@@ -1,203 +1,219 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-<script language="JavaScript" src="light.js"></script>
-<style type="text/css"> 
-
-input[type="button"]
-{
-margin: 1px;
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edga,chrome=1">
+  <script src="light.js"></script>
+  <style>
+input[type="button"] {
+  margin: 1px;
 }
 
-input[type="range"]
-{
-height:15px;
-padding-top: 0px;
-padding-bottom: 0px;
+input[type="range"] {
+  height:15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
-.toolbtn
-{
--webkit-appearance: none;
-border-radius: 0;
-border-style:none;
-background-color:rgb(230,230,230);
-outline: none;
-line-height: 110%;
+.toolbtn {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(230,230,230);
+  outline: none;
+  line-height: 110%;
 }
 
-.toolbtn:hover
-{
-border-style:none;
-background-color:rgb(200,200,200);
-outline: none;
-line-height: 110%;
+.toolbtn:hover {
+  border-style:none;
+  background-color:rgb(200,200,200);
+  outline: none;
+  line-height: 110%;
 }
 
-.toolbtnwithlisthover
-{
-border-style:none;
-background-color:rgb(215,215,215);
-outline: none;
-line-height: 110%;
+.toolbtnwithlisthover {
+  border-style:none;
+  background-color:rgb(215,215,215);
+  outline: none;
+  line-height: 110%;
 }
 
-.toolbtnselected
-{
--webkit-appearance: none;
-border-radius: 0;
-border-style:none;
-background-color:rgb(192,192,192);
-outline: none;
-line-height: 110%;
+.toolbtnselected {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(192,192,192);
+  outline: none;
+  line-height: 110%;
 }
 
-.toollistbox
-{
-background-color:rgb(215,215,215);
-font-size:12pt;
-position:absolute;
-padding-right: 1px;
-line-height:1;
+.toollistbox {
+  background-color:rgb(215,215,215);
+  font-size:12pt;
+  position:absolute;
+  padding-right: 1px;
+  line-height:1;
 }
 
-.toollistbtn
-{
--webkit-appearance: none;
-border-radius: 0;
-border-style:none;
-background-color:rgb(215,215,215);
-outline: none;
-line-height: 110%;
-width:100%;
-text-align:left;
+.toollistbtn {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(215,215,215);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
 }
 
-.toollistbtn:hover
-{
-border-style:none;
-background-color:rgb(168,168,168);
-outline: none;
-line-height: 110%;
-width:100%;
-text-align:left;
+.toollistbtn:hover {
+  border-style:none;
+  background-color:rgb(168,168,168);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
 }
 
-.toollistbtnselected
-{
--webkit-appearance: none;
-border-radius: 0;
-border-style:none;
-background-color:rgb(168,168,168);
-outline: none;
-line-height: 110%;
-width:100%;
-text-align:left;
+.toollistbtnselected {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(168,168,168);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
 }
 
-.mainbox
-{
-background-color:white;
-font-size:12pt;
+.mainbox {
+  background-color:white;
+  font-size:12pt;
 }
 
-
-
-.settingsbox
-{
-background-color:rgb(90,90,90);
-color:white;
-opacity:0.8;
-font-size:12pt;
+.settingsbox {
+  background-color:rgb(90,90,90);
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
 }
 
-.forcestopbox
-{
-background-color:red;
-color:white;
-opacity:0.8;
-font-size:12pt;
+.forcestopbox {
+  background-color:red;
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
 }
 
-.optionsbar
-{
-margin-left:5px;
-margin-top:2px;
+.optionsbar {
+  margin-left:5px;
+  margin-top:2px;
 }
 
-input
-{
-outline: none;
+input {
+  outline: none;
 }
 
-
-
-
-textarea
-{
-outline: none;
+textarea {
+  outline: none;
 }
 
-</style>
+  </style>
 </head>
 <body style="background-color:rgb(0,0,0);">
 <canvas id="canvas1" style="position:absolute;top:0;left:0;"></canvas>
 <div class="mainbox" id="mainbox" style="position:absolute; top:0; left:0; width:100%; height:50px;">
-<div style="float: right; text-align:right; margin-right:5px">
-<div>
-<input type="button" id="undo" disabled><input type="button" id="redo" disabled><input type="button" id="reset"><input type="button" id="accessJSON" style="display:none;"><input type="button" id="save"><input type="button" id="open"><input type="file" id="openfile" style="display:none">
-</div>
-<div style="margin-top:2px">
-<label id="showgrid_"><input type="checkbox" id="showgrid"><span id="showgrid_title"></span></label>
-<label id="grid_"><input type="checkbox" id="grid"><span id="grid_title"></span></label><label id="lockobjs_"><input type="checkbox" id="lockobjs"><span id="lockobjs_title"></span></label>
-</div>
-</div>
+  <div style="float: right; text-align:right; margin-right:5px">
+    <div>
+      <input type="button" id="undo" disabled>
+      <input type="button" id="redo" disabled>
+      <input type="button" id="reset">
+      <input type="button" id="accessJSON" style="display:none;">
+      <input type="button" id="save">
+      <input type="button" id="open">
+      <input type="file" id="openfile" style="display:none">
+    </div>
+    <div style="margin-top:2px">
+      <label id="showgrid_">
+        <input type="checkbox" id="showgrid">
+        <span id="showgrid_title"></span>
+      </label>
+      <label id="grid_">
+        <input type="checkbox" id="grid">
+        <span id="grid_title"></span>
+      </label>
+      <label id="lockobjs_">
+        <input type="checkbox" id="lockobjs">
+        <span id="lockobjs_title"></span>
+      </label>
+    </div>
+  </div>
 
-<!--===============工具欄==================-->
-<div class="optionsbar">
-<span id="toolbar_title"></span>
-<input type="button" id="tool_laser" class="toolbtn"><input type="button" id="tool_parallel" class="toolbtn"><input type="button" id="tool_radiant" class="toolbtn"><input type="button" id="tool_mirror_" class="toolbtn"><input type="button" id="tool_refractor_" class="toolbtn"><input type="button" id="tool_blackline" class="toolbtn"><input type="button" class="toolbtn" id="tool_ruler"><input type="button" class="toolbtn" id="tool_protractor">&nbsp;
-<input type="button" id="tool_" class="toolbtn">
-</div>
+  <!--===============工具欄==================-->
+  <div class="optionsbar">
+    <span id="toolbar_title"></span>
+    <input type="button" class="toolbtn" id="tool_laser">
+    <input type="button" class="toolbtn" id="tool_parallel">
+    <input type="button" class="toolbtn" id="tool_radiant">
+    <input type="button" class="toolbtn" id="tool_mirror_">
+    <input type="button" class="toolbtn" id="tool_refractor_">
+    <input type="button" class="toolbtn" id="tool_blackline">
+    <input type="button" class="toolbtn" id="tool_ruler">
+    <input type="button" class="toolbtn" id="tool_protractor">&nbsp;
+    <input type="button" class="toolbtn" id="tool_">
+  </div>
 
-<div class="optionsbar">
-<span id="modebar_title"></span>
-<input type="button" id="mode_light" class="toolbtn"><input type="button" id="mode_extended_light" class="toolbtn"><input type="button" id="mode_images" class="toolbtn"><input type="button" id="mode_observer" class="toolbtn">
-<span id="rayDensity_title"></span>
-<input type="range" id="rayDensity" min="-3" max="3" step="0.0001" value="-2.3026">
-<span id="status" style="display:none;"></span>
-</div>
+  <div class="optionsbar">
+    <span id="modebar_title"></span>
+    <input type="button" class="toolbtn" id="mode_light">
+    <input type="button" class="toolbtn" id="mode_extended_light">
+    <input type="button" class="toolbtn" id="mode_images">
+    <input type="button" class="toolbtn" id="mode_observer">
+    <span id="rayDensity_title"></span>
+    <input type="range" id="rayDensity" min="-3" max="3" step="0.0001" value="-2.3026">
+    <span id="status" style="display:none;"></span>
+  </div>
 </div>
 <div id="obj_settings" class="settingsbox" style="position:absolute; top:50px; left:0; width:100%; display:none;">
-<div class="optionsbar">
-<span id="obj_name"></span>
-<span id="p_box">&nbsp;
-<span id="p_name"></span>
-<input type="range" id="objAttr_range">
-<input type="text" id="objAttr_text" style="width:40px;">
-<span id="setAttrAll_box"><label id="setAttrAll_"><input type="checkbox" id="setAttrAll"><span id="setAttrAll_title"></span></label></span></span>
-<input type="button" id="copy"><input id="delete" type="button">
-</div>
+  <div class="optionsbar">
+    <span id="obj_name"></span>
+    <span id="p_box">&nbsp;
+      <span id="p_name"></span>
+      <input type="range" id="objAttr_range">
+      <input type="text" id="objAttr_text" style="width:40px;">
+      <span id="setAttrAll_box">
+        <label id="setAttrAll_">
+          <input type="checkbox" id="setAttrAll">
+          <span id="setAttrAll_title"></span>
+        </label>
+      </span>
+    </span>
+    <input type="button" id="copy">
+    <input id="delete" type="button">
+  </div>
 </div>
 <div id="forceStop" class="forcestopbox" style="position:absolute; top:90px; left:10px; display:none;"></div>
 <textarea id="textarea1" style="position: absolute; bottom: 0; left: 0; width: 99%; height: 100px; display:none;"></textarea>
 
 <!--===============存檔方塊==================-->
 <div class="mainbox" id="saveBox" style="position:absolute; top:50px; right:0px; padding-left: 3px; padding-bottom: 3px; display:none;">
-<span id="save_name_title"></span>
-<input type="text" id="save_name" style="width:200px;" value="">
-<input type="button" id="save_confirm"><input type="button" id="save_cancel"><br>
-<div id="save_description" style="font-size:10pt;"></div>
+  <span id="save_name_title"></span>
+  <input type="text" id="save_name" style="width:200px;" value="">
+  <input type="button" id="save_confirm"><input type="button" id="save_cancel"><br>
+  <div id="save_description" style="font-size:10pt;"></div>
 </div>
 
 <!--===============工具欄下拉選單==================-->
 <div class="toollistbox" id="tool_mirror_list" style="position:absolute; display:none;">
-<input type="button" id="tool_mirror" class="toollistbtn"><br><input type="button" id="tool_arcmirror"class="toollistbtn"><br><input type="button" id="tool_idealmirror" class="toollistbtn">
+  <input type="button" class="toollistbtn" id="tool_mirror"><br>
+  <input type="button" class="toollistbtn" id="tool_arcmirror"><br>
+  <input type="button" class="toollistbtn" id="tool_idealmirror">
 </div>
 <div class="toollistbox" id="tool_refractor_list" style="position:absolute; display:none;">
-<input type="button" id="tool_halfplane" class="toollistbtn"><br><input type="button" id="tool_circlelens"class="toollistbtn"><br><input type="button" id="tool_refractor" class="toollistbtn"><br><input type="button" id="tool_lens" class="toollistbtn">
+  <input type="button" class="toollistbtn" id="tool_halfplane"><br>
+  <input type="button" class="toollistbtn" id="tool_circlelens"><br>
+  <input type="button" class="toollistbtn" id="tool_refractor"><br>
+  <input type="button" class="toollistbtn" id="tool_lens">
 </div>
 
 <!--===============座標輸入方塊==================-->
