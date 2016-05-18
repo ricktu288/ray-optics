@@ -1,8 +1,9 @@
 ﻿(function() {
 
-  var graphs = {
-
-  //=============基本圖型==============
+var graphs = {
+  /**
+  * 基本圖型
+  **/
   point: function(x, y) {return {type: 1, x: x, y: y, exist: true}},
 
   line: function(p1, p2) {return {type: 2, p1: p1, p2: p2, exist: true}},
@@ -14,28 +15,60 @@
   segment: function(p1, p2) {return {type: 4, p1: p1, p2: p2, exist: true}},
 
   circle: function(c, r) {
-                  if (typeof r == 'object' && r.type == 1) { return {type: 5, c: c, r: this.line_segment(c, r), exist: true} }
-                                               else { return {type: 5, c: c, r: r, exist: true} }
-                          },
-
-  //==================================================求交點============================================
-  intersection: function(obj1, obj2) {
-  //線,線
-  if (obj1.type == 2 && obj2.type == 2)
-  {
-  return this.intersection_2line(obj1, obj2);
-  }
-  //線,圓  或  圓,線
-  if (obj1.type == 2 && obj2.type == 5)
-  {
-  return this.intersection_line_circle(obj1, obj2);
-  }
-  if (obj1.type == 5 && obj2.type == 2)
-  {
-  return this.intersection_line_circle(obj2, obj1);
-  }
+    if (typeof r == 'object' && r.type == 1) {
+      return {type: 5, c: c, r: this.line_segment(c, r), exist: true}
+    } else {
+      return {type: 5, c: c, r: r, exist: true}
+    }
   },
-  //==============================================求兩直線交點========================================
+  /**
+  * inner product
+  * @method dot
+  * @param {graph.point} p1
+  * @param {graph.point} p2
+  * @return {Number}
+  **/
+  dot: function(p1, p2) {
+    return p1.x * p2.x + p1.y * p2.y;
+  },
+  /**
+  * outer product
+  * @method cross
+  * @param {graph.line} l1
+  * @param {graph.line} l2
+  * @return {Number}
+  **/
+  cross: function(l1, l2) {
+    return p1.x * p2.y - p1.y * p2.x;
+  },
+  /**
+  * 求交點
+  * @method intersection
+  * @param {graph} obj1
+  * @param {graph} obj2
+  * @return {graph.point}
+  **/
+  intersection: function(obj1, obj2) {
+    // line & line
+    if (obj1.type == 2 && obj2.type == 2) {
+      return this.intersection_2line(obj1, obj2);
+    }
+    // line & circle
+    else if (obj1.type == 2 && obj2.type == 5) {
+      return this.intersection_line_circle(obj1, obj2);
+    }
+    // circle & line
+    else if (obj1.type == 5 && obj2.type == 2) {
+      return this.intersection_line_circle(obj2, obj1);
+    }
+  },
+  /**
+  * 兩直線交點
+  * @method intersection_2line
+  * @param {graph.line} l1
+  * @param {graph.line} l2
+  * @return {graph.point}
+  **/
   intersection_2line: function(l1, l2) {
     var A = l1.p2.x * l1.p1.y - l1.p1.x * l1.p2.y;
     var B = l2.p2.x * l2.p1.y - l2.p1.x * l2.p2.y;
@@ -45,7 +78,13 @@
     var yb = l2.p2.y - l2.p1.y;
     return graphs.point((A * xb - B * xa) / (xa * yb - xb * ya), (A * yb - B * ya) / (xa * yb - xb * ya));
   },
-  //==========================================求直線與圓的交點========================================
+  /**
+  * 直線與圓的交點
+  * @method intersection_2line
+  * @param {graph.line} l1
+  * @param {graph.circle} c2
+  * @return {graph.point}
+  **/
   intersection_line_circle: function(l1, c1) {
     var xa = l1.p2.x - l1.p1.x;
     var ya = l1.p2.y - l1.p1.y;
@@ -64,147 +103,174 @@
 
     var d = Math.sqrt(r_sq - (px - cx) * (px - cx) - (py - cy) * (py - cy));
 
-    var p = [];
-    p[1] = graphs.point(px + ux * d, py + uy * d);
-    p[2] = graphs.point(px - ux * d, py - uy * d);
+    var ret = [];
+    ret[1] = graphs.point(px + ux * d, py + uy * d);
+    ret[2] = graphs.point(px - ux * d, py - uy * d);
 
-    return p;
+    return ret;
   },
 
 
-  intersection_is_on_ray: function(p1, r1)
-  {
+  intersection_is_on_ray: function(p1, r1) {
     return (p1.x - r1.p1.x) * (r1.p2.x - r1.p1.x) + (p1.y - r1.p1.y) * (r1.p2.y - r1.p1.y) >= 0;
   },
 
 
-  intersection_is_on_segment: function(p1, s1)
-  {
+  intersection_is_on_segment: function(p1, s1) {
     return (p1.x - s1.p1.x) * (s1.p2.x - s1.p1.x) + (p1.y - s1.p1.y) * (s1.p2.y - s1.p1.y) >= 0 && (p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y) >= 0;
   },
 
+  /**
+  * 線段長度
+  * @method length_segment
+  * @param {graph.segment} seg
+  * @return {Number}
+  **/
+  length_segment: function(seg) {
+    return Math.sqrt(this.length_segment_squared(seg));
+  },
+  /**
+  * 線段長度平方
+  * @method length_segment_squared
+  * @param {graph.segment} seg
+  * @return {Number}
+  **/
+  length_segment_squared: function(seg) {
+    return this.length_squared(seg.p1, seg.p2);
+  },
+  /**
+  * 兩點距離
+  * @method length
+  * @param {graph.point} p1
+  * @param {graph.point} p2
+  * @return {Number}
+  **/
+  length: function(p1, p2) {
+    return Math.sqrt(this.length_squared(p1, p2));
+  },
+  /**
+  * 兩點距離平方
+  * @method length_squared
+  * @param {graph.point} p1
+  * @param {graph.point} p2
+  * @return {Number}
+  **/
+  length_squared: function(p1, p2) {
+    var dx = p1.x - p2.x;
+    var dy = p1.y - p2.y;
+    return dx * dx + dy * dy;
+  },
 
-  //=========求線段長度=========
-  length_segment: function(s1)
-  {
-  return Math.sqrt((s1.p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (s1.p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y));
-  },
-  length_segment_squared: function(s1)
-  {
-  return (s1.p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (s1.p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y);
-  },
-
-  //=========求兩點距離=========
-  length: function(p1, p2)
-  {
-  return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
-  },
-  length_squared: function(p1, p2)
-  {
-  return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
-  },
-
-  //==========================基本作圖函數======================================
-  //求線段中點
-  midpoint: function(l1)
-  {
-  return graphs.point((l1.p1.x + l1.p2.x) * 0.5, (l1.p1.y + l1.p2.y) * 0.5);
-  },
-  //求線段中垂線
-  perpendicular_bisector: function(l1)
-  {
-  return graphs.line(graphs.point((-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5, (l1.p1.x - l1.p2.x + l1.p1.y + l1.p2.y) * 0.5), graphs.point((l1.p1.y - l1.p2.y + l1.p1.x + l1.p2.x) * 0.5, (-l1.p1.x + l1.p2.x + l1.p1.y + l1.p2.y) * 0.5));
-  },
-  //畫通過一點且與一直線平行的線
-  parallel: function(l1, p1)
-  {
-  return graphs.line(p1, graphs.point(l1.p2.x + p1.x - l1.p1.x, l1.p2.y + p1.y - l1.p1.y));
-  }
-  //==========================================================================
-  //=↓graph結束==
-  };
-
-  var canvasPainter = {
-
-  draw: function(graph, color) {
-  //var ctx = canvas.getContext('2d');
-  //===========================point=======================
-  if (graph.type == 1)
-  {
-  if (!color) {ctx.fillStyle = 'red'}else {ctx.fillStyle = color}
-  ctx.fillRect(graph.x - 2, graph.y - 2, 5, 5); //繪製填滿的矩形
   /*
-  ctx.beginPath();
-  ctx.arc(graph.x,graph.y,2,0,Math.PI*2,false);
-  ctx.fill();
+  * 基本作圖函數
   */
-  }
-  //===========================line========================
-  if (graph.type == 2)
-  {
-  if (!color) {ctx.strokeStyle = 'black'}else {ctx.strokeStyle = color}
-  ctx.beginPath();
-  var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-  var cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做直線端點)
-  ctx.moveTo(graph.p1.x - Math.sin(ang1) * cvsLimit, graph.p1.y - Math.cos(ang1) * cvsLimit);
-  ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
-  ctx.stroke();
-  }
-  //===========================ray========================
-  if (graph.type == 3)
-  {
-  if (!color) {ctx.strokeStyle = 'black'}else {ctx.strokeStyle = color}
-  var ang1, cvsLimit;
-  if (Math.abs(graph.p2.x - graph.p1.x) > 1e-5 || Math.abs(graph.p2.y - graph.p1.y) > 1e-5)
-  {
-    ctx.beginPath();
-    ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-    cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做射線終點)
-    ctx.moveTo(graph.p1.x, graph.p1.y);
-    ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
-    ctx.stroke();
-  }
-  }
-  //===========================line_segment========================
-  if (graph.type == 4)
-  {
-  if (!color) {ctx.strokeStyle = 'black'}else {ctx.strokeStyle = color}
-  ctx.beginPath();
-
-  ctx.moveTo(graph.p1.x, graph.p1.y);
-  ctx.lineTo(graph.p2.x, graph.p2.y);
-  ctx.stroke();
-  }
-  //===========================circle=======================
-  if (graph.type == 5)
-  {
-  if (!color) {ctx.strokeStyle = 'black'}else {ctx.strokeStyle = color}
-  ctx.beginPath();
-  if (typeof graph.r == 'object')
-  {
-  ctx.arc(graph.c.x, graph.c.y, Math.sqrt(Math.pow(graph.r.p1.x - graph.r.p2.x, 2) + Math.pow(graph.r.p1.y - graph.r.p2.y, 2)), 0, Math.PI * 2, false);
-  }
-  else
-  {
-  ctx.arc(graph.c.x, graph.c.y, graph.r, 0, Math.PI * 2, false);
-  }
-  ctx.stroke();
-  }
-  //======================================================
-
-
+  /**
+  * 線段中點
+  * @method midpoint
+  * @param {graph.line} l1
+  * @return {graph.point}
+  **/
+  midpoint: function(l1) {
+    var nx = (l1.p1.x + l1.p2.x) * 0.5;
+    var ny = (l1.p1.y + l1.p2.y) * 0.5;
+    return graphs.point(nx, ny);
   },
-
-  cls: function() {
-  //var ctx = canvas.getContext('2d');
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
+  /**
+  * 線段中垂線
+  * @method perpendicular_bisector
+  * @param {graph.line} l1
+  * @return {graph.line}
+  **/
+  perpendicular_bisector: function(l1) {
+    return graphs.line(
+        graphs.point(
+          (-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
+          (l1.p1.x - l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
+        ),
+        graphs.point(
+          (l1.p1.y - l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
+          (-l1.p1.x + l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
+        )
+      );
+  },
+  /**
+  * 畫通過一點且與一直線平行的線
+  * @method parallel
+  * @param {graph.line} l1
+  * @param {graph.point} p1
+  * @return {graph.line}
+  **/
+  parallel: function(l1, p1) {
+    var dx = l1.p2.x - l1.p1.x;
+    var dy = l1.p2.y - l1.p1.y;
+    return graphs.line(p1, graphs.point(p1.x + dx, p1.y + dy));
   }
+};
 
-
-  };
+var canvasPainter = {
+  draw: function(graph, color) {
+    //var ctx = canvas.getContext('2d');
+    // point
+    if (graph.type == 1) {
+      ctx.fillStyle = color ? color : 'red';
+      ctx.fillRect(graph.x - 2, graph.y - 2, 5, 5); //繪製填滿的矩形
+      /*
+        ctx.beginPath();
+        ctx.arc(graph.x,graph.y,2,0,Math.PI*2,false);
+        ctx.fill();
+      */
+    }
+    // line
+    else if (graph.type == 2) {
+      ctx.strokeStyle = color ? color : 'black';
+      ctx.beginPath();
+      var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
+      var cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做直線端點)
+      ctx.moveTo(graph.p1.x - Math.sin(ang1) * cvsLimit, graph.p1.y - Math.cos(ang1) * cvsLimit);
+      ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
+      ctx.stroke();
+    }
+    // ray
+    else if (graph.type == 3) {
+      ctx.strokeStyle = color ? color : 'black';
+      var ang1, cvsLimit;
+      if (Math.abs(graph.p2.x - graph.p1.x) > 1e-5 || Math.abs(graph.p2.y - graph.p1.y) > 1e-5)
+      {
+        ctx.beginPath();
+        ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
+        cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做射線終點)
+        ctx.moveTo(graph.p1.x, graph.p1.y);
+        ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
+        ctx.stroke();
+      }
+    }
+    // (line_)segment
+    else if (graph.type == 4) {
+      ctx.strokeStyle = color ? color : 'black';
+      ctx.beginPath();
+      ctx.moveTo(graph.p1.x, graph.p1.y);
+      ctx.lineTo(graph.p2.x, graph.p2.y);
+      ctx.stroke();
+    }
+    // circle
+    else if (graph.type == 5) {
+      ctx.strokeStyle = color ? color : 'black';
+      ctx.beginPath();
+      if (typeof graph.r == 'object') {
+        var dx = graph.r.p1.x - graph.r.p2.x;
+        var dy = graph.r.p1.y - graph.r.p2.y;
+        ctx.arc(graph.c.x, graph.c.y, Math.sqrt(dx * dx + dy * dy), 0, Math.PI * 2, false);
+      } else {
+        ctx.arc(graph.c.x, graph.c.y, graph.r, 0, Math.PI * 2, false);
+      }
+      ctx.stroke();
+    }
+  },
+  cls: function() {
+    //var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+};
 
   var objTypes = {};
 
@@ -4727,119 +4793,115 @@
 
   }
 
-  function message(msg)
-  {
+  function getMsg(msg) {
     return chrome.i18n.getMessage(msg);
   }
 
-  function init_i18n()
-  {
+  function init_i18n() {
     var downarraw = '\u25BC';
     //var downarraw="\u25BE";
-    document.title = message('appName');
+    document.title = getMsg('appName');
 
     //===========toolbar===========
-    document.getElementById('toolbar_title').innerHTML = message('toolbar_title');
+    document.getElementById('toolbar_title').innerHTML = getMsg('toolbar_title');
 
     //Ray
-    document.getElementById('tool_laser').value = message('toolname_laser');
-    document.getElementById('tool_laser').dataset['n'] = message('toolname_laser');
+    document.getElementById('tool_laser').value = getMsg('toolname_laser');
+    document.getElementById('tool_laser').dataset['n'] = getMsg('toolname_laser');
 
     //Point source
-    document.getElementById('tool_radiant').value = message('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['n'] = message('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['p'] = message('brightness');
+    document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
+    document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');
+    document.getElementById('tool_radiant').dataset['p'] = getMsg('brightness');
 
     //Beam
-    document.getElementById('tool_parallel').value = message('toolname_parallel');
-    document.getElementById('tool_parallel').dataset['n'] = message('toolname_parallel');
-    document.getElementById('tool_parallel').dataset['p'] = message('brightness');
+    document.getElementById('tool_parallel').value = getMsg('toolname_parallel');
+    document.getElementById('tool_parallel').dataset['n'] = getMsg('toolname_parallel');
+    document.getElementById('tool_parallel').dataset['p'] = getMsg('brightness');
 
     //Mirror▼
-    document.getElementById('tool_mirror_').value = message('toolname_mirror_') + downarraw;
+    document.getElementById('tool_mirror_').value = getMsg('toolname_mirror_') + downarraw;
 
     //Mirror->Line
-    document.getElementById('tool_mirror').value = message('tooltitle_mirror');
-    document.getElementById('tool_mirror').dataset['n'] = message('toolname_mirror_');
+    document.getElementById('tool_mirror').value = getMsg('tooltitle_mirror');
+    document.getElementById('tool_mirror').dataset['n'] = getMsg('toolname_mirror_');
 
     //Mirror->Circular Arc
-    document.getElementById('tool_arcmirror').value = message('tooltitle_arcmirror');
-    document.getElementById('tool_arcmirror').dataset['n'] = message('toolname_mirror_');
+    document.getElementById('tool_arcmirror').value = getMsg('tooltitle_arcmirror');
+    document.getElementById('tool_arcmirror').dataset['n'] = getMsg('toolname_mirror_');
 
     //Mirror->Curve (ideal)
-    document.getElementById('tool_idealmirror').value = message('tooltitle_idealmirror');
-    document.getElementById('tool_idealmirror').dataset['n'] = message('toolname_idealmirror');
-    document.getElementById('tool_idealmirror').dataset['p'] = message('focallength');
+    document.getElementById('tool_idealmirror').value = getMsg('tooltitle_idealmirror');
+    document.getElementById('tool_idealmirror').dataset['n'] = getMsg('toolname_idealmirror');
+    document.getElementById('tool_idealmirror').dataset['p'] = getMsg('focallength');
 
     //Refractor▼
-    document.getElementById('tool_refractor_').value = message('toolname_refractor_') + downarraw;
+    document.getElementById('tool_refractor_').value = getMsg('toolname_refractor_') + downarraw;
 
     //Refractor->Half-plane
-    document.getElementById('tool_halfplane').value = message('tooltitle_halfplane');
-    document.getElementById('tool_halfplane').dataset['n'] = message('toolname_refractor_');
-    document.getElementById('tool_halfplane').dataset['p'] = message('refractiveindex');
+    document.getElementById('tool_halfplane').value = getMsg('tooltitle_halfplane');
+    document.getElementById('tool_halfplane').dataset['n'] = getMsg('toolname_refractor_');
+    document.getElementById('tool_halfplane').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Circle
-    document.getElementById('tool_circlelens').value = message('tooltitle_circlelens');
-    document.getElementById('tool_circlelens').dataset['n'] = message('toolname_refractor_');
-    document.getElementById('tool_circlelens').dataset['p'] = message('refractiveindex');
+    document.getElementById('tool_circlelens').value = getMsg('tooltitle_circlelens');
+    document.getElementById('tool_circlelens').dataset['n'] = getMsg('toolname_refractor_');
+    document.getElementById('tool_circlelens').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Other shape
-    document.getElementById('tool_refractor').value = message('tooltitle_refractor');
-    document.getElementById('tool_refractor').dataset['n'] = message('toolname_refractor_');
-    document.getElementById('tool_refractor').dataset['p'] = message('refractiveindex');
+    document.getElementById('tool_refractor').value = getMsg('tooltitle_refractor');
+    document.getElementById('tool_refractor').dataset['n'] = getMsg('toolname_refractor_');
+    document.getElementById('tool_refractor').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Lens (ideal)
-    document.getElementById('tool_lens').value = message('tooltitle_lens');
-    document.getElementById('tool_lens').dataset['n'] = message('toolname_lens');
-    document.getElementById('tool_lens').dataset['p'] = message('focallength');
+    document.getElementById('tool_lens').value = getMsg('tooltitle_lens');
+    document.getElementById('tool_lens').dataset['n'] = getMsg('toolname_lens');
+    document.getElementById('tool_lens').dataset['p'] = getMsg('focallength');
 
     //Blocker
-    document.getElementById('tool_blackline').value = message('toolname_blackline');
-    document.getElementById('tool_blackline').dataset['n'] = message('toolname_blackline');
+    document.getElementById('tool_blackline').value = getMsg('toolname_blackline');
+    document.getElementById('tool_blackline').dataset['n'] = getMsg('toolname_blackline');
 
     //Ruler
-    document.getElementById('tool_ruler').value = message('toolname_ruler');
-    document.getElementById('tool_ruler').dataset['n'] = message('toolname_ruler');
+    document.getElementById('tool_ruler').value = getMsg('toolname_ruler');
+    document.getElementById('tool_ruler').dataset['n'] = getMsg('toolname_ruler');
 
     //Protractor
-    document.getElementById('tool_protractor').value = message('toolname_protractor');
-    document.getElementById('tool_protractor').dataset['n'] = message('toolname_protractor');
+    document.getElementById('tool_protractor').value = getMsg('toolname_protractor');
+    document.getElementById('tool_protractor').dataset['n'] = getMsg('toolname_protractor');
 
     //Move view
-    document.getElementById('tool_').value = message('toolname_');
+    document.getElementById('tool_').value = getMsg('toolname_');
 
 
 
     //===========modebar===========
-    document.getElementById('modebar_title').innerHTML = message('modebar_title');
-    document.getElementById('mode_light').value = message('modename_light');
-    document.getElementById('mode_extended_light').value = message('modename_extended_light');
-    document.getElementById('mode_images').value = message('modename_images');
-    document.getElementById('mode_observer').value = message('modename_observer');
-    document.getElementById('rayDensity_title').innerHTML = message('raydensity');
+    document.getElementById('modebar_title').innerHTML = getMsg('modebar_title');
+    document.getElementById('mode_light').value = getMsg('modename_light');
+    document.getElementById('mode_extended_light').value = getMsg('modename_extended_light');
+    document.getElementById('mode_images').value = getMsg('modename_images');
+    document.getElementById('mode_observer').value = getMsg('modename_observer');
+    document.getElementById('rayDensity_title').innerHTML = getMsg('raydensity');
 
 
-    document.getElementById('undo').value = message('undo');
-    document.getElementById('redo').value = message('redo');
-    document.getElementById('reset').value = message('reset');
-    document.getElementById('save').value = message('save');
-    document.getElementById('save_name_title').innerHTML = message('save_name');
-    document.getElementById('save_confirm').value = message('save');
-    document.getElementById('save_cancel').value = message('save_cancel');
-    document.getElementById('save_description').innerHTML = message('save_description');
-    document.getElementById('open').value = message('open');
-    document.getElementById('lockobjs_title').innerHTML = message('lockobjs');
-    document.getElementById('grid_title').innerHTML = message('snaptogrid');
-    document.getElementById('showgrid_title').innerHTML = message('grid');
+    document.getElementById('undo').value = getMsg('undo');
+    document.getElementById('redo').value = getMsg('redo');
+    document.getElementById('reset').value = getMsg('reset');
+    document.getElementById('save').value = getMsg('save');
+    document.getElementById('save_name_title').innerHTML = getMsg('save_name');
+    document.getElementById('save_confirm').value = getMsg('save');
+    document.getElementById('save_cancel').value = getMsg('save_cancel');
+    document.getElementById('save_description').innerHTML = getMsg('save_description');
+    document.getElementById('open').value = getMsg('open');
+    document.getElementById('lockobjs_title').innerHTML = getMsg('lockobjs');
+    document.getElementById('grid_title').innerHTML = getMsg('snaptogrid');
+    document.getElementById('showgrid_title').innerHTML = getMsg('grid');
 
-    document.getElementById('setAttrAll_title').innerHTML = message('applytoall');
-    document.getElementById('copy').value = message('duplicate');
-    document.getElementById('delete').value = message('delete');
+    document.getElementById('setAttrAll_title').innerHTML = getMsg('applytoall');
+    document.getElementById('copy').value = getMsg('duplicate');
+    document.getElementById('delete').value = getMsg('delete');
 
-    document.getElementById('forceStop').innerHTML = message('processing');
-
+    document.getElementById('forceStop').innerHTML = getMsg('processing');
   }
-
-
+  
 })();
