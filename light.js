@@ -3733,7 +3733,12 @@ var canvasPainter = {
   function canvas_onmousedown(e) {
   //滑鼠按下時
   //console.log(e.which);
-  var mouse_nogrid = graphs.point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop); //滑鼠實際位置
+  if (e.changedTouches) {
+    var et = e.changedTouches[0];
+  } else {
+    var et = e;
+  }
+  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1)
   {
@@ -3745,7 +3750,7 @@ var canvasPainter = {
   }
 
 
-  if (!((e.which && (e.which == 1 || e.which == 3)) || (e.touches && e.touches.length == 1)))
+  if (!((e.which && (e.which == 1 || e.which == 3)) || (e.changedTouches)))
   {
     return;
   }
@@ -3754,7 +3759,7 @@ var canvasPainter = {
   if (document.getElementById('grid').checked)
   {
     //使用格線
-    mouse = graphs.point(Math.round((e.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((e.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
+    mouse = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
 
   }
   else
@@ -3767,7 +3772,7 @@ var canvasPainter = {
 
   if (isConstructing)
   {
-    if ((e.which && e.which == 1) || (e.touches && e.touches.length == 1))
+    if ((e.which && e.which == 1) || (e.changedTouches))
     {
       //只有滑鼠左鍵才反應
       //若有一個物件正在被建立,則將動作直接傳給它
@@ -3888,18 +3893,23 @@ var canvasPainter = {
   //========================================================MouseMove===============================================================
   function canvas_onmousemove(e) {
   //滑鼠移動時
-  var mouse_nogrid = graphs.point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop); //滑鼠實際位置
+  if (e.changedTouches) {
+    var et = e.changedTouches[0];
+  } else {
+    var et = e;
+  }
+  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
   var mouse2;
   //if(document.getElementById("grid").checked != e.altKey)
   if (document.getElementById('grid').checked && !(e.altKey && !isConstructing))
   {
     //使用格線
-    mouse2 = graphs.point(Math.round((e.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((e.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
+    mouse2 = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
   }
   else
   {
     //不使用格線
-    mouse2 = graphs.point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop);
+    mouse2 = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop);
   }
 
   if (mouse2.x == mouse.x && mouse2.y == mouse.y)
@@ -4017,7 +4027,7 @@ var canvasPainter = {
   //document.getElementById('status').innerHTML=mouse.x;
   if (isConstructing)
   {
-    if ((e.which && e.which == 1) || (e.touches && e.touches.length == 1))
+    if ((e.which && e.which == 1) || (e.changedTouches))
     {
       //若有一個物件正在被建立,則將動作直接傳給它
       objTypes[objs[objs.length - 1].type].c_mouseup(objs[objs.length - 1], mouse);
