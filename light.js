@@ -2951,23 +2951,23 @@ var canvasPainter = {
 
     tools_normal.forEach(function(element, index)
     {
-      document.getElementById('tool_' + element).onmouseenter = function() {toolbtn_mouseentered(element, event);};
-      document.getElementById('tool_' + element).onclick = function() {toolbtn_clicked(element, event);};
+      document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtn_mouseentered(element, e);};
+      document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
       cancelMousedownEvent('tool_' + element);
     });
 
     tools_withList.forEach(function(element, index)
     {
-      document.getElementById('tool_' + element).onmouseenter = function() {toolbtnwithlist_mouseentered(element, event);};
-      document.getElementById('tool_' + element).onclick = function() {toolbtnwithlist_mouseentered(element, event);};
-      document.getElementById('tool_' + element).onmouseleave = function() {toolbtnwithlist_mouseleft(element, event);};
-      document.getElementById('tool_' + element + 'list').onmouseleave = function() {toollist_mouseleft(element, event);};
+      document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtnwithlist_mouseentered(element, e);};
+      document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};
+      document.getElementById('tool_' + element).onmouseleave = function(e) {toolbtnwithlist_mouseleft(element, e);};
+      document.getElementById('tool_' + element + 'list').onmouseleave = function(e) {toollist_mouseleft(element, e);};
       cancelMousedownEvent('tool_' + element);
     });
 
     tools_inList.forEach(function(element, index)
     {
-      document.getElementById('tool_' + element).onclick = function() {toollistbtn_clicked(element, event);};
+      document.getElementById('tool_' + element).onclick = function(e) {toollistbtn_clicked(element, e);};
       cancelMousedownEvent('tool_' + element);
     });
 
@@ -4773,7 +4773,7 @@ var canvasPainter = {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + document.getElementById('textarea1').value);
     pom.setAttribute('download', document.getElementById('save_name').value);
-    pom.click();
+    pom.dispatchEvent(new MouseEvent("click"));
     document.getElementById('saveBox').style.display = 'none';
   }
 
