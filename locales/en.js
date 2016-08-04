@@ -1,4 +1,5 @@
-﻿{
+﻿if (typeof locales == 'undefined') locales = {};
+locales["en"] = {
   "appName": {
     "message": "Ray Optics Simulation"
   },

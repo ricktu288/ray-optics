@@ -1,39 +1,42 @@
-﻿{
+if (typeof locales == 'undefined') locales = {};
+locales["zh-CN"] = {
   "appName": {
-    "message": "幾何光學模擬"
+    "message": "几何光学模拟"
   },
   "appShortName": {
-    "message": "幾何光學"
+    "message": "几何光学"
   },
   "appDesc": {
-    "message": "模擬光的反射和折射。"
+    "message": "模拟光的反射和折射。"
   },
   "toolbar_title": {
     "message": "工具："
   },
   "toolname_laser": {
-    "message": "單一光線"
+    "message": "单一光线"
   },
   "toolname_radiant": {
-    "message": "點光源"
+    "message": "点光源"
   },
   "toolname_parallel": {
     "message": "平行光"
   },
   "toolname_mirror_": {
-    "message": "鏡子"
+    "message": "镜子"
   },
+
   "tooltitle_mirror": {
-    "message": "線段"
+    "message": "线段"
   },
+
   "tooltitle_arcmirror": {
-    "message": "圓弧"
+    "message": "圆弧"
   },
   "toolname_idealmirror": {
-    "message": "理想曲面鏡"
+    "message": "理想曲面镜"
   },
   "tooltitle_idealmirror": {
-    "message": "理想曲面鏡"
+    "message": "理想曲面镜"
   },
   "toolname_refractor_": {
     "message": "透光物"
@@ -42,16 +45,16 @@
     "message": "半平面"
   },
   "tooltitle_circlelens": {
-    "message": "圓形"
+    "message": "圆形"
   },
   "tooltitle_refractor": {
-    "message": "透鏡及其他"
+    "message": "透镜及其他"
   },
   "toolname_lens": {
-    "message": "理想透鏡"
+    "message": "理想透镜"
   },
   "tooltitle_lens": {
-    "message": "理想透鏡"
+    "message": "理想透镜"
   },
   "toolname_blackline": {
     "message": "吸光片"
@@ -63,58 +66,58 @@
     "message": "量角器"
   },
   "toolname_": {
-    "message": "移動畫面"
+    "message": "移动画面"
   },
   "modebar_title": {
-    "message": "檢視："
+    "message": "视图："
   },
   "modename_light": {
-    "message": "光線"
+    "message": "光线"
   },
   "modename_extended_light": {
-    "message": "延長光線"
+    "message": "延长光线"
   },
   "modename_images": {
     "message": "所有像"
   },
   "modename_observer": {
-    "message": "觀察者所見"
+    "message": "观察者所见"
   },
   "raydensity": {
-    "message": "光線密度："
+    "message": "光线密度："
   },
   "undo": {
-    "message": "復原"
+    "message": "撤消"
   },
   "redo": {
     "message": "重做"
   },
   "reset": {
-    "message": "重設"
+    "message": "重置"
   },
   "save": {
-    "message": "儲存"
+    "message": "保存"
   },
   "save_name": {
-    "message": "名稱："
+    "message": "名称："
   },
   "save_cancel": {
     "message": "取消"
   },
   "save_description": {
-    "message": "檔案將儲存於預設的下載資料夾。"
+    "message": "文件将保存于默认的下载文件夹。"
   },
   "open": {
-    "message": "開啟"
+    "message": "打开"
   },
   "lockobjs": {
-    "message": "鎖定物件"
+    "message": "锁定对象"
   },
   "grid": {
-    "message": "格線"
+    "message": "网格"
   },
   "snaptogrid": {
-    "message": "對齊格線"
+    "message": "对齐网格"
   },
   "brightness": {
     "message": "亮度："
@@ -126,15 +129,15 @@
     "message": "折射率："
   },
   "applytoall": {
-    "message": "套用全部"
+    "message": "应用全部"
   },  
   "duplicate": {
-    "message": "複製"
+    "message": "复制"
   },  
   "delete": {
-    "message": "刪除"
+    "message": "删除"
   },  
   "processing": {
-    "message": "處理中……<br>按此處以終止。"
+    "message": "正在处理……<br>按此处以终止。"
   }
 }

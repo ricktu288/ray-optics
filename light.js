@@ -4792,12 +4792,24 @@ var canvasPainter = {
     };
 
   }
-
+  
+  var lang = 'en';
   function getMsg(msg) {
-    return chrome.i18n.getMessage(msg);
+    //if (typeof chrome != 'undefined') {
+    //  return chrome.i18n.getMessage(msg);
+    //} else {
+    return locales[lang][msg].message;
+    //}
+    
   }
 
   function init_i18n() {
+    if (navigator.language) {
+      var browser_lang = navigator.language;
+      if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
+        lang = browser_lang;
+      }
+    }
     var downarraw = '\u25BC';
     //var downarraw="\u25BE";
     document.title = getMsg('appName');
