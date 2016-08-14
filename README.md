@@ -11,5 +11,5 @@ Simulate reflection and refraction of light.
 - Distance and angular measurement
 
 ## Links
-- [GitHub Page](http://ricktu288.github.io/ray-optics/)
+- [GitHub Page](https://ricktu288.github.io/ray-optics/)
 - [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)

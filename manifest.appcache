@@ -1,0 +1,13 @@
+﻿CACHE MANIFEST
+# 2016-8-14-2
+index.html
+index.js
+icon128.png
+image.png
+manifest.json
+locales/en.js
+locales/zh_TW.js
+locales/zh_CN.js
+
+NETWORK:
+https://www.google-analytics.com/analytics.js
