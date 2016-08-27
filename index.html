@@ -12,11 +12,10 @@
 
 <div class="container">
 <center>
-  <h1><b>Ray Optics Simulation</b></h1>
-  An open-source web application that simulates the reflection and refraction of light.<br>
-  Written in HTML, CSS and JavaScript.<br>
-  <a href="#" class="btn btn-success btn-lg">Start Application</a>
-  <a href="#" class="btn btn-primary btn-lg">View on GitHub</a>
+  <h1><b><span id="title"></span></b></h1>
+  <div id="description"></div><br>
+  <a href="#" class="btn btn-success btn-lg" id="start"></a>
+  <a href="#" class="btn btn-primary btn-lg" id="github_link"></a>
   </center>
 <div id="screenshots" class="carousel slide" data-ride="carousel">
   <!-- Indicators -->
@@ -62,5 +61,29 @@
   </a>
 </div>
 </div>
+
+<script src="locales/en.js"></script>
+<script src="locales/zh_CN.js"></script>
+<script src="locales/zh_TW.js"></script>
+
+<script>
+var lang = 'en';
+function init_i18n() {
+  if (navigator.language) {
+    var browser_lang = navigator.language;
+    if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
+      lang = browser_lang;
+    }
+  }
+  document.title = locales[lang]["title"].message;
+  for (item in locales[lang]) {
+    document.getElementById(item).innerHTML = locales[lang][item].message;
+  }
+  
+}
+init_i18n();
+</script>
+
+
 </body>
 </html>
