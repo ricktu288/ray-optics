@@ -4,9 +4,9 @@
   <title>Ray Optics Simulation</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
 .thumbnail.right-caption > img {
   float: left;
@@ -85,129 +85,133 @@
   
   <div class="row" style="font-size: 10pt">
     <div class="col-sm-6">
-      <h2>Tools</h2>
-      <div class="row thumbnail right-caption">
-        <img src="img/ray.png">
-        <div class="caption">
-          <p class="tool-title">Ray</p>
-          A single ray of light from two points
+      <div class="col-sm-12">
+        <h2>Tools</h2>
+        <div class="row thumbnail right-caption">
+          <img src="img/ray.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Ray</p>
+            A single ray of light from two points
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/beam.png">
-        <div class="caption">
-          <p class="tool-title">Beam</p>
-          A parallel beam of light from a line-segment. The density is controlled by the "Ray density" slider.
+        <div class="row thumbnail right-caption">
+          <img src="img/beam.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Beam</p>
+            A parallel beam of light from a line-segment. The density is controlled by the "Ray density" slider.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/point_source.png">
-        <div class="caption">
-          <p class="tool-title">Point Source</p>
-          Light from a single point. The number of rays is controlled by the "Ray density" slider.
+        <div class="row thumbnail right-caption">
+          <img src="img/point_source.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Point Source</p>
+            Light from a single point. The number of rays is controlled by the "Ray density" slider.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/mirror.png">
-        <div class="caption">
-          <p class="tool-title">Mirror</p>
-          Simulate the reflection of light on a mirror.
+        <div class="row thumbnail right-caption">
+          <img src="img/mirror.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Mirror</p>
+            Simulate the reflection of light on a mirror.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/mirror_arc.png">
-        <div class="caption">
-          <p class="tool-title">Mirror (Arc)</p>
-          A mirror whose shape is part of a circle, which is defined by three points.
+        <div class="row thumbnail right-caption">
+          <img src="img/mirror_arc.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Mirror (Arc)</p>
+            A mirror whose shape is part of a circle, which is defined by three points.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/ideal_mirror.png">
-        <div class="caption">
-          <p class="tool-title">Ideal curved mirror</p>
-          The idealized "curved" mirror which obeys exactly the mirror equation. The focal length (in pixels) can be set directly.
+        <div class="row thumbnail right-caption">
+          <img src="img/ideal_mirror.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Ideal curved mirror</p>
+            The idealized "curved" mirror which obeys exactly the mirror equation. The focal length (in pixels) can be set directly.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/glass_halfplane.png">
-        <div class="caption">
-          <p class="tool-title">Glass (Half-plane)</p>
-          Simulate the the refraction and reflection of light on a surface. The intensities are calculated from Fresnel equations and assuming unpolarized.
+        <div class="row thumbnail right-caption">
+          <img src="img/glass_halfplane.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Glass</p>
+            Simulate the the refraction and reflection of light on a surface. The intensities are calculated by assuming unpolarized.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/glass_circle.png">
-        <div class="caption">
-          <p class="tool-title">Glass (Circle)</p>
-          Glass with circle shape, defind by its center and a point on the surface.
+        <div class="row thumbnail right-caption">
+          <img src="img/glass_circle.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Glass (Circle)</p>
+            Glass with circle shape, defind by its center and a point on the surface.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/glass.png">
-        <div class="caption">
-          <p class="tool-title">Glass (Other shapes)</p>
-          Glass with any shapes constructed from line segments and circular arcs, including prisms and "spherical" lenses.
+        <div class="row thumbnail right-caption">
+          <img src="img/glass.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Glass (Other shapes)</p>
+            Glass with any shapes constructed from line segments and circular arcs, including prisms and "spherical" lenses.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/ideal_lens.png">
-        <div class="caption">
-          <p class="tool-title">Glass (Ideal lens)</p>
-          An ideal lens with obeys exactly the thin lens equation. The focal length (in pixels) can be set directly.
+        <div class="row thumbnail right-caption">
+          <img src="img/ideal_lens.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Glass (Ideal lens)</p>
+            An ideal lens with obeys exactly the thin lens equation. The focal length (in pixels) can be set directly.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/blocker.png">
-        <div class="caption">
-          <p class="tool-title">Blocker</p>
-          A line-segment-shaped light blocker which completely absorbes the incident rays.
+        <div class="row thumbnail right-caption">
+          <img src="img/blocker.png" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title">Blocker</p>
+            A line-segment-shaped light blocker which completely absorbes the incident rays.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/ruler.png" style="width:100px;">
-        <div class="caption">
-          <p class="tool-title">Ruler</p>
-          A ruler from a point for zero and another point. The scale is in pixels.
+        <div class="row thumbnail right-caption">
+          <img src="img/ruler.png" style="width:100px;" class="img-rounded">
+          <div class="caption" class="img-rounded">
+            <p class="tool-title">Ruler</p>
+            A ruler from a point for zero and another point. The scale is in pixels.
+          </div>
         </div>
-      </div>
-      <div class="row thumbnail right-caption">
-        <img src="img/protractor.png" style="width:100px;">
-        <div class="caption">
-          <p class="tool-title">Protractor</p>
-          A protracter defined from center and another point for the zero direcrion. The scale is in degrees.
+        <div class="row thumbnail right-caption">
+          <img src="img/protractor.png" style="width:100px;" class="img-rounded">
+          <div class="caption" class="img-rounded">
+            <p class="tool-title">Protractor</p>
+            A protracter defined from center and another point for the zero direcrion. The scale is in degrees.
+          </div>
         </div>
       </div>
     </div>
     <div class="col-sm-6">
-      <h2>Views</h2>
-      <div class="row thumbnail">
-        <div class="caption">
-          <p class="mode-title">Rays</p>
-          Show the path of rays. The number of rays is controlled by the "Ray density" slider. When the density is high, they appears to be continuous.
+      <div class="col-sm-12">
+        <h2>Views</h2>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title">Rays</p>
+            Show the path of rays. The number of rays is controlled by the "Ray density" slider. When the density is high, they appears to be continuous.
+          </div>
+          <img src="img/low_density.png" class="img-rounded">
+          <img src="img/high_density.png" style="margin-top:5px" class="img-rounded">
         </div>
-        <img src="img/low_density.png">
-        <img src="img/high_density.png" style="margin-top:5px">
-      </div>
-      <div class="row thumbnail">
-        <div class="caption">
-          <p class="mode-title">Extended Rays</p>
-          Show both the path of rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title">Extended Rays</p>
+            Show both the path of rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.
+          </div>
+          <img src="img/extended_rays.png" class="img-rounded">
         </div>
-        <img src="img/extended_rays.png">
-      </div>
-      <div class="row thumbnail">
-        <div class="caption">
-          <p class="mode-title">All Images</p>
-          Show the position of all images. Yellow points indicates real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if ray density is too low.
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title">All Images</p>
+            Show the position of all images. Yellow points indicates real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if ray density is too low.
+          </div>
+          <img src="img/all_images.png" class="img-rounded">
         </div>
-        <img src="img/all_images.png">
-      </div>
-      <div class="row thumbnail">
-        <div class="caption">
-          <p class="mode-title">Seen by observer</p>
-          The blue circle is the observer, which is like an eye. The blue lines indecates the rays observed by it, and the orange points indecates the location of images.
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title">Seen by observer</p>
+            The blue circle is the observer, which is like an eye. The blue lines indecates the rays observed by it, and the orange points indecates the location of images.
+          </div>
+          <img src="img/seen_by_observer.png" class="img-rounded">
         </div>
-        <img src="img/seen_by_observer.png">
       </div>
     </div>
   </div>  

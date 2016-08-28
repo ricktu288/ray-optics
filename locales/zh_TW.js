@@ -10,6 +10,6 @@ locales["zh-TW"] = {
     "message": "啟動程式"
   },
   "github_link": {
-    "message": "至GitHub"
+    "message": "至GitHub查看"
   },
 }
