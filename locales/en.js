@@ -125,5 +125,8 @@ locales["en"] = {
   },
   "seen_by_observer_desc": {
     "message": "The blue circle is the observer. Any rays crossing it are considered to be \"observed\". The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange."
+  },
+  "language": {
+    "message": "Language: English"
   }
 };

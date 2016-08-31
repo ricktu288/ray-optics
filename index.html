@@ -1,5 +1,5 @@
 ﻿ <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <title>Ray Optics Simulation</title>
   <meta charset="utf-8">
@@ -215,9 +215,20 @@
       </div>
     </div>
   </div>  
-  
-  
+  <div  style="float: right;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">Language</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="#" onclick="setLang('en');">English</a></li>
+        <li><a href="#" onclick="setLang('zh-TW');">正體中文</a></li>
+        <li><a href="#" onclick="setLang('zh-CN');">简体中文</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
+
 
 <script src="locales/en.js"></script>
 <script src="locales/zh_CN.js"></script>
@@ -225,13 +236,7 @@
 
 <script>
 var lang = 'en';
-function init_i18n() {
-  if (navigator.language) {
-    var browser_lang = navigator.language;
-    if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
-      lang = browser_lang;
-    }
-  }
+function setLang(lang) {
   document.body.style.fontFamily = locales[lang].font.message;
   document.title = locales[lang]["title"].message;
   for (item in locales[lang]) {
@@ -239,9 +244,14 @@ function init_i18n() {
       document.getElementById(item).innerHTML = locales[lang][item].message;
     }
   }
-  
 }
-init_i18n();
+if (navigator.language) {
+  var browser_lang = navigator.language;
+  if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
+    lang = browser_lang;
+  }
+}
+setLang(lang);
 </script>
 
 
