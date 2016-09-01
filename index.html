@@ -259,6 +259,8 @@ function setLang(lang) {
   document.title = locales[lang]["page_title"].message;
   if (lang != browser_lang) {
     document.getElementById('start').href = 'simulator/?' + lang;
+  } else {
+    document.getElementById('start').href = 'simulator/';
   }
   for (item in locales[lang]) {
     if (document.getElementById(item)) {
