@@ -13,7 +13,7 @@ locales["en"] = {
     "message": "Ray Optics Simulation"
   },
   "description": {
-    "message": "An open-source web application that simulates the reflection and refraction of light.<br>Written in HTML, CSS and JavaScript."
+    "message": "An open-source web application to simulate reflection and refraction of light.<br>Written in HTML, CSS and JavaScript."
   },
   "start": {
     "message": "Start Application"
