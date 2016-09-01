@@ -36,8 +36,10 @@
   <center>
     <h1><b><span id="title"></span></b></h1>
     <p id="description">An open-source web application that simulates the reflection and refraction of light.<br>Written in HTML, CSS and JavaScript.</p>
-    <a href="#" class="btn btn-success btn-lg" id="start">Start Application</a>
-    <a href="#" class="btn btn-primary btn-lg" id="github_link">View on GitHub</a>
+    <p>
+      <a href="#" class="btn btn-success btn-lg" id="start">Start Application</a>
+      <a href="#" class="btn btn-primary btn-lg" id="github_link">View on GitHub</a>
+    </p>
   </center>
   <div id="screenshots" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -52,23 +54,23 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <img src="screenshots/1.png">
+        <img src="img/1.png"style="width: 1280px">
       </div>
 
       <div class="item">
-        <img src="screenshots/2.png">
+        <img src="img/3.png" style="width: 1280px">
       </div>
 
       <div class="item">
-        <img src="screenshots/3.png">
+        <img src="img/2.png" style="width: 1280px">
       </div>
 
       <div class="item">
-        <img src="screenshots/4.png">
+        <img src="img/4.png" style="width: 1280px">
       </div>
       
       <div class="item">
-        <img src="screenshots/5.png">
+        <img src="img/5.png" style="width: 1280px">
       </div>
     </div>
 
@@ -221,9 +223,9 @@
       <span id="language">Language</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li><a href="#" onclick="setLang('en');">English</a></li>
-        <li><a href="#" onclick="setLang('zh-TW');">正體中文</a></li>
-        <li><a href="#" onclick="setLang('zh-CN');">简体中文</a></li>
+        <li><a href="#" onclick="setLang('en');event.preventDefault();">English</a></li>
+        <li><a href="#" onclick="setLang('zh-TW');event.preventDefault();">正體中文</a></li>
+        <li><a href="#" onclick="setLang('zh-CN');event.preventDefault();">简体中文</a></li>
       </ul>
     </div>
   </div>

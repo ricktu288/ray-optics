@@ -61,7 +61,7 @@ locales["zh-TW"] = {
     "message": "透光物"
   },
   "glass_halfplane_desc": {
-    "message": "模擬光線經過透光物體界面時的反射與折射。 計算光強度時假設為非偏振光。"
+    "message": "模擬光線經過透光物體界面時的反射與折射。計算光強度時假設為非偏振光。"
   },
   "glass_circle": {
     "message": "透光物 (圓形)"
