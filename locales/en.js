@@ -6,6 +6,9 @@ locales["en"] = {
   "font": {
     "message": "Arial"
   },
+  "page_title": {
+    "message": "Ray Optics Simulation - Home"
+  },
   "title": {
     "message": "Ray Optics Simulation"
   },
@@ -124,9 +127,12 @@ locales["en"] = {
     "message": "Seen by observer"
   },
   "seen_by_observer_desc": {
-    "message": "The blue circle is the observer. Any rays crossing it are considered to be \"observed\". The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange."
+    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be \"observed\". The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange."
   },
   "language": {
     "message": "Language: English"
+  },
+  "footer_message": {
+    "message": "Developed by Rick Tu"
   }
 };

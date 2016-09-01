@@ -137,5 +137,14 @@ locales["zh-TW"] = {
   },  
   "processing": {
     "message": "處理中……<br>按此處以終止。"
+  },
+  "footer_message": {
+    "message": "由 Rick Tu 開發"
+  },
+  "homepage": {
+    "message": "首頁"
+  },
+  "source": {
+    "message": "原始碼"
   }
 }

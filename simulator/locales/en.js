@@ -137,5 +137,14 @@ locales["en"] = {
   },  
   "processing": {
     "message": "Processing...<br>Click here to stop."
+  },
+  "footer_message": {
+    "message": "Developed by Rick Tu"
+  },
+  "homepage": {
+    "message": "Home"
+  },
+  "source": {
+    "message": "Source"
   }
 }

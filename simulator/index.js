@@ -4820,6 +4820,13 @@ var canvasPainter = {
         lang = browser_lang;
       }
     }
+    
+    var url_lang = location.search.substr(1)
+    if (url_lang && locales[url_lang]) {
+      lang = url_lang;
+    }
+    
+    
     var downarraw = '\u25BC';
     //var downarraw="\u25BE";
     document.title = getMsg('appName');
@@ -4924,6 +4931,10 @@ var canvasPainter = {
     document.getElementById('delete').value = getMsg('delete');
 
     document.getElementById('forceStop').innerHTML = getMsg('processing');
+    
+    document.getElementById('footer_message').innerHTML = getMsg('footer_message');
+    document.getElementById('homepage').innerHTML = getMsg('homepage');
+    document.getElementById('source').innerHTML = getMsg('source');
   }
   
 })();

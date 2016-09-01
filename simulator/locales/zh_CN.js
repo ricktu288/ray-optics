@@ -139,5 +139,14 @@ locales["zh-CN"] = {
   },  
   "processing": {
     "message": "正在处理……<br>按此处以终止。"
+  },
+  "footer_message": {
+    "message": "由 Rick Tu 开发"
+  },
+  "homepage": {
+    "message": "首页"
+  },
+  "source": {
+    "message": "源代码"
   }
 }

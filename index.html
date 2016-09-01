@@ -34,11 +34,11 @@
 
 <div class="container">
   <center>
-    <h1><b><span id="title"></span></b></h1>
+    <h1><b><span id="title">Ray Optics Simulation</span></b></h1>
     <p id="description">An open-source web application that simulates the reflection and refraction of light.<br>Written in HTML, CSS and JavaScript.</p>
     <p>
-      <a href="#" class="btn btn-success btn-lg" id="start">Start Application</a>
-      <a href="#" class="btn btn-primary btn-lg" id="github_link">View on GitHub</a>
+      <a href="simulator/" target="_blank" class="btn btn-success btn-lg" id="start">Start Application</a>
+      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">View on GitHub</a>
     </p>
   </center>
   <div id="screenshots" class="carousel slide" data-ride="carousel">
@@ -210,14 +210,14 @@
         <div class="row thumbnail">
           <div class="caption">
             <p class="mode-title" id="seen_by_observer">Seen by observer</p>
-            <span id="seen_by_observer_desc">The blue circle is the observer. Any rays crossing it are considered to be "observed". The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange.</span>
+            <span id="seen_by_observer_desc">Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be "observed". The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange.</span>
           </div>
           <img src="img/seen_by_observer.png" class="img-rounded">
         </div>
       </div>
     </div>
   </div>  
-  <div  style="float: right;">
+  <div style="float: right;">
     <div class="dropup">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
       <span id="language">Language</span>
@@ -238,9 +238,13 @@
 
 <script>
 var lang = 'en';
+var browser_lang = '';
 function setLang(lang) {
   document.body.style.fontFamily = locales[lang].font.message;
-  document.title = locales[lang]["title"].message;
+  document.title = locales[lang]["page_title"].message;
+  if (lang != browser_lang) {
+    document.getElementById('start').href = 'simulator/?' + lang;
+  }
   for (item in locales[lang]) {
     if (document.getElementById(item)) {
       document.getElementById(item).innerHTML = locales[lang][item].message;
@@ -248,11 +252,17 @@ function setLang(lang) {
   }
 }
 if (navigator.language) {
-  var browser_lang = navigator.language;
+  browser_lang = navigator.language;
   if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
     lang = browser_lang;
   }
 }
+
+var url_lang = location.search.substr(1)
+if (url_lang && locales[url_lang]) {
+  lang = url_lang;
+}
+
 setLang(lang);
 </script>
 
