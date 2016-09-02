@@ -4781,21 +4781,11 @@ var canvasPainter = {
   {
     JSONOutput();
     
-    if (typeof Blob != 'undefined' && typeof URL != 'undefined') {
-      var blob = new Blob([document.getElementById('textarea1').value], {type: 'text/plain'});
-      var url = URL.createObjectURL(blob);
-    } else {
-      var url = 'data:text/plain;charset=utf-8,' + document.getElementById('textarea1').value;
-    }
-    
-    var pom = document.createElement('a');
-    pom.setAttribute('href', url);
-    pom.setAttribute('target', '_blank');
-    pom.setAttribute('download', document.getElementById('save_name').value);
-    pom.dispatchEvent(new MouseEvent("click"));
+    var blob = new Blob([document.getElementById('textarea1').value], {type: 'application/json'});
+    saveAs(blob, document.getElementById('save_name').value);
     
     document.getElementById('saveBox').style.display = 'none';
-}
+  }
 
   function open(readFile)
   {
