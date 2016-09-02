@@ -1,7 +1,8 @@
-﻿CACHE MANIFEST
-# 2016-9-2-1
+﻿﻿CACHE MANIFEST
+# 2016-9-2-2
 index.html
 index.js
+FileSaver.js
 icon128.png
 manifest.json
 locales/en.js
