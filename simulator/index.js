@@ -4780,10 +4780,19 @@ var canvasPainter = {
   function save()
   {
     JSONOutput();
+    
+    if (typeof Blob != 'undefined' && typeof URL != 'undefined') {
+      var blob = new Blob([document.getElementById('textarea1').value]);
+      var url = URL.createObjectURL(blob);
+    } else {
+      var url = 'data:text/plain;charset=utf-8,' + document.getElementById('textarea1').value;
+    }
+    
     var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + document.getElementById('textarea1').value);
+    pom.setAttribute('href', url);
     pom.setAttribute('download', document.getElementById('save_name').value);
     pom.dispatchEvent(new MouseEvent("click"));
+    
     document.getElementById('saveBox').style.display = 'none';
   }
 
