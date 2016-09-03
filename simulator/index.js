@@ -2873,9 +2873,15 @@ var canvasPainter = {
     //observer=graphs.circle(graphs.point(canvas.width*0.5,canvas.height*0.5),20);
     //document.getElementById('objAttr_text').value="";
     //toolbtn_clicked(AddingObjType);
+    
+    if (typeof(Storage) !== "undefined" && localStorage.rayOpticsData) {
+      document.getElementById('textarea1').value = localStorage.rayOpticsData;
+    }
+    
     if (document.getElementById('textarea1').value != '')
     {
       JSONInput();
+      toolbtn_clicked('');
     }
     else
     {
@@ -4524,6 +4530,9 @@ var canvasPainter = {
   function JSONOutput()
   {
     document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin});
+    if (typeof(Storage) !== "undefined") {
+      localStorage.rayOpticsData = document.getElementById('textarea1').value;
+    }
   }
   function JSONInput()
   {
