@@ -4825,8 +4825,11 @@ var canvasPainter = {
   function init_i18n() {
     if (navigator.language) {
       var browser_lang = navigator.language;
-      if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
-        lang = browser_lang;
+      if (browser_lang.toLowerCase() == 'zh-tw') {
+        lang = 'zh-TW';
+      }
+      if (browser_lang.toLowerCase() == 'zh-cn') {
+        lang = 'zh-CN';
       }
     }
     

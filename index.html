@@ -308,12 +308,12 @@
 <script src="locales/zh_TW.js"></script>
 
 <script>
-var lang = 'en';
+var default_lang = 'en';
 var browser_lang = '';
 function setLang(lang) {
   document.body.style.fontFamily = locales[lang].font.message;
   document.title = locales[lang]["page_title"].message;
-  if (lang != browser_lang) {
+  if (lang != default_lang) {
     document.getElementById('start').href = 'simulator/?' + lang;
   } else {
     document.getElementById('start').href = 'simulator/';
@@ -326,17 +326,16 @@ function setLang(lang) {
 }
 if (navigator.language) {
   browser_lang = navigator.language;
-  if (browser_lang == 'zh-TW' || browser_lang == 'zh-CN') {
-    lang = browser_lang;
+  if (browser_lang.toLowerCase() == 'zh-tw') {
+    default_lang = 'zh-TW';
+  }
+  if (browser_lang.toLowerCase() == 'zh-cn') {
+    default_lang = 'zh-CN';
   }
 }
 
-var url_lang = location.search.substr(1)
-if (url_lang && locales[url_lang]) {
-  lang = url_lang;
-}
+setLang(default_lang);
 
-setLang(lang);
 </script>
 
 </body>
