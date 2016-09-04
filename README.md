@@ -13,6 +13,7 @@ Simulate reflection and refraction of light.
 ## Links
 - [Project Page](https://ricktu288.github.io/ray-optics/)
 - [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)
+- [Documentation](http://chengscott.tw/ray-optics/)
 
 # Quick Start
 
