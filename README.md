@@ -11,11 +11,16 @@ Simulate reflection and refraction of light.
 - Distance and angular measurement
 
 ## Links
-- [GitHub Page](https://ricktu288.github.io/ray-optics/)
+- [Project Page](https://chengscott.github.io/ray-optics/)
 - [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)
 
+# Quick Start
+
+Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
+
+
 # License
-Copyright 2016 ricktu288
+Copyright 2016 Rick Tu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,3 +33,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+## Third-Party Software
+
+Ray Optics Simulation includes or depends upon the following third-party software, either in whole or in part. Each third-party software package is provided under its own license.
+
+### FileSaver.js
+
+FileSaver.js is distributed under the [MIT license](https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md).
+The source code is available at: https://github.com/eligrey/FileSaver.js
+
+### Bootstrap
+
+Bootstrap is distributed under the [MIT license](https://raw.githubusercontent.com/twbs/bootstrap/master/LICENSE).
+The source code is available at: https://github.com/twbs/bootstrap
