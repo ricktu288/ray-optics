@@ -100,7 +100,7 @@ locales["en"] = {
     "message": "Protractor"
   },
   "protractor_desc": {
-    "message": "A protracter defined from center and another point for the zero direcrion. The scale is in degrees."
+    "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees."
   },
   "views": {
     "message": "Views"
