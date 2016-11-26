@@ -1,7 +1,7 @@
 if (typeof locales == 'undefined') locales = {};
 locales["zh-CN"] = {
   "lang": {
-    "message": "简体中文"
+    "message": "残体中文"
   },
   "font": {
     "message": ""
