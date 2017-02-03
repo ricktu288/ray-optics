@@ -57,11 +57,26 @@ locales["en"] = {
   "toolname_blackline": {
     "message": "Blocker"
   },
+  "toolname_measure_": {
+    "message": "Measure"
+  },
   "toolname_ruler": {
     "message": "Ruler"
   },
+  "tooltitle_ruler": {
+    "message": "Distance"
+  },
   "toolname_protractor": {
     "message": "Protractor"
+  },
+  "tooltitle_protractor": {
+    "message": "Angle"
+  },
+  "toolname_power": {
+    "message": "Energy flux measurement"
+  },
+  "tooltitle_power": {
+    "message": "Energy flux"
   },
   "toolname_": {
     "message": "Move view"

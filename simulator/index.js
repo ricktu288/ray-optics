@@ -2812,6 +2812,76 @@ var canvasPainter = {
   };
 
 
+  //"power"物件
+  objTypes['power'] = {
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'power', p1: mouse, p2: mouse};
+  },
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+  clicked: objTypes['lineobj'].clicked,
+  dragging: objTypes['lineobj'].dragging,
+  rayIntersection: objTypes['lineobj'].rayIntersection,
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas, aboveLight) {
+    //var ctx = canvas.getContext('2d');
+    
+    if (!aboveLight) {
+      ctx.globalCompositeOperation = 'lighter';
+      
+      ctx.strokeStyle = 'rgb(128,128,128)';
+      
+      //ctx.textBaseline="hanging";
+      //ctx.lineWidth=3;
+      //ctx.lineCap = "butt";
+      ctx.beginPath();
+      ctx.moveTo(obj.p1.x, obj.p1.y);
+      ctx.lineTo(obj.p2.x, obj.p2.y);
+      //ctx.stroke();
+      //ctx.lineWidth=1;
+      ctx.stroke();
+      //ctx.stroke();
+
+      ctx.globalCompositeOperation = 'source-over';
+    } else {
+      ctx.globalCompositeOperation = 'lighter';
+      var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+      
+      //ctx.font="bold 14px Arial";
+      ctx.font = '14px Arial';
+      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.fillText(obj.power.toFixed(2), obj.p2.x, obj.p2.y);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    
+  },
+  
+  //=================================射出光線=============================================
+  shoot: function(obj) {
+    obj.power = 0;
+  },
+  
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, shootPoint) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
+    ray.p2 = graphs.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
+    ray.p1 = graphs.point(shootPoint.x, shootPoint.y);
+
+    obj.power += Math.sign(rcrosss) * ray.brightness;
+  }
+  
+  
+  
+  
+
+  };
+
 
   var canvas;
   var ctx;
@@ -2853,9 +2923,9 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
-  var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens'];
+  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', ''];
+  var tools_withList = ['mirror_', 'refractor_', 'measure_'];
+  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens', 'ruler', 'protractor', 'power'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
 
@@ -4902,15 +4972,23 @@ var canvasPainter = {
     //Blocker
     document.getElementById('tool_blackline').value = getMsg('toolname_blackline');
     document.getElementById('tool_blackline').dataset['n'] = getMsg('toolname_blackline');
-
+    
+    //Measure▼
+    document.getElementById('tool_measure_').value = getMsg('toolname_measure_') + downarraw;
+    
     //Ruler
-    document.getElementById('tool_ruler').value = getMsg('toolname_ruler');
+    document.getElementById('tool_ruler').value = getMsg('tooltitle_ruler');
     document.getElementById('tool_ruler').dataset['n'] = getMsg('toolname_ruler');
 
     //Protractor
-    document.getElementById('tool_protractor').value = getMsg('toolname_protractor');
+    document.getElementById('tool_protractor').value = getMsg('tooltitle_protractor');
     document.getElementById('tool_protractor').dataset['n'] = getMsg('toolname_protractor');
-
+    
+    //Power meter
+    document.getElementById('tool_power').value = getMsg('tooltitle_power');
+    document.getElementById('tool_power').dataset['n'] = getMsg('toolname_power');
+    
+    
     //Move view
     document.getElementById('tool_').value = getMsg('toolname_');
 

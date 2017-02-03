@@ -57,11 +57,26 @@ locales["zh-TW"] = {
   "toolname_blackline": {
     "message": "吸光片"
   },
+  "toolname_measure_": {
+    "message": "測量"
+  },
   "toolname_ruler": {
     "message": "直尺"
   },
+  "tooltitle_ruler": {
+    "message": "距離"
+  },
   "toolname_protractor": {
     "message": "量角器"
+  },
+  "tooltitle_protractor": {
+    "message": "角度"
+  },
+  "toolname_power": {
+    "message": "能量通量測量"
+  },
+  "tooltitle_power": {
+    "message": "能量通量"
   },
   "toolname_": {
     "message": "移動畫面"
