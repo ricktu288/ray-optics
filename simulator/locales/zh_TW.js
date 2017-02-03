@@ -135,6 +135,12 @@ locales["zh-TW"] = {
   "brightness": {
     "message": "亮度："
   },
+  "power": {
+    "message": "功率："
+  },
+  "intensity": {
+    "message": "強度(px<sup>-1</sup>)："
+  },
   "focallength": {
     "message": "焦距："
   },

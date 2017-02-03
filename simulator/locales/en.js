@@ -135,6 +135,12 @@ locales["en"] = {
   "brightness": {
     "message": "Brightness:"
   },
+  "power": {
+    "message": "Power:"
+  },
+  "intensity": {
+    "message": "Intensity(px<sup>-1</sup>):"
+  },
   "focallength": {
     "message": "Focal length:"
   },

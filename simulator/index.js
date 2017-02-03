@@ -2056,12 +2056,12 @@ var canvasPainter = {
 
   p_name: 'Brightness', //屬性名稱
   p_min: 0,
-  p_max: 1,
-  p_step: 0.01,
+  p_max: 1000,
+  p_step: 1,
 
   //======================================建立物件=========================================
   create: function(mouse) {
-  return {type: 'radiant', x: mouse.x, y: mouse.y, p: 0.5};
+  return {type: 'radiant', x: mouse.x, y: mouse.y, p: 500};
   },
 
   //==============================建立物件過程滑鼠按下=======================================
@@ -2133,12 +2133,13 @@ var canvasPainter = {
 
   //=================================射出光線=============================================
   shoot: function(obj) {
-  var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
+  var n = parseInt(getRayDensity() * 500);
+  var s = Math.PI * 2 / n;
   var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0; //為避免使用觀察者時出現黑色間格
   for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s)
   {
     var ray1 = graphs.ray(graphs.point(obj.x, obj.y), graphs.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));
-    ray1.brightness = Math.min(obj.p / getRayDensity(), 1);
+    ray1.brightness = obj.p / n;
     ray1.isNew = true;
     if (i == i0)
     {
@@ -2211,7 +2212,8 @@ var canvasPainter = {
     for (var i = 0.5; i <= n; i++)
     {
       var ray1 = graphs.ray(graphs.point(obj.p1.x + i * stepX, obj.p1.y + i * stepY), graphs.point(rayp2_x + i * stepX, rayp2_y + i * stepY));
-      ray1.brightness = Math.min(obj.p / getRayDensity(), 1);
+      //ray1.brightness = Math.min(obj.p / getRayDensity(), 1);
+      ray1.brightness = obj.p / getRayDensity();
       ray1.isNew = true;
       if (i == 0)
       {
@@ -3495,7 +3497,7 @@ var canvasPainter = {
               }
             }
           }
-          ctx.globalAlpha = alpha0 * waitingRays[j].brightness;
+          ctx.globalAlpha = Math.min(alpha0 * waitingRays[j].brightness, 1);
           //↓若光線沒有射到任何物件
           if (s_lensq == Infinity)
           {
@@ -3572,7 +3574,7 @@ var canvasPainter = {
                   if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
                   {
 
-                    ctx.globalAlpha = alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5;
+                    ctx.globalAlpha =  Math.min(alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5, 1);
                     if (s_point)
                     {
                       rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
@@ -3631,7 +3633,7 @@ var canvasPainter = {
               observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
               if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
               {
-                ctx.globalAlpha = alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5;
+                ctx.globalAlpha =  Math.min(alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5, 1);
 
                 if (s_point)
                 {
@@ -4923,12 +4925,12 @@ var canvasPainter = {
     //Point source
     document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
     document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['p'] = getMsg('brightness');
+    document.getElementById('tool_radiant').dataset['p'] = getMsg('power');
 
     //Beam
     document.getElementById('tool_parallel').value = getMsg('toolname_parallel');
     document.getElementById('tool_parallel').dataset['n'] = getMsg('toolname_parallel');
-    document.getElementById('tool_parallel').dataset['p'] = getMsg('brightness');
+    document.getElementById('tool_parallel').dataset['p'] = getMsg('intensity');
 
     //Mirror▼
     document.getElementById('tool_mirror_').value = getMsg('toolname_mirror_') + downarraw;
