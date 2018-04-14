@@ -34,11 +34,11 @@ var graphs = {
   /**
   * outer product
   * @method cross
-  * @param {graph.line} l1
-  * @param {graph.line} l2
+  * @param {graph.point} p1
+  * @param {graph.point} p2
   * @return {Number}
   **/
-  cross: function(l1, l2) {
+  cross: function(p1, p2) {
     return p1.x * p2.y - p1.y * p2.x;
   },
   /**
