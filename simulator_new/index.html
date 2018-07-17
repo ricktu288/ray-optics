@@ -11,13 +11,15 @@
 </head>
 
 <body style="background-color: black; overflow:hidden;">
-  <div id="toolbar" style="background-color: white" 
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; z-index: -1">
+  </canvas>
+  <div id="toolbar" style="background-color: white"
   data-bind="foreach: toolbarGroups">
     <label class="btn-group">
-      <div class="input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" 
+      <div class="input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
       data-bind="text: title"></div>
       <!-- ko foreach: tools -->
-      <!-- ko if: type == ToolTypeEnum.RADIO -->
+      <!-- ko if: type == 1/*ToolTypeEnum.RADIO*/ -->
       <label class="btn btn-secondary"
        data-bind="css: {'active': $parent.selected() == name}">
         <span data-bind="text: name"></span>
@@ -25,7 +27,7 @@
         data-bind="attr: {name: $parent.title}, value: name, checked: $parent.selected">
       </label>
       <!-- /ko -->
-      <!-- ko if: type == ToolTypeEnum.RADIOLIST -->
+      <!-- ko if: type == 2/*ToolTypeEnum.RADIOLIST*/ -->
       <label class="btn btn-secondary dropdown-toggle"
       data-bind="css: {'active': $parent.selected() == name}">
         <!-- Show child text before current text. -->
@@ -47,13 +49,13 @@
         </div>
       </label>
       <!-- /ko -->
-      <!-- ko if: type == ToolTypeEnum.BUTTON -->
+      <!-- ko if: type == 3/*ToolTypeEnum.BUTTON*/ -->
       <label class="btn btn-secondary"
-       data-bind="click: content">
+       data-bind="click: action">
         <span data-bind="text: name"></span>
       </label>
       <!-- /ko -->
-      <!-- ko if: type == ToolTypeEnum.CHECK -->
+      <!-- ko if: type == 4/*ToolTypeEnum.CHECK*/ -->
       <div class="btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary">
           <span data-bind="text: name"></span>
@@ -61,20 +63,29 @@
         </label>
       </div>
       <!-- /ko -->
-      <!-- ko if: type == ToolTypeEnum.SLIDE -->
+      <!-- ko if: type == 5/*ToolTypeEnum.SLIDE*/ -->
       <div class="btn btn-static">
         <span data-bind="text: name + ' :'"></span>
-        <span data-bind="text: content.value"></span>
-        <input type="range" style="vertical-align: middle" 
-         data-bind="attr: {min: content.min, max: content.max, step: content.step}, 
-                    value: content.value, valueUpdate: 'input'">
+        <!-- TODO: Add validation, http://knockoutjs.com/documentation/extenders.html -->
+        <input type="text" style="width: 80px"
+         data-bind="value: value, valueUpdate: 'input'">
+        <input type="range" style="vertical-align: middle"
+         data-bind="attr: {min: min, max: max, step: step},
+                    value: value, valueUpdate: 'input'">
+      </div>
+      <!-- /ko -->
+      <!-- ko if: type == 6/*ToolTypeEnum.HELP*/ -->
+      <div class="btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-danger">
+          <span data-bind="text: name"></span>
+          <input type="checkbox" checked autocomplete="off">
+        </label>
       </div>
       <!-- /ko -->
       <!-- /ko -->
       <span data-bind="text: selected"></span>
     </label>
   </div>
-  <canvas id="canvas1" style="position: absolute; top: 0; left: 0"></canvas>
   <!--Import scripts-->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
@@ -82,12 +93,16 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
     crossorigin="anonymous"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js" integrity="sha256-ZhpcIWx8GPtl1VEkyV22X7GHSzX1NCdp6BvbXMDHI/g="
-    crossorigin="anonymous"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M="
     crossorigin="anonymous"></script>
-  <script src="ToolBarGroup.js"></script>
-  <script src="ToolBarViewModel.js"></script>
-  <script src="script.js"></script>
+  <!--View Models scripts-->
+  <script src="ToolBarGroup.js" type="module"></script>
+  <script src="ToolBarViewModel.js" type="module"></script>
+  <script src="script.js" type="module"></script>
+  <!--Logic scripts-->
+  <script src="math-helper.js" type="module"></script>
+  <script src="shapes.js" type="module"></script>
+  <script src="canvas.js" type="module"></script>
+  <script src="main.js" type="module"></script>
 </body>
 </html>

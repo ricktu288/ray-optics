@@ -1,7 +1,7 @@
-/* global ToolTypeEnum, ToolBarItem, ToolBarGroup */
+import { ToolBarGroup, ToolBarItem, ToolTypeEnum } from "./ToolBarGroup.js";
+
 function ToolBarViewModel() {
   var self = this;
-
   /**
    * All ToolBarGroups and Items are created here.
    * Knockout.js will automatically draw these and
@@ -10,11 +10,11 @@ function ToolBarViewModel() {
    */
   self.toolbarGroups = [
     new ToolBarGroup("File: ", [
-      new ToolBarItem("Undo", ToolTypeEnum.BUTTON, function() {alert("");}),
-      new ToolBarItem("Redo", ToolTypeEnum.BUTTON, function() {alert("");}),
-      new ToolBarItem("Reset", ToolTypeEnum.BUTTON, function() {alert("");}),
-      new ToolBarItem("Save", ToolTypeEnum.BUTTON, function() {alert("");}),
-      new ToolBarItem("Open", ToolTypeEnum.BUTTON, function() {alert("");})
+      new ToolBarItem("Undo", ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Redo", ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Reset", ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Save", ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Open", ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
     new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", ToolTypeEnum.RADIO),
@@ -36,22 +36,21 @@ function ToolBarViewModel() {
       new ToolBarItem("Protractor", ToolTypeEnum.RADIO),
       new ToolBarItem("Move View", ToolTypeEnum.RADIO)
     ]),
-    new ToolBarGroup("Mode: ", [
+    new ToolBarGroup("View: ", [
       new ToolBarItem("Rays", ToolTypeEnum.RADIO),
       new ToolBarItem("Extended Rays", ToolTypeEnum.RADIO),
       new ToolBarItem("All Images", ToolTypeEnum.RADIO),
       new ToolBarItem("Seen by Observer", ToolTypeEnum.RADIO)
     ]),
-    new ToolBarGroup("View: ", [
-      new ToolBarItem("Ray Density", ToolTypeEnum.SLIDE, {
-        min: -3,
-        max: 3,
-        step: 0.0001,
-        value: -2.3026
-      }),
+    new ToolBarGroup("Settings: ", [
+      new ToolBarItem("Ray Density", ToolTypeEnum.SLIDE, undefined, undefined,
+        -3, 3, 0.0001, -2.3026),
       new ToolBarItem("Grid", ToolTypeEnum.CHECK),
       new ToolBarItem("Snap to Grid", ToolTypeEnum.CHECK),
-      new ToolBarItem("Lock Objects", ToolTypeEnum.CHECK)
+      new ToolBarItem("Lock Objects", ToolTypeEnum.CHECK),
+      new ToolBarItem("Zoom", ToolTypeEnum.SLIDE, undefined, undefined,
+        25, 500, 25, 100),
+      new ToolBarItem("Help", ToolTypeEnum.HELP)
     ])
   ];
 }

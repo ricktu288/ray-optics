@@ -41,3 +41,7 @@ input[type="checkbox"] {
 span {
   vertical-align: middle;
 }
+input[type="text"] {
+  vertical-align: middle;
+  font-size: 14px;
+}
