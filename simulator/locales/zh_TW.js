@@ -139,7 +139,7 @@ locales["zh-TW"] = {
     "message": "處理中……<br>按此處以終止。"
   },
   "footer_message": {
-    "message": "由 Rick Tu, j3soon 開發"
+    "message": "由 <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 開發"
   },
   "homepage": {
     "message": "首頁"

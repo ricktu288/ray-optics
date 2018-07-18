@@ -21,7 +21,7 @@ Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
 
 
 # License
-Copyright 2016 Rick Tu
+Copyright 2016 Rick Tu, Johnson
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,3 +48,13 @@ The source code is available at: https://github.com/eligrey/FileSaver.js
 
 Bootstrap is distributed under the [MIT license](https://raw.githubusercontent.com/twbs/bootstrap/master/LICENSE).
 The source code is available at: https://github.com/twbs/bootstrap
+
+### jQuery
+
+jQuery is distributed under the [MIT license](https://github.com/jquery/jquery/blob/master/LICENSE.txt).
+The source code is available at: https://github.com/jquery/jquery
+
+### Knockout
+
+Knockout is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
+The source code is available at: https://github.com/knockout/knockout
