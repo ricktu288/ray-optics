@@ -128,18 +128,18 @@ locales["zh-TW"] = {
   },
   "applytoall": {
     "message": "套用全部"
-  },  
+  },
   "duplicate": {
     "message": "複製"
-  },  
+  },
   "delete": {
     "message": "刪除"
-  },  
+  },
   "processing": {
     "message": "處理中……<br>按此處以終止。"
   },
   "footer_message": {
-    "message": "由 Rick Tu 開發"
+    "message": "由 Rick Tu, j3soon 開發"
   },
   "homepage": {
     "message": "首頁"

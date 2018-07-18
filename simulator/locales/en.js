@@ -128,18 +128,18 @@ locales["en"] = {
   },
   "applytoall": {
     "message": "Apply to All"
-  },  
+  },
   "duplicate": {
     "message": "Duplicate"
-  },  
+  },
   "delete": {
     "message": "Delete"
-  },  
+  },
   "processing": {
     "message": "Processing...<br>Click here to stop."
   },
   "footer_message": {
-    "message": "Developed by Rick Tu"
+    "message": "Developed by Rick Tu, j3soon"
   },
   "homepage": {
     "message": "Home"

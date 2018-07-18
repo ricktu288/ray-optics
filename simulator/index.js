@@ -1,6 +1,4 @@
-﻿(function() {
-
-var graphs = {
+﻿var graphs = {
   /**
   * 基本圖型
   **/
@@ -268,6 +266,8 @@ var canvasPainter = {
   },
   cls: function() {
     //var ctx = canvas.getContext('2d');
+    ctx.restore();
+    ctx.setTransform(scale,0,0,scale,0,0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 };
@@ -2858,6 +2858,7 @@ var canvasPainter = {
   var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
+  var scale = 1;
 
   window.onload = function(e) {
     init_i18n();
@@ -2873,11 +2874,11 @@ var canvasPainter = {
     //observer=graphs.circle(graphs.point(canvas.width*0.5,canvas.height*0.5),20);
     //document.getElementById('objAttr_text').value="";
     //toolbtn_clicked(AddingObjType);
-    
+
     if (typeof(Storage) !== "undefined" && localStorage.rayOpticsData) {
       document.getElementById('textarea1').value = localStorage.rayOpticsData;
     }
-    
+
     if (document.getElementById('textarea1').value != '')
     {
       JSONInput();
@@ -3016,6 +3017,11 @@ var canvasPainter = {
       setRayDensity(Math.exp(this.value));
       draw();
     };
+    document.getElementById('rayDensity_txt').oninput = function()
+    {
+      setRayDensity(Math.exp(this.value));
+      draw();
+    };
     document.getElementById('rayDensity').onmouseup = function()
     {
       setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用
@@ -3032,6 +3038,7 @@ var canvasPainter = {
     cancelMousedownEvent('lockobjs_');
     cancelMousedownEvent('grid_');
     document.getElementById('showgrid_').onclick = function() {draw()};
+    document.getElementById('showgrid').onclick = function() {draw()};
     cancelMousedownEvent('showgrid_');
 
     document.getElementById('forceStop').onclick = function()
@@ -3198,6 +3205,8 @@ var canvasPainter = {
     canvas.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         }, false);
+    
+    toolbtn_clicked('laser');
   };
 
 
@@ -4314,6 +4323,9 @@ var canvasPainter = {
       endPositioning();
       return;
     }
+    if (undoIndex == undoLBound)
+        //已達復原資料下界
+        return;
     undoIndex = (undoIndex + (undoLimit - 1)) % undoLimit;
     document.getElementById('textarea1').value = undoArr[undoIndex];
     JSONInput();
@@ -4330,6 +4342,9 @@ var canvasPainter = {
   {
     isConstructing = false;
     endPositioning();
+    if (undoIndex == undoUBound)
+      //已達復原資料下界
+      return;
     undoIndex = (undoIndex + 1) % undoLimit;
     document.getElementById('textarea1').value = undoArr[undoIndex];
     JSONInput();
@@ -4611,6 +4626,7 @@ var canvasPainter = {
     tools_normal.forEach(function(element, index)
     {
       document.getElementById('tool_' + element).className = 'toolbtn';
+      
     });
     tools_withList.forEach(function(element, index)
     {
@@ -4789,10 +4805,10 @@ var canvasPainter = {
   function save()
   {
     JSONOutput();
-    
+
     var blob = new Blob([document.getElementById('textarea1').value], {type: 'application/json'});
     saveAs(blob, document.getElementById('save_name').value);
-    
+
     document.getElementById('saveBox').style.display = 'none';
   }
 
@@ -4811,7 +4827,7 @@ var canvasPainter = {
     };
 
   }
-  
+
   var lang = 'en';
   function getMsg(msg) {
     //if (typeof chrome != 'undefined') {
@@ -4819,7 +4835,7 @@ var canvasPainter = {
     //} else {
     return locales[lang][msg].message;
     //}
-    
+
   }
 
   function init_i18n() {
@@ -4832,13 +4848,13 @@ var canvasPainter = {
         lang = 'zh-CN';
       }
     }
-    
+
     var url_lang = location.search.substr(1)
     if (url_lang && locales[url_lang]) {
       lang = url_lang;
     }
-    
-    
+
+
     var downarraw = '\u25BC';
     //var downarraw="\u25BE";
     document.title = getMsg('appName');
@@ -4943,10 +4959,8 @@ var canvasPainter = {
     document.getElementById('delete').value = getMsg('delete');
 
     document.getElementById('forceStop').innerHTML = getMsg('processing');
-    
+
     document.getElementById('footer_message').innerHTML = getMsg('footer_message');
     document.getElementById('homepage').innerHTML = getMsg('homepage');
     document.getElementById('source').innerHTML = getMsg('source');
   }
-  
-})();

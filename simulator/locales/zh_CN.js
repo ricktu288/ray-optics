@@ -130,18 +130,18 @@ locales["zh-CN"] = {
   },
   "applytoall": {
     "message": "应用全部"
-  },  
+  },
   "duplicate": {
     "message": "复制"
-  },  
+  },
   "delete": {
     "message": "删除"
-  },  
+  },
   "processing": {
     "message": "正在处理……<br>按此处以终止。"
   },
   "footer_message": {
-    "message": "由 Rick Tu 开发"
+    "message": "由 Rick Tu, j3soon 开发"
   },
   "homepage": {
     "message": "首页"
