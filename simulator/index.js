@@ -2988,7 +2988,8 @@ var canvasPainter = {
     tools_withList.forEach(function(element, index)
     {
       document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtnwithlist_mouseentered(element, e);};
-      document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};
+      /*document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};*/
+      document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
       document.getElementById('tool_' + element).onmouseleave = function(e) {toolbtnwithlist_mouseleft(element, e);};
       document.getElementById('tool_' + element + 'list').onmouseleave = function(e) {toollist_mouseleft(element, e);};
       cancelMousedownEvent('tool_' + element);
@@ -4700,12 +4701,32 @@ var canvasPainter = {
 
     document.getElementById('tool_' + tool).className = 'toolbtnselected';
     AddingObjType = tool;
+    if (tool == "mirror_") {
+      var t = window.toolBarViewModel.mirrors.selected();
+      if (t == "Segment")
+        AddingObjType = "mirror";
+      else if (t == "Circular Arc")
+        AddingObjType = "arcmirror";
+      else if (t == "Ideal Curved")
+        AddingObjType = "idealmirror";
+    } else if (tool == "refractor_") {
+      var t = window.toolBarViewModel.glasses.selected();
+      if (t == "Half-plane")
+        AddingObjType = "halfplane";
+      else if (t == "Circle")
+        AddingObjType = "circlelens";
+      else if (t == "Free-shape")
+        AddingObjType = "refractor";
+      else if (t == "Ideal Lens")
+        AddingObjType = "lens";
+    }
+    console.log(AddingObjType);
   }
 
   function toolbtnwithlist_mouseentered(tool, e)
   {
     //console.log("tool_"+tool)
-    hideAllLists();
+    /*hideAllLists();
     var rect = document.getElementById('tool_' + tool).getBoundingClientRect();
     //console.log(document.getElementById("tool_"+tool+"list"))
     document.getElementById('tool_' + tool + 'list').style.left = rect.left + 'px';
@@ -4714,14 +4735,14 @@ var canvasPainter = {
     if (document.getElementById('tool_' + tool).className == 'toolbtn')
     {
       document.getElementById('tool_' + tool).className = 'toolbtnwithlisthover';
-    }
+    }*/
   }
 
   function toolbtnwithlist_mouseleft(tool, e)
   {
     //console.log("btnout")
 
-    var rect = document.getElementById('tool_' + tool + 'list').getBoundingClientRect();
+    /*var rect = document.getElementById('tool_' + tool + 'list').getBoundingClientRect();
     mouse = graphs.point(e.pageX, e.pageY);
     //console.log(rect)
     //console.log(mouse)
@@ -4733,7 +4754,7 @@ var canvasPainter = {
       {
         document.getElementById('tool_' + tool).className = 'toolbtn';
       }
-    }
+    }*/
 
   }
 

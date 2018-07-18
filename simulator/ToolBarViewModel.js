@@ -28,7 +28,7 @@ function ToolBarViewModel() {
         ToolTypeEnum.RADIO),
       new ToolBarItem("Point Source", "tool_radiant", "point_source", "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)",
         ToolTypeEnum.RADIO),
-      new ToolBarItem("Mirrors", "tool_mirror_", undefined, 4, ToolTypeEnum.RADIOLIST, [
+      self.mirrors = new ToolBarItem("Mirrors", "tool_mirror_", undefined, 4, ToolTypeEnum.RADIOLIST, [
         new ToolBarItem("Segment", "tool_mirror", "mirror", "Simulate the reflection of light on a mirror. (Drag or click to create.)",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Circular Arc", "tool_arcmirror", "mirror_arc", "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. First 2 points define the gap between arc's edges, the last point defines the arc's size.)",
@@ -36,7 +36,7 @@ function ToolBarViewModel() {
         new ToolBarItem("Ideal Curved", "tool_idealmirror", "ideal_curved_mirror", "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)",
           ToolTypeEnum.RADIO)
       ]),
-      new ToolBarItem("Glasses", "tool_refractor_", undefined, 3, ToolTypeEnum.RADIOLIST, [
+      self.glasses = new ToolBarItem("Glasses", "tool_refractor_", undefined, 3, ToolTypeEnum.RADIOLIST, [
         new ToolBarItem("Half-plane", "tool_halfplane", "glass_halfplane", "Simulate the the refraction and reflection of light on a surface. The intensities are calculated by assuming unpolarized. (Drag or click to create.)",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Circle", "tool_circlelens", "glass_circle", "Glass with circle shape, defined by its center and a point on the surface. (Drag or click to create.)",
