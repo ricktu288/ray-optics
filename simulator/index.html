@@ -166,13 +166,13 @@ textarea {
   data-bind="foreach: toolbarGroups">
     <label class="btn-group">
       <div class="input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
-      data-bind="text: title"></div>
+      data-bind="text: getLocaleName()"></div>
       <!-- ko foreach: tools -->
       <!-- ko if: type == 1/*ToolTypeEnum.RADIO*/ -->
       <label class="btn btn-secondary"
        data-toggle="popover" data-trigger="hover" data-html="true"
        data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
-        <span data-bind="text: name"></span>
+        <span data-bind="text: getLocaleName()"></span>
         <input type="radio" autocomplete="off"
         data-bind="attr: {name: $parent.title, id: id}, value: name, checked: $parent.selected">
       </label>
@@ -182,7 +182,7 @@ textarea {
       data-bind="css: {'active': $parent.selected() == name}, attr: {style: 'z-index: ' + description + ' !important'}">
         <!-- Show child text before current text. -->
         <!--<span data-bind="text: selected"></span>-->
-        <span data-bind="text: name"></span>
+        <span data-bind="text: getLocaleName()"></span>
         <input type="radio" autocomplete="off"
         data-bind="attr: {name: $parent.title, id: id}, value: name, checked: $parent.selected">
         <div class="dropdown-menu" style="padding:0; margin:0; min-width:100%;">
@@ -191,7 +191,7 @@ textarea {
             <label class="btn btn-secondary" style="margin:0"
             data-toggle="popover" data-trigger="hover" data-html="true"
             data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
-              <span data-bind="text: name"></span>
+              <span data-bind="text: getLocaleName()"></span>
               <input type="radio" autocomplete="off"
               data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
             </label>
@@ -204,7 +204,7 @@ textarea {
       <label class="btn btn-secondary"
       data-toggle="popover" data-trigger="hover" data-html="true"
       data-bind="attr: {title: getTitle(), 'data-content': getContent(), id: id}">
-        <span data-bind="text: name"></span>
+        <span data-bind="text: getLocaleName()"></span>
       </label>
       <!-- /ko -->
       <!-- ko if: type == 4/*ToolTypeEnum.CHECK*/ -->
@@ -214,7 +214,7 @@ textarea {
         data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
           <input type="checkbox" autocomplete="off"
           data-bind="checked: selected, attr: {id: id}">
-          <span data-bind="text: name"></span>
+          <span data-bind="text: getLocaleName()"></span>
         </label>
       </div>
       <!-- /ko -->
@@ -222,7 +222,7 @@ textarea {
       <div class="btn btn-static"
         data-toggle="popover" data-trigger="hover" data-html="true"
         data-bind="attr: {title: getTitle(), 'data-content': getContent()}">
-        <span data-bind="text: name + ' :'"></span>
+        <span data-bind="text: getLocaleName() + ' :'"></span>
         <!-- TODO: Add validation, http://knockoutjs.com/documentation/extenders.html -->
         <input type="text" style="width: 80px"
          data-bind="value: value, valueUpdate: 'input', attr: {id: id + '_txt'}">
@@ -237,7 +237,7 @@ textarea {
         data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
           <input id="help" type="checkbox" autocomplete="off"
           data-bind="checked: selected">
-          <span data-bind="text: name"></span>
+          <span data-bind="text: getLocaleName()"></span>
         </label>
       </div>
       <!-- /ko -->
@@ -362,6 +362,7 @@ crossorigin="anonymous"></script>
 crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M="
 crossorigin="anonymous"></script>
+
 <!--View Models scripts-->
 <script src="ToolBarGroup.js" type="module"></script>
 <script src="ToolBarViewModel.js" type="module"></script>

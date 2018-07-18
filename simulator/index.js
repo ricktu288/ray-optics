@@ -4421,7 +4421,7 @@ var canvasPainter = {
     //mode="light";
     toolbtn_clicked('laser');
     modebtn_clicked('light');
-    
+
     //Reset new UI.
     window.toolBarViewModel.tools.selected("Ray");
     window.toolBarViewModel.modes.selected("Rays");

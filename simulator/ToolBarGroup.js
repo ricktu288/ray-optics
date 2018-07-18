@@ -14,7 +14,6 @@ export class ToolBarItem {
    * @param {string|String[]} name
    * @param {string} id
    * @param {string} img popover image.
-   * @param {string|number} description popover description or z-index for RADIOLIST.
    * @param {number|ToolTypeEnum} type any type listed in ToolTypeEnum.
    * @param {ToolBarItem[]|undefined} content the list of items in RADIOLIST.
    * @param {function|undefined} action the action that triggers on BUTTON click.
@@ -23,11 +22,22 @@ export class ToolBarItem {
    * @param {number|undefined} step the step size in SLIDE.
    * @param {number|undefined} value the current value in SLIDE.
    */
-  constructor(name, id, img, description, type, content, action, min, max, step, value) {
+  constructor(name, id, img, type, content, action, min, max, step, value) {
     this.name = name;
     this.id = id;
     this.img = img;
-    this.description = description;
+
+    //@param {string|number} description popover description or z-index for RADIOLIST.
+    this.description = "";//description;
+
+    //Warning: Dirty code below.
+    if (this.name == "Mirrors")
+      this.description = 4;
+    else if (this.name == "Glasses")
+      this.description = 3;
+    else
+      this.description = getMsg(this.id + "_popover");
+
     this.type = type;
     this.selected = "";
     this.content = content;
@@ -52,7 +62,10 @@ export class ToolBarItem {
     //console.log(this);
   }
   getTitle() {
-    return "<b>" + this.name + "</b>";
+    return "<b>" + this.getLocaleName() + "</b>";
+  }
+  getLocaleName() {
+    return getMsg(this.id);
   }
   getContent() {
     var image = "";
@@ -76,5 +89,8 @@ export class ToolBarGroup {
       this.selected = ko.observable(tools[i].name);
       break;
     }
+  }
+  getLocaleName() {
+    return getMsg(this.title);
   }
 }
