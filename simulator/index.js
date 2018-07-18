@@ -4416,9 +4416,17 @@ var canvasPainter = {
     showLight = true; //顯示光線
     origin = {x: 0, y: 0};
     observer = null;
+    scale = 1;
     //mode="light";
-    toolbtn_clicked('');
+    toolbtn_clicked('laser');
     modebtn_clicked('light');
+    
+    //Reset new UI.
+    window.toolBarViewModel.tools.selected("Ray");
+    window.toolBarViewModel.modes.selected("Rays");
+    window.toolBarViewModel.c1.selected(false);
+    window.toolBarViewModel.c2.selected(false);
+    window.toolBarViewModel.c3.selected(false);
 
     document.getElementById('lockobjs').checked = false;
     document.getElementById('grid').checked = false;
@@ -4865,7 +4873,6 @@ var canvasPainter = {
     origin.y -= centerY * scaleChange;
     scale = value;
     draw();
-    console.log(value);
   }
 
   function save()

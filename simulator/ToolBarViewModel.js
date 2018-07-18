@@ -21,7 +21,7 @@ function ToolBarViewModel() {
       new ToolBarItem("Open", "open", undefined, "Open an existing file. (Ctrl+O)",
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
-    new ToolBarGroup("Tools: ", [
+    self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray", "A single ray of light defined by two points. (Drag or Click to create. First point is the source, shooting toward the second point.)",
         ToolTypeEnum.RADIO),
       new ToolBarItem("Beam", "tool_parallel", "beam", "A parallel beam of rays emerges from a line-segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)",
@@ -55,7 +55,7 @@ function ToolBarViewModel() {
       new ToolBarItem("Move View", "tool_", undefined, "Drag to move view. (Mouse right button drag has the same function.",
         ToolTypeEnum.RADIO)
     ]),
-    new ToolBarGroup("View: ", [
+    self.modes = new ToolBarGroup("View: ", [
       new ToolBarItem("Rays", "mode_light", "normal", "Show the rays. When the 'Ray density' is high, they appears to be continuous.",
         ToolTypeEnum.RADIO),
       new ToolBarItem("Extended Rays", "mode_extended_light", "extended_rays", "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.",
@@ -69,11 +69,11 @@ function ToolBarViewModel() {
       new ToolBarItem("Ray Density", "rayDensity", undefined, "Decides how dense should the lights be simulated.",
         ToolTypeEnum.SLIDE, undefined, undefined,
         -3, 3, 0.0001, -2.3026),
-      new ToolBarItem("Grid", "showgrid", undefined, "Defines the visibility of the background grid.",
+      self.c1 = new ToolBarItem("Grid", "showgrid", undefined, "Defines the visibility of the background grid.",
         ToolTypeEnum.CHECK),
-      new ToolBarItem("Snap to Grid", "grid", undefined, "Defines whether to snap to grid.",
+      self.c2 = new ToolBarItem("Snap to Grid", "grid", undefined, "Defines whether to snap to grid.",
         ToolTypeEnum.CHECK),
-      new ToolBarItem("Lock Objects", "lockobjs", undefined, "Defines whether the objects can be moved or not.",
+      self.c3 = new ToolBarItem("Lock Objects", "lockobjs", undefined, "Defines whether the objects can be moved or not.",
         ToolTypeEnum.CHECK),
       new ToolBarItem("Zoom", "zoom", undefined, "Zoom the view with percentage.",
         ToolTypeEnum.SLIDE, undefined, undefined,
@@ -86,6 +86,8 @@ function ToolBarViewModel() {
 
 var toolBarViewModel = new ToolBarViewModel();
 ko.applyBindings(toolBarViewModel);
+
+window.toolBarViewModel = toolBarViewModel;
 
 $("#help").click(function () {
   if (this.checked)
