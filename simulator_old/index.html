@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html manifest="manifest.appcache">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <meta property="og:title" content="Ray Optics Simulation">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/">
+  <meta property="og:image" content="https://ricktu288.github.io/ray-optics/image.png">
+  <meta property="og:description" content="An open-source web app to simulate reflection and refraction of light.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+  
+  <title>Ray Optics Simulation</title>
+  <link rel="icon" href="icon128.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon128.png">
+  <script src="index.js"></script>
+  <script src="FileSaver.js"></script>
+  <script src="locales/en.js"></script>
+  <script src="locales/zh_CN.js"></script>
+  <script src="locales/zh_TW.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-82058200-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <style>
+input[type="button"] {
+  margin: 1px;
+}
+
+input[type="range"] {
+  height:15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.toolbtn {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(230,230,230);
+  outline: none;
+  line-height: 110%;
+}
+
+.toolbtn:hover {
+  border-style:none;
+  background-color:rgb(200,200,200);
+  outline: none;
+  line-height: 110%;
+}
+
+.toolbtnwithlisthover {
+  border-style:none;
+  background-color:rgb(215,215,215);
+  outline: none;
+  line-height: 110%;
+}
+
+.toolbtnselected {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(192,192,192);
+  outline: none;
+  line-height: 110%;
+}
+
+.toollistbox {
+  background-color:rgb(215,215,215);
+  font-size:12pt;
+  position:absolute;
+  padding-right: 1px;
+  line-height:1;
+}
+
+.toollistbtn {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(215,215,215);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
+}
+
+.toollistbtn:hover {
+  border-style:none;
+  background-color:rgb(168,168,168);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
+}
+
+.toollistbtnselected {
+  -webkit-appearance: none;
+  border-radius: 0;
+  border-style:none;
+  background-color:rgb(168,168,168);
+  outline: none;
+  line-height: 110%;
+  width:100%;
+  text-align:left;
+}
+
+.mainbox {
+  background-color:white;
+  font-size:12pt;
+  padding-top: 1px;
+  padding-left: 1px;
+  padding-bottom: 4px;
+  padding-right: 1px;
+  margin: 0px;
+}
+
+.saveBox {
+  background-color:white;
+  font-size:12pt;
+  padding-top: 1px;
+  padding-left: 1px;
+  padding-bottom: 1px;
+  padding-right: 1px;
+  margin: 0px;
+}
+
+
+.settingsbox {
+  background-color:rgb(90,90,90);
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
+  padding: 1px;
+  margin: 0px;
+}
+
+.forcestopbox {
+  background-color:red;
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
+}
+
+.optionsbar {
+  margin-left:5px;
+  margin-top:2px;
+}
+
+input {
+  outline: none;
+}
+
+textarea {
+  outline: none;
+}
+
+  </style>
+</head>
+<body style="background-color:rgb(0,0,0); overflow:hidden;">
+<canvas id="canvas1" style="position:absolute;top:0;left:0;"></canvas>
+<div style="position:absolute; top:0; left:0; width:100%;">
+  <div class="mainbox" id="mainbox" style="width:100%;">
+    <div style="float: right; text-align:right; margin-right:5px">
+      <div>
+        <input type="button" id="undo" disabled>
+        <input type="button" id="redo" disabled>
+        <input type="button" id="reset">
+        <input type="button" id="accessJSON" style="display:none;">
+        <input type="button" id="save">
+        <input type="button" id="open">
+        <input type="file" id="openfile" style="display:none">
+      </div>
+      <div style="margin-top:2px">
+        <label id="showgrid_">
+          <input type="checkbox" id="showgrid">
+          <span id="showgrid_title"></span>
+        </label>
+        <label id="grid_">
+          <input type="checkbox" id="grid">
+          <span id="grid_title"></span>
+        </label>
+        <label id="lockobjs_">
+          <input type="checkbox" id="lockobjs">
+          <span id="lockobjs_title"></span>
+        </label>
+      </div>
+    </div>
+
+    <!--===============工具欄==================-->
+    <div class="optionsbar">
+      <span id="toolbar_title"></span>
+      <input type="button" class="toolbtn" id="tool_laser">
+      <input type="button" class="toolbtn" id="tool_parallel">
+      <input type="button" class="toolbtn" id="tool_radiant">
+      <input type="button" class="toolbtn" id="tool_mirror_">
+      <input type="button" class="toolbtn" id="tool_refractor_">
+      <input type="button" class="toolbtn" id="tool_blackline">
+      <input type="button" class="toolbtn" id="tool_ruler">
+      <input type="button" class="toolbtn" id="tool_protractor">&nbsp;
+      <input type="button" class="toolbtn" id="tool_">
+    </div>
+
+    <div class="optionsbar">
+      <span id="modebar_title"></span>
+      <input type="button" class="toolbtn" id="mode_light">
+      <input type="button" class="toolbtn" id="mode_extended_light">
+      <input type="button" class="toolbtn" id="mode_images">
+      <input type="button" class="toolbtn" id="mode_observer">
+      <span id="rayDensity_title"></span>
+      <input type="range" id="rayDensity" min="-3" max="3" step="0.0001" value="-2.3026">
+      <span id="status" style="display:none;"></span>
+    </div>
+  </div>
+  <div id="obj_settings" class="settingsbox" style="left:0; width:100%; display:none;">
+    <div class="optionsbar">
+      <span id="obj_name"></span>
+      <span id="p_box">&nbsp;
+        <span id="p_name"></span>
+        <input type="range" id="objAttr_range">
+        <input type="text" id="objAttr_text" style="width:40px;">
+        <span id="setAttrAll_box">
+          <label id="setAttrAll_">
+            <input type="checkbox" id="setAttrAll">
+            <span id="setAttrAll_title"></span>
+          </label>
+        </span>
+      </span>
+      <input type="button" id="copy">
+      <input id="delete" type="button">
+    </div>
+  </div>
+</div>
+<div id="forceStop" class="forcestopbox" style="position:absolute; top:90px; left:10px; display:none;"></div>
+<textarea id="textarea1" style="position: absolute; bottom: 0; left: 0; width: 99%; height: 100px; display:none;"></textarea>
+
+<!--===============存檔方塊==================-->
+<div id="saveBox" class="saveBox" style="position:absolute; top:50px; right:0px; padding-left: 3px; padding-bottom: 3px; display:none;">
+  <span id="save_name_title"></span>
+  <input type="text" id="save_name" style="width:200px;" value="">
+  <input type="button" id="save_confirm"><input type="button" id="save_cancel"><br>
+  <div id="save_description" style="font-size:10pt; display: none;"></div>
+</div>
+
+<!--===============工具欄下拉選單==================-->
+<div class="toollistbox" id="tool_mirror_list" style="position:absolute; display:none;">
+  <input type="button" class="toollistbtn" id="tool_mirror"><br>
+  <input type="button" class="toollistbtn" id="tool_arcmirror"><br>
+  <input type="button" class="toollistbtn" id="tool_idealmirror">
+</div>
+<div class="toollistbox" id="tool_refractor_list" style="position:absolute; display:none;">
+  <input type="button" class="toollistbtn" id="tool_halfplane"><br>
+  <input type="button" class="toollistbtn" id="tool_circlelens"><br>
+  <input type="button" class="toollistbtn" id="tool_refractor"><br>
+  <input type="button" class="toollistbtn" id="tool_lens">
+</div>
+
+<!--===============座標輸入方塊==================-->
+<input type="text" id="xybox" style="background-color:rgba(0,0,0,0.5); color:white; position:absolute; border:none; display:none;" value="">
+
+
+<div style="position:absolute; right:0; bottom: 0; color:rgba(255,255,255,0.25); font-size:9pt;">
+  <span id="footer_message">Developed by Rick Tu</span>
+  |
+  <a href="https://ricktu288.github.io/ray-optics/" target="_blank" style="color:rgba(255,255,255,0.25)" id="homepage">Home</a>
+  |
+  <a href="https://github.com/ricktu288/ray-optics" target="_blank" style="color:rgba(255,255,255,0.25)" id="source">Source</a>
+</div>
+
+</body>
+</html>
