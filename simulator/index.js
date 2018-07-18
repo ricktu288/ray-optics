@@ -2922,6 +2922,28 @@ var canvasPainter = {
       canvas_onmouseup(e);
     };
 
+    // IE9, Chrome, Safari, Opera
+    canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
+    // Firefox
+    canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
+
+    function canvas_onmousewheel(e) {
+      // cross-browser wheel delta
+      var e = window.event || e; // old IE support
+      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+      var d = scale;
+      if (delta < 0) {
+        d = scale * 0.9;
+      } else if (delta > 0) {
+        d = scale / 0.9;
+      }
+      d = Math.max(25, Math.min(500, d * 100));
+      setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
+      $("#zoom").val(d);
+      $("#zoom").trigger('change');
+      return false;
+    }
+
     canvas.ontouchstart = function(e)
     {
       document.getElementById('objAttr_text').blur();
@@ -3025,25 +3047,21 @@ var canvasPainter = {
     document.getElementById('zoom').onmouseup = function()
     {
       setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
-      draw();
       createUndoPoint();
     };
     document.getElementById('zoom').ontouchend = function()
     {
       setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
-      draw();
       createUndoPoint();
     };
     cancelMousedownEvent('rayDensity');
     document.getElementById('rayDensity').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
-      draw();
     };
     document.getElementById('rayDensity_txt').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
-      draw();
     };
     document.getElementById('rayDensity').onmouseup = function()
     {
@@ -4047,8 +4065,6 @@ var canvasPainter = {
       }*/
       origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
       origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
-      console.log(mouseDiffX);
-      console.log(origin);
       draw();
     }
   }
@@ -4838,7 +4854,18 @@ var canvasPainter = {
   }
 
   function setScale(value) {
+    setScaleWithCenter(value, canvas.width / scale / 2, canvas.height / scale / 2);
+  }
+
+  function setScaleWithCenter(value, centerX, centerY) {
+    scaleChange = value - scale;
+    origin.x *= value / scale;
+    origin.y *= value / scale;
+    origin.x -= centerX * scaleChange;
+    origin.y -= centerY * scaleChange;
     scale = value;
+    draw();
+    console.log(value);
   }
 
   function save()
