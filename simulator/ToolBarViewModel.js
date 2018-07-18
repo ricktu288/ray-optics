@@ -12,7 +12,7 @@ function ToolBarViewModel() {
     new ToolBarGroup("File: ", [
       new ToolBarItem("Undo", "undo", undefined, "Undo last action. (Ctrl+Z)",
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
-      new ToolBarItem("Redo", "redo", undefined, "Redo last action.",
+      new ToolBarItem("Redo", "redo", undefined, "Redo last action. (Ctrl+Y)",
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Reset", "reset", undefined, "Create new file.",
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),

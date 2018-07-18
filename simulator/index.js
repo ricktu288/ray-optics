@@ -266,9 +266,9 @@ var canvasPainter = {
   },
   cls: function() {
     //var ctx = canvas.getContext('2d');
-    ctx.restore();
-    ctx.setTransform(scale,0,0,scale,0,0);
+    ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
   }
 };
 
@@ -3012,6 +3012,29 @@ var canvasPainter = {
     };
     cancelMousedownEvent('mode_' + element);
     });
+    document.getElementById('zoom').oninput = function()
+    {
+      setScale(this.value / 100);
+      draw();
+    };
+    document.getElementById('zoom_txt').oninput = function()
+    {
+      setScale(this.value / 100);
+      draw();
+    };
+    document.getElementById('zoom').onmouseup = function()
+    {
+      setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
+      draw();
+      createUndoPoint();
+    };
+    document.getElementById('zoom').ontouchend = function()
+    {
+      setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
+      draw();
+      createUndoPoint();
+    };
+    cancelMousedownEvent('rayDensity');
     document.getElementById('rayDensity').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
@@ -3205,7 +3228,7 @@ var canvasPainter = {
     canvas.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         }, false);
-    
+
     toolbtn_clicked('laser');
   };
 
@@ -3249,6 +3272,8 @@ var canvasPainter = {
 
 
 
+    ctx.save();
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
     if (document.getElementById('showgrid').checked)
     {
       //畫出格線
@@ -3256,17 +3281,17 @@ var canvasPainter = {
       ctx.strokeStyle = 'rgb(64,64,64)';
       var dashstep = 4;
       ctx.beginPath();
-      for (var x = ((origin.x % gridSize) + gridSize) % gridSize; x <= canvas.width; x += gridSize)
+      for (var x = origin.x / scale % gridSize; x <= canvas.width / scale; x += gridSize)
       {
-        for (var y = 0; y <= canvas.height; y += dashstep)
+        for (var y = 0; y <= canvas.height / scale; y += dashstep)
         {
           ctx.moveTo(x, y);
           ctx.lineTo(x, y + dashstep * 0.5);
         }
       }
-      for (var y = ((origin.y % gridSize) + gridSize) % gridSize; y <= canvas.height; y += gridSize)
+      for (var y = origin.y / scale % gridSize; y <= canvas.height / scale; y += gridSize)
       {
-        for (var x = 0; x <= canvas.width; x += dashstep)
+        for (var x = 0; x <= canvas.width / scale; x += dashstep)
         {
           ctx.moveTo(x, y);
           ctx.lineTo(x + dashstep * 0.5, y);
@@ -3274,6 +3299,7 @@ var canvasPainter = {
       }
       ctx.stroke();
     }
+    ctx.restore();
 
 
     //畫出物件
@@ -3296,6 +3322,7 @@ var canvasPainter = {
       ctx.fill();
     }
     lastDrawTime = new Date();
+    //ctx.setTransform(1,0,0,1,0,0);
   }
 
 
@@ -3753,7 +3780,7 @@ var canvasPainter = {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1)
   {
@@ -3774,7 +3801,7 @@ var canvasPainter = {
   if (document.getElementById('grid').checked)
   {
     //使用格線
-    mouse = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
+    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
 
   }
   else
@@ -3881,6 +3908,7 @@ var canvasPainter = {
          //draggingPart.part=0;
          draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
          draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+         draggingPart.mouse2 = origin; //Original origin.
          draggingPart.snapData = {};
          document.getElementById('obj_settings').style.display = 'none';
          selectedObj = -1;
@@ -3913,18 +3941,18 @@ var canvasPainter = {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置
   var mouse2;
   //if(document.getElementById("grid").checked != e.altKey)
   if (document.getElementById('grid').checked && !(e.altKey && !isConstructing))
   {
     //使用格線
-    mouse2 = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
+    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
   }
   else
   {
     //不使用格線
-    mouse2 = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop);
+    mouse2 = mouse_nogrid;
   }
 
   if (mouse2.x == mouse.x && mouse2.y == mouse.y)
@@ -3954,8 +3982,8 @@ var canvasPainter = {
         draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
       }
 
-      var mouseDiffX = mouse_snapped.x - draggingPart.mouse1.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = mouse_snapped.y - draggingPart.mouse1.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); //目前滑鼠位置與上一次的滑鼠位置的Y軸差
 
       observer.c.x += mouseDiffX;
       observer.c.y += mouseDiffY;
@@ -4005,20 +4033,22 @@ var canvasPainter = {
         draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
       }
 
-      var mouseDiffX = mouse_snapped.x - draggingPart.mouse1.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = mouse_snapped.y - draggingPart.mouse1.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
-      for (var i = 0; i < objs.length; i++)
+      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      /*for (var i = 0; i < objs.length; i++)
       {
         objTypes[objs[i].type].move(objs[i], mouseDiffX, mouseDiffY);
-      }
-      draggingPart.mouse1 = mouse_snapped; //將"上一次的滑鼠位置"設為目前的滑鼠位置(給下一次使用)
-      if (observer)
+      }*/
+      //draggingPart.mouse1 = mouse_snapped; //將"上一次的滑鼠位置"設為目前的滑鼠位置(給下一次使用)
+      /*if (observer)
       {
         observer.c.x += mouseDiffX;
         observer.c.y += mouseDiffY;
-      }
-      origin.x += mouseDiffX;
-      origin.y += mouseDiffY;
+      }*/
+      origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
+      origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
+      console.log(mouseDiffX);
+      console.log(origin);
       draw();
     }
   }
@@ -4407,6 +4437,11 @@ var canvasPainter = {
     createUndoPoint();
     return false;
     }
+    //Ctrl+Y
+    if (e.ctrlKey && e.keyCode == 89)
+    {
+      document.getElementById('redo').onclick();
+    }
 
     //Ctrl+S
     if (e.ctrlKey && e.keyCode == 83)
@@ -4626,7 +4661,7 @@ var canvasPainter = {
     tools_normal.forEach(function(element, index)
     {
       document.getElementById('tool_' + element).className = 'toolbtn';
-      
+
     });
     tools_withList.forEach(function(element, index)
     {
@@ -4800,6 +4835,10 @@ var canvasPainter = {
     {
       rayDensity_light = value;
     }
+  }
+
+  function setScale(value) {
+    scale = value;
   }
 
   function save()
