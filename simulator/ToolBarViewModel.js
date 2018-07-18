@@ -78,7 +78,7 @@ function ToolBarViewModel() {
       new ToolBarItem("Zoom", "zoom", undefined, "Zoom the view with percentage.",
         ToolTypeEnum.SLIDE, undefined, undefined,
         25, 500, 25, 100),
-      new ToolBarItem("Help", "help", undefined, "Toggle help popup. <br><br>Some other tips: <br>Click to select object, <br>Ctrl+D to duplicate, <br>Delete key to delete, <br>Arrow keys to move slowly. <br>When creating line objects, <br>Hold Shift to lock angle, <br>hold Ctrl to make the first point be the center point.",
+      new ToolBarItem("Help", "help", undefined, "Toggle help popup. <br><br>Some other tips: <br>Click to select object, <br>Ctrl+D to duplicate, <br>Delete key to delete, <br>Arrow keys to move slowly, <br>Double-click or right-click the dot can edit its coordinates directly. <br>When creating line objects, <br>Hold Shift to lock angle, <br>Hold Ctrl to make the first point be the center point.",
         ToolTypeEnum.HELP, undefined)
     ])
   ];

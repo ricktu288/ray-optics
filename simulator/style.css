@@ -35,6 +35,9 @@ input[type="checkbox"] {
   /* Make native checkbox act as the same as bootstrap's checkbox. */
   display: none;
 }
+#setAttrAll {
+  display: inline;
+}
 .dropdown-toggle {
   /* Fix dropdown-menu overlapped by checked radio */
   /*z-index: 1060 !important;*/
