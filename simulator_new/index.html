@@ -21,7 +21,8 @@
       <!-- ko foreach: tools -->
       <!-- ko if: type == 1/*ToolTypeEnum.RADIO*/ -->
       <label class="btn btn-secondary"
-       data-bind="css: {'active': $parent.selected() == name}">
+       data-toggle="popover" data-trigger="hover" data-html="true"
+       data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
         <span data-bind="text: name"></span>
         <input type="radio" autocomplete="off"
         data-bind="attr: {name: $parent.title}, value: name, checked: $parent.selected">
@@ -29,17 +30,18 @@
       <!-- /ko -->
       <!-- ko if: type == 2/*ToolTypeEnum.RADIOLIST*/ -->
       <label class="btn btn-secondary dropdown-toggle"
-      data-bind="css: {'active': $parent.selected() == name}">
+      data-bind="css: {'active': $parent.selected() == name}, attr: {style: 'z-index: ' + description + ' !important'}">
         <!-- Show child text before current text. -->
         <!--<span data-bind="text: selected"></span>-->
         <span data-bind="text: name"></span>
         <input type="radio" autocomplete="off"
         data-bind="attr: {name: $parent.title}, value: name, checked: $parent.selected">
         <div class="dropdown-menu" style="padding:0; margin:0; min-width:100%;">
-          <div class="btn-group-vertical btn-group-toggle" style="padding:0; margin:0; width:100%" data-toggle="buttons">
+          <div class="btn-group-vertical" style="padding:0; margin:0; width:100%" data-toggle="buttons">
             <!-- ko foreach: content -->
             <label class="btn btn-secondary" style="margin:0"
-            data-bind="css: {'active': $parent.selected() == name}">
+            data-toggle="popover" data-trigger="hover" data-html="true"
+            data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
               <span data-bind="text: name"></span>
               <input type="radio" autocomplete="off"
               data-bind="attr: {name: $parent.name}, value: name, checked: $parent.selected">
@@ -51,20 +53,26 @@
       <!-- /ko -->
       <!-- ko if: type == 3/*ToolTypeEnum.BUTTON*/ -->
       <label class="btn btn-secondary"
-       data-bind="click: action">
+      data-toggle="popover" data-trigger="hover" data-html="true"
+      data-bind="click: action, attr: {title: getTitle(), 'data-content': getContent()}">
         <span data-bind="text: name"></span>
       </label>
       <!-- /ko -->
       <!-- ko if: type == 4/*ToolTypeEnum.CHECK*/ -->
-      <div class="btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-primary">
+      <div class="btn-group">
+        <label class="btn btn-primary"
+        data-toggle="popover" data-trigger="hover" data-html="true"
+        data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
+          <input type="checkbox" autocomplete="off"
+          data-bind="checked: selected">
           <span data-bind="text: name"></span>
-          <input type="checkbox" checked autocomplete="off">
         </label>
       </div>
       <!-- /ko -->
       <!-- ko if: type == 5/*ToolTypeEnum.SLIDE*/ -->
-      <div class="btn btn-static">
+      <div class="btn btn-static"
+        data-toggle="popover" data-trigger="hover" data-html="true"
+        data-bind="attr: {title: getTitle(), 'data-content': getContent()}">
         <span data-bind="text: name + ' :'"></span>
         <!-- TODO: Add validation, http://knockoutjs.com/documentation/extenders.html -->
         <input type="text" style="width: 80px"
@@ -75,10 +83,13 @@
       </div>
       <!-- /ko -->
       <!-- ko if: type == 6/*ToolTypeEnum.HELP*/ -->
-      <div class="btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-danger">
+      <div class="btn-group">
+        <label class="btn btn-danger"
+        data-toggle="popover" data-trigger="hover" data-html="true"
+        data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
+          <input id="help" type="checkbox" autocomplete="off"
+          data-bind="checked: selected">
           <span data-bind="text: name"></span>
-          <input type="checkbox" checked autocomplete="off">
         </label>
       </div>
       <!-- /ko -->

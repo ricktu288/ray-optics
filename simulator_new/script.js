@@ -10,3 +10,6 @@ $(".dropdown-menu > div > label").click(function (e) {
   $(this).parent().parent().hide();
   e.stopPropagation();
 });
+
+/* Initialize Bootstrap Popover */
+$("[data-toggle=popover]").popover();

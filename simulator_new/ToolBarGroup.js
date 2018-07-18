@@ -12,6 +12,8 @@ export class ToolBarItem {
   /**
    * Create a ToolBarItem that can be any type listed in ToolTypeEnum.
    * @param {string|String[]} name
+   * @param {string} img popover image.
+   * @param {string|number} description popover description or z-index for RADIOLIST.
    * @param {number|ToolTypeEnum} type any type listed in ToolTypeEnum.
    * @param {ToolBarItem[]|undefined} content the list of items in RADIOLIST.
    * @param {function|undefined} action the action that triggers on BUTTON click.
@@ -20,8 +22,10 @@ export class ToolBarItem {
    * @param {number|undefined} step the step size in SLIDE.
    * @param {number|undefined} value the current value in SLIDE.
    */
-  constructor(name, type, content, action, min, max, step, value) {
+  constructor(name, img, description, type, content, action, min, max, step, value) {
     this.name = name;
+    this.img = img;
+    this.description = description;
     this.type = type;
     this.selected = "";
     this.content = content;
@@ -30,6 +34,8 @@ export class ToolBarItem {
         this.selected = ko.observable(content[i].name);
         break;
       }
+    } else if (this.type == ToolTypeEnum.CHECK) {
+      this.selected = ko.observable(false);
     } else if (this.type == ToolTypeEnum.BUTTON) {
       this.action = action;
     } else if (this.type == ToolTypeEnum.SLIDE) {
@@ -38,7 +44,19 @@ export class ToolBarItem {
       this.step = ko.observable(step);
       this.value = ko.observable(value);
     }
+    else if (this.type == ToolTypeEnum.HELP) {
+      this.selected = ko.observable(true);
+    }
     //console.log(this);
+  }
+  getTitle() {
+    return "<b>" + this.name + "</b>";
+  }
+  getContent() {
+    var image = "";
+    if (this.img != undefined)
+      image = "<img src='../img/" + this.img + ".png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>";
+    return image + "<b>" + this.description + "</b>";
   }
 }
 

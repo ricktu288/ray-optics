@@ -8,7 +8,8 @@
   /* Make button group wrappable. */
   display: flex;
   flex-wrap: wrap;
-  /*margin: 0;*/
+  margin: 0;
+  margin-bottom: 2px;
 }
 .btn-static {
   cursor: default !important;
@@ -31,12 +32,14 @@ input[type="radio"] {
   display: none;
 }
 input[type="checkbox"] {
-  /* Make native radio act as the same as bootstrap's radio. */
+  /* Make native checkbox act as the same as bootstrap's checkbox. */
   display: none;
 }
-.btn-group>.btn.active {
+.dropdown-toggle {
   /* Fix dropdown-menu overlapped by checked radio */
-  z-index: 0 !important;
+  /*z-index: 1060 !important;*/
+  position: absolute;
+  display: block;
 }
 span {
   vertical-align: middle;
@@ -45,3 +48,5 @@ input[type="text"] {
   vertical-align: middle;
   font-size: 14px;
 }
+/* Prevent popover flickering when space is not enough */
+.popover { pointer-events: none; }

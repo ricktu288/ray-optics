@@ -70,7 +70,7 @@ locales["en"] = {
     "message": "Glass (Circle)"
   },
   "glass_circle_desc": {
-    "message": "Glass with circle shape, defind by its center and a point on the surface."
+    "message": "Glass with circle shape, defined by its center and a point on the surface."
   },
   "glass": {
     "message": "Glass (Other shapes)"
@@ -88,7 +88,7 @@ locales["en"] = {
     "message": "Blocker"
   },
   "blocker_desc": {
-    "message": "A line-segment light blocker which absorbes the incident rays."
+    "message": "A line-segment light blocker which absorbs the incident rays."
   },
   "ruler": {
     "message": "Ruler"
