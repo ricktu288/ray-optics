@@ -21,6 +21,9 @@ locales["zh-TW"] = {
   "github_link": {
     "message": "至GitHub查看"
   },
+  "start-old": {
+    "message": "手機版"
+  },
   "tools": {
     "message": "工具"
   },

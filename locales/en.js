@@ -21,6 +21,9 @@ locales["en"] = {
   "github_link": {
     "message": "View on GitHub"
   },
+  "start-old": {
+    "message": "Mobile Version"
+  },
   "tools": {
     "message": "Tools"
   },
