@@ -66,7 +66,7 @@ function ToolBarViewModel() {
         ToolTypeEnum.RADIO)
     ]),
     new ToolBarGroup("Settings: ", [
-      new ToolBarItem("Ray Density", "rayDensity", undefined,
+      self.rayDensity = new ToolBarItem("Ray Density", "rayDensity", undefined,
         ToolTypeEnum.SLIDE, undefined, undefined,
         -3, 3, 0.0001, -2.3026),
       self.c1 = new ToolBarItem("Grid", "showgrid", undefined,
@@ -75,7 +75,7 @@ function ToolBarViewModel() {
         ToolTypeEnum.CHECK),
       self.c3 = new ToolBarItem("Lock Objects", "lockobjs", undefined,
         ToolTypeEnum.CHECK),
-      new ToolBarItem("Zoom", "zoom", undefined,
+      self.zoom = new ToolBarItem("Zoom", "zoom", undefined,
         ToolTypeEnum.SLIDE, undefined, undefined,
         25, 500, 25, 100),
       new ToolBarItem("Help", "help", undefined,

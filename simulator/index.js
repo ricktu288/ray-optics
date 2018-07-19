@@ -2939,8 +2939,7 @@ var canvasPainter = {
       }
       d = Math.max(25, Math.min(500, d * 100));
       setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
-      $("#zoom").val(d);
-      $("#zoom").trigger('change');
+      window.toolBarViewModel.zoom.value(d);
       return false;
     }
 
@@ -4415,11 +4414,13 @@ var canvasPainter = {
     //AddingObjType="";
     rayDensity_light = 0.1; //光線密度(光線相關模式)
     rayDensity_images = 1; //光線密度(像相關模式)
+    window.toolBarViewModel.rayDensity.value(rayDensity_light);
     extendLight = false; //觀察者的影像
     showLight = true; //顯示光線
     origin = {x: 0, y: 0};
     observer = null;
     scale = 1;
+    window.toolBarViewModel.zoom.value(scale * 100);
     //mode="light";
     toolbtn_clicked('laser');
     modebtn_clicked('light');
@@ -4844,11 +4845,13 @@ var canvasPainter = {
     mode = mode1;
     if (mode == 'images' || mode == 'observer')
     {
-      document.getElementById('rayDensity').value = Math.log(rayDensity_images);
+      //document.getElementById('rayDensity').value = Math.log(rayDensity_images);
+      window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_images));
     }
     else
     {
-      document.getElementById('rayDensity').value = Math.log(rayDensity_light);
+      //document.getElementById('rayDensity').value = Math.log(rayDensity_light);
+      window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_light));
     }
     if (mode == 'observer' && !observer)
     {
