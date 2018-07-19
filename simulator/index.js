@@ -4853,7 +4853,7 @@ var canvasPainter = {
     if (mode == 'observer' && !observer)
     {
       //初始化觀察者
-      observer = graphs.circle(graphs.point(canvas.width * 0.5, canvas.height * 0.5), 20);
+      observer = graphs.circle(graphs.point((canvas.width * 0.5 - origin.x) / scale, (canvas.height * 0.5 - origin.y) / scale), 20);
     }
 
 
