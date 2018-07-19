@@ -4120,8 +4120,8 @@ var canvasPainter = {
 
 
   function canvas_ondblclick(e) {
-    //console.log("d");
-    var mouse = graphs.point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop); //滑鼠實際位置(一律不使用格線)
+    console.log("dblclick");
+    var mouse = graphs.point((e.pageX - e.target.offsetLeft - origin.x) / scale, (e.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置(一律不使用格線)
     if (isConstructing)
     {
     }
@@ -4139,13 +4139,14 @@ var canvasPainter = {
           draggingPart.targetPoint = graphs.point(observer.c.x, observer.c.y);
           draggingPart.snapData = {};
 
-          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x) + 'px';
-          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y) + 'px';
-          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x - origin.x) + ',' + (draggingPart.targetPoint.y - origin.y) + ')';
+          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
+          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
+          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
           document.getElementById('xybox').size = document.getElementById('xybox').value.length;
           document.getElementById('xybox').style.display = '';
           document.getElementById('xybox').select();
           document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
+          console.log("show xybox");
           //e.cancelBubble = true;
           //if (e.stopPropagation) e.stopPropagation();
           xyBox_cancelContextMenu = true;
@@ -4195,13 +4196,14 @@ var canvasPainter = {
           draggingPart.hasDuplicated = false;
           positioningObj = targetObj_index; //輸入位置的物件設為i
 
-          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x) + 'px';
-          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y) + 'px';
-          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x - origin.x) + ',' + (draggingPart.targetPoint.y - origin.y) + ')';
+          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
+          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
+          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
           document.getElementById('xybox').size = document.getElementById('xybox').value.length;
           document.getElementById('xybox').style.display = '';
           document.getElementById('xybox').select();
           document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
+          console.log("show xybox");
           //e.cancelBubble = true;
           //if (e.stopPropagation) e.stopPropagation();
           xyBox_cancelContextMenu = true;
@@ -4303,13 +4305,13 @@ var canvasPainter = {
       if (positioningObj == -4)
       {
         //觀察者
-        observer.c.x = xyData[0] + origin.x;
-        observer.c.y = xyData[1] + origin.y;
+        observer.c.x = xyData[0];
+        observer.c.y = xyData[1];
       }
       else
       {
         //物件
-        objTypes[objs[positioningObj].type].dragging(objs[positioningObj], graphs.point(xyData[0] + origin.x, xyData[1] + origin.y), draggingPart, ctrl, shift);
+        objTypes[objs[positioningObj].type].dragging(objs[positioningObj], graphs.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
       }
       draw();
       createUndoPoint();
