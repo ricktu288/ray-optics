@@ -3058,10 +3058,12 @@ var canvasPainter = {
     document.getElementById('rayDensity').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
+      draw();
     };
     document.getElementById('rayDensity_txt').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
+      draw();
     };
     document.getElementById('rayDensity').onmouseup = function()
     {
