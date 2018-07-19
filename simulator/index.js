@@ -4606,7 +4606,7 @@ var canvasPainter = {
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin});
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale});
     if (typeof(Storage) !== "undefined") {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
@@ -4638,6 +4638,10 @@ var canvasPainter = {
       {
         jsonData.rayDensity_images = 1;
       }
+      if (!jsonData.scale)
+      {
+        jsonData.scale = 1;
+      }
       jsonData.version = 1;
     }
     if (jsonData.version == 1)
@@ -4657,6 +4661,7 @@ var canvasPainter = {
     rayDensity_images = jsonData.rayDensity_images;
     observer = jsonData.observer;
     origin = jsonData.origin;
+    scale = jsonData.scale;
     modebtn_clicked(jsonData.mode);
     selectObj(selectedObj);
     //draw();
