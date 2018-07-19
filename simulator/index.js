@@ -542,7 +542,7 @@ var canvasPainter = {
     var per_x = par_y;
     var per_y = -par_x;
 
-    var sufficientlyLargeDistance = Math.abs(obj.p1.x) + Math.abs(obj.p1.y) + canvas.width + canvas.height;
+    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / scale;
 
     ctx.beginPath();
     ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
