@@ -3039,10 +3039,17 @@ var canvasPainter = {
       setScale(this.value / 100);
       draw();
     };
-    document.getElementById('zoom_txt').oninput = function()
+    document.getElementById('zoom_txt').onfocusout = function()
     {
       setScale(this.value / 100);
       draw();
+    };
+    document.getElementById('zoom_txt').onkeyup = function()
+    {
+      if (event.keyCode === 13) {
+        setScale(this.value / 100);
+        draw();
+      }
     };
     document.getElementById('zoom').onmouseup = function()
     {
@@ -3060,10 +3067,17 @@ var canvasPainter = {
       setRayDensity(Math.exp(this.value));
       draw();
     };
-    document.getElementById('rayDensity_txt').oninput = function()
+    document.getElementById('rayDensity_txt').onfocusout = function()
     {
       setRayDensity(Math.exp(this.value));
       draw();
+    };
+    document.getElementById('rayDensity_txt').onkeyup = function()
+    {
+      if (event.keyCode === 13) {
+        setRayDensity(Math.exp(this.value));
+        draw();
+      }
     };
     document.getElementById('rayDensity').onmouseup = function()
     {
