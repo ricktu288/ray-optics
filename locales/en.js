@@ -22,7 +22,7 @@ locales["en"] = {
     "message": "View on GitHub"
   },
   "start-old": {
-    "message": "Mobile Version"
+    "message": "Old Version"
   },
   "tools": {
     "message": "Tools"

@@ -22,7 +22,7 @@ locales["zh-CN"] = {
     "message": "至GitHub查看"
   },
   "start-old": {
-    "message": "手机版"
+    "message": "旧版"
   },
   "tools": {
     "message": "工具"
