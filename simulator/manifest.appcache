@@ -1,5 +1,5 @@
 ﻿CACHE MANIFEST
-# 2018-07-19-2
+# 2018-07-19-3
 index.html
 index.js
 FileSaver.js
@@ -13,11 +13,11 @@ style.css
 ToolBarGroup.js
 ToolBarViewModel.js
 
+https://code.jquery.com/jquery-3.3.1.min.js
 https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css
+https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js
 https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js
 https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js
-https://code.jquery.com/jquery-3.3.1.min.js
-https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js
 
 ../img/ray.png
 ../img/beam.png

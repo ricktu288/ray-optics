@@ -1,4 +1,4 @@
-export var ToolTypeEnum = {
+var ToolTypeEnum = {
   RADIO: 1,
   RADIOLIST: 2,
   BUTTON: 3,
@@ -8,7 +8,7 @@ export var ToolTypeEnum = {
 };
 Object.freeze(ToolTypeEnum);
 
-export class ToolBarItem {
+class ToolBarItem {
   /**
    * Create a ToolBarItem that can be any type listed in ToolTypeEnum.
    * @param {string|String[]} name
@@ -75,7 +75,7 @@ export class ToolBarItem {
   }
 }
 
-export class ToolBarGroup {
+class ToolBarGroup {
   /**
    * Creates a ToolBarGroup that results in a new toolgroup row in toolbar.
    * @param {string} title
