@@ -223,7 +223,7 @@ var canvasPainter = {
       ctx.strokeStyle = color ? color : 'black';
       ctx.beginPath();
       var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-      var cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做直線端點)
+      var cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height / scale + canvas.width / scale;  //取一個會超出繪圖區的距離(當做直線端點)
       ctx.moveTo(graph.p1.x - Math.sin(ang1) * cvsLimit, graph.p1.y - Math.cos(ang1) * cvsLimit);
       ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
       ctx.stroke();
@@ -236,7 +236,7 @@ var canvasPainter = {
       {
         ctx.beginPath();
         ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-        cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做射線終點)
+        cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height / scale + canvas.width / scale;  //取一個會超出繪圖區的距離(當做射線終點)
         ctx.moveTo(graph.p1.x, graph.p1.y);
         ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
         ctx.stroke();
