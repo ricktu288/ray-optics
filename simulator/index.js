@@ -4671,7 +4671,11 @@ var canvasPainter = {
       //為比此版本新的檔案版本
       return;
     }
-
+    //TODO: Create new version.
+    if (!jsonData.scale)
+    {
+      jsonData.scale = 1;
+    }
 
     objs = jsonData.objs;
     rayDensity_light = jsonData.rayDensity_light;
@@ -4744,7 +4748,6 @@ var canvasPainter = {
       else if (t == "Ideal Lens")
         AddingObjType = "lens";
     }
-    console.log(AddingObjType);
   }
 
   function toolbtnwithlist_mouseentered(tool, e)
@@ -4955,7 +4958,6 @@ var canvasPainter = {
     //} else {
     return locales[lang][msg].message;
     //}
-
   }
 
   function init_i18n() {
