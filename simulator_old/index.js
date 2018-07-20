@@ -1,4 +1,6 @@
-﻿var graphs = {
+﻿(function() {
+
+var graphs = {
   /**
   * 基本圖型
   **/
@@ -32,11 +34,11 @@
   /**
   * outer product
   * @method cross
-  * @param {graph.point} p1
-  * @param {graph.point} p2
+  * @param {graph.line} l1
+  * @param {graph.line} l2
   * @return {Number}
   **/
-  cross: function(p1, p2) {
+  cross: function(l1, l2) {
     return p1.x * p2.y - p1.y * p2.x;
   },
   /**
@@ -223,7 +225,7 @@ var canvasPainter = {
       ctx.strokeStyle = color ? color : 'black';
       ctx.beginPath();
       var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-      var cvsLimit = (Math.abs(graph.p1.x + origin.x) + Math.abs(graph.p1.y + origin.y) + canvas.height + canvas.width) / scale;  //取一個會超出繪圖區的距離(當做直線端點)
+      var cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做直線端點)
       ctx.moveTo(graph.p1.x - Math.sin(ang1) * cvsLimit, graph.p1.y - Math.cos(ang1) * cvsLimit);
       ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
       ctx.stroke();
@@ -236,7 +238,7 @@ var canvasPainter = {
       {
         ctx.beginPath();
         ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度
-        cvsLimit = (Math.abs(graph.p1.x + origin.x) + Math.abs(graph.p1.y + origin.y) + canvas.height + canvas.width) / scale;  //取一個會超出繪圖區的距離(當做直線端點)
+        cvsLimit = Math.abs(graph.p1.x) + Math.abs(graph.p1.y) + canvas.height + canvas.width;  //取一個會超出繪圖區的距離(當做射線終點)
         ctx.moveTo(graph.p1.x, graph.p1.y);
         ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
         ctx.stroke();
@@ -266,9 +268,7 @@ var canvasPainter = {
   },
   cls: function() {
     //var ctx = canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
   }
 };
 
@@ -542,7 +542,7 @@ var canvasPainter = {
     var per_x = par_y;
     var per_y = -par_x;
 
-    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / scale;
+    var sufficientlyLargeDistance = Math.abs(obj.p1.x) + Math.abs(obj.p1.y) + canvas.width + canvas.height;
 
     ctx.beginPath();
     ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
@@ -2858,7 +2858,6 @@ var canvasPainter = {
   var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
-  var scale = 1;
 
   window.onload = function(e) {
     init_i18n();
@@ -2874,11 +2873,11 @@ var canvasPainter = {
     //observer=graphs.circle(graphs.point(canvas.width*0.5,canvas.height*0.5),20);
     //document.getElementById('objAttr_text').value="";
     //toolbtn_clicked(AddingObjType);
-
+    
     if (typeof(Storage) !== "undefined" && localStorage.rayOpticsData) {
       document.getElementById('textarea1').value = localStorage.rayOpticsData;
     }
-
+    
     if (document.getElementById('textarea1').value != '')
     {
       JSONInput();
@@ -2921,27 +2920,6 @@ var canvasPainter = {
     {
       canvas_onmouseup(e);
     };
-
-    // IE9, Chrome, Safari, Opera
-    canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
-    // Firefox
-    canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
-
-    function canvas_onmousewheel(e) {
-      // cross-browser wheel delta
-      var e = window.event || e; // old IE support
-      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-      var d = scale;
-      if (delta < 0) {
-        d = scale * 0.9;
-      } else if (delta > 0) {
-        d = scale / 0.9;
-      }
-      d = Math.max(25, Math.min(500, d * 100));
-      setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
-      window.toolBarViewModel.zoom.value(d);
-      return false;
-    }
 
     canvas.ontouchstart = function(e)
     {
@@ -2987,8 +2965,7 @@ var canvasPainter = {
     tools_withList.forEach(function(element, index)
     {
       document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtnwithlist_mouseentered(element, e);};
-      /*document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};*/
-      document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
+      document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};
       document.getElementById('tool_' + element).onmouseleave = function(e) {toolbtnwithlist_mouseleft(element, e);};
       document.getElementById('tool_' + element + 'list').onmouseleave = function(e) {toollist_mouseleft(element, e);};
       cancelMousedownEvent('tool_' + element);
@@ -3034,50 +3011,10 @@ var canvasPainter = {
     };
     cancelMousedownEvent('mode_' + element);
     });
-    document.getElementById('zoom').oninput = function()
-    {
-      setScale(this.value / 100);
-      draw();
-    };
-    document.getElementById('zoom_txt').onfocusout = function()
-    {
-      setScale(this.value / 100);
-      draw();
-    };
-    document.getElementById('zoom_txt').onkeyup = function()
-    {
-      if (event.keyCode === 13) {
-        setScale(this.value / 100);
-        draw();
-      }
-    };
-    document.getElementById('zoom').onmouseup = function()
-    {
-      setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
-      createUndoPoint();
-    };
-    document.getElementById('zoom').ontouchend = function()
-    {
-      setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用
-      createUndoPoint();
-    };
-    cancelMousedownEvent('rayDensity');
     document.getElementById('rayDensity').oninput = function()
     {
       setRayDensity(Math.exp(this.value));
       draw();
-    };
-    document.getElementById('rayDensity_txt').onfocusout = function()
-    {
-      setRayDensity(Math.exp(this.value));
-      draw();
-    };
-    document.getElementById('rayDensity_txt').onkeyup = function()
-    {
-      if (event.keyCode === 13) {
-        setRayDensity(Math.exp(this.value));
-        draw();
-      }
     };
     document.getElementById('rayDensity').onmouseup = function()
     {
@@ -3095,7 +3032,6 @@ var canvasPainter = {
     cancelMousedownEvent('lockobjs_');
     cancelMousedownEvent('grid_');
     document.getElementById('showgrid_').onclick = function() {draw()};
-    document.getElementById('showgrid').onclick = function() {draw()};
     cancelMousedownEvent('showgrid_');
 
     document.getElementById('forceStop').onclick = function()
@@ -3262,8 +3198,6 @@ var canvasPainter = {
     canvas.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         }, false);
-
-    toolbtn_clicked('laser');
   };
 
 
@@ -3306,8 +3240,6 @@ var canvasPainter = {
 
 
 
-    ctx.save();
-    ctx.setTransform(scale, 0, 0, scale, 0, 0);
     if (document.getElementById('showgrid').checked)
     {
       //畫出格線
@@ -3315,17 +3247,17 @@ var canvasPainter = {
       ctx.strokeStyle = 'rgb(64,64,64)';
       var dashstep = 4;
       ctx.beginPath();
-      for (var x = origin.x / scale % gridSize; x <= canvas.width / scale; x += gridSize)
+      for (var x = ((origin.x % gridSize) + gridSize) % gridSize; x <= canvas.width; x += gridSize)
       {
-        for (var y = 0; y <= canvas.height / scale; y += dashstep)
+        for (var y = 0; y <= canvas.height; y += dashstep)
         {
           ctx.moveTo(x, y);
           ctx.lineTo(x, y + dashstep * 0.5);
         }
       }
-      for (var y = origin.y / scale % gridSize; y <= canvas.height / scale; y += gridSize)
+      for (var y = ((origin.y % gridSize) + gridSize) % gridSize; y <= canvas.height; y += gridSize)
       {
-        for (var x = 0; x <= canvas.width / scale; x += dashstep)
+        for (var x = 0; x <= canvas.width; x += dashstep)
         {
           ctx.moveTo(x, y);
           ctx.lineTo(x + dashstep * 0.5, y);
@@ -3333,7 +3265,6 @@ var canvasPainter = {
       }
       ctx.stroke();
     }
-    ctx.restore();
 
 
     //畫出物件
@@ -3356,7 +3287,6 @@ var canvasPainter = {
       ctx.fill();
     }
     lastDrawTime = new Date();
-    //ctx.setTransform(1,0,0,1,0,0);
   }
 
 
@@ -3814,7 +3744,7 @@ var canvasPainter = {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置
+  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1)
   {
@@ -3835,7 +3765,7 @@ var canvasPainter = {
   if (document.getElementById('grid').checked)
   {
     //使用格線
-    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
+    mouse = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
 
   }
   else
@@ -3942,7 +3872,6 @@ var canvasPainter = {
          //draggingPart.part=0;
          draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
          draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
-         draggingPart.mouse2 = origin; //Original origin.
          draggingPart.snapData = {};
          document.getElementById('obj_settings').style.display = 'none';
          selectedObj = -1;
@@ -3975,18 +3904,18 @@ var canvasPainter = {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置
+  var mouse_nogrid = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop); //滑鼠實際位置
   var mouse2;
   //if(document.getElementById("grid").checked != e.altKey)
   if (document.getElementById('grid').checked && !(e.altKey && !isConstructing))
   {
     //使用格線
-    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
+    mouse2 = graphs.point(Math.round((et.pageX - e.target.offsetLeft - origin.x) / gridSize) * gridSize + origin.x, Math.round((et.pageY - e.target.offsetTop - origin.y) / gridSize) * gridSize + origin.y);
   }
   else
   {
     //不使用格線
-    mouse2 = mouse_nogrid;
+    mouse2 = graphs.point(et.pageX - e.target.offsetLeft, et.pageY - e.target.offsetTop);
   }
 
   if (mouse2.x == mouse.x && mouse2.y == mouse.y)
@@ -4016,8 +3945,8 @@ var canvasPainter = {
         draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      var mouseDiffX = mouse_snapped.x - draggingPart.mouse1.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = mouse_snapped.y - draggingPart.mouse1.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
 
       observer.c.x += mouseDiffX;
       observer.c.y += mouseDiffY;
@@ -4067,20 +3996,20 @@ var canvasPainter = {
         draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); //目前滑鼠位置與上一次的滑鼠位置的Y軸差
-      /*for (var i = 0; i < objs.length; i++)
+      var mouseDiffX = mouse_snapped.x - draggingPart.mouse1.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = mouse_snapped.y - draggingPart.mouse1.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      for (var i = 0; i < objs.length; i++)
       {
         objTypes[objs[i].type].move(objs[i], mouseDiffX, mouseDiffY);
-      }*/
-      //draggingPart.mouse1 = mouse_snapped; //將"上一次的滑鼠位置"設為目前的滑鼠位置(給下一次使用)
-      /*if (observer)
+      }
+      draggingPart.mouse1 = mouse_snapped; //將"上一次的滑鼠位置"設為目前的滑鼠位置(給下一次使用)
+      if (observer)
       {
         observer.c.x += mouseDiffX;
         observer.c.y += mouseDiffY;
-      }*/
-      origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
-      origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
+      }
+      origin.x += mouseDiffX;
+      origin.y += mouseDiffY;
       draw();
     }
   }
@@ -4135,8 +4064,8 @@ var canvasPainter = {
 
 
   function canvas_ondblclick(e) {
-    console.log("dblclick");
-    var mouse = graphs.point((e.pageX - e.target.offsetLeft - origin.x) / scale, (e.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置(一律不使用格線)
+    //console.log("d");
+    var mouse = graphs.point(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop); //滑鼠實際位置(一律不使用格線)
     if (isConstructing)
     {
     }
@@ -4154,14 +4083,13 @@ var canvasPainter = {
           draggingPart.targetPoint = graphs.point(observer.c.x, observer.c.y);
           draggingPart.snapData = {};
 
-          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
-          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
-          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
+          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x) + 'px';
+          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y) + 'px';
+          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x - origin.x) + ',' + (draggingPart.targetPoint.y - origin.y) + ')';
           document.getElementById('xybox').size = document.getElementById('xybox').value.length;
           document.getElementById('xybox').style.display = '';
           document.getElementById('xybox').select();
           document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-          console.log("show xybox");
           //e.cancelBubble = true;
           //if (e.stopPropagation) e.stopPropagation();
           xyBox_cancelContextMenu = true;
@@ -4211,14 +4139,13 @@ var canvasPainter = {
           draggingPart.hasDuplicated = false;
           positioningObj = targetObj_index; //輸入位置的物件設為i
 
-          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
-          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
-          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
+          document.getElementById('xybox').style.left = (draggingPart.targetPoint.x) + 'px';
+          document.getElementById('xybox').style.top = (draggingPart.targetPoint.y) + 'px';
+          document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x - origin.x) + ',' + (draggingPart.targetPoint.y - origin.y) + ')';
           document.getElementById('xybox').size = document.getElementById('xybox').value.length;
           document.getElementById('xybox').style.display = '';
           document.getElementById('xybox').select();
           document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-          console.log("show xybox");
           //e.cancelBubble = true;
           //if (e.stopPropagation) e.stopPropagation();
           xyBox_cancelContextMenu = true;
@@ -4320,13 +4247,13 @@ var canvasPainter = {
       if (positioningObj == -4)
       {
         //觀察者
-        observer.c.x = xyData[0];
-        observer.c.y = xyData[1];
+        observer.c.x = xyData[0] + origin.x;
+        observer.c.y = xyData[1] + origin.y;
       }
       else
       {
         //物件
-        objTypes[objs[positioningObj].type].dragging(objs[positioningObj], graphs.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
+        objTypes[objs[positioningObj].type].dragging(objs[positioningObj], graphs.point(xyData[0] + origin.x, xyData[1] + origin.y), draggingPart, ctrl, shift);
       }
       draw();
       createUndoPoint();
@@ -4387,9 +4314,6 @@ var canvasPainter = {
       endPositioning();
       return;
     }
-    if (undoIndex == undoLBound)
-        //已達復原資料下界
-        return;
     undoIndex = (undoIndex + (undoLimit - 1)) % undoLimit;
     document.getElementById('textarea1').value = undoArr[undoIndex];
     JSONInput();
@@ -4406,9 +4330,6 @@ var canvasPainter = {
   {
     isConstructing = false;
     endPositioning();
-    if (undoIndex == undoUBound)
-      //已達復原資料下界
-      return;
     undoIndex = (undoIndex + 1) % undoLimit;
     document.getElementById('textarea1').value = undoArr[undoIndex];
     JSONInput();
@@ -4430,23 +4351,13 @@ var canvasPainter = {
     //AddingObjType="";
     rayDensity_light = 0.1; //光線密度(光線相關模式)
     rayDensity_images = 1; //光線密度(像相關模式)
-    window.toolBarViewModel.rayDensity.value(rayDensity_light);
     extendLight = false; //觀察者的影像
     showLight = true; //顯示光線
     origin = {x: 0, y: 0};
     observer = null;
-    scale = 1;
-    window.toolBarViewModel.zoom.value(scale * 100);
     //mode="light";
-    toolbtn_clicked('laser');
+    toolbtn_clicked('');
     modebtn_clicked('light');
-
-    //Reset new UI.
-    window.toolBarViewModel.tools.selected("Ray");
-    window.toolBarViewModel.modes.selected("Rays");
-    window.toolBarViewModel.c1.selected(false);
-    window.toolBarViewModel.c2.selected(false);
-    window.toolBarViewModel.c3.selected(false);
 
     document.getElementById('lockobjs').checked = false;
     document.getElementById('grid').checked = false;
@@ -4480,11 +4391,6 @@ var canvasPainter = {
     draw();
     createUndoPoint();
     return false;
-    }
-    //Ctrl+Y
-    if (e.ctrlKey && e.keyCode == 89)
-    {
-      document.getElementById('redo').onclick();
     }
 
     //Ctrl+S
@@ -4623,7 +4529,7 @@ var canvasPainter = {
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale});
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin});
     if (typeof(Storage) !== "undefined") {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
@@ -4655,10 +4561,6 @@ var canvasPainter = {
       {
         jsonData.rayDensity_images = 1;
       }
-      if (!jsonData.scale)
-      {
-        jsonData.scale = 1;
-      }
       jsonData.version = 1;
     }
     if (jsonData.version == 1)
@@ -4678,7 +4580,6 @@ var canvasPainter = {
     rayDensity_images = jsonData.rayDensity_images;
     observer = jsonData.observer;
     origin = jsonData.origin;
-    scale = jsonData.scale;
     modebtn_clicked(jsonData.mode);
     selectObj(selectedObj);
     //draw();
@@ -4710,7 +4611,6 @@ var canvasPainter = {
     tools_normal.forEach(function(element, index)
     {
       document.getElementById('tool_' + element).className = 'toolbtn';
-
     });
     tools_withList.forEach(function(element, index)
     {
@@ -4725,32 +4625,12 @@ var canvasPainter = {
 
     document.getElementById('tool_' + tool).className = 'toolbtnselected';
     AddingObjType = tool;
-    if (tool == "mirror_") {
-      var t = window.toolBarViewModel.mirrors.selected();
-      if (t == "Segment")
-        AddingObjType = "mirror";
-      else if (t == "Circular Arc")
-        AddingObjType = "arcmirror";
-      else if (t == "Ideal Curved")
-        AddingObjType = "idealmirror";
-    } else if (tool == "refractor_") {
-      var t = window.toolBarViewModel.glasses.selected();
-      if (t == "Half-plane")
-        AddingObjType = "halfplane";
-      else if (t == "Circle")
-        AddingObjType = "circlelens";
-      else if (t == "Free-shape")
-        AddingObjType = "refractor";
-      else if (t == "Ideal Lens")
-        AddingObjType = "lens";
-    }
-    console.log(AddingObjType);
   }
 
   function toolbtnwithlist_mouseentered(tool, e)
   {
     //console.log("tool_"+tool)
-    /*hideAllLists();
+    hideAllLists();
     var rect = document.getElementById('tool_' + tool).getBoundingClientRect();
     //console.log(document.getElementById("tool_"+tool+"list"))
     document.getElementById('tool_' + tool + 'list').style.left = rect.left + 'px';
@@ -4759,14 +4639,14 @@ var canvasPainter = {
     if (document.getElementById('tool_' + tool).className == 'toolbtn')
     {
       document.getElementById('tool_' + tool).className = 'toolbtnwithlisthover';
-    }*/
+    }
   }
 
   function toolbtnwithlist_mouseleft(tool, e)
   {
     //console.log("btnout")
 
-    /*var rect = document.getElementById('tool_' + tool + 'list').getBoundingClientRect();
+    var rect = document.getElementById('tool_' + tool + 'list').getBoundingClientRect();
     mouse = graphs.point(e.pageX, e.pageY);
     //console.log(rect)
     //console.log(mouse)
@@ -4778,7 +4658,7 @@ var canvasPainter = {
       {
         document.getElementById('tool_' + tool).className = 'toolbtn';
       }
-    }*/
+    }
 
   }
 
@@ -4861,18 +4741,16 @@ var canvasPainter = {
     mode = mode1;
     if (mode == 'images' || mode == 'observer')
     {
-      //document.getElementById('rayDensity').value = Math.log(rayDensity_images);
-      window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_images));
+      document.getElementById('rayDensity').value = Math.log(rayDensity_images);
     }
     else
     {
-      //document.getElementById('rayDensity').value = Math.log(rayDensity_light);
-      window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_light));
+      document.getElementById('rayDensity').value = Math.log(rayDensity_light);
     }
     if (mode == 'observer' && !observer)
     {
       //初始化觀察者
-      observer = graphs.circle(graphs.point((canvas.width * 0.5 - origin.x) / scale, (canvas.height * 0.5 - origin.y) / scale), 20);
+      observer = graphs.circle(graphs.point(canvas.width * 0.5, canvas.height * 0.5), 20);
     }
 
 
@@ -4908,27 +4786,13 @@ var canvasPainter = {
     }
   }
 
-  function setScale(value) {
-    setScaleWithCenter(value, canvas.width / scale / 2, canvas.height / scale / 2);
-  }
-
-  function setScaleWithCenter(value, centerX, centerY) {
-    scaleChange = value - scale;
-    origin.x *= value / scale;
-    origin.y *= value / scale;
-    origin.x -= centerX * scaleChange;
-    origin.y -= centerY * scaleChange;
-    scale = value;
-    draw();
-  }
-
   function save()
   {
     JSONOutput();
-
+    
     var blob = new Blob([document.getElementById('textarea1').value], {type: 'application/json'});
     saveAs(blob, document.getElementById('save_name').value);
-
+    
     document.getElementById('saveBox').style.display = 'none';
   }
 
@@ -4947,7 +4811,7 @@ var canvasPainter = {
     };
 
   }
-
+  
   var lang = 'en';
   function getMsg(msg) {
     //if (typeof chrome != 'undefined') {
@@ -4955,7 +4819,7 @@ var canvasPainter = {
     //} else {
     return locales[lang][msg].message;
     //}
-
+    
   }
 
   function init_i18n() {
@@ -4968,13 +4832,13 @@ var canvasPainter = {
         lang = 'zh-CN';
       }
     }
-
+    
     var url_lang = location.search.substr(1)
     if (url_lang && locales[url_lang]) {
       lang = url_lang;
     }
-
-
+    
+    
     var downarraw = '\u25BC';
     //var downarraw="\u25BE";
     document.title = getMsg('appName');
@@ -5079,8 +4943,10 @@ var canvasPainter = {
     document.getElementById('delete').value = getMsg('delete');
 
     document.getElementById('forceStop').innerHTML = getMsg('processing');
-
+    
     document.getElementById('footer_message').innerHTML = getMsg('footer_message');
     document.getElementById('homepage').innerHTML = getMsg('homepage');
     document.getElementById('source').innerHTML = getMsg('source');
   }
+  
+})();

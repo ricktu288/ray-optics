@@ -21,6 +21,9 @@ locales["en"] = {
   "github_link": {
     "message": "View on GitHub"
   },
+  "start-old": {
+    "message": "Old Version"
+  },
   "tools": {
     "message": "Tools"
   },
@@ -70,7 +73,7 @@ locales["en"] = {
     "message": "Glass (Circle)"
   },
   "glass_circle_desc": {
-    "message": "Glass with circle shape, defind by its center and a point on the surface."
+    "message": "Glass with circle shape, defined by its center and a point on the surface."
   },
   "glass": {
     "message": "Glass (Other shapes)"
@@ -88,7 +91,7 @@ locales["en"] = {
     "message": "Blocker"
   },
   "blocker_desc": {
-    "message": "A line-segment light blocker which absorbes the incident rays."
+    "message": "A line-segment light blocker which absorbs the incident rays."
   },
   "ruler": {
     "message": "Ruler"
@@ -133,6 +136,6 @@ locales["en"] = {
     "message": "Language: English"
   },
   "footer_message": {
-    "message": "Developed by Rick Tu"
+    "message": "Developed by <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
   }
 };

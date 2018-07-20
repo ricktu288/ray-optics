@@ -62,6 +62,7 @@
     <p>
       <a href="simulator/" target="_blank" class="btn btn-success btn-lg" id="start">Start Application</a>
       <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">View on GitHub</a>
+      <a href="simulator_old/" target="_blank" class="btn btn-info btn-lg" id="start-old">Mobile Version</a>
     </p>
   </center>
   <br>
@@ -104,7 +105,7 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-  
+
   <div class="row" style="font-size: 10pt">
     <div class="col-sm-6">
       <div class="col-sm-12">
@@ -265,7 +266,7 @@
             <p class="mode-title" id="all_images">All Images</p>
             <span id="all_images_desc">
               Show the position of all images.
-              Yellow points indicate real images, orange indicate virtual images, 
+              Yellow points indicate real images, orange indicate virtual images,
               and gray (none in this picture) indicate virtual objects.
               Note that some images cannot be detected if "Ray density" is not high enough.
             </span>
@@ -288,7 +289,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
   <div style="float: right;">
     <div class="dropup">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -318,6 +319,11 @@ function setLang(lang) {
     document.getElementById('start').href = 'simulator/?' + lang;
   } else {
     document.getElementById('start').href = 'simulator/';
+  }
+  if (lang != default_lang) {
+    document.getElementById('start-old').href = 'simulator_old/?' + lang;
+  } else {
+    document.getElementById('start-old').href = 'simulator_old/';
   }
   for (item in locales[lang]) {
     if (document.getElementById(item)) {

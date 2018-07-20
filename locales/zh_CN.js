@@ -21,6 +21,9 @@ locales["zh-CN"] = {
   "github_link": {
     "message": "至GitHub查看"
   },
+  "start-old": {
+    "message": "旧版"
+  },
   "tools": {
     "message": "工具"
   },
@@ -133,6 +136,6 @@ locales["zh-CN"] = {
     "message": "语言：简体中文"
   },
   "footer_message": {
-    "message": "由 Rick Tu 开发"
+    "message": "由 <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 开发"
   }
 };

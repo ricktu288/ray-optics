@@ -1,5 +1,5 @@
 ﻿CACHE MANIFEST
-# 2016-9-4-1
+# 2018-07-20-1
 index.html
 index.js
 FileSaver.js
@@ -8,6 +8,34 @@ manifest.json
 locales/en.js
 locales/zh_TW.js
 locales/zh_CN.js
+script.js
+style.css
+ToolBarGroup.js
+ToolBarViewModel.js
+
+https://code.jquery.com/jquery-3.3.1.min.js
+https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css
+https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js
+https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js
+https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js
+
+../img/ray.png
+../img/beam.png
+../img/point_source.png
+../img/mirror.png
+../img/mirror_arc.png
+../img/ideal_curved_mirror.png
+../img/glass_halfplane.png
+../img/glass_circle.png
+../img/glass.png
+../img/ideal_lens.png
+../img/blocker.png
+../img/ruler.png
+../img/protractor.png
+../img/normal.png
+../img/extended_rays.png
+../img/all_images.png
+../img/seen_by_observer.png
 
 NETWORK:
 https://www.google-analytics.com/analytics.js

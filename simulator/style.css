@@ -1,0 +1,55 @@
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+  /* Remove the outline and shadow when button is focused. */
+  outline: none;
+  box-shadow: none;
+}
+.btn-group {
+  /* Make button group wrappable. */
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  margin-bottom: 2px;
+}
+.btn-static {
+  cursor: default !important;
+}
+.btn-group > .btn {
+  /* Make btn in btn-group won't extend the height of container. */
+  margin-bottom: 0;
+  /* Remove smooth edge */
+  border-radius: 0;
+}
+.btn-group-toggle > .btn {
+  /* Remove smooth edge */
+  border-radius: 0;
+  border: 0;
+  /* Fill to parent. */
+  height: 100%;
+}
+input[type="radio"] {
+  /* Make native radio act as the same as bootstrap's radio. */
+  display: none;
+}
+input[type="checkbox"] {
+  /* Make native checkbox act as the same as bootstrap's checkbox. */
+  display: none;
+}
+#setAttrAll {
+  display: inline;
+}
+.dropdown-toggle {
+  /* Fix dropdown-menu overlapped by checked radio */
+  /*z-index: 1060 !important;*/
+  position: absolute;
+  display: block;
+}
+span {
+  vertical-align: middle;
+}
+input[type="text"] {
+  vertical-align: middle;
+  font-size: 14px;
+}
+/* Prevent popover flickering when space is not enough */
+.popover { pointer-events: none; }
