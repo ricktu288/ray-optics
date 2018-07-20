@@ -82,6 +82,8 @@ function ToolBarViewModel() {
   ];
 }
 
+init_i18n();
+
 var toolBarViewModel = new ToolBarViewModel();
 ko.applyBindings(toolBarViewModel);
 
