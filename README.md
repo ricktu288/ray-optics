@@ -1,5 +1,6 @@
 # Ray Optics Simulation
 Simulate reflection and refraction of light.
+
 ## Features
 - Simulate various light sources: ray, beam, and point source
 - Simulate reflection in plane or arc mirror
@@ -15,10 +16,14 @@ Simulate reflection and refraction of light.
 - [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)
 - [Documentation](http://chengscott.tw/ray-optics/)
 
+## Sample files
+- [Sample Folder](/samples)
+
+Use `Open` to open the downloaded sample files to preview what cane be done using this project.
+
 # Quick Start
 
 Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
-
 
 # License
 Copyright 2018 Rick Tu, Johnson
