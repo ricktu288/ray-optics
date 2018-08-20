@@ -17,9 +17,11 @@ Simulate reflection and refraction of light.
 - [Documentation](http://chengscott.tw/ray-optics/)
 
 ## Sample files
-- [Sample Folder](/samples)
+- [Sample file folder](/samples)
 
 Use `Open` to open the downloaded sample files to preview what cane be done using this project.
+
+If you created a good sample, please submit a pull request to let others see your work!
 
 # Quick Start
 

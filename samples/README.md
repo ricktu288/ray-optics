@@ -1,6 +1,6 @@
 # Ray Optics Sample Files
 
-Open one `json` file below and Right-Click the `Raw` button and savethe file.
+Open one `json` file below and Right-Click the `Raw` button and save the file.
 
 1. [Spherical lens and mirror/球面透鏡與面鏡/球面透镜与面镜](spherical-lens-and-mirror.json)
 2. [Compound microscope/複式顯微鏡/复式显微镜](compound-microscope.json)
