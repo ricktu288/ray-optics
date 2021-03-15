@@ -362,6 +362,7 @@ var canvasPainter = {
     if (draggingPart.part == 1)
     {
       //正在拖曳第一個端點
+      //Dragging the first endpoint
       basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
       obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -372,7 +373,7 @@ var canvasPainter = {
     if (draggingPart.part == 2)
     {
       //正在拖曳第二個端點
-
+      //Dragging the second endpoint
       basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
       obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -383,6 +384,7 @@ var canvasPainter = {
     if (draggingPart.part == 0)
     {
       //正在拖曳整條線
+      //Dragging the entire line
 
       if (shift)
       {
@@ -660,20 +662,26 @@ var canvasPainter = {
   move: objTypes['lineobj'].move,
 
   //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  // When the drawing area is pressed (to determine the part of the object being pressed)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    // clicking on p1 (center)?
     if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
       draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
       return true;
     }
+    // clicking on p2 (edge)?
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
       draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    // clicking on outer edge of circle?  then drag entire circle
+    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    // clicking inside circle?  then drag entire circle
+    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
@@ -2822,6 +2830,7 @@ var canvasPainter = {
   var isConstructing = false; //正在建立新的物件
   var constructionPoint; //建立物件的起始位置
   var draggingObj = -1; //拖曳中的物件編號(-1表示沒有拖曳,-3表示整個畫面,-4表示觀察者)
+                        //Object number in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
   var positioningObj = -1; //輸入座標中的物件編號(-1表示沒有,-4表示觀察者)
   var draggingPart = {}; //拖曳的部份與滑鼠位置資訊
   var selectedObj = -1; //選取的物件編號(-1表示沒有選取)
