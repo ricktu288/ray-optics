@@ -2562,66 +2562,9 @@ var canvasPainter = {
     return {type: 'parabolicmirror', p1: mouse};
   },
 
-  //==============================建立物件過程滑鼠按下=======================================
-  c_mousedown: function(obj, mouse)
-  {
-    if (!obj.p2 && !obj.p3)
-    {
-      draw();
-      obj.p2 = mouse;
-      return;
-    }
-    if (obj.p2 && !obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
-    {
-      obj.p2 = mouse;
-      draw();
-      obj.p3 = mouse;
-      return;
-    }
-  },
-  //==============================建立物件過程滑鼠移動=======================================
-  c_mousemove: function(obj, mouse, ctrl, shift)
-  {
-    if (!obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
-    {
-      if (shift)
-      {
-        obj.p2 = snapToDirection(mouse, constructionPoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1}]);
-      }
-      else
-      {
-        obj.p2 = mouse;
-      }
-
-      obj.p1 = ctrl ? graphs.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
-
-      //obj.p2=mouse;
-      draw();
-      return;
-    }
-    if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
-    {
-      obj.p3 = mouse;
-      draw();
-      return;
-    }
-  },
-  //==============================建立物件過程滑鼠放開=======================================
-  c_mouseup: function(obj, mouse)
-  {
-    if (obj.p2 && !obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
-    {
-      obj.p3 = mouse;
-      return;
-    }
-    if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
-    {
-      obj.p3 = mouse;
-      draw();
-      isConstructing = false;
-      return;
-    }
-  },
+  c_mousedown: objTypes['arcmirror'].c_mousedown,
+  c_mousemove: objTypes['arcmirror'].c_mousemove,
+  c_mouseup: objTypes['arcmirror'].c_mouseup,
 
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
@@ -2677,20 +2620,7 @@ var canvasPainter = {
     //ctx.lineWidth=1;
   },
 
-  //=================================平移物件====================================
-  move: function(obj, diffX, diffY) {
-    //移動線段的第一點
-    obj.p1.x = obj.p1.x + diffX;
-    obj.p1.y = obj.p1.y + diffY;
-    //移動線段的第二點
-    obj.p2.x = obj.p2.x + diffX;
-    obj.p2.y = obj.p2.y + diffY;
-
-    obj.p3.x = obj.p3.x + diffX;
-    obj.p3.y = obj.p3.y + diffY;
-    return obj;
-  },
-
+  move: objTypes['arcmirror'].move,
 
   //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
@@ -2713,29 +2643,15 @@ var canvasPainter = {
       return true;
     }
 
-    var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.p1, obj.p3)), graphs.perpendicular_bisector(graphs.line(obj.p2, obj.p3)));
-    if (isFinite(center.x) && isFinite(center.y))
-    {
-      var r = graphs.length(center, obj.p3);
-      var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
-      var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
-      var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
-      var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
-      if (Math.abs(graphs.length(center, mouse_nogrid) - r) < clickExtent_line && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
+    if (!obj.tmp_points) return false;
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      if (mouseOnSegment(mouse_nogrid, seg))
       {
         //拖曳整個物件
-        draggingPart.part = 0;
-        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
-        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
-        draggingPart.snapData = {};
-        return true;
-      }
-    }
-    else
-    {
-      //圓弧三點共線,當作線段處理
-      if (mouseOnSegment(mouse_nogrid, obj))
-      {
         draggingPart.part = 0;
         draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
         draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
@@ -2746,68 +2662,7 @@ var canvasPainter = {
     return false;
   },
 
-  //=================================拖曳物件時====================================
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    var basePoint;
-    if (draggingPart.part == 1)
-    {
-      //正在拖曳第一個端點
-      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
-
-      obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-      obj.p2 = ctrl ? graphs.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
-
-      //obj.p1=mouse;
-    }
-    if (draggingPart.part == 2)
-    {
-      //正在拖曳第二個端點
-
-      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
-
-      obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-      obj.p1 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
-
-      //obj.p2=mouse;
-    }
-    if (draggingPart.part == 3)
-    {
-      //正在拖曳弧形控制點
-      obj.p3 = mouse;
-    }
-
-    if (draggingPart.part == 0)
-    {
-      //正在拖曳整個物件
-
-      if (shift)
-      {
-        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)},{x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x)}], draggingPart.snapData);
-      }
-      else
-      {
-        var mouse_snapped = mouse;
-        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
-      }
-
-      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
-      //移動線段的第一點
-      obj.p1.x = obj.p1.x - mouseDiffX;
-      obj.p1.y = obj.p1.y - mouseDiffY;
-      //移動線段的第二點
-      obj.p2.x = obj.p2.x - mouseDiffX;
-      obj.p2.y = obj.p2.y - mouseDiffY;
-
-      obj.p3.x = obj.p3.x - mouseDiffX;
-      obj.p3.y = obj.p3.y - mouseDiffY;
-
-      //更新滑鼠位置
-      draggingPart.mouse1 = mouse_snapped;
-    }
-  },
-
-
+  dragging: objTypes['arcmirror'].dragging,
 
   //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
   rayIntersection: function(obj, ray) {
