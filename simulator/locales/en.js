@@ -39,6 +39,9 @@ locales["en"] = {
   "tooltitle_idealmirror": {
     "message": "Ideal curved mirror"
   },
+  "tooltitle_sphericallens": {
+    "message": "Spherical lens"
+  },
   "toolname_refractor_": {
     "message": "Glass"
   },
@@ -53,6 +56,9 @@ locales["en"] = {
   },
   "toolname_lens": {
     "message": "Ideal lens"
+  },
+  "toolname_sphericallens": {
+    "message": "Spherical lens"
   },
   "tooltitle_lens": {
     "message": "Ideal lens"
@@ -128,6 +134,9 @@ locales["en"] = {
   },
   "tool_lens": {
     "message": "Ideal Lens"
+  },
+  "tool_sphericallens": {
+    "message": "Spherical Lens"
   },
   "tool_blackline": {
     "message": "Blocker"
@@ -284,6 +293,9 @@ locales["en"] = {
   },
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
+  },
+  "tool_sphericallens_popover": {
+    "message": "A spherical lens. (Drag or click to create.)"
   },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"

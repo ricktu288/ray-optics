@@ -173,6 +173,12 @@
     var ny = (l1.p1.y + l1.p2.y) * 0.5;
     return graphs.point(nx, ny);
   },
+
+  midpoint_points: function(p1, p2) {
+    var nx = (p1.x + p2.x) * 0.5;
+    var ny = (p1.y + p2.y) * 0.5;
+    return graphs.point(nx, ny);
+  },
   /**
   * 線段中垂線
   * @method perpendicular_bisector
@@ -1864,6 +1870,110 @@ var canvasPainter = {
 
   };
 
+  objTypes['sphericallens'] = {
+
+  p_name: 'Refractive index', //屬?<80>??<90><8D>稱
+  p_min: 1,
+  p_max: 3,
+  p_step: 0.01,
+
+  supportSurfaceMerging: true, //?<94>??<8F>??<95><8C>?<9D>??<9E><8D>?<90><88>
+  //======================================建?<8B>?<89>?件=========================================
+  create: function(mouse) {
+    return {type: 'sphericallens', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
+  },
+
+  c_mousedown: objTypes['refractor'].c_mousedown,
+  c_mousemove: objTypes['refractor'].c_mousemove,
+
+  c_mouseup: function(obj, mouse) {
+    objTypes['refractor'].c_mouseup(obj, mouse);
+    if (obj.path.length > 2 && obj.notDone) {
+      var p1 = obj.path[0];
+      var p2 = obj.path[1];
+      var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+      var dx = (p2.x-p1.x)/len;
+      var dy = (p2.y-p1.y)/len;
+      var dpx = dy;
+      var dpy = -dx;
+      var cx = (p1.x+p2.x)*.5;
+      var cy = (p1.y+p2.y)*.5;
+      const thick = 10;
+      // create lens
+      obj.path[0] = {x: p1.x-dpx*thick, y: p1.y-dpy*thick, arc: false};
+      obj.path[1] = {x: p1.x+dpx*thick, y: p1.y+dpy*thick, arc: false};
+      obj.path[2] = {x: cx+dpx*thick*2, y: cy+dpy*thick*2, arc: true};
+      obj.path[3] = {x: p2.x+dpx*thick, y: p2.y+dpy*thick, arc: false};
+      obj.path[4] = {x: p2.x-dpx*thick, y: p2.y-dpy*thick, arc: false};
+      obj.path[5] = {x: cx-dpx*thick*2, y: cy-dpy*thick*2, arc: true};
+      obj.notDone = false;
+      isConstructing = false;
+      draw();
+    }
+  },
+
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    var p1 = graphs.midpoint_points(obj.path[0], obj.path[1]);
+    var p2 = graphs.midpoint_points(obj.path[3], obj.path[4]);
+    var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    var dx = (p2.x-p1.x)/len;
+    var dy = (p2.y-p1.y)/len;
+    var dpx = dy;
+    var dpy = -dx;
+    var cx = (p1.x+p2.x)*.5;
+    var cy = (p1.y+p2.y)*.5;
+    var othick = Math.hypot(obj.path[0].x-p1.x, obj.path[0].y-p1.y);
+    var cthick2 = Math.hypot(obj.path[2].x-cx, obj.path[2].y-cy);
+    var cthick5 = Math.hypot(obj.path[5].x-cx, obj.path[5].y-cy);
+    var oldx, oldy;
+    if (draggingPart.part == 1) {
+      oldx = obj.path[draggingPart.index].x;
+      oldy = obj.path[draggingPart.index].y;
+    }
+
+    objTypes['refractor'].dragging(obj, mouse, draggingPart, ctrl, shift);
+    if (draggingPart.part != 1)
+      return;
+    if (draggingPart.index == 2 || draggingPart.index == 5) {
+      // keep center points on optical axis
+      var off = (mouse.x-cx)*dpx + (mouse.y-cy)*dpy;
+      obj.path[draggingPart.index] = {x: cx+dpx*off, y: cy+dpy*off, arc: true };
+    } else {
+      var thick = Math.abs(((mouse.x-cx)*dpx + (mouse.y-cy)*dpy));
+      // adjust center thickness to match so curvature is the same
+      cthick2 += thick-othick;
+      cthick5 += thick-othick;
+      var mpt = obj.path[draggingPart.index];
+      var lchange = (mpt.x-oldx)*dx + (mpt.y-oldy)*dy;
+      // adjust length
+      if (draggingPart.index < 2) {
+        p1.x += lchange*dx;
+        p1.y += lchange*dy;
+      } else {
+        p2.x += lchange*dx;
+        p2.y += lchange*dy;
+      }
+      // recreate lens
+      obj.path[0] = {x: p1.x-dpx*thick, y: p1.y-dpy*thick, arc: false};
+      obj.path[1] = {x: p1.x+dpx*thick, y: p1.y+dpy*thick, arc: false};
+      obj.path[2] = {x: cx+dpx*cthick2, y: cy+dpy*cthick2, arc: true};
+      obj.path[3] = {x: p2.x+dpx*thick, y: p2.y+dpy*thick, arc: false};
+      obj.path[4] = {x: p2.x-dpx*thick, y: p2.y-dpy*thick, arc: false};
+      obj.path[5] = {x: cx-dpx*cthick5, y: cy-dpy*cthick5, arc: true};
+    }
+  },
+
+  move: objTypes['refractor'].move,
+  draw: objTypes['refractor'].draw,
+  clicked: objTypes['refractor'].clicked,
+  rayIntersection: objTypes['refractor'].rayIntersection,
+  shot: objTypes['refractor'].shot,
+  fillGlass: objTypes['refractor'].fillGlass,
+  getShotData: objTypes['refractor'].getShotData,
+  refract: objTypes['refractor'].refract,
+
+  };
+
   //"idealmirror"(理想曲面鏡)物件
   objTypes['idealmirror'] = {
 
@@ -3013,7 +3123,7 @@ var canvasPainter = {
   var clickExtent_point_construct = 10;
   var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
   var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror'];
+  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
@@ -3039,7 +3149,11 @@ var canvasPainter = {
 
     if (document.getElementById('textarea1').value != '')
     {
-      JSONInput();
+      try {
+        JSONInput();
+      } catch (error) {
+        console.error(error);
+      }
       toolbtn_clicked('');
     }
     else
@@ -4914,6 +5028,8 @@ var canvasPainter = {
         AddingObjType = "refractor";
       else if (t == "Ideal Lens")
         AddingObjType = "lens";
+      else if (t == "Spherical Lens")
+        AddingObjType = "sphericallens";
     }
   }
 
@@ -5046,7 +5162,12 @@ var canvasPainter = {
     }
 
 
-    draw();
+    try {
+      draw();
+    } catch (error) {
+      console.error(error);
+      isDrawing = false;
+    }
   }
 
 
@@ -5211,7 +5332,12 @@ var canvasPainter = {
     //Refractor->Lens (ideal)
     document.getElementById('tool_lens').value = getMsg('tooltitle_lens');
     document.getElementById('tool_lens').dataset['n'] = getMsg('toolname_lens');
-    document.getElementById('tool_lens').dataset['p'] = getMsg('focallength');
+    document.getElementById('tool_lens').dataset['p'] = getMsg('refractiveindex');
+
+    //Refractor->Lens (real)
+    document.getElementById('tool_sphericallens').value = getMsg('tooltitle_sphericallens');
+    document.getElementById('tool_sphericallens').dataset['n'] = getMsg('toolname_sphericallens');
+    document.getElementById('tool_sphericallens').dataset['p'] = getMsg('refractiveindex');
 
     //Blocker
     document.getElementById('tool_blackline').value = getMsg('toolname_blackline');

@@ -44,6 +44,8 @@ function ToolBarViewModel() {
         new ToolBarItem("Free-shape", "tool_refractor", "glass",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Ideal Lens", "tool_lens", "ideal_lens",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Spherical Lens", "tool_sphericallens", "spherical_lens",
           ToolTypeEnum.RADIO)
       ]),
       new ToolBarItem("Blocker", "tool_blackline", "blocker",
