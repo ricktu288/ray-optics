@@ -30,6 +30,9 @@ locales["en"] = {
   "tooltitle_arcmirror": {
     "message": "Circular arc"
   },
+  "tooltitle_parabolicmirror": {
+    "message": "Parabolic"
+  },
   "toolname_idealmirror": {
     "message": "Ideal curved mirror"
   },
@@ -104,6 +107,9 @@ locales["en"] = {
   },
   "tool_arcmirror": {
     "message": "Circular Arc"
+  },
+  "tool_parabolicmirror": {
+    "message": "Parabolic"
   },
   "tool_idealmirror": {
     "message": "Ideal Curved"
@@ -260,6 +266,9 @@ locales["en"] = {
   },
   "tool_arcmirror_popover": {
     "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. First 2 points define the gap between arc's edges, the last point defines the arc's size.)"
+  },
+  "tool_parabolicmirror_popover": {
+    "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
   "tool_idealmirror_popover": {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"

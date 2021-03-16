@@ -2554,6 +2554,300 @@ var canvasPainter = {
 
   };
 
+  // parabolic mirror
+  objTypes['parabolicmirror'] = {
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'parabolicmirror', p1: mouse};
+  },
+
+  //==============================建立物件過程滑鼠按下=======================================
+  c_mousedown: function(obj, mouse)
+  {
+    if (!obj.p2 && !obj.p3)
+    {
+      draw();
+      obj.p2 = mouse;
+      return;
+    }
+    if (obj.p2 && !obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
+    {
+      obj.p2 = mouse;
+      draw();
+      obj.p3 = mouse;
+      return;
+    }
+  },
+  //==============================建立物件過程滑鼠移動=======================================
+  c_mousemove: function(obj, mouse, ctrl, shift)
+  {
+    if (!obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
+    {
+      if (shift)
+      {
+        obj.p2 = snapToDirection(mouse, constructionPoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1}]);
+      }
+      else
+      {
+        obj.p2 = mouse;
+      }
+
+      obj.p1 = ctrl ? graphs.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
+
+      //obj.p2=mouse;
+      draw();
+      return;
+    }
+    if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
+    {
+      obj.p3 = mouse;
+      draw();
+      return;
+    }
+  },
+  //==============================建立物件過程滑鼠放開=======================================
+  c_mouseup: function(obj, mouse)
+  {
+    if (obj.p2 && !obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
+    {
+      obj.p3 = mouse;
+      return;
+    }
+    if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
+    {
+      obj.p3 = mouse;
+      draw();
+      isConstructing = false;
+      return;
+    }
+  },
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+    //var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgb(255,0,255)';
+    //ctx.lineWidth=1.5;
+    if (obj.p3 && obj.p2)
+    {
+      var p12d = graphs.length(obj.p1, obj.p2);
+      // unit vector from p1 to p2
+      var dir1 = [(obj.p2.x-obj.p1.x)/p12d, (obj.p2.y-obj.p1.y)/p12d];
+      // perpendicular direction
+      var dir2 = [dir1[1], -dir1[0]];
+      // get height of (this section of) parabola
+      var height = (obj.p3.x-obj.p1.x)*dir2[0]+(obj.p3.y-obj.p1.y)*dir2[1];
+      // reposition p3 to be at vertex
+      obj.p3.x = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*height;
+      obj.p3.y = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height;
+      var x0 = p12d/2;
+      var a = height/(x0*x0); // y=ax^2
+      var i;
+      ctx.strokeStyle = 'rgb(168,168,168)';
+      ctx.beginPath();
+      obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
+      ctx.moveTo(obj.p1.x, obj.p1.y);
+      for (i = 1; i < p12d; i++) {
+        var x = i-x0;
+        var y = height-a*x*x;
+        var pt = graphs.point(obj.p1.x+dir1[0]*i+dir2[0]*y, obj.p1.y+dir1[1]*i+dir2[1]*y);
+        ctx.lineTo(pt.x, pt.y);
+        obj.tmp_points.push(pt);
+      }
+      ctx.stroke();
+      ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+      var focusx = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*(height-1/(4*a));
+      var focusy = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*(height-1/(4*a));
+      ctx.fillRect(focusx - 2, focusy - 2, 3, 3);
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+      ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+    }
+    else if (obj.p2)
+    {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+      ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+    }
+    else
+    {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+    }
+    //ctx.lineWidth=1;
+  },
+
+  //=================================平移物件====================================
+  move: function(obj, diffX, diffY) {
+    //移動線段的第一點
+    obj.p1.x = obj.p1.x + diffX;
+    obj.p1.y = obj.p1.y + diffY;
+    //移動線段的第二點
+    obj.p2.x = obj.p2.x + diffX;
+    obj.p2.y = obj.p2.y + diffY;
+
+    obj.p3.x = obj.p3.x + diffX;
+    obj.p3.y = obj.p3.y + diffY;
+    return obj;
+  },
+
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 1;
+      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      return true;
+    }
+    if (mouseOnPoint(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p2) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 2;
+      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      return true;
+    }
+    if (mouseOnPoint(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 3;
+      draggingPart.targetPoint = graphs.point(obj.p3.x, obj.p3.y);
+      return true;
+    }
+
+    var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.p1, obj.p3)), graphs.perpendicular_bisector(graphs.line(obj.p2, obj.p3)));
+    if (isFinite(center.x) && isFinite(center.y))
+    {
+      var r = graphs.length(center, obj.p3);
+      var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
+      var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
+      var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
+      var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
+      if (Math.abs(graphs.length(center, mouse_nogrid) - r) < clickExtent_line && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
+      {
+        //拖曳整個物件
+        draggingPart.part = 0;
+        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
+        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+        draggingPart.snapData = {};
+        return true;
+      }
+    }
+    else
+    {
+      //圓弧三點共線,當作線段處理
+      if (mouseOnSegment(mouse_nogrid, obj))
+      {
+        draggingPart.part = 0;
+        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
+        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+        draggingPart.snapData = {};
+        return true;
+      }
+    }
+    return false;
+  },
+
+  //=================================拖曳物件時====================================
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    var basePoint;
+    if (draggingPart.part == 1)
+    {
+      //正在拖曳第一個端點
+      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+
+      obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
+      obj.p2 = ctrl ? graphs.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
+
+      //obj.p1=mouse;
+    }
+    if (draggingPart.part == 2)
+    {
+      //正在拖曳第二個端點
+
+      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+
+      obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
+      obj.p1 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
+
+      //obj.p2=mouse;
+    }
+    if (draggingPart.part == 3)
+    {
+      //正在拖曳弧形控制點
+      obj.p3 = mouse;
+    }
+
+    if (draggingPart.part == 0)
+    {
+      //正在拖曳整個物件
+
+      if (shift)
+      {
+        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)},{x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x)}], draggingPart.snapData);
+      }
+      else
+      {
+        var mouse_snapped = mouse;
+        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
+      }
+
+      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      //移動線段的第一點
+      obj.p1.x = obj.p1.x - mouseDiffX;
+      obj.p1.y = obj.p1.y - mouseDiffY;
+      //移動線段的第二點
+      obj.p2.x = obj.p2.x - mouseDiffX;
+      obj.p2.y = obj.p2.y - mouseDiffY;
+
+      obj.p3.x = obj.p3.x - mouseDiffX;
+      obj.p3.y = obj.p3.y - mouseDiffY;
+
+      //更新滑鼠位置
+      draggingPart.mouse1 = mouse_snapped;
+    }
+  },
+
+
+
+  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
+  rayIntersection: function(obj, ray) {
+    if (!obj.p3) {return;}
+    if (!obj.tmp_points) return;
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
+        return rp_temp;
+      }
+    }
+  },
+
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, rp) {
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      if (graphs.intersection_is_on_segment(rp, seg)) {
+        var rx = ray.p1.x - rp.x;
+        var ry = ray.p1.y - rp.y;
+        var mx = seg.p2.x - seg.p1.x;
+        var my = seg.p2.y - seg.p1.y;
+        ray.p1 = rp;
+        ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+        return;
+      }
+    }
+  }
+
+
+
+
+
+  };
+
   //"ruler"物件
   objTypes['ruler'] = {
 
@@ -2864,7 +3158,7 @@ var canvasPainter = {
   var clickExtent_point_construct = 10;
   var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
   var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens'];
+  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
@@ -4629,10 +4923,17 @@ var canvasPainter = {
   };
 
 
+  // attributes starting with tmp_ are not written to output
+  function JSONreplacer(name, val) {
+    if (name.startsWith("tmp_"))
+      return undefined;
+    return val;
+  }
+
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale});
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale}, JSONreplacer);
     if (typeof(Storage) !== "undefined") {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
@@ -4744,6 +5045,8 @@ var canvasPainter = {
         AddingObjType = "mirror";
       else if (t == "Circular Arc")
         AddingObjType = "arcmirror";
+      else if (t == "Parabolic")
+        AddingObjType = "parabolicmirror";
       else if (t == "Ideal Curved")
         AddingObjType = "idealmirror";
     } else if (tool == "refractor_") {
@@ -4965,7 +5268,12 @@ var canvasPainter = {
     //if (typeof chrome != 'undefined') {
     //  return chrome.i18n.getMessage(msg);
     //} else {
-    return locales[lang][msg].message;
+    var m = locales[lang][msg];
+    if (m == null) {
+      console.log("undefined message: " + msg);
+      return msg;
+    }
+    return m.message;
     //}
   }
 
@@ -5017,6 +5325,10 @@ var canvasPainter = {
     //Mirror->Circular Arc
     document.getElementById('tool_arcmirror').value = getMsg('tooltitle_arcmirror');
     document.getElementById('tool_arcmirror').dataset['n'] = getMsg('toolname_mirror_');
+
+    //Mirror->Parabolic
+    document.getElementById('tool_parabolicmirror').value = getMsg('tooltitle_parabolicmirror');
+    document.getElementById('tool_parabolicmirror').dataset['n'] = getMsg('toolname_mirror_');
 
     //Mirror->Curve (ideal)
     document.getElementById('tool_idealmirror').value = getMsg('tooltitle_idealmirror');
