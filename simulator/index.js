@@ -1965,6 +1965,8 @@ var canvasPainter = {
 
   draw: function(obj, canvas, aboveLight) {
     objTypes['refractor'].draw(obj, canvas, aboveLight);
+    if (obj.path.length < 6)
+      return;
 
     // get radii of curvature
     var center1 = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.path[1], obj.path[2])),
