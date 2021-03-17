@@ -1963,8 +1963,51 @@ var canvasPainter = {
     }
   },
 
+  draw: function(obj, canvas, aboveLight) {
+    objTypes['refractor'].draw(obj, canvas, aboveLight);
+
+    // get radii of curvature
+    var center1 = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.path[1], obj.path[2])),
+                                            graphs.perpendicular_bisector(graphs.line(obj.path[3], obj.path[2])));
+    var r2 = graphs.length(center1, obj.path[2]);
+    var center2 = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.path[4], obj.path[5])),
+                                            graphs.perpendicular_bisector(graphs.line(obj.path[0], obj.path[5])));
+    var r1 = graphs.length(center2, obj.path[5]);
+
+    var p1 = graphs.midpoint_points(obj.path[0], obj.path[1]);
+    var p2 = graphs.midpoint_points(obj.path[3], obj.path[4]);
+    var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    var dx = (p2.x-p1.x)/len;
+    var dy = (p2.y-p1.y)/len;
+    var dpx = dy;
+    var dpy = -dx;
+    var cx = (p1.x+p2.x)*.5;
+    var cy = (p1.y+p2.y)*.5;
+    var thick = graphs.length(obj.path[2], obj.path[5]);
+
+    // correct sign
+    if (dpx*(center1.x-obj.path[2].x)+dpy*(center1.y-obj.path[2].y) < 0)
+      r2 = -r2;
+    if (dpx*(center2.x-obj.path[5].x)+dpy*(center2.y-obj.path[5].y) < 0)
+      r1 = -r1;
+
+    // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
+    // do some extra work to get an accurate focal length.  still not quite exact
+    var n = obj.p;
+    var si1 = n*r1/(n-1);
+    var power = (1-n)/r2 - n/(thick-si1);
+    var focalLength = 1/power;
+    ctx.fillStyle = 'rgb(255,0,255)';
+    ctx.fillRect(obj.path[2].x+focalLength*dpx - 2, obj.path[2].y+focalLength*dpy - 2, 3, 3);
+
+    // other side is slightly different
+    si1 = -n*r2/(n-1);
+    power = -(1-n)/r1 - n/(thick-si1);
+    focalLength = 1/power;
+    ctx.fillRect(obj.path[5].x-focalLength*dpx - 2, obj.path[5].y-focalLength*dpy - 2, 3, 3);
+  },
+
   move: objTypes['refractor'].move,
-  draw: objTypes['refractor'].draw,
   clicked: objTypes['refractor'].clicked,
   rayIntersection: objTypes['refractor'].rayIntersection,
   shot: objTypes['refractor'].shot,
