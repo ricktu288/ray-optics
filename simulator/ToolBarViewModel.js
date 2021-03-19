@@ -17,7 +17,16 @@ function ToolBarViewModel() {
       new ToolBarItem("Save", "save", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Open", "open", undefined,
-        ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      self.samples = new ToolBarItem("Samples", "samples", 4, ToolTypeEnum.RADIOLIST, [
+        new ToolBarItem("Sample 1", "sample1", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 2", "sample2", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 3", "sample3", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 4", "sample4", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 5", "sample5", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 6", "sample6", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+        new ToolBarItem("Sample 7", "sample7", undefined, ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      ])
     ]),
     self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray",
@@ -99,3 +108,4 @@ $("#help").click(function () {
   else
     $("[data-toggle=popover]").popover("disable");
 });
+

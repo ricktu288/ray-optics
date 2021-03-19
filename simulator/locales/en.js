@@ -156,6 +156,9 @@ locales["en"] = {
   "Settings: ": {
     "message": "Settings: "
   },
+  "samples": {
+    "message": "Samples"
+  },
   "mode_light": {
     "message": "Rays"
   },

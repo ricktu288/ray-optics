@@ -187,13 +187,22 @@ textarea {
         <div class="dropdown-menu" style="padding:0; margin:0; min-width:100%;">
           <div class="btn-group-vertical" style="padding:0; margin:0; width:100%" data-toggle="buttons">
             <!-- ko foreach: content -->
-            <label class="btn btn-secondary" style="margin:0"
-            data-toggle="popover" data-trigger="hover" data-html="true"
-            data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
-              <span data-bind="text: getLocaleName()"></span>
-              <input type="radio" autocomplete="off"
-              data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
-            </label>
+              <!-- ko if: img != undefined -->
+              <label class="btn btn-secondary" style="margin:0" data-toggle="popover" data-trigger="hover" data-html="true"
+              data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
+                <span data-bind="text: getLocaleName()"></span>
+                <input type="radio" autocomplete="off"
+                data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
+              </label>
+              <!-- /ko -->
+              <!-- ko if: img == undefined -->
+              <label class="btn btn-secondary" style="margin:0" data-html="true"
+              data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
+                <span data-bind="text: getLocaleName()"></span>
+                <input type="radio" autocomplete="off"
+                data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
+              </label>
+              <!-- /ko -->
             <!-- /ko -->
           </div>
         </div>

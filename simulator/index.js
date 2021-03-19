@@ -3580,9 +3580,29 @@ var canvasPainter = {
             e.preventDefault();
         }, false);
 
+
+    var i;
+    var samples = [ "porro.json" ];
+    for (i = 1; ; i++) {
+      var elt = document.getElementById("sample" + i);
+      if (!elt) break;
+      const ii = i;
+      elt.onclick = function () { openSample(samples[ii-1]); };
+    }
+
     toolbtn_clicked('laser');
   };
 
+  function openSample(name) {
+    var client = new XMLHttpRequest();
+    client.open('GET', 'samples/' + name);
+    client.onload = function() {
+      if (client.status >= 300)
+        return;
+      console.log(client.responseText);
+    }
+    client.send();
+  }
 
   //========================畫出物件=================================
 
