@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 505,
+        "y": 313,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 405,
+        "y": 313,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 360,
+          "y": 500,
+          "arc": false
+        },
+        {
+          "x": 540,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 720,
+          "y": 500,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 2.03
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 0,
+    "y": 0
+  },
+  "scale": 1
+}

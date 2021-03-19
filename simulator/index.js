@@ -3602,7 +3602,7 @@ var canvasPainter = {
 
   function openSample(name) {
     var client = new XMLHttpRequest();
-    client.open('GET', 'samples/' + name);
+    client.open('GET', '../samples/' + name);
     client.onload = function() {
       if (client.status >= 300)
         return;
