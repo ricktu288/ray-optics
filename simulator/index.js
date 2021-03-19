@@ -2746,9 +2746,11 @@ var canvasPainter = {
       obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);
       for (i = 1; i < p12d; i++) {
-        var x = i-x0;
+        // avoid using exact integers to avoid problems with detecting intersections
+        var ix = i+.001;
+        var x = ix-x0;
         var y = height-a*x*x;
-        var pt = graphs.point(obj.p1.x+dir1[0]*i+dir2[0]*y, obj.p1.y+dir1[1]*i+dir2[1]*y);
+        var pt = graphs.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
         ctx.lineTo(pt.x, pt.y);
         obj.tmp_points.push(pt);
       }
@@ -2828,6 +2830,9 @@ var canvasPainter = {
     for (i = 0; i < pts.length-1; i++) {
       var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
       var seg = graphs.segment(pts[i], pts[i+1]);
+      // need minShotLength check to handle a ray that reflects off mirror multiple times
+      if (graphs.length(ray.p1, rp_temp) < minShotLength)
+        continue;
       if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
         return rp_temp;
       }
@@ -3582,7 +3587,9 @@ var canvasPainter = {
 
 
     var i;
-    var samples = [ "porro.json" ];
+    var samples = [ "reflect.json", "internal.json", "parabolic.json", "prisms.json",
+                    "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
+                    "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json" ];
     for (i = 1; ; i++) {
       var elt = document.getElementById("sample" + i);
       if (!elt) break;
@@ -3599,7 +3606,8 @@ var canvasPainter = {
     client.onload = function() {
       if (client.status >= 300)
         return;
-      console.log(client.responseText);
+      document.getElementById('textarea1').value = client.responseText;
+      JSONInput();
     }
     client.send();
   }
