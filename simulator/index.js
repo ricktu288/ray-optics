@@ -3587,7 +3587,8 @@ var canvasPainter = {
 
 
     var i;
-    var samples = [ "reflect.json", "internal.json", "parabolic.json", "prisms.json",
+    var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json",
+		    "convex-lens.json", "concave-lens.json", "spherical-aberration.json",
                     "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
                     "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json" ];
     for (i = 1; ; i++) {
@@ -5405,7 +5406,7 @@ var canvasPainter = {
     //Refractor->Lens (ideal)
     document.getElementById('tool_lens').value = getMsg('tooltitle_lens');
     document.getElementById('tool_lens').dataset['n'] = getMsg('toolname_lens');
-    document.getElementById('tool_lens').dataset['p'] = getMsg('refractiveindex');
+    document.getElementById('tool_lens').dataset['p'] = getMsg('focallength');
 
     //Refractor->Lens (real)
     document.getElementById('tool_sphericallens').value = getMsg('tooltitle_sphericallens');
