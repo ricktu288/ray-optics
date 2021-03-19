@@ -157,7 +157,7 @@ locales["en"] = {
     "message": "Settings: "
   },
   "samples": {
-    "message": "Samples"
+    "message": "Examples"
   },
   "sample1": { "message": "Reflection and Refraction" },
   "sample2": { "message": "Internal Reflection" },
