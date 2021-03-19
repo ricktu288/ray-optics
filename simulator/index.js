@@ -1819,6 +1819,11 @@ var canvasPainter = {
     ctx.fill();
   }
 
+  // show focal length
+  var mp = graphs.midpoint(obj);
+  ctx.fillStyle = 'rgb(255,0,255)';
+  ctx.fillRect(mp.x+obj.p*per_x - 2, mp.y+obj.p*per_y - 2, 3, 3);
+  ctx.fillRect(mp.x-obj.p*per_x - 2, mp.y-obj.p*per_y - 2, 3, 3);
   },
 
 
@@ -3587,7 +3592,7 @@ var canvasPainter = {
 
 
     var i;
-    var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json",
+    var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json", "lens-images.json",
 		    "convex-lens.json", "concave-lens.json", "spherical-aberration.json",
                     "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
                     "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json" ];

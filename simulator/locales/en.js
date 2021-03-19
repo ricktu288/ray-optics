@@ -159,6 +159,19 @@ locales["en"] = {
   "samples": {
     "message": "Samples"
   },
+  "sample1": { "message": "Reflection and Refraction" },
+  "sample2": { "message": "Internal Reflection" },
+  "sample3": { "message": "Parabolic Mirror" },
+  "sample4": { "message": "Prisms" },
+  "sample5": { "message": "Lens Images" },
+  "sample6": { "message": "Convex Lens" },
+  "sample7": { "message": "Concave Lens" },
+  "sample8": { "message": "Spherical Aberration" },
+  "sample9": { "message": "Apparent Depth of an Object Underwater" },
+  "sample10": { "message": "Compound Microscope" },
+  "sample11": { "message": "Images Formed By Two Mirrors" },
+  "sample12": { "message": "Reflection and Refraction of a Single Ray" },
+  "sample13": { "message": "Spherical Lens and Mirror" },
   "mode_light": {
     "message": "Rays"
   },
