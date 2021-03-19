@@ -12,7 +12,7 @@ Simulate reflection and refraction of light.
 - Distance and angular measurement
 
 ## Links
-- [Project Page](https://ricktu288.github.io/ray-optics/)
+- [Online Application](https://www.falstad.com/ray-optics/)
 - [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)
 - [Documentation](http://chengscott.tw/ray-optics/)
 
@@ -25,7 +25,7 @@ If you created a good sample, please submit a pull request to let others see you
 
 # Quick Start
 
-Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
+Clone the repo: `git clone https://github.com/pfalstad/ray-optics.git`
 
 # License
 Copyright 2018 Rick Tu, Johnson
