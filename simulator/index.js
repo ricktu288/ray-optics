@@ -1931,13 +1931,13 @@ var canvasPainter = {
 
   objTypes['sphericallens'] = {
 
-  p_name: 'Refractive index', //屬?<80>??<90><8D>稱
+  p_name: 'Refractive index',
   p_min: 1,
   p_max: 3,
   p_step: 0.01,
 
-  supportSurfaceMerging: true, //?<94>??<8F>??<95><8C>?<9D>??<9E><8D>?<90><88>
-  //======================================建?<8B>?<89>?件=========================================
+  supportSurfaceMerging: true,
+
   create: function(mouse) {
     return {type: 'sphericallens', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
   },
