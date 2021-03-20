@@ -40,6 +40,8 @@ function ToolBarViewModel() {
         new ToolBarItem("Ideal Curved", "tool_idealmirror", "ideal_curved_mirror",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Parabolic", "tool_parabolicmirror", "mirror_parabolic",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Beam Splitter", "tool_beamsplitter", "beamsplitter",
           ToolTypeEnum.RADIO)
       ]),
       self.glasses = new ToolBarItem("Glasses", "tool_refractor_", 3, ToolTypeEnum.RADIOLIST, [

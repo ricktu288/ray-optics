@@ -1725,6 +1725,60 @@ var canvasPainter = {
 
   };
 
+  // beam splitter
+  objTypes['beamsplitter'] = {
+
+  p_name: 'Transmission Ratio',
+  p_min: 0,
+  p_max: 1,
+  p_step: .01,
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5};
+  },
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+  clicked: objTypes['lineobj'].clicked,
+  dragging: objTypes['lineobj'].dragging,
+  rayIntersection: objTypes['lineobj'].rayIntersection,
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+    //ctx.lineWidth=1.5;
+    ctx.strokeStyle = 'rgb(100,100,168)';
+    ctx.beginPath();
+    ctx.moveTo(obj.p1.x, obj.p1.y);
+    ctx.lineTo(obj.p2.x, obj.p2.y);
+    ctx.stroke();
+    //ctx.lineWidth=1;
+  },
+
+
+
+  //=============================當物件被光射到時================================
+  shot: function(mirror, ray, rayIndex, rp) {
+    //此時代表光一定有射到鏡子,只需找到交點,不需判斷是否真的射到
+    var rx = ray.p1.x - rp.x;
+    var ry = ray.p1.y - rp.y;
+    var mx = mirror.p2.x - mirror.p1.x;
+    var my = mirror.p2.y - mirror.p1.y;
+    ray.p1 = rp;
+    ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    var ray2 = graphs.ray(rp, graphs.point(rp.x-rx, rp.y-ry));
+    var transmission = mirror.p;
+    ray2.brightness = transmission*ray.brightness;
+    if (ray2.brightness > .01)
+      addRay(ray2);
+    ray.brightness *= (1-transmission);
+  }
+
+  };
+
   //"lens"(透鏡)物件
   objTypes['lens'] = {
 
@@ -3178,7 +3232,7 @@ var canvasPainter = {
   var clickExtent_point_construct = 10;
   var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
   var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror'];
+  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
@@ -5095,6 +5149,8 @@ var canvasPainter = {
         AddingObjType = "arcmirror";
       else if (t == "Parabolic")
         AddingObjType = "parabolicmirror";
+      else if (t == "Beam Splitter")
+        AddingObjType = "beamsplitter";
       else if (t == "Ideal Curved")
         AddingObjType = "idealmirror";
     } else if (tool == "refractor_") {
@@ -5389,6 +5445,11 @@ var canvasPainter = {
     document.getElementById('tool_idealmirror').value = getMsg('tooltitle_idealmirror');
     document.getElementById('tool_idealmirror').dataset['n'] = getMsg('toolname_idealmirror');
     document.getElementById('tool_idealmirror').dataset['p'] = getMsg('focallength');
+
+    //Mirror->Beam Splitter
+    document.getElementById('tool_beamsplitter').value = getMsg('tooltitle_beamsplitter');
+    document.getElementById('tool_beamsplitter').dataset['n'] = getMsg('toolname_beamsplitter');
+    document.getElementById('tool_beamsplitter').dataset['p'] = getMsg('transmissionratio');
 
     //Refractor▼
     document.getElementById('tool_refractor_').value = getMsg('toolname_refractor_') + downarraw;

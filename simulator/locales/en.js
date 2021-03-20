@@ -33,6 +33,9 @@ locales["en"] = {
   "tooltitle_parabolicmirror": {
     "message": "Parabolic"
   },
+  "tooltitle_beamsplitter": {
+    "message": "Beam Splitter"
+  },
   "toolname_idealmirror": {
     "message": "Ideal curved mirror"
   },
@@ -44,6 +47,9 @@ locales["en"] = {
   },
   "toolname_refractor_": {
     "message": "Glass"
+  },
+  "toolname_beamsplitter": {
+    "message": "Beam Splitter"
   },
   "tooltitle_halfplane": {
     "message": "Half-plane"
@@ -116,6 +122,9 @@ locales["en"] = {
   },
   "tool_parabolicmirror": {
     "message": "Parabolic"
+  },
+  "tool_beamsplitter": {
+    "message": "Beam Splitter"
   },
   "tool_idealmirror": {
     "message": "Ideal Curved"
@@ -241,6 +250,9 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index:"
   },
+  "transmissionratio": {
+    "message": "Transmission Ratio:"
+  },
   "applytoall": {
     "message": "Apply to All"
   },
@@ -294,6 +306,9 @@ locales["en"] = {
   },
   "tool_parabolicmirror_popover": {
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
+  },
+  "tool_beamsplitter_popover": {
+    "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
   "tool_idealmirror_popover": {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
