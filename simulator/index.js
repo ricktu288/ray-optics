@@ -2075,6 +2075,7 @@ var canvasPainter = {
   fillGlass: objTypes['refractor'].fillGlass,
   getShotData: objTypes['refractor'].getShotData,
   refract: objTypes['refractor'].refract,
+  getShotType: objTypes['refractor'].getShotType,
 
   };
 
