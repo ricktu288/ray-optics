@@ -211,6 +211,12 @@
   }
 };
 
+function getMouseStyle(obj, style) {
+  if (obj == mouseObj && mouseObj)
+    return 'rgb(0,255,255)'
+  return style;
+}
+
 var canvasPainter = {
   draw: function(graph, color) {
     //var ctx = canvas.getContext('2d');
@@ -558,7 +564,7 @@ var canvasPainter = {
     ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
     ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
 
-    objTypes['refractor'].fillGlass(obj.p);
+    objTypes['refractor'].fillGlass(obj.p, obj);
   }
 
   ctx.fillStyle = 'indigo';
@@ -729,7 +735,7 @@ var canvasPainter = {
   {
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p);
+    objTypes['refractor'].fillGlass(obj.p, obj);
   }
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
@@ -1002,7 +1008,7 @@ var canvasPainter = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(obj.p);
+      this.fillGlass(obj.p, obj);
     }
     ctx.lineWidth = 1;
 
@@ -1026,12 +1032,12 @@ var canvasPainter = {
     }
   },
 
-  fillGlass: function(n)
+  fillGlass: function(n, obj)
   {
     if (n >= 1)
     {
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = getMouseStyle(obj, 'white');
       //ctx.fillStyle="rgb(128,128,128)";
       //ctx.globalAlpha=1-(1/n);
       ctx.globalAlpha = Math.log(n) / Math.log(1.5) * 0.2;
@@ -1047,7 +1053,7 @@ var canvasPainter = {
     {
 
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = 'rgb(70,70,70)';
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -1658,7 +1664,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'rgb(255,0,0)';
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
   ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
   ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
   },
@@ -1698,7 +1704,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
     //ctx.lineWidth=1.5;
-    ctx.strokeStyle = 'rgb(168,168,168)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -1750,7 +1756,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
     //ctx.lineWidth=1.5;
-    ctx.strokeStyle = 'rgb(100,100,168)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -1816,7 +1822,7 @@ var canvasPainter = {
   var center_size = 2;
 
   //畫線
-  ctx.strokeStyle = 'rgb(128,128,128)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
   ctx.globalAlpha = 1 / ((Math.abs(obj.p) / 100) + 1);
   //ctx.globalAlpha=0.3;
   ctx.lineWidth = 4;
@@ -2052,20 +2058,22 @@ var canvasPainter = {
     if (dpx*(center2.x-obj.path[5].x)+dpy*(center2.y-obj.path[5].y) < 0)
       r1 = -r1;
 
-    // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
-    // do some extra work to get an accurate focal length.  still not quite exact
-    var n = obj.p;
-    var si1 = n*r1/(n-1);
-    var power = (1-n)/r2 - n/(thick-si1);
-    var focalLength = 1/power;
-    ctx.fillStyle = 'rgb(255,0,255)';
-    ctx.fillRect(obj.path[2].x+focalLength*dpx - 2, obj.path[2].y+focalLength*dpy - 2, 3, 3);
+    if (obj == mouseObj) {
+      // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
+      // do some extra work to get an accurate focal length.  still not quite exact
+      var n = obj.p;
+      var si1 = n*r1/(n-1);
+      var power = (1-n)/r2 - n/(thick-si1);
+      var focalLength = 1/power;
+      ctx.fillStyle = 'rgb(255,0,255)';
+      ctx.fillRect(obj.path[2].x+focalLength*dpx - 2, obj.path[2].y+focalLength*dpy - 2, 3, 3);
 
-    // other side is slightly different
-    si1 = -n*r2/(n-1);
-    power = -(1-n)/r1 - n/(thick-si1);
-    focalLength = 1/power;
-    ctx.fillRect(obj.path[5].x-focalLength*dpx - 2, obj.path[5].y-focalLength*dpy - 2, 3, 3);
+      // other side is slightly different
+      si1 = -n*r2/(n-1);
+      power = -(1-n)/r1 - n/(thick-si1);
+      focalLength = 1/power;
+      ctx.fillRect(obj.path[5].x-focalLength*dpx - 2, obj.path[5].y-focalLength*dpy - 2, 3, 3);
+    }
   },
 
   move: objTypes['refractor'].move,
@@ -2116,7 +2124,7 @@ var canvasPainter = {
   var center_size = 1;
 
   //畫線
-  ctx.strokeStyle = 'rgb(168,168,168)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
   //ctx.globalAlpha=1/((Math.abs(obj.p)/100)+1);
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
@@ -2257,7 +2265,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.strokeStyle = 'rgb(70,35,10)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,35,10)');
   ctx.lineWidth = 3;
   ctx.lineCap = 'butt';
   ctx.beginPath();
@@ -2310,7 +2318,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'rgb(0,255,0)';
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(0,128,0)');
   ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
 
   },
@@ -2401,7 +2409,7 @@ var canvasPainter = {
   draw: function(obj, canvas) {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = 'rgb(0,255,0)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,128,0)');
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
     ctx.beginPath();
@@ -2534,7 +2542,7 @@ var canvasPainter = {
         var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
         var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
         var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
-        ctx.strokeStyle = 'rgb(168,168,168)';
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
@@ -2801,7 +2809,7 @@ var canvasPainter = {
       var x0 = p12d/2;
       var a = height/(x0*x0); // y=ax^2
       var i;
-      ctx.strokeStyle = 'rgb(168,168,168)';
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
       ctx.beginPath();
       obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -2816,9 +2824,11 @@ var canvasPainter = {
       }
       ctx.stroke();
       ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
-      var focusx = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*(height-1/(4*a));
-      var focusy = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*(height-1/(4*a));
-      ctx.fillRect(focusx - 2, focusy - 2, 3, 3);
+      if (obj == mouseObj) {
+        var focusx = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*(height-1/(4*a));
+        var focusy = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*(height-1/(4*a));
+        ctx.fillRect(focusx - 2, focusy - 2, 3, 3);
+      }
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
       ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
@@ -2960,7 +2970,7 @@ var canvasPainter = {
   //var scale_len_long=20;
 
 
-  ctx.strokeStyle = 'rgb(128,128,128)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
   //ctx.font="bold 14px Arial";
   ctx.font = '14px Arial';
   ctx.fillStyle = 'rgb(128,128,128)';
@@ -3107,7 +3117,7 @@ var canvasPainter = {
     var scale_len_mid = 15;
     var scale_len_long = 20;
 
-    ctx.strokeStyle = 'rgb(128,128,128)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
     ctx.font = 'bold 14px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';
 
@@ -3203,6 +3213,8 @@ var canvasPainter = {
   var positioningObj = -1; //輸入座標中的物件編號(-1表示沒有,-4表示觀察者)
   var draggingPart = {}; //拖曳的部份與滑鼠位置資訊
   var selectedObj = -1; //選取的物件編號(-1表示沒有選取)
+  var mouseObj = -1;
+  var mousePart = {};
   var AddingObjType = ''; //拖曳空白處新增物件的類型
   var waitingRays = []; //待處理光線
   var waitingRayCount = 0; //待處理光線數量
@@ -4404,6 +4416,9 @@ var canvasPainter = {
 
   if (isConstructing)
   {
+    // highlight object being constructed
+    mouseObj = objs[objs.length-1];
+
     //若有一個物件正在被建立,則將動作直接傳給它
     objTypes[objs[objs.length - 1].type].c_mousemove(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
   }
@@ -4488,6 +4503,21 @@ var canvasPainter = {
       origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
       origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
       draw();
+    }
+
+    if (draggingObj == -1) {
+      // highlight object under mouse cursor
+      var oldMouseObj = mouseObj;
+      mouseObj = null;
+      for (var i = 0; i < objs.length; i++) {
+        if (typeof objs[i] != 'undefined') {
+          mousePart_ = {};
+          if (objTypes[objs[i].type].clicked(objs[i], mouse, mouse, mousePart_))
+            mouseObj = objs[i];
+        }
+      }
+      if (oldMouseObj != mouseObj)
+        draw();
     }
   }
   }
