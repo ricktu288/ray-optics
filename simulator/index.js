@@ -4275,9 +4275,7 @@ var canvasPainter = {
   }
   else
   {
-
-
-    //var returndata;
+    // lockobjs prevents selection, but alt overrides it
     if ((!(document.getElementById('lockobjs').checked) != (e.altKey && AddingObjType != '')) && !(e.which == 3))
     {
       //搜尋每個物件,尋找滑鼠按到的物件
@@ -4505,7 +4503,7 @@ var canvasPainter = {
       draw();
     }
 
-    if (draggingObj == -1) {
+    if (draggingObj == -1 && !document.getElementById('lockobjs').checked) {
       // highlight object under mouse cursor
       var oldMouseObj = mouseObj;
       mouseObj = null;
