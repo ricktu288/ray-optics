@@ -2282,6 +2282,85 @@ var canvasPainter = {
 
   };
 
+  //"text"
+  objTypes['text'] = {
+
+  p_name: 'Text',
+  p_type: 'string',
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here'};
+  },
+
+  //==============================建立物件過程滑鼠按下=======================================
+  c_mousedown: function(obj, mouse)
+  {
+    draw();
+  },
+  //==============================建立物件過程滑鼠移動=======================================
+  c_mousemove: function(obj, mouse, ctrl, shift)
+  {
+    obj.x=mouse.x;
+    obj.y=mouse.y;
+    draw();
+  },
+  //==============================建立物件過程滑鼠放開=======================================
+  c_mouseup: function(obj, mouse)
+  {
+    isConstructing = false;
+  },
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+  ctx.fillStyle = getMouseStyle(obj, 'white');
+  ctx.font = '24px serif';
+  ctx.fillText(obj.p, obj.x, obj.y);
+  obj.tmp_width = ctx.measureText(obj.p).width;
+  },
+
+  //=================================平移物件====================================
+  move: function(obj, diffX, diffY) {
+    obj.x = obj.x + diffX;
+    obj.y = obj.y + diffY;
+    return obj;
+  },
+
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    
+    console.log("nogrid " + mouse_nogrid.x + " "+ mouse_nogrid.y + " " + obj.x + " " + obj.y + " " + (obj.x + obj.tmp_width));
+    if (mouse_nogrid.x >= obj.x && mouse_nogrid.x <= obj.x+obj.tmp_width &&
+        mouse_nogrid.y <= obj.y && mouse_nogrid.y >= obj.y-24) {
+      draggingPart.part = 0;
+      draggingPart.mouse0 = graphs.point(mouse_nogrid.x, mouse_nogrid.y);
+      draggingPart.targetPoint = graphs.point(obj.x, obj.y);
+      draggingPart.snapData = {};
+      return true;
+    }
+    return false;
+  },
+
+  //=================================拖曳物件時====================================
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    if (shift)
+    {
+      var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+    }
+    else
+    {
+      var mouse_snapped = mouse;
+      draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
+    }
+
+    obj.x = mouse_snapped.x + draggingPart.targetPoint.x - draggingPart.mouse0.x;
+    obj.y = mouse_snapped.y + draggingPart.targetPoint.y - draggingPart.mouse0.y;
+    return {obj: obj};
+  },
+
+  };
+
   //"radiant"物件
   objTypes['radiant'] = {
 
@@ -3243,7 +3322,7 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
+  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'text', ''];
   var tools_withList = ['mirror_', 'refractor_'];
   var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
@@ -3512,13 +3591,13 @@ var canvasPainter = {
 
     document.getElementById('objAttr_range').ontouchend = function()
     {
-      setAttr(document.getElementById('objAttr_range').value * 1);
+      setAttr(document.getElementById('objAttr_range').value);
       createUndoPoint();
     };
     cancelMousedownEvent('objAttr_range');
     document.getElementById('objAttr_text').onchange = function()
     {
-      setAttr(document.getElementById('objAttr_text').value * 1);
+      setAttr(document.getElementById('objAttr_text').value);
     };
     cancelMousedownEvent('objAttr_text');
     document.getElementById('objAttr_text').onkeydown = function(e)
@@ -3532,7 +3611,7 @@ var canvasPainter = {
     };
     document.getElementById('setAttrAll').onchange = function()
     {
-      setAttr(document.getElementById('objAttr_text').value * 1);
+      setAttr(document.getElementById('objAttr_text').value);
       createUndoPoint();
     };
     cancelMousedownEvent('setAttrAll');
@@ -4689,25 +4768,38 @@ var canvasPainter = {
       var p_temp = objs[index].p;
       //document.getElementById('p_name').innerHTML=objTypes[objs[index].type].p_name;
       document.getElementById('p_name').innerHTML = document.getElementById('tool_' + objs[index].type).dataset['p'];
-      document.getElementById('objAttr_range').min = objTypes[objs[index].type].p_min;
-      document.getElementById('objAttr_range').max = objTypes[objs[index].type].p_max;
-      document.getElementById('objAttr_range').step = objTypes[objs[index].type].p_step;
-      document.getElementById('objAttr_range').value = p_temp;
+      var type = objTypes[objs[index].type].p_type;
+      if (type == 'string') {
+        document.getElementById('objAttr_range').style.display = 'none';
+        document.getElementById('objAttr_text').style.width = '200px';
+      } else {
+        document.getElementById('objAttr_range').style.display = '';
+        document.getElementById('objAttr_range').min = objTypes[objs[index].type].p_min;
+        document.getElementById('objAttr_range').max = objTypes[objs[index].type].p_max;
+        document.getElementById('objAttr_range').step = objTypes[objs[index].type].p_step;
+        document.getElementById('objAttr_range').value = p_temp;
+        document.getElementById('objAttr_text').style.width = '40px';
+      }
       document.getElementById('objAttr_text').value = p_temp;
       objs[index].p = p_temp;
-      for (var i = 0; i < objs.length; i++)
-      {
-        if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
+      if (type != 'string') {
+        for (var i = 0; i < objs.length; i++)
         {
-          //若有另一個相同type的物件,則顯示"套用全部"選項
-          document.getElementById('setAttrAll_box').style.display = '';
-          //document.getElementById('setAttrAll').checked=false;
-          break;
+          if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
+          {
+            //若有另一個相同type的物件,則顯示"套用全部"選項
+            document.getElementById('setAttrAll_box').style.display = '';
+            //document.getElementById('setAttrAll').checked=false;
+            break;
+          }
+          if (i == objs.length - 1)
+          {
+            document.getElementById('setAttrAll_box').style.display = 'none';
+          }
         }
-        if (i == objs.length - 1)
-        {
-          document.getElementById('setAttrAll_box').style.display = 'none';
-        }
+      } else {
+        document.getElementById('setAttrAll_box').style.display = 'none';
+        document.getElementById('setAttrAll').checked=false;
       }
     }
     else
@@ -4728,9 +4820,13 @@ var canvasPainter = {
   function setAttr(value)
   {
     //alert(value)
+    var type = objTypes[objs[selectedObj].type].p_type;
+    if (type != 'string') {
+      value *= 1;
+      document.getElementById('objAttr_range').value = value;
+    }
     objs[selectedObj].p = value;
     document.getElementById('objAttr_text').value = value;
-    document.getElementById('objAttr_range').value = value;
     if (document.getElementById('setAttrAll').checked)
     {
       for (var i = 0; i < objs.length; i++)
@@ -5519,6 +5615,11 @@ var canvasPainter = {
     //Protractor
     document.getElementById('tool_protractor').value = getMsg('toolname_protractor');
     document.getElementById('tool_protractor').dataset['n'] = getMsg('toolname_protractor');
+
+    //Text
+    document.getElementById('tool_text').value = getMsg('toolname_text');
+    document.getElementById('tool_text').dataset['n'] = getMsg('toolname_text');
+    document.getElementById('tool_text').dataset['p'] = '';
 
     //Move view
     document.getElementById('tool_').value = getMsg('toolname_');

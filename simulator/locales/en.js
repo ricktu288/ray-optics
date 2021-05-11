@@ -78,6 +78,9 @@ locales["en"] = {
   "toolname_protractor": {
     "message": "Protractor"
   },
+  "toolname_text": {
+    "message": "Text"
+  },
   "toolname_": {
     "message": "Move view"
   },
@@ -155,6 +158,9 @@ locales["en"] = {
   },
   "tool_protractor": {
     "message": "Protractor"
+  },
+  "tool_text": {
+    "message": "Text"
   },
   "tool_": {
     "message": "Move view"
@@ -336,6 +342,9 @@ locales["en"] = {
   },
   "tool_protractor_popover": {
     "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+  },
+  "tool_text_popover": {
+    "message": "A text label."
   },
   "tool__popover": {
     "message": "Drag to move view. (Mouse right button drag has the same function.)"
