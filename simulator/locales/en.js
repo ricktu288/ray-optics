@@ -182,11 +182,12 @@ locales["en"] = {
   "sample6": { "message": "Convex Lens" },
   "sample7": { "message": "Concave Lens" },
   "sample8": { "message": "Spherical Aberration" },
-  "sample9": { "message": "Apparent Depth of an Object Underwater" },
-  "sample10": { "message": "Compound Microscope" },
-  "sample11": { "message": "Images Formed By Two Mirrors" },
-  "sample12": { "message": "Reflection and Refraction of a Single Ray" },
-  "sample13": { "message": "Spherical Lens and Mirror" },
+  "sample9": { "message": "Zoom Lens" },
+  "sample10": { "message": "Apparent Depth of an Object Underwater" },
+  "sample11": { "message": "Compound Microscope" },
+  "sample12": { "message": "Images Formed By Two Mirrors" },
+  "sample13": { "message": "Reflection and Refraction of a Single Ray" },
+  "sample14": { "message": "Spherical Lens and Mirror" },
   "mode_light": {
     "message": "Rays"
   },
