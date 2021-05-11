@@ -2314,6 +2314,8 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   ctx.fillStyle = getMouseStyle(obj, 'white');
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
   ctx.font = '24px serif';
   ctx.fillText(obj.p, obj.x, obj.y);
   obj.tmp_width = ctx.measureText(obj.p).width;
@@ -2330,7 +2332,6 @@ var canvasPainter = {
   //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     
-    console.log("nogrid " + mouse_nogrid.x + " "+ mouse_nogrid.y + " " + obj.x + " " + obj.y + " " + (obj.x + obj.tmp_width));
     if (mouse_nogrid.x >= obj.x && mouse_nogrid.x <= obj.x+obj.tmp_width &&
         mouse_nogrid.y <= obj.y && mouse_nogrid.y >= obj.y-24) {
       draggingPart.part = 0;
