@@ -4377,53 +4377,16 @@ var canvasPainter = {
         }
       }
 
-      var draggingPart_ = {};
-      var click_lensq = Infinity;
-      var click_lensq_temp;
-      var targetObj_index = -1;
-      //var targetObj_index_temp;
-      var targetIsPoint = false;
-
-      //for(var i=objs.length-1;i>=0;i--)
-      for (var i = 0; i < objs.length; i++)
+      var ret = selectionSearch(mouse_nogrid);
+      if (ret.targetObj_index != -1)
         {
-        if (typeof objs[i] != 'undefined')
-          {
-            draggingPart_ = {};
-            if (objTypes[objs[i].type].clicked(objs[i], mouse_nogrid, mouse, draggingPart_))
-            {
-              //clicked()回傳true表示滑鼠按到了該物件
-
-              if (draggingPart_.targetPoint)
-              {
-                //滑鼠按到一個點
-                targetIsPoint = true; //一旦發現能夠按到點,就必須按到點
-                click_lensq_temp = graphs.length_squared(mouse_nogrid, draggingPart_.targetPoint);
-                if (click_lensq_temp <= click_lensq)
-                {
-                  targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的
-                  click_lensq = click_lensq_temp;
-                  draggingPart = draggingPart_;
-                }
-              }
-              else if (!targetIsPoint)
-              {
-                //滑鼠按到的不是點,且到目前為止未按到點
-                targetObj_index = i; //按到非點的情況下,選擇最後建立的
-                draggingPart = draggingPart_;
-              }
-
-            }
-          }
-        }
-        if (targetObj_index != -1)
-        {
-          //最後決定選擇targetObj_index
-          selectObj(targetObj_index);
-          draggingPart.originalObj = JSON.parse(JSON.stringify(objs[targetObj_index])); //暫存拖曳前的物件狀態
-          draggingPart.hasDuplicated = false;
-          draggingObj = targetObj_index;
-          return;
+        //最後決定選擇targetObj_index
+        selectObj(ret.targetObj_index);
+        draggingPart = ret.mousePart;
+        draggingPart.originalObj = JSON.parse(JSON.stringify(objs[ret.targetObj_index])); //暫存拖曳前的物件狀態
+        draggingPart.hasDuplicated = false;
+        draggingObj = ret.targetObj_index;
+        return;
         }
       }
 
@@ -4462,6 +4425,45 @@ var canvasPainter = {
       }
   }
   }
+
+  // search for best object to select at mouse position
+  function selectionSearch(mouse_nogrid) {
+    var i;
+    var mousePart_;
+    var click_lensq = Infinity;
+    var click_lensq_temp;
+    var targetObj_index = -1;
+    //var targetObj_index_temp;
+    var targetIsPoint = false;
+    var mousePart;
+
+    for (var i = 0; i < objs.length; i++) {
+      if (typeof objs[i] != 'undefined') {
+        mousePart_ = {};
+        if (objTypes[objs[i].type].clicked(objs[i], mouse_nogrid, mouse, mousePart_)) {
+          //clicked()回傳true表示滑鼠按到了該物件
+
+          if (mousePart_.targetPoint) {
+            //滑鼠按到一個點
+            targetIsPoint = true; //一旦發現能夠按到點,就必須按到點
+            var click_lensq_temp = graphs.length_squared(mouse_nogrid, mousePart_.targetPoint);
+            if (click_lensq_temp <= click_lensq) {
+              targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的
+              click_lensq = click_lensq_temp;
+              mousePart = mousePart_;
+            }
+          } else if (!targetIsPoint) {
+            //滑鼠按到的不是點,且到目前為止未按到點
+            targetObj_index = i; //按到非點的情況下,選擇最後建立的
+            mousePart = mousePart_;
+          }
+        }
+      }
+    }
+    return { mousePart: mousePart, targetObj_index: targetObj_index };
+  }
+
+
   //================================================================================================================================
   //========================================================MouseMove===============================================================
   function canvas_onmousemove(e) {
@@ -4585,17 +4587,12 @@ var canvasPainter = {
 
     if (draggingObj == -1 && !document.getElementById('lockobjs').checked) {
       // highlight object under mouse cursor
-      var oldMouseObj = mouseObj;
-      mouseObj = null;
-      for (var i = 0; i < objs.length; i++) {
-        if (typeof objs[i] != 'undefined') {
-          mousePart_ = {};
-          if (objTypes[objs[i].type].clicked(objs[i], mouse, mouse, mousePart_))
-            mouseObj = objs[i];
-        }
-      }
-      if (oldMouseObj != mouseObj)
+      var ret = selectionSearch(mouse_nogrid);
+      var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
+      if (mouseObj != newMouseObj) {
+        mouseObj = newMouseObj;
         draw();
+      }
     }
   }
   }
