@@ -1882,11 +1882,13 @@ var canvasPainter = {
     ctx.fill();
   }
 
-  // show focal length
-  var mp = graphs.midpoint(obj);
-  ctx.fillStyle = 'rgb(255,0,255)';
-  ctx.fillRect(mp.x+obj.p*per_x - 2, mp.y+obj.p*per_y - 2, 3, 3);
-  ctx.fillRect(mp.x-obj.p*per_x - 2, mp.y-obj.p*per_y - 2, 3, 3);
+  if (obj == mouseObj) {
+    // show focal length
+    var mp = graphs.midpoint(obj);
+    ctx.fillStyle = 'rgb(255,0,255)';
+    ctx.fillRect(mp.x+obj.p*per_x - 2, mp.y+obj.p*per_y - 2, 3, 3);
+    ctx.fillRect(mp.x-obj.p*per_x - 2, mp.y-obj.p*per_y - 2, 3, 3);
+  }
   },
 
 
