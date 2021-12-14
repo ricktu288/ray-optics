@@ -28,7 +28,7 @@ If you created a good sample, please submit a pull request to let others see you
 Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
 
 # License
-Copyright 2018 Rick Tu, Johnson
+Copyright 2016--2021 Yi-Ting Tu, Johnson
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
