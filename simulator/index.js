@@ -4623,7 +4623,7 @@ var canvasPainter = {
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale});
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale},null, 2);
     if (typeof(Storage) !== "undefined") {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
