@@ -84,6 +84,9 @@ locales["zh-CN"] = {
   "tool_text": {
     "message": "文字"
   }, 
+  "toolname_text": {
+    "message": "文字"
+  }, 
   "toolname_": {
     "message": "移动画面"
   },
