@@ -30,8 +30,23 @@ locales["zh-TW"] = {
   "tooltitle_arcmirror": {
     "message": "圓弧"
   },
+  "tool_parabolicmirror": {
+    "message": "拋物線"
+  },
+  "tool_beamsplitter": {
+    "message": "分光鏡"
+  },
+  "toolname_beamsplitter": {
+    "message": "分光鏡"
+  },
   "toolname_idealmirror": {
     "message": "理想曲面鏡"
+  },
+  "tooltitle_sphericallens": {
+    "message": "球面透鏡"
+  },
+  "toolname_sphericallens": {
+    "message": "球面透鏡"
   },
   "tooltitle_idealmirror": {
     "message": "理想曲面鏡"
@@ -62,6 +77,9 @@ locales["zh-TW"] = {
   },
   "toolname_protractor": {
     "message": "量角器"
+  },
+  "tool_text": {
+    "message": "文字"
   },
   "toolname_": {
     "message": "移動畫面"
@@ -141,6 +159,23 @@ locales["zh-TW"] = {
   "Settings: ": {
     "message": "設定："
   },
+  "samples": {
+    "message": "範例"
+  },
+  "sample1": { "message": "反射與折射" },
+  "sample2": { "message": "全反射" },
+  "sample3": { "message": "拋物面鏡" },
+  "sample4": { "message": "三稜鏡" },
+  "sample5": { "message": "透鏡的像" },
+  "sample6": { "message": "凸透鏡" },
+  "sample7": { "message": "凹透鏡" },
+  "sample8": { "message": "球面像差" },
+  "sample9": { "message": "變焦鏡頭" },
+  "sample10": { "message": "水中物體的視深度" },
+  "sample11": { "message": "複式顯微鏡" },
+  "sample12": { "message": "兩面鏡子成像" },
+  "sample13": { "message": "單一光線的反射與折射" },
+  "sample14": { "message": "球面透鏡與面鏡" },
   "mode_light": {
     "message": "光線"
   },
@@ -213,6 +248,9 @@ locales["zh-TW"] = {
   "refractiveindex": {
     "message": "折射率："
   },
+  "transmissionratio": {
+    "message": "透光率："
+  },
   "applytoall": {
     "message": "套用全部"
   },
@@ -267,6 +305,12 @@ locales["zh-TW"] = {
   "tool_arcmirror_popover": {
     "message": "圓弧形的鏡子，由三點決定。（拖曳或點擊以創建。前兩個點定義弧形兩邊間的空隙，第三點決定弧的大小。）"
   },
+  "tool_parabolicmirror_popover": {
+    "message": "拋物線形的鏡子，由三點決定。（拖曳或點擊以創建。）"
+  },
+  "tool_beamsplitter_popover": {
+    "message": "能穿透一個比例的光的鏡子。（拖曳或點擊以創建。）"
+  },
   "tool_idealmirror_popover": {
     "message": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距(單位為像素)。（拖曳或點擊以創建。）"
   },
@@ -282,6 +326,9 @@ locales["zh-TW"] = {
   "tool_lens_popover": {
     "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（拖曳或點擊以創建。）"
   },
+  "tool_sphericallens_popover": {
+    "message": "球面透鏡。（拖曳或點擊以創建。）"
+  },
   "tool_blackline_popover": {
     "message": "線段形狀的吸光片，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
   },
@@ -290,6 +337,9 @@ locales["zh-TW"] = {
   },
   "tool_protractor_popover": {
     "message": "指定圓心和圓周上一點作為零度位置。刻度單位為度。（拖曳或點擊以創建。）"
+  },
+  "tool_text_popover": {
+    "message": "文字標籤。"
   },
   "tool__popover": {
     "message": "拖曳以移動視窗。（滑鼠右鍵拖曳也有相同的功能）"
