@@ -177,6 +177,9 @@ locales["en"] = {
   "save": {
     "message": "Save"
   },
+  "export_svg": {
+    "message": "Export"
+  },
   "save_name": {
     "message": "Name:"
   },
@@ -245,6 +248,9 @@ locales["en"] = {
   },
   "open_popover": {
     "message": "Open an existing file. (Ctrl+O)"
+  },
+  "export_svg_popover": {
+    "message": "Export to SVG. (Experimental)"
   },
   "tool_laser_popover": {
     "message": "A single ray of light defined by two points. (Drag or Click to create. First point is the source, shooting toward the second point.)"

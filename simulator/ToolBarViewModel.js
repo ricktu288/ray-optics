@@ -17,6 +17,8 @@ function ToolBarViewModel() {
       new ToolBarItem("Save", "save", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Open", "open", undefined,
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Export", "export_svg", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
     self.tools = new ToolBarGroup("Tools: ", [

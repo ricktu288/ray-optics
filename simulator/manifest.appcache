@@ -1,8 +1,9 @@
 ﻿CACHE MANIFEST
-# 2018-07-20-3
+# 2021-12-21
 index.html
 index.js
 FileSaver.js
+canvas2svg.js
 icon128.png
 manifest.json
 locales/en.js

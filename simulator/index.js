@@ -267,7 +267,10 @@ var canvasPainter = {
   cls: function() {
     //var ctx = canvas.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (ctx.constructor != C2S) {
+        //only do this when not being exported to SVG to avoid bug
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
   }
 };
@@ -3015,6 +3018,8 @@ var canvasPainter = {
       document.getElementById('save_name').select();
     };
     cancelMousedownEvent('save');
+    document.getElementById('export_svg').onclick = exportSVG;
+    cancelMousedownEvent('export_svg');
     document.getElementById('open').onclick = function()
     {
       document.getElementById('openfile').click();
@@ -3414,7 +3419,7 @@ var canvasPainter = {
     //ctx.beginPath();
     while (leftRayCount != 0 && !forceStop)
     {
-      if (new Date() - st_time > 200)
+      if (new Date() - st_time > 200 && ctx.constructor != C2S)
       {
         //若已計算超過200ms
         //先休息10ms後再繼續(防止程式沒有回應)
@@ -4949,6 +4954,17 @@ var canvasPainter = {
       createUndoPoint();
     };
 
+  }
+  
+  function exportSVG() {
+    var ctx1 = ctx;
+    ctx = new C2S(canvas.width,canvas.height);
+    ctx.fillStyle="black";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    draw();
+    var blob = new Blob([ctx.getSerializedSvg()], {type: 'image/svg+xml'});
+        saveAs(blob,"export.svg");
+    ctx = ctx1;
   }
 
   var lang = 'en';

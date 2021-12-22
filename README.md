@@ -51,6 +51,11 @@ Ray Optics Simulation includes or depends upon the following third-party softwar
 FileSaver.js is distributed under the [MIT license](https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md).
 The source code is available at: https://github.com/eligrey/FileSaver.js
 
+### canvas2svg
+
+canvas2svg is distributed under the [MIT license](https://github.com/gliffy/canvas2svg/blob/master/LICENSE).
+The source code is available at: https://github.com/gliffy/canvas2svg
+
 ### Bootstrap
 
 Bootstrap is distributed under the [MIT license](https://raw.githubusercontent.com/twbs/bootstrap/master/LICENSE).

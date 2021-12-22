@@ -177,6 +177,9 @@ locales["zh-TW"] = {
   "save": {
     "message": "儲存"
   },
+  "export_svg": {
+    "message": "匯出"
+  },
   "save_name": {
     "message": "名稱："
   },
@@ -242,6 +245,9 @@ locales["zh-TW"] = {
   },
   "save_popover": {
     "message": "將目前畫面存檔。(Ctrl+S)"
+  },
+  "export_svg_popover": {
+    "message": "匯出為SVG。（實驗性）"
   },
   "open_popover": {
     "message": "開啟檔案。(Ctrl+O)"
