@@ -1,3 +1,8 @@
+var i;
+var sampleList = [];
+for (i = 1; i <= 13; i++)
+  sampleList.push(new ToolBarItem("Sample " + i, "sample" + i, undefined, ToolTypeEnum.BUTTON, undefined, undefined));
+
 function ToolBarViewModel() {
   var self = this;
   /**
@@ -19,7 +24,8 @@ function ToolBarViewModel() {
       new ToolBarItem("Open", "open", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Export", "export_svg", undefined,
-        ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      self.samples = new ToolBarItem("Samples", "samples", 4, ToolTypeEnum.RADIOLIST, sampleList)
     ]),
     self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray",
@@ -34,6 +40,10 @@ function ToolBarViewModel() {
         new ToolBarItem("Circular Arc", "tool_arcmirror", "mirror_arc",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Ideal Curved", "tool_idealmirror", "ideal_curved_mirror",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Parabolic", "tool_parabolicmirror", "mirror_parabolic",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Beam Splitter", "tool_beamsplitter", "beamsplitter",
           ToolTypeEnum.RADIO)
       ]),
       self.glasses = new ToolBarItem("Glasses", "tool_refractor_", 3, ToolTypeEnum.RADIOLIST, [
@@ -44,6 +54,8 @@ function ToolBarViewModel() {
         new ToolBarItem("Free-shape", "tool_refractor", "glass",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Ideal Lens", "tool_lens", "ideal_lens",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Spherical Lens", "tool_sphericallens", "spherical_lens",
           ToolTypeEnum.RADIO)
       ]),
       new ToolBarItem("Blocker", "tool_blackline", "blocker",
@@ -51,6 +63,8 @@ function ToolBarViewModel() {
       new ToolBarItem("Ruler", "tool_ruler", "ruler",
         ToolTypeEnum.RADIO),
       new ToolBarItem("Protractor", "tool_protractor", "protractor",
+        ToolTypeEnum.RADIO),
+      new ToolBarItem("Text", "tool_text", undefined,
         ToolTypeEnum.RADIO),
       new ToolBarItem("Move View", "tool_", undefined,
         ToolTypeEnum.RADIO)

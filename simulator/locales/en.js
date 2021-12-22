@@ -30,14 +30,26 @@ locales["en"] = {
   "tooltitle_arcmirror": {
     "message": "Circular arc"
   },
+  "tooltitle_parabolicmirror": {
+    "message": "Parabolic"
+  },
+  "tooltitle_beamsplitter": {
+    "message": "Beam Splitter"
+  },
   "toolname_idealmirror": {
     "message": "Ideal curved mirror"
   },
   "tooltitle_idealmirror": {
     "message": "Ideal curved mirror"
   },
+  "tooltitle_sphericallens": {
+    "message": "Spherical lens"
+  },
   "toolname_refractor_": {
     "message": "Glass"
+  },
+  "toolname_beamsplitter": {
+    "message": "Beam Splitter"
   },
   "tooltitle_halfplane": {
     "message": "Half-plane"
@@ -51,6 +63,9 @@ locales["en"] = {
   "toolname_lens": {
     "message": "Ideal lens"
   },
+  "toolname_sphericallens": {
+    "message": "Spherical lens"
+  },
   "tooltitle_lens": {
     "message": "Ideal lens"
   },
@@ -62,6 +77,9 @@ locales["en"] = {
   },
   "toolname_protractor": {
     "message": "Protractor"
+  },
+  "toolname_text": {
+    "message": "Text"
   },
   "toolname_": {
     "message": "Move view"
@@ -105,6 +123,12 @@ locales["en"] = {
   "tool_arcmirror": {
     "message": "Circular Arc"
   },
+  "tool_parabolicmirror": {
+    "message": "Parabolic"
+  },
+  "tool_beamsplitter": {
+    "message": "Beam Splitter"
+  },
   "tool_idealmirror": {
     "message": "Ideal Curved"
   },
@@ -123,6 +147,9 @@ locales["en"] = {
   "tool_lens": {
     "message": "Ideal Lens"
   },
+  "tool_sphericallens": {
+    "message": "Spherical Lens"
+  },
   "tool_blackline": {
     "message": "Blocker"
   },
@@ -131,6 +158,9 @@ locales["en"] = {
   },
   "tool_protractor": {
     "message": "Protractor"
+  },
+  "tool_text": {
+    "message": "Text"
   },
   "tool_": {
     "message": "Move view"
@@ -141,6 +171,23 @@ locales["en"] = {
   "Settings: ": {
     "message": "Settings: "
   },
+  "samples": {
+    "message": "Examples"
+  },
+  "sample1": { "message": "Reflection and Refraction" },
+  "sample2": { "message": "Internal Reflection" },
+  "sample3": { "message": "Parabolic Mirror" },
+  "sample4": { "message": "Prisms" },
+  "sample5": { "message": "Lens Images" },
+  "sample6": { "message": "Convex Lens" },
+  "sample7": { "message": "Concave Lens" },
+  "sample8": { "message": "Spherical Aberration" },
+  "sample9": { "message": "Zoom Lens" },
+  "sample10": { "message": "Apparent Depth of an Object Underwater" },
+  "sample11": { "message": "Compound Microscope" },
+  "sample12": { "message": "Images Formed By Two Mirrors" },
+  "sample13": { "message": "Reflection and Refraction of a Single Ray" },
+  "sample14": { "message": "Spherical Lens and Mirror" },
   "mode_light": {
     "message": "Rays"
   },
@@ -213,6 +260,9 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index:"
   },
+  "transmissionratio": {
+    "message": "Transmission Ratio:"
+  },
   "applytoall": {
     "message": "Apply to All"
   },
@@ -267,6 +317,12 @@ locales["en"] = {
   "tool_arcmirror_popover": {
     "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. First 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },
+  "tool_parabolicmirror_popover": {
+    "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
+  },
+  "tool_beamsplitter_popover": {
+    "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
+  },
   "tool_idealmirror_popover": {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
@@ -282,6 +338,9 @@ locales["en"] = {
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
+  "tool_sphericallens_popover": {
+    "message": "A spherical lens. (Drag or click to create.)"
+  },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
@@ -290,6 +349,9 @@ locales["en"] = {
   },
   "tool_protractor_popover": {
     "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+  },
+  "tool_text_popover": {
+    "message": "A text label."
   },
   "tool__popover": {
     "message": "Drag to move view. (Mouse right button drag has the same function.)"
