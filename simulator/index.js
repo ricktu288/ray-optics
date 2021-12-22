@@ -3775,6 +3775,7 @@ var canvasPainter = {
         return;
       document.getElementById('textarea1').value = client.responseText;
       JSONInput();
+      createUndoPoint();
     }
     client.send();
   }
