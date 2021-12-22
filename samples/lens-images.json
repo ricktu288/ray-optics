@@ -1,0 +1,95 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 169,
+        "y": 259,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 170,
+        "y": 433,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 660,
+        "y": 460,
+        "exist": true
+      },
+      "p": 199
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 520,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 660,
+        "y": 760,
+        "exist": true
+      },
+      "p": 199
+    },
+    {
+      "type": "radiant",
+      "x": 260,
+      "y": 560,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 260,
+      "y": 600,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 260,
+      "y": 640,
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 40,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 480,
+        "exist": true
+      }
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 0,
+    "y": 0
+  },
+  "scale": 1
+}

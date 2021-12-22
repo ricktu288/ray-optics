@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html manifest="manifest.appcache">
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -187,13 +187,22 @@ textarea {
         <div class="dropdown-menu" style="padding:0; margin:0; min-width:100%;">
           <div class="btn-group-vertical" style="padding:0; margin:0; width:100%" data-toggle="buttons">
             <!-- ko foreach: content -->
-            <label class="btn btn-secondary" style="margin:0"
-            data-toggle="popover" data-trigger="hover" data-html="true"
-            data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
-              <span data-bind="text: getLocaleName()"></span>
-              <input type="radio" autocomplete="off"
-              data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
-            </label>
+              <!-- ko if: img != undefined -->
+              <label class="btn btn-secondary" style="margin:0" data-toggle="popover" data-trigger="hover" data-html="true"
+              data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
+                <span data-bind="text: getLocaleName()"></span>
+                <input type="radio" autocomplete="off"
+                data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
+              </label>
+              <!-- /ko -->
+              <!-- ko if: img == undefined -->
+              <label class="btn btn-secondary" style="margin:0" data-html="true"
+              data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
+                <span data-bind="text: getLocaleName()"></span>
+                <input type="radio" autocomplete="off"
+                data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
+              </label>
+              <!-- /ko -->
             <!-- /ko -->
           </div>
         </div>
@@ -283,7 +292,8 @@ textarea {
       <input type="button" class="toolbtn" id="tool_refractor_">
       <input type="button" class="toolbtn" id="tool_blackline">
       <input type="button" class="toolbtn" id="tool_ruler">
-      <input type="button" class="toolbtn" id="tool_protractor">&nbsp;
+      <input type="button" class="toolbtn" id="tool_protractor">
+      <input type="button" class="toolbtn" id="tool_text">&nbsp;
       <input type="button" class="toolbtn" id="tool_">
     </div>
 
@@ -333,12 +343,15 @@ textarea {
   <input type="button" class="toollistbtn" id="tool_mirror"><br>
   <input type="button" class="toollistbtn" id="tool_arcmirror"><br>
   <input type="button" class="toollistbtn" id="tool_idealmirror">
+  <input type="button" class="toollistbtn" id="tool_parabolicmirror"><br>
+  <input type="button" class="toollistbtn" id="tool_beamsplitter"><br>
 </div>
 <div class="toollistbox" id="tool_refractor_list" style="position:absolute; display:none;">
   <input type="button" class="toollistbtn" id="tool_halfplane"><br>
   <input type="button" class="toollistbtn" id="tool_circlelens"><br>
   <input type="button" class="toollistbtn" id="tool_refractor"><br>
   <input type="button" class="toollistbtn" id="tool_lens">
+  <input type="button" class="toollistbtn" id="tool_sphericallens">
 </div>
 
 <!--===============座標輸入方塊==================-->

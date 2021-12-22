@@ -173,6 +173,12 @@
     var ny = (l1.p1.y + l1.p2.y) * 0.5;
     return graphs.point(nx, ny);
   },
+
+  midpoint_points: function(p1, p2) {
+    var nx = (p1.x + p2.x) * 0.5;
+    var ny = (p1.y + p2.y) * 0.5;
+    return graphs.point(nx, ny);
+  },
   /**
   * 線段中垂線
   * @method perpendicular_bisector
@@ -204,6 +210,12 @@
     return graphs.line(p1, graphs.point(p1.x + dx, p1.y + dy));
   }
 };
+
+function getMouseStyle(obj, style) {
+  if (obj == mouseObj && mouseObj)
+    return 'rgb(0,255,255)'
+  return style;
+}
 
 var canvasPainter = {
   draw: function(graph, color) {
@@ -365,6 +377,7 @@ var canvasPainter = {
     if (draggingPart.part == 1)
     {
       //正在拖曳第一個端點
+      //Dragging the first endpoint
       basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
       obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -375,7 +388,7 @@ var canvasPainter = {
     if (draggingPart.part == 2)
     {
       //正在拖曳第二個端點
-
+      //Dragging the second endpoint
       basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
       obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -386,6 +399,7 @@ var canvasPainter = {
     if (draggingPart.part == 0)
     {
       //正在拖曳整條線
+      //Dragging the entire line
 
       if (shift)
       {
@@ -553,7 +567,7 @@ var canvasPainter = {
     ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
     ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
 
-    objTypes['refractor'].fillGlass(obj.p);
+    objTypes['refractor'].fillGlass(obj.p, obj);
   }
 
   ctx.fillStyle = 'indigo';
@@ -663,20 +677,26 @@ var canvasPainter = {
   move: objTypes['lineobj'].move,
 
   //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  // When the drawing area is pressed (to determine the part of the object being pressed)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    // clicking on p1 (center)?
     if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
       draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
       return true;
     }
+    // clicking on p2 (edge)?
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
       draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    // clicking on outer edge of circle?  then drag entire circle
+    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    // clicking inside circle?  then drag entire circle
+    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
@@ -718,7 +738,7 @@ var canvasPainter = {
   {
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p);
+    objTypes['refractor'].fillGlass(obj.p, obj);
   }
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
@@ -991,36 +1011,39 @@ var canvasPainter = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(obj.p);
+      this.fillGlass(obj.p, obj);
     }
     ctx.lineWidth = 1;
 
 
-    for (var i = 0; i < obj.path.length; i++)
+    if (obj == mouseObj)
     {
-      if (typeof obj.path[i].arc != 'undefined')
+      for (var i = 0; i < obj.path.length; i++)
       {
-        if (obj.path[i].arc)
+        if (typeof obj.path[i].arc != 'undefined')
         {
-          ctx.fillStyle = 'rgb(255,0,255)';
-          //ctx.fillStyle="indigo";
-          ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
-        }
-        else
-        {
-          ctx.fillStyle = 'rgb(255,0,0)';
-          ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
+          if (obj.path[i].arc)
+          {
+            ctx.fillStyle = 'rgb(255,0,255)';
+            //ctx.fillStyle="indigo";
+            ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
+          }
+          else
+          {
+            ctx.fillStyle = 'rgb(255,0,0)';
+            ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
+          }
         }
       }
     }
   },
 
-  fillGlass: function(n)
+  fillGlass: function(n, obj)
   {
     if (n >= 1)
     {
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = getMouseStyle(obj, 'white');
       //ctx.fillStyle="rgb(128,128,128)";
       //ctx.globalAlpha=1-(1/n);
       ctx.globalAlpha = Math.log(n) / Math.log(1.5) * 0.2;
@@ -1036,7 +1059,7 @@ var canvasPainter = {
     {
 
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = 'rgb(70,70,70)';
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -1647,7 +1670,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'rgb(255,0,0)';
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
   ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
   ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
   },
@@ -1687,7 +1710,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
     //ctx.lineWidth=1.5;
-    ctx.strokeStyle = 'rgb(168,168,168)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -1711,6 +1734,60 @@ var canvasPainter = {
 
 
 
+
+  };
+
+  // beam splitter
+  objTypes['beamsplitter'] = {
+
+  p_name: 'Transmission Ratio',
+  p_min: 0,
+  p_max: 1,
+  p_step: .01,
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5};
+  },
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+  clicked: objTypes['lineobj'].clicked,
+  dragging: objTypes['lineobj'].dragging,
+  rayIntersection: objTypes['lineobj'].rayIntersection,
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+    //ctx.lineWidth=1.5;
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
+    ctx.beginPath();
+    ctx.moveTo(obj.p1.x, obj.p1.y);
+    ctx.lineTo(obj.p2.x, obj.p2.y);
+    ctx.stroke();
+    //ctx.lineWidth=1;
+  },
+
+
+
+  //=============================當物件被光射到時================================
+  shot: function(mirror, ray, rayIndex, rp) {
+    //此時代表光一定有射到鏡子,只需找到交點,不需判斷是否真的射到
+    var rx = ray.p1.x - rp.x;
+    var ry = ray.p1.y - rp.y;
+    var mx = mirror.p2.x - mirror.p1.x;
+    var my = mirror.p2.y - mirror.p1.y;
+    ray.p1 = rp;
+    ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    var ray2 = graphs.ray(rp, graphs.point(rp.x-rx, rp.y-ry));
+    var transmission = mirror.p;
+    ray2.brightness = transmission*ray.brightness;
+    if (ray2.brightness > .01)
+      addRay(ray2);
+    ray.brightness *= (1-transmission);
+  }
 
   };
 
@@ -1751,7 +1828,7 @@ var canvasPainter = {
   var center_size = 2;
 
   //畫線
-  ctx.strokeStyle = 'rgb(128,128,128)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
   ctx.globalAlpha = 1 / ((Math.abs(obj.p) / 100) + 1);
   //ctx.globalAlpha=0.3;
   ctx.lineWidth = 4;
@@ -1808,6 +1885,13 @@ var canvasPainter = {
     ctx.fill();
   }
 
+  if (obj == mouseObj) {
+    // show focal length
+    var mp = graphs.midpoint(obj);
+    ctx.fillStyle = 'rgb(255,0,255)';
+    ctx.fillRect(mp.x+obj.p*per_x - 2, mp.y+obj.p*per_y - 2, 3, 3);
+    ctx.fillRect(mp.x-obj.p*per_x - 2, mp.y-obj.p*per_y - 2, 3, 3);
+  }
   },
 
 
@@ -1859,6 +1943,158 @@ var canvasPainter = {
 
   };
 
+  objTypes['sphericallens'] = {
+
+  p_name: 'Refractive index',
+  p_min: 1,
+  p_max: 3,
+  p_step: 0.01,
+
+  supportSurfaceMerging: true,
+
+  create: function(mouse) {
+    return {type: 'sphericallens', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
+  },
+
+  c_mousedown: objTypes['refractor'].c_mousedown,
+  c_mousemove: objTypes['refractor'].c_mousemove,
+
+  c_mouseup: function(obj, mouse) {
+    objTypes['refractor'].c_mouseup(obj, mouse);
+    if (obj.path.length > 2 && obj.notDone) {
+      var p1 = obj.path[0];
+      var p2 = obj.path[1];
+      var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+      var dx = (p2.x-p1.x)/len;
+      var dy = (p2.y-p1.y)/len;
+      var dpx = dy;
+      var dpy = -dx;
+      var cx = (p1.x+p2.x)*.5;
+      var cy = (p1.y+p2.y)*.5;
+      const thick = 10;
+      // create lens
+      obj.path[0] = {x: p1.x-dpx*thick, y: p1.y-dpy*thick, arc: false};
+      obj.path[1] = {x: p1.x+dpx*thick, y: p1.y+dpy*thick, arc: false};
+      obj.path[2] = {x: cx+dpx*thick*2, y: cy+dpy*thick*2, arc: true};
+      obj.path[3] = {x: p2.x+dpx*thick, y: p2.y+dpy*thick, arc: false};
+      obj.path[4] = {x: p2.x-dpx*thick, y: p2.y-dpy*thick, arc: false};
+      obj.path[5] = {x: cx-dpx*thick*2, y: cy-dpy*thick*2, arc: true};
+      obj.notDone = false;
+      isConstructing = false;
+      draw();
+    }
+  },
+
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    var p1 = graphs.midpoint_points(obj.path[0], obj.path[1]);
+    var p2 = graphs.midpoint_points(obj.path[3], obj.path[4]);
+    var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    var dx = (p2.x-p1.x)/len;
+    var dy = (p2.y-p1.y)/len;
+    var dpx = dy;
+    var dpy = -dx;
+    var cx = (p1.x+p2.x)*.5;
+    var cy = (p1.y+p2.y)*.5;
+    var othick = Math.hypot(obj.path[0].x-p1.x, obj.path[0].y-p1.y);
+    var cthick2 = Math.hypot(obj.path[2].x-cx, obj.path[2].y-cy);
+    var cthick5 = Math.hypot(obj.path[5].x-cx, obj.path[5].y-cy);
+    var oldx, oldy;
+    if (draggingPart.part == 1) {
+      oldx = obj.path[draggingPart.index].x;
+      oldy = obj.path[draggingPart.index].y;
+    }
+
+    objTypes['refractor'].dragging(obj, mouse, draggingPart, ctrl, shift);
+    if (draggingPart.part != 1)
+      return;
+    if (draggingPart.index == 2 || draggingPart.index == 5) {
+      // keep center points on optical axis
+      var off = (mouse.x-cx)*dpx + (mouse.y-cy)*dpy;
+      obj.path[draggingPart.index] = {x: cx+dpx*off, y: cy+dpy*off, arc: true };
+    } else {
+      var thick = Math.abs(((mouse.x-cx)*dpx + (mouse.y-cy)*dpy));
+      // adjust center thickness to match so curvature is the same
+      cthick2 += thick-othick;
+      cthick5 += thick-othick;
+      var mpt = obj.path[draggingPart.index];
+      var lchange = (mpt.x-oldx)*dx + (mpt.y-oldy)*dy;
+      // adjust length
+      if (draggingPart.index < 2) {
+        p1.x += lchange*dx;
+        p1.y += lchange*dy;
+      } else {
+        p2.x += lchange*dx;
+        p2.y += lchange*dy;
+      }
+      // recreate lens
+      obj.path[0] = {x: p1.x-dpx*thick, y: p1.y-dpy*thick, arc: false};
+      obj.path[1] = {x: p1.x+dpx*thick, y: p1.y+dpy*thick, arc: false};
+      obj.path[2] = {x: cx+dpx*cthick2, y: cy+dpy*cthick2, arc: true};
+      obj.path[3] = {x: p2.x+dpx*thick, y: p2.y+dpy*thick, arc: false};
+      obj.path[4] = {x: p2.x-dpx*thick, y: p2.y-dpy*thick, arc: false};
+      obj.path[5] = {x: cx-dpx*cthick5, y: cy-dpy*cthick5, arc: true};
+    }
+  },
+
+  draw: function(obj, canvas, aboveLight) {
+    objTypes['refractor'].draw(obj, canvas, aboveLight);
+    if (obj.path.length < 6)
+      return;
+
+    // get radii of curvature
+    var center1 = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.path[1], obj.path[2])),
+                                            graphs.perpendicular_bisector(graphs.line(obj.path[3], obj.path[2])));
+    var r2 = graphs.length(center1, obj.path[2]);
+    var center2 = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.path[4], obj.path[5])),
+                                            graphs.perpendicular_bisector(graphs.line(obj.path[0], obj.path[5])));
+    var r1 = graphs.length(center2, obj.path[5]);
+
+    var p1 = graphs.midpoint_points(obj.path[0], obj.path[1]);
+    var p2 = graphs.midpoint_points(obj.path[3], obj.path[4]);
+    var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    var dx = (p2.x-p1.x)/len;
+    var dy = (p2.y-p1.y)/len;
+    var dpx = dy;
+    var dpy = -dx;
+    var cx = (p1.x+p2.x)*.5;
+    var cy = (p1.y+p2.y)*.5;
+    var thick = graphs.length(obj.path[2], obj.path[5]);
+
+    // correct sign
+    if (dpx*(center1.x-obj.path[2].x)+dpy*(center1.y-obj.path[2].y) < 0)
+      r2 = -r2;
+    if (dpx*(center2.x-obj.path[5].x)+dpy*(center2.y-obj.path[5].y) < 0)
+      r1 = -r1;
+
+    if (obj == mouseObj) {
+      // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
+      // do some extra work to get an accurate focal length.  still not quite exact
+      var n = obj.p;
+      var si1 = n*r1/(n-1);
+      var power = (1-n)/r2 - n/(thick-si1);
+      var focalLength = 1/power;
+      ctx.fillStyle = 'rgb(255,0,255)';
+      ctx.fillRect(obj.path[2].x+focalLength*dpx - 2, obj.path[2].y+focalLength*dpy - 2, 3, 3);
+
+      // other side is slightly different
+      si1 = -n*r2/(n-1);
+      power = -(1-n)/r1 - n/(thick-si1);
+      focalLength = 1/power;
+      ctx.fillRect(obj.path[5].x-focalLength*dpx - 2, obj.path[5].y-focalLength*dpy - 2, 3, 3);
+    }
+  },
+
+  move: objTypes['refractor'].move,
+  clicked: objTypes['refractor'].clicked,
+  rayIntersection: objTypes['refractor'].rayIntersection,
+  shot: objTypes['refractor'].shot,
+  fillGlass: objTypes['refractor'].fillGlass,
+  getShotData: objTypes['refractor'].getShotData,
+  refract: objTypes['refractor'].refract,
+  getShotType: objTypes['refractor'].getShotType,
+
+  };
+
   //"idealmirror"(理想曲面鏡)物件
   objTypes['idealmirror'] = {
 
@@ -1896,7 +2132,7 @@ var canvasPainter = {
   var center_size = 1;
 
   //畫線
-  ctx.strokeStyle = 'rgb(168,168,168)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
   //ctx.globalAlpha=1/((Math.abs(obj.p)/100)+1);
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
@@ -2037,7 +2273,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.strokeStyle = 'rgb(70,35,10)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,35,10)');
   ctx.lineWidth = 3;
   ctx.lineCap = 'butt';
   ctx.beginPath();
@@ -2051,6 +2287,86 @@ var canvasPainter = {
   shot: function(obj, ray, rayIndex, rp) {
     ray.exist = false;
   }
+
+  };
+
+  //"text"
+  objTypes['text'] = {
+
+  p_name: 'Text',
+  p_type: 'string',
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here'};
+  },
+
+  //==============================建立物件過程滑鼠按下=======================================
+  c_mousedown: function(obj, mouse)
+  {
+    draw();
+  },
+  //==============================建立物件過程滑鼠移動=======================================
+  c_mousemove: function(obj, mouse, ctrl, shift)
+  {
+    obj.x=mouse.x;
+    obj.y=mouse.y;
+    draw();
+  },
+  //==============================建立物件過程滑鼠放開=======================================
+  c_mouseup: function(obj, mouse)
+  {
+    isConstructing = false;
+  },
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+  ctx.fillStyle = getMouseStyle(obj, 'white');
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.font = '24px serif';
+  ctx.fillText(obj.p, obj.x, obj.y);
+  obj.tmp_width = ctx.measureText(obj.p).width;
+  },
+
+  //=================================平移物件====================================
+  move: function(obj, diffX, diffY) {
+    obj.x = obj.x + diffX;
+    obj.y = obj.y + diffY;
+    return obj;
+  },
+
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    
+    if (mouse_nogrid.x >= obj.x && mouse_nogrid.x <= obj.x+obj.tmp_width &&
+        mouse_nogrid.y <= obj.y && mouse_nogrid.y >= obj.y-24) {
+      draggingPart.part = 0;
+      draggingPart.mouse0 = graphs.point(mouse_nogrid.x, mouse_nogrid.y);
+      draggingPart.targetPoint = graphs.point(obj.x, obj.y);
+      draggingPart.snapData = {};
+      return true;
+    }
+    return false;
+  },
+
+  //=================================拖曳物件時====================================
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    if (shift)
+    {
+      var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+    }
+    else
+    {
+      var mouse_snapped = mouse;
+      draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
+    }
+
+    obj.x = mouse_snapped.x + draggingPart.targetPoint.x - draggingPart.mouse0.x;
+    obj.y = mouse_snapped.y + draggingPart.targetPoint.y - draggingPart.mouse0.y;
+    return {obj: obj};
+  },
 
   };
 
@@ -2090,7 +2406,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'rgb(0,255,0)';
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(0,128,0)');
   ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
 
   },
@@ -2181,7 +2497,7 @@ var canvasPainter = {
   draw: function(obj, canvas) {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = 'rgb(0,255,0)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,128,0)');
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
     ctx.beginPath();
@@ -2314,14 +2630,16 @@ var canvasPainter = {
         var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
         var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
         var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
-        ctx.strokeStyle = 'rgb(168,168,168)';
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
-        ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
-        ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-        ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+        if (obj == mouseObj) {
+          ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+          ctx.fillStyle = 'rgb(255,0,0)';
+          ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+          ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+        }
       }
       else
       {
@@ -2549,6 +2867,162 @@ var canvasPainter = {
 
   };
 
+  // parabolic mirror
+  objTypes['parabolicmirror'] = {
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'parabolicmirror', p1: mouse};
+  },
+
+  c_mousedown: objTypes['arcmirror'].c_mousedown,
+  c_mousemove: objTypes['arcmirror'].c_mousemove,
+  c_mouseup: objTypes['arcmirror'].c_mouseup,
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+    //var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgb(255,0,255)';
+    //ctx.lineWidth=1.5;
+    if (obj.p3 && obj.p2)
+    {
+      var p12d = graphs.length(obj.p1, obj.p2);
+      // unit vector from p1 to p2
+      var dir1 = [(obj.p2.x-obj.p1.x)/p12d, (obj.p2.y-obj.p1.y)/p12d];
+      // perpendicular direction
+      var dir2 = [dir1[1], -dir1[0]];
+      // get height of (this section of) parabola
+      var height = (obj.p3.x-obj.p1.x)*dir2[0]+(obj.p3.y-obj.p1.y)*dir2[1];
+      // reposition p3 to be at vertex
+      obj.p3.x = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*height;
+      obj.p3.y = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height;
+      var x0 = p12d/2;
+      var a = height/(x0*x0); // y=ax^2
+      var i;
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
+      ctx.beginPath();
+      obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
+      ctx.moveTo(obj.p1.x, obj.p1.y);
+      for (i = 1; i < p12d; i++) {
+        // avoid using exact integers to avoid problems with detecting intersections
+        var ix = i+.001;
+        var x = ix-x0;
+        var y = height-a*x*x;
+        var pt = graphs.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
+        ctx.lineTo(pt.x, pt.y);
+        obj.tmp_points.push(pt);
+      }
+      ctx.stroke();
+      if (obj == mouseObj) {
+        ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+        var focusx = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*(height-1/(4*a));
+        var focusy = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*(height-1/(4*a));
+        ctx.fillRect(focusx - 2, focusy - 2, 3, 3);
+        ctx.fillStyle = 'rgb(255,0,0)';
+        ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+        ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+      }
+    }
+    else if (obj.p2)
+    {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+      ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+    }
+    else
+    {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+    }
+    //ctx.lineWidth=1;
+  },
+
+  move: objTypes['arcmirror'].move,
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 1;
+      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      return true;
+    }
+    if (mouseOnPoint(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p2) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 2;
+      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      return true;
+    }
+    if (mouseOnPoint(mouse_nogrid, obj.p3))
+    {
+      draggingPart.part = 3;
+      draggingPart.targetPoint = graphs.point(obj.p3.x, obj.p3.y);
+      return true;
+    }
+
+    if (!obj.tmp_points) return false;
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      if (mouseOnSegment(mouse_nogrid, seg))
+      {
+        //拖曳整個物件
+        draggingPart.part = 0;
+        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
+        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+        draggingPart.snapData = {};
+        return true;
+      }
+    }
+    return false;
+  },
+
+  dragging: objTypes['arcmirror'].dragging,
+
+  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
+  rayIntersection: function(obj, ray) {
+    if (!obj.p3) {return;}
+    if (!obj.tmp_points) return;
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      // need minShotLength check to handle a ray that reflects off mirror multiple times
+      if (graphs.length(ray.p1, rp_temp) < minShotLength)
+        continue;
+      if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
+        return rp_temp;
+      }
+    }
+  },
+
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, rp) {
+    var i;
+    var pts = obj.tmp_points;
+    for (i = 0; i < pts.length-1; i++) {
+      var seg = graphs.segment(pts[i], pts[i+1]);
+      if (graphs.intersection_is_on_segment(rp, seg)) {
+        var rx = ray.p1.x - rp.x;
+        var ry = ray.p1.y - rp.y;
+        var mx = seg.p2.x - seg.p1.x;
+        var my = seg.p2.y - seg.p1.y;
+        ray.p1 = rp;
+        ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+        return;
+      }
+    }
+  }
+
+
+
+
+
+  };
+
   //"ruler"物件
   objTypes['ruler'] = {
 
@@ -2586,7 +3060,7 @@ var canvasPainter = {
   //var scale_len_long=20;
 
 
-  ctx.strokeStyle = 'rgb(128,128,128)';
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
   //ctx.font="bold 14px Arial";
   ctx.font = '14px Arial';
   ctx.fillStyle = 'rgb(128,128,128)';
@@ -2733,7 +3207,7 @@ var canvasPainter = {
     var scale_len_mid = 15;
     var scale_len_long = 20;
 
-    ctx.strokeStyle = 'rgb(128,128,128)';
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
     ctx.font = 'bold 14px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';
 
@@ -2825,9 +3299,12 @@ var canvasPainter = {
   var isConstructing = false; //正在建立新的物件
   var constructionPoint; //建立物件的起始位置
   var draggingObj = -1; //拖曳中的物件編號(-1表示沒有拖曳,-3表示整個畫面,-4表示觀察者)
+                        //Object number in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
   var positioningObj = -1; //輸入座標中的物件編號(-1表示沒有,-4表示觀察者)
   var draggingPart = {}; //拖曳的部份與滑鼠位置資訊
   var selectedObj = -1; //選取的物件編號(-1表示沒有選取)
+  var mouseObj = -1;
+  var mousePart = {};
   var AddingObjType = ''; //拖曳空白處新增物件的類型
   var waitingRays = []; //待處理光線
   var waitingRayCount = 0; //待處理光線數量
@@ -2856,9 +3333,9 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', ''];
+  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'text', ''];
   var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'refractor', 'halfplane', 'circlelens'];
+  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
@@ -2884,7 +3361,11 @@ var canvasPainter = {
 
     if (document.getElementById('textarea1').value != '')
     {
-      JSONInput();
+      try {
+        JSONInput();
+      } catch (error) {
+        console.error(error);
+      }
       toolbtn_clicked('');
     }
     else
@@ -3123,13 +3604,13 @@ var canvasPainter = {
 
     document.getElementById('objAttr_range').ontouchend = function()
     {
-      setAttr(document.getElementById('objAttr_range').value * 1);
+      setAttr(document.getElementById('objAttr_range').value);
       createUndoPoint();
     };
     cancelMousedownEvent('objAttr_range');
     document.getElementById('objAttr_text').onchange = function()
     {
-      setAttr(document.getElementById('objAttr_text').value * 1);
+      setAttr(document.getElementById('objAttr_text').value);
     };
     cancelMousedownEvent('objAttr_text');
     document.getElementById('objAttr_text').onkeydown = function(e)
@@ -3143,7 +3624,7 @@ var canvasPainter = {
     };
     document.getElementById('setAttrAll').onchange = function()
     {
-      setAttr(document.getElementById('objAttr_text').value * 1);
+      setAttr(document.getElementById('objAttr_text').value);
       createUndoPoint();
     };
     cancelMousedownEvent('setAttrAll');
@@ -3268,9 +3749,33 @@ var canvasPainter = {
             e.preventDefault();
         }, false);
 
+
+    var i;
+    var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json", "lens-images.json",
+		    "convex-lens.json", "concave-lens.json", "spherical-aberration.json", "zoom-lens.json",
+                    "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
+                    "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json" ];
+    for (i = 1; ; i++) {
+      var elt = document.getElementById("sample" + i);
+      if (!elt) break;
+      const ii = i;
+      elt.onclick = function () { openSample(samples[ii-1]); };
+    }
+
     toolbtn_clicked('laser');
   };
 
+  function openSample(name) {
+    var client = new XMLHttpRequest();
+    client.open('GET', '../samples/' + name);
+    client.onload = function() {
+      if (client.status >= 300)
+        return;
+      document.getElementById('textarea1').value = client.responseText;
+      JSONInput();
+    }
+    client.send();
+  }
 
   //========================畫出物件=================================
 
@@ -3862,9 +4367,7 @@ var canvasPainter = {
   }
   else
   {
-
-
-    //var returndata;
+    // lockobjs prevents selection, but alt overrides it
     if ((!(document.getElementById('lockobjs').checked) != (e.altKey && AddingObjType != '')) && !(e.which == 3))
     {
       //搜尋每個物件,尋找滑鼠按到的物件
@@ -3886,53 +4389,16 @@ var canvasPainter = {
         }
       }
 
-      var draggingPart_ = {};
-      var click_lensq = Infinity;
-      var click_lensq_temp;
-      var targetObj_index = -1;
-      //var targetObj_index_temp;
-      var targetIsPoint = false;
-
-      //for(var i=objs.length-1;i>=0;i--)
-      for (var i = 0; i < objs.length; i++)
+      var ret = selectionSearch(mouse_nogrid);
+      if (ret.targetObj_index != -1)
         {
-        if (typeof objs[i] != 'undefined')
-          {
-            draggingPart_ = {};
-            if (objTypes[objs[i].type].clicked(objs[i], mouse_nogrid, mouse, draggingPart_))
-            {
-              //clicked()回傳true表示滑鼠按到了該物件
-
-              if (draggingPart_.targetPoint)
-              {
-                //滑鼠按到一個點
-                targetIsPoint = true; //一旦發現能夠按到點,就必須按到點
-                click_lensq_temp = graphs.length_squared(mouse_nogrid, draggingPart_.targetPoint);
-                if (click_lensq_temp <= click_lensq)
-                {
-                  targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的
-                  click_lensq = click_lensq_temp;
-                  draggingPart = draggingPart_;
-                }
-              }
-              else if (!targetIsPoint)
-              {
-                //滑鼠按到的不是點,且到目前為止未按到點
-                targetObj_index = i; //按到非點的情況下,選擇最後建立的
-                draggingPart = draggingPart_;
-              }
-
-            }
-          }
-        }
-        if (targetObj_index != -1)
-        {
-          //最後決定選擇targetObj_index
-          selectObj(targetObj_index);
-          draggingPart.originalObj = JSON.parse(JSON.stringify(objs[targetObj_index])); //暫存拖曳前的物件狀態
-          draggingPart.hasDuplicated = false;
-          draggingObj = targetObj_index;
-          return;
+        //最後決定選擇targetObj_index
+        selectObj(ret.targetObj_index);
+        draggingPart = ret.mousePart;
+        draggingPart.originalObj = JSON.parse(JSON.stringify(objs[ret.targetObj_index])); //暫存拖曳前的物件狀態
+        draggingPart.hasDuplicated = false;
+        draggingObj = ret.targetObj_index;
+        return;
         }
       }
 
@@ -3971,6 +4437,45 @@ var canvasPainter = {
       }
   }
   }
+
+  // search for best object to select at mouse position
+  function selectionSearch(mouse_nogrid) {
+    var i;
+    var mousePart_;
+    var click_lensq = Infinity;
+    var click_lensq_temp;
+    var targetObj_index = -1;
+    //var targetObj_index_temp;
+    var targetIsPoint = false;
+    var mousePart;
+
+    for (var i = 0; i < objs.length; i++) {
+      if (typeof objs[i] != 'undefined') {
+        mousePart_ = {};
+        if (objTypes[objs[i].type].clicked(objs[i], mouse_nogrid, mouse, mousePart_)) {
+          //clicked()回傳true表示滑鼠按到了該物件
+
+          if (mousePart_.targetPoint) {
+            //滑鼠按到一個點
+            targetIsPoint = true; //一旦發現能夠按到點,就必須按到點
+            var click_lensq_temp = graphs.length_squared(mouse_nogrid, mousePart_.targetPoint);
+            if (click_lensq_temp <= click_lensq) {
+              targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的
+              click_lensq = click_lensq_temp;
+              mousePart = mousePart_;
+            }
+          } else if (!targetIsPoint) {
+            //滑鼠按到的不是點,且到目前為止未按到點
+            targetObj_index = i; //按到非點的情況下,選擇最後建立的
+            mousePart = mousePart_;
+          }
+        }
+      }
+    }
+    return { mousePart: mousePart, targetObj_index: targetObj_index };
+  }
+
+
   //================================================================================================================================
   //========================================================MouseMove===============================================================
   function canvas_onmousemove(e) {
@@ -4003,6 +4508,9 @@ var canvasPainter = {
 
   if (isConstructing)
   {
+    // highlight object being constructed
+    mouseObj = objs[objs.length-1];
+
     //若有一個物件正在被建立,則將動作直接傳給它
     objTypes[objs[objs.length - 1].type].c_mousemove(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
   }
@@ -4087,6 +4595,16 @@ var canvasPainter = {
       origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
       origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
       draw();
+    }
+
+    if (draggingObj == -1 && !document.getElementById('lockobjs').checked) {
+      // highlight object under mouse cursor
+      var ret = selectionSearch(mouse_nogrid);
+      var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
+      if (mouseObj != newMouseObj) {
+        mouseObj = newMouseObj;
+        draw();
+      }
     }
   }
   }
@@ -4260,25 +4778,38 @@ var canvasPainter = {
       var p_temp = objs[index].p;
       //document.getElementById('p_name').innerHTML=objTypes[objs[index].type].p_name;
       document.getElementById('p_name').innerHTML = document.getElementById('tool_' + objs[index].type).dataset['p'];
-      document.getElementById('objAttr_range').min = objTypes[objs[index].type].p_min;
-      document.getElementById('objAttr_range').max = objTypes[objs[index].type].p_max;
-      document.getElementById('objAttr_range').step = objTypes[objs[index].type].p_step;
-      document.getElementById('objAttr_range').value = p_temp;
+      var type = objTypes[objs[index].type].p_type;
+      if (type == 'string') {
+        document.getElementById('objAttr_range').style.display = 'none';
+        document.getElementById('objAttr_text').style.width = '200px';
+      } else {
+        document.getElementById('objAttr_range').style.display = '';
+        document.getElementById('objAttr_range').min = objTypes[objs[index].type].p_min;
+        document.getElementById('objAttr_range').max = objTypes[objs[index].type].p_max;
+        document.getElementById('objAttr_range').step = objTypes[objs[index].type].p_step;
+        document.getElementById('objAttr_range').value = p_temp;
+        document.getElementById('objAttr_text').style.width = '40px';
+      }
       document.getElementById('objAttr_text').value = p_temp;
       objs[index].p = p_temp;
-      for (var i = 0; i < objs.length; i++)
-      {
-        if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
+      if (type != 'string') {
+        for (var i = 0; i < objs.length; i++)
         {
-          //若有另一個相同type的物件,則顯示"套用全部"選項
-          document.getElementById('setAttrAll_box').style.display = '';
-          //document.getElementById('setAttrAll').checked=false;
-          break;
+          if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
+          {
+            //若有另一個相同type的物件,則顯示"套用全部"選項
+            document.getElementById('setAttrAll_box').style.display = '';
+            //document.getElementById('setAttrAll').checked=false;
+            break;
+          }
+          if (i == objs.length - 1)
+          {
+            document.getElementById('setAttrAll_box').style.display = 'none';
+          }
         }
-        if (i == objs.length - 1)
-        {
-          document.getElementById('setAttrAll_box').style.display = 'none';
-        }
+      } else {
+        document.getElementById('setAttrAll_box').style.display = 'none';
+        document.getElementById('setAttrAll').checked=false;
       }
     }
     else
@@ -4299,9 +4830,13 @@ var canvasPainter = {
   function setAttr(value)
   {
     //alert(value)
+    var type = objTypes[objs[selectedObj].type].p_type;
+    if (type != 'string') {
+      value *= 1;
+      document.getElementById('objAttr_range').value = value;
+    }
     objs[selectedObj].p = value;
     document.getElementById('objAttr_text').value = value;
-    document.getElementById('objAttr_range').value = value;
     if (document.getElementById('setAttrAll').checked)
     {
       for (var i = 0; i < objs.length; i++)
@@ -4625,10 +5160,17 @@ var canvasPainter = {
   };
 
 
+  // attributes starting with tmp_ are not written to output
+  function JSONreplacer(name, val) {
+    if (name.startsWith("tmp_"))
+      return undefined;
+    return val;
+  }
+
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale},null, 2);
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale}, JSONreplacer, 2);
     if (typeof(Storage) !== "undefined") {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
@@ -4740,6 +5282,10 @@ var canvasPainter = {
         AddingObjType = "mirror";
       else if (t == "Circular Arc")
         AddingObjType = "arcmirror";
+      else if (t == "Parabolic")
+        AddingObjType = "parabolicmirror";
+      else if (t == "Beam Splitter")
+        AddingObjType = "beamsplitter";
       else if (t == "Ideal Curved")
         AddingObjType = "idealmirror";
     } else if (tool == "refractor_") {
@@ -4752,6 +5298,8 @@ var canvasPainter = {
         AddingObjType = "refractor";
       else if (t == "Ideal Lens")
         AddingObjType = "lens";
+      else if (t == "Spherical Lens")
+        AddingObjType = "sphericallens";
     }
   }
 
@@ -4884,7 +5432,12 @@ var canvasPainter = {
     }
 
 
-    draw();
+    try {
+      draw();
+    } catch (error) {
+      console.error(error);
+      isDrawing = false;
+    }
   }
 
 
@@ -4972,7 +5525,12 @@ var canvasPainter = {
     //if (typeof chrome != 'undefined') {
     //  return chrome.i18n.getMessage(msg);
     //} else {
-    return locales[lang][msg].message;
+    var m = locales[lang][msg];
+    if (m == null) {
+      console.log("undefined message: " + msg);
+      return msg;
+    }
+    return m.message;
     //}
   }
 
@@ -5025,10 +5583,19 @@ var canvasPainter = {
     document.getElementById('tool_arcmirror').value = getMsg('tooltitle_arcmirror');
     document.getElementById('tool_arcmirror').dataset['n'] = getMsg('toolname_mirror_');
 
+    //Mirror->Parabolic
+    document.getElementById('tool_parabolicmirror').value = getMsg('tooltitle_parabolicmirror');
+    document.getElementById('tool_parabolicmirror').dataset['n'] = getMsg('toolname_mirror_');
+
     //Mirror->Curve (ideal)
     document.getElementById('tool_idealmirror').value = getMsg('tooltitle_idealmirror');
     document.getElementById('tool_idealmirror').dataset['n'] = getMsg('toolname_idealmirror');
     document.getElementById('tool_idealmirror').dataset['p'] = getMsg('focallength');
+
+    //Mirror->Beam Splitter
+    document.getElementById('tool_beamsplitter').value = getMsg('tooltitle_beamsplitter');
+    document.getElementById('tool_beamsplitter').dataset['n'] = getMsg('toolname_beamsplitter');
+    document.getElementById('tool_beamsplitter').dataset['p'] = getMsg('transmissionratio');
 
     //Refractor▼
     document.getElementById('tool_refractor_').value = getMsg('toolname_refractor_') + downarraw;
@@ -5053,6 +5620,11 @@ var canvasPainter = {
     document.getElementById('tool_lens').dataset['n'] = getMsg('toolname_lens');
     document.getElementById('tool_lens').dataset['p'] = getMsg('focallength');
 
+    //Refractor->Lens (real)
+    document.getElementById('tool_sphericallens').value = getMsg('tooltitle_sphericallens');
+    document.getElementById('tool_sphericallens').dataset['n'] = getMsg('toolname_sphericallens');
+    document.getElementById('tool_sphericallens').dataset['p'] = getMsg('refractiveindex');
+
     //Blocker
     document.getElementById('tool_blackline').value = getMsg('toolname_blackline');
     document.getElementById('tool_blackline').dataset['n'] = getMsg('toolname_blackline');
@@ -5064,6 +5636,11 @@ var canvasPainter = {
     //Protractor
     document.getElementById('tool_protractor').value = getMsg('toolname_protractor');
     document.getElementById('tool_protractor').dataset['n'] = getMsg('toolname_protractor');
+
+    //Text
+    document.getElementById('tool_text').value = getMsg('toolname_text');
+    document.getElementById('tool_text').dataset['n'] = getMsg('toolname_text');
+    document.getElementById('tool_text').dataset['p'] = '';
 
     //Move view
     document.getElementById('tool_').value = getMsg('toolname_');
