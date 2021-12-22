@@ -82,10 +82,10 @@ locales["zh-CN"] = {
     "message": "量角器"
   },
   "tool_power": {
-    "message": "测量"
+    "message": "探测器"
   },
   "toolname_power": {
-    "message": "测量"
+    "message": "探测器"
   }, 
   "tool_text": {
     "message": "文字"

@@ -79,10 +79,10 @@ locales["en"] = {
     "message": "Protractor"
   },
   "tool_power": {
-    "message": "Measurements"
+    "message": "Detector"
   },
   "toolname_power": {
-    "message": "Measurements"
+    "message": "Detector"
   },
   "toolname_text": {
     "message": "Text"
