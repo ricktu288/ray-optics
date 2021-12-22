@@ -1620,27 +1620,28 @@ var canvasPainter = {
 
       var R_s = Math.pow((n1 * cos1 - cos2) / (n1 * cos1 + cos2), 2);
       var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
-      var R = 0.5 * (R_s + R_p);
       //參考http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
 
       //處理反射光
       var ray2 = graphs.ray(s_point, graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
-      ray2.brightness = ray.brightness * R;
+      ray2.brightness_s = ray.brightness_s * R_s;
+      ray2.brightness_p = ray.brightness_p * R_p;
       ray2.gap = ray.gap;
-      if (ray2.brightness > 0.01)
+      if (ray2.brightness_s + ray2.brightness_p > 0.01)
       {
         //將反射光新增至等待區
         addRay(ray2);
       }
       else 
       {
-        totalTruncation += ray2.brightness;
+        totalTruncation += ray2.brightness_s + ray2.brightness_p;
         if (!ray.gap)
         {
-          var amp = Math.floor(0.01 / ray2.brightness) + 1;
+          var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
           if (rayIndex % amp == 0)
           {
-            ray2.brightness = ray2.brightness * amp;
+            ray2.brightness_s = ray2.brightness_s * amp;
+            ray2.brightness_p = ray2.brightness_p * amp;
             addRay(ray2);
           }
         }
@@ -1649,7 +1650,8 @@ var canvasPainter = {
       //處理折射光
       ray.p1 = s_point;
       ray.p2 = graphs.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
-      ray.brightness = ray.brightness * (1 - R);
+      ray.brightness_s = ray.brightness_s * (1 - R_s);
+      ray.brightness_p = ray.brightness_p * (1 - R_p);
 
     }
   }
@@ -1685,7 +1687,8 @@ var canvasPainter = {
   //=================================射出光線=============================================
   shoot: function(obj) {
   var ray1 = graphs.ray(obj.p1, obj.p2);
-  ray1.brightness = 1;
+  ray1.brightness_s = 0.5;
+  ray1.brightness_p = 0.5;
   ray1.gap = true;
   ray1.isNew = true;
   addRay(ray1);
@@ -1789,10 +1792,15 @@ var canvasPainter = {
     ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     var ray2 = graphs.ray(rp, graphs.point(rp.x-rx, rp.y-ry));
     var transmission = mirror.p;
-    ray2.brightness = transmission*ray.brightness;
-    if (ray2.brightness > .01)
+    ray2.brightness_s = transmission*ray.brightness_s;
+    ray2.brightness_p = transmission*ray.brightness_p;
+    if (ray2.brightness_s + ray2.brightness_p > .01) {
       addRay(ray2);
-    ray.brightness *= (1-transmission);
+    } else {
+        totalTruncation += ray2.brightness_s + ray2.brightness_p;
+    }
+    ray.brightness_s *= (1-transmission);
+    ray.brightness_p *= (1-transmission);
   }
 
   };
@@ -2463,7 +2471,8 @@ var canvasPainter = {
   for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s)
   {
     var ray1 = graphs.ray(graphs.point(obj.x, obj.y), graphs.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));
-    ray1.brightness = Math.min(obj.p / getRayDensity(), 1);
+    ray1.brightness_s = Math.min(obj.p / getRayDensity(), 1) * 0.5;
+    ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
     if (i == i0)
     {
@@ -2536,7 +2545,8 @@ var canvasPainter = {
     for (var i = 0.5; i <= n; i++)
     {
       var ray1 = graphs.ray(graphs.point(obj.p1.x + i * stepX, obj.p1.y + i * stepY), graphs.point(rayp2_x + i * stepX, rayp2_y + i * stepY));
-      ray1.brightness = Math.min(obj.p / getRayDensity(), 1);
+      ray1.brightness_s = Math.min(obj.p / getRayDensity(), 1) * 0.5;
+      ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
       ray1.isNew = true;
       if (i == 0)
       {
@@ -3372,9 +3382,9 @@ var canvasPainter = {
     ray.p2 = graphs.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
     ray.p1 = graphs.point(shootPoint.x, shootPoint.y);
 
-    obj.power += Math.sign(rcrosss) * ray.brightness;
-    obj.normal += Math.sign(rcrosss) * sint * ray.brightness;
-    obj.shear += Math.sign(rcrosss) * Math.sqrt(1 - sint * sint) * ray.brightness;
+    obj.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
+    obj.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
+    obj.shear += Math.sign(rcrosss) * Math.sqrt(1 - sint * sint) * (ray.brightness_s + ray.brightness_p);
   }
 
 
@@ -4102,7 +4112,7 @@ var canvasPainter = {
               }
             }
           }
-          ctx.globalAlpha = alpha0 * waitingRays[j].brightness;
+          ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
           //↓若光線沒有射到任何物件
           if (s_lensq == Infinity)
           {
@@ -4179,7 +4189,7 @@ var canvasPainter = {
                   if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
                   {
 
-                    ctx.globalAlpha = alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5;
+                    ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
                     if (s_point)
                     {
                       rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
@@ -4238,7 +4248,7 @@ var canvasPainter = {
               observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
               if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
               {
-                ctx.globalAlpha = alpha0 * (waitingRays[j].brightness + last_ray.brightness) * 0.5;
+                ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
 
                 if (s_point)
                 {
