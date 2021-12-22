@@ -291,7 +291,7 @@ locales["zh-TW"] = {
     "message": "將目前畫面存檔。(Ctrl+S)"
   },
   "export_svg_popover": {
-    "message": "匯出為SVG。（實驗性）"
+    "message": "匯出為SVG。"
   },
   "open_popover": {
     "message": "開啟檔案。(Ctrl+O)"

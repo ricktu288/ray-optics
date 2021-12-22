@@ -300,7 +300,7 @@ locales["en"] = {
     "message": "Open an existing file. (Ctrl+O)"
   },
   "export_svg_popover": {
-    "message": "Export to SVG. (Experimental)"
+    "message": "Export to SVG."
   },
   "tool_laser_popover": {
     "message": "A single ray of light defined by two points. (Drag or Click to create. First point is the source, shooting toward the second point.)"

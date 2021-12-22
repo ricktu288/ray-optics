@@ -278,12 +278,14 @@ var canvasPainter = {
   },
   cls: function() {
     //var ctx = canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
     if (ctx.constructor != C2S) {
         //only do this when not being exported to SVG to avoid bug
+        ctx.setTransform(1,0,0,1,0,0);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
+    } else {
+        ctx.translate(origin.x / scale, origin.y / scale);
     }
-    ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
   }
 };
 
@@ -3123,7 +3125,7 @@ var canvasPainter = {
       x = obj.p1.x + i * par_x + scale_direction * scale_len_long * per_x;
       y = obj.p1.y + i * par_y + scale_direction * scale_len_long * per_y;
       ctx.lineTo(x, y);
-      //ctx.stroke();
+      if (ctx.constructor == C2S) ctx.stroke();
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(text_ang);
@@ -3243,7 +3245,7 @@ var canvasPainter = {
 
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, r, 0, Math.PI * 2, false);
-    //ctx.stroke();
+      //ctx.stroke();
 
     var ang, x, y;
     for (var i = 0; i < 360; i += scale_step)
@@ -3255,7 +3257,7 @@ var canvasPainter = {
         x = obj.p1.x + (r - scale_len_long) * Math.cos(ang);
         y = obj.p1.y + (r - scale_len_long) * Math.sin(ang);
         ctx.lineTo(x, y);
-        //ctx.stroke();
+        if (ctx.constructor == C2S) ctx.stroke();
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(ang + Math.PI * 0.5);
@@ -3818,7 +3820,7 @@ var canvasPainter = {
 
     ctx.save();
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
-    if (document.getElementById('showgrid').checked)
+    if (document.getElementById('showgrid').checked && ctx.constructor != C2S)
     {
       //畫出格線
       //ctx.lineWidth = 0.5;
@@ -5511,9 +5513,11 @@ var canvasPainter = {
   
   function exportSVG() {
     var ctx1 = ctx;
-    ctx = new C2S(canvas.width,canvas.height);
+    var svgWidth = canvas.width / scale;
+    var svgHeight = canvas.height / scale;
+    ctx = new C2S(svgWidth, svgHeight);
     ctx.fillStyle="black";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0,0, svgWidth, svgHeight);
     draw();
     var blob = new Blob([ctx.getSerializedSvg()], {type: 'image/svg+xml'});
         saveAs(blob,"export.svg");
