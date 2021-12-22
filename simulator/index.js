@@ -3326,8 +3326,7 @@ var canvasPainter = {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = 'rgb(192,192,192)';
-
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)')
       //ctx.textBaseline="hanging";
       //ctx.lineWidth=3;
       //ctx.lineCap = "butt";
@@ -3357,12 +3356,13 @@ var canvasPainter = {
         var str3 = "∥Force∝" + obj.shear.toFixed(2);
       }
 
-      //ctx.font="bold 14px Arial";
-      ctx.font = '20px Arial';
-      ctx.fillStyle = 'rgb(192,192,192)';
-      ctx.fillText(str1, obj.p2.x, obj.p2.y + 20);
-      ctx.fillText(str2, obj.p2.x, obj.p2.y + 40);
-      ctx.fillText(str3, obj.p2.x, obj.p2.y + 60);
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = getMouseStyle(obj, 'rgb(192,192,192)');
+      ctx.fillText(str1, obj.p2.x, obj.p2.y);
+      ctx.fillText(str2, obj.p2.x, obj.p2.y + 20);
+      ctx.fillText(str3, obj.p2.x, obj.p2.y + 40);
       ctx.globalCompositeOperation = 'source-over';
     }
 
