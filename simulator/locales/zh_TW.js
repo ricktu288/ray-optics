@@ -45,6 +45,9 @@ locales["zh-TW"] = {
   "tooltitle_sphericallens": {
     "message": "球面透鏡"
   },
+  "tool_sphericallens": {
+    "message": "球面透鏡"
+  },
   "toolname_sphericallens": {
     "message": "球面透鏡"
   },
