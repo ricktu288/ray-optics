@@ -2406,7 +2406,7 @@ var canvasPainter = {
   //=================================將物件畫到Canvas上====================================
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.fillStyle = getMouseStyle(obj, 'rgb(0,128,0)');
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
 
   },
@@ -2497,7 +2497,7 @@ var canvasPainter = {
   draw: function(obj, canvas) {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,128,0)');
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
     ctx.beginPath();
