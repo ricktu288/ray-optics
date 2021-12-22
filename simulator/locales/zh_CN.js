@@ -81,6 +81,12 @@ locales["zh-CN"] = {
   "toolname_protractor": {
     "message": "量角器"
   },
+  "tool_power": {
+    "message": "测量"
+  },
+  "toolname_power": {
+    "message": "测量"
+  }, 
   "tool_text": {
     "message": "文字"
   }, 
@@ -343,6 +349,9 @@ locales["zh-CN"] = {
   },
   "tool_protractor_popover": {
     "message": "指定圆心和圆周上一点作为零度位置。刻度单位为度。（拖曳或点击以创建。）"
+  },
+  "tool_power_popover": {
+    "message": "测量通过一线段的功率（能量流率）与力（垂直与水平动量流率）。（拖曳或点击以创建该线段。）"
   },
   "tool_text_popover": {
     "message": "文字标签。"

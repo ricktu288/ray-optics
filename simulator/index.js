@@ -1632,13 +1632,17 @@ var canvasPainter = {
         //將反射光新增至等待區
         addRay(ray2);
       }
-      else if (!ray.gap)
+      else 
       {
-        var amp = Math.floor(0.01 / ray2.brightness) + 1;
-        if (rayIndex % amp == 0)
+        totalTruncation += ray2.brightness;
+        if (!ray.gap)
         {
-          ray2.brightness = ray2.brightness * amp;
-          addRay(ray2);
+          var amp = Math.floor(0.01 / ray2.brightness) + 1;
+          if (rayIndex % amp == 0)
+          {
+            ray2.brightness = ray2.brightness * amp;
+            addRay(ray2);
+          }
         }
       }
 
@@ -3289,7 +3293,95 @@ var canvasPainter = {
   }
 
   };
+  //"power"物件
+  objTypes['power'] = {
 
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'power', p1: mouse, p2: mouse};
+  },
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+  clicked: objTypes['lineobj'].clicked,
+  dragging: objTypes['lineobj'].dragging,
+  rayIntersection: objTypes['lineobj'].rayIntersection,
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas, aboveLight) {
+    //var ctx = canvas.getContext('2d');
+
+    if (!aboveLight) {
+      ctx.globalCompositeOperation = 'lighter';
+
+      ctx.strokeStyle = 'rgb(192,192,192)';
+
+      //ctx.textBaseline="hanging";
+      //ctx.lineWidth=3;
+      //ctx.lineCap = "butt";
+      ctx.setLineDash([5,5]);
+      ctx.beginPath();
+      ctx.moveTo(obj.p1.x, obj.p1.y);
+      ctx.lineTo(obj.p2.x, obj.p2.y);
+      //ctx.stroke();
+      //ctx.lineWidth=1;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      //ctx.stroke();
+
+      ctx.globalCompositeOperation = 'source-over';
+    } else {
+      ctx.globalCompositeOperation = 'lighter';
+      var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+      
+      var accuracy = -Math.floor(Math.log10(totalTruncation));
+      if (totalTruncation > 0 && accuracy <= 2) {
+        var str1 = "Power∝" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str2 = "⊥Force∝" + obj.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str3 = "∥Force∝" + obj.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+      } else {
+        var str1 = "Power∝" + obj.power.toFixed(2);
+        var str2 = "⊥Force∝" + obj.normal.toFixed(2);
+        var str3 = "∥Force∝" + obj.shear.toFixed(2);
+      }
+
+      //ctx.font="bold 14px Arial";
+      ctx.font = '20px Arial';
+      ctx.fillStyle = 'rgb(192,192,192)';
+      ctx.fillText(str1, obj.p2.x, obj.p2.y + 20);
+      ctx.fillText(str2, obj.p2.x, obj.p2.y + 40);
+      ctx.fillText(str3, obj.p2.x, obj.p2.y + 60);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+  },
+
+  //=================================射出光線=============================================
+  shoot: function(obj) {
+    obj.power = 0;
+    obj.normal = 0;
+    obj.shear = 0;
+  },
+
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, shootPoint) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
+    var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+    ray.p2 = graphs.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
+    ray.p1 = graphs.point(shootPoint.x, shootPoint.y);
+
+    obj.power += Math.sign(rcrosss) * ray.brightness;
+    obj.normal += Math.sign(rcrosss) * sint * ray.brightness;
+    obj.shear += Math.sign(rcrosss) * Math.sqrt(1 - sint * sint) * ray.brightness;
+  }
+
+
+
+
+
+  };
 
 
   var canvas;
@@ -3335,12 +3427,13 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'text', ''];
+  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
   var tools_withList = ['mirror_', 'refractor_'];
   var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
+  var totalTruncation = 0;
 
   window.onload = function(e) {
     init_i18n();
@@ -3785,6 +3878,7 @@ var canvasPainter = {
   function draw()
   {
     stateOutdated = true;
+    totalTruncation = 0;
     document.getElementById('forceStop').style.display = 'none';
     if (timerID != -1)
     {
@@ -3923,7 +4017,7 @@ var canvasPainter = {
     var rpd;
     var leftRayCount = waitingRays.length;
     var surfaceMerging_objs = [];
-
+    
     //ctx.beginPath();
     while (leftRayCount != 0 && !forceStop)
     {
@@ -5642,6 +5736,10 @@ var canvasPainter = {
     document.getElementById('tool_protractor').value = getMsg('toolname_protractor');
     document.getElementById('tool_protractor').dataset['n'] = getMsg('toolname_protractor');
 
+    //Power Measurement
+    document.getElementById('tool_power').value = getMsg('toolname_power');
+    document.getElementById('tool_power').dataset['n'] = getMsg('toolname_power');
+    
     //Text
     document.getElementById('tool_text').value = getMsg('toolname_text');
     document.getElementById('tool_text').dataset['n'] = getMsg('toolname_text');

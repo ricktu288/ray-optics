@@ -78,6 +78,12 @@ locales["en"] = {
   "toolname_protractor": {
     "message": "Protractor"
   },
+  "tool_power": {
+    "message": "Measurements"
+  },
+  "toolname_power": {
+    "message": "Measurements"
+  },
   "toolname_text": {
     "message": "Text"
   },
@@ -349,6 +355,9 @@ locales["en"] = {
   },
   "tool_protractor_popover": {
     "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+  },
+  "tool_power_popover": {
+    "message": "A tool for measuring the power (rate of energy flow) and forces (rate of prependicular and parallel momentum flow) through a line segment. (Drag or click to create the line segment.)"
   },
   "tool_text_popover": {
     "message": "A text label."
