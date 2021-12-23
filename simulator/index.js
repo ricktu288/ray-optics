@@ -3347,13 +3347,13 @@ var canvasPainter = {
       
       var accuracy = -Math.floor(Math.log10(totalTruncation));
       if (totalTruncation > 0 && accuracy <= 2) {
-        var str1 = "Power∝" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str2 = "⊥Force∝" + obj.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str3 = "∥Force∝" + obj.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str1 = "P=" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str2 = "F⊥=" + obj.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str3 = "F∥=" + obj.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
       } else {
-        var str1 = "Power∝" + obj.power.toFixed(2);
-        var str2 = "⊥Force∝" + obj.normal.toFixed(2);
-        var str3 = "∥Force∝" + obj.shear.toFixed(2);
+        var str1 = "P=" + obj.power.toFixed(2);
+        var str2 = "F⊥=" + obj.normal.toFixed(2);
+        var str3 = "F∥=" + obj.shear.toFixed(2);
       }
 
       ctx.font = '16px Arial';

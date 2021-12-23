@@ -357,7 +357,7 @@ locales["en"] = {
     "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
   },
   "tool_power_popover": {
-    "message": "A tool for measuring the power (rate of energy flow) and forces (rate of prependicular and parallel momentum flow) through a line segment. (Drag or click to create the line segment.)"
+    "message": "A tool for measuring the rate of energy flow (P), the rate of prependicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
   "tool_text_popover": {
     "message": "A text label."
