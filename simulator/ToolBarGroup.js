@@ -72,7 +72,7 @@ class ToolBarItem {
   getContent() {
     var image = "";
     if (this.img != undefined)
-      image = "<img src='../img/" + this.img + ".png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>";
+      image = "<img src='../img/" + this.img + ".svg' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>";
     return image + "<b>" + this.description + "</b>";
   }
 }
