@@ -3,23 +3,22 @@ Simulate reflection and refraction of light.
 
 ## Features
 - Simulate various light sources: ray, beam, and point source
-- Simulate reflection in plane or arc mirror
-- Simulate refraction in plane or arc interfaces, including both refracted and reflected rays
+- Simulate reflection in linear, circular, and parabolic mirror
+- Simulate beam splitter
+- Simulate refraction in linear or circular interfaces, including both refracted and reflected rays
 - Simulate ideal lens/mirror, which obeys lens/mirror equation
 - View extensions of rays to see if they converge to a virtual image
 - View real images, virtual images and virtual objects directly
 - View images that can be observed from some given position
-- Distance and angular measurement
+- Distance, angular, energy flow and momentum flow measurements
+- Export as SVG diagram
 
 ## Links
 - [Project Page](https://ricktu288.github.io/ray-optics/)
-- [Chrome App](https://chrome.google.com/webstore/detail/ray-optics-simulation/egamlemiidmmmcccadndbjjihkcfiobh)
-- [Documentation](http://chengscott.tw/ray-optics/)
+- [Documentation (incomplete and outdated)](http://chengscott.tw/ray-optics/)
 
 ## Sample files
 - [Sample file folder](/samples)
-
-Use `Open` to open the downloaded sample files to preview what cane be done using this project.
 
 If you created a good sample, please submit a pull request to let others see your work!
 
@@ -28,7 +27,7 @@ If you created a good sample, please submit a pull request to let others see you
 Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
 
 # License
-Copyright 2016--2021 Yi-Ting Tu, Johnson
+Copyright 2016–2021 Yi-Ting Tu, Johnson
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
