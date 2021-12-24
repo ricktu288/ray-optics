@@ -283,7 +283,10 @@ var canvasPainter = {
         ctx.setTransform(1,0,0,1,0,0);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
-    } else {
+        if (backgroundImage) {
+            ctx.drawImage(backgroundImage,0,0);
+        }
+    } else if (!backgroundImage) {
         ctx.translate(origin.x / scale, origin.y / scale);
     }
   }
@@ -3444,6 +3447,7 @@ var canvasPainter = {
   var xyBox_cancelContextMenu = false;
   var scale = 1;
   var totalTruncation = 0;
+  var backgroundImage = null;
 
   window.onload = function(e) {
     init_i18n();
@@ -5087,6 +5091,7 @@ var canvasPainter = {
     //mode="light";
     toolbtn_clicked('laser');
     modebtn_clicked('light');
+    backgroundImage = null;
 
     //Reset new UI.
     window.toolBarViewModel.tools.selected("Ray");
@@ -5610,7 +5615,18 @@ var canvasPainter = {
       document.getElementById('textarea1').value = fileString;
       endPositioning();
       selectedObj = -1;
-      JSONInput();
+      try {
+        JSONInput();
+      } catch (error) {
+        reader.onload = function (e) {
+            backgroundImage = new Image();
+            backgroundImage.src = e.target.result;
+            backgroundImage.onload = function (e1) {
+                draw();
+            }
+        }
+        reader.readAsDataURL(readFile);
+      }
       createUndoPoint();
     };
 
@@ -5618,8 +5634,13 @@ var canvasPainter = {
   
   function exportSVG() {
     var ctx1 = ctx;
-    var svgWidth = canvas.width / scale;
-    var svgHeight = canvas.height / scale;
+    if (backgroundImage) {
+        var svgWidth = backgroundImage.width;
+        var svgHeight = backgroundImage.height;
+    } else {
+        var svgWidth = canvas.width / scale;
+        var svgHeight = canvas.height / scale;
+    }
     ctx = new C2S(svgWidth, svgHeight);
     ctx.fillStyle="black";
     ctx.fillRect(0,0, svgWidth, svgHeight);
