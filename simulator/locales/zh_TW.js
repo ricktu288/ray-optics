@@ -294,13 +294,13 @@ locales["zh-TW"] = {
     "message": "清空整個畫面。"
   },
   "save_popover": {
-    "message": "將目前畫面存檔。(Ctrl+S)"
+    "message": "將目前畫面存檔。"
   },
   "export_svg_popover": {
     "message": "匯出為SVG。"
   },
   "open_popover": {
-    "message": "開啟檔案。(Ctrl+O)"
+    "message": "開啟檔案或背景圖片。背景圖片將從座標原點顯示。（或拖放檔案）"
   },
   "tool_laser_popover": {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"

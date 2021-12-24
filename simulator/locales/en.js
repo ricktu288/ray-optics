@@ -300,10 +300,10 @@ locales["en"] = {
     "message": "Reset all changes."
   },
   "save_popover": {
-    "message": "Save the current file. (Ctrl+S)"
+    "message": "Save the current file."
   },
   "open_popover": {
-    "message": "Open an existing file. (Ctrl+O)"
+    "message": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
   },
   "export_svg_popover": {
     "message": "Export to SVG."
