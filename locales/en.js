@@ -52,13 +52,19 @@ locales["en"] = {
     "message": "Simulate the reflection of light on a mirror."
   },
   "mirror_arc": {
-    "message": "Mirror (Arc)"
+    "message": "Mirror (Curved)"
   },
   "mirror_arc_desc": {
-    "message": "A mirror whose shape is part of a circle, which is defined by three points."
+    "message": "A mirror whose shape is curved. Circular and parabolic curves are available."
   },
   "ideal_curved_mirror": {
     "message": "Ideal curved mirror"
+  },
+  "beamsplitter": {
+    "message": "Beam Splitter"
+  },
+  "beamsplitter_desc": {
+    "message": "A mirror that transmits a percentage of incoming light."
   },
   "ideal_curved_mirror_desc": {
     "message": "The idealized \"curved\" mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly."
@@ -67,7 +73,7 @@ locales["en"] = {
     "message": "Glass"
   },
   "glass_halfplane_desc": {
-    "message": "Simulate the the refraction and reflection of light on a surface. The intensities are calculated by assuming unpolarized."
+    "message": "Simulate the the refraction and reflection of light on a surface."
   },
   "glass_circle": {
     "message": "Glass (Circle)"
@@ -104,6 +110,12 @@ locales["en"] = {
   },
   "protractor_desc": {
     "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees."
+  },
+  "power": {
+    "message": "Detector"
+  },
+  "power_desc": {
+    "message": "A tool for measuring the rate of energy flow (P), the rate of prependicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. The units are arbitrary."
   },
   "views": {
     "message": "Views"

@@ -333,7 +333,7 @@ locales["en"] = {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
   "tool_halfplane_popover": {
-    "message": "Simulate the the refraction and reflection of light on a surface. The intensities are calculated by assuming unpolarized. (Drag or click to create.)"
+    "message": "Simulate the the refraction and reflection of light on a surface. (Drag or click to create.)"
   },
   "tool_circlelens_popover": {
     "message": "Glass with circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
@@ -378,7 +378,7 @@ locales["en"] = {
     "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange. (Drag the big blue dot to move the observer.)"
   },
   "rayDensity_popover": {
-    "message": "Decides how dense should the lights be simulated."
+    "message": "Decides how dense should the lights be simulated. The number is in log scale."
   },
   "showgrid_popover": {
     "message": "Defines the visibility of the background grid."

@@ -52,10 +52,10 @@ locales["zh-TW"] = {
     "message": "模擬光線射到鏡子時的反射。"
   },
   "mirror_arc": {
-    "message": "鏡子 (圓弧)"
+    "message": "鏡子 (曲線)"
   },
   "mirror_arc_desc": {
-    "message": "圓弧形的鏡子，由三點決定。"
+    "message": "曲線形的鏡子。可選圓弧或拋物線。"
   },
   "ideal_curved_mirror": {
     "message": "理想曲面鏡"
@@ -63,11 +63,17 @@ locales["zh-TW"] = {
   "ideal_curved_mirror_desc": {
     "message": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距(單位為像素)。"
   },
+  "beamsplitter": {
+    "message": "分光鏡"
+  },
+  "beamsplitter_desc": {
+    "message": "能穿透一個比例的光的鏡子。"
+  },
   "glass_halfplane": {
     "message": "透光物"
   },
   "glass_halfplane_desc": {
-    "message": "模擬光線經過透光物體界面時的反射與折射。計算光強度時假設為非偏振光。"
+    "message": "模擬光線經過透光物體界面時的反射與折射。"
   },
   "glass_circle": {
     "message": "透光物 (圓形)"
@@ -104,6 +110,12 @@ locales["zh-TW"] = {
   },
   "protractor_desc": {
     "message": "指定圓心和圓周上一點作為零度位置。刻度單位為度。"
+  },
+  "power": {
+    "message": "探測器"
+  },
+  "power_desc": {
+    "message": "測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。單位為任意。"
   },
   "views": {
     "message": "呈現方式"
