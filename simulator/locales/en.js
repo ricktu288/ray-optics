@@ -130,7 +130,7 @@ locales["en"] = {
     "message": "Circular Arc"
   },
   "tool_parabolicmirror": {
-    "message": "Parabolic (experimental)"
+    "message": "Parabolic"
   },
   "tool_beamsplitter": {
     "message": "Beam Splitter"

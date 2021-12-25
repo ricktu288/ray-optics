@@ -2922,7 +2922,7 @@ var canvasPainter = {
       ctx.beginPath();
       obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);
-      for (i = 1; i < p12d; i++) {
+      for (i = 0.1; i < p12d; i+=0.1) {
         // avoid using exact integers to avoid problems with detecting intersections
         var ix = i+.001;
         var x = ix-x0;
@@ -3004,25 +3004,33 @@ var canvasPainter = {
   rayIntersection: function(obj, ray) {
     if (!obj.p3) {return;}
     if (!obj.tmp_points) return;
-    var i;
+    var i,j;
     var pts = obj.tmp_points;
-    for (i = 0; i < pts.length-1; i++) {
+    var dir = graphs.length(obj.p2, ray.p1) > graphs.length(obj.p1, ray.p1);
+    var rp;
+    for (j = 0; j < pts.length-1; j++) {
+      i = dir ? j : (pts.length-2-j);
       var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
       var seg = graphs.segment(pts[i], pts[i+1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
       if (graphs.length(ray.p1, rp_temp) < minShotLength)
         continue;
       if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
-        return rp_temp;
+          if (!rp || graphs.length(ray.p1, rp_temp) < graphs.length(ray.p1, rp)) {
+              rp = rp_temp;
+          }
       }
     }
+    if (rp) return rp;
   },
 
   //=============================當物件被光射到時================================
   shot: function(obj, ray, rayIndex, rp) {
     var i;
     var pts = obj.tmp_points;
-    for (i = 0; i < pts.length-1; i++) {
+    var dir = graphs.length(obj.p2, rp) > graphs.length(obj.p1, rp);
+    for (j = 0; j < pts.length-1; j++) {
+      i = dir ? j : (pts.length-2-j);
       var seg = graphs.segment(pts[i], pts[i+1]);
       if (graphs.intersection_is_on_segment(rp, seg)) {
         var rx = ray.p1.x - rp.x;

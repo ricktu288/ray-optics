@@ -31,7 +31,7 @@ locales["zh-CN"] = {
     "message": "圆弧"
   },
   "tool_parabolicmirror": {
-    "message": "抛物线（实验性）" 
+    "message": "抛物线" 
   },
   "tool_beamsplitter": {
     "message": "分光镜"
