@@ -8,16 +8,13 @@ Simulate reflection and refraction of light.
 - Simulate refraction in linear or circular interfaces, including both refracted and reflected rays
 - Simulate ideal lens/mirror, which obeys lens/mirror equation
 - View extensions of rays to see if they converge to a virtual image
-- View real images, virtual images and virtual objects directly
+- View real images, virtual images, and virtual objects directly
 - View images that can be observed from some given position
-- Distance, angular, energy flow and momentum flow measurements
+- Distance, angular, energy flow, and momentum flow measurements
 - Export as SVG diagram
 
 ## Links
 - [Project Page](https://ricktu288.github.io/ray-optics/)
-- [Documentation (incomplete and outdated)](http://chengscott.tw/ray-optics/)
-
-## Sample files
 - [Sample file folder](/samples)
 
 If you created a good sample, please submit a pull request to let others see your work!
@@ -25,6 +22,19 @@ If you created a good sample, please submit a pull request to let others see you
 # Quick Start
 
 Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
+# Making your own tools
+
+The structure of a tool is described in [the template here](tool_template.js). You can also search for `objTypes['id_of_existing_tool']` in `simulator/index.js` and modify them. (I'm sorry that the code is not well-organized and most of the comments in `index.js` are in Mandarin since this was a very old project of my own began in 2010 when I (Yi-Ting Tu) was a junior high school student. I will organize and translate them when I have time.)
+
+## A way to quickly test your own tools
+
+After you complete the code `objTypes['id_of_your_tool'] = {...};`, a quick way to test it without modifying the toolbar is to execute the code directly in your browser's developer tool. And when you want to choose the tool, execute `AddingObjType = 'id_of_your_tool'`.
+
+## Putting your own tools into the toolbar
+
+You can just search for an existing tool id such as `protractor` or `beamsplitter` in `simulator/ToolBarViewModel.js`, `simulator/index.html`, `simulator/index.js`, and `simulator/locales/en.js` and add the corresponding lines for your tools. And also include an exported SVG image (use the "export" button) of your tools in `img/id_of_your_tool.svg` cropped to a suitable size.
+
+If you create a useful tool, please submit a pull request to let others use your tool! (We will add the Chinese locales for it.)
 
 # License
 Copyright 2016–2021 Yi-Ting Tu, Johnson
