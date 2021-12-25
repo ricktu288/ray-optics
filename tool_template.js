@@ -81,6 +81,7 @@ objTypes['id_of_your_tool'] = {
   /* DRAW THE OBJECT */
   draw: function(obj, canvas, aboveLight) {
     // Called when the obj is to be drawn on canvas. It is called once before rendering the light with aboveLight == false and once after with aboveLight == true. No return value is needed.
+    // You should directly use the global variable ctx here, rather than from the canvas parameter.
     ctx.some_color_style = getMouseStyle(obj, some_color); // Use this when the color is to be replaced by a highlighted color if the mouse is above the object.
     ctx.some_drawing_commands
     // Note that when the scene is being exported to SVG, the ctx is temporarily replaced by that provided by canvas2svg, which does not support certain commands and some behaviors are different from the real ctx. Use ctx.constructor == C2S to detect and do some workaround if needed.
