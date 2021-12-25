@@ -2,7 +2,7 @@
 
 objTypes['id_of_your_tool'] = {
   
-  // If your tool has a property to be adjusted with a slider, include the following 4 properties:
+  // If your tool has a property to be adjusted with a slider, include the following four properties:
   p_name: 'name_for_the_slider',
   p_min: the_minimum_value,
   p_max: the_maximum_value,
@@ -39,30 +39,30 @@ objTypes['id_of_your_tool'] = {
     // Move the position of obj by (diffX, diffY). An example of moving a point is
     obj.some_control_point.x += diffX;
     obj.some_control_point.y += diffY;
-    // Make sure all control points are moved. No return value is needed
+    // Make sure all control points are moved. No return value is needed.
   },
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    // Called when the user clicked the view after the construction is done. You need to check whether the user clicked the object, and if so, which part of it.
+    // Called when need to check whether the mouse is on the object, and if so, which part of it the user would be dragging if the user really clicked it. Note that this method may be called even if no click is actually performed.
     // mouse_nogrid is the real position of the mouse, mouse is the nearest snapping point if "snap to grid" is on.
-    // To test if the user clicked some control point:
+    // To test if the mouse is on some control point:
     if (mouseOnPoint(mouse_nogrid, obj.some_control_point)) {
       draggingPart.part = part_id; // a number to indicate the control point.
       draggingPart.targetPoint = graphs.point(obj.some_control_point.x, obj.some_control_point.y);
       return true;
     }
-    // Use mouseOnSegment(mouse_nogrid, some_segment) to test if the user clicked the segment from some_segment.p1 to some_segment.p2, and use the following:
-    if (user_clicked_some_non_point_part) {
-        draggingPart.part = part_id; // a number to indicate the part the user clicked. In particular, if the user is to drag the entire object, part_id should be set to 0.
+    // Use mouseOnSegment(mouse_nogrid, some_segment) to test if the mouse is on the segment from some_segment.p1 to some_segment.p2, and use the following:
+    if (mouse_on_some_non_point_part) {
+        draggingPart.part = part_id; // a number to indicate the part the user would be dragging. In particular, if the user would be dragging the entire object, part_id should be 0.
         draggingPart.mouse0 = mouse;
         draggingPart.mouse1 = mouse;
         draggingPart.snapData = {};
         return true;
     }
-    // If the user does not click the object:
+    // If the mouse is not on the object:
     return false;
   },
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    // Called when the user is dragging obj (after clicked returns true). Modify obj here according to the draggingPart you set in clicked and the coordinate of the mouse and whether the user is holding ctrl or shift. No return value is needed. Some examples are:
+    // Called when the user is really dragging obj. Modify obj here according to the draggingPart you set in clicked and the coordinate of the mouse and whether the user is holding ctrl or shift. No return value is needed. Some examples are:
     if (draggingPart.part == part_id_for_some_control_point) {
       obj.some_control_point = mouse;
     }
@@ -89,7 +89,7 @@ objTypes['id_of_your_tool'] = {
   }
 
   /* INTERACTIONS WITH THE SIMULATOR */
-  // If your object is a light source, include the following function:
+  // If your object is a light source, include the following method:
   shoot: function(obj) {
     // Called when the object is to shoot rays. For each rays to be shot, use the following:
     var ray1 = graphs.ray(initial_point, second_point_to_indicate_direction); // The points can be created by graphs.point(x, y).
@@ -101,7 +101,7 @@ objTypes['id_of_your_tool'] = {
     addRay(ray1);
   },
   
-  // If your object is a device that interacts with incoming light, include the following two functions:
+  // If your object is a device that interacts with incoming light, include the following two methods:
   // For the detection of intersection with an incoming ray, if your object has a shape of a line segment, use
   rayIntersection: objTypes['lineobj'].rayIntersection,
   // Or you may look at if there are existing objTypes your tool can inherit. Otherwise, you need to implement your own:
@@ -113,7 +113,7 @@ objTypes['id_of_your_tool'] = {
   },
   shot: function(obj, ray, rayIndex, rp) {
     // Called when ray has been calculated to be shot on obj at the intersection rp and the interaction between ray and obj is to be performed. You should modify the ray or create more rays here. No return value is needed.
-    // NOTE: If your object contains some refracting surface, You may need the "surface merging" feature so that if there is another surface overlapping with it, the interaction will only be calculated once with the two (or even more) surfaces combined. Note that treating them as two very close surfaces does not work. This is an essential discontinuity of ray optics. (In reality, this discontinuity is smoothed out at the scale of the wavelength, but this is not the purpose of this simulation.) However, the "surface merging" feature is very complicated (search for "Merging" in index.js). If you don't want to deal with it, you can choose to parametrize your surface with lines and circular arcs, and let the rayIntersection, shot, along with some other functions be inherited from objTypes['refractor']. See objTypes['sphericallens'] in index.js for an example.
+    // NOTE: If your object contains some refracting surface, You may need the "surface merging" feature so that if there is another surface overlapping with it, the interaction will only be calculated once with the two (or even more) surfaces combined. Note that treating them as two very close surfaces does not work. This is an essential discontinuity of ray optics. (In reality, this discontinuity is smoothed out at the scale of the wavelength, but this is not the purpose of this simulation.) However, the "surface merging" feature is very complicated (search for "Merging" in index.js). If you don't want to deal with it, you can choose to parametrize your surface with lines and circular arcs, and let the rayIntersection, shot, along with some other methods be inherited from objTypes['refractor']. See objTypes['sphericallens'] in index.js for an example.
 
     // To modify the original ray, you may use:
     ray.p1 = new_initial_point; // Usually equals rp.
@@ -121,7 +121,6 @@ objTypes['id_of_your_tool'] = {
     ray.brightness_s = new_intensity_of_s_polarization;
     ray.brightness_p = new_intensity_of_p_polarization;
     // Note that the alpha value when the ray is drawn is the sum of them.
-    // In the rare situation that your object is to split a continuous beam of rays into two continuous beams, with the last ray of the first beam and the first ray of the second beam intersecting at some point other than rp, then you should set ray.gap = true for the first ray of the second beam to avoid error in the detection of images.
     // If the ray is to be absorbed, set:
     ray.exist = false;
 
@@ -129,7 +128,7 @@ objTypes['id_of_your_tool'] = {
     var ray1 = graphs.ray(initial_point, second_point_to_indicate_direction); // The points can be created by graphs.point(x, y)
     ray1.brightness_s = intensity_of_s_polarization;
     ray1.brightness_p = intensity_of_p_polarization;
-    ray1.gap = ray.gap; // Also see the rare situation described above.
+    ray1.gap = ray.gap;
     addRay(ray1);
   }
 };
