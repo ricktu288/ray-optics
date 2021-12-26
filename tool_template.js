@@ -130,5 +130,13 @@ objTypes['id_of_your_tool'] = {
     ray1.brightness_p = intensity_of_p_polarization;
     ray1.gap = ray.gap;
     addRay(ray1);
+
+    // Sometimes keeping tracks of all the rays may result in infinite loop. Depending on the situation, some rays with brightness below a certain threshold (such as 0.01) may be neglected. If you neglect a ray, use the following code for the "detector" tool to estimate the error:
+    totalTruncation += neglected_intensity_of_s_polarization + neglected_intensity_of_p_polarization;
+
+    // If the incoming rays are in a continuous bunch, sometimes you may want to do something on every other incoming rays (or every nth). In such case, use:
+    if (!ray.gap && rayIndex % n == 0) {
+      // do something
+    }
   }
 };
