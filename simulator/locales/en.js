@@ -309,10 +309,10 @@ locales["en"] = {
     "message": "Export to SVG."
   },
   "tool_laser_popover": {
-    "message": "A single ray of light defined by two points. (Drag or Click to create. First point is the source, shooting toward the second point.)"
+    "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
-    "message": "A parallel beam of rays emerges from a line-segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
@@ -321,7 +321,7 @@ locales["en"] = {
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
   },
   "tool_arcmirror_popover": {
-    "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. First 2 points define the gap between arc's edges, the last point defines the arc's size.)"
+    "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },
   "tool_parabolicmirror_popover": {
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
@@ -333,13 +333,13 @@ locales["en"] = {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
   "tool_halfplane_popover": {
-    "message": "Simulate the the refraction and reflection of light on a surface. (Drag or click to create.)"
+    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },
   "tool_circlelens_popover": {
-    "message": "Glass with circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
+    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
   "tool_refractor_popover": {
-    "message": "Glass with any shapes constructed from line segments and circular arcs, including prisms and 'spherical' lenses. (Click to create segment, drag to create arc, click on the starting point when finish drawing.)"
+    "message": "Glass with any shapes constructed from line segments and circular arcs, including prisms and 'spherical' lenses. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
@@ -354,28 +354,28 @@ locales["en"] = {
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
   },
   "tool_protractor_popover": {
-    "message": "A protractor defined from center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+    "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
   },
   "tool_power_popover": {
-    "message": "A tool for measuring the rate of energy flow (P), the rate of prependicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
+    "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
   "tool_text_popover": {
     "message": "A text label."
   },
   "tool__popover": {
-    "message": "Drag to move view. (Mouse right button drag has the same function.)"
+    "message": "Drag to move the view. (Mouse right button drag has the same function.)"
   },
   "mode_light_popover": {
-    "message": "Show the rays. When the 'Ray density' is high, they appears to be continuous."
+    "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
   },
   "mode_extended_light_popover": {
     "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones."
   },
   "mode_images_popover": {
-    "message": "Show the position of all images. Yellow points indicate real images, orange indicate virtual images, and gray (none in this picture) indicate virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough."
+    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough."
   },
   "mode_observer_popover": {
-    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer do not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange. (Drag the big blue dot to move the observer.)"
+    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange. (Drag the big blue dot to move the observer.)"
   },
   "rayDensity_popover": {
     "message": "Decides how dense should the lights be simulated. The number is in log scale."
