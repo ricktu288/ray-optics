@@ -23,6 +23,8 @@ If you created a good sample, please submit a pull request to let others see you
 
 Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
 
+Open `simulator/index.html` locally in you browser (or start an http server in the repo directory if "Sample" does not work).
+
 # Making your own tools
 
 The structure of a tool is described in [the template here](tool_template.js). You can also search for `objTypes['id_of_existing_tool']` in `simulator/index.js` for reference. (I'm sorry that the code is not well-organized and most of the comments in `index.js` are in Chinese since this was from a very old project of my own (Yi-Ting Tu) when I just learn to code in JavaScript.)
