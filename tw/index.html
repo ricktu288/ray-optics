@@ -1,0 +1,269 @@
+ <!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>幾何光學模擬 - 首頁</title>
+  <meta property="og:title" content="幾何光學模擬">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/tw/">
+  <meta property="og:image" content="https://ricktu288.github.io/ray-optics/image.png">
+  <meta property="og:description" content="開放原始碼的網頁程式，可模擬光的反射與折射。">
+  <meta property="og:locale" content="zh_TW">
+  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/tw/">
+  <link rel="alternate" href="https://ricktu288.github.io/ray-optics/" hreflang="en">
+  <link rel="alternate" href="https://ricktu288.github.io/ray-optics/tw/" hreflang="zh-TW">
+  <link rel="alternate" href="https://ricktu288.github.io/ray-optics/cn/" hreflang="zh-CN">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="icon" href="https://ricktu288.github.io/icon128.png" type="image/png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-82058200-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <style>
+.carousel-inner > .item > img {
+  width: 1280px;
+}
+
+.thumbnail.right-caption > img {
+  float: left;
+  margin-right: 9px;
+}
+
+.thumbnail {
+  margin-bottom: 5px;
+}
+.tool-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.mode-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+  </style>
+</head>
+<body style="font-family: 微軟正黑體;">
+
+<div class="container">
+  <center>
+    <h1><b><span id="title">幾何光學模擬</span></b></h1>
+    <p id="description">開放原始碼的網頁程式，可模擬光的反射與折射。<br>以HTML、CSS和JavaScript寫成。</p>
+    <p>
+      <a href="https://ricktu288.github.io/ray-optics/simulator/?zh-TW" target="_blank" class="btn btn-success btn-lg" id="start">啟動程式</a>
+      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">至GitHub查看</a>
+      <a href="https://ricktu288.github.io/ray-optics/simulator_old/?zh-TW" target="_blank" class="btn btn-info btn-lg" id="start-old">舊版</a>
+    </p>
+  </center>
+  <br>
+  <div id="screenshots" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+      <li data-target="#screenshots" data-slide-to="1" class=""></li>
+      <li data-target="#screenshots" data-slide-to="2" class=""></li>
+      <li data-target="#screenshots" data-slide-to="3" class=""></li>
+      <li data-target="#screenshots" data-slide-to="4" class=""></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="../img/1.svg" alt="1.svg">
+      </div>
+      <div class="item">
+        <img src="../img/3.svg" alt="3.svg">
+      </div>
+      <div class="item">
+        <img src="../img/2.svg" alt="2.svg">
+      </div>
+      <div class="item">
+        <img src="../img/4.svg" alt="4.svg">
+      </div>
+      <div class="item">
+        <img src="../img/5.svg" alt="5.svg">
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div class="row" style="font-size: 10pt">
+    <div class="col-sm-6">
+      <div class="col-sm-12">
+        <h2 id="tools">工具</h2>
+        <div class="row thumbnail right-caption">
+          <img src="../img/ray.svg" alt="ray" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="ray">單一光線</p>
+            <span id="ray_desc">由兩點決定一條光線。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/beam.svg" alt="Beam" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="beam">平行光</p>
+            <span id="beam_desc">由一線段產生一束平行光，密度由「光線密度」滑桿決定。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/point_source.svg" alt="Point Source" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="point_source">點光源</p>
+            <span id="point_source_desc">由一點向四周發射光線，數量由「光線密度」滑桿決定。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/mirror.svg" alt="Mirror" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="mirror">鏡子</p>
+            <span id="mirror_desc">模擬光線射到鏡子時的反射。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="mirror_arc">鏡子 (曲線)</p>
+            <span id="mirror_arc_desc">曲線形的鏡子。可選圓弧或拋物線。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="ideal_curved_mirror">理想曲面鏡</p>
+            <span id="ideal_curved_mirror_desc">完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距(單位為像素)。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="beamsplitter">分光鏡</p>
+            <span id="beamsplitter_desc">能穿透一個比例的光的鏡子。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="glass_halfplane">透光物</p>
+            <span id="glass_halfplane_desc">模擬光線經過透光物體界面時的反射與折射。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="glass">透光物 (其他形狀)</p>
+            <span id="glass_desc">任何由線段與圓弧組成的透光物，包括三稜鏡與「球面」透鏡。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="ideal_lens">透光物 (理想透鏡)</p>
+            <span id="ideal_lens_desc">完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/blocker.svg" alt="Blocker" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="blocker">吸光片</p>
+            <span id="blocker_desc">線段形狀的吸光片，光線射到其上後就不會再射出。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/ruler.svg" alt="Ruler" style="width:100px;" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="ruler">直尺</p>
+            <span id="ruler_desc">指定原點與另一點。刻度單位為像素。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/protractor.svg" alt="Protractor" style="width:100px;" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="protractor">量角器</p>
+            <span id="protractor_desc">指定圓心和圓周上一點作為零度位置。刻度單位為度。</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/power.svg" alt="Detector" style="width:100px;" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="power">探測器</p>
+            <span id="power_desc">測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。單位為任意。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="col-sm-12">
+        <h2 id="views">呈現方式</h2>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title" id="rays">光線</p>
+            <span id="rays_desc">畫出光線。當「光線密度」高時，光線呈現連續。</span>
+          </div>
+          <img src="../img/low_density.svg" alt="Low density" class="img-rounded">
+          <img src="../img/high_density.svg" alt="High density" style="margin-top:5px" class="img-rounded">
+        </div>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title" id="extended_rays">延長光線</p>
+            <span id="extended_rays_desc">除光線實際路徑外，亦畫出其延長線。橘色、灰色分別表示向後、向前的延長線。</span>
+          </div>
+          <img src="../img/extended_rays.svg" alt="Extended rays" class="img-rounded">
+        </div>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title" id="all_images">所有像</p>
+            <span id="all_images_desc">點出像的位置。黃點表示實像，橘點表示虛像，灰點(圖中沒有)表示虛物。注意「光線密度」不夠高時有些像無法正常顯示。</span>
+          </div>
+          <img src="../img/all_images.svg" alt="All images" class="img-rounded">
+        </div>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title" id="seen_by_observer">觀察者所見</p>
+            <span id="seen_by_observer_desc">模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以橘色表示。</span>
+          </div>
+          <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="float: right;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">語言：正體中文</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="../">English</a></li>
+        <li><a href="#">正體中文</a></li>
+        <li><a href="../cn">简体中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+</script>
+
+</body>
+</html>
