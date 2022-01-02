@@ -82,3 +82,27 @@ The source code is available at: https://github.com/jquery/jquery
 
 Knockout is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
 The source code is available at: https://github.com/knockout/knockout
+
+
+# 幾何光學模擬
+模擬光的反射與折射
+
+## 功能
+- 模擬多種光源：光線、平行光、點光源
+- 模擬直線形、弧形、拋物線形鏡子的反射
+- 模擬分光鏡(beam splitter)
+- 模擬直線型與弧形界面的折射，包括反射光與折射光
+- 模擬理想透鏡/面鏡（符合透鏡/面鏡公式）
+- 顯示光線的延長線以觀察是否成虛像
+- 直接檢視實像、虛像與虛物
+- 顯示從某一位置能觀察到的像
+- 距離、角度、能量流與動量流量測
+- 匯出為SVG圖形
+
+## 連結
+- [正體中文首頁](https://ricktu288.github.io/ray-optics/tw/)
+- [簡體中文首頁](https://ricktu288.gitlab.io/ray-optics/cn/)
+- [範例檔案夾](/samples)
+
+如果您建立了有意義的範例，歡迎發pull request給我們！
+
