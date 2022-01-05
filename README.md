@@ -50,7 +50,7 @@ The structure of a tool is described in [the template here](tool_template.js). T
 | Detector | `power` |
 | Text | `text` |
 
-I'm sorry that most of the comments in [`index.js`](simulator/index.js) are in Chinese, but you can see [the template](tool_template.js) for some explanations in English.
+I'm sorry that most of the comments in [`index.js`](simulator/index.js) are in Chinese. For now, you can see [the template](tool_template.js) for some explanations in English.
 
 ## A way to quickly test your own tools
 
