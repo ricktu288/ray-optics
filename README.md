@@ -27,7 +27,30 @@ Open `simulator/index.html` locally in you browser (or start an http server in t
 
 # Making your own tools
 
-The structure of a tool is described in [the template here](tool_template.js). You can also search for `objTypes['id_of_existing_tool']` in `simulator/index.js` for reference. (I'm sorry that the code is not well-organized and most of the comments in `index.js` are in Chinese since this was from a very old project of my own (Yi-Ting Tu) when I just learn to code in JavaScript.)
+The structure of a tool is described in [the template here](tool_template.js). To view the code of an existing tool, you can search for `objTypes['id_of_the_tool'] =` in [`index.js`](simulator/index.js).
+
+| Name on the toolbar | ID of the tool |
+| --- | --- |
+| Ray | `laser` |
+| Beam | `parallel` |
+| Point source | `radiant` |
+| Mirrors -> Segment | `mirror` |
+| Mirrors -> Circular Arc | `arcmirror` |
+| Mirrors -> Ideal Curved | `idealmirror` |
+| Mirrors -> Parabolic | `parabolicmirror` |
+| Mirrors -> Beam Splitter | `beamsplitter` |
+| Glasses -> Half-plane | `halfplane` |
+| Glasses -> Circle | `circlelens` |
+| Glasses -> Free-shape | `refractor` |
+| Glasses -> Ideal Lens | `lens` |
+| Glasses -> Spherical Lens | `sphericallens` |
+| Blocker | `blackline` |
+| Ruler | `ruler` |
+| Protractor | `protractor` |
+| Detector | `power` |
+| Text | `text` |
+
+I'm sorry that most of the comments in [`index.js`](simulator/index.js) are in Chinese, but you can see [the template](tool_template.js) for some explanations in English.
 
 ## A way to quickly test your own tools
 
