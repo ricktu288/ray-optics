@@ -275,6 +275,9 @@ locales["zh-TW"] = {
   "processing": {
     "message": "處理中……<br>按此處以終止。"
   },
+  "restore": {
+    "message": "按此處以恢復先前的工作階段。"
+  },
   "footer_message": {
     "message": "由 <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 開發"
   },

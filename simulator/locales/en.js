@@ -281,6 +281,9 @@ locales["en"] = {
   "processing": {
     "message": "Processing...<br>Click here to stop."
   },
+  "restore": {
+    "message": "Click here to restore your previous session."
+  },
   "footer_message": {
     "message": "Developed by <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
   },

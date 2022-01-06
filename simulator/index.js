@@ -3456,6 +3456,7 @@ var canvasPainter = {
   var scale = 1;
   var totalTruncation = 0;
   var backgroundImage = null;
+  var restoredData = "";
 
   window.onload = function(e) {
     init_i18n();
@@ -3471,24 +3472,26 @@ var canvasPainter = {
     //observer=graphs.circle(graphs.point(canvas.width*0.5,canvas.height*0.5),20);
     //document.getElementById('objAttr_text').value="";
     //toolbtn_clicked(AddingObjType);
-
-    if (typeof(Storage) !== "undefined" && localStorage.rayOpticsData) {
-      document.getElementById('textarea1').value = localStorage.rayOpticsData;
-    }
-
-    if (document.getElementById('textarea1').value != '')
-    {
-      try {
-        JSONInput();
-      } catch (error) {
-        console.error(error);
+    var needRestore = false;
+    try {
+      restoredData = localStorage.rayOpticsData;
+      var jsonData = JSON.parse(restoredData);
+      if (jsonData.objs.length > 0) {
+        needRestore = true;
       }
+    } catch { }
+
+    if (needRestore) {
+      document.getElementById('restore').style.display = '';
+      initParameters();
       toolbtn_clicked('');
-    }
-    else
-    {
+      window.toolBarViewModel.tools.selected("Move View");
+      AddingObjType = '';
+    } else {
+      restoredData = '';
       initParameters();
     }
+
     undoArr[0] = document.getElementById('textarea1').value;
     document.getElementById('undo').disabled = true;
     document.getElementById('redo').disabled = true;
@@ -3606,7 +3609,7 @@ var canvasPainter = {
     cancelMousedownEvent('undo');
     document.getElementById('redo').onclick = redo;
     cancelMousedownEvent('redo');
-    document.getElementById('reset').onclick = function() {initParameters();createUndoPoint();};
+    document.getElementById('reset').onclick = function() {initParameters();cancelRestore();createUndoPoint();};
     cancelMousedownEvent('reset');
     document.getElementById('accessJSON').onclick = accessJSON;
     cancelMousedownEvent('accessJSON');
@@ -3709,6 +3712,8 @@ var canvasPainter = {
       }
     };
     cancelMousedownEvent('forceStop');
+    document.getElementById('restore').onclick = function() {restore()};
+    cancelMousedownEvent('restore');
     document.getElementById('objAttr_range').oninput = function()
     {
       setAttr(document.getElementById('objAttr_range').value * 1);
@@ -3879,7 +3884,7 @@ var canvasPainter = {
       elt.onclick = function () { openSample(samples[ii-1]); };
     }
 
-    toolbtn_clicked('laser');
+    //toolbtn_clicked('laser');
   };
 
   function openSample(name) {
@@ -3890,6 +3895,7 @@ var canvasPainter = {
         return;
       document.getElementById('textarea1').value = client.responseText;
       JSONInput();
+      cancelRestore();
       createUndoPoint();
     }
     client.send();
@@ -4552,6 +4558,7 @@ var canvasPainter = {
         }
         selectObj(objs.length - 1);
         objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse);
+        cancelRestore();
        }
       }
   }
@@ -5291,7 +5298,7 @@ var canvasPainter = {
   function JSONOutput()
   {
     document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale}, JSONreplacer, 2);
-    if (typeof(Storage) !== "undefined") {
+    if (typeof(Storage) !== "undefined" && !restoredData) {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
   }
@@ -5625,12 +5632,14 @@ var canvasPainter = {
       selectedObj = -1;
       try {
         JSONInput();
+        cancelRestore();
       } catch (error) {
         reader.onload = function (e) {
             backgroundImage = new Image();
             backgroundImage.src = e.target.result;
             backgroundImage.onload = function (e1) {
                 draw();
+                cancelRestore();
             }
         }
         reader.readAsDataURL(readFile);
@@ -5656,6 +5665,19 @@ var canvasPainter = {
     var blob = new Blob([ctx.getSerializedSvg()], {type: 'image/svg+xml'});
         saveAs(blob,"export.svg");
     ctx = ctx1;
+  }
+  
+  function restore() {
+    document.getElementById('textarea1').value = restoredData;
+    document.getElementById('restore').style.display = 'none';
+    restoredData = '';
+    JSONInput();
+    createUndoPoint();
+  }
+  
+  function cancelRestore() {
+    restoredData = '';
+    document.getElementById('restore').style.display = 'none';
   }
 
   var lang = 'en';
@@ -5816,6 +5838,7 @@ var canvasPainter = {
     document.getElementById('delete').value = getMsg('delete');
 
     document.getElementById('forceStop').innerHTML = getMsg('processing');
+    document.getElementById('restore').innerHTML = getMsg('restore');
 
     document.getElementById('homepage').innerHTML = getMsg('homepage');
     document.getElementById('source').innerHTML = getMsg('source');
