@@ -3356,7 +3356,7 @@ var canvasPainter = {
       ctx.globalCompositeOperation = 'lighter';
       var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
       
-      var accuracy = -Math.floor(Math.log10(totalTruncation));
+      var accuracy = Math.max(-Math.floor(Math.log10(totalTruncation)), 0);
       if (totalTruncation > 0 && accuracy <= 2) {
         var str1 = "P=" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
         var str2 = "F⊥=" + obj.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
