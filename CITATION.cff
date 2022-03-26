@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Tu
+    given-names: Yi-Ting
+  - family-names: Sun
+    given-names: Wei-Fang
+title: "Ray Optics Simulation"
+doi: 10.5281/zenodo.6386611
+date-released: 2016-02-22
+url: "https://ricktu288.github.io/ray-optics/"
