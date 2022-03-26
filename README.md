@@ -65,7 +65,7 @@ You can just search for an existing tool id such as `protractor` or `beamsplitte
 If you create a useful tool, please submit a pull request to let others use your tool! (We will add the Chinese locales for it.)
 
 # License
-Copyright 2016–2021 Yi-Ting Tu, Johnson
+Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
