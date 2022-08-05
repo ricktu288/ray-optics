@@ -29,6 +29,8 @@ function ToolBarViewModel() {
     ]),
     self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray",
+        ToolTypeEnum.RADIO),      
+	  new ToolBarItem("Led", "tool_led", "led",
         ToolTypeEnum.RADIO),
       new ToolBarItem("Beam", "tool_parallel", "beam",
         ToolTypeEnum.RADIO),

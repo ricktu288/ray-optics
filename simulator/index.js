@@ -1702,6 +1702,70 @@ var canvasPainter = {
 
   };
 
+  //"led"物件
+  objTypes['led'] = {
+
+  p_name: 'Emission Angle',
+  p_min: 0,
+  p_max: 180,
+  p_step: 1,
+  
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'led', p1: mouse, p2: mouse, p : 30};
+  },
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+  clicked: objTypes['lineobj'].clicked,
+  dragging: objTypes['lineobj'].dragging,
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas) {
+  //var ctx = canvas.getContext('2d');
+  ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
+  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
+  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+  },
+
+
+  //=================================射出光線=============================================
+  shoot: function(obj) {
+  var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
+  var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0;
+  
+  var ang, x1, y1;
+  // for (var i = (i0 - (Math.PI / 180.0 * obj.p) / 2.0); i < (i0 + (Math.PI / 180.0 * obj.p) / 2.0 - 1e-5); i = i + s)
+  for (var i = i0; i < (i0 + (Math.PI / 180.0 * obj.p) - 1e-5); i = i + s)
+  {
+	var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));	
+	
+	ang = i + Math.atan2(obj.p2.y - obj.p1.y, obj.p2.x - obj.p1.x);
+
+	x1 = obj.p1.x + r * Math.cos(ang);
+	y1 = obj.p1.y + r * Math.sin(ang);
+	
+    var ray1 = graphs.ray(graphs.point(obj.p1.x, obj.p1.y), graphs.point(x1, y1));
+	
+    ray1.brightness_s = 0.5;
+	ray1.brightness_p = 0.5;
+    ray1.isNew = true;
+    if (i == i0)
+    {
+      ray1.gap = true;
+    }
+    addRay(ray1);
+  }
+  }
+
+
+
+
+  };
+
   //"mirror"(鏡子)物件
   objTypes['mirror'] = {
 
@@ -3449,7 +3513,7 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
+  var tools_normal = ['laser', 'led', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
   var tools_withList = ['mirror_', 'refractor_'];
   var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
@@ -5723,6 +5787,11 @@ var canvasPainter = {
     document.getElementById('tool_laser').value = getMsg('toolname_laser');
     document.getElementById('tool_laser').dataset['n'] = getMsg('toolname_laser');
 
+    //Led
+    document.getElementById('tool_led').value = getMsg('toolname_led');
+    document.getElementById('tool_led').dataset['n'] = getMsg('toolname_led');
+    document.getElementById('tool_led').dataset['p'] = getMsg('emissionangle');
+	
     //Point source
     document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
     document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');

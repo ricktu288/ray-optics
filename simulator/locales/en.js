@@ -15,6 +15,9 @@ locales["en"] = {
   "toolname_laser": {
     "message": "Single ray"
   },
+  "toolname_led": {
+    "message": "Led"
+  },
   "toolname_radiant": {
     "message": "Point source"
   },
@@ -113,6 +116,9 @@ locales["en"] = {
   },
   "tool_laser": {
     "message": "Ray"
+  },
+  "tool_led": {
+    "message": "Led"
   },
   "tool_parallel": {
     "message": "Beam"
@@ -259,6 +265,9 @@ locales["en"] = {
   },
   "brightness": {
     "message": "Brightness:"
+  },
+  "emissionangle": {
+    "message": "Emission Angle:"
   },
   "focallength": {
     "message": "Focal length:"
