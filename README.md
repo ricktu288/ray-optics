@@ -35,7 +35,8 @@ The structure of a tool is described in [the template here](tool_template.js). T
 | --- | --- |
 | Ray | `laser` |
 | Beam | `parallel` |
-| Point source | `radiant` |
+| Point source -> 360 degrees | `radiant` |
+| Point source -> Finite angle | `led` |
 | Mirrors -> Segment | `mirror` |
 | Mirrors -> Circular Arc | `arcmirror` |
 | Mirrors -> Ideal Curved | `idealmirror` |
