@@ -30,12 +30,14 @@ function ToolBarViewModel() {
     self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray",
         ToolTypeEnum.RADIO),      
-	  new ToolBarItem("Led", "tool_led", "led",
-        ToolTypeEnum.RADIO),
       new ToolBarItem("Beam", "tool_parallel", "beam",
         ToolTypeEnum.RADIO),
-      new ToolBarItem("Point Source", "tool_radiant", "point_source",
-        ToolTypeEnum.RADIO),
+      self.point_sources = new ToolBarItem("Point Source", "tool_radiant_", 4, ToolTypeEnum.RADIOLIST, [
+        new ToolBarItem("360 degrees", "tool_radiant", "point_source",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Finite angle", "tool_led", "led",
+          ToolTypeEnum.RADIO)
+      ]),
       self.mirrors = new ToolBarItem("Mirrors", "tool_mirror_", 4, ToolTypeEnum.RADIOLIST, [
         new ToolBarItem("Segment", "tool_mirror", "mirror",
           ToolTypeEnum.RADIO),

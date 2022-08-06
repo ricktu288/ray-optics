@@ -15,6 +15,9 @@ locales["zh-CN"] = {
   "toolname_laser": {
     "message": "单一光线"
   },
+  "toolname_led": {
+    "message": "点光源"
+  },
   "toolname_radiant": {
     "message": "点光源"
   },
@@ -121,6 +124,12 @@ locales["zh-CN"] = {
     "message": "单一光线"
   },
   "tool_radiant": {
+    "message": "360度"
+  },
+  "tool_led": {
+    "message": "有限角度"
+  },
+  "tool_radiant_": {
     "message": "点光源"
   },
   "tool_parallel": {
@@ -254,6 +263,9 @@ locales["zh-CN"] = {
   "brightness": {
     "message": "亮度："
   },
+  "emissionangle": {
+    "message": "发射角（度）："
+  },
   "focallength": {
     "message": "焦距："
   },
@@ -313,6 +325,9 @@ locales["zh-CN"] = {
   },
   "tool_radiant_popover": {
     "message": "由一点向四周发射光线，数量由「光线密度」滑杆决定。 （点击以创建。）"
+  },
+  "tool_led_popover": {
+    "message": "指定发射角之点光源。"
   },
   "tool_mirror_popover": {
     "message": "模拟光线射到镜子时的反射。（拖曳或点击以创建。）"

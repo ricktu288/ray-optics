@@ -16,7 +16,7 @@ locales["en"] = {
     "message": "Single ray"
   },
   "toolname_led": {
-    "message": "Led"
+    "message": "Point source"
   },
   "toolname_radiant": {
     "message": "Point source"
@@ -117,13 +117,16 @@ locales["en"] = {
   "tool_laser": {
     "message": "Ray"
   },
-  "tool_led": {
-    "message": "Led"
-  },
   "tool_parallel": {
     "message": "Beam"
   },
   "tool_radiant": {
+    "message": "360 degrees"
+  },
+  "tool_led": {
+    "message": "Finite angle"
+  },
+  "tool_radiant_": {
     "message": "Point source"
   },
   "tool_mirror_": {
@@ -328,6 +331,9 @@ locales["en"] = {
   },
   "tool_radiant_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
+  },
+  "tool_led_popover": {
+    "message": "Point source with a given emission angle."
   },
   "tool_mirror_popover": {
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
