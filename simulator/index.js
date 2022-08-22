@@ -1712,7 +1712,7 @@ var canvasPainter = {
   
   //======================================建立物件=========================================
   create: function(mouse) {
-    return {type: 'led', p1: mouse, p2: mouse, p : 30};
+    return {type: 'led', p1: mouse, p2: mouse, p : 30, symmetric : true};
   },
 
   //使用lineobj原型
@@ -1738,8 +1738,15 @@ var canvasPainter = {
   var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
   var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0;
   
-  var ang, x1, y1;
-  for (var i = (i0 - (Math.PI / 180.0 * obj.p) / 2.0); i < (i0 + (Math.PI / 180.0 * obj.p) / 2.0 - 1e-5); i = i + s)
+  var ang, x1, y1, iStart, iEnd;
+  if (obj.symmetric) {
+    iStart = (i0 - (Math.PI / 180.0 * obj.p) / 2.0);
+    iEnd = (i0 + (Math.PI / 180.0 * obj.p) / 2.0 - 1e-5);
+  } else {
+    iStart = i0;
+    iEnd = (i0 + (Math.PI / 180.0 * obj.p) - 1e-5);
+  }
+  for (var i = iStart; i < iEnd; i = i + s)
   {
 	var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));	
 	
