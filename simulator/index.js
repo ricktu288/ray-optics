@@ -5020,9 +5020,9 @@ var canvasPainter = {
 
   function hasSameAttrType(obj1, obj2)
   {
-    //obj1.type==obj2.type
-    //objTypes[obj1.type].p_name==objTypes[obj2.type].p_name
-    return document.getElementById('tool_' + obj1.type).dataset['n'] == document.getElementById('tool_' + obj2.type).dataset['n'];
+    return obj1.type==obj2.type;
+    //return objTypes[obj1.type].p_name==objTypes[obj2.type].p_name;
+    //return document.getElementById('tool_' + obj1.type).dataset['n'] == document.getElementById('tool_' + obj2.type).dataset['n'];
   }
 
   function setAttr(value)
