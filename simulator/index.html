@@ -297,9 +297,8 @@ textarea {
     <div class="optionsbar">
       <span id="toolbar_title"></span>
       <input type="button" class="toolbtn" id="tool_laser">
-      <input type="button" class="toolbtn" id="tool_led">
       <input type="button" class="toolbtn" id="tool_parallel">
-      <input type="button" class="toolbtn" id="tool_radiant">
+      <input type="button" class="toolbtn" id="tool_radiant_">
       <input type="button" class="toolbtn" id="tool_mirror_">
       <input type="button" class="toolbtn" id="tool_refractor_">
       <input type="button" class="toolbtn" id="tool_blackline">
@@ -353,10 +352,14 @@ textarea {
 </div>
 
 <!--===============工具欄下拉選單==================-->
+<div class="toollistbox" id="tool_radiant_list" style="position:absolute; display:none;">
+  <input type="button" class="toollistbtn" id="tool_radiant"><br>
+  <input type="button" class="toollistbtn" id="tool_led"><br>
+</div>
 <div class="toollistbox" id="tool_mirror_list" style="position:absolute; display:none;">
   <input type="button" class="toollistbtn" id="tool_mirror"><br>
   <input type="button" class="toollistbtn" id="tool_arcmirror"><br>
-  <input type="button" class="toollistbtn" id="tool_idealmirror">
+  <input type="button" class="toollistbtn" id="tool_idealmirror"><br>
   <input type="button" class="toollistbtn" id="tool_parabolicmirror"><br>
   <input type="button" class="toollistbtn" id="tool_beamsplitter"><br>
 </div>
@@ -364,8 +367,8 @@ textarea {
   <input type="button" class="toollistbtn" id="tool_halfplane"><br>
   <input type="button" class="toollistbtn" id="tool_circlelens"><br>
   <input type="button" class="toollistbtn" id="tool_refractor"><br>
-  <input type="button" class="toollistbtn" id="tool_lens">
-  <input type="button" class="toollistbtn" id="tool_sphericallens">
+  <input type="button" class="toollistbtn" id="tool_lens"><br>
+  <input type="button" class="toollistbtn" id="tool_sphericallens"><br>
 </div>
 
 <!--===============座標輸入方塊==================-->

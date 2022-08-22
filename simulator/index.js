@@ -3520,9 +3520,9 @@ var canvasPainter = {
   var clickExtent_line = 10;
   var clickExtent_point = 10;
   var clickExtent_point_construct = 10;
-  var tools_normal = ['laser', 'led', 'radiant', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
-  var tools_withList = ['mirror_', 'refractor_'];
-  var tools_inList = ['mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
+  var tools_normal = ['laser', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
+  var tools_withList = ['radiant_', 'mirror_', 'refractor_'];
+  var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
@@ -5475,7 +5475,13 @@ var canvasPainter = {
 
     document.getElementById('tool_' + tool).className = 'toolbtnselected';
     AddingObjType = tool;
-    if (tool == "mirror_") {
+    if (tool == "radiant_") {
+      var t = window.toolBarViewModel.point_sources.selected();
+      if (t == "360 degrees")
+        AddingObjType = "radiant";
+      if (t == "Finite angle")
+        AddingObjType = "led";
+    } else if (tool == "mirror_") {
       var t = window.toolBarViewModel.mirrors.selected();
       if (t == "Segment")
         AddingObjType = "mirror";
@@ -5794,20 +5800,23 @@ var canvasPainter = {
     document.getElementById('tool_laser').value = getMsg('toolname_laser');
     document.getElementById('tool_laser').dataset['n'] = getMsg('toolname_laser');
 
-    //Led
-    document.getElementById('tool_led').value = getMsg('toolname_led');
-    document.getElementById('tool_led').dataset['n'] = getMsg('toolname_led');
-    document.getElementById('tool_led').dataset['p'] = getMsg('emissionangle');
-	
-    //Point source
-    document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['p'] = getMsg('brightness');
-
     //Beam
     document.getElementById('tool_parallel').value = getMsg('toolname_parallel');
     document.getElementById('tool_parallel').dataset['n'] = getMsg('toolname_parallel');
     document.getElementById('tool_parallel').dataset['p'] = getMsg('brightness');
+
+    //Point source▼
+    document.getElementById('tool_radiant_').value = getMsg('toolname_radiant_') + downarraw;
+
+    //Point source->360 degrees
+    document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
+    document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');
+    document.getElementById('tool_radiant').dataset['p'] = getMsg('brightness');
+	
+    //Point source->Finite angle
+    document.getElementById('tool_led').value = getMsg('toolname_led');
+    document.getElementById('tool_led').dataset['n'] = getMsg('toolname_led');
+    document.getElementById('tool_led').dataset['p'] = getMsg('emissionangle');
 
     //Mirror▼
     document.getElementById('tool_mirror_').value = getMsg('toolname_mirror_') + downarraw;
