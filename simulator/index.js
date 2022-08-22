@@ -2432,7 +2432,7 @@ var canvasPainter = {
         mouse_nogrid.y <= obj.y && mouse_nogrid.y >= obj.y-24) {
       draggingPart.part = 0;
       draggingPart.mouse0 = graphs.point(mouse_nogrid.x, mouse_nogrid.y);
-      draggingPart.targetPoint = graphs.point(obj.x, obj.y);
+      draggingPart.targetPoint_ = graphs.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
       return true;
     }
@@ -2451,8 +2451,8 @@ var canvasPainter = {
       draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
     }
 
-    obj.x = mouse_snapped.x + draggingPart.targetPoint.x - draggingPart.mouse0.x;
-    obj.y = mouse_snapped.y + draggingPart.targetPoint.y - draggingPart.mouse0.y;
+    obj.x = mouse_snapped.x + draggingPart.targetPoint_.x - draggingPart.mouse0.x;
+    obj.y = mouse_snapped.y + draggingPart.targetPoint_.y - draggingPart.mouse0.y;
     return {obj: obj};
   },
 
