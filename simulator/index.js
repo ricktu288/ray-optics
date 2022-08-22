@@ -1739,8 +1739,7 @@ var canvasPainter = {
   var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0;
   
   var ang, x1, y1;
-  // for (var i = (i0 - (Math.PI / 180.0 * obj.p) / 2.0); i < (i0 + (Math.PI / 180.0 * obj.p) / 2.0 - 1e-5); i = i + s)
-  for (var i = i0; i < (i0 + (Math.PI / 180.0 * obj.p) - 1e-5); i = i + s)
+  for (var i = (i0 - (Math.PI / 180.0 * obj.p) / 2.0); i < (i0 + (Math.PI / 180.0 * obj.p) / 2.0 - 1e-5); i = i + s)
   {
 	var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));	
 	
