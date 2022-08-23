@@ -443,414 +443,20 @@ var canvasPainter = {
 
   };
 
-  //"halfplane"(半平面折射鏡)物件
-  objTypes['halfplane'] = {
-
-  p_name: 'Refractive index', //屬性名稱
-  p_min: 1,
-  p_max: 3,
-  p_step: 0.01,
-
-  supportSurfaceMerging: true, //支援界面融合
-
-  //======================================建立物件=========================================
-  create: function(mouse) {
-    return {type: 'halfplane', p1: mouse, p2: mouse, p: 1.5};
-  },
-
-  //使用lineobj原型
-  c_mousedown: objTypes['lineobj'].c_mousedown,
-  c_mousemove: objTypes['lineobj'].c_mousemove,
-  c_mouseup: objTypes['lineobj'].c_mouseup,
-  move: objTypes['lineobj'].move,
-
-  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
-    {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
-      return true;
-    }
-    if (mouseOnPoint(mouse_nogrid, obj.p2))
-    {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
-      return true;
-    }
-    if (mouseOnLine(mouse_nogrid, obj))
-    {
-      draggingPart.part = 0;
-      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
-      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
-      draggingPart.snapData = {};
-      return true;
-    }
-    return false;
-  },
-
-  //=================================拖曳物件時====================================
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    var basePoint;
-    if (draggingPart.part == 1)
-    {
-      //正在拖曳第一個端點
-      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
-
-      obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-      obj.p2 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
-
-      //obj.p1=mouse;
-    }
-    if (draggingPart.part == 2)
-    {
-      //正在拖曳第二個端點
-
-      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
-
-      obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-      obj.p1 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
-
-      //obj.p2=mouse;
-    }
-    if (draggingPart.part == 0)
-    {
-      //正在拖曳整條線
-
-      if (shift)
-      {
-        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)},{x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x)}], draggingPart.snapData);
-      }
-      else
-      {
-        var mouse_snapped = mouse;
-        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
-      }
-
-      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
-      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
-      //移動線段的第一點
-      obj.p1.x = obj.p1.x - mouseDiffX;
-      obj.p1.y = obj.p1.y - mouseDiffY;
-      //移動線段的第二點
-      obj.p2.x = obj.p2.x - mouseDiffX;
-      obj.p2.y = obj.p2.y - mouseDiffY;
-      //更新滑鼠位置
-      draggingPart.mouse1 = mouse_snapped;
-    }
-  },
-
-  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
-  rayIntersection: function(obj, ray) {
-    if (obj.p <= 0)return;
-    var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.p1, obj.p2));   //求光(的延長線)與物件的交點
-
-    if (graphs.intersection_is_on_ray(rp_temp, ray))
-    {
-      //↑若rp_temp在ray上(即ray真的有射到obj,不是ray的延長線射到)
-      return rp_temp; //回傳光線的頭與鏡子的交點
-    }
-  },
-
-
-  //=================================將物件畫到Canvas上====================================
-  draw: function(obj, canvas, aboveLight) {
-
-  if (!aboveLight)
-  {
-    var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    var par_x = (obj.p2.x - obj.p1.x) / len;
-    var par_y = (obj.p2.y - obj.p1.y) / len;
-    var per_x = par_y;
-    var per_y = -par_x;
-
-    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);
-
-    ctx.beginPath();
-    ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + par_x * sufficientlyLargeDistance, obj.p1.y + par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
-
-    objTypes['refractor'].fillGlass(obj.p, obj);
-  }
-
-  ctx.fillStyle = 'indigo';
-  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
-
-
-  },
-
-  //=============================當物件被光射到時================================
-  shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
-    //ray.exist=false;
-
-    var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y); //ray與此線段之內積
-    var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y); //此線段長度平方
-    var normal = {x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y)};
-    //normal.x=rdots*(obj.p2.x-obj.p1.x)-ssq*(ray.p2.x-ray.p1.x);
-    //normal.y=rdots*(obj.p2.y-obj.p1.y)-ssq*(ray.p2.y-ray.p1.y);
-
-    var shotType = this.getShotType(obj, ray);
-    if (shotType == 1)
-    {
-      //從內部射向外部
-      var n1 = obj.p; //來源介質的折射率(目的介質假設為1)
-      //canvasPainter.draw(graphs.segment(ray.p1,s_point),canvas,"red");
-    }
-    else if (shotType == -1)
-    {
-      //從外部射向內部
-      var n1 = 1 / obj.p;
-    }
-    else
-    {
-      //可能導致Bug的狀況(如射到邊界點)
-      //為防止光線射向錯誤方向導致誤解,將光線吸收
-      ray.exist = false;
-      return;
-    }
-
-    //界面融合
-    //if(surfaceMerging_obj)
-    for (var i = 0; i < surfaceMerging_objs.length; i++)
-    {
-      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1)
-      {
-        //從內部射向外部
-        n1 *= surfaceMerging_objs[i].p;
-      }
-      else if (shotType == -1)
-      {
-        //從外部射向內部
-        n1 /= surfaceMerging_objs[i].p;
-      }
-      else if (shotType == 0)
-      {
-        //等同於沒射到(例如兩界面重合)
-        //n1=n1;
-      }
-      else
-      {
-        //可能導致Bug的狀況(如射到邊界點)
-        //為防止光線射向錯誤方向導致誤解,將光線吸收
-        ray.exist = false;
-        return;
-      }
-    }
-    objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
-
-
-  },
-
-  getShotType: function(obj, ray) {
-    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
-    if (rcrosss > 0)
-    {
-      return 1; //由內向外
-    }
-    if (rcrosss < 0)
-    {
-      return -1; //由外向內
-    }
-    return 2;
-  }
-
-  };
-
-  //"circlelens"物件
-  objTypes['circlelens'] = {
-
-  p_name: 'Refractive index', //屬性名稱
-  p_min: 1,
-  p_max: 3,
-  p_step: 0.01,
-
-  supportSurfaceMerging: true, //支援界面融合
-
-  //======================================建立物件=========================================
-  create: function(mouse) {
-    return {type: 'circlelens', p1: mouse, p2: mouse, p: 1.5};
-  },
-
-  //使用lineobj原型
-  c_mousedown: objTypes['lineobj'].c_mousedown,
-  c_mousemove: function(obj, mouse, ctrl, shift) {objTypes['lineobj'].c_mousemove(obj, mouse, false, shift)},
-  c_mouseup: objTypes['lineobj'].c_mouseup,
-  move: objTypes['lineobj'].move,
-
-  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
-  // When the drawing area is pressed (to determine the part of the object being pressed)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    // clicking on p1 (center)?
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
-    {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
-      return true;
-    }
-    // clicking on p2 (edge)?
-    if (mouseOnPoint(mouse_nogrid, obj.p2))
-    {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
-      return true;
-    }
-    // clicking on outer edge of circle?  then drag entire circle
-    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
-    // clicking inside circle?  then drag entire circle
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
-    {
-      draggingPart.part = 0;
-      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
-      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
-      draggingPart.snapData = {};
-      return true;
-    }
-    return false;
-  },
-
-  //=================================拖曳物件時====================================
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {objTypes['lineobj'].dragging(obj, mouse, draggingPart, false, shift)},
-
-  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
-  rayIntersection: function(obj, ray) {
-    if (obj.p <= 0)return;
-    var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));   //求光(的延長線)與鏡子的交點
-    var rp_exist = [];
-    var rp_lensq = [];
-    for (var i = 1; i <= 2; i++)
-    {
-
-      rp_exist[i] = graphs.intersection_is_on_ray(rp_temp[i], ray) && graphs.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
-
-
-      rp_lensq[i] = graphs.length_squared(ray.p1, rp_temp[i]); //光線射到第i交點的距離
-    }
-
-
-    if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) {return rp_temp[1];}
-    if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) {return rp_temp[2];}
-  },
-
-
-  //=================================將物件畫到Canvas上====================================
-  draw: function(obj, canvas, aboveLight) {
-
-  if (!aboveLight)
-  {
-    ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p, obj);
-  }
-  ctx.lineWidth = 1;
-  //ctx.fillStyle="indigo";
-  ctx.fillStyle = 'red';
-  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-  //ctx.fillStyle="rgb(255,0,255)";
-  ctx.fillStyle = 'indigo';
-  //ctx.fillStyle="Purple";
-  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
-
-
-  },
-
-  //=============================當物件被光射到時================================
-  shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
-
-    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
-    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
-    if (d > 0)
-    {
-      //從內部射向外部
-      var n1 = obj.p; //來源介質的折射率(目的介質假設為1)
-      //var normal={x:rp.x-obj.p1.x,y:rp.y-obj.p1.y};
-      var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
-    }
-    else if (d < 0)
-    {
-      //從外部射向內部
-      var n1 = 1 / obj.p;
-      var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
-      //var normal={x:obj.p1.x-rp.x,y:obj.p1.y-rp.y};
-    }
-    else
-    {
-      //可能導致Bug的狀況(如射到邊界點)
-      //為防止光線射向錯誤方向導致誤解,將光線吸收
-      ray.exist = false;
-      return;
-    }
-    //console.log(n1);
-
-    var shotType;
-
-    //界面融合
-    //if(surfaceMerging_obj)
-    for (var i = 0; i < surfaceMerging_objs.length; i++)
-    {
-      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1)
-      {
-        //從內部射向外部
-        n1 *= surfaceMerging_objs[i].p;
-      }
-      else if (shotType == -1)
-      {
-        //從外部射向內部
-        n1 /= surfaceMerging_objs[i].p;
-      }
-      else if (shotType == 0)
-      {
-        //等同於沒射到(例如兩界面重合)
-        //n1=n1;
-      }
-      else
-      {
-        //可能導致Bug的狀況(如射到邊界點)
-        //為防止光線射向錯誤方向導致誤解,將光線吸收
-        ray.exist = false;
-        return;
-      }
-    }
-    objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
-
-
-  },
-
-  getShotType: function(obj, ray) {
-
-    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, this.rayIntersection(obj, ray)));
-    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
-
-    if (d > 0)
-    {
-      return 1; //由內向外
-    }
-    if (d < 0)
-    {
-      return -1; //由外向內
-    }
-    return 2;
-  }
-
-  };
-
   //"refractor"物件
   objTypes['refractor'] = {
-
-
-  p_name: 'Refractive index', //屬性名稱
-  p_min: 1,
-  p_max: 3,
-  p_step: 0.01,
 
   supportSurfaceMerging: true, //支援界面融合
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('refractiveindex'), 1, 3, 0.01, obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //==============================建立物件過程滑鼠按下=======================================
@@ -1662,6 +1268,396 @@ var canvasPainter = {
 
   };
 
+  //"halfplane"(半平面折射鏡)物件
+  objTypes['halfplane'] = {
+
+  supportSurfaceMerging: true, //支援界面融合
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'halfplane', p1: mouse, p2: mouse, p: 1.5};
+  },
+
+  p_box: objTypes['refractor'].p_box,
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: objTypes['lineobj'].c_mousemove,
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    {
+      draggingPart.part = 1;
+      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      return true;
+    }
+    if (mouseOnPoint(mouse_nogrid, obj.p2))
+    {
+      draggingPart.part = 2;
+      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      return true;
+    }
+    if (mouseOnLine(mouse_nogrid, obj))
+    {
+      draggingPart.part = 0;
+      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
+      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+      draggingPart.snapData = {};
+      return true;
+    }
+    return false;
+  },
+
+  //=================================拖曳物件時====================================
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    var basePoint;
+    if (draggingPart.part == 1)
+    {
+      //正在拖曳第一個端點
+      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+
+      obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
+      obj.p2 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
+
+      //obj.p1=mouse;
+    }
+    if (draggingPart.part == 2)
+    {
+      //正在拖曳第二個端點
+
+      basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+
+      obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
+      obj.p1 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
+
+      //obj.p2=mouse;
+    }
+    if (draggingPart.part == 0)
+    {
+      //正在拖曳整條線
+
+      if (shift)
+      {
+        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)},{x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x)}], draggingPart.snapData);
+      }
+      else
+      {
+        var mouse_snapped = mouse;
+        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定
+      }
+
+      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差
+      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差
+      //移動線段的第一點
+      obj.p1.x = obj.p1.x - mouseDiffX;
+      obj.p1.y = obj.p1.y - mouseDiffY;
+      //移動線段的第二點
+      obj.p2.x = obj.p2.x - mouseDiffX;
+      obj.p2.y = obj.p2.y - mouseDiffY;
+      //更新滑鼠位置
+      draggingPart.mouse1 = mouse_snapped;
+    }
+  },
+
+  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
+  rayIntersection: function(obj, ray) {
+    if (obj.p <= 0)return;
+    var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.p1, obj.p2));   //求光(的延長線)與物件的交點
+
+    if (graphs.intersection_is_on_ray(rp_temp, ray))
+    {
+      //↑若rp_temp在ray上(即ray真的有射到obj,不是ray的延長線射到)
+      return rp_temp; //回傳光線的頭與鏡子的交點
+    }
+  },
+
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas, aboveLight) {
+
+  if (!aboveLight)
+  {
+    var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+    var par_x = (obj.p2.x - obj.p1.x) / len;
+    var par_y = (obj.p2.y - obj.p1.y) / len;
+    var per_x = par_y;
+    var per_y = -par_x;
+
+    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);
+
+    ctx.beginPath();
+    ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
+    ctx.lineTo(obj.p1.x + par_x * sufficientlyLargeDistance, obj.p1.y + par_y * sufficientlyLargeDistance);
+    ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
+    ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
+
+    objTypes['refractor'].fillGlass(obj.p, obj);
+  }
+
+  ctx.fillStyle = 'indigo';
+  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+
+
+  },
+
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
+    //ray.exist=false;
+
+    var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y); //ray與此線段之內積
+    var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y); //此線段長度平方
+    var normal = {x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y)};
+    //normal.x=rdots*(obj.p2.x-obj.p1.x)-ssq*(ray.p2.x-ray.p1.x);
+    //normal.y=rdots*(obj.p2.y-obj.p1.y)-ssq*(ray.p2.y-ray.p1.y);
+
+    var shotType = this.getShotType(obj, ray);
+    if (shotType == 1)
+    {
+      //從內部射向外部
+      var n1 = obj.p; //來源介質的折射率(目的介質假設為1)
+      //canvasPainter.draw(graphs.segment(ray.p1,s_point),canvas,"red");
+    }
+    else if (shotType == -1)
+    {
+      //從外部射向內部
+      var n1 = 1 / obj.p;
+    }
+    else
+    {
+      //可能導致Bug的狀況(如射到邊界點)
+      //為防止光線射向錯誤方向導致誤解,將光線吸收
+      ray.exist = false;
+      return;
+    }
+
+    //界面融合
+    //if(surfaceMerging_obj)
+    for (var i = 0; i < surfaceMerging_objs.length; i++)
+    {
+      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
+      if (shotType == 1)
+      {
+        //從內部射向外部
+        n1 *= surfaceMerging_objs[i].p;
+      }
+      else if (shotType == -1)
+      {
+        //從外部射向內部
+        n1 /= surfaceMerging_objs[i].p;
+      }
+      else if (shotType == 0)
+      {
+        //等同於沒射到(例如兩界面重合)
+        //n1=n1;
+      }
+      else
+      {
+        //可能導致Bug的狀況(如射到邊界點)
+        //為防止光線射向錯誤方向導致誤解,將光線吸收
+        ray.exist = false;
+        return;
+      }
+    }
+    objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
+
+
+  },
+
+  getShotType: function(obj, ray) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
+    if (rcrosss > 0)
+    {
+      return 1; //由內向外
+    }
+    if (rcrosss < 0)
+    {
+      return -1; //由外向內
+    }
+    return 2;
+  }
+
+  };
+
+  //"circlelens"物件
+  objTypes['circlelens'] = {
+
+  supportSurfaceMerging: true, //支援界面融合
+
+  //======================================建立物件=========================================
+  create: function(mouse) {
+    return {type: 'circlelens', p1: mouse, p2: mouse, p: 1.5};
+  },
+
+  p_box: objTypes['refractor'].p_box,
+
+  //使用lineobj原型
+  c_mousedown: objTypes['lineobj'].c_mousedown,
+  c_mousemove: function(obj, mouse, ctrl, shift) {objTypes['lineobj'].c_mousemove(obj, mouse, false, shift)},
+  c_mouseup: objTypes['lineobj'].c_mouseup,
+  move: objTypes['lineobj'].move,
+
+  //==========================繪圖區被按下時(判斷物件被按下的部分)===========================
+  // When the drawing area is pressed (to determine the part of the object being pressed)
+  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+    // clicking on p1 (center)?
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    {
+      draggingPart.part = 1;
+      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      return true;
+    }
+    // clicking on p2 (edge)?
+    if (mouseOnPoint(mouse_nogrid, obj.p2))
+    {
+      draggingPart.part = 2;
+      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      return true;
+    }
+    // clicking on outer edge of circle?  then drag entire circle
+    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    // clicking inside circle?  then drag entire circle
+    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
+    {
+      draggingPart.part = 0;
+      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置
+      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置
+      draggingPart.snapData = {};
+      return true;
+    }
+    return false;
+  },
+
+  //=================================拖曳物件時====================================
+  dragging: function(obj, mouse, draggingPart, ctrl, shift) {objTypes['lineobj'].dragging(obj, mouse, draggingPart, false, shift)},
+
+  //====================判斷一道光是否會射到此物件(若是,則回傳交點)====================
+  rayIntersection: function(obj, ray) {
+    if (obj.p <= 0)return;
+    var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));   //求光(的延長線)與鏡子的交點
+    var rp_exist = [];
+    var rp_lensq = [];
+    for (var i = 1; i <= 2; i++)
+    {
+
+      rp_exist[i] = graphs.intersection_is_on_ray(rp_temp[i], ray) && graphs.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+
+
+      rp_lensq[i] = graphs.length_squared(ray.p1, rp_temp[i]); //光線射到第i交點的距離
+    }
+
+
+    if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) {return rp_temp[1];}
+    if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) {return rp_temp[2];}
+  },
+
+
+  //=================================將物件畫到Canvas上====================================
+  draw: function(obj, canvas, aboveLight) {
+
+  if (!aboveLight)
+  {
+    ctx.beginPath();
+    ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
+    objTypes['refractor'].fillGlass(obj.p, obj);
+  }
+  ctx.lineWidth = 1;
+  //ctx.fillStyle="indigo";
+  ctx.fillStyle = 'red';
+  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+  //ctx.fillStyle="rgb(255,0,255)";
+  ctx.fillStyle = 'indigo';
+  //ctx.fillStyle="Purple";
+  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+
+
+  },
+
+  //=============================當物件被光射到時================================
+  shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
+
+    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
+    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+    if (d > 0)
+    {
+      //從內部射向外部
+      var n1 = obj.p; //來源介質的折射率(目的介質假設為1)
+      //var normal={x:rp.x-obj.p1.x,y:rp.y-obj.p1.y};
+      var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
+    }
+    else if (d < 0)
+    {
+      //從外部射向內部
+      var n1 = 1 / obj.p;
+      var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
+      //var normal={x:obj.p1.x-rp.x,y:obj.p1.y-rp.y};
+    }
+    else
+    {
+      //可能導致Bug的狀況(如射到邊界點)
+      //為防止光線射向錯誤方向導致誤解,將光線吸收
+      ray.exist = false;
+      return;
+    }
+    //console.log(n1);
+
+    var shotType;
+
+    //界面融合
+    //if(surfaceMerging_obj)
+    for (var i = 0; i < surfaceMerging_objs.length; i++)
+    {
+      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
+      if (shotType == 1)
+      {
+        //從內部射向外部
+        n1 *= surfaceMerging_objs[i].p;
+      }
+      else if (shotType == -1)
+      {
+        //從外部射向內部
+        n1 /= surfaceMerging_objs[i].p;
+      }
+      else if (shotType == 0)
+      {
+        //等同於沒射到(例如兩界面重合)
+        //n1=n1;
+      }
+      else
+      {
+        //可能導致Bug的狀況(如射到邊界點)
+        //為防止光線射向錯誤方向導致誤解,將光線吸收
+        ray.exist = false;
+        return;
+      }
+    }
+    objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
+
+
+  },
+
+  getShotType: function(obj, ray) {
+
+    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, this.rayIntersection(obj, ray)));
+    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+
+    if (d > 0)
+    {
+      return 1; //由內向外
+    }
+    if (d < 0)
+    {
+      return -1; //由外向內
+    }
+    return 2;
+  }
+
+  };
+
+
   //"laser"物件
   objTypes['laser'] = {
 
@@ -1704,15 +1700,17 @@ var canvasPainter = {
 
   //"led"物件
   objTypes['led'] = {
-
-  p_name: 'Emission Angle',
-  p_min: 0,
-  p_max: 180,
-  p_step: 1,
   
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'led', p1: mouse, p2: mouse, p : 30, symmetric : true};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //使用lineobj原型
@@ -1823,14 +1821,16 @@ var canvasPainter = {
   // beam splitter
   objTypes['beamsplitter'] = {
 
-  p_name: 'Transmission Ratio',
-  p_min: 0,
-  p_max: 1,
-  p_step: .01,
-
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //使用lineobj原型
@@ -1882,14 +1882,16 @@ var canvasPainter = {
   //"lens"(透鏡)物件
   objTypes['lens'] = {
 
-  p_name: 'Focal length', //屬性名稱
-  p_min: -1000,
-  p_max: 1000,
-  p_step: 1,
-
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'lens', p1: mouse, p2: mouse, p: 100};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //使用lineobj原型
@@ -2033,16 +2035,13 @@ var canvasPainter = {
 
   objTypes['sphericallens'] = {
 
-  p_name: 'Refractive index',
-  p_min: 1,
-  p_max: 3,
-  p_step: 0.01,
-
   supportSurfaceMerging: true,
 
   create: function(mouse) {
     return {type: 'sphericallens', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
   },
+
+  p_box: objTypes['refractor'].p_box,
 
   c_mousedown: objTypes['refractor'].c_mousedown,
   c_mousemove: objTypes['refractor'].c_mousemove,
@@ -2186,15 +2185,12 @@ var canvasPainter = {
   //"idealmirror"(理想曲面鏡)物件
   objTypes['idealmirror'] = {
 
-  p_name: 'Focal length', //屬性名稱
-  p_min: -1000,
-  p_max: 1000,
-  p_step: 1,
-
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100};
   },
+
+  p_box: objTypes['lens'].p_box,
 
   //使用lineobj原型
   c_mousedown: objTypes['lineobj'].c_mousedown,
@@ -2381,12 +2377,16 @@ var canvasPainter = {
   //"text"
   objTypes['text'] = {
 
-  p_name: 'Text',
-  p_type: 'string',
-
   //======================================建立物件=========================================
   create: function(mouse) {
   return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here'};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createStringAttr('', obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //==============================建立物件過程滑鼠按下=======================================
@@ -2461,14 +2461,16 @@ var canvasPainter = {
   //"radiant"物件
   objTypes['radiant'] = {
 
-  p_name: 'Brightness', //屬性名稱
-  p_min: 0,
-  p_max: 1,
-  p_step: 0.01,
-
   //======================================建立物件=========================================
   create: function(mouse) {
   return {type: 'radiant', x: mouse.x, y: mouse.y, p: 0.5};
+  },
+
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.p, function(obj, value) {
+      obj.p = value;
+    }, elem);
   },
 
   //==============================建立物件過程滑鼠按下=======================================
@@ -2564,15 +2566,12 @@ var canvasPainter = {
   //"parallel"(平行光)物件
   objTypes['parallel'] = {
 
-  p_name: 'Brightness', //屬性名稱
-  p_min: 0,
-  p_max: 1,
-  p_step: 0.01,
-
   //======================================建立物件=========================================
   create: function(mouse) {
     return {type: 'parallel', p1: mouse, p2: mouse, p: 0.5};
   },
+
+  p_box: objTypes['radiant'].p_box,
 
   //使用lineobj原型
   c_mousedown: objTypes['lineobj'].c_mousedown,
@@ -3580,7 +3579,9 @@ var canvasPainter = {
 
     canvas.onmousedown = function(e)
     {
-      document.getElementById('objAttr_text').blur();
+      //document.getElementById('objAttr_text').blur();
+      // TODO: check that commenting out the above line does not cause problem.
+
       document.body.focus();
       canvas_onmousedown(e);
       e.cancelBubble = true;
@@ -3621,7 +3622,9 @@ var canvasPainter = {
 
     canvas.ontouchstart = function(e)
     {
-      document.getElementById('objAttr_text').blur();
+      //document.getElementById('objAttr_text').blur();
+      // TODO: check that commenting out the above line does not cause problem.
+
       document.body.focus();
       canvas_onmousedown(e);
       e.cancelBubble = true;
@@ -3786,41 +3789,6 @@ var canvasPainter = {
     cancelMousedownEvent('forceStop');
     document.getElementById('restore').onclick = function() {restore()};
     cancelMousedownEvent('restore');
-    document.getElementById('objAttr_range').oninput = function()
-    {
-      setAttr(document.getElementById('objAttr_range').value * 1);
-    };
-
-    document.getElementById('objAttr_range').onmouseup = function()
-    {
-      createUndoPoint();
-    };
-
-    document.getElementById('objAttr_range').ontouchend = function()
-    {
-      setAttr(document.getElementById('objAttr_range').value);
-      createUndoPoint();
-    };
-    cancelMousedownEvent('objAttr_range');
-    document.getElementById('objAttr_text').onchange = function()
-    {
-      setAttr(document.getElementById('objAttr_text').value);
-    };
-    cancelMousedownEvent('objAttr_text');
-    document.getElementById('objAttr_text').onkeydown = function(e)
-    {
-      e.cancelBubble = true;
-      if (e.stopPropagation) e.stopPropagation();
-    };
-    document.getElementById('objAttr_text').onclick = function(e)
-    {
-      this.select();
-    };
-    document.getElementById('setAttrAll').onchange = function()
-    {
-      setAttr(document.getElementById('objAttr_text').value);
-      createUndoPoint();
-    };
     cancelMousedownEvent('setAttrAll');
     cancelMousedownEvent('setAttrAll_');
 
@@ -4623,9 +4591,10 @@ var canvasPainter = {
         constructionPoint = mouse;
         if (objs[selectedObj])
         {
-          if (hasSameAttrType(objs[selectedObj], objs[objs.length - 1]))
+          if (hasSameAttrType(objs[selectedObj], objs[objs.length - 1]) && objs[selectedObj].p)
           {
             objs[objs.length - 1].p = objs[selectedObj].p; //讓此物件的附加屬性與上一個選取的物件相同(若類型相同)
+            // TODO: Generalized this to other properties.
           }
         }
         selectObj(objs.length - 1);
@@ -4969,50 +4938,30 @@ var canvasPainter = {
     }
     selectedObj = index;
     document.getElementById('obj_name').innerHTML = document.getElementById('tool_' + objs[index].type).dataset['n'];
-    if (objTypes[objs[index].type].p_name)
+    if (objTypes[objs[index].type].p_box)
     {
-      //若此物件有可調整的參數(如折射率)
       document.getElementById('p_box').style.display = '';
-      var p_temp = objs[index].p;
-      //document.getElementById('p_name').innerHTML=objTypes[objs[index].type].p_name;
-      document.getElementById('p_name').innerHTML = document.getElementById('tool_' + objs[index].type).dataset['p'];
-      var type = objTypes[objs[index].type].p_type;
-      if (type == 'string') {
-        document.getElementById('objAttr_range').style.display = 'none';
-        document.getElementById('objAttr_text').style.width = '200px';
-      } else {
-        document.getElementById('objAttr_range').style.display = '';
-        document.getElementById('objAttr_range').min = objTypes[objs[index].type].p_min;
-        document.getElementById('objAttr_range').max = objTypes[objs[index].type].p_max;
-        document.getElementById('objAttr_range').step = objTypes[objs[index].type].p_step;
-        document.getElementById('objAttr_range').value = p_temp;
-        document.getElementById('objAttr_text').style.width = '40px';
-      }
-      document.getElementById('objAttr_text').value = p_temp;
-      objs[index].p = p_temp;
-      if (type != 'string') {
-        for (var i = 0; i < objs.length; i++)
+      document.getElementById('p_box').innerHTML = '';
+      objTypes[objs[index].type].p_box(objs[index], document.getElementById('p_box'));
+      for (var i = 0; i < objs.length; i++)
+      {
+        if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
         {
-          if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj]))
-          {
-            //若有另一個相同type的物件,則顯示"套用全部"選項
-            document.getElementById('setAttrAll_box').style.display = '';
-            //document.getElementById('setAttrAll').checked=false;
-            break;
-          }
-          if (i == objs.length - 1)
-          {
-            document.getElementById('setAttrAll_box').style.display = 'none';
-          }
+          //若有另一個相同type的物件,則顯示"套用全部"選項
+          document.getElementById('setAttrAll_box').style.display = '';
+          //document.getElementById('setAttrAll').checked=false;
+          break;
         }
-      } else {
-        document.getElementById('setAttrAll_box').style.display = 'none';
-        document.getElementById('setAttrAll').checked=false;
+        if (i == objs.length - 1)
+        {
+          document.getElementById('setAttrAll_box').style.display = 'none';
+        }
       }
     }
     else
     {
       document.getElementById('p_box').style.display = 'none';
+      document.getElementById('setAttrAll_box').style.display = 'none';
     }
 
     document.getElementById('obj_settings').style.display = '';
@@ -5021,27 +4970,21 @@ var canvasPainter = {
   function hasSameAttrType(obj1, obj2)
   {
     return obj1.type==obj2.type;
-    //return objTypes[obj1.type].p_name==objTypes[obj2.type].p_name;
-    //return document.getElementById('tool_' + obj1.type).dataset['n'] == document.getElementById('tool_' + obj2.type).dataset['n'];
   }
 
-  function setAttr(value)
+  function setAttr(func)
   {
-    //alert(value)
-    var type = objTypes[objs[selectedObj].type].p_type;
-    if (type != 'string') {
-      value *= 1;
-      document.getElementById('objAttr_range').value = value;
+    if (!document.getElementById('setAttrAll').checked)
+    {
+      func(objs[selectedObj]);
     }
-    objs[selectedObj].p = value;
-    document.getElementById('objAttr_text').value = value;
-    if (document.getElementById('setAttrAll').checked)
+    else
     {
       for (var i = 0; i < objs.length; i++)
       {
         if (hasSameAttrType(objs[i], objs[selectedObj]))
         {
-          objs[i].p = value;
+          func(objs[i]);
         }
       }
     }
@@ -5661,6 +5604,20 @@ var canvasPainter = {
     };
   }
 
+  function cancelMousedownEvent_(elem)
+  {
+    elem.onmousedown = function(e)
+    {
+      e.cancelBubble = true;
+      if (e.stopPropagation) e.stopPropagation();
+    };
+    elem.ontouchstart = function(e)
+    {
+      e.cancelBubble = true;
+      if (e.stopPropagation) e.stopPropagation();
+    };
+  }
+
 
   function setRayDensity(value)
   {
@@ -5803,7 +5760,6 @@ var canvasPainter = {
     //Beam
     document.getElementById('tool_parallel').value = getMsg('toolname_parallel');
     document.getElementById('tool_parallel').dataset['n'] = getMsg('toolname_parallel');
-    document.getElementById('tool_parallel').dataset['p'] = getMsg('brightness');
 
     //Point source▼
     document.getElementById('tool_radiant_').value = getMsg('toolname_radiant_') + downarraw;
@@ -5811,12 +5767,10 @@ var canvasPainter = {
     //Point source->360 degrees
     document.getElementById('tool_radiant').value = getMsg('toolname_radiant');
     document.getElementById('tool_radiant').dataset['n'] = getMsg('toolname_radiant');
-    document.getElementById('tool_radiant').dataset['p'] = getMsg('brightness');
 	
     //Point source->Finite angle
     document.getElementById('tool_led').value = getMsg('toolname_led');
     document.getElementById('tool_led').dataset['n'] = getMsg('toolname_led');
-    document.getElementById('tool_led').dataset['p'] = getMsg('emissionangle');
 
     //Mirror▼
     document.getElementById('tool_mirror_').value = getMsg('toolname_mirror_') + downarraw;
@@ -5836,12 +5790,10 @@ var canvasPainter = {
     //Mirror->Curve (ideal)
     document.getElementById('tool_idealmirror').value = getMsg('tooltitle_idealmirror');
     document.getElementById('tool_idealmirror').dataset['n'] = getMsg('toolname_idealmirror');
-    document.getElementById('tool_idealmirror').dataset['p'] = getMsg('focallength');
 
     //Mirror->Beam Splitter
     document.getElementById('tool_beamsplitter').value = getMsg('tooltitle_beamsplitter');
     document.getElementById('tool_beamsplitter').dataset['n'] = getMsg('toolname_beamsplitter');
-    document.getElementById('tool_beamsplitter').dataset['p'] = getMsg('transmissionratio');
 
     //Refractor▼
     document.getElementById('tool_refractor_').value = getMsg('toolname_refractor_') + downarraw;
@@ -5849,27 +5801,22 @@ var canvasPainter = {
     //Refractor->Half-plane
     document.getElementById('tool_halfplane').value = getMsg('tooltitle_halfplane');
     document.getElementById('tool_halfplane').dataset['n'] = getMsg('toolname_refractor_');
-    document.getElementById('tool_halfplane').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Circle
     document.getElementById('tool_circlelens').value = getMsg('tooltitle_circlelens');
     document.getElementById('tool_circlelens').dataset['n'] = getMsg('toolname_refractor_');
-    document.getElementById('tool_circlelens').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Other shape
     document.getElementById('tool_refractor').value = getMsg('tooltitle_refractor');
     document.getElementById('tool_refractor').dataset['n'] = getMsg('toolname_refractor_');
-    document.getElementById('tool_refractor').dataset['p'] = getMsg('refractiveindex');
 
     //Refractor->Lens (ideal)
     document.getElementById('tool_lens').value = getMsg('tooltitle_lens');
     document.getElementById('tool_lens').dataset['n'] = getMsg('toolname_lens');
-    document.getElementById('tool_lens').dataset['p'] = getMsg('focallength');
 
     //Refractor->Lens (real)
     document.getElementById('tool_sphericallens').value = getMsg('tooltitle_sphericallens');
     document.getElementById('tool_sphericallens').dataset['n'] = getMsg('toolname_sphericallens');
-    document.getElementById('tool_sphericallens').dataset['p'] = getMsg('refractiveindex');
 
     //Blocker
     document.getElementById('tool_blackline').value = getMsg('toolname_blackline');
@@ -5890,7 +5837,6 @@ var canvasPainter = {
     //Text
     document.getElementById('tool_text').value = getMsg('toolname_text');
     document.getElementById('tool_text').dataset['n'] = getMsg('toolname_text');
-    document.getElementById('tool_text').dataset['p'] = '';
 
     //Move view
     document.getElementById('tool_').value = getMsg('toolname_');
@@ -5928,4 +5874,111 @@ var canvasPainter = {
 
     document.getElementById('homepage').innerHTML = getMsg('homepage');
     document.getElementById('source').innerHTML = getMsg('source');
+  }
+
+
+  function createNumberAttr(label, min, max, step, value, func, elem) {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
+    elem.appendChild(p_name);
+    var objAttr_range = document.createElement('input');
+    objAttr_range.type = 'range';
+    objAttr_range.min = min;
+    objAttr_range.max = max;
+    objAttr_range.step = step;
+    objAttr_range.value = value;
+    elem.appendChild(objAttr_range);
+    var objAttr_text = document.createElement('input');
+    objAttr_text.type = 'text';
+    objAttr_text.value = value;
+    objAttr_text.style.width = '40px';
+    objAttr_text.style.marginLeft = '0.2em';
+    elem.appendChild(objAttr_text);
+    objAttr_range.oninput = function()
+    {
+      objAttr_text.value = objAttr_range.value;
+      setAttr(function(obj) {
+        func(obj, objAttr_range.value * 1);
+      });
+    };
+
+    objAttr_range.onmouseup = function()
+    {
+      createUndoPoint();
+    };
+
+    objAttr_range.ontouchend = function()
+    {
+      setAttr(function(obj) {
+        func(obj, objAttr_range.value * 1);
+      });
+      createUndoPoint();
+    };
+    cancelMousedownEvent_(objAttr_range);
+    objAttr_text.onchange = function()
+    {
+      objAttr_range.value = objAttr_text.value;
+      setAttr(function(obj) {
+        func(obj, objAttr_text.value);
+      });
+    };
+    cancelMousedownEvent_(objAttr_text);
+    objAttr_text.onkeydown = function(e)
+    {
+      e.cancelBubble = true;
+      if (e.stopPropagation) e.stopPropagation();
+    };
+    objAttr_text.onclick = function(e)
+    {
+      this.select();
+    };
+  }
+
+  function createStringAttr(label, value, func, elem) {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
+    elem.appendChild(p_name);
+    var objAttr_text = document.createElement('input');
+    objAttr_text.type = 'text';
+    objAttr_text.value = value;
+    objAttr_text.style.width = '200px';
+    elem.appendChild(objAttr_text);
+    objAttr_text.onchange = function()
+    {
+      setAttr(function(obj) {
+        func(obj, objAttr_text.value);
+      });
+    };
+    cancelMousedownEvent_(objAttr_text);
+    objAttr_text.onkeydown = function(e)
+    {
+      e.cancelBubble = true;
+      if (e.stopPropagation) e.stopPropagation();
+    };
+    objAttr_text.onclick = function(e)
+    {
+      this.select();
+    };
+  }
+
+  function createBooleanAttr(label, value, func, elem) {
+    var label_elem = document.createElement('label');
+    label_elem.style.marginLeft = '0.2em';
+    label_elem.style.marginRight = '0.2em';
+    elem.appendChild(label_elem);
+    var objAttr_checkbox = document.createElement('input');
+    objAttr_checkbox.type = 'checkbox';
+    objAttr_checkbox.style.display = 'inline';
+    objAttr_checkbox.checked = value;
+    label_elem.appendChild(objAttr_checkbox);
+    var p_name = document.createElement('span');
+    p_name.innerHTML = '&nbsp;' + label;
+    label_elem.appendChild(p_name);
+    objAttr_checkbox.onchange = function()
+    {
+      setAttr(function(obj) {
+        func(obj, objAttr_checkbox.checked);
+      });
+    };
+    cancelMousedownEvent_(label_elem);
   }

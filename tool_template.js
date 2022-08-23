@@ -2,18 +2,27 @@
 
 objTypes['id_of_your_tool'] = {
   
-  // If your tool has a property to be adjusted with a slider, include the following four properties:
-  p_name: 'name_for_the_slider',
-  p_min: the_minimum_value,
-  p_max: the_maximum_value,
-  p_step: the_step_for_the_slider,
-
   create: function(mouse) {
-    // Return the initial status of the object when the user first click the view to create it (the construction may or may not be completed at this stage). the coordinates of the mouse are (mouse.x, mouse.y). The following line is for a linear object with a slider as an example.
-    return {type: 'id_of_your_tool', p1: mouse, p2: mouse, p: default_value_for_the_slider_if_any};
+    // Return the initial status of the object when the user first click the view to create it (the construction may or may not be completed at this stage). the coordinates of the mouse are (mouse.x, mouse.y). The following line is for a linear object with a property.
+    return {type: 'id_of_your_tool', p1: mouse, p2: mouse, property_name: default_value};
   },
   
-  /* INTERACTIONS WITH THE USER */
+  /* THE PROPERTY BOX */
+  // If your tool has some properties to be adjusted by the user, include the following function
+  p_box: function(obj, elem) {
+    // To create a slider, use
+    createNumberAttr(getMsg('locale_key_for_slider_name'), the_minimum_value, the_maximum_value, the_step_for_the_slider, obj.property_name, function(obj, value) {
+      obj.property_name = value;
+    }, elem);
+    // createStringAttr and createBooleanAttr can be used similarly (without the min, max and step).
+
+    // To create custom HTML, append children to elem and use the following to change properties in event callbacks:
+      setAttr(function(obj) {
+        // Modify obj here
+      });
+  }
+
+  /* MOUSE INTERACTIONS WHEN CONSTRUCTING THE OBJECT */
   // If your object has the shape of a line segment, then use the followings:
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
@@ -35,6 +44,8 @@ objTypes['id_of_your_tool'] = {
   c_mousedown: function(obj, mouse) {
     // Similar to c_mousedown.
   },
+
+  /* MOUSE INTERACTIONS AFTER THE OBJECT IS CONSTRUCTED */
   move: function(obj, diffX, diffY) {
     // Move the position of obj by (diffX, diffY). An example of moving a point is
     obj.some_control_point.x += diffX;
