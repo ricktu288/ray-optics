@@ -266,6 +266,9 @@ locales["zh-CN"] = {
   "emissionangle": {
     "message": "发射角（度）："
   },
+  "symmetric": {
+    "message": "对称"
+  },
   "focallength": {
     "message": "焦距："
   },

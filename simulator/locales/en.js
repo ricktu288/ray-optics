@@ -272,6 +272,9 @@ locales["en"] = {
   "emissionangle": {
     "message": "Emission Angle:"
   },
+  "symmetric": {
+    "message": "Symmetric"
+  },
   "focallength": {
     "message": "Focal length:"
   },

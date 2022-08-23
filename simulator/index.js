@@ -1708,8 +1708,14 @@ var canvasPainter = {
 
   //===================================顯示屬性方塊=========================================
   p_box: function(obj, elem) {
+    createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
+      obj.brightness = value;
+    }, elem);
     createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.p, function(obj, value) {
       obj.p = value;
+    }, elem);
+    createBooleanAttr(getMsg('symmetric'), obj.symmetric, function(obj, value) {
+      obj.symmetric = value;
     }, elem);
   },
 
@@ -1755,8 +1761,8 @@ var canvasPainter = {
 	
     var ray1 = graphs.ray(graphs.point(obj.p1.x, obj.p1.y), graphs.point(x1, y1));
 	
-    ray1.brightness_s = 0.5;
-	ray1.brightness_p = 0.5;
+    ray1.brightness_s = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
+    ray1.brightness_p = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
     if (i == i0)
     {
