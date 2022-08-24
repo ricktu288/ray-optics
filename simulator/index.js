@@ -5753,6 +5753,7 @@ var canvasPainter = {
 
 
     var downarraw = '\u25BC';
+    var uparraw = '\u25B2';
     //var downarraw="\u25BE";
     document.title = getMsg('appName');
 
@@ -5880,6 +5881,7 @@ var canvasPainter = {
 
     document.getElementById('homepage').innerHTML = getMsg('homepage');
     document.getElementById('source').innerHTML = getMsg('source');
+    document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
   }
 
 
