@@ -32,7 +32,7 @@ function ToolBarViewModel() {
         ToolTypeEnum.RADIO),      
       new ToolBarItem("Beam", "tool_parallel", "beam",
         ToolTypeEnum.RADIO),
-      self.point_sources = new ToolBarItem("Point Source", "tool_radiant_", 4, ToolTypeEnum.RADIOLIST, [
+      self.point_sources = new ToolBarItem("Point Source", "tool_radiant_", 6, ToolTypeEnum.RADIOLIST, [
         new ToolBarItem("360 degrees", "tool_radiant", "point_source",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Finite angle", "tool_led", "led",
