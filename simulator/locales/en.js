@@ -108,6 +108,9 @@ locales["en"] = {
   "modename_observer": {
     "message": "Seen by observer"
   },
+  "color_mode": {
+    "message": "Simulate Colors"
+  },
   "File: ": {
     "message": "File: "
   },

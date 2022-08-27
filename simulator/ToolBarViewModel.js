@@ -83,7 +83,9 @@ function ToolBarViewModel() {
       new ToolBarItem("All Images", "mode_images", "all_images",
         ToolTypeEnum.RADIO),
       new ToolBarItem("Seen by Observer", "mode_observer", "seen_by_observer",
-        ToolTypeEnum.RADIO)
+        ToolTypeEnum.RADIO),
+      self.colorMode = new ToolBarItem("Simulate Colors", "color_mode", undefined,
+        ToolTypeEnum.CHECK)
     ]),
     new ToolBarGroup("Settings: ", [
       self.rayDensity = new ToolBarItem("Ray Density", "rayDensity", undefined,
@@ -128,4 +130,12 @@ $("#help").click(function () {
     $("[data-toggle=popover]").popover("disable");
     localStorage.rayOpticsHelp = "off";
   }
+});
+
+$("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");
+$("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">beta</span></sup>' 
+
+$("#color_mode").click(function () {
+  colorMode = this.checked;
+  draw();
 });

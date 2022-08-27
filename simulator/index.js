@@ -3547,6 +3547,7 @@ var canvasPainter = {
   var totalTruncation = 0;
   var backgroundImage = null;
   var restoredData = "";
+  var colorMode = false;
 
   window.onload = function(e) {
     init_i18n();
@@ -5146,6 +5147,7 @@ var canvasPainter = {
     //mode="light";
     toolbtn_clicked('laser');
     modebtn_clicked('light');
+    colorMode = false;
     backgroundImage = null;
 
     //Reset new UI.
@@ -5154,6 +5156,7 @@ var canvasPainter = {
     window.toolBarViewModel.c1.selected(false);
     window.toolBarViewModel.c2.selected(false);
     window.toolBarViewModel.c3.selected(false);
+    window.toolBarViewModel.colorMode.selected(false);
 
     document.getElementById('lockobjs').checked = false;
     document.getElementById('grid').checked = false;
@@ -5337,7 +5340,7 @@ var canvasPainter = {
   //=========================================JSON輸出/輸入====================================================
   function JSONOutput()
   {
-    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale}, JSONreplacer, 2);
+    document.getElementById('textarea1').value = JSON.stringify({version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale, colorMode: colorMode}, JSONreplacer, 2);
     if (typeof(Storage) !== "undefined" && !restoredData) {
       localStorage.rayOpticsData = document.getElementById('textarea1').value;
     }
@@ -5390,6 +5393,10 @@ var canvasPainter = {
     {
       jsonData.scale = 1;
     }
+    if (!jsonData.colorMode)
+    {
+      jsonData.colorMode = false;
+    }
 
     objs = jsonData.objs;
     rayDensity_light = jsonData.rayDensity_light;
@@ -5397,6 +5404,8 @@ var canvasPainter = {
     observer = jsonData.observer;
     origin = jsonData.origin;
     scale = jsonData.scale;
+    colorMode = jsonData.colorMode;
+    window.toolBarViewModel.colorMode.selected(colorMode);
     modebtn_clicked(jsonData.mode);
     selectObj(selectedObj);
     //draw();
