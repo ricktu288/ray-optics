@@ -272,6 +272,9 @@ locales["zh-TW"] = {
   "focallength": {
     "message": "焦距："
   },
+  "cartesiansign": {
+    "message": "卡氏符號約定"
+  },
   "refractiveindex": {
     "message": "折射率："
   },

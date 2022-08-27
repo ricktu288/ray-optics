@@ -2196,7 +2196,18 @@ var canvasPainter = {
     return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100};
   },
 
-  p_box: objTypes['lens'].p_box,
+  //===================================顯示屬性方塊=========================================
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
+      obj.p = value * (cartesianSign?-1:1);
+    }, elem);
+    createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
+      cartesianSign = value;
+      if (obj == objs[selectedObj]) {
+        selectObj(selectedObj);
+      }
+    }, elem);
+  },
 
   //使用lineobj原型
   c_mousedown: objTypes['lineobj'].c_mousedown,
@@ -3531,6 +3542,7 @@ var canvasPainter = {
   var modes = ['light', 'extended_light', 'images', 'observer'];
   var xyBox_cancelContextMenu = false;
   var scale = 1;
+  var cartesianSign = false;
   var totalTruncation = 0;
   var backgroundImage = null;
   var restoredData = "";
@@ -5123,6 +5135,7 @@ var canvasPainter = {
     origin = {x: 0, y: 0};
     observer = null;
     scale = 1;
+    cartesianSign = false;
     window.toolBarViewModel.zoom.value(scale * 100);
     //mode="light";
     toolbtn_clicked('laser');
@@ -5371,6 +5384,10 @@ var canvasPainter = {
     {
       jsonData.scale = 1;
     }
+    if (!jsonData.cartesianSign)
+    {
+      jsonData.cartesianSign = false;
+    }
 
     objs = jsonData.objs;
     rayDensity_light = jsonData.rayDensity_light;
@@ -5378,6 +5395,7 @@ var canvasPainter = {
     observer = jsonData.observer;
     origin = jsonData.origin;
     scale = jsonData.scale;
+    cartesianSign = jsonData.cartesianSign;
     modebtn_clicked(jsonData.mode);
     selectObj(selectedObj);
     //draw();

@@ -278,6 +278,9 @@ locales["en"] = {
   "focallength": {
     "message": "Focal length:"
   },
+  "cartesiansign": {
+    "message": "Cartesian Sign Convention"
+  },
   "refractiveindex": {
     "message": "Refractive index:"
   },
