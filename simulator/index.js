@@ -5585,8 +5585,10 @@ var canvasPainter = {
 
   function modebtn_clicked(mode1)
   {
+    console.log(mode1);
     document.getElementById('mode_' + mode).className = 'toolbtn';
     document.getElementById('mode_' + mode1).className = 'toolbtnselected';
+    window.toolBarViewModel.modes.selected({"light":"Rays","extended_light":"Extended Rays","images":"All Images","observer":"Seen by Observer"}[mode1]);
     mode = mode1;
     if (mode == 'images' || mode == 'observer')
     {
