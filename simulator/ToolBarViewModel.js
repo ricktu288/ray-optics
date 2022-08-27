@@ -98,7 +98,7 @@ function ToolBarViewModel() {
       self.zoom = new ToolBarItem("Zoom", "zoom", undefined,
         ToolTypeEnum.SLIDE, undefined, undefined,
         25, 500, 25, 100),
-      new ToolBarItem("Help", "help", undefined,
+      self.help = new ToolBarItem("Help", "help", undefined,
         ToolTypeEnum.HELP, undefined)
     ])
   ];
@@ -111,9 +111,21 @@ ko.applyBindings(toolBarViewModel);
 
 window.toolBarViewModel = toolBarViewModel;
 
-$("#help").click(function () {
-  if (this.checked)
-    $("[data-toggle=popover]").popover("enable");
-  else
+try {
+  if (localStorage.rayOpticsHelp == "off") {
+    $("#help").prop('checked', false);
     $("[data-toggle=popover]").popover("disable");
+    window.toolBarViewModel.help.selected(false)
+  }
+} catch { }
+$("#help").click(function () {
+  if (this.checked) {
+    console.log(1);
+    $("[data-toggle=popover]").popover("enable");
+    localStorage.rayOpticsHelp = "on";
+  } else {
+    console.log(0);
+    $("[data-toggle=popover]").popover("disable");
+    localStorage.rayOpticsHelp = "off";
+  }
 });

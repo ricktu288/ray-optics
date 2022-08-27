@@ -2202,8 +2202,9 @@ var canvasPainter = {
       obj.p = value * (cartesianSign?-1:1);
     }, elem);
     createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-      cartesianSign = value;
       if (obj == objs[selectedObj]) {
+        cartesianSign = value;
+        localStorage.rayOpticsCartesianSign = value?"true":"false";
         selectObj(selectedObj);
       }
     }, elem);
@@ -5136,6 +5137,11 @@ var canvasPainter = {
     observer = null;
     scale = 1;
     cartesianSign = false;
+    try {
+      if (localStorage.rayOpticsCartesianSign == "true") {
+        cartesianSign = true;
+      }
+    } catch { }
     window.toolBarViewModel.zoom.value(scale * 100);
     //mode="light";
     toolbtn_clicked('laser');
@@ -5384,10 +5390,6 @@ var canvasPainter = {
     {
       jsonData.scale = 1;
     }
-    if (!jsonData.cartesianSign)
-    {
-      jsonData.cartesianSign = false;
-    }
 
     objs = jsonData.objs;
     rayDensity_light = jsonData.rayDensity_light;
@@ -5395,7 +5397,6 @@ var canvasPainter = {
     observer = jsonData.observer;
     origin = jsonData.origin;
     scale = jsonData.scale;
-    cartesianSign = jsonData.cartesianSign;
     modebtn_clicked(jsonData.mode);
     selectObj(selectedObj);
     //draw();
