@@ -4494,6 +4494,7 @@ var canvasPainter = {
       }
 
     }
+    ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1.0;
     //if(showLight)
     //{
@@ -4529,7 +4530,6 @@ var canvasPainter = {
     //ctx.stroke();
     setTimeout(draw_, 10);
 
-    ctx.globalCompositeOperation = 'source-over';
   }
 
 
