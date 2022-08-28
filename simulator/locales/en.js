@@ -272,6 +272,9 @@ locales["en"] = {
   "brightness": {
     "message": "Brightness:"
   },
+  "wavelength": {
+    "message": "Wavelength (nm):"
+  },
   "emissionangle": {
     "message": "Emission Angle:"
   },
