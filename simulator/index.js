@@ -211,9 +211,9 @@
   }
 };
 
-function getMouseStyle(obj, style) {
+function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
-    return 'rgb(0,255,255)'
+    return (screen && colorMode)?'rgb(0,100,100)':'rgb(0,255,255)'
   return style;
 }
 
@@ -658,11 +658,18 @@ var canvasPainter = {
   {
     if (n >= 1)
     {
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = getMouseStyle(obj, 'white');
-      //ctx.fillStyle="rgb(128,128,128)";
-      //ctx.globalAlpha=1-(1/n);
-      ctx.globalAlpha = Math.log(n) / Math.log(1.5) * 0.2;
+      if (colorMode) {
+        ctx.globalCompositeOperation = 'screen';
+        var alpha = 1 - Math.exp(-(Math.log(n) / Math.log(1.5) * 0.2));
+        ctx.fillStyle = getMouseStyle(obj, "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)", true);
+        //ctx.globalAlpha = ;
+      } else {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = getMouseStyle(obj, 'white');
+        //ctx.fillStyle="rgb(128,128,128)";
+        //ctx.globalAlpha=1-(1/n);
+        ctx.globalAlpha = Math.log(n) / Math.log(1.5) * 0.2;
+      }
 
       //ctx.globalAlpha=0.3;
       ctx.fill('evenodd');
@@ -1757,10 +1764,12 @@ var canvasPainter = {
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
+    ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
     ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.p1.x - 1, obj.p1.y - 1, 3, 3);
+    ctx.globalCompositeOperation = "source-over";
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
     ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
@@ -2546,10 +2555,12 @@ var canvasPainter = {
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
+    ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
     ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
-    ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
+    ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)', true);
     ctx.fillRect(obj.x - 1, obj.y - 1, 3, 3);
+    ctx.globalCompositeOperation = "source-over";
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
     ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
@@ -2645,6 +2656,7 @@ var canvasPainter = {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     if (colorMode) {
+      ctx.globalCompositeOperation = "screen";
       ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 700, 1));
     } else {
       ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
@@ -2655,6 +2667,7 @@ var canvasPainter = {
     ctx.moveTo(obj.p1.x + Math.sin(a_l) * 2, obj.p1.y + Math.cos(a_l) * 2);
     ctx.lineTo(obj.p2.x + Math.sin(a_l) * 2, obj.p2.y + Math.cos(a_l) * 2);
     ctx.stroke();
+    ctx.globalCompositeOperation = "source-over";
 
     ctx.strokeStyle = 'rgba(128,128,128,255)';
     ctx.lineWidth = 2;
@@ -3223,7 +3236,7 @@ var canvasPainter = {
   //var scale_len_long=20;
 
 
-  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)', true);
   //ctx.font="bold 14px Arial";
   ctx.font = '14px Arial';
   ctx.fillStyle = 'rgb(128,128,128)';
@@ -3359,7 +3372,7 @@ var canvasPainter = {
   //var ctx = canvas.getContext('2d');
   if (!aboveLight)
   {
-    ctx.globalCompositeOperation = 'screen';
+    ctx.globalCompositeOperation = 'lighter';
     var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var scale_width_limit = 5;
 
@@ -3370,7 +3383,7 @@ var canvasPainter = {
     var scale_len_mid = 15;
     var scale_len_long = 20;
 
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
+    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)',true);
     ctx.font = 'bold 14px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';
 
@@ -3473,7 +3486,7 @@ var canvasPainter = {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)')
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)', true)
       //ctx.textBaseline="hanging";
       //ctx.lineWidth=3;
       //ctx.lineCap = "butt";
