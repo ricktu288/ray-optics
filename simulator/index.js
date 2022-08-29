@@ -1757,7 +1757,7 @@ var canvasPainter = {
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
-    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700)[0];
+    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
     ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.p1.x - 1, obj.p1.y - 1, 3, 3);
@@ -2546,7 +2546,7 @@ var canvasPainter = {
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
-    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700)[0];
+    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
     ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.x - 1, obj.y - 1, 3, 3);
@@ -2645,7 +2645,7 @@ var canvasPainter = {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     if (colorMode) {
-      ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 700)[0]);
+      ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 700, 1));
     } else {
       ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
     }
@@ -3359,7 +3359,7 @@ var canvasPainter = {
   //var ctx = canvas.getContext('2d');
   if (!aboveLight)
   {
-    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalCompositeOperation = 'screen';
     var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var scale_width_limit = 5;
 
@@ -4156,7 +4156,7 @@ var canvasPainter = {
     
     //ctx.beginPath();
     if (colorMode) {
-      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalCompositeOperation = 'screen';
     }
     while (leftRayCount != 0 && !forceStop)
     {
@@ -4241,14 +4241,18 @@ var canvasPainter = {
               }
             }
           }
-          ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
+          if (colorMode) {
+            var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p));
+          } else {
+            ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
+          }
           //↓若光線沒有射到任何物件
           if (s_lensq == Infinity)
           {
             if (mode == 'light' || mode == 'extended_light')
             {
               if (colorMode) {
-                canvasPainter.draw(waitingRays[j], wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出這條光線
+                canvasPainter.draw(waitingRays[j], color); //畫出這條光線
               } else {
                 canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); //畫出這條光線
               }
@@ -4258,7 +4262,7 @@ var canvasPainter = {
             {
               if (colorMode) {
                 ctx.setLineDash([2, 2]);
-                canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出這條光的延長線
+                canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線
                 ctx.setLineDash([]);
               } else {
                 canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線
@@ -4287,7 +4291,7 @@ var canvasPainter = {
             if (mode == 'light' || mode == 'extended_light')
             {
               if (colorMode) {
-                canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出這條光線
+                canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); //畫出這條光線
               } else {
                 canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); //畫出這條光線
               }
@@ -4297,9 +4301,9 @@ var canvasPainter = {
             {
               if (colorMode) {
                 ctx.setLineDash([2, 2]);
-                canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出這條光的延長線
+                canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線
                 ctx.setLineDash([1, 5]);
-                canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出這條光向前的延長線
+                canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); //畫出這條光向前的延長線
                 ctx.setLineDash([]);
               } else {
                 canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線
@@ -4355,7 +4359,7 @@ var canvasPainter = {
                     {
                       //虛像
                       if (colorMode) {
-                        canvasPainter.draw(observed_intersection, wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出像
+                        canvasPainter.draw(observed_intersection, color); //畫出像
                       } else {
                         canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像
                       }
@@ -4365,14 +4369,14 @@ var canvasPainter = {
                     {
                       //實像
                       if (colorMode) {
-                        canvasPainter.draw(observed_intersection, wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出像
+                        canvasPainter.draw(observed_intersection, color); //畫出像
                       } else {
                         canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像
                       }
                     }
                       if (colorMode) {
                         ctx.setLineDash([1, 2]);
-                        canvasPainter.draw(graphs.segment(observed_point, observed_intersection), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出觀察到的光線(射線)
+                        canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); //畫出觀察到的光線(射線)
                         ctx.setLineDash([]);
                       } else {
                         canvasPainter.draw(graphs.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); //畫出連線
@@ -4382,7 +4386,7 @@ var canvasPainter = {
                   {
                     if (colorMode) {
                       ctx.setLineDash([1, 2]);
-                      canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出觀察到的光線(射線)
+                      canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線)
                       ctx.setLineDash([]);
                     } else {
                       canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線)
@@ -4437,7 +4441,7 @@ var canvasPainter = {
                 {
                   //虛像
                   if (colorMode) {
-                    canvasPainter.draw(observed_intersection, wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出像
+                    canvasPainter.draw(observed_intersection, color); //畫出像
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像
                   }
@@ -4446,7 +4450,7 @@ var canvasPainter = {
                 {
                   //實像
                   if (colorMode) {
-                    canvasPainter.draw(observed_intersection, wavelengthToColor(waitingRays[j].wavelength)[0]); //畫出像
+                    canvasPainter.draw(observed_intersection, color); //畫出像
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像
                   }
@@ -4500,7 +4504,22 @@ var canvasPainter = {
       }
 
     }
-    ctx.globalCompositeOperation = 'source-over';
+    if (colorMode) {
+      //var gammaCorrection = 0.2;
+      var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+          var R = - Math.log(1-(data[i] / 255));
+          var G = - Math.log(1-(data[i+1] / 255));
+          var B = - Math.log(1-(data[i+2] / 255));
+          var factor = Math.max(R,G,B,1);
+          data[i] = 255 * R / factor;
+          data[i+1] = 255 * G / factor;
+          data[i+2] = 255 * B / factor;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+    }
     ctx.globalAlpha = 1.0;
     //if(showLight)
     //{
@@ -6131,7 +6150,7 @@ var canvasPainter = {
 
 // From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
         // takes wavelength in nm and returns an rgba value
-        function wavelengthToColor(wavelength) {
+        function wavelengthToColor(wavelength, brightness) {
             var r,
                 g,
                 b,
@@ -6181,14 +6200,15 @@ var canvasPainter = {
             } else {
                 alpha = 1;
             }
-     
-            colorSpace = ["rgba(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%, " + alpha + ")", R, G, B, alpha]
-     
-            // colorSpace is an array with 5 elements.
-            // The first element is the complete code as a string.  
-            // Use colorSpace[0] as is to display the desired color.  
-            // use the last four elements alone or together to access each of the individual r, g, b and a channels.  
-           
-            return colorSpace;
+
+            R *= alpha * brightness;
+            G *= alpha * brightness;
+            B *= alpha * brightness;
+
+            R = 1 - Math.exp(-R);
+            G = 1 - Math.exp(-G);
+            B = 1 - Math.exp(-B);
+
+            return "rgb(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%)";
            
         }
