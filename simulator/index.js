@@ -4372,7 +4372,8 @@ var canvasPainter = {
                     {
                       //虛像
                       if (colorMode) {
-                        canvasPainter.draw(observed_intersection, color); //畫出像
+                        ctx.fillStyle = color;
+                        ctx.fillRect(observed_intersection.x - 1, observed_intersection.y - 1, 3, 3);
                       } else {
                         canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像
                       }
@@ -4410,7 +4411,13 @@ var canvasPainter = {
                 {
                   if (last_intersection)
                   {
-                    canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線)
+                    if (colorMode) {
+                      ctx.setLineDash([1, 2]);
+                      canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線)
+                      ctx.setLineDash([]);
+                    } else {
+                      canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線)
+                    }
                   }
                   /*
                   else
@@ -4454,7 +4461,8 @@ var canvasPainter = {
                 {
                   //虛像
                   if (colorMode) {
-                    canvasPainter.draw(observed_intersection, color); //畫出像
+                    ctx.fillStyle = color;
+                    ctx.fillRect(observed_intersection.x - 1, observed_intersection.y - 1, 3, 3);
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像
                   }
@@ -4472,7 +4480,8 @@ var canvasPainter = {
                 {
                   //虛物
                   if (colorMode) {
-
+                    ctx.fillStyle = color;
+                    ctx.fillRect(observed_intersection.x, observed_intersection.y, 1, 1);
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(80,80,80)'); //畫出像
                   }
@@ -4522,9 +4531,9 @@ var canvasPainter = {
       var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
       var data = imageData.data;
       for (var i = 0; i < data.length; i += 4) {
-          var R = - Math.log(1-(data[i] / 255));
-          var G = - Math.log(1-(data[i+1] / 255));
-          var B = - Math.log(1-(data[i+2] / 255));
+          var R = - Math.log(1-(data[i] / 256));
+          var G = - Math.log(1-(data[i+1] / 256));
+          var B = - Math.log(1-(data[i+2] / 256));
           var factor = Math.max(R,G,B,1);
           data[i] = 255 * R / factor;
           data[i+1] = 255 * G / factor;
