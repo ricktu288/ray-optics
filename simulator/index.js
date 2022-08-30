@@ -2207,7 +2207,7 @@ var canvasPainter = {
     if (obj == mouseObj) {
       // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
       // do some extra work to get an accurate focal length.  still not quite exact
-      var n = obj.p;
+      var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (565*565*0.000001));
       var si1 = n*r1/(n-1);
       var power = (1-n)/r2 - n/(thick-si1);
       var focalLength = 1/power;
