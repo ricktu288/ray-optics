@@ -276,7 +276,7 @@ locales["en"] = {
     "message": "Wavelength (nm):"
   },
   "emissionangle": {
-    "message": "Emission Angle:"
+    "message": "Emission Angle (°):"
   },
   "symmetric": {
     "message": "Symmetric"
@@ -289,6 +289,9 @@ locales["en"] = {
   },
   "refractiveindex": {
     "message": "Refractive index:"
+  },
+  "cauchycoeff": {
+    "message": "Cauchy coefficient"
   },
   "transmissionratio": {
     "message": "Transmission Ratio:"
@@ -399,13 +402,16 @@ locales["en"] = {
     "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
   },
   "mode_extended_light_popover": {
-    "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones."
+    "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
   "mode_images_popover": {
-    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough."
+    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
   },
   "mode_observer_popover": {
-    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange. (Drag the big blue dot to move the observer.)"
+    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the point(s) in orange. (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+  },
+  "color_mode_popover": {
+    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. <br><b>⚠️ WARNING:<br><ul><li>The color of images may be very inaccurate, especially when Ray Density is high.</li><li>The 'wavelength' is only for color and dispersion. Wave optics phenomena are not simulated.</li><li>The 'Export' button does not work with color mixture.</ul></b>"
   },
   "rayDensity_popover": {
     "message": "Decides how dense should the lights be simulated. The number is in log scale."

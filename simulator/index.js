@@ -454,12 +454,16 @@ var canvasPainter = {
 
   //===================================顯示屬性方塊=========================================
   p_box: function(obj, elem) {
-    createNumberAttr(getMsg('refractiveindex'), 1, 3, 0.01, obj.p, function(obj, value) {
-      obj.p = value;
-    }, elem);
     if (colorMode) {
-      createNumberAttr(getMsg('cauchycoeff'), 0, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
+      createNumberAttr(getMsg('cauchycoeff') + " A:", 1, 3, 0.01, obj.p, function(obj, value) {
+        obj.p = value;
+      }, elem);
+      createNumberAttr("B(μm²):", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         obj.cauchyCoeff = value;
+      }, elem);
+    } else {
+      createNumberAttr(getMsg('refractiveindex'), 1, 3, 0.01, obj.p, function(obj, value) {
+        obj.p = value;
       }, elem);
     }
   },
@@ -1693,7 +1697,7 @@ var canvasPainter = {
       obj.p = value;
     }, elem);
     if (colorMode) {
-      createNumberAttr(getMsg('wavelength'), 380, 750, 1, obj.wavelength || 700, function(obj, value) {
+      createNumberAttr(getMsg('wavelength'), 400, 700, 1, obj.wavelength || 532, function(obj, value) {
         obj.wavelength = value;
       }, elem);
     }
@@ -1714,7 +1718,7 @@ var canvasPainter = {
   ray1.brightness_s = 0.5 * (obj.p || 1);
   ray1.brightness_p = 0.5 * (obj.p || 1);
   if (colorMode) {
-    ray1.wavelength = obj.wavelength || 700;
+    ray1.wavelength = obj.wavelength || 532;
   }
   ray1.gap = true;
   ray1.isNew = true;
@@ -1740,7 +1744,7 @@ var canvasPainter = {
       obj.brightness = value;
     }, elem);
     if (colorMode) {
-      createNumberAttr(getMsg('wavelength'), 380, 750, 1, obj.wavelength || 700, function(obj, value) {
+      createNumberAttr(getMsg('wavelength'), 380, 750, 1, obj.wavelength || 532, function(obj, value) {
         obj.wavelength = value;
       }, elem);
     }
@@ -1765,7 +1769,7 @@ var canvasPainter = {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
     ctx.globalCompositeOperation = "screen";
-    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
+    ctx.fillStyle = wavelengthToColor(obj.wavelength || 532, 1);
     ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.p1.x - 1, obj.p1.y - 1, 3, 3);
@@ -1806,7 +1810,7 @@ var canvasPainter = {
     ray1.brightness_s = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
     ray1.brightness_p = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
     if (colorMode) {
-      ray1.wavelength = obj.wavelength || 700;
+      ray1.wavelength = obj.wavelength || 532;
     }
     ray1.isNew = true;
     if (i == i0)
@@ -2556,7 +2560,7 @@ var canvasPainter = {
   //var ctx = canvas.getContext('2d');
   if (colorMode) {
     ctx.globalCompositeOperation = "screen";
-    ctx.fillStyle = wavelengthToColor(obj.wavelength || 700, 1);
+    ctx.fillStyle = wavelengthToColor(obj.wavelength || 532, 1);
     ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)', true);
     ctx.fillRect(obj.x - 1, obj.y - 1, 3, 3);
@@ -2618,7 +2622,7 @@ var canvasPainter = {
     ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
     if (colorMode) {
-      ray1.wavelength = obj.wavelength || 700;
+      ray1.wavelength = obj.wavelength || 532;
     }
     if (i == i0)
     {
@@ -2657,7 +2661,7 @@ var canvasPainter = {
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     if (colorMode) {
       ctx.globalCompositeOperation = "screen";
-      ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 700, 1));
+      ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 532, 1));
     } else {
       ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
     }
@@ -2698,7 +2702,7 @@ var canvasPainter = {
       ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
       ray1.isNew = true;
       if (colorMode) {
-        ray1.wavelength = obj.wavelength || 700;
+        ray1.wavelength = obj.wavelength || 532;
       }
       if (i == 0)
       {
@@ -4536,7 +4540,9 @@ var canvasPainter = {
 
     }
     if (colorMode && ctx.constructor != C2S) {
-      //var gammaCorrection = 0.2;
+      // Inverse transformation of the color adjustment made in wavelengthToColor.
+      // This is to avoid the color satiation problem when using the 'lighter' composition.
+      // Currently not supported when exporting to SVG.
       var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
       var data = imageData.data;
       for (var i = 0; i < data.length; i += 4) {
@@ -6179,69 +6185,72 @@ var canvasPainter = {
     cancelMousedownEvent_(label_elem);
   }
 
-// From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
-        // takes wavelength in nm and returns an rgba value
-        function wavelengthToColor(wavelength, brightness) {
-            var r,
-                g,
-                b,
-                alpha,
-                colorSpace,
-                wl = wavelength,
-                gamma = 1;
-     
-     
-            if (wl >= 380 && wl < 440) {
-                R = -1 * (wl - 440) / (440 - 380);
-                G = 0;
-                B = 1;
-           } else if (wl >= 440 && wl < 490) {
-               R = 0;
-               G = (wl - 440) / (490 - 440);
-               B = 1;  
-            } else if (wl >= 490 && wl < 510) {
-                R = 0;
-                G = 1;
-                B = -1 * (wl - 510) / (510 - 490);
-            } else if (wl >= 510 && wl < 580) {
-                R = (wl - 510) / (580 - 510);
-                G = 1;
-                B = 0;
-            } else if (wl >= 580 && wl < 645) {
-                R = 1;
-                G = -1 * (wl - 645) / (645 - 580);
-                B = 0.0;
-            } else if (wl >= 645 && wl <= 780) {
-                R = 1;
-                G = 0;
-                B = 0;
-            } else {
-                R = 0;
-                G = 0;
-                B = 0;
-            }
-     
-            // intensty is lower at the edges of the visible spectrum.
-            if (wl > 780 || wl < 380) {
-                alpha = 0;
-            } else if (wl > 700) {
-                alpha = (780 - wl) / (780 - 700);
-            } else if (wl < 420) {
-                alpha = (wl - 380) / (420 - 380);
-            } else {
-                alpha = 1;
-            }
+// takes wavelength in nm and returns an rgb value
+function wavelengthToColor(wavelength, brightness) {
+    // From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
+    var r,
+        g,
+        b,
+        alpha,
+        colorSpace,
+        wl = wavelength,
+        gamma = 1;
 
-            R *= alpha * brightness;
-            G *= alpha * brightness;
-            B *= alpha * brightness;
 
-            if (ctx.constructor != C2S) {
-              R = 1 - Math.exp(-R);
-              G = 1 - Math.exp(-G);
-              B = 1 - Math.exp(-B);
-            }
+    if (wl >= 380 && wl < 440) {
+        R = -1 * (wl - 440) / (440 - 380);
+        G = 0;
+        B = 1;
+   } else if (wl >= 440 && wl < 490) {
+       R = 0;
+       G = (wl - 440) / (490 - 440);
+       B = 1;  
+    } else if (wl >= 490 && wl < 510) {
+        R = 0;
+        G = 1;
+        B = -1 * (wl - 510) / (510 - 490);
+    } else if (wl >= 510 && wl < 580) {
+        R = (wl - 510) / (580 - 510);
+        G = 1;
+        B = 0;
+    } else if (wl >= 580 && wl < 645) {
+        R = 1;
+        G = -1 * (wl - 645) / (645 - 580);
+        B = 0.0;
+    } else if (wl >= 645 && wl <= 780) {
+        R = 1;
+        G = 0;
+        B = 0;
+    } else {
+        R = 0;
+        G = 0;
+        B = 0;
+    }
 
-            return "rgb(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%)";
-           
-        }
+    // intensty is lower at the edges of the visible spectrum.
+    if (wl > 780 || wl < 380) {
+        alpha = 0;
+    } else if (wl > 700) {
+        alpha = (780 - wl) / (780 - 700);
+    } else if (wl < 420) {
+        alpha = (wl - 380) / (420 - 380);
+    } else {
+        alpha = 1;
+    }
+
+    R *= alpha * brightness;
+    G *= alpha * brightness;
+    B *= alpha * brightness;
+
+    if (ctx.constructor != C2S) {
+      // Adjust color to make (R,G,B) linear when using the 'screen' composition.
+      // This is to avoid the color satiation problem when using the 'lighter' composition.
+      // Currently not supported when exporting to SVG.
+      R = 1 - Math.exp(-R);
+      G = 1 - Math.exp(-G);
+      B = 1 - Math.exp(-B);
+    }
+
+    return "rgb(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%)";
+   
+}
