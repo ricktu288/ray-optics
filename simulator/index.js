@@ -1923,6 +1923,7 @@ var canvasPainter = {
     var transmission = mirror.p;
     ray2.brightness_s = transmission*ray.brightness_s;
     ray2.brightness_p = transmission*ray.brightness_p;
+    ray2.wavelength = ray.wavelength;
     if (ray2.brightness_s + ray2.brightness_p > .01) {
       addRay(ray2);
     } else {
