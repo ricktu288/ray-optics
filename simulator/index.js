@@ -4357,7 +4357,12 @@ var canvasPainter = {
                   if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
                   {
 
-                    ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+
+                    if (colorMode) {
+                      var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5);
+                    } else {
+                      ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+                    }
                     if (s_point)
                     {
                       rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
@@ -4444,7 +4449,11 @@ var canvasPainter = {
               observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
               if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
               {
-                ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+                if (colorMode) {
+                  var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5);
+                } else {
+                  ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+                }
 
                 if (s_point)
                 {
@@ -4526,7 +4535,7 @@ var canvasPainter = {
       }
 
     }
-    if (colorMode) {
+    if (colorMode && ctx.constructor != C2S) {
       //var gammaCorrection = 0.2;
       var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
       var data = imageData.data;
@@ -6227,9 +6236,11 @@ var canvasPainter = {
             G *= alpha * brightness;
             B *= alpha * brightness;
 
-            R = 1 - Math.exp(-R);
-            G = 1 - Math.exp(-G);
-            B = 1 - Math.exp(-B);
+            if (ctx.constructor != C2S) {
+              R = 1 - Math.exp(-R);
+              G = 1 - Math.exp(-G);
+              B = 1 - Math.exp(-B);
+            }
 
             return "rgb(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%)";
            
