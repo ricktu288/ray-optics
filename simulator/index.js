@@ -458,7 +458,7 @@ var canvasPainter = {
       obj.p = value;
     }, elem);
     if (colorMode) {
-      createNumberAttr(getMsg('cauchycoeff'), 0, 0.02, 0.0001, (obj.cauchyCoeff || 0), function(obj, value) {
+      createNumberAttr(getMsg('cauchycoeff'), 0, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         obj.cauchyCoeff = value;
       }, elem);
     }
@@ -923,13 +923,13 @@ var canvasPainter = {
     if (shotType == 1)
     {
       //從內部射向外部
-      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
+      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
       //canvasPainter.draw(graphs.segment(ray.p1,s_point),canvas,"red");
     }
     else if (shotType == -1)
     {
       //從外部射向內部
-      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else if (shotType == 0)
     {
@@ -951,12 +951,12 @@ var canvasPainter = {
       if (shotType == 1)
       {
         //從內部射向外部
-        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         //從外部射向內部
-        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {
@@ -1431,13 +1431,13 @@ var canvasPainter = {
     if (shotType == 1)
     {
       //從內部射向外部
-      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
+      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
       //canvasPainter.draw(graphs.segment(ray.p1,s_point),canvas,"red");
     }
     else if (shotType == -1)
     {
       //從外部射向內部
-      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else
     {
@@ -1455,12 +1455,12 @@ var canvasPainter = {
       if (shotType == 1)
       {
         //從內部射向外部
-        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         //從外部射向內部
-        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {
@@ -1597,14 +1597,14 @@ var canvasPainter = {
     if (d > 0)
     {
       //從內部射向外部
-      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
+      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1)
       //var normal={x:rp.x-obj.p1.x,y:rp.y-obj.p1.y};
       var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
     }
     else if (d < 0)
     {
       //從外部射向內部
-      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
       var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
       //var normal={x:obj.p1.x-rp.x,y:obj.p1.y-rp.y};
     }
@@ -1627,12 +1627,12 @@ var canvasPainter = {
       if (shotType == 1)
       {
         //從內部射向外部
-        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         //從外部射向內部
-        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {
@@ -2207,7 +2207,7 @@ var canvasPainter = {
     if (obj == mouseObj) {
       // the lensmaker's equation is apparently not accurate enough at the scale of this simulator so we
       // do some extra work to get an accurate focal length.  still not quite exact
-      var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0) / (565*565*0.000001));
+      var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (565*565*0.000001));
       var si1 = n*r1/(n-1);
       var power = (1-n)/r2 - n/(thick-si1);
       var focalLength = 1/power;
