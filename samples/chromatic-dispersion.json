@@ -1,0 +1,260 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 155,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 155,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 400
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 125,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 125,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 700
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 130,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 130,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 621
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 135,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 135,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 594
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 140,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 140,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 506
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 145,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 145,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 470
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 150,
+        "y": 344,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 150,
+        "y": 460,
+        "exist": true
+      },
+      "p": 0.24,
+      "wavelength": 451
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 255.13540879018944,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 262.86459120981056,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 272.86573752426676,
+          "y": 399.7973356869135,
+          "arc": true
+        },
+        {
+          "x": 262.86459120981056,
+          "y": 480.40467137382706,
+          "arc": false
+        },
+        {
+          "x": 255.13540879018944,
+          "y": 480.40467137382706,
+          "arc": false
+        },
+        {
+          "x": 245.13426247573324,
+          "y": 399.7973356869135,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 769.373480098699,
+          "y": 354.7157824849382,
+          "arc": false
+        },
+        {
+          "x": 707.3045912098103,
+          "y": 477.1646713738271,
+          "arc": false
+        },
+        {
+          "x": 842,
+          "y": 480,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 339,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 399,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 402,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 462,
+        "exist": true
+      }
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 648.6954087901897,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 653.3045912098103,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 665.0593043115275,
+          "y": 400.76233568691356,
+          "arc": true
+        },
+        {
+          "x": 653.3045912098103,
+          "y": 441.5246713738271,
+          "arc": false
+        },
+        {
+          "x": 648.6954087901897,
+          "y": 441.5246713738271,
+          "arc": false
+        },
+        {
+          "x": 633.4518933248102,
+          "y": 400.76233568691356,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -92.52418667877868,
+    "y": -133.09218688126833
+  },
+  "scale": 1.2345679012345687,
+  "colorMode": true
+}

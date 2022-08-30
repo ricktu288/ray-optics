@@ -200,6 +200,7 @@ locales["zh-TW"] = {
   "sample12": { "message": "兩面鏡子成像" },
   "sample13": { "message": "單一光線的反射與折射" },
   "sample14": { "message": "球面透鏡與面鏡" },
+  "sample15": { "message": "色散" },
   "mode_light": {
     "message": "光線"
   },

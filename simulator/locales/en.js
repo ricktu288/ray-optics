@@ -206,6 +206,7 @@ locales["en"] = {
   "sample12": { "message": "Images Formed By Two Mirrors" },
   "sample13": { "message": "Reflection and Refraction of a Single Ray" },
   "sample14": { "message": "Spherical Lens and Mirror" },
+  "sample15": { "message": "Chromatic dispersion" },
   "mode_light": {
     "message": "Rays"
   },

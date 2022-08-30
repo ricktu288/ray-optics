@@ -4002,7 +4002,7 @@ var canvasPainter = {
     var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json", "lens-images.json",
 		    "convex-lens.json", "concave-lens.json", "spherical-aberration.json", "zoom-lens.json",
                     "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
-                    "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json" ];
+                    "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json" ];
     for (i = 1; ; i++) {
       var elt = document.getElementById("sample" + i);
       if (!elt) break;
