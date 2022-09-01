@@ -107,6 +107,9 @@ objTypes['id_of_your_tool'] = {
     ray1.brightness_s = intensity_of_s_polarization;
     ray1.brightness_p = intensity_of_p_polarization;
     // Note that the alpha value when the ray is drawn is the sum of them.
+    if (colorMode) {
+      ray1.wavelength = wavelength_for_color_simulation;
+    }
     ray1.gap = true; // True if it is the first ray in a bunch of rays shot by the object, false otherwise. This is for the detection of images to work currectly.
     ray1.isNew = true;
     addRay(ray1);

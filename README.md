@@ -8,6 +8,7 @@ Simulate reflection and refraction of light.
 - Simulate reflection in linear, circular, and parabolic mirror
 - Simulate beam splitter
 - Simulate refraction in linear or circular interfaces, including both refracted and reflected rays
+- Simulate mixture of colors and chromatic dispersion<sup>beta</sup>  
 - Simulate ideal lens/mirror, which obeys lens/mirror equation
 - View extensions of rays to see if they converge to a virtual image
 - View real images, virtual images, and virtual objects directly
@@ -118,6 +119,7 @@ The source code is available at: https://github.com/knockout/knockout
 - 模擬直線形、弧形、拋物線形鏡子的反射
 - 模擬分光鏡(beam splitter)
 - 模擬直線型與弧形界面的折射，包括反射光與折射光
+- 模擬混色與色散<sup>beta</sup> 
 - 模擬理想透鏡/面鏡（符合透鏡/面鏡公式）
 - 顯示光線的延長線以觀察是否成虛像
 - 直接檢視實像、虛像與虛物
