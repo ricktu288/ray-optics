@@ -54,8 +54,6 @@ The structure of a tool is described in [the template here](tool_template.js). T
 | Detector | `power` |
 | Text | `text` |
 
-I'm sorry that most of the comments in [`index.js`](simulator/index.js) are in Chinese. For now, you can see [the template](tool_template.js) for some explanations in English.
-
 ## A way to quickly test your own tools
 
 After you complete the code `objTypes['id_of_your_tool'] = {...};`, a quick way to test it without modifying the toolbar is to execute the code directly in your browser's developer tool. And when you want to choose the tool, execute `AddingObjType = 'id_of_your_tool'`.
