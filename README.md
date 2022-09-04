@@ -30,7 +30,7 @@ Open `simulator/index.html` locally in you browser (or start an http server in t
 
 # Making your own tools
 
-The structure of a tool is described in [the template here](tool_template.js). To view the code of an existing tool, you can search for `objTypes['id_of_the_tool'] =` in [`index.js`](simulator/index.js).
+The structure of a tool is described in [the template here](tool_template.js). The codes of the existing tools are in [`simulator/js/objs`](simulator/js/objs).
 
 | Name on the toolbar | ID of the tool |
 | --- | --- |
@@ -60,7 +60,7 @@ After you complete the code `objTypes['id_of_your_tool'] = {...};`, a quick way 
 
 ## Putting your own tools into the toolbar
 
-You can just search for an existing tool id such as `protractor` or `beamsplitter` in `simulator/ToolBarViewModel.js`, `simulator/index.html`, `simulator/index.js`, and `simulator/locales/en.js` and add the corresponding lines for your tools. And also include an exported SVG image (use the "export" button) of your tools in `img/id_of_your_tool.svg` cropped to a suitable size.
+You can just search for an existing tool id such as `protractor` or `beamsplitter` in `simulator/js/ToolBarViewModel.js`, `simulator/index.html`, `simulator/index.js`, and `simulator/locales/en.js` and add the corresponding lines for your tools. And also include an exported SVG image (use the "export" button) of your tools in `img/id_of_your_tool.svg` cropped to a suitable size.
 
 If you create a useful tool, please submit a pull request to let others use your tool! (We will add the Chinese locales for it.)
 

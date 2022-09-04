@@ -15,9 +15,9 @@
 
   <title>Ray Optics Simulation</title>
   <link rel="canonical" href="https://ricktu288.github.io/ray-optics/simulator/">
-  <link rel="icon" href="icon128.png" type="image/png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon128.png">
+  <link rel="icon" href="../icon128.png" type="image/png">
+  <link rel="manifest" href="manifest/manifest.json">
+  <link rel="apple-touch-icon" href="../icon128.png">
   <style>
 input[type="button"] {
   margin: 1px;
@@ -163,7 +163,7 @@ textarea {
   </style>
   <!--Import CSSs-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body style="background-color:rgb(0,0,0); overflow:hidden;">
 
@@ -389,17 +389,46 @@ textarea {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 
-<script src="index.js"></script>
-<script src="FileSaver.js"></script>
-<script src="canvas2svg.js"></script>
+<script src="js/graphs.js"></script>
+<script src="js/canvasPainter.js"></script>
+<script src="js/index.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/simulator.js"></script>
+<script src="js/parameterBox.js"></script>
+<script src="../thirdparty/FileSaver.js"></script>
+<script src="../thirdparty/canvas2svg.js"></script>
+
+<!--Objs scripts-->
+<script src="js/objs/lineobj.js"></script>
+<script src="js/objs/laser.js"></script>
+<script src="js/objs/parallel.js"></script>
+<script src="js/objs/radiant.js"></script>
+<script src="js/objs/led.js"></script>
+<script src="js/objs/mirror.js"></script>
+<script src="js/objs/arcmirror.js"></script>
+<script src="js/objs/idealmirror.js"></script>
+<script src="js/objs/parabolicmirror.js"></script>
+<script src="js/objs/beamsplitter.js"></script>
+<script src="js/objs/refractor.js"></script>
+<script src="js/objs/halfplane.js"></script>
+<script src="js/objs/circlelens.js"></script>
+<script src="js/objs/lens.js"></script>
+<script src="js/objs/sphericallens.js"></script>
+<script src="js/objs/blackline.js"></script>
+<script src="js/objs/ruler.js"></script>
+<script src="js/objs/protractor.js"></script>
+<script src="js/objs/power.js"></script>
+<script src="js/objs/text.js"></script>
+
+<!--Locale scripts-->
 <script src="locales/en.js"></script>
 <script src="locales/zh_CN.js"></script>
 <script src="locales/zh_TW.js"></script>
 
 <!--View Models scripts-->
-<script src="ToolBarGroup.js"></script>
-<script src="ToolBarViewModel.js"></script>
-<script src="script.js"></script>
+<script src="js/ToolBarGroup.js"></script>
+<script src="js/ToolBarViewModel.js"></script>
+<script src="js/script.js"></script>
 
 
 </body>
