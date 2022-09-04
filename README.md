@@ -32,28 +32,6 @@ Open `simulator/index.html` locally in you browser (or start an http server in t
 
 The structure of a tool is described in [the template here](tool_template.js). The codes of the existing tools are in [`simulator/js/objs`](simulator/js/objs).
 
-| Name on the toolbar | ID of the tool |
-| --- | --- |
-| Ray | `laser` |
-| Beam | `parallel` |
-| Point source -> 360 degrees | `radiant` |
-| Point source -> Finite angle | `led` |
-| Mirrors -> Segment | `mirror` |
-| Mirrors -> Circular Arc | `arcmirror` |
-| Mirrors -> Ideal Curved | `idealmirror` |
-| Mirrors -> Parabolic | `parabolicmirror` |
-| Mirrors -> Beam Splitter | `beamsplitter` |
-| Glasses -> Half-plane | `halfplane` |
-| Glasses -> Circle | `circlelens` |
-| Glasses -> Free-shape | `refractor` |
-| Glasses -> Ideal Lens | `lens` |
-| Glasses -> Spherical Lens | `sphericallens` |
-| Blocker | `blackline` |
-| Ruler | `ruler` |
-| Protractor | `protractor` |
-| Detector | `power` |
-| Text | `text` |
-
 ## A way to quickly test your own tools
 
 After you complete the code `objTypes['id_of_your_tool'] = {...};`, a quick way to test it without modifying the toolbar is to execute the code directly in your browser's developer tool. And when you want to choose the tool, execute `AddingObjType = 'id_of_your_tool'`.
