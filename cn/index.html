@@ -17,8 +17,6 @@
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/cn/" hreflang="zh-CN">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="icon" href="https://ricktu288.github.io/ray-optics/icon128.png" type="image/png">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
 .carousel-inner > .item > img {
   width: 1280px;
@@ -58,7 +56,7 @@
     </p>
   </center>
   <br>
-  <div id="screenshots" class="carousel slide" data-ride="carousel">
+  <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#screenshots" data-slide-to="0" class="active"></li>
@@ -103,98 +101,98 @@
       <div class="col-sm-12">
         <h2 id="tools">工具</h2>
         <div class="row thumbnail right-caption">
-          <img src="../img/ray.svg" alt="ray" class="img-rounded">
+          <img src="../img/ray.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="ray">单一光线</p>
             <span id="ray_desc">由两点决定一条光线。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/beam.svg" alt="Beam" class="img-rounded">
+          <img src="../img/beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="beam">平行光</p>
             <span id="beam_desc">由一线段产生一束平行光，密度由"光线密度"滑杆决定。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/point_source.svg" alt="Point Source" class="img-rounded">
+          <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="point_source">点光源</p>
             <span id="point_source_desc">由一点向四周发射光线，数量由"光线密度"滑杆决定。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/mirror.svg" alt="Mirror" class="img-rounded">
+          <img src="../img/mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="mirror">镜子</p>
             <span id="mirror_desc">模拟光线射到镜子时的反射。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded">
+          <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="mirror_arc">镜子 (曲线)</p>
             <span id="mirror_arc_desc">曲线形的镜子。可选圆弧或抛物线。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded">
+          <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="ideal_curved_mirror">理想曲面镜</p>
             <span id="ideal_curved_mirror_desc">完全符合面镜公式(1/p + 1/q = 1/f)的理想化"曲面"镜，可直接设定其焦距(单位为像素)。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded">
+          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="beamsplitter">分光镜</p>
             <span id="beamsplitter_desc">能穿透一个比例的光的镜子。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded">
+          <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="glass_halfplane">透光物</p>
             <span id="glass_halfplane_desc">模拟光线经过透光物体界面时的反射与折射。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded">
+          <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="glass">透光物 (其他形状)</p>
             <span id="glass_desc">任何由线段与圆弧组成的透光物，包括三棱镜与"球面"透镜。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded">
+          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="ideal_lens">透光物 (理想透镜)</p>
             <span id="ideal_lens_desc">完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距(单位为像素)。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/blocker.svg" alt="Blocker" class="img-rounded">
+          <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
             <p class="tool-title" id="blocker">吸光片</p>
             <span id="blocker_desc">线段形状的吸光片，光线射到其上后就不会再射出。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/ruler.svg" alt="Ruler" style="width:100px;" class="img-rounded">
+          <img src="../img/ruler.svg" alt="Ruler"  style="width:100px;height:100px;" class="img-rounded">
           <div class="caption">
             <p class="tool-title" id="ruler">直尺</p>
             <span id="ruler_desc">指定原点与另一点。刻度单位为像素。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/protractor.svg" alt="Protractor" style="width:100px;" class="img-rounded">
+          <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
           <div class="caption">
             <p class="tool-title" id="protractor">量角器</p>
             <span id="protractor_desc">指定圆心和圆周上一点作为零度位置。刻度单位为度。</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/power.svg" alt="Detector" style="width:100px;" class="img-rounded">
+          <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
           <div class="caption">
             <p class="tool-title" id="power">探测器</p>
             <span id="power_desc">测量通过一线段的能量流率(P)、垂直动量流率(F⊥)与水平动量流率(F∥)。单位为任意。</span>
@@ -210,29 +208,47 @@
             <p class="mode-title" id="rays">光线</p>
             <span id="rays_desc">画出光线。当"光线密度"高时，光线呈现连续。</span>
           </div>
-          <img src="../img/low_density.svg" alt="Low density" class="img-rounded">
-          <img src="../img/high_density.svg" alt="High density" style="margin-top:5px" class="img-rounded">
+          <center>
+            <div style="aspect-ratio: 519/163; max-width: 510px">
+              <img src="../img/low_density.svg" alt="Low density" class="img-rounded" style="width:100%">
+            </div>
+            <div style="aspect-ratio: 519/163; max-width: 510px">
+              <img src="../img/high_density.svg" alt="High density" style="margin-top:5px;width:100%" class="img-rounded">
+            </div>
+          </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
             <p class="mode-title" id="extended_rays">延长光线</p>
             <span id="extended_rays_desc">除光线实际路径外，亦画出其延长线。橘色、灰色分别表示向后、向前的延长线。</span>
           </div>
-          <img src="../img/extended_rays.svg" alt="Extended rays" class="img-rounded">
+          <center>
+            <div style="aspect-ratio: 445/216; max-width: 510px">
+              <img src="../img/extended_rays.svg" alt="Extended rays" class="img-rounded" style="width:100%">
+            </div>
+          </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
             <p class="mode-title" id="all_images">所有像</p>
             <span id="all_images_desc">点出像的位置。黄点表示实像，橘点表示虚像，灰点(图中没有)表示虚物。注意"光线密度"不够高时有些像无法正常显示。</span>
           </div>
-          <img src="../img/all_images.svg" alt="All images" class="img-rounded">
+          <center>
+            <div style="aspect-ratio: 445/216; max-width: 510px">
+              <img src="../img/all_images.svg" alt="All images" class="img-rounded" style="width:100%">
+            </div>
+          </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
             <p class="mode-title" id="seen_by_observer">观察者所见</p>
             <span id="seen_by_observer_desc">模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以橘色表示。</span>
           </div>
-          <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded">
+          <center>
+            <div style="aspect-ratio: 445/216; max-width: 510px">
+              <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
+            </div>
+          </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
@@ -241,7 +257,11 @@
 模拟光源的颜色（波长）、混色与透光物的色散。
             </span>
           </div>
-          <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded">
+          <center>
+            <div style="aspect-ratio: 445/216; max-width: 510px">
+              <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
+            </div>
+          </center>
         </div>
       </div>
     </div>
@@ -262,7 +282,8 @@
 
 
 
-</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>
