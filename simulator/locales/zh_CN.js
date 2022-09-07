@@ -27,12 +27,6 @@ locales["zh-CN"] = {
   "toolname_mirror_": {
     "message": "镜子"
   },
-  "tooltitle_mirror": {
-    "message": "线段"
-  },
-  "tooltitle_arcmirror": {
-    "message": "圆弧"
-  },
   "tool_parabolicmirror": {
     "message": "抛物线" 
   },
@@ -45,34 +39,16 @@ locales["zh-CN"] = {
   "toolname_idealmirror": {
     "message": "理想曲面镜"
   },
-  "tooltitle_sphericallens": {
-    "message": "球面透镜"
-  },
   "tool_sphericallens": {
     "message": "球面透镜"
   },
   "toolname_sphericallens": {
     "message": "球面透镜"
   },
-  "tooltitle_idealmirror": {
-    "message": "理想曲面镜"
-  },
   "toolname_refractor_": {
     "message": "透光物"
   },
-  "tooltitle_halfplane": {
-    "message": "半平面"
-  },
-  "tooltitle_circlelens": {
-    "message": "圆形"
-  },
-  "tooltitle_refractor": {
-    "message": "透镜及其他"
-  },
   "toolname_lens": {
-    "message": "理想透镜"
-  },
-  "tooltitle_lens": {
     "message": "理想透镜"
   },
   "toolname_blackline": {
@@ -144,8 +120,17 @@ locales["zh-CN"] = {
   "tool_mirror": {
     "message": "线段"
   },
+  "toolname_mirror": {
+    "message": "镜子"
+  },
   "tool_arcmirror": {
     "message": "圆弧"
+  },
+  "toolname_arcmirror": {
+    "message": "镜子"
+  },
+  "toolname_parabolicmirror": {
+    "message": "镜子"
   },
   "tool_idealmirror": {
     "message": "理想曲面镜"
@@ -156,11 +141,20 @@ locales["zh-CN"] = {
   "tool_halfplane": {
     "message": "半平面"
   },
+  "toolname_halfplane": {
+    "message": "透光物"
+  },
   "tool_circlelens": {
     "message": "圆形"
   },
+  "toolname_circlelens": {
+    "message": "透光物"
+  },
   "tool_refractor": {
     "message": "透镜及其他"
+  },
+  "toolname_refractor": {
+    "message": "透光物"
   },
   "tool_lens": {
     "message": "理想透镜"

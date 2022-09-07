@@ -124,49 +124,34 @@ window.onload = function(e) {
 
   tools_normal.forEach(function(element, index)
   {
-    document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtn_mouseentered(element, e);};
     document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
-    cancelMousedownEvent('tool_' + element);
   });
 
   tools_withList.forEach(function(element, index)
   {
-    document.getElementById('tool_' + element).onmouseenter = function(e) {toolbtnwithlist_mouseentered(element, e);};
-    /*document.getElementById('tool_' + element).onclick = function(e) {toolbtnwithlist_mouseentered(element, e);};*/
     document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
-    document.getElementById('tool_' + element).onmouseleave = function(e) {toolbtnwithlist_mouseleft(element, e);};
-    document.getElementById('tool_' + element + 'list').onmouseleave = function(e) {toollist_mouseleft(element, e);};
-    cancelMousedownEvent('tool_' + element);
   });
 
   tools_inList.forEach(function(element, index)
   {
-    document.getElementById('tool_' + element).onclick = function(e) {toollistbtn_clicked(element, e);};
-    cancelMousedownEvent('tool_' + element);
+    document.getElementById('tool_' + element).onclick = function(e) {toolbtn_clicked(element, e);};
   });
 
 
+
   document.getElementById('undo').onclick = undo;
-  cancelMousedownEvent('undo');
   document.getElementById('redo').onclick = redo;
-  cancelMousedownEvent('redo');
   document.getElementById('reset').onclick = function() {initParameters();cancelRestore();createUndoPoint();};
-  cancelMousedownEvent('reset');
-  document.getElementById('accessJSON').onclick = accessJSON;
-  cancelMousedownEvent('accessJSON');
   document.getElementById('save').onclick = function()
   {
     document.getElementById('saveBox').style.display = '';
     document.getElementById('save_name').select();
   };
-  cancelMousedownEvent('save');
   document.getElementById('export_svg').onclick = exportSVG;
-  cancelMousedownEvent('export_svg');
   document.getElementById('open').onclick = function()
   {
     document.getElementById('openfile').click();
   };
-  cancelMousedownEvent('open');
 
   document.getElementById('openfile').onchange = function()
   {
@@ -179,8 +164,14 @@ window.onload = function(e) {
     modebtn_clicked(element);
     createUndoPoint();
   };
-  cancelMousedownEvent('mode_' + element);
   });
+  document.getElementById('color_mode').onclick = function()
+  {
+    colorMode = this.checked;
+    draw();
+  };
+
+
   document.getElementById('zoom').oninput = function()
   {
     setScale(this.value / 100);
@@ -208,7 +199,6 @@ window.onload = function(e) {
     setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
     createUndoPoint();
   };
-  cancelMousedownEvent('rayDensity');
   document.getElementById('rayDensity').oninput = function()
   {
     setRayDensity(Math.exp(this.value));
@@ -238,12 +228,8 @@ window.onload = function(e) {
     draw();
     createUndoPoint();
   };
-  cancelMousedownEvent('rayDensity');
-  cancelMousedownEvent('lockobjs_');
-  cancelMousedownEvent('grid_');
-  document.getElementById('showgrid_').onclick = function() {draw()};
+  document.getElementById('grid').onclick = function() {draw()};
   document.getElementById('showgrid').onclick = function() {draw()};
-  cancelMousedownEvent('showgrid_');
 
   document.getElementById('forceStop').onclick = function()
   {
@@ -699,46 +685,9 @@ function JSONInput()
   selectObj(selectedObj);
 }
 
-function accessJSON()
-{
-  if (document.getElementById('textarea1').style.display == 'none')
-  {
-    document.getElementById('textarea1').style.display = '';
-    document.getElementById('textarea1').select();
-  }
-  else
-  {
-    document.getElementById('textarea1').style.display = 'none';
-  }
-
-}
-
-
-function toolbtn_mouseentered(tool, e)
-{
-  hideAllLists();
-}
 
 function toolbtn_clicked(tool, e)
 {
-
-  tools_normal.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toolbtn';
-
-  });
-  tools_withList.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toolbtn';
-  });
-  tools_inList.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toollistbtn';
-  });
-
-  hideAllLists();
-
-  document.getElementById('tool_' + tool).className = 'toolbtnselected';
   AddingObjType = tool;
   if (tool == "radiant_") {
     var t = window.toolBarViewModel.point_sources.selected();
@@ -773,113 +722,9 @@ function toolbtn_clicked(tool, e)
   }
 }
 
-function toolbtnwithlist_mouseentered(tool, e)
-{
-  //console.log("tool_"+tool)
-  /*hideAllLists();
-  var rect = document.getElementById('tool_' + tool).getBoundingClientRect();
-  //console.log(document.getElementById("tool_"+tool+"list"))
-  document.getElementById('tool_' + tool + 'list').style.left = rect.left + 'px';
-  document.getElementById('tool_' + tool + 'list').style.top = rect.bottom + 'px';
-  document.getElementById('tool_' + tool + 'list').style.display = '';
-  if (document.getElementById('tool_' + tool).className == 'toolbtn')
-  {
-    document.getElementById('tool_' + tool).className = 'toolbtnwithlisthover';
-  }*/
-}
-
-function toolbtnwithlist_mouseleft(tool, e)
-{
-  //console.log("btnout")
-
-  /*var rect = document.getElementById('tool_' + tool + 'list').getBoundingClientRect();
-  mouse = graphs.point(e.pageX, e.pageY);
-  //console.log(rect)
-  //console.log(mouse)
-  if (mouse.x < rect.left || mouse.x > rect.right || mouse.y < rect.top - 5 || mouse.y > rect.bottom)
-  {
-    //滑鼠不在下拉選單上
-    document.getElementById('tool_' + tool + 'list').style.display = 'none';
-    if (document.getElementById('tool_' + tool).className == 'toolbtnwithlisthover')
-    {
-      document.getElementById('tool_' + tool).className = 'toolbtn';
-    }
-  }*/
-
-}
-
-function toollist_mouseleft(tool, e)
-{
-  var rect = document.getElementById('tool_' + tool).getBoundingClientRect();
-  mouse = graphs.point(e.pageX, e.pageY);
-  if (mouse.x < rect.left || mouse.x > rect.right || mouse.y < rect.top || mouse.y > rect.bottom + 5)
-  {
-    //滑鼠不在帶下拉選單的按鈕上 The mouse is not on a button with dropdown list
-    document.getElementById('tool_' + tool + 'list').style.display = 'none';
-    if (document.getElementById('tool_' + tool).className == 'toolbtnwithlisthover')
-    {
-      document.getElementById('tool_' + tool).className = 'toolbtn';
-    }
-  }
-}
-
-function hideAllLists()
-{
-  tools_withList.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element + 'list').style.display = 'none';
-    if (document.getElementById('tool_' + element).className == 'toolbtnwithlisthover')
-    {
-      document.getElementById('tool_' + element).className = 'toolbtn';
-    }
-  });
-}
-
-function toollistbtn_clicked(tool, e)
-{
-  var selected_toolbtn; //先前被按下的toolbtn Previously clicked toolbtn
-  var selecting_toolbtnwithlist; //這個toollistbtn所屬的toolbtnwithlist The toolbtnwithlist contaning the toollistbtn
-  tools_withList.forEach(function(element, index)
-  {
-    if (document.getElementById('tool_' + element).className == 'toolbtnwithlisthover')
-    {
-      selecting_toolbtnwithlist = element;
-    }
-    if (document.getElementById('tool_' + element).className == 'toolbtnselected')
-    {
-      selected_toolbtn = element;
-    }
-  });
-  if (!selecting_toolbtnwithlist)
-  {
-    selecting_toolbtnwithlist = selected_toolbtn; //這個toollistbtn屬於先前被按下的toolbtn The toollistbtn is in the previously clicked toollistbtn
-  }
-  tools_normal.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toolbtn';
-  });
-  tools_withList.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toolbtn';
-  });
-  tools_inList.forEach(function(element, index)
-  {
-    document.getElementById('tool_' + element).className = 'toollistbtn';
-  });
-
-  hideAllLists();
-
-  document.getElementById('tool_' + selecting_toolbtnwithlist).className = 'toolbtnselected';
-  document.getElementById('tool_' + tool).className = 'toollistbtnselected';
-  AddingObjType = tool;
-}
-
 
 function modebtn_clicked(mode1)
 {
-  console.log(mode1);
-  document.getElementById('mode_' + mode).className = 'toolbtn';
-  document.getElementById('mode_' + mode1).className = 'toolbtnselected';
   window.toolBarViewModel.modes.selected({"light":"Rays","extended_light":"Extended Rays","images":"All Images","observer":"Seen by Observer"}[mode1]);
   mode = mode1;
   if (mode == 'images' || mode == 'observer')

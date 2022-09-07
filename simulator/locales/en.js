@@ -27,26 +27,17 @@ locales["en"] = {
   "toolname_mirror_": {
     "message": "Mirror"
   },
-  "tooltitle_mirror": {
-    "message": "Line segment"
+  "toolname_mirror": {
+    "message": "Mirror"
   },
-  "tooltitle_arcmirror": {
-    "message": "Circular arc"
+  "toolname_arcmirror": {
+    "message": "Mirror"
   },
-  "tooltitle_parabolicmirror": {
-    "message": "Parabolic"
-  },
-  "tooltitle_beamsplitter": {
-    "message": "Beam Splitter"
+  "toolname_parabolicmirror": {
+    "message": "Mirror"
   },
   "toolname_idealmirror": {
     "message": "Ideal curved mirror"
-  },
-  "tooltitle_idealmirror": {
-    "message": "Ideal curved mirror"
-  },
-  "tooltitle_sphericallens": {
-    "message": "Spherical lens"
   },
   "toolname_refractor_": {
     "message": "Glass"
@@ -54,23 +45,20 @@ locales["en"] = {
   "toolname_beamsplitter": {
     "message": "Beam Splitter"
   },
-  "tooltitle_halfplane": {
-    "message": "Half-plane"
+  "toolname_halfplane": {
+    "message": "Glass"
   },
-  "tooltitle_circlelens": {
-    "message": "Circle"
+  "toolname_circlelens": {
+    "message": "Glass"
   },
-  "tooltitle_refractor": {
-    "message": "Lens & other"
+  "toolname_refractor": {
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "Ideal lens"
   },
   "toolname_sphericallens": {
     "message": "Spherical lens"
-  },
-  "tooltitle_lens": {
-    "message": "Ideal lens"
   },
   "toolname_blackline": {
     "message": "Blocker"

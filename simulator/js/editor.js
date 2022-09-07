@@ -509,7 +509,7 @@ function selectObj(index)
     return;
   }
   selectedObj = index;
-  document.getElementById('obj_name').innerHTML = document.getElementById('tool_' + objs[index].type).dataset['n'];
+  document.getElementById('obj_name').innerHTML = getMsg('toolname_' + objs[index].type);
   if (objTypes[objs[index].type].p_box)
   {
     document.getElementById('p_box').style.display = '';
