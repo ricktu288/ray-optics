@@ -429,43 +429,15 @@ function canvas_ondblclick(e) {
       }
     }
 
-
-    //搜尋每個物件,尋找滑鼠按到的物件 Search every object, find the one the mouse clicked
-    var draggingPart_ = {};
-    var click_lensq = Infinity;
-    var click_lensq_temp;
-    var targetObj_index = -1;
-
-    for (var i = 0; i < objs.length; i++)
+    var ret = selectionSearch(mouse);
+    if (ret.targetObj_index != -1 && ret.mousePart.targetPoint)
       {
-      if (typeof objs[i] != 'undefined')
-        {
-          draggingPart_ = {};
-          if (objTypes[objs[i].type].clicked(objs[i], mouse, mouse, draggingPart_))
-          {
-            //clicked()回傳true表示滑鼠按到了該物件 clicked() returns true means the mouse clicked the object
-
-            if (draggingPart_.targetPoint)
-            {
-              //滑鼠按到一個點 The mouse clicked a point
-              click_lensq_temp = graphs.length_squared(mouse, draggingPart_.targetPoint);
-              if (click_lensq_temp <= click_lensq)
-              {
-                targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
-                click_lensq = click_lensq_temp;
-                draggingPart = draggingPart_;
-              }
-            }
-          }
-        }
-      }
-      if (targetObj_index != -1)
-      {
-        selectObj(targetObj_index);
-        draggingPart.originalObj = JSON.parse(JSON.stringify(objs[targetObj_index])); //暫存拖曳前的物件狀態 Store the obj status before dragging
+        selectObj(ret.targetObj_index);
+        draggingPart = ret.mousePart;
+        draggingPart.originalObj = JSON.parse(JSON.stringify(objs[ret.targetObj_index])); //暫存拖曳前的物件狀態 Store the obj status before dragging
 
         draggingPart.hasDuplicated = false;
-        positioningObj = targetObj_index;
+        positioningObj = ret.targetObj_index;
 
         document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
         document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
