@@ -139,7 +139,6 @@ else
   // lockobjs prevents selection, but alt overrides it
   if ((!(document.getElementById('lockobjs').checked) != (e.altKey && AddingObjType != '')) && !(e.which == 3))
   {
-    //搜尋每個物件,尋找滑鼠按到的物件 Search for the object that the mouse clicked
 
     draggingPart = {};
 
@@ -161,7 +160,6 @@ else
     var ret = selectionSearch(mouse_nogrid);
     if (ret.targetObj_index != -1)
       {
-      //最後決定選擇targetObj_index Finally decide to select targetObj_index
       selectObj(ret.targetObj_index);
       draggingPart = ret.mousePart;
       draggingPart.originalObj = JSON.parse(JSON.stringify(objs[ret.targetObj_index])); //暫存拖曳前的物件狀態 Store the obj status before dragging
@@ -228,10 +226,13 @@ function selectionSearch(mouse_nogrid) {
           //滑鼠按到一個點 The mouse clicked a point
           targetIsPoint = true; //一旦發現能夠按到點,就必須按到點 If the mouse can click a point, then it must click a point
           var click_lensq_temp = graphs.length_squared(mouse_nogrid, mousePart_.targetPoint);
-          if (click_lensq_temp <= click_lensq) {
-            targetObj_index = i; //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
+          if (click_lensq_temp <= click_lensq || objs[targetObj_index] == mouseObj) {
+            //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
+            // But if the object is the highlighted object, the points from this object have the highest priority.
+            targetObj_index = i;
             click_lensq = click_lensq_temp;
             mousePart = mousePart_;
+            if (objs[targetObj_index] == mouseObj) break;
           }
         } else if (!targetIsPoint) {
           //滑鼠按到的不是點,且到目前為止未按到點 If not clicking a point, and until now not clicking any point
