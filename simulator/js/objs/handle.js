@@ -116,7 +116,14 @@ objTypes['handle'] = {
           p.y = (p.y - obj.p2.y) * factor + obj.p2.y;
         };
       } else if (ctrl) {
-        return;
+        // Rotation
+        var theta = Math.atan2(obj.p2.y - mouse.y, obj.p2.x - mouse.x) - Math.atan2(obj.p2.y - draggingPart.targetPoint_.y, obj.p2.x - draggingPart.targetPoint_.x);
+        var trans = function(p) {
+          var x = p.x - obj.p2.x;
+          var y = p.y - obj.p2.y;
+          p.x = Math.cos(theta) * x - Math.sin(theta) * y + obj.p2.x;
+          p.y = Math.sin(theta) * x + Math.cos(theta) * y + obj.p2.y;
+        };
       } else {
         // Translation
         var diffX = mouse_snapped.x - draggingPart.targetPoint_.x;
