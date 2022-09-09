@@ -415,17 +415,7 @@ else
 }
 
 function addControlPointForHandle(controlPoint) {
-  var handleIndex = -1;
-  controlPoint.mousePart.originalObj = objs[controlPoint.targetObj_index];
-  controlPoint.newPoint = controlPoint.mousePart.targetPoint;
-  controlPoint.mousePart.byHandle = true;
-  controlPoint = JSON.parse(JSON.stringify(controlPoint));
-  for (var i in objs) {
-    if (objs[i].type == "handle" && objs[i].notDone == true) {
-      handleIndex = i;
-    }
-  }
-  if (handleIndex == -1) {
+  if (!(objs[0].type == "handle" && objs[0].notDone)) {
     objs.unshift(objTypes["handle"].create());
     for (var i in objs) {
       if (objs[i].type == "handle") {
@@ -437,15 +427,13 @@ function addControlPointForHandle(controlPoint) {
     controlPoint.targetObj_index++;
     handleIndex = 0;
   }
-  objs[handleIndex].controlPoints.push(controlPoint);
+  objTypes["handle"].c_addControlPoint(objs[0], controlPoint);
   draw();
 }
 
 
 function finishHandleCreation(point) {
-  objs[0].notDone = false;
-  objs[0].p1 = point;
-  
+  objTypes["handle"].c_finishHandle(objs[0], point);
   draw();
 }
 
