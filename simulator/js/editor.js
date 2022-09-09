@@ -382,7 +382,15 @@ else
   {
     draggingObj = -1;
     draggingPart = {};
-    canvas_ondblclick(e);
+    var ret = selectionSearch(mouse);
+    if (ret.targetObj_index != -1 && ret.mousePart.targetPoint)
+    {
+      addControlPointForHandle(ret);
+    }
+    else
+    {
+      finishHandle(mouse);
+    }
     return;
   }
   draggingObj = -1;
@@ -390,8 +398,43 @@ else
   createUndoPoint();
 }
 
+}
+
+function addControlPointForHandle(controlPoint) {
+  var handleIndex = -1;
+  controlPoint.mousePart.originalObj = objs[controlPoint.targetObj_index];
+  controlPoint.newPoint = controlPoint.mousePart.targetPoint;
+  controlPoint = JSON.parse(JSON.stringify(controlPoint));
+  for (var i in objs) {
+    if (objs[i].type == "handle" && objs[i].notDone == true) {
+      handleIndex = i;
+    }
+  }
+  if (handleIndex == -1) {
+    objs.unshift(objTypes["handle"].create());
+    for (var i in objs) {
+      if (objs[i].type == "handle") {
+        for (var j in objs[i].controlPoints) {
+          objs[i].controlPoints[j].targetObj_index++;
+        }
+      }
+    }
+    controlPoint.targetObj_index++;
+    handleIndex = 0;
+  }
+  objs[handleIndex].controlPoints.push(controlPoint);
+  draw();
+}
 
 
+function finishHandle(point) {
+  for (var i in objs) {
+    if (objs[i].type == "handle" && objs[i].notDone == true) {
+      objs[i].notDone = false;
+      objs[i].p1 = point;
+    }
+  }
+  draw();
 }
 
 
@@ -548,6 +591,21 @@ function removeObj(index)
   {
     objs[i] = JSON.parse(JSON.stringify(objs[i + 1]));
   }
+
+  for (var i in objs) {
+    if (objs[i].type == "handle") {
+      for (var j in objs[i].controlPoints) {
+        if (objs[i].controlPoints[j].targetObj_index > index) {
+          objs[i].controlPoints[j].targetObj_index--;
+        }
+        if (objs[i].controlPoints[j].targetObj_index == index) {
+          objs[i].controlPoints = [];
+          break;
+        }
+      }
+    }
+  }
+
   isConstructing = false;
   objs.length = objs.length - 1;
   selectedObj--;
