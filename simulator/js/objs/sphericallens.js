@@ -58,6 +58,7 @@ objTypes['sphericallens'] = {
     }
 
     objTypes['refractor'].dragging(obj, mouse, draggingPart, ctrl, shift);
+    if (draggingPart.byHandle) return;
     if (draggingPart.part != 1)
       return;
     if (draggingPart.index == 2 || draggingPart.index == 5) {

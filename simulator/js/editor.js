@@ -22,6 +22,8 @@ var clickExtent_point_construct = 10;
 var gridSize = 20; //格線大小 Size of the grid
 var origin = {x: 0, y: 0}; //格線原點座標 Origin of the grid
 
+var pendingControlPointSelection = false;
+
 function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
     return (screen && colorMode)?'rgb(0,100,100)':'rgb(0,255,255)'
@@ -124,7 +126,6 @@ else
 }
 
 
-
 if (isConstructing)
 {
   if ((e.which && e.which == 1) || (e.changedTouches))
@@ -160,11 +161,19 @@ else
     var ret = selectionSearch(mouse_nogrid);
     if (ret.targetObj_index != -1)
       {
+      if (!e.ctrlKey && objs.length > 0 && objs[0].type == "handle" && objs[0].notDone) {
+        // User is creating a handle
+        removeObj(0);
+        ret.targetObj_index--;
+      }
       selectObj(ret.targetObj_index);
       draggingPart = ret.mousePart;
       draggingPart.originalObj = JSON.parse(JSON.stringify(objs[ret.targetObj_index])); //暫存拖曳前的物件狀態 Store the obj status before dragging
       draggingPart.hasDuplicated = false;
       draggingObj = ret.targetObj_index;
+      if (e.ctrlKey && draggingPart.targetPoint) {
+        pendingControlPointSelection = true;
+      }
       return;
       }
     }
@@ -172,6 +181,11 @@ else
   if (draggingObj == -1)
     {
     //滑鼠按到了空白處 The mouse clicked the blank area
+     if (objs.length > 0 && objs[0].type == "handle" && objs[0].notDone) {
+       // User is creating a handle
+       finishHandleCreation(mouse);
+       return;
+     }
      if ((AddingObjType == '') || (e.which == 3))
      {
        //準備平移整個畫面 To drag the entire scene
@@ -222,16 +236,17 @@ function selectionSearch(mouse_nogrid) {
       if (objTypes[objs[i].type].clicked(objs[i], mouse_nogrid, mouse, mousePart_)) {
         //clicked()回傳true表示滑鼠按到了該物件 click(() returns true means the mouse clicked the object
 
-        if (mousePart_.targetPoint) {
+        if (mousePart_.targetPoint || mousePart_.targetPoint_) {
           //滑鼠按到一個點 The mouse clicked a point
           targetIsPoint = true; //一旦發現能夠按到點,就必須按到點 If the mouse can click a point, then it must click a point
-          var click_lensq_temp = graphs.length_squared(mouse_nogrid, mousePart_.targetPoint);
+          var click_lensq_temp = graphs.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
           if (click_lensq_temp <= click_lensq || objs[targetObj_index] == mouseObj) {
             //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
-            // But if the object is the highlighted object, the points from this object have the highest priority.
+            // But if the object is the highlighted object, the points from this object have the higher priority.
             targetObj_index = i;
             click_lensq = click_lensq_temp;
             mousePart = mousePart_;
+            if (objs[targetObj_index].type == "handle") break; // Handles has the highest priority
             if (objs[targetObj_index] == mouseObj) break;
           }
         } else if (!targetIsPoint) {
@@ -247,6 +262,8 @@ function selectionSearch(mouse_nogrid) {
 
 
 function canvas_onmousemove(e) {
+
+pendingControlPointSelection = false;
 if (e.changedTouches) {
   var et = e.changedTouches[0];
 } else {
@@ -379,19 +396,15 @@ if (isConstructing)
 }
 else
 {
+  if (pendingControlPointSelection) {
+    pendingControlPointSelection = false
+    addControlPointForHandle({ mousePart: draggingPart, targetObj_index: draggingObj });
+  }
   if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mouse0.x && mouse.y == draggingPart.mouse0.y)
   {
     draggingObj = -1;
     draggingPart = {};
-    var ret = selectionSearch(mouse);
-    if (ret.targetObj_index != -1 && ret.mousePart.targetPoint)
-    {
-      addControlPointForHandle(ret);
-    }
-    else
-    {
-      finishHandle(mouse);
-    }
+    canvas_ondblclick(e);
     return;
   }
   draggingObj = -1;
@@ -405,6 +418,7 @@ function addControlPointForHandle(controlPoint) {
   var handleIndex = -1;
   controlPoint.mousePart.originalObj = objs[controlPoint.targetObj_index];
   controlPoint.newPoint = controlPoint.mousePart.targetPoint;
+  controlPoint.mousePart.byHandle = true;
   controlPoint = JSON.parse(JSON.stringify(controlPoint));
   for (var i in objs) {
     if (objs[i].type == "handle" && objs[i].notDone == true) {
@@ -428,15 +442,14 @@ function addControlPointForHandle(controlPoint) {
 }
 
 
-function finishHandle(point) {
-  for (var i in objs) {
-    if (objs[i].type == "handle" && objs[i].notDone == true) {
-      objs[i].notDone = false;
-      objs[i].p1 = point;
-    }
-  }
+function finishHandleCreation(point) {
+  objs[0].notDone = false;
+  objs[0].p1 = point;
+  
   draw();
 }
+
+
 
 
 function canvas_ondblclick(e) {
@@ -525,6 +538,10 @@ function selectObj(index)
     return;
   }
   selectedObj = index;
+  if (objs[index].type == 'handle') {
+    document.getElementById('obj_settings').style.display = 'none';
+    return;
+  }
   document.getElementById('obj_name').innerHTML = getMsg('toolname_' + objs[index].type);
   if (objTypes[objs[index].type].p_box)
   {
@@ -598,8 +615,7 @@ function removeObj(index)
       for (var j in objs[i].controlPoints) {
         if (objs[i].controlPoints[j].targetObj_index > index) {
           objs[i].controlPoints[j].targetObj_index--;
-        }
-        if (objs[i].controlPoints[j].targetObj_index == index) {
+        } else if (objs[i].controlPoints[j].targetObj_index == index) {
           objs[i].controlPoints = [];
           break;
         }

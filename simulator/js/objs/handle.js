@@ -16,14 +16,16 @@ objTypes['handle'] = {
     for (var i in obj.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = obj.notDone?'cyan':getMouseStyle(obj,'transparent');
-      ctx.arc(obj.controlPoints[i].mousePart.targetPoint.x, obj.controlPoints[i].mousePart.targetPoint.y, 5, 0, Math.PI * 2, false);
+      ctx.strokeStyle = obj.notDone?'cyan':getMouseStyle(obj,'gray');
+      ctx.setLineDash([2, 2]);
+      ctx.arc(obj.controlPoints[i].newPoint.x, obj.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
       ctx.stroke();
+      ctx.setLineDash([]);
     }
     if (!obj.notDone) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = getMouseStyle(obj,'red');
+      ctx.strokeStyle = getMouseStyle(obj,'gray');
       ctx.arc(obj.p1.x, obj.p1.y, 2, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
@@ -66,8 +68,8 @@ objTypes['handle'] = {
         obj.controlPoints[i].newPoint.x += diffX;
         obj.controlPoints[i].newPoint.y += diffY;
         objTypes[objs[obj.controlPoints[i].targetObj_index].type].dragging(objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
-        obj.controlPoints[i].mousePart.targetPoint.x += diffX;
-        obj.controlPoints[i].mousePart.targetPoint.y += diffY;
+        //obj.controlPoints[i].mousePart.targetPoint.x += diffX;
+        //obj.controlPoints[i].mousePart.targetPoint.y += diffY;
       }
     }
   },
