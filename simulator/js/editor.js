@@ -240,14 +240,13 @@ function selectionSearch(mouse_nogrid) {
           //滑鼠按到一個點 The mouse clicked a point
           targetIsPoint = true; //一旦發現能夠按到點,就必須按到點 If the mouse can click a point, then it must click a point
           var click_lensq_temp = graphs.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
-          if (click_lensq_temp <= click_lensq || objs[targetObj_index] == mouseObj) {
+          if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
             //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
-            // But if the object is the highlighted object, the points from this object have the higher priority.
+            // But if the object is the selected object, the points from this object have the highest priority.
             targetObj_index = i;
             click_lensq = click_lensq_temp;
             mousePart = mousePart_;
-            if (objs[targetObj_index].type == "handle") break; // Handles has the highest priority
-            if (objs[targetObj_index] == mouseObj) break;
+            if (targetObj_index == selectedObj) break;
           }
         } else if (!targetIsPoint) {
           //滑鼠按到的不是點,且到目前為止未按到點 If not clicking a point, and until now not clicking any point
@@ -424,6 +423,7 @@ function addControlPointForHandle(controlPoint) {
         }
       }
     }
+    if (selectedObj >= 0) selectedObj++;
     controlPoint.targetObj_index++;
     handleIndex = 0;
   }
