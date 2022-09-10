@@ -122,9 +122,11 @@ objTypes['halfplane'] = {
     objTypes['refractor'].fillGlass(obj.p, obj);
   }
 
-  ctx.fillStyle = 'indigo';
-  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+  if (obj == mouseObj) {
+    ctx.fillStyle = 'magenta';
+    ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+    ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+  }
 
 
   },
