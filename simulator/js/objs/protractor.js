@@ -124,8 +124,10 @@ objTypes['protractor'] = {
   }
   ctx.fillStyle = 'red';
   ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-  ctx.fillStyle = 'rgb(255,0,255)';
-  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+  if (obj == mouseObj) {
+    ctx.fillStyle = 'magenta';
+    ctx.fillRect(obj.p2.x - 3, obj.p2.y - 3, 5, 5);
+  }
 
   }
 
