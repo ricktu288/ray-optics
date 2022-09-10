@@ -12,7 +12,7 @@ objTypes['refractor'] = {
   p_box: function(obj, elem) {
     if (colorMode) {
       createNumberAttr(getMsg('cauchycoeff') + " A:", 1, 3, 0.01, obj.p, function(obj, value) {
-        obj.p = value;
+        obj.p = value * 1;
       }, elem);
       createNumberAttr("B(μm²):", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         obj.cauchyCoeff = value;
