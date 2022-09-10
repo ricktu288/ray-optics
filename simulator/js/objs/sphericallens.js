@@ -12,7 +12,7 @@ objTypes['sphericallens'] = {
   c_mousedown: objTypes['refractor'].c_mousedown,
   c_mousemove: objTypes['refractor'].c_mousemove,
 
-  c_mouseup: function(obj, mouse) {
+  c_mouseup: function(obj, mouse, ctrl, shift) {
     objTypes['refractor'].c_mouseup(obj, mouse);
     if (obj.path.length > 2 && obj.notDone) {
       var p1 = obj.path[0];

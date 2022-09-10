@@ -132,7 +132,7 @@ if (isConstructing)
   {
     //只有滑鼠左鍵才反應 Only react for left click
     //若有一個物件正在被建立,則將動作直接傳給它 If an obj is being created, pass the action to it
-    objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse);
+    objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
   }
 }
 else
@@ -385,7 +385,7 @@ if (isConstructing)
   if ((e.which && e.which == 1) || (e.changedTouches))
   {
     //若有一個物件正在被建立,則將動作直接傳給它 If an object is being created, pass the action to it
-    objTypes[objs[objs.length - 1].type].c_mouseup(objs[objs.length - 1], mouse);
+    objTypes[objs[objs.length - 1].type].c_mouseup(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
     if (!isConstructing)
     {
       //該物件已經表示建立完畢 The object says the contruction is done

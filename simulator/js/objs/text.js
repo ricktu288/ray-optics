@@ -14,7 +14,7 @@ objTypes['text'] = {
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
-  c_mousedown: function(obj, mouse)
+  c_mousedown: function(obj, mouse, ctrl, shift)
   {
     draw();
   },
@@ -28,7 +28,7 @@ objTypes['text'] = {
   },
 
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
-  c_mouseup: function(obj, mouse)
+  c_mouseup: function(obj, mouse, ctrl, shift)
   {
     isConstructing = false;
   },

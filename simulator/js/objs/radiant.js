@@ -9,7 +9,7 @@ objTypes['radiant'] = {
   p_box: objTypes['laser'].p_box,
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
-  c_mousedown: function(obj, mouse)
+  c_mousedown: function(obj, mouse, ctrl, shift)
   {
     draw();
   },
@@ -19,7 +19,7 @@ objTypes['radiant'] = {
 
   },
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
-  c_mouseup: function(obj, mouse)
+  c_mouseup: function(obj, mouse, ctrl, shift)
   {
     isConstructing = false;
   },
