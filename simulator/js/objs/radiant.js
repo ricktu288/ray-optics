@@ -29,13 +29,13 @@ objTypes['radiant'] = {
   if (colorMode) {
     ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = wavelengthToColor(obj.wavelength || 532, 1);
-    ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
+    ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)', true);
-    ctx.fillRect(obj.x - 1, obj.y - 1, 3, 3);
+    ctx.fillRect(obj.x - 1.5, obj.y - 1.5, 3, 3);
     ctx.globalCompositeOperation = "source-over";
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
-    ctx.fillRect(obj.x - 2, obj.y - 2, 5, 5);
+    ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
   }
 
   },

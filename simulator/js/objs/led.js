@@ -37,16 +37,16 @@ objTypes['led'] = {
   if (colorMode) {
     ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = wavelengthToColor(obj.wavelength || 532, 1);
-    ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
+    ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
-    ctx.fillRect(obj.p1.x - 1, obj.p1.y - 1, 3, 3);
+    ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     ctx.globalCompositeOperation = "source-over";
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
-    ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 5, 5);
+    ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
   }
   ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
-  ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+  ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
   },
 
 

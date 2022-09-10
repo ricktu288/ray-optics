@@ -124,8 +124,8 @@ objTypes['halfplane'] = {
 
   if (obj == mouseObj) {
     ctx.fillStyle = 'magenta';
-    ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-    ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+    ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+    ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
   }
 
 

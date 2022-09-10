@@ -43,25 +43,25 @@ objTypes['parabolicmirror'] = {
       }
       ctx.stroke();
       if (obj == mouseObj) {
-        ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+        ctx.fillRect(obj.p3.x - 1.5, obj.p3.y - 1.5, 3, 3);
         var focusx = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*(height-1/(4*a));
         var focusy = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*(height-1/(4*a));
-        ctx.fillRect(focusx - 2, focusy - 2, 3, 3);
+        ctx.fillRect(focusx - 1.5, focusy - 1.5, 3, 3);
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-        ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+        ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+        ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
       }
     }
     else if (obj.p2)
     {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-      ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }
     else
     {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     }
   },
 

@@ -10,7 +10,7 @@ var canvasPainter = {
     // point
     if (graph.type == 1) {
       ctx.fillStyle = color ? color : 'red';
-      ctx.fillRect(graph.x - 2, graph.y - 2, 5, 5);
+      ctx.fillRect(graph.x - 2.5, graph.y - 2.5, 5, 5);
     }
     // line
     else if (graph.type == 2) {

@@ -348,7 +348,7 @@ function shootWaitingRays() {
                     //虛像 Virtual image
                     if (colorMode) {
                       ctx.fillStyle = color;
-                      ctx.fillRect(observed_intersection.x - 1, observed_intersection.y - 1, 3, 3);
+                      ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
                     } else {
                       canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
                     }
@@ -431,7 +431,7 @@ function shootWaitingRays() {
                 //虛像 Virtual image
                 if (colorMode) {
                   ctx.fillStyle = color;
-                  ctx.fillRect(observed_intersection.x - 1, observed_intersection.y - 1, 3, 3);
+                  ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
                 } else {
                   canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
                 }
@@ -450,7 +450,7 @@ function shootWaitingRays() {
                 //虛物 Virtual object
                 if (colorMode) {
                   ctx.fillStyle = color;
-                  ctx.fillRect(observed_intersection.x, observed_intersection.y, 1, 1);
+                  ctx.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
                 } else {
                   canvasPainter.draw(observed_intersection, 'rgb(80,80,80)');
                 }

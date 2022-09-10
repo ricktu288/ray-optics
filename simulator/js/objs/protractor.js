@@ -123,10 +123,10 @@ objTypes['protractor'] = {
     ctx.globalCompositeOperation = 'source-over';
   }
   ctx.fillStyle = 'red';
-  ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+  ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
   if (obj == mouseObj) {
     ctx.fillStyle = 'magenta';
-    ctx.fillRect(obj.p2.x - 3, obj.p2.y - 3, 5, 5);
+    ctx.fillRect(obj.p2.x - 2.5, obj.p2.y - 2.5, 5, 5);
   }
 
   }

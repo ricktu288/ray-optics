@@ -194,12 +194,12 @@ objTypes['refractor'] = {
           if (obj.path[i].arc)
           {
             ctx.fillStyle = 'rgb(255,0,255)';
-            ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
+            ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
           }
           else
           {
             ctx.fillStyle = 'rgb(255,0,0)';
-            ctx.fillRect(obj.path[i].x - 2, obj.path[i].y - 2, 3, 3);
+            ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
           }
         }
       }

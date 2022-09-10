@@ -90,10 +90,10 @@ objTypes['arcmirror'] = {
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
         if (obj == mouseObj) {
-          ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+          ctx.fillRect(obj.p3.x - 1.5, obj.p3.y - 1.5, 3, 3);
           ctx.fillStyle = 'rgb(255,0,0)';
-          ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-          ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+          ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+          ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
         }
       }
       else
@@ -105,22 +105,22 @@ objTypes['arcmirror'] = {
         ctx.lineTo(obj.p2.x, obj.p2.y);
         ctx.stroke();
 
-        ctx.fillRect(obj.p3.x - 2, obj.p3.y - 2, 3, 3);
+        ctx.fillRect(obj.p3.x - 1.5, obj.p3.y - 1.5, 3, 3);
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-        ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+        ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+        ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
       }
     }
     else if (obj.p2)
     {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
-      ctx.fillRect(obj.p2.x - 2, obj.p2.y - 2, 3, 3);
+      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }
     else
     {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 2, obj.p1.y - 2, 3, 3);
+      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     }
   },
 

@@ -128,13 +128,13 @@ objTypes['sphericallens'] = {
       var power = (1-n)/r2 - n/(thick-si1);
       var focalLength = 1/power;
       ctx.fillStyle = 'rgb(255,0,255)';
-      ctx.fillRect(obj.path[2].x+focalLength*dpx - 2, obj.path[2].y+focalLength*dpy - 2, 3, 3);
+      ctx.fillRect(obj.path[2].x+focalLength*dpx - 1.5, obj.path[2].y+focalLength*dpy - 1.5, 3, 3);
 
       // other side is slightly different
       si1 = -n*r2/(n-1);
       power = -(1-n)/r1 - n/(thick-si1);
       focalLength = 1/power;
-      ctx.fillRect(obj.path[5].x-focalLength*dpx - 2, obj.path[5].y-focalLength*dpy - 2, 3, 3);
+      ctx.fillRect(obj.path[5].x-focalLength*dpx - 1.5, obj.path[5].y-focalLength*dpy - 1.5, 3, 3);
     }
   },
 
