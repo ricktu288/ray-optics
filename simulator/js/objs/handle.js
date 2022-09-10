@@ -33,6 +33,7 @@ objTypes['handle'] = {
 
     for (var i in obj.controlPoints) {
       // If user drags some target objs, restore them back to avoid unexpected behavior.
+      obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(objs[obj.controlPoints[i].targetObj_index]));
       objTypes[objs[obj.controlPoints[i].targetObj_index].type].dragging(objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
     }
     for (var i in obj.controlPoints) {
@@ -138,6 +139,7 @@ objTypes['handle'] = {
       trans(obj.p1);
       trans(obj.p2);
       for (var i in obj.controlPoints) {
+        obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(objs[obj.controlPoints[i].targetObj_index]));
         trans(obj.controlPoints[i].newPoint);
         objTypes[objs[obj.controlPoints[i].targetObj_index].type].dragging(objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
