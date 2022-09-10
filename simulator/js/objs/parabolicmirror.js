@@ -1,4 +1,5 @@
 // Mirrors -> Parabolic
+// Originally contributed by Paul Falstad (pfalstad)
 objTypes['parabolicmirror'] = {
 
   //建立物件 Create the obj

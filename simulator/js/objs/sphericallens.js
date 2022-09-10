@@ -1,4 +1,5 @@
 // Glasses -> Spherical Lens
+// Originally contributed by Paul Falstad (pfalstad)
 objTypes['sphericallens'] = {
 
   supportSurfaceMerging: true,

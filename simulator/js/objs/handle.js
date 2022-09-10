@@ -1,4 +1,4 @@
-
+// The handle created when holding ctrl and click several points
 objTypes['handle'] = {
 
   //建立物件 Create the obj

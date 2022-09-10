@@ -1,4 +1,5 @@
 // Text
+// Originally contributed by Paul Falstad (pfalstad)
 objTypes['text'] = {
 
   //建立物件 Create the obj

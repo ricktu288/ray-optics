@@ -1,4 +1,5 @@
 // Point source -> Finite angle
+// Originally contributed by GLmontanari
 objTypes['led'] = {
   
   //建立物件 Create the obj

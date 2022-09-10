@@ -1,4 +1,5 @@
 // Mirrors -> Beam Splitter
+// Originally contributed by Paul Falstad (pfalstad)
 objTypes['beamsplitter'] = {
 
   //建立物件 Create the obj
