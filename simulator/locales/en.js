@@ -418,6 +418,6 @@ locales["en"] = {
     "message": "Zoom the view with percentage."
   },
   "help_popover": {
-    "message": "Toggle help popup. <br><br>Some other tips: <br>Click to select object, <br>Ctrl+D to duplicate, <br>Delete key to delete, <br>Arrow keys to move slowly, <br>Double-click or right-click the dot can edit its coordinates directly. <br>When creating line objects, <br>Hold Shift to lock angle, <br>Hold Ctrl to make the first point be the center point."
+    "message": "Toggle help popup. <br><br>Some other tips: <br>Click to select object, <br>Ctrl+D to duplicate, <br>Delete key to delete, <br>Arrow keys to move slowly, <br>Double-click or right-click the dot can edit its coordinates directly. <br>When creating line objects, <br>Hold Shift to lock angle, <br>Hold Ctrl to make the first point be the center point. <br> Hold Ctrl, click several points, then click empty space to group the points and create a handle. <br>When dragging the handle, <br>Hold Ctrl to rotate the group, <br>Hold Ctrl and Shift to scale the group."
   }
 }
