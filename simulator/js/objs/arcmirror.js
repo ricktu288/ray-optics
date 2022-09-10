@@ -17,7 +17,14 @@ objTypes['arcmirror'] = {
     }
     if (obj.p2 && !obj.p3 && !mouseOnPoint_construct(mouse, obj.p1))
     {
-      obj.p2 = mouse;
+      if (shift)
+      {
+        obj.p2 = snapToDirection(mouse, constructionPoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1}]);
+      }
+      else
+      {
+        obj.p2 = mouse;
+      }
       draw();
       obj.p3 = mouse;
       return;

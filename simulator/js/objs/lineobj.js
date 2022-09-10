@@ -4,7 +4,14 @@ objTypes['lineobj'] = {
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse)
   {
-    obj.p2 = mouse;
+    if (shift)
+    {
+      obj.p2 = snapToDirection(mouse, constructionPoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1}]);
+    }
+    else
+    {
+      obj.p2 = mouse;
+    }
     if (!mouseOnPoint_construct(mouse, obj.p1))
     {
       draw();
