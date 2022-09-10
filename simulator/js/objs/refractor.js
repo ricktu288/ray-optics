@@ -19,7 +19,7 @@ objTypes['refractor'] = {
       }, elem);
     } else {
       createNumberAttr(getMsg('refractiveindex'), 1, 3, 0.01, obj.p, function(obj, value) {
-        obj.p = value;
+        obj.p = value * 1;
       }, elem);
     }
   },
