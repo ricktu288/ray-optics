@@ -151,7 +151,7 @@ locales["zh-CN"] = {
     "message": "透光物"
   },
   "tool_refractor": {
-    "message": "透镜及其他"
+    "message": " 自订形状"
   },
   "toolname_refractor": {
     "message": "透光物"

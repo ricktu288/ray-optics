@@ -154,7 +154,7 @@ locales["zh-TW"] = {
     "message": "圓形"
   },
   "tool_refractor": {
-    "message": "透鏡及其他"
+    "message": "自訂形狀"
   },
   "tool_lens": {
     "message": "理想透鏡"
