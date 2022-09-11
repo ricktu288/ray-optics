@@ -67,9 +67,7 @@ objTypes['handle'] = {
 
   //平移物件 Move the object
   move: function(obj, diffX, diffY) {
-    obj.x = obj.x + diffX;
-    obj.y = obj.y + diffY;
-    return obj;
+    objTypes['handle'].dragging(obj, graphs.point(obj.p1.x + diffX, obj.p1.y + diffY), {targetPoint_: obj.p1, part: 1});
   },
 
   //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
