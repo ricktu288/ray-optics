@@ -74,7 +74,6 @@ objTypes['radiant'] = {
 
     obj.x = mouse_snapped.x;
     obj.y = mouse_snapped.y;
-    return {obj: obj};
   },
 
   //射出光線 Shoot rays

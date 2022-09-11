@@ -79,7 +79,6 @@ objTypes['text'] = {
 
     obj.x = mouse_snapped.x + draggingPart.targetPoint_.x - draggingPart.mouse0.x;
     obj.y = mouse_snapped.y + draggingPart.targetPoint_.y - draggingPart.mouse0.y;
-    return {obj: obj};
   },
 
 };
