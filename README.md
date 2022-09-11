@@ -87,7 +87,7 @@ Knockout is distributed under the [MIT license](https://opensource.org/licenses/
 The source code is available at: https://github.com/knockout/knockout
 
 
-# 幾何光學模擬
+# 線光學模擬
 模擬光的反射與折射
 
 ## 功能
