@@ -19,6 +19,7 @@ Simulate reflection and refraction of light.
 ## Links
 - [Project Page](https://ricktu288.github.io/ray-optics/)
 - [Sample file folder](/samples)
+- [Documentation](https://github.com/ricktu288/ray-optics/wiki)
 
 If you created a good sample, please submit a pull request to let others see your work!
 
@@ -28,19 +29,9 @@ Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
 
 Open `simulator/index.html` locally in you browser (or start an http server in the repo directory if "Sample" does not work).
 
-# Making your own tools
+# Contributing
 
-The structure of a tool is described in [the template here](tool_template.js). The codes of the existing tools are in [`simulator/js/objs`](simulator/js/objs).
-
-## A way to quickly test your own tools
-
-After you complete the code `objTypes['id_of_your_tool'] = {...};`, a quick way to test it without modifying the toolbar is to execute the code directly in your browser's developer tool. And when you want to choose the tool, execute `AddingObjType = 'id_of_your_tool'`.
-
-## Putting your own tools into the toolbar
-
-You can just search for an existing tool id such as `protractor` or `beamsplitter` in `simulator/js/ToolBarViewModel.js`, `simulator/index.html`, `simulator/index.js`, and `simulator/locales/en.js` and add the corresponding lines for your tools. And also include an exported SVG image (use the "export" button) of your tools in `img/id_of_your_tool.svg` cropped to a suitable size.
-
-If you create a useful tool, please submit a pull request to let others use your tool! (We will add the Chinese locales for it.)
+See [wiki/Contributing](https://github.com/ricktu288/ray-optics/wiki/Contributing).
 
 # License
 Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun

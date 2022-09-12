@@ -22,3 +22,4 @@
 | Detector | `power` |
 | Text | `text` |
 
+See [here](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj) for the structure of a tool.
