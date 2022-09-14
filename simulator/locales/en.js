@@ -279,6 +279,9 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index:"
   },
+  "refractiveindex_note": {
+    "message": "(relative if inside another glass)"
+  },
   "cauchycoeff": {
     "message": "Cauchy coefficient"
   },
@@ -355,19 +358,19 @@ locales["en"] = {
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
   "tool_halfplane_popover": {
-    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)<br>If several glasses overlap, the effective refractive index of the overlapping region is the product of the individual ones."
+    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },
   "tool_circlelens_popover": {
-    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)<br>If several glasses overlap, the effective refractive index of the overlapping region is the product of the individual ones."
+    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
   "tool_refractor_popover": {
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)<br>If several glasses overlap, the effective refractive index of the overlapping region is the product of the individual ones."
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
   "tool_sphericallens_popover": {
-    "message": "A spherical lens. (Click to create.)<br>If several glasses overlap, the effective refractive index of the overlapping region is the product of the individual ones."
+    "message": "A spherical lens. (Click to create.)"
   },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"

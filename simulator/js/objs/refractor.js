@@ -22,6 +22,11 @@ objTypes['refractor'] = {
         obj.p = value * 1;
       }, elem);
     }
+    var note = document.createElement('span');
+    note.innerHTML = getMsg('refractiveindex_note');
+    note.style.marginLeft = "0.2em";
+    note.style.marginRight = "0.2em";
+    elem.appendChild(note);
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
