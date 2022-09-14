@@ -1,10 +1,12 @@
-Contribution are welcome. Feel free to open issues to report bugs, request new features, or share your ideas.
+# Contributing
+
+Contributions are welcome. Feel free to open issues to report bugs, request new features, or share your ideas.
 
 For code contributions, see the following guidelines.
 
-# Contributing a tool
+## Contributing a tool
 
-1. Fork this repo and clone locally. If you have forked previously, sync to get latest changes.
+1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
 2. Add a script <code><var>TOOL_ID</var>.js</code> in `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool (which should not be changed once merge into `master`, but the name in the locales can be changed) and write the code there. See the README there for a correspondence between the id with the name of the existing tools on the toolbar. See [the structure of a tool](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj)) for documentation.
 
@@ -26,27 +28,27 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
    - <code>tool_<var>TOOL_ID</var></code>: the title on the toolbar (or dropdown item)
    - <code>tool_<var>TOOL_ID</var>_popover</code>: the text in the popover when the user hover the item on the toolbar
 
-7. _(optional)_ Add an exported SVG image (use the "export" button) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>. You may first open an existing image as background so that the exported SVG will be cropped automatically.
+7. _(optional)_ Add an exported SVG image (use the "export" button) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>. You may first open an existing image as the background so that the exported SVG will be cropped automatically.
 
 8. Commit your changes (several times maybe), push to your fork, and create a pull request.
 
-# Contributing a locale
+## Contributing a locale
 
-1. Fork this repo and clone locally. If you have forked previously, sync to get latest changes.
+1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
 2. Add a script <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/` and translate the strings from an existing locale.
-3. Add a folder in the repo root with the name being the country/region code, and copy `index.html` (the homepage) inside that folder. Translate the text in the new homepage. Replace all `img/` with `../img/` in the new homepage.
+3. Add a folder in the repo root with the name being the country/region code, and copy `index.html` (the homepage) inside that folder. Translate the text on the new homepage. Replace all `img/` with `../img/` in the new homepage.
 
 4. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
 5. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
 
 6. Commit your changes, push to your fork, and create a pull request.
 
-# Contributing an example
+## Contributing an example
 
-1. Fork this repo and clone locally. If you have forked previously, sync to get latest changes.
+1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the example file in `samples/`, with the name being the name of the example. Currently the "text" tool does not support locales, so if your the example contains text, they should be in English.
+2. Add the example file in `samples/`, with the name being the name of the example. Currently, the "text" tool does not support locales, so if the example contains texts, they should be in English.
 
 3. _(optional)_ Modify the number of samples in `sampleList` of `simulator/js/ToolBarViewModel.js`.
 
@@ -56,11 +58,11 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 6. Commit your changes, push to your fork, and create a pull request.
 
-# More contributions
+## More contributions
 
-Such as adding a new parameter to a tool, adding a new mode of viewing light, etc. See [the wiki](https://github.com/ricktu288/ray-optics/wiki) for documentation. For significant change such as a new framwork or a new toolbar design, please open an issue to discuss with the project's developers first.
+Such as adding a new parameter to a tool, adding a new mode of viewing light, etc. See [the wiki](https://github.com/ricktu288/ray-optics/wiki) for documentation. For significant changes such as a new framework or a new toolbar design, please open an issue to discuss with the project's developers first.
 
-## Requirements on compatibility
+### Requirements on compatibility
 
 If you modified some existing tools/components, make sure that the following are satisfied:
 
