@@ -8,7 +8,7 @@ For code contributions, see the following guidelines.
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add a script <code><var>TOOL_ID</var>.js</code> in `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool (which should not be changed once merge into `master`, but the name in the locales can be changed) and write the code there. See the README there for a correspondence between the id with the name of the existing tools on the toolbar. See [the structure of a tool](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj)) for documentation.
+2. Add a script <code><var>TOOL_ID</var>.js</code> in `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool, and write the code there. See the README there for a correspondence between the id with the name of the existing tools on the toolbar. See [the structure of a tool](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj)) for documentation.
 
 3. Add a script tag in `simulator/index.html` for the new tool.
 
