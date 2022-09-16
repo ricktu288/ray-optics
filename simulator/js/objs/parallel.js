@@ -21,7 +21,6 @@ objTypes['parallel'] = {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     if (colorMode) {
-      ctx.globalCompositeOperation = "screen";
       ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 532, 1));
     } else {
       ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
@@ -32,7 +31,6 @@ objTypes['parallel'] = {
     ctx.moveTo(obj.p1.x + Math.sin(a_l) * 2, obj.p1.y + Math.cos(a_l) * 2);
     ctx.lineTo(obj.p2.x + Math.sin(a_l) * 2, obj.p2.y + Math.cos(a_l) * 2);
     ctx.stroke();
-    ctx.globalCompositeOperation = "source-over";
 
     ctx.strokeStyle = 'rgba(128,128,128,255)';
     ctx.lineWidth = 2;

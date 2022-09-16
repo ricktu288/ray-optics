@@ -30,10 +30,8 @@ objTypes['laser'] = {
   draw: function(obj, canvas) {
 
   if (colorMode) {
-    ctx.globalCompositeOperation = "screen";
     ctx.fillStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 532, 1));
     ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
-    ctx.globalCompositeOperation = "source-over";
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
     ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);

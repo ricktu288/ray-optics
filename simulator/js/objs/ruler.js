@@ -32,7 +32,7 @@ objTypes['ruler'] = {
   var scale_len_mid = 15;
 
 
-  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)', true);
+  ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
   //ctx.font="bold 14px Arial";
   ctx.font = '14px Arial';
   ctx.fillStyle = 'rgb(128,128,128)';

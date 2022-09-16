@@ -20,7 +20,7 @@ objTypes['power'] = {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)', true)
+      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)')
       ctx.setLineDash([5,5]);
       ctx.beginPath();
       ctx.moveTo(obj.p1.x, obj.p1.y);

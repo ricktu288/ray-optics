@@ -104,6 +104,23 @@ function draw_() {
       objTypes[objs[i].type].shoot(objs[i]); //若objs[i]能射出光線,讓它射出 If objs[i] can shoot rays, shoot them.
     }
   }
+  if (colorMode && ctx.constructor != C2S) {
+    // Transformation the color to the same representation as color rendering.
+    // This is to avoid the color satiation problem when using the 'lighter' composition.
+    // Currently not supported when exporting to SVG.
+    var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
+    var data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+        var R = 1 - Math.exp(-data[i] / 256);
+        var G = 1 - Math.exp(-data[i+1] / 256);
+        var B = 1 - Math.exp(-data[i+2] / 256);
+        data[i] = 255 * R;
+        data[i+1] = 255 * G;
+        data[i+2] = 255 * B;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+  }
   shootWaitingRays();
   if (mode == 'observer')
   {
@@ -248,7 +265,7 @@ function shootWaitingRays() {
           }
         }
         if (colorMode) {
-          var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p));
+          var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p), true);
         } else {
           ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
         }
@@ -342,7 +359,7 @@ function shootWaitingRays() {
 
 
                   if (colorMode) {
-                    var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5);
+                    var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
                   } else {
                     ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
                   }
@@ -423,7 +440,7 @@ function shootWaitingRays() {
             if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
             {
               if (colorMode) {
-                var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5);
+                var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
               } else {
                 ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
               }
@@ -550,7 +567,7 @@ function shootWaitingRays() {
 }
 
 // takes wavelength in nm and returns an rgb value
-function wavelengthToColor(wavelength, brightness) {
+function wavelengthToColor(wavelength, brightness, transform) {
   // From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
   var r,
       g,
@@ -606,7 +623,7 @@ function wavelengthToColor(wavelength, brightness) {
   G *= alpha * brightness;
   B *= alpha * brightness;
 
-  if (ctx.constructor != C2S) {
+  if (ctx.constructor != C2S && transform) {
     // Adjust color to make (R,G,B) linear when using the 'screen' composition.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
     // Currently not supported when exporting to SVG.
