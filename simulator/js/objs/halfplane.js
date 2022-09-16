@@ -99,28 +99,26 @@ objTypes['halfplane'] = {
     }
   },
 
+  zIndex: objTypes['refractor'].zIndex,
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas, aboveLight) {
 
-  if (!aboveLight)
-  {
-    var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    var par_x = (obj.p2.x - obj.p1.x) / len;
-    var par_y = (obj.p2.y - obj.p1.y) / len;
-    var per_x = par_y;
-    var per_y = -par_x;
+  var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+  var par_x = (obj.p2.x - obj.p1.x) / len;
+  var par_y = (obj.p2.y - obj.p1.y) / len;
+  var per_x = par_y;
+  var per_y = -par_x;
 
-    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);
+  var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);
 
-    ctx.beginPath();
-    ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + par_x * sufficientlyLargeDistance, obj.p1.y + par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
+  ctx.beginPath();
+  ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
+  ctx.lineTo(obj.p1.x + par_x * sufficientlyLargeDistance, obj.p1.y + par_y * sufficientlyLargeDistance);
+  ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
+  ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
 
-    objTypes['refractor'].fillGlass(obj.p, obj);
-  }
+  objTypes['refractor'].fillGlass(obj.p, obj, aboveLight);
 
   if (obj == mouseObj) {
     ctx.fillStyle = 'magenta';

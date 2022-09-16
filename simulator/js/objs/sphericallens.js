@@ -91,6 +91,8 @@ objTypes['sphericallens'] = {
     }
   },
 
+  zIndex: objTypes['refractor'].zIndex,
+
   draw: function(obj, canvas, aboveLight) {
     objTypes['refractor'].draw(obj, canvas, aboveLight);
     if (obj.path.length < 6)

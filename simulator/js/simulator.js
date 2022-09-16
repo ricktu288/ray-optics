@@ -83,10 +83,21 @@ function draw_() {
   }
   ctx.restore();
 
-
+  // Sort the objects with z-index.
+  var mapped = objs.map(function(obj, i) {
+    if (objTypes[obj.type].zIndex) {
+      return {index: i, value: objTypes[obj.type].zIndex(obj)};
+    } else {
+      return {index: i, value: 0};
+    }
+  });
+  mapped.sort(function(a, b) {
+    return a.value - b.value;
+  });
   //畫出物件 Draw the objects
-  for (var i = 0; i < objs.length; i++)
+  for (var j = 0; j < objs.length; j++)
   {
+    var i = mapped[j].index;
     objTypes[objs[i].type].draw(objs[i], canvas);
     if (objTypes[objs[i].type].shoot)
     {
@@ -506,13 +517,10 @@ function shootWaitingRays() {
     ctx.globalCompositeOperation = 'source-over';
   }
   ctx.globalAlpha = 1.0;
-  //if(showLight)
-  //{
-    for (var i = 0; i < objs.length; i++)
-      {
-      objTypes[objs[i].type].draw(objs[i], canvas, true); //畫出objs[i] Draw objs[i]
-      }
-  //}
+  for (var i = 0; i < objs.length; i++)
+  {
+    objTypes[objs[i].type].draw(objs[i], canvas, true); //畫出objs[i] Draw objs[i]
+  }
   if (mode == 'observer')
   {
     //畫出即時觀察者 Draw the observer

@@ -94,6 +94,11 @@ objTypes['refractor'] = {
     }
     draw();
   },
+  
+  zIndex: function(obj) {
+    return obj.p * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
+  },
+
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas, aboveLight) {
     var p1;
@@ -149,7 +154,7 @@ objTypes['refractor'] = {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
-    else if (!aboveLight)
+    else
     {
       //物件已經畫完 The user has completed drawing the obj
       ctx.beginPath();
@@ -185,7 +190,7 @@ objTypes['refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(obj.p, obj);
+      this.fillGlass(obj.p, obj, aboveLight);
     }
     ctx.lineWidth = 1;
 
@@ -211,20 +216,26 @@ objTypes['refractor'] = {
     }
   },
 
-  fillGlass: function(n, obj)
+  fillGlass: function(n, obj, aboveLight)
   {
+    if (aboveLight) {
+      // Draw the highlight only
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = getMouseStyle(obj, 'transparent');
+      ctx.fill('evenodd');
+      ctx.globalAlpha = 1;
+      return;
+    }
     if (n >= 1)
     {
-      if (colorMode) {
-        ctx.globalCompositeOperation = 'screen';
-        var alpha = 1 - Math.exp(-(Math.log(n) / Math.log(1.5) * 0.2));
-        ctx.fillStyle = getMouseStyle(obj, "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)", true);
+      ctx.globalCompositeOperation = 'lighter';
+      var alpha = Math.log(n) / Math.log(1.5) * 0.2;
+      if (ctx.constructor != C2S) {
+        ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
       } else {
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.fillStyle = getMouseStyle(obj, 'white');
-        ctx.globalAlpha = Math.log(n) / Math.log(1.5) * 0.2;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle ="white";
       }
-
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
@@ -232,12 +243,41 @@ objTypes['refractor'] = {
     }
     else
     {
+      var alpha = Math.log(1/n) / Math.log(1.5) * 0.2;
+      if (ctx.constructor != C2S) {
+        // Subtract the gray color.
+        // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
+        ctx.globalCompositeOperation = 'difference';
+        ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (0) + "%," + (0) + "%)";
+        ctx.fill('evenodd');
 
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
-      ctx.lineWidth = 1;
-      ctx.stroke();
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.fillStyle = "white";
+        ctx.globalAlpha = 1;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
+        
+        ctx.globalCompositeOperation = 'lighter';
 
+        ctx.fillStyle = "rgb(" + (0) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
+        ctx.fill('evenodd');
+
+        ctx.globalCompositeOperation = 'difference';
+
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1;
+      } else {
+        // canvas2svg does not support globalCompositeOperation. Use the old appearance.
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
     }
 
   },

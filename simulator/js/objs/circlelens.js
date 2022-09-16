@@ -70,16 +70,14 @@ objTypes['circlelens'] = {
     if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) {return rp_temp[2];}
   },
 
+  zIndex: objTypes['refractor'].zIndex,
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas, aboveLight) {
 
-  if (!aboveLight)
-  {
-    ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p, obj);
-  }
+  ctx.beginPath();
+  ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
+  objTypes['refractor'].fillGlass(obj.p, obj, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
   ctx.fillStyle = 'red';
