@@ -18,7 +18,7 @@ objTypes['refractor'] = {
         obj.cauchyCoeff = value;
       }, elem);
     } else {
-      createNumberAttr(getMsg('refractiveindex'), 1, 3, 0.01, obj.p, function(obj, value) {
+      createNumberAttr(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
       }, elem);
     }
