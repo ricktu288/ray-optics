@@ -31,7 +31,7 @@ Open `simulator/index.html` locally in you browser (or start an http server in t
 
 # Contributing
 
-See [wiki/Contributing](https://github.com/ricktu288/ray-optics/wiki/Contributing).
+See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md).
 
 # License
 Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun
