@@ -630,6 +630,10 @@ function createUndoPoint()
     //復原步數已達上限 The limit of undo is reached
     undoLBound = (undoLBound + 1) % undoLimit;
   }
+
+  // Force reset the anti-rasterization-bias behavior of some browsers. Put here as a workround for some bugs in some browsers.
+  canvas.height = window.innerHeight-1;
+  canvas.height = window.innerHeight;
 }
 
 function undo()

@@ -249,6 +249,7 @@ objTypes['refractor'] = {
         // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
 
         // A trick to work around a buggy behavior in some browser (at least in Google Chrome 105 on macOS 12.2.1 on iMac 2021) that the color in the lower left corner of the canvas is filled to the glass. Reason unknown.
+        // TODO: Find out the reason behind this behavior.
         var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
         var data = imageData.data;
         ctx.putImageData(imageData, 0, 0);

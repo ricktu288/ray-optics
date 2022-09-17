@@ -168,8 +168,6 @@ window.onload = function(e) {
   document.getElementById('color_mode').onclick = function()
   {
     colorMode = this.checked;
-    canvas.height = window.innerHeight-1;
-    canvas.height = window.innerHeight; // Force reset the anti-rasterization-bias behavior of some browsers.
     draw();
   };
 
@@ -409,9 +407,6 @@ if (ctx)
 
 function initParameters()
 {
-  canvas.height = window.innerHeight-1;
-  canvas.height = window.innerHeight; // Force reset the anti-rasterization-bias behavior of some browsers.
-
   isConstructing = false;
   endPositioning();
   objs.length = 0;
@@ -629,8 +624,6 @@ function JSONOutput()
 }
 function JSONInput()
 {
-  canvas.height = window.innerHeight-1;
-  canvas.height = window.innerHeight; // Force reset the anti-rasterization-bias behavior of some browsers.
   var jsonData = JSON.parse(document.getElementById('textarea1').value);
   if (typeof jsonData != 'object')return;
   if (!jsonData.version)
