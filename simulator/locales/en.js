@@ -306,11 +306,11 @@ locales["en"] = {
   "footer_message": {
     "message": "Developed by <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
   },
-  "homepage": {
-    "message": "Home"
+  "contribute": {
+    "message": "Contribute"
   },
-  "source": {
-    "message": "Source"
+  "issues": {
+    "message": "Report Issues"
   },
   "undo_popover": {
     "message": "Undo last action. (Ctrl+Z)"

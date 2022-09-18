@@ -44,8 +44,8 @@ function init_i18n() {
   document.getElementById('forceStop').innerHTML = getMsg('processing');
   document.getElementById('restore').innerHTML = getMsg('restore');
 
-  document.getElementById('homepage').innerHTML = getMsg('homepage');
-  document.getElementById('source').innerHTML = getMsg('source');
+  document.getElementById('contribute').innerHTML = getMsg('contribute');
+  document.getElementById('issues').innerHTML = getMsg('issues');
   document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
 }
 

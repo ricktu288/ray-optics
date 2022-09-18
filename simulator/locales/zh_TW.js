@@ -306,11 +306,11 @@ locales["zh-TW"] = {
   "footer_message": {
     "message": "由 <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 開發"
   },
-  "homepage": {
-    "message": "首頁"
+  "contribute": {
+    "message": "貢獻"
   },
-  "source": {
-    "message": "原始碼"
+  "issues": {
+    "message": "回報問題"
   },
   "undo_popover": {
     "message": "復原上個動作。(Ctrl+Z)"
