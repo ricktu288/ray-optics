@@ -312,6 +312,9 @@ locales["zh-CN"] = {
   "issues": {
     "message": "回报问题"
   },
+  "about": {
+    "message": "关于"
+  },
   "undo_popover": {
     "message": "复原上个动作。(Ctrl+Z)"
   },

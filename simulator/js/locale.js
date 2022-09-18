@@ -46,6 +46,7 @@ function init_i18n() {
 
   document.getElementById('contribute').innerHTML = getMsg('contribute');
   document.getElementById('issues').innerHTML = getMsg('issues');
+  document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
 }
 

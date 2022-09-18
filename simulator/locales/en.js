@@ -312,6 +312,9 @@ locales["en"] = {
   "issues": {
     "message": "Report Issues"
   },
+  "about": {
+    "message": "About"
+  },
   "undo_popover": {
     "message": "Undo last action. (Ctrl+Z)"
   },
