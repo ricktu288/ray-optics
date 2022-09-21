@@ -4,9 +4,9 @@ var ctx;
 var objs = []; //物件 The objects
 var objCount = 0; //物件數量 Number of the objects
 var observer;
-var tools_normal = ['laser', 'parallel', 'blackline', 'ruler', 'protractor', 'power', 'text', ''];
-var tools_withList = ['radiant_', 'mirror_', 'refractor_'];
-var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter'];
+var tools_normal = ['laser', 'parallel', 'ruler', 'protractor', 'power', 'text', ''];
+var tools_withList = ['radiant_', 'mirror_', 'refractor_', 'blocker_'];
+var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter','blackline','blackcircle'];
 var modes = ['light', 'extended_light', 'images', 'observer'];
 var xyBox_cancelContextMenu = false;
 var scale = 1;
@@ -719,6 +719,12 @@ function toolbtn_clicked(tool, e)
       AddingObjType = "lens";
     else if (t == "Spherical Lens")
       AddingObjType = "sphericallens";
+  } else if (tool === "blocker_") {
+    var t = window.toolBarViewModel.blockers.selected();
+    if (t === "Line Blocker")
+      AddingObjType = "blackline";
+    else if (t === "Circle Blocker")
+      AddingObjType = "blackcircle";
   }
 }
 
