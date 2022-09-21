@@ -3,7 +3,7 @@ objTypes['blackcircle'] = {
 
     //建立物件 Create the obj
     create: function (mouse) {
-        return {type: 'blackcircle', p1: mouse, p2: mouse, p: 1.5};
+        return {type: 'blackcircle', p1: mouse, p2: mouse};
     },
 
     //使用lineobj原型 Use the prototype lineobj
@@ -19,14 +19,15 @@ objTypes['blackcircle'] = {
 
         ctx.beginPath();
         ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "brown";
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,35,10)');
         //ctx.fillStyle="indigo";
 
         ctx.stroke();
+        ctx.fillStyle = 'red';
         ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-        objTypes['refractor'].fillGlass(obj.p, obj, aboveLight);
 
+        ctx.lineWidth = 1;
         if (obj === mouseObj) {
             ctx.fillStyle = 'magenta';
             ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
