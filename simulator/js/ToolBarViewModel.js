@@ -38,6 +38,12 @@ function ToolBarViewModel() {
         new ToolBarItem("Finite angle", "tool_led", "led",
           ToolTypeEnum.RADIO)
       ]),
+      self.blockers = new ToolBarItem("Blockers", "tool_blocker_", undefined, ToolTypeEnum.RADIOLIST, [
+        new ToolBarItem("Line Blocker", "tool_blackline", "blocker",
+            ToolTypeEnum.RADIO),
+        new ToolBarItem("Circle Blocker", "tool_blackcircle", "circle_blocker",
+            ToolTypeEnum.RADIO)
+      ]),
       self.mirrors = new ToolBarItem("Mirrors", "tool_mirror_", 4, ToolTypeEnum.RADIOLIST, [
         new ToolBarItem("Segment", "tool_mirror", "mirror",
           ToolTypeEnum.RADIO),
@@ -61,12 +67,6 @@ function ToolBarViewModel() {
           ToolTypeEnum.RADIO),
         new ToolBarItem("Spherical Lens", "tool_sphericallens", "spherical_lens",
           ToolTypeEnum.RADIO)
-      ]),
-      self.blockers = new ToolBarItem("Blockers", "tool_blocker_", 2, ToolTypeEnum.RADIOLIST, [
-        new ToolBarItem("Line Blocker", "tool_blackline", "blocker",
-            ToolTypeEnum.RADIO),
-        new ToolBarItem("Circle Blocker", "tool_blackcircle", "circle_blocker",
-            ToolTypeEnum.RADIO)
       ]),
       new ToolBarItem("Ruler", "tool_ruler", "ruler",
         ToolTypeEnum.RADIO),
