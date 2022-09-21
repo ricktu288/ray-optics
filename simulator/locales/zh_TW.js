@@ -57,6 +57,9 @@ locales["zh-TW"] = {
   "toolname_refractor_": {
     "message": "透光物"
   },
+  "toolname_blocker_": {
+    "message": "遮光物"
+  },
   "toolname_halfplane": {
     "message": "透光物"
   },
@@ -71,6 +74,9 @@ locales["zh-TW"] = {
   },
   "toolname_blackline": {
     "message": "吸光片"
+  },
+  "toolname_blackcircle": {
+    "message": "圓形遮光物"
   },
   "toolname_ruler": {
     "message": "直尺"
@@ -147,6 +153,9 @@ locales["zh-TW"] = {
   "tool_refractor_": {
     "message": "透光物"
   },
+  "tool_blocker_": {
+    "message": "遮光物"
+  },
   "tool_halfplane": {
     "message": "半平面"
   },
@@ -161,6 +170,9 @@ locales["zh-TW"] = {
   },
   "tool_blackline": {
     "message": "吸光片"
+  },
+  "tool_blackcircle": {
+    "message": "圓形遮光物"
   },
   "tool_ruler": {
     "message": "直尺"
@@ -377,6 +389,9 @@ locales["zh-TW"] = {
   },
   "tool_blackline_popover": {
     "message": "線段形狀的吸光片，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
+  },
+  "tool_blackcircle_popover": {
+    "message": "圓形遮光物，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
   },
   "tool_ruler_popover": {
     "message": "指定原點與另一點。刻度單位為像素。（拖曳或點擊以創建。）"
