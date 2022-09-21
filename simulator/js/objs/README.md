@@ -6,6 +6,8 @@
 | Beam | `parallel` |
 | Point source -> 360 degrees | `radiant` |
 | Point source -> Finite angle | `led` |
+| Blockers -> Line Blocker | `blackline` |
+| Blockers -> Circle Blocker | `blackcircle` |
 | Mirrors -> Segment | `mirror` |
 | Mirrors -> Circular Arc | `arcmirror` |
 | Mirrors -> Ideal Curved | `idealmirror` |
@@ -16,7 +18,6 @@
 | Glasses -> Free-shape | `refractor` |
 | Glasses -> Ideal Lens | `lens` |
 | Glasses -> Spherical Lens | `sphericallens` |
-| Blocker | `blackline` |
 | Ruler | `ruler` |
 | Protractor | `protractor` |
 | Detector | `power` |

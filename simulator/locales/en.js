@@ -42,6 +42,9 @@ locales["en"] = {
   "toolname_refractor_": {
     "message": "Glass"
   },
+  "toolname_blocker_": {
+    "message": "Blocker"
+  },
   "toolname_beamsplitter": {
     "message": "Beam Splitter"
   },
@@ -61,7 +64,10 @@ locales["en"] = {
     "message": "Spherical lens"
   },
   "toolname_blackline": {
-    "message": "Blocker"
+    "message": "Line Blocker"
+  },
+  "toolname_blackcircle": {
+    "message": "Circle Blocker"
   },
   "toolname_ruler": {
     "message": "Ruler"
@@ -141,6 +147,9 @@ locales["en"] = {
   "tool_refractor_": {
     "message": "Glasses"
   },
+  "tool_blocker_": {
+    "message": "Blockers"
+  },
   "tool_halfplane": {
     "message": "Half-plane"
   },
@@ -157,7 +166,10 @@ locales["en"] = {
     "message": "Spherical Lens"
   },
   "tool_blackline": {
-    "message": "Blocker"
+    "message": "Line Blocker"
+  },
+  "tool_blackcircle": {
+    "message": "Circle Blocker"
   },
   "tool_ruler": {
     "message": "Ruler"
@@ -377,6 +389,9 @@ locales["en"] = {
   },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_blackcircle_popover": {
+    "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
