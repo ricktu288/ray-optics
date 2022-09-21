@@ -37,6 +37,8 @@ class ToolBarItem {
       this.description = 3;
     else if (this.name == "Point Source")
       this.description = 6;
+    else if (this.name == "Blockers")
+      this.description = 7;
     else if (this.name == "Samples")
       this.description = 5;
     else
