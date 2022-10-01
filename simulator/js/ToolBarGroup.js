@@ -30,17 +30,36 @@ class ToolBarItem {
     //@param {string|number} description popover description or z-index for RADIOLIST.
     this.description = "";//description;
 
-    //Warning: Dirty code below.
-    if (this.name == "Mirrors")
-      this.description = 4;
-    else if (this.name == "Glasses")
+    // Currently, a hack is used to make the RADIOLIST dropdown menu appear
+    // above other toolbar buttons. This hack requires setting the
+    // `description` of the RADIOLIST to represent its z-index. This
+    // value should monotonically decrease for each RADIOLIST
+    // (from left to right, top to bottom).
+    //
+    // This works because a higher z-index button will always appear above a
+    // lower z-index one, and a button will never be covered by a dropdown menu
+    // of another RADIOLIST button at its right or below it. Therefore, the
+    // z-index of a button must be higher than all buttons at its right or
+    // below.
+    //
+    // The current approach is far from ideal. A better approach is to make
+    // the buttons in the dropdown menu to have higher z-indices than normal
+    // buttons. However, this is currently not possible due to unknown reasons.
+    //
+    // TL;DR: For each RADIOLIST button, its `description` must be set to a
+    //        value higher than all RADIOLIST buttons at its right or below.
+    //        This value should be updated whenever a new RADIOLIST button is
+    //        added or reordered.
+    if (this.name == "Glasses")
       this.description = 3;
+    else if (this.name == "Mirrors")
+      this.description = 4;
+    else if (this.name == "Blockers")
+      this.description = 5;
     else if (this.name == "Point Source")
       this.description = 6;
-    else if (this.name == "Blockers")
-      this.description = 7;
     else if (this.name == "Samples")
-      this.description = 5;
+      this.description = 7;
     else
       this.description = getMsg(this.id + "_popover");
 
