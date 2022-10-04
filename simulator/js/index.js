@@ -861,6 +861,7 @@ function exportSVG() {
 function restore() {
   document.getElementById('textarea1').value = restoredData;
   document.getElementById('restore').style.display = 'none';
+  document.getElementById('welcome').style.display = 'none';
   restoredData = '';
   JSONInput();
   createUndoPoint();
@@ -869,6 +870,7 @@ function restore() {
 function cancelRestore() {
   restoredData = '';
   document.getElementById('restore').style.display = 'none';
+  document.getElementById('welcome').style.display = 'none';
 }
 
 

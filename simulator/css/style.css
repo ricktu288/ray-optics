@@ -1,3 +1,63 @@
+input[type="button"] {
+  margin: 1px;
+}
+
+input[type="range"] {
+  height:15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.saveBox {
+  background-color:white;
+  font-size:12pt;
+  padding-top: 1px;
+  padding-left: 1px;
+  padding-bottom: 1px;
+  padding-right: 1px;
+  margin: 0px;
+}
+
+
+.settingsbox {
+  background-color:rgb(90,90,90);
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
+  padding: 1px;
+  margin: 0px;
+}
+
+.forcestopbox {
+  background-color:red;
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
+  cursor: pointer;
+}
+
+.restorebox {
+  background-color:darkgreen;
+  color:white;
+  opacity:0.8;
+  font-size:12pt;
+  line-height: 2;
+  cursor: pointer;
+}
+
+.optionsbar {
+  margin-left:5px;
+  margin-top:2px;
+}
+
+input {
+  outline: none;
+}
+
+textarea {
+  outline: none;
+}
+
 .btn:focus,.btn:active:focus,.btn.active:focus,
 .btn.focus,.btn:active.focus,.btn.active.focus {
   /* Remove the outline and shadow when button is focused. */

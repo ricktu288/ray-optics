@@ -11,12 +11,13 @@ For code contributions, see the following guidelines.
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
 2. Add a script <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/` and translate the strings from an existing locale.
-3. Add a folder in the repo root with the name being the country/region code, and copy `index.html` (the homepage) inside that folder. Translate the text on the new homepage. Replace all `img/` with `../img/` in the new homepage.
+3. Add the translation of the welcome message in `simulator/index.html`.
+4. Add a folder in the repo root with the name being the country/region code, and copy `index.html` (the homepage) inside that folder. Translate the text on the new homepage. Replace all `img/` with `../img/` in the new homepage.
 
-4. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
-5. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
+5. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
+6. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
 
-6. Commit your changes, push to your fork, and create a pull request.
+7. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing a tool
 

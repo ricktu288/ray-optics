@@ -18,68 +18,6 @@
   <link rel="icon" href="../icon128.png" type="image/png">
   <link rel="manifest" href="manifest/manifest.json">
   <link rel="apple-touch-icon" href="../icon128.png">
-  <style>
-input[type="button"] {
-  margin: 1px;
-}
-
-input[type="range"] {
-  height:15px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.saveBox {
-  background-color:white;
-  font-size:12pt;
-  padding-top: 1px;
-  padding-left: 1px;
-  padding-bottom: 1px;
-  padding-right: 1px;
-  margin: 0px;
-}
-
-
-.settingsbox {
-  background-color:rgb(90,90,90);
-  color:white;
-  opacity:0.8;
-  font-size:12pt;
-  padding: 1px;
-  margin: 0px;
-}
-
-.forcestopbox {
-  background-color:red;
-  color:white;
-  opacity:0.8;
-  font-size:12pt;
-  cursor: pointer;
-}
-
-.restorebox {
-  background-color:darkgreen;
-  color:white;
-  opacity:0.8;
-  font-size:12pt;
-  line-height: 2;
-  cursor: pointer;
-}
-
-.optionsbar {
-  margin-left:5px;
-  margin-top:2px;
-}
-
-input {
-  outline: none;
-}
-
-textarea {
-  outline: none;
-}
-
-  </style>
   <!--Import CSSs-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -89,6 +27,33 @@ textarea {
 
 <!-- Toolbar -->
 
+  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2">
+  </div>
+  <script>
+    var welcome_msgs = {
+      "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Exmaples" menu above.<br>To add an optical element, select a tool above and click the view.',
+      "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要載入範例，請使用上方「範例」選單。<br>若要加入光學元件，請選擇上方之工具並點擊空白處。',
+      "zh-CN": '<span style="font-size:22pt">欢迎使用“线光学模拟”</span><br>若要载入范例，请使用上方“范例”选单。 <br>若要加入光学元件，请选择上方之工具并点击空白处。',
+    }
+    var lang = 'en';
+    if (navigator.language) {
+      var browser_lang = navigator.language;
+      if (browser_lang.toLowerCase() == 'zh-tw') {
+        lang = 'zh-TW';
+      }
+      if (browser_lang.toLowerCase() == 'zh-cn') {
+        lang = 'zh-CN';
+      }
+    }
+
+    var url_lang = location.search.substr(1)
+    if (url_lang && welcome_msgs[url_lang]) {
+      lang = url_lang;
+    }
+
+    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+
+  </script>
   <canvas id="canvas1" style="position: absolute; top: 0; left: 0; z-index: -1">
   </canvas>
   <div id="toolbar" style="background-color: white"
