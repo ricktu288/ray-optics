@@ -19,15 +19,15 @@
   <link rel="manifest" href="manifest/manifest.json">
   <link rel="apple-touch-icon" href="../icon128.png">
   <!--Import CSSs-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 </head>
-<body style="background-color:rgb(0,0,0); overflow:hidden;">
+<body style="background-color:rgb(0,0,0); overflow:hidden; margin: 0px;">
 
 
 <!-- Toolbar -->
 
-  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2">
+  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2; font-family: initial !important">
   </div>
   <script>
     var welcome_msgs = {
