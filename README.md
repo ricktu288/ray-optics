@@ -1,7 +1,9 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6386611.svg)](https://doi.org/10.5281/zenodo.6386611)
+![Example figure](https://raw.githubusercontent.com/ricktu288/ray-optics/master/img/1.svg)
 
 # Ray Optics Simulation
-Simulate reflection and refraction of light.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6386611.svg)](https://doi.org/10.5281/zenodo.6386611)
+
+A web app for creating and simulating 2D geometric optical scenes. Our goal is to make it easy for students to build physical intuition by "playing around", for teachers to do dynamical demonstrations, and at the same time also include tools for more advanced usage.
 
 ## Features
 - Simulate various light sources: ray, beam, and point source
@@ -17,21 +19,21 @@ Simulate reflection and refraction of light.
 - Export as SVG diagram
 
 ## Links
-- [Project Page](https://ricktu288.github.io/ray-optics/)
-- [Sample file folder](/samples)
+- [**Lanuch the Web App**](https://ricktu288.github.io/ray-optics/simulator/)
+- [Home page](https://ricktu288.github.io/ray-optics/)
 - [Documentation](https://github.com/ricktu288/ray-optics/wiki)
+- [Cite this repo](https://github.com/ricktu288/ray-optics/blob/master/CITATION.cff)
 
-If you created a good sample, please submit a pull request to let others see your work!
-
-# Quick Start
-
-Clone the repo: `git clone https://github.com/ricktu288/ray-optics.git`
-
-Open `simulator/index.html` locally in you browser (or start an http server in the repo directory if "Sample" does not work).
 
 # Contributing
 
-See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md).
+Contributions are welcome. Possible contributions include but not limited to the followings:
+
+- New tools
+- New locales
+- New examples
+
+For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md).
 
 # License
 Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun
@@ -79,7 +81,7 @@ The source code is available at: https://github.com/knockout/knockout
 
 
 # 線光學模擬
-模擬光的反射與折射
+自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。
 
 ## 功能
 - 模擬多種光源：光線、平行光、點光源
@@ -95,9 +97,6 @@ The source code is available at: https://github.com/knockout/knockout
 - 匯出為SVG圖形
 
 ## 連結
+- [**啟動網頁程式**](https://ricktu288.github.io/ray-optics/simulator/)
 - [正體中文首頁](https://ricktu288.github.io/ray-optics/tw/)
 - [簡體中文首頁](https://ricktu288.gitlab.io/ray-optics/cn/)
-- [範例檔案夾](/samples)
-
-如果您建立了有意義的範例，歡迎發pull request給我們！
-
