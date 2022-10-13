@@ -24,9 +24,15 @@ objTypes['refractor'] = {
     }
     var note = document.createElement('span');
     note.innerHTML = getMsg('refractiveindex_note');
+    note.id = "refractiveindex_note";
     note.style.marginLeft = "0.2em";
     note.style.marginRight = "0.2em";
+    note.style.borderBottom = "1px dotted white";
+    note.style.color = "white";
+    note.style.cursor = "help";
+    note.title = getMsg('refractiveindex_note_popover');
     elem.appendChild(note);
+    cancelMousedownEvent("refractiveindex_note");
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user

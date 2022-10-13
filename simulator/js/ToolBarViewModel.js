@@ -121,6 +121,7 @@ try {
   if (localStorage.rayOpticsHelp == "off") {
     $("#help").prop('checked', false);
     $("[data-toggle=popover]").popover("disable");
+    $("#help").parent().popover("enable");
     window.toolBarViewModel.help.selected(false)
   }
 } catch { }
@@ -132,6 +133,7 @@ $("#help").click(function () {
   } else {
     console.log(0);
     $("[data-toggle=popover]").popover("disable");
+    $("#help").parent().popover("enable");
     localStorage.rayOpticsHelp = "off";
   }
 });
