@@ -7,7 +7,19 @@ locales["zh-CN"] = {
     "message": "线光学"
   },
   "appDesc": {
-    "message": "模拟光的反射和折射。"
+    "message": "自由、开源的网页程式，用于建立及模拟二维几何光学场景。"
+  },
+  "homepage_desc": {
+    "message": "建立二维几何光学场景，并即时模拟光线行为。<br>完全免费，免下载，直接于浏览器中执行。"
+  },
+  "launch_simulator": {
+    "message": "启动程序"
+  },
+  "view_on_github": {
+    "message": "查看GitHub"
+  },
+  "welcome": {
+    "message": "<span style=\"font-size:22pt\">欢迎使用“线光学模拟”</span><br>若要载入范例，请使用上方“范例”选单。 <br>若要加入光学元件，请选择工具并点击空白处。"
   },
   "toolbar_title": {
     "message": "工具："
@@ -256,7 +268,7 @@ locales["zh-CN"] = {
     "message": "取消"
   },
   "save_description": {
-    "message": "档案将储存于预设的下载资料夹。"
+    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">贡献新的项目到“范例”选单中</a>。"
   },
   "open": {
     "message": "开启"
@@ -329,6 +341,9 @@ locales["zh-CN"] = {
   },
   "about": {
     "message": "关于"
+  },
+  "translate": {
+    "message": "协助我们翻译本程式"
   },
   "undo_popover": {
     "message": "复原上个动作。(Ctrl+Z)"

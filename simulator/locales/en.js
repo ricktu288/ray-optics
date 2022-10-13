@@ -7,7 +7,19 @@ locales["en"] = {
     "message": "Ray Optics"
   },
   "appDesc": {
-    "message": "Simulate reflection and refraction of light."
+    "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
+  },
+  "homepage_desc": {
+    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. No download needed."
+  },
+  "launch_simulator": {
+    "message": "Launch Simulator"
+  },
+  "view_on_github": {
+    "message": "View on GitHub"
+  },
+  "welcome": {
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To load an example, use the \"Examples\" menu above.<br>To add an optical component, select a tool and click the blank space."
   },
   "toolbar_title": {
     "message": "Tool:&nbsp;"
@@ -253,7 +265,7 @@ locales["en"] = {
     "message": "Cancel"
   },
   "save_description": {
-    "message": "The file will be saved in the default download folder."
+    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
   },
   "open": {
     "message": "Open"
@@ -326,6 +338,9 @@ locales["en"] = {
   },
   "about": {
     "message": "About"
+  },
+  "translate": {
+    "message": "Help us translate this app"
   },
   "undo_popover": {
     "message": "Undo last action. (Ctrl+Z)"
