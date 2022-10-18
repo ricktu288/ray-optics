@@ -1,27 +1,27 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+﻿ <!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>线光学模拟 - 首页</title>
-  <meta property="og:title" content="线光学模拟">
+  <title>Ray Optics Simulatie</title>
+  <meta property="og:title" content="Ray Optics Simulatie">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/cn/">
+  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/nl/">
   <meta property="og:image" content="https://ricktu288.github.io/ray-optics/image.png">
-  <meta property="og:description" content="自由、开源的网页程式，用于建立及模拟二维几何光学场景。">
-  <meta property="og:locale" content="zh_CN">
-  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/cn/">
+  <meta property="og:description" content="Een open-source web applicatie om reflectie en refractie van licht te simuleren.">
+  <meta property="og:locale" content="nl">
+  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/nl/">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/" hreflang="en">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/tw/" hreflang="zh-TW">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/cn/" hreflang="zh-CN">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/ru/" hreflang="ru">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/nl/" hreflang="nl">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="icon" href="https://ricktu288.github.io/ray-optics/icon128.png" type="image/png">
+  <link rel="icon" href="icon128.png" type="image/png">
   <style>
 .carousel-inner > .item > img {
-  width: 1280px;
+  width: 100%;
 }
 
 .thumbnail.right-caption > img {
@@ -46,15 +46,18 @@
 
   </style>
 </head>
-<body style="">
+<body>
 
 <div class="container">
   <center>
-    <h1><b><span id="title">线光学模拟</span></b></h1>
-    <p id="description">建立二维几何光学场景，并即时模拟光线行为。<br>完全免费，免下载，直接于浏览器中执行。</p>
+    <h1><b><span id="title">Ray Optics Simulatie</span></b></h1>
+    <p id="description">
+      Een open-source web applicatie om reflectie en refractie van licht te simuleren.<br>
+      Geschreven in HTML, CSS en JavaScript. 
+    </p>
     <p>
-      <a href="https://ricktu288.github.io/ray-optics/simulator/?zh-CN" target="_blank" class="btn btn-success btn-lg" id="start">启动程序</a>
-      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">查看GitHub</a>
+      <a href="https://ricktu288.github.io/ray-optics/simulator/?nl" target="_blank" class="btn btn-success btn-lg" id="start">Start Applicatie</a>
+      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">Bekijk op GitHub</a>
     </p>
   </center>
   <br>
@@ -62,10 +65,10 @@
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#screenshots" data-slide-to="0" class="active"></li>
-      <li data-target="#screenshots" data-slide-to="1" class=""></li>
-      <li data-target="#screenshots" data-slide-to="2" class=""></li>
-      <li data-target="#screenshots" data-slide-to="3" class=""></li>
-      <li data-target="#screenshots" data-slide-to="4" class=""></li>
+      <li data-target="#screenshots" data-slide-to="1"></li>
+      <li data-target="#screenshots" data-slide-to="2"></li>
+      <li data-target="#screenshots" data-slide-to="3"></li>
+      <li data-target="#screenshots" data-slide-to="4"></li>
     </ol>
 
     <!-- Wrapper for slides -->
@@ -101,128 +104,142 @@
   <div class="row" style="font-size: 10pt">
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="tools">工具</h2>
+        <h2 id="tools">Gereedschap</h2>
         <div class="row thumbnail right-caption">
           <img src="../img/ray.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ray">单一光线</p>
-            <span id="ray_desc">由两点决定一条光线。</span>
+            <p class="tool-title" id="ray">Straal</p>
+            <span id="ray_desc">
+              Één lichtstraal door twee punten. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="beam">平行光</p>
-            <span id="beam_desc">由一线段产生一束平行光，密度由"光线密度"滑杆决定。</span>
+            <p class="tool-title" id="beam">Beam</p>
+            <span id="beam_desc">
+              Een evenwijdige bundel uit een lijnstuk, de dichtheid wordt met "Straal dichtheid" ingesteld. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="point_source">点光源</p>
-            <span id="point_source_desc">由一点向四周发射光线，数量由"光线密度"滑杆决定。</span>
+            <p class="tool-title" id="point_source">Punt bron</p>
+            <span id="point_source_desc">
+              Stralen komen uit een punt, aantal wordt met "Straal dichtheid" ingesteld. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="mirror">镜子</p>
-            <span id="mirror_desc">模拟光线射到镜子时的反射。</span>
+            <p class="tool-title" id="mirror">Spiegel</p>
+            <span id="mirror_desc">
+              Simuleert de reflectie in een spiegel. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="mirror_arc">镜子 (曲线)</p>
-            <span id="mirror_arc_desc">曲线形的镜子。可选圆弧或抛物线。</span>
+            <p class="tool-title" id="mirror_arc">Gebogen spiegel</p>
+            <span id="mirror_arc_desc">
+              Een deel van een cirkel als spiegel, gedefinieerd met drie punten. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_curved_mirror">理想曲面镜</p>
-            <span id="ideal_curved_mirror_desc">完全符合面镜公式(1/p + 1/q = 1/f)的理想化"曲面"镜，可直接设定其焦距(单位为像素)。</span>
-          </div>
-        </div>
-        <div class="row thumbnail right-caption">
-          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
-          <div class="caption">
-            <p class="tool-title" id="beamsplitter">分光镜</p>
-            <span id="beamsplitter_desc">能穿透一个比例的光的镜子。</span>
+            <p class="tool-title" id="ideal_curved_mirror">Ideale gebogen spiegel</p>
+            <span id="ideal_curved_mirror_desc">
+              Een ideale "gebogen" spiegel die aan de spiegelvergelijking voldoet (1/p + 1/q = 1/f). De brandpuntafstand (in pixels) kan ingesteld worden. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass_halfplane">透光物</p>
-            <span id="glass_halfplane_desc">模拟光线经过透光物体界面时的反射与折射。</span>
+            <p class="tool-title" id="glass_halfplane">Glas</p>
+            <span id="glass_halfplane_desc">
+              Simuleert de breking en spiegelig van licht op een oppervlak. De intensiteiten worden berekend op basis van ongepolarizeerd glas.
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/glass.svg" alt="Glass (Other shapes)"  class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass">透光物 (其他形状)</p>
-            <span id="glass_desc">任何由线段与圆弧组成的透光物，包括三棱镜与"球面"透镜。</span>
+            <p class="tool-title" id="glass">Glas (overige vormen)</p>
+            <span id="glass_desc">
+              Willekeurige glazen vormen uit lijnstukken en cirkelbogen, inclusief prismas en "ronde" lenzen. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)"  class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_lens">透光物 (理想透镜)</p>
-            <span id="ideal_lens_desc">完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距(单位为像素)。</span>
+            <p class="tool-title" id="ideal_lens">Glas (Ideale lens)</p>
+            <span id="ideal_lens_desc">
+              Een ideale lens die de lensformule volgt (1/p + 1/q = 1/f). De brandpuntafstand (in pixels) kan ingesteld worden. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="blocker">吸光片</p>
-            <span id="blocker_desc">线段形状的吸光片，光线射到其上后就不会再射出。</span>
+            <p class="tool-title" id="blocker">Scherm</p>
+            <span id="blocker_desc">
+              Een lijnstuk dat opvallend licht absorbeert. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ruler.svg" alt="Ruler"  style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption">
-            <p class="tool-title" id="ruler">直尺</p>
-            <span id="ruler_desc">指定原点与另一点。刻度单位为像素。</span>
+          <div class="caption" class="img-rounded">
+            <p class="tool-title" id="ruler">Lineaal</p>
+            <span id="ruler_desc">
+              Een lineaal van 0 tot een ander punt. De schaal is in pixels. 
+            </span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption">
-            <p class="tool-title" id="protractor">量角器</p>
-            <span id="protractor_desc">指定圆心和圆周上一点作为零度位置。刻度单位为度。</span>
-          </div>
-        </div>
-        <div class="row thumbnail right-caption">
-          <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption">
-            <p class="tool-title" id="power">探测器</p>
-            <span id="power_desc">测量通过一线段的能量流率(P)、垂直动量流率(F⊥)与水平动量流率(F∥)。单位为任意。</span>
+          <div class="caption" class="img-rounded">
+            <p class="tool-title" id="protractor">Gradenboog</p>
+            <span id="protractor_desc">
+              Een gradenboog met een middelpunt tot een ander punt voor een hoek van 0 graden. De schaal is in graden. 
+            </span>
           </div>
         </div>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="views">呈现方式</h2>
+        <h2 id="views">Views</h2>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="rays">光线</p>
-            <span id="rays_desc">画出光线。当"光线密度"高时，光线呈现连续。</span>
+            <p class="mode-title" id="rays">Stralen</p>
+            <span id="rays_desc">
+              Toont de lichtstralen. Als de "Straaldichtheid" groot is, lijkt op een lichtvlek. 
+            </span>
           </div>
           <center>
             <div style="aspect-ratio: 519/163; max-width: 510px">
-              <img src="../img/high_density.svg" alt="High density" class="img-rounded" style="width:100%">
+              <img src="../img/high_density.svg" alt="High density" style=";width:100%" class="img-rounded">
             </div>
             <div style="aspect-ratio: 519/163; max-width: 510px">
-              <img src="../img/low_density.svg" alt="Low density" style="margin-top:5px;width:100%" class="img-rounded">
+              <img src="../img/low_density.svg" alt="Low density" class="img-rounded" style="margin-top:5px; width:100%">
             </div>
           </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="extended_rays">延长光线</p>
-            <span id="extended_rays_desc">除光线实际路径外，亦画出其延长线。橘色、灰色分别表示向后、向前的延长线。</span>
+            <p class="mode-title" id="extended_rays">Uitgebreide stralen</p>
+            <span id="extended_rays_desc">
+              Toont de echte en virtuele stralen. Oranje voor stralen tegengesteld aan lichtrichting, grijs voor doortrekken in de lichtrichting. 
+            </span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -232,8 +249,10 @@
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="all_images">所有像</p>
-            <span id="all_images_desc">点出像的位置。黄点表示实像，橘点表示虚像，灰点(图中没有)表示虚物。注意"光线密度"不够高时有些像无法正常显示。</span>
+            <p class="mode-title" id="all_images">Alle beelden</p>
+            <span id="all_images_desc">
+              Toont de plaats van alle beelden. Gele punten voor de reeele beelden, oranje voor de virtuele beelden, grijs (niet in deze figuur) geven virtuele objecten aan. Let op dat sommige beelden niet zichtbaar zijn als de "Straaldichtheid" te laag is.
+            </span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -243,25 +262,14 @@
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="seen_by_observer">观察者所见</p>
-            <span id="seen_by_observer_desc">模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。</span>
-          </div>
-          <center>
-            <div style="aspect-ratio: 445/216; max-width: 510px">
-              <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
-            </div>
-          </center>
-        </div>
-        <div class="row thumbnail">
-          <div class="caption">
-            <p class="mode-title" id="simulate_colors">模拟色彩<sup><span class="badge" style="background:orange">beta</span></sup></p>
-            <span id="simulate_colors_desc">
-模拟光源的颜色（波长）、混色与透光物的色散。
+            <p class="mode-title" id="seen_by_observer">Beeld voor waarnemer</p>
+            <span id="seen_by_observer_desc">
+              Simuleert de stralen en beelden zoals die vanaf een bepaalde plaats zichtbaar zijn. De blauwe cirkel is de waarnemer (het oog). Elke straal die de cirkel kruist is "zichtbaar". De waarnemer "weet" niet waar de eigenlijke straal begint, maar gaat uit van een rechte lijn van het punt van inval naar de "bron". De (zichtbare) stralen worden in het blauw getoond en de punt(en) in oranje. 
             </span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
-              <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
+              <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
             </div>
           </center>
         </div>
@@ -271,7 +279,7 @@
   <div style="float: right;">
     <div class="dropup">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <span id="language">语言：简体中文</span>
+      <span id="language">Taal: Nederlands</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="https://ricktu288.github.io/ray-optics/">English</a></li>
@@ -284,10 +292,9 @@
   </div>
 </div>
 
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

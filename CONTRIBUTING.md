@@ -34,27 +34,6 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 8. Commit your changes (several times maybe), push to your fork, and create a pull request.
 
-## Contributing a locale
-
-**Method 1: By e-mail**
-
-1. Download https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/en.js.
-2. Translate every  phrase/sentence in the quotation after `"message":` to the target language. Ignore the text between `<` and `>`.
-3. Send the resulting file to yttu@duck.com. Include the name of the language and your name to  be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
-
-**Method 2: Via GitHub**
-
-1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
-
-2. Add a script <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/` and translate the strings from an existing locale.
-3. _(optional)_ Add the translation of the welcome message in `simulator/index.html`.
-4. _(optional)_ Add a folder in the repo root with the name being the country/region code, and copy `index.html` (the homepage) inside that folder. Translate the text on the new homepage. Replace all `img/` with `../img/` in the new homepage.
-
-5. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
-6. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
-
-7. Commit your changes, push to your fork, and create a pull request.
-
 ## Contributing an example
 
 **Method 1: By e-mail**
@@ -75,6 +54,47 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 5. _(optional)_ Add the file name of the example to the `samples` array in `simulator/js/index.js`.
 
 6. Commit your changes, push to your fork, and create a pull request.
+
+## Contributing translations
+
+You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation.
+1. Download the target locale file:
+   - Traditional Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
+   - Simplified Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
+   - Russian (incomplete): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
+   - Dutch (incomplete): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
+   - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/template.js
+2. Translate the phrase/sentence in the quotation after `"message":` to the target language. If you encounter `<` and `>`, leave the text between them untouched; `&amp;` means the "&" symbol; `\"` means a quote, and `&nbsp;` means an extra space.  If the translation of an item is completed, remove the line `"incomplete": true,`. For example,
+```javascript
+  "save_description": {
+    "incomplete": true,
+    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
+  },
+```
+becomes (for Traditional Chinese)
+```javascript
+  "save_description": {
+    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">貢獻新的項目到「範例」選單中</a>。"
+  },
+
+```
+After that, you can submit the translated file with either method below:
+
+**Method 1: By e-mail**
+
+3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
+
+**Method 2: Via GitHub**
+
+3. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
+
+4. Save/replace the file as <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/`.
+5. _(optional)_ Add/modify the translation of the welcome message in `simulator/index.html`.
+6. _(optional)_ Add/modify <code><var>LOCALE_ID/index.html</var>.js</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
+7. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
+8. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
+
+9. Commit your changes, push to your fork, and create a pull request.
 
 ## More contributions
 

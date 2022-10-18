@@ -34,15 +34,20 @@
       "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
       "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要載入範例，請使用上方「範例」選單。<br>若要加入光學元件，請選擇工具並點擊空白處。',
       "zh-CN": '<span style="font-size:22pt">欢迎使用“线光学模拟”</span><br>若要载入范例，请使用上方“范例”选单。 <br>若要加入光学元件，请选择工具并点击空白处。',
+      "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
+      "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.'
     }
     var lang = 'en';
     if (navigator.language) {
-      var browser_lang = navigator.language;
-      if (browser_lang.toLowerCase() == 'zh-tw') {
+      var browser_lang = navigator.language.toLowerCase();
+      if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk') {
         lang = 'zh-TW';
-      }
-      if (browser_lang.toLowerCase() == 'zh-cn') {
+      } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
         lang = 'zh-CN';
+      } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
+        lang = 'ru';
+      } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
+        lang = 'nl';
       }
     }
 
@@ -194,7 +199,9 @@
     <li><a href="?en" style="color:gray" id="lang-en">English</a></li>
     <li><a href="?zh-TW" style="color:gray" id="lang-zh-TW">正體中文</a></li>
     <li><a href="?zh-CN" style="color:gray" id="lang-zh-CN">简体中文</a></li>
-    <li><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-a-locale" target="_blank" style="color:gray" id="translate">Help us translate this app</a></li>
+    <li><a href="?ru" style="color:gray" id="lang-ru">Русский <span style="color:gray">(96/163 translated)</span></a></li>
+    <li><a href="?nl" style="color:gray" id="lang-nl">Nederlands <span style="color:gray">(82/163 translated)</span></a></li>
+    <li><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" style="color:lightgray" id="translate">Help us translate this app</a></li>
   </ul>
 </div>
 
@@ -208,6 +215,8 @@
 <script src="locales/en.js"></script>
 <script src="locales/zh_CN.js"></script>
 <script src="locales/zh_TW.js"></script>
+<script src="locales/ru.js"></script>
+<script src="locales/nl.js"></script>
 <script src="js/locale.js"></script>
 
 <!--View Models scripts-->
