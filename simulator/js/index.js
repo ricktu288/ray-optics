@@ -367,7 +367,8 @@ window.onload = function(e) {
   var samples = [ "reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json", "lens-images.json",
                   "convex-lens.json", "concave-lens.json", "spherical-aberration.json", "zoom-lens.json",
                   "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
-                  "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json" ];
+                  "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json",
+                  "bended-pencil.json", "broken-pencil.json", "NL-simulation.json" ];
   for (i = 1; ; i++) {
     var elt = document.getElementById("sample" + i);
     if (!elt) break;
@@ -383,6 +384,7 @@ function openSample(name) {
     if (client.status >= 300)
       return;
     document.getElementById('textarea1').value = client.responseText;
+    backgroundImage = null;
     JSONInput();
     cancelRestore();
     createUndoPoint();
@@ -671,6 +673,13 @@ function JSONInput()
   if (!jsonData.colorMode)
   {
     jsonData.colorMode = false;
+  }
+  if (jsonData.backgroundImage) {
+    backgroundImage = new Image();
+    backgroundImage.src = "../samples/" + jsonData.backgroundImage;
+    backgroundImage.onload = function (e1) {
+        draw();
+    }
   }
 
   objs = jsonData.objs;

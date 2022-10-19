@@ -219,6 +219,9 @@ locales["en"] = {
   "sample13": { "message": "Reflection and Refraction of a Single Ray" },
   "sample14": { "message": "Spherical Lens and Mirror" },
   "sample15": { "message": "Chromatic dispersion" },
+  "sample16": { "message": "Bended Pencil" },
+  "sample17": { "message": "Broken Pencil" },
+  "sample18": { "message": "NL Binoculars" },
   "mode_light": {
     "message": "Rays"
   },

@@ -38,8 +38,8 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 **Method 1: By e-mail**
 
-1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English.
-2. Send the file to yttu@duck.com. Include the name of the example and your name to  be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
+1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
+2. Send the files to yttu@duck.com. Include the name of the example and your name to  be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
 
 **Method 2: Via GitHub**
 
@@ -47,13 +47,15 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 2. Add the example file in `samples/`, with the name being the name of the example. Currently, the "text" tool does not support locales, so if the example contains texts, they should be in English.
 
-3. _(optional)_ Modify the number of samples in `sampleList` of `simulator/js/ToolBarViewModel.js`.
+3. If the work contains a background image, put it also in `samples/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
 
-4. _(optional)_ Add the locale key <code>sample<var>N</var></code> into at least one of `en`, `zh_TW` or `zh_CN` locale scripts in `simulator/locales/` with the name of the example.
+4. _(optional)_ Modify the number of samples in `sampleList` of `simulator/js/ToolBarViewModel.js`.
 
-5. _(optional)_ Add the file name of the example to the `samples` array in `simulator/js/index.js`.
+5. _(optional)_ Add the locale key <code>sample<var>N</var></code> into at least one of `en`, `zh_TW` or `zh_CN` locale scripts in `simulator/locales/` with the name of the example.
 
-6. Commit your changes, push to your fork, and create a pull request.
+6. _(optional)_ Add the file name of the example to the `samples` array in `simulator/js/index.js`.
+
+7. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing translations
 

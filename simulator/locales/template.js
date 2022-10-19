@@ -332,6 +332,18 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Chromatic dispersion"
   },
+  "sample16": {
+    "incomplete": true,
+    "message": "Bended Pencil"
+  },
+  "sample17": {
+    "incomplete": true,
+    "message": "Broken Pencil"
+  },
+  "sample18": {
+    "incomplete": true,
+    "message": "NL Binoculars"
+  },
   "mode_light": {
     "incomplete": true,
     "message": "Rays"

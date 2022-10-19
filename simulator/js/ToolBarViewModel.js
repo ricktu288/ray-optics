@@ -1,6 +1,6 @@
 var i;
 var sampleList = [];
-for (i = 1; i <= 15; i++)
+for (i = 1; i <= 18; i++)
   sampleList.push(new ToolBarItem("Sample " + i, "sample" + i, undefined, ToolTypeEnum.BUTTON, undefined, undefined));
 
 function ToolBarViewModel() {
@@ -140,4 +140,3 @@ $("#help").click(function () {
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");
 $("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">beta</span></sup>' 
-$("#sample15").prev()[0].innerHTML += '<sup><span class="badge bg-warning">beta</span></sup>' 

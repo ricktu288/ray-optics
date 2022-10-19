@@ -219,6 +219,9 @@ locales["zh-TW"] = {
   "sample13": { "message": "單一光線的反射與折射" },
   "sample14": { "message": "球面透鏡與面鏡" },
   "sample15": { "message": "色散" },
+  "sample16": { "message": "彎曲的鉛筆" },
+  "sample17": { "message": "斷掉的鉛筆" },
+  "sample18": { "message": "NL 雙筒望遠鏡" },
   "mode_light": {
     "message": "光線"
   },

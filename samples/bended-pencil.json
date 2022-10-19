@@ -1,0 +1,135 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 822.1683000000002,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 822.1683000000002,
+        "y": 860,
+        "exist": true
+      },
+      "p": "100"
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 620,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 620,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 200,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 200,
+          "y": 480,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "radiant",
+      "x": 650,
+      "y": 520,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 660,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 590,
+      "y": 640,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 580,
+      "y": 660,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 630,
+      "y": 560,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 610,
+      "y": 600,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 600,
+      "y": 620,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 640,
+      "y": 540,
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 258.60166896644785,
+      "y": 605.4671820424851,
+      "p": "dialectric material"
+    },
+    {
+      "type": "text",
+      "x": 1022.5261689664474,
+      "y": 501.105882042485,
+      "p": "bended pencil (yellow)"
+    },
+    {
+      "type": "text",
+      "x": 596.7172689664478,
+      "y": 466.332582042485,
+      "p": "original pencil (green)"
+    }
+  ],
+  "mode": "images",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 0.05756733343630739,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 1236.5956333333334,
+      "y": 497.18188888888886,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 138.0588122595025,
+    "y": -101.04181338053894
+  },
+  "scale": 1.1111111111111112,
+  "colorMode": false,
+  "backgroundImage": "bended-pencil.png"
+}

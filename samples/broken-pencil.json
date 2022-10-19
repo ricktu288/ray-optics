@@ -1,0 +1,141 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 880,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 640,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 640,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 580,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.44
+    },
+    {
+      "type": "radiant",
+      "x": 480,
+      "y": 540,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 360,
+      "y": 600,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 320,
+      "y": 620,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 200,
+      "y": 680,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 440,
+      "y": 560,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 520,
+      "y": 520,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 280,
+      "y": 640,
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 311.34000000000003,
+      "y": 832.3499999999999,
+      "p": "dialectric material"
+    },
+    {
+      "type": "text",
+      "x": 830.0100000000001,
+      "y": 509.2399999999999,
+      "p": "broken pencil (yellow)"
+    },
+    {
+      "type": "text",
+      "x": 380,
+      "y": 460,
+      "p": "original pencil (green)"
+    },
+    {
+      "type": "radiant",
+      "x": 560,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 240,
+      "y": 660,
+      "p": 0.5
+    }
+  ],
+  "mode": "images",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 0.0711902078655893,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 1427.1100000000001,
+      "y": 659.45,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 126.22222222222219,
+    "y": -92.1111111111112
+  },
+  "scale": 1.1111111111111112,
+  "colorMode": false,
+  "backgroundImage": "broken-pencil.png"
+}
