@@ -222,6 +222,8 @@ locales["en"] = {
   "sample16": { "message": "Bended Pencil" },
   "sample17": { "message": "Broken Pencil" },
   "sample18": { "message": "NL Binoculars" },
+  "sample19": { "message": "Luneburg lens" },
+  "sample20": { "message": "Maxwell fisheye lens" },
   "mode_light": {
     "message": "Rays"
   },
