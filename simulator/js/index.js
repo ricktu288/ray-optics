@@ -15,7 +15,6 @@ var backgroundImage = null;
 var restoredData = "";
 
 window.onload = function(e) {
-  init_i18n();
   canvas = document.getElementById('canvas1');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

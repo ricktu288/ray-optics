@@ -31,6 +31,24 @@ function init_i18n() {
   document.getElementById('issues').innerHTML = getMsg('issues');
   document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('translate').innerHTML = getMsg('translate');
+
+  console.log("start")
+  for (var lang1 in locales) {
+    var translated = 0;
+    var total = 0;
+    for (var item in locales[lang1]) {
+      total++;
+      if (!locales[lang1][item].incomplete) {
+        translated++;
+      }
+    }
+    console.log([lang1,total,translated]);
+    if (translated != total) {
+      document.getElementById('lang-'+lang1).innerHTML += ' <span style="color:gray">(' + translated + '/' + total + ' ' + getMsg('translated') + ')</span>';
+    }
+  }
+
   document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
+
 }
 

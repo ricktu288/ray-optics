@@ -14,7 +14,7 @@ For direct contributions, see the following guidelines.
 
 3. Add a script tag in `simulator/index.html` for the new tool.
 
-4. Add the locale strings for the tool to at least one of `en`, `zh_TW` or `zh_CN` locale scripts in `simulator/locales/`:
+4. Add the locale strings for the tool to `simulator/locales/en.js`:
    - <code>toolname_<var>TOOL_ID</var></code>: the label on the parameter bar when the object is selected
    - If the tool has some new parameters, add the strings for them.
 
@@ -26,13 +26,15 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
    - `tools_normal`, `tools_withList` or `tools_inlist` in `simulator/index.js`
    - `toolbtn_clicked` in `simulator/index.js` (if inside a dropdown)
 
-6. _(optional)_ Add the locale strings for the tool to at least one of `en`, `zh_TW` or `zh_CN` locale scripts in `simulator/locales/`:
+6. _(optional)_ Add the locale strings for the tool to `simulator/locales/en.js`:
    - <code>tool_<var>TOOL_ID</var></code>: the title on the toolbar (or dropdown item)
    - <code>tool_<var>TOOL_ID</var>_popover</code>: the text in the popover when the user hover the item on the toolbar
 
-7. _(optional)_ Add an exported SVG image (use the "export" button) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>. You may first open an existing image as the background so that the exported SVG will be cropped automatically.
+7. _(optional)_ Run `node sync.js` in `simulator/locales/` to sync to other locales. Translate the added strings to other locales if you speak that language (follow the translation guidelines).
 
-8. Commit your changes (several times maybe), push to your fork, and create a pull request.
+8. _(optional)_ Add an exported SVG image (use the "export" button) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>. You may first open an existing image as the background so that the exported SVG will be cropped automatically.
+
+9. Commit your changes (several times maybe), push to your fork, and create a pull request.
 
 ## Contributing an example
 
@@ -51,7 +53,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 4. _(optional)_ Modify the number of samples in `sampleList` of `simulator/js/ToolBarViewModel.js`.
 
-5. _(optional)_ Add the locale key <code>sample<var>N</var></code> into at least one of `en`, `zh_TW` or `zh_CN` locale scripts in `simulator/locales/` with the name of the example.
+5. _(optional)_ Add the locale key <code>sample<var>N</var></code> into `simulator/locales/en.js` with the name of the example. Run `node sync.js` to sync to other locales. Translate the name to other locales if you speak that language (follow the translation guidelines).
 
 6. _(optional)_ Add the file name of the example to the `samples` array in `simulator/js/index.js`.
 
@@ -91,12 +93,13 @@ After that, you can submit the translated file with either method below:
 3. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
 4. Save/replace the file as <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/`.
-5. _(optional)_ Add/modify the translation of the welcome message in `simulator/index.html`.
-6. _(optional)_ Add/modify <code><var>LOCALE_ID/index.html</var>.js</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
-7. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
-8. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
+5. _(optional)_ If it is a new language, modify the locale list in `simulator/locales/sync.js`.
+6. _(optional)_ Add/modify the translation of the welcome message in `simulator/index.html`.
+7. _(optional)_ Add/modify <code><var>LOCALE_ID/index.html</var>.js</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
+8. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
+9. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
 
-9. Commit your changes, push to your fork, and create a pull request.
+10. Commit your changes, push to your fork, and create a pull request.
 
 ## More contributions
 

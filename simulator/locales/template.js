@@ -1,4 +1,4 @@
-﻿if (typeof locales == 'undefined') locales = {};
+if (typeof locales == 'undefined') locales = {};
 locales["LOCALE_ID"] = {
   "appName": {
     "incomplete": true,
@@ -519,6 +519,10 @@ locales["LOCALE_ID"] = {
   "translate": {
     "incomplete": true,
     "message": "Help us translate this app"
+  },
+  "translated": {
+    "incomplete": true,
+    "message": "translated"
   },
   "undo_popover": {
     "incomplete": true,

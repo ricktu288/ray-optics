@@ -39,23 +39,17 @@ locales["zh-CN"] = {
   "toolname_mirror_": {
     "message": "镜子"
   },
-  "tool_parabolicmirror": {
-    "message": "抛物线" 
+  "toolname_mirror": {
+    "message": "镜子"
   },
-  "tool_beamsplitter": {
-    "message": "分光镜"
+  "toolname_arcmirror": {
+    "message": "镜子"
   },
-  "toolname_beamsplitter": {
-    "message": "分光镜"
+  "toolname_parabolicmirror": {
+    "message": "镜子"
   },
   "toolname_idealmirror": {
     "message": "理想曲面镜"
-  },
-  "tool_sphericallens": {
-    "message": "球面透镜"
-  },
-  "toolname_sphericallens": {
-    "message": "球面透镜"
   },
   "toolname_refractor_": {
     "message": "透光物"
@@ -63,17 +57,29 @@ locales["zh-CN"] = {
   "toolname_blocker_": {
     "message": "遮光物"
   },
+  "toolname_beamsplitter": {
+    "message": "分光镜"
+  },
+  "toolname_halfplane": {
+    "message": "透光物"
+  },
+  "toolname_circlelens": {
+    "message": "透光物"
+  },
+  "toolname_refractor": {
+    "message": "透光物"
+  },
   "toolname_lens": {
     "message": "理想透镜"
+  },
+  "toolname_sphericallens": {
+    "message": "球面透镜"
   },
   "toolname_blackline": {
     "message": "吸光片"
   },
   "toolname_blackcircle": {
     "message": "圆形遮光物"
-  },
-  "toolname_blackline": {
-    "message": "吸光片"
   },
   "toolname_ruler": {
     "message": "直尺"
@@ -86,13 +92,10 @@ locales["zh-CN"] = {
   },
   "toolname_power": {
     "message": "探测器"
-  }, 
-  "tool_text": {
-    "message": "文字"
-  }, 
+  },
   "toolname_text": {
     "message": "文字"
-  }, 
+  },
   "toolname_": {
     "message": "移动画面"
   },
@@ -123,6 +126,9 @@ locales["zh-CN"] = {
   "tool_laser": {
     "message": "单一光线"
   },
+  "tool_parallel": {
+    "message": "平行光"
+  },
   "tool_radiant": {
     "message": "360度"
   },
@@ -132,26 +138,20 @@ locales["zh-CN"] = {
   "tool_radiant_": {
     "message": "点光源"
   },
-  "tool_parallel": {
-    "message": "平行光"
-  },
   "tool_mirror_": {
     "message": "镜子"
   },
   "tool_mirror": {
     "message": "线段"
   },
-  "toolname_mirror": {
-    "message": "镜子"
-  },
   "tool_arcmirror": {
     "message": "圆弧"
   },
-  "toolname_arcmirror": {
-    "message": "镜子"
+  "tool_parabolicmirror": {
+    "message": "抛物线"
   },
-  "toolname_parabolicmirror": {
-    "message": "镜子"
+  "tool_beamsplitter": {
+    "message": "分光镜"
   },
   "tool_idealmirror": {
     "message": "理想曲面镜"
@@ -165,23 +165,17 @@ locales["zh-CN"] = {
   "tool_halfplane": {
     "message": "半平面"
   },
-  "toolname_halfplane": {
-    "message": "透光物"
-  },
   "tool_circlelens": {
     "message": "圆形"
-  },
-  "toolname_circlelens": {
-    "message": "透光物"
   },
   "tool_refractor": {
     "message": " 自订形状"
   },
-  "toolname_refractor": {
-    "message": "透光物"
-  },
   "tool_lens": {
     "message": "理想透镜"
+  },
+  "tool_sphericallens": {
+    "message": "球面透镜"
   },
   "tool_blackline": {
     "message": "吸光片"
@@ -195,6 +189,9 @@ locales["zh-CN"] = {
   "tool_protractor": {
     "message": "量角器"
   },
+  "tool_text": {
+    "message": "文字"
+  },
   "tool_": {
     "message": "移动画面"
   },
@@ -207,26 +204,66 @@ locales["zh-CN"] = {
   "samples": {
     "message": "范例"
   },
-  "sample1": { "message": "反射与折射" },
-  "sample2": { "message": "全反射" },
-  "sample3": { "message": "抛物面镜" },
-  "sample4": { "message": "三稜鏡" },
-  "sample5": { "message": "透镜的像" },
-  "sample6": { "message": "凸透镜" },
-  "sample7": { "message": "凹透镜" },
-  "sample8": { "message": "球面像差" },
-  "sample9": { "message": "变焦镜头" },
-  "sample10": { "message": "水中物体的视深度" },
-  "sample11": { "message": "复式显微镜" },
-  "sample12": { "message": "两面镜子成像" },
-  "sample13": { "message": "单一光线的反射与折射" },
-  "sample14": { "message": "球面透镜与面镜" }, 
-  "sample15": { "message": "色散" },
-  "sample16": { "message": "弯曲的铅笔" },
-  "sample17": { "message": "断掉的铅笔" },
-  "sample18": { "message": "NL 双筒望远镜" },
-  "sample19": { "message": "龙伯透镜" },
-  "sample20": { "message": "马克士威鱼眼透镜" },
+  "sample1": {
+    "message": "反射与折射"
+  },
+  "sample2": {
+    "message": "全反射"
+  },
+  "sample3": {
+    "message": "抛物面镜"
+  },
+  "sample4": {
+    "message": "三稜鏡"
+  },
+  "sample5": {
+    "message": "透镜的像"
+  },
+  "sample6": {
+    "message": "凸透镜"
+  },
+  "sample7": {
+    "message": "凹透镜"
+  },
+  "sample8": {
+    "message": "球面像差"
+  },
+  "sample9": {
+    "message": "变焦镜头"
+  },
+  "sample10": {
+    "message": "水中物体的视深度"
+  },
+  "sample11": {
+    "message": "复式显微镜"
+  },
+  "sample12": {
+    "message": "两面镜子成像"
+  },
+  "sample13": {
+    "message": "单一光线的反射与折射"
+  },
+  "sample14": {
+    "message": "球面透镜与面镜"
+  },
+  "sample15": {
+    "message": "色散"
+  },
+  "sample16": {
+    "message": "弯曲的铅笔"
+  },
+  "sample17": {
+    "message": "断掉的铅笔"
+  },
+  "sample18": {
+    "message": "NL 双筒望远镜"
+  },
+  "sample19": {
+    "message": "龙伯透镜"
+  },
+  "sample20": {
+    "message": "马克士威鱼眼透镜"
+  },
   "mode_light": {
     "message": "光线"
   },
@@ -337,7 +374,7 @@ locales["zh-CN"] = {
   },
   "restore": {
     "message": "按此处以恢复先前的工作阶段。"
-  }, 
+  },
   "footer_message": {
     "message": "由<a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github .com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 开发"
   },
@@ -353,6 +390,9 @@ locales["zh-CN"] = {
   "translate": {
     "message": "协助我们翻译本程式"
   },
+  "translated": {
+    "message": "已翻译"
+  },
   "undo_popover": {
     "message": "复原上个动作。(Ctrl+Z)"
   },
@@ -365,11 +405,11 @@ locales["zh-CN"] = {
   "save_popover": {
     "message": "将目前画面存档。"
   },
-  "export_svg_popover": {
-    "message": "导出为SVG。"
-  },
   "open_popover": {
     "message": "开启档案或背景图片。背景图片将从座标原点显示。（或拖放档案）"
+  },
+  "export_svg_popover": {
+    "message": "导出为SVG。"
   },
   "tool_laser_popover": {
     "message": "由两点决定一条光线。（拖曳或点击以创建. 第一个点是光源，射向第二个点。）"
@@ -389,15 +429,15 @@ locales["zh-CN"] = {
   "tool_arcmirror_popover": {
     "message": "圆弧形的镜子，由三点决定。（拖曳或点击以创建。前两个点定义弧形两边间的空隙，第三点决定弧的大小。）"
   },
-  "tool_idealmirror_popover": {
-    "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
-  },
   "tool_parabolicmirror_popover": {
     "message": "抛物线形的镜子，由三点决定。（拖曳或点击以创建。）"
   },
   "tool_beamsplitter_popover": {
     "message": "能穿透一个比例的光的镜子。（拖曳或点击以创建。）"
-  }, 
+  },
+  "tool_idealmirror_popover": {
+    "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
+  },
   "tool_halfplane_popover": {
     "message": "模拟光线经过透光物体界面时的反射与折射。（拖曳或点击以创建。）"
   },
@@ -412,7 +452,7 @@ locales["zh-CN"] = {
   },
   "tool_sphericallens_popover": {
     "message": "球面透镜。（点击以创建。）"
-  }, 
+  },
   "tool_blackline_popover": {
     "message": "线段形状的吸光片，光线射到其上后就不会再射出。（拖曳或点击以创建。）"
   },
@@ -430,7 +470,7 @@ locales["zh-CN"] = {
   },
   "tool_text_popover": {
     "message": "文字标签。"
-  }, 
+  },
   "tool__popover": {
     "message": "拖曳以移动视窗。（滑鼠右键拖曳也有相同的功能）"
   },

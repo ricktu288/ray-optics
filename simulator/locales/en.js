@@ -1,4 +1,4 @@
-﻿if (typeof locales == 'undefined') locales = {};
+if (typeof locales == 'undefined') locales = {};
 locales["en"] = {
   "appName": {
     "message": "Ray Optics Simulation"
@@ -204,26 +204,66 @@ locales["en"] = {
   "samples": {
     "message": "Examples"
   },
-  "sample1": { "message": "Reflection and Refraction" },
-  "sample2": { "message": "Internal Reflection" },
-  "sample3": { "message": "Parabolic Mirror" },
-  "sample4": { "message": "Prisms" },
-  "sample5": { "message": "Lens Images" },
-  "sample6": { "message": "Convex Lens" },
-  "sample7": { "message": "Concave Lens" },
-  "sample8": { "message": "Spherical Aberration" },
-  "sample9": { "message": "Zoom Lens" },
-  "sample10": { "message": "Apparent Depth of an Object Underwater" },
-  "sample11": { "message": "Compound Microscope" },
-  "sample12": { "message": "Images Formed By Two Mirrors" },
-  "sample13": { "message": "Reflection and Refraction of a Single Ray" },
-  "sample14": { "message": "Spherical Lens and Mirror" },
-  "sample15": { "message": "Chromatic dispersion" },
-  "sample16": { "message": "Bended Pencil" },
-  "sample17": { "message": "Broken Pencil" },
-  "sample18": { "message": "NL Binoculars" },
-  "sample19": { "message": "Luneburg lens" },
-  "sample20": { "message": "Maxwell fisheye lens" },
+  "sample1": {
+    "message": "Reflection and Refraction"
+  },
+  "sample2": {
+    "message": "Internal Reflection"
+  },
+  "sample3": {
+    "message": "Parabolic Mirror"
+  },
+  "sample4": {
+    "message": "Prisms"
+  },
+  "sample5": {
+    "message": "Lens Images"
+  },
+  "sample6": {
+    "message": "Convex Lens"
+  },
+  "sample7": {
+    "message": "Concave Lens"
+  },
+  "sample8": {
+    "message": "Spherical Aberration"
+  },
+  "sample9": {
+    "message": "Zoom Lens"
+  },
+  "sample10": {
+    "message": "Apparent Depth of an Object Underwater"
+  },
+  "sample11": {
+    "message": "Compound Microscope"
+  },
+  "sample12": {
+    "message": "Images Formed By Two Mirrors"
+  },
+  "sample13": {
+    "message": "Reflection and Refraction of a Single Ray"
+  },
+  "sample14": {
+    "message": "Spherical Lens and Mirror"
+  },
+  "sample15": {
+    "message": "Chromatic dispersion"
+  },
+  "sample16": {
+    "message": "Bended Pencil"
+  },
+  "sample17": {
+    "message": "Broken Pencil"
+  },
+  "sample18": {
+    "message": "NL Binoculars"
+  },
+  "sample19": {
+    "message": "Luneburg lens"
+  },
+  "sample20": {
+    "message": "Maxwell fisheye lens"
+  },
   "mode_light": {
     "message": "Rays"
   },
@@ -349,6 +389,9 @@ locales["en"] = {
   },
   "translate": {
     "message": "Help us translate this app"
+  },
+  "translated": {
+    "message": "translated"
   },
   "undo_popover": {
     "message": "Undo last action. (Ctrl+Z)"

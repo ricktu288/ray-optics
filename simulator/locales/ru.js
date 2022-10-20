@@ -83,7 +83,7 @@ locales["ru"] = {
   },
   "toolname_blackline": {
     "incomplete": true,
-    "message": "Line Blocker",
+    "message": "Line Blocker"
   },
   "toolname_blackcircle": {
     "incomplete": true,
@@ -445,6 +445,10 @@ locales["ru"] = {
   "translate": {
     "incomplete": true,
     "message": "Help us translate this app"
+  },
+  "translated": {
+    "incomplete": true,
+    "message": "translated"
   },
   "undo_popover": {
     "message": "Отменить последнее действие. (Ctrl+Z)"

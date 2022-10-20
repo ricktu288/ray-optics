@@ -1,4 +1,4 @@
-﻿if (typeof locales == 'undefined') locales = {};
+if (typeof locales == 'undefined') locales = {};
 locales["zh-TW"] = {
   "appName": {
     "message": "線光學模擬"
@@ -42,35 +42,23 @@ locales["zh-TW"] = {
   "toolname_mirror": {
     "message": "鏡子"
   },
-  "tool_parabolicmirror": {
-    "message": "拋物線"
-  },
   "toolname_arcmirror": {
     "message": "鏡子"
   },
   "toolname_parabolicmirror": {
     "message": "鏡子"
   },
-  "tool_beamsplitter": {
-    "message": "分光鏡"
-  },
-  "toolname_beamsplitter": {
-    "message": "分光鏡"
-  },
   "toolname_idealmirror": {
     "message": "理想曲面鏡"
-  },
-  "tool_sphericallens": {
-    "message": "球面透鏡"
-  },
-  "toolname_sphericallens": {
-    "message": "球面透鏡"
   },
   "toolname_refractor_": {
     "message": "透光物"
   },
   "toolname_blocker_": {
     "message": "遮光物"
+  },
+  "toolname_beamsplitter": {
+    "message": "分光鏡"
   },
   "toolname_halfplane": {
     "message": "透光物"
@@ -83,6 +71,9 @@ locales["zh-TW"] = {
   },
   "toolname_lens": {
     "message": "理想透鏡"
+  },
+  "toolname_sphericallens": {
+    "message": "球面透鏡"
   },
   "toolname_blackline": {
     "message": "吸光片"
@@ -101,9 +92,6 @@ locales["zh-TW"] = {
   },
   "toolname_power": {
     "message": "探測器"
-  },
-  "tool_text": {
-    "message": "文字"
   },
   "toolname_text": {
     "message": "文字"
@@ -138,6 +126,9 @@ locales["zh-TW"] = {
   "tool_laser": {
     "message": "單一光線"
   },
+  "tool_parallel": {
+    "message": "平行光"
+  },
   "tool_radiant": {
     "message": "360度"
   },
@@ -147,9 +138,6 @@ locales["zh-TW"] = {
   "tool_radiant_": {
     "message": "點光源"
   },
-  "tool_parallel": {
-    "message": "平行光"
-  },
   "tool_mirror_": {
     "message": "鏡子"
   },
@@ -158,6 +146,12 @@ locales["zh-TW"] = {
   },
   "tool_arcmirror": {
     "message": "圓弧"
+  },
+  "tool_parabolicmirror": {
+    "message": "拋物線"
+  },
+  "tool_beamsplitter": {
+    "message": "分光鏡"
   },
   "tool_idealmirror": {
     "message": "理想曲面鏡"
@@ -180,6 +174,9 @@ locales["zh-TW"] = {
   "tool_lens": {
     "message": "理想透鏡"
   },
+  "tool_sphericallens": {
+    "message": "球面透鏡"
+  },
   "tool_blackline": {
     "message": "吸光片"
   },
@@ -191,6 +188,9 @@ locales["zh-TW"] = {
   },
   "tool_protractor": {
     "message": "量角器"
+  },
+  "tool_text": {
+    "message": "文字"
   },
   "tool_": {
     "message": "移動畫面"
@@ -204,26 +204,66 @@ locales["zh-TW"] = {
   "samples": {
     "message": "範例"
   },
-  "sample1": { "message": "反射與折射" },
-  "sample2": { "message": "全反射" },
-  "sample3": { "message": "拋物面鏡" },
-  "sample4": { "message": "三稜鏡" },
-  "sample5": { "message": "透鏡的像" },
-  "sample6": { "message": "凸透鏡" },
-  "sample7": { "message": "凹透鏡" },
-  "sample8": { "message": "球面像差" },
-  "sample9": { "message": "變焦鏡頭" },
-  "sample10": { "message": "水中物體的視深度" },
-  "sample11": { "message": "複式顯微鏡" },
-  "sample12": { "message": "兩面鏡子成像" },
-  "sample13": { "message": "單一光線的反射與折射" },
-  "sample14": { "message": "球面透鏡與面鏡" },
-  "sample15": { "message": "色散" },
-  "sample16": { "message": "彎曲的鉛筆" },
-  "sample17": { "message": "斷掉的鉛筆" },
-  "sample18": { "message": "NL 雙筒望遠鏡" },
-  "sample19": { "message": "龍伯透鏡" },
-  "sample20": { "message": "馬克士威魚眼透鏡" },
+  "sample1": {
+    "message": "反射與折射"
+  },
+  "sample2": {
+    "message": "全反射"
+  },
+  "sample3": {
+    "message": "拋物面鏡"
+  },
+  "sample4": {
+    "message": "三稜鏡"
+  },
+  "sample5": {
+    "message": "透鏡的像"
+  },
+  "sample6": {
+    "message": "凸透鏡"
+  },
+  "sample7": {
+    "message": "凹透鏡"
+  },
+  "sample8": {
+    "message": "球面像差"
+  },
+  "sample9": {
+    "message": "變焦鏡頭"
+  },
+  "sample10": {
+    "message": "水中物體的視深度"
+  },
+  "sample11": {
+    "message": "複式顯微鏡"
+  },
+  "sample12": {
+    "message": "兩面鏡子成像"
+  },
+  "sample13": {
+    "message": "單一光線的反射與折射"
+  },
+  "sample14": {
+    "message": "球面透鏡與面鏡"
+  },
+  "sample15": {
+    "message": "色散"
+  },
+  "sample16": {
+    "message": "彎曲的鉛筆"
+  },
+  "sample17": {
+    "message": "斷掉的鉛筆"
+  },
+  "sample18": {
+    "message": "NL 雙筒望遠鏡"
+  },
+  "sample19": {
+    "message": "龍伯透鏡"
+  },
+  "sample20": {
+    "message": "馬克士威魚眼透鏡"
+  },
   "mode_light": {
     "message": "光線"
   },
@@ -350,6 +390,9 @@ locales["zh-TW"] = {
   "translate": {
     "message": "協助我們翻譯本程式"
   },
+  "translated": {
+    "message": "已翻譯"
+  },
   "undo_popover": {
     "message": "復原上個動作。(Ctrl+Z)"
   },
@@ -362,11 +405,11 @@ locales["zh-TW"] = {
   "save_popover": {
     "message": "將目前畫面存檔。"
   },
-  "export_svg_popover": {
-    "message": "匯出為SVG。"
-  },
   "open_popover": {
     "message": "開啟檔案或背景圖片。背景圖片將從座標原點顯示。（或拖放檔案）"
+  },
+  "export_svg_popover": {
+    "message": "匯出為SVG。"
   },
   "tool_laser_popover": {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
