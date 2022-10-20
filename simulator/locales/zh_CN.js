@@ -225,6 +225,8 @@ locales["zh-CN"] = {
   "sample16": { "message": "弯曲的铅笔" },
   "sample17": { "message": "断掉的铅笔" },
   "sample18": { "message": "NL 双筒望远镜" },
+  "sample19": { "message": "龙伯透镜" },
+  "sample20": { "message": "马克士威鱼眼透镜" },
   "mode_light": {
     "message": "光线"
   },
