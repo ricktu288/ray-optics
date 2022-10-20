@@ -367,7 +367,7 @@ window.onload = function(e) {
                   "convex-lens.json", "concave-lens.json", "spherical-aberration.json", "zoom-lens.json",
                   "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
                   "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json",
-                  "bended-pencil.json", "broken-pencil.json", "NL-simulation.json", "luneburg-lens.json", "maxwell-fisheye-lens.json" ];
+                  "bended-pencil.json", "broken-pencil.json", "NL-simulation.json", "luneburg-lens.json", "maxwell-fisheye-lens.json", "inferior-mirage.json" ];
   for (i = 1; ; i++) {
     var elt = document.getElementById("sample" + i);
     if (!elt) break;
