@@ -267,6 +267,12 @@ locales["en"] = {
   "sample21": {
     "message": "Inferior mirage"
   },
+  "sample22": {
+    "message": "Fresnel lens"
+  },
+  "sample23": {
+    "message": "Rochester cloak"
+  },
   "mode_light": {
     "message": "Rays"
   },
