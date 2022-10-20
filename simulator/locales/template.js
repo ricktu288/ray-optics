@@ -352,6 +352,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Maxwell fisheye lens"
   },
+  "sample21": {
+    "incomplete": true,
+    "message": "Inferior mirage"
+  },
   "mode_light": {
     "incomplete": true,
     "message": "Rays"

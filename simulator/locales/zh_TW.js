@@ -264,6 +264,9 @@ locales["zh-TW"] = {
   "sample20": {
     "message": "馬克士威魚眼透鏡"
   },
+  "sample21": {
+    "message": "下蜃景"
+  },
   "mode_light": {
     "message": "光線"
   },
