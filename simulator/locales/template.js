@@ -344,6 +344,14 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "NL Binoculars"
   },
+  "sample19": {
+    "incomplete": true,
+    "message": "Luneburg lens"
+  },
+  "sample20": {
+    "incomplete": true,
+    "message": "Maxwell fisheye lens"
+  },
   "mode_light": {
     "incomplete": true,
     "message": "Rays"
