@@ -264,6 +264,9 @@ locales["en"] = {
   "sample20": {
     "message": "Maxwell fisheye lens"
   },
+  "sample21": {
+    "message": "Inferior mirage"
+  },
   "mode_light": {
     "message": "Rays"
   },
