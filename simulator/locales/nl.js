@@ -312,6 +312,14 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Inferior mirage"
   },
+  "sample22": {
+    "incomplete": true,
+    "message": "Fresnel lens"
+  },
+  "sample23": {
+    "incomplete": true,
+    "message": "Rochester cloak"
+  },
   "mode_light": {
     "message": "Stralen"
   },

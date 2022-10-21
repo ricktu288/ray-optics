@@ -267,6 +267,12 @@ locales["zh-CN"] = {
   "sample21": {
     "message": "下蜃景"
   },
+  "sample22": {
+    "message": "菲涅耳透镜"
+  },
+  "sample23": {
+    "message": "罗切斯特斗篷"
+  },
   "mode_light": {
     "message": "光线"
   },
