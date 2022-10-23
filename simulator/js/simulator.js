@@ -189,14 +189,14 @@ function shootWaitingRays() {
   }
   while (leftRayCount != 0 && !forceStop)
   {
-    if (new Date() - st_time > 200 && ctx.constructor != C2S)
+    if (new Date() - st_time > 50 && ctx.constructor != C2S)
     {
       //若已計算超過200ms If already run for 200ms
       //先休息10ms後再繼續(防止程式沒有回應) Pause for 10ms and continue (prevent not responding)
       document.getElementById('status').innerHTML = shotRayCount + ' rays (' + leftRayCount + ' waiting)'; //顯示狀態 Show status
       hasExceededTime = true;
       timerID = setTimeout(shootWaitingRays, 10);
-      document.getElementById('forceStop').style.display = '';
+      //document.getElementById('forceStop').style.display = '';
       return;
     }
 
