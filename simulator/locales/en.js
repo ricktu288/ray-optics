@@ -273,6 +273,9 @@ locales["en"] = {
   "sample23": {
     "message": "Rochester cloak"
   },
+  "sample24": {
+    "message": "Retroreflectors"
+  },
   "mode_light": {
     "message": "Rays"
   },
