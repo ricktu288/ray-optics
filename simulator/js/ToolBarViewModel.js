@@ -1,6 +1,6 @@
 var i;
 var sampleList = [];
-for (i = 1; i <= 23; i++)
+for (i = 1; i <= 24; i++)
   sampleList.push(new ToolBarItem("Sample " + i, "sample" + i, undefined, ToolTypeEnum.BUTTON, undefined, undefined));
 
 function ToolBarViewModel() {
