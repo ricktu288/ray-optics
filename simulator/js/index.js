@@ -368,7 +368,7 @@ window.onload = function(e) {
                   "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
                   "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json",
                   "bended-pencil.json", "broken-pencil.json", "NL-simulation.json", "luneburg-lens.json", "maxwell-fisheye-lens.json", "inferior-mirage.json",
-                  "fresnel-lens.json", "rochester-cloak.json" ];
+                  "fresnel-lens.json", "rochester-cloak.json", "retroreflectors.json" ];
   for (i = 1; ; i++) {
     var elt = document.getElementById("sample" + i);
     if (!elt) break;
