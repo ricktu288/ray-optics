@@ -1,0 +1,255 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 399,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1740,
+        "y": 399,
+        "exist": true
+      },
+      "p": 2
+    },
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 359,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 439,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 1740,
+        "y": 399,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 459,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1880,
+        "y": 459,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1740,
+        "y": 599,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1680,
+        "y": 539,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1680,
+        "y": 659,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1740,
+        "y": 599,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1580,
+        "y": 365,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1573.8638023096755,
+        "y": 385.02716309740833,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 120,
+        "y": 459,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 459,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 980,
+        "y": 399,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 399,
+        "exist": true
+      },
+      "p": 2
+    },
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 980,
+        "y": 359,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 980,
+        "y": 439,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 1020,
+        "y": 399,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 575,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 625,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 659,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 599,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1020,
+        "y": 599,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 539,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1580,
+        "y": 553,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1573.8638023096755,
+        "y": 573.0271630974083,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 910.2775143314573,
+      "y": 269.79378187562054,
+      "p": "Cat's eye retroreflector"
+    },
+    {
+      "type": "text",
+      "x": 910.2775143314573,
+      "y": 749.7937818756205,
+      "p": "Corner retroreflector"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 375,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 425,
+        "exist": true
+      },
+      "p": 0.5
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 8.468047816622468,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -334.49708352307346,
+    "y": -72.73916932468985
+  },
+  "scale": 1.2709329141644996,
+  "colorMode": false
+}
