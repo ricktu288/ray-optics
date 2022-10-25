@@ -276,6 +276,12 @@ locales["en"] = {
   "sample24": {
     "message": "Retroreflectors"
   },
+  "sample25": {
+    "message": "Maze solution"
+  },
+  "sample26": {
+    "message": "Optical cavity"
+  },
   "mode_light": {
     "message": "Rays"
   },
