@@ -320,6 +320,18 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Rochester cloak"
   },
+  "sample24": {
+    "incomplete": true,
+    "message": "Retroreflectors"
+  },
+  "sample25": {
+    "incomplete": true,
+    "message": "Maze solution"
+  },
+  "sample26": {
+    "incomplete": true,
+    "message": "Optical cavity"
+  },
   "mode_light": {
     "message": "Stralen"
   },
