@@ -1,3 +1,22 @@
+var lang = 'en';
+if (navigator.language) {
+  var browser_lang = navigator.language.toLowerCase();
+  if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk') {
+    lang = 'zh-TW';
+  } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
+    lang = 'zh-CN';
+  } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
+    lang = 'ru';
+  } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
+    lang = 'nl';
+  }
+}
+
+var url_lang = location.search.substr(1)
+if (url_lang && ["en", "zh-TW", "ru", "nl"].includes(url_lang)) {
+  lang = url_lang;
+}
+
 
 function getMsg(msg) {
   var m = locales[lang][msg];
@@ -13,6 +32,8 @@ function init_i18n() {
   var uparraw = '\u25B2';
   //var downarraw="\u25BE";
   document.title = getMsg('appName');
+
+  document.getElementById("welcome").innerHTML = getMsg('welcome_msgs');
 
 
   document.getElementById('save_name_title').innerHTML = getMsg('save_name');
@@ -42,13 +63,13 @@ function init_i18n() {
         translated++;
       }
     }
-    console.log([lang1,total,translated]);
+    console.log([lang1, total, translated]);
     if (translated != total) {
-      document.getElementById('lang-'+lang1).innerHTML += ' <span style="color:gray">(' + translated + '/' + total + ' ' + getMsg('translated') + ')</span>';
+      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:gray"> (${translated}/${total} ${getMsg('translated')})</span>`;
     }
   }
 
-  document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
+  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML + uparraw;
 
 }
 
