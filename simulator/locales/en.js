@@ -273,6 +273,15 @@ locales["en"] = {
   "sample23": {
     "message": "Rochester cloak"
   },
+  "sample24": {
+    "message": "Retroreflectors"
+  },
+  "sample25": {
+    "message": "Maze solution"
+  },
+  "sample26": {
+    "message": "Optical cavity"
+  },
   "mode_light": {
     "message": "Rays"
   },

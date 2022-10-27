@@ -1,0 +1,264 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 80,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 80,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1260,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1260,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1900,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1500,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 1920,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1920,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 120,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": -1120.9109401992,
+      "y": 375.62470059919997,
+      "p": "no matter how high are the mirrors."
+    },
+    {
+      "type": "text",
+      "x": -1120.9109401992,
+      "y": 215.62470059919997,
+      "p": "These optical cavities are stable when their seperation distance is less than 400, meaning"
+    },
+    {
+      "type": "text",
+      "x": -1120.9109401992,
+      "y": 255.62470059919997,
+      "p": "that for such separation distances, for each ray that emanates from one of the mirrors"
+    },
+    {
+      "type": "text",
+      "x": -1120.9109401992,
+      "y": 295.62470059919997,
+      "p": "towards the other mirror, a non divergent trajectory is guranteed for high enough mirrors."
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -220,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 180,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 380,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 380,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 580,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 980,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1960,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": -1120.9109401992,
+      "y": 335.62470059919997,
+      "p": "When the separation distance is more than 400, a non-divergent trajectory is not guaranteed"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 697.9210178168971,
+    "y": 193.31082999329962
+  },
+  "scale": 0.5807643281354694,
+  "colorMode": false
+}

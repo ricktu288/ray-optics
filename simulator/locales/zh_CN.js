@@ -273,6 +273,15 @@ locales["zh-CN"] = {
   "sample23": {
     "message": "罗切斯特斗篷"
   },
+  "sample24": {
+    "message": "回复反射器"
+  },
+  "sample25": {
+    "message": "破解迷宫"
+  },
+  "sample26": {
+    "message": "共振腔"
+  },
   "mode_light": {
     "message": "光线"
   },
