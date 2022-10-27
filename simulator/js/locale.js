@@ -14,7 +14,6 @@ function init_i18n() {
   //var downarraw="\u25BE";
   document.title = getMsg('appName');
 
-
   document.getElementById('save_name_title').innerHTML = getMsg('save_name');
   document.getElementById('save_confirm').value = getMsg('save');
   document.getElementById('save_cancel').value = getMsg('save_cancel');
@@ -42,13 +41,13 @@ function init_i18n() {
         translated++;
       }
     }
-    console.log([lang1,total,translated]);
+    console.log([lang1, total, translated]);
     if (translated != total) {
-      document.getElementById('lang-'+lang1).innerHTML += ' <span style="color:gray">(' + translated + '/' + total + ' ' + getMsg('translated') + ')</span>';
+      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:gray"> (${translated}/${total} ${getMsg('translated')})</span>`;
     }
   }
 
-  document.getElementById('language').innerHTML = document.getElementById('lang-'+lang).innerHTML + uparraw;
+  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML + uparraw;
 
 }
 
