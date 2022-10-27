@@ -29,13 +29,46 @@
 <body style="background-color:rgb(0,0,0); overflow:hidden; margin: 0px;">
 
 
-  <!-- Toolbar -->
-
-  <div id="welcome"
-    style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2; font-family: initial !important">
+  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2; font-family: initial !important">
   </div>
+  <script>
+    // The strings for the welcome message is handled separately here, rather than in locales/ and scripts/locale.js.
+    // Otherwise, the Largest Contentful Paint (LCP) for this webpage would be 4.1 seconds, according to previous data
+    // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
+
+    var welcome_msgs = {
+      "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
+      "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要載入範例，請使用上方「範例」選單。<br>若要加入光學元件，請選擇工具並點擊空白處。',
+      "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要载入示例，请使用上方“示例”菜单。 <br>若要加入光学元件，请选择工具并点击空白处。',
+      "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
+      "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.'
+    }
+    var lang = 'en';
+    if (navigator.language) {
+      var browser_lang = navigator.language.toLowerCase();
+      if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk') {
+        lang = 'zh-TW';
+      } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
+        lang = 'zh-CN';
+      } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
+        lang = 'ru';
+      } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
+        lang = 'nl';
+      }
+    }
+
+    var url_lang = location.search.substr(1)
+    if (url_lang && welcome_msgs[url_lang]) {
+      lang = url_lang;
+    }
+
+    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+
+  </script>
   <canvas id="canvas1" style="position: absolute; top: 0; left: 0; z-index: -1">
   </canvas>
+
+  <!-- Toolbar -->
   <div id="toolbar" style="background-color: white" data-bind="foreach: toolbarGroups">
     <label class="btn-group">
       <div class="input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"

@@ -524,8 +524,5 @@ locales["en"] = {
   },
   "help_popover": {
     "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>Help popups</b><p>Click this button to toggle help popups for other buttons.</p><b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"x\" to set rotation/scaling center. Press Delete to remove the handle. Note: If two objects sharing the same control point are to be grouped, that point must be clicked twice while holding Ctrl, once while each object is selected. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Delete key to delete; Ctrl+D to clone.</p></div>"
-  },
-  "welcome_msgs": {
-    "message": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.'
   }
 }
