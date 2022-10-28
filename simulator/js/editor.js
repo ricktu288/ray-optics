@@ -216,7 +216,10 @@ function selectionSearch(mouse_nogrid) {
 
         if (mousePart_.targetPoint || mousePart_.targetPoint_) {
           //滑鼠按到一個點 The mouse clicked a point
-          targetIsPoint = true; //一旦發現能夠按到點,就必須按到點 If the mouse can click a point, then it must click a point
+          if (!targetIsPoint) {
+            targetIsPoint = true; //一旦發現能夠按到點,就必須按到點 If the mouse can click a point, then it must click a point
+            results = [];
+          }
           var click_lensq_temp = graphs.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
           if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
             //按到點的情況下,選擇最接近滑鼠的 In case of clicking a point, choose the one nearest to the mouse
