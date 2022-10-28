@@ -23,6 +23,7 @@ var gridSize = 20; //格線大小 Size of the grid
 var origin = { x: 0, y: 0 }; //格線原點座標 Origin of the grid
 
 var pendingControlPointSelection = false;
+var pendingControlPoints;
 
 function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
@@ -137,7 +138,8 @@ function canvas_onmousedown(e) {
         }
       }
 
-      var ret = selectionSearch(mouse_nogrid);
+      var rets = selectionSearch(mouse_nogrid);
+      var ret = rets[0];
       if (ret.targetObj_index != -1) {
         if (!e.ctrlKey && objs.length > 0 && objs[0].type == "handle" && objs[0].notDone) {
           // User is creating a handle
@@ -151,6 +153,7 @@ function canvas_onmousedown(e) {
         draggingObj = ret.targetObj_index;
         if (e.ctrlKey && draggingPart.targetPoint) {
           pendingControlPointSelection = true;
+          pendingControlPoints = rets;
         }
         return;
       }
@@ -202,6 +205,8 @@ function selectionSearch(mouse_nogrid) {
   var targetObj_index = -1;
   var targetIsPoint = false;
   var mousePart;
+  var targetIsSelected = false;
+  var results = [];
 
   for (var i = 0; i < objs.length; i++) {
     if (typeof objs[i] != 'undefined') {
@@ -219,17 +224,26 @@ function selectionSearch(mouse_nogrid) {
             targetObj_index = i;
             click_lensq = click_lensq_temp;
             mousePart = mousePart_;
-            if (targetObj_index == selectedObj) break;
+            if (!targetIsSelected) {
+              results.unshift({mousePart: mousePart, targetObj_index: targetObj_index});
+            } else {
+              results.push({mousePart: mousePart, targetObj_index: targetObj_index});
+            }
+            if (targetObj_index == selectedObj) targetIsSelected = true;
           }
         } else if (!targetIsPoint) {
           //滑鼠按到的不是點,且到目前為止未按到點 If not clicking a point, and until now not clicking any point
           targetObj_index = i; //按到非點的情況下,選擇最後建立的 If clicking non-point, choose the most newly created one
           mousePart = mousePart_;
+          results.unshift({mousePart: mousePart, targetObj_index: targetObj_index});
         }
       }
     }
   }
-  return { mousePart: mousePart, targetObj_index: targetObj_index };
+  if (results.length == 0) {
+    results.push({targetObj_index: -1});
+  }
+  return results;
 }
 
 
@@ -327,7 +341,7 @@ function canvas_onmousemove(e) {
 
     if (draggingObj == -1 && !document.getElementById('lockobjs').checked) {
       // highlight object under mouse cursor
-      var ret = selectionSearch(mouse_nogrid);
+      var ret = selectionSearch(mouse_nogrid)[0];
       var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
       if (mouseObj != newMouseObj) {
         mouseObj = newMouseObj;
@@ -351,7 +365,7 @@ function canvas_onmouseup(e) {
   else {
     if (pendingControlPointSelection) {
       pendingControlPointSelection = false
-      addControlPointForHandle({ mousePart: draggingPart, targetObj_index: draggingObj });
+      addControlPointsForHandle(pendingControlPoints);
     }
     if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mouse0.x && mouse.y == draggingPart.mouse0.y) {
       draggingObj = -1;
@@ -366,7 +380,7 @@ function canvas_onmouseup(e) {
 
 }
 
-function addControlPointForHandle(controlPoint) {
+function addControlPointsForHandle(controlPoints) {
   if (!(objs[0].type == "handle" && objs[0].notDone)) {
     objs.unshift(objTypes["handle"].create());
     for (var i in objs) {
@@ -377,10 +391,14 @@ function addControlPointForHandle(controlPoint) {
       }
     }
     if (selectedObj >= 0) selectedObj++;
-    controlPoint.targetObj_index++;
+    for (var i in controlPoints) {
+      controlPoints[i].targetObj_index++;
+    }
     handleIndex = 0;
   }
-  objTypes["handle"].c_addControlPoint(objs[0], controlPoint);
+  for (var i in controlPoints) {
+    objTypes["handle"].c_addControlPoint(objs[0], controlPoints[i]);
+  }
   draw();
 }
 
@@ -423,7 +441,7 @@ function canvas_ondblclick(e) {
       }
     }
 
-    var ret = selectionSearch(mouse);
+    var ret = selectionSearch(mouse)[0];
     if (ret.targetObj_index != -1 && ret.mousePart.targetPoint) {
       selectObj(ret.targetObj_index);
       draggingPart = ret.mousePart;
