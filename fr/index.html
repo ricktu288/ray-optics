@@ -1,17 +1,17 @@
  <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>線光學模擬 - 首頁</title>
-  <meta property="og:title" content="線光學模擬">
+  <title>Simulateur de rayon optique</title>
+  <meta property="og:title" content="Simulateur de rayon optique">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/tw/">
+  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/fr/">
   <meta property="og:image" content="https://ricktu288.github.io/ray-optics/image.png">
-  <meta property="og:description" content="自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。">
-  <meta property="og:locale" content="zh_TW">
-  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/tw/">
+  <meta property="og:description" content="Une application web open-source pour simuler la reflexion et refraction de la lumière.">
+  <meta property="og:locale" content="fr">
+  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/fr/">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/" hreflang="en">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/tw/" hreflang="zh-TW">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/cn/" hreflang="zh-CN">
@@ -47,15 +47,15 @@
 
   </style>
 </head>
-<body style="font-family: 微軟正黑體;">
+<body>
 
 <div class="container">
   <center>
-    <h1><b><span id="title">線光學模擬</span></b></h1>
-    <p id="description">建立二維幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。</p>
+    <h1><b><span id="title">Simulateur de rayon optique</span></b></h1>
+    <p id="description">Une application web open-source pour simuler la reflexion et refraction de la lumière.<br>Ecrit en HTML, CSS et JavaScript.</p>
     <p>
-      <a href="https://ricktu288.github.io/ray-optics/simulator/?zh-TW" target="_blank" class="btn btn-success btn-lg" id="start">啟動程式</a>
-      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">查看GitHub</a>
+      <a href="https://ricktu288.github.io/ray-optics/simulator/?fr" target="_blank" class="btn btn-success btn-lg" id="start">Lancer l'application</a>
+      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">Vu sur GitHub</a>
     </p>
   </center>
   <br>
@@ -102,114 +102,100 @@
   <div class="row" style="font-size: 10pt">
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="tools">工具</h2>
+        <h2 id="tools">Outils</h2>
         <div class="row thumbnail right-caption">
           <img src="../img/ray.svg" alt="ray" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="ray">單一光線</p>
-            <span id="ray_desc">由兩點決定一條光線。</span>
+            <p class="tool-title" id="ray">Rayon</p>
+            <span id="ray_desc">Un rayon de lumière unique définit par deux points.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/beam.svg" alt="Beam" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="beam">平行光</p>
-            <span id="beam_desc">由一線段產生一束平行光，密度由「光線密度」滑桿決定。</span>
+            <p class="tool-title" id="beam">Faisceau</p>
+            <span id="beam_desc">Un faisceau de rayons parallèle émergeant d'un segment, avec une densité controlée par le curseur 'Densité de rayons'.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="point_source">點光源</p>
-            <span id="point_source_desc">由一點向四周發射光線，數量由「光線密度」滑桿決定。</span>
+            <p class="tool-title" id="point_source">Source de lumière</p>
+            <span id="point_source_desc">Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/mirror.svg" alt="Mirror" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="mirror">鏡子</p>
-            <span id="mirror_desc">模擬光線射到鏡子時的反射。</span>
+            <p class="tool-title" id="mirror">Miroir</p>
+            <span id="mirror_desc">Simule la reflexion de la lumière sur un miroir.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="mirror_arc">鏡子 (曲線)</p>
-            <span id="mirror_arc_desc">曲線形的鏡子。可選圓弧或拋物線。</span>
+            <p class="tool-title" id="mirror_arc">Miroir (Arc)</p>
+            <span id="mirror_arc_desc">Un miroir dont la forme est un arc circulaire, qui est définit par trois points.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_curved_mirror">理想曲面鏡</p>
-            <span id="ideal_curved_mirror_desc">完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距(單位為像素)。</span>
-          </div>
-        </div>
-        <div class="row thumbnail right-caption">
-          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded">
-          <div class="caption">
-            <p class="tool-title" id="beamsplitter">分光鏡</p>
-            <span id="beamsplitter_desc">能穿透一個比例的光的鏡子。</span>
+            <p class="tool-title" id="ideal_curved_mirror">Miroir parfaitement courbé</p>
+            <span id="ideal_curved_mirror_desc">Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale (en centimètre) peut être défini directement. (Glisser ou cliquer pour le créer.)</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass_halfplane">透光物</p>
-            <span id="glass_halfplane_desc">模擬光線經過透光物體界面時的反射與折射。</span>
+            <p class="tool-title" id="glass_halfplane">Verre</p>
+            <span id="glass_halfplane_desc">Simule la réfraction et la reflexion de la lumière sur une surface. L'intensité est calculée en l'assumant non-polarisée. (Glisser ou cliquer pour le créer.)</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass">透光物 (其他形狀)</p>
-            <span id="glass_desc">任何由線段與圓弧組成的透光物，包括三稜鏡與「球面」透鏡。</span>
+            <p class="tool-title" id="glass">Verre (Autres formes)</p>
+            <span id="glass_desc">Verre avec une forme quelconque construite avec des segments et des arcs circulaires, prismes et lentilles spherique inclus.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_lens">透光物 (理想透鏡)</p>
-            <span id="ideal_lens_desc">完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。</span>
+            <p class="tool-title" id="ideal_lens">Verre (Lentille idéale)</p>
+            <span id="ideal_lens_desc">Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="blocker">吸光片</p>
-            <span id="blocker_desc">線段形狀的吸光片，光線射到其上後就不會再射出。</span>
+            <p class="tool-title" id="blocker">Diaphragme</p>
+            <span id="blocker_desc">Un segment absorbant les rayons incidents.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ruler.svg" alt="Ruler"  style="width:100px;height:100px;" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="ruler">直尺</p>
-            <span id="ruler_desc">指定原點與另一點。刻度單位為像素。</span>
+            <p class="tool-title" id="ruler">Règle</p>
+            <span id="ruler_desc">Une règle de zéro à un autre point. L'échelle est en pixels.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="protractor">量角器</p>
-            <span id="protractor_desc">指定圓心和圓周上一點作為零度位置。刻度單位為度。</span>
-          </div>
-        </div>
-        <div class="row thumbnail right-caption">
-          <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption">
-            <p class="tool-title" id="power">探測器</p>
-            <span id="power_desc">測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。單位為任意。</span>
+            <p class="tool-title" id="protractor">Rapporteur</p>
+            <span id="protractor_desc">Un rapporteur défini par le centre et un autre point pour la direction zero. L'echelle est en degrès.</span>
           </div>
         </div>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="views">呈現方式</h2>
+        <h2 id="views">Vues</h2>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="rays">光線</p>
-            <span id="rays_desc">畫出光線。當「光線密度」高時，光線呈現連續。</span>
+            <p class="mode-title" id="rays">Rayons</p>
+            <span id="rays_desc">Montre les rayons. Quand la 'Densité de rayons' est élevée, elles paraissent continues.</span>
           </div>
           <center>
             <div style="aspect-ratio: 519/163; max-width: 510px">
@@ -222,8 +208,8 @@
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="extended_rays">延長光線</p>
-            <span id="extended_rays_desc">除光線實際路徑外，亦畫出其延長線。橘色、灰色分別表示向後、向前的延長線。</span>
+            <p class="mode-title" id="extended_rays">Rayons étendus</p>
+            <span id="extended_rays_desc">Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant.</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -233,8 +219,8 @@
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="all_images">所有像</p>
-            <span id="all_images_desc">點出像的位置。黃點表示實像，橘點表示虛像，灰點(圖中沒有)表示虛物。注意「光線密度」不夠高時有些像無法正常顯示。</span>
+            <p class="mode-title" id="all_images">Toutes images</p>
+            <span id="all_images_desc">Montre la position de toutes les images. Les points jaunes indiquent les images réelles, l'orange indique les images virtuelles et le gris (absent sur l'image) indique les objets virtuels. Notons que certaines images ne peuvent pas être detectées si la 'Densité de rayon' n'est pas suffisament grande.</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -244,25 +230,12 @@
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="seen_by_observer">觀察者所見</p>
-            <span id="seen_by_observer_desc">模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。</span>
+            <p class="mode-title" id="seen_by_observer">Vu par un observateur</p>
+            <span id="seen_by_observer_desc">Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l'observateur. N'importe quel rayon traversant ce cercle est consideré comme 'observé'. L'observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu'il commence à un certain point s'ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange.</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
               <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
-            </div>
-          </center>
-        </div>
-        <div class="row thumbnail">
-          <div class="caption">
-            <p class="mode-title" id="simulate_colors">模擬色彩<sup><span class="badge" style="background:orange">beta</span></sup></p>
-            <span id="simulate_colors_desc">
-模擬光源的顏色（波長）、混色與透光物的色散。
-            </span>
-          </div>
-          <center>
-            <div style="aspect-ratio: 445/216; max-width: 510px">
-              <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
             </div>
           </center>
         </div>
@@ -272,7 +245,7 @@
   <div style="float: right;">
     <div class="dropup">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <span id="language">語言：正體中文</span>
+      <span id="language">Langue: Français</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="https://ricktu288.github.io/ray-optics/">English</a></li>

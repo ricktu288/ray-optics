@@ -43,7 +43,7 @@ function init_i18n() {
     }
     console.log([lang1, total, translated]);
     if (translated != total) {
-      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:gray"> (${translated}/${total} ${getMsg('translated')})</span>`;
+      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:gray"> (${Math.round(translated/total*100)}% ${getMsg('translated')})</span>`;
     }
   }
 

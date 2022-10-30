@@ -1,11 +1,10 @@
 if (typeof locales == 'undefined') locales = {};
-locales["nl"] = {
+locales["fr"] = {
   "appName": {
-    "message": "Ray Optics Simulatie"
+    "message": "Simulation de rayon optique"
   },
   "appShortName": {
-    "incomplete": true,
-    "message": "Ray Optics"
+    "message": "Rayon optique"
   },
   "appDesc": {
     "incomplete": true,
@@ -20,65 +19,64 @@ locales["nl"] = {
     "message": "Launch Simulator"
   },
   "view_on_github": {
-    "message": "Bekijk op GitHub"
+    "message": "Vu sur GitHub"
   },
   "welcome": {
     "incomplete": true,
     "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To load an example, use the \"Examples\" menu above.<br>To add an optical component, select a tool and click the blank space."
   },
   "toolbar_title": {
-    "incomplete": true,
-    "message": "Tool:&nbsp;"
+    "message": "Outils:&nbsp;"
   },
   "toolname_laser": {
-    "message": "Enkele straal"
+    "message": "Rayon"
   },
   "toolname_led": {
-    "message": "Punt bron"
+    "message": "Source de lumière"
   },
   "toolname_radiant": {
-    "message": "Punt bron"
+    "message": "Source de lumière"
   },
   "toolname_parallel": {
-    "message": "Bundel"
+    "message": "Faisceau"
   },
   "toolname_mirror_": {
-    "message": "Spiegel"
+    "message": "Miroir"
   },
   "toolname_mirror": {
-    "message": "Spiegel"
+    "message": "Miroir"
   },
   "toolname_arcmirror": {
-    "message": "Spiegel"
+    "message": "Miroir"
   },
   "toolname_parabolicmirror": {
-    "message": "Spiegel"
+    "message": "Miroir"
   },
   "toolname_idealmirror": {
-    "message": "Ideale gebogen spiegel"
+    "message": "Miroir parfaitement courbé"
   },
   "toolname_refractor_": {
-    "message": "Glas"
+    "message": "Verre"
   },
   "toolname_blocker_": {
     "incomplete": true,
-    "message": "Blocker"
+    "message": "Diaphragme"
   },
   "toolname_beamsplitter": {
     "incomplete": true,
     "message": "Beam Splitter"
   },
   "toolname_halfplane": {
-    "message": "Glas"
+    "message": "Verre"
   },
   "toolname_circlelens": {
-    "message": "Glas"
+    "message": "Verre"
   },
   "toolname_refractor": {
-    "message": "Glas"
+    "message": "Verre"
   },
   "toolname_lens": {
-    "message": "Ideale lens"
+    "message": "Lentille idéale"
   },
   "toolname_sphericallens": {
     "incomplete": true,
@@ -93,10 +91,10 @@ locales["nl"] = {
     "message": "Circle Blocker"
   },
   "toolname_ruler": {
-    "message": "Lineaal"
+    "message": "Règle"
   },
   "toolname_protractor": {
-    "message": "Gradenboog"
+    "message": "Rapporteur"
   },
   "tool_power": {
     "incomplete": true,
@@ -107,42 +105,41 @@ locales["nl"] = {
     "message": "Detector"
   },
   "toolname_text": {
-    "incomplete": true,
-    "message": "Text"
+    "message": "Texte"
   },
   "toolname_": {
-    "message": "Verplaats beeld"
+    "message": "Bouger la vue"
   },
   "modebar_title": {
-    "message": "Beeld:"
+    "message": "Vue:"
   },
   "modename_light": {
-    "message": "Stralen"
+    "message": "Rayons"
   },
   "modename_extended_light": {
-    "message": "Virtuele stralen"
+    "message": "Rayons étendus"
   },
   "modename_images": {
-    "message": "Alle beelden"
+    "message": "Toutes les images"
   },
   "modename_observer": {
-    "message": "Zichtbaar voor waarnemer"
+    "message": "Vu par un observateur"
   },
   "color_mode": {
     "incomplete": true,
     "message": "Simulate Colors"
   },
   "File: ": {
-    "message": "Bestand: "
+    "message": "Fichier: "
   },
   "Tools: ": {
-    "message": "Gereedschap: "
+    "message": "Outils: "
   },
   "tool_laser": {
-    "message": "Straal"
+    "message": "Rayon"
   },
   "tool_parallel": {
-    "message": "Bundel"
+    "message": "Faisceau"
   },
   "tool_radiant": {
     "incomplete": true,
@@ -153,16 +150,16 @@ locales["nl"] = {
     "message": "Finite angle"
   },
   "tool_radiant_": {
-    "message": "Punt bron"
+    "message": "Source de lumière"
   },
   "tool_mirror_": {
-    "message": "spiegels"
+    "message": "Miroirs"
   },
   "tool_mirror": {
-    "message": "Lijnstuk"
+    "message": "Segment"
   },
   "tool_arcmirror": {
-    "message": "Cirkelboog"
+    "message": "Arc circulaire"
   },
   "tool_parabolicmirror": {
     "incomplete": true,
@@ -173,25 +170,25 @@ locales["nl"] = {
     "message": "Beam Splitter"
   },
   "tool_idealmirror": {
-    "message": "Ideaal gebogen"
+    "message": "Courbure idéale"
   },
   "tool_refractor_": {
-    "message": "Glas"
+    "message": "Verres"
   },
   "tool_blocker_": {
-    "message": "Scherm"
+    "message": "Diaphragme"
   },
   "tool_halfplane": {
-    "message": "Halve vlak"
+    "message": "Demi-plan"
   },
   "tool_circlelens": {
-    "message": "Cirkel"
+    "message": "Cercle"
   },
   "tool_refractor": {
-    "message": "Vrije-vorm"
+    "message": "Forme libre"
   },
   "tool_lens": {
-    "message": "Ideale Lens"
+    "message": "Lentille idéale"
   },
   "tool_sphericallens": {
     "incomplete": true,
@@ -206,23 +203,22 @@ locales["nl"] = {
     "message": "Circle Blocker"
   },
   "tool_ruler": {
-    "message": "Lineaal"
+    "message": "Règle"
   },
   "tool_protractor": {
-    "message": "Gradenboog"
+    "message": "Rapporteur"
   },
   "tool_text": {
-    "incomplete": true,
-    "message": "Text"
+    "message": "Texte"
   },
   "tool_": {
-    "message": "Verplaats beeld"
+    "message": "Bouger la vue"
   },
   "View: ": {
-    "message": "Beeld: "
+    "message": "Vue: "
   },
   "Settings: ": {
-    "message": "Instellingen: "
+    "message": "Paramètres: "
   },
   "samples": {
     "incomplete": true,
@@ -333,83 +329,72 @@ locales["nl"] = {
     "message": "Optical cavity"
   },
   "mode_light": {
-    "message": "Stralen"
+    "message": "Rayons"
   },
   "mode_extended_light": {
-    "message": "Virtuele stralen"
+    "message": "Rayons étendus"
   },
   "mode_images": {
-    "message": "Alle beelden"
+    "message": "Toutes les images"
   },
   "mode_observer": {
-    "message": "Beeld voor waarnemer"
+    "message": "Vu par un observateur"
   },
   "zoom": {
-    "incomplete": true,
     "message": "Zoom"
   },
   "help": {
-    "message": "Help"
+    "message": "Aide"
   },
   "rayDensity": {
-    "message": "Straaldichtheid"
+    "message": "Densité de rayon"
   },
   "raydensity": {
-    "message": "Straaldichtheid:"
+    "message": "Densité de rayon:"
   },
   "undo": {
-    "incomplete": true,
-    "message": "Undo"
+    "message": "Annuler"
   },
   "redo": {
-    "incomplete": true,
-    "message": "Redo"
+    "message": "Rétablir"
   },
   "reset": {
-    "incomplete": true,
-    "message": "Reset"
+    "message": "Recommencer"
   },
   "save": {
-    "incomplete": true,
-    "message": "Save"
+    "message": "Sauvegarder"
   },
   "export_svg": {
     "incomplete": true,
     "message": "Export"
   },
   "save_name": {
-    "message": "Naam:"
+    "message": "Nom:"
   },
   "save_cancel": {
-    "incomplete": true,
-    "message": "Cancel"
+    "message": "Annuler"
   },
   "save_description": {
     "incomplete": true,
     "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
   },
   "open": {
-    "incomplete": true,
-    "message": "Open"
+    "message": "Ouvrir"
   },
   "lockobjs": {
-    "incomplete": true,
-    "message": "Lock Objects"
+    "message": "Verrouiller les objets"
   },
   "showgrid": {
-    "incomplete": true,
-    "message": "Grid"
+    "message": "Grille"
   },
   "grid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Attacher à la grille"
   },
   "snaptogrid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Attacher à la grille"
   },
   "brightness": {
-    "message": "Helderheid:"
+    "message": "Luminosité:"
   },
   "wavelength": {
     "incomplete": true,
@@ -424,14 +409,14 @@ locales["nl"] = {
     "message": "Symmetric"
   },
   "focallength": {
-    "message": "Brandpuntafstand:"
+    "message": "Distance focale:"
   },
   "cartesiansign": {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Brekingsindex:"
+    "message": "Indice de réfraction:"
   },
   "refractiveindex_note": {
     "incomplete": true,
@@ -450,24 +435,23 @@ locales["nl"] = {
     "message": "Transmission Ratio:"
   },
   "applytoall": {
-    "message": "Overal toepassen"
+    "message": "Appliquer à tous"
   },
   "duplicate": {
-    "message": "Dupliceer"
+    "message": "Dupliquer"
   },
   "delete": {
-    "message": "Verwijder"
+    "message": "Supprimer"
   },
   "processing": {
-    "message": "Rekenen...<br>Klik hier om te stoppen."
+    "message": "En cours de traitement...<br>Cliquez ici pour arrêter"
   },
   "restore": {
     "incomplete": true,
     "message": "Click here to restore your previous session."
   },
   "footer_message": {
-    "incomplete": true,
-    "message": "Developed by <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
+    "message": "Développer par <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> | Le développement de ce logiciel a été soutenu financièrement par l'ANR (Agence Nationale de la Recherce), dans le cadre de l'appel à projets NCU (Nouveaux Cursus Universitaires) 'Hybridation des formations de l'enseignement supérieur', à travers le projet HTTP (Hybridation Technologique et Travaux Pratiques) [ANR-20-NCUN-0001]"
   },
   "contribute": {
     "incomplete": true,
@@ -490,43 +474,43 @@ locales["nl"] = {
     "message": "translated"
   },
   "undo_popover": {
-    "message": "Laatste actie ongedaan maken. (Ctrl+Z)"
+    "message": "Annuler la dernière action. (Ctrl+Z)"
   },
   "redo_popover": {
-    "message": "Laatste actie opnieuw. (Ctrl+Y)"
+    "message": "Rétablir la dernière action. (Ctrl+Y)"
   },
   "reset_popover": {
-    "message": "Alle wijzigingen ongedaan maken."
+    "message": "Ecraser tous les changements."
   },
   "save_popover": {
-    "message": "Huidig bestand opslaan."
+    "message": "Sauvegarder le fichier actuel."
   },
   "open_popover": {
     "incomplete": true,
-    "message": "Bestand openen or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
+    "message": "Ouvrir un fichier or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
   },
   "export_svg_popover": {
     "incomplete": true,
     "message": "Export to SVG."
   },
   "tool_laser_popover": {
-    "message": "Één straal door twee punten. (Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting.)"
+    "message": "Un rayon de lumière unique définit par deux points. (Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.)"
   },
   "tool_parallel_popover": {
-    "message": "Een evenwijdige bundel uit een lijnstuk, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Sleep en klik om te maken.)"
+    "message": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité controlée par le curseur 'Densité de rayons'. (Glisser ou cliquer pour le créer.)"
   },
   "tool_radiant_popover": {
-    "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"
+    "message": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'. (Cliquer pour le créer.)"
   },
   "tool_led_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
   "tool_mirror_popover": {
-    "message": "Simuleert de reflectie van licht op een spiegel. (Sleep of klik om te maken.)"
+    "message": "Simule la reflexion de la lumière sur un miroir. (Glisser ou cliquer pour le créer.)"
   },
   "tool_arcmirror_popover": {
-    "message": "Een spiegel in de vorm van een cirkelboog, door drie punten vastgelegd. De eerste twee punten leggen de afstand tussen de randen vast, het laatste punt de grootte.)"
+    "message": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points. (Glisser ou cliquer pour le créer. Les deux premiers points définissent l'espace entre les bords de l'arc, le dernier point définit la taille de l'arc.)"
   },
   "tool_parabolicmirror_popover": {
     "incomplete": true,
@@ -537,62 +521,61 @@ locales["nl"] = {
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
   "tool_idealmirror_popover": {
-    "message": "Een ideale 'gebogen' spiegel die precies de spiegel formule volgt (1/p + 1/q = 1/f). De brandpuntsafstand (in pixels) kan worden ingevoerd. (Sleep of klik om te maken.)"
+    "message": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_halfplane_popover": {
-    "message": "Simuleert de refractie en reflectie van licht op/door een oppervlak. (Sleep of klik om te maken.)"
+    "message": "Simule la réfraction et la reflexion de la lumière sur une surface. (Glisser ou cliquer pour le créer.)"
   },
   "tool_circlelens_popover": {
-    "message": "Glasschijf, gedefinieerd door middelpunt en een punt op de rand. (Sleep of klik om te maken.)"
+    "message": "Verre avec une forme circulaire, définie par son centre et un point sur sa surface. (Glisser ou cliquer pour le créer.)"
   },
   "tool_refractor_popover": {
-    "message": "Glas in willekeurige vorm uit lijnstukken en cirkelbogen. (Klik om een lijnstuk te maken, sleep om een cirkelboog te maken, klik op startpunt om tekenen te sluiten.)"
+    "message": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires. (Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner.)"
   },
   "tool_lens_popover": {
-    "message": "Een ideale lens die de lenzenformule volgt (1/v + 1/b = 1/f). De brandpuntafstand (in pixels) kan worden ingevoerd. (Sleep of klik om te maken.)"
+    "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_sphericallens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },
   "tool_blackline_popover": {
-    "message": "Een lichtblokkerend lijnstuk (scherm). (Sleep of klik om te maken.)"
+    "message": "Un segment absorbant les rayons incidents. (Glisser ou cliquer pour le créer.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
-    "message": "Een lineaal van 0 tot een willekeurige afstand. Schaal is in pixels. (Sleep of klik om te maken.)"
+    "message": "Une règle de zéro à un autre point. L'échelle est en pixels. (Glisser ou cliquer pour le créer.)"
   },
   "tool_protractor_popover": {
-    "message": "Een gradenboog van middelpunt tot een ander punt (hoek 0). De schaal is in graden. (Sleep of klik om te maken.)"
+    "message": "Un rapporteur défini par le centre et un autre point pour la direction zero. L'echelle est en degrès. (Glisser ou cliquer pour le créer.)"
   },
   "tool_power_popover": {
     "incomplete": true,
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
   "tool_text_popover": {
-    "incomplete": true,
-    "message": "A text label."
+    "message": "Une légende, pour un objet quelconque."
   },
   "tool__popover": {
-    "message": "Sleep om beeld te verplaatsen. (Rechtermuisknop sleep heeft dezelfde functie.)"
+    "message": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
   },
   "mode_light_popover": {
-    "message": "Toont de stralen. Als de 'Straaldichtheid' groot is lijkt het continu."
+    "message": "Montre les rayons. Quand la 'Densité de rayons' est élevée, elles paraissent continues."
   },
   "mode_extended_light_popover": {
     "incomplete": true,
-    "message": "Toont stralen en uitgebreide (gereflecteerde/virtuele) stralen. Oranje betekent 'backtrace', grijs betekent 'vooruit' berekend.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    "message": "Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
   "mode_images_popover": {
     "incomplete": true,
-    "message": "Toont de positie van alle beelden. Gele punten zijn reëele beelden, oranje geeft de virtuele beelden en grijs (niet in dit plaatje) de virtuele objecten. Let op dat sommige beelden niet gedetecteerd kunnen worden als de 'Straaldichtheid' niet groot genoeg is.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    "message": "Montre la position de toutes les images. Les points jaunes indiquent les images réelles, l'orange indique les images virtuelles et le gris (absent sur l'image) indique les objets virtuels. Notons que certaines images ne peuvent pas être detectées si la 'Densité de rayon' n'est pas suffisament grande.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
   },
   "mode_observer_popover": {
     "incomplete": true,
-    "message": "Simuleert de stralen en beelden zoals gezien vanaf een positie. De blauwe cirkel is de waarnemer (het oog). Een straal die er op komt wordt beschouwd als zichtbaar. De waarnemer ('het oog') 'weet' niet waar die stralen in werkelijkheid beginnen, maar gaat uit van een rechte lijn vanaf het punt van waarneming. De stralen zijn blauw en de 'licht'punten zijn oranje. (Sleep de blauwe stip om 'het oog' te verplaatsen.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+    "message": "Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l'observateur. N'importe quel rayon traversant ce cercle est consideré comme 'observé'. L'observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu'il commence à un certain point s'ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange. (Glisser le cercle bleu bougera l'observateur.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
   "color_mode_popover": {
     "incomplete": true,
@@ -600,19 +583,19 @@ locales["nl"] = {
   },
   "rayDensity_popover": {
     "incomplete": true,
-    "message": "Instellen van de straaldichtheid van de lichtsimulatie. The number is in log scale."
+    "message": "Défini à quel densité la lumière est simulée. The number is in log scale."
   },
   "showgrid_popover": {
-    "message": "Toont of verbergt het achtergrondraster."
+    "message": "Défini la visibilité de l'arrière-plan de la grille."
   },
   "grid_popover": {
-    "message": "Zet verplaatsen op raster aan of uit."
+    "message": "Défini si l'on s'accorche à la grille."
   },
   "lockobjs_popover": {
-    "message": "(De)Blokkeert de verplaatsing van objecten."
+    "message": "Défini si l'objet peut être bougé ou non."
   },
   "zoom_popover": {
-    "message": "Beeld in/uitzoomen met een percentage."
+    "message": "Zoom sur la vue avec un pourcentage."
   },
   "help_popover": {
     "incomplete": true,
