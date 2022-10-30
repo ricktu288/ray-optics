@@ -258,7 +258,7 @@ locales["nl"] = {
   },
   "sample8": {
     "incomplete": true,
-    "message": "Spherical Aberration"
+    "message": "Monochromatic aberrations"
   },
   "sample9": {
     "incomplete": true,
@@ -331,6 +331,14 @@ locales["nl"] = {
   "sample26": {
     "incomplete": true,
     "message": "Optical cavity"
+  },
+  "sample27": {
+    "incomplete": true,
+    "message": "Beam expanders"
+  },
+  "sample28": {
+    "incomplete": true,
+    "message": "Telescope"
   },
   "mode_light": {
     "message": "Stralen"

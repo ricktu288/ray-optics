@@ -226,7 +226,7 @@ locales["en"] = {
     "message": "Concave Lens"
   },
   "sample8": {
-    "message": "Spherical Aberration"
+    "message": "Monochromatic aberrations"
   },
   "sample9": {
     "message": "Zoom Lens"
@@ -281,6 +281,12 @@ locales["en"] = {
   },
   "sample26": {
     "message": "Optical cavity"
+  },
+  "sample27": {
+    "message": "Beam expanders"
+  },
+  "sample28": {
+    "message": "Telescope"
   },
   "mode_light": {
     "message": "Rays"
