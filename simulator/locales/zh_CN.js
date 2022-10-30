@@ -226,7 +226,7 @@ locales["zh-CN"] = {
     "message": "凹透镜"
   },
   "sample8": {
-    "message": "球面像差"
+    "message": "单色像差"
   },
   "sample9": {
     "message": "变焦镜头"
@@ -281,6 +281,12 @@ locales["zh-CN"] = {
   },
   "sample26": {
     "message": "共振腔"
+  },
+  "sample27": {
+    "message": "扩束镜"
+  },
+  "sample28": {
+    "message": "望远镜"
   },
   "mode_light": {
     "message": "光线"

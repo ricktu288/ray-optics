@@ -226,7 +226,7 @@ locales["zh-TW"] = {
     "message": "凹透鏡"
   },
   "sample8": {
-    "message": "球面像差"
+    "message": "單色像差"
   },
   "sample9": {
     "message": "變焦鏡頭"
@@ -281,6 +281,12 @@ locales["zh-TW"] = {
   },
   "sample26": {
     "message": "共振腔"
+  },
+  "sample27": {
+    "message": "擴束器"
+  },
+  "sample28": {
+    "message": "望遠鏡"
   },
   "mode_light": {
     "message": "光線"
