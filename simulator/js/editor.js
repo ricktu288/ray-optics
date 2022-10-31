@@ -572,6 +572,25 @@ function removeObj(index) {
   selectObj(selectedObj);
 }
 
+function cloneObj(index) {
+  if (objs[index].type == "handle") {
+    var indices = [];
+    for (var j in objs[index].controlPoints) {
+      if (indices.indexOf(objs[index].controlPoints[j].targetObj_index) == -1) {
+        indices.push(objs[index].controlPoints[j].targetObj_index);
+      }
+    }
+    console.log(indices);
+    for (var j in indices) {
+      if (objs[indices[j]].type != "handle") {
+        cloneObj(indices[j]);
+      }
+    }
+  } else {
+    objs[objs.length] = JSON.parse(JSON.stringify(objs[index]));
+  }
+}
+
 
 function createUndoPoint() {
   undoIndex = (undoIndex + 1) % undoLimit;

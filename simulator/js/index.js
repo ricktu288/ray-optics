@@ -412,10 +412,9 @@ window.onkeydown = function (e) {
     }
     return false;
   }
-
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
-    objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
+    cloneObj(selectedObj);
     draw();
     createUndoPoint();
     return false;
