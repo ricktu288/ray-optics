@@ -288,6 +288,9 @@ locales["en"] = {
   "sample28": {
     "message": "Telescope"
   },
+  "sample29": {
+    "message": "GRIN slab"
+  },
   "mode_light": {
     "message": "Rays"
   },
