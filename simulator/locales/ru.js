@@ -337,6 +337,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Telescope"
   },
+  "sample29": {
+    "incomplete": true,
+    "message": "GRIN slab"
+  },
   "mode_light": {
     "message": "Лучи"
   },
