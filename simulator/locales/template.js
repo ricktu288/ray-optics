@@ -384,6 +384,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Telescope"
   },
+  "sample29": {
+    "incomplete": true,
+    "message": "GRIN slab"
+  },
   "mode_light": {
     "incomplete": true,
     "message": "Rays"

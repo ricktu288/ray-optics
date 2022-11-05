@@ -288,6 +288,9 @@ locales["zh-TW"] = {
   "sample28": {
     "message": "望遠鏡"
   },
+  "sample29": {
+    "message": "漸變折射率平板"
+  },
   "mode_light": {
     "message": "光線"
   },
