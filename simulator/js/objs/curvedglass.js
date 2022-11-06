@@ -5,7 +5,7 @@ objTypes['curvedglass'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'curvedglass', p1: mouse, p2: mouse, eqn1: "-\\sqrt{1-x^2}", eqn2: "\\sqrt{1-x^2}", p: 1.5};
+    return {type: 'curvedglass', p1: mouse, p2: mouse, eqn1: "0", eqn2: "0.5\\cdot\\sqrt{1-x^2}", p: 1.5};
   },
 
   //顯示屬性方塊 Show the property box

@@ -3,7 +3,7 @@ objTypes['curvedmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "\\sqrt{1-x^2}"};
+    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}"};
   },
 
   //顯示屬性方塊 Show the property box
