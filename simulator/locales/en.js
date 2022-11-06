@@ -303,6 +303,9 @@ locales["en"] = {
   "sample29": {
     "message": "GRIN slab"
   },
+  "sample30": {
+    "message": "Penrose unilluminable room"
+  },
   "mode_light": {
     "message": "Rays"
   },

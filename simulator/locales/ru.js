@@ -357,6 +357,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "GRIN slab"
   },
+  "sample30": {
+    "incomplete": true,
+    "message": "Penrose unilluminable room"
+  },
   "mode_light": {
     "message": "Лучи"
   },

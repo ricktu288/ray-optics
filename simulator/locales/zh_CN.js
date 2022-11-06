@@ -303,6 +303,9 @@ locales["zh-CN"] = {
   "sample29": {
     "message": "渐变折射率平板"
   },
+  "sample30": {
+    "message": "无法全屋照亮的彭罗斯房间"
+  },
   "mode_light": {
     "message": "光线"
   },
