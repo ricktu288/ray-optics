@@ -145,6 +145,7 @@ objTypes['curvedmirror'] = {
       if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
           if (!rp || graphs.length(ray.p1, rp_temp) < graphs.length(ray.p1, rp)) {
               rp = rp_temp;
+              obj.tmp_i = i;
           }
       }
     }
@@ -153,22 +154,16 @@ objTypes['curvedmirror'] = {
 
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp) {
-    var i;
+    var i = obj.tmp_i;
     var pts = obj.tmp_points;
-    var dir = graphs.length(obj.p2, rp) > graphs.length(obj.p1, rp);
-    for (j = 0; j < pts.length-1; j++) {
-      i = dir ? j : (pts.length-2-j);
-      var seg = graphs.segment(pts[i], pts[i+1]);
-      if (graphs.intersection_is_on_segment(rp, seg)) {
-        var rx = ray.p1.x - rp.x;
-        var ry = ray.p1.y - rp.y;
-        var mx = seg.p2.x - seg.p1.x;
-        var my = seg.p2.y - seg.p1.y;
-        ray.p1 = rp;
-        ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-        return;
-      }
-    }
+    var seg = graphs.segment(pts[i], pts[i+1]);
+    var rx = ray.p1.x - rp.x;
+    var ry = ray.p1.y - rp.y;
+    var mx = seg.p2.x - seg.p1.x;
+    var my = seg.p2.y - seg.p1.y;
+    ray.p1 = rp;
+    ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    return;
   }
 
 };

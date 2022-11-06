@@ -7,7 +7,9 @@ function evaluateLatex(latex) {
     .replace("\\arcsin","asin")
     .replace("\\arccos","acos")
     .replace("\\arctan","atan")
+    .replace("\\max","max")
     .replace("\\min","min")
+    .replace("\\operatorname{abs}","abs")
     .replace("\\operatorname{floor}","floor");
   console.log(latex_replaced);
   return evaluatex(
