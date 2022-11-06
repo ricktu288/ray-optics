@@ -104,6 +104,48 @@ function createBooleanAttr(label, value, func, elem) {
   cancelMousedownEvent_(label_elem);
 }
 
+function createEquationAttr(label, value, func, elem) {
+
+  var p_name = document.createElement('span');
+  p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
+  elem.appendChild(p_name);
+  var eqnContainer = document.createElement('span');
+  var eqnSpan = document.createElement('span');
+  eqnSpan.style.backgroundColor = 'white';
+  eqnSpan.style.color = 'black';
+  eqnSpan.style.paddingLeft = '3px';
+  eqnSpan.style.paddingRight = '3px';
+  eqnContainer.appendChild(eqnSpan);
+  eqnContainer.addEventListener('keydown', function(e) {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  });
+  elem.appendChild(eqnContainer);
+  cancelMousedownEvent_(eqnSpan);
+  var mathField = MQ.MathField(eqnSpan, {
+    spaceBehavesLikeTab: true,
+    leftRightIntoCmdGoes: 'up',
+    restrictMismatchedBrackets: true,
+    sumStartsWithNEquals: true,
+    supSubsRequireOperand: true,
+    charsThatBreakOutOfSupSub: '+-=<>',
+    autoSubscriptNumerals: true,
+    autoCommands: 'pi theta sqrt sum',
+    autoOperatorNames: 'sin cos tan csc sec cot log exp arcsin arccos arctan floor min',
+    maxDepth: 10,
+    handlers: {
+      edit: function() {
+        setAttr(function(obj) {
+          func(obj, mathField.latex());
+        });
+      }
+    }
+  });
+  setTimeout(function() {
+    mathField.latex(value);
+  }, 1);
+}
+
 function hasSameAttrType(obj1, obj2)
 {
   return obj1.type==obj2.type;

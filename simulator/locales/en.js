@@ -48,6 +48,9 @@ locales["en"] = {
   "toolname_parabolicmirror": {
     "message": "Mirror"
   },
+  "toolname_curvedmirror": {
+    "message": "Mirror"
+  },
   "toolname_idealmirror": {
     "message": "Ideal curved mirror"
   },
@@ -74,6 +77,9 @@ locales["en"] = {
   },
   "toolname_sphericallens": {
     "message": "Spherical lens"
+  },
+  "toolname_curvedglass": {
+    "message": "Glass"
   },
   "toolname_blackline": {
     "message": "Line Blocker"
@@ -150,6 +156,9 @@ locales["en"] = {
   "tool_parabolicmirror": {
     "message": "Parabolic"
   },
+  "tool_curvedmirror": {
+    "message": "Custom Equation"
+  },
   "tool_beamsplitter": {
     "message": "Beam Splitter"
   },
@@ -176,6 +185,9 @@ locales["en"] = {
   },
   "tool_sphericallens": {
     "message": "Spherical Lens"
+  },
+  "tool_curvedglass": {
+    "message": "Custom Equation"
   },
   "tool_blackline": {
     "message": "Line Blocker"
@@ -459,6 +471,9 @@ locales["en"] = {
   "tool_parabolicmirror_popover": {
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
+  "tool_curvedmirror_popover": {
+    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+  },
   "tool_beamsplitter_popover": {
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
@@ -479,6 +494,9 @@ locales["en"] = {
   },
   "tool_sphericallens_popover": {
     "message": "A spherical lens. (Click to create.)"
+  },
+  "tool_curvedglass_popover": {
+    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"

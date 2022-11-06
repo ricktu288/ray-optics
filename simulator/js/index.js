@@ -6,13 +6,14 @@ var objCount = 0; //物件數量 Number of the objects
 var observer;
 var tools_normal = ['laser', 'parallel', 'ruler', 'protractor', 'power', 'text', ''];
 var tools_withList = ['radiant_', 'mirror_', 'refractor_', 'blocker_'];
-var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'circlelens', 'parabolicmirror', 'beamsplitter', 'blackline', 'blackcircle'];
+var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'curvedglass', 'circlelens', 'parabolicmirror', 'curvedmirror', 'beamsplitter', 'blackline', 'blackcircle'];
 var modes = ['light', 'extended_light', 'images', 'observer'];
 var xyBox_cancelContextMenu = false;
 var scale = 1;
 var cartesianSign = false;
 var backgroundImage = null;
 var restoredData = "";
+var MQ;
 
 window.onload = function (e) {
   canvas = document.getElementById('canvas1');
@@ -330,6 +331,8 @@ window.onload = function (e) {
     const ii = i;
     elt.onclick = function () { openSample(samples[ii - 1]); };
   }
+
+  MQ = MathQuill.getInterface(2);
 };
 
 function openSample(name) {
@@ -623,6 +626,8 @@ function toolbtn_clicked(tool, e) {
       AddingObjType = "arcmirror";
     else if (t == "Parabolic")
       AddingObjType = "parabolicmirror";
+    else if (t == "Custom equation")
+      AddingObjType = "curvedmirror";
     else if (t == "Beam Splitter")
       AddingObjType = "beamsplitter";
     else if (t == "Ideal Curved")
@@ -639,6 +644,8 @@ function toolbtn_clicked(tool, e) {
       AddingObjType = "lens";
     else if (t == "Spherical Lens")
       AddingObjType = "sphericallens";
+    else if (t == "Custom equation")
+      AddingObjType = "curvedglass";
   } else if (tool === "blocker_") {
     var t = window.toolBarViewModel.blockers.selected();
     if (t === "Line Blocker")

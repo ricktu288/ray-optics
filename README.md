@@ -79,6 +79,15 @@ The source code is available at: https://github.com/jquery/jquery
 Knockout is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
 The source code is available at: https://github.com/knockout/knockout
 
+### MathQuill
+
+MathQuill is distributed under the [Mozilla Public License, version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
+The source code is available at: https://github.com/mathquill/mathquill
+
+### Evaluatex
+
+Evaluatex is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
+The source code is available at: https://github.com/arthanzel/evaluatex
 
 # 線光學模擬
 自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。

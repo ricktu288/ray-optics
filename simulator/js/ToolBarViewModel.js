@@ -53,6 +53,8 @@ function ToolBarViewModel() {
           ToolTypeEnum.RADIO),
         new ToolBarItem("Parabolic", "tool_parabolicmirror", "mirror_parabolic",
           ToolTypeEnum.RADIO),
+        new ToolBarItem("Custom equation", "tool_curvedmirror", "mirror_curved",
+          ToolTypeEnum.RADIO),
         new ToolBarItem("Beam Splitter", "tool_beamsplitter", "beamsplitter",
           ToolTypeEnum.RADIO)
       ]),
@@ -66,6 +68,8 @@ function ToolBarViewModel() {
         new ToolBarItem("Ideal Lens", "tool_lens", "ideal_lens",
           ToolTypeEnum.RADIO),
         new ToolBarItem("Spherical Lens", "tool_sphericallens", "spherical_lens",
+          ToolTypeEnum.RADIO),
+        new ToolBarItem("Custom equation", "tool_curvedglass", "glass_curved",
           ToolTypeEnum.RADIO)
       ]),
       new ToolBarItem("Ruler", "tool_ruler", "ruler",
@@ -139,5 +143,7 @@ $("#help").click(function () {
 });
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");
-$("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">beta</span></sup>' 
+$("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>' 
 $("#samples").next().css("max-height","calc(100vh - 100%)").css("overflow-y","scroll");
+$("#tool_curvedmirror").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
+$("#tool_curvedglass").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'

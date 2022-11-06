@@ -64,6 +64,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Mirror"
   },
+  "toolname_curvedmirror": {
+    "incomplete": true,
+    "message": "Mirror"
+  },
   "toolname_idealmirror": {
     "incomplete": true,
     "message": "Ideal curved mirror"
@@ -99,6 +103,10 @@ locales["LOCALE_ID"] = {
   "toolname_sphericallens": {
     "incomplete": true,
     "message": "Spherical lens"
+  },
+  "toolname_curvedglass": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_blackline": {
     "incomplete": true,
@@ -200,6 +208,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Parabolic"
   },
+  "tool_curvedmirror": {
+    "incomplete": true,
+    "message": "Custom Equation"
+  },
   "tool_beamsplitter": {
     "incomplete": true,
     "message": "Beam Splitter"
@@ -235,6 +247,10 @@ locales["LOCALE_ID"] = {
   "tool_sphericallens": {
     "incomplete": true,
     "message": "Spherical Lens"
+  },
+  "tool_curvedglass": {
+    "incomplete": true,
+    "message": "Custom Equation"
   },
   "tool_blackline": {
     "incomplete": true,
@@ -612,6 +628,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
+  "tool_curvedmirror_popover": {
+    "incomplete": true,
+    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+  },
   "tool_beamsplitter_popover": {
     "incomplete": true,
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
@@ -639,6 +659,10 @@ locales["LOCALE_ID"] = {
   "tool_sphericallens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
+  },
+  "tool_curvedglass_popover": {
+    "incomplete": true,
+    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
   "tool_blackline_popover": {
     "incomplete": true,

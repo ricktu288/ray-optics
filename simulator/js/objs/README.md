@@ -12,12 +12,14 @@
 | Mirrors -> Circular Arc | `arcmirror` |
 | Mirrors -> Ideal Curved | `idealmirror` |
 | Mirrors -> Parabolic | `parabolicmirror` |
+| Mirrors -> Custom equation | `curvedmirror` |
 | Mirrors -> Beam Splitter | `beamsplitter` |
 | Glasses -> Half-plane | `halfplane` |
 | Glasses -> Circle | `circlelens` |
 | Glasses -> Free-shape | `refractor` |
 | Glasses -> Ideal Lens | `lens` |
 | Glasses -> Spherical Lens | `sphericallens` |
+| Glasses -> Custom equation | `curvedglass` |
 | Ruler | `ruler` |
 | Protractor | `protractor` |
 | Detector | `power` |
