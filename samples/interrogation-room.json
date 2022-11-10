@@ -1,0 +1,210 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "radiant",
+      "x": 1240,
+      "y": 700,
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1400,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 640,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1400,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 1400,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1400,
+        "y": 640,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 1483.333333333333,
+      "y": 620.3333333333333,
+      "p": "Dark room"
+    },
+    {
+      "type": "text",
+      "x": 1311.3333333333337,
+      "y": 912.6666666666669,
+      "p": "Two-way mirror"
+    },
+    {
+      "type": "text",
+      "x": 1206.0000000000002,
+      "y": 675.3333333333334,
+      "p": "Lamp"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1400,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1400,
+        "y": 640,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 1160,
+      "y": 620,
+      "p": "Interrogation room"
+    },
+    {
+      "type": "text",
+      "x": 1443.0000000000002,
+      "y": 797.6666666666669,
+      "p": "Observer"
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 980,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 1134.6000000000001,
+      "y": 790.6666666666667,
+      "p": "Suspect"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1160,
+        "y": 800,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 820,
+        "exist": true
+      },
+      "p": "50"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1440,
+        "y": 800,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1440,
+        "y": 820,
+        "exist": true
+      },
+      "p": "50"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 20.085536923187668,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -452,
+    "y": -260
+  },
+  "scale": 1,
+  "colorMode": false
+}
