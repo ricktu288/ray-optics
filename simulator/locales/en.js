@@ -306,6 +306,12 @@ locales["en"] = {
   "sample30": {
     "message": "Penrose unilluminable room"
   },
+  "sample31": {
+    "message": "Camera obscura"
+  },
+  "sample32": {
+    "message": "Interrogation room"
+  },
   "mode_light": {
     "message": "Rays"
   },
