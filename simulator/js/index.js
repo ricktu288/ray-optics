@@ -323,7 +323,7 @@ window.onload = function (e) {
     "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json",
     "bended-pencil.json", "broken-pencil.json", "NL-simulation.json", "luneburg-lens.json", "maxwell-fisheye-lens.json", "inferior-mirage.json",
     "fresnel-lens.json", "rochester-cloak.json", "retroreflectors.json", "maze-solution.json", "optical-cavity.json", "beam-expanders.json",
-    "telescope.json", "GRIN-slab.json", "penrose-unilluminable-room.json"];
+    "telescope.json", "GRIN-slab.json", "penrose-unilluminable-room.json", "camera-obscura.json", "interrogation-room.json"];
   
   for (i = 1; ; i++) {
     var elt = document.getElementById("sample" + i);
