@@ -361,6 +361,14 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Penrose unilluminable room"
   },
+  "sample31": {
+    "incomplete": true,
+    "message": "Camera obscura"
+  },
+  "sample32": {
+    "incomplete": true,
+    "message": "Interrogation room"
+  },
   "mode_light": {
     "message": "Лучи"
   },

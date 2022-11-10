@@ -306,6 +306,12 @@ locales["zh-CN"] = {
   "sample30": {
     "message": "无法全屋照亮的彭罗斯房间"
   },
+  "sample31": {
+    "message": "暗箱"
+  },
+  "sample32": {
+    "message": "讯问室"
+  },
   "mode_light": {
     "message": "光线"
   },
