@@ -244,7 +244,7 @@ locales["zh-CN"] = {
     "message": "变焦镜头"
   },
   "sample10": {
-    "message": "水中物体的视深度"
+    "message": "视深度"
   },
   "sample11": {
     "message": "复式显微镜"
@@ -253,7 +253,7 @@ locales["zh-CN"] = {
     "message": "两面镜子成像"
   },
   "sample13": {
-    "message": "单一光线的反射与折射"
+    "message": "单一光线演示"
   },
   "sample14": {
     "message": "球面透镜与面镜"
@@ -289,7 +289,7 @@ locales["zh-CN"] = {
     "message": "回复反射器"
   },
   "sample25": {
-    "message": "破解迷宫"
+    "message": "单一光线解迷宫"
   },
   "sample26": {
     "message": "共振腔"
@@ -304,7 +304,7 @@ locales["zh-CN"] = {
     "message": "渐变折射率平板"
   },
   "sample30": {
-    "message": "无法全屋照亮的彭罗斯房间"
+    "message": "彭罗斯房间"
   },
   "sample31": {
     "message": "暗箱"

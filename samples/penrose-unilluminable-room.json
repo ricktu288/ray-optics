@@ -5,13 +5,13 @@
       "type": "curvedmirror",
       "p1": {
         "type": 1,
-        "x": 660,
+        "x": 655,
         "y": 580,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 580,
         "exist": true
       },
@@ -21,13 +21,13 @@
       "type": "curvedmirror",
       "p1": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 660,
+        "x": 655,
         "y": 780,
         "exist": true
       },
@@ -37,13 +37,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 580,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 660,
         "exist": true
       }
@@ -52,13 +52,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 660,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 660,
         "exist": true
       }
@@ -67,13 +67,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 580,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 660,
         "exist": true
       }
@@ -82,13 +82,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 700,
         "exist": true
       }
@@ -97,13 +97,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 700,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1660,
+        "x": 1655,
         "y": 700,
         "exist": true
       }
@@ -112,13 +112,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 700,
         "exist": true
       }
@@ -127,43 +127,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 660,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 860,
-        "y": 580,
-        "exist": true
-      }
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 660,
-        "y": 660,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 860,
-        "y": 660,
-        "exist": true
-      }
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 660,
-        "y": 660,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 660,
+        "x": 855,
         "y": 580,
         "exist": true
       }
@@ -172,13 +142,43 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 660,
+        "x": 655,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 855,
+        "y": 660,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 655,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 655,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 655,
         "y": 700,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 660,
+        "x": 655,
         "y": 780,
         "exist": true
       }
@@ -187,13 +187,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 700,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 660,
+        "x": 655,
         "y": 700,
         "exist": true
       }
@@ -202,13 +202,13 @@
       "type": "mirror",
       "p1": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 700,
         "exist": true
       }
@@ -217,19 +217,19 @@
       "type": "arcmirror",
       "p1": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 860,
+        "x": 855,
         "y": 580,
         "exist": true
       },
       "p3": {
         "type": 1,
-        "x": 960,
+        "x": 955,
         "y": 680,
         "exist": true
       }
@@ -238,34 +238,40 @@
       "type": "arcmirror",
       "p1": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 780,
         "exist": true
       },
       "p2": {
         "type": 1,
-        "x": 1460,
+        "x": 1455,
         "y": 580,
         "exist": true
       },
       "p3": {
         "type": 1,
-        "x": 1360,
+        "x": 1355,
         "y": 680,
         "exist": true
       }
     },
     {
       "type": "radiant",
-      "x": 1107.6666666666667,
-      "y": 407.9999999999999,
+      "x": 733,
+      "y": 620,
       "p": "0.02"
     },
     {
       "type": "text",
-      "x": 1709.6666666666667,
-      "y": 361.9999999999999,
+      "x": 728.0000000000003,
+      "y": 142.99999999999997,
       "p": "Warning: The numerical error of the ellipses may be too high to demonstrate this properly."
+    },
+    {
+      "type": "text",
+      "x": 801.2222222222226,
+      "y": 101.44444444444434,
+      "p": "No matter where you put the point source, it will not shine the entire room."
     }
   ],
   "mode": "light",
@@ -273,9 +279,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": -152,
-    "y": 124
+    "x": -147.3611111111119,
+    "y": 123.07777777777802
   },
-  "scale": 0.5,
+  "scale": 1.1,
   "colorMode": false
 }

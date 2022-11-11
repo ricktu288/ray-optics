@@ -244,7 +244,7 @@ locales["en"] = {
     "message": "Zoom Lens"
   },
   "sample10": {
-    "message": "Apparent Depth of an Object Underwater"
+    "message": "Apparent Depth"
   },
   "sample11": {
     "message": "Compound Microscope"
@@ -253,7 +253,7 @@ locales["en"] = {
     "message": "Images Formed By Two Mirrors"
   },
   "sample13": {
-    "message": "Reflection and Refraction of a Single Ray"
+    "message": "Single Ray demo"
   },
   "sample14": {
     "message": "Spherical Lens and Mirror"

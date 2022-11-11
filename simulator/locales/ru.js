@@ -279,7 +279,7 @@ locales["ru"] = {
   },
   "sample10": {
     "incomplete": true,
-    "message": "Apparent Depth of an Object Underwater"
+    "message": "Apparent Depth"
   },
   "sample11": {
     "incomplete": true,
@@ -291,7 +291,7 @@ locales["ru"] = {
   },
   "sample13": {
     "incomplete": true,
-    "message": "Reflection and Refraction of a Single Ray"
+    "message": "Single Ray demo"
   },
   "sample14": {
     "incomplete": true,
