@@ -6,13 +6,13 @@
       "p1": {
         "type": 1,
         "x": 760,
-        "y": 280,
+        "y": 500,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 760,
-        "y": 880,
+        "y": 660,
         "exist": true
       },
       "p": 100
@@ -48,55 +48,55 @@
       "type": "radiant",
       "x": 480,
       "y": 540,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 360,
       "y": 600,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 320,
       "y": 620,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 200,
       "y": 680,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 440,
       "y": 560,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 520,
       "y": 520,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 280,
       "y": 640,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "text",
       "x": 311.34000000000003,
       "y": 832.3499999999999,
-      "p": "dialectric material"
+      "p": "dielectric material"
     },
     {
       "type": "text",
       "x": 830.0100000000001,
-      "y": 509.2399999999999,
-      "p": "broken pencil (yellow)"
+      "y": 493.2399999999999,
+      "p": "image on retina"
     },
     {
       "type": "text",
@@ -108,18 +108,30 @@
       "type": "radiant",
       "x": 560,
       "y": 500,
-      "p": 0.5
+      "p": "0.5"
     },
     {
       "type": "radiant",
       "x": 240,
       "y": 660,
-      "p": 0.5
+      "p": "0.5"
+    },
+    {
+      "type": "text",
+      "x": 830.0100000000001,
+      "y": 469.2399999999999,
+      "p": "broken pencil (yellow)"
+    },
+    {
+      "type": "text",
+      "x": 696.3,
+      "y": 695.9,
+      "p": "observer's eye"
     }
   ],
   "mode": "images",
   "rayDensity_light": 0.1,
-  "rayDensity_images": 0.0711902078655893,
+  "rayDensity_images": 0.21709939257630184,
   "observer": {
     "type": 5,
     "c": {

@@ -18,21 +18,6 @@
       "p": "\\frac{4}{5}\\cdot\\sqrt{1-x^2}"
     },
     {
-      "type": "ruler",
-      "p1": {
-        "type": 1,
-        "x": 660,
-        "y": 580,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1660,
-        "y": 580,
-        "exist": true
-      }
-    },
-    {
       "type": "curvedmirror",
       "p1": {
         "type": 1,
@@ -272,9 +257,15 @@
     },
     {
       "type": "radiant",
-      "x": 880,
-      "y": 840,
-      "p": 0.5
+      "x": 1107.6666666666667,
+      "y": 407.9999999999999,
+      "p": "0.02"
+    },
+    {
+      "type": "text",
+      "x": 1709.6666666666667,
+      "y": 361.9999999999999,
+      "p": "Warning: The numerical error of the ellipses may be too high to demonstrate this properly."
     }
   ],
   "mode": "light",
@@ -282,9 +273,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 0,
-    "y": 0
+    "x": -152,
+    "y": 124
   },
-  "scale": 1,
+  "scale": 0.5,
   "colorMode": false
 }

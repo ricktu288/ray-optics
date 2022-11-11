@@ -6,13 +6,13 @@
       "p1": {
         "type": 1,
         "x": 822.1683000000002,
-        "y": 300,
+        "y": 500,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 822.1683000000002,
-        "y": 860,
+        "y": 660,
         "exist": true
       },
       "p": "100"
@@ -96,7 +96,19 @@
       "type": "text",
       "x": 258.60166896644785,
       "y": 605.4671820424851,
-      "p": "dialectric material"
+      "p": "dielectric material"
+    },
+    {
+      "type": "text",
+      "x": 1022.5261689664474,
+      "y": 524.1058820424851,
+      "p": "image on retina"
+    },
+    {
+      "type": "text",
+      "x": 596.7172689664478,
+      "y": 466.332582042485,
+      "p": "original pencil (green)"
     },
     {
       "type": "text",
@@ -106,14 +118,14 @@
     },
     {
       "type": "text",
-      "x": 596.7172689664478,
-      "y": 466.332582042485,
-      "p": "original pencil (green)"
+      "x": 756.9058620671046,
+      "y": 689.9247359150299,
+      "p": "observer's eye"
     }
   ],
   "mode": "images",
   "rayDensity_light": 0.1,
-  "rayDensity_images": 0.05756733343630739,
+  "rayDensity_images": 0.08803683258237255,
   "observer": {
     "type": 5,
     "c": {
