@@ -20,6 +20,8 @@ function ToolBarViewModel() {
       new ToolBarItem("Open", "open", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Export", "export_svg", undefined,
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("View Gallery", "view_gallery", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
     self.tools = new ToolBarGroup("Tools: ", [
@@ -135,6 +137,11 @@ $("#help").click(function () {
     $("#help").parent().popover("enable");
     localStorage.rayOpticsHelp = "off";
   }
+});
+
+
+$("#view_gallery").click(function () {
+  window.open("https://ricktu288.github.io/ray-optics/gallery/");
 });
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");

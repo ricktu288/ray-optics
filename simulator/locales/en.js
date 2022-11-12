@@ -255,6 +255,9 @@ locales["en"] = {
   "export_svg": {
     "message": "Export"
   },
+  "view_gallery": {
+    "message": "View Gallery"
+  },
   "save_name": {
     "message": "Name:"
   },
@@ -362,6 +365,9 @@ locales["en"] = {
   },
   "export_svg_popover": {
     "message": "Export to SVG."
+  },
+  "view_gallery_popover": {
+    "message": "Go to the Gallery webpage to load an example."
   },
   "tool_laser_popover": {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"

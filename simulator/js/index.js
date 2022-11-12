@@ -146,7 +146,7 @@ window.onload = function (e) {
   };
 
   document.getElementById('openfile').onchange = function () {
-    open(this.files[0]);
+    openFile(this.files[0]);
   };
 
   modes.forEach(function (element, index) {
@@ -307,7 +307,7 @@ window.onload = function (e) {
     var dt = e.dataTransfer;
     if (dt.files[0]) {
       var files = dt.files;
-      open(files[0]);
+      openFile(files[0]);
     }
     else {
       var fileString = dt.getData('text');
@@ -727,7 +727,7 @@ function save() {
   document.getElementById('saveBox').style.display = 'none';
 }
 
-function open(readFile) {
+function openFile(readFile) {
   var reader = new FileReader();
   document.getElementById('save_name').value = readFile.name;
   reader.readAsText(readFile);

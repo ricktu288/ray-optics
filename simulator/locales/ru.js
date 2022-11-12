@@ -282,6 +282,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "view_gallery": {
+    "incomplete": true,
+    "message": "View Gallery"
+  },
   "save_name": {
     "message": "Название:"
   },
@@ -407,6 +411,10 @@ locales["ru"] = {
   "export_svg_popover": {
     "incomplete": true,
     "message": "Export to SVG."
+  },
+  "view_gallery_popover": {
+    "incomplete": true,
+    "message": "Go to the Gallery webpage to load an example."
   },
   "tool_laser_popover": {
     "message": "Одиночный луч света, задаваемый двумя точками. (Потяните или нажмите, чтобы создать. Первая точка - источник, испускающий луч в сторону второй точки.)"

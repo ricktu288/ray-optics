@@ -290,6 +290,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "view_gallery": {
+    "incomplete": true,
+    "message": "View Gallery"
+  },
   "save_name": {
     "message": "Naam:"
   },
@@ -421,6 +425,10 @@ locales["nl"] = {
   "export_svg_popover": {
     "incomplete": true,
     "message": "Export to SVG."
+  },
+  "view_gallery_popover": {
+    "incomplete": true,
+    "message": "Go to the Gallery webpage to load an example."
   },
   "tool_laser_popover": {
     "message": "Één straal door twee punten. (Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting.)"

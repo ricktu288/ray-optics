@@ -281,6 +281,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "view_gallery": {
+    "incomplete": true,
+    "message": "View Gallery"
+  },
   "save_name": {
     "message": "Nom:"
   },
@@ -405,6 +409,10 @@ locales["fr"] = {
   "export_svg_popover": {
     "incomplete": true,
     "message": "Export to SVG."
+  },
+  "view_gallery_popover": {
+    "incomplete": true,
+    "message": "Go to the Gallery webpage to load an example."
   },
   "tool_laser_popover": {
     "message": "Un rayon de lumière unique définit par deux points. (Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.)"

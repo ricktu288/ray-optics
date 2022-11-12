@@ -255,6 +255,9 @@ locales["zh-TW"] = {
   "export_svg": {
     "message": "匯出"
   },
+  "view_gallery": {
+    "message": "瀏覽作品集"
+  },
   "save_name": {
     "message": "名稱："
   },
@@ -362,6 +365,9 @@ locales["zh-TW"] = {
   },
   "export_svg_popover": {
     "message": "匯出為SVG。"
+  },
+  "view_gallery_popover": {
+    "message": "前往「作品集」頁面以載入範例。"
   },
   "tool_laser_popover": {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
