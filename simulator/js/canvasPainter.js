@@ -70,6 +70,7 @@ var canvasPainter = {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
         if (backgroundImage) {
+            ctx.globalAlpha = 1;
             ctx.drawImage(backgroundImage,0,0);
         }
     } else if (!backgroundImage) {

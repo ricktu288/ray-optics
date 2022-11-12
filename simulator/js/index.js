@@ -588,9 +588,11 @@ function JSONInput() {
   }
   if (jsonData.backgroundImage) {
     backgroundImage = new Image();
-    backgroundImage.src = "../samples/" + jsonData.backgroundImage;
+    backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
     backgroundImage.onload = function (e1) {
-      draw();
+      setTimeout(function() {
+        draw();
+      }, 1);
     }
   }
 
