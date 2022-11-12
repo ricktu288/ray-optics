@@ -25,9 +25,12 @@ for (category of data) {
     objs = JSON.parse(fs.readFileSync(item.id + ".json").toString()).objs;
     for (obj of objs) {
       if (obj.type == "text") {
-        alt += " / " + obj.p;
+        if ((alt +  ", " + obj.p).length <= 125) {
+          alt += ", " + obj.p;
+        }
       }
     }
+    console.log(alt);
     codeItem = indexTemplateItem
       .replaceAll("{ID}", item.id)
       .replaceAll("{TITLE}", item.title)
