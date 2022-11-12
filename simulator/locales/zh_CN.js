@@ -15,11 +15,14 @@ locales["zh-CN"] = {
   "launch_simulator": {
     "message": "启动程序"
   },
-  "view_on_github": {
-    "message": "查看GitHub"
+  "home": {
+    "message": "首页"
+  },
+  "gallery": {
+    "message": "作品集"
   },
   "welcome": {
-    "message": "<span style=\"font-size:22pt\">欢迎使用“射线光学模拟”</span><br>若要载入示例，请使用上方“示例”选单。 <br>若要加入光学元件，请选择工具并点击空白处。"
+    "message": "<span style=\"font-size:22pt\">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href=\"https://ricktu288.github.io/ray-optics/gallery/\">请前往“作品集”页面</a>。"
   },
   "toolbar_title": {
     "message": "工具："
@@ -213,105 +216,6 @@ locales["zh-CN"] = {
   "Settings: ": {
     "message": "设定："
   },
-  "samples": {
-    "message": "示例"
-  },
-  "sample1": {
-    "message": "反射与折射"
-  },
-  "sample2": {
-    "message": "全反射"
-  },
-  "sample3": {
-    "message": "抛物面镜"
-  },
-  "sample4": {
-    "message": "三棱镜"
-  },
-  "sample5": {
-    "message": "透镜的像"
-  },
-  "sample6": {
-    "message": "凸透镜"
-  },
-  "sample7": {
-    "message": "凹透镜"
-  },
-  "sample8": {
-    "message": "单色像差"
-  },
-  "sample9": {
-    "message": "变焦镜头"
-  },
-  "sample10": {
-    "message": "视深度"
-  },
-  "sample11": {
-    "message": "复式显微镜"
-  },
-  "sample12": {
-    "message": "两面镜子成像"
-  },
-  "sample13": {
-    "message": "单一光线演示"
-  },
-  "sample14": {
-    "message": "球面透镜与面镜"
-  },
-  "sample15": {
-    "message": "色散"
-  },
-  "sample16": {
-    "message": "弯曲的铅笔"
-  },
-  "sample17": {
-    "message": "断掉的铅笔"
-  },
-  "sample18": {
-    "message": "NL 双筒望远镜"
-  },
-  "sample19": {
-    "message": "龙勃透镜"
-  },
-  "sample20": {
-    "message": "麦克斯韦鱼眼透镜"
-  },
-  "sample21": {
-    "message": "下蜃景"
-  },
-  "sample22": {
-    "message": "菲涅耳透镜"
-  },
-  "sample23": {
-    "message": "罗切斯特斗篷"
-  },
-  "sample24": {
-    "message": "回复反射器"
-  },
-  "sample25": {
-    "message": "单一光线解迷宫"
-  },
-  "sample26": {
-    "message": "共振腔"
-  },
-  "sample27": {
-    "message": "扩束镜"
-  },
-  "sample28": {
-    "message": "望远镜"
-  },
-  "sample29": {
-    "message": "渐变折射率平板"
-  },
-  "sample30": {
-    "message": "彭罗斯房间"
-  },
-  "sample31": {
-    "message": "暗箱"
-  },
-  "sample32": {
-    "message": "讯问室"
-  },
   "mode_light": {
     "message": "光线"
   },
@@ -358,7 +262,7 @@ locales["zh-CN"] = {
     "message": "取消"
   },
   "save_description": {
-    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">贡献新的项目到“示例”选单中</a>。"
+    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">贡献新的项目</a>到<a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。"
   },
   "open": {
     "message": "打开"

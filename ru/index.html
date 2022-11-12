@@ -45,10 +45,95 @@
   margin-bottom: 0px;
 }
 
+.brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+
+.brand:hover{
+    text-decoration: none;
+}
+
+.github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    padding: 0px;
+    height:40px;
+    width: 90px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    display:inline-block;
+    float:right;
+}
+
+.navul {
+    font-size: 11pt;
+}
+.navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 2px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+.clearfix {
+    clear: both;
+}
+.navul a:hover{
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+}
+.navul a.active{
+    color: #000;
+    border-bottom: 3px solid gray;
+}
+body { 
+    padding-top: 65px; 
+}
   </style>
 </head>
 <body>
 
+<div class="navbar navbar-fixed-top container" style="background-color:white">
+
+    <a href="https://ricktu288.github.io/ray-optics/" class="navbar-left brand">
+      <img src="../icon128.png" style="width:18pt; height:18pt">
+      Симуляция оптических лучей
+    </a>
+    <div class="navbar-right">
+
+<span class="navul">
+     <a href="https://ricktu288.github.io/ray-optics/" class="active">Home</a>
+     <a href="https://ricktu288.github.io/ray-optics/gallery/">Gallery</a>
+     <a href="https://ricktu288.github.io/ray-optics/about">About</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+    </div>
+
+</div>
 <div class="container">
   <center>
     <h1><b><span id="title">Симуляция оптических лучей</span></b></h1>
@@ -297,6 +382,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 </body>
 </html>

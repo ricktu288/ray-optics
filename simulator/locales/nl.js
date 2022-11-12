@@ -19,12 +19,17 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Launch Simulator"
   },
-  "view_on_github": {
-    "message": "Bekijk op GitHub"
+  "home": {
+    "incomplete": true,
+    "message": "Home"
+  },
+  "gallery": {
+    "incomplete": true,
+    "message": "Gallery"
   },
   "welcome": {
     "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To load an example, use the \"Examples\" menu above.<br>To add an optical component, select a tool and click the blank space."
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://ricktu288.github.io/ray-optics/gallery/\">go to the Gallery page</a>."
   },
   "toolbar_title": {
     "incomplete": true,
@@ -240,138 +245,6 @@ locales["nl"] = {
   "Settings: ": {
     "message": "Instellingen: "
   },
-  "samples": {
-    "incomplete": true,
-    "message": "Examples"
-  },
-  "sample1": {
-    "incomplete": true,
-    "message": "Reflection and Refraction"
-  },
-  "sample2": {
-    "incomplete": true,
-    "message": "Internal Reflection"
-  },
-  "sample3": {
-    "incomplete": true,
-    "message": "Parabolic Mirror"
-  },
-  "sample4": {
-    "incomplete": true,
-    "message": "Prisms"
-  },
-  "sample5": {
-    "incomplete": true,
-    "message": "Lens Images"
-  },
-  "sample6": {
-    "incomplete": true,
-    "message": "Convex Lens"
-  },
-  "sample7": {
-    "incomplete": true,
-    "message": "Concave Lens"
-  },
-  "sample8": {
-    "incomplete": true,
-    "message": "Monochromatic aberrations"
-  },
-  "sample9": {
-    "incomplete": true,
-    "message": "Zoom Lens"
-  },
-  "sample10": {
-    "incomplete": true,
-    "message": "Apparent Depth"
-  },
-  "sample11": {
-    "incomplete": true,
-    "message": "Compound Microscope"
-  },
-  "sample12": {
-    "incomplete": true,
-    "message": "Images Formed By Two Mirrors"
-  },
-  "sample13": {
-    "incomplete": true,
-    "message": "Single Ray demo"
-  },
-  "sample14": {
-    "incomplete": true,
-    "message": "Spherical Lens and Mirror"
-  },
-  "sample15": {
-    "incomplete": true,
-    "message": "Chromatic dispersion"
-  },
-  "sample16": {
-    "incomplete": true,
-    "message": "Bended Pencil"
-  },
-  "sample17": {
-    "incomplete": true,
-    "message": "Broken Pencil"
-  },
-  "sample18": {
-    "incomplete": true,
-    "message": "NL Binoculars"
-  },
-  "sample19": {
-    "incomplete": true,
-    "message": "Luneburg lens"
-  },
-  "sample20": {
-    "incomplete": true,
-    "message": "Maxwell fisheye lens"
-  },
-  "sample21": {
-    "incomplete": true,
-    "message": "Inferior mirage"
-  },
-  "sample22": {
-    "incomplete": true,
-    "message": "Fresnel lens"
-  },
-  "sample23": {
-    "incomplete": true,
-    "message": "Rochester cloak"
-  },
-  "sample24": {
-    "incomplete": true,
-    "message": "Retroreflectors"
-  },
-  "sample25": {
-    "incomplete": true,
-    "message": "Maze solution"
-  },
-  "sample26": {
-    "incomplete": true,
-    "message": "Optical cavity"
-  },
-  "sample27": {
-    "incomplete": true,
-    "message": "Beam expanders"
-  },
-  "sample28": {
-    "incomplete": true,
-    "message": "Telescope"
-  },
-  "sample29": {
-    "incomplete": true,
-    "message": "GRIN slab"
-  },
-  "sample30": {
-    "incomplete": true,
-    "message": "Penrose unilluminable room"
-  },
-  "sample31": {
-    "incomplete": true,
-    "message": "Camera obscura"
-  },
-  "sample32": {
-    "incomplete": true,
-    "message": "Interrogation room"
-  },
   "mode_light": {
     "message": "Stralen"
   },
@@ -426,7 +299,7 @@ locales["nl"] = {
   },
   "save_description": {
     "incomplete": true,
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
+    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
   },
   "open": {
     "incomplete": true,

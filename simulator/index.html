@@ -30,7 +30,7 @@
 <body style="background-color:rgb(0,0,0); overflow:hidden; margin: 0px;">
 
 
-  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.3); font-size:12pt; text-align:center; pointer-events: none; line-height:2; font-family: initial !important">
+  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.4); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
   </div>
   <script>
     // The strings for the welcome message is handled separately here, rather than in locales/ and scripts/locale.js.
@@ -38,12 +38,12 @@
     // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
 
     var welcome_msgs = {
-      "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
-      "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要載入範例，請使用上方「範例」選單。<br>若要加入光學元件，請選擇工具並點擊空白處。',
-      "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要载入示例，请使用上方“示例”菜单。 <br>若要加入光学元件，请选择工具并点击空白处。',
-      "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
-      "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.',
-      "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To load an example, use the "Examples" menu above.<br>To add an optical component, select a tool and click the blank space.'
+      "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://ricktu288.github.io/ray-optics/gallery/">go to the Gallery page</a>.',
+      "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://ricktu288.github.io/ray-optics/gallery/">請前往「作品集」頁面</a>。',
+      "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://ricktu288.github.io/ray-optics/gallery/">请前往“作品集”页面</a>。',
+      "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://ricktu288.github.io/ray-optics/gallery/">go to the Gallery page</a>.',
+      "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://ricktu288.github.io/ray-optics/gallery/">go to the Gallery page</a>.',
+      "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://ricktu288.github.io/ray-optics/gallery/">go to the Gallery page</a>.'
     }
     var lang = 'en';
     if (navigator.language) {
@@ -200,7 +200,7 @@
     <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing" target="_blank"
       style="color:rgba(255,255,255,0.25)" id="contribute">Contribute</a>
     ·
-    <a href="https://github.com/ricktu288/ray-optics/wiki/About" target="_blank" style="color:rgba(255,255,255,0.25)"
+    <a href="https://ricktu288.github.io/ray-optics/about" target="_blank" style="color:rgba(255,255,255,0.25)"
       id="about">About</a>
     ·
     <a href="#" style="color:rgba(255,255,255,0.25)" data-toggle="dropdown" id="language">English▲</a>

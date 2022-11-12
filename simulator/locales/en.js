@@ -15,11 +15,14 @@ locales["en"] = {
   "launch_simulator": {
     "message": "Launch Simulator"
   },
-  "view_on_github": {
-    "message": "View on GitHub"
+  "home": {
+    "message": "Home"
+  },
+  "gallery": {
+    "message": "Gallery"
   },
   "welcome": {
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To load an example, use the \"Examples\" menu above.<br>To add an optical component, select a tool and click the blank space."
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://ricktu288.github.io/ray-optics/gallery/\">go to the Gallery page</a>."
   },
   "toolbar_title": {
     "message": "Tool:&nbsp;"
@@ -213,105 +216,6 @@ locales["en"] = {
   "Settings: ": {
     "message": "Settings: "
   },
-  "samples": {
-    "message": "Examples"
-  },
-  "sample1": {
-    "message": "Reflection and Refraction"
-  },
-  "sample2": {
-    "message": "Internal Reflection"
-  },
-  "sample3": {
-    "message": "Parabolic Mirror"
-  },
-  "sample4": {
-    "message": "Prisms"
-  },
-  "sample5": {
-    "message": "Lens Images"
-  },
-  "sample6": {
-    "message": "Convex Lens"
-  },
-  "sample7": {
-    "message": "Concave Lens"
-  },
-  "sample8": {
-    "message": "Monochromatic aberrations"
-  },
-  "sample9": {
-    "message": "Zoom Lens"
-  },
-  "sample10": {
-    "message": "Apparent Depth"
-  },
-  "sample11": {
-    "message": "Compound Microscope"
-  },
-  "sample12": {
-    "message": "Images Formed By Two Mirrors"
-  },
-  "sample13": {
-    "message": "Single Ray demo"
-  },
-  "sample14": {
-    "message": "Spherical Lens and Mirror"
-  },
-  "sample15": {
-    "message": "Chromatic dispersion"
-  },
-  "sample16": {
-    "message": "Bended Pencil"
-  },
-  "sample17": {
-    "message": "Broken Pencil"
-  },
-  "sample18": {
-    "message": "NL Binoculars"
-  },
-  "sample19": {
-    "message": "Luneburg lens"
-  },
-  "sample20": {
-    "message": "Maxwell fisheye lens"
-  },
-  "sample21": {
-    "message": "Inferior mirage"
-  },
-  "sample22": {
-    "message": "Fresnel lens"
-  },
-  "sample23": {
-    "message": "Rochester cloak"
-  },
-  "sample24": {
-    "message": "Retroreflectors"
-  },
-  "sample25": {
-    "message": "Maze solution"
-  },
-  "sample26": {
-    "message": "Optical cavity"
-  },
-  "sample27": {
-    "message": "Beam expanders"
-  },
-  "sample28": {
-    "message": "Telescope"
-  },
-  "sample29": {
-    "message": "GRIN slab"
-  },
-  "sample30": {
-    "message": "Penrose unilluminable room"
-  },
-  "sample31": {
-    "message": "Camera obscura"
-  },
-  "sample32": {
-    "message": "Interrogation room"
-  },
   "mode_light": {
     "message": "Rays"
   },
@@ -358,7 +262,7 @@ locales["en"] = {
     "message": "Cancel"
   },
   "save_description": {
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
+    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
   },
   "open": {
     "message": "Open"

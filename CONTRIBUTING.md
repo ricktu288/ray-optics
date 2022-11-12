@@ -36,32 +36,36 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 9. Commit your changes (several times maybe), push to your fork, and create a pull request.
 
-## Contributing an example
+## Contributing items to the Gallery
 
 **Method 1: By e-mail**
 
 1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files to yttu@duck.com. Include the name of the example and your name to  be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
+2. Send the files to yttu@duck.com. Include the name of your work and your name to be appear on the [list of contributors](https://ricktu288.github.io/ray-optics/about).
 
 **Method 2: Via GitHub**
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the example file in `samples/`, with the name being the name of the example. Currently, the "text" tool does not support locales, so if the example contains texts, they should be in English.
+2. Add the JSON file in `gallery/` (follow the naming convention there). Currently, the "text" tool does not support locales, so if the work contains texts, they should be in English.
 
-3. If the work contains a background image, put it also in `samples/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
+3. If the work contains a background image, put it also in `gallery/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
 
-4. _(optional)_ Modify the number of samples in `sampleList` of `simulator/js/ToolBarViewModel.js`.
+4. _(optional)_ Take a PNG screenshot (with width approximately 2250px). It should contain all the tools, texts, and the relavent part of the simulation. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `.png`.
 
-5. _(optional)_ Add the locale key <code>sample<var>N</var></code> into `simulator/locales/en.js` with the name of the example. Run `node sync.js` to sync to other locales. Translate the name to other locales if you speak that language (follow the translation guidelines).
+5. _(optional)_ Take a 500x500 PNG screenshot for the thumbnail. It does not need to contains everything in the simulation, but should contain at least some essential part. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `-thumbnail.png`.
 
-6. _(optional)_ Add the file name of the example to the `samples` array in `simulator/js/index.js`.
+_Note: On HiDPI screens, please scale the webpage with the browser first such that the pixel of the canvas matches the pixel of the screens, before taking the screenshots._
+
+5. _(optional)_ Edit `gallery/data.json` with a text editor. This file contains the structure of the gallery and the metadata for the items. The ID of an item is the JSON file name without the `.json`. If you replace an existing items, you can change the title but not the ID, and you should append you name in the list of contributors.
+
+6. _(optional)_ Run `node generate-gallery.js` in `gallery/`.
 
 7. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing translations
 
-You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation.
+You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Note that the Gallery does not support translation currently.
 1. Download the target locale file:
    - Traditional Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
    - Simplified Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
@@ -71,15 +75,15 @@ You can submit a complete or partial translation for a new language, make progre
    - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/template.js
 2. Translate the phrase/sentence in the quotation after `"message":` to the target language. If you encounter `<` and `>`, leave the text between them untouched; `&amp;` means the "&" symbol; `\"` means a quote, and `&nbsp;` means an extra space.  If the translation of an item is completed, remove the line `"incomplete": true,`. For example,
 ```javascript
-  "save_description": {
+  "welcome": {
     "incomplete": true,
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">contribute a new item in the Examples menu</a>."
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://ricktu288.github.io/ray-optics/gallery/\">go to the Gallery page</a>."
   },
 ```
 becomes (for Traditional Chinese)
 ```javascript
-  "save_description": {
-    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">貢獻新的項目到「範例」選單中</a>。"
+  "welcome": {
+    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://ricktu288.github.io/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
   },
 
 ```
@@ -87,7 +91,7 @@ After that, you can submit the translated file with either method below:
 
 **Method 1: By e-mail**
 
-3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://github.com/ricktu288/ray-optics/wiki/About).
+3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://ricktu288.github.io/ray-optics/about).
 
 **Method 2: Via GitHub**
 

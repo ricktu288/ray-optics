@@ -1,7 +1,3 @@
-var i;
-var sampleList = [];
-for (i = 1; i <= 32; i++)
-  sampleList.push(new ToolBarItem("Sample " + i, "sample" + i, undefined, ToolTypeEnum.BUTTON, undefined, undefined));
 
 function ToolBarViewModel() {
   var self = this;
@@ -24,8 +20,7 @@ function ToolBarViewModel() {
       new ToolBarItem("Open", "open", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Export", "export_svg", undefined,
-        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
-      self.samples = new ToolBarItem("Samples", "samples", 4, ToolTypeEnum.RADIOLIST, sampleList)
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
     self.tools = new ToolBarGroup("Tools: ", [
       new ToolBarItem("Ray", "tool_laser", "ray",
@@ -144,6 +139,5 @@ $("#help").click(function () {
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");
 $("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>' 
-$("#samples").next().css("max-height","calc(100vh - 100%)").css("overflow-y","scroll");
 $("#tool_curvedmirror").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
 $("#tool_curvedglass").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'

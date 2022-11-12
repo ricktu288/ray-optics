@@ -13,6 +13,7 @@ var scale = 1;
 var cartesianSign = false;
 var backgroundImage = null;
 var restoredData = "";
+var isFromGallery = false;
 var MQ;
 
 window.onload = function (e) {
@@ -128,7 +129,13 @@ window.onload = function (e) {
 
   document.getElementById('undo').onclick = undo;
   document.getElementById('redo').onclick = redo;
-  document.getElementById('reset').onclick = function () { initParameters(); cancelRestore(); createUndoPoint(); };
+  document.getElementById('reset').onclick = function () {
+    initParameters();
+    cancelRestore();
+    createUndoPoint();
+    isFromGallery = false;
+    document.getElementById('welcome').style.display = '';
+  };
   document.getElementById('save').onclick = function () {
     document.getElementById('saveBox').style.display = '';
     document.getElementById('save_name').select();
@@ -315,37 +322,26 @@ window.onload = function (e) {
     e.preventDefault();
   }, false);
 
-
-  var i;
-  var samples = ["reflect.json", "internal-reflection.json", "parabolic-mirror.json", "prisms.json", "lens-images.json",
-    "convex-lens.json", "concave-lens.json", "monochromatic-aberrations.json", "zoom-lens.json",
-    "apparent-depth-of-an-object-under-water.json", "compound-microscope.json", "images-formed-by-two-mirrors.json",
-    "reflection-and-refraction-of-a-single-ray.json", "spherical-lens-and-mirror.json", "chromatic-dispersion.json",
-    "bended-pencil.json", "broken-pencil.json", "NL-simulation.json", "luneburg-lens.json", "maxwell-fisheye-lens.json", "inferior-mirage.json",
-    "fresnel-lens.json", "rochester-cloak.json", "retroreflectors.json", "maze-solution.json", "optical-cavity.json", "beam-expanders.json",
-    "telescope.json", "GRIN-slab.json", "penrose-unilluminable-room.json", "camera-obscura.json", "interrogation-room.json"];
-  
-  for (i = 1; ; i++) {
-    var elt = document.getElementById("sample" + i);
-    if (!elt) break;
-    const ii = i;
-    elt.onclick = function () { openSample(samples[ii - 1]); };
-  }
-
   MQ = MathQuill.getInterface(2);
+
+  if (window.location.hash.length > 1) {
+    openSample(window.location.hash.substr(1) + ".json");
+    history.replaceState('', document.title, window.location.pathname+window.location.search);
+    isFromGallery = true;
+  }
 };
 
 function openSample(name) {
   var client = new XMLHttpRequest();
-  client.open('GET', '../samples/' + name);
+  client.open('GET', '../gallery/' + name);
   client.onload = function () {
     if (client.status >= 300)
       return;
     document.getElementById('textarea1').value = client.responseText;
     backgroundImage = null;
     JSONInput();
-    cancelRestore();
     createUndoPoint();
+    isFromGallery = true;
   }
   client.send();
 }
@@ -385,13 +381,13 @@ function initParameters() {
     }
   } catch { }
   window.toolBarViewModel.zoom.value(scale * 100);
-  toolbtn_clicked('laser');
+  toolbtn_clicked('');
   modebtn_clicked('light');
   colorMode = false;
   backgroundImage = null;
 
   //Reset new UI.
-  window.toolBarViewModel.tools.selected("Ray");
+  window.toolBarViewModel.tools.selected("Move View");
   window.toolBarViewModel.modes.selected("Rays");
   window.toolBarViewModel.c1.selected(false);
   window.toolBarViewModel.c2.selected(false);
@@ -546,11 +542,12 @@ function JSONreplacer(name, val) {
 
 function JSONOutput() {
   document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale, colorMode: colorMode }, JSONreplacer, 2);
-  if (typeof (Storage) !== "undefined" && !restoredData) {
+  if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
     localStorage.rayOpticsData = document.getElementById('textarea1').value;
   }
 }
 function JSONInput() {
+  document.getElementById('welcome').style.display = 'none';
   var jsonData = JSON.parse(document.getElementById('textarea1').value);
   if (typeof jsonData != 'object') return;
   if (!jsonData.version) {
@@ -611,6 +608,9 @@ function JSONInput() {
 
 
 function toolbtn_clicked(tool, e) {
+  if (tool != "") {
+    document.getElementById('welcome').style.display = 'none';
+  }
   AddingObjType = tool;
   if (tool == "radiant_") {
     var t = window.toolBarViewModel.point_sources.selected();
@@ -776,13 +776,13 @@ function exportSVG() {
 function restore() {
   document.getElementById('textarea1').value = restoredData;
   document.getElementById('restore').style.display = 'none';
-  document.getElementById('welcome').style.display = 'none';
   restoredData = '';
   JSONInput();
   createUndoPoint();
 }
 
 function cancelRestore() {
+  isFromGallery = false;
   restoredData = '';
   document.getElementById('restore').style.display = 'none';
   document.getElementById('welcome').style.display = 'none';

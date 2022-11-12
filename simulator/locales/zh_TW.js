@@ -7,19 +7,22 @@ locales["zh-TW"] = {
     "message": "線光學"
   },
   "appDesc": {
-    "message": "自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。"
+    "message": "自由、開源的網頁程式，用於建立及模擬平面幾何光學場景。"
   },
   "homepage_desc": {
-    "message": "建立二維幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。"
+    "message": "建立平面幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。"
   },
   "launch_simulator": {
     "message": "啟動程式"
   },
-  "view_on_github": {
-    "message": "查看GitHub"
+  "home": {
+    "message": "首頁"
+  },
+  "gallery": {
+    "message": "作品集"
   },
   "welcome": {
-    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要載入範例，請使用上方「範例」選單。<br>若要加入光學元件，請選擇工具並點擊空白處。"
+    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://ricktu288.github.io/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
   },
   "toolbar_title": {
     "message": "工具："
@@ -213,105 +216,6 @@ locales["zh-TW"] = {
   "Settings: ": {
     "message": "設定："
   },
-  "samples": {
-    "message": "範例"
-  },
-  "sample1": {
-    "message": "反射與折射"
-  },
-  "sample2": {
-    "message": "全反射"
-  },
-  "sample3": {
-    "message": "拋物面鏡"
-  },
-  "sample4": {
-    "message": "三稜鏡"
-  },
-  "sample5": {
-    "message": "透鏡的像"
-  },
-  "sample6": {
-    "message": "凸透鏡"
-  },
-  "sample7": {
-    "message": "凹透鏡"
-  },
-  "sample8": {
-    "message": "單色像差"
-  },
-  "sample9": {
-    "message": "變焦鏡頭"
-  },
-  "sample10": {
-    "message": "視深度"
-  },
-  "sample11": {
-    "message": "複式顯微鏡"
-  },
-  "sample12": {
-    "message": "兩面鏡子成像"
-  },
-  "sample13": {
-    "message": "單一光線演示"
-  },
-  "sample14": {
-    "message": "球面透鏡與面鏡"
-  },
-  "sample15": {
-    "message": "色散"
-  },
-  "sample16": {
-    "message": "彎曲的鉛筆"
-  },
-  "sample17": {
-    "message": "斷掉的鉛筆"
-  },
-  "sample18": {
-    "message": "NL 雙筒望遠鏡"
-  },
-  "sample19": {
-    "message": "龍伯透鏡"
-  },
-  "sample20": {
-    "message": "馬克士威魚眼透鏡"
-  },
-  "sample21": {
-    "message": "下蜃景"
-  },
-  "sample22": {
-    "message": "菲涅耳透鏡"
-  },
-  "sample23": {
-    "message": "羅切斯特斗篷"
-  },
-  "sample24": {
-    "message": "回復反射器"
-  },
-  "sample25": {
-    "message": "單一光線解迷宮"
-  },
-  "sample26": {
-    "message": "共振腔"
-  },
-  "sample27": {
-    "message": "擴束器"
-  },
-  "sample28": {
-    "message": "望遠鏡"
-  },
-  "sample29": {
-    "message": "漸變折射率平板"
-  },
-  "sample30": {
-    "message": "潘洛斯房間"
-  },
-  "sample31": {
-    "message": "暗箱"
-  },
-  "sample32": {
-    "message": "偵訊室"
-  },
   "mode_light": {
     "message": "光線"
   },
@@ -358,7 +262,7 @@ locales["zh-TW"] = {
     "message": "取消"
   },
   "save_description": {
-    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-an-example\" target=\"_blank\">貢獻新的項目到「範例」選單中</a>。"
+    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">貢獻新的項目</a>到<a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。"
   },
   "open": {
     "message": "開啟"

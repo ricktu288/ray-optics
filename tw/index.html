@@ -9,7 +9,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ricktu288.github.io/ray-optics/tw/">
   <meta property="og:image" content="https://ricktu288.github.io/ray-optics/image.png">
-  <meta property="og:description" content="自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。">
+  <meta property="og:description" content="自由、開源的網頁程式，用於建立及模擬平面幾何光學場景。">
   <meta property="og:locale" content="zh_TW">
   <link rel="canonical" href="https://ricktu288.github.io/ray-optics/tw/">
   <link rel="alternate" href="https://ricktu288.github.io/ray-optics/" hreflang="en">
@@ -45,17 +45,101 @@
   margin-bottom: 0px;
 }
 
+.brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+
+.brand:hover{
+    text-decoration: none;
+}
+
+.github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    padding: 0px;
+    height:40px;
+    width: 90px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    display:inline-block;
+    float:right;
+}
+
+.navul {
+    font-size: 11pt;
+}
+.navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 2px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+.clearfix {
+    clear: both;
+}
+.navul a:hover{
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+}
+.navul a.active{
+    color: #000;
+    border-bottom: 3px solid gray;
+}
+body { 
+    padding-top: 65px; 
+}
   </style>
 </head>
 <body style="font-family: 微軟正黑體;">
 
+<div class="navbar navbar-fixed-top container" style="background-color:white">
+
+    <a href="https://ricktu288.github.io/ray-optics/" class="navbar-left brand">
+      <img src="../icon128.png" style="width:18pt; height:18pt">
+      線光學模擬
+    </a>
+    <div class="navbar-right">
+
+<span class="navul">
+     <a href="https://ricktu288.github.io/ray-optics/" class="active">首頁</a>
+     <a href="https://ricktu288.github.io/ray-optics/gallery/">作品集</a>
+     <a href="https://ricktu288.github.io/ray-optics/about">關於</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+    </div>
+
+</div>
 <div class="container">
   <center>
     <h1><b><span id="title">線光學模擬</span></b></h1>
-    <p id="description">建立二維幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。</p>
+    <p id="description">建立平面幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。</p>
     <p>
       <a href="https://ricktu288.github.io/ray-optics/simulator/?zh-TW" target="_blank" class="btn btn-success btn-lg" id="start">啟動程式</a>
-      <a href="https://github.com/ricktu288/ray-optics" class="btn btn-primary btn-lg" id="github_link">查看GitHub</a>
     </p>
   </center>
   <br>
@@ -290,6 +374,8 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 </body>
 </html>

@@ -30,7 +30,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 Contributions are welcome. Possible contributions include but not limited to the followings:
 
 - New tools
-- New examples
+- New items in the gallery
 - New translations
 
 For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md).
