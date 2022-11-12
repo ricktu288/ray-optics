@@ -10904,6 +10904,12 @@
         "exist": true
       },
       "p": 1
+    },
+    {
+      "type": "text",
+      "x": -150.0000000000001,
+      "y": -192,
+      "p": "Warning: The sequence of light appearing does not respect the actual speed of light. Only the final image is meaningful."
     }
   ],
   "mode": "light",
@@ -10911,9 +10917,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 519.0000000000001,
-    "y": 419
+    "x": 300.50000000000006,
+    "y": 387
   },
-  "scale": 1,
+  "scale": 0.5,
   "colorMode": false
 }
