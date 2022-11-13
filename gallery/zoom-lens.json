@@ -130,6 +130,12 @@
     },
     {
       "type": "text",
+      "x": 519,
+      "y": 614,
+      "p": "(Shift+drag the lens)"
+    },
+    {
+      "type": "text",
       "x": 567,
       "y": 326,
       "p": "← zoom →"
@@ -143,5 +149,6 @@
     "x": 0,
     "y": 0
   },
-  "scale": 1
+  "scale": 1,
+  "colorMode": false
 }

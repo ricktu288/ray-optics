@@ -20,7 +20,8 @@
       {
         "id": "retroreflectors",
         "contributors": [
-          "Stas Fainer"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "Retroreflectors"
       },
@@ -152,6 +153,13 @@
         "title": "Monochromatic aberrations"
       },
       {
+        "id": "chromatic-aberration",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Chromatic aberration"
+      },
+      {
         "id": "luneburg-lens",
         "contributors": [
           "Stas Fainer"
@@ -168,7 +176,8 @@
       {
         "id": "fresnel-lens",
         "contributors": [
-          "Stas Fainer"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "Fresnel lens"
       }

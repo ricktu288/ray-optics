@@ -249,6 +249,18 @@
       "x": -1120.9109401992,
       "y": 335.62470059919997,
       "p": "When the separation distance is more than 400, a non-divergent trajectory is not guaranteed"
+    },
+    {
+      "type": "text",
+      "x": 852.4610727599995,
+      "y": 1067.02347232,
+      "p": "to move horizontally"
+    },
+    {
+      "type": "text",
+      "x": 824.9111713199999,
+      "y": 1025.6986201599998,
+      "p": "Shift+drag the ideal mirror"
     }
   ],
   "mode": "light",
