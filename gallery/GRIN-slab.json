@@ -10909,7 +10909,7 @@
       "type": "text",
       "x": -150.0000000000001,
       "y": -192,
-      "p": "Warning: The sequence of light appearing does not respect the actual speed of light. Only the final image is meaningful."
+      "p": "Warning: The sequence of light appearing does not represent the actual speed of light. Only the final image is meaningful."
     }
   ],
   "mode": "light",
