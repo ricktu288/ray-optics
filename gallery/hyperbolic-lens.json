@@ -209,7 +209,7 @@
       "type": "text",
       "x": 1104.9111111111113,
       "y": -383.4476190476192,
-      "p": "can collimate a parralel beam of light into one point (without aberrations)."
+      "p": "can collimate a parallel beam of monochromatic light into one point (without spherical aberration)."
     },
     {
       "type": "parallel",
