@@ -116,6 +116,13 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab"
+      },
+      {
+        "id": "transverse-and-longitudinal-magnification",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Transverse and longitudinal magnification"
       }
     ]
   },
@@ -180,6 +187,13 @@
           "Yi-Ting Tu"
         ],
         "title": "Fresnel lens"
+      },
+      {
+        "id": "hyperbolic-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Hyperbolic lens"
       }
     ]
   },
