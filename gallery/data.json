@@ -83,13 +83,6 @@
         "title": "Apparent Depth"
       },
       {
-        "id": "chromatic-dispersion",
-        "contributors": [
-          "Yi-Ting Tu"
-        ],
-        "title": "Chromatic dispersion"
-      },
-      {
         "id": "bended-pencil",
         "contributors": [
           "Stas Fainer"
@@ -104,6 +97,20 @@
         "title": "Broken Pencil"
       },
       {
+        "id": "chromatic-dispersion",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Chromatic dispersion"
+      },
+      {
+        "id": "rainbows",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Rainbows"
+      },
+      {
         "id": "inferior-mirage",
         "contributors": [
           "Stas Fainer"
@@ -116,20 +123,6 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab"
-      },
-      {
-        "id": "transverse-and-longitudinal-magnification",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Transverse and longitudinal magnification"
-      },
-      {
-        "id": "rainbows",
-        "contributors": [
-          "Yi-Ting Tu"
-        ],
-        "title": "Rainbows"
       }
     ]
   },
@@ -159,6 +152,13 @@
         "title": "Lens Images"
       },
       {
+        "id": "transverse-and-longitudinal-magnification",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Transverse and longitudinal magnification"
+      },
+      {
         "id": "monochromatic-aberrations",
         "contributors": [
           "Paul Falstad",
@@ -174,6 +174,21 @@
         "title": "Chromatic aberration"
       },
       {
+        "id": "hyperbolic-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Hyperbolic lens"
+      },
+      {
+        "id": "fresnel-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Fresnel lens"
+      },
+      {
         "id": "luneburg-lens",
         "contributors": [
           "Stas Fainer"
@@ -186,21 +201,6 @@
           "Stas Fainer"
         ],
         "title": "Maxwell fisheye lens"
-      },
-      {
-        "id": "fresnel-lens",
-        "contributors": [
-          "Stas Fainer",
-          "Yi-Ting Tu"
-        ],
-        "title": "Fresnel lens"
-      },
-      {
-        "id": "hyperbolic-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Hyperbolic lens"
       }
     ]
   },
@@ -216,20 +216,6 @@
         "title": "Zoom Lens"
       },
       {
-        "id": "compound-microscope",
-        "contributors": [
-          "Yi-Ting Tu"
-        ],
-        "title": "Compound Microscope"
-      },
-      {
-        "id": "rochester-cloak",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Rochester cloak"
-      },
-      {
         "id": "beam-expanders",
         "contributors": [
           "Stas Fainer"
@@ -237,11 +223,32 @@
         "title": "Beam expanders"
       },
       {
+        "id": "compound-microscope",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Compound Microscope"
+      },
+      {
         "id": "telescope",
         "contributors": [
           "Stas Fainer"
         ],
         "title": "Telescope"
+      },
+      {
+        "id": "NL-simulation",
+        "contributors": [
+          "Kimmik"
+        ],
+        "title": "NL Binoculars"
+      },
+      {
+        "id": "rochester-cloak",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Rochester cloak"
       }
     ]
   },
@@ -262,13 +269,6 @@
           "Yi-Ting Tu"
         ],
         "title": "Spherical Lens and Mirror"
-      },
-      {
-        "id": "NL-simulation",
-        "contributors": [
-          "Kimmik"
-        ],
-        "title": "NL Binoculars"
       },
       {
         "id": "interrogation-room",
