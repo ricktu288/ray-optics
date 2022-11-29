@@ -237,13 +237,6 @@
         "title": "Telescope"
       },
       {
-        "id": "NL-simulation",
-        "contributors": [
-          "Kimmik"
-        ],
-        "title": "NL Binoculars"
-      },
-      {
         "id": "rochester-cloak",
         "contributors": [
           "Stas Fainer"
@@ -283,6 +276,20 @@
           "Stas Fainer"
         ],
         "title": "Camera obscura"
+      },
+      {
+        "id": "NL-simulation",
+        "contributors": [
+          "Wen Zhou"
+        ],
+        "title": "NL Binoculars"
+      },
+      {
+        "id": "einstein-ring-refocused-to-single-image-via-eyepiece",
+        "contributors": [
+          "Jordan Anderson"
+        ],
+        "title": "Einstein Ring refocused to Single Image via Eyepiece"
       }
     ]
   }
