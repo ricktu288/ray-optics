@@ -1,160 +1,52 @@
 ﻿ <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interrogation room - Ray Optics Simulation</title>
-  <meta property="og:title" content="Interrogation room - Ray Optics Simulation">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ricktu288.github.io/ray-optics/gallery/interrogation-room">
-  <meta property="og:image" content="https://ricktu288.github.io/ray-optics/gallery/interrogation-room-thumbnail.png">
-  <meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
-  <meta property="og:locale" content="en">
-  <link rel="canonical" href="https://ricktu288.github.io/ray-optics/gallery/interrogation-room">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="icon" href="../icon128.png" type="image/png">
-  <style>
-.example-container {
-  border-width:2px;
-  margin-bottom: 5px;
-  display: inline-block;
-  width:270px;
-  text-decoration: none;
-}
-
-.example-container:hover {
-  text-decoration: none;
-}
-
-.example-image {
-  width:250px;
-  height:250px;
-}
-
-.example-title {
-  font-size: 12pt;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.example-contributor {
-  font-size: 9pt;
-  color: gray;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.brand {
-    font-size: 12pt;
-    color: #888;
-    margin-top: 0px;
-    margin-bottom:0px;
-    margin-left:5px;
-    margin-right:5px;
-    padding: 0px;
-    height:40px;
-    line-height:40px;
-    position: relative;
-    text-align:center;
-    text-decoration: none;
-}
-
-.brand:hover{
-    text-decoration: none;
-}
-
-.github-button-container {
-    color: #888;
-    margin-top: 7px;
-    margin-bottom:0px;
-    margin-left:0px;
-    margin-right:0px;
-    padding: 0px;
-    height:40px;
-    width: 90px;
-    line-height:40px;
-    position: relative;
-    text-align:center;
-    display:inline-block;
-    float:right;
-}
-
-.navul {
-    font-size: 11pt;
-}
-.navul a {
-    color: #555;
-    float: left;
-    margin-top: 0px;
-    margin-bottom:0px;
-    margin-left:5px;
-    margin-right:5px;
-    padding: 2px;
-    height:40px;
-    line-height:40px;
-    position: relative;
-    text-align:center;
-    text-decoration: none;
-}
-.clearfix {
-    clear: both;
-}
-.navul a:hover{
-    border-bottom: 3px solid #CCC;
-    text-decoration: none;
-}
-.navul a.active{
-    color: #000;
-    border-bottom: 3px solid gray;
-}
-body { 
-    padding-top: 72px; 
-    padding-bottom: 65px; 
-}
-.anchor {
-    padding-top: 65px; 
-}
-  </style>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interrogation room - Ray Optics Simulation</title>
+<meta property="og:title" content="Interrogation room - Ray Optics Simulation">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ricktu288.github.io/ray-optics/gallery/interrogation-room">
+<meta property="og:image" content="https://ricktu288.github.io/ray-optics/gallery/interrogation-room-thumbnail.png">
+<meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
+<meta property="og:locale" content="en">
+<link rel="canonical" href="https://ricktu288.github.io/ray-optics/gallery/interrogation-room">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="icon" href="../icon128.png" type="image/png">
 </head>
 <body>
 <div class="navbar navbar-fixed-top container" style="background-color:white">
-
-    <a href="https://ricktu288.github.io/ray-optics/" class="navbar-left brand">
-      <img src="../icon128.png" alt="" style="width:18pt; height:18pt">
-      Ray Optics Simulation
-    </a>
-    <div class="navbar-right">
-
+<a href="https://ricktu288.github.io/ray-optics/" class="navbar-left brand">
+<img src="../icon128.png" alt="" style="width:18pt;height:18pt">
+Ray Optics Simulation
+</a>
+<div class="navbar-right">
 <span class="navul">
-     <a href="https://ricktu288.github.io/ray-optics/">Home</a>
-     <a href="https://ricktu288.github.io/ray-optics/gallery/" class="active">Gallery</a>
-     <a href="https://ricktu288.github.io/ray-optics/about">About</a>
+<a href="https://ricktu288.github.io/ray-optics/">Home</a>
+<a href="https://ricktu288.github.io/ray-optics/gallery/" class="active">Gallery</a>
+<a href="https://ricktu288.github.io/ray-optics/about">About</a>
 </span>
 <span class="github-button-container">
 <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
 </span>
-    </div>
-
+</div>
 </div>
 <div class="container">
-  <center>
-    <h1><b><span id="title">Interrogation room</span></b></h1>
-    <p id="description">
-    Contributor: Stas Fainer
-    </p>
-    <p>
-    <a href="https://ricktu288.github.io/ray-optics/simulator/#interrogation-room" target="_blank" class="btn btn-success btn-lg" id="start">Open in Simulator</a>
-      <!--<a href="https://github.com/ricktu288/ray-optics" class="btn btn-success btn-lg" id="github_link">View On GitHub</a><br>-->
-    </p>
-    <img src="interrogation-room.png" alt="Interrogation room, Dark room, Two-way mirror, Lamp, Interrogation room, Observer, Suspect" style="width: 100%">
-  </center>
+<center>
+<h1><b><span id="title">Interrogation room</span></b></h1>
+<p id="description">
+Contributor: Stas Fainer
+</p>
+<p>
+<a href="https://ricktu288.github.io/ray-optics/simulator/#interrogation-room" target="_blank" class="btn btn-success btn-lg" id="start">Open in Simulator</a>
+</p>
+<img src="interrogation-room.png" alt="Interrogation room, Dark room, Two-way mirror, Lamp, Interrogation room, Observer, Suspect" style="width:100%">
+</center>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-
 </body>
 </html>
