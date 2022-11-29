@@ -51,9 +51,9 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 3. If the work contains a background image, put it also in `gallery/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
 
-4. _(optional)_ Take a PNG screenshot (with width approximately 2250px). It should contain all the tools, texts, and the relavent part of the simulation. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `.png`.
+4. _(optional)_ Take a PNG screenshot with width 1140. It should contain all the tools, texts, and the relavent part of the simulation. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `.png`.
 
-5. _(optional)_ Take a 500x500 PNG screenshot for the thumbnail. It does not need to contains everything in the simulation, but should contain at least some essential part. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `-thumbnail.png`.
+5. _(optional)_ Take a 250x250 PNG screenshot for the thumbnail. It does not need to contains everything in the simulation, but should contain at least some essential part. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `-thumbnail.png`.
 
 _Note: On HiDPI screens, please scale the webpage with the browser first such that the pixel of the canvas matches the pixel of the screens, before taking the screenshots._
 
