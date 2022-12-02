@@ -366,7 +366,7 @@ locales["ru"] = {
   },
   "restore": {
     "incomplete": true,
-    "message": "Click here to restore your previous session."
+    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
   },
   "footer_message": {
     "message": "Разработано <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"

@@ -376,9 +376,12 @@ function canvas_onmouseup(e) {
       canvas_ondblclick(e);
       return;
     }
+    if (draggingObj != -3) {
+      // If user is moving the view, do not create undo point.
+      createUndoPoint();
+    }
     draggingObj = -1;
     draggingPart = {};
-    createUndoPoint();
   }
 
 }
@@ -602,6 +605,7 @@ function createUndoPoint() {
     //復原步數已達上限 The limit of undo is reached
     undoLBound = (undoLBound + 1) % undoLimit;
   }
+  hasUnsavedChange = true;
 }
 
 function undo() {

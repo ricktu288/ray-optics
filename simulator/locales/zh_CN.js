@@ -328,7 +328,7 @@ locales["zh-CN"] = {
     "message": "处理中……<br>按此处以终止。"
   },
   "restore": {
-    "message": "点击此处以恢复先前的进度。"
+    "message": "按此处以恢复先前的进度。.<br>⚠️ 重要更动：本程序将不会再储存您的进度，请在关闭此网页前储存您的作品。"
   },
   "footer_message": {
     "message": "由<a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github .com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 开发"

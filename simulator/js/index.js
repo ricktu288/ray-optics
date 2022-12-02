@@ -14,6 +14,7 @@ var cartesianSign = false;
 var backgroundImage = null;
 var restoredData = "";
 var isFromGallery = false;
+var hasUnsavedChange = false;
 var MQ;
 
 window.onload = function (e) {
@@ -133,8 +134,9 @@ window.onload = function (e) {
     initParameters();
     cancelRestore();
     createUndoPoint();
-    isFromGallery = false;
     document.getElementById('welcome').style.display = '';
+    isFromGallery = false;
+    hasUnsavedChange = false;
   };
   document.getElementById('save').onclick = function () {
     document.getElementById('saveBox').style.display = '';
@@ -342,6 +344,7 @@ function openSample(name) {
     JSONInput();
     createUndoPoint();
     isFromGallery = true;
+    hasUnsavedChange = false;
   }
   client.send();
 }
@@ -727,6 +730,7 @@ function save() {
   saveAs(blob, document.getElementById('save_name').value);
 
   document.getElementById('saveBox').style.display = 'none';
+  hasUnsavedChange = false;
 }
 
 function openFile(readFile) {
@@ -741,6 +745,7 @@ function openFile(readFile) {
     try {
       JSONInput();
       cancelRestore();
+      hasUnsavedChange = false;
     } catch (error) {
       reader.onload = function (e) {
         backgroundImage = new Image();
@@ -790,5 +795,12 @@ function cancelRestore() {
   document.getElementById('welcome').style.display = 'none';
 }
 
-
+window.onbeforeunload = function(e) {
+  if (!restoredData) {
+    localStorage.rayOpticsData = '';
+  }
+  if (hasUnsavedChange) {
+    return "You have unsaved change.";
+  }
+}
 
