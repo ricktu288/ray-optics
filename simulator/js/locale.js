@@ -26,8 +26,8 @@ function init_i18n() {
   document.getElementById('forceStop').innerHTML = getMsg('processing');
   document.getElementById('restore').innerHTML = getMsg('restore');
 
+  document.getElementById('github').innerHTML = getMsg('github');
   document.getElementById('contribute').innerHTML = getMsg('contribute');
-  document.getElementById('issues').innerHTML = getMsg('issues');
   document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('translate').innerHTML = getMsg('translate');
 
@@ -43,7 +43,7 @@ function init_i18n() {
     }
     console.log([lang1, total, translated]);
     if (translated != total) {
-      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:gray"> (${Math.round(translated/total*100)}% ${getMsg('translated')})</span>`;
+      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:white"> (${Math.round(translated/total*100)}% ${getMsg('translated')})</span>`;
     }
   }
 

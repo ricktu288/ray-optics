@@ -10,7 +10,7 @@ locales["zh-TW"] = {
     "message": "自由、開源的網頁程式，用於建立及模擬平面幾何光學場景。"
   },
   "homepage_desc": {
-    "message": "建立平面幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，直接於瀏覽器中執行。"
+    "message": "建立平面幾何光學場景，並即時模擬光線行為。<br>完全免費，免下載，原始碼<a href=\"https://github.com/ricktu288/ray-optics\">公開於 GitHub</a>。"
   },
   "launch_simulator": {
     "message": "啟動程式"
@@ -328,16 +328,13 @@ locales["zh-TW"] = {
     "message": "處理中……<br>按此處以終止。"
   },
   "restore": {
-    "message": "按此處以恢復先前的工作階段。.<br>⚠️ 重要更動：本程式將不會再儲存您的工作階段，請在關閉此網頁前儲存您的作品。"
-  },
-  "footer_message": {
-    "message": "由 <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 開發"
+    "message": "按此處以恢復先前的工作階段。.<br>⚠️ 重要更動：本程式即日起不再自動儲存您的工作階段，請在關閉此網頁前儲存您的作品。"
   },
   "contribute": {
     "message": "貢獻"
   },
-  "issues": {
-    "message": "回報問題"
+  "github": {
+    "message": "GitHub 專案"
   },
   "about": {
     "message": "關於"

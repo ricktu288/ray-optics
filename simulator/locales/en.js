@@ -10,7 +10,7 @@ locales["en"] = {
     "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
   },
   "homepage_desc": {
-    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. No download needed."
+    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
   },
   "launch_simulator": {
     "message": "Launch Simulator"
@@ -328,16 +328,13 @@ locales["en"] = {
     "message": "Processing...<br>Click here to stop."
   },
   "restore": {
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
-  },
-  "footer_message": {
-    "message": "Developed by <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
+    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
     "message": "Contribute"
   },
-  "issues": {
-    "message": "Report Issues"
+  "github": {
+    "message": "GitHub Repo"
   },
   "about": {
     "message": "About"

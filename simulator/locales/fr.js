@@ -10,10 +10,6 @@ locales["fr"] = {
     "incomplete": true,
     "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
   },
-  "homepage_desc": {
-    "incomplete": true,
-    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. No download needed."
-  },
   "launch_simulator": {
     "incomplete": true,
     "message": "Launch Simulator"
@@ -367,16 +363,13 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
   },
-  "footer_message": {
-    "message": "Développer par <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> | Le développement de ce logiciel a été soutenu financièrement par l'ANR (Agence Nationale de la Recherce), dans le cadre de l'appel à projets NCU (Nouveaux Cursus Universitaires) 'Hybridation des formations de l'enseignement supérieur', à travers le projet HTTP (Hybridation Technologique et Travaux Pratiques) [ANR-20-NCUN-0001]"
-  },
   "contribute": {
     "incomplete": true,
     "message": "Contribute"
   },
-  "issues": {
+  "github": {
     "incomplete": true,
-    "message": "Report Issues"
+    "message": "GitHub Repo"
   },
   "about": {
     "incomplete": true,

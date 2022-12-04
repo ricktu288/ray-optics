@@ -20,7 +20,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 
 ## Links
 - [**Lanuch the Web App**](https://ricktu288.github.io/ray-optics/simulator/)
-- [Home page](https://ricktu288.github.io/ray-optics/)
+- [Gallery](https://ricktu288.github.io/ray-optics/gallery/)
 - [Documentation](https://github.com/ricktu288/ray-optics/wiki)
 - [Cite this repo](https://github.com/ricktu288/ray-optics/blob/master/CITATION.cff)
 
@@ -107,5 +107,4 @@ The source code is available at: https://github.com/arthanzel/evaluatex
 
 ## 連結
 - [**啟動網頁程式**](https://ricktu288.github.io/ray-optics/simulator/)
-- [正體中文首頁](https://ricktu288.github.io/ray-optics/tw/)
-- [簡體中文首頁](https://ricktu288.gitlab.io/ray-optics/cn/)
+- [作品集](https://ricktu288.github.io/ray-optics/gallery/)

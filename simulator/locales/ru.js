@@ -10,10 +10,6 @@ locales["ru"] = {
     "incomplete": true,
     "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
   },
-  "homepage_desc": {
-    "incomplete": true,
-    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. No download needed."
-  },
   "launch_simulator": {
     "incomplete": true,
     "message": "Launch Simulator"
@@ -368,16 +364,13 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
   },
-  "footer_message": {
-    "message": "Разработано <a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github.com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a>"
-  },
   "contribute": {
     "incomplete": true,
     "message": "Contribute"
   },
-  "issues": {
+  "github": {
     "incomplete": true,
-    "message": "Report Issues"
+    "message": "GitHub Repo"
   },
   "about": {
     "incomplete": true,

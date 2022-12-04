@@ -10,7 +10,7 @@ locales["zh-CN"] = {
     "message": "自由、开源的网页程序，用于建立及模拟二维几何光学场景。"
   },
   "homepage_desc": {
-    "message": "建立二维几何光学场景，并即时模拟光线行为。<br>完全免费，免下载，直接于浏览器中执行。"
+    "message": "建立二维几何光学场景，并实时模拟光线行为。<br>完全免费，免下载，源代码<a href=\"https://github.com/ricktu288/ray-optics\">公开于 GitHub</a>。"
   },
   "launch_simulator": {
     "message": "启动程序"
@@ -328,16 +328,13 @@ locales["zh-CN"] = {
     "message": "处理中……<br>按此处以终止。"
   },
   "restore": {
-    "message": "按此处以恢复先前的进度。.<br>⚠️ 重要更动：本程序将不会再储存您的进度，请在关闭此网页前储存您的作品。"
-  },
-  "footer_message": {
-    "message": "由<a href='https://github.com/ricktu288' style='color:rgba(255,255,255,0.25)'>ricktu288</a>, <a href='https://github .com/j3soon' style='color:rgba(255,255,255,0.25)'>j3soon</a> 开发"
+    "message": "按此处以恢复先前的进度。.<br>⚠️ 重要更动：本程序即日起不再自动保存您的进度，请在关闭此网页前保存您的作品。"
   },
   "contribute": {
     "message": "贡献"
   },
-  "issues": {
-    "message": "反馈问题"
+  "github": {
+    "message": "GitHub 仓库"
   },
   "about": {
     "message": "关于"
