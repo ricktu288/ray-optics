@@ -104,7 +104,7 @@
       "type": "text",
       "x": 1119.577777777778,
       "y": 16.552380952380787,
-      "p": "(for example 0<y<Y converts to (specific to this hyperbolic lens) a slab with vertical length of  K ∙ Y )."
+      "p": "(for example 0<y<Y converts to a slab with vertical length of  K ∙ Y )."
     },
     {
       "type": "ruler",

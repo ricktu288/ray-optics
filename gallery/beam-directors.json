@@ -1,0 +1,132 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedglass",
+      "p1": {
+        "type": 1,
+        "x": 780,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 680,
+        "exist": true
+      },
+      "eqn1": "-0.05",
+      "eqn2": "\\max(1-\\operatorname{abs}(x/3),0)-\\operatorname{floor}(50*\\max(1-\\operatorname{abs}(x/3),0))/50",
+      "p": 1.5
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 780,
+          "y": 240,
+          "arc": false
+        },
+        {
+          "x": 780,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 800,
+          "y": 300,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2000,
+        "y": 460,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 740,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 340,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 740,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 660,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 560,
+      "y": 620,
+      "p": "Fresnel biprism"
+    },
+    {
+      "type": "text",
+      "x": 560,
+      "y": 300,
+      "p": "Biprism"
+    },
+    {
+      "type": "text",
+      "x": 550.4105263157899,
+      "y": 532.0210526315793,
+      "p": "You can click and replace \"50\" in the formula by other number of slices"
+    },
+    {
+      "type": "text",
+      "x": 772.5385964912283,
+      "y": 554.343859649123,
+      "p": "↓"
+    },
+    {
+      "type": "text",
+      "x": 550,
+      "y": 496,
+      "p": "This fresnel biprism was made from the above biprism"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 2.497024941914371,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -528,
+    "y": -5.000000000000014
+  },
+  "scale": 1.25,
+  "colorMode": false
+}
