@@ -76,6 +76,13 @@
         "title": "Prisms"
       },
       {
+        "id": "beam-directors",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Beam Directors"
+      },
+      {
         "id": "apparent-depth",
         "contributors": [
           "Yi-Ting Tu"
@@ -123,13 +130,6 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab"
-      },
-      {
-        "id": "beam-directors",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Beam Directors"
       }
     ]
   },
