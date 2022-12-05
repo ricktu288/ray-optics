@@ -35,6 +35,17 @@ Contributions are welcome. Possible contributions include but not limited to the
 
 For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md).
 
+# Cite this project
+
+APA:
+```
+Tu, Y.-T., & Sun, W.-F. (2016). Ray Optics Simulation [Computer software]. https://doi.org/10.5281/zenodo.6386611
+```
+BibTeX:
+```
+@software{Tu_Ray_Optics_Simulation_2016,author = {Tu, Yi-Ting and Sun, Wei-Fang},doi = {10.5281/zenodo.6386611},month = {2},title = {{Ray Optics Simulation}},url = {https://ricktu288.github.io/ray-optics/},year = {2016}}
+```
+
 # License
 Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun
 
