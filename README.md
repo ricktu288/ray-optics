@@ -19,10 +19,10 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 - Export as SVG diagram
 
 ## Links
-- [**Lanuch the Web App**](https://ricktu288.github.io/ray-optics/simulator/)
-- [Gallery](https://ricktu288.github.io/ray-optics/gallery/)
+- [**Lanuch the Web App**](https://phydemo.app/ray-optics/simulator/)
+- [Gallery](https://phydemo.app/ray-optics/gallery/)
 - [Documentation](https://github.com/ricktu288/ray-optics/wiki)
-- [About](https://ricktu288.github.io/ray-optics/about)
+- [About](https://phydemo.app/ray-optics/about)
 
 # Contributing
 
@@ -42,7 +42,7 @@ Tu, Y.-T., & Sun, W.-F. (2016). Ray Optics Simulation [Computer software]. https
 ```
 BibTeX:
 ```
-@software{Tu_Ray_Optics_Simulation_2016,author = {Tu, Yi-Ting and Sun, Wei-Fang},doi = {10.5281/zenodo.6386611},month = {2},title = {{Ray Optics Simulation}},url = {https://ricktu288.github.io/ray-optics/},year = {2016}}
+@software{Tu_Ray_Optics_Simulation_2016,author = {Tu, Yi-Ting and Sun, Wei-Fang},doi = {10.5281/zenodo.6386611},month = {2},title = {{Ray Optics Simulation}},url = {https://phydemo.app/ray-optics/},year = {2016}}
 ```
 
 # License
@@ -116,7 +116,7 @@ The source code is available at: https://github.com/arthanzel/evaluatex
 - 匯出為SVG圖形
 
 ## 連結
-- [**啟動網頁程式**](https://ricktu288.github.io/ray-optics/simulator/)
-- [作品集](https://ricktu288.github.io/ray-optics/gallery/)
+- [**啟動網頁程式**](https://phydemo.app/ray-optics/simulator/)
+- [作品集](https://phydemo.app/ray-optics/gallery/)
 - [原始碼文件](https://github.com/ricktu288/ray-optics/wiki)
-- [關於](https://ricktu288.github.io/ray-optics/about)
+- [關於](https://phydemo.app/ray-optics/about)

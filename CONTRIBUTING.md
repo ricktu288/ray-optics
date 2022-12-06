@@ -41,7 +41,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 **Method 1: By e-mail**
 
 1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files to yttu@duck.com. Include the name of your work and your name to be appear on the [list of contributors](https://ricktu288.github.io/ray-optics/about).
+2. Send the files to yttu@duck.com. Include the name of your work and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub**
 
@@ -77,13 +77,13 @@ You can submit a complete or partial translation for a new language, make progre
 ```javascript
   "welcome": {
     "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://ricktu288.github.io/ray-optics/gallery/\">go to the Gallery page</a>."
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
   },
 ```
 becomes (for Traditional Chinese)
 ```javascript
   "welcome": {
-    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://ricktu288.github.io/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
+    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://phydemo.app/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
   },
 
 ```
@@ -91,7 +91,7 @@ After that, you can submit the translated file with either method below:
 
 **Method 1: By e-mail**
 
-3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://ricktu288.github.io/ray-optics/about).
+3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub**
 

@@ -26,7 +26,7 @@ locales["LOCALE_ID"] = {
   },
   "welcome": {
     "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://ricktu288.github.io/ray-optics/gallery/\">go to the Gallery page</a>."
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
   },
   "toolbar_title": {
     "incomplete": true,
@@ -350,7 +350,7 @@ locales["LOCALE_ID"] = {
   },
   "save_description": {
     "incomplete": true,
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
+    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
   },
   "open": {
     "incomplete": true,

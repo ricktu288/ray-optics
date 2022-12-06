@@ -22,7 +22,7 @@ locales["zh-CN"] = {
     "message": "作品集"
   },
   "welcome": {
-    "message": "<span style=\"font-size:22pt\">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href=\"https://ricktu288.github.io/ray-optics/gallery/\">请前往“作品集”页面</a>。"
+    "message": "<span style=\"font-size:22pt\">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href=\"https://phydemo.app/ray-optics/gallery/\">请前往“作品集”页面</a>。"
   },
   "toolbar_title": {
     "message": "工具："
@@ -265,7 +265,7 @@ locales["zh-CN"] = {
     "message": "取消"
   },
   "save_description": {
-    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">贡献新的项目</a>到<a href=\"https://ricktu288.github.io/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。"
+    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">贡献新的项目</a>到<a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。"
   },
   "open": {
     "message": "打开"
