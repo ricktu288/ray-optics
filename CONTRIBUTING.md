@@ -2,7 +2,7 @@
 
 Contributions are welcome.
 
-To report bugs, request new features, or share your ideas, feel free to [open issues here](https://github.com/ricktu288/ray-optics/issues).  You can also send an email to yttu@duck.com if you are not familiar with GitHub.
+To report bugs, request new features, or share your ideas, feel free to [open issues here](https://github.com/ricktu288/ray-optics/issues).  You can also send an email to ray-optics@phydemo.app if you are not familiar with GitHub.
 
 For direct contributions, see the following guidelines.
 
@@ -41,7 +41,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 **Method 1: By e-mail**
 
 1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files to yttu@duck.com. Include the name of your work and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+2. Send the files to ray-optics@phydemo.app. Include the name of your work and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub**
 
@@ -91,7 +91,7 @@ After that, you can submit the translated file with either method below:
 
 **Method 1: By e-mail**
 
-3. Send the resulting file to yttu@duck.com (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+3. Send the resulting file to ray-optics@phydemo.app (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to be appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub**
 
