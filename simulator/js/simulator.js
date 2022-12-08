@@ -121,6 +121,13 @@ function draw_() {
     ctx.putImageData(imageData, 0, 0);
     ctx.globalCompositeOperation = 'source-over';
   }
+
+  leftRayCount = 0;
+  last_s_obj_index = -1;
+  last_ray = null;
+  last_intersection = null;
+  waitingRaysIndex = -1;
+  firstBreak = true;
   shootWaitingRays();
   if (mode == 'observer')
   {
@@ -162,18 +169,22 @@ function setRayDensity(value)
   }
 }
 
+
+var last_ray;
+var last_intersection;
+var last_s_obj_index;
+var waitingRaysIndex;
+var leftRayCount;
+var firstBreak;
+
 function shootWaitingRays() {
   timerID = -1;
   var st_time = new Date();
   var alpha0 = 1;
   ctx.globalAlpha = alpha0;
-  var ray1;
   var observed;
-  var last_ray;
-  var last_intersection;
   var s_obj;
   var s_obj_index;
-  var last_s_obj_index;
   var s_point;
   var s_point_temp;
   var s_lensq;
@@ -181,340 +192,351 @@ function shootWaitingRays() {
   var observed_point;
   var observed_intersection;
   var rpd;
-  var leftRayCount = waitingRays.length;
   var surfaceMerging_objs = [];
+
   
   if (colorMode) {
     ctx.globalCompositeOperation = 'screen';
   }
-  while (leftRayCount != 0 && !forceStop)
-  {
+
+  while (true) {
     if (new Date() - st_time > 50 && ctx.constructor != C2S)
     {
       //若已計算超過200ms If already run for 200ms
       //先休息10ms後再繼續(防止程式沒有回應) Pause for 10ms and continue (prevent not responding)
-      document.getElementById('status').innerHTML = shotRayCount + ' rays (' + leftRayCount + ' waiting)'; //顯示狀態 Show status
       hasExceededTime = true;
-      timerID = setTimeout(shootWaitingRays, 10);
+      timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
+      firstBreak = false;
       //document.getElementById('forceStop').style.display = '';
       return;
     }
+    if (waitingRaysIndex >= waitingRays.length) {
+      if (!(leftRayCount != 0 && !forceStop)) {
+        break;
+      }
+      leftRayCount = 0;
+      last_s_obj_index = -1;
+      last_ray = null;
+      last_intersection = null;
+      waitingRaysIndex = -1;
+      continue;
+    }
+    waitingRaysIndex++;
 
-    leftRayCount = 0;
-    last_s_obj_index = -1;
-    last_ray = null;
-    last_intersection = null;
-    for (var j = 0; j < waitingRays.length; j++)
+
+
+
+
+    var j = waitingRaysIndex;
+    if (waitingRays[j] && waitingRays[j].exist)
     {
-      if (waitingRays[j] && waitingRays[j].exist)
+      //開始射出waitingRays[j](等待區的最後一條光線) Start handling waitingRays[j]
+      //判斷這道光射出後,會先撞到哪一個物件 Test which object will this ray shoot on first
+
+      //↓搜尋每一個"與這道光相交的物件",尋找"[物件與光線的交點]離[光線的頭]最近的物件" Search every object intersected with the ray, and find which intersection is the nearest
+      s_obj = null; //"到目前為止,已檢查的物件中[與光線的交點]離[光線的頭]最近的物件" The current nearest object in search
+      s_obj_index = -1;
+      s_point = null;  //s_obj與光線的交點 The intersection
+      surfaceMerging_objs = []; //要與射到的物件進行界面融合的物件 The objects whose surface is to be merged with s_obj
+      s_lensq = Infinity;
+      observed = false; //waitingRays[j]是否被觀察者看到 Whether waitingRays[j] is observed by the observer
+      for (var i = 0; i < objs.length; i++)
       {
-        //開始射出waitingRays[j](等待區的最後一條光線) Start handling waitingRays[j]
-        //判斷這道光射出後,會先撞到哪一個物件 Test which object will this ray shoot on first
-
-        //↓搜尋每一個"與這道光相交的物件",尋找"[物件與光線的交點]離[光線的頭]最近的物件" Search every object intersected with the ray, and find which intersection is the nearest
-        s_obj = null; //"到目前為止,已檢查的物件中[與光線的交點]離[光線的頭]最近的物件" The current nearest object in search
-        s_obj_index = -1;
-        s_point = null;  //s_obj與光線的交點 The intersection
-        surfaceMerging_objs = []; //要與射到的物件進行界面融合的物件 The objects whose surface is to be merged with s_obj
-        s_lensq = Infinity;
-        observed = false; //waitingRays[j]是否被觀察者看到 Whether waitingRays[j] is observed by the observer
-        for (var i = 0; i < objs.length; i++)
-        {
-          //↓若objs[i]會影響到光 if objs[i] can affect the ray
-          if (objTypes[objs[i].type].rayIntersection) {
-            //↓判斷objs[i]是否與這道光相交 Test whether objs[i] intersects with the ray
-            s_point_temp = objTypes[objs[i].type].rayIntersection(objs[i], waitingRays[j]);
-            if (s_point_temp)
+        //↓若objs[i]會影響到光 if objs[i] can affect the ray
+        if (objTypes[objs[i].type].rayIntersection) {
+          //↓判斷objs[i]是否與這道光相交 Test whether objs[i] intersects with the ray
+          s_point_temp = objTypes[objs[i].type].rayIntersection(objs[i], waitingRays[j]);
+          if (s_point_temp)
+          {
+            //此時代表objs[i]是"與這道光相交的物件",交點是s_point_temp Here objs[i] intersects with the ray at s_point_temp
+            s_lensq_temp = graphs.length_squared(waitingRays[j].p1, s_point_temp);
+            if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
             {
-              //此時代表objs[i]是"與這道光相交的物件",交點是s_point_temp Here objs[i] intersects with the ray at s_point_temp
-              s_lensq_temp = graphs.length_squared(waitingRays[j].p1, s_point_temp);
-              if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
-              {
-                //這道光同時射到兩個物件,且至少有一個支援界面融合 The ray is shot on two objects at the same time, and at least one of them supports surface merging
+              //這道光同時射到兩個物件,且至少有一個支援界面融合 The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
-                if (objTypes[s_obj.type].supportSurfaceMerging)
+              if (objTypes[s_obj.type].supportSurfaceMerging)
+              {
+                if (objTypes[objs[i].type].supportSurfaceMerging)
                 {
-                  if (objTypes[objs[i].type].supportSurfaceMerging)
-                  {
-                    //兩個都支援界面融合(例如兩個折射鏡以一條邊相連) Both of them supports surface merging (e.g. two glasses with one common edge
-                    surfaceMerging_objs[surfaceMerging_objs.length] = objs[i];
-                  }
-                  else
-                  {
-                    //只有先射到的界面支援界面融合 Only the first shot object supports surface merging
-                    //將擬定射到的物件設為不支援界面融合者(如折射鏡邊界與一遮光片重合,則只執行遮光片的動作) Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
-                    s_obj = objs[i];
-                    s_obj_index = i;
-                    s_point = s_point_temp;
-                    s_lensq = s_lensq_temp;
-
-                    surfaceMerging_objs = [];
-                  }
-                }
-              }
-              else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
-              {
-                s_obj = objs[i]; //更新"到目前為止,已檢查的物件中[物件與光線的交點]離[光線的頭]最近的物件" Update the object to be shot
-                s_obj_index = i;
-                s_point = s_point_temp;
-                s_lensq = s_lensq_temp;
-
-                surfaceMerging_objs = [];
-              }
-            }
-          }
-        }
-        if (colorMode) {
-          var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p), true);
-        } else {
-          ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
-        }
-        //↓若光線沒有射到任何物件 If not shot on any object
-        if (s_lensq == Infinity)
-        {
-          if (mode == 'light' || mode == 'extended_light')
-          {
-            if (colorMode) {
-              canvasPainter.draw(waitingRays[j], color); //畫出這條光線 Draw the ray
-            } else {
-              canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); //畫出這條光線 Draw the ray
-            }
-          }
-          if (mode == 'extended_light' && !waitingRays[j].isNew)
-          {
-            if (colorMode) {
-              ctx.setLineDash([2, 2]);
-              canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the extension of the ray
-              ctx.setLineDash([]);
-            } else {
-              canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the extension of the ray
-            }
-          }
-
-          if (mode == 'observer')
-          {
-            observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
-            if (observed_point)
-            {
-              if (graphs.intersection_is_on_ray(observed_point, waitingRays[j]))
-              {
-                observed = true;
-              }
-            }
-          }
-        }
-        else
-        {
-          //此時,代表光線會在射出經過s_len(距離)後,在s_point(位置)撞到s_obj(物件) Here the ray will be shot on s_obj at s_point after traveling for s_len
-          if (mode == 'light' || mode == 'extended_light')
-          {
-            if (colorMode) {
-              canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); //畫出這條光線 Draw the ray
-            } else {
-              canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); //畫出這條光線 Draw the ray
-            }
-          }
-          if (mode == 'extended_light' && !waitingRays[j].isNew)
-          {
-            if (colorMode) {
-              ctx.setLineDash([2, 2]);
-              canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the backward extension of the ray
-              ctx.setLineDash([1, 5]);
-              canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); //畫出這條光向前的延長線 Draw the forward extension of the ray
-              ctx.setLineDash([]);
-            } else {
-              canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the backward extension of the ray
-              canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); //畫出這條光向前的延長線 Draw the forward extension of the ray
-            }
-
-          }
-
-          if (mode == 'observer')
-          {
-            observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
-
-            if (observed_point)
-            {
-
-              if (graphs.intersection_is_on_segment(observed_point, graphs.segment(waitingRays[j].p1, s_point)))
-              {
-                observed = true;
-              }
-            }
-          }
-        }
-        if (mode == 'observer' && last_ray)
-        {
-          if (!waitingRays[j].gap)
-          {
-            observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray); //觀察到的光線之交點 The intersection of the observed rays
-
-            if (observed)
-            {
-              if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
-              {
-                //當交點彼此相當靠近 If the intersections are near each others
-                if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
-                {
-
-
-                  if (colorMode) {
-                    var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
-                  } else {
-                    ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
-                  }
-                  if (s_point)
-                  {
-                    rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
-                  }
-                  else
-                  {
-                    rpd = (observed_intersection.x - waitingRays[j].p1.x) * (waitingRays[j].p2.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (waitingRays[j].p2.y - waitingRays[j].p1.y);
-                  }
-                  if (rpd < 0)
-                  {
-                    //虛像 Virtual image
-                    if (colorMode) {
-                      ctx.fillStyle = color;
-                      ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
-                    } else {
-                      canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
-                    }
-                  }
-                  else if (rpd < s_lensq)
-                  {
-                    //實像 Real image
-                    if (colorMode) {
-                      canvasPainter.draw(observed_intersection, color); //畫出像 Draw the image
-                    } else {
-                      canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像 Draw the image
-                    }
-                  }
-                    if (colorMode) {
-                      ctx.setLineDash([1, 2]);
-                      canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); // Draw the observed ray
-                      ctx.setLineDash([]);
-                    } else {
-                      canvasPainter.draw(graphs.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
-                    }
+                  //兩個都支援界面融合(例如兩個折射鏡以一條邊相連) Both of them supports surface merging (e.g. two glasses with one common edge
+                  surfaceMerging_objs[surfaceMerging_objs.length] = objs[i];
                 }
                 else
                 {
-                  if (colorMode) {
-                    ctx.setLineDash([1, 2]);
-                    canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
-                    ctx.setLineDash([]);
-                  } else {
-                    canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
-                  }
-                }
-              }
-              else
-              {
-                if (last_intersection)
-                {
-                  if (colorMode) {
-                    ctx.setLineDash([1, 2]);
-                    canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
-                    ctx.setLineDash([]);
-                  } else {
-                    canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
-                  }
+                  //只有先射到的界面支援界面融合 Only the first shot object supports surface merging
+                  //將擬定射到的物件設為不支援界面融合者(如折射鏡邊界與一遮光片重合,則只執行遮光片的動作) Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
+                  s_obj = objs[i];
+                  s_obj_index = i;
+                  s_point = s_point_temp;
+                  s_lensq = s_lensq_temp;
+
+                  surfaceMerging_objs = [];
                 }
               }
             }
-            last_intersection = observed_intersection;
+            else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
+            {
+              s_obj = objs[i]; //更新"到目前為止,已檢查的物件中[物件與光線的交點]離[光線的頭]最近的物件" Update the object to be shot
+              s_obj_index = i;
+              s_point = s_point_temp;
+              s_lensq = s_lensq_temp;
+
+              surfaceMerging_objs = [];
+            }
           }
-          else
-          {
-            last_intersection = null;
+        }
+      }
+      if (colorMode) {
+        var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p), true);
+      } else {
+        ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
+      }
+      //↓若光線沒有射到任何物件 If not shot on any object
+      if (s_lensq == Infinity)
+      {
+        if (mode == 'light' || mode == 'extended_light')
+        {
+          if (colorMode) {
+            canvasPainter.draw(waitingRays[j], color); //畫出這條光線 Draw the ray
+          } else {
+            canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); //畫出這條光線 Draw the ray
+          }
+        }
+        if (mode == 'extended_light' && !waitingRays[j].isNew)
+        {
+          if (colorMode) {
+            ctx.setLineDash([2, 2]);
+            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the extension of the ray
+            ctx.setLineDash([]);
+          } else {
+            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the extension of the ray
           }
         }
 
-        if (mode == 'images' && last_ray)
+        if (mode == 'observer')
         {
-          if (!waitingRays[j].gap)
+          observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
+          if (observed_point)
+          {
+            if (graphs.intersection_is_on_ray(observed_point, waitingRays[j]))
+            {
+              observed = true;
+            }
+          }
+        }
+      }
+      else
+      {
+        //此時,代表光線會在射出經過s_len(距離)後,在s_point(位置)撞到s_obj(物件) Here the ray will be shot on s_obj at s_point after traveling for s_len
+        if (mode == 'light' || mode == 'extended_light')
+        {
+          if (colorMode) {
+            canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); //畫出這條光線 Draw the ray
+          } else {
+            canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); //畫出這條光線 Draw the ray
+          }
+        }
+        if (mode == 'extended_light' && !waitingRays[j].isNew)
+        {
+          if (colorMode) {
+            ctx.setLineDash([2, 2]);
+            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the backward extension of the ray
+            ctx.setLineDash([1, 5]);
+            canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); //畫出這條光向前的延長線 Draw the forward extension of the ray
+            ctx.setLineDash([]);
+          } else {
+            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the backward extension of the ray
+            canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); //畫出這條光向前的延長線 Draw the forward extension of the ray
+          }
+
+        }
+
+        if (mode == 'observer')
+        {
+          observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
+
+          if (observed_point)
           {
 
-            observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
+            if (graphs.intersection_is_on_segment(observed_point, graphs.segment(waitingRays[j].p1, s_point)))
+            {
+              observed = true;
+            }
+          }
+        }
+      }
+      if (mode == 'observer' && last_ray)
+      {
+        if (!waitingRays[j].gap)
+        {
+          observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray); //觀察到的光線之交點 The intersection of the observed rays
+
+          if (observed)
+          {
             if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
             {
-              if (colorMode) {
-                var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
-              } else {
-                ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
-              }
-
-              if (s_point)
+              //當交點彼此相當靠近 If the intersections are near each others
+              if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
               {
-                rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
+
+
+                if (colorMode) {
+                  var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
+                } else {
+                  ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+                }
+                if (s_point)
+                {
+                  rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
+                }
+                else
+                {
+                  rpd = (observed_intersection.x - waitingRays[j].p1.x) * (waitingRays[j].p2.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (waitingRays[j].p2.y - waitingRays[j].p1.y);
+                }
+                if (rpd < 0)
+                {
+                  //虛像 Virtual image
+                  if (colorMode) {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                  } else {
+                    canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
+                  }
+                }
+                else if (rpd < s_lensq)
+                {
+                  //實像 Real image
+                  if (colorMode) {
+                    canvasPainter.draw(observed_intersection, color); //畫出像 Draw the image
+                  } else {
+                    canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像 Draw the image
+                  }
+                }
+                  if (colorMode) {
+                    ctx.setLineDash([1, 2]);
+                    canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); // Draw the observed ray
+                    ctx.setLineDash([]);
+                  } else {
+                    canvasPainter.draw(graphs.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
+                  }
               }
               else
               {
-                rpd = (observed_intersection.x - waitingRays[j].p1.x) * (waitingRays[j].p2.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (waitingRays[j].p2.y - waitingRays[j].p1.y);
-              }
-
-              if (rpd < 0)
-              {
-                //虛像 Virtual image
                 if (colorMode) {
-                  ctx.fillStyle = color;
-                  ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                  ctx.setLineDash([1, 2]);
+                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
+                  ctx.setLineDash([]);
                 } else {
-                  canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
-                }
-              }
-              else if (rpd < s_lensq)
-              {
-                //實像 Real image
-                if (colorMode) {
-                  canvasPainter.draw(observed_intersection, color); //畫出像 Draw the image
-                } else {
-                  canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像 Draw the image
-                }
-              }
-              else
-              {
-                //虛物 Virtual object
-                if (colorMode) {
-                  ctx.fillStyle = color;
-                  ctx.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
-                } else {
-                  canvasPainter.draw(observed_intersection, 'rgb(80,80,80)');
+                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
                 }
               }
             }
-            last_intersection = observed_intersection;
+            else
+            {
+              if (last_intersection)
+              {
+                if (colorMode) {
+                  ctx.setLineDash([1, 2]);
+                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
+                  ctx.setLineDash([]);
+                } else {
+                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
+                }
+              }
+            }
           }
-
-        }
-
-        if (last_s_obj_index != s_obj_index)
-        {
-          waitingRays[j].gap = true;
-        }
-        waitingRays[j].isNew = false;
-
-        last_ray = {p1: waitingRays[j].p1, p2: waitingRays[j].p2};
-        last_s_obj_index = s_obj_index;
-        if (s_obj)
-        {
-          objTypes[s_obj.type].shot(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+          last_intersection = observed_intersection;
         }
         else
         {
-          waitingRays[j] = null;
-        }
-
-        shotRayCount = shotRayCount + 1;
-        if (waitingRays[j] && waitingRays[j].exist)
-        {
-          leftRayCount = leftRayCount + 1;
+          last_intersection = null;
         }
       }
-    }
 
+      if (mode == 'images' && last_ray)
+      {
+        if (!waitingRays[j].gap)
+        {
+
+          observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
+          if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
+          {
+            if (colorMode) {
+              var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
+            } else {
+              ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+            }
+
+            if (s_point)
+            {
+              rpd = (observed_intersection.x - waitingRays[j].p1.x) * (s_point.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (s_point.y - waitingRays[j].p1.y);
+            }
+            else
+            {
+              rpd = (observed_intersection.x - waitingRays[j].p1.x) * (waitingRays[j].p2.x - waitingRays[j].p1.x) + (observed_intersection.y - waitingRays[j].p1.y) * (waitingRays[j].p2.y - waitingRays[j].p1.y);
+            }
+
+            if (rpd < 0)
+            {
+              //虛像 Virtual image
+              if (colorMode) {
+                ctx.fillStyle = color;
+                ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+              } else {
+                canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
+              }
+            }
+            else if (rpd < s_lensq)
+            {
+              //實像 Real image
+              if (colorMode) {
+                canvasPainter.draw(observed_intersection, color); //畫出像 Draw the image
+              } else {
+                canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); //畫出像 Draw the image
+              }
+            }
+            else
+            {
+              //虛物 Virtual object
+              if (colorMode) {
+                ctx.fillStyle = color;
+                ctx.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
+              } else {
+                canvasPainter.draw(observed_intersection, 'rgb(80,80,80)');
+              }
+            }
+          }
+          last_intersection = observed_intersection;
+        }
+
+      }
+
+      if (last_s_obj_index != s_obj_index)
+      {
+        waitingRays[j].gap = true;
+      }
+      waitingRays[j].isNew = false;
+
+      last_ray = {p1: waitingRays[j].p1, p2: waitingRays[j].p2};
+      last_s_obj_index = s_obj_index;
+      if (s_obj)
+      {
+        objTypes[s_obj.type].shot(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+      }
+      else
+      {
+        waitingRays[j] = null;
+      }
+
+      shotRayCount = shotRayCount + 1;
+      if (waitingRays[j] && waitingRays[j].exist)
+      {
+        leftRayCount = leftRayCount + 1;
+      }
+    }
   }
+
+  //}
   if (colorMode && ctx.constructor != C2S) {
     // Inverse transformation of the color adjustment made in wavelengthToColor.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
