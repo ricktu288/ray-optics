@@ -210,6 +210,11 @@ function shootWaitingRays() {
       //document.getElementById('forceStop').style.display = '';
       return;
     }
+    if (new Date() - st_time > 5000 && ctx.constructor == C2S)
+    {
+      isDrawing = false;
+      return;
+    }
     if (waitingRaysIndex >= waitingRays.length) {
       if (!(leftRayCount != 0 && !forceStop)) {
         break;
