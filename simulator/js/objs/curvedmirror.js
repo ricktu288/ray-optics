@@ -161,9 +161,54 @@ objTypes['curvedmirror'] = {
     var ry = ray.p1.y - rp.y;
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
-    ray.p1 = rp;
-    ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-    return;
+
+    if (i == 0 || i == pts.length - 2) {
+      ray.p1 = rp;
+      ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    } else {
+      // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
+      // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
+
+      var outx = rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my;
+      var outy = rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
+      
+      var frac;
+      if (mx > my) {
+        frac = (rp.x - seg.p1.x) / mx;
+      } else {
+        frac = (rp.y - seg.p1.y) / my;
+      }
+      
+      var segA;
+      if (frac < 0.5) {
+        segA = graphs.segment(pts[i-1], pts[i]);
+      } else {
+        segA = graphs.segment(pts[i+1], pts[i+2]);
+      }
+      var rxA = ray.p1.x - rp.x;
+      var ryA = ray.p1.y - rp.y;
+      var mxA = segA.p2.x - segA.p1.x;
+      var myA = segA.p2.y - segA.p1.y;
+
+      var outxA = rp.x + rxA * (myA * myA - mxA * mxA) - 2 * ryA * mxA * myA;
+      var outyA = rp.y + ryA * (mxA * mxA - myA * myA) - 2 * rxA * mxA * myA;
+
+      var outxFinal;
+      var outyFinal;
+
+      if (frac < 0.5) {
+        outxFinal = outx * (0.5+frac) + outxA * (0.5-frac);
+        outyFinal = outy * (0.5+frac) + outyA * (0.5-frac);
+      } else {
+        outxFinal = outxA * (frac-0.5) + outx * (1.5-frac);
+        outyFinal = outyA * (frac-0.5) + outy * (1.5-frac);
+      }
+      console.log(frac);
+      //canvasPainter.draw(graphs.ray(rp,graphs.point(outx, outy)),"white");
+      //canvasPainter.draw(graphs.ray(rp,graphs.point(outxA, outyA)),"white");
+      ray.p1 = rp;
+      ray.p2 = graphs.point(outxFinal, outyFinal);
+    }
   }
 
 };

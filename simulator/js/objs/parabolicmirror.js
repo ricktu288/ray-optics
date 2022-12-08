@@ -113,45 +113,12 @@ objTypes['parabolicmirror'] = {
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
     if (!obj.p3) {return;}
-    if (!obj.tmp_points) return;
-    var i,j;
-    var pts = obj.tmp_points;
-    var dir = graphs.length(obj.p2, ray.p1) > graphs.length(obj.p1, ray.p1);
-    var rp;
-    for (j = 0; j < pts.length-1; j++) {
-      i = dir ? j : (pts.length-2-j);
-      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
-      var seg = graphs.segment(pts[i], pts[i+1]);
-      // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (graphs.length(ray.p1, rp_temp) < minShotLength)
-        continue;
-      if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
-          if (!rp || graphs.length(ray.p1, rp_temp) < graphs.length(ray.p1, rp)) {
-              rp = rp_temp;
-          }
-      }
-    }
-    if (rp) return rp;
+    return objTypes['curvedmirror'].rayIntersection(obj, ray);
   },
 
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp) {
-    var i;
-    var pts = obj.tmp_points;
-    var dir = graphs.length(obj.p2, rp) > graphs.length(obj.p1, rp);
-    for (j = 0; j < pts.length-1; j++) {
-      i = dir ? j : (pts.length-2-j);
-      var seg = graphs.segment(pts[i], pts[i+1]);
-      if (graphs.intersection_is_on_segment(rp, seg)) {
-        var rx = ray.p1.x - rp.x;
-        var ry = ray.p1.y - rp.y;
-        var mx = seg.p2.x - seg.p1.x;
-        var my = seg.p2.y - seg.p1.y;
-        ray.p1 = rp;
-        ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-        return;
-      }
-    }
+    return objTypes['curvedmirror'].shot(obj, ray, rayIndex, rp);
   }
 
 };

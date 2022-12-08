@@ -70,6 +70,9 @@ objTypes['curvedglass'] = {
         var scaled_y;
         try {
           scaled_y = ((side == 0) ? 1 : (-1)) * fns[side]({x: ((side == 0) ? scaled_x : (-scaled_x))});
+          if (side == 1 && -scaled_y < fns[0]({x: -scaled_x})) {
+            lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
+          }
           var y = scaled_y*p12d*0.5;
           var pt = graphs.point(p1.x+dir1[0]*ix+dir2[0]*y, p1.y+dir1[1]*ix+dir2[1]*y);
           pt.arc = false;
@@ -79,7 +82,7 @@ objTypes['curvedglass'] = {
           lastError = e;
         }
       }
-      if (!hasPoints) {
+      if (!hasPoints || lastError.startsWith("Curve generation error:")) {
         delete obj.tmp_glass;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
@@ -131,20 +134,194 @@ objTypes['curvedglass'] = {
 
   dragging: objTypes['lineobj'].dragging,
 
+
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
+
     if (!obj.tmp_glass) return;
-    return objTypes['refractor'].rayIntersection(obj.tmp_glass, ray);
+    if (obj.p <= 0)return;
+
+    var s_lensq = Infinity;
+    var s_lensq_temp;
+    var s_point = null;
+    var s_point_temp = null;
+    var s_point_index = -1;
+    var rp_exist = [];
+    var rp_lensq = [];
+    var rp_temp;
+
+    var p1;
+    var p2;
+    var p3;
+    var center;
+    var r;
+
+    for (var i = 0; i < obj.tmp_glass.path.length; i++)
+    {
+      s_point_temp = null;
+      //Line segment i->i+1
+      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));   //求光(的延長線)與物件(的延長線)的交點
+
+      if (graphs.intersection_is_on_segment(rp_temp, graphs.segment(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && graphs.intersection_is_on_ray(rp_temp, ray) && graphs.length_squared(ray.p1, rp_temp) > minShotLength_squared)
+      {
+        //↑若rp_temp在ray上且rp_temp在obj上(即ray真的有射到obj,不是ray的延長線射到或射到obj的延長線上)
+        s_lensq_temp = graphs.length_squared(ray.p1, rp_temp); //交點到[光線的頭]的距離
+        s_point_temp = rp_temp;
+      }
+
+      if (s_point_temp) {
+        if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i-1) {
+          // The ray shots on a point where the upper and the lower surfaces overlap.
+          return;
+        } else if (s_lensq_temp < s_lensq)
+        {
+          s_lensq = s_lensq_temp;
+          s_point = s_point_temp;
+          s_point_index = i;
+        }
+      }
+    }
+    if (s_point)
+    {
+      obj.tmp_i = s_point_index;
+      return s_point;
+    }
+
   },
 
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
-    objTypes['refractor'].shot(obj.tmp_glass, ray, rayIndex, rp, surfaceMerging_objs);
+
+    var shotData = this.getShotData(obj, ray);
+    var shotType = shotData.shotType;
+    if (shotType == 1)
+    {
+      //從內部射向外部 Shot from inside to outside
+      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
+    }
+    else if (shotType == -1)
+    {
+      //從外部射向內部 Shot from outside to inside
+      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+    }
+    else if (shotType == 0)
+    {
+      //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+      var n1 = 1;
+    }
+    else
+    {
+      //可能導致Bug的狀況(如射到邊界點) The situation that may cause a bug (e.g. shot at an edge point)
+      //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+      ray.exist = false;
+      return;
+    }
+
+    //界面融合 Surface merging
+    for (var i = 0; i < surfaceMerging_objs.length; i++)
+    {
+      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
+      if (shotType == 1)
+      {
+        //從內部射向外部 Shot from inside to outside
+        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+      }
+      else if (shotType == -1)
+      {
+        //從外部射向內部 Shot from outside to inside
+        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+      }
+      else if (shotType == 0)
+      {
+        //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+        //n1=n1;
+      }
+      else
+      {
+        //可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
+        //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+        ray.exist = false;
+        return;
+      }
+    }
+
+    objTypes['refractor'].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
   },
 
   //判斷光線內部/外部射出 Test if the ray is shot from inside or outside
   getShotType: function(obj, ray) {
-    return objTypes['refractor'].getShotType(obj.tmp_glass, ray);
+    return this.getShotData(obj, ray).shotType;
   },
+
+
+  getShotData: function(obj, ray) {
+    //判斷光射到物件的何處 Test where in the obj does the ray shoot on
+    var i = obj.tmp_i;
+    var pts = obj.tmp_glass.path;
+
+    var s_point = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+    var rp = s_point;
+
+    var s_lensq = graphs.length_squared(ray.p1, s_point);
+
+    var rdots = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
+    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x);
+    var ssq = (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
+
+    var normal_x = rdots * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) - ssq * (ray.p2.x - ray.p1.x);
+    var normal_y = rdots * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
+
+    if (rcrosss < 0)
+    {
+      var shotType = 1; //從內部射向外部 Shot from inside to outside
+    }
+    else
+    {
+      var shotType = -1; //從外部射向內部 Shot from outside to inside
+    }
+
+    // Use a simple trick to smooth out the normal vector so that image detection works.
+    // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
+
+    var seg = graphs.segment(pts[i%pts.length], pts[(i+1)%pts.length]);
+    var rx = ray.p1.x - rp.x;
+    var ry = ray.p1.y - rp.y;
+    var mx = seg.p2.x - seg.p1.x;
+    var my = seg.p2.y - seg.p1.y;
+
+    var frac;
+    if (mx > my) {
+      frac = (rp.x - seg.p1.x) / mx;
+    } else {
+      frac = (rp.y - seg.p1.y) / my;
+    }
+    
+    var segA;
+    if (frac < 0.5) {
+      segA = graphs.segment(pts[(i-1+pts.length)%pts.length], pts[i%pts.length]);
+    } else {
+      segA = graphs.segment(pts[(i+1)%pts.length], pts[(i+2)%pts.length]);
+    }
+
+    var rdotsA = (ray.p2.x - ray.p1.x) * (segA.p2.x - segA.p1.x) + (ray.p2.y - ray.p1.y) * (segA.p2.y - segA.p1.y);
+    var ssqA = (segA.p2.x - segA.p1.x) * (segA.p2.x - segA.p1.x) + (segA.p2.y - segA.p1.y) * (segA.p2.y - segA.p1.y);
+
+    var normal_xA = rdotsA * (segA.p2.x - segA.p1.x) - ssqA * (ray.p2.x - ray.p1.x);
+    var normal_yA = rdotsA * (segA.p2.y - segA.p1.y) - ssqA * (ray.p2.y - ray.p1.y);
+
+    var normal_xFinal;
+    var normal_yFinal;
+
+    if (frac < 0.5) {
+      normal_xFinal = normal_x * (0.5+frac) + normal_xA * (0.5-frac);
+      normal_yFinal = normal_y * (0.5+frac) + normal_yA * (0.5-frac);
+    } else {
+      normal_xFinal = normal_xA * (frac-0.5) + normal_x * (1.5-frac);
+      normal_yFinal = normal_yA * (frac-0.5) + normal_y * (1.5-frac);
+    }
+
+    return {s_point: s_point, normal: {x: normal_xFinal, y: normal_yFinal},shotType: shotType};
+  }
+
 
 };
