@@ -42,7 +42,14 @@ Tu, Y.-T., & Sun, W.-F. (2016). Ray Optics Simulation [Computer software]. https
 ```
 BibTeX:
 ```
-@software{Tu_Ray_Optics_Simulation_2016,author = {Tu, Yi-Ting and Sun, Wei-Fang},doi = {10.5281/zenodo.6386611},month = {2},title = {{Ray Optics Simulation}},url = {https://phydemo.app/ray-optics/},year = {2016}}
+@software{Tu_Ray_Optics_Simulation_2016,
+  author = {Tu, Yi-Ting and Sun, Wei-Fang},
+  doi = {10.5281/zenodo.6386611},
+  month = {2},
+  title = {{Ray Optics Simulation}},
+  url = {https://phydemo.app/ray-optics/},
+  year = {2016}
+}
 ```
 
 # License
