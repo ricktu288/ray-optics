@@ -263,9 +263,9 @@
     },
     {
       "type": "text",
-      "x": 728.0000000000003,
-      "y": 142.99999999999997,
-      "p": "Warning: The numerical error of the ellipses may be too high to demonstrate this properly."
+      "x": 831.0000000000005,
+      "y": 147.99999999999994,
+      "p": "Warning: Due to numerical error, it may still shine after some time."
     },
     {
       "type": "text",
@@ -279,9 +279,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": -147.3611111111119,
-    "y": 123.07777777777802
+    "x": 12.017676767676448,
+    "y": 171.55353535353544
   },
-  "scale": 1.1,
+  "scale": 0.5,
   "colorMode": false
 }
