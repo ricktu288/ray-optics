@@ -357,7 +357,7 @@ locales["fr"] = {
     "message": "Supprimer"
   },
   "processing": {
-    "message": "En cours de traitement...<br>Cliquez ici pour arrêter"
+    "message": "En cours de traitement... Cliquez ici pour arrêter"
   },
   "restore": {
     "incomplete": true,

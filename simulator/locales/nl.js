@@ -372,7 +372,7 @@ locales["nl"] = {
     "message": "Verwijder"
   },
   "processing": {
-    "message": "Rekenen...<br>Klik hier om te stoppen."
+    "message": "Rekenen... Klik hier om te stoppen."
   },
   "restore": {
     "incomplete": true,

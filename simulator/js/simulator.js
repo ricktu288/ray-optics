@@ -207,7 +207,7 @@ function shootWaitingRays() {
       hasExceededTime = true;
       timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
       firstBreak = false;
-      //document.getElementById('forceStop').style.display = '';
+      document.getElementById('forceStop').style.display = '';
       return;
     }
     if (new Date() - st_time > 5000 && ctx.constructor == C2S)
@@ -215,8 +215,9 @@ function shootWaitingRays() {
       isDrawing = false;
       return;
     }
+    if (forceStop) break;
     if (waitingRaysIndex >= waitingRays.length) {
-      if (!(leftRayCount != 0 && !forceStop)) {
+      if (leftRayCount == 0) {
         break;
       }
       leftRayCount = 0;

@@ -430,7 +430,7 @@ locales["LOCALE_ID"] = {
   },
   "processing": {
     "incomplete": true,
-    "message": "Processing...<br>Click here to stop."
+    "message": "Processing... Click here to stop."
   },
   "restore": {
     "incomplete": true,

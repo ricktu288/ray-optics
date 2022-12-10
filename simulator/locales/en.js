@@ -325,7 +325,7 @@ locales["en"] = {
     "message": "Delete"
   },
   "processing": {
-    "message": "Processing...<br>Click here to stop."
+    "message": "Processing... Click here to stop."
   },
   "restore": {
     "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."

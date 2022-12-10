@@ -358,7 +358,7 @@ locales["ru"] = {
     "message": "Удалить"
   },
   "processing": {
-    "message": "Вычисление...<br>Нажмите, чтобы остановить."
+    "message": "Вычисление... Нажмите, чтобы остановить."
   },
   "restore": {
     "incomplete": true,
