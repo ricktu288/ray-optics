@@ -20,9 +20,6 @@ objTypes['curvedmirror'] = {
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
     var fn;
-    var evaluatexConstants = {
-      "pi": 3.14
-    }
     try {
       fn = evaluateLatex(obj.p);
     } catch (e) {
@@ -62,7 +59,7 @@ objTypes['curvedmirror'] = {
         scaled_y = fn({x: scaled_x, "pi": Math.PI});
         var y = scaled_y*p12d*0.5;
         var pt = graphs.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
-        if (i == 0.1) {
+        if (i == -0.1) {
           ctx.moveTo(pt.x, pt.y);
         } else {
           ctx.lineTo(pt.x, pt.y);
@@ -164,7 +161,14 @@ objTypes['curvedmirror'] = {
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
 
-    if (i == 0 || i == pts.length - 2) {
+    var frac;
+    if (Math.abs(mx) > Math.abs(my)) {
+      frac = (rp.x - seg.p1.x) / mx;
+    } else {
+      frac = (rp.y - seg.p1.y) / my;
+    }
+
+    if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
       ray.p1 = rp;
       ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
@@ -173,13 +177,6 @@ objTypes['curvedmirror'] = {
 
       var outx = rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my;
       var outy = rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
-      
-      var frac;
-      if (Math.abs(mx) > Math.abs(my)) {
-        frac = (rp.x - seg.p1.x) / mx;
-      } else {
-        frac = (rp.y - seg.p1.y) / my;
-      }
       
       var segA;
       if (frac < 0.5) {
