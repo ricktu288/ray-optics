@@ -62,9 +62,11 @@ objTypes['curvedglass'] = {
       var i;
       var lastError = "";
       var hasPoints = false;
-      for (i = 0.1; i < p12d; i+=0.1) {
+    for (i = -0.1; i < p12d+0.09; i+=0.1) {
         // avoid using exact integers to avoid problems with detecting intersections
         var ix = i + 0.05;
+        if (ix < 0) ix = 0;
+        if (ix > p12d) ix = p12d;
         var x = ix-x0;
         var scaled_x = 2*x/p12d;
         var scaled_y;
@@ -290,7 +292,7 @@ objTypes['curvedglass'] = {
     var my = seg.p2.y - seg.p1.y;
 
     var frac;
-    if (mx > my) {
+    if (Math.abs(mx) > Math.abs(my)) {
       frac = (rp.x - seg.p1.x) / mx;
     } else {
       frac = (rp.y - seg.p1.y) / my;

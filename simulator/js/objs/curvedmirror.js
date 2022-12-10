@@ -50,9 +50,11 @@ objTypes['curvedmirror'] = {
     ctx.beginPath();
     obj.tmp_points = [];
     var lastError = "";
-    for (i = 0.1; i < p12d; i+=0.1) {
+    for (i = -0.1; i < p12d+0.09; i+=0.1) {
       // avoid using exact integers to avoid problems with detecting intersections
       var ix = i + 0.05;
+      if (ix < 0) ix = 0;
+      if (ix > p12d) ix = p12d;
       var x = ix-x0;
       var scaled_x = 2*x/p12d;
       var scaled_y;
@@ -173,7 +175,7 @@ objTypes['curvedmirror'] = {
       var outy = rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
       
       var frac;
-      if (mx > my) {
+      if (Math.abs(mx) > Math.abs(my)) {
         frac = (rp.x - seg.p1.x) / mx;
       } else {
         frac = (rp.y - seg.p1.y) / my;
