@@ -1,0 +1,299 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedglass",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -500,
+        "exist": true
+      },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "eqn2": "0.5\\cdot\\sqrt{1-x^2}",
+      "p": 1.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 820,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 60,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 700,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": 60,
+        "exist": true
+      },
+      "p": 152,
+      "symmetric": true
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 664.115427318801,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": -500,
+        "exist": true
+      },
+      "p": 162,
+      "symmetric": true
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -600,
+      "p": "Aplanatic points of an optical system are special points on its optical axis, such that \"rays proceeding from one of them will all converge to, or seen to diverge from the other point\"."
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -440,
+      "p": "spherical lens, will diverge from another point on the optical axis outside the spherical lens (without spherical aberration)."
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -540,
+      "p": "Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other."
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -480,
+      "p": "Sphere: a spherical lens has two aplanatic points - click on the \"Extended rays\" option to verify that light emitted from a point on the optical axis inside the"
+    },
+    {
+      "type": "text",
+      "x": -739,
+      "y": -160,
+      "p": "k_1 ∙ n1 ∙ sqrt( (x + |x_1|)^2 + y^2) + k_2 ∙ n2 ∙ sqrt(  (x - |x_2|)^2 + y^2) = n1 ∙ |x_1| + n2 ∙ |x_2|"
+    },
+    {
+      "type": "text",
+      "x": 1020,
+      "y": -60,
+      "p": "Spherical lens"
+    },
+    {
+      "type": "text",
+      "x": 1009.3333333333333,
+      "y": -544,
+      "p": "Elliptical lens"
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -380,
+      "p": "Hyperbola: the two foci of the \"Hyperbolic mirror\" example are also aplanatic points."
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -240,
+      "p": "Given two points with horizontal coordinates x_1 and x_2, and given the refractive index outside and inside our optical"
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": -200,
+      "p": "element as n1 and n2 (respectively), for this two points to be aplanatic points - the boundary of our optical element"
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": -120,
+      "p": "such that k_i=1 or -1 if the ray connecting x_i and the boundary of our optical element is real or imaginary, respectively."
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": -80,
+      "p": "This is an equation of a Cartesian oval, of which the conic sections are special cases."
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": 100,
+      "p": "whereas in the ellipse we have k_1=k_2=1, 0 < x_1, x_2 ."
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": -160,
+      "p": "must fulfill the following equation:"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": 20,
+      "p": "In both the sphere and the ellipse in this example, we have n1=1 and n2=1.5."
+    },
+    {
+      "type": "text",
+      "x": -1119,
+      "y": 60,
+      "p": "However in the sphere we have k_1=-1, k_2=1, x_1 < 0 < x_2,"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.12106835203815525,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 855,
+    "y": 655
+  },
+  "scale": 0.75,
+  "colorMode": false
+}
