@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedmirror",
+      "p1": {
+        "type": 1,
+        "x": 880.0000000000002,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 879.9999999999998,
+        "y": 840,
+        "exist": true
+      },
+      "p": "\\sqrt{1+x^2}"
+    },
+    {
+      "type": "radiant",
+      "x": 738.5786437626906,
+      "y": 739.9999999999999,
+      "p": 0.5
+    },
+    {
+      "type": "blackcircle",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 740,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1140,
+        "y": 740,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 203,
+      "y": 374,
+      "p": "Hyperbola reflection property:"
+    },
+    {
+      "type": "text",
+      "x": 204,
+      "y": 415,
+      "p": "Light rays traveling from one focus towards the hyperbolic mirror"
+    },
+    {
+      "type": "text",
+      "x": 205,
+      "y": 469,
+      "p": "The two foci of the hyperbola are aplanatic points (see example \"Aplanatic points\")."
+    },
+    {
+      "type": "text",
+      "x": 198,
+      "y": 442,
+      "p": " will reflect away from the other focus."
+    }
+  ],
+  "mode": "extended_light",
+  "rayDensity_light": 0.5077327766614864,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 32,
+    "y": -109.00000000000006
+  },
+  "scale": 1,
+  "colorMode": false
+}
