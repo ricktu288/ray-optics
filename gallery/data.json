@@ -18,6 +18,13 @@
         "title": "Parabolic Mirror"
       },
       {
+        "id": "hyperbolic-mirror",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Hyperbolic mirror"
+      },
+      {
         "id": "retroreflectors",
         "contributors": [
           "Stas Fainer",
@@ -130,6 +137,13 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab"
+      },
+      {
+        "id": "aplanatic-points",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Aplanatic points"
       }
     ]
   },
