@@ -1,7 +1,7 @@
 if (typeof locales == 'undefined') locales = {};
 locales["zh-CN"] = {
   "appName": {
-    "message": "射线光学模拟"
+    "message": "模拟器 - 射线光学模拟"
   },
   "appShortName": {
     "message": "射线光学"

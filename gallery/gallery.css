@@ -64,6 +64,9 @@
     float:right;
 }
 
+.github-button-container a {
+    color: transparent;
+}
 .navul {
     font-size: 11pt;
 }
