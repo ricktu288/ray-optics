@@ -5,7 +5,7 @@ locales["de"] = {
   },
   "appShortName": {
     "incomplete": true,
-    "message": "Ray Optics"
+    "message": "Strahl Optik"
   },
   "appDesc": {
     "incomplete": true,
@@ -21,7 +21,7 @@ locales["de"] = {
   },
   "gallery": {
     "incomplete": true,
-    "message": "Gallery"
+    "message": "Gallerie"
   },
   "welcome": {
     "incomplete": true,
@@ -29,11 +29,11 @@ locales["de"] = {
   },
   "toolbar_title": {
     "incomplete": true,
-    "message": "Tool:&nbsp;"
+    "message": "Werkzeug:&nbsp;"
   },
   "toolname_laser": {
     "incomplete": true,
-    "message": "Single ray"
+    "message": "Einzel Strahl"
   },
   "toolname_led": {
     "incomplete": true,
