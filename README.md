@@ -53,7 +53,7 @@ BibTeX:
 ```
 
 # License
-Copyright 2016–2022 Yi-Ting Tu, Wei-Fang Sun
+Copyright 2016–2023 Yi-Ting Tu, Wei-Fang Sun
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
