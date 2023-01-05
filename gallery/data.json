@@ -244,6 +244,13 @@
         "title": "Beam expanders"
       },
       {
+        "id": "ray-relaying",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Ray relaying"
+      },
+      {
         "id": "compound-microscope",
         "contributors": [
           "Yi-Ting Tu"
