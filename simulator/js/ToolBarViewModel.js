@@ -145,6 +145,6 @@ $("#view_gallery").click(function () {
 });
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");
-$("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>' 
-$("#tool_curvedmirror").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
-$("#tool_curvedglass").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
+//$("#color_mode").next()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>' 
+//$("#tool_curvedmirror").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
+//$("#tool_curvedglass").prev()[0].innerHTML += '<sup><span class="badge bg-warning">Beta</span></sup>'
