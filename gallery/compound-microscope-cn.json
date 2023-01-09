@@ -1,0 +1,91 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 404,
+        "y": 334,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1084,
+        "y": 334,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 849,
+        "y": 190,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 849,
+        "y": 478,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 464,
+        "y": 274,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 464,
+        "y": 394,
+        "exist": true
+      },
+      "p": 50
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 404.6412698412697,
+        "y": 321.8297258297258,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 463.94039644565953,
+        "y": 333.94335080124546,
+        "exist": true
+      },
+      "p": 82,
+      "symmetric": true
+    },
+    {
+      "type": "text",
+      "x": 439.20737472022296,
+      "y": 433.3254857285816,
+      "p": "物镜"
+    },
+    {
+      "type": "text",
+      "x": 825.0740413868898,
+      "y": 516.2588190619148,
+      "p": "目镜"
+    }
+  ],
+  "mode": "extended_light",
+  "rayDensity_light": 0.049787068367863944,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -257.67588506694545,
+    "y": -40.40685716072693
+  },
+  "scale": 1.25,
+  "colorMode": false
+}
