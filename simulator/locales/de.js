@@ -1,10 +1,10 @@
 if (typeof locales == 'undefined') locales = {};
 locales["de"] = {
   "appName": {
-    "message": "Strahl Optik Simulation"
+    "message": "Simulator - Strahlenoptik-Simulation"
   },
   "appShortName": {
-    "message": "Strahl Optik"
+    "message": "Strahlenoptik"
   },
   "appDesc": {
     "incomplete": true,
@@ -21,7 +21,7 @@ locales["de"] = {
   },
   "welcome": {
     "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
+    "message": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>."
   },
   "toolbar_title": {
     "message": "Werkzeug:&nbsp;"
@@ -54,19 +54,16 @@ locales["de"] = {
     "message": "Spiegel"
   },
   "toolname_idealmirror": {
-    "incomplete": true,
-    "message": "Ideal curved Spiegel"
+    "message": "Ideal gebogen"
   },
   "toolname_refractor_": {
-    "incomplete": true,
+	"message": "Glas"
   },
   "toolname_blocker_": {
-    "incomplete": true,
-    "message": "Blocker"
+    "message": "Vorhang"
   },
   "toolname_beamsplitter": {
-    "incomplete": true,
-    "message": "Beam Splitter"
+    "message": "Strahlteiler"
   },
   "toolname_halfplane": {
     "message": "Glas"
@@ -87,10 +84,10 @@ locales["de"] = {
     "message": "Glas"
   },
   "toolname_blackline": {
-    "message": "Linienförmiger Block"
+    "message": "Block"
   },
   "toolname_blackcircle": {
-    "message": "Kreisförmiger Block"
+    "message": "Kreis"
   },
   "toolname_ruler": {
     "message": "Lineal"
@@ -99,12 +96,10 @@ locales["de"] = {
     "message": "Winkelmesser"
   },
   "tool_power": {
-    "incomplete": true,
-    "message": "Detector"
+    "message": "Detektor"
   },
   "toolname_power": {
-    "incomplete": true,
-    "message": "Detector"
+    "message": "Detektor"
   },
   "toolname_text": {
     "message": "Text"
@@ -119,92 +114,70 @@ locales["de"] = {
     "message": "Strahlen"
   },
   "modename_extended_light": {
-    "incomplete": true,
-    "message": "Extended rays"
+    "message": "Virtuelle Strahlen"
   },
   "modename_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "Alle Abbildungen"
   },
   "modename_observer": {
-    "incomplete": true,
-    "message": "Seen by observer"
+    "message": "Beobachterperspektiv"
   },
   "color_mode": {
-    "incomplete": true,
-    "message": "Simulate Colors"
+    "message": "Farbe simulieren"
   },
   "File: ": {
-    "incomplete": true,
-    "message": "File: "
+    "message": "Datei: "
   },
   "Tools: ": {
-    "incomplete": true,
-    "message": "Tools: "
+    "message": "Werkzeuge: "
   },
   "tool_laser": {
-    "incomplete": true,
-    "message": "Ray"
+    "message": "Strahl"
   },
   "tool_parallel": {
-    "incomplete": true,
-    "message": "Beam"
+    "message": "Bündel"
   },
   "tool_radiant": {
-    "incomplete": true,
-    "message": "360 degrees"
+    "message": "360 Grad"
   },
   "tool_led": {
-    "incomplete": true,
-    "message": "Finite angle"
+    "message": "Finiter Winkel"
   },
   "tool_radiant_": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Punktquelle"
   },
   "tool_mirror_": {
-    "incomplete": true,
-    "message": "Mirrors"
+    "message": "Spiegel"
   },
   "tool_mirror": {
-    "incomplete": true,
     "message": "Segment"
   },
   "tool_arcmirror": {
-    "incomplete": true,
-    "message": "Circular Arc"
+    "message": "Kreisbogen"
   },
   "tool_parabolicmirror": {
-    "incomplete": true,
-    "message": "Parabolic"
+    "message": "Parabolisch"
   },
   "tool_curvedmirror": {
-    "incomplete": true,
-    "message": "Custom Equation"
+    "message": "Benutzerdefinierte Gleichung"
   },
   "tool_beamsplitter": {
-    "incomplete": true,
-    "message": "Beam Splitter"
+    "message": "Strahlteiler"
   },
   "tool_idealmirror": {
-    "incomplete": true,
-    "message": "Ideal Curved"
+    "message": "Ideal gebogen"
   },
   "tool_refractor_": {
-    "incomplete": true,
-    "message": "Glasses"
+    "message": "Glasen"
   },
   "tool_blocker_": {
-    "incomplete": true,
     "message": "Blöcke"
   },
   "tool_halfplane": {
-    "incomplete": true,
-    "message": "Half-plane"
+    "message": "Halbraum"
   },
   "tool_circlelens": {
-    "incomplete": true,
-    "message": "Circle"
+    "message": "Kugellinse"
   },
   "tool_refractor": {
     "message": "Freiform"
@@ -219,12 +192,10 @@ locales["de"] = {
     "message": "Benutzerdefinierte Gleichung"
   },
   "tool_blackline": {
-    "incomplete": true,
-    "message": "Line Blocker"
+    "message": "Block"
   },
   "tool_blackcircle": {
-    "incomplete": true,
-    "message": "Circle Blocker"
+    "message": "Kreis"
   },
   "tool_ruler": {
     "message": "Lineal"
@@ -248,31 +219,25 @@ locales["de"] = {
     "message": "Strahlen"
   },
   "mode_extended_light": {
-    "incomplete": true,
-    "message": "Extended rays"
+    "message": "Virtuelle Strahlen"
   },
   "mode_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "Alle Abbildungen"
   },
   "mode_observer": {
-    "incomplete": true,
-    "message": "Seen by Observer"
+    "message": "Beobachterperspektiv"
   },
   "zoom": {
-    "incomplete": true,
     "message": "Zoom"
   },
   "help": {
     "message": "Hilfe"
   },
   "rayDensity": {
-    "incomplete": true,
-    "message": "Ray Density"
+    "message": "Strahl-Anzahldichte"
   },
   "raydensity": {
-    "incomplete": true,
-    "message": "Ray Density:"
+    "message": "Strahl-Anzahldichte:"
   },
   "undo": {
     "message": "Rückgängig"
@@ -281,7 +246,6 @@ locales["de"] = {
     "message": "Wiederherstellen"
   },
   "reset": {
-    "incomplete": true,
     "message": "Zurücksetzen"
   },
   "save": {
@@ -291,8 +255,7 @@ locales["de"] = {
     "message": "Exportieren"
   },
   "view_gallery": {
-    "incomplete": true,
-    "message": "View Gallery"
+    "message": "Galerie ansehen"
   },
   "save_name": {
     "message": "Name:"
@@ -308,20 +271,16 @@ locales["de"] = {
     "message": "Öffnen"
   },
   "lockobjs": {
-    "incomplete": true,
-    "message": "Lock Objects"
+    "message": "Objekte sperren"
   },
   "showgrid": {
-    "incomplete": true,
-    "message": "Grid"
+    "message": "Raster"
   },
   "grid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Anrasten"
   },
   "snaptogrid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Anrasten"
   },
   "brightness": {
     "message": "Helligkeit:"
@@ -339,67 +298,54 @@ locales["de"] = {
     "message": "Brennweite:"
   },
   "cartesiansign": {
-    "incomplete": true,
-    "message": "Cartesian Sign Convention"
+    "message": "Kartesische Zeichenkonvention"
   },
   "refractiveindex": {
     "message": "Brechungsindex:"
   },
   "refractiveindex_note": {
-    "incomplete": true,
-    "message": "(relative if inside another glass)"
+    "message": "(relativ wenn das Glas ineinander)"
   },
   "refractiveindex_note_popover": {
     "incomplete": true,
     "message": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones."
   },
   "cauchycoeff": {
-    "incomplete": true,
-    "message": "Cauchy coefficient"
+    "message": "Cauchy Koeffizient"
   },
   "transmissionratio": {
-    "incomplete": true,
-    "message": "Transmission Ratio:"
+    "message": "Transmissionsgrad:"
   },
   "applytoall": {
-    "incomplete": true,
-    "message": "Apply to All"
+    "message": "Alle anwenden"
   },
   "duplicate": {
-    "incomplete": true,
-    "message": "Duplicate"
+    "message": "Duplizieren"
   },
   "delete": {
-    "incomplete": true,
-    "message": "Delete"
+    "message": "Löschen"
   },
   "processing": {
-    "incomplete": true,
-    "message": "Processing... Click here to stop."
+    "message": "In der Bearbeitung... hier klicken, um zu stoppen."
   },
   "restore": {
     "incomplete": true,
     "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
   },
   "contribute": {
-    "incomplete": true,
-    "message": "Contribute"
+    "message": "Mitmachen"
   },
   "github": {
-    "incomplete": true,
     "message": "GitHub Repo"
   },
   "about": {
-    "incomplete": true,
-    "message": "About"
+    "message": "Über"
   },
   "translate": {
-    "incomplete": true,
-    "message": "Help us translate this app"
+    "message": "Helfen beim Übersetzen"
   },
   "translated": {
-    "incomplete": true,
-    "message": "translated"
+    "message": "Übersetzt"
   },
   "undo_popover": {
     "incomplete": true,
