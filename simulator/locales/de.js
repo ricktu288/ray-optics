@@ -4,7 +4,6 @@ locales["de"] = {
     "message": "Strahl Optik Simulation"
   },
   "appShortName": {
-    "incomplete": true,
     "message": "Strahl Optik"
   },
   "appDesc": {
@@ -12,15 +11,12 @@ locales["de"] = {
     "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
   },
   "launch_simulator": {
-    "incomplete": true,
-    "message": "Launch Simulator"
+    "message": "Simulator starten"
   },
   "home": {
-    "incomplete": true,
     "message": "Home"
   },
   "gallery": {
-    "incomplete": true,
     "message": "Gallerie"
   },
   "welcome": {
@@ -28,52 +24,41 @@ locales["de"] = {
     "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
   },
   "toolbar_title": {
-    "incomplete": true,
     "message": "Werkzeug:&nbsp;"
   },
   "toolname_laser": {
-    "incomplete": true,
-    "message": "Einzel Strahl"
+    "message": "Einzelstrahl"
   },
   "toolname_led": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Punktquelle"
   },
   "toolname_radiant": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Punktquelle"
   },
   "toolname_parallel": {
-    "incomplete": true,
-    "message": "Beam"
+    "message": "Paralleles Bündel"
   },
   "toolname_mirror_": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Spiegel"
   },
   "toolname_mirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Spiegel"
   },
   "toolname_arcmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Spiegel"
   },
   "toolname_parabolicmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Spiegel"
   },
   "toolname_curvedmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Spiegel"
   },
   "toolname_idealmirror": {
     "incomplete": true,
-    "message": "Ideal curved mirror"
+    "message": "Ideal curved Spiegel"
   },
   "toolname_refractor_": {
     "incomplete": true,
-    "message": "Glass"
   },
   "toolname_blocker_": {
     "incomplete": true,
@@ -84,44 +69,34 @@ locales["de"] = {
     "message": "Beam Splitter"
   },
   "toolname_halfplane": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Glas"
   },
   "toolname_circlelens": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Glas"
   },
   "toolname_refractor": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Glas"
   },
   "toolname_lens": {
-    "incomplete": true,
-    "message": "Ideal lens"
+    "message": "Ideale Linse"
   },
   "toolname_sphericallens": {
-    "incomplete": true,
-    "message": "Spherical lens"
+    "message": "Sphärische Linse"
   },
   "toolname_curvedglass": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Glas"
   },
   "toolname_blackline": {
-    "incomplete": true,
-    "message": "Line Blocker"
+    "message": "Linienförmiger Block"
   },
   "toolname_blackcircle": {
-    "incomplete": true,
-    "message": "Circle Blocker"
+    "message": "Kreisförmiger Block"
   },
   "toolname_ruler": {
-    "incomplete": true,
-    "message": "Ruler"
+    "message": "Lineal"
   },
   "toolname_protractor": {
-    "incomplete": true,
-    "message": "Protractor"
+    "message": "Winkelmesser"
   },
   "tool_power": {
     "incomplete": true,
@@ -132,20 +107,16 @@ locales["de"] = {
     "message": "Detector"
   },
   "toolname_text": {
-    "incomplete": true,
     "message": "Text"
   },
   "toolname_": {
-    "incomplete": true,
-    "message": "Move view"
+    "message": "Ansicht bewegen"
   },
   "modebar_title": {
-    "incomplete": true,
-    "message": "View:"
+    "message": "Ansicht:"
   },
   "modename_light": {
-    "incomplete": true,
-    "message": "Rays"
+    "message": "Strahlen"
   },
   "modename_extended_light": {
     "incomplete": true,
@@ -225,7 +196,7 @@ locales["de"] = {
   },
   "tool_blocker_": {
     "incomplete": true,
-    "message": "Blockers"
+    "message": "Blöcke"
   },
   "tool_halfplane": {
     "incomplete": true,
@@ -236,20 +207,16 @@ locales["de"] = {
     "message": "Circle"
   },
   "tool_refractor": {
-    "incomplete": true,
-    "message": "Free-shape"
+    "message": "Freiform"
   },
   "tool_lens": {
-    "incomplete": true,
-    "message": "Ideal Lens"
+    "message": "Ideale Linse"
   },
   "tool_sphericallens": {
-    "incomplete": true,
-    "message": "Spherical Lens"
+    "message": "Sphärische Linse"
   },
   "tool_curvedglass": {
-    "incomplete": true,
-    "message": "Custom Equation"
+    "message": "Benutzerdefinierte Gleichung"
   },
   "tool_blackline": {
     "incomplete": true,
@@ -260,32 +227,25 @@ locales["de"] = {
     "message": "Circle Blocker"
   },
   "tool_ruler": {
-    "incomplete": true,
-    "message": "Ruler"
+    "message": "Lineal"
   },
   "tool_protractor": {
-    "incomplete": true,
-    "message": "Protractor"
+    "message": "Winkelmesser"
   },
   "tool_text": {
-    "incomplete": true,
     "message": "Text"
   },
   "tool_": {
-    "incomplete": true,
-    "message": "Move view"
+    "message": "Ansicht bewegen"
   },
   "View: ": {
-    "incomplete": true,
-    "message": "View: "
+    "message": "Ansicht: "
   },
   "Settings: ": {
-    "incomplete": true,
-    "message": "Settings: "
+    "message": "Einstellungen: "
   },
   "mode_light": {
-    "incomplete": true,
-    "message": "Rays"
+    "message": "Strahlen"
   },
   "mode_extended_light": {
     "incomplete": true,
@@ -304,8 +264,7 @@ locales["de"] = {
     "message": "Zoom"
   },
   "help": {
-    "incomplete": true,
-    "message": "Help"
+    "message": "Hilfe"
   },
   "rayDensity": {
     "incomplete": true,
@@ -316,44 +275,37 @@ locales["de"] = {
     "message": "Ray Density:"
   },
   "undo": {
-    "incomplete": true,
-    "message": "Undo"
+    "message": "Rückgängig"
   },
   "redo": {
-    "incomplete": true,
-    "message": "Redo"
+    "message": "Wiederherstellen"
   },
   "reset": {
     "incomplete": true,
-    "message": "Reset"
+    "message": "Zurücksetzen"
   },
   "save": {
-    "incomplete": true,
-    "message": "Save"
+    "message": "Speichern"
   },
   "export_svg": {
-    "incomplete": true,
-    "message": "Export"
+    "message": "Exportieren"
   },
   "view_gallery": {
     "incomplete": true,
     "message": "View Gallery"
   },
   "save_name": {
-    "incomplete": true,
     "message": "Name:"
   },
   "save_cancel": {
-    "incomplete": true,
-    "message": "Cancel"
+    "message": "Abbrechen"
   },
   "save_description": {
     "incomplete": true,
     "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
   },
   "open": {
-    "incomplete": true,
-    "message": "Open"
+    "message": "Öffnen"
   },
   "lockobjs": {
     "incomplete": true,
@@ -372,32 +324,26 @@ locales["de"] = {
     "message": "Snap to Grid"
   },
   "brightness": {
-    "incomplete": true,
-    "message": "Brightness:"
+    "message": "Helligkeit:"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm):"
+    "message": "Wellenlänge (nm):"
   },
   "emissionangle": {
-    "incomplete": true,
-    "message": "Emission Angle (°):"
+    "message": "Emissionswinkel (°):"
   },
   "symmetric": {
-    "incomplete": true,
-    "message": "Symmetric"
+    "message": "symmetrisch"
   },
   "focallength": {
-    "incomplete": true,
-    "message": "Focal length:"
+    "message": "Brennweite:"
   },
   "cartesiansign": {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "incomplete": true,
-    "message": "Refractive index:"
+    "message": "Brechungsindex:"
   },
   "refractiveindex_note": {
     "incomplete": true,
