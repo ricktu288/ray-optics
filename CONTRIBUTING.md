@@ -100,8 +100,8 @@ After that, you can submit the translated file with either method below:
 4. Save/replace the file as <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/`.
 5. _(optional)_ If it is a new language, modify the locale list in `simulator/locales/sync.js`.
 6. _(optional)_ Add/modify the translation of the welcome message in `simulator/index.html`.
-7. _(optional)_ Add/modify <code><var>LOCALE_ID/index.html</var>.js</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
-8. _(optional)_ Add the corresponding lines in `init_i18n` of `simulator/js/locale.js` and the `<ul class="dropdown-menu"` in `simulator/index.html`
+7. _(optional)_ Add/modify <code><var>LOCALE_ID</var>/index.html</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
+8. _(optional)_ Add the corresponding lines and the `<ul class="dropdown-menu"` in `simulator/index.html`
 9. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
 
 10. Commit your changes, push to your fork, and create a pull request.

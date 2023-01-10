@@ -20,7 +20,6 @@ locales["de"] = {
     "message": "Gallerie"
   },
   "welcome": {
-    "incomplete": true,
     "message": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>."
   },
   "toolbar_title": {
@@ -171,7 +170,7 @@ locales["de"] = {
     "message": "Glasen"
   },
   "tool_blocker_": {
-    "message": "Blöcke"
+    "message": "Vorhang"
   },
   "tool_halfplane": {
     "message": "Halbraum"
@@ -345,7 +344,7 @@ locales["de"] = {
     "message": "Helfen beim Übersetzen"
   },
   "translated": {
-    "message": "Übersetzt"
+    "message": "übersetzt"
   },
   "undo_popover": {
     "incomplete": true,
@@ -485,7 +484,7 @@ locales["de"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. <br><b>⚠️ WARNING:<br><ul><li>The color of images may be very inaccurate, especially when Ray Density is high.</li><li>The 'wavelength' is only for color and dispersion. Wave optics phenomena are not simulated.</li><li>The 'Export' button does not work with color mixture.</ul></b></b>"
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
   },
   "rayDensity_popover": {
     "incomplete": true,

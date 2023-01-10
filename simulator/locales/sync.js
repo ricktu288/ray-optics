@@ -1,7 +1,7 @@
 // Run this script with node.js whenever some new items are added into en.js
 
-locale_name = ['en', 'zh-TW', 'zh-CN', 'ru', 'nl', 'fr', 'LOCALE_ID'];
-locale_files = ['en.js', 'zh_TW.js', 'zh_CN.js', 'ru.js', 'nl.js', 'fr.js', 'template.js'];
+locale_name = ['en', 'zh-TW', 'zh-CN', 'ru', 'nl', 'fr', 'de', 'LOCALE_ID'];
+locale_files = ['en.js', 'zh_TW.js', 'zh_CN.js', 'ru.js', 'nl.js', 'fr.js', 'de.js', 'template.js'];
 fs = require('fs');
 
 var locales = {};
