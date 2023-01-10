@@ -2057,5 +2057,6 @@
     "y": 455
   },
   "scale": 0.5,
-  "colorMode": false
+  "colorMode": false,
+  "backgroundImage": "black-cat-becomes-white-background.png"
 }
