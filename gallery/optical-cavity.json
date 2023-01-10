@@ -112,30 +112,6 @@
       "p": 1
     },
     {
-      "type": "text",
-      "x": -1120.9109401992,
-      "y": 375.62470059919997,
-      "p": "no matter how high are the mirrors."
-    },
-    {
-      "type": "text",
-      "x": -1120.9109401992,
-      "y": 215.62470059919997,
-      "p": "These optical cavities are stable when their seperation distance is less than 400, meaning"
-    },
-    {
-      "type": "text",
-      "x": -1120.9109401992,
-      "y": 255.62470059919997,
-      "p": "that for such separation distances, for each ray that emanates from one of the mirrors"
-    },
-    {
-      "type": "text",
-      "x": -1120.9109401992,
-      "y": 295.62470059919997,
-      "p": "towards the other mirror, a non divergent trajectory is guranteed for high enough mirrors."
-    },
-    {
       "type": "idealmirror",
       "p1": {
         "type": 1,
@@ -246,12 +222,6 @@
     },
     {
       "type": "text",
-      "x": -1120.9109401992,
-      "y": 335.62470059919997,
-      "p": "When the separation distance is more than 400, a non-divergent trajectory is not guaranteed"
-    },
-    {
-      "type": "text",
       "x": 852.4610727599995,
       "y": 1067.02347232,
       "p": "to move horizontally"
@@ -261,6 +231,36 @@
       "x": 824.9111713199999,
       "y": 1025.6986201599998,
       "p": "Shift+drag the ideal mirror"
+    },
+    {
+      "type": "text",
+      "x": -1160,
+      "y": 300,
+      "p": "In this example f = 100 ."
+    },
+    {
+      "type": "text",
+      "x": -1160,
+      "y": 140,
+      "p": "Given the length of this optical cavity is: d, and the focal length of its ideal concave mirrors is: f,"
+    },
+    {
+      "type": "text",
+      "x": -1160,
+      "y": 180,
+      "p": "the optical cavity is stable (meaning that for each ray that emanates from one of the"
+    },
+    {
+      "type": "text",
+      "x": -1160,
+      "y": 220,
+      "p": "mirrors towards the other mirror, a non-divergent trajectory is guaranteed for"
+    },
+    {
+      "type": "text",
+      "x": -1160,
+      "y": 260,
+      "p": "sufficiently high mirrors) if and only if d ≤ 4f ."
     }
   ],
   "mode": "light",
