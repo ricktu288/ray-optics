@@ -28,6 +28,10 @@ objTypes['handle'] = {
     obj.notDone = false;
   },
 
+  zIndex: function(obj) {
+    return -Infinity;
+  },
+
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
 
