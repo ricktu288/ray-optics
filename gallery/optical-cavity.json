@@ -260,7 +260,7 @@
       "type": "text",
       "x": -1160,
       "y": 260,
-      "p": "sufficiently high mirrors) if and only if d ≤ 4f ."
+      "p": "sufficiently high mirrors) if and only if d ≤ 4f (in the paraxial approximation)."
     }
   ],
   "mode": "light",
