@@ -946,13 +946,13 @@
     },
     {
       "type": "text",
-      "x": 3340,
+      "x": 3324,
       "y": 1040,
       "p": "Given the distance between identical consecutive lenses is: d"
     },
     {
       "type": "text",
-      "x": 3340,
+      "x": 3324,
       "y": 1080,
       "p": "and their focal length is: f, a non-divergent ray trajectory"
     },
@@ -998,9 +998,9 @@
     },
     {
       "type": "text",
-      "x": 3340,
+      "x": 3324,
       "y": 1120,
-      "p": "is guaranteed if and only if d ≤ 4f ."
+      "p": "is guaranteed if and only if d ≤ 4f (in the paraxial approximation)."
     }
   ],
   "mode": "light",
@@ -1008,9 +1008,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": -131.3999999999999,
-    "y": -299.8000000000001
+    "x": -117.43384615384608,
+    "y": -291.16807692307697
   },
-  "scale": 0.52,
+  "scale": 0.51,
   "colorMode": false
 }
