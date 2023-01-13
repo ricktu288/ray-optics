@@ -16,6 +16,14 @@ var minShotLength = 1e-6; //光線兩次作用的最短距離(小於此距離的
 var minShotLength_squared = minShotLength * minShotLength;
 var totalTruncation = 0;
 
+const VIOLET_WAVELENGTH = 400;
+const BLUE_WAVELENGTH = 460;
+const CYAN_WAVELENGTH = 500;
+const GREEN_WAVELENGTH = 540;
+const YELLOW_WAVELENGTH = 580;
+const RED_WAVELENGTH = 620;
+const INFRARED_WAVELENGTH = 700;
+
 // Draw the scene
 function draw()
 {
@@ -605,28 +613,27 @@ function wavelengthToColor(wavelength, brightness, transform) {
       wl = wavelength,
       gamma = 1;
 
-
-  if (wl >= 380 && wl < 440) {
-      R = -1 * (wl - 440) / (440 - 380);
+  if (wl >= VIOLET_WAVELENGTH && wl < BLUE_WAVELENGTH) {
+      R = -1 * (wl - BLUE_WAVELENGTH) / (BLUE_WAVELENGTH - VIOLET_WAVELENGTH);
       G = 0;
       B = 1;
- } else if (wl >= 440 && wl < 490) {
+ } else if (wl >= BLUE_WAVELENGTH && wl < CYAN_WAVELENGTH) {
      R = 0;
-     G = (wl - 440) / (490 - 440);
+     G = (wl - BLUE_WAVELENGTH) / (CYAN_WAVELENGTH - BLUE_WAVELENGTH);
      B = 1;  
-  } else if (wl >= 490 && wl < 510) {
+  } else if (wl >= CYAN_WAVELENGTH && wl < GREEN_WAVELENGTH) {
       R = 0;
       G = 1;
-      B = -1 * (wl - 510) / (510 - 490);
-  } else if (wl >= 510 && wl < 580) {
-      R = (wl - 510) / (580 - 510);
+      B = -1 * (wl - GREEN_WAVELENGTH) / (GREEN_WAVELENGTH - CYAN_WAVELENGTH);
+  } else if (wl >= GREEN_WAVELENGTH && wl < YELLOW_WAVELENGTH) {
+      R = (wl - GREEN_WAVELENGTH) / (YELLOW_WAVELENGTH - GREEN_WAVELENGTH);
       G = 1;
       B = 0;
-  } else if (wl >= 580 && wl < 645) {
+  } else if (wl >= YELLOW_WAVELENGTH && wl < RED_WAVELENGTH) {
       R = 1;
-      G = -1 * (wl - 645) / (645 - 580);
+      G = -1 * (wl - RED_WAVELENGTH) / (RED_WAVELENGTH - YELLOW_WAVELENGTH);
       B = 0.0;
-  } else if (wl >= 645 && wl <= 780) {
+  } else if (wl >= RED_WAVELENGTH && wl <= INFRARED_WAVELENGTH) {
       R = 1;
       G = 0;
       B = 0;
@@ -637,12 +644,12 @@ function wavelengthToColor(wavelength, brightness, transform) {
   }
 
   // intensty is lower at the edges of the visible spectrum.
-  if (wl > 780 || wl < 380) {
+  if (wl > INFRARED_WAVELENGTH || wl < 380) {
       alpha = 0;
-  } else if (wl > 700) {
-      alpha = (780 - wl) / (780 - 700);
-  } else if (wl < 420) {
-      alpha = (wl - 380) / (420 - 380);
+  } else if (wl > RED_WAVELENGTH) {
+      alpha = (INFRARED_WAVELENGTH - wl) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
+  } else if (wl < BLUE_WAVELENGTH) {
+      alpha = (wl - VIOLET_WAVELENGTH) / (BLUE_WAVELENGTH - VIOLET_WAVELENGTH);
   } else {
       alpha = 1;
   }
@@ -654,7 +661,7 @@ function wavelengthToColor(wavelength, brightness, transform) {
   if (ctx.constructor != C2S && transform) {
     // Adjust color to make (R,G,B) linear when using the 'screen' composition.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
-    // Currently not supported when exporting to SVG.
+    // Currently not supported when exporting to SVG as it is currently under draft in CSS Color 4 
     R = 1 - Math.exp(-R);
     G = 1 - Math.exp(-G);
     B = 1 - Math.exp(-B);
