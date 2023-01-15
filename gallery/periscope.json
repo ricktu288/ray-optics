@@ -124,7 +124,7 @@
       "p": 7,
       "symmetric": true,
       "brightness": 1,
-      "wavelength": 440
+      "wavelength": "460"
     },
     {
       "type": "led",
@@ -143,7 +143,7 @@
       "p": 7,
       "symmetric": true,
       "brightness": 1,
-      "wavelength": 515
+      "wavelength": "540"
     },
     {
       "type": "led",
@@ -161,7 +161,7 @@
       },
       "p": "4",
       "symmetric": true,
-      "wavelength": 679,
+      "wavelength": "620",
       "brightness": 1
     },
     {
@@ -197,9 +197,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 377,
-    "y": -131.99999999999994
+    "x": 119.2500000000002,
+    "y": -34.500000000000114
   },
-  "scale": 1,
+  "scale": 0.75,
   "colorMode": true
 }
