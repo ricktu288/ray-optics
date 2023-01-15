@@ -43,7 +43,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
 2. Send the files to ray-optics@phydemo.app. Include the name of your work and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
-**Method 2: Via GitHub**
+**Method 2: Via GitHub** (preferred if you use GitHub)
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
@@ -93,7 +93,7 @@ After that, you can submit the translated file with either method below:
 
 3. Send the resulting file to ray-optics@phydemo.app (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
-**Method 2: Via GitHub**
+**Method 2: Via GitHub** (preferred if you use GitHub)
 
 3. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
