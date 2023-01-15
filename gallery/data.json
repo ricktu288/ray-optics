@@ -54,6 +54,13 @@
           "Stas Fainer"
         ],
         "title": "Optical cavity"
+      },
+      {
+        "id": "periscope",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Periscope"
       }
     ]
   },
