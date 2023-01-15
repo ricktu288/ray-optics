@@ -27,8 +27,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "660"
+              "p": "0.9",
+              "wavelength": "620"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -64,8 +64,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.6",
-              "wavelength": "618"
+              "p": "0.4",
+              "wavelength": "600"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -101,8 +101,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.54",
-              "wavelength": "576"
+              "p": "0.6",
+              "wavelength": "580"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -138,8 +138,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "534"
+              "p": "0.9",
+              "wavelength": "540"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -175,8 +175,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.72",
-              "wavelength": "492"
+              "p": "0.6",
+              "wavelength": "500"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -212,8 +212,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "450"
+              "p": "0.9",
+              "wavelength": "460"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -249,8 +249,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "408"
+              "p": "0.8",
+              "wavelength": "420"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -286,8 +286,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "660"
+              "p": "0.9",
+              "wavelength": "620"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -323,8 +323,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.6",
-              "wavelength": "618"
+              "p": "0.4",
+              "wavelength": "600"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -360,8 +360,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.54",
-              "wavelength": "576"
+              "p": "0.6",
+              "wavelength": "580"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -397,8 +397,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "534"
+              "p": "0.9",
+              "wavelength": "540"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -434,8 +434,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.72",
-              "wavelength": "492"
+              "p": "0.6",
+              "wavelength": "500"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -471,8 +471,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "450"
+              "p": "0.9",
+              "wavelength": "460"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -508,8 +508,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "408"
+              "p": "0.8",
+              "wavelength": "420"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -545,8 +545,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "408"
+              "p": "0.8",
+              "wavelength": "420"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -582,8 +582,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "450"
+              "p": "0.9",
+              "wavelength": "460"
             },
             "byHandle": true
           },
@@ -618,8 +618,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.72",
-              "wavelength": "492"
+              "p": "0.6",
+              "wavelength": "500"
             },
             "byHandle": true
           },
@@ -654,8 +654,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "534"
+              "p": "0.9",
+              "wavelength": "540"
             },
             "byHandle": true
           },
@@ -690,8 +690,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.54",
-              "wavelength": "576"
+              "p": "0.6",
+              "wavelength": "580"
             },
             "byHandle": true
           },
@@ -726,8 +726,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.6",
-              "wavelength": "618"
+              "p": "0.4",
+              "wavelength": "600"
             },
             "byHandle": true
           },
@@ -762,8 +762,8 @@
                 "y": 589.6308454309253,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "660"
+              "p": "0.9",
+              "wavelength": "620"
             },
             "byHandle": true
           },
@@ -798,8 +798,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "408"
+              "p": "0.8",
+              "wavelength": "420"
             },
             "hasDuplicated": false,
             "byHandle": true
@@ -835,8 +835,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": 1,
-              "wavelength": "450"
+              "p": "0.9",
+              "wavelength": "460"
             },
             "byHandle": true
           },
@@ -871,8 +871,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.72",
-              "wavelength": "492"
+              "p": "0.6",
+              "wavelength": "500"
             },
             "byHandle": true
           },
@@ -907,8 +907,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "534"
+              "p": "0.9",
+              "wavelength": "540"
             },
             "byHandle": true
           },
@@ -943,8 +943,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.54",
-              "wavelength": "576"
+              "p": "0.6",
+              "wavelength": "580"
             },
             "byHandle": true
           },
@@ -979,8 +979,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.6",
-              "wavelength": "618"
+              "p": "0.4",
+              "wavelength": "600"
             },
             "byHandle": true
           },
@@ -1015,8 +1015,8 @@
                 "y": 410.3691545690761,
                 "exist": true
               },
-              "p": "0.68",
-              "wavelength": "660"
+              "p": "0.9",
+              "wavelength": "620"
             },
             "byHandle": true
           },
@@ -1057,8 +1057,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": "0.68",
-      "wavelength": "660"
+      "p": "0.9",
+      "wavelength": "620"
     },
     {
       "type": "laser",
@@ -1074,8 +1074,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": "0.6",
-      "wavelength": "618"
+      "p": "0.4",
+      "wavelength": "600"
     },
     {
       "type": "laser",
@@ -1091,8 +1091,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": "0.54",
-      "wavelength": "576"
+      "p": "0.6",
+      "wavelength": "580"
     },
     {
       "type": "laser",
@@ -1108,8 +1108,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": "0.68",
-      "wavelength": "534"
+      "p": "0.9",
+      "wavelength": "540"
     },
     {
       "type": "laser",
@@ -1125,8 +1125,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": "0.72",
-      "wavelength": "492"
+      "p": "0.6",
+      "wavelength": "500"
     },
     {
       "type": "laser",
@@ -1142,8 +1142,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": 1,
-      "wavelength": "450"
+      "p": "0.9",
+      "wavelength": "460"
     },
     {
       "type": "laser",
@@ -1159,8 +1159,8 @@
         "y": 589.6308454309253,
         "exist": true
       },
-      "p": 1,
-      "wavelength": "408"
+      "p": "0.8",
+      "wavelength": "420"
     },
     {
       "type": "laser",
@@ -1176,8 +1176,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": "0.68",
-      "wavelength": "660"
+      "p": "0.9",
+      "wavelength": "620"
     },
     {
       "type": "laser",
@@ -1193,8 +1193,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": "0.6",
-      "wavelength": "618"
+      "p": "0.4",
+      "wavelength": "600"
     },
     {
       "type": "laser",
@@ -1210,8 +1210,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": "0.54",
-      "wavelength": "576"
+      "p": "0.6",
+      "wavelength": "580"
     },
     {
       "type": "laser",
@@ -1227,8 +1227,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": "0.68",
-      "wavelength": "534"
+      "p": "0.9",
+      "wavelength": "540"
     },
     {
       "type": "laser",
@@ -1244,8 +1244,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": "0.72",
-      "wavelength": "492"
+      "p": "0.6",
+      "wavelength": "500"
     },
     {
       "type": "laser",
@@ -1261,8 +1261,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": 1,
-      "wavelength": "450"
+      "p": "0.9",
+      "wavelength": "460"
     },
     {
       "type": "laser",
@@ -1278,8 +1278,8 @@
         "y": 410.3691545690761,
         "exist": true
       },
-      "p": 1,
-      "wavelength": "408"
+      "p": "0.8",
+      "wavelength": "420"
     },
     {
       "type": "text",
@@ -1343,8 +1343,8 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 572.4859055633052,
-    "y": -73.965669005916
+    "x": 280.4859055633052,
+    "y": -199.96566900591597
   },
   "scale": 1.25,
   "colorMode": true

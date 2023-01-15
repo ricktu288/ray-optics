@@ -698,8 +698,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": "0.5",
-      "wavelength": "408"
+      "p": "0.4",
+      "wavelength": "420"
     },
     {
       "type": "parallel",
@@ -715,8 +715,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": "0.34",
-      "wavelength": "660"
+      "p": "0.45",
+      "wavelength": "620"
     },
     {
       "type": "parallel",
@@ -732,8 +732,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": 0.3,
-      "wavelength": "618"
+      "p": "0.2",
+      "wavelength": "600"
     },
     {
       "type": "parallel",
@@ -749,8 +749,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": 0.27,
-      "wavelength": "576"
+      "p": "0.3",
+      "wavelength": "580"
     },
     {
       "type": "parallel",
@@ -766,8 +766,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": 0.34,
-      "wavelength": "534"
+      "p": "0.45",
+      "wavelength": "540"
     },
     {
       "type": "parallel",
@@ -783,8 +783,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": 0.36,
-      "wavelength": "492"
+      "p": "0.3",
+      "wavelength": "500"
     },
     {
       "type": "parallel",
@@ -800,8 +800,8 @@
         "y": 425.5532688822327,
         "exist": true
       },
-      "p": "0.5",
-      "wavelength": "450"
+      "p": "0.45",
+      "wavelength": "460"
     },
     {
       "type": "refractor",
