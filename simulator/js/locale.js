@@ -27,7 +27,7 @@ function init_i18n() {
   document.getElementById('restore').innerHTML = getMsg('restore');
 
   document.getElementById('github').innerHTML = getMsg('github');
-  document.getElementById('contribute').innerHTML = getMsg('contribute');
+  document.getElementById('home').innerHTML = getMsg('home');
   document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('translate').innerHTML = getMsg('translate');
 
