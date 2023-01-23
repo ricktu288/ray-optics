@@ -20,7 +20,7 @@ objTypes['laser'] = {
       obj.p = value;
     }, elem);
     if (colorMode) {
-      createNumberAttr(getMsg('wavelength'), 400, 700, 1, obj.wavelength || 532, function(obj, value) {
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
       }, elem);
     }
@@ -30,7 +30,7 @@ objTypes['laser'] = {
   draw: function(obj, canvas) {
 
   if (colorMode) {
-    ctx.fillStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 532, 1));
+    ctx.fillStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1));
     ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
   } else {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
@@ -47,7 +47,7 @@ objTypes['laser'] = {
   ray1.brightness_s = 0.5 * (obj.p || 1);
   ray1.brightness_p = 0.5 * (obj.p || 1);
   if (colorMode) {
-    ray1.wavelength = obj.wavelength || 532;
+    ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
   }
   ray1.gap = true;
   ray1.isNew = true;
