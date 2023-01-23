@@ -59,7 +59,7 @@ locales["de"] = {
 	"message": "Glas"
   },
   "toolname_blocker_": {
-    "message": "Vorhang"
+    "message": "Absorber"
   },
   "toolname_beamsplitter": {
     "message": "Strahlteiler"
@@ -119,7 +119,7 @@ locales["de"] = {
     "message": "Alle Abbildungen"
   },
   "modename_observer": {
-    "message": "Beobachterperspektiv"
+    "message": "Beobachterperspektive"
   },
   "color_mode": {
     "message": "Farbe simulieren"
