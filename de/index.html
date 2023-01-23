@@ -1,23 +1,24 @@
  <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="de">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Strahlenoptik-Simulation</title>
-  <meta property="og:title" content="線光學模擬 - PhyDemo">
+  <title>Strahlenoptik-Simulation - PhyDemo</title>
+  <meta property="og:title" content="Strahlenoptik-Simulation - PhyDemo">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://phydemo.app/ray-optics/tw/">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/de/">
   <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
-  <meta property="og:description" content="自由、開源的網頁程式，用於建立及模擬平面幾何光學場景。">
-  <meta property="og:locale" content="zh_TW">
-  <link rel="canonical" href="https://phydemo.app/ray-optics/tw/">
+  <meta property="og:description" content="Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.">
+  <meta property="og:locale" content="de">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/de/">
   <link rel="alternate" href="https://phydemo.app/ray-optics/" hreflang="en">
-  <link rel="alternate" href="https://phydemo.app/ray-optics/tw/" hreflang="zh-TW">
-  <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
-  <link rel="alternate" href="https://phydemo.app/ray-optics/ru/" hreflang="ru">
-  <link rel="alternate" href="https://phydemo.app/ray-optics/nl/" hreflang="nl">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/de/" hreflang="de">
   <link rel="alternate" href="https://phydemo.app/ray-optics/fr/" hreflang="fr">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/nl/" hreflang="nl">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/ru/" hreflang="ru">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/tw/" hreflang="zh-TW">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="icon" href="https://phydemo.app/ray-optics/icon128.png" type="image/png">
   <style>
@@ -142,7 +143,7 @@ body {
     <h1><b><span id="title">Strahlenoptik-Simulation</span></b></h1>
     <p id="description">Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.<br>Völlig kostenlos und webbasiert. Der Quellcode ist <a href="https://github.com/ricktu288/ray-optics">auf GitHub verfügbar</a>.</p>
     <p>
-      <a href="https://phydemo.app/ray-optics/simulator/?zh-TW" target="_blank" class="btn btn-success btn-lg" id="start">Simulator starten</a>
+      <a href="https://phydemo.app/ray-optics/simulator/?de" target="_blank" class="btn btn-success btn-lg" id="start">Simulator starten</a>
     </p>
   </center>
   <br>
@@ -159,19 +160,19 @@ body {
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <a href="https://phydemo.app/ray-optics/simulator/?zh-TW#compound-microscope-tw" target="_blank"><img src="3.svg" alt="3.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#spherical-lens-and-mirror" target="_blank"><img src="../img/1.svg" alt="1.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/?zh-TW#spherical-lens-and-mirror" target="_blank"><img src="../img/1.svg" alt="1.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/?zh-TW#apparent-depth-tw" target="_blank"><img src="5.svg" alt="5.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="../img/3.svg" alt="3.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/?zh-TW#chromatic-dispersion-tw" target="_blank"><img src="6.png" alt="6.png"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="../img/5.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/?zh-TW#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="../img/6.png"></a>
       </div>
     </div>
 
@@ -363,11 +364,12 @@ body {
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="https://phydemo.app/ray-optics/">English</a></li>
-        <li><a href="https://phydemo.app/ray-optics/tw/">正體中文</a></li>
-        <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>
-        <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
+        <li><a href="https://phydemo.app/ray-optics/de/">Deutsch</a></li>
+        <li><a href="https://phydemo.app/ray-optics/fr/">Français</a></li>
         <li><a href="https://phydemo.app/ray-optics/nl/">Nederlands</a></li>
-        <li><a href="https://phydemo.app/ray-optics/fr/">français</a></li>
+        <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
+        <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>
+        <li><a href="https://phydemo.app/ray-optics/tw/">正體中文</a></li>
       </ul>
     </div>
   </div>

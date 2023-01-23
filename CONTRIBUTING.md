@@ -67,11 +67,12 @@ _Note: On HiDPI screens, please scale the webpage with the browser first such th
 
 You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Note that the Gallery does not support translation currently.
 1. Download the target locale file:
-   - Traditional Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
-   - Simplified Chinese (completed): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
-   - Russian (incomplete): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
-   - Dutch (incomplete): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
-   - French (incomplete): https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
+   - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
+   - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
+   - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
+   - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
+   - Traditional Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
+   - Simplified Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
    - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/template.js
 2. Translate the phrase/sentence in the quotation after `"message":` to the target language. If you encounter `<` and `>`, leave the text between them untouched; `&amp;` means the "&" symbol; `\"` means a quote, and `&nbsp;` means an extra space.  If the translation of an item is completed, remove the line `"incomplete": true,`. For example,
 ```javascript
