@@ -28,10 +28,14 @@ function init_i18n() {
 
   document.getElementById('github').innerHTML = getMsg('github');
   document.getElementById('home').innerHTML = getMsg('home');
+  if (lang != "en") {
+    document.getElementById('home').href += lang.split("-")[lang.split("-").length - 1].toLowerCase() + "/";
+  }
   document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('translate').innerHTML = getMsg('translate');
 
   console.log("start")
+  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML + uparraw;
   for (var lang1 in locales) {
     var translated = 0;
     var total = 0;
@@ -42,12 +46,11 @@ function init_i18n() {
       }
     }
     console.log([lang1, total, translated]);
-    if (translated != total) {
-      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:white"> (${Math.round(translated/total*100)}% ${getMsg('translated')})</span>`;
+    if (lang1 != "en") {
+      document.getElementById('lang-' + lang1).innerHTML += `<span style="color:rgba(255,255,255,0.6)"> (${Math.round(translated/total*100)}% ${getMsg('translated')})</span>`;
     }
   }
 
-  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML + uparraw;
 
 }
 

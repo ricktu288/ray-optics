@@ -8,14 +8,16 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Images from Two Mirrors"
+        "title": "Images from Two Mirrors",
+        "description": "This simulation shows the images formed by two mirrors. The green \"L\" is the object. If the angle between the two mirrors is \\(\\frac{360^\\circ}{n}\\), then \\(n-1\\) virtual images (the orange L's) will be formed. You can drag the endpoint of the mirror to change the angle between them."
       },
       {
         "id": "parabolic-mirror",
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Parabolic Mirror"
+        "title": "Parabolic Mirror",
+        "description": "This simulation demonstrates the focusing property of the parabolic mirror."
       },
       {
         "id": "hyperbolic-mirror",
@@ -38,7 +40,8 @@
           "Vincent Fan",
           "Yi-Ting Tu"
         ],
-        "title": "Penrose unilluminable room"
+        "title": "Penrose unilluminable room",
+        "description": "This simulation demonstrates the Penrose unilluminable room, which is constructed from elliptic, circular, and linear mirrors. It has the interesting property that a point source (green) within the room will not shine the entire room, no matter where you put it. You can drag the green point to move the source."
       },
       {
         "id": "maze-solution",
@@ -73,21 +76,24 @@
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Reflection and Refraction"
+        "title": "Reflection and Refraction",
+        "description": "This simulation shows the reflection and refraction at a surface."
       },
       {
         "id": "internal-reflection",
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Internal Reflection"
+        "title": "Internal Reflection",
+        "description": "This simulation shows the refraction and internal reflection at a surface."
       },
       {
         "id": "prisms",
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Prisms"
+        "title": "Prisms",
+        "description": "This simulation demonstrates the right-angle prism, the Porro prism, the rhomboid prism, the Dove prism, and the pentaprism."
       },
       {
         "id": "beam-directors",
@@ -101,14 +107,15 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Apparent Depth"
+        "title": "Apparent Depth",
+        "description": "This simulation shows the apparent depth (the distance between the observed image and the water surface) of an object underwater, which is less than the actual depth (the distance between the object and the water surface). The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle."
       },
       {
         "id": "bended-pencil",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Bended Pencil"
+        "title": "Bent Pencil"
       },
       {
         "id": "broken-pencil",
@@ -122,14 +129,16 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Chromatic dispersion"
+        "title": "Chromatic dispersion",
+        "description": "This simulation demonstrates chromatic dispersion using a white-colored beam and a triangular prism. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors."
       },
       {
         "id": "rainbows",
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Rainbows"
+        "title": "Rainbows",
+        "description": "This simulation demonstrates the formation of the primary rainbow, the secondary rainbow, and Alexandar's dark band. Here the spectrum of the sunlight is approximated by mixing red, orange, yellow, green, cyan, blue, and violet colors."
       },
       {
         "id": "inferior-mirage",
@@ -163,21 +172,24 @@
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Concave Lens"
+        "title": "Concave Lens",
+        "description": "This simulation shows a concave lens diverging a beam."
       },
       {
         "id": "convex-lens",
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Convex Lens"
+        "title": "Convex Lens",
+        "description": "This simulation shows a convex lens converging a beam."
       },
       {
         "id": "lens-images",
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Lens Images"
+        "title": "Lens Images",
+        "description": "This simulation shows the images of a beam and point sources produced by ideal lenses."
       },
       {
         "id": "transverse-and-longitudinal-magnification",
@@ -199,7 +211,8 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Chromatic aberration"
+        "title": "Chromatic aberration",
+        "description": "This simulation shows the chromatic aberration of a spherical lens. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors. The focal length of red light is the largest, and that of violet light is the smallest."
       },
       {
         "id": "hyperbolic-lens",
@@ -248,7 +261,8 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Compound Microscope"
+        "title": "Compound Microscope",
+        "description": "This simulation demonstrates the compound microscope. The object (green) is very near the axis, representing a small object. The object is magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced."
       },
       {
         "id": "telescope",
@@ -289,14 +303,16 @@
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Single Ray demo"
+        "title": "Single Ray demo",
+        "description": "This simulation demonstrates the reflection and refraction of a single ray."
       },
       {
         "id": "spherical-lens-and-mirror",
         "contributors": [
           "Yi-Ting Tu"
         ],
-        "title": "Spherical Lens and Mirror"
+        "title": "Spherical Lens and Mirror",
+        "description": "This simulation shows a continuous beam passing through a spherical lens and a spherical mirror."
       },
       {
         "id": "interrogation-room",
@@ -317,14 +333,16 @@
         "contributors": [
           "Wen Zhou"
         ],
-        "title": "NL Binoculars"
+        "title": "NL Binoculars",
+        "description": "This simulation shows a rough sketch of Swarovski NL binoculars."
       },
       {
         "id": "einstein-ring-refocused-to-single-image-via-eyepiece",
         "contributors": [
           "Jordan Anderson"
         ],
-        "title": "Einstein Ring refocused to Single Image via Eyepiece"
+        "title": "Einstein Ring refocused to Single Image via Eyepiece",
+        "description": "This simulation models an eyepiece/lens that could be used on any scientific telescope which will reverse the \"halo\" and focus an Einstein ring back into its original form while scattering the light of any star or massive object used to create the ring."
       },
       {
         "id": "black-cat-becomes-white",
@@ -332,7 +350,8 @@
           "Victory Science",
           "Yi-Ting Tu"
         ],
-        "title": "\"Black cat becomes white\" demo"
+        "title": "\"Black cat becomes white\" demo",
+        "description": "This simulation explains the popular science demo in which some part of a figure disappears when put in water. The demo is made with the following steps: (1) Draw a figure (e.g. a black cat) on a piece of paper. (2) Put the paper in a plastic zip-lock bag. (3) Draw part of the figure (e.g. the border of the cat) or some other figure on the plastic surface. When put in water, the figure drawn on the paper disappears, but not the part drawn on the plastic surface."
       }
     ]
   }

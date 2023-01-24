@@ -102,3 +102,8 @@ body {
 .anchor {
     padding-top: 65px; 
 }
+.description {
+  display: inline-block;
+  text-align: left;
+  width: 80%;
+}
