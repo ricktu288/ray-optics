@@ -27,20 +27,10 @@ objTypes['mirror'] = {
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     if (colorMode) {
-      //var dichroic;
-      // if(dichroic){
-      createNumberAttr("Dichroic " + getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = value;
       }, elem);
-      // }
-    
-      // createBooleanAttr(/*getMsg('')*/"Dichroic", dichroic, function(obj, value) {
-      //   if (obj == objs[selectedObj]) {
-      //     dichroic = value;
-      //     localStorage.rayOpticsDichroic = value?"true":"false";
-      //     selectObj(selectedObj);
-      //   }
-      // }, elem);
     }
   },
 

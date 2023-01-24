@@ -287,6 +287,9 @@ locales["de"] = {
   "wavelength": {
     "message": "Wellenlänge (nm):"
   },
+  "dichroic": {
+    "message": "Dichroitische"
+  },
   "emissionangle": {
     "message": "Emissionswinkel (°):"
   },

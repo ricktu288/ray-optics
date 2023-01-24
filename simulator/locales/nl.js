@@ -328,6 +328,9 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Wavelength (nm):"
   },
+  "dichroic": {
+    "message": "Dichroïde"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

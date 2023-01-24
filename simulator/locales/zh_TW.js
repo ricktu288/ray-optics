@@ -288,6 +288,9 @@ locales["zh-TW"] = {
   "wavelength": {
     "message": "波長 (nm)："
   },
+  "dichroic": {
+    "message": "二色性"
+  },
   "emissionangle": {
     "message": "發射角 (°)："
   },
