@@ -22,6 +22,7 @@ for (category of data) {
   for (item of category.content) {
     console.log(item.id);
     alt = item.title;
+    /*
     objs = JSON.parse(fs.readFileSync(item.id + ".json").toString()).objs;
     for (obj of objs) {
       if (obj.type == "text") {
@@ -31,6 +32,7 @@ for (category of data) {
       }
     }
     console.log(alt);
+    */
     codeItem = indexTemplateItem
       .replaceAll("{ID}", item.id)
       .replaceAll("{TITLE}", item.title)
