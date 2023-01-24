@@ -43,6 +43,7 @@ for (category of data) {
       .replaceAll("{TITLE}", item.title)
       .replaceAll("{CONTRIBUTORS}", ((item.contributors.length==1)?"Contributor: ":"Contributors: ") + item.contributors.join(", "))
       .replaceAll("{ALT}", alt)
+      .replaceAll("{DESCRIPTION}", item.description || "")
     )
   }
   codeCategory = codeCategory

@@ -41,7 +41,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 **Method 1: By e-mail**
 
 1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files to ray-optics@phydemo.app. Include the name of your work and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+2. Send the files to ray-optics@phydemo.app. Include the title of your work, a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
