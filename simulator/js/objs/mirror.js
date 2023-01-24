@@ -3,7 +3,7 @@ objTypes['mirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'mirror', p1: mouse, p2: mouse};
+    return {type: 'mirror', p1: mouse, p2: mouse, dichroic : false};
   },
 
   //使用lineobj原型 Use the prototype lineobj
@@ -17,7 +17,7 @@ objTypes['mirror'] = {
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {    
-    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -27,9 +27,11 @@ objTypes['mirror'] = {
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     if (colorMode) {
-
+      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
+          obj.dichroic = value;
+      }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
+        obj.wavelength = obj.dichroic? value : NaN;
       }, elem);
     }
   },
