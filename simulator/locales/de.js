@@ -59,7 +59,7 @@ locales["de"] = {
 	"message": "Glas"
   },
   "toolname_blocker_": {
-    "message": "Vorhang"
+    "message": "Absorber"
   },
   "toolname_beamsplitter": {
     "message": "Strahlteiler"
@@ -119,7 +119,7 @@ locales["de"] = {
     "message": "Alle Abbildungen"
   },
   "modename_observer": {
-    "message": "Beobachterperspektiv"
+    "message": "Beobachterperspektive"
   },
   "color_mode": {
     "message": "Farbe simulieren"
@@ -170,7 +170,7 @@ locales["de"] = {
     "message": "Glasen"
   },
   "tool_blocker_": {
-    "message": "Vorhang"
+    "message": "Absorber"
   },
   "tool_halfplane": {
     "message": "Halbraum"
@@ -376,15 +376,15 @@ locales["de"] = {
   },
   "tool_laser_popover": {
     "incomplete": true,
-    "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
+    "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A parallel beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "Ein paralleles Lichtbündel strahlt aus einem Segment aus, wobei die Dichte durch den Slider \"Strahl-Anzahldichte\" eingestellt wird. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "incomplete": true,
-    "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
+    "message": "Strahlen entstehen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Click to create.)"
   },
   "tool_led_popover": {
     "incomplete": true,
@@ -392,7 +392,7 @@ locales["de"] = {
   },
   "tool_mirror_popover": {
     "incomplete": true,
-    "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
+    "message": "Simulieren Sie die Reflexion von Licht auf einem Spiegel. (Drag or click to create.)"
   },
   "tool_arcmirror_popover": {
     "incomplete": true,
@@ -408,15 +408,15 @@ locales["de"] = {
   },
   "tool_beamsplitter_popover": {
     "incomplete": true,
-    "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
+    "message": "Ein Spiegel, der einen Teil der Lichteinstrahlung überlässt. (Drag or click to create.)"
   },
   "tool_idealmirror_popover": {
     "incomplete": true,
-    "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
+    "message": "Der idealisierte \"gekrümmte\" Spiegel, der genau der Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Drag or click to create.)"
   },
   "tool_halfplane_popover": {
     "incomplete": true,
-    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
+    "message": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche. (Drag or click to create.)"
   },
   "tool_circlelens_popover": {
     "incomplete": true,
@@ -428,7 +428,7 @@ locales["de"] = {
   },
   "tool_lens_popover": {
     "incomplete": true,
-    "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
+    "message": "Eine ideale Linse, die genau der Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Drag or click to create.)"
   },
   "tool_sphericallens_popover": {
     "incomplete": true,
@@ -440,7 +440,7 @@ locales["de"] = {
   },
   "tool_blackline_popover": {
     "incomplete": true,
-    "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Drag or click to create.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": true,
@@ -448,15 +448,15 @@ locales["de"] = {
   },
   "tool_ruler_popover": {
     "incomplete": true,
-    "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
+    "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Drag or click to create.)"
   },
   "tool_protractor_popover": {
     "incomplete": true,
-    "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+    "message": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad. (Drag or click to create.)"
   },
   "tool_power_popover": {
     "incomplete": true,
-    "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
+    "message": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment. (Drag or click to create the line segment.) Die Einheiten sind willkürlich."
   },
   "tool_text_popover": {
     "incomplete": true,
@@ -467,24 +467,23 @@ locales["de"] = {
     "message": "Drag to move the view. (Mouse right button drag has the same function.)"
   },
   "mode_light_popover": {
-    "incomplete": true,
-    "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
+    "message": "In dieser Einsicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein."
   },
   "mode_extended_light_popover": {
     "incomplete": true,
-    "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    "message": "In dieser Einsicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
   "mode_images_popover": {
     "incomplete": true,
-    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    "message": "In dieser Einsicht wird die Position aller Bilder angezeigt. Gelb bedeutet echte Bilde, Orange bedeutet virtuelle Bilder und Grau (nicht in diesem Bild dargestellt) bedeutet virtuelle Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die \"Strahl-Anzahldichte\" nicht hoch genug ist.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
   },
   "mode_observer_popover": {
     "incomplete": true,
-    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+    "message": "In dieser Einsicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Kreis ist der Beobachter. Alle Strahlen, die es kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, denkt aber vielleicht, dass sie irgendwann beginnen, wenn sie sich dort schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt. (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>In diese Modus werden die Farben (Wellenlängen) von Lichtquellen, Farbmischung und chromatische Dispersion von Gläsern ebenfalls mitsimuliert. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
   },
   "rayDensity_popover": {
     "incomplete": true,
