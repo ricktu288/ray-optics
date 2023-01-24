@@ -20,11 +20,8 @@ objTypes['parallel'] = {
   draw: function(obj, canvas) {
     //var ctx = canvas.getContext('2d');
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    if (colorMode) {
-      ctx.strokeStyle = getMouseStyle(obj, wavelengthToColor(obj.wavelength || 532, 1));
-    } else {
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(0,255,0)');
-    }
+    ctx.strokeStyle = getMouseStyle(obj, colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
+    
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
     ctx.beginPath();
@@ -58,7 +55,7 @@ objTypes['parallel'] = {
       ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
       ray1.isNew = true;
       if (colorMode) {
-        ray1.wavelength = obj.wavelength || 532;
+        ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
       }
       if (i == 0)
       {
