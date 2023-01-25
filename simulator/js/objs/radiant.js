@@ -26,16 +26,12 @@ objTypes['radiant'] = {
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
+  ctx.fillStyle = colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
   if (colorMode) {
-    ctx.fillStyle = wavelengthToColor(obj.wavelength || 532, 1);
-    ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.x - 1.5, obj.y - 1.5, 3, 3);
-  } else {
-    ctx.fillStyle = getMouseStyle(obj, 'rgb(0,255,0)');
-    ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
   }
-
   },
 
   //平移物件 Move the object
@@ -85,7 +81,7 @@ objTypes['radiant'] = {
     ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
     if (colorMode) {
-      ray1.wavelength = obj.wavelength || 532;
+      ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     if (i == i0)
     {

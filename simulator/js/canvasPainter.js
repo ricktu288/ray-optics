@@ -16,7 +16,7 @@ var canvasPainter = {
     else if (graph.type == 2) {
       ctx.strokeStyle = color ? color : 'black';
       ctx.beginPath();
-      var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度 Get the angle from the slope Get the angle from the slope Get the angle from the slope
+      var ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度 Get the angle from the slope 
       var cvsLimit = (Math.abs(graph.p1.x + origin.x) + Math.abs(graph.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);  //取一個會超出繪圖區的距離(當做直線端點) Choose a distance exceeding the edge of the drawing area (for the endpoint of the line) Choose a distance exceeding the edge of the drawing area (for the endpoint of the line)
       ctx.moveTo(graph.p1.x - Math.sin(ang1) * cvsLimit, graph.p1.y - Math.cos(ang1) * cvsLimit);
       ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);
@@ -29,7 +29,7 @@ var canvasPainter = {
       if (Math.abs(graph.p2.x - graph.p1.x) > 1e-5 || Math.abs(graph.p2.y - graph.p1.y) > 1e-5)
       {
         ctx.beginPath();
-        ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度 Get the angle from the slope Get the angle from the slope
+        ang1 = Math.atan2((graph.p2.x - graph.p1.x), (graph.p2.y - graph.p1.y)); //從斜率取得角度 Get the angle from the slope 
         cvsLimit = (Math.abs(graph.p1.x + origin.x) + Math.abs(graph.p1.y + origin.y) + canvas.height + canvas.width) / Math.min(1, scale);  //取一個會超出繪圖區的距離(當做直線端點) Choose a distance exceeding the edge of the drawing area (for the endpoint of the line)
         ctx.moveTo(graph.p1.x, graph.p1.y);
         ctx.lineTo(graph.p1.x + Math.sin(ang1) * cvsLimit, graph.p1.y + Math.cos(ang1) * cvsLimit);

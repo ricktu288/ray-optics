@@ -16,7 +16,7 @@ var minShotLength = 1e-6; //光線兩次作用的最短距離(小於此距離的
 var minShotLength_squared = minShotLength * minShotLength;
 var totalTruncation = 0;
 
-const UV_WAVELENGTH = 400;
+const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
 const BLUE_WAVELENGTH = 460;
 const CYAN_WAVELENGTH = 500;

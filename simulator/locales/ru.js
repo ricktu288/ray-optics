@@ -314,6 +314,9 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Wavelength (nm):"
   },
+  "dichroic": {
+    "message": "Дихроик"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

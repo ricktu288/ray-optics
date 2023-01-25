@@ -380,6 +380,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Wavelength (nm):"
   },
+  "dichroic": {
+    "incomplete": true,
+    "message": "Dichroic"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

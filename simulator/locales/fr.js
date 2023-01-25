@@ -313,6 +313,9 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Wavelength (nm):"
   },
+  "dichroic": {
+    "message": "Dichroïque"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"
