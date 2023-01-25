@@ -50,7 +50,7 @@ objTypes['idealmirror'] = {
   var center_size = 1;
 
   //畫線 Draw the line segment
-  ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
+  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
   ctx.beginPath();

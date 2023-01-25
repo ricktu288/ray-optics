@@ -38,6 +38,12 @@ objTypes['beamsplitter'] = {
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
     ctx.stroke();
+    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
+    ctx.setLineDash([15, 15]);
+    ctx.moveTo(obj.p1.x, obj.p1.y);
+    ctx.lineTo(obj.p2.x, obj.p2.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
   },
 
 
