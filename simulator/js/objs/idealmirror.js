@@ -18,6 +18,14 @@ objTypes['idealmirror'] = {
         selectObj(selectedObj);
       }
     }, elem);
+    if (colorMode) {
+      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
+          obj.dichroic = value;
+      }, elem);
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+        obj.wavelength = obj.dichroic? value : NaN;
+      }, elem);
+    }
   },
 
   //使用lineobj原型 Use the prototype lineobj
@@ -42,7 +50,7 @@ objTypes['idealmirror'] = {
   var center_size = 1;
 
   //畫線 Draw the line segment
-  ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
+  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -135,18 +143,16 @@ objTypes['idealmirror'] = {
 
   },
 
-
-
   //當物件被光射到時 When the obj is shot by a ray
-  shot: function(obj, ray, rayIndex, shootPoint) {
+  shot: function(mirror, ray, rayIndex, shootPoint) {
     //當成理想透鏡與平面鏡的結合 Treat as a combination of an ideal lens and a planar mirror
-    objTypes['lens'].shot(obj, ray, rayIndex, graphs.point(shootPoint.x, shootPoint.y));
+    objTypes['lens'].shot(mirror, ray, rayIndex, graphs.point(shootPoint.x, shootPoint.y));
 
     //將光線往後拉 Pull the ray backwards
     ray.p1.x = 2 * ray.p1.x - ray.p2.x;
     ray.p1.y = 2 * ray.p1.y - ray.p2.y;
 
-    objTypes['mirror'].shot(obj, ray, rayIndex, shootPoint);
-  }
+    objTypes['mirror'].shot(mirror, ray, rayIndex, shootPoint);
+  },
 
 };

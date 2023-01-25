@@ -361,7 +361,15 @@
           "Yi-Ting Tu"
         ],
         "title": "\"Black cat becomes white\" demo",
-        "description": "\"Black cat becomes white\" is a popular science demo in which some part of a figure disappears when put in water. It is made with the following steps: (1) Draw a figure (e.g. a black cat) on a piece of paper. (2) Put the paper in a plastic zip-lock bag. (3) Draw part of the figure (e.g. the border of the cat) or some other figure on the plastic surface. When put in water, the figure drawn on the paper disappears, but not the part drawn on the plastic surface."
+        "description": "This simulation explains the popular science demo in which some part of a figure disappears when put in water. The demo is made with the following steps: (1) Draw a figure (e.g. a black cat) on a piece of paper. (2) Put the paper in a plastic zip-lock bag. (3) Draw part of the figure (e.g. the border of the cat) or some other figure on the plastic surface. When put in water, the figure drawn on the paper disappears, but not the part drawn on the plastic surface."
+      },
+      {
+        "id": "dichroic-rbg-splitter-and-combiner",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "Dichroic RGB Splitter & Combiner",
+        "description": "This simulation demonstrates the splitting and combination of RGB beams using dichroic mirrors."
       }
     ]
   }
