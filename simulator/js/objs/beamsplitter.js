@@ -12,6 +12,14 @@ objTypes['beamsplitter'] = {
     createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
+    if (colorMode) {
+      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
+          obj.dichroic = value;
+      }, elem);
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+        obj.wavelength = obj.dichroic? value : NaN;
+      }, elem);
+    }
   },
 
   //使用lineobj原型 Use the prototype lineobj

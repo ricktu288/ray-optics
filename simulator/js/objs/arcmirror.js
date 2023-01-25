@@ -6,6 +6,18 @@ objTypes['arcmirror'] = {
     return {type: 'arcmirror', p1: mouse};
   },
 
+  //顯示屬性方塊 Show the property box
+  p_box: function(obj, elem) {
+    if (colorMode) {
+      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
+          obj.dichroic = value;
+      }, elem);
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+        obj.wavelength = obj.dichroic? value : NaN;
+      }, elem);
+    }
+  },
+
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {

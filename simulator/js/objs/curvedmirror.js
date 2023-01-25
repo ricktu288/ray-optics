@@ -11,6 +11,14 @@ objTypes['curvedmirror'] = {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
+    if (colorMode) {
+      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
+          obj.dichroic = value;
+      }, elem);
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+        obj.wavelength = obj.dichroic? value : NaN;
+      }, elem);
+    }
   },
 
   c_mousedown: objTypes['lineobj'].c_mousedown,

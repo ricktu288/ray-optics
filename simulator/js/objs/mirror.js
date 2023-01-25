@@ -47,6 +47,7 @@ objTypes['mirror'] = {
     ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, rp, rx, ry);
   },
 
+  //Find the reflection point for the ray custom to each mirror
   reflection_point: function(mirror, rp, rx, ry) {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
