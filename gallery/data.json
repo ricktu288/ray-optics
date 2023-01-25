@@ -358,7 +358,8 @@
         "contributors": [
           "James Garrard"
         ],
-        "title": "Dichroic RGB Splitter & Combiner"
+        "title": "Dichroic RGB Splitter & Combiner",
+        "description": "This simulation demonstrates the splitting and combination of RGB beams using dichroic mirrors."
       }
     ]
   }
