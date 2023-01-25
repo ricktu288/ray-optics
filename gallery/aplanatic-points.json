@@ -1,0 +1,287 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedglass",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -500,
+        "exist": true
+      },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "eqn2": "0.5\\cdot\\sqrt{1-x^2}",
+      "p": 1.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 820,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 60,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 700,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": 60,
+        "exist": true
+      },
+      "p": 152,
+      "symmetric": true
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 664.115427318801,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": -500,
+        "exist": true
+      },
+      "p": 162,
+      "symmetric": true
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -400,
+      "p": "Points A and B are an example of aplanatic points of the sphere."
+    },
+    {
+      "type": "text",
+      "x": 1020,
+      "y": -60,
+      "p": "Spherical lens"
+    },
+    {
+      "type": "text",
+      "x": 1009.3333333333333,
+      "y": -544,
+      "p": "Elliptical lens"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -480,
+      "p": "Click on the \"Extended rays\" button to verify that light emitted from the light source in the spherical lens (point A),"
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -440,
+      "p": "will diverge from another point on the optical axis outside the spherical lens (point B) without spherical aberration."
+    },
+    {
+      "type": "text",
+      "x": 693.3333333333333,
+      "y": 119.33333333333334,
+      "p": "A"
+    },
+    {
+      "type": "text",
+      "x": 544,
+      "y": 119.33333333333331,
+      "p": "B"
+    },
+    {
+      "type": "text",
+      "x": 694.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 544.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -360,
+      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse."
+    },
+    {
+      "type": "text",
+      "x": 967,
+      "y": -446,
+      "p": "C"
+    },
+    {
+      "type": "text",
+      "x": 656.2666666666667,
+      "y": -445.6000000000001,
+      "p": "D"
+    },
+    {
+      "type": "text",
+      "x": 970,
+      "y": -474.3333333333333,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 659,
+      "y": -471.3333333333333,
+      "p": "↑"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1210577348092538,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 926.3169999999998,
+    "y": 647.0289999999999
+  },
+  "scale": 0.78,
+  "colorMode": false
+}
