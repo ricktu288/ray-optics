@@ -160,12 +160,21 @@ objTypes['curvedmirror'] = {
   },
 
   //當物件被光射到時 When the obj is shot by a ray
-  shot: function(obj, ray, rayIndex, rp) {
-    var i = obj.tmp_i;
-    var pts = obj.tmp_points;
-    var seg = graphs.segment(pts[i], pts[i+1]);
+  shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
+    
+    var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
+
+    ray.p1 = rp;
+    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
+  },
+
+  //Find the reflection point for the ray custom to each mirror
+  reflection_point: function(mirror, ray, rp, rx, ry) {
+    var i = mirror.tmp_i;
+    var pts = mirror.tmp_points;
+    var seg = graphs.segment(pts[i], pts[i+1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
 
@@ -177,8 +186,7 @@ objTypes['curvedmirror'] = {
     }
 
     if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
-      ray.p1 = rp;
-      ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+      return graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
       // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
       // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
@@ -213,8 +221,7 @@ objTypes['curvedmirror'] = {
       console.log(frac);
       //canvasPainter.draw(graphs.ray(rp,graphs.point(outx, outy)),"white");
       //canvasPainter.draw(graphs.ray(rp,graphs.point(outxA, outyA)),"white");
-      ray.p1 = rp;
-      ray.p2 = graphs.point(outxFinal, outyFinal);
+      return graphs.point(outxFinal, outyFinal);
     }
   }
 

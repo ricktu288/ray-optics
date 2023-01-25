@@ -44,11 +44,11 @@ objTypes['mirror'] = {
     var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
 
     ray.p1 = rp;
-    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, rp, rx, ry);
+    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
   },
 
   //Find the reflection point for the ray custom to each mirror
-  reflection_point: function(mirror, rp, rx, ry) {
+  reflection_point: function(mirror, ray, rp, rx, ry) {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
     return graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);

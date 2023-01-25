@@ -295,29 +295,32 @@ objTypes['arcmirror'] = {
   },
 
   //當物件被光射到時 When the obj is shot by a ray
-  shot: function(obj, ray, rayIndex, rp) {
+  shot: function(mirror, ray, rayIndex, rp) {
+    var rx = ray.p1.x - rp.x;
+    var ry = ray.p1.y - rp.y;
+    
+    var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
 
-    //alert("")
-    var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(obj.p1, obj.p3)), graphs.perpendicular_bisector(graphs.line(obj.p2, obj.p3)));
-    if (isFinite(center.x) && isFinite(center.y))
-    {
+    ray.p1 = rp;
+    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
+  },
 
-      var rx = ray.p1.x - rp.x;
-      var ry = ray.p1.y - rp.y;
+  reflection_point: function(mirror, ray, rp, rx, ry) {
+    var mx = mirror.p2.x - mirror.p1.x;
+    var my = mirror.p2.y - mirror.p1.y;
+    var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(mirror.p1, mirror.p3)), graphs.perpendicular_bisector(graphs.line(mirror.p2, mirror.p3)));
+    if (isFinite(center.x) && isFinite(center.y)) {
       var cx = center.x - rp.x;
       var cy = center.y - rp.y;
       var c_sq = cx * cx + cy * cy;
       var r_dot_c = rx * cx + ry * cy;
-      ray.p1 = rp;
-
-      ray.p2 = graphs.point(rp.x - c_sq * rx + 2 * r_dot_c * cx, rp.y - c_sq * ry + 2 * r_dot_c * cy);
+      return graphs.point(rp.x - c_sq * rx + 2 * r_dot_c * cx, rp.y - c_sq * ry + 2 * r_dot_c * cy);
     }
     else
     {
       //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-      return objTypes['mirror'].shot(obj, ray, rayIndex, rp);
+      return objTypes['mirror'].reflection_point(obj, ray, rayIndex, rp);
     }
-
   }
 
 };

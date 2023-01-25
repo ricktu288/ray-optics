@@ -46,14 +46,21 @@ objTypes['beamsplitter'] = {
     ctx.setLineDash([]);
   },
 
-
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
+    
+    var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
+
+    ray.p1 = rp;
+    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
+  },
+
+  //Find the reflection point for the ray custom to each mirror
+  reflection_point: function(mirror, ray, rp, rx, ry) {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
-    ray.p1 = rp;
     ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     var ray2 = graphs.ray(rp, graphs.point(rp.x-rx, rp.y-ry));
     var transmission = mirror.p;
@@ -67,6 +74,7 @@ objTypes['beamsplitter'] = {
     }
     ray.brightness_s *= (1-transmission);
     ray.brightness_p *= (1-transmission);
+    return ray.p2;
   }
 
 };
