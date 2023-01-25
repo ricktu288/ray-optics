@@ -162,32 +162,8 @@
     {
       "type": "text",
       "x": -1120,
-      "y": -600,
-      "p": "Aplanatic points of an optical system are special points on its optical axis, such that \"rays proceeding from one of them will all converge to, or seen to diverge from the other point\"."
-    },
-    {
-      "type": "text",
-      "x": -1120,
-      "y": -440,
-      "p": "spherical lens, will diverge from another point on the optical axis outside the spherical lens (without spherical aberration)."
-    },
-    {
-      "type": "text",
-      "x": -1120,
-      "y": -540,
-      "p": "Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other."
-    },
-    {
-      "type": "text",
-      "x": -1120,
-      "y": -480,
-      "p": "Sphere: a spherical lens has two aplanatic points - click on the \"Extended rays\" option to verify that light emitted from a point on the optical axis inside the"
-    },
-    {
-      "type": "text",
-      "x": -739,
-      "y": -160,
-      "p": "k_1 ∙ n1 ∙ sqrt( (x - x_1)^2 + y^2) + k_2 ∙ n2 ∙ sqrt(  (x - x_2)^2 + y^2) = n1 ∙ |x_1| + n2 ∙ |x_2|"
+      "y": -400,
+      "p": "Points A and B are an example of aplanatic points of the sphere."
     },
     {
       "type": "text",
@@ -200,48 +176,6 @@
       "x": 1009.3333333333333,
       "y": -544,
       "p": "Elliptical lens"
-    },
-    {
-      "type": "text",
-      "x": -1120,
-      "y": -380,
-      "p": "Hyperbola: the two foci of the \"Hyperbolic mirror\" example are also aplanatic points."
-    },
-    {
-      "type": "text",
-      "x": -1120,
-      "y": -240,
-      "p": "Given two points with horizontal coordinates x_1 and x_2, and given the refractive index outside and inside our optical"
-    },
-    {
-      "type": "text",
-      "x": -1119,
-      "y": -200,
-      "p": "element as n1 and n2 (respectively), for this two points to be aplanatic points - the boundary of our optical element"
-    },
-    {
-      "type": "text",
-      "x": -1119,
-      "y": -120,
-      "p": "such that k_i=1 or -1 if the ray connecting x_i and the boundary of our optical element is real or imaginary, respectively."
-    },
-    {
-      "type": "text",
-      "x": -1119,
-      "y": -80,
-      "p": "This is an equation of a Cartesian oval, of which the conic sections are special cases."
-    },
-    {
-      "type": "text",
-      "x": -1119,
-      "y": 100,
-      "p": "whereas in the ellipse we have k_1=k_2=1, 0 < x_1, x_2 ."
-    },
-    {
-      "type": "text",
-      "x": -1119,
-      "y": -160,
-      "p": "must fulfill the following equation:"
     },
     {
       "type": "blackline",
@@ -275,25 +209,79 @@
     },
     {
       "type": "text",
-      "x": -1119,
-      "y": 20,
-      "p": "In both the sphere and the ellipse in this example, we have n1=1 and n2=1.5."
+      "x": -1120,
+      "y": -480,
+      "p": "Click on the \"Extended rays\" button to verify that light emitted from the light source in the spherical lens (point A),"
     },
     {
       "type": "text",
-      "x": -1119,
-      "y": 60,
-      "p": "However in the sphere we have k_1=-1, k_2=1, x_1 < 0 < x_2,"
+      "x": -1120,
+      "y": -440,
+      "p": "will diverge from another point on the optical axis outside the spherical lens (point B) without spherical aberration."
+    },
+    {
+      "type": "text",
+      "x": 693.3333333333333,
+      "y": 119.33333333333334,
+      "p": "A"
+    },
+    {
+      "type": "text",
+      "x": 544,
+      "y": 119.33333333333331,
+      "p": "B"
+    },
+    {
+      "type": "text",
+      "x": 694.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 544.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": -1120,
+      "y": -360,
+      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse."
+    },
+    {
+      "type": "text",
+      "x": 967,
+      "y": -446,
+      "p": "C"
+    },
+    {
+      "type": "text",
+      "x": 656.2666666666667,
+      "y": -445.6000000000001,
+      "p": "D"
+    },
+    {
+      "type": "text",
+      "x": 970,
+      "y": -474.3333333333333,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 659,
+      "y": -471.3333333333333,
+      "p": "↑"
     }
   ],
   "mode": "light",
-  "rayDensity_light": 0.12106835203815525,
+  "rayDensity_light": 0.1210577348092538,
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 855,
-    "y": 655
+    "x": 926.3169999999998,
+    "y": 647.0289999999999
   },
-  "scale": 0.75,
+  "scale": 0.78,
   "colorMode": false
 }

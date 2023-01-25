@@ -2,110 +2,45 @@
   "version": 2,
   "objs": [
     {
-      "type": "lens",
-      "p1": {
-        "type": 1,
-        "x": 1020,
-        "y": 720,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1020,
-        "y": 840,
-        "exist": true
-      },
-      "p": "50"
-    },
-    {
-      "type": "lens",
-      "p1": {
-        "type": 1,
-        "x": 620,
-        "y": 720,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 620,
-        "y": 840,
-        "exist": true
-      },
-      "p": "150"
-    },
-    {
-      "type": "lens",
-      "p1": {
-        "type": 1,
-        "x": 820,
-        "y": 720,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 820,
-        "y": 840,
-        "exist": true
-      },
-      "p": "50"
-    },
-    {
-      "type": "ruler",
-      "p1": {
-        "type": 1,
-        "x": 620,
-        "y": 780,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1220,
-        "y": 780,
-        "exist": true
-      }
-    },
-    {
       "type": "radiant",
       "x": 740,
-      "y": 460,
-      "p": 0.1
+      "y": 680,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 760,
-      "y": 440,
-      "p": 0.1
+      "y": 660,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 740,
-      "y": 500,
-      "p": 0.1
+      "y": 720,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 780,
-      "y": 440,
-      "p": 0.1
-    },
-    {
-      "type": "text",
-      "x": 1304.41728,
-      "y": 797.86802,
-      "p": "Observer (sees virtual object image)"
+      "y": 660,
+      "p": 0,
+      "wavelength": 478
     },
     {
       "type": "blackline",
       "p1": {
         "type": 1,
         "x": -180,
-        "y": 580,
+        "y": 560,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 1480,
-        "y": 580,
+        "y": 560,
         "exist": true
       }
     },
@@ -114,13 +49,13 @@
       "p1": {
         "type": 1,
         "x": 620,
-        "y": 480,
+        "y": 700,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 1220,
-        "y": 480,
+        "y": 700,
         "exist": true
       }
     },
@@ -129,13 +64,13 @@
       "p1": {
         "type": 1,
         "x": 620,
-        "y": 420,
+        "y": 640,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 620,
-        "y": 540,
+        "y": 760,
         "exist": true
       },
       "p": "150"
@@ -145,13 +80,13 @@
       "p1": {
         "type": 1,
         "x": 820,
-        "y": 420,
+        "y": 640,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 820,
-        "y": 540,
+        "y": 760,
         "exist": true
       },
       "p": "50"
@@ -161,13 +96,13 @@
       "p1": {
         "type": 1,
         "x": 1020,
-        "y": 420,
+        "y": 640,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 1020,
-        "y": 540,
+        "y": 760,
         "exist": true
       },
       "p": "50"
@@ -177,27 +112,27 @@
       "p1": {
         "type": 1,
         "x": 1220,
-        "y": 420,
+        "y": 640,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 1220,
-        "y": 540,
+        "y": 760,
         "exist": true
       },
       "p": "150"
     },
     {
       "type": "text",
-      "x": 1304.41728,
-      "y": 497.86802,
-      "p": "Observer (doesn't see the objects)"
+      "x": 1404.41728,
+      "y": 702.86802,
+      "p": "but sees the object from the visibility area)"
     },
     {
       "type": "text",
       "x": 619.2048888888892,
-      "y": 551.2114110116362,
+      "y": 791.2114110116362,
       "p": "Partial invisibility area"
     },
     {
@@ -205,81 +140,86 @@
       "p1": {
         "type": 1,
         "x": 526.4045982887067,
-        "y": 759.4411080855376,
+        "y": 659.4411080855376,
         "exist": true
       },
       "p2": {
         "type": 1,
         "x": 580.524691358025,
-        "y": 761.8358024691357,
+        "y": 661.8358024691357,
         "exist": true
       },
       "p": 7,
-      "symmetric": true
+      "symmetric": true,
+      "wavelength": 610,
+      "brightness": "0.5"
     },
     {
       "type": "text",
       "x": 502.8452718642517,
-      "y": 749.1647798121938,
+      "y": 689.1647798121938,
       "p": "Object"
     },
     {
-      "type": "lens",
-      "p1": {
-        "type": 1,
-        "x": 1220,
-        "y": 720,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1220,
-        "y": 840,
-        "exist": true
-      },
-      "p": "150"
+      "type": "radiant",
+      "x": 720,
+      "y": 660,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 720,
-      "y": 440,
-      "p": 0.1
-    },
-    {
-      "type": "radiant",
-      "x": 720,
-      "y": 520,
-      "p": 0.1
+      "y": 740,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 760,
-      "y": 520,
-      "p": 0.1
+      "y": 740,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "radiant",
       "x": 780,
-      "y": 520,
-      "p": 0.1
+      "y": 740,
+      "p": 0.06,
+      "wavelength": 478
     },
     {
       "type": "text",
       "x": 680,
-      "y": 420,
+      "y": 640,
       "p": "8 objects"
     },
     {
       "type": "text",
       "x": 315.33399478076143,
-      "y": 799.2695194863096,
+      "y": 719.2695194863096,
       "p": "Visibility area"
     },
     {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": -180,
+        "y": 800,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 800,
+        "exist": true
+      }
+    },
+    {
       "type": "text",
-      "x": 639.5932746647545,
-      "y": 312.10522436449435,
-      "p": "Below are two identical rochester cloaks"
+      "x": 1304.41728,
+      "y": 677.86802,
+      "p": "Observer (doesn't see the objects from the partial invisibility area,"
     }
   ],
   "mode": "light",
@@ -287,9 +227,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": -197.50595058208128,
-    "y": -60.12946293656091
+    "x": -46.87066886973239,
+    "y": -164.847130153994
   },
   "scale": 0.9835294892978196,
-  "colorMode": false
+  "colorMode": true
 }
