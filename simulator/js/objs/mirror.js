@@ -45,7 +45,6 @@ objTypes['mirror'] = {
     if(!dichroicEnabled || rayHueMatchesMirror != mirror.isDichroicFilter) {    
       return objTypes['lineobj'].rayIntersection(mirror, ray);
     }
-    return;
   },
 
   //當物件被光射到時 When the obj is shot by a ray
