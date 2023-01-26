@@ -15,7 +15,7 @@ objTypes['curvedmirror'] = {
       createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
           obj.isDichroic = value;
       }, elem);
-      createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
+      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
         obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 

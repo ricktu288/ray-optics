@@ -331,6 +331,9 @@ locales["nl"] = {
   "dichroic": {
     "message": "Dichroïde"
   },
+  "filter": {
+    "message": "Filter"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

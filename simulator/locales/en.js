@@ -291,6 +291,9 @@ locales["en"] = {
   "dichroic": {
     "message": "Dichroic"
   },
+  "filter": {
+    "message": "Filter"
+  },
   "emissionangle": {
     "message": "Emission Angle (°):"
   },

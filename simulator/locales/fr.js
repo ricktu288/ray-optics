@@ -316,6 +316,9 @@ locales["fr"] = {
   "dichroic": {
     "message": "Dichroïque"
   },
+  "filter": {
+    "message": "Filtre"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"
