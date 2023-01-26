@@ -3,7 +3,7 @@ objTypes['idealmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100};
+    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100, isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -19,11 +19,14 @@ objTypes['idealmirror'] = {
       }
     }, elem);
     if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
-          obj.dichroic = value;
+      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
+          obj.isDichroic = value;
+      }, elem);
+      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
+        obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.dichroic? value : NaN;
+        obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
     }
   },
@@ -35,7 +38,6 @@ objTypes['idealmirror'] = {
   move: objTypes['lineobj'].move,
   clicked: objTypes['lineobj'].clicked,
   dragging: objTypes['lineobj'].dragging,
-  rayIntersection: objTypes['lineobj'].rayIntersection,
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
@@ -50,7 +52,7 @@ objTypes['idealmirror'] = {
   var center_size = 1;
 
   //畫線 Draw the line segment
-  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -141,6 +143,10 @@ objTypes['idealmirror'] = {
     ctx.fill();
   }
 
+  },
+
+  rayIntersection: function(mirror, ray) {
+    return objTypes['mirror'].rayIntersection(mirror, ray);
   },
 
   //當物件被光射到時 When the obj is shot by a ray

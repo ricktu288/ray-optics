@@ -3,7 +3,7 @@ objTypes['curvedmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}"};
+    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}", isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -12,11 +12,14 @@ objTypes['curvedmirror'] = {
       obj.p = value;
     }, elem);
     if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
-          obj.dichroic = value;
+      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
+          obj.isDichroic = value;
+      }, elem);
+      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
+        obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.dichroic? value : NaN;
+        obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
     }
   },
@@ -51,7 +54,7 @@ objTypes['curvedmirror'] = {
     // get height of (this section of) parabola
     var x0 = p12d/2;
     var i;
-    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     obj.tmp_points = [];
     var lastError = "";
@@ -136,11 +139,13 @@ objTypes['curvedmirror'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function(obj, ray) {
-    if (!obj.tmp_points) return;
+  rayIntersection: function(mirror, ray) {
+    var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
+    var rayHueMatchesMirror =  mirror.wavelength == ray.wavelength;
+    if (!mirror.tmp_points || dichroicEnabled && rayHueMatchesMirror == mirror.isDichroicFilter) return;
     var i,j;
-    var pts = obj.tmp_points;
-    var dir = graphs.length(obj.p2, ray.p1) > graphs.length(obj.p1, ray.p1);
+    var pts = mirror.tmp_points;
+    var dir = graphs.length(mirror.p2, ray.p1) > graphs.length(mirror.p1, ray.p1);
     var rp;
     for (j = 0; j < pts.length-1; j++) {
       i = dir ? j : (pts.length-2-j);
@@ -152,7 +157,7 @@ objTypes['curvedmirror'] = {
       if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
           if (!rp || graphs.length(ray.p1, rp_temp) < graphs.length(ray.p1, rp)) {
               rp = rp_temp;
-              obj.tmp_i = i;
+              mirror.tmp_i = i;
           }
       }
     }
@@ -163,21 +168,14 @@ objTypes['curvedmirror'] = {
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
-    
-    var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
-
-    ray.p1 = rp;
-    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
-  },
-
-  //Find the reflection point for the ray custom to each mirror
-  reflection_point: function(mirror, ray, rp, rx, ry) {
     var i = mirror.tmp_i;
     var pts = mirror.tmp_points;
     var seg = graphs.segment(pts[i], pts[i+1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
+    
 
+    ray.p1 = rp;
     var frac;
     if (Math.abs(mx) > Math.abs(my)) {
       frac = (rp.x - seg.p1.x) / mx;
@@ -186,7 +184,7 @@ objTypes['curvedmirror'] = {
     }
 
     if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
-      return graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+      ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
       // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
       // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
@@ -221,7 +219,7 @@ objTypes['curvedmirror'] = {
       console.log(frac);
       //canvasPainter.draw(graphs.ray(rp,graphs.point(outx, outy)),"white");
       //canvasPainter.draw(graphs.ray(rp,graphs.point(outxA, outyA)),"white");
-      return graphs.point(outxFinal, outyFinal);
+      ray.p2 = graphs.point(outxFinal, outyFinal);
     }
   }
 

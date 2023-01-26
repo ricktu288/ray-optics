@@ -311,11 +311,13 @@ locales["ru"] = {
     "message": "Яркость:"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm):"
+    "message": "Длина волны (nm):"
   },
   "dichroic": {
     "message": "Дихроик"
+  },
+  "filter": {
+    "message": "Фильтр"
   },
   "emissionangle": {
     "incomplete": true,

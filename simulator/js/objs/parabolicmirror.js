@@ -4,17 +4,20 @@ objTypes['parabolicmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'parabolicmirror', p1: mouse};
+    return {type: 'parabolicmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
-          obj.dichroic = value;
+      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
+          obj.isDichroic = value;
+      }, elem);
+      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
+        obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.dichroic? value : NaN;
+        obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
     }
   },
@@ -41,7 +44,7 @@ objTypes['parabolicmirror'] = {
       var x0 = p12d/2;
       var a = height/(x0*x0); // y=ax^2
       var i;
-      ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.beginPath();
       obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);

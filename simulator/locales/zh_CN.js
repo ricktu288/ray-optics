@@ -291,6 +291,9 @@ locales["zh-CN"] = {
   "dichroic": {
     "message": "二色性"
   },
+  "filter": {
+    "message": "滤光"
+  },
   "emissionangle": {
     "message": "发射角 (°)："
   },
