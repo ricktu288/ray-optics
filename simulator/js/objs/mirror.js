@@ -13,7 +13,6 @@ objTypes['mirror'] = {
   move: objTypes['lineobj'].move,
   clicked: objTypes['lineobj'].clicked,
   dragging: objTypes['lineobj'].dragging,
-  rayIntersection: objTypes['lineobj'].rayIntersection,
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {    
@@ -39,6 +38,16 @@ objTypes['mirror'] = {
     }
   },
 
+  rayIntersection: function(mirror, ray) {
+    var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
+    var rayHueMatchesMirror =  mirror.wavelength == ray.wavelength;
+    //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
+    if(!dichroicEnabled || rayHueMatchesMirror != mirror.isDichroicFilter) {    
+      return objTypes['lineobj'].rayIntersection(mirror, ray);
+    }
+    return;
+  },
+
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
@@ -48,15 +57,7 @@ objTypes['mirror'] = {
 
     ray.p1 = rp;
     ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-  },
+  }
 
-  // rayIntersection: function(obj, ray) {
-  //   var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
-  //   var rayHueMatchesMirror =  mirror.wavelength == ray.wavelength;
-  //   //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
-  //   if(!dichroicEnabled || rayHueMatchesMirror != mirror.isDichroicFilter) {    
-  //     return super.rayIntersection(obj, ray);
-  //   }
-  // }
 
 };
