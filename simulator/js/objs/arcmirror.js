@@ -3,7 +3,7 @@ objTypes['arcmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'arcmirror', p1: mouse};
+    return {type: 'arcmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -14,7 +14,7 @@ objTypes['arcmirror'] = {
       }, elem);
       createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
         obj.isDichroicFilter = value;
-    }, elem);
+      }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
@@ -273,8 +273,7 @@ objTypes['arcmirror'] = {
     var rayHueMatchesMirror =  mirror.wavelength == ray.wavelength;
     if (!mirror.p3 || dichroicEnabled && rayHueMatchesMirror == mirror.isDichroicFilter) {return;}
     var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(mirror.p1, mirror.p3)), graphs.perpendicular_bisector(graphs.line(mirror.p2, mirror.p3)));
-    if (isFinite(center.x) && isFinite(center.y))
-    {
+    if (isFinite(center.x) && isFinite(center.y)) {
 
       var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(center, mirror.p2));
       var rp_exist = [];
@@ -295,7 +294,7 @@ objTypes['arcmirror'] = {
     else
     {
       //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-      return mirrorTypes['mirror'].rayIntersection(mirror, ray);
+      return objTypes['lineobj'].rayIntersection(mirror, ray);
     }
   },
 
@@ -306,19 +305,19 @@ objTypes['arcmirror'] = {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
 
-    ray.p1 = rp;
     var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(mirror.p1, mirror.p3)), graphs.perpendicular_bisector(graphs.line(mirror.p2, mirror.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
       var cx = center.x - rp.x;
       var cy = center.y - rp.y;
       var c_sq = cx * cx + cy * cy;
       var r_dot_c = rx * cx + ry * cy;
+      ray.p1 = rp;
       ray.p2 = graphs.point(rp.x - c_sq * rx + 2 * r_dot_c * cx, rp.y - c_sq * ry + 2 * r_dot_c * cy);
     }
     else
     {
       //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-      ray.p2 = mirrorTypes['mirror'].reflection_point(mirror, ray, rayIndex, rp);
+      return objTypes['mirror'].shot(obj, ray, rayIndex, rp);
     }
     
   }

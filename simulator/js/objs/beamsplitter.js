@@ -4,7 +4,7 @@ objTypes['beamsplitter'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5};
+    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5, isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -13,11 +13,14 @@ objTypes['beamsplitter'] = {
       obj.p = value;
     }, elem);
     if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.dichroic, function(obj, value) {
-          obj.dichroic = value;
+      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
+        obj.isDichroic = value;
+      }, elem);
+      createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
+        obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.dichroic? value : NaN;
+        obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
     }
   },
@@ -38,7 +41,7 @@ objTypes['beamsplitter'] = {
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
     ctx.stroke();
-    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.dichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
+    ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
     ctx.setLineDash([15, 15]);
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -46,19 +49,16 @@ objTypes['beamsplitter'] = {
     ctx.setLineDash([]);
   },
 
+  rayIntersection: function(obj, ray) {
+    return objTypes['mirror'].rayIntersection(obj, ray);
+  },
+
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
-    
-    var dichroic = colorMode && mirror.dichroic && mirror.wavelength && mirror.wavelength != ray.wavelength;
 
     ray.p1 = rp;
-    ray.p2 = dichroic? graphs.point(rp.x-rx, rp.y-ry) : this.reflection_point(mirror, ray, rp, rx, ry);
-  },
-
-  //Find the reflection point for the ray custom to each mirror
-  reflection_point: function(mirror, ray, rp, rx, ry) {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
     ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
@@ -74,7 +74,6 @@ objTypes['beamsplitter'] = {
     }
     ray.brightness_s *= (1-transmission);
     ray.brightness_p *= (1-transmission);
-    return ray.p2;
-  }
+  },
 
 };

@@ -3,7 +3,7 @@ objTypes['curvedmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}"};
+    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}", isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -17,7 +17,7 @@ objTypes['curvedmirror'] = {
       }, elem);
       createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
         obj.isDichroicFilter = value;
-    }, elem);
+      }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);

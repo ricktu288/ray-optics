@@ -4,7 +4,7 @@ objTypes['parabolicmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'parabolicmirror', p1: mouse};
+    return {type: 'parabolicmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
   },
 
   //顯示屬性方塊 Show the property box
@@ -15,7 +15,7 @@ objTypes['parabolicmirror'] = {
       }, elem);
       createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
         obj.isDichroicFilter = value;
-    }, elem);
+      }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);

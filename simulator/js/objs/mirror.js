@@ -31,7 +31,7 @@ objTypes['mirror'] = {
       }, elem);
       createBooleanAttr(/*getMsg('dichroic')*/" Filter", obj.isDichroicFilter, function(obj, value) {
         obj.isDichroicFilter = value;
-    }, elem);
+      }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = obj.isDichroic? value : NaN;
       }, elem);
