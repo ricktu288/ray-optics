@@ -108,7 +108,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Apparent Depth",
-        "description": "This simulation shows the apparent depth (the distance between the observed image and the water surface) of an object underwater, which is less than the actual depth (the distance between the object and the water surface). The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle."
+        "description": "When you look at an object underwater from the air, the depth of the object appears to be smaller than its actual depth. This phenomenon is due to the reflection of light, and is demonstrated in this simulation. The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle."
       },
       {
         "id": "bended-pencil",
@@ -378,7 +378,7 @@
           "James Garrard"
         ],
         "title": "GaN based LCD Pixel",
-        "description": "This is a model of a GaN based LCD pixel. It simulates how new microled display layers function and how our eyes perceive it."
+        "description": "This is a model of a GaN based LCD pixel. It simulates how new microled display layers function and how our eyes perceive the pixel."
       }
     ]
   }
