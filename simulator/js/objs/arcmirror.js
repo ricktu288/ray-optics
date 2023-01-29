@@ -16,7 +16,7 @@ objTypes['arcmirror'] = {
         obj.isDichroicFilter = value;
       }, elem);
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.isDichroic? value : NaN;
+        obj.wavelength = value;
       }, elem);
     }
   },
