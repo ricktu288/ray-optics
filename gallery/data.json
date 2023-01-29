@@ -263,7 +263,8 @@
         "contributors": [
           "Paul Falstad"
         ],
-        "title": "Zoom Lens"
+        "title": "Zoom Lens",
+        "description": "This simulation demonstrates a zoom lens, where you can change the zoom by dragging the concave lens in the middle."
       },
       {
         "id": "compound-microscope",
@@ -271,7 +272,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Compound Microscope",
-        "description": "A compound microscope consists of two lens, the objective and the eyepiece. The object (green) is very near the axis, representing a small object. The object is then magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced."
+        "description": "A compound microscope consists of two lenses, the objective and the eyepiece. The object (green) is very near the axis, representing a small object. The object is then magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced."
       },
       {
         "id": "telescope",
@@ -377,7 +378,7 @@
           "James Garrard"
         ],
         "title": "GaN based LCD Pixel",
-        "description": "This is a model of a GaN based LCD pixel, and it simulates how new microled display layers function."
+        "description": "This is a model of a GaN based LCD pixel. It simulates how new microled display layers function and how our eyes perceive it."
       }
     ]
   }
