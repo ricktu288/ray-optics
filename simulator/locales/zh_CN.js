@@ -367,7 +367,7 @@ locales["zh-CN"] = {
     "message": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
   },
   "export_svg_popover": {
-    "message": "导出为SVG。"
+    "message": "导出为SVG。不支持混色与相对折射率低于1的情形。"
   },
   "view_gallery_popover": {
     "message": "前往「作品集」页面以载入示例。"
@@ -454,7 +454,7 @@ locales["zh-CN"] = {
     "message": "模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。 （拖曳大蓝点以移动观察者。）<br>若使用「模拟色彩」，则改以光源颜色显示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模拟光源的颜色（波长）、混色与透光物的色散。选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。注意「光线密度」高时像的颜色有时不准确。「导出」钮目前不支持混色。"
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模拟光源的颜色（波长）、混色与透光物的色散。选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。屏幕显示之颜色仅为粗略近似，且当「光线密度」太高或太低时可能非常不准确。"
   },
   "rayDensity_popover": {
     "message": "决定光线模拟的密度。数值为对数刻度。"

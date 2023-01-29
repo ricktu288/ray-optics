@@ -367,7 +367,7 @@ locales["en"] = {
     "message": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
   },
   "export_svg_popover": {
-    "message": "Export to SVG."
+    "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."
   },
   "view_gallery_popover": {
     "message": "Go to the Gallery webpage to load an example."
@@ -454,7 +454,7 @@ locales["en"] = {
     "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "message": "Decides how dense should the lights be simulated. The number is in log scale."

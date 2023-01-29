@@ -422,7 +422,7 @@ locales["nl"] = {
   },
   "export_svg_popover": {
     "incomplete": true,
-    "message": "Export to SVG."
+    "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."
   },
   "view_gallery_popover": {
     "incomplete": true,
@@ -523,7 +523,7 @@ locales["nl"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": true,

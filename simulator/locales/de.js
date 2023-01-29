@@ -374,7 +374,7 @@ locales["de"] = {
   },
   "export_svg_popover": {
     "incomplete": true,
-    "message": "Export to SVG."
+    "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."
   },
   "view_gallery_popover": {
     "incomplete": true,
@@ -489,7 +489,7 @@ locales["de"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>In diese Modus werden die Farben (Wellenlängen) von Lichtquellen, Farbmischung und chromatische Dispersion von Gläsern ebenfalls mitsimuliert. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. Note that the color of images may be inaccurate when 'Ray density' is high. The 'Export' button does not support color mixture."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>In diese Modus werden die Farben (Wellenlängen) von Lichtquellen, Farbmischung und chromatische Dispersion von Gläsern ebenfalls mitsimuliert. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": true,
