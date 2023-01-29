@@ -6,6 +6,8 @@ objTypes['idealmirror'] = {
     return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100, isDichroic: false, isDichroicFilter: false};
   },
 
+  dichroicSettings: objTypes['mirror'].dichroicSettings,
+
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
@@ -18,17 +20,7 @@ objTypes['idealmirror'] = {
         selectObj(selectedObj);
       }
     }, elem);
-    if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-          obj.isDichroic = value;
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        obj.isDichroicFilter = value;
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      }, elem);
-    }
+    this.dichroicSettings(obj,elem);
   },
 
   //使用lineobj原型 Use the prototype lineobj

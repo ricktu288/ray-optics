@@ -7,22 +7,14 @@ objTypes['beamsplitter'] = {
     return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5, isDichroic: false, isDichroicFilter: false};
   },
 
+  dichroicSettings: objTypes['mirror'].dichroicSettings,
+
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-        obj.isDichroic = value;
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        obj.isDichroicFilter = value;
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      }, elem);
-    }
+    this.dichroicSettings(obj,elem);
   },
 
   //使用lineobj原型 Use the prototype lineobj

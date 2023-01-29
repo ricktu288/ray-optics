@@ -7,19 +7,11 @@ objTypes['parabolicmirror'] = {
     return {type: 'parabolicmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
   },
 
+  dichroicSettings: objTypes['mirror'].dichroicSettings,
+
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-          obj.isDichroic = value;
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        obj.isDichroicFilter = value;
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      }, elem);
-    }
+    this.dichroicSettings(obj,elem);
   },
 
   c_mousedown: objTypes['arcmirror'].c_mousedown,
