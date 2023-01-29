@@ -33,7 +33,9 @@
         "exist": true
       },
       "wavelength": "620",
-      "dichroic": true
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
     },
     {
       "type": "mirror",
@@ -67,7 +69,9 @@
         "exist": true
       },
       "wavelength": "460",
-      "dichroic": true
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
     },
     {
       "type": "mirror",
@@ -83,8 +87,10 @@
         "y": 440,
         "exist": true
       },
-      "wavelength": "620",
-      "dichroic": true
+      "wavelength": 620,
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
     },
     {
       "type": "mirror",
@@ -101,7 +107,9 @@
         "exist": true
       },
       "wavelength": "540",
-      "dichroic": true
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
     },
     {
       "type": "parallel",
@@ -156,7 +164,8 @@
         "y": 360,
         "exist": true
       },
-      "dichroic": false
+      "dichroic": false,
+      "isDichroic": true
     },
     {
       "type": "mirror",
@@ -229,9 +238,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": -504.99999999999994,
-    "y": -171
+    "x": -408.14285714285734,
+    "y": 2.2857142857144197
   },
-  "scale": 1.75,
+  "scale": 1.25,
   "colorMode": true
 }

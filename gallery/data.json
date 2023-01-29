@@ -370,6 +370,14 @@
         ],
         "title": "Dichroic RGB Splitter & Combiner",
         "description": "This simulation demonstrates the splitting and combination of RGB beams using dichroic mirrors."
+      },
+      {
+        "id": "gan-based-lcd-pixel",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "GaN based LCD Pixel",
+        "description": "This is a model of a GaN based LCD pixel, and it simulates how new microled display layers function."
       }
     ]
   }
