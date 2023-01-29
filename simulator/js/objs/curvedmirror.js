@@ -6,22 +6,14 @@ objTypes['curvedmirror'] = {
     return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}", isDichroic: false, isDichroicFilter: false};
   },
 
+  dichroicSettings: objTypes['mirror'].dichroicSettings,
+
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    if (colorMode) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-          obj.isDichroic = value;
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        obj.isDichroicFilter = value;
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = obj.isDichroic? value : NaN;
-      }, elem);
-    }
+    this.dichroicSettings(obj,elem);
   },
 
   c_mousedown: objTypes['lineobj'].c_mousedown,
