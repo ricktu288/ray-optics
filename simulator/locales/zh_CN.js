@@ -292,8 +292,7 @@ locales["zh-CN"] = {
     "message": "二色性"
   },
   "filter": {
-    "incomplete": true,//Translation software gives 彩色滤光片, 彩色滤镜, or 滤色器
-    "message": "Filter"
+    "message": "滤光"
   },
   "emissionangle": {
     "message": "发射角 (°)："

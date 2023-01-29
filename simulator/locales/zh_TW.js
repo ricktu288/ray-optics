@@ -292,8 +292,7 @@ locales["zh-TW"] = {
     "message": "二色性"
   },
   "filter": {
-    "incomplete": true,
-    "message": "Filter"
+    "message": "濾光"
   },
   "emissionangle": {
     "message": "發射角 (°)："
