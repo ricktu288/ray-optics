@@ -161,9 +161,9 @@
     },
     {
       "type": "text",
-      "x": -1120,
+      "x": -840,
       "y": -400,
-      "p": "Points A and B are an example of aplanatic points of the sphere."
+      "p": "Points A and B are an example of aplanatic points of the sphere, for which (n1,n2,x1,x2)=(1.5,1,3 * 20,-4.5 * 20) relative to the marked Y axis."
     },
     {
       "type": "text",
@@ -209,13 +209,13 @@
     },
     {
       "type": "text",
-      "x": -1120,
+      "x": -840,
       "y": -480,
       "p": "Click on the \"Extended rays\" button to verify that light emitted from the light source in the spherical lens (point A),"
     },
     {
       "type": "text",
-      "x": -1120,
+      "x": -840,
       "y": -440,
       "p": "will diverge from another point on the optical axis outside the spherical lens (point B) without spherical aberration."
     },
@@ -245,12 +245,6 @@
     },
     {
       "type": "text",
-      "x": -1120,
-      "y": -360,
-      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse."
-    },
-    {
-      "type": "text",
       "x": 967,
       "y": -446,
       "p": "C"
@@ -272,6 +266,39 @@
       "x": 659,
       "y": -471.3333333333333,
       "p": "↑"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 605.1814223512338,
+      "y": -877.7406869859694,
+      "p": "Y axis"
+    },
+    {
+      "type": "text",
+      "x": -840,
+      "y": -360,
+      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse, for which (n1,n2)=(1.5,1.5)"
+    },
+    {
+      "type": "text",
+      "x": 632.8205128205128,
+      "y": -849.7435897435897,
+      "p": "↓"
     }
   ],
   "mode": "light",
@@ -279,9 +306,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 926.3169999999998,
-    "y": 647.0289999999999
+    "x": 993.6377289377288,
+    "y": 665.3327838827844
   },
-  "scale": 0.78,
+  "scale": 0.5300000000000002,
   "colorMode": false
 }
