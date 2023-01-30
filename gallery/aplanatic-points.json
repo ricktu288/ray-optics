@@ -60,11 +60,11 @@
       },
       "p2": {
         "type": 1,
-        "x": 1300,
+        "x": 960,
         "y": 60,
         "exist": true
       },
-      "p": 152,
+      "p": 162,
       "symmetric": true
     },
     {
@@ -161,9 +161,9 @@
     },
     {
       "type": "text",
-      "x": -1120,
-      "y": -400,
-      "p": "Points A and B are an example of aplanatic points of the sphere."
+      "x": -958.1132075471697,
+      "y": -360.00000000000006,
+      "p": "where x1,x2 are the horizontal coordinates of points A,B respectively (each grid cell has dimensions of 20 by 20)."
     },
     {
       "type": "text",
@@ -209,13 +209,13 @@
     },
     {
       "type": "text",
-      "x": -1120,
+      "x": -960,
       "y": -480,
       "p": "Click on the \"Extended rays\" button to verify that light emitted from the light source in the spherical lens (point A),"
     },
     {
       "type": "text",
-      "x": -1120,
+      "x": -960,
       "y": -440,
       "p": "will diverge from another point on the optical axis outside the spherical lens (point B) without spherical aberration."
     },
@@ -245,12 +245,6 @@
     },
     {
       "type": "text",
-      "x": -1120,
-      "y": -360,
-      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse."
-    },
-    {
-      "type": "text",
       "x": 967,
       "y": -446,
       "p": "C"
@@ -272,6 +266,45 @@
       "x": 659,
       "y": -471.3333333333333,
       "p": "↑"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 605.1814223512338,
+      "y": -877.7406869859694,
+      "p": "Y axis"
+    },
+    {
+      "type": "text",
+      "x": -960,
+      "y": -320,
+      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse, for which (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)"
+    },
+    {
+      "type": "text",
+      "x": 632.8205128205128,
+      "y": -849.7435897435897,
+      "p": "↓"
+    },
+    {
+      "type": "text",
+      "x": -958.1132075471697,
+      "y": -400.00000000000006,
+      "p": "Points A and B are an example of aplanatic points of the sphere, for which (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relative to the marked Y axis,"
     }
   ],
   "mode": "light",
@@ -279,9 +312,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 926.3169999999998,
-    "y": 647.0289999999999
+    "x": 951.6483146067413,
+    "y": 661.6797752808989
   },
-  "scale": 0.78,
+  "scale": 0.5300000000000002,
   "colorMode": false
 }
