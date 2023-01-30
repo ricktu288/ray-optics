@@ -292,7 +292,7 @@
       "type": "text",
       "x": -960,
       "y": -320,
-      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse, for which (n1,n2,E)=(1.5,1.5,>0)"
+      "p": "In a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse, for which (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)"
     },
     {
       "type": "text",
