@@ -252,6 +252,9 @@ locales["zh-TW"] = {
   "save": {
     "message": "儲存"
   },
+  "get_link": {
+    "message": "取得連結"
+  },
   "export_svg": {
     "message": "匯出"
   },
@@ -358,13 +361,19 @@ locales["zh-TW"] = {
     "message": "重做上個動作。(Ctrl+Y)"
   },
   "reset_popover": {
-    "message": "清空整個畫面。"
+    "message": "清空整個場景。"
   },
   "save_popover": {
-    "message": "將目前畫面存檔。"
+    "message": "將目前場景存檔。"
   },
   "open_popover": {
     "message": "開啟檔案或背景圖片。背景圖片將從座標原點顯示。（或拖放檔案）"
+  },
+  "get_link_popover": {
+    "message": "複製並前往本場景的專屬網址，以便分享連結（可考慮透過短網址工具）。"
+  },
+  "get_link_warning": {
+    "message": "本網址過長，在部分平臺上可能無法正常運作。建議改用「儲存」並分享檔案。"
   },
   "export_svg_popover": {
     "message": "匯出為SVG。不支援混色與相對折射率低於1的情形。"

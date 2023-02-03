@@ -10,6 +10,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
   },
+  "homepage_desc": {
+    "incomplete": true,
+    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
+  },
   "launch_simulator": {
     "incomplete": true,
     "message": "Launch Simulator"
@@ -273,6 +277,10 @@ locales["fr"] = {
   "save": {
     "message": "Sauvegarder"
   },
+  "get_link": {
+    "incomplete": true,
+    "message": "Get Link"
+  },
   "export_svg": {
     "incomplete": true,
     "message": "Export"
@@ -404,6 +412,14 @@ locales["fr"] = {
   "open_popover": {
     "incomplete": true,
     "message": "Ouvrir un fichier or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
+  },
+  "get_link_popover": {
+    "incomplete": true,
+    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener)."
+  },
+  "get_link_warning": {
+    "incomplete": true,
+    "message": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
   },
   "export_svg_popover": {
     "incomplete": true,

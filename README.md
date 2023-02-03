@@ -111,6 +111,12 @@ The source code is available at: https://github.com/arthanzel/evaluatex
 MathJax is distributed under the [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 The source code is available at: https://github.com/mathjax/MathJax-src
 
+### json-url
+
+json-url is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
+The source code is available at: https://github.com/masotime/json-url
+
+
 # 線光學模擬
 自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。
 

@@ -252,6 +252,9 @@ locales["en"] = {
   "save": {
     "message": "Save"
   },
+  "get_link": {
+    "message": "Get Link"
+  },
   "export_svg": {
     "message": "Export"
   },
@@ -361,10 +364,16 @@ locales["en"] = {
     "message": "Reset all changes."
   },
   "save_popover": {
-    "message": "Save the current file."
+    "message": "Save the current scene as a file."
   },
   "open_popover": {
     "message": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
+  },
+  "get_link_popover": {
+    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener)."
+  },
+  "get_link_warning": {
+    "message": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
   },
   "export_svg_popover": {
     "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."

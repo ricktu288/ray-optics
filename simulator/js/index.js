@@ -131,6 +131,7 @@ window.onload = function (e) {
   document.getElementById('undo').onclick = undo;
   document.getElementById('redo').onclick = redo;
   document.getElementById('reset').onclick = function () {
+    history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
     cancelRestore();
     createUndoPoint();
@@ -142,6 +143,7 @@ window.onload = function (e) {
     document.getElementById('saveBox').style.display = '';
     document.getElementById('save_name').select();
   };
+  document.getElementById('get_link').onclick = getLink;
   document.getElementById('export_svg').onclick = exportSVG;
   document.getElementById('open').onclick = function () {
     document.getElementById('openfile').click();
@@ -326,7 +328,16 @@ window.onload = function (e) {
 
   MQ = MathQuill.getInterface(2);
 
-  if (window.location.hash.length > 1) {
+  if (window.location.hash.length > 150) {
+    JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
+      document.getElementById('textarea1').value = JSON.stringify(json);
+      backgroundImage = null;
+      JSONInput();
+      createUndoPoint();
+      isFromGallery = true;
+      hasUnsavedChange = false;
+    });
+  } else if (window.location.hash.length > 1) {
     openSample(window.location.hash.substr(1) + ".json");
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     isFromGallery = true;
@@ -762,6 +773,20 @@ function openFile(readFile) {
     createUndoPoint();
   };
 
+}
+
+function getLink() {
+  JsonUrl('lzma').compress(JSON.parse(document.getElementById('textarea1').value)).then(output => {
+    window.location.hash = '#' + output;
+    var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+    console.log(fullURL.length);
+    navigator.clipboard.writeText(fullURL);
+    if (fullURL.length > 2043) {
+      alert(getMsg("get_link_warning"));
+    } else {
+      hasUnsavedChange = false;
+    }
+  });
 }
 
 function exportSVG() {

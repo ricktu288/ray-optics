@@ -252,6 +252,9 @@ locales["zh-CN"] = {
   "save": {
     "message": "保存"
   },
+  "get_link": {
+    "message": "取得连结"
+  },
   "export_svg": {
     "message": "导出"
   },
@@ -358,13 +361,19 @@ locales["zh-CN"] = {
     "message": "重做上个动作。(Ctrl+Y)"
   },
   "reset_popover": {
-    "message": "清空整个画面。"
+    "message": "清空整个场景。"
   },
   "save_popover": {
-    "message": "将目前画面存档。"
+    "message": "将目前场景存档。"
   },
   "open_popover": {
     "message": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
+  },
+"get_link_popover": {
+    "message": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。"
+  },
+  "get_link_warning": {
+    "message": "本网址过长，在部分平台上可能无法正常运作。建议改用「保存」并分享文件。 "
   },
   "export_svg_popover": {
     "message": "导出为SVG。不支持混色与相对折射率低于1的情形。"

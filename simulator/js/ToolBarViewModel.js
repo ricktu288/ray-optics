@@ -21,6 +21,8 @@ function ToolBarViewModel() {
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("Export", "export_svg", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
+      new ToolBarItem("Get Link", "get_link", undefined,
+        ToolTypeEnum.BUTTON, undefined, function () { alert(""); }),
       new ToolBarItem("View Gallery", "view_gallery", undefined,
         ToolTypeEnum.BUTTON, undefined, function () { alert(""); })
     ]),
