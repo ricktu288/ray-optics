@@ -309,7 +309,7 @@ objTypes['arcmirror'] = {
     else
     {
       //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-      return objTypes['mirror'].shot(obj, ray, rayIndex, rp);
+      return objTypes['mirror'].shot(mirror, ray, rayIndex, rp);
     }
     
   }
