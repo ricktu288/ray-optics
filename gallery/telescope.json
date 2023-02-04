@@ -338,7 +338,7 @@
       "type": "text",
       "x": 1516,
       "y": 392,
-      "p": "With a telescope (better angular seperation of both stars)"
+      "p": "With a Gallilean beam expander (better angular seperation of both stars)"
     },
     {
       "type": "text",
@@ -356,7 +356,7 @@
       "type": "text",
       "x": 1516,
       "y": 1212,
-      "p": "Without a telescope"
+      "p": "Without a beam expander"
     }
   ],
   "mode": "light",

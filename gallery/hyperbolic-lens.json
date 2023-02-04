@@ -91,12 +91,6 @@
     {
       "type": "text",
       "x": 1104.9111111111113,
-      "y": -423.4476190476192,
-      "p": "The hyperbolic lens is the only lens that in theory (neglecting the wave nature of light, i.e - geometric optics domain)"
-    },
-    {
-      "type": "text",
-      "x": 1104.9111111111113,
       "y": -343.4476190476192,
       "p": "(Select this hyperbolic lens to see its custom equation)."
     },
@@ -204,12 +198,6 @@
       "x": 1119.577777777778,
       "y": -23.447619047619213,
       "p": "such that K is the conversion constant between the equation dimensions to the grid dimensions - for this hyperbolic lens K=200."
-    },
-    {
-      "type": "text",
-      "x": 1104.9111111111113,
-      "y": -383.4476190476192,
-      "p": "can collimate a parallel beam of monochromatic light into one point (without spherical aberration)."
     },
     {
       "type": "parallel",

@@ -114,13 +114,19 @@
       "type": "text",
       "x": 1022.5261689664474,
       "y": 501.105882042485,
-      "p": "bended pencil (yellow)"
+      "p": "bent pencil (yellow)"
     },
     {
       "type": "text",
       "x": 756.9058620671046,
       "y": 689.9247359150299,
       "p": "observer's eye"
+    },
+    {
+      "type": "text",
+      "x": 402.769649611609,
+      "y": 759.7247288166785,
+      "p": "Ignore the orange squares!"
     }
   ],
   "mode": "images",
@@ -138,10 +144,10 @@
     "exist": true
   },
   "origin": {
-    "x": 138.0588122595025,
-    "y": -101.04181338053894
+    "x": 293.64557950111447,
+    "y": 189.2425946300823
   },
-  "scale": 1.1111111111111112,
-  "colorMode": false,
+  "scale": 0.8611111111111112,
+  "colorMode": false
   "backgroundImage": "bended-pencil-background.png"
 }

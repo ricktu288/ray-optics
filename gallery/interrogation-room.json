@@ -141,7 +141,7 @@
       "type": "text",
       "x": 1443.0000000000002,
       "y": 797.6666666666669,
-      "p": "Observer"
+      "p": "Observer's eyeris"
     },
     {
       "type": "ruler",
@@ -162,7 +162,7 @@
       "type": "text",
       "x": 1134.6000000000001,
       "y": 790.6666666666667,
-      "p": "Suspect"
+      "p": "Suspect's eyeris"
     },
     {
       "type": "lens",
@@ -195,6 +195,72 @@
         "exist": true
       },
       "p": "50"
+    },
+    {
+      "type": "text",
+      "x": 754,
+      "y": 883,
+      "p": "The lamp object in the suspect's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1098,
+      "y": 854,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 795,
+      "y": 1052,
+      "p": "The lamp's reflection in the suspect's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1574,
+      "y": 712,
+      "p": "←"
+    },
+    {
+      "type": "text",
+      "x": 1606,
+      "y": 711,
+      "p": "The lamp's reflection"
+    },
+    {
+      "type": "text",
+      "x": 1518,
+      "y": 860,
+      "p": "←"
+    },
+    {
+      "type": "text",
+      "x": 1555,
+      "y": 859,
+      "p": "The lamp object in the observer's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1021,
+      "y": 1024,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 581,
+      "p": "Press on \"All Images\" to see the location"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 628,
+      "p": "in the suspect's and observer's image plane"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 604,
+      "p": "of the lamp's reflection, and the objects"
     }
   ],
   "mode": "light",

@@ -127,6 +127,12 @@
       "x": 696.3,
       "y": 695.9,
       "p": "observer's eye"
+    },
+    {
+      "type": "text",
+      "x": 8.654838709677364,
+      "y": 563.4709677419356,
+      "p": "Ignore the orange squares!"
     }
   ],
   "mode": "images",
@@ -144,10 +150,10 @@
     "exist": true
   },
   "origin": {
-    "x": 126.22222222222219,
-    "y": -92.1111111111112
+    "x": 323.4722222222222,
+    "y": 180.13888888888883
   },
-  "scale": 1.1111111111111112,
-  "colorMode": false,
+  "scale": 0.8611111111111112,
+  "colorMode": false
   "backgroundImage": "broken-pencil-background.png"
 }

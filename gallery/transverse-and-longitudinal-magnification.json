@@ -80,26 +80,14 @@
     {
       "type": "text",
       "x": -646.6666666666667,
-      "y": 270,
-      "p": "and f is the focal length of the ideal lens. Therefore in this example we have y'_j - y'_k = M_T * (y_j - y_k), where j,k∈{0,1,2,3,4,5}."
+      "y": 470,
+      "p": "In this example we have y'_j - y'_k = M_T * (y_j - y_k), where j,k∈{0,1,2,3,4,5}."
     },
     {
       "type": "text",
       "x": -646.6666666666667,
       "y": 550,
       "p": ""
-    },
-    {
-      "type": "text",
-      "x": -646.6666666666667,
-      "y": 230,
-      "p": "The transverse (also called linear) magnification is M_T=1/(1 - u / f) where u is the distance of the (point) object from our ideal lens"
-    },
-    {
-      "type": "text",
-      "x": -646.6666666666667,
-      "y": 350,
-      "p": "The longitudinal magnification is M_L = dv / du where u is the distance of the object from our ideal lens, and v is"
     },
     {
       "type": "text",
@@ -234,22 +222,10 @@
       "p": "x'_3"
     },
     {
-      "type": "text",
-      "x": -646.6666666666667,
-      "y": 390,
-      "p": "the distance of the image from this lens."
-    },
-    {
       "type": "radiant",
       "x": 820,
       "y": 600,
       "p": 0.5
-    },
-    {
-      "type": "text",
-      "x": -646.6666666666667,
-      "y": 470,
-      "p": "For an ideal lens: M_L = - (M_T)^2"
     },
     {
       "type": "text",
@@ -333,7 +309,7 @@
       "type": "text",
       "x": -626.6666666666671,
       "y": 791.6666666666666,
-      "p": "(The ratio will converge to: - (M_T)^2 = -9)"
+      "p": "(The ratio will converge to the longitudinal magnification: M_L = - (M_T)^2 = -9)"
     }
   ],
   "mode": "images",

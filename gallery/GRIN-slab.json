@@ -10910,6 +10910,21 @@
       "x": -150.0000000000001,
       "y": -192,
       "p": "Warning: The sequence of light appearing does not represent the actual speed of light. Only the final image is meaningful."
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": -120,
+        "y": 0,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -120,
+        "y": -100,
+        "exist": true
+      }
     }
   ],
   "mode": "light",
@@ -10917,9 +10932,9 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 300.50000000000006,
-    "y": 387
+    "x": 544.0000000000001,
+    "y": 456
   },
-  "scale": 0.5,
+  "scale": 1,
   "colorMode": false
 }
