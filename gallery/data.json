@@ -52,7 +52,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Maze solution",
-        "description": "This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls.<br>The larger and smaller red rectangles inside the maze (seen in the screenshot below) represent the origin and the initial direction of the light ray, respectively.<br>For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated."
+        "description": "This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls.<br>The larger and smaller red squares inside the maze (seen in the screenshot bellow) represent the origin and the initial direction of the light ray, respectively.<br>For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated."
       },
       {
         "id": "optical-cavity",
@@ -154,7 +154,7 @@
           "Stas Fainer"
         ],
         "title": "Inferior mirage",
-        "description": "This is a simulation of the Inferior mirage effect.<br>The sky with this effect is modeled (specifically in this simulation) with the refractive index \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of the sun above the ground.<br>This simulation aims to demonstrate this effect qualitatively."
+        "description": "This is a simulation of the Inferior mirage effect.<br>The sky with this effect is modeled (specifically in this example) with the refractive index \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of the sun above the ground. In this simulation the sky is composed of rectangles with constant refractive index according to \\(n(y)\\).<br>This simulation aims to demonstrate this effect qualitatively."
       },
       {
         "id": "GRIN-slab",
