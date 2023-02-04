@@ -24,8 +24,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Hyperbolic mirror"
-        "description": "This is a demonstration of the reflection property of the hyperbolic mirror:<br> Light rays traveling from one focus towards the hyperbolic mirror, will reflect away from the other focus.<br><br>The two foci of the hyperbola are aplanatic points (see example <a href=\"https://phydemo.app/ray-optics/gallery/aplanatic-points\" target=\"_blank\">Aplanatic points</a>)."
+        "title": "Hyperbolic mirror",
+        "description": "This is a demonstration of the reflection property of the hyperbolic mirror:<br> Light rays traveling from one focus towards the hyperbolic mirror, will reflect away from the other focus.<br><br>The two foci of the hyperbola are aplanatic points (see <a href=\"https://phydemo.app/ray-optics/gallery/aplanatic-points\" target=\"_blank\">Aplanatic points</a>)."
       },
       {
         "id": "retroreflectors",
@@ -33,7 +33,7 @@
           "Stas Fainer",
           "Yi-Ting Tu"
         ],
-        "title": "Retroreflectors"
+        "title": "Retroreflectors",
         "description": "This is a simulation of two types of retroreflectors:<br>1. Corner retroreflector.<br>2. Cat's eye retroreflector."
       },
       {
@@ -51,15 +51,15 @@
           "Stas Fainer",
           "Yi-Ting Tu"
         ],
-        "title": "Maze solution"
-        "description": "This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls.<br>The larger and smaller red rectangles inside the maze (seen in the screenshot bellow) represent the origin and the initial direction of the light ray, respectively.<br>For some initial orientations of the light ray, it exists the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated."
+        "title": "Maze solution",
+        "description": "This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls.<br>The larger and smaller red rectangles inside the maze (seen in the screenshot below) represent the origin and the initial direction of the light ray, respectively.<br>For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated."
       },
       {
         "id": "optical-cavity",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Optical cavity"
+        "title": "Optical cavity",
         "description": "This is a simulation of optical rays inside an optical cavity.<br>In general, given the length of the optical cavity is \\(d\\), and the focal length of its ideal mirrors is \\(f\\), the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors) in the paraxial approximation, if and only if \\(d\\leq 4f\\)."
       },
       {
@@ -67,7 +67,7 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Periscope"
+        "title": "Periscope",
         "description": "This is a simulation of a periscope made from two flat mirrors and some light blockers."
       }
     ]
@@ -105,8 +105,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Beam Directors"
-        "description": "This is a simulation of a regular and a fresnel Biprism.<br>A biprism can direct an incoming collimated beam into two directions, depending on the apex angle."
+        "title": "Beam Directors",
+        "description": "This is a simulation of a regular and a Fresnel biprism.<br>A biprism can direct an incoming collimated beam into two directions, depending on the apex angle."
       },
       {
         "id": "apparent-depth",
@@ -121,16 +121,16 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Bent Pencil"
-        "description": "This is a simulation of the image perceived with our eyes, when looking from above on a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken pencil</a> simulation where the braking of the pencil is more pronounced."
+        "title": "Bent Pencil",
+        "description": "This is a simulation of the image perceived with our eyes, when looking from above at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken Pencil</a> simulation where the breaking of the pencil is more pronounced."
       },
       {
         "id": "broken-pencil",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Broken Pencil"
-        "description": "This is a simulation of the image perceived with our eyes, when looking from the side on a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation the braking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent pencil</a> simulation where the bending of the pencil is more pronounced."
+        "title": "Broken Pencil",
+        "description": "This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent Pencil</a> simulation where the bending of the pencil is more pronounced."
       },
       {
         "id": "chromatic-dispersion",
@@ -153,16 +153,16 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Inferior mirage"
-        "description": "This is a simulation of the Inferior mirage effect.<br>The sky with this effect is modeled (specifically in this example) with the refractive index \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of the sun above the ground.<br>This simulation aims to demonstrate this effect qualitatively."
+        "title": "Inferior mirage",
+        "description": "This is a simulation of the Inferior mirage effect.<br>The sky with this effect is modeled (specifically in this simulation) with the refractive index \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of the sun above the ground.<br>This simulation aims to demonstrate this effect qualitatively."
       },
       {
         "id": "GRIN-slab",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "GRIN slab"
-        "description": "This is a simulation of a dialectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.<br>Note that the dialectric in this simulation is made of thin dialectric rectangles of constant refractive index, according to the previous equation for \\(n(\\rho)\\)."
+        "title": "GRIN slab",
+        "description": "This is a simulation of a dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.<br>Note that the dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to the previous equation for \\(n(\\rho)\\)."
       },
       {
         "id": "aplanatic-points",
@@ -170,7 +170,7 @@
           "Stas Fainer"
         ],
         "title": "Aplanatic points",
-        "description": "Aplanatic points of an optical system are special points on its optical axis, such that \"rays proceeding from one of them will all converge to, or seen to diverge from the other point\".<br><br>Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other.<br><br>Sphere: a spherical lens has two aplanatic points, inside and outside the sphere - for more details see the simulation.<br><br>Hyperbola: the two foci of the <a href=\"https://phydemo.app/ray-optics/gallery/hyperbolic-mirror\" target=\"_blank\">Hyperbolic mirror</a> simulation are also aplanatic points.<br><br><br>Given two points with horizontal coordinates \\(x_1\\) and \\(x_2\\), identical vertical coordinates, and given the refractive index outside and inside our optical element as \\(n_1\\) and \\(n_2\\) (respectively), for this two points to be aplanatic points - the boundary of our optical element must fulfill the following equation:<br>\\(k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\)<br>such that \\(k_i=1\\) or \\(-1\\) if the ray connecting \\(x_i\\) and the boundary of our optical element is real or imaginary, respectively, and E is a constant for which this equaiton has a non trivial solution.<br>This equation (which can be derived using Fermat's principle) is an equation of a Cartesian oval, of which the conic sections are special cases."
+        "description": "Aplanatic points of an optical system are special points on its optical axis, such that \"rays proceeding from one of them will all converge to, or seen to diverge from the other point\".<br><br>Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other.<br><br>Sphere: a spherical lens has two aplanatic points, inside and outside the sphere - for more details see the simulation.<br><br>Hyperbola: the two foci of the <a href=\"https://phydemo.app/ray-optics/gallery/hyperbolic-mirror\" target=\"_blank\">Hyperbolic mirror</a> simulation are also aplanatic points.<br><br><br>Given two points with horizontal coordinates \\(x_1\\) and \\(x_2\\), identical vertical coordinates, and given the refractive index outside and inside our optical element as \\(n_1\\) and \\(n_2\\) (respectively), for this two points to be aplanatic points - the boundary of our optical element must fulfill the following equation:<br>\\(k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\)<br>such that \\(k_i=1\\) or \\(-1\\) if the ray connecting \\(x_i\\) and the boundary of our optical element is real or imaginary, respectively, and \\(E\\) is a constant for which this equation has a non-trivial solution.<br>This equation (which can be derived using Fermat's principle) is an equation of a Cartesian oval, of which the conic sections are special cases."
       }
     ]
   },
@@ -207,7 +207,7 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Transverse and longitudinal magnification"
+        "title": "Transverse and longitudinal magnification",
         "description": "This is a simulation of transverse and longitudinal magnification for an ideal lens with focal length \\(f\\).<br>The transverse (also called linear) and the longitudinal magnification is \\(M_T=1-\\frac{u}{f}\\) and \\(M_L=\\frac{dv}{du}\\) respectively, where \\(u\\) and \\(v\\) is the distance of the object and the image from our ideal lens, respectively.<br>Also, for an ideal lens \\(M_L=-(M_T)^2\\)"
       },
       {
@@ -216,7 +216,7 @@
           "Stas Fainer"
         ],
         "title": "Vanishing point",
-        "description": "Some optical systems map infinite parallel lines, to lines on the image plane which meet at a single point, making an illusion that the parallel lines meet \"at infinity\". This single point is called the vanishing point.<br><br> For an optical system comprising an ideal lens with focal length \\(f\\), located on the \\(XY\\) plane, such that it’s optical axis coincides with the \\(X\\)(horizontal) axis and the lens coincides with the \\(Y\\) axis, the vanishing point for a line with a slope \\(m\\), located at \\(x<0\\), is given by the \\((x,y)\\) coordinates \\((f,m f)\\) ."
+        "description": "Some optical systems map infinite parallel lines, to lines on the image plane which meet at a single point, making an illusion that the parallel lines meet \"at infinity\". This single point is called the vanishing point.<br><br> For an optical system comprising an ideal lens with focal length \\(f\\), located on the \\(XY\\) plane, such that its optical axis coincides with the \\(X\\)(horizontal) axis and the lens coincides with the \\(Y\\) axis, the vanishing point for a line with a slope \\(m\\), located at \\(x<0\\), is given by the \\((x,y)\\) coordinates \\((f,m f)\\) ."
       },
       {
         "id": "monochromatic-aberrations",
@@ -224,7 +224,7 @@
           "Paul Falstad",
           "Stas Fainer"
         ],
-        "title": "Monochromatic aberrations"
+        "title": "Monochromatic aberrations",
         "description": "This is a simulation of different monochromatic aberrations:<br><br>1. Spherical aberration.<br>2. Comma aberration.<br>3. Defocus aberration.<br>4. Field curvature aberration."
       },
       {
@@ -240,8 +240,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Hyperbolic lens"
-        "description": "This is a simulation and comparison between the hyperbolic and spherical lenses.<br>Both lenses have identical focal length, but as oppose to the spherical lens, the hyperbolic lens can collimate a parallel beam of monochromatic light to a single point (neglecting the wave nature of light - i.e in the geometric optics approximation) without spherical aberrations."
+        "title": "Hyperbolic lens",
+        "description": "This is a simulation and comparison between the hyperbolic and spherical lenses.<br>Both lenses have identical focal lengths, but as opposed to the spherical lens, the hyperbolic lens can collimate a parallel beam of monochromatic light to a single point (neglecting the wave nature of light - i.e in the geometric optics approximation) without spherical aberrations."
       },
       {
         "id": "fresnel-lens",
@@ -249,24 +249,24 @@
           "Stas Fainer",
           "Yi-Ting Tu"
         ],
-        "title": "Fresnel lens"
-        "description": "This is a simulation and comparison between a spherical and a fresnel lens.<br>One of the advantages of the fresnel lens can be readily seen: it functions similar to a regular spherical lens, while taking much less space - and therefore weighing less."
+        "title": "Fresnel lens",
+        "description": "This is a simulation and comparison between a spherical and a Fresnel lens.<br>One of the advantages of the Fresnel lens can be readily seen: it functions similar to a regular spherical lens, while taking much less space - and therefore weighing less."
       },
       {
         "id": "luneburg-lens",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Luneburg lens"
-        "description": "This is a simulation of a Lundberg lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.<br>This simulation simulates a Lundberg lens that composed from \\(N=20\\) concentric spherical lenses with radius \\(R_i=(N-i)5\\) and refractive index \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), where \\(i=1,...,N\\).<br>However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i^{th}\\) concentric spherical lens is given by \\(n_{i}^{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)."
+        "title": "Luneburg lens",
+        "description": "This is a simulation of a Luneberg lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.<br>This simulation simulates a Luneberg lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=(N-i)5\\) and refractive index \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), where \\(i=1,...,N\\).<br>However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i^{th}\\) concentric spherical lens is given by \\(n_{i}^{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)."
       },
       {
         "id": "maxwell-fisheye-lens",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Maxwell fisheye lens"
-        "description": "This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.<br>This simulation simulates a Maxwell fish-eye lens that composed from \\(N=20\\) concentric spherical lenses with radius \\(R_i=(N-i)5\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(i=1,...,N\\).<br>However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i^{th}\\) concentric spherical lens is given by \\(n_{i}^{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)."
+        "title": "Maxwell fisheye lens",
+        "description": "This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.<br>This simulation simulates a Maxwell fish-eye lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=(N-i)5\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(i=1,...,N\\).<br>However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i^{th}\\) concentric spherical lens is given by \\(n_{i}^{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)."
       }
     ]
   },
@@ -288,30 +288,30 @@
           "Yi-Ting Tu"
         ],
         "title": "Compound Microscope",
-        "description": "A compound microscope consists of two lenses, the objective and the eyepiece. The object (green) is very near the axis, representing a small object. The object is then magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced."
+        "description": "A compound microscope consists of two lenses, the objective, and the eyepiece. The object (green) is very near the axis, representing a small object. The object is then magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced."
       },
       {
         "id": "telescope",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Telescope"
-        "description": "This is a simulation of a simple telescope, composed of a convex lens and a gallilean <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">beam expander</a> - which increases the telescope's angular resolution, thereby better separating the incoming light from two distant stars.<br>In the screenshot bellow you can compare the telescope's performance to its version without the beam expander (containing only a convex lens)."
+        "title": "Telescope",
+        "description": "This is a simulation of a simple telescope, composed of a convex lens and a Galilean <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">beam expander</a> - which increases the telescope's angular resolution, thereby better separating the incoming light from two distant stars.<br>In the screenshot bellow you can compare the telescope's performance to its version without the beam expander (containing only a convex lens)."
       },
       {
         "id": "beam-expanders",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Beam expanders"
-        "description": "This is a simulation of two types of beam expanders - Keplerian beam expander, and Gallilean beam expander.<br>A beam expander expands or reduces the diameter of a beam of collimated light. A gallilean beam expander composed of a convex and a concave lens, whereas a keplerian beam expander composed of two convex lenses. In both types, the sum of the lenses focal length equals their separation distance."
+        "title": "Beam expanders",
+        "description": "This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander.<br>A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses' focal length equals their separation distance."
       },
       {
         "id": "ray-relaying",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Ray relaying"
+        "title": "Ray relaying",
         "description": "This is a simulation of ray relaying by a series of identical lenses with focal length \\(f\\) and distance \\(d\\) between consecutive lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\) (in the paraxial approximation)."
       },
       {
@@ -349,7 +349,7 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Interrogation room"
+        "title": "Interrogation room",
         "description": "This is a simulation of a two-way mirror in an interrogation room.<br>The observer in the dark room (ideally the dark room's interior is not emitting/reflecting light, as well as absorbing all the incoming light from the interrogation room) is able to see inside the interrogation room because the light created by the lamp in the interrogation room is scattered and received by the observer through the two-way mirror, whereas the suspect can only see inside the interrogation room as well as his and the lamp's reflections (since no light is received by the suspect from the dark room)."
       },
       {
@@ -357,7 +357,7 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Camera obscura"
+        "title": "Camera obscura",
         "description": "This is a simulation of a Camera obscura.<br>The observer in the dark room sees an inverted image of the objects outside, projected on the wall in front of him (without the use of an extra lens)."
       },
       {
