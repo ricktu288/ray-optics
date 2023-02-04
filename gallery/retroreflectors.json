@@ -1,0 +1,438 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 1580,
+              "y": 365,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 1589.8370290514372,
+                "y": 340.9312279475333,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1579.690302034749,
+                "y": 359.2556410260939,
+                "exist": true
+              },
+              "p": 0.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 6,
+          "newPoint": {
+            "type": 1,
+            "x": 1589.8370290514372,
+            "y": 340.9312279475333,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 1573.8638023096755,
+              "y": 385.02716309740833,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 1589.8370290514372,
+                "y": 340.9312279475333,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1579.690302034749,
+                "y": 359.2556410260939,
+                "exist": true
+              },
+              "p": 0.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 6,
+          "newPoint": {
+            "type": 1,
+            "x": 1579.690302034749,
+            "y": 359.2556410260939,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 1561.8419961934637,
+        "y": 393.1216146908936,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 1580,
+              "y": 553,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 1578.6178318367304,
+                "y": 625.2021567235963,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1572.2412181624272,
+                "y": 645.1540734704547,
+                "exist": true
+              },
+              "p": 0.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 13,
+          "newPoint": {
+            "type": 1,
+            "x": 1578.6178318367304,
+            "y": 625.2021567235963,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 1573.8638023096755,
+              "y": 573.0271630974083,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 1578.6178318367304,
+                "y": 625.2021567235963,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1572.2412181624272,
+                "y": 645.1540734704547,
+                "exist": true
+              },
+              "p": 0.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 13,
+          "newPoint": {
+            "type": 1,
+            "x": 1572.2412181624272,
+            "y": 645.1540734704547,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 1564.2100462571639,
+        "y": 687.8266556092497,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1738.0410074234537,
+        "y": 674.1230222703612,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 399,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1740,
+        "y": 399,
+        "exist": true
+      },
+      "p": 2
+    },
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 359,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 439,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 1740,
+        "y": 399,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1740,
+        "y": 679,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1680,
+        "y": 619,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1680,
+        "y": 739,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1740,
+        "y": 679,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1589.8370290514372,
+        "y": 340.9312279475333,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1579.690302034749,
+        "y": 359.2556410260939,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 120,
+        "y": 539,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1860,
+        "y": 539,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 980,
+        "y": 399,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 399,
+        "exist": true
+      },
+      "p": 2
+    },
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 980,
+        "y": 359,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 980,
+        "y": 439,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 1020,
+        "y": 399,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 655,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 705,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 739,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 679,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1020,
+        "y": 679,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 619,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1578.6178318367304,
+        "y": 625.2021567235963,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1572.2412181624272,
+        "y": 645.1540734704547,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 910.2775143314573,
+      "y": 269.79378187562054,
+      "p": "Cat's eye retroreflector"
+    },
+    {
+      "type": "text",
+      "x": 910.2775143314573,
+      "y": 829.7937818756205,
+      "p": "Corner retroreflector"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 375,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 425,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 1434.1510876155473,
+      "y": 798.9362521876403,
+      "p": "to rotate the beam"
+    },
+    {
+      "type": "text",
+      "x": 1555.6086273614158,
+      "y": 736.2484897381598,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 1448.843531939644,
+      "y": 762.6948895215344,
+      "p": "Ctrl+drag here"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -319.13461479759104,
+    "y": 69.31640564978733
+  },
+  "scale": 1.0209329141644996,
+  "colorMode": false
+}

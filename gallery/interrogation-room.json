@@ -1,0 +1,276 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "radiant",
+      "x": 1240,
+      "y": 700,
+      "p": 1
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1400,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 640,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1400,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 1401,
+        "y": 918,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1401,
+        "y": 638,
+        "exist": true
+      },
+      "p": 0.56
+    },
+    {
+      "type": "text",
+      "x": 1483.333333333333,
+      "y": 620.3333333333333,
+      "p": "Dark room"
+    },
+    {
+      "type": "text",
+      "x": 1311.3333333333337,
+      "y": 912.6666666666669,
+      "p": "Two-way mirror"
+    },
+    {
+      "type": "text",
+      "x": 1206.0000000000002,
+      "y": 675.3333333333334,
+      "p": "Lamp"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1400,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 920,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1700,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1400,
+        "y": 640,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 1160,
+      "y": 620,
+      "p": "Interrogation room"
+    },
+    {
+      "type": "text",
+      "x": 1443.0000000000002,
+      "y": 797.6666666666669,
+      "p": "Observer's eyeris"
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1700,
+        "y": 980,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 1134.6000000000001,
+      "y": 790.6666666666667,
+      "p": "Suspect's eyeris"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1160,
+        "y": 800,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 820,
+        "exist": true
+      },
+      "p": "50"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1440,
+        "y": 800,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1440,
+        "y": 820,
+        "exist": true
+      },
+      "p": "50"
+    },
+    {
+      "type": "text",
+      "x": 754,
+      "y": 883,
+      "p": "The lamp object in the suspect's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1098,
+      "y": 854,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 795,
+      "y": 1052,
+      "p": "The lamp's reflection in the suspect's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1574,
+      "y": 712,
+      "p": "←"
+    },
+    {
+      "type": "text",
+      "x": 1606,
+      "y": 711,
+      "p": "The lamp's reflection"
+    },
+    {
+      "type": "text",
+      "x": 1518,
+      "y": 860,
+      "p": "←"
+    },
+    {
+      "type": "text",
+      "x": 1555,
+      "y": 859,
+      "p": "The lamp object in the observer's image plane"
+    },
+    {
+      "type": "text",
+      "x": 1021,
+      "y": 1024,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 581,
+      "p": "Press on \"All Images\" to see the location"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 628,
+      "p": "in the suspect's and observer's image plane"
+    },
+    {
+      "type": "text",
+      "x": 691,
+      "y": 604,
+      "p": "of the lamp's reflection, and the objects"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 20.085536923187668,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -681,
+    "y": -331
+  },
+  "scale": 1,
+  "colorMode": false
+}

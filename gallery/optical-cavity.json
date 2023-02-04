@@ -1,0 +1,252 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 80,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 80,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1260,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1260,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1900,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1500,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 1920,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1920,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 120,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -220,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 180,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 380,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 380,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 580,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 980,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 1500,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1960,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": 852.4610727599995,
+      "y": 1067.02347232,
+      "p": "to move horizontally"
+    },
+    {
+      "type": "text",
+      "x": 824.9111713199999,
+      "y": 1025.6986201599998,
+      "p": "Shift+drag the ideal mirror"
+    },
+    {
+      "type": "text",
+      "x": -526.6176762800001,
+      "y": 212.18468916,
+      "p": "In this example f = 100 ."
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 508.8247524434072,
+    "y": 259.8240553293727
+  },
+  "scale": 0.55,
+  "colorMode": false
+}

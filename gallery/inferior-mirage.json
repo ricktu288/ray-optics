@@ -1,0 +1,1207 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 260,
+        "y": 1640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 4480,
+        "y": 1640,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 240,
+        "y": 1640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 240,
+        "y": 1040,
+        "exist": true
+      }
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 820,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 840,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 840,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 820,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0006
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 240,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 240,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4142
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 260,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3908
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 280,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3679
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 300,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3454
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 320,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3233
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 340,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3017
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 360,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2806
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 380,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2601
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 420,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 420,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 400,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2401
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 420,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 440,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 440,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 420,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2207
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 440,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 460,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 460,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 440,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2019
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 460,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 460,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1837
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 500,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 500,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 480,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1662
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 500,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 520,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 520,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 500,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1494
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 520,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 540,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 540,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 520,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1333
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 540,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 540,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.118
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 560,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1035
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 600,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 600,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 580,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0899
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 600,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 620,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 620,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 600,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.077
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 620,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 640,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 640,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 620,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0651
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 640,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 660,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 660,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 640,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0541
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 660,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 660,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.044
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 700,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 700,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 680,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0349
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 700,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 720,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 720,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 700,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0269
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 720,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 740,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 740,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 720,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0198
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 740,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 760,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 760,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 740,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0138
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 760,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 780,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 780,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 760,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0088
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 780,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 800,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 800,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 780,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.005
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 260,
+          "y": 800,
+          "arc": false
+        },
+        {
+          "x": 260,
+          "y": 820,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 820,
+          "arc": false
+        },
+        {
+          "x": 4480,
+          "y": 800,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0022
+    },
+    {
+      "type": "text",
+      "x": 1157.489153683247,
+      "y": 1052.9975274295023,
+      "p": "Sky (without inferior mirage effect)"
+    },
+    {
+      "type": "text",
+      "x": 299.799656486022,
+      "y": 1043.71236723451,
+      "p": "Sun rays"
+    },
+    {
+      "type": "text",
+      "x": 1142.1637886361382,
+      "y": 1698.0955793479338,
+      "p": "Ground"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 2260,
+        "y": 1347.0158304828124,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2260,
+        "y": 1620,
+        "exist": true
+      },
+      "p": "56"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9872074375396,
+        "y": 596.5033948050785,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 240,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 240,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 260,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 4480,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 2260,
+        "y": 547.0158304828124,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2260,
+        "y": 820,
+        "exist": true
+      },
+      "p": 56
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 800,
+        "y": 1160,
+        "exist": true
+      },
+      "p": 4,
+      "symmetric": true,
+      "brightness": 1
+    },
+    {
+      "type": "text",
+      "x": 1157.489153683247,
+      "y": 272.99752742950227,
+      "p": "Sky (with inferior mirage effect)"
+    },
+    {
+      "type": "text",
+      "x": 1142.1637886361382,
+      "y": 898.0955793479338,
+      "p": "Ground"
+    },
+    {
+      "type": "text",
+      "x": 299.799656486022,
+      "y": 243.71236723451003,
+      "p": "Sun rays"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9217904859358,
+        "y": 597.2557837962934,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9682378722621,
+        "y": 606.0485920462127,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 605.3124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 603.7124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 602.9124825727488,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 602.3124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 601.7124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 601.1124825727488,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 600.7124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 600.3124825727489,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9607984477366,
+        "y": 599.9124825727488,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9217904859358,
+        "y": 599.2557837962934,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 320,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 679.9217904859358,
+        "y": 598.4557837962934,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": 2110.390890452898,
+      "y": 490.330960553045,
+      "p": "Observer's eye (not to scale)"
+    },
+    {
+      "type": "text",
+      "x": 2254.58686505484,
+      "y": 530.9495449479587,
+      "p": "↓"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 10.471947340553626,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -72.12577057568696,
+    "y": 92.56816880381052
+  },
+  "scale": 0.49238545109180554,
+  "colorMode": false
+}
