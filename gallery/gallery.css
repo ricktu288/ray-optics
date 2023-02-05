@@ -107,3 +107,7 @@ body {
   text-align: left;
   max-width: 80%;
 }
+
+ol, ul {
+  padding-left: 1.8em;
+}
