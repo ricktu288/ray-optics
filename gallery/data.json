@@ -130,7 +130,7 @@
           "Stas Fainer"
         ],
         "title": "Bent Pencil",
-        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from above at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken Pencil</a> simulation where the breaking of the pencil is more pronounced.</p>"
+        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from above on a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken Pencil</a> simulation where the breaking of the pencil is more pronounced.</p>"
       },
       {
         "id": "broken-pencil",
@@ -138,7 +138,7 @@
           "Stas Fainer"
         ],
         "title": "Broken Pencil",
-        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent Pencil</a> simulation where the bending of the pencil is more pronounced.</p>"
+        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent Pencil</a> simulation where the bending of the pencil is more pronounced.</p>"
       },
       {
         "id": "chromatic-dispersion",
@@ -274,7 +274,7 @@
           "Stas Fainer"
         ],
         "title": "Maxwell fisheye lens",
-        "description": "<p>This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.</p><p>This simulation shows a Maxwell fish-eye lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(i=1,...,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+        "description": "<p>This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.</p><p>This simulation shows a Maxwell fish-eye lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), where \\(i=1,...,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
       }
     ]
   },
@@ -312,7 +312,7 @@
           "Stas Fainer"
         ],
         "title": "Beam expanders",
-        "description": "<p>This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander. A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses' focal length equals their separation distance.</p>"
+        "description": "<p>This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander. A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses focal length equals their separation distance.</p>"
       },
       {
         "id": "ray-relaying",
