@@ -312,7 +312,7 @@
           "Stas Fainer"
         ],
         "title": "Beam expanders",
-        "description": "<p>This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander. A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses focal length equals their separation distance.</p>"
+        "description": "<p>This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander. A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses' focal length equals their separation distance.</p>"
       },
       {
         "id": "ray-relaying",
