@@ -1,0 +1,866 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 1740,
+              "y": 400,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "circlelens",
+              "p1": {
+                "type": 1,
+                "x": 1779.2152461677942,
+                "y": 409.67236379007136,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1838.177069943688,
+                "y": 419.30333294403516,
+                "exist": true
+              },
+              "p": 1.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 21,
+          "newPoint": {
+            "type": 1,
+            "x": 1779.2152461677942,
+            "y": 409.67236379007136,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 1799.743219111662,
+              "y": 400,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "circlelens",
+              "p1": {
+                "type": 1,
+                "x": 1779.2152461677942,
+                "y": 409.67236379007136,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 1838.177069943688,
+                "y": 419.30333294403516,
+                "exist": true
+              },
+              "p": 1.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 21,
+          "newPoint": {
+            "type": 1,
+            "x": 1838.177069943688,
+            "y": 419.30333294403516,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 1896.8889739134063,
+        "y": 428.6275190613971,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1720,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 2540,
+              "y": 319,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 2540,
+                "y": 300,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 2540,
+                "y": 312.7587301587308,
+                "exist": true
+              },
+              "p": "10",
+              "wavelength": "408"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 24,
+          "newPoint": {
+            "type": 1,
+            "x": 2540,
+            "y": 312.7587301587308,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 2580,
+              "y": 319,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "parallel",
+              "p1": {
+                "type": 1,
+                "x": 2580,
+                "y": 280,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 2580,
+                "y": 312.7587301587308,
+                "exist": true
+              },
+              "p": "10",
+              "wavelength": "650"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 23,
+          "newPoint": {
+            "type": 1,
+            "x": 2580,
+            "y": 312.7587301587308,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 2560,
+        "y": 333.7587301587308,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2560,
+        "y": 312.7587301587308,
+        "exist": true
+      }
+    },
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "index": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 900,
+              "y": 520,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "refractor",
+              "path": [
+                {
+                  "x": 768.1733517111296,
+                  "y": 445.07977025336027,
+                  "arc": false
+                },
+                {
+                  "x": 845.2029564127843,
+                  "y": 423.4825482211809,
+                  "arc": false
+                },
+                {
+                  "x": 787.9844198515441,
+                  "y": 367.57159582552,
+                  "arc": false
+                }
+              ],
+              "notDone": false,
+              "p": 1.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 4,
+          "newPoint": {
+            "type": 1,
+            "x": 845.2029564127843,
+            "y": 423.4825482211809,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "index": 0,
+            "targetPoint": {
+              "type": 1,
+              "x": 820,
+              "y": 520,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "refractor",
+              "path": [
+                {
+                  "x": 768.1733517111296,
+                  "y": 445.07977025336027,
+                  "arc": false
+                },
+                {
+                  "x": 845.2029564127843,
+                  "y": 423.4825482211809,
+                  "arc": false
+                },
+                {
+                  "x": 787.9844198515441,
+                  "y": 367.57159582552,
+                  "arc": false
+                }
+              ],
+              "notDone": false,
+              "p": 1.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 4,
+          "newPoint": {
+            "type": 1,
+            "x": 768.1733517111296,
+            "y": 445.07977025336027,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "index": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 860,
+              "y": 450.718,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "refractor",
+              "path": [
+                {
+                  "x": 768.1733517111296,
+                  "y": 445.07977025336027,
+                  "arc": false
+                },
+                {
+                  "x": 845.2029564127843,
+                  "y": 423.4825482211809,
+                  "arc": false
+                },
+                {
+                  "x": 787.9844198515441,
+                  "y": 367.57159582552,
+                  "arc": false
+                }
+              ],
+              "notDone": false,
+              "p": 1.5
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 4,
+          "newPoint": {
+            "type": 1,
+            "x": 787.9844198515441,
+            "y": 367.57159582552,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 829.005039888654,
+        "y": 365.7103446949417,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780.1153711528576,
+        "y": 400.34122009434657,
+        "exist": true
+      },
+      "p": "In examples A and B, press ctrl+(left mouse) and move"
+    },
+    {
+      "type": "protractor",
+      "p1": {
+        "type": 1,
+        "x": 2686,
+        "y": 488.66666666666663,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 3086,
+        "y": 488.66666666666663,
+        "exist": true
+      }
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 768.1733517111296,
+          "y": 445.07977025336027,
+          "arc": false
+        },
+        {
+          "x": 845.2029564127843,
+          "y": 423.4825482211809,
+          "arc": false
+        },
+        {
+          "x": 787.9844198515441,
+          "y": 367.57159582552,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 2695.014553318879,
+        "y": 429.06052298722733,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2747.5072766594403,
+        "y": 458.12104597445074,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 1560,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1720,
+        "y": 400,
+        "exist": true
+      },
+      "p": "10",
+      "wavelength": "575"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 340,
+        "y": -40,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 340,
+        "y": 900,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1220,
+        "y": -40,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 340,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 3100,
+        "y": -40,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2260,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2180,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1220,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "protractor",
+      "p1": {
+        "type": 1,
+        "x": 780,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1180,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1220,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 340,
+        "y": 900,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 3100,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2260,
+        "y": 900,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 3100,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 3100,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 620,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 400,
+        "exist": true
+      },
+      "p": 1,
+      "wavelength": "575"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1300,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": 900,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": -40,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 2260,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2260,
+        "y": -40,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 1779.2152461677942,
+        "y": 409.67236379007136,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1838.177069943688,
+        "y": 419.30333294403516,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "protractor",
+      "p1": {
+        "type": 1,
+        "x": 1740,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2140,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 2580,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2580,
+        "y": 312.7587301587308,
+        "exist": true
+      },
+      "p": "10",
+      "wavelength": "650"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 2540,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2540,
+        "y": 312.7587301587308,
+        "exist": true
+      },
+      "p": "10",
+      "wavelength": "408"
+    },
+    {
+      "type": "text",
+      "x": 722,
+      "y": -56,
+      "p": "Example - A"
+    },
+    {
+      "type": "text",
+      "x": 2642,
+      "y": -56,
+      "p": "Example - C"
+    },
+    {
+      "type": "text",
+      "x": 1682,
+      "y": -56,
+      "p": "Example - B"
+    },
+    {
+      "type": "text",
+      "x": 814.6666666666666,
+      "y": 447,
+      "p": "A2"
+    },
+    {
+      "type": "text",
+      "x": 822.5714285714287,
+      "y": 395.5714285714286,
+      "p": "A1"
+    },
+    {
+      "type": "text",
+      "x": 1880.7619047619041,
+      "y": 458.7619047619048,
+      "p": "B1"
+    },
+    {
+      "type": "text",
+      "x": 1732.5714285714284,
+      "y": 590.5714285714287,
+      "p": "B2"
+    },
+    {
+      "type": "text",
+      "x": 2544.266666666666,
+      "y": 403.9333333333336,
+      "p": "C1"
+    },
+    {
+      "type": "text",
+      "x": 2543.933333333333,
+      "y": 450.93333333333356,
+      "p": "C3"
+    },
+    {
+      "type": "text",
+      "x": 2544.933333333333,
+      "y": 417.6000000000002,
+      "p": "C2"
+    },
+    {
+      "type": "text",
+      "x": 3126.4,
+      "y": 161.60000000000014,
+      "p": "it is measured relative to the vertical axis - see the screenshot in the simulation description page)."
+    },
+    {
+      "type": "text",
+      "x": 1848.3999999999999,
+      "y": 383.6000000000002,
+      "p": "ctrl + left mouse"
+    },
+    {
+      "type": "text",
+      "x": 1891.0666666666673,
+      "y": 421.6000000000001,
+      "p": "↓"
+    },
+    {
+      "type": "text",
+      "x": 770.4000000000001,
+      "y": 325.60000000000014,
+      "p": "ctrl + left mouse"
+    },
+    {
+      "type": "text",
+      "x": 823.8285714285715,
+      "y": 357.17142857142875,
+      "p": "↓"
+    },
+    {
+      "type": "text",
+      "x": 2340.4,
+      "y": 343.60000000000014,
+      "p": "shift + left mouse"
+    },
+    {
+      "type": "text",
+      "x": 2516.4,
+      "y": 345.60000000000014,
+      "p": "→"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 1.6000000000001364,
+      "p": "In examples A and B, by rotating the prisms between points A1 to A2 and B1 to B2, thereby changing the"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 41.600000000000136,
+      "p": "incidence angle of the ray entering into the optical element,  you can clearly observe that a minimum"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 121.60000000000014,
+      "p": "(in example A the deviation angle is measured relative to a horizontal axis, whereas in example B"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 421.60000000000014,
+      "p": "the light wavelength (color). Then, when expanding the two beams from point C2 to C3, the"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 221.60000000000014,
+      "p": "Now zoom into example C (using the simulation zoom), and expand the two beams (red and purple, and"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 261.60000000000014,
+      "p": "their intersection looks pink) downwards (this is effectively the same as rotating the spherical prism in"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 301.60000000000014,
+      "p": "example B, thereby changing the incidence angle of the entering ray) and observe that from point"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 381.60000000000014,
+      "p": "rays (\"optical caustics\") - the minimum deviation angle is achieved around point C2, and depends on"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 81.60000000000014,
+      "p": "deviation angle is achieved somewhere between the pair of points."
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 341.60000000000014,
+      "p": "C1 to C2 the backward exiting rays accumulate down towards two distinct red and purple"
+    },
+    {
+      "type": "text",
+      "x": 1439.819047619047,
+      "y": -203.57460317460277,
+      "p": "Use the built-in zoom to better interact with the simulation"
+    },
+    {
+      "type": "text",
+      "x": 3124.4,
+      "y": 461.60000000000014,
+      "p": "backward exiting rays reverse their direction upward."
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 3.8186616201103805,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -165.64285714285705,
+    "y": 394.72063492063455
+  },
+  "scale": 0.5,
+  "colorMode": true
+}
