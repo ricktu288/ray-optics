@@ -130,7 +130,7 @@
           "Stas Fainer"
         ],
         "title": "Bent Pencil",
-        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from above at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken Pencil</a> simulation where the breaking of the pencil is more pronounced.</p>"
+        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from above on a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/broken-pencil\" target=\"_blank\">Broken Pencil</a> simulation where the breaking of the pencil is more pronounced.</p>"
       },
       {
         "id": "broken-pencil",
@@ -138,7 +138,7 @@
           "Stas Fainer"
         ],
         "title": "Broken Pencil",
-        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent Pencil</a> simulation where the bending of the pencil is more pronounced.</p>"
+        "description": "<p>This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the <a href=\"https://phydemo.app/ray-optics/gallery/bended-pencil\" target=\"_blank\">Bent Pencil</a> simulation where the bending of the pencil is more pronounced.</p>"
       },
       {
         "id": "chromatic-dispersion",
@@ -154,7 +154,15 @@
           "Yi-Ting Tu"
         ],
         "title": "Rainbows",
-        "description": "<p>This simulation demonstrates the formation of the primary rainbow, the secondary rainbow, and Alexandar's dark band. Here the spectrum of the sunlight is approximated by mixing red, orange, yellow, green, cyan, blue, and violet colors.</p>"
+        "description": "<p>This simulation demonstrates the formation of the primary rainbow, the secondary rainbow, and Alexandar's dark band. Here the spectrum of the sunlight is approximated by mixing red, orange, yellow, green, cyan, blue, and violet colors. The outgoing rays for the primary/secondary rainbow are due to one/two internal reflections within the raindrop (you can see this by setting Ray Density to a low number and dragging the raindrop). Note that these are not total internal reflections, so the intensities of the outgoing rays are much lower than the incoming rays. Since the <a href=\"https://phydemo.app/ray-optics/gallery/minimum-deviation-angle\" target=\"_blank\">minimum deviation angles</a> depend on the wavelength, different colors accumulate at different angles. Hence the colors in the rainbows are produced. Away from the minimum angles, the rays do not accumulate, so all colors are weak and mixed together, producing the dim white (or \"gray\") color at the angles just outside the two rainbows. On the other hand, no rays go to the angle between the two rainbows, forming Alexandar's dark band.</p>"
+      },
+      {
+        "id": "minimum-deviation-angle",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Minimum deviation angle",
+        "description": "<p>The definition of the deviation angle of a ray hitting an optical element depends on the context - in the screenshot below you can see its definition for a triangular and a spherical prism. In the examples inside this simulation, the deviation angle as a function of the incidence angle of the ray entering the optical element, has a local minimum at a deviation angle which is called the \"minimum deviation angle\". This local minimum can explain optical phenomena such as <a href=\"https://phydemo.app/ray-optics/gallery/rainbows\" target=\"_blank\">rainbows</a> and halos - due to this local minimum, the deviated rays accumulate at specific directions, creating \"optical caustics\" (as seen in example C inside simulation) which we perceive as rainbows/halos.</p>"
       },
       {
         "id": "inferior-mirage",
@@ -274,7 +282,7 @@
           "Stas Fainer"
         ],
         "title": "Maxwell fisheye lens",
-        "description": "<p>This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.</p><p>This simulation shows a Maxwell fish-eye lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(i=1,...,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+        "description": "<p>This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(\\rho\\) is the radial distance from the center of the lens.</p><p>This simulation shows a Maxwell fish-eye lens that is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), where \\(i=1,...,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
       }
     ]
   },

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maxwell fisheye lens - Ray Optics Simulation</title>
-<meta property="og:title" content="Maxwell fisheye lens - Ray Optics Simulation">
+<title>Minimum deviation angle - Ray Optics Simulation</title>
+<meta property="og:title" content="Minimum deviation angle - Ray Optics Simulation">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://phydemo.app/ray-optics/gallery/maxwell-fisheye-lens">
-<meta property="og:image" content="https://phydemo.app/ray-optics/gallery/maxwell-fisheye-lens-thumbnail.png">
+<meta property="og:url" content="https://phydemo.app/ray-optics/gallery/minimum-deviation-angle">
+<meta property="og:image" content="https://phydemo.app/ray-optics/gallery/minimum-deviation-angle-thumbnail.png">
 <meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
 <meta property="og:locale" content="en">
-<link rel="canonical" href="https://phydemo.app/ray-optics/gallery/maxwell-fisheye-lens">
+<link rel="canonical" href="https://phydemo.app/ray-optics/gallery/minimum-deviation-angle">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="gallery.css">
 <link rel="icon" href="../icon128.png" type="image/png">
@@ -35,17 +35,17 @@ Ray Optics Simulation
 </div>
 <div class="container">
 <center>
-<h1><b><span>Maxwell fisheye lens</span></b></h1>
+<h1><b><span>Minimum deviation angle</span></b></h1>
 <p>
 Contributor: Stas Fainer
 </p>
 <div class="description">
-<p>This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \(n(\rho) = \frac{n_0}{1+(\frac{\rho}{R})^2} \), where \(n_0=2\) is the refractive index in the center of the lens, \(R=100\) is the radius of the lens, and \(\rho\) is the radial distance from the center of the lens.</p><p>This simulation shows a Maxwell fish-eye lens that is composed of \(N=20\) concentric spherical lenses with radius \(R_i=5(N+1-i)\) and refractive index \(n_i = \frac{n_0}{1+(\frac{R_i}{R})^2} \), where \(i=1,...,N\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \(i\)th concentric spherical lens is given by \(n_{i}^\text{numerical}=\frac{n_i}{\prod\limits_{k=i+1}^{N}n_k}\).</p>
+<p>The definition of the deviation angle of a ray hitting an optical element depends on the context - in the screenshot below you can see its definition for a triangular and a spherical prism. In the examples inside this simulation, the deviation angle as a function of the incidence angle of the ray entering the optical element, has a local minimum at a deviation angle which is called the "minimum deviation angle". This local minimum can explain optical phenomena such as <a href="https://phydemo.app/ray-optics/gallery/rainbows" target="_blank">rainbows</a> and halos - due to this local minimum, the deviated rays accumulate at specific directions, creating "optical caustics" (as seen in example C inside simulation) which we perceive as rainbows/halos.</p>
 </div>
 <p>
-<a href="https://phydemo.app/ray-optics/simulator/#maxwell-fisheye-lens" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
+<a href="https://phydemo.app/ray-optics/simulator/#minimum-deviation-angle" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
 </p>
-<img src="maxwell-fisheye-lens.png" alt="Maxwell fisheye lens" style="width:100%">
+<img src="minimum-deviation-angle.png" alt="Minimum deviation angle" style="width:100%">
 </center>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
