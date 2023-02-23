@@ -77,6 +77,14 @@
         ],
         "title": "Maze solution",
         "description": "<p>This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls. The larger and smaller red squares inside the maze (seen in the screenshot below) represent the origin and the initial direction of the light ray, respectively. For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated.</p>"
+      },
+      {
+        "id": "chaff-countermeasure",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Chaff countermeasure",
+        "description": "<p>This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects). The script for creating the chaff is available <a href=\"https://github.com/StasFainer/ray-optics-scripts/tree/main/Chaff%20countermeasure\" target=\"_blank\">here</a>.</p>"
       }
     ]
   },
