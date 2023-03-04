@@ -369,7 +369,7 @@ locales["zh-CN"] = {
   "open_popover": {
     "message": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
   },
-"get_link_popover": {
+  "get_link_popover": {
     "message": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。"
   },
   "get_link_warning": {

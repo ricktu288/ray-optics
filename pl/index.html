@@ -1,17 +1,17 @@
-﻿ <!DOCTYPE html>
-<html lang="nl">
+ <!DOCTYPE html>
+<html lang="pl">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ray Optics Simulatie</title>
-  <meta property="og:title" content="Ray Optics Simulatie">
+  <title>Symulacja promieni optycznych</title>
+  <meta property="og:title" content="Symulacja promieni optycznych">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://phydemo.app/ray-optics/nl/">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/pl/">
   <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
-  <meta property="og:description" content="Een open-source web applicatie om reflectie en refractie van licht te simuleren.">
-  <meta property="og:locale" content="nl">
-  <link rel="canonical" href="https://phydemo.app/ray-optics/nl/">
+  <meta property="og:description" content="Twórz i symuluj interaktywnie sceny optyki geometrycznej 2D.">
+  <meta property="og:locale" content="pl">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/pl/">
   <link rel="alternate" href="https://phydemo.app/ray-optics/" hreflang="en">
   <link rel="alternate" href="https://phydemo.app/ray-optics/de/" hreflang="de">
   <link rel="alternate" href="https://phydemo.app/ray-optics/fr/" hreflang="fr">
@@ -21,7 +21,7 @@
   <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
   <link rel="alternate" href="https://phydemo.app/ray-optics/tw/" hreflang="zh-TW">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="icon" href="../icon128.png" type="image/png">
+  <link rel="icon" href="https://phydemo.app/ray-optics/icon128.png" type="image/png">
   <style>
 .carousel-inner > .item > a > img {
   width: 1920px;
@@ -118,20 +118,20 @@ body {
 }
   </style>
 </head>
-<body>
+<body style="">
 
 <div class="navbar navbar-fixed-top container" style="background-color:white">
 
     <a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
       <img src="../icon128.png" alt="" style="width:18pt; height:18pt">
-      Ray Optics Simulatie
+      Symulacja promieni optycznych
     </a>
     <div class="navbar-right">
 
 <span class="navul">
-     <a href="https://phydemo.app/ray-optics/" class="active">Home</a>
-     <a href="https://phydemo.app/ray-optics/gallery/">Gallery</a>
-     <a href="https://phydemo.app/ray-optics/about">About</a>
+     <a href="https://phydemo.app/ray-optics/" class="active">Strona główna</a>
+     <a href="https://phydemo.app/ray-optics/gallery/">Galeria</a>
+     <a href="https://phydemo.app/ray-optics/about">O aplikacji</a>
 </span>
 <span class="github-button-container">
 <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
@@ -141,13 +141,10 @@ body {
 </div>
 <div class="container">
   <center>
-    <h1><b><span id="title">Ray Optics Simulatie</span></b></h1>
-    <p id="description">
-      Een open-source web applicatie om reflectie en refractie van licht te simuleren.<br>
-      Geschreven in HTML, CSS en JavaScript. 
-    </p>
+    <h1><b><span id="title">Symulacja biegu promieni</span></b></h1>
+    <p id="description">Twórz i symuluj interaktywnie sceny optyki geometrycznej 2D.<br>Całkowicie darmowa aplikacja webowa. Kod źródłowy jest <a href="https://github.com/ricktu288/ray-optics">dostępny na GitHub</a>.</p>
     <p>
-      <a href="https://phydemo.app/ray-optics/simulator/?nl" target="_blank" class="btn btn-success btn-lg" id="start">Start Applicatie</a>
+      <a href="https://phydemo.app/ray-optics/simulator/?pl" target="_blank" class="btn btn-success btn-lg" id="start">Uruchom symulator</a>
     </p>
   </center>
   <br>
@@ -155,10 +152,10 @@ body {
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#screenshots" data-slide-to="0" class="active"></li>
-      <li data-target="#screenshots" data-slide-to="1"></li>
-      <li data-target="#screenshots" data-slide-to="2"></li>
-      <li data-target="#screenshots" data-slide-to="3"></li>
-      <li data-target="#screenshots" data-slide-to="4"></li>
+      <li data-target="#screenshots" data-slide-to="1" class=""></li>
+      <li data-target="#screenshots" data-slide-to="2" class=""></li>
+      <li data-target="#screenshots" data-slide-to="3" class=""></li>
+      <li data-target="#screenshots" data-slide-to="4" class=""></li>
     </ol>
 
     <!-- Wrapper for slides -->
@@ -170,13 +167,13 @@ body {
         <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="../img/3.svg" alt="3.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="3.svg" alt="3.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="../img/5.svg"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="5.svg" alt="5.svg"></a>
       </div>
       <div class="item">
-        <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="../img/6.png"></a>
+        <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="6.png" alt="6.png"></a>
       </div>
     </div>
 
@@ -194,142 +191,128 @@ body {
   <div class="row" style="font-size: 10pt">
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="tools">Gereedschap</h2>
+        <h2 id="tools">Narzędzia</h2>
         <div class="row thumbnail right-caption">
-          <img src="../img/ray.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/ray.svg" alt="ray" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="ray">Straal</p>
-            <span id="ray_desc">
-              Één lichtstraal door twee punten. 
-            </span>
+            <p class="tool-title" id="ray">Promień</p>
+            <span id="ray_desc">Pojedynczy promień światła określony przez dwa punkty.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/beam.svg" alt="Beam" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="beam">Beam</p>
-            <span id="beam_desc">
-              Een evenwijdige bundel uit een lijnstuk, de dichtheid wordt met "Straal dichtheid" ingesteld. 
-            </span>
+            <p class="tool-title" id="beam">Wiązka</p>
+            <span id="beam_desc">Wysyłana prostopadle do odcinka wiązka promieni równoległych, których gęstość jest kontrolowana za pomocą suwaka "Gęstość promieni".</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="point_source">Punt bron</p>
-            <span id="point_source_desc">
-              Stralen komen uit een punt, aantal wordt met "Straal dichtheid" ingesteld. 
-            </span>
+            <p class="tool-title" id="point_source">Źródło punktowe</p>
+            <span id="point_source_desc">Promienie wychodzące z jednego punktu, a ich liczba jest kontrolowana za pomocą suwaka "Gęstość promieni".</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/mirror.svg" alt="Mirror" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="mirror">Spiegel</p>
-            <span id="mirror_desc">
-              Simuleert de reflectie in een spiegel. 
-            </span>
+            <p class="tool-title" id="mirror">Zwierciadło</p>
+            <span id="mirror_desc">Symuluje odbicie światła od zwierciadła płaskiego.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded">
           <div class="caption">
-            <p class="tool-title" id="mirror_arc">Gebogen spiegel</p>
-            <span id="mirror_arc_desc">
-              Een deel van een cirkel als spiegel, gedefinieerd met drie punten. 
-            </span>
+            <p class="tool-title" id="mirror_arc">Zwierciadło (zakrzywione)</p>
+            <span id="mirror_arc_desc">Zwierciadło, którego powierzchnia jest zakrzywiona. Może być kołowa, paraboliczna lub zdefiniowana przez niestandardowe równanie y = f(x).</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_curved_mirror">Ideale gebogen spiegel</p>
-            <span id="ideal_curved_mirror_desc">
-              Een ideale "gebogen" spiegel die aan de spiegelvergelijking voldoet (1/p + 1/q = 1/f). De brandpuntafstand (in pixels) kan ingesteld worden. 
-            </span>
+            <p class="tool-title" id="ideal_curved_mirror">Idealnie zakrzywione zwierciadło</p>
+            <span id="ideal_curved_mirror_desc">Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio.</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="beamsplitter">Rozdzielacz wiązki</p>
+            <span id="beamsplitter_desc">Zwierciadło odbijające tylko część padającego światła.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass_halfplane">Glas</p>
-            <span id="glass_halfplane_desc">
-              Simuleert de breking en spiegelig van licht op een oppervlak. De intensiteiten worden berekend op basis van ongepolarizeerd glas.
-            </span>
+            <p class="tool-title" id="glass_halfplane">Szkło</p>
+            <span id="glass_halfplane_desc">Symuluje załamanie i odbicie światła na granicy ośrodków.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/glass.svg" alt="Glass (Other shapes)"  class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="glass">Glas (overige vormen)</p>
-            <span id="glass_desc">
-              Willekeurige glazen vormen uit lijnstukken en cirkelbogen, inclusief prismas en "ronde" lenzen. 
-            </span>
+            <p class="tool-title" id="glass">Szkło (inne kształty)</p>
+            <span id="glass_desc">Szkło o dowolnych kształtach, ograniczonych odcinkami i łukami okręgów lub zdefiniowanych układem nierówności f(x) &lt; y &lt; g(x).</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
-          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)"  class="img-rounded" style="width:100px;height:100px;">
+          <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="ideal_lens">Glas (Ideale lens)</p>
-            <span id="ideal_lens_desc">
-              Een ideale lens die de lensformule volgt (1/p + 1/q = 1/f). De brandpuntafstand (in pixels) kan ingesteld worden. 
-            </span>
+            <p class="tool-title" id="ideal_lens">Szkło (idealna soczewka)</p>
+            <span id="ideal_lens_desc">Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
           <div class="caption">
-            <p class="tool-title" id="blocker">Scherm</p>
-            <span id="blocker_desc">
-              Een lijnstuk dat opvallend licht absorbeert. 
-            </span>
+            <p class="tool-title" id="blocker">Przesłona</p>
+            <span id="blocker_desc">Przeszkoda - odcinek - pochłaniająca padające promienie.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/ruler.svg" alt="Ruler"  style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption" class="img-rounded">
-            <p class="tool-title" id="ruler">Lineaal</p>
-            <span id="ruler_desc">
-              Een lineaal van 0 tot een ander punt. De schaal is in pixels. 
-            </span>
+          <div class="caption">
+            <p class="tool-title" id="ruler">Linijka</p>
+            <span id="ruler_desc">Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie). Wyskalowana w pikselach.</span>
           </div>
         </div>
         <div class="row thumbnail right-caption">
           <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
-          <div class="caption" class="img-rounded">
-            <p class="tool-title" id="protractor">Gradenboog</p>
-            <span id="protractor_desc">
-              Een gradenboog met een middelpunt tot een ander punt voor een hoek van 0 graden. De schaal is in graden. 
-            </span>
+          <div class="caption">
+            <p class="tool-title" id="protractor">Kątomierz</p>
+            <span id="protractor_desc">Kątomierz określony przez środek (wierzchołek kąta - pierwsze kliknięcie) i inny punkt dla kierunku zerowego (drugie kliknięcie). Skala jest w stopniach.</span>
+          </div>
+        </div>
+        <div class="row thumbnail right-caption">
+          <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
+          <div class="caption">
+            <p class="tool-title" id="power">Detektor</p>
+            <span id="power_desc">Narzędzie do pomiaru szybkości przepływu energii (P), szybkości prostopadłego przepływu pędu (F⊥), i szybkości równoległego przepływu pędu (F∥) przez odcinek. Jednostki są umowne.</span>
           </div>
         </div>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="col-sm-12">
-        <h2 id="views">Views</h2>
+        <h2 id="views">Widok</h2>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="rays">Stralen</p>
-            <span id="rays_desc">
-              Toont de lichtstralen. Als de "Straaldichtheid" groot is, lijkt op een lichtvlek. 
-            </span>
+            <p class="mode-title" id="rays">Promienie</p>
+            <span id="rays_desc">Pokaż promienie. Gdy "gęstość promieni" jest duża, wiązka pojawia się jako ciągła.</span>
           </div>
           <center>
             <div style="aspect-ratio: 519/163; max-width: 510px">
-              <img src="../img/high_density.png" alt="High density" style=";width:100%" class="img-rounded">
+              <img src="../img/high_density.png" alt="High density" class="img-rounded" style="width:100%">
             </div>
             <div style="aspect-ratio: 519/163; max-width: 510px">
-              <img src="../img/low_density.svg" alt="Low density" class="img-rounded" style="margin-top:5px; width:100%">
+              <img src="../img/low_density.svg" alt="Low density" style="margin-top:5px;width:100%" class="img-rounded">
             </div>
           </center>
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="extended_rays">Uitgebreide stralen</p>
-            <span id="extended_rays_desc">
-              Toont de echte en virtuele stralen. Oranje voor stralen tegengesteld aan lichtrichting, grijs voor doortrekken in de lichtrichting. 
-            </span>
+            <p class="mode-title" id="extended_rays">Rozszerzone promienie</p>
+            <span id="extended_rays_desc">Pokaż zarówno promienie, jak i ich przedłużenia. Kolor pomarańczowy wskazuje przedłużenia do tyłu, a szary do przodu.</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -339,10 +322,8 @@ body {
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="all_images">Alle beelden</p>
-            <span id="all_images_desc">
-              Toont de plaats van alle beelden. Gele punten voor de reeele beelden, oranje voor de virtuele beelden, grijs (niet in deze figuur) geven virtuele objecten aan. Let op dat sommige beelden niet zichtbaar zijn als de "Straaldichtheid" te laag is.
-            </span>
+            <p class="mode-title" id="all_images">Wszystkie obrazy</p>
+            <span id="all_images_desc">Pokaż położenie wszystkich obrazów. Żółte punkty oznaczają obrazy rzeczywiste, pomarańczowe obrazy pozorne, a szare (brak na tym zdjęciu) obiekty wirtualne. Zwróć uwagę, że niektórych obrazów nie można wykryć, jeśli "Gęstość promieni" nie jest wystarczająco wysoka.</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -352,14 +333,25 @@ body {
         </div>
         <div class="row thumbnail">
           <div class="caption">
-            <p class="mode-title" id="seen_by_observer">Beeld voor waarnemer</p>
-            <span id="seen_by_observer_desc">
-              Simuleert de stralen en beelden zoals die vanaf een bepaalde plaats zichtbaar zijn. De blauwe cirkel is de waarnemer (het oog). Elke straal die de cirkel kruist is "zichtbaar". De waarnemer "weet" niet waar de eigenlijke straal begint, maar gaat uit van een rechte lijn van het punt van inval naar de "bron". De (zichtbare) stralen worden in het blauw getoond en de punt(en) in oranje. 
-            </span>
+            <p class="mode-title" id="seen_by_observer">Widziane przez obserwatora</p>
+            <span id="seen_by_observer_desc">Symuluje promienie i obrazy widziane z określonego miejsca. Obserwatora symbolizuje niebieskie kółko. Wszelkie przecinające je promienie uważa się za "obserwowane". Obserwator nie wie, gdzie faktycznie zaczynają się promienie, ale będzie mu się wydawało, że zaczynają się w pewnym punkcie (punktach), jeśli się tam przecinają. Promienie są pokazane na niebiesko, a punkt(y) na żółto (rzeczywiste) lub pomarańczowo (pozorne).</span>
           </div>
           <center>
             <div style="aspect-ratio: 445/216; max-width: 510px">
               <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
+            </div>
+          </center>
+        </div>
+        <div class="row thumbnail">
+          <div class="caption">
+            <p class="mode-title" id="simulate_colors">Symuluj kolory</p>
+            <span id="simulate_colors_desc">
+			Symuluj kolory (długości fal) źródeł światła, mieszanie kolorów i dyspersję chromatyczną szkieł.
+            </span>
+          </div>
+          <center>
+            <div style="aspect-ratio: 445/216; max-width: 510px">
+              <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
             </div>
           </center>
         </div>
@@ -369,7 +361,7 @@ body {
   <div style="float: right;">
     <div class="dropup">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <span id="language">Taal: Nederlands</span>
+      <span id="language">Język: polski</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="https://phydemo.app/ray-optics/">English</a></li>
@@ -385,9 +377,10 @@ body {
   </div>
 </div>
 
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
