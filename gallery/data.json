@@ -70,6 +70,14 @@
         "description": "<p>This is a simulation of optical rays inside an optical cavity. In general, given the length of the optical cavity is \\(d\\), and the focal length of its ideal mirrors is \\(f\\), the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors) in the paraxial approximation, if and only if \\(d\\leq 4f\\).</p>"
       },
       {
+        "id": "resonator",
+        "contributors": [
+          "Mikhail Kochiev"
+        ],
+        "title": "Plano-concave resonator",
+        "description": "<p>This is a demonstration of a plano-concave resonator. If the distance between the mirrors is greater than the radius of curvature, the resonator is unstable. If the distance between the mirrors is less than or equal to the radius of curvature, a stable resonator mode is formed.</p>"
+      },
+      {
         "id": "maze-solution",
         "contributors": [
           "Stas Fainer",
