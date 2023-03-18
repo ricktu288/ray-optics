@@ -66,8 +66,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Optical cavity",
-        "description": "<p>This is a simulation of optical rays inside an optical cavity. In general, given the length of the optical cavity is \\(d\\), and the focal length of its ideal mirrors is \\(f\\), the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors) in the paraxial approximation, if and only if \\(d\\leq 4f\\).</p>"
+        "title": "Two-mirror optical cavity",
+        "description": "<p>This is a simulation of rays inside an optical cavity with two mirrors. Given the length of the cavity is \\(d\\), and the radius of curvature of its mirrors is \\(R_1\\) and \\(R_2\\) respectively (with the convention that \\(R>0\\) for a concave mirror), then the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors), if and only if \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). In this simulation we assume that the mirrors are ideal curved mirrors, meaning that \\(f=\\frac{R}{2}\\), rendering the previous stability condition to \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). <a href=\"https://phydemo.app/ray-optics/gallery/resonator\" target=\"_blank\">Here</a> is a similar simulation with spherical mirrors, where the first stability condition holds in the paraxial approximation.</p>"
       },
       {
         "id": "resonator",
@@ -85,6 +85,14 @@
         ],
         "title": "Maze solution",
         "description": "<p>This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls. The larger and smaller red squares inside the maze (seen in the screenshot below) represent the origin and the initial direction of the light ray, respectively. For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated.</p>"
+      },
+      {
+        "id": "chaff-countermeasure",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Chaff countermeasure",
+        "description": "<p>This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects). The script for creating the chaff is available <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">here</a>.</p>"
       }
     ]
   },
@@ -170,7 +178,7 @@
           "Stas Fainer"
         ],
         "title": "Minimum deviation angle",
-        "description": "<p>The definition of the deviation angle of a ray hitting an optical element depends on the context - in the screenshot below you can see its definition for a triangular and a spherical prism. In the examples inside this simulation, the deviation angle as a function of the incidence angle of the ray entering the optical element, has a local minimum at a deviation angle which is called the \"minimum deviation angle\". This local minimum can explain optical phenomena such as <a href=\"https://phydemo.app/ray-optics/gallery/rainbows\" target=\"_blank\">rainbows</a> and halos - due to this local minimum, the deviated rays accumulate at specific directions, creating \"optical caustics\" (as seen in example C inside simulation) which we perceive as rainbows/halos.</p>"
+        "description": "<p>The definition of the deviation angle of a ray hitting an optical element depends on the context - in the screenshot below you can see its definition for a triangular and a spherical prism. In the examples inside this simulation, the deviation angle as a function of the incidence angle of the ray entering the optical element, has a local minimum at a deviation angle which is called the \"minimum deviation angle\". This local minimum can explain optical phenomena such as <a href=\"https://phydemo.app/ray-optics/gallery/rainbows\" target=\"_blank\">rainbows</a> and halos - due to this local minimum, the deviated rays accumulate at specific directions, creating \"optical caustics\" (as seen in example C inside the simulation) which we perceive as rainbows/halos.</p>"
       },
       {
         "id": "inferior-mirage",
@@ -186,7 +194,7 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab",
-        "description": "<p>This is a simulation of a dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius. Note that the dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to the previous equation for \\(n(\\rho)\\).</p>"
+        "description": "<p>This is a simulation of a dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius. Note that the dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to the previous equation for \\(n(\\rho)\\). The script for creating these lenses is available <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">here</a>.</p>"
       },
       {
         "id": "aplanatic-points",

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Optical cavity - Ray Optics Simulation</title>
-<meta property="og:title" content="Optical cavity - Ray Optics Simulation">
+<title>Two-mirror optical cavity - Ray Optics Simulation</title>
+<meta property="og:title" content="Two-mirror optical cavity - Ray Optics Simulation">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://phydemo.app/ray-optics/gallery/optical-cavity">
 <meta property="og:image" content="https://phydemo.app/ray-optics/gallery/optical-cavity-thumbnail.png">
@@ -35,17 +35,17 @@ Ray Optics Simulation
 </div>
 <div class="container">
 <center>
-<h1><b><span>Optical cavity</span></b></h1>
+<h1><b><span>Two-mirror optical cavity</span></b></h1>
 <p>
 Contributor: Stas Fainer
 </p>
 <div class="description">
-<p>This is a simulation of optical rays inside an optical cavity. In general, given the length of the optical cavity is \(d\), and the focal length of its ideal mirrors is \(f\), the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors) in the paraxial approximation, if and only if \(d\leq 4f\).</p>
+<p>This is a simulation of rays inside an optical cavity with two mirrors. Given the length of the cavity is \(d\), and the radius of curvature of its mirrors is \(R_1\) and \(R_2\) respectively (with the convention that \(R>0\) for a concave mirror), then the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors), if and only if \(0\leq (1-\frac {d}{R_1})(1-\frac {d}{R_2})\leq 1\). In this simulation we assume that the mirrors are ideal curved mirrors, meaning that \(f=\frac{R}{2}\), rendering the previous stability condition to \(0\leq (1-\frac {d}{2f_1})(1-\frac {d}{2f_2})\leq 1\). <a href="https://phydemo.app/ray-optics/gallery/resonator" target="_blank">Here</a> is a similar simulation with spherical mirrors, where the first stability condition holds in the paraxial approximation.</p>
 </div>
 <p>
 <a href="https://phydemo.app/ray-optics/simulator/#optical-cavity" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
 </p>
-<img src="optical-cavity.png" alt="Optical cavity" style="width:100%">
+<img src="optical-cavity.png" alt="Two-mirror optical cavity" style="width:100%">
 </center>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
