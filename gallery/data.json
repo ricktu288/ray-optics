@@ -344,7 +344,7 @@
           "Stas Fainer"
         ],
         "title": "Ray relaying",
-        "description": "<p>This is a simulation of ray relaying by a series of identical lenses with focal length \\(f\\) and distance \\(d\\) between consecutive lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\) (in the paraxial approximation).</p>"
+        "description": "<p>This is a simulation of ray relaying by a series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between consecutive lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). The script for creating these series of lenses is available <a href=\"https://phydemo.app/ray-optics/gallery/ray-relaying.py\" target=\"_blank\">here</a>.</p>"
       },
       {
         "id": "rochester-cloak",
