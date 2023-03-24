@@ -1,4 +1,3 @@
-import numpy as np
 import json
 
 f = 40 # lens focal length
@@ -35,12 +34,7 @@ for i in range(len(d)):
     "y":0.5*(2*initial_y+lensDiameter)-beamRadius+y_displacement[i], "exist":True}, "p2":{"type": 1,
     "x":initial_x-beamDisplacement, "y":0.5*(2*initial_y+lensDiameter)+beamRadius+y_displacement[i], "exist":True}, "p":0.5})
 
-# int32 type is not serializable, therefore convert it to int type
-def convert(o):
-    if isinstance(o, np.int32): return int(o)  
-    raise TypeError
-
-json_Dict = json.dumps(Dict, default=convert) # converts the dictionary to a json formatted string
+json_Dict = json.dumps(Dict) # converts the dictionary to a json formatted string
 
 # create the json (simulation) file
 with open("ray-relaying.json", "w") as f:
