@@ -30,12 +30,7 @@ for i in range(N):
     "p2": {"type":1, "x":x + L*np.cos(theta), "y":y + L*np.sin(theta), "exist": True},
     "isDichroic": False, "isDichroicFilter": False})
 
-# int32 type is not serializable, therefore convert it to int type
-def convert(o):
-    if isinstance(o, np.int32): return int(o)  
-    raise TypeError
-
-json_Dict = json.dumps(Dict, default=convert) # converts the dictionary to a json formatted string
+json_Dict = json.dumps(Dict) # converts the dictionary to a json formatted string
 
 # create the json (simulation) file
 with open("chaff.json", "w") as f:
