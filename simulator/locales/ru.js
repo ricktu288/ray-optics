@@ -383,7 +383,7 @@ locales["ru"] = {
   },
   "github": {
     "incomplete": true,
-    "message": "GitHub Repo"
+    "message": "GitHub"
   },
   "about": {
     "incomplete": true,

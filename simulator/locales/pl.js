@@ -343,7 +343,7 @@ locales["pl"] = {
     "message": "Wnieś wkład"
   },
   "github": {
-    "message": "Repozytorium GitHub"
+    "message": "GitHub"
   },
   "about": {
     "message": "O aplikacji"

@@ -458,7 +458,7 @@ locales["LOCALE_ID"] = {
   },
   "github": {
     "incomplete": true,
-    "message": "GitHub Repo"
+    "message": "GitHub"
   },
   "about": {
     "incomplete": true,

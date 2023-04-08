@@ -349,7 +349,7 @@ locales["de"] = {
     "message": "Mitmachen"
   },
   "github": {
-    "message": "GitHub Repo"
+    "message": "GitHub"
   },
   "about": {
     "message": "Über"

@@ -343,7 +343,7 @@ locales["zh-TW"] = {
     "message": "貢獻"
   },
   "github": {
-    "message": "GitHub 專案"
+    "message": "GitHub"
   },
   "about": {
     "message": "關於"
