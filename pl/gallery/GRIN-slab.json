@@ -1,0 +1,10940 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -100,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -100,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -101,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -101,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0000000000000002
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -99,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -99,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -100,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -100,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.029417310909429
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -98,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -98,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -99,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -99,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0577334257741882
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -97,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -97,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -98,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -98,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0850345616615167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -96,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -96,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -97,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -97,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1113955191559843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -95,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -95,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -96,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -96,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1368817000902074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -94,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -94,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -95,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -95,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1615506876585282
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -93,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -93,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -94,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -94,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1854534997206765
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -92,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -92,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -93,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -93,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2086355943790499
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -91,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -91,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -92,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -92,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2311376852326468
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -90,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -90,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -91,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -91,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.252996408614167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -89,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -89,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -90,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -90,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.274244874425634
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -88,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -88,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -89,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -89,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2949131244990917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -87,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -87,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -88,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -88,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3150285168010618
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -86,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -86,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -87,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -87,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3346160496562296
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -85,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -85,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -86,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -86,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3536986370680884
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -84,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -84,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -85,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -85,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3722973438726755
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -83,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -83,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -84,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -84,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3904315876734101
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -82,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -82,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -83,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -83,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4081193131265546
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -81,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -81,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -82,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -82,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4253771430747724
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -80,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -80,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -81,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -81,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4422205101855958
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -79,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -79,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -80,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -80,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4586637720873168
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -78,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -78,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -79,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -79,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4747203124660622
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -77,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -77,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -78,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -78,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4904026301640776
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -76,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -76,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -77,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -77,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5057224179774968
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -75,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -75,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -76,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -76,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5206906325745548
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -74,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -74,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -75,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -75,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5353175567289004
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -73,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -73,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -74,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -74,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.549612854876985
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -72,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -72,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -73,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -73,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.563585622855365
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -71,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -71,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -72,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -72,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.577244432546839
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -70,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -70,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -71,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -71,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5905973720586866
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -69,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -69,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -70,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -70,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.603652081967906
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -68,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -68,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -69,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -69,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.61641578809414
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -67,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -67,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -68,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -68,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6288953311984167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -66,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -66,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -67,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -67,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.641097193952875
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -65,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -65,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -66,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -66,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.653027525481654
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -64,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -64,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -65,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -65,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.664692163734785
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -63,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -63,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -64,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -64,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6760966559241148
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -62,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -62,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -63,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -63,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6872462772221488
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -61,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -61,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -62,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -62,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6981460479004744
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -60,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -60,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -61,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -61,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7088007490635062
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -59,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -59,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -60,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -60,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.719214937115194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -58,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -58,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -59,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -59,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7293929570806053
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -57,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -57,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -58,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -58,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7393389548906217
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -56,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -56,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -57,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -57,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7490568887260358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -55,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -55,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -56,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -56,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7585505395068974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -54,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -54,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -55,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -55,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.767823520603796
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -53,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -53,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -54,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -54,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.776879286839711
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -52,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -52,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -53,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -53,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7857211428439772
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -51,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -51,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -52,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -52,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7943522508136467
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -50,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -50,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -51,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -51,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8027756377319946
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -49,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -49,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -50,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -50,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8109942020890073
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -48,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -48,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -49,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -49,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8190107201443315
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -47,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -47,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -48,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -48,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8268278517692902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -46,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -46,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -47,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -47,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8344481459011044
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -45,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -45,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -46,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -46,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8418740456393863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -44,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -44,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -45,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -45,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8491078930121951
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -43,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -43,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -44,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -44,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8561519334364847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -42,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -42,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -43,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -43,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8630083198955394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -41,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -41,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -42,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -42,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8696791168540126
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -40,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -40,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -41,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -41,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.876166303929372
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -39,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -39,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -40,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -40,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8824717793369439
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -38,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -38,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -39,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -39,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8885973631242843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -37,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -37,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -38,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -38,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8945448002092746
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -36,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -36,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -37,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -37,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9003157632351526
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -35,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -35,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -36,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -36,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9059118552545917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -34,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -34,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -35,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -35,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9113346122539612
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -33,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -33,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -34,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -34,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.916585505527995
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -32,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -32,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -33,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -33,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9216659439142902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -31,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -31,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -32,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -32,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.926577275896298
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -30,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -30,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -31,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -31,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9313207915827966
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -29,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -29,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -30,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -30,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.935897724571213
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -28,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -28,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -29,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -29,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9403092537015847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -27,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -27,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -28,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -28,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9445565047074358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -26,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -26,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -27,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -27,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.948640551769361
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -25,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -25,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -26,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -26,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9525624189766635
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -24,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -24,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -25,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -25,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9563230817019974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -23,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -23,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -24,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -24,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9599234678935809
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -22,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -22,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -23,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -23,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.963364459289207
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -21,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -21,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -22,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -22,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9666468925559566
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -20,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -20,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -21,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -21,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.969771560359221
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -19,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -19,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -20,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -20,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9727392123643712
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -18,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -18,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -19,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -19,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9755505561741518
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -17,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -17,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -18,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -18,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9782062582046394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -16,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -16,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -17,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -17,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9807069445023915
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -15,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -15,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -16,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -16,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.983053201505194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -14,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -14,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -15,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -15,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.98524557674863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -13,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -13,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -14,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -14,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9872845795205074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -12,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -12,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -13,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -13,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.989170681465017
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -11,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -11,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -12,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -12,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.99090431713832
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -10,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -10,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -11,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -11,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9924858845171276
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -9,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -9,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -10,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -10,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9939157454616783
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -8,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -8,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -9,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -9,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.995194226134388
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -7,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -7,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -8,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -8,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9963216173753167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -6,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -6,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -7,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -7,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9972981750354653
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -5,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -5,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -6,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -6,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9981241202688085
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -4,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -4,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -5,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -5,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.998799639783838
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -3,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -3,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -4,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -4,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9993248860552904
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -2,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -2,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -3,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -3,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9996999774966244
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": -1,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -1,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -2,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9999249985936973
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 0,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 0,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": -1,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": -1,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 2
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 1,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 1,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 0,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9999249985936973
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 2,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 2,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 1,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9996999774966244
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 3,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 3,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 2,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9993248860552904
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 4,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 4,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 3,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 3,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.998799639783838
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 5,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 5,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 4,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 4,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9981241202688085
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 6,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 6,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 5,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 5,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9972981750354653
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 7,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 7,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 6,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 6,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9963216173753167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 8,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 8,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 7,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 7,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.995194226134388
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 9,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 9,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 8,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 8,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9939157454616783
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 10,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 10,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 9,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 9,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9924858845171276
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 11,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 11,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 10,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 10,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.99090431713832
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 12,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 12,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 11,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 11,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.989170681465017
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 13,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 13,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 12,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 12,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9872845795205074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 14,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 14,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 13,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 13,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.98524557674863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 15,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 15,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 14,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 14,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.983053201505194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 16,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 16,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 15,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 15,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9807069445023915
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 17,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 17,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 16,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 16,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9782062582046394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 18,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 18,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 17,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 17,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9755505561741518
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 19,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 19,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 18,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 18,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9727392123643712
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 20,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 20,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 19,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 19,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.969771560359221
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 21,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 21,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 20,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9666468925559566
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 22,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 22,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 21,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 21,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.963364459289207
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 23,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 23,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 22,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 22,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9599234678935809
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 24,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 24,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 23,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 23,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9563230817019974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 25,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 25,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 24,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 24,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9525624189766635
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 26,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 26,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 25,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 25,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.948640551769361
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 27,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 27,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 26,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 26,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9445565047074358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 28,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 28,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 27,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 27,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9403092537015847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 29,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 29,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 28,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 28,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.935897724571213
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 30,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 30,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 29,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 29,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9313207915827966
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 31,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 31,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 30,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 30,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.926577275896298
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 32,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 32,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 31,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 31,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9216659439142902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 33,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 33,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 32,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 32,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.916585505527995
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 34,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 34,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 33,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 33,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9113346122539612
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 35,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 35,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 34,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 34,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9059118552545917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 36,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 36,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 35,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 35,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9003157632351526
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 37,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 37,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 36,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 36,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8945448002092746
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 38,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 38,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 37,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 37,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8885973631242843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 39,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 39,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 38,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 38,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8824717793369439
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 40,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 40,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 39,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 39,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.876166303929372
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 41,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 41,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 40,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8696791168540126
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 42,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 42,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 41,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 41,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8630083198955394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 43,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 43,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 42,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 42,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8561519334364847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 44,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 44,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 43,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 43,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8491078930121951
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 45,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 45,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 44,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 44,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8418740456393863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 46,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 46,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 45,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 45,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8344481459011044
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 47,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 47,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 46,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 46,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8268278517692902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 48,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 48,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 47,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 47,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8190107201443315
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 49,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 49,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 48,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 48,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8109942020890073
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 50,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 50,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 49,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 49,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8027756377319946
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 51,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 51,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 50,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 50,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7943522508136467
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 52,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 52,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 51,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 51,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7857211428439772
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 53,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 53,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 52,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 52,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.776879286839711
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 54,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 54,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 53,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 53,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.767823520603796
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 55,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 55,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 54,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 54,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7585505395068974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 56,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 56,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 55,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 55,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7490568887260358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 57,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 57,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 56,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 56,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7393389548906217
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 58,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 58,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 57,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 57,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7293929570806053
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 59,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 59,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 58,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 58,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.719214937115194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 60,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 60,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 59,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 59,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7088007490635062
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 61,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 61,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 60,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 60,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6981460479004744
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 62,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 62,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 61,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 61,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6872462772221488
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 63,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 63,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 62,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 62,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6760966559241148
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 64,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 64,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 63,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 63,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.664692163734785
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 65,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 65,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 64,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 64,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.653027525481654
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 66,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 66,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 65,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 65,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.641097193952875
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 67,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 67,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 66,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 66,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6288953311984167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 68,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 68,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 67,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 67,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.61641578809414
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 69,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 69,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 68,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 68,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.603652081967906
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 70,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 70,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 69,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 69,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5905973720586866
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 71,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 71,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 70,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 70,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.577244432546839
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 72,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 72,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 71,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 71,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.563585622855365
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 73,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 73,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 72,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 72,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.549612854876985
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 74,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 74,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 73,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 73,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5353175567289004
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 75,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 75,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 74,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 74,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5206906325745548
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 76,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 76,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 75,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 75,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5057224179774968
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 77,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 77,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 76,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 76,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4904026301640776
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 78,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 78,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 77,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 77,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4747203124660622
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 79,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 79,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 78,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 78,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4586637720873168
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 80,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 80,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 79,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 79,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4422205101855958
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 81,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 81,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 80,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 80,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4253771430747724
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 82,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 82,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 81,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 81,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4081193131265546
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 83,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 83,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 82,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 82,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3904315876734101
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 84,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 84,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 83,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 83,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3722973438726755
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 85,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 85,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 84,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 84,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3536986370680884
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 86,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 86,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 85,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 85,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3346160496562296
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 87,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 87,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 86,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 86,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3150285168010618
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 88,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 88,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 87,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 87,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2949131244990917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 89,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 89,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 88,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 88,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.274244874425634
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 90,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 90,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 89,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 89,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.252996408614167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 91,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 91,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 90,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 90,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2311376852326468
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 92,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 92,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 91,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 91,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2086355943790499
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 93,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 93,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 92,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 92,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1854534997206765
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 94,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 94,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 93,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 93,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1615506876585282
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 95,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 95,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 94,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 94,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1368817000902074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 96,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 96,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 95,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 95,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1113955191559843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 97,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 97,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 96,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 96,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0850345616615167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 98,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 98,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 97,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 97,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0577334257741882
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 99,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 99,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 98,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 98,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.029417310909429
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 100,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 100,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 99,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 99,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0000000000000002
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 200,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 200,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 199,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 199,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0000000000000002
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 201,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 201,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 200,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 200,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.029417310909429
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 202,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 202,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 201,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 201,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0577334257741882
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 203,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 203,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 202,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 202,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0850345616615167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 204,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 204,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 203,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 203,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1113955191559843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 205,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 205,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 204,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 204,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1368817000902074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 206,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 206,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 205,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 205,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1615506876585282
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 207,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 207,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 206,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 206,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1854534997206765
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 208,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 208,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 207,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 207,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2086355943790499
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 209,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 209,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 208,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 208,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2311376852326468
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 210,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 210,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 209,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 209,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.252996408614167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 211,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 211,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 210,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 210,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.274244874425634
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 212,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 212,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 211,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 211,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2949131244990917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 213,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 213,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 212,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 212,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3150285168010618
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 214,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 214,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 213,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 213,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3346160496562296
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 215,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 215,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 214,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 214,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3536986370680884
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 216,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 216,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 215,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 215,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3722973438726755
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 217,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 217,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 216,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 216,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3904315876734101
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 218,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 218,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 217,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 217,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4081193131265546
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 219,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 219,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 218,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 218,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4253771430747724
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 220,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 220,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 219,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 219,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4422205101855958
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 221,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 221,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 220,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 220,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4586637720873168
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 222,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 222,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 221,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 221,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4747203124660622
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 223,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 223,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 222,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 222,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4904026301640776
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 224,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 224,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 223,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 223,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5057224179774968
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 225,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 225,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 224,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 224,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5206906325745548
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 226,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 226,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 225,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 225,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5353175567289004
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 227,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 227,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 226,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 226,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.549612854876985
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 228,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 228,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 227,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 227,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.563585622855365
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 229,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 229,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 228,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 228,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.577244432546839
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 230,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 230,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 229,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 229,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5905973720586866
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 231,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 231,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 230,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 230,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.603652081967906
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 232,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 232,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 231,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 231,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.61641578809414
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 233,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 233,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 232,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 232,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6288953311984167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 234,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 234,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 233,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 233,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.641097193952875
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 235,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 235,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 234,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 234,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.653027525481654
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 236,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 236,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 235,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 235,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.664692163734785
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 237,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 237,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 236,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 236,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6760966559241148
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 238,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 238,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 237,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 237,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6872462772221488
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 239,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 239,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 238,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 238,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6981460479004744
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 240,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 240,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 239,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 239,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7088007490635062
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 241,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 241,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 240,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 240,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.719214937115194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 242,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 242,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 241,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 241,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7293929570806053
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 243,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 243,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 242,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 242,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7393389548906217
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 244,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 244,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 243,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 243,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7490568887260358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 245,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 245,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 244,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 244,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7585505395068974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 246,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 246,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 245,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 245,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.767823520603796
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 247,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 247,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 246,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 246,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.776879286839711
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 248,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 248,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 247,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 247,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7857211428439772
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 249,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 249,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 248,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 248,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7943522508136467
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 250,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 250,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 249,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 249,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8027756377319946
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 251,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 251,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 250,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 250,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8109942020890073
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 252,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 252,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 251,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 251,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8190107201443315
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 253,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 253,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 252,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 252,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8268278517692902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 254,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 254,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 253,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 253,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8344481459011044
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 255,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 255,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 254,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 254,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8418740456393863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 256,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 256,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 255,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 255,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8491078930121951
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 257,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 257,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 256,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 256,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8561519334364847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 258,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 258,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 257,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 257,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8630083198955394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 259,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 259,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 258,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 258,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8696791168540126
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 259,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 259,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.876166303929372
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 261,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 261,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 260,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 260,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8824717793369439
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 262,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 262,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 261,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 261,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8885973631242843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 263,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 263,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 262,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 262,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8945448002092746
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 264,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 264,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 263,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 263,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9003157632351526
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 265,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 265,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 264,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 264,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9059118552545917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 266,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 266,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 265,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 265,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9113346122539612
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 267,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 267,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 266,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 266,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.916585505527995
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 268,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 268,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 267,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 267,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9216659439142902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 269,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 269,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 268,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 268,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.926577275896298
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 270,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 270,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 269,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 269,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9313207915827966
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 271,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 271,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 270,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 270,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.935897724571213
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 272,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 272,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 271,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 271,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9403092537015847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 273,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 273,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 272,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 272,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9445565047074358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 274,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 274,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 273,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 273,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.948640551769361
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 275,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 275,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 274,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 274,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9525624189766635
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 276,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 276,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 275,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 275,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9563230817019974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 277,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 277,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 276,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 276,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9599234678935809
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 278,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 278,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 277,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 277,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.963364459289207
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 279,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 279,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 278,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 278,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9666468925559566
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 279,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 279,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.969771560359221
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 281,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 281,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 280,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 280,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9727392123643712
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 282,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 282,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 281,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 281,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9755505561741518
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 283,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 283,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 282,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 282,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9782062582046394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 284,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 284,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 283,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 283,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9807069445023915
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 285,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 285,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 284,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 284,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.983053201505194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 286,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 286,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 285,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 285,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.98524557674863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 287,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 287,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 286,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 286,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9872845795205074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 288,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 288,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 287,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 287,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.989170681465017
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 289,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 289,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 288,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 288,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.99090431713832
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 289,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 289,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9924858845171276
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 291,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 291,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 290,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9939157454616783
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 292,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 292,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 291,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 291,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.995194226134388
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 293,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 293,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 292,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 292,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9963216173753167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 294,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 294,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 293,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 293,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9972981750354653
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 295,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 295,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 294,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 294,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9981241202688085
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 296,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 296,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 295,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 295,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.998799639783838
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 297,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 297,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 296,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 296,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9993248860552904
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 298,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 298,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 297,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 297,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9996999774966244
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 299,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 299,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 298,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 298,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9999249985936973
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 299,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 299,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 2
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 301,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 301,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 300,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9999249985936973
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 302,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 302,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 301,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 301,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9996999774966244
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 303,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 303,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 302,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 302,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9993248860552904
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 304,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 304,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 303,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 303,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.998799639783838
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 305,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 305,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 304,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 304,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9981241202688085
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 306,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 306,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 305,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 305,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9972981750354653
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 307,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 307,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 306,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 306,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9963216173753167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 308,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 308,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 307,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 307,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.995194226134388
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 309,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 309,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 308,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 308,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9939157454616783
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 310,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 310,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 309,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 309,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9924858845171276
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 311,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 311,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 310,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 310,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.99090431713832
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 312,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 312,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 311,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 311,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.989170681465017
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 313,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 313,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 312,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 312,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9872845795205074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 314,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 314,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 313,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 313,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.98524557674863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 315,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 315,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 314,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 314,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.983053201505194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 316,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 316,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 315,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 315,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9807069445023915
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 317,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 317,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 316,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 316,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9782062582046394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 318,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 318,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 317,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 317,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9755505561741518
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 319,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 319,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 318,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 318,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9727392123643712
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 319,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 319,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.969771560359221
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 321,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 321,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 320,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9666468925559566
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 322,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 322,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 321,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 321,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.963364459289207
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 323,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 323,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 322,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 322,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9599234678935809
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 324,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 324,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 323,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 323,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9563230817019974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 325,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 325,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 324,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 324,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9525624189766635
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 326,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 326,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 325,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 325,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.948640551769361
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 327,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 327,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 326,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 326,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9445565047074358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 328,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 328,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 327,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 327,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9403092537015847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 329,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 329,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 328,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 328,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.935897724571213
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 330,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 330,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 329,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 329,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9313207915827966
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 331,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 331,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 330,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 330,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.926577275896298
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 332,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 332,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 331,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 331,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9216659439142902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 333,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 333,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 332,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 332,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.916585505527995
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 334,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 334,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 333,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 333,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9113346122539612
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 335,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 335,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 334,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 334,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9059118552545917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 336,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 336,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 335,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 335,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.9003157632351526
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 337,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 337,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 336,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 336,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8945448002092746
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 338,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 338,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 337,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 337,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8885973631242843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 339,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 339,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 338,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 338,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8824717793369439
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 339,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 339,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.876166303929372
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 341,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 341,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 340,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8696791168540126
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 342,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 342,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 341,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 341,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8630083198955394
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 343,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 343,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 342,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 342,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8561519334364847
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 344,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 344,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 343,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 343,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8491078930121951
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 345,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 345,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 344,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 344,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8418740456393863
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 346,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 346,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 345,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 345,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8344481459011044
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 347,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 347,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 346,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 346,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8268278517692902
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 348,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 348,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 347,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 347,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8190107201443315
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 349,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 349,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 348,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 348,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8109942020890073
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 350,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 350,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 349,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 349,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.8027756377319946
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 351,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 351,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 350,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 350,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7943522508136467
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 352,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 352,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 351,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 351,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7857211428439772
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 353,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 353,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 352,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 352,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.776879286839711
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 354,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 354,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 353,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 353,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.767823520603796
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 355,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 355,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 354,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 354,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7585505395068974
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 356,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 356,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 355,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 355,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7490568887260358
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 357,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 357,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 356,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 356,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7393389548906217
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 357,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 357,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7293929570806053
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 359,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 359,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 358,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.719214937115194
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 359,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 359,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.7088007490635062
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 360,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6981460479004744
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 362,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 362,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 361,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6872462772221488
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 363,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 363,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 362,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 362,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6760966559241148
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 364,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 364,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 363,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 363,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.664692163734785
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 365,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 365,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 364,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 364,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.653027525481654
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 366,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 366,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 365,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 365,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.641097193952875
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 367,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 367,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 366,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 366,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.6288953311984167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 368,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 368,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 367,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 367,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.61641578809414
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 369,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 369,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 368,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 368,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.603652081967906
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 370,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 370,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 369,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 369,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5905973720586866
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 371,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 371,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 370,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 370,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.577244432546839
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 372,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 372,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 371,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 371,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.563585622855365
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 373,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 373,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 372,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 372,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.549612854876985
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 374,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 374,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 373,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 373,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5353175567289004
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 375,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 375,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 374,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 374,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5206906325745548
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 376,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 376,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 375,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 375,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5057224179774968
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 377,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 377,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 376,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 376,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4904026301640776
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 378,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 378,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 377,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 377,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4747203124660622
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 379,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 379,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 378,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 378,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4586637720873168
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 379,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 379,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4422205101855958
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 381,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 381,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 380,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 380,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4253771430747724
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 382,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 382,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 381,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 381,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.4081193131265546
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 383,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 383,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 382,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 382,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3904315876734101
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 384,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 384,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 383,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 383,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3722973438726755
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 385,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 385,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 384,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 384,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3536986370680884
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 386,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 386,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 385,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 385,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3346160496562296
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 387,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 387,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 386,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 386,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.3150285168010618
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 388,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 388,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 387,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 387,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2949131244990917
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 389,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 389,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 388,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 388,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.274244874425634
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 390,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 390,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 389,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 389,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.252996408614167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 391,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 391,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 390,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 390,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2311376852326468
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 392,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 392,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 391,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 391,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.2086355943790499
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 393,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 393,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 392,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 392,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1854534997206765
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 394,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 394,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 393,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 393,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1615506876585282
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 395,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 395,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 394,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 394,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1368817000902074
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 396,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 396,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 395,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 395,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.1113955191559843
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 397,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 397,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 396,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 396,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0850345616615167
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 398,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 398,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 397,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 397,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0577334257741882
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 399,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 399,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 398,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 398,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.029417310909429
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 0,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 1000,
+          "y": 399,
+          "arc": false
+        },
+        {
+          "x": 0,
+          "y": 399,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.0000000000000002
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": -100,
+        "y": 0,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -40,
+        "y": 0,
+        "exist": true
+      },
+      "p": "46",
+      "symmetric": true,
+      "brightness": "0.8"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -100,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 181,
+        "y": 423,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -100,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 180,
+        "y": 180,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": -150.0000000000001,
+      "y": -192,
+      "p": "Ostrzeżenie: Sekwencja pojawiania się światła nie odzwierciedla rzeczywistej prędkości światła. Tylko ostateczny obraz ma znaczenie."
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": -120,
+        "y": 0,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -120,
+        "y": -100,
+        "exist": true
+      }
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 2.718281828459045,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 544.0000000000001,
+    "y": 456
+  },
+  "scale": 1,
+  "colorMode": false
+}

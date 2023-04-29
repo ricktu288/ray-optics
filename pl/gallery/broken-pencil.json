@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 660,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 640,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 640,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 580,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.44
+    },
+    {
+      "type": "radiant",
+      "x": 480,
+      "y": 540,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 360,
+      "y": 600,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 320,
+      "y": 620,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 200,
+      "y": 680,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 440,
+      "y": 560,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 520,
+      "y": 520,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 280,
+      "y": 640,
+      "p": "0.5"
+    },
+    {
+      "type": "text",
+      "x": 311.34000000000003,
+      "y": 832.3499999999999,
+      "p": "materiał dielektryczny"
+    },
+    {
+      "type": "text",
+      "x": 830.0100000000001,
+      "y": 493.2399999999999,
+      "p": "obraz na siatkówce"
+    },
+    {
+      "type": "text",
+      "x": 380,
+      "y": 460,
+      "p": "ołówek oryginalny (zielony)"
+    },
+    {
+      "type": "radiant",
+      "x": 560,
+      "y": 500,
+      "p": "0.5"
+    },
+    {
+      "type": "radiant",
+      "x": 240,
+      "y": 660,
+      "p": "0.5"
+    },
+    {
+      "type": "text",
+      "x": 830.0100000000001,
+      "y": 469.2399999999999,
+      "p": "złamany ołówek (żółty)"
+    },
+    {
+      "type": "text",
+      "x": 696.3,
+      "y": 695.9,
+      "p": "oko obserwatora"
+    },
+    {
+      "type": "text",
+      "x": 8.654838709677364,
+      "y": 563.4709677419356,
+      "p": "Zignoruj pomarańczowe kwadraty!"
+    }
+  ],
+  "mode": "images",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 0.21709939257630184,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 1427.1100000000001,
+      "y": 659.45,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 323.4722222222222,
+    "y": 180.13888888888883
+  },
+  "scale": 0.8611111111111112,
+  "colorMode": false,
+  "backgroundImage": "broken-pencil-background.png"
+}

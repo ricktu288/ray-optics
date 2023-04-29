@@ -21,6 +21,9 @@ locales["pl"] = {
   "gallery": {
     "message": "Galeria"
   },
+  "gallery_url": {
+    "message": "https://phydemo.app/ray-optics/pl/gallery/"
+  },
   "welcome": {
     "message": "<span style=\"font-size:22pt\">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href=\"https://phydemo.app/ray-optics/gallery/\">przejdź do strony Galerii</a>."
   },
@@ -259,7 +262,7 @@ locales["pl"] = {
     "message": "Eksportuj"
   },
   "view_gallery": {
-    "message": "Zobacz Galerię (en)"
+    "message": "Zobacz Galerię"
   },
   "save_name": {
     "message": "Nazwa:"

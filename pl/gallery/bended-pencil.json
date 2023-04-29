@@ -1,0 +1,153 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 822.1683000000002,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 822.1683000000002,
+        "y": 660,
+        "exist": true
+      },
+      "p": "100"
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 620,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 620,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 200,
+          "y": 680,
+          "arc": false
+        },
+        {
+          "x": 200,
+          "y": 480,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "radiant",
+      "x": 650,
+      "y": 520,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 660,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 590,
+      "y": 640,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 580,
+      "y": 660,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 630,
+      "y": 560,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 610,
+      "y": 600,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 600,
+      "y": 620,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 640,
+      "y": 540,
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 258.60166896644785,
+      "y": 605.4671820424851,
+      "p": "materiał dielektryczny"
+    },
+    {
+      "type": "text",
+      "x": 1022.5261689664474,
+      "y": 524.1058820424851,
+      "p": "obraz na siatkówce"
+    },
+    {
+      "type": "text",
+      "x": 596.7172689664478,
+      "y": 466.332582042485,
+      "p": "ołówek oryginalny (zielony)"
+    },
+    {
+      "type": "text",
+      "x": 1022.5261689664474,
+      "y": 501.105882042485,
+      "p": "zagięty ołówek (żółty)"
+    },
+    {
+      "type": "text",
+      "x": 756.9058620671046,
+      "y": 689.9247359150299,
+      "p": "oko obserwatora"
+    },
+    {
+      "type": "text",
+      "x": 402.769649611609,
+      "y": 759.7247288166785,
+      "p": "Zignoruj pomarańczowe kwadraty!"
+    }
+  ],
+  "mode": "images",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 0.08803683258237255,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 1236.5956333333334,
+      "y": 497.18188888888886,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 293.64557950111447,
+    "y": 189.2425946300823
+  },
+  "scale": 0.8611111111111112,
+  "colorMode": false,
+  "backgroundImage": "bended-pencil-background.png"
+}

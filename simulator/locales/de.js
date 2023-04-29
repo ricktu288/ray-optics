@@ -23,6 +23,10 @@ locales["de"] = {
   "gallery": {
     "message": "Gallerie"
   },
+  "gallery_url": {
+    "incomplete": true,
+    "message": "https://phydemo.app/ray-optics/gallery/"
+  },
   "welcome": {
     "message": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>."
   },

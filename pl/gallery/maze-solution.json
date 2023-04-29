@@ -1,0 +1,1861 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 847.7103992768032,
+              "y": 647.2931549915269,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 840.4000000000004,
+                "y": 625.4095238095238,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 847.7103992768032,
+                "y": 647.2931549915269,
+                "exist": true
+              },
+              "p": "1"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 114,
+          "newPoint": {
+            "type": 1,
+            "x": 847.7103992768032,
+            "y": 647.2931549915269,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 286.97625707625707,
+        "y": 635.6057498057501,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 847.7103992768032,
+        "y": 647.2931549915269,
+        "exist": true
+      }
+    },
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 840.4000000000004,
+              "y": 625.4095238095238,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 840.4000000000004,
+                "y": 625.4095238095238,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 847.7103992768032,
+                "y": 647.2931549915269,
+                "exist": true
+              },
+              "p": "1"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 114,
+          "newPoint": {
+            "type": 1,
+            "x": 840.4000000000004,
+            "y": 625.4095238095238,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 248.31666111666104,
+        "y": 527.6360528360532,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 840.4000000000004,
+        "y": 625.4095238095238,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 520,
+        "y": 320,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 520,
+        "y": 1220,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1420,
+        "y": 1220,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 1220,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1420,
+        "y": 920,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 1220,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1420,
+        "y": 860,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 1220,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 1120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 1120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 1120,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 1120,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 1020,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 980,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 980,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 520,
+        "y": 460,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 460,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 360,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 880,
+        "y": 360,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 840,
+        "y": 360,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 840,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 840,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 800,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 800,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 520,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 740,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 660,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 660,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 1220,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 740,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 1020,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 720,
+        "y": 1020,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 560,
+        "y": 760,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 940,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 940,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 940,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 940,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 740,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 800,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 1020,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 800,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1060,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1060,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1020,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1060,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1020,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1100,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1100,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1080,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 1140,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 1140,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 800,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 1100,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 940,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 940,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 940,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 980,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 660,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 700,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1120,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 1140,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1080,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1080,
+        "y": 1140,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1120,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1120,
+        "y": 1140,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1120,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1120,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1120,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1160,
+        "y": 1140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 1100,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 1060,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 620,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 620,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1080,
+        "y": 700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 700,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1080,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1080,
+        "y": 740,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1080,
+        "y": 660,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1080,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": 620,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 840,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 460,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1240,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1240,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 360,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1280,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1280,
+        "y": 360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1280,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1180,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1180,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1220,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": 960,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1260,
+        "y": 680,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": 680,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 960,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 960,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 860,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 860,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1420,
+        "y": 860,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 960,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1300,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1420,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1180,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1220,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 680,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 680,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1300,
+        "y": 860,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 860,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1300,
+        "y": 900,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1300,
+        "y": 860,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 1000,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 1060,
+        "exist": true
+      }
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 840.4000000000004,
+        "y": 625.4095238095238,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 847.7103992768032,
+        "y": 647.2931549915269,
+        "exist": true
+      },
+      "p": "1"
+    },
+    {
+      "type": "text",
+      "x": 1443.2311388776352,
+      "y": 953.0278131289024,
+      "p": "Wyjście z labiryntu"
+    },
+    {
+      "type": "text",
+      "x": -244.02374292374296,
+      "y": 1165.5819402819404,
+      "p": "i wtedy komunikat przetwarzania w lewym dolnym rogu zniknie."
+    },
+    {
+      "type": "text",
+      "x": -244.02374292374296,
+      "y": 1125.5819402819404,
+      "p": "Należy zauważyć, że przetwarzanie symulacji kończy się tylko raz"
+    },
+    {
+      "type": "text",
+      "x": -114.59543789543784,
+      "y": 493.9208458208447,
+      "p": "przeciągając górny i dolny znacznik (odpowiednio)."
+    },
+    {
+      "type": "text",
+      "x": -114.59543789543784,
+      "y": 453.9208458208447,
+      "p": "Kontroluj początek promienia i początkowy kierunek"
+    },
+    {
+      "type": "text",
+      "x": 210.69040959040956,
+      "y": 539.7513930513928,
+      "p": "→"
+    },
+    {
+      "type": "text",
+      "x": 249.3095904095904,
+      "y": 646.915273615274,
+      "p": "→"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.10000000000000002,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 192.0178071928072,
+    "y": -7.186455211455495
+  },
+  "scale": 0.75,
+  "colorMode": false
+}

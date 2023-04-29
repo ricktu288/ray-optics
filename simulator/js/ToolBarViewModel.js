@@ -143,7 +143,7 @@ $("#help").click(function () {
 
 
 $("#view_gallery").click(function () {
-  window.open("https://ricktu288.github.io/ray-optics/gallery/");
+  window.open(getMsg("gallery_url"));
 });
 
 $("#color_mode").parent().removeClass("btn-primary").addClass("btn-secondary").css("margin-left","10px");

@@ -1,0 +1,195 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1060,
+        "y": 680,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 680,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1060,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 541,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 680,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1060,
+        "y": 680,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1060,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 763,
+      "y": 676.3333333333335,
+      "p": "Obserwator"
+    },
+    {
+      "type": "text",
+      "x": -84.10894544052428,
+      "y": 535.5267977636405,
+      "p": "Obiekty na zewnątrz"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 60,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      },
+      "p": "4",
+      "symmetric": true,
+      "brightness": "5"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 60,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      },
+      "p": "4",
+      "symmetric": true,
+      "brightness": "5"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 60,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      },
+      "p": 4,
+      "symmetric": true,
+      "brightness": "5"
+    },
+    {
+      "type": "text",
+      "x": 860.7901098901095,
+      "y": 392.9062845651083,
+      "p": "Ciemny pokój"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 60,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 540,
+        "exist": true
+      },
+      "p": "4",
+      "symmetric": true,
+      "brightness": "5"
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 60,
+        "y": 700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1060,
+        "y": 700,
+        "exist": true
+      }
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 20.08352846991968,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 222.39505494505482,
+    "y": 3.6198089492208965
+  },
+  "scale": 1,
+  "colorMode": false
+}

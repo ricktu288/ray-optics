@@ -1,0 +1,427 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 480,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 685.2,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0361
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 664.953086419753,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0221
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 695.0765432098766,
+        "y": 480.0098765432099,
+        "exist": true
+      },
+      "p": 1.0476
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 690.1382716049383,
+        "y": 480.0098765432099,
+        "exist": true
+      },
+      "p": 1.0413
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 645.1999999999999,
+        "y": 480.39999999999986,
+        "exist": true
+      },
+      "p": 1.0135
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 675.0765432098766,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0281
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 670.1382716049383,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0249
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0318
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 625.1999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0072
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 655,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0174
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 649.9999999999999,
+        "y": 480.39999999999986,
+        "exist": true
+      },
+      "p": 1.0153
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 660,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0196
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 620,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0058
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 635.1999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0101
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 629.9999999999999,
+        "y": 479.9999999999999,
+        "exist": true
+      },
+      "p": 1.0086
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0118
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 604.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0019
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 614.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0045
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 609.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0032
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 840,
+        "exist": true
+      },
+      "p": 30,
+      "symmetric": true
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 840,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 480,
+        "exist": true
+      },
+      "p": 30,
+      "symmetric": true
+    },
+    {
+      "type": "text",
+      "x": 174.19555848924676,
+      "y": 489.1654958865022,
+      "p": "Soczewka Luneburga"
+    },
+    {
+      "type": "text",
+      "x": 162.05791104625422,
+      "y": 846.441503719748,
+      "p": "Szkło o kształcie koła"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 4.4816890703380645,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 163.5299998870674,
+    "y": -216.30377364882975
+  },
+  "scale": 1.1438396227480496,
+  "colorMode": false
+}

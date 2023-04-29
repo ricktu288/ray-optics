@@ -1,0 +1,246 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p": 0.5,
+      "wavelength": 620
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 920,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 360,
+        "exist": true
+      },
+      "wavelength": "620",
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 920,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 520,
+        "exist": true
+      },
+      "wavelength": "540",
+      "dichroic": true
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 920,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 440,
+        "exist": true
+      },
+      "wavelength": "460",
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 440,
+        "exist": true
+      },
+      "wavelength": 620,
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 480,
+        "exist": true
+      },
+      "wavelength": "540",
+      "dichroic": true,
+      "isDichroic": true,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p": 0.5,
+      "wavelength": 460
+    },
+    {
+      "type": "text",
+      "x": 436.57142857142844,
+      "y": 352.00000000000006,
+      "p": "Rozdzielacz i sumator komponentów RGB"
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 360,
+        "exist": true
+      },
+      "dichroic": false,
+      "isDichroic": true
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 660,
+        "y": 520,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 560,
+        "exist": true
+      },
+      "dichroic": false
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 920,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 320,
+        "exist": true
+      },
+      "dichroic": false
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 440,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 440,
+        "y": 320,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 438.857142857143,
+      "y": 469.7142857142858,
+      "p": "Źródło światła"
+    },
+    {
+      "type": "text",
+      "x": 612.5714285714287,
+      "y": 436,
+      "p": "Kostka dichroiczna"
+    },
+    {
+      "type": "text",
+      "x": 969.142857142857,
+      "y": 433.14285714285717,
+      "p": "Sumator wiązki"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.4134990756293879,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -408.14285714285734,
+    "y": 2.2857142857144197
+  },
+  "scale": 1.25,
+  "colorMode": true
+}

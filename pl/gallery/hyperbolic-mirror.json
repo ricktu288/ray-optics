@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedmirror",
+      "p1": {
+        "type": 1,
+        "x": 880.0000000000002,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 879.9999999999998,
+        "y": 840,
+        "exist": true
+      },
+      "p": "\\sqrt{1+x^2}"
+    },
+    {
+      "type": "radiant",
+      "x": 738.5786437626906,
+      "y": 739.9999999999999,
+      "p": 0.43
+    },
+    {
+      "type": "blackcircle",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 740,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1140,
+        "y": 740,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 574,
+      "y": 811,
+      "p": "Umieść źródło światła w ognisku"
+    },
+    {
+      "type": "text",
+      "x": 1036,
+      "y": 751,
+      "p": "←Te pozorne promienie skupiają się w drugim ognisku."
+    },
+    {
+      "type": "text",
+      "x": 1060,
+      "y": 719,
+      "p": "Promienie pomarańczowe są pozornymi promieniami (przedłużenia odbitych promieni żółtych)."
+    },
+    {
+      "type": "text",
+      "x": 733,
+      "y": 782,
+      "p": "↑"
+    }
+  ],
+  "mode": "extended_light",
+  "rayDensity_light": 0.5077327766614864,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 21,
+    "y": -214.00000000000006
+  },
+  "scale": 1,
+  "colorMode": false
+}

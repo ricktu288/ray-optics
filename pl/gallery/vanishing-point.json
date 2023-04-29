@@ -1,0 +1,344 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 1340,
+        "exist": true
+      },
+      "p": "100"
+    },
+    {
+      "type": "radiant",
+      "x": -1520,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": -560,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 420,
+      "y": 500,
+      "p": 0.5,
+      "wavelength": "532"
+    },
+    {
+      "type": "radiant",
+      "x": 800,
+      "y": 500,
+      "p": 0.5,
+      "wavelength": "532"
+    },
+    {
+      "type": "radiant",
+      "x": 800,
+      "y": 940,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": 660,
+      "y": 1080,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": 500,
+      "y": 1240,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": 380,
+      "y": 1360,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": 220,
+      "y": 1520,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": -500,
+      "y": 2240,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": -2180,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": -3620,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 480,
+      "y": 940,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": 340,
+      "y": 1080,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": 200,
+      "y": 1220,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": 60,
+      "y": 1360,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": -140,
+      "y": 1560,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": -2840,
+      "y": 4260,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": 620,
+      "y": 500,
+      "p": 0.5,
+      "wavelength": "532"
+    },
+    {
+      "type": "radiant",
+      "x": -40,
+      "y": 500,
+      "p": 0.5
+    },
+    {
+      "type": "radiant",
+      "x": 800,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": 620,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": 420,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": -40,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": -560,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": -1520,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": -2180,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "radiant",
+      "x": -3620,
+      "y": 640,
+      "p": 0.5,
+      "wavelength": "660"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1480,
+        "y": 1480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 420,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": -1820,
+        "y": 420,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 420,
+        "exist": true
+      }
+    },
+    {
+      "type": "radiant",
+      "x": -280,
+      "y": 1700,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "radiant",
+      "x": 80,
+      "y": 1660,
+      "p": 0.5,
+      "wavelength": "450"
+    },
+    {
+      "type": "radiant",
+      "x": -840,
+      "y": 2260,
+      "p": 0.5,
+      "wavelength": "580"
+    },
+    {
+      "type": "text",
+      "x": 324,
+      "y": 1008,
+      "p": "Ta para równoległych prostych zbiega się w punkcie B"
+    },
+    {
+      "type": "text",
+      "x": 324,
+      "y": 588,
+      "p": "Ta para równoległych prostych zbiega się w punkcie A"
+    },
+    {
+      "type": "text",
+      "x": 1054,
+      "y": 913.3333333333333,
+      "p": "A"
+    },
+    {
+      "type": "text",
+      "x": 1075,
+      "y": 812.3333333333333,
+      "p": "→"
+    },
+    {
+      "type": "text",
+      "x": 1054,
+      "y": 813.3333333333333,
+      "p": "B"
+    },
+    {
+      "type": "text",
+      "x": 1075,
+      "y": 912.3333333333333,
+      "p": "→"
+    },
+    {
+      "type": "text",
+      "x": 1560,
+      "y": 580,
+      "p": "Możesz sprawdzić, że para prostych równoległych o współczynniku kierunkowym - m skupiana jest przez idealną soczewkę w punkcie o współrzędnych (f,m∙f),"
+    },
+    {
+      "type": "text",
+      "x": 1560,
+      "y": 607,
+      "p": "klikając przycisk \"Siatka\" i zauważając, że każda komórka siatki ma wymiary 20 na 20."
+    },
+    {
+      "type": "text",
+      "x": 1560,
+      "y": 660,
+      "p": "Można również sprawdzić, jak zmiana ogniskowej idealnej soczewki - f, wpływa na punkty zbiegu."
+    },
+    {
+      "type": "text",
+      "x": -860,
+      "y": 1100,
+      "p": "Zauważ, że te pary równoległych linii nie są w rzeczywistości nieskończone."
+    }
+  ],
+  "mode": "images",
+  "rayDensity_light": 0.049787068367863944,
+  "rayDensity_images": 1,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 314,
+      "y": 901,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 585,
+    "y": 183
+  },
+  "scale": 0.5,
+  "colorMode": true,
+  "backgroundImage": "vanishing-point-background.png"
+}

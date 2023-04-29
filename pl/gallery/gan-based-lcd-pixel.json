@@ -1,0 +1,364 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 40,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 40,
+        "y": 700,
+        "exist": true
+      },
+      "p": 1,
+      "wavelength": "460"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 160,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 160,
+        "y": 600,
+        "exist": true
+      },
+      "p": 0.5,
+      "wavelength": "620"
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 280,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 280,
+        "y": 500,
+        "exist": true
+      },
+      "isDichroic": true,
+      "isDichroicFilter": true,
+      "wavelength": 620
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 280,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 280,
+        "y": 600,
+        "exist": true
+      },
+      "isDichroic": true,
+      "isDichroicFilter": true,
+      "wavelength": 540
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 160,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 160,
+        "y": 600,
+        "exist": true
+      },
+      "p": 0.5,
+      "wavelength": "540"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 160,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 160,
+        "y": 600,
+        "exist": true
+      },
+      "p": 0,
+      "wavelength": 580
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 40,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 40,
+        "y": 700,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": -246,
+      "y": 557,
+      "p": "Niebieskie podświetlenie LED GaN"
+    },
+    {
+      "type": "text",
+      "x": 60.33333333333326,
+      "y": 391.6666666666665,
+      "p": "Fosfor żółty"
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 280,
+        "y": 700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 280,
+        "y": 600,
+        "exist": true
+      },
+      "p": 0.5,
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "text",
+      "x": 402.26825396825393,
+      "y": 387.59682539682524,
+      "p": "Ciekły kryształ"
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 500,
+        "y": 500,
+        "exist": true
+      },
+      "p": 0.43,
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 500,
+        "y": 600,
+        "exist": true
+      },
+      "p": 0.88,
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "beamsplitter",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 500,
+        "y": 600,
+        "exist": true
+      },
+      "p": 1,
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "text",
+      "x": 195.4666666666667,
+      "y": 746.5333333333335,
+      "p": "Filtry światła"
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 500,
+        "exist": true
+      },
+      "isDichroic": true,
+      "isDichroicFilter": false,
+      "wavelength": 620
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 600,
+        "exist": true
+      },
+      "isDichroic": true,
+      "isDichroicFilter": false,
+      "wavelength": "540"
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 700,
+        "exist": true
+      },
+      "isDichroic": true,
+      "isDichroicFilter": false,
+      "wavelength": 460
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 840,
+        "y": 340,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 240,
+        "exist": true
+      },
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 40,
+        "y": 340,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 40,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 396,
+      "y": 748,
+      "p": "Zmień szybkość transmisji"
+    },
+    {
+      "type": "text",
+      "x": 396,
+      "y": 748,
+      "p": "Zmień szybkość transmisji"
+    },
+    {
+      "type": "text",
+      "x": 397.4285714285714,
+      "y": 776.2857142857144,
+      "p": "Aby utworzyć dowolną wartość RGB"
+    },
+    {
+      "type": "text",
+      "x": 397.4285714285714,
+      "y": 776.2857142857144,
+      "p": "Aby utworzyć dowolną wartość RGB"
+    },
+    {
+      "type": "text",
+      "x": 32,
+      "y": 230.00000000000006,
+      "p": "Piksel, tak jak widzi go obserwator"
+    },
+    {
+      "type": "text",
+      "x": 858,
+      "y": 432.00000000000006,
+      "p": "Nie jest częścią wyświetlacza LCD"
+    },
+    {
+      "type": "text",
+      "x": 858,
+      "y": 522,
+      "p": "naszym oczom wydaje się być zmieszane"
+    },
+    {
+      "type": "text",
+      "x": 856,
+      "y": 486.00000000000006,
+      "p": "Piksele są tak małe, że światło"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 2.718281828459045,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 174,
+    "y": 242.00000000000003
+  },
+  "scale": 0.5,
+  "colorMode": true
+}

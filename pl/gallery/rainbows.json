@@ -1,0 +1,233 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 72,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 72,
+        "y": 300,
+        "exist": true
+      },
+      "p": "40",
+      "wavelength": "420"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 42,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 42,
+        "y": 300,
+        "exist": true
+      },
+      "p": "40",
+      "wavelength": "620"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 47,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 47,
+        "y": 300,
+        "exist": true
+      },
+      "p": "20",
+      "wavelength": "600"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 52,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 52,
+        "y": 300,
+        "exist": true
+      },
+      "p": "30",
+      "wavelength": "580"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 57,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 57,
+        "y": 300,
+        "exist": true
+      },
+      "p": "45",
+      "wavelength": "540"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 62,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 62,
+        "y": 300,
+        "exist": true
+      },
+      "p": "30",
+      "wavelength": "500"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 67,
+        "y": 260,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 67,
+        "y": 300,
+        "exist": true
+      },
+      "p": "45",
+      "wavelength": "460"
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 642,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 662,
+        "y": 280,
+        "exist": true
+      },
+      "p": 1.324,
+      "cauchyCoeff": "0.00312"
+    },
+    {
+      "type": "text",
+      "x": 282.80000000000007,
+      "y": 771.8857142857144,
+      "p": "Tęcza wtórna"
+    },
+    {
+      "type": "text",
+      "x": 106.34285714285716,
+      "y": 811.9999999999998,
+      "p": "Ciemny pas Aleksandra"
+    },
+    {
+      "type": "text",
+      "x": 591.8285714285715,
+      "y": 373.25714285714247,
+      "p": "Kropla deszczu"
+    },
+    {
+      "type": "text",
+      "x": 255.59999999999997,
+      "y": 758.9523809523808,
+      "p": "↖"
+    },
+    {
+      "type": "text",
+      "x": 187.6,
+      "y": 694.152380952381,
+      "p": "↘"
+    },
+    {
+      "type": "text",
+      "x": 166.8,
+      "y": 780.5523809523809,
+      "p": "↗"
+    },
+    {
+      "type": "text",
+      "x": 44.62857142857155,
+      "y": 662.0571428571426,
+      "p": "Tęcza pierwotna"
+    },
+    {
+      "type": "text",
+      "x": 87.82857142857156,
+      "y": 342.0571428571426,
+      "p": "Światło słoneczne"
+    },
+    {
+      "type": "text",
+      "x": 635.5999999999999,
+      "y": 342.9523809523809,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 186.53333333333342,
+      "y": 950.1523809523809,
+      "p": "z których każda daje obserwatorowi jeden kolor (pod odpowiednim kątem)."
+    },
+    {
+      "type": "text",
+      "x": 220.53333333333342,
+      "y": 870.1523809523809,
+      "p": "Są to kolory powstałe z pojedynczej kropli deszczu."
+    },
+    {
+      "type": "text",
+      "x": 184.53333333333342,
+      "y": 916.1523809523809,
+      "p": "Końcowe tęcze, które widzimy, są spowodowane ogromną liczbą kropel deszczu na niebie,"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 148.4131591025766,
+  "rayDensity_images": 1,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 270.4,
+      "y": 519.5999999999999,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 261.5073068372468,
+    "y": 49.97243964726634
+  },
+  "scale": 0.75,
+  "colorMode": true
+}

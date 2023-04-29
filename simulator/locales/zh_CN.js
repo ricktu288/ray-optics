@@ -21,6 +21,10 @@ locales["zh-CN"] = {
   "gallery": {
     "message": "作品集"
   },
+  "gallery_url": {
+    "incomplete": true,
+    "message": "https://phydemo.app/ray-optics/gallery/"
+  },
   "welcome": {
     "message": "<span style=\"font-size:22pt\">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href=\"https://phydemo.app/ray-optics/gallery/\">请前往“作品集”页面</a>。"
   },

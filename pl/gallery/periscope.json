@@ -1,0 +1,205 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 860,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 860,
+        "y": 880,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 920,
+        "y": 380,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 920,
+        "y": 820,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 860,
+        "y": 380,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 920,
+        "y": 380,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 880,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 860,
+        "y": 880,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 860,
+        "y": 380,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 920,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 860,
+        "y": 820,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 920,
+        "y": 880,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 820,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 880,
+        "exist": true
+      },
+      "p": 162
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 820,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 880,
+        "y": 400,
+        "exist": true
+      },
+      "p": 7,
+      "symmetric": true,
+      "brightness": 1,
+      "wavelength": "460"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 460,
+        "y": 440,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 760,
+        "y": 420,
+        "exist": true
+      },
+      "p": 7,
+      "symmetric": true,
+      "brightness": 1,
+      "wavelength": "540"
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 20,
+        "y": 420,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 400,
+        "exist": true
+      },
+      "p": "4",
+      "symmetric": true,
+      "wavelength": "620",
+      "brightness": 1
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 960,
+        "y": 820,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 920,
+        "y": 820,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 914.4,
+      "y": 930.4,
+      "p": "Oko obserwatora (nie w skali)"
+    },
+    {
+      "type": "text",
+      "x": 954,
+      "y": 910,
+      "p": "↑"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 20.031379119430994,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 119.2500000000002,
+    "y": -34.500000000000114
+  },
+  "scale": 0.75,
+  "colorMode": true
+}

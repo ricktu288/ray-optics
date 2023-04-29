@@ -1,0 +1,111 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 820,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 900,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 1006.1042346598156,
+      "y": 523.9535701314057,
+      "p": "Ta soczewka Fresnela została wykonana z półkolistego szkła poniżej"
+    },
+    {
+      "type": "refractor",
+      "path": [
+        {
+          "x": 1260,
+          "y": 780,
+          "arc": false
+        },
+        {
+          "x": 1340,
+          "y": 860,
+          "arc": true
+        },
+        {
+          "x": 1260,
+          "y": 940,
+          "arc": false
+        }
+      ],
+      "notDone": false,
+      "p": 1.5
+    },
+    {
+      "type": "curvedglass",
+      "p1": {
+        "type": 1,
+        "x": 1340,
+        "y": 600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1340,
+        "y": 760,
+        "exist": true
+      },
+      "eqn1": "-0.05",
+      "eqn2": "\\sqrt{1-x^2}-\\frac{\\operatorname{floor}\\left(50\\cdot\\sqrt{1-x^2}\\right)}{50}",
+      "p": 1.5
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 1040,
+        "y": 640,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1040,
+        "y": 720,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 959.4173479780818,
+      "y": 564.5504719438892,
+      "p": "Możesz kliknąć i zmienić \"50\" we wzorze na inną liczbę wycinków"
+    },
+    {
+      "type": "text",
+      "x": 1006.1042346598156,
+      "y": 523.9535701314057,
+      "p": "Ta soczewka Fresnela została wykonana z półkolistego szkła poniżej"
+    },
+    {
+      "type": "text",
+      "x": 1332.3771336724562,
+      "y": 595.3601419098701,
+      "p": "↓"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -828.2196457962517,
+    "y": -363.23863091726093
+  },
+  "scale": 1.2970949456575611,
+  "colorMode": false
+}

@@ -21,6 +21,9 @@ locales["zh-TW"] = {
   "gallery": {
     "message": "作品集"
   },
+  "gallery_url": {
+    "message": "https://phydemo.app/ray-optics/tw/gallery/"
+  },
   "welcome": {
     "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://phydemo.app/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
   },

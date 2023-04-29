@@ -1,0 +1,1351 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "handle",
+      "controlPoints": [
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 300,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 191.80329216606003,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "620"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 8,
+          "newPoint": {
+            "type": 1,
+            "x": 191.80329216606003,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 320,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 221.6802406430355,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.4",
+              "wavelength": "600"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 9,
+          "newPoint": {
+            "type": 1,
+            "x": 221.6802406430355,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 340,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 251.5571891200092,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "580"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 10,
+          "newPoint": {
+            "type": 1,
+            "x": 251.5571891200092,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 360,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 281.4341375969836,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "540"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 11,
+          "newPoint": {
+            "type": 1,
+            "x": 281.4341375969836,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 380,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 311.31108607395794,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "500"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 12,
+          "newPoint": {
+            "type": 1,
+            "x": 311.31108607395794,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 400,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 341.1880345509317,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "460"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 13,
+          "newPoint": {
+            "type": 1,
+            "x": 341.1880345509317,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 420,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 371.0649830279073,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.8",
+              "wavelength": "420"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 14,
+          "newPoint": {
+            "type": 1,
+            "x": 371.0649830279073,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 300,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 191.80329216606003,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "620"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 1,
+          "newPoint": {
+            "type": 1,
+            "x": 191.80329216606003,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 320,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 221.6802406430355,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.4",
+              "wavelength": "600"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 2,
+          "newPoint": {
+            "type": 1,
+            "x": 221.6802406430355,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 340,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 251.5571891200092,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "580"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 3,
+          "newPoint": {
+            "type": 1,
+            "x": 251.5571891200092,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 360,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 281.4341375969836,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "540"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 4,
+          "newPoint": {
+            "type": 1,
+            "x": 281.4341375969836,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 380,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 311.31108607395794,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "500"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 5,
+          "newPoint": {
+            "type": 1,
+            "x": 311.31108607395794,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 400,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 341.1880345509317,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "460"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 6,
+          "newPoint": {
+            "type": 1,
+            "x": 341.1880345509317,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 1,
+            "targetPoint": {
+              "type": 1,
+              "x": 420,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 371.0649830279073,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.8",
+              "wavelength": "420"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 7,
+          "newPoint": {
+            "type": 1,
+            "x": 371.0649830279073,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 371.0649830279073,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.8",
+              "wavelength": "420"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 7,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 341.1880345509317,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "460"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 6,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 311.31108607395794,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "500"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 5,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 281.4341375969836,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "540"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 4,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 251.5571891200092,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "580"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 3,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 221.6802406430355,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.4",
+              "wavelength": "600"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 2,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 560,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 191.80329216606003,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 589.6308454309253,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "620"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 1,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 589.6308454309253,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 371.0649830279073,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.8",
+              "wavelength": "420"
+            },
+            "hasDuplicated": false,
+            "byHandle": true
+          },
+          "targetObj_index": 14,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 341.1880345509317,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "460"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 13,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 311.31108607395794,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "500"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 12,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 281.4341375969836,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "540"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 11,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 251.5571891200092,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.6",
+              "wavelength": "580"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 10,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 221.6802406430355,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.4",
+              "wavelength": "600"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 9,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        },
+        {
+          "mousePart": {
+            "part": 2,
+            "targetPoint": {
+              "type": 1,
+              "x": 440,
+              "y": 440,
+              "exist": true
+            },
+            "originalObj": {
+              "type": "laser",
+              "p1": {
+                "type": 1,
+                "x": 191.80329216606003,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p2": {
+                "type": 1,
+                "x": 400.9419315048804,
+                "y": 410.3691545690761,
+                "exist": true
+              },
+              "p": "0.9",
+              "wavelength": "620"
+            },
+            "byHandle": true
+          },
+          "targetObj_index": 8,
+          "newPoint": {
+            "type": 1,
+            "x": 400.9419315048804,
+            "y": 410.3691545690761,
+            "exist": true
+          }
+        }
+      ],
+      "notDone": false,
+      "p1": {
+        "type": 1,
+        "x": 102.17244673513872,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 281.4341375969836,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 191.80329216606003,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "620"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 221.6802406430355,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.4",
+      "wavelength": "600"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 251.5571891200092,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.6",
+      "wavelength": "580"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 281.4341375969836,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "540"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 311.31108607395794,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.6",
+      "wavelength": "500"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 341.1880345509317,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "460"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 371.0649830279073,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 589.6308454309253,
+        "exist": true
+      },
+      "p": "0.8",
+      "wavelength": "420"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 191.80329216606003,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "620"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 221.6802406430355,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.4",
+      "wavelength": "600"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 251.5571891200092,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.6",
+      "wavelength": "580"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 281.4341375969836,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "540"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 311.31108607395794,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.6",
+      "wavelength": "500"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 341.1880345509317,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.9",
+      "wavelength": "460"
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 371.0649830279073,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 400.9419315048804,
+        "y": 410.3691545690761,
+        "exist": true
+      },
+      "p": "0.8",
+      "wavelength": "420"
+    },
+    {
+      "type": "text",
+      "x": 74.94848484848487,
+      "y": 510.83939393939386,
+      "p": "↳"
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 510,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 530,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 560,
+          "y": 500,
+          "arc": true
+        },
+        {
+          "x": 530,
+          "y": 660,
+          "arc": false
+        },
+        {
+          "x": 510,
+          "y": 660,
+          "arc": false
+        },
+        {
+          "x": 480,
+          "y": 500,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 1.728,
+      "cauchyCoeff": "0.01342"
+    },
+    {
+      "type": "text",
+      "x": -101.85151515151514,
+      "y": 470.039393939394,
+      "p": "Ctrl+Shift+przeciągnij tutaj"
+    },
+    {
+      "type": "text",
+      "x": -97.05151515151513,
+      "y": 554.8393939393939,
+      "p": "aby ustawić szerokość wiązki"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.049787068367863944,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 280.4859055633052,
+    "y": -199.96566900591597
+  },
+  "scale": 1.25,
+  "colorMode": true
+}

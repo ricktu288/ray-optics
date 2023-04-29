@@ -1,0 +1,320 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "curvedglass",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -500,
+        "exist": true
+      },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "eqn2": "0.5\\cdot\\sqrt{1-x^2}",
+      "p": 1.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 820,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 60,
+        "exist": true
+      },
+      "p": 1.5
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 700,
+        "y": 60,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 960,
+        "y": 60,
+        "exist": true
+      },
+      "p": 162,
+      "symmetric": true
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -400,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": 240,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1000,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 664.115427318801,
+        "y": -500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": -500,
+        "exist": true
+      },
+      "p": 162,
+      "symmetric": true
+    },
+    {
+      "type": "text",
+      "x": -958.1132075471697,
+      "y": -360.00000000000006,
+      "p": "gdzie x1,x2 to odpowiednio poziome współrzędne punktów A, B (każda komórka siatki ma wymiary 20 na 20)."
+    },
+    {
+      "type": "text",
+      "x": 1020,
+      "y": -60,
+      "p": "Soczewka sferyczna"
+    },
+    {
+      "type": "text",
+      "x": 1009.3333333333333,
+      "y": -544,
+      "p": "Soczewka eliptyczna"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -600,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": -120,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": -960,
+      "y": -480,
+      "p": "Kliknij przycisk \"Promienie rozszerzone\", aby sprawdzić, czy światło emitowane ze źródła światła w soczewce sferycznej (punkt A)"
+    },
+    {
+      "type": "text",
+      "x": -960,
+      "y": -440,
+      "p": "będzie odchylać się od innego punktu na osi optycznej poza soczewką sferyczną (punkt B) bez aberracji sferycznej."
+    },
+    {
+      "type": "text",
+      "x": 693.3333333333333,
+      "y": 119.33333333333334,
+      "p": "A"
+    },
+    {
+      "type": "text",
+      "x": 544,
+      "y": 119.33333333333331,
+      "p": "B"
+    },
+    {
+      "type": "text",
+      "x": 694.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 544.6666666666666,
+      "y": 88.66666666666666,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 967,
+      "y": -446,
+      "p": "C"
+    },
+    {
+      "type": "text",
+      "x": 656.2666666666667,
+      "y": -445.6000000000001,
+      "p": "D"
+    },
+    {
+      "type": "text",
+      "x": 970,
+      "y": -474.3333333333333,
+      "p": "↑"
+    },
+    {
+      "type": "text",
+      "x": 659,
+      "y": -471.3333333333333,
+      "p": "↑"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 640,
+        "y": -840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 440,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 605.1814223512338,
+      "y": -877.7406869859694,
+      "p": "oś Y"
+    },
+    {
+      "type": "text",
+      "x": -960,
+      "y": -320,
+      "p": "W podobny sposób ogniska elipsy (punkty C i D) są przykładem punktów aplanatycznych elipsy, dla których (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)"
+    },
+    {
+      "type": "text",
+      "x": 632.8205128205128,
+      "y": -849.7435897435897,
+      "p": "↓"
+    },
+    {
+      "type": "text",
+      "x": -958.1132075471697,
+      "y": -400.00000000000006,
+      "p": "Punkty A i B są przykładem punktów aplanatycznych sfery, dla której (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relative to the marked Y axis,"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1210577348092538,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 951.6483146067413,
+    "y": 661.6797752808989
+  },
+  "scale": 0.5300000000000002,
+  "colorMode": false
+}

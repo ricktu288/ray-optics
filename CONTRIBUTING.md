@@ -40,14 +40,14 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 **Method 1: By e-mail**
 
-1. Save you work as a `.json` file using the "Save" button. If your work contains text labels, the text should be in English. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
+1. Save you work as a `.json` file using the "Save" button. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
 2. Send the files to ray-optics@phydemo.app. Include the title of your work, a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the JSON file in `gallery/` (follow the naming convention there). Currently, the "text" tool does not support locales, so if the work contains texts, they should be in English.
+2. Add the JSON file in `gallery/` (follow the naming convention there).
 
 3. If the work contains a background image, put it also in `gallery/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
 

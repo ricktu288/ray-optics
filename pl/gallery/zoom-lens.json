@@ -1,0 +1,154 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 140,
+        "y": 420,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 140,
+        "y": 500,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 373,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 387,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 392,
+          "y": 459,
+          "arc": true
+        },
+        {
+          "x": 387,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 373,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 369,
+          "y": 459,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 1.7
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 854,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 866,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 872.0143851941782,
+          "y": 460,
+          "arc": true
+        },
+        {
+          "x": 866,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 854,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 852,
+          "y": 460,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 1.82
+    },
+    {
+      "type": "sphericallens",
+      "path": [
+        {
+          "x": 603,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 637,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 628,
+          "y": 460.5,
+          "arc": true
+        },
+        {
+          "x": 637,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 603,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 613,
+          "y": 460.5,
+          "arc": true
+        }
+      ],
+      "notDone": false,
+      "p": 2.01
+    },
+    {
+      "type": "text",
+      "x": 519,
+      "y": 614,
+      "p": "(Shift+przeciągnij soczewkę)"
+    },
+    {
+      "type": "text",
+      "x": 567,
+      "y": 326,
+      "p": "← zoom →"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 0,
+    "y": 0
+  },
+  "scale": 1,
+  "colorMode": false
+}

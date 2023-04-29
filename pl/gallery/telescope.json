@@ -1,0 +1,372 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 700,
+        "y": 580,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1200,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1120,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1120,
+        "y": 860,
+        "exist": true
+      },
+      "p": "-20"
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 700,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 860,
+        "exist": true
+      },
+      "p": "440"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": -1444.3486969386593,
+        "y": 143.9467395015365,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -1260,
+        "y": 2080,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": -760,
+        "y": -120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -760,
+        "y": 1839.8127438231468,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1160,
+        "y": 1120,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 1680,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1140,
+        "y": 1360,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1140,
+        "y": 1100,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 540,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 540,
+        "y": 280,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 540,
+        "y": 280,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 280,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1140,
+        "y": 1700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 1700,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1480,
+        "y": 1700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 1100,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1160,
+        "y": 300,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1160,
+        "y": 860,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 540,
+        "y": 880,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 540,
+        "y": 620,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1140,
+        "y": 1700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1140,
+        "y": 1440,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1260,
+        "y": 1680,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1260,
+        "y": 1120,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1260,
+        "y": 860,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1260,
+        "y": 300,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 540,
+        "y": 880,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 880,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1140,
+        "y": 1100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 1100,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1480,
+        "y": 880,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1480,
+        "y": 280,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": -760,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -760,
+        "y": 840,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1240,
+        "y": 1180,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1240,
+        "y": 1180,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": -1526,
+      "y": 114,
+      "p": "Światło z gwiazdy 2"
+    },
+    {
+      "type": "text",
+      "x": -806,
+      "y": -146,
+      "p": "Światło z gwiazdy 1"
+    },
+    {
+      "type": "text",
+      "x": 1516,
+      "y": 392,
+      "p": "Z ekspanderem wiązki Galileusza (lepsza separacja kątowa obu gwiazd)"
+    },
+    {
+      "type": "text",
+      "x": 1234.6666666666667,
+      "y": 1691.3333333333335,
+      "p": "Ekran"
+    },
+    {
+      "type": "text",
+      "x": 1234.6666666666667,
+      "y": 871.3333333333334,
+      "p": "Ekran"
+    },
+    {
+      "type": "text",
+      "x": 1516,
+      "y": 1212,
+      "p": "Bez ekspandera wiązki"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.10000000000000002,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 704.2,
+    "y": 254.6
+  },
+  "scale": 0.38,
+  "colorMode": false
+}

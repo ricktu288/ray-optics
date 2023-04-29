@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1080,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1080,
+        "y": 780,
+        "exist": true
+      },
+      "p": "-100"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 780,
+        "y": 660,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 740,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 620,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 880,
+        "y": 780,
+        "exist": true
+      },
+      "p": "300"
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 700,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 700,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 420,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 880,
+        "y": 580,
+        "exist": true
+      },
+      "p": "300"
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 880,
+        "y": 500,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 500,
+        "exist": true
+      }
+    },
+    {
+      "type": "lens",
+      "p1": {
+        "type": 1,
+        "x": 1280,
+        "y": 420,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1280,
+        "y": 580,
+        "exist": true
+      },
+      "p": "100"
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 780,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 540,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 494,
+      "y": 512,
+      "p": "Ekspander wiązki Keplera"
+    },
+    {
+      "type": "text",
+      "x": 494,
+      "y": 712,
+      "p": "Ekspander wiązki Galileusza"
+    },
+    {
+      "type": "text",
+      "x": 671,
+      "y": 364,
+      "p": "W obu przypadkach odległość między soczewkami jest równa sumie ich ogniskowych"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 3.4339115327994474,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -82,
+    "y": -86
+  },
+  "scale": 1,
+  "colorMode": false
+}
