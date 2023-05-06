@@ -1,0 +1,421 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 180,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 180,
+        "y": 960,
+        "exist": true
+      },
+      "p": 200
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1980,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1980,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2580,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2180,
+        "y": 960,
+        "exist": true
+      },
+      "p": 400
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 2580,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2580,
+        "y": 960,
+        "exist": true
+      },
+      "p": -300
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 218.63481228668945,
+        "y": 488.39590443686006,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1020,
+        "y": 540,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -220,
+        "y": 960,
+        "exist": true
+      },
+      "p": 200
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": -220,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 180,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 380,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 380,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 980,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 2180,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2640,
+        "y": 500,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": 852.4610727599995,
+      "y": 1067.02347232,
+      "p": "aby przesunąć w poziomie"
+    },
+    {
+      "type": "text",
+      "x": 824.9111713199999,
+      "y": 1025.6986201599998,
+      "p": "Shift + przeciągnij idealne zwierciadło"
+    },
+    {
+      "type": "text",
+      "x": 1001.8181818181815,
+      "y": 18.181818181818016,
+      "p": "d = 400 w rezonatorach poniżej"
+    },
+    {
+      "type": "text",
+      "x": 136.36363636363615,
+      "y": 136.36363636363626,
+      "p": "f2 = d/2"
+    },
+    {
+      "type": "text",
+      "x": 938.1818181818178,
+      "y": 136.36363636363626,
+      "p": "f2 = d/4"
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 1180,
+        "y": 100,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1180,
+        "y": 1020,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1380,
+        "y": 960,
+        "exist": true
+      },
+      "p": 200
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1780,
+        "y": 560,
+        "exist": true
+      }
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 979,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 979,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "idealmirror",
+      "p1": {
+        "type": 1,
+        "x": 580,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 580,
+        "y": 960,
+        "exist": true
+      },
+      "p": 100
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": 1380,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1840,
+        "y": 540,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 1779,
+        "y": 160,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1779,
+        "y": 960,
+        "exist": true
+      },
+      "isDichroic": false,
+      "isDichroicFilter": false
+    },
+    {
+      "type": "text",
+      "x": -263.63636363636385,
+      "y": 136.36363636363626,
+      "p": "f1 = d/2"
+    },
+    {
+      "type": "text",
+      "x": 2538.181818181819,
+      "y": 136.36363636363626,
+      "p": "f2 < 0"
+    },
+    {
+      "type": "text",
+      "x": -112.72727272727292,
+      "y": 270.909090909091,
+      "p": "Rezonator konfokalny"
+    },
+    {
+      "type": "text",
+      "x": 674.5454545454544,
+      "y": 230.90909090909093,
+      "p": "Rezonator koncentryczny"
+    },
+    {
+      "type": "text",
+      "x": 2254.545454545455,
+      "y": 230.9090909090909,
+      "p": "Rezonator wklęsło-wypukły"
+    },
+    {
+      "type": "text",
+      "x": 541.8181818181815,
+      "y": 136.36363636363626,
+      "p": "f1 = d/4"
+    },
+    {
+      "type": "text",
+      "x": 1339.9999999999998,
+      "y": 136.36363636363626,
+      "p": "f1 = d/2"
+    },
+    {
+      "type": "text",
+      "x": 1730.909090909091,
+      "y": 136.36363636363626,
+      "p": "f2 = ∞"
+    },
+    {
+      "type": "text",
+      "x": 2147.2727272727275,
+      "y": 136.36363636363626,
+      "p": "f1 > 0"
+    },
+    {
+      "type": "text",
+      "x": 1505.4545454545455,
+      "y": 230.90909090909093,
+      "p": "Rezonator płasko-wklęsły"
+    },
+    {
+      "type": "text",
+      "x": 200,
+      "y": 448,
+      "p": "aby przesunąć promień"
+    },
+    {
+      "type": "text",
+      "x": 200,
+      "y": 420,
+      "p": "Kliknij + przytrzymaj lewy przycisk myszy"
+    },
+    {
+      "type": "text",
+      "x": 212.7272727272726,
+      "y": 478.18181818181824,
+      "p": "↓"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 279.99999999999994,
+    "y": 256
+  },
+  "scale": 0.55,
+  "colorMode": false
+}

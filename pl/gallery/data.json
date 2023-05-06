@@ -66,16 +66,16 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Two-mirror optical cavity",
-        "description": "<p>This is a simulation of rays inside an optical cavity with two mirrors. Given the length of the cavity is \\(d\\), and the radius of curvature of its mirrors is \\(R_1\\) and \\(R_2\\) respectively (with the convention that \\(R>0\\) for a concave mirror), then the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors), if and only if \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). In this simulation we assume that the mirrors are ideal curved mirrors, meaning that \\(f=\\frac{R}{2}\\), rendering the previous stability condition to \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). <a href=\"https://phydemo.app/ray-optics/gallery/resonator\" target=\"_blank\">Here</a> is a similar simulation with spherical mirrors, where the first stability condition holds in the paraxial approximation.</p>"
+        "title": "Wnęka optyczna z dwoma zwierciadłami",
+        "description": "<p>Jest to symulacja promieni wewnątrz wnęki optycznej z dwoma zwierciadłami. Biorąc pod uwagę, że długość wnęki wynosi \\(d\\), a promienie krzywizny jej zwierciadeł wynoszą odpowiednio \\(R_1\\) i \\(R_2\\) (z konwencją, że \\(R>0\\) dla zwierciadła wklęsłego), to wnęka optyczna jest stabilna (co oznacza, że dla każdego promienia wychodzącego z jednego zwierciadeł w kierunku drugiego zwierciadła trajektoria nierozbieżna jest gwarantowana dla dostatecznie wysokich zwierciadeł), wtedy i tylko wtedy, gdy \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). W tej symulacji zakładamy, że zwierciadła są idealnie zakrzywionymi zwierciadłami, co oznacza, że \\(f=\\frac{R}{2}\\) i sprowadza poprzedni warunek stabilności do postaci \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). <a href=\"https://phydemo.app/ray-optics/pl/gallery/resonator\" target=\"_blank\">Tutaj</a> podobna symulacja ze zwierciadłami sferycznymi, gdzie pierwszy warunek stabilności jest spełniony w przybliżeniu przyosiowym.</p>"
       },
       {
         "id": "resonator",
         "contributors": [
           "Mikhail Kochiev"
         ],
-        "title": "Plano-concave resonator",
-        "description": "<p>This is a demonstration of a plano-concave resonator. If the distance between the mirrors is greater than the radius of curvature, the resonator is unstable. If the distance between the mirrors is less than or equal to the radius of curvature, a stable resonator mode is formed.</p>"
+        "title": "Rezonator płasko-wklęsły",
+        "description": "<p>To jest demonstracja rezonatora płasko-wklęsłego. Jeśli odległość między zwierciadłami jest większa niż promień krzywizny, rezonator jest niestabilny. Jeśli odległość między zwierciadłami jest mniejsza lub równa promieniowi krzywizny, otrzymujemy stabilny tryb rezonatora.</p>"
       },
       {
         "id": "maze-solution",
@@ -91,8 +91,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Chaff countermeasure",
-        "description": "<p>This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects). The script for creating the chaff is available <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">here</a>.</p>"
+        "title": "Dipole odbijające (chaff)",
+        "description": "<p>Jest to jakościowa symulacja systemu przeciwdziałania namiarom radarowym (pomijając efekty dyfrakcyjne). Skrypt do tworzenia chaff jest dostępny <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">tu</a>.</p>"
       }
     ]
   },
