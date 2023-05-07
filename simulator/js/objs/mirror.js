@@ -44,17 +44,23 @@ objTypes['mirror'] = {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = value;
       }, elem);
-      createNumberAttr(getMsg('bandwidth'), 1, (INFRARED_WAVELENGTH - UV_WAVELENGTH) / 2, 1, obj.bandwidth || 10, function(obj, value) { 
+      createNumberAttr(/*getMsg('bandwidth')*/"Bandwidth (nm)±", 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
         obj.bandwidth = value;
       }, elem);
     }
   },
 
-  rayIntersection: function(mirror, ray) {
+  //Checks to see if the wavelength of the ray interacts and reflects off the mirror.
+  //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
+  wavelengthInteraction: function(mirror, ray){
     var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
-    var rayHueMatchesMirror =  Math.abs(mirror.wavelength - ray.wavelength) <= mirror.bandwidth/2;
-    //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
-    if (!dichroicEnabled || (rayHueMatchesMirror != mirror.isDichroicFilter)) {
+    var rayHueMatchesMirror =  Math.abs(mirror.wavelength - ray.wavelength) <= mirror.bandwidth;
+    return !dichroicEnabled || (rayHueMatchesMirror != mirror.isDichroicFilter);
+  }, 
+
+  //Describes how the ray refects off the mirror surface
+  rayIntersection: function(mirror, ray) {
+    if (objTypes['mirror'].wavelengthInteraction(mirror,ray)) {
       return objTypes['lineobj'].rayIntersection(mirror, ray);
     }    
   },

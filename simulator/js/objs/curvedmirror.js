@@ -7,6 +7,7 @@ objTypes['curvedmirror'] = {
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
+  wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
@@ -132,9 +133,7 @@ objTypes['curvedmirror'] = {
 
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(mirror, ray) {
-    var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
-    var rayHueMatchesMirror =  mirror.wavelength == ray.wavelength;
-    if (!mirror.tmp_points || dichroicEnabled && rayHueMatchesMirror == mirror.isDichroicFilter) return;
+    if (!mirror.tmp_points || !objTypes['mirror'].wavelengthInteraction(mirror,ray)) return;
     var i,j;
     var pts = mirror.tmp_points;
     var dir = graphs.length(mirror.p2, ray.p1) > graphs.length(mirror.p1, ray.p1);
