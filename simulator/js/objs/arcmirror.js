@@ -3,7 +3,7 @@ objTypes['arcmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'arcmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
+    return {type: 'arcmirror', p1: mouse};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,

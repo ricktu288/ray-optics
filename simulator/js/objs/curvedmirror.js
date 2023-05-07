@@ -3,7 +3,7 @@ objTypes['curvedmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}", isDichroic: false, isDichroicFilter: false};
+    return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}"};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,

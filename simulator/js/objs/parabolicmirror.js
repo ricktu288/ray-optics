@@ -4,7 +4,7 @@ objTypes['parabolicmirror'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'parabolicmirror', p1: mouse, isDichroic: false, isDichroicFilter: false};
+    return {type: 'parabolicmirror', p1: mouse};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
