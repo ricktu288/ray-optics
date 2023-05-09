@@ -44,7 +44,7 @@ objTypes['mirror'] = {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
         obj.wavelength = value;
       }, elem);
-      createNumberAttr(/*getMsg('bandwidth')*/"Bandwidth (nm)±", 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
+      createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
         obj.bandwidth = value;
       }, elem);
     }

@@ -400,6 +400,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Filter"
   },
+  "bandwidth": {
+    "incomplete": true,
+    "message": "Bandwidth (nm):"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

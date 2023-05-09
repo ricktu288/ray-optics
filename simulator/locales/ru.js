@@ -331,6 +331,10 @@ locales["ru"] = {
   "filter": {
     "message": "Фильтр"
   },
+  "bandwidth": {
+    "incomplete": true,
+    "message": "Bandwidth (nm):"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"
