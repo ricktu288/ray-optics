@@ -306,8 +306,7 @@ locales["de"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "Bandbreite (nm):"
   },
   "emissionangle": {
     "message": "Emissionswinkel (°):"

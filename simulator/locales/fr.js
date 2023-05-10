@@ -332,8 +332,7 @@ locales["fr"] = {
     "message": "Filtre"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "Bande Passante (nm):"
   },
   "emissionangle": {
     "incomplete": true,

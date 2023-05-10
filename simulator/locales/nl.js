@@ -348,7 +348,7 @@ locales["nl"] = {
   },
   "bandwidth": {
     "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "Bandbreedte (nm):"
   },
   "emissionangle": {
     "incomplete": true,
