@@ -301,8 +301,7 @@ locales["zh-TW"] = {
     "message": "濾光"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "帶寬 (nm)："
   },
   "emissionangle": {
     "message": "發射角 (°)："

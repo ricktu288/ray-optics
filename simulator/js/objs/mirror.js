@@ -54,7 +54,7 @@ objTypes['mirror'] = {
   //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
   wavelengthInteraction: function(mirror, ray){
     var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
-    var rayHueMatchesMirror =  Math.abs(mirror.wavelength - ray.wavelength) <= mirror.bandwidth;
+    var rayHueMatchesMirror =  Math.abs(mirror.wavelength - ray.wavelength) <= (mirror.bandwidth || 0);
     return !dichroicEnabled || (rayHueMatchesMirror != mirror.isDichroicFilter);
   }, 
 
