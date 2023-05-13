@@ -301,6 +301,9 @@ locales["zh-CN"] = {
   "filter": {
     "message": "滤光"
   },
+  "bandwidth": {
+    "message": "带宽 (nm)："
+  },
   "emissionangle": {
     "message": "发射角 (°)："
   },

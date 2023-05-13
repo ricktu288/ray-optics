@@ -346,6 +346,10 @@ locales["nl"] = {
   "filter": {
     "message": "Filter"
   },
+  "bandwidth": {
+    "incomplete": true,
+    "message": "Bandbreedte (nm):"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"
