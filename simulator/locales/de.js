@@ -7,8 +7,7 @@ locales["de"] = {
     "message": "Strahlenoptik"
   },
   "appDesc": {
-    "incomplete": true,
-    "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
+    "message": "Eine freie, open-source Web-Applikation zum Erzeugen und Simulieren von optischen 2D-Szenen."
   },
   "homepage_desc": {
     "incomplete": true,
@@ -175,7 +174,7 @@ locales["de"] = {
     "message": "Ideal gebogen"
   },
   "tool_refractor_": {
-    "message": "Glasen"
+    "message": "Gläser"
   },
   "tool_blocker_": {
     "message": "Absorber"
@@ -232,7 +231,7 @@ locales["de"] = {
     "message": "Alle Abbildungen"
   },
   "mode_observer": {
-    "message": "Beobachterperspektiv"
+    "message": "Beobachterperspektive"
   },
   "zoom": {
     "message": "Zoom"
@@ -349,8 +348,7 @@ locales["de"] = {
     "message": "In der Bearbeitung... hier klicken, um zu stoppen."
   },
   "restore": {
-    "incomplete": true,
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
+    "message": "Hier klicken, um die vorherige Session wiederherzustellen.<br>⚠️ Wichtige Änderung: Diese App speichert Ihre Session nicht mehr. Bitte speichern Sie Ihre Arbeit vor dem Schließen der Seite."
   },
   "contribute": {
     "message": "Mitmachen"
@@ -368,20 +366,16 @@ locales["de"] = {
     "message": "übersetzt"
   },
   "undo_popover": {
-    "incomplete": true,
-    "message": "Undo last action. (Ctrl+Z)"
+    "message": "Letzte Aktion rückgängig machen. (Ctrl+Z)"
   },
   "redo_popover": {
-    "incomplete": true,
-    "message": "Redo last action. (Ctrl+Y)"
+    "message": "Letzte Aktion wieder herstellen. (Ctrl+Y)"
   },
   "reset_popover": {
-    "incomplete": true,
-    "message": "Reset all changes."
+    "message": "Alle Änderungen zurücksetzen."
   },
   "save_popover": {
-    "incomplete": true,
-    "message": "Save the current scene as a file."
+    "message": "Die aktuelle Szene als Datei speichern."
   },
   "open_popover": {
     "incomplete": true,
@@ -405,134 +399,115 @@ locales["de"] = {
   },
   "tool_laser_popover": {
     "incomplete": true,
-    "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
+    "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Ziehen oder Klicken zum Erzeugen. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "Ein paralleles Lichtbündel strahlt aus einem Segment aus, wobei die Dichte durch den Slider \"Strahl-Anzahldichte\" eingestellt wird. (Drag or click to create.)"
+    "message": "Ein paralleles Lichtbündel strahlt aus einem Segment aus, wobei die Dichte durch den Slider \"Strahl-Anzahldichte\" eingestellt wird. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_radiant_popover": {
     "incomplete": true,
     "message": "Strahlen entstehen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Click to create.)"
   },
   "tool_led_popover": {
-    "incomplete": true,
-    "message": "Point source with a given emission angle."
+    "message": "Punktquelle mit definiertem Emissions-Winkel."
   },
   "tool_mirror_popover": {
-    "incomplete": true,
-    "message": "Simulieren Sie die Reflexion von Licht auf einem Spiegel. (Drag or click to create.)"
+    "message": "Simulieren Sie die Reflexion von Licht auf einem Spiegel. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_arcmirror_popover": {
     "incomplete": true,
-    "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
+    "message": "A mirror whose shape is part of a circle, which is defined by three points. (Ziehen oder Klicken zum Erzeugen. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },
   "tool_parabolicmirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
+    "message": "Ein parabolischer Spiegel, definiert durch drei Punkte. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_curvedmirror_popover": {
     "incomplete": true,
-    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_beamsplitter_popover": {
-    "incomplete": true,
-    "message": "Ein Spiegel, der einen Teil der Lichteinstrahlung überlässt. (Drag or click to create.)"
+    "message": "Ein Spiegel, der einen Teil der Lichteinstrahlung durchlässt. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_idealmirror_popover": {
-    "incomplete": true,
-    "message": "Der idealisierte \"gekrümmte\" Spiegel, der genau der Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Drag or click to create.)"
+    "message": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_halfplane_popover": {
-    "incomplete": true,
-    "message": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche. (Drag or click to create.)"
+    "message": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_circlelens_popover": {
     "incomplete": true,
-    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
+    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_refractor_popover": {
     "incomplete": true,
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
-    "incomplete": true,
-    "message": "Eine ideale Linse, die genau der Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Drag or click to create.)"
+    "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_sphericallens_popover": {
-    "incomplete": true,
-    "message": "A spherical lens. (Click to create.)"
+    "message": "Eine sphärische Linse. (Klicken zum Erzeugen.)"
   },
   "tool_curvedglass_popover": {
     "incomplete": true,
-    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_blackline_popover": {
-    "incomplete": true,
-    "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Drag or click to create.)"
+    "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": true,
-    "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "A circle light blocker which absorbs the incident rays. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_ruler_popover": {
-    "incomplete": true,
-    "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Drag or click to create.)"
+    "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_protractor_popover": {
-    "incomplete": true,
-    "message": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad. (Drag or click to create.)"
+    "message": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_power_popover": {
-    "incomplete": true,
-    "message": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment. (Drag or click to create the line segment.) Die Einheiten sind willkürlich."
+    "message": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment. (Ziehen oder Klicken zum Erzeugen.) Die Einheiten sind willkürlich."
   },
   "tool_text_popover": {
-    "incomplete": true,
-    "message": "A text label."
+    "message": "Ein Text-Label."
   },
   "tool__popover": {
-    "incomplete": true,
-    "message": "Drag to move the view. (Mouse right button drag has the same function.)"
+    "message": "Ziehen um die Ansicht zu Verschieben. (Rechte Maustaste hat die gleiche Funktion.)"
   },
   "mode_light_popover": {
-    "message": "In dieser Einsicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein."
+    "message": "In dieser Ansicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein."
   },
   "mode_extended_light_popover": {
     "incomplete": true,
-    "message": "In dieser Einsicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    "message": "In dieser Ansicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
   "mode_images_popover": {
     "incomplete": true,
-    "message": "In dieser Einsicht wird die Position aller Bilder angezeigt. Gelb bedeutet echte Bilde, Orange bedeutet virtuelle Bilder und Grau (nicht in diesem Bild dargestellt) bedeutet virtuelle Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die \"Strahl-Anzahldichte\" nicht hoch genug ist.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    "message": "In dieser Ansicht wird die Position aller Bilder angezeigt. Gelb bedeutet echte Bilde, Orange bedeutet virtuelle Bilder und Grau (nicht in diesem Bild dargestellt) bedeutet virtuelle Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die \"Strahl-Anzahldichte\" nicht hoch genug ist.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
   },
   "mode_observer_popover": {
     "incomplete": true,
-    "message": "In dieser Einsicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Kreis ist der Beobachter. Alle Strahlen, die es kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, denkt aber vielleicht, dass sie irgendwann beginnen, wenn sie sich dort schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt. (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+    "message": "In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Kreis ist der Beobachter. Alle Strahlen, die es kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, denkt aber vielleicht, dass sie irgendwann beginnen, wenn sie sich dort schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt. (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
   "color_mode_popover": {
     "incomplete": true,
     "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>In diese Modus werden die Farben (Wellenlängen) von Lichtquellen, Farbmischung und chromatische Dispersion von Gläsern ebenfalls mitsimuliert. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "incomplete": true,
-    "message": "Decides how dense should the lights be simulated. The number is in log scale."
+    "message": "Gibt die Dichte der Lichtstrahlen für die Simulation an. Logarithmische Skala."
   },
   "showgrid_popover": {
-    "incomplete": true,
-    "message": "Defines the visibility of the background grid."
+    "message": "Sichtbarkeit des Gitters."
   },
   "grid_popover": {
-    "incomplete": true,
-    "message": "Defines whether to snap to grid."
+    "message": "Objekte auf dem Gitter einrasten."
   },
   "lockobjs_popover": {
-    "incomplete": true,
-    "message": "Defines whether the objects can be moved or not."
+    "message": "Verschieben von Objekten sperren."
   },
   "zoom_popover": {
-    "incomplete": true,
-    "message": "Zoom the view with percentage."
+    "message": "Ansicht zoomen. (in Prozent)"
   },
   "help_popover": {
     "incomplete": true,
