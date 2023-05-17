@@ -10,7 +10,7 @@ locales["de"] = {
     "message": "Eine freie, open-source Web-Applikation zum Erzeugen und Simulieren von optischen 2D-Szenen."
   },
   "homepage_desc": {
-    "message": "Erzeuge &amp; simuliere interaktiv 2D-Szenen für geometrische Optik.<br>Frei und Web-basiert. Quellcode <a href=\"https://github.com/ricktu288/ray-optics\">verfügbar auf GitHub</a>."
+    "message": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.<br>Völlig kostenlos und webbasiert. Der Quellcode ist <a href="https://github.com/ricktu288/ray-optics">auf GitHub verfügbar</a>."
   },
   "launch_simulator": {
     "message": "Simulator starten"
@@ -395,7 +395,7 @@ locales["de"] = {
     "message": "Ein paralleles Lichtbündel strahlt aus einem Segment aus, wobei die Dichte durch den Slider \"Strahl-Anzahldichte\" eingestellt wird. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_radiant_popover": {
-    "message": "Strahlen entstehen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Klicken zum Erzeugen.)"
+    "message": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Klicken zum Erzeugen.)"
   },
   "tool_led_popover": {
     "message": "Punktquelle mit definiertem Emissions-Winkel."
@@ -425,8 +425,7 @@ locales["de"] = {
     "message": "Kreisförmiger Glaskörper, definiert durch Mittelpunkt und einen Punkt auf dem Umfang. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_refractor_popover": {
-    "incomplete": true,
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+    "message": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert. (Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen.)"
   },
   "tool_lens_popover": {
     "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
@@ -435,8 +434,7 @@ locales["de"] = {
     "message": "Eine sphärische Linse. (Klicken zum Erzeugen.)"
   },
   "tool_curvedglass_popover": {
-    "incomplete": true,
-    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Ziehen oder Klicken zum Erzeugen.)"
+    "message": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) &lt; y &lt; g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_blackline_popover": {
     "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Ziehen oder Klicken zum Erzeugen.)"
