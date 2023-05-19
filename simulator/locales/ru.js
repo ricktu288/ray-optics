@@ -353,6 +353,14 @@ locales["ru"] = {
   "refractiveindex": {
     "message": "Показатель преломления:"
   },
+  "random": {
+    "incomplete": true,
+    "message": "Random emission"
+  },
+  "lambertian": {
+    "incomplete": true,
+    "message": "Lambertian emission"
+  },
   "refractiveindex_note": {
     "incomplete": true,
     "message": "(relative if inside another glass)"

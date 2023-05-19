@@ -319,6 +319,14 @@ locales["zh-CN"] = {
   "refractiveindex": {
     "message": "折射率："
   },
+  "random": {
+    "incomplete": true,
+    "message": "Random emission"
+  },
+  "lambertian": {
+    "incomplete": true,
+    "message": "Lambertian emission"
+  },
   "refractiveindex_note": {
     "message": "（于另一透光物内部时为相对值）"
   },

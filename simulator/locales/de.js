@@ -323,6 +323,14 @@ locales["de"] = {
   "refractiveindex": {
     "message": "Brechungsindex:"
   },
+  "random": {
+    "incomplete": true,
+    "message": "Random emission"
+  },
+  "lambertian": {
+    "incomplete": true,
+    "message": "Lambertian emission"
+  },
   "refractiveindex_note": {
     "message": "(relativ wenn das Glas ineinander)"
   },

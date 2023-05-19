@@ -318,6 +318,12 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index:"
   },
+  "random": {
+    "message": "Random emission"
+  },
+  "lambertian": {
+    "message": "Lambertian emission"
+  },
   "refractiveindex_note": {
     "message": "(relative if inside another glass)"
   },
@@ -391,7 +397,7 @@ locales["en"] = {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
-    "message": "A parallel beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
