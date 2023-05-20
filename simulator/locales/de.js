@@ -10,7 +10,7 @@ locales["de"] = {
     "message": "Eine freie, open-source Web-Applikation zum Erzeugen und Simulieren von optischen 2D-Szenen."
   },
   "homepage_desc": {
-    "message": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.<br>Völlig kostenlos und webbasiert. Der Quellcode ist <a href="https://github.com/ricktu288/ray-optics">auf GitHub verfügbar</a>."
+    "message": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.<br>Völlig kostenlos und webbasiert. Der Quellcode ist <a href=\"https://github.com/ricktu288/ray-optics\">auf GitHub verfügbar</a>."
   },
   "launch_simulator": {
     "message": "Simulator starten"
