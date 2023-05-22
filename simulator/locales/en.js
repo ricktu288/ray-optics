@@ -324,6 +324,24 @@ locales["en"] = {
   "lambertian": {
     "message": "Lambertian emission"
   },
+  "fontsize": {
+    "message": "Font Size (px)"
+  },
+  "fontname": {
+    "message": "Font"
+  },
+  "fontstyle": {
+    "message": "Style"
+  },
+  "fontalignment": {
+    "message": "Alignment"
+  },
+  "smallcaps": {
+    "message": "Small Caps"
+  },
+  "angle": {
+    "message": "Angle (°)"
+  },
   "refractiveindex_note": {
     "message": "(relative if inside another glass)"
   },
