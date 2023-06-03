@@ -52,10 +52,10 @@ objTypes['text'] = {
     createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
       obj.fontName = value;
     }, elem);
-    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle, fontStyles || 'Normal', function(obj, value) {
+    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
       obj.fontStyle = value;
     }, elem);
-    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant, fontAlignmants || 'Left', function(obj, value) {
+    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant || 'Left', fontAlignmants, function(obj, value) {
       obj.fontAlignmant = value;
     }, elem);
     createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
