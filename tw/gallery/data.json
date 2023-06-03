@@ -87,6 +87,14 @@
         "description": "<p>此模擬中，一條光線在迷宮內部產生，並被牆壁多次反射。迷宮內的大紅色和小紅色正方形（如下面的截圖所示）分別代表光線的起源和初始方向。取決於光線初始方向，光線可能最終會離開迷宮，因此原則上可以通過追蹤光線的路徑計算出迷宮的解法。</p>"
       },
       {
+        "id": "specular-and-diffuse-reflection",
+        "contributors": [
+          "Steve Stonebraker"
+        ],
+        "title": "鏡面反射與漫反射",
+        "description": "<p>相同的光束照射在光滑表面和粗糙表面上，展示了鏡面反射與漫反射之間的區別。</p>"
+      },
+      {
         "id": "chaff-countermeasure",
         "contributors": [
           "Stas Fainer"

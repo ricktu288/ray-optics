@@ -87,6 +87,14 @@
         "description": "<p>Symulacja biegu promienia światła wysłanego w labiryncie, wielokrotnie odbijanego przez ściany. Większy i mniejszy czerwony kwadrat wewnątrz labiryntu (widoczne na zrzucie ekranu poniżej) reprezentują odpowiednio punkt wysłania i początkowy kierunek promienia światła. W przypadku niektórych początkowych orientacji, promień światła wychodzi z labiryntu, a tym samym, cofając się po torze promienia, można zasadniczo znaleźć rozwiązanie labiryntu.</p>"
       },
       {
+        "id": "specular-and-diffuse-reflection",
+        "contributors": [
+          "Steve Stonebraker"
+        ],
+        "title": "Specular and Diffuse Reflections",
+        "description": "<p>Identical beams shine on a smooth surface and a rough surface, illustrating the difference between specular and diffuse reflections.</p>"
+      },
+      {
         "id": "chaff-countermeasure",
         "contributors": [
           "Stas Fainer"
