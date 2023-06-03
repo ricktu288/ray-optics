@@ -354,11 +354,11 @@ locales["fr"] = {
   },
   "random": {
     "incomplete": true,
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
     "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "incomplete": true,
@@ -472,7 +472,8 @@ locales["fr"] = {
     "message": "Un rayon de lumière unique définit par deux points. (Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.)"
   },
   "tool_parallel_popover": {
-    "message": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité controlée par le curseur 'Densité de rayons'. (Glisser ou cliquer pour le créer.)"
+    "incomplete": true,
+    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'. (Cliquer pour le créer.)"

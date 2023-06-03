@@ -319,10 +319,10 @@ locales["en"] = {
     "message": "Refractive index:"
   },
   "random": {
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "message": "Font Size (px)"

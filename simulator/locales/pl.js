@@ -321,11 +321,11 @@ locales["pl"] = {
   },
   "random": {
     "incomplete": true,
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
     "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "incomplete": true,
@@ -424,7 +424,8 @@ locales["pl"] = {
     "message": "Pojedynczy promień światła określony przez dwa punkty. (Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu.)"
   },
   "tool_parallel_popover": {
-    "message": "Wysyłana prostopadle do odcinka wiązka promieni równoległych, o gęstości regulowanej za pomocą suwaka 'Gęstość promieni'. (Przeciągnij lub kliknij, aby utworzyć.)"
+    "incomplete": true,
+    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"

@@ -426,11 +426,11 @@ locales["LOCALE_ID"] = {
   },
   "random": {
     "incomplete": true,
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
     "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "incomplete": true,

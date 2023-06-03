@@ -355,11 +355,11 @@ locales["ru"] = {
   },
   "random": {
     "incomplete": true,
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
     "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "incomplete": true,
@@ -474,7 +474,8 @@ locales["ru"] = {
     "message": "Одиночный луч света, задаваемый двумя точками. (Потяните или нажмите, чтобы создать. Первая точка - источник, испускающий луч в сторону второй точки.)"
   },
   "tool_parallel_popover": {
-    "message": "Пучок параллельных лучей, исходящих из отрезка, с плотностью лучей задаваемой ползунком 'Плотность лучей'. (Потяните или нажмите, чтобы создать.)"
+    "incomplete": true,
+    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Лучи исходят из одной точки во всех направлениях. Количество лучей задается ползунком 'Плотность лучей'. (Нажмите, чтобы создать.)"

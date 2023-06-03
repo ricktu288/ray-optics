@@ -370,11 +370,11 @@ locales["nl"] = {
   },
   "random": {
     "incomplete": true,
-    "message": "Random emission"
+    "message": "Random"
   },
   "lambertian": {
     "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "Lambertian"
   },
   "fontsize": {
     "incomplete": true,
@@ -488,7 +488,8 @@ locales["nl"] = {
     "message": "Één straal door twee punten. (Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting.)"
   },
   "tool_parallel_popover": {
-    "message": "Een evenwijdige bundel uit een lijnstuk, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Sleep en klik om te maken.)"
+    "incomplete": true,
+    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"

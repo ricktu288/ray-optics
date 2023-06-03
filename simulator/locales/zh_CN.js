@@ -40,7 +40,7 @@ locales["zh-CN"] = {
     "message": "点光源"
   },
   "toolname_parallel": {
-    "message": "平行光"
+    "message": "光束"
   },
   "toolname_mirror_": {
     "message": "镜子"
@@ -139,7 +139,7 @@ locales["zh-CN"] = {
     "message": "单一光线"
   },
   "tool_parallel": {
-    "message": "平行光"
+    "message": "光束"
   },
   "tool_radiant": {
     "message": "360度"
@@ -319,36 +319,28 @@ locales["zh-CN"] = {
     "message": "折射率："
   },
   "random": {
-    "incomplete": true,
-    "message": "Random emission"
+    "message": "随机"
   },
   "lambertian": {
-    "incomplete": true,
-    "message": "Lambertian emission"
+    "message": "朗伯"
   },
   "fontsize": {
-    "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "字型大小 (px)"
   },
   "fontname": {
-    "incomplete": true,
-    "message": "Font"
+    "message": "字型"
   },
   "fontstyle": {
-    "incomplete": true,
-    "message": "Style"
+    "message": "样式"
   },
   "fontalignment": {
-    "incomplete": true,
-    "message": "Alignment"
+    "message": "对齐"
   },
   "smallcaps": {
-    "incomplete": true,
-    "message": "Small Caps"
+    "message": "小型大写"
   },
   "angle": {
-    "incomplete": true,
-    "message": "Angle (°)"
+    "message": "角度 (°)"
   },
   "refractiveindex_note": {
     "message": "（于另一透光物内部时为相对值）"
@@ -423,7 +415,7 @@ locales["zh-CN"] = {
     "message": "由两点决定一条光线。（拖曳或点击以创建. 第一个点是光源，射向第二个点。）"
   },
   "tool_parallel_popover": {
-    "message": "由一线段产生一束平行光，密度由「光线密度」滑杆决定。 （拖曳或点击以创建。）"
+    "message": "由一线段产生光束，可调整发射角，密度由「光线密度」滑杆决定。 （拖曳或点击以创建。）"
   },
   "tool_radiant_popover": {
     "message": "由一点向四周发射光线，数量由「光线密度」滑杆决定。 （点击以创建。）"
