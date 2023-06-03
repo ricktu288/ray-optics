@@ -1,16 +1,68 @@
 // Text
 // Originally contributed by Paul Falstad (pfalstad)
+
+// generic list of web safe fonts
+fonts = [
+  'Serif',
+  'Arial',
+  'Helvetica',
+  'Times New Roman',
+  'Georgia',
+  'Courier New',
+  'Verdana',
+  'Tahoma',
+  'Trebuchet MS',
+  'Impact',
+  'Lucida Sans'
+];
+
+fontStyles = [
+  'Normal',
+  'Bold',
+  'Italic',
+  'Bold Italic',
+  'Oblique',
+  'Bold Oblique'
+]
+
+fontAlignmants = {
+  'left': "Left",
+  'center': "Centre",
+  'right': "Right"
+}
+
 objTypes['text'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here'};
+  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here', fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignmant: 'Left', fontSmallCaps: false, fontAngle: 0};
   },
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    createStringAttr('', obj.p, function(obj, value) {
+    // createStringAttr('', obj.p, function(obj, value) {
+    //   obj.p = value;
+    // }, elem);
+    createTextAttr('', obj.p, function(obj, value) {
       obj.p = value;
+    }, elem);
+    createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
+      obj.fontSize = value;
+    }, elem);
+    createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
+      obj.fontName = value;
+    }, elem);
+    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle, fontStyles || 'Normal', function(obj, value) {
+      obj.fontStyle = value;
+    }, elem);
+    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant, fontAlignmants || 'Left', function(obj, value) {
+      obj.fontAlignmant = value;
+    }, elem);
+    createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
+      obj.fontSmallCaps = value;
+    }, elem);
+   createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
+      obj.fontAngle = value;
     }, elem);
   },
 
@@ -36,12 +88,41 @@ objTypes['text'] = {
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
-  ctx.fillStyle = getMouseStyle(obj, 'white');
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.font = '24px serif';
-  ctx.fillText(obj.p, obj.x, obj.y);
-  obj.tmp_width = ctx.measureText(obj.p).width;
+    ctx.fillStyle = getMouseStyle(obj, 'white');
+    ctx.textAlign = obj.fontAlignmant || 'Left';
+    ctx.textBaseline = 'bottom';
+
+    fontName = '';
+    if (obj.fontStyle && obj.fontStyle != 'Normal') fontName += obj.fontStyle + ' ';
+    if (obj.fontSmallCaps) fontName += 'small-caps '
+    fontName += (obj.fontSize || 24) + 'px ' + (obj.fontName || 'serif');
+    ctx.font = fontName;
+
+    ctx.save();
+    ctx.translate(obj.x, obj.y);
+    ctx.rotate(-(obj.fontAngle||0)/180*Math.PI);
+    y_offset = 0;
+    obj.tmp_left = 0;
+    obj.tmp_right = 0;
+    obj.tmp_up = 0;
+    obj.tmp_down = 0;
+    obj.p.split('\n').forEach(line => {
+      ctx.fillText(line, 0, y_offset);
+      lineDimensions = ctx.measureText(line);
+      obj.tmp_left = Math.max(obj.tmp_left, lineDimensions.actualBoundingBoxLeft);
+      obj.tmp_right = Math.max(obj.tmp_right, lineDimensions.actualBoundingBoxRight);
+      obj.tmp_up = Math.max(obj.tmp_up, lineDimensions.actualBoundingBoxAscent - y_offset);
+      obj.tmp_down = Math.max(obj.tmp_down, -lineDimensions.actualBoundingBoxDescent + y_offset);
+      if (lineDimensions.fontBoundingBoxAscent) {
+        y_offset += lineDimensions.fontBoundingBoxAscent + lineDimensions.fontBoundingBoxDescent;
+      } else {
+        y_offset += (obj.fontSize || 24) * 1.5;
+      }
+    });
+    ctx.restore();
+    // precompute triganometry for faster calculations in 'clicked' function
+    obj.tmp_sin_angle = Math.sin((obj.fontAngle||0)/180*Math.PI);
+    obj.tmp_cos_angle = Math.cos((obj.fontAngle||0)/180*Math.PI);
   },
 
   //平移物件 Move the object
@@ -54,10 +135,16 @@ objTypes['text'] = {
   //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     
-    if (mouse_nogrid.x >= obj.x && mouse_nogrid.x <= obj.x+obj.tmp_width &&
-        mouse_nogrid.y <= obj.y && mouse_nogrid.y >= obj.y-24) {
+    // translate and rotate the mouse point into the text's reference frame for easy comparison
+    relativeMouseX = mouse_nogrid.x - obj.x
+    relativeMouseY = mouse_nogrid.y - obj.y
+    rotatedMouseX = relativeMouseX * obj.tmp_cos_angle - relativeMouseY * obj.tmp_sin_angle;
+    rotatedMouseY = relativeMouseY * obj.tmp_cos_angle + relativeMouseX * obj.tmp_sin_angle;
+    if (rotatedMouseX >= -obj.tmp_left && rotatedMouseX <=  obj.tmp_right &&
+        rotatedMouseY <=  obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
       draggingPart.part = 0;
       draggingPart.mouse0 = graphs.point(mouse_nogrid.x, mouse_nogrid.y);
+      draggingPart.mouse0snapped = document.getElementById('grid').checked ? graphs.point(Math.round(draggingPart.mouse0.x / gridSize) * gridSize, Math.round(draggingPart.mouse0.y / gridSize) * gridSize) : draggingPart.mouse0;
       draggingPart.targetPoint_ = graphs.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
       return true;
@@ -77,8 +164,15 @@ objTypes['text'] = {
       draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定 Unlock the dragging direction when the user release the shift key
     }
 
-    obj.x = mouse_snapped.x + draggingPart.targetPoint_.x - draggingPart.mouse0.x;
-    obj.y = mouse_snapped.y + draggingPart.targetPoint_.y - draggingPart.mouse0.y;
+    // 'mouse' current mouse position, snapped to grid
+    // 'draggingPart.targetPoint_' object placement position (bottom left)
+    // 'draggingPart.mouse0' is coordiates of where the drag started, not snapped
+    // 'draggingPart.mouse0snapped' is coordiates of where the drag started, snapped to grid
+    // 'mouse_snapped' is restriced to horzontal or vertical when shift held, snapped to grid
+
+    // new location  =  current location (snapped)  +  object placement location  -  where drag started (snapped)
+    obj.x = mouse_snapped.x + draggingPart.targetPoint_.x - draggingPart.mouse0snapped.x;
+    obj.y = mouse_snapped.y + draggingPart.targetPoint_.y - draggingPart.mouse0snapped.y;
   },
 
 };

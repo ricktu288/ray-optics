@@ -319,6 +319,38 @@ locales["de"] = {
   "refractiveindex": {
     "message": "Brechungsindex:"
   },
+  "random": {
+    "incomplete": true,
+    "message": "Random emission"
+  },
+  "lambertian": {
+    "incomplete": true,
+    "message": "Lambertian emission"
+  },
+  "fontsize": {
+    "incomplete": true,
+    "message": "Font Size (px)"
+  },
+  "fontname": {
+    "incomplete": true,
+    "message": "Font"
+  },
+  "fontstyle": {
+    "incomplete": true,
+    "message": "Style"
+  },
+  "fontalignment": {
+    "incomplete": true,
+    "message": "Alignment"
+  },
+  "smallcaps": {
+    "incomplete": true,
+    "message": "Small Caps"
+  },
+  "angle": {
+    "incomplete": true,
+    "message": "Angle (°)"
+  },
   "refractiveindex_note": {
     "message": "(relativ, wenn Glaskörper überlappen)"
   },
