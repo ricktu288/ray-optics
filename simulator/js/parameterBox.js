@@ -82,6 +82,37 @@ function createStringAttr(label, value, func, elem) {
   };
 }
 
+function createTextAttr(label, value, func, elem) {
+  var p_name = document.createElement('span');
+  p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
+  elem.appendChild(p_name);
+  var objAttr_text = document.createElement('textarea');
+  objAttr_text.value = value;
+  objAttr_text.cols = 25;
+  objAttr_text.rows = 1;
+  elem.appendChild(objAttr_text);
+  objAttr_text.oninput = function()
+  {
+    // if user starts adding more than one line, auto expand the text area
+    if (objAttr_text.value.split('\n').length > 1 && objAttr_text.rows==1) {
+      objAttr_text.rows = 3;
+    }
+    setAttr(function(obj) {
+      func(obj, objAttr_text.value);
+    });
+  };
+  cancelMousedownEvent_(objAttr_text);
+  objAttr_text.onkeydown = function(e)
+  {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  };
+  objAttr_text.onclick = function(e)
+  {
+    this.select();
+  };
+}
+
 function createBooleanAttr(label, value, func, elem) {
   var label_elem = document.createElement('label');
   label_elem.style.marginLeft = '0.2em';
@@ -144,6 +175,36 @@ function createEquationAttr(label, value, func, elem) {
   setTimeout(function() {
     mathField.latex(value);
   }, 1);
+}
+
+function createDropdownAttr(label, value, options, func, elem) {
+  var p_name = document.createElement('span');
+  p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
+  elem.appendChild(p_name);
+
+  isArray = Array.isArray(options);
+  var dropdown = document.createElement('select');
+  for (key in options) {
+    var option = document.createElement('option');
+    option.value = isArray ? options[key] : key;
+    option.textContent = options[key];
+    if (option.value == value) option.selected = true;
+    dropdown.appendChild(option);
+  }
+
+  elem.appendChild(dropdown);
+  dropdown.onchange = function()
+  {
+    setAttr(function(obj) {
+      func(obj, dropdown.value);
+    });
+    createUndoPoint();
+  };
+  cancelMousedownEvent_(dropdown);
+  dropdown.onclick = function(e)
+  {
+    this.select();
+  };
 }
 
 function hasSameAttrType(obj1, obj2)
