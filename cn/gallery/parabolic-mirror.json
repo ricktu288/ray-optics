@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parabolicmirror",
+      "p1": {
+        "type": 1,
+        "x": 200,
+        "y": 240,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 200,
+        "y": 440,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 140,
+        "y": 340,
+        "exist": true
+      }
+    },
+    {
+      "type": "parabolicmirror",
+      "p1": {
+        "type": 1,
+        "x": 200,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 200,
+        "y": 680,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 260,
+        "y": 580,
+        "exist": true
+      }
+    },
+    {
+      "type": "radiant",
+      "x": 180,
+      "y": 340,
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": -200,
+        "y": 460,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 780,
+        "y": 460,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": -284.9382716049383,
+        "y": 495.0617283950618,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": -284.9382716049383,
+        "y": 655.0617283950618,
+        "exist": true
+      },
+      "p": 0.5
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 346.13743275010006,
+    "y": 66.95285434989992
+  },
+  "scale": 0.8100000000000003
+}

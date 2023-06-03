@@ -1,0 +1,80 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "halfplane",
+      "p1": {
+        "type": 1,
+        "x": 760,
+        "y": 400,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 820,
+        "y": 400,
+        "exist": true
+      },
+      "p": 1.33
+    },
+    {
+      "type": "radiant",
+      "x": 680,
+      "y": 600,
+      "p": 1
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 680,
+        "y": 600,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 400,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 714.7,
+      "y": 537.4,
+      "p": "觀察到的像（橘點）"
+    },
+    {
+      "type": "text",
+      "x": 910.7,
+      "y": 256.4,
+      "p": "觀察者"
+    },
+    {
+      "type": "text",
+      "x": 697.7,
+      "y": 616.4,
+      "p": "水中物體（綠點）"
+    }
+  ],
+  "mode": "observer",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 3.2520969380833185,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 881.5,
+      "y": 241,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": -307.70000000000005,
+    "y": -18.400000000000006
+  },
+  "scale": 1,
+  "colorMode": false
+}

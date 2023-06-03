@@ -1,10 +1,10 @@
 // Run this script with node.js whenever some items in the gallery change
 
-langs = ['en', 'pl', 'zh-TW'];
-lang_names = ['English', 'polski', '正體中文'];
-translated_str = ['translated', 'przetłumaczone', '已翻譯'];
-paths = ['', '../pl/gallery/', '../tw/gallery/'];
-urls = ['https://phydemo.app/ray-optics/gallery/', 'https://phydemo.app/ray-optics/pl/gallery/', 'https://phydemo.app/ray-optics/tw/gallery/'];
+langs = ['en', 'pl', 'zh-CN', 'zh-TW'];
+lang_names = ['English', 'polski', '简体中文', '正體中文'];
+translated_str = ['translated', 'przetłumaczone', '已翻译', '已翻譯'];
+paths = ['', '../pl/gallery/', '../cn/gallery/', '../tw/gallery/'];
+urls = ['https://phydemo.app/ray-optics/gallery/', 'https://phydemo.app/ray-optics/pl/gallery/', 'https://phydemo.app/ray-optics/cn/gallery/', 'https://phydemo.app/ray-optics/tw/gallery/'];
 available_in = {};
 
 fs = require('fs');

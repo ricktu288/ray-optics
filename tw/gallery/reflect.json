@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "halfplane",
+      "p1": {
+        "type": 1,
+        "x": 280,
+        "y": 560,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 740,
+        "y": 560,
+        "exist": true
+      },
+      "p": 2.5
+    },
+    {
+      "type": "radiant",
+      "x": 563.3244586579999,
+      "y": 397.53135193200006,
+      "p": 0.5
+    },
+    {
+      "type": "protractor",
+      "p1": {
+        "type": 1,
+        "x": 308.23277865800003,
+        "y": 560.506591932,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 307.95091897299994,
+        "y": 499.16042447499996,
+        "exist": true
+      }
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -102.99491720096887,
+    "y": -204.2228351572425
+  },
+  "scale": 1.6935087808430291
+}
