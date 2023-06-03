@@ -18,13 +18,13 @@ objTypes['parallel'] = {
         obj.wavelength = value;
       }, elem);
     }
-    createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
+    createNumberAttr(getMsg('emissionangle') + '<sup><span class="badge bg-warning">Beta</span></sup>', 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
       obj.divergence = value;
     }, elem);
-    createBooleanAttr(getMsg('lambertian'), obj.lambert, function(obj, value) {
+    createBooleanAttr(getMsg('lambertian') + '<sup><span class="badge bg-warning">Beta</span></sup>', obj.lambert, function(obj, value) {
       obj.lambert = value;
     }, elem);
-    createBooleanAttr(getMsg('random'), obj.random, function(obj, value) {
+    createBooleanAttr(getMsg('random') + '<sup><span class="badge bg-warning">Beta</span></sup>', obj.random, function(obj, value) {
       obj.random = value;
     }, elem);
 },
