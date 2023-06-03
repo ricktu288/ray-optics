@@ -25,7 +25,7 @@ fontStyles = [
   'Bold Oblique'
 ]
 
-fontAlignmants = {
+fontAlignments = {
   'left': "Left",
   'center': "Centre",
   'right': "Right"
@@ -35,7 +35,7 @@ objTypes['text'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here', fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignmant: 'Left', fontSmallCaps: false, fontAngle: 0};
+  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here', fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0};
   },
 
   //顯示屬性方塊 Show the property box
@@ -55,8 +55,8 @@ objTypes['text'] = {
     createDropdownAttr(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
       obj.fontStyle = value;
     }, elem);
-    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant || 'Left', fontAlignmants, function(obj, value) {
-      obj.fontAlignmant = value;
+    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignment || 'Left', fontAlignments, function(obj, value) {
+      obj.fontAlignment = value;
     }, elem);
     createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
       obj.fontSmallCaps = value;
@@ -89,7 +89,7 @@ objTypes['text'] = {
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
     ctx.fillStyle = getMouseStyle(obj, 'white');
-    ctx.textAlign = obj.fontAlignmant || 'Left';
+    ctx.textAlign = obj.fontAlignment || 'left';
     ctx.textBaseline = 'bottom';
 
     fontName = '';
