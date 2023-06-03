@@ -18,7 +18,7 @@ objTypes['parallel'] = {
         obj.wavelength = value;
       }, elem);
     }
-    createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.divergence, function(obj, value) {
+    createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
       obj.divergence = value;
     }, elem);
     createBooleanAttr(getMsg('lambertian'), obj.lambert, function(obj, value) {
@@ -103,7 +103,7 @@ objTypes['parallel'] = {
     var sizeX = (obj.p2.x - obj.p1.x);
     var sizeY = (obj.p2.y - obj.p1.y);
     var normal = Math.atan2(stepX, stepY) + Math.PI / 2.0;
-    var halfAngle = obj.divergence / 180.0 * Math.PI * 0.5;
+    var halfAngle = (obj.divergence || 0.0) / 180.0 * Math.PI * 0.5;
     var numnAngledRays = 1.0 + Math.floor(halfAngle/s) * 2.0;
     var rayBrightness = 1.0 / numnAngledRays;
     this.initRandom(obj);

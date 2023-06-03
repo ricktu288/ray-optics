@@ -46,22 +46,22 @@ objTypes['text'] = {
     createTextAttr('', obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize, function(obj, value) {
+    createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
       obj.fontSize = value;
     }, elem);
-    createDropdownAttr(getMsg('fontname'), obj.fontName, fonts, function(obj, value) {
+    createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
       obj.fontName = value;
     }, elem);
-    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle, fontStyles, function(obj, value) {
+    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle, fontStyles || 'Normal', function(obj, value) {
       obj.fontStyle = value;
     }, elem);
-    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant, fontAlignmants, function(obj, value) {
+    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignmant, fontAlignmants || 'Left', function(obj, value) {
       obj.fontAlignmant = value;
     }, elem);
     createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
       obj.fontSmallCaps = value;
     }, elem);
-   createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle, function(obj, value) {
+   createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
       obj.fontAngle = value;
     }, elem);
   },
@@ -89,18 +89,18 @@ objTypes['text'] = {
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
     ctx.fillStyle = getMouseStyle(obj, 'white');
-    ctx.textAlign = obj.fontAlignmant;
+    ctx.textAlign = obj.fontAlignmant || 'Left';
     ctx.textBaseline = 'bottom';
 
     fontName = '';
-    if (obj.fontStyle != 'Normal') fontName += obj.fontStyle + ' ';
+    if (obj.fontStyle && obj.fontStyle != 'Normal') fontName += obj.fontStyle + ' ';
     if (obj.fontSmallCaps) fontName += 'small-caps '
-    fontName += obj.fontSize + 'px ' + obj.fontName;
+    fontName += (obj.fontSize || 24) + 'px ' + (obj.fontName || 'serif');
     ctx.font = fontName;
 
     ctx.save();
     ctx.translate(obj.x, obj.y);
-    ctx.rotate(-obj.fontAngle/180*Math.PI);
+    ctx.rotate(-(obj.fontAngle||0)/180*Math.PI);
     y_offset = 0;
     obj.tmp_left = 0;
     obj.tmp_right = 0;
@@ -113,12 +113,16 @@ objTypes['text'] = {
       obj.tmp_right = Math.max(obj.tmp_right, lineDimensions.actualBoundingBoxRight);
       obj.tmp_up = Math.max(obj.tmp_up, lineDimensions.actualBoundingBoxAscent - y_offset);
       obj.tmp_down = Math.max(obj.tmp_down, -lineDimensions.actualBoundingBoxDescent + y_offset);
-      y_offset += lineDimensions.fontBoundingBoxAscent + lineDimensions.fontBoundingBoxDescent;
+      if (lineDimensions.fontBoundingBoxAscent) {
+        y_offset += lineDimensions.fontBoundingBoxAscent + lineDimensions.fontBoundingBoxDescent;
+      } else {
+        y_offset += (obj.fontSize || 24) * 1.5;
+      }
     });
     ctx.restore();
     // precompute triganometry for faster calculations in 'clicked' function
-    obj.tmp_sin_angle = Math.sin(obj.fontAngle/180*Math.PI);
-    obj.tmp_cos_angle = Math.cos(obj.fontAngle/180*Math.PI);
+    obj.tmp_sin_angle = Math.sin((obj.fontAngle||0)/180*Math.PI);
+    obj.tmp_cos_angle = Math.cos((obj.fontAngle||0)/180*Math.PI);
   },
 
   //平移物件 Move the object
