@@ -64,6 +64,8 @@
         lang = 'de';
       } else if (browser_lang == 'pl' || browser_lang.startsWith('pl-')) {
         lang = 'pl';
+      } else if (browser_lang == 'ja' || browser_lang.startsWith('ja-')) {
+        lang = 'ja';
       }
     }
 
@@ -219,6 +221,7 @@
       <li><a href="?ru" style="color:white" id="lang-ru">Русский</a></li>
       <li><a href="?zh-CN" style="color:white" id="lang-zh-CN">简体中文</a></li>
       <li><a href="?zh-TW" style="color:white" id="lang-zh-TW">正體中文</a></li>
+      <li><a href="?zh-TW" style="color:white" id="lang-ja">日本語</a></li>
       <li><b><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations"
                 target="_blank" style="color:white" id="translate">Help us translate this app</a></b></li>
     </ul>
@@ -239,6 +242,7 @@
   <script src="locales/fr.js"></script>
   <script src="locales/de.js"></script>
   <script src="locales/pl.js"></script>
+  <script src="locales/ja.js"></script>
   <script id="localeScripts" src="js/locale.js"></script>
 
   <!--View Models scripts-->
