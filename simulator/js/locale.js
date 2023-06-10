@@ -28,8 +28,11 @@ function init_i18n() {
 
   document.getElementById('github').innerHTML = getMsg('github');
   document.getElementById('home').innerHTML = getMsg('home');
-  if (lang != "en") {
+  if (lang != "en" && lang != "ja") {
     document.getElementById('home').href += lang.split("-")[lang.split("-").length - 1].toLowerCase() + "/";
+  }
+  if (lang == "ja") {
+    document.getElementById('home').href += "jp/";
   }
   document.getElementById('about').innerHTML = getMsg('about');
   document.getElementById('translate').innerHTML = getMsg('translate');
