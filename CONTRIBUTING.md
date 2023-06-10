@@ -69,6 +69,7 @@ You can submit a complete or partial translation for a new language, make progre
 1. Download the target locale file:
    - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
    - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
+   - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ja.js
    - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
    - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/pl.js
    - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
