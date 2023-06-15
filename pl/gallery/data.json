@@ -154,7 +154,7 @@
           "Stas Fainer"
         ],
         "title": "Zgięty ołówek",
-        "description": "<p>Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z góry na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji zginanie jest bardziej wyraźne. Możesz sprawdzić symulację <a href=\"https://phydemo.app/ray-optics/pl/gallery/broken-pencil_pl\" target=\"_blank\">Złamany ołówek</a>, gdzie to drugie złudzenie jest bardziej wyraźne.</p>"
+        "description": "<p>Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z góry na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji zginanie jest bardziej wyraźne. Możesz sprawdzić symulację <a href=\"https://phydemo.app/ray-optics/pl/gallery/broken-pencil\" target=\"_blank\">Złamany ołówek</a>, gdzie to drugie złudzenie jest bardziej wyraźne.</p>"
       },
       {
         "id": "broken-pencil",
