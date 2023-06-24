@@ -91,8 +91,8 @@
         "contributors": [
           "Steve Stonebraker"
         ],
-        "title": "Specular and Diffuse Reflections",
-        "description": "<p>Identical beams shine on a smooth surface and a rough surface, illustrating the difference between specular and diffuse reflections.</p>"
+        "title": "Odbicie zwierciadlane i rozproszone",
+        "description": "<p>Identyczne wiązki promieni padają na powierzchnię gładką i chropowatą, ilustrując różnicę między odbiciem zwierciadlanym i rozproszonym.</p>"
       },
       {
         "id": "chaff-countermeasure",

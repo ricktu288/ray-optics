@@ -1,0 +1,100 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 353,
+        "y": 376,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 291,
+        "y": 415,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "curvedmirror",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 860,
+        "y": 540,
+        "exist": true
+      },
+      "p": "0.002\\cdot\\left(\\sin\\left(100x\\right)+\\sin\\left(70x\\right)-\\sin\\left(200x\\right)-\\sin\\left(631x\\right)+\\sin\\left(1391x\\right)-0.7\\cdot\\sin\\left(10000x\\right)\\right)"
+    },
+    {
+      "type": "mirror",
+      "p1": {
+        "type": 1,
+        "x": 280,
+        "y": 540,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 560,
+        "y": 540,
+        "exist": true
+      }
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 670,
+        "y": 363,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 608,
+        "y": 402,
+        "exist": true
+      },
+      "p": 0.5
+    },
+    {
+      "type": "text",
+      "x": 369.4823529411765,
+      "y": 574.3411764705884,
+      "p": "Zwierciadlane"
+    },
+    {
+      "type": "text",
+      "x": 693.4823529411765,
+      "y": 576.3411764705884,
+      "p": "Rozproszone"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.28311559552082877,
+  "rayDensity_images": 1.0124771987582037,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 886.4823529411765,
+      "y": 363.8411764705884,
+      "exist": true
+    },
+    "r": 20,
+    "exist": true
+  },
+  "origin": {
+    "x": 3.5176470588235134,
+    "y": 17.658823529411592
+  },
+  "scale": 1,
+  "colorMode": false
+}
