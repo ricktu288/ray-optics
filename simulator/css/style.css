@@ -50,6 +50,14 @@ input[type="range"] {
   margin-top:2px;
 }
 
+
+.showadvancedbutton {
+  margin-left:5px;
+  margin-top:2px;
+  color:rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+
 input {
   outline: none;
 }

@@ -351,6 +351,10 @@ locales["de"] = {
     "incomplete": true,
     "message": "Angle (°)"
   },
+  "beam_warning": {
+    "incomplete": true,
+    "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
   "refractiveindex_note": {
     "message": "(relativ, wenn Glaskörper überlappen)"
   },
@@ -371,6 +375,10 @@ locales["de"] = {
   },
   "delete": {
     "message": "Löschen"
+  },
+  "showadvanced": {
+    "incomplete": true,
+    "message": "Show advanced options"
   },
   "processing": {
     "message": "In Bearbeitung... hier klicken, um zu stoppen."
@@ -424,7 +432,8 @@ locales["de"] = {
     "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt.)"
   },
   "tool_parallel_popover": {
-    "message": "Ein paralleles Lichtbündel strahlt aus einem Segment aus, wobei die Dichte durch den Slider \"Strahl-Anzahldichte\" eingestellt wird. (Ziehen oder Klicken zum Erzeugen.)"
+    "incomplete": true,
+    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Klicken zum Erzeugen.)"
@@ -502,7 +511,8 @@ locales["de"] = {
     "message": "In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Punkt ist der Beobachter. Alle Strahlen, die ihn kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, 'denkt' aber, dass sie an einem Punkt beginnen, an dem sie sich schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt. (Ziehen Sie den großen blauen Kreis um den Beobachter zu bewegen.)<br>Wenn 'Farben simulieren' aktiv ist, werden die Strahlen mit den Quellfarben dargestellt."
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>In diesem Modus werden die Farben (Wellenlängen) von Lichtquellen, Farbmischung und chromatische Dispersion von Gläsern ebenfalls mitsimuliert. Diese Parameters können für diese Art von Objekten eingestellt werden, wenn ausgewählt. Um Farbspektren zu simulieren, überlappen Sie Lichtquellen mit unterschiedlicher Wellenlänge. Die Farben auf dem Bildschirm sind nur Näherungen, und können sehr ungenau sein, wenn die 'Strahldichte' zu hoch oder zu klein ist."
+    "incomplete": true,
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filter (advanced option in mirrors) and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "message": "Gibt die Dichte der Lichtstrahlen für die Simulation an. Logarithmische Skala."

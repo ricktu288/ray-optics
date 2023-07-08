@@ -46,24 +46,27 @@ objTypes['text'] = {
     createTextAttr('', obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
-      obj.fontSize = value;
-    }, elem);
-    createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
-      obj.fontName = value;
-    }, elem);
-    createDropdownAttr(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
-      obj.fontStyle = value;
-    }, elem);
-    createDropdownAttr(getMsg('fontalignment'), obj.fontAlignment || 'Left', fontAlignments, function(obj, value) {
-      obj.fontAlignment = value;
-    }, elem);
-    createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
-      obj.fontSmallCaps = value;
-    }, elem);
-   createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
-      obj.fontAngle = value;
-    }, elem);
+
+    if (createAdvancedOptions(typeof obj.fontSize != 'undefined' && (obj.fontSize != 24 || obj.fontName != 'Serif' || obj.fontStyle != 'Normal' || obj.fontAlignment != 'left' || obj.fontSmallCaps || obj.fontAngle != 0))) {
+      createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
+        obj.fontSize = value;
+      }, elem);
+      createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
+        obj.fontName = value;
+      }, elem);
+      createDropdownAttr(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
+        obj.fontStyle = value;
+      }, elem);
+      createDropdownAttr(getMsg('fontalignment'), obj.fontAlignment || 'left', fontAlignments, function(obj, value) {
+        obj.fontAlignment = value;
+      }, elem);
+      createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
+        obj.fontSmallCaps = value;
+      }, elem);
+      createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
+        obj.fontAngle = value;
+      }, elem);
+    }
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user

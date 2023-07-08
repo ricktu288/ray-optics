@@ -351,6 +351,10 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Angle (°)"
   },
+  "beam_warning": {
+    "incomplete": true,
+    "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
   "refractiveindex_note": {
     "message": "(względny, jeśli znajduje się w innym szkle)"
   },
@@ -371,6 +375,10 @@ locales["pl"] = {
   },
   "delete": {
     "message": "Usuń"
+  },
+  "showadvanced": {
+    "incomplete": true,
+    "message": "Show advanced options"
   },
   "processing": {
     "message": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
@@ -425,7 +433,7 @@ locales["pl"] = {
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"
@@ -503,7 +511,8 @@ locales["pl"] = {
     "message": "Symuluje promienie i obrazy widziane z określonego miejsca. Obserwatora symbolizuje niebieskie kółko. Wszelkie przecinające je promienie uważa się za 'obserwowane'. Obserwator nie wie, gdzie faktycznie zaczynają się promienie, ale będzie mu się wydawało, że zaczynają się w pewnym punkcie (punktach), jeśli się tam przecinają. Promienie są pokazane na niebiesko, a punkty na żółto (rzeczywiste) lub pomarańczowo (pozorne). (Przeciągnij dużą niebieską kropkę, aby przesunąć obserwatora.)<br>Gdy opcja „Symuluj kolory” jest włączona, zamiast tego są one wyświetlane w kolorach źródłowych."
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Symuluj kolory (długości fal) źródeł światła, mieszanie kolorów i dyspersję chromatyczną szkieł. Możesz ustawić te parametry dla tych obiektów po ich wybraniu. Aby symulować widma kolorów, nałóż na siebie promienie o różnych długościach fal. Kolory pokazane na ekranie są tylko zgrubnymi przybliżeniami i mogą być bardzo niedokładne, gdy 'Gęstość promieni' jest zbyt wysoka lub zbyt niska."
+    "incomplete": true,
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filter (advanced option in mirrors) and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "message": "Decyduje o tym, jaka ma być gęstość promieni symulowanego światła. Liczba jest w skali logarytmicznej."

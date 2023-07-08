@@ -20,9 +20,11 @@ objTypes['led'] = {
     createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    createBooleanAttr(getMsg('symmetric'), obj.symmetric, function(obj, value) {
-      obj.symmetric = value;
-    }, elem);
+    if (createAdvancedOptions(!obj.symmetric)) {
+      createBooleanAttr(getMsg('symmetric'), obj.symmetric, function(obj, value) {
+        obj.symmetric = value;
+      }, elem);
+    }
   },
 
   //使用lineobj原型 Use the prototype lineobj

@@ -493,6 +493,7 @@ function selectObj(index) {
     //若此物件不存在 If this object does not exist
     selectedObj = -1;
     document.getElementById('obj_settings').style.display = 'none';
+    showAdvancedOn = false;
     return;
   }
   selectedObj = index;
@@ -501,6 +502,7 @@ function selectObj(index) {
     return;
   }
   document.getElementById('obj_name').innerHTML = getMsg('toolname_' + objs[index].type);
+  document.getElementById('showAdvanced').style.display = 'none';
   if (objTypes[objs[index].type].p_box) {
     document.getElementById('p_box').style.display = '';
     document.getElementById('p_box').innerHTML = '';

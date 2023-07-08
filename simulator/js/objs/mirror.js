@@ -29,7 +29,7 @@ objTypes['mirror'] = {
   },
 
   dichroicSettings: function(obj, elem){
-    if (colorMode) {
+    if (colorMode && createAdvancedOptions(obj.isDichroic)) {
       createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
           obj.isDichroic = value;
           obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;

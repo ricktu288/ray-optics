@@ -22,6 +22,7 @@ function init_i18n() {
   document.getElementById('setAttrAll_title').innerHTML = getMsg('applytoall');
   document.getElementById('copy').value = getMsg('duplicate');
   document.getElementById('delete').value = getMsg('delete');
+  document.getElementById('showAdvanced').innerHTML = getMsg('showadvanced');
 
   document.getElementById('forceStop').innerHTML = getMsg('processing');
   document.getElementById('restore').innerHTML = getMsg('restore');

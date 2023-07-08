@@ -15,6 +15,7 @@ var backgroundImage = null;
 var restoredData = "";
 var isFromGallery = false;
 var hasUnsavedChange = false;
+var showAdvancedOn = false;
 var MQ;
 
 window.onload = function (e) {
@@ -237,6 +238,11 @@ window.onload = function (e) {
     createUndoPoint();
   };
   cancelMousedownEvent('delete');
+  document.getElementById('showAdvanced').onclick = function () {
+    showAdvancedOn = true;
+    selectObj(selectedObj);
+  };
+  cancelMousedownEvent('showAdvanced');
   document.getElementById('textarea1').onchange = function () {
     JSONInput();
     createUndoPoint();

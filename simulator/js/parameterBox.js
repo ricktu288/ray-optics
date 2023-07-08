@@ -230,3 +230,12 @@ function setAttr(func)
   }
   draw();
 }
+
+function createAdvancedOptions(condition) {
+  if (showAdvancedOn || condition) {
+    return true
+  } else {
+    document.getElementById('showAdvanced').style.display = '';
+    return false
+  }
+}

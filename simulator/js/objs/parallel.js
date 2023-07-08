@@ -18,15 +18,28 @@ objTypes['parallel'] = {
         obj.wavelength = value;
       }, elem);
     }
-    createNumberAttr(getMsg('emissionangle') + '<sup><span class="badge bg-warning">Beta</span></sup>', 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
-      obj.divergence = value;
-    }, elem);
-    createBooleanAttr(getMsg('lambertian') + '<sup><span class="badge bg-warning">Beta</span></sup>', obj.lambert, function(obj, value) {
-      obj.lambert = value;
-    }, elem);
-    createBooleanAttr(getMsg('random') + '<sup><span class="badge bg-warning">Beta</span></sup>', obj.random, function(obj, value) {
-      obj.random = value;
-    }, elem);
+    
+    if (createAdvancedOptions(typeof obj.divergence != 'undefined' && (obj.divergence != 0.0 || obj.random))) {
+      createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
+        obj.divergence = value;
+      }, elem);
+      createBooleanAttr(getMsg('lambertian'), obj.lambert, function(obj, value) {
+        obj.lambert = value;
+      }, elem);
+      createBooleanAttr(getMsg('random'), obj.random, function(obj, value) {
+        obj.random = value;
+      }, elem);
+      if (mode == 'images' || mode == 'observer') {
+        var note = document.createElement('span');
+        note.innerHTML = getMsg('beam_warning');
+        note.id = "beam_warning";
+        note.style.marginLeft = "0.2em";
+        note.style.marginRight = "0.2em";
+        note.style.color = "white";
+        elem.appendChild(note);
+        cancelMousedownEvent("beam_warning");
+      }
+    }
 },
 
   //使用lineobj原型 Use the prototype lineobj

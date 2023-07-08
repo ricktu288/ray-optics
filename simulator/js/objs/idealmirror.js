@@ -13,13 +13,15 @@ objTypes['idealmirror'] = {
     createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
       obj.p = value * (cartesianSign?-1:1);
     }, elem);
-    createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-      if (obj == objs[selectedObj]) {
-        cartesianSign = value;
-        localStorage.rayOpticsCartesianSign = value?"true":"false";
-        selectObj(selectedObj);
-      }
-    }, elem);
+    if (createAdvancedOptions(cartesianSign)) {
+      createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
+        if (obj == objs[selectedObj]) {
+          cartesianSign = value;
+          localStorage.rayOpticsCartesianSign = value?"true":"false";
+          selectObj(selectedObj);
+        }
+      }, elem);
+    }
     this.dichroicSettings(obj,elem);
   },
 

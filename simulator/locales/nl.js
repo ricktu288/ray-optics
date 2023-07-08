@@ -400,6 +400,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Angle (°)"
   },
+  "beam_warning": {
+    "incomplete": true,
+    "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
   "refractiveindex_note": {
     "incomplete": true,
     "message": "(relative if inside another glass)"
@@ -424,6 +428,10 @@ locales["nl"] = {
   },
   "delete": {
     "message": "Verwijder"
+  },
+  "showadvanced": {
+    "incomplete": true,
+    "message": "Show advanced options"
   },
   "processing": {
     "message": "Rekenen... Klik hier om te stoppen."
@@ -489,7 +497,7 @@ locales["nl"] = {
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A beam of rays emerges from a line segment, with adjustable divergence and density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"
@@ -580,7 +588,7 @@ locales["nl"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filter (advanced option in mirrors) and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": true,

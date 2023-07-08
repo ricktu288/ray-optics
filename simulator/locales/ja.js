@@ -456,6 +456,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "角度 (°)"
   },
+  "beam_warning": {
+    "incomplete": true,
+    "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
   "refractiveindex_note": {
     "incomplete": false,
     "message": "(relative if inside another glass)"
@@ -483,6 +487,10 @@ locales["ja"] = {
   "delete": {
     "incomplete": false,
     "message": "消去"
+  },
+  "showadvanced": {
+    "incomplete": true,
+    "message": "Show advanced options"
   },
   "processing": {
     "incomplete": false,
@@ -553,8 +561,8 @@ locales["ja"] = {
     "message": "2 つの点によって定義される単一光線。 (ドラッグまたはクリックして作成します。最初のポイントがソースとなり、2 番目のポイントで発射方向を決めます。)"
   },
   "tool_parallel_popover": {
-    "incomplete": false,
-    "message": "平行な光線が線分から現れ、密度は「光線密度」スライダーで調整できます。 (ドラッグまたはクリックして作成します。)"
+    "incomplete": true,
+    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "incomplete": false,
@@ -657,8 +665,8 @@ locales["ja"] = {
     "message": "ある位置から見た光線と画像をシミュレートします。 青い丸が観察者です。 それを横切る光線はすべて「観測された」とみなされます。 観察者は、光線が実際にどこから始まるのかを知りませんが、光線が交差する場合、ある点で光線が始まると考えるかもしれません。 光線は青、点は黄色 (現実) またはオレンジ (仮想) で表示されます。 (大きな青い点をドラッグして観察者を移動します。)<br>「カラーのシミュレート」がオンの場合、代わりにソース カラーで表示されます。"
   },
   "color_mode_popover": {
-    "incomplete": false,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>光源の色（波長）、色の混色、ガラスの波長分散をシミュレーションします。 選択したオブジェクトに対してこれらのパラメータを設定できます。 カラースペクトルをシミュレートするには、異なる波長の光線を重ねます。 画面に表示される色はおおよその近似値にすぎず、「光線密度」が高すぎるか低すぎる場合は非常に不正確になる可能性があります。"
+    "incomplete": true,
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filter (advanced option in mirrors) and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": false,

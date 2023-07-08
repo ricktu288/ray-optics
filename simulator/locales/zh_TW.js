@@ -342,6 +342,9 @@ locales["zh-TW"] = {
   "angle": {
     "message": "角度 (°)"
   },
+  "beam_warning": {
+    "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"
+  },
   "refractiveindex_note": {
     "message": "（於另一透光物內部時為相對值）"
   },
@@ -362,6 +365,9 @@ locales["zh-TW"] = {
   },
   "delete": {
     "message": "刪除"
+  },
+  "showadvanced": {
+    "message": "顯示進階選項"
   },
   "processing": {
     "message": "處理中…… 按此處以終止。"
@@ -415,7 +421,7 @@ locales["zh-TW"] = {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
   },
   "tool_parallel_popover": {
-    "message": "由一線段產生光束，可調整發射角，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
+    "message": "由一線段產生平行或發散（進階選項）光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
   },
   "tool_radiant_popover": {
     "message": "由一點向四周發射光線，數量由「光線密度」滑桿決定。（點擊以創建。）"
@@ -493,7 +499,7 @@ locales["zh-TW"] = {
     "message": "模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。（拖曳大藍點以移動觀察者。）<br>若使用「模擬色彩」，則改以光源顏色顯示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色與透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色、濾光（鏡子的進階選項）與透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
   },
   "rayDensity_popover": {
     "message": "決定光線模擬的密度。數值為對數刻度。"
