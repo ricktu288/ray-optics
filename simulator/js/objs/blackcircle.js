@@ -60,9 +60,42 @@ objTypes['blackcircle'] = {
         return false;
     },
 
+    //顯示屬性方塊 Show the property box
+    p_box: function(obj, elem) {
+        this.dichroicSettings(obj,elem);
+    },
+
+    dichroicSettings: function(obj, elem){
+        if (colorMode && createAdvancedOptions(obj.isDichroic)) {
+        createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
+            obj.isDichroic = value;
+            obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
+            obj.isDichroicFilter = obj.isDichroicFilter || false;
+            obj.bandwidth = obj.bandwidth || 10
+        }, elem);
+        createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
+            if(obj.isDichroic){
+            obj.isDichroicFilter = value;
+            }
+        }, elem);
+        createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+            obj.wavelength = value;
+        }, elem);
+        createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
+            obj.bandwidth = value;
+        }, elem);
+        }
+    },
+
+    wavelengthInteraction: function(blackcircle, ray){
+        var dichroicEnabled = colorMode && blackcircle.isDichroic && blackcircle.wavelength;
+        var rayHueMatchesMirror =  Math.abs(blackcircle.wavelength - ray.wavelength) <= (blackcircle.bandwidth || 0);
+        return !dichroicEnabled || (rayHueMatchesMirror != blackcircle.isDichroicFilter);
+    }, 
+
     //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
     rayIntersection: function (obj, ray) {
-        if (obj.p <= 0) return;
+        if (obj.p <= 0 || !objTypes['blackcircle'].wavelengthInteraction(obj,ray)) return;
         var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));   //求光(的延長線)與鏡子的交點
         var rp_exist = [];
         var rp_lensq = [];
