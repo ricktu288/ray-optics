@@ -603,6 +603,39 @@ function shootWaitingRays() {
 
 }
 
+
+//Optical Filter Settings
+function dichroicSettings(obj, elem){
+  if (colorMode && createAdvancedOptions(obj.isDichroic)) {
+    createBooleanAttr(getMsg('Optical Filter'), obj.isDichroic, function(obj, value) {
+        obj.isDichroic = value;
+        obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
+        obj.isDichroicFilter = obj.isDichroicFilter || false;
+        obj.bandwidth = obj.bandwidth || 10
+    }, elem);
+    createBooleanAttr(getMsg('Invert'), obj.isDichroicFilter, function(obj, value) {
+      if(obj.isDichroic){
+        obj.isDichroicFilter = value;
+      }
+    }, elem);
+    createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+      obj.wavelength = value;
+    }, elem);
+    createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
+      obj.bandwidth = value;
+    }, elem);
+  }
+}
+
+//Optical filter wavelength interaction check
+//Checks to see if the wavelength of the ray interacts
+function wavelengthInteraction(obj, ray){
+var dichroicEnabled = colorMode && obj.isDichroic && obj.wavelength;
+var rayHueMatchesMirror =  Math.abs(obj.wavelength - ray.wavelength) <= (obj.bandwidth || 0);
+return !dichroicEnabled || (rayHueMatchesMirror != obj.isDichroicFilter);
+}
+
+
 // takes wavelength in nm and returns an rgb value
 function wavelengthToColor(wavelength, brightness, transform) {
   // From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
@@ -615,37 +648,37 @@ function wavelengthToColor(wavelength, brightness, transform) {
       gamma = 1;
 
   if (wl >= UV_WAVELENGTH && wl < VIOLET_WAVELENGTH) {
-      R = 0.5;
-      G = 0;
-      B = 1;
+    R = 0.5;
+    G = 0;
+    B = 1;
   } else if (wl >= VIOLET_WAVELENGTH && wl < BLUE_WAVELENGTH) {
     R = -0.5 * (wl - BLUE_WAVELENGTH) / (BLUE_WAVELENGTH - VIOLET_WAVELENGTH);
     G = 0;
     B = 1;
   } else if (wl >= BLUE_WAVELENGTH && wl < CYAN_WAVELENGTH) {
-     R = 0;
-     G = (wl - BLUE_WAVELENGTH) / (CYAN_WAVELENGTH - BLUE_WAVELENGTH);
-     B = 1;  
+    R = 0;
+    G = (wl - BLUE_WAVELENGTH) / (CYAN_WAVELENGTH - BLUE_WAVELENGTH);
+    B = 1;  
   } else if (wl >= CYAN_WAVELENGTH && wl < GREEN_WAVELENGTH) {
-      R = 0;
-      G = 1;
-      B = -1 * (wl - GREEN_WAVELENGTH) / (GREEN_WAVELENGTH - CYAN_WAVELENGTH);
+    R = 0;
+    G = 1;
+    B = -1 * (wl - GREEN_WAVELENGTH) / (GREEN_WAVELENGTH - CYAN_WAVELENGTH);
   } else if (wl >= GREEN_WAVELENGTH && wl < YELLOW_WAVELENGTH) {
-      R = (wl - GREEN_WAVELENGTH) / (YELLOW_WAVELENGTH - GREEN_WAVELENGTH);
-      G = 1;
-      B = 0;
+    R = (wl - GREEN_WAVELENGTH) / (YELLOW_WAVELENGTH - GREEN_WAVELENGTH);
+    G = 1;
+    B = 0;
   } else if (wl >= YELLOW_WAVELENGTH && wl < RED_WAVELENGTH) {
-      R = 1;
-      G = -1 * (wl - RED_WAVELENGTH) / (RED_WAVELENGTH - YELLOW_WAVELENGTH);
-      B = 0.0;
+    R = 1;
+    G = -1 * (wl - RED_WAVELENGTH) / (RED_WAVELENGTH - YELLOW_WAVELENGTH);
+    B = 0.0;
   } else if (wl >= RED_WAVELENGTH && wl <= INFRARED_WAVELENGTH) {
-      R = 1;
-      G = 0;
-      B = 0;
+    R = 1;
+    G = 0;
+    B = 0;
   } else {
-      R = 0;
-      G = 0;
-      B = 0;
+    R = 0;
+    G = 0;
+    B = 0;
   }
 
   // intensty is lower at the edges of the visible spectrum.

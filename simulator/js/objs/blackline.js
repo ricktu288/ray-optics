@@ -29,40 +29,12 @@ objTypes['blackline'] = {
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
-
-  dichroicSettings: function(obj, elem){
-    if (colorMode && createAdvancedOptions(obj.isDichroic)) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-          obj.isDichroic = value;
-          obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
-          obj.isDichroicFilter = obj.isDichroicFilter || false;
-          obj.bandwidth = obj.bandwidth || 10
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        if(obj.isDichroic){
-          obj.isDichroicFilter = value;
-        }
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      }, elem);
-      createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
-        obj.bandwidth = value;
-      }, elem);
-    }
-  },
-
-  wavelengthInteraction: function(blackline, ray){
-    var dichroicEnabled = colorMode && blackline.isDichroic && blackline.wavelength;
-    var rayHueMatchesMirror =  Math.abs(blackline.wavelength - ray.wavelength) <= (blackline.bandwidth || 0);
-    return !dichroicEnabled || (rayHueMatchesMirror != blackline.isDichroicFilter);
-  }, 
 
   //Describes how the ray 
   rayIntersection: function(blackline, ray) {
-    if (objTypes['blackline'].wavelengthInteraction(blackline,ray)) {
+    if (wavelengthInteraction(blackline,ray)) {
       return objTypes['lineobj'].rayIntersection(blackline, ray);
     }    
   },

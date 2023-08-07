@@ -1,3 +1,4 @@
+
 // Mirrors -> Segment
 objTypes['mirror'] = {
 
@@ -25,42 +26,12 @@ objTypes['mirror'] = {
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
-
-  dichroicSettings: function(obj, elem){
-    if (colorMode && createAdvancedOptions(obj.isDichroic)) {
-      createBooleanAttr(getMsg('dichroic'), obj.isDichroic, function(obj, value) {
-          obj.isDichroic = value;
-          obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
-          obj.isDichroicFilter = obj.isDichroicFilter || false;
-          obj.bandwidth = obj.bandwidth || 10
-      }, elem);
-      createBooleanAttr(getMsg('filter'), obj.isDichroicFilter, function(obj, value) {
-        if(obj.isDichroic){
-          obj.isDichroicFilter = value;
-        }
-      }, elem);
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      }, elem);
-      createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
-        obj.bandwidth = value;
-      }, elem);
-    }
-  },
-
-  //Checks to see if the wavelength of the ray interacts and reflects off the mirror.
-  //Reflect if not dichroic, the hue matches when not a filter, or when the hue doesn't match and it is a filter
-  wavelengthInteraction: function(mirror, ray){
-    var dichroicEnabled = colorMode && mirror.isDichroic && mirror.wavelength;
-    var rayHueMatchesMirror =  Math.abs(mirror.wavelength - ray.wavelength) <= (mirror.bandwidth || 0);
-    return !dichroicEnabled || (rayHueMatchesMirror != mirror.isDichroicFilter);
-  }, 
 
   //Describes how the ray refects off the mirror surface
   rayIntersection: function(mirror, ray) {
-    if (objTypes['mirror'].wavelengthInteraction(mirror,ray)) {
+    if (wavelengthInteraction(mirror,ray)) {
       return objTypes['lineobj'].rayIntersection(mirror, ray);
     }    
   },
