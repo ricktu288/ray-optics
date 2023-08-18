@@ -303,6 +303,9 @@ locales["zh-TW"] = {
   "bandwidth": {
     "message": "帶寬 (nm)："
   },
+  "invert":{
+    "message": "反向"
+  },
   "emissionangle": {
     "message": "發射角 (°)："
   },

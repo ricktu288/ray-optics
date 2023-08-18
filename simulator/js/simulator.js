@@ -607,13 +607,13 @@ function shootWaitingRays() {
 //Optical Filter Settings
 function dichroicSettings(obj, elem){
   if (colorMode && createAdvancedOptions(obj.isDichroic)) {
-    createBooleanAttr(getMsg('Optical Filter'), obj.isDichroic, function(obj, value) {
+    createBooleanAttr(getMsg('filter'), obj.isDichroic, function(obj, value) {
         obj.isDichroic = value;
         obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
         obj.isDichroicFilter = obj.isDichroicFilter || false;
         obj.bandwidth = obj.bandwidth || 10
     }, elem);
-    createBooleanAttr(getMsg('Invert'), obj.isDichroicFilter, function(obj, value) {
+    createBooleanAttr(getMsg('invert'), obj.isDichroicFilter, function(obj, value) {
       if(obj.isDichroic){
         obj.isDichroicFilter = value;
       }

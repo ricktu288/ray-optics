@@ -322,8 +322,7 @@ locales["fr"] = {
     "message": "Luminosité:"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm):"
+    "message": "Longueur d'onde (nm):"
   },
   "dichroic": {
     "message": "Dichroïque"
@@ -333,6 +332,9 @@ locales["fr"] = {
   },
   "bandwidth": {
     "message": "Bande Passante (nm):"
+  },
+  "invert":{
+    "message": "Renverser"
   },
   "emissionangle": {
     "incomplete": true,

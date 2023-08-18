@@ -404,6 +404,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Bandwidth (nm):"
   },
+  "invert": {
+    "incomplete": true,
+    "message": "Invert"
+  },
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°):"

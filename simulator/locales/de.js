@@ -304,6 +304,10 @@ locales["de"] = {
   "bandwidth": {
     "message": "Bandbreite (nm):"
   },
+  "invert":{
+    "incomplete": true,
+    "message": "Invertieren"
+  },
   "emissionangle": {
     "message": "Emissionswinkel (°):"
   },

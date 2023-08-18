@@ -301,8 +301,10 @@ locales["pl"] = {
     "message": "Filtr"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "Szerokość pasma (nm):"
+  },
+  "invert":{
+    "message": "Odwróć"
   },
   "emissionangle": {
     "message": "Kąt emisji (°):"

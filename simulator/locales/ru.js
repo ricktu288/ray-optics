@@ -332,8 +332,10 @@ locales["ru"] = {
     "message": "Фильтр"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm):"
+    "message": "Пропускная способность (nm):"
+  },
+  "invert":{
+    "message": "Инвертировать"
   },
   "emissionangle": {
     "incomplete": true,

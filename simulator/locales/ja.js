@@ -404,6 +404,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "帯域幅 (nm):"
   },
+  "invert":{
+    "incomplete": false,
+    "message": "反転"
+  },
   "emissionangle": {
     "incomplete": false,
     "message": "放射角度 (°):"

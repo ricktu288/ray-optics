@@ -337,8 +337,7 @@ locales["nl"] = {
     "message": "Helderheid:"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm):"
+    "message": "Golflengte (nm):"
   },
   "dichroic": {
     "message": "Dichroïde"
@@ -347,8 +346,10 @@ locales["nl"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "incomplete": true,
     "message": "Bandbreedte (nm):"
+  },
+  "invert":{
+    "message": "Omkeren"
   },
   "emissionangle": {
     "incomplete": true,
