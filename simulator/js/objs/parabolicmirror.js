@@ -11,7 +11,7 @@ objTypes['parabolicmirror'] = {
 
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
 
   c_mousedown: objTypes['arcmirror'].c_mousedown,

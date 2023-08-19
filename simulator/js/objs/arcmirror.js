@@ -6,12 +6,9 @@ objTypes['arcmirror'] = {
     return {type: 'arcmirror', p1: mouse};
   },
 
-  dichroicSettings: objTypes['mirror'].dichroicSettings,
-  wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
-
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
@@ -262,7 +259,7 @@ objTypes['arcmirror'] = {
 
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(mirror, ray) {
-    if (!mirror.p3 || !objTypes['mirror'].wavelengthInteraction(mirror, ray)) {return;}
+    if (!mirror.p3 || !wavelengthInteraction(mirror, ray)) {return;}
     var center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(mirror.p1, mirror.p3)), graphs.perpendicular_bisector(graphs.line(mirror.p2, mirror.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
 

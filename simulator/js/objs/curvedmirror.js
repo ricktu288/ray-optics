@@ -14,7 +14,7 @@ objTypes['curvedmirror'] = {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
 
   c_mousedown: objTypes['lineobj'].c_mousedown,
@@ -133,7 +133,7 @@ objTypes['curvedmirror'] = {
 
   //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(mirror, ray) {
-    if (!mirror.tmp_points || !objTypes['mirror'].wavelengthInteraction(mirror,ray)) return;
+    if (!mirror.tmp_points || !wavelengthInteraction(mirror,ray)) return;
     var i,j;
     var pts = mirror.tmp_points;
     var dir = graphs.length(mirror.p2, ray.p1) > graphs.length(mirror.p1, ray.p1);

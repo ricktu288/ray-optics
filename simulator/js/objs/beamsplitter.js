@@ -14,7 +14,7 @@ objTypes['beamsplitter'] = {
     createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
     }, elem);
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
 
   //使用lineobj原型 Use the prototype lineobj

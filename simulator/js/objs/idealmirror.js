@@ -22,7 +22,7 @@ objTypes['idealmirror'] = {
         }
       }, elem);
     }
-    this.dichroicSettings(obj,elem);
+    dichroicSettings(obj,elem);
   },
 
   //使用lineobj原型 Use the prototype lineobj

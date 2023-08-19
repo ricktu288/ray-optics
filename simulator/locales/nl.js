@@ -337,8 +337,7 @@ locales["nl"] = {
     "message": "Helderheid:"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm):"
+    "message": "Golflengte (nm):"
   },
   "dichroic": {
     "message": "Dichroïde"
@@ -347,8 +346,10 @@ locales["nl"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "incomplete": true,
     "message": "Bandbreedte (nm):"
+  },
+  "invert":{
+    "message": "Omkeren"
   },
   "emissionangle": {
     "incomplete": true,
@@ -588,7 +589,7 @@ locales["nl"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filter (advanced option in mirrors) and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": true,

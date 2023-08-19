@@ -20,7 +20,7 @@ objTypes['blackcircle'] = {
         ctx.beginPath();
         ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2);
         ctx.lineWidth = 3;
-        ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,35,10)');
+        ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
         //ctx.fillStyle="indigo";
 
         ctx.stroke();
@@ -60,9 +60,14 @@ objTypes['blackcircle'] = {
         return false;
     },
 
+    //顯示屬性方塊 Show the property box
+    p_box: function(obj, elem) {
+        dichroicSettings(obj,elem);
+    },
+
     //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
     rayIntersection: function (obj, ray) {
-        if (obj.p <= 0) return;
+        if (obj.p <= 0 || !wavelengthInteraction(obj,ray)) return;
         var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));   //求光(的延長線)與鏡子的交點
         var rp_exist = [];
         var rp_lensq = [];
