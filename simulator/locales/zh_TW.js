@@ -502,7 +502,7 @@ locales["zh-TW"] = {
     "message": "模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。（拖曳大藍點以移動觀察者。）<br>若使用「模擬色彩」，則改以光源顏色顯示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色、濾光（鏡子的進階選項）與透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
+    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
   },
   "rayDensity_popover": {
     "message": "決定光線模擬的密度。數值為對數刻度。"

@@ -606,24 +606,31 @@ function shootWaitingRays() {
 
 //Optical Filter Settings
 function dichroicSettings(obj, elem){
-  if (colorMode && createAdvancedOptions(obj.isDichroic)) {
+  if (colorMode) {
     createBooleanAttr(getMsg('filter'), obj.isDichroic, function(obj, value) {
-        obj.isDichroic = value;
-        obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
-        obj.isDichroicFilter = obj.isDichroicFilter || false;
-        obj.bandwidth = obj.bandwidth || 10
-    }, elem);
-    createBooleanAttr(getMsg('invert'), obj.isDichroicFilter, function(obj, value) {
-      if(obj.isDichroic){
-        obj.isDichroicFilter = value;
+      obj.isDichroic = value;
+      obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
+      obj.isDichroicFilter = obj.isDichroicFilter || false;
+      obj.bandwidth = obj.bandwidth || 10
+      if (obj == objs[selectedObj]) {
+        cartesianSign = value;
+        localStorage.rayOpticsCartesianSign = value?"true":"false";
+        selectObj(selectedObj);
       }
     }, elem);
-    createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-      obj.wavelength = value;
-    }, elem);
-    createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
-      obj.bandwidth = value;
-    }, elem);
+    if (obj.isDichroic) {
+      createBooleanAttr(getMsg('invert'), obj.isDichroicFilter, function(obj, value) {
+        if(obj.isDichroic){
+          obj.isDichroicFilter = value;
+        }
+      }, elem);
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
+        obj.wavelength = value;
+      }, elem);
+      createNumberAttr("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
+        obj.bandwidth = value;
+      }, elem);
+    }
   }
 }
 
