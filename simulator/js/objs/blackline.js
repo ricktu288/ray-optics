@@ -17,7 +17,7 @@ objTypes['blackline'] = {
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas) {
   //var ctx = canvas.getContext('2d');
-  ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,35,10)');
+  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
   ctx.lineWidth = 3;
   ctx.lineCap = 'butt';
   ctx.beginPath();
