@@ -38,12 +38,12 @@ For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/
 
 APA:
 ```
-Tu, Y.-T., & Sun, W.-F. (2016). Ray Optics Simulation [Computer software]. https://doi.org/10.5281/zenodo.6386611
+Tu, Y.-T. (2016). Ray Optics Simulation [Computer software]. https://doi.org/10.5281/zenodo.6386611
 ```
 BibTeX:
 ```
 @software{Tu_Ray_Optics_Simulation_2016,
-  author = {Tu, Yi-Ting and Sun, Wei-Fang},
+  author = {Tu, Yi-Ting},
   doi = {10.5281/zenodo.6386611},
   month = {2},
   title = {{Ray Optics Simulation}},
@@ -53,7 +53,7 @@ BibTeX:
 ```
 
 # License
-Copyright 2016–2023 Yi-Ting Tu, Wei-Fang Sun
+Copyright 2016–2023 Yi-Ting Tu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -90,11 +90,6 @@ The source code is available at: https://github.com/twbs/bootstrap
 
 jQuery is distributed under the [MIT license](https://github.com/jquery/jquery/blob/master/LICENSE.txt).
 The source code is available at: https://github.com/jquery/jquery
-
-### Knockout
-
-Knockout is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
-The source code is available at: https://github.com/knockout/knockout
 
 ### MathQuill
 
