@@ -108,6 +108,10 @@ locales["pl"] = {
   "toolname_text": {
     "message": "Tekst"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "message": "Przesuń widok"
   },
@@ -149,6 +153,10 @@ locales["pl"] = {
   },
   "tool_radiant_": {
     "message": "Źródło punktowe"
+  },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
   },
   "tool_mirror_": {
     "message": "Zwierciadła"
@@ -219,6 +227,10 @@ locales["pl"] = {
   "Settings: ": {
     "message": "Ustawienia: "
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "message": "Promienie"
   },
@@ -276,6 +288,10 @@ locales["pl"] = {
   "open": {
     "message": "Otwórz"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "message": "Zablokuj obiekty"
   },
@@ -303,7 +319,7 @@ locales["pl"] = {
   "bandwidth": {
     "message": "Szerokość pasma (nm):"
   },
-  "invert":{
+  "invert": {
     "message": "Odwróć"
   },
   "emissionangle": {

@@ -108,6 +108,9 @@ locales["zh-TW"] = {
   "toolname_text": {
     "message": "文字"
   },
+  "toolname_more_": {
+    "message": "更多"
+  },
   "toolname_": {
     "message": "移動畫面"
   },
@@ -130,10 +133,10 @@ locales["zh-TW"] = {
     "message": "模擬色彩"
   },
   "File: ": {
-    "message": "檔案："
+    "message": "檔案"
   },
   "Tools: ": {
-    "message": "工具："
+    "message": "工具"
   },
   "tool_laser": {
     "message": "單一光線"
@@ -149,6 +152,9 @@ locales["zh-TW"] = {
   },
   "tool_radiant_": {
     "message": "點光源"
+  },
+  "tool_lightsource_": {
+    "message": "光源"
   },
   "tool_mirror_": {
     "message": "鏡子"
@@ -214,10 +220,13 @@ locales["zh-TW"] = {
     "message": "移動畫面"
   },
   "View: ": {
-    "message": "檢視："
+    "message": "檢視"
   },
   "Settings: ": {
-    "message": "設定："
+    "message": "設定"
+  },
+  "moreoptions": {
+    "message": "更多"
   },
   "mode_light": {
     "message": "光線"
@@ -276,6 +285,9 @@ locales["zh-TW"] = {
   "open": {
     "message": "開啟"
   },
+  "layoutaids": {
+    "message": "排版輔助"
+  },
   "lockobjs": {
     "message": "鎖定物件"
   },
@@ -303,7 +315,7 @@ locales["zh-TW"] = {
   "bandwidth": {
     "message": "帶寬 (nm)："
   },
-  "invert":{
+  "invert": {
     "message": "反向"
   },
   "emissionangle": {

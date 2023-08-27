@@ -2,7 +2,7 @@ if (typeof locales == 'undefined') locales = {};
 locales["LOCALE_ID"] = {
   "appName": {
     "incomplete": true,
-    "message": "Ray Optics Simulation"
+    "message": "Simulator - Ray Optics Simulation"
   },
   "appShortName": {
     "incomplete": true,
@@ -144,6 +144,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Text"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "incomplete": true,
     "message": "Move view"
@@ -174,11 +178,11 @@ locales["LOCALE_ID"] = {
   },
   "File: ": {
     "incomplete": true,
-    "message": "File: "
+    "message": "File"
   },
   "Tools: ": {
     "incomplete": true,
-    "message": "Tools: "
+    "message": "Tools"
   },
   "tool_laser": {
     "incomplete": true,
@@ -200,9 +204,13 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source"
   },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
+  },
   "tool_mirror_": {
     "incomplete": true,
-    "message": "Mirrors"
+    "message": "Mirror"
   },
   "tool_mirror": {
     "incomplete": true,
@@ -230,11 +238,11 @@ locales["LOCALE_ID"] = {
   },
   "tool_refractor_": {
     "incomplete": true,
-    "message": "Glasses"
+    "message": "Glass"
   },
   "tool_blocker_": {
     "incomplete": true,
-    "message": "Blockers"
+    "message": "Blocker"
   },
   "tool_halfplane": {
     "incomplete": true,
@@ -286,11 +294,15 @@ locales["LOCALE_ID"] = {
   },
   "View: ": {
     "incomplete": true,
-    "message": "View: "
+    "message": "View"
   },
   "Settings: ": {
     "incomplete": true,
     "message": "Settings: "
+  },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
   },
   "mode_light": {
     "incomplete": true,
@@ -367,6 +379,10 @@ locales["LOCALE_ID"] = {
   "open": {
     "incomplete": true,
     "message": "Open"
+  },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
   },
   "lockobjs": {
     "incomplete": true,
@@ -502,7 +518,7 @@ locales["LOCALE_ID"] = {
   },
   "restore": {
     "incomplete": true,
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will no longer store your session. Please save your work before closing this page."
+    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
     "incomplete": true,

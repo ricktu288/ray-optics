@@ -144,6 +144,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "テキスト"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "incomplete": false,
     "message": "ビュー移動"
@@ -199,6 +203,10 @@ locales["ja"] = {
   "tool_radiant_": {
     "incomplete": false,
     "message": "点光源"
+  },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
   },
   "tool_mirror_": {
     "incomplete": false,
@@ -292,6 +300,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "設定: "
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "incomplete": false,
     "message": "光線"
@@ -368,6 +380,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "開く"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "incomplete": false,
     "message": "オブジェクトを固定"
@@ -404,7 +420,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "帯域幅 (nm):"
   },
-  "invert":{
+  "invert": {
     "incomplete": false,
     "message": "反転"
   },

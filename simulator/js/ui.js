@@ -66,12 +66,112 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-return new bootstrap.Tooltip(tooltipTriggerEl)
-})
 
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-return new bootstrap.Popover(popoverTriggerEl)
-})
+
+
+
+function getMsg(msg) {
+  var m = locales[lang][msg];
+  if (m == null) {
+    console.log("undefined message: " + msg);
+    return msg;
+  }
+  return m.message;
+}
+
+function updateUIText(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-text]');
+  
+  elements.forEach(el => {
+    const key = el.getAttribute('data-text');
+    const text = getMsg(key);
+    el.innerHTML = text;
+  });
+}
+
+function updateUIWithPopovers(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-title]');
+  
+  elements.forEach(el => {
+    const titleKey = el.getAttribute('data-title');
+    const title = getMsg(titleKey);
+    el.setAttribute('title', title);
+
+    const contentKey = el.getAttribute('data-popover');
+    if (contentKey == null) {
+      el.setAttribute('data-bs-toggle', 'tooltip');
+      el.setAttribute('data-bs-trigger', 'hover');
+      el.setAttribute('data-bs-placement', 'bottom');
+    } else {
+      const content = getMsg(contentKey);
+      el.setAttribute('data-bs-toggle', 'popover');
+      el.setAttribute('data-bs-trigger', 'hover');
+      el.setAttribute('data-bs-html', 'true');
+      el.setAttribute('data-bs-content', content);
+    }
+  });
+
+  var tooltipTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+
+  var popoverTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+  })
+}
+
+function updateUIWithoutPopovers(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-title]');
+  
+  elements.forEach(el => {
+    const textKey = el.getAttribute('data-text');
+
+    if (textKey == null) {
+      const titleKey = el.getAttribute('data-title');
+      const title = getMsg(titleKey);
+      el.setAttribute('title', title);
+      el.setAttribute('data-bs-toggle', 'tooltip');
+      el.setAttribute('data-bs-trigger', 'hover');
+      el.setAttribute('data-bs-placement', 'bottom');
+    }
+  });
+
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+}
+
+function disablePopoversAndTooltips() {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+    tooltipTriggerEl.setAttribute('data-bs-toggle', '');
+  });
+  
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+  });
+
+  tooltipList.forEach(function (tooltip) {
+    tooltip.disable();
+  });
+
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+  });
+
+  popoverTriggerList.forEach(function (popoverTriggerEl) {
+    popoverTriggerEl.setAttribute('data-bs-toggle', '');
+  });
+
+  popoverList.forEach(function (popover) {
+    popover.disable();
+  });
+}
+
+updateUIText();
+updateUIWithPopovers();
+

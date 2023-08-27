@@ -108,6 +108,9 @@ locales["zh-CN"] = {
   "toolname_text": {
     "message": "文字"
   },
+  "toolname_more_": {
+    "message": "更多"
+  },
   "toolname_": {
     "message": "移动画面"
   },
@@ -149,6 +152,9 @@ locales["zh-CN"] = {
   },
   "tool_radiant_": {
     "message": "点光源"
+  },
+  "tool_lightsource_": {
+    "message": "光源"
   },
   "tool_mirror_": {
     "message": "镜子"
@@ -219,6 +225,10 @@ locales["zh-CN"] = {
   "Settings: ": {
     "message": "设定："
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "message": "光线"
   },
@@ -276,6 +286,10 @@ locales["zh-CN"] = {
   "open": {
     "message": "打开"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "message": "锁定物件"
   },
@@ -303,7 +317,7 @@ locales["zh-CN"] = {
   "bandwidth": {
     "message": "带宽 (nm)："
   },
-  "invert":{
+  "invert": {
     "message": "反向"
   },
   "emissionangle": {

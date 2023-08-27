@@ -108,6 +108,9 @@ locales["en"] = {
   "toolname_text": {
     "message": "Text"
   },
+  "toolname_more_": {
+    "message": "More"
+  },
   "toolname_": {
     "message": "Move view"
   },
@@ -130,10 +133,10 @@ locales["en"] = {
     "message": "Simulate Colors"
   },
   "File: ": {
-    "message": "File: "
+    "message": "File"
   },
   "Tools: ": {
-    "message": "Tools: "
+    "message": "Tools"
   },
   "tool_laser": {
     "message": "Ray"
@@ -150,8 +153,11 @@ locales["en"] = {
   "tool_radiant_": {
     "message": "Point source"
   },
+  "tool_lightsource_": {
+    "message": "Light Source"
+  },
   "tool_mirror_": {
-    "message": "Mirrors"
+    "message": "Mirror"
   },
   "tool_mirror": {
     "message": "Segment"
@@ -172,10 +178,10 @@ locales["en"] = {
     "message": "Ideal Curved"
   },
   "tool_refractor_": {
-    "message": "Glasses"
+    "message": "Glass"
   },
   "tool_blocker_": {
-    "message": "Blockers"
+    "message": "Blocker"
   },
   "tool_halfplane": {
     "message": "Half-plane"
@@ -214,10 +220,13 @@ locales["en"] = {
     "message": "Move view"
   },
   "View: ": {
-    "message": "View: "
+    "message": "View"
   },
   "Settings: ": {
     "message": "Settings: "
+  },
+  "moreoptions": {
+    "message": "More"
   },
   "mode_light": {
     "message": "Rays"
@@ -275,6 +284,9 @@ locales["en"] = {
   },
   "open": {
     "message": "Open"
+  },
+  "layoutaids": {
+    "message": "Layout Aids"
   },
   "lockobjs": {
     "message": "Lock Objects"

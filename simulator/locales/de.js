@@ -109,6 +109,10 @@ locales["de"] = {
   "toolname_text": {
     "message": "Text"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "message": "Ansicht bewegen"
   },
@@ -150,6 +154,10 @@ locales["de"] = {
   },
   "tool_radiant_": {
     "message": "Punktquelle"
+  },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
   },
   "tool_mirror_": {
     "message": "Spiegel"
@@ -220,6 +228,10 @@ locales["de"] = {
   "Settings: ": {
     "message": "Einstellungen: "
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "message": "Strahlen"
   },
@@ -277,6 +289,10 @@ locales["de"] = {
   "open": {
     "message": "Öffnen"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "message": "Objekte sperren"
   },
@@ -304,7 +320,7 @@ locales["de"] = {
   "bandwidth": {
     "message": "Bandbreite (nm):"
   },
-  "invert":{
+  "invert": {
     "incomplete": true,
     "message": "Invertieren"
   },

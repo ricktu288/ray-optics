@@ -127,6 +127,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Text"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "message": "Verplaats beeld"
   },
@@ -171,6 +175,10 @@ locales["nl"] = {
   },
   "tool_radiant_": {
     "message": "Punt bron"
+  },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
   },
   "tool_mirror_": {
     "message": "spiegels"
@@ -249,6 +257,10 @@ locales["nl"] = {
   "Settings: ": {
     "message": "Instellingen: "
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "message": "Stralen"
   },
@@ -317,6 +329,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Open"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "incomplete": true,
     "message": "Lock Objects"
@@ -348,7 +364,7 @@ locales["nl"] = {
   "bandwidth": {
     "message": "Bandbreedte (nm):"
   },
-  "invert":{
+  "invert": {
     "message": "Omkeren"
   },
   "emissionangle": {

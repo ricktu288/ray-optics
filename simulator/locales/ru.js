@@ -124,6 +124,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Text"
   },
+  "toolname_more_": {
+    "incomplete": true,
+    "message": "More"
+  },
   "toolname_": {
     "message": "Движение камеры"
   },
@@ -168,6 +172,10 @@ locales["ru"] = {
   },
   "tool_radiant_": {
     "message": "Точечный источник"
+  },
+  "tool_lightsource_": {
+    "incomplete": true,
+    "message": "Light Source"
   },
   "tool_mirror_": {
     "message": "Зеркала"
@@ -246,6 +254,10 @@ locales["ru"] = {
   "Settings: ": {
     "message": "Настройки: "
   },
+  "moreoptions": {
+    "incomplete": true,
+    "message": "More"
+  },
   "mode_light": {
     "message": "Лучи"
   },
@@ -307,6 +319,10 @@ locales["ru"] = {
   "open": {
     "message": "Открыть"
   },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
+  },
   "lockobjs": {
     "message": "🔒"
   },
@@ -334,7 +350,7 @@ locales["ru"] = {
   "bandwidth": {
     "message": "Пропускная способность (nm):"
   },
-  "invert":{
+  "invert": {
     "message": "Инвертировать"
   },
   "emissionangle": {
