@@ -20,37 +20,19 @@ body {
   z-index: -3;
 }
 
-/*
+.popover-image {
+  float:left;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  max-width: 245px;
+}
+
 .popover {
-  background-color:rgb(64,64,64);
-}
-.popover-header {
-  background-color:rgb(64,64,64);
-}
-.popover-header {
-  color: white;
+  padding-bottom:10px;
 }
 .popover-body {
-  color: white;
+  padding-bottom:0px;
 }
-
-.popover.bs-popover-end > .popover-arrow::after,
-.popover.bs-popover-end > .popover-arrow::before {
-  border-right-color: rgb(64,64,64);
-  border-right-width: 9px;
-}
-
-.popover.bs-popover-bottom > .popover-arrow::after,
-.popover.bs-popover-bottom > .popover-arrow::before {
-  border-bottom-color: rgb(64,64,64);
-  border-bottom-width: 9px;
-}
-
-
-.popover-header::before {
-  display: none !important;
-}
-*/
 
 
 #main-flex-wrapper {

@@ -120,16 +120,20 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_lightsource_"></button>
                     <ul class="dropdown-menu" aria-labelledby="sourceToolsDropdown">
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-ray" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-ray" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="right" title="All Images" data-bs-html="true" data-bs-offset="90%" data-bs-content="<img src='beam.svg' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'><div>A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)</div>">Single Ray</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_laser">
+                        <label class="btn btn-primary dropdown-item" for="tool_laser" data-text="tool_laser" data-popover="tool_laser_popover" data-image="ray.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-beam" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-beam" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="right" title="All Images" data-bs-html="true" data-bs-offset="90%" data-bs-content="<img src='beam.svg' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'><div>A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)</div>">Beam</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_parallel">
+                        <label class="btn btn-primary dropdown-item" for="tool_parallel" data-text="tool_parallel" data-popover="tool_parallel_popover" data-image="beam.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-pointsrc" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-pointsrc">Point Source</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_radiant">
+                        <label class="btn btn-primary dropdown-item" for="tool_radiant" data-text="tool_radiant" data-popover="tool_radiant_popover" data-image="point_source.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                      </li>
+                      <li>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_led">
+                        <label class="btn btn-primary dropdown-item" for="tool_led" data-text="tool_led" data-popover="tool_led_popover" data-image="led.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                     </ul>
                   </div>
@@ -138,76 +142,70 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" id="mirrorToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="toolname_mirror_"></button>
                     <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-idealmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-idealmirror">Ideal Curved</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_mirror">
+                        <label class="btn btn-primary dropdown-item" for="tool_mirror" data-text="tool_mirror" data-popover="tool_mirror_popover" data-image="mirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-flatmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-flatmirror">Segment</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_arcmirror">
+                        <label class="btn btn-primary dropdown-item" for="tool_arcmirror" data-text="tool_arcmirror" data-popover="tool_arcmirror_popover" data-image="mirror_arc.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-arcmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-arcmirror">Circular Arc</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_parabolicmirror">
+                        <label class="btn btn-primary dropdown-item" for="tool_parabolicmirror" data-text="tool_parabolicmirror" data-popover="tool_parabolicmirror_popover" data-image="mirror_parabolic.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-parabmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-parabmirror">Parabolic</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_curvedmirror">
+                        <label class="btn btn-primary dropdown-item" for="tool_curvedmirror" data-text="tool_curvedmirror" data-popover="tool_curvedmirror_popover" data-image="mirror_curved.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-splitter" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-splitter">Beam Splitter</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_idealmirror">
+                        <label class="btn btn-primary dropdown-item" for="tool_idealmirror" data-text="tool_idealmirror" data-popover="tool_idealmirror_popover" data-image="ideal_curved_mirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                      </li>
+                      <li>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_beamsplitter">
+                        <label class="btn btn-primary dropdown-item" for="tool_beamsplitter" data-text="tool_beamsplitter" data-popover="tool_beamsplitter_popover" data-image="beamsplitter.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                     </ul>
                   </div>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="glassToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="toolname_refractor_"></button>
-                    <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="glassToolsDropdown">
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-idealmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-idealmirror">Ideal Curved</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_halfplane">
+                        <label class="btn btn-primary dropdown-item" for="tool_halfplane" data-text="tool_halfplane" data-popover="tool_halfplane_popover" data-image="glass_halfplane.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-flatmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-flatmirror">Segment</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_circlelens">
+                        <label class="btn btn-primary dropdown-item" for="tool_circlelens" data-text="tool_circlelens" data-popover="tool_circlelens_popover" data-image="glass_circle.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-arcmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-arcmirror">Circular Arc</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_refractor">
+                        <label class="btn btn-primary dropdown-item" for="tool_refractor" data-text="tool_refractor" data-popover="tool_refractor_popover" data-image="glass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-parabmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-parabmirror">Parabolic</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_curvedglass">
+                        <label class="btn btn-primary dropdown-item" for="tool_curvedglass" data-text="tool_curvedglass" data-popover="tool_curvedglass_popover" data-image="glass_curved.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-splitter" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-splitter">Beam Splitter</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_sphericallens">
+                        <label class="btn btn-primary dropdown-item" for="tool_sphericallens" data-text="tool_sphericallens" data-popover="tool_sphericallens_popover" data-image="spherical_lens.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                      </li>
+                      <li>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_lens">
+                        <label class="btn btn-primary dropdown-item" for="tool_lens" data-text="tool_lens" data-popover="tool_lens_popover" data-image="ideal_lens.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                     </ul>
                   </div>
                   <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="blockerToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="toolname_blocker_">
-                      Blocker
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="blockerToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="toolname_blocker_"></button>
+                    <ul class="dropdown-menu" aria-labelledby="blockerToolsDropdown">
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-idealmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-idealmirror">Ideal Curved</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_blackline">
+                        <label class="btn btn-primary dropdown-item" for="tool_blackline" data-text="tool_blackline" data-popover="tool_blackline_popover" data-image="blocker.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-flatmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-flatmirror">Segment</label>
-                      </li>
-                      <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-arcmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-arcmirror">Circular Arc</label>
-                      </li>
-                      <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-parabmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-parabmirror">Parabolic</label>
-                      </li>
-                      <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-splitter" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-splitter">Beam Splitter</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_blackcircle">
+                        <label class="btn btn-primary dropdown-item" for="tool_blackcircle" data-text="tool_blackcircle" data-popover="tool_blackcircle_popover" data-image="circle_blocker.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                       </li>
                     </ul>
                   </div>
@@ -215,31 +213,27 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" id="moreToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="toolname_more_">
                       More
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="moreToolsDropdown">
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-idealmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-idealmirror">Ideal Curved</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ruler">
+                        <label class="btn btn-primary dropdown-item" for="tool_ruler" data-text="tool_ruler" data-popover="tool_ruler_popover" data-image="ruler.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-flatmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-flatmirror">Segment</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_protractor">
+                        <label class="btn btn-primary dropdown-item" for="tool_protractor" data-text="tool_protractor" data-popover="tool_protractor_popover" data-image="protractor.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-arcmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-arcmirror">Circular Arc</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_power">
+                        <label class="btn btn-primary dropdown-item" for="tool_power" data-text="tool_power" data-popover="tool_power_popover" data-image="power.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
                       </li>
                       <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-parabmirror" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-parabmirror">Parabolic</label>
-                      </li>
-                      <li>
-                        <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-splitter" autocomplete="off">
-                        <label class="btn btn-primary dropdown-item" for="toolsradio-splitter">Beam Splitter</label>
+                        <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_text">
+                        <label class="btn btn-primary dropdown-item" for="tool_text" data-text="tool_text" data-popover="tool_text_popover" data-bs-placement="right" data-bs-offset="0,0"></label>
                       </li>
                     </ul>
                   </div>
-                  <input type="radio" class="btn-check" name="toolsradio" id="toolsradio-moveview" autocomplete="off" checked>
-                  <label class="btn btn-primary" for="toolsradio-moveview" data-title="toolname_">
+                  <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
+                  <label class="btn btn-primary" for="tool_" data-title="tool_">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-move" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z"/>
                     </svg>
@@ -251,20 +245,20 @@
             <div class="col-auto">
               <div class="row">
                 <div class="btn-group" role="group">
-                  <input type="radio" class="btn-check" name="viewradio" id="viewradio-ray" autocomplete="off" checked>
-                  <label class="btn btn-primary" for="viewradio-ray" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rays">
+                  <input type="radio" class="btn-check" name="viewradio" id="mode_light" autocomplete="off" checked>
+                  <label class="btn btn-primary" for="mode_light" data-title="mode_light" data-popover="mode_light_popover" data-image="normal.svg" data-bs-placement="bottom">
                     <img src="images/rays.svg" alt="Ray" width="16" height="20">                        
                   </label>
-                  <input type="radio" class="btn-check" name="viewradio" id="viewradio-extended" autocomplete="off">
-                  <label class="btn btn-primary" for="viewradio-extended" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="123">
+                  <input type="radio" class="btn-check" name="viewradio" id="mode_extended_light" autocomplete="off">
+                  <label class="btn btn-primary" for="mode_extended_light" data-title="mode_extended_light" data-popover="mode_extended_light_popover" data-image="extended_rays.svg" data-bs-placement="bottom">
                     <img src="images/extended.svg" alt="Extended" width="16" height="20">
                   </label>
-                  <input type="radio" class="btn-check" name="viewradio" id="viewradio-images" autocomplete="off">
-                  <label class="btn btn-primary" for="viewradio-images" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" title="All Images" data-bs-html="true" data-bs-content="<img src='all_images.svg' width=100%><br><div style='color: white!important'>Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead.</div>">
+                  <input type="radio" class="btn-check" name="viewradio" id="mode_images" autocomplete="off">
+                  <label class="btn btn-primary" for="mode_images" data-title="mode_images" data-popover="mode_images_popover" data-image="all_images.svg" data-bs-placement="bottom">
                     <img src="images/images.svg" alt="Images" width="16" height="20">
                   </label>
-                  <input type="radio" class="btn-check" name="viewradio" id="viewradio-observer" autocomplete="off">
-                  <label class="btn btn-primary" for="viewradio-observer" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Seen by Observer">
+                  <input type="radio" class="btn-check" name="viewradio" id="mode_observer" autocomplete="off">
+                  <label class="btn btn-primary" for="mode_observer" data-title="mode_observer" data-popover="mode_observer_popover" data-image="seen_by_observer.svg" data-bs-placement="bottom">
                     <img src="images/observer.svg" alt="Observer" width="16" height="20">
                   </label>
                 </div>
@@ -275,12 +269,12 @@
             <div class="col-auto d-none d-xl-block">
               <div class="row justify-content-center">
                 <div class="btn-group d-flex align-items-center" role="group">
-                  <button class="btn range-minus-btn" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" title="All Images" data-bs-html="true" data-bs-content="<img src='all_images.svg' width=100%><br><div style='color: white!important'>Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead.</div>">
+                  <button class="btn range-minus-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                       <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                     </svg>
                   </button>
-                  <input type="range" class="form-range toolbar-range" min="0" max="100" step="1" id="raydensity-slider">
+                  <input type="range" class="form-range toolbar-range" min="0" max="100" step="1" id="raydensity-slider" data-popover="rayDensity_popover">
                   <button class="btn range-plus-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -293,20 +287,20 @@
             <div class="col-auto d-none d-xxl-block">
               <div class="row">
                 <div class="btn-group" role="group">
-                  <input type="checkbox" class="btn-check" id="grid" autocomplete="off">
-                  <label class="btn btn-secondary" for="grid">
+                  <input type="checkbox" class="btn-check" id="showgrid" autocomplete="off">
+                  <label class="btn btn-secondary" for="showgrid" data-title="showgrid">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16">
                       <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13zM1.5 1a.5.5 0 0 0-.5.5V5h4V1H1.5zM5 6H1v4h4V6zm1 4h4V6H6v4zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5v-4zm1 0v4h4v-4H6zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11h-4zm0-1h4V6h-4v4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11v4zm-1 0V1H6v4h4z"/>
                     </svg>                    
                   </label>
-                  <input type="checkbox" class="btn-check" id="snaptogrid" autocomplete="off">
-                  <label class="btn btn-secondary" for="snaptogrid">
+                  <input type="checkbox" class="btn-check" id="grid" autocomplete="off">
+                  <label class="btn btn-secondary" for="grid" data-title="grid">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magnet" viewBox="0 0 16 16">
                       <path d="M8 1a7 7 0 0 0-7 7v3h4V8a3 3 0 0 1 6 0v3h4V8a7 7 0 0 0-7-7Zm7 11h-4v3h4v-3ZM5 12H1v3h4v-3ZM0 8a8 8 0 1 1 16 0v8h-6V8a2 2 0 1 0-4 0v8H0V8Z"/>
                     </svg>                 
                   </label>
-                  <input type="checkbox" class="btn-check" id="lock" autocomplete="off">
-                  <label class="btn btn-secondary" for="lock">
+                  <input type="checkbox" class="btn-check" id="lockobjs" autocomplete="off">
+                  <label class="btn btn-secondary" for="lockobjs" data-title="lockobjs">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
                       <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                     </svg>

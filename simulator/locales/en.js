@@ -139,16 +139,16 @@ locales["en"] = {
     "message": "Tools"
   },
   "tool_laser": {
-    "message": "Ray"
+    "message": "Single ray"
   },
   "tool_parallel": {
     "message": "Beam"
   },
   "tool_radiant": {
-    "message": "360 degrees"
+    "message": "Point source (360°)"
   },
   "tool_led": {
-    "message": "Finite angle"
+    "message": "Point source (<360°)"
   },
   "tool_radiant_": {
     "message": "Point source"
@@ -436,7 +436,7 @@ locales["en"] = {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
-    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
@@ -517,7 +517,7 @@ locales["en"] = {
     "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "message": "Decides how dense should the lights be simulated. The number is in log scale."
+    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
     "message": "Defines the visibility of the background grid."
