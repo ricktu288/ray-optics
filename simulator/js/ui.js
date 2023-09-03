@@ -115,15 +115,12 @@ function updateUIWithPopovers(elememt = document) {
         el.setAttribute('data-bs-html', 'true');
         el.setAttribute('data-bs-content', content);
 
-        let imgLoaded = false;
+        // Update popover size after image is loaded
         el.addEventListener('inserted.bs.popover', function() {
-          if (!imgLoaded) {
-            const imgElement = document.querySelector('#dynamic-popover-image');
-            imgElement.addEventListener('load', function() {
-              imgLoaded = true;
-              bootstrap.Popover.getInstance(el).update();
-            });
-          }
+          const imgElement = document.querySelectorAll('#dynamic-popover-image');
+          imgElement[imgElement.length - 1].addEventListener('load', function() {
+            bootstrap.Popover.getInstance(el).update();
+          });
         });
       } else {
         // Popover without image
@@ -203,3 +200,37 @@ function disablePopoversAndTooltips() {
 updateUIText();
 updateUIWithPopovers();
 
+var currentMobileToolGroupId = null;
+
+function initTools() {
+
+  const allElements = document.querySelectorAll('*');
+
+  allElements.forEach(element => {
+    if (element.id && element.id.startsWith('mobile-dropdown-trigger-')) {
+      const toolGroupId = element.id.replace('mobile-dropdown-trigger-', '');
+      const toolGroup = document.getElementById(`mobile-dropdown-${toolGroupId}`);
+
+      element.addEventListener('click', (event) => {
+        // Show the corresponding tool group in the mobile tool dropdown.
+        event.stopPropagation();
+        document.getElementById('mobile-dropdown-tools-root').style.display='none';
+        toolGroup.style.display='';
+        currentMobileToolGroupId = toolGroupId;
+        f();
+      });
+    }
+  });
+
+  document.getElementById('mobile-tools').addEventListener('click', (event) => {
+    // Hide the mobile tool dropdown.
+    if (currentMobileToolGroupId != null) {
+      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display='none';
+      document.getElementById('mobile-dropdown-tools-root').style.display='';
+      f();
+    }
+  });
+
+}
+
+initTools();

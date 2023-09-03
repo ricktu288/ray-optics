@@ -198,6 +198,10 @@ body {
   overflow-y: auto;
 }
 
+#advanced-help {
+  font-size: 9pt;
+}
+
 #help-dropdown {
   width:300px;
   background: rgb(64, 64, 64);

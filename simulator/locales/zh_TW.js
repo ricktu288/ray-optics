@@ -111,6 +111,9 @@ locales["zh-TW"] = {
   "toolname_more_": {
     "message": "更多"
   },
+  "tool_more_": {
+    "message": "更多"
+  },
   "toolname_": {
     "message": "移動畫面"
   },
@@ -225,8 +228,8 @@ locales["zh-TW"] = {
   "Settings: ": {
     "message": "設定"
   },
-  "moreoptions": {
-    "message": "更多"
+  "moresettings": {
+    "message": "更多選項"
   },
   "mode_light": {
     "message": "光線"
@@ -514,10 +517,10 @@ locales["zh-TW"] = {
     "message": "模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。（拖曳大藍點以移動觀察者。）<br>若使用「模擬色彩」，則改以光源顏色顯示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
+    "message": "模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
   },
   "rayDensity_popover": {
-    "message": "決定光線模擬的密度。數值為對數刻度。"
+    "message": "決定從光束與點光源射出的光線數量。這也會影響到像的偵測與顏色渲染的準確性。"
   },
   "showgrid_popover": {
     "message": "決定是否顯示背景格線。"
@@ -533,5 +536,14 @@ locales["zh-TW"] = {
   },
   "help_popover": {
     "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>提示泡泡</b><p>按此鈕以切換是否於其他按鈕顯示提示泡泡。</p><b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</div>"
+  },
+  "show_help_popups": {
+    "message": "顯示提示泡泡"
+  },
+  "language": {
+    "message": "語言"
+  },
+  "advanced_help": {
+    "message": "進階說明詳見右下角的說明圖示。"
   }
 }
