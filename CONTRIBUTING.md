@@ -65,11 +65,12 @@ _Note: On HiDPI screens, please scale the webpage with the browser first such th
 
 ## Contributing translations
 
-You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Note that the Gallery does not support translation currently.
+You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Currently, the translation of the Gallery can only be done manually.
 1. Download the target locale file:
    - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
    - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
    - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ja.js
+   - Korean: _submitted but not yet merged_
    - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
    - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/pl.js
    - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
