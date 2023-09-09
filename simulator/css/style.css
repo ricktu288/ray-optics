@@ -84,6 +84,8 @@ body {
   background-color: rgb(255,255,255);
 }
 
+
+
 #mobile-dropdown-collpase {
   position: absolute;
   top: 0;
@@ -147,6 +149,11 @@ body {
 */
 
 /* Make selected tool dropdown look like a selected radio button */
+
+.btn.selected {
+  background-color: #0a58ca;
+  color: white;
+}
 
 .btn.selected {
   background-color: #0a58ca;

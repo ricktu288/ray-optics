@@ -30,29 +30,44 @@ document.addEventListener('DOMContentLoaded', function() {
   function resetDropdownButtons() {
     // Remove the 'selected' class from all dropdown buttons
     document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function(button) {
-        button.classList.remove('selected');
+      button.classList.remove('selected');
+    });
+    document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function(button) {
+      button.classList.remove('selected');
     });
   }
 
   // Listen for changes to any radio input within a dropdown
   document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function(input) {
     input.addEventListener('change', function() {
-        if (input.checked) {
-            // Reset other dropdown buttons
-            resetDropdownButtons();
+      if (input.checked) {
+        // Reset other dropdown buttons
+        if (!input.id.includes('mobile')) {
+          resetDropdownButtons();
 
-            // Get the associated dropdown button using the aria-labelledby attribute
-            let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
+          // Get the associated dropdown button using the aria-labelledby attribute
+          let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
 
-            // Style the button to indicate selection. Change as needed.
-            dropdownButton.classList.add('selected');
+          // Style the button to indicate selection.
+          dropdownButton.classList.add('selected');
+        } else if (input.name == 'toolsradio_mobile'){
+          resetDropdownButtons();
+
+          // Get the associated mobile trigger button
+          let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
+          let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
+          if (toggle != null) {
+            // Style the button to indicate selection.
+            toggle.classList.add('selected');
+          }
         }
+      }
     });
   });
 
   // Listen for changes to standalone radio inputs (outside dropdowns)
   document.querySelectorAll('input[type="radio"].btn-check').forEach(function(input) {
-    if (!input.closest('.dropdown-menu')) { // Check if the radio is not inside a dropdown
+    if (!input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
         input.addEventListener('change', function() {
             if (input.checked) {
                 // Reset dropdown buttons
@@ -214,10 +229,20 @@ function initTools() {
       element.addEventListener('click', (event) => {
         // Show the corresponding tool group in the mobile tool dropdown.
         event.stopPropagation();
-        document.getElementById('mobile-dropdown-tools-root').style.display='none';
-        toolGroup.style.display='';
+        originalWidth = $("#mobile-dropdown-tools-root").width();
+        originalMarginLeft = parseInt($("#mobile-dropdown-tools-root").css("margin-left"), 10);
+        originalMarginRight = parseInt($("#mobile-dropdown-tools-root").css("margin-right"), 10);
+        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function() {
+          $(this).hide();
+          toolGroup.style.display='';
+          $(this).css({
+            "margin-left": originalMarginLeft + "px",
+            "margin-right": originalMarginRight + "px"
+          });
+          f();
+        });
+        
         currentMobileToolGroupId = toolGroupId;
-        f();
       });
     }
   });

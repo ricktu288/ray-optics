@@ -575,7 +575,7 @@
                     <div class="mobile-dropdown">
                       <ul id="mobile-dropdown-tools-root">
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-source">
+                          <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-source">
                             <div class="col" data-text="tool_lightsource_"></div>
                             <div class="col text-end">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -585,7 +585,7 @@
                           </button>
                         </li>
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-mirror">
+                          <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-mirror">
                             <div class="col" data-text="tool_mirror_"></div>
                             <div class="col text-end">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -595,7 +595,7 @@
                           </button>
                         </li>
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-glass">
+                          <button class="btn btn-primary dropdown-item  mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-glass">
                             <div class="col" data-text="tool_refractor_"></div>
                             <div class="col text-end">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -605,7 +605,7 @@
                           </button>
                         </li>
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-blocker">
+                          <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-blocker">
                             <div class="col" data-text="tool_blocker_"></div>
                             <div class="col text-end">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -615,7 +615,7 @@
                           </button>
                         </li>
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-more">
+                          <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-more">
                             <div class="col" data-text="tool_more_"></div>
                             <div class="col text-end">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -625,46 +625,113 @@
                           </button>
                         </li>
                         <li>
-                          <button class="btn btn-primary dropdown-item d-flex w-100" id="mobile-dropdown-trigger-more" data-text="tool_"></button>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool__mobile" checked>
+                          <label class="btn btn-primary dropdown-item" for="tool__mobile" data-text="tool_"></label>
                         </li>
                       </ul>
 
                       <ul id="mobile-dropdown-source" style="display:none">
-                        <li><button class="btn btn-primary dropdown-item" id="tool_laser_mobile" data-text="tool_laser"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_parallel_mobile" data-text="tool_parallel"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_radiant_mobile" data-text="tool_radiant"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_led_mobile" data-text="tool_led"></button></li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_laser_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_laser_mobile" data-text="tool_laser"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_parallel_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_parallel_mobile" data-text="tool_parallel"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_radiant_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_radiant_mobile" data-text="tool_radiant"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_led_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_led_mobile" data-text="tool_led"></label>
+                        </li>
                       </ul>
                       
                       <ul id="mobile-dropdown-mirror" style="display:none">
-                        <li><button class="btn btn-primary dropdown-item" id="tool_mirror_mobile" data-text="tool_mirror"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_arcmirror_mobile" data-text="tool_arcmirror"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_parabolicmirror_mobile" data-text="tool_parabolicmirror"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_curvedmirror_mobile" data-text="tool_curvedmirror"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_idealmirror_mobile" data-text="tool_idealmirror"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_beamsplitter_mobile" data-text="tool_beamsplitter"></button></li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_mirror_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_mirror_mobile" data-text="tool_mirror"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_arcmirror_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_arcmirror_mobile" data-text="tool_arcmirror"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_parabolicmirror_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_parabolicmirror_mobile" data-text="tool_parabolicmirror"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_curvedmirror_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_curvedmirror_mobile" data-text="tool_curvedmirror"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_idealmirror_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_idealmirror_mobile" data-text="tool_idealmirror"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_beamsplitter_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_beamsplitter_mobile" data-text="tool_beamsplitter"></label>
+                        </li>
                       </ul>
                       
                       <ul id="mobile-dropdown-glass" style="display:none">
-                        <li><button class="btn btn-primary dropdown-item" id="tool_halfplane_mobile" data-text="tool_halfplane"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_circlelens_mobile" data-text="tool_circlelens"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_refractor_mobile" data-text="tool_refractor"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_curvedglass_mobile" data-text="tool_curvedglass"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_sphericallens_mobile" data-text="tool_sphericallens"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_lens_mobile" data-text="tool_lens"></button></li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_halfplane_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_halfplane_mobile" data-text="tool_halfplane"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_circlelens_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_circlelens_mobile" data-text="tool_circlelens"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_refractor_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_refractor_mobile" data-text="tool_refractor"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_curvedglass_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_curvedglass_mobile" data-text="tool_curvedglass"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_sphericallens_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_sphericallens_mobile" data-text="tool_sphericallens"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_lens_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_lens_mobile" data-text="tool_lens"></label>
+                        </li>
                       </ul>
                       
                       <ul id="mobile-dropdown-blocker" style="display:none">
-                        <li><button class="btn btn-primary dropdown-item" id="tool_blackline_mobile" data-text="tool_blackline"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_blackcircle_mobile" data-text="tool_blackcircle"></button></li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_blackline_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_blackline_mobile" data-text="tool_blackline"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_blackcircle_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_blackcircle_mobile" data-text="tool_blackcircle"></label>
+                        </li>
                       </ul>
                       
                       <ul id="mobile-dropdown-more" style="display:none">
-                        <li><button class="btn btn-primary dropdown-item" id="tool_ruler_mobile" data-text="tool_ruler"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_protractor_mobile" data-text="tool_protractor"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_power_mobile" data-text="tool_power"></button></li>
-                        <li><button class="btn btn-primary dropdown-item" id="tool_text_mobile" data-text="tool_text"></button></li>
-                      </ul>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ruler_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_ruler_mobile" data-text="tool_ruler"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_protractor_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_protractor_mobile" data-text="tool_protractor"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_power_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_power_mobile" data-text="tool_power"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_text_mobile">
+                          <label class="btn btn-primary dropdown-item" for="tool_text_mobile" data-text="tool_text"></label>
+                        </li>
+                      </ul>                      
                     </div>
                     
                   </div>
@@ -678,7 +745,24 @@
                   </button>
                   <div class="dropdown-menu mobile-dropdown-menu">
                     <div id="mobile-dropdown-view" class="mobile-dropdown">
-                      Under construction...<br />
+                      <ul>
+                        <li>
+                          <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_light_mobile" checked>
+                          <label class="btn btn-primary dropdown-item" for="mode_light_mobile" data-text="mode_light"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_extended_light_mobile">
+                          <label class="btn btn-primary dropdown-item" for="mode_extended_light_mobile" data-text="mode_extended_light"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_images_mobile">
+                          <label class="btn btn-primary dropdown-item" for="mode_images_mobile" data-text="mode_images"></label>
+                        </li>
+                        <li>
+                          <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_observer_mobile">
+                          <label class="btn btn-primary dropdown-item" for="mode_observer_mobile" data-text="mode_observer"></label>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
