@@ -2,88 +2,88 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-  <meta property="og:title" content="Simulator - Ray Optics Simulation">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://phydemo.app/ray-optics/">
-  <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
-  <meta property="og:description"
-    content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta property="og:title" content="Simulator - Ray Optics Simulation">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://phydemo.app/ray-optics/">
+    <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
+    <meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
 
-  <title>Simulator - Ray Optics Simulation</title>
-  <link rel="canonical" href="https://phydemo.app/ray-optics/simulator/">
-  <link rel="icon" href="../icon128.png" type="image/png">
-  <link rel="manifest" href="manifest/manifest.json">
-  <link rel="apple-touch-icon" href="../icon128.png">
-  <!--Import CSSs-->
-  <link rel="preload" href="../thirdparty/bootstrap-4.1.1/bootstrap.min.css" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="../thirdparty/mathquill/mathquill.css" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+    <title>Simulator - Ray Optics Simulation</title>
+    <link rel="canonical" href="https://phydemo.app/ray-optics/simulator/">
+    <link rel="icon" href="../icon128.png" type="image/png">
+    <link rel="manifest" href="manifest/manifest.json">
+    <link rel="apple-touch-icon" href="../icon128.png">
+    <!--Import CSSs-->
+    <link rel="preload" href="../thirdparty/bootstrap-4.1.1/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../thirdparty/mathquill/mathquill.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
 </head>
 
 <body style="background-color:rgb(0,0,0); overflow:hidden; margin: 0px;">
 
 
-  <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
-  </div>
-  <script>
-    // The strings for the welcome message is handled separately here, rather than in locales/ and scripts/locale.js.
-    // Otherwise, the Largest Contentful Paint (LCP) for this webpage would be 4.1 seconds, according to previous data
-    // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
+    <div id="welcome" style="position:absolute; top: 50%; width: 100%; z-index:0; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
+    </div>
+    <script>
+        // The strings for the welcome message is handled separately here, rather than in locales/ and scripts/locale.js.
+        // Otherwise, the Largest Contentful Paint (LCP) for this webpage would be 4.1 seconds, according to previous data
+        // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
 
-    var welcome_msgs = {
-      "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-      "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://phydemo.app/ray-optics/tw/gallery/">請前往「作品集」頁面</a>。',
-      "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://phydemo.app/ray-optics/cn/gallery/">请前往“作品集”页面</a>。',
-      "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-      "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-      "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-      "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.",
-      "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
-      "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.'
-    }
-    var lang = 'en';
-    if (navigator.language) {
-      var browser_lang = navigator.language.toLowerCase();
-      if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk' || browser_lang.startsWith('zh-hant')) {
-        lang = 'zh-TW';
-      } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
-        lang = 'zh-CN';
-      } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
-        lang = 'ru';
-      } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
-        lang = 'nl';
-      } else if (browser_lang == 'fr' || browser_lang.startsWith('fr-')) {
-        lang = 'fr';
-      } else if (browser_lang == 'de' || browser_lang.startsWith('de-')) {
-        lang = 'de';
-      } else if (browser_lang == 'pl' || browser_lang.startsWith('pl-')) {
-        lang = 'pl';
-      } else if (browser_lang == 'ja' || browser_lang.startsWith('ja-')) {
-        lang = 'ja';
-      }
-    }
+        var welcome_msgs = {
+            "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
+            "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://phydemo.app/ray-optics/tw/gallery/">請前往「作品集」頁面</a>。',
+            "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://phydemo.app/ray-optics/cn/gallery/">请前往“作品集”页面</a>。',
+            "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
+            "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
+            "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
+            "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.",
+            "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
+            "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.',
+            "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href="https://phydemo.app/ray-optics/gallery/">Gallery page වෙත යන්න</a>.',
+        }
+        var lang = 'en';
+        if (navigator.language) {
+            var browser_lang = navigator.language.toLowerCase();
+            if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk' || browser_lang.startsWith('zh-hant')) {
+                lang = 'zh-TW';
+            } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
+                lang = 'zh-CN';
+            } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
+                lang = 'ru';
+            } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
+                lang = 'nl';
+            } else if (browser_lang == 'fr' || browser_lang.startsWith('fr-')) {
+                lang = 'fr';
+            } else if (browser_lang == 'de' || browser_lang.startsWith('de-')) {
+                lang = 'de';
+            } else if (browser_lang == 'pl' || browser_lang.startsWith('pl-')) {
+                lang = 'pl';
+            } else if (browser_lang == 'ja' || browser_lang.startsWith('ja-')) {
+                lang = 'ja';
+            } else if (browser_lang == 'si' || browser_lang.startsWith('si-')) {
+                lang = 'si';
+            }
+        }
 
-    var url_lang = location.search.substr(1)
-    if (url_lang && welcome_msgs[url_lang]) {
-      lang = url_lang;
-    }
+        var url_lang = location.search.substr(1)
+        if (url_lang && welcome_msgs[url_lang]) {
+            lang = url_lang;
+        }
 
-    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
-
-  </script>
-  <canvas id="canvas1" style="position: absolute; top: 0; left: 0; z-index: -1">
+        document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+    </script>
+    <canvas id="canvas1" style="position: absolute; top: 0; left: 0; z-index: -1">
   </canvas>
 
-  <!-- Toolbar -->
-  <div id="toolbar" style="background-color: white" data-bind="foreach: toolbarGroups">
-    <label class="btn-group">
+    <!-- Toolbar -->
+    <div id="toolbar" style="background-color: white" data-bind="foreach: toolbarGroups">
+        <label class="btn-group">
       <div class="input-group-text" style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
         data-bind="text: getLocaleName()"></div>
       <!-- ko foreach: tools -->
@@ -94,10 +94,9 @@
         <input type="radio" autocomplete="off"
           data-bind="attr: {name: $parent.title, id: id}, value: name, checked: $parent.selected">
       </label>
-      <!-- /ko -->
-      <!-- ko if: type == 2/*ToolTypeEnum.RADIOLIST*/ -->
-      <label class="btn btn-secondary dropdown-toggle"
-        data-bind="css: {'active': $parent.selected() == name}, attr: {style: 'z-index: ' + description + ' !important'}">
+        <!-- /ko -->
+        <!-- ko if: type == 2/*ToolTypeEnum.RADIOLIST*/ -->
+        <label class="btn btn-secondary dropdown-toggle" data-bind="css: {'active': $parent.selected() == name}, attr: {style: 'z-index: ' + description + ' !important'}">
         <!-- Show child text before current text. -->
         <!--<span data-bind="text: selected"></span>-->
         <span data-bind="text: getLocaleName()"></span>
@@ -114,184 +113,172 @@
               <input type="radio" autocomplete="off"
                 data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
             </label>
-            <!-- /ko -->
-            <!-- ko if: img == undefined -->
-            <label class="btn btn-secondary" style="margin:0" data-html="true"
-              data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
+        <!-- /ko -->
+        <!-- ko if: img == undefined -->
+        <label class="btn btn-secondary" style="margin:0" data-html="true" data-bind="css: {'active': $parent.selected() == name}, attr: {title: getTitle(), 'data-content': getContent()}">
               <span data-bind="text: getLocaleName()"></span>
               <input type="radio" autocomplete="off"
                 data-bind="attr: {name: $parent.name, id: id}, value: name, checked: $parent.selected">
             </label>
-            <!-- /ko -->
-            <!-- /ko -->
-          </div>
-        </div>
-      </label>
-      <!-- /ko -->
-      <!-- ko if: type == 3/*ToolTypeEnum.BUTTON*/ -->
-      <label class="btn btn-secondary" data-toggle="popover" data-trigger="hover" data-html="true"
-        data-bind="attr: {title: getTitle(), 'data-content': getContent(), id: id}">
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+    </div>
+    </label>
+    <!-- /ko -->
+    <!-- ko if: type == 3/*ToolTypeEnum.BUTTON*/ -->
+    <label class="btn btn-secondary" data-toggle="popover" data-trigger="hover" data-html="true" data-bind="attr: {title: getTitle(), 'data-content': getContent(), id: id}">
         <span data-bind="text: getLocaleName()"></span>
       </label>
-      <!-- /ko -->
-      <!-- ko if: type == 4/*ToolTypeEnum.CHECK*/ -->
-      <div class="btn-group">
-        <label class="btn btn-primary" data-toggle="popover" data-trigger="hover" data-html="true"
-          data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
+    <!-- /ko -->
+    <!-- ko if: type == 4/*ToolTypeEnum.CHECK*/ -->
+    <div class="btn-group">
+        <label class="btn btn-primary" data-toggle="popover" data-trigger="hover" data-html="true" data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
           <input type="checkbox" autocomplete="off" data-bind="checked: selected, attr: {id: id}">
           <span data-bind="text: getLocaleName()"></span>
         </label>
-      </div>
-      <!-- /ko -->
-      <!-- ko if: type == 5/*ToolTypeEnum.SLIDE*/ -->
-      <div class="btn btn-static" data-toggle="popover" data-trigger="hover" data-html="true"
-        data-bind="attr: {title: getTitle(), 'data-content': getContent()}">
+    </div>
+    <!-- /ko -->
+    <!-- ko if: type == 5/*ToolTypeEnum.SLIDE*/ -->
+    <div class="btn btn-static" data-toggle="popover" data-trigger="hover" data-html="true" data-bind="attr: {title: getTitle(), 'data-content': getContent()}">
         <span data-bind="text: getLocaleName() + ' :'"></span>
         <!-- TODO: Add validation, http://knockoutjs.com/documentation/extenders.html -->
         <input type="text" style="width: 80px" data-bind="value: value, valueUpdate: 'input', attr: {id: id + '_txt'}">
-        <input type="range" style="vertical-align: middle"
-          data-bind="attr: {min: min, max: max, step: step, id: id}, value: value, valueUpdate: 'input'">
-      </div>
-      <!-- /ko -->
-      <!-- ko if: type == 6/*ToolTypeEnum.HELP*/ -->
-      <div class="btn-group">
-        <label class="btn btn-danger" data-toggle="popover" data-trigger="hover" data-html="true"
-          data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
+        <input type="range" style="vertical-align: middle" data-bind="attr: {min: min, max: max, step: step, id: id}, value: value, valueUpdate: 'input'">
+    </div>
+    <!-- /ko -->
+    <!-- ko if: type == 6/*ToolTypeEnum.HELP*/ -->
+    <div class="btn-group">
+        <label class="btn btn-danger" data-toggle="popover" data-trigger="hover" data-html="true" data-bind="css: {'active': selected() == true}, attr: {title: getTitle(), 'data-content': getContent()}">
           <input id="help" type="checkbox" autocomplete="off" data-bind="checked: selected">
           <span data-bind="text: getLocaleName()"></span>
         </label>
-      </div>
-      <!-- /ko -->
-      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
     </label>
-  </div>
+    </div>
 
-  <!--<canvas id="canvas1" style="position:absolute;top:0;left:0;"></canvas>-->
-  <div style="width:100%;">
-    <input type="file" id="openfile" style="display:none">
-    <span id="status" style="display:none;"></span>
-    <div id="obj_settings" class="settingsbox" style="left:0; width:100%; display:none;">
-      <div class="optionsbar">
-        <span id="obj_name"></span>
-        <span id="p_box"></span>
-        <span id="setAttrAll_box">
+    <!--<canvas id="canvas1" style="position:absolute;top:0;left:0;"></canvas>-->
+    <div style="width:100%;">
+        <input type="file" id="openfile" style="display:none">
+        <span id="status" style="display:none;"></span>
+        <div id="obj_settings" class="settingsbox" style="left:0; width:100%; display:none;">
+            <div class="optionsbar">
+                <span id="obj_name"></span>
+                <span id="p_box"></span>
+                <span id="setAttrAll_box">
           <label id="setAttrAll_">
             <input type="checkbox" id="setAttrAll">
             <span id="setAttrAll_title"></span>
-          </label>
-        </span>
-        <input type="button" id="copy">
-        <input id="delete" type="button">
-        <span id="showAdvanced" class="showadvancedbutton" style="display: none;"></span>
-      </div>
+                </label>
+                </span>
+                <input type="button" id="copy">
+                <input id="delete" type="button">
+                <span id="showAdvanced" class="showadvancedbutton" style="display: none;"></span>
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="restore" class="restorebox" style="top:10px; left:10px; display:none;"></div>
-  <textarea id="textarea1"
-    style="position: absolute; bottom: 0; left: 0; width: 99%; height: 100px; display:none;"></textarea>
+    <div id="restore" class="restorebox" style="top:10px; left:10px; display:none;"></div>
+    <textarea id="textarea1" style="position: absolute; bottom: 0; left: 0; width: 99%; height: 100px; display:none;"></textarea>
 
-  <!--存檔方塊 Save box-->
-  <div id="saveBox" class="saveBox" style="right:0px; padding-left: 3px; padding-bottom: 3px; display:none;">
-    <span id="save_name_title"></span>
-    <input type="text" id="save_name" style="width:200px;" value="">
-    <input type="button" id="save_confirm"><input type="button" id="save_cancel"><br>
-    <div id="save_description" style="font-size:10pt;"></div>
-  </div>
+    <!--存檔方塊 Save box-->
+    <div id="saveBox" class="saveBox" style="right:0px; padding-left: 3px; padding-bottom: 3px; display:none;">
+        <span id="save_name_title"></span>
+        <input type="text" id="save_name" style="width:200px;" value="">
+        <input type="button" id="save_confirm"><input type="button" id="save_cancel"><br>
+        <div id="save_description" style="font-size:10pt;"></div>
+    </div>
 
-  <!--座標輸入方塊 Coordinates entering box-->
-  <input type="text" id="xybox"
-    style="background-color:rgba(0,0,0,0.5); color:white; position:absolute; border:none; display:none;" value="">
+    <!--座標輸入方塊 Coordinates entering box-->
+    <input type="text" id="xybox" style="background-color:rgba(0,0,0,0.5); color:white; position:absolute; border:none; display:none;" value="">
 
-  <div id="forceStop" style="position:absolute; left:0; bottom: 0; color:gray; font-size:9pt; cursor: pointer;"></div>
-  <div style="position:absolute; right:0; bottom: 0; color:gray; font-size:9pt;">
-    <a href="https://phydemo.app/ray-optics/" target="_blank" style="color:gray"
-      id="home">Home</a>
-    ·
-    <a href="https://phydemo.app/ray-optics/about" target="_blank" style="color:gray"
-      id="about">About</a>
-    ·
-    <a href="https://github.com/ricktu288/ray-optics" target="_blank"
-      style="color:gray" id="github">GitHub</a>
-    ·
-    <a href="#" style="color:gray" data-toggle="dropdown" id="language">English▲</a>
-    <ul class="dropdown-menu" style="background:gray; font-size:9pt; padding:5px; min-width: 0">
-      <li><a href="?en" style="color:white" id="lang-en">English</a></li>
-      <li><a href="?de" style="color:white" id="lang-de">Deutsch</a></li>
-      <li><a href="?fr" style="color:white" id="lang-fr">Français</a></li>
-      <li><a href="?ja" style="color:white" id="lang-ja">日本語</a></li>
-      <li><a href="?nl" style="color:white" id="lang-nl">Nederlands</a></li>
-      <li><a href="?pl" style="color:white" id="lang-pl">polski</a></li>
-      <li><a href="?ru" style="color:white" id="lang-ru">Русский</a></li>
-      <li><a href="?zh-CN" style="color:white" id="lang-zh-CN">简体中文</a></li>
-      <li><a href="?zh-TW" style="color:white" id="lang-zh-TW">正體中文</a></li>
-      <li><b><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations"
+    <div id="forceStop" style="position:absolute; left:0; bottom: 0; color:gray; font-size:9pt; cursor: pointer;"></div>
+    <div style="position:absolute; right:0; bottom: 0; color:gray; font-size:9pt;">
+        <a href="https://phydemo.app/ray-optics/" target="_blank" style="color:gray" id="home">Home</a> ·
+        <a href="https://phydemo.app/ray-optics/about" target="_blank" style="color:gray" id="about">About</a> ·
+        <a href="https://github.com/ricktu288/ray-optics" target="_blank" style="color:gray" id="github">GitHub</a> ·
+        <a href="#" style="color:gray" data-toggle="dropdown" id="language">English▲</a>
+        <ul class="dropdown-menu" style="background:gray; font-size:9pt; padding:5px; min-width: 0">
+            <li><a href="?en" style="color:white" id="lang-en">English</a></li>
+            <li><a href="?de" style="color:white" id="lang-de">Deutsch</a></li>
+            <li><a href="?fr" style="color:white" id="lang-fr">Français</a></li>
+            <li><a href="?ja" style="color:white" id="lang-ja">日本語</a></li>
+            <li><a href="?nl" style="color:white" id="lang-nl">Nederlands</a></li>
+            <li><a href="?pl" style="color:white" id="lang-pl">polski</a></li>
+            <li><a href="?ru" style="color:white" id="lang-ru">Русский</a></li>
+            <li><a href="?si" style="color:white" id="lang-si">සිංහල</a></li>
+            <li><a href="?zh-CN" style="color:white" id="lang-zh-CN">简体中文</a></li>
+            <li><a href="?zh-TW" style="color:white" id="lang-zh-TW">正體中文</a></li>
+            <li><b><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations"
                 target="_blank" style="color:white" id="translate">Help us translate this app</a></b></li>
-    </ul>
-  </div>
+        </ul>
+    </div>
 
-  <!--Import scripts-->
-  <script src="../thirdparty/jquery.min.js"></script>
-  <script src="../thirdparty/knockout.min.js"></script>
-  <script src="../thirdparty/popper.min.js"></script>
-  <script src="../thirdparty/bootstrap-4.1.1/bootstrap.min.js"></script>
+    <!--Import scripts-->
+    <script src="../thirdparty/jquery.min.js"></script>
+    <script src="../thirdparty/knockout.min.js"></script>
+    <script src="../thirdparty/popper.min.js"></script>
+    <script src="../thirdparty/bootstrap-4.1.1/bootstrap.min.js"></script>
 
-  <!--Locale scripts-->
-  <script src="locales/en.js"></script>
-  <script src="locales/zh_CN.js"></script>
-  <script src="locales/zh_TW.js"></script>
-  <script src="locales/ru.js"></script>
-  <script src="locales/nl.js"></script>
-  <script src="locales/fr.js"></script>
-  <script src="locales/de.js"></script>
-  <script src="locales/pl.js"></script>
-  <script src="locales/ja.js"></script>
-  <script id="localeScripts" src="js/locale.js"></script>
+    <!--Locale scripts-->
+    <script src="locales/en.js"></script>
+    <script src="locales/zh_CN.js"></script>
+    <script src="locales/zh_TW.js"></script>
+    <script src="locales/ru.js"></script>
+    <script src="locales/nl.js"></script>
+    <script src="locales/fr.js"></script>
+    <script src="locales/de.js"></script>
+    <script src="locales/pl.js"></script>
+    <script src="locales/ja.js"></script>
+    <script src="locales/si.js"></script>
+    <script id="localeScripts" src="js/locale.js"></script>
 
-  <!--View Models scripts-->
-  <script src="js/ToolBarGroup.js"></script>
-  <script src="js/ToolBarViewModel.js"></script>
+    <!--View Models scripts-->
+    <script src="js/ToolBarGroup.js"></script>
+    <script src="js/ToolBarViewModel.js"></script>
 
-  <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 
-  <!--Simulator scripts-->
-  <script src="js/index.js"></script>
-  <script src="js/graphs.js"></script>
-  <script src="js/canvasPainter.js"></script>
-  <script src="js/editor.js"></script>
-  <script src="js/simulator.js"></script>
-  <script src="js/parameterBox.js"></script>
-  <script src="../thirdparty/FileSaver.js"></script>
-  <script src="../thirdparty/canvas2svg.js"></script>
-  <script src="../thirdparty/evaluatex.min.js"></script>
-  <script src="../thirdparty/mathquill/mathquill.min.js"></script>
-  <script src="../thirdparty/json-url/json-url.js"></script>
-  <script src="js/equation.js"></script>
+    <!--Simulator scripts-->
+    <script src="js/index.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="js/canvasPainter.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/parameterBox.js"></script>
+    <script src="../thirdparty/FileSaver.js"></script>
+    <script src="../thirdparty/canvas2svg.js"></script>
+    <script src="../thirdparty/evaluatex.min.js"></script>
+    <script src="../thirdparty/mathquill/mathquill.min.js"></script>
+    <script src="../thirdparty/json-url/json-url.js"></script>
+    <script src="js/equation.js"></script>
 
-  <!--Objs scripts-->
-  <script src="js/objs/lineobj.js"></script>
-  <script src="js/objs/laser.js"></script>
-  <script src="js/objs/parallel.js"></script>
-  <script src="js/objs/radiant.js"></script>
-  <script src="js/objs/led.js"></script>
-  <script src="js/objs/mirror.js"></script>
-  <script src="js/objs/arcmirror.js"></script>
-  <script src="js/objs/idealmirror.js"></script>
-  <script src="js/objs/parabolicmirror.js"></script>
-  <script src="js/objs/curvedmirror.js"></script>
-  <script src="js/objs/beamsplitter.js"></script>
-  <script src="js/objs/refractor.js"></script>
-  <script src="js/objs/halfplane.js"></script>
-  <script src="js/objs/circlelens.js"></script>
-  <script src="js/objs/lens.js"></script>
-  <script src="js/objs/sphericallens.js"></script>
-  <script src="js/objs/curvedglass.js"></script>
-  <script src="js/objs/blackline.js"></script>
-  <script src="js/objs/blackcircle.js"></script>
-  <script src="js/objs/ruler.js"></script>
-  <script src="js/objs/protractor.js"></script>
-  <script src="js/objs/power.js"></script>
-  <script src="js/objs/text.js"></script>
-  <script src="js/objs/handle.js"></script>
+    <!--Objs scripts-->
+    <script src="js/objs/lineobj.js"></script>
+    <script src="js/objs/laser.js"></script>
+    <script src="js/objs/parallel.js"></script>
+    <script src="js/objs/radiant.js"></script>
+    <script src="js/objs/led.js"></script>
+    <script src="js/objs/mirror.js"></script>
+    <script src="js/objs/arcmirror.js"></script>
+    <script src="js/objs/idealmirror.js"></script>
+    <script src="js/objs/parabolicmirror.js"></script>
+    <script src="js/objs/curvedmirror.js"></script>
+    <script src="js/objs/beamsplitter.js"></script>
+    <script src="js/objs/refractor.js"></script>
+    <script src="js/objs/halfplane.js"></script>
+    <script src="js/objs/circlelens.js"></script>
+    <script src="js/objs/lens.js"></script>
+    <script src="js/objs/sphericallens.js"></script>
+    <script src="js/objs/curvedglass.js"></script>
+    <script src="js/objs/blackline.js"></script>
+    <script src="js/objs/blackcircle.js"></script>
+    <script src="js/objs/ruler.js"></script>
+    <script src="js/objs/protractor.js"></script>
+    <script src="js/objs/power.js"></script>
+    <script src="js/objs/text.js"></script>
+    <script src="js/objs/handle.js"></script>
 
 
 
