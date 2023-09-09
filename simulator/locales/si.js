@@ -16,8 +16,7 @@ locales["si"] = {
         "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
     },
     "launch_simulator": {
-        "incomplete": true,
-        "message": "Launch Simulator"
+        "message": "Simulator Launch කරන්න."
     },
     "home": {
         "incomplete": true,
