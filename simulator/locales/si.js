@@ -471,32 +471,25 @@ locales["si"] = {
         "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."
     },
     "view_gallery_popover": {
-        "incomplete": true,
         "message": "උදාහරණ සදහා Galleryට යන්න."
     },
     "tool_laser_popover": {
-        "incomplete": true,
-        "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
+        "message": "ලක්ෂ්‍යය දෙකකින් අර්ථ දක්වා ඇති තනි ආලෝක කිරණකි. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය ප්‍රභවය ද, දෙවන ලක්ෂ්‍යය කිරණයේ දිශාව ද වේ.)"
     },
     "tool_parallel_popover": {
-        "incomplete": true,
-        "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+        "message": "රේඛීය සමාන්තර හෝ අපසාරී (advanced option) කිරණ කදම්භයක් මතු වන අතර 'කිරණ ඝනත්වය' slider මගින් ඝනත්වය පාලනය කරයි. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
     },
     "tool_radiant_popover": {
-        "incomplete": true,
-        "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
+        "message": "එක් ලක්ෂ්‍යයකින් කිරණ මතු වේ.'කිරණ ඝනත්වය' slider මඟින් සංඛ්‍යාව පාලනය වේ.(නිර්මාණය කිරීමට click කරන්න.)"
     },
     "tool_led_popover": {
-        "incomplete": true,
-        "message": "Point source with a given emission angle."
+        "message": "දී ඇති විමෝචන කෝණයක් සහිත ලක්ෂ්‍යය ප්‍රභවක්."
     },
     "tool_mirror_popover": {
-        "incomplete": true,
-        "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
+        "message": "දර්පණයක් මත ආලෝකයේ පරාවර්තනය අනුකරණය (simulate) කරන්න. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
     },
     "tool_arcmirror_popover": {
-        "incomplete": true,
-        "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
+        "message": "ලක්ෂ්‍ය තුනකින් අර්ථ දක්වා ඇති රවුමක කොටසක් වන දර්පණයක්. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය 2 චාපයේ දාර අතර පරතරය නිරූපණය කරයි, අවසාන ලක්ෂ්‍යය චාපයේ විශාලත්වය නිරූපණය කරයි.)"
     },
     "tool_parabolicmirror_popover": {
         "incomplete": true,
