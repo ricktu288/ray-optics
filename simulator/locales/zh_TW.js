@@ -277,7 +277,7 @@ locales["zh-TW"] = {
     "message": "瀏覽作品集"
   },
   "save_name": {
-    "message": "名稱："
+    "message": "名稱"
   },
   "save_cancel": {
     "message": "取消"
@@ -384,8 +384,11 @@ locales["zh-TW"] = {
   "delete": {
     "message": "刪除"
   },
+  "unselect": {
+    "message": "取消選取"
+  },
   "showadvanced": {
-    "message": "顯示進階選項"
+    "message": "更多選項…"
   },
   "processing": {
     "message": "處理中…… 按此處以終止。"
@@ -535,13 +538,16 @@ locales["zh-TW"] = {
     "message": "透過百分比縮放視窗。"
   },
   "help_popover": {
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>提示泡泡</b><p>按此鈕以切換是否於其他按鈕顯示提示泡泡。</p><b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</div>"
+    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</div>"
   },
   "show_help_popups": {
     "message": "顯示提示泡泡"
   },
   "language": {
     "message": "語言"
+  },
+  "close": {
+    "message": "關閉"
   },
   "advanced_help": {
     "message": "進階說明詳見右下角的說明圖示。"

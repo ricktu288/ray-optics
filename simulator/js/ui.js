@@ -15,27 +15,25 @@ f = function(e) {
 document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
 document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
 
+function resetDropdownButtons() {
+  // Remove the 'selected' class from all dropdown buttons
+  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function(button) {
+    button.classList.remove('selected');
+  });
+  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function(button) {
+    button.classList.remove('selected');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   
-  
-  
-  
-
   document.getElementById('more-options-dropdown').addEventListener('click', function(e) {
     e.stopPropagation();
   });
-  
 
-
-  function resetDropdownButtons() {
-    // Remove the 'selected' class from all dropdown buttons
-    document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function(button) {
-      button.classList.remove('selected');
-    });
-    document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function(button) {
-      button.classList.remove('selected');
-    });
-  }
+  document.getElementById('mobile-dropdown-options').addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
 
   // Listen for changes to any radio input within a dropdown
   document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function(input) {
@@ -67,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Listen for changes to standalone radio inputs (outside dropdowns)
   document.querySelectorAll('input[type="radio"].btn-check').forEach(function(input) {
-    if (!input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
+    if (input.name == 'toolsradio' && !input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
         input.addEventListener('change', function() {
             if (input.checked) {
                 // Reset dropdown buttons
@@ -245,6 +243,14 @@ function initTools() {
         currentMobileToolGroupId = toolGroupId;
       });
     }
+
+    if (element.id && element.id.startsWith('tool_')) {
+      const toolId = element.id.replace('tool_', '').replace('_mobile', '');
+      element.addEventListener('click', (event) => {
+        console.log('tool_' + toolId);
+        toolbtn_clicked(toolId);
+      });
+    }
   });
 
   document.getElementById('mobile-tools').addEventListener('click', (event) => {
@@ -259,3 +265,20 @@ function initTools() {
 }
 
 initTools();
+
+function initModes() {
+  const allElements = document.querySelectorAll('*');
+
+  allElements.forEach(element => {
+    if (element.id && element.id.startsWith('mode_')) {
+      const modeId = element.id.replace('mode_', '').replace('_mobile', '');
+      element.addEventListener('click', (event) => {
+        console.log('mode_' + modeId);
+        modebtn_clicked(modeId);
+        createUndoPoint();
+      });
+    }
+  });
+}
+
+initModes();

@@ -209,6 +209,22 @@ body {
   font-size: 9pt;
 }
 
+
+#mobile-dropdown-options .container {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+#mobile-dropdown-options .row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#mobile-dropdown-options .form-check-input {
+  height: 1.2em;
+  width: 2.4em;
+}
+
 #help-dropdown {
   width:300px;
   background: rgb(64, 64, 64);
@@ -295,6 +311,10 @@ body {
 .footer-right .btn {
   color: gray;
   padding: 3px;
+}
+
+#about {
+  color: white;
 }
 
 .saveBox {

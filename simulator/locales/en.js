@@ -382,7 +382,7 @@ locales["en"] = {
     "message": "Delete"
   },
   "showadvanced": {
-    "message": "Show advanced options"
+    "message": "More options..."
   },
   "processing": {
     "message": "Processing... Click here to stop."

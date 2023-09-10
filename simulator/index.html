@@ -98,12 +98,12 @@
                       <li><button class="dropdown-item" type="button" id="view_gallery" data-text="view_gallery" data-popover="view_gallery_popover"></button></li>
                     </ul>
                   </div>
-                  <button type="button" class="btn btn-secondary" data-title="undo">
+                  <button type="button" class="btn btn-secondary" id="undo" data-title="undo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
                     </svg>
                   </button>
-                  <button type="button" class="btn btn-secondary" data-title="redo">
+                  <button type="button" class="btn btn-secondary" id="redo" data-title="redo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                     </svg>
@@ -231,7 +231,7 @@
                     </ul>
                   </div>
                   <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
-                  <label class="btn btn-primary" for="tool_" data-title="tool_">
+                  <label class="btn btn-primary" for="tool_" data-title="tool_"data-popover="tool__popover">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-move" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z"/>
                     </svg>
@@ -272,7 +272,7 @@
                       <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                     </svg>
                   </button>
-                  <input type="range" class="form-range toolbar-range" min="0" max="100" step="1" id="raydensity-slider">
+                  <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity">
                   <button class="btn range-plus-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -327,7 +327,7 @@
                                 <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                               </svg>
                             </button>
-                            <input type="range" class="form-range toolbar-range" min="0" max="100" step="1" id="raydensity-slider">
+                            <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_more">
                             <button class="btn range-plus-btn">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -370,7 +370,7 @@
                           <div class="col-auto d-flex align-items-center">
                             <div class="flex-grow-1 d-flex align-items-center">
                               <div class="form-check form-switch align-items-center">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                <input class="form-check-input" type="checkbox" id="color_mode">
                               </div>
                             </div>
                           </div>
@@ -393,7 +393,7 @@
                                 <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                               </svg>
                             </button>
-                            <span class="mx-2">100%</span>
+                            <span class="mx-2" id="zoom">100%</span>
                             <button class="btn range-plus-btn">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -404,115 +404,12 @@
                         <div class="row d-flex justify-content-between align-items-center">
                           <div class="col-auto" data-text="language"></div>
                           <div class="col-auto d-flex align-items-center">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal">
                               English
                             </button>
                           </div>
                         </div>
-
-                        <div class="collapse" id="collapseExample">
-                          <div class="card card-body">
-                            <div class="d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col" data-text="language"></div>
-                                <div class="col text-end" id="lang-en" data-text="translated"></div>
-                              </div>
-                            </div>
-                            <a href="?en" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  English
-                                </div>
-                                <div class="col text-end" id="lang-en">
-                                  100%
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?de" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  Deutsch
-                                </div>
-                                <div class="col text-end" id="lang-de">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?fr" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  Français
-                                </div>
-                                <div class="col text-end" id="lang-fr">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?ja" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  日本語
-                                </div>
-                                <div class="col text-end" id="lang-ja">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?nl" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  Nederlands
-                                </div>
-                                <div class="col text-end" id="lang-nl">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?pl" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  polski
-                                </div>
-                                <div class="col text-end" id="lang-pl">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?ru" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  Русский
-                                </div>
-                                <div class="col text-end" id="lang-ru">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?zh-CN" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  简体中文
-                                </div>
-                                <div class="col text-end" id="lang-zh-CN">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            <a href="?zh-TW" class="btn btn-primary dropdown-item d-flex align-items-center">
-                              <div class="d-flex w-100">
-                                <div class="col">
-                                  正體中文
-                                </div>
-                                <div class="col text-end" id="lang-zh-TW">
-                                  %
-                                </div>
-                              </div>
-                            </a>
-                            
-                            <small><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" id="translate" data-text="translate"></a></small>
-
-                          </div>
-                        </div>
+                        
                         <hr class="dropdown-divider">
 
                         <div id="advanced-help" data-text="advanced_help"></div>
@@ -545,6 +442,7 @@
                     </button>
                     <div class="dropdown-menu mobile-dropdown-menu">
                       <div id="mobile-dropdown-file" class="mobile-dropdown">
+                        <li><button class="dropdown-item" type="button" id="reset_mobile" data-text="reset"></button></li>
                         <li><button class="btn btn-primary dropdown-item" data-bs-toggle="modal" data-bs-target="#saveModal" data-text="save"></button></li>
                         <li><button class="dropdown-item" type="button" id="open_mobile" data-text="open"></button></li>
                         <li><button class="dropdown-item" type="button" id="export_svg_mobile" data-text="export_svg"></button></li>
@@ -553,12 +451,12 @@
                         <li><button class="dropdown-item" type="button" id="view_gallery_mobile" data-text="view_gallery"></button></li>
                       </div>
                     </div>
-                    <button type="button" class="btn btn-secondary">
+                    <button type="button" class="btn btn-secondary" id="undo_mobile">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
                       </svg>
                     </button>
-                    <button type="button" class="btn btn-secondary">
+                    <button type="button" class="btn btn-secondary" id="redo_mobile">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                       </svg>
@@ -775,7 +673,105 @@
                   </button>
                   <div class="dropdown-menu mobile-dropdown-menu">
                     <div id="mobile-dropdown-options" class="mobile-dropdown">
-                      Under construction...<br />
+                      <div class="container">
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="rayDensity"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <button class="btn range-minus-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                              </svg>
+                            </button>
+                            <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_mobile">
+                            <button class="btn range-plus-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+
+                        <hr class="dropdown-divider">
+
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="showgrid"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                              <div class="form-check form-switch align-items-center">
+                                <input class="form-check-input" type="checkbox" id="showgrid_mobile">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="grid"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                              <div class="form-check form-switch align-items-center">
+                                <input class="form-check-input" type="checkbox" id="grid_mobile">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="lockobjs"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                              <div class="form-check form-switch align-items-center">
+                                <input class="form-check-input" type="checkbox" id="lockobjs_mobile">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <hr class="dropdown-divider">
+
+
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="color_mode"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                              <div class="form-check form-switch align-items-center">
+                                <input class="form-check-input" type="checkbox" id="color_mode_mobile">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="show_help_popups"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                              <div class="form-check form-switch align-items-center">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="zoom"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <button class="btn range-minus-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                              </svg>
+                            </button>
+                            <span class="mx-2" id="zoom_mobile">100%</span>
+                            <button class="btn range-plus-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-center">
+                          <div class="col-auto" data-text="language"></div>
+                          <div class="col-auto d-flex align-items-center">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal">
+                              English
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -804,16 +800,16 @@
                   </svg>
                 </button>
                 <input type="text" id="objAttr_text" style="width:40px; color: white; background-color: rgba(255,255,255,0.2); border: none" value="1.33">
-                <input type="range" class="form-range" min="0" max="100" step="1" id="raydensity-slider" style="width: 125px; padding-top:15px">&nbsp;
+                <input type="range" class="form-range" min="0" max="100" step="1" style="width: 125px; padding-top:15px">&nbsp;
               </nobr>
-              
-
+            </span>
+            <span>
               <nobr>
                 <span class="d-none d-lg-inline">
-                  <span id="showAdvanced">More options...</span>
+                  <span id="showAdvanced" data-text="showadvanced"></span>
                   <span id="setAttrAll_box">
                     <input type="checkbox" class="btn-check" id="setAttrAll" autocomplete="off">
-                    <label class="btn btn-outline-secondary" for="setAttrAll">
+                    <label class="btn btn-outline-secondary" for="setAttrAll" data-title="applytoall">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="m11.5 11.932a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
                         <path d="m11.5 1.1864a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
@@ -822,7 +818,7 @@
                       </svg>
                     </label>
                   </span>
-                  <button class="btn">
+                  <button class="btn" data-title="duplicate" id="copy">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 9.766 9.766">
                       <g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
                         <path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
@@ -830,12 +826,12 @@
                       </g>
                     </svg>
                   </button>
-                  <button class="btn">
+                  <button class="btn" data-title="delete" id="delete">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                       <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                     </svg>
                   </button>
-                  <button class="btn">
+                  <button class="btn" data-title="unselect" id="unselect">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
@@ -849,11 +845,11 @@
                     </svg>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
-                    <li><button class="dropdown-item">More Options...</button></li>
-                    <li><button class="dropdown-item">Apply to All</button></li>
-                    <li><button class="dropdown-item">Duplicate</button></li>
-                    <li><button class="dropdown-item">Delete</button></li>
-                    <li><button class="dropdown-item">Unselect</button></li>
+                    <li><button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button></li>
+                    <li><button class="dropdown-item" data-text="applytoall" id="setAttrAll_mobile"></button></li>
+                    <li><button class="dropdown-item" data-text="duplicate" id="copy_mobile"></button></li>
+                    <li><button class="dropdown-item" data-text="delete" id="delete_mobile"></button></li>
+                    <li><button class="dropdown-item" data-text="unselect" id="unselect_mobile"></button></li>
                   </ul>
                 </span>
               </nobr>
@@ -871,21 +867,137 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Save</h5>
+            <h5 class="modal-title" id="staticBackdropLabel" data-text="save"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form>
               <div class="mb-3">
-                <label for="save_name" class="form-label">Name</label>
+                <label for="save_name" class="form-label" data-text="save_name"></label>
                 <input type="text" class="form-control" id="save_name">
-                <div id="save_description" class="form-text">To share your work, you can <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery" target="_blank">contribute a new item</a> to the <a href="https://phydemo.app/ray-optics/gallery/" target="_blank">Gallery</a>.</div>
+                <div id="save_description" class="form-text" data-text="save_description"></div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-text="save" id="save_confirm"></button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="save_cancel"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language modal -->
+    <div class="modal fade" id="languageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel" data-text="language"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col" data-text="language"></div>
+                <div class="col text-end" id="lang-en" data-text="translated"></div>
+              </div>
+            </div>
+            <a href="?en" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  English
+                </div>
+                <div class="col text-end" id="lang-en">
+                  100%
+                </div>
+              </div>
+            </a>
+            <a href="?de" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Deutsch
+                </div>
+                <div class="col text-end" id="lang-de">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?fr" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Français
+                </div>
+                <div class="col text-end" id="lang-fr">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?ja" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  日本語
+                </div>
+                <div class="col text-end" id="lang-ja">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?nl" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Nederlands
+                </div>
+                <div class="col text-end" id="lang-nl">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?pl" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  polski
+                </div>
+                <div class="col text-end" id="lang-pl">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?ru" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Русский
+                </div>
+                <div class="col text-end" id="lang-ru">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?zh-CN" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  简体中文
+                </div>
+                <div class="col text-end" id="lang-zh-CN">
+                  %
+                </div>
+              </div>
+            </a>
+            <a href="?zh-TW" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  正體中文
+                </div>
+                <div class="col text-end" id="lang-zh-TW">
+                  %
+                </div>
+              </div>
+            </a>
+            
+            <small><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" id="translate" data-text="translate"></a></small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="close"></button>
           </div>
         </div>
       </div>
@@ -899,14 +1011,14 @@
     <div class="footer-left">
       <div id="forceStop">
         <div class="spinner-border text-secondary" role="status"></div>
-        <span>Processing... Click here to stop.</span>
+        <span data-text="processing"></span>
       </div>
       
     </div>
 
     <!-- Footer buttons -->
     <div class="footer-right">
-      <button class="btn">
+      <button class="btn" data-title="home">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
           <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z"/>
         </svg>
@@ -919,16 +1031,21 @@
       </button>
       <div class="dropdown-menu" id="help-dropdown" aria-labelledby="helpDropdown">
         <div class="container">
-          <div style="font-weight: normal; font-size: 10pt;"><b>Help popups</b><p>Click this button to toggle help popups for other buttons.</p><b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p></div>
+          <div data-text="help_popover"></div>
+          <hr class="dropdown-divider">
+          <a href="https://phydemo.app/ray-optics/about" target="_blank" id="about" data-text="about"></a>
         </div>
       </div>
 
-      <button class="btn">
+      <button class="btn" data-title="github">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
         </svg>
       </button>
     </div>
+
+    <input type="file" id="openfile" style="display:none">
+    <div id="status" style="display: none;"></div>
 
     <!--Thirdparty scripts-->
     <script src="../thirdparty/jquery.min.js"></script>
@@ -952,5 +1069,47 @@
 
     <!--UI scripts-->
     <script src="js/ui.js"></script>
+
+
+    <!--Simulator scripts-->
+    <script src="js/index.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="js/canvasPainter.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/parameterBox.js"></script>
+    <script src="../thirdparty/FileSaver.js"></script>
+    <script src="../thirdparty/canvas2svg.js"></script>
+    <script src="../thirdparty/evaluatex.min.js"></script>
+    <script src="../thirdparty/mathquill/mathquill.min.js"></script>
+    <script src="../thirdparty/json-url/json-url.js"></script>
+    <script src="js/equation.js"></script>
+
+    <!--Objs scripts-->
+    <script src="js/objs/lineobj.js"></script>
+    <script src="js/objs/laser.js"></script>
+    <script src="js/objs/parallel.js"></script>
+    <script src="js/objs/radiant.js"></script>
+    <script src="js/objs/led.js"></script>
+    <script src="js/objs/mirror.js"></script>
+    <script src="js/objs/arcmirror.js"></script>
+    <script src="js/objs/idealmirror.js"></script>
+    <script src="js/objs/parabolicmirror.js"></script>
+    <script src="js/objs/curvedmirror.js"></script>
+    <script src="js/objs/beamsplitter.js"></script>
+    <script src="js/objs/refractor.js"></script>
+    <script src="js/objs/halfplane.js"></script>
+    <script src="js/objs/circlelens.js"></script>
+    <script src="js/objs/lens.js"></script>
+    <script src="js/objs/sphericallens.js"></script>
+    <script src="js/objs/curvedglass.js"></script>
+    <script src="js/objs/blackline.js"></script>
+    <script src="js/objs/blackcircle.js"></script>
+    <script src="js/objs/ruler.js"></script>
+    <script src="js/objs/protractor.js"></script>
+    <script src="js/objs/power.js"></script>
+    <script src="js/objs/text.js"></script>
+    <script src="js/objs/handle.js"></script>
+
   </body>
 </html>
