@@ -105,6 +105,7 @@ function updateUIText(elememt = document) {
   });
 
   document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
+  document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
   for (var lang1 in locales) {
     var translated = 0;
     var total = 0;
