@@ -174,8 +174,7 @@ function canvas_onmousedown(e) {
         draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
         draggingPart.mouse2 = origin; //Original origin.
         draggingPart.snapData = {};
-        document.getElementById('obj_settings').style.display = 'none';
-        selectedObj = -1;
+        selectObj(-1);
       }
       else {
         //建立新的物件 Create a new object
