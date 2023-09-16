@@ -523,6 +523,9 @@ function selectObj(index) {
           document.getElementById('applytoall_mobile_container').style.display = 'none';
         }
       }
+    } else {
+      document.getElementById('setAttrAll_box').style.display = 'none';
+      document.getElementById('applytoall_mobile_container').style.display = 'none';
     }
   }
   else {
