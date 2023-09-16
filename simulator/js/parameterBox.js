@@ -240,6 +240,7 @@ function createDropdownAttr(label, value, options, func, elem) {
     var option = document.createElement('option');
     option.value = isArray ? options[key] : key;
     option.textContent = options[key];
+    option.style.color = 'black';
     if (option.value == value) option.selected = true;
     dropdown.appendChild(option);
   }
