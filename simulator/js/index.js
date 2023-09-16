@@ -179,6 +179,11 @@ window.onload = function (e) {
     document.getElementById('openfile').click();
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
+  document.getElementById('view_gallery').onclick = function() {
+    window.open(getMsg("gallery_url"));
+  };
+  document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
+
 
   document.getElementById('openfile').onchange = function () {
     openFile(this.files[0]);
@@ -186,18 +191,32 @@ window.onload = function (e) {
 
   document.getElementById('color_mode').onclick = function () {
     colorMode = this.checked;
+    document.getElementById('color_mode').checked = colorMode;
+    document.getElementById('color_mode_mobile').checked = colorMode;
     draw();
   };
+  document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;
 
-  document.getElementById('color_mode_mobile').onclick = function () {
-    colorMode = this.checked;
-    draw();
+  document.getElementById('show_help_popups').onclick = function () {
+    popoversEnabled = this.checked;
+    localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
 
+  document.getElementById('zoomPlus').onclick = function () {
+    setScale(scale * 1.1);
+  }
+  document.getElementById('zoomMinus').onclick = function () {
+    setScale(scale / 1.1);
+  }
+  document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
+  document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
 
 
   document.getElementById('rayDensity').oninput = function () {
     setRayDensity(Math.exp(this.value));
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
   };
   document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
@@ -205,6 +224,9 @@ window.onload = function (e) {
 
   document.getElementById('rayDensity').onmouseup = function () {
     setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
     createUndoPoint();
   };
@@ -213,11 +235,36 @@ window.onload = function (e) {
 
   document.getElementById('rayDensity').ontouchend = function () {
     setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
     createUndoPoint();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
   document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
+
+  document.getElementById('rayDensityPlus').onclick = function () {
+    rayDensityValue = Math.log(getRayDensity()) * 1.0 + 0.1;
+    setRayDensity(Math.exp(rayDensityValue));
+    document.getElementById('rayDensity').value = rayDensityValue;
+    document.getElementById('rayDensity_more').value = rayDensityValue;
+    document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    draw();
+  };
+  document.getElementById('rayDensityMinus').onclick = function () {
+    rayDensityValue = Math.log(getRayDensity()) * 1.0 - 0.1;
+    setRayDensity(Math.exp(rayDensityValue));
+    document.getElementById('rayDensity').value = rayDensityValue;
+    document.getElementById('rayDensity_more').value = rayDensityValue;
+    document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    draw();
+  };
+  document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
+  document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
+  document.getElementById('rayDensityPlus_more').onclick = document.getElementById('rayDensityPlus').onclick;
+  document.getElementById('rayDensityMinus_more').onclick = document.getElementById('rayDensityMinus').onclick;
+
 
   document.getElementById('grid').onclick = function (e) {
     document.getElementById('grid').checked = e.target.checked;
@@ -253,6 +300,13 @@ window.onload = function (e) {
 
   document.getElementById('restore').onclick = function () { restore() };
 
+  document.getElementById('setAttrAll').onclick = function () {
+    const checked = this.checked;
+    document.getElementById('setAttrAll').checked = checked;
+    document.getElementById('applytoall_mobile').checked = checked;
+  }
+  document.getElementById('applytoall_mobile').onclick = document.getElementById('setAttrAll').onclick;
+
   document.getElementById('copy').onclick = function () {
     objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
     objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
@@ -260,17 +314,27 @@ window.onload = function (e) {
     draw();
     createUndoPoint();
   };
+  document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
     removeObj(selectedObj);
     draw();
     createUndoPoint();
   };
+  document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
+
+  document.getElementById('unselect').onclick = function () {
+    selectObj(-1);
+    draw();
+    createUndoPoint();
+  };
+  document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
   document.getElementById('showAdvanced').onclick = function () {
     showAdvancedOn = true;
     selectObj(selectedObj);
   };
+  document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
   document.getElementById('textarea1').onchange = function () {
     JSONInput();
@@ -420,8 +484,8 @@ function initParameters() {
       cartesianSign = true;
     }
   } catch { }
-  document.getElementById("zoom").innerText = (scale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = (scale * 100) + '%';
+  document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
   colorMode = false;
@@ -451,6 +515,7 @@ function initParameters() {
   document.getElementById('color_mode_mobile').checked = false;
 
   document.getElementById('setAttrAll').checked = false;
+  document.getElementById('applytoall_mobile').checked = false;
 
   draw();
 }
@@ -710,6 +775,8 @@ function setScaleWithCenter(value, centerX, centerY) {
   origin.x -= centerX * scaleChange;
   origin.y -= centerY * scaleChange;
   scale = value;
+  document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   draw();
 }
 

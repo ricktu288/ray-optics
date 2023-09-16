@@ -28,6 +28,7 @@
     <div style="position: fixed; width: 100%; height: 100%; display: flex; flex-direction: column;">
       <canvas id="canvas1"></canvas>
       <div id="welcome" style="position:absolute; top: calc(50% + 34px); left: 0; width: 100%; transform: translate(0%, -50%); z-index:-2; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
+        <span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href="https://phydemo-ray-optics-v3-archive.vercel.app/simulator/" rel="nofollow">Click here</a> to go back to the old version.</span>
       </div>
       <script>
         // The strings for the welcome message is handled separately here, rather than in locales/ and scripts/locale.js.
@@ -35,15 +36,15 @@
         // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
     
         var welcome_msgs = {
-          "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://phydemo.app/ray-optics/tw/gallery/">請前往「作品集」頁面</a>。',
-          "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://phydemo.app/ray-optics/cn/gallery/">请前往“作品集”页面</a>。',
-          "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.",
-          "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
-          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.'
+          "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://phydemo.app/ray-optics/tw/gallery/">請前往「作品集」頁面</a>。<br><span style="font-size:8pt">無法正常運作嗎？<a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel="nofollow">按這裡</a>可回到舊版。</span>',
+          "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://phydemo.app/ray-optics/cn/gallery/">请前往“作品集”页面</a>。<br><span style="font-size:8pt">无法正常运作吗？ <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel="nofollow">按这里</a>可回到旧版。 </span>',
+          "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.<br><span style=\"font-size:8pt\">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>",
+          "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>'
         }
         var lang = 'en';
         if (navigator.language) {
@@ -286,13 +287,13 @@
               <div class="col-auto d-none d-xl-block">
                 <div class="row justify-content-center">
                   <div class="btn-group d-flex align-items-center" role="group" data-popover="rayDensity_popover" data-bs-offset="0,25">
-                    <button class="btn shadow-none range-minus-btn">
+                    <button class="btn shadow-none range-minus-btn" id="rayDensityMinus">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                       </svg>
                     </button>
                     <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity">
-                    <button class="btn shadow-none range-plus-btn">
+                    <button class="btn shadow-none range-plus-btn" id="rayDensityPlus">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                       </svg>
@@ -341,13 +342,13 @@
                           <div class="d-inline d-xl-none">
                             <div class="d-flex align-items-center" data-text="rayDensity"></div>
                             <div class="btn-group d-flex align-items-center" role="group" data-popover="rayDensity_popover" data-bs-placement="left">
-                              <button class="btn shadow-none range-minus-btn">
+                              <button class="btn shadow-none range-minus-btn" id="rayDensityMinus_more">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                                   <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                               </button>
                               <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_more">
-                              <button class="btn shadow-none range-plus-btn">
+                              <button class="btn shadow-none range-plus-btn" id="rayDensityPlus_more">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
@@ -384,7 +385,7 @@
                           </div>
 
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="color_mode_popover" data-bs-placement="left">
+                          <div class="row d-flex justify-content-between align-items-center" data-popover="color_mode_popover" data-bs-placement="left" data-bs-offset="40,0">
                             <div class="col-auto" data-text="color_mode"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
@@ -394,12 +395,12 @@
                               </div>
                             </div>
                           </div>
-                          <div class="row d-flex justify-content-between align-items-center">
+                          <div class="row d-flex justify-content-between align-items-center" data-popover="show_help_popups_popover" data-bs-placement="left">
                             <div class="col-auto" data-text="show_help_popups"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                  <input class="form-check-input" type="checkbox" id="show_help_popups">
                                 </div>
                               </div>
                             </div>
@@ -407,13 +408,13 @@
                           <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-auto" data-text="zoom"></div>
                             <div class="col-auto d-flex align-items-center">
-                              <button class="btn shadow-none range-minus-btn">
+                              <button class="btn shadow-none range-minus-btn" id="zoomMinus">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                                   <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                               </button>
                               <span class="mx-2" id="zoom">100%</span>
-                              <button class="btn shadow-none range-plus-btn">
+                              <button class="btn shadow-none range-plus-btn" id="zoomPlus">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
@@ -423,7 +424,7 @@
                           <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-auto" data-text="language"></div>
                             <div class="col-auto d-flex align-items-center">
-                              <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal">
+                              <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language">
                                 English
                               </button>
                             </div>
@@ -696,13 +697,13 @@
                           <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-auto" data-text="rayDensity"></div>
                             <div class="col-auto d-flex align-items-center">
-                              <button class="btn range-minus-btn">
+                              <button class="btn range-minus-btn" id="rayDensityMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                                   <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                               </button>
                               <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_mobile">
-                              <button class="btn range-plus-btn">
+                              <button class="btn range-plus-btn" id="rayDensityPlus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
@@ -757,25 +758,15 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="show_help_popups"></div>
-                            <div class="col-auto d-flex align-items-center">
-                              <div class="flex-grow-1 d-flex align-items-center">
-                                <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-auto" data-text="zoom"></div>
                             <div class="col-auto d-flex align-items-center">
-                              <button class="btn range-minus-btn">
+                              <button class="btn range-minus-btn" id="zoomMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                                   <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                                 </svg>
                               </button>
                               <span class="mx-2" id="zoom_mobile">100%</span>
-                              <button class="btn range-plus-btn">
+                              <button class="btn range-plus-btn" id="zoomPlus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                 </svg>
@@ -790,6 +781,9 @@
                               </button>
                             </div>
                           </div>
+                          <hr class="dropdown-divider">
+
+                          <div id="advanced-help" data-text="advanced_help"></div>
                         </div>
                       </div>
                     </div>
@@ -839,7 +833,7 @@
                       <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                     </svg>
                   </button>
-                  <button class="btn" data-title="unselect" id="unselect">
+                  <button class="btn" id="unselect" data-popover="unselect_popover" data-bs-placement="bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
@@ -853,8 +847,13 @@
                     </svg>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
-                    <li><button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button></li>
-                    <li><button class="dropdown-item" data-text="applytoall" id="setAttrAll_mobile"></button></li>
+                    <li id="showAdvanced_mobile_container" style="display: none">
+                      <button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button>
+                    </li>
+                    <li id="applytoall_mobile_container" style="display: none">
+                      <input type="checkbox" class="btn-check" autocomplete="off" id="applytoall_mobile" checked>
+                      <label class="dropdown-item" for="applytoall_mobile" data-text="applytoall"></label>
+                    </li>
                     <li><button class="dropdown-item" data-text="duplicate" id="copy_mobile"></button></li>
                     <li><button class="dropdown-item" data-text="delete" id="delete_mobile"></button></li>
                     <li><button class="dropdown-item" data-text="unselect" id="unselect_mobile"></button></li>
@@ -888,7 +887,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-text="save" id="save_confirm"></button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-text="save" id="save_confirm"></button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="save_cancel"></button>
           </div>
         </div>
@@ -908,7 +907,7 @@
             <div class="d-flex align-items-center">
               <div class="d-flex w-100">
                 <div class="col" data-text="language"></div>
-                <div class="col text-end" id="lang-en" data-text="translated"></div>
+                <div class="col text-end" data-text="translated"></div>
               </div>
             </div>
             <a href="?en" class="btn btn-primary dropdown-item d-flex align-items-center">
@@ -917,7 +916,7 @@
                   English
                 </div>
                 <div class="col text-end" id="lang-en">
-                  100%
+                  English
                 </div>
               </div>
             </a>
@@ -927,7 +926,7 @@
                   Deutsch
                 </div>
                 <div class="col text-end" id="lang-de">
-                  %
+                  Deutsch
                 </div>
               </div>
             </a>
@@ -937,7 +936,7 @@
                   Français
                 </div>
                 <div class="col text-end" id="lang-fr">
-                  %
+                  Français
                 </div>
               </div>
             </a>
@@ -947,7 +946,7 @@
                   日本語
                 </div>
                 <div class="col text-end" id="lang-ja">
-                  %
+                  日本語
                 </div>
               </div>
             </a>
@@ -957,7 +956,7 @@
                   Nederlands
                 </div>
                 <div class="col text-end" id="lang-nl">
-                  %
+                  Nederlands
                 </div>
               </div>
             </a>
@@ -967,7 +966,7 @@
                   polski
                 </div>
                 <div class="col text-end" id="lang-pl">
-                  %
+                  polski
                 </div>
               </div>
             </a>
@@ -977,7 +976,7 @@
                   Русский
                 </div>
                 <div class="col text-end" id="lang-ru">
-                  %
+                  Русский
                 </div>
               </div>
             </a>
@@ -987,7 +986,7 @@
                   简体中文
                 </div>
                 <div class="col text-end" id="lang-zh-CN">
-                  %
+                  简体中文
                 </div>
               </div>
             </a>
@@ -997,7 +996,7 @@
                   正體中文
                 </div>
                 <div class="col text-end" id="lang-zh-TW">
-                  %
+                  正體中文
                 </div>
               </div>
             </a>
@@ -1026,11 +1025,11 @@
 
     <!-- Footer buttons -->
     <div class="footer-right" id="footer-right" style="display: none">
-      <button class="btn" data-title="home">
+      <a class="btn" data-title="home" href="https://phydemo.app/ray-optics/" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
           <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z"/>
         </svg>
-      </button>
+      </a>
       <button class="btn" type="button" id="helpDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -1045,11 +1044,11 @@
         </div>
       </div>
 
-      <button class="btn" data-title="github">
+      <a class="btn" data-title="github"href="https://github.com/ricktu288/ray-optics" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
         </svg>
-      </button>
+      </a>
     </div>
 
     <input type="file" id="openfile" style="display:none">

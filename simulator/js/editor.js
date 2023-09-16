@@ -505,24 +505,31 @@ function selectObj(index) {
   }
   document.getElementById('obj_name').innerHTML = getMsg('toolname_' + objs[index].type);
   document.getElementById('showAdvanced').style.display = 'none';
+  document.getElementById('showAdvanced_mobile_container').style.display = 'none';
   if (objTypes[objs[index].type].p_box) {
     document.getElementById('p_box').style.display = '';
     document.getElementById('p_box').innerHTML = '';
     objTypes[objs[index].type].p_box(objs[index], document.getElementById('p_box'));
-    for (var i = 0; i < objs.length; i++) {
-      if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj])) {
-        //若有另一個相同type的物件,則顯示"套用全部"選項 If there is an object with the same type, then show "Apply to All"
-        document.getElementById('setAttrAll_box').style.display = '';
-        break;
-      }
-      if (i == objs.length - 1) {
-        document.getElementById('setAttrAll_box').style.display = 'none';
+
+    if (document.getElementById('p_box').innerHTML != '') {
+      for (var i = 0; i < objs.length; i++) {
+        if (i != selectedObj && hasSameAttrType(objs[i], objs[selectedObj])) {
+          //若有另一個相同type的物件,則顯示"套用全部"選項 If there is an object with the same type, then show "Apply to All"
+          document.getElementById('setAttrAll_box').style.display = '';
+          document.getElementById('applytoall_mobile_container').style.display = '';
+          break;
+        }
+        if (i == objs.length - 1) {
+          document.getElementById('setAttrAll_box').style.display = 'none';
+          document.getElementById('applytoall_mobile_container').style.display = 'none';
+        }
       }
     }
   }
   else {
     document.getElementById('p_box').style.display = 'none';
     document.getElementById('setAttrAll_box').style.display = 'none';
+    document.getElementById('applytoall_mobile_container').style.display = 'none';
   }
 
   document.getElementById('obj_settings').style.display = '';
@@ -604,6 +611,8 @@ function createUndoPoint() {
   undoUBound = undoIndex;
   document.getElementById('undo').disabled = false;
   document.getElementById('redo').disabled = true;
+  document.getElementById('undo_mobile').disabled = false;
+  document.getElementById('redo_mobile').disabled = true;
   undoArr[undoIndex] = document.getElementById('textarea1').value;
   if (undoUBound == undoLBound) {
     //復原步數已達上限 The limit of undo is reached
@@ -635,9 +644,11 @@ function undo() {
   document.getElementById('textarea1').value = undoArr[undoIndex];
   JSONInput();
   document.getElementById('redo').disabled = false;
+  document.getElementById('redo_mobile').disabled = false;
   if (undoIndex == undoLBound) {
     //已達復原資料下界 The lower bound of undo data is reached
     document.getElementById('undo').disabled = true;
+    document.getElementById('undo_mobile').disabled = true;
   }
 
 }
@@ -652,8 +663,10 @@ function redo() {
   document.getElementById('textarea1').value = undoArr[undoIndex];
   JSONInput();
   document.getElementById('undo').disabled = false;
+  document.getElementById('undo_mobile').disabled = false;
   if (undoIndex == undoUBound) {
     //已達復原資料下界 The lower bound of undo data is reached
     document.getElementById('redo').disabled = true;
+    document.getElementById('redo_mobile').disabled = true;
   }
 }

@@ -75,18 +75,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+});
+
+window.addEventListener('load', function() {
   document.getElementById('toolbar-loading').style.display = 'none';
   document.getElementById('toolbar-wrapper').style.display = '';
   document.getElementById('saveModal').style.display = '';
   document.getElementById('languageModal').style.display = '';
   document.getElementById('footer-left').style.display = '';
   document.getElementById('footer-right').style.display = '';
-
 });
-
-
-
-
 
 function getMsg(msg) {
   var m = locales[lang][msg];
@@ -105,6 +103,21 @@ function updateUIText(elememt = document) {
     const text = getMsg(key);
     el.innerHTML = text;
   });
+
+  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
+  for (var lang1 in locales) {
+    var translated = 0;
+    var total = 0;
+    for (var item in locales[lang1]) {
+      total++;
+      if (!locales[lang1][item].incomplete) {
+        translated++;
+      }
+    }
+    console.log([lang1, total, translated]);
+
+    document.getElementById('lang-' + lang1).innerText = Math.round(translated/total*100) + '%';
+  }
 }
 
 function updateUIWithPopovers(elememt = document) {
@@ -187,36 +200,21 @@ function updateUIWithoutPopovers(elememt = document) {
   })
 }
 
-function disablePopoversAndTooltips() {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-    tooltipTriggerEl.setAttribute('data-bs-toggle', '');
-  });
-  
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-  });
-
-  tooltipList.forEach(function (tooltip) {
-    tooltip.disable();
-  });
-
-  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
-  });
-
-  popoverTriggerList.forEach(function (popoverTriggerEl) {
-    popoverTriggerEl.setAttribute('data-bs-toggle', '');
-  });
-
-  popoverList.forEach(function (popover) {
-    popover.disable();
-  });
-}
-
 updateUIText();
-updateUIWithPopovers();
+
+var popoversEnabled = true;
+try {
+  if (localStorage.rayOpticsHelp == "off") {
+    popoversEnabled = false;
+  }
+} catch { }
+
+document.getElementById('show_help_popups').checked = popoversEnabled;
+if (popoversEnabled) {
+  updateUIWithPopovers();
+} else {
+  updateUIWithoutPopovers();
+}
 
 var currentMobileToolGroupId = null;
 
@@ -296,3 +294,4 @@ function hideAllPopovers() {
     }
   });
 }
+

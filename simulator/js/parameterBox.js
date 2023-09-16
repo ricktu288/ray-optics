@@ -126,6 +126,8 @@ function createTextAttr(label, value, func, elem) {
   objAttr_text.cols = 25;
   objAttr_text.rows = 1;
   elem.appendChild(objAttr_text);
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
   objAttr_text.oninput = function()
   {
     // if user starts adding more than one line, auto expand the text area
@@ -166,6 +168,8 @@ function createBooleanAttr(label, value, func, elem) {
   wrapper.appendChild(objAttr_checkbox);
   nobr.appendChild(wrapper);
   elem.appendChild(nobr);
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
 
   objAttr_checkbox.onchange = function() {
     setAttr(function(obj) {
@@ -195,6 +199,8 @@ function createEquationAttr(label, value, func, elem) {
   });
   nobr.appendChild(eqnContainer);
   elem.appendChild(nobr);
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
   var mathField = MQ.MathField(eqnSpan, {
     spaceBehavesLikeTab: true,
     leftRightIntoCmdGoes: 'up',
@@ -240,6 +246,8 @@ function createDropdownAttr(label, value, options, func, elem) {
 
   nobr.appendChild(dropdown);
   elem.appendChild(nobr);
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
   dropdown.onchange = function()
   {
     setAttr(function(obj) {

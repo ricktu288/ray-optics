@@ -384,6 +384,9 @@ locales["en"] = {
   "unselect": {
     "message": "Unselect"
   },
+  "unselect_popover": {
+    "message": "Unselect this object (Right-click on blank space has the same function.)"
+  },
   "showadvanced": {
     "message": "More options..."
   },
@@ -540,6 +543,9 @@ locales["en"] = {
   "show_help_popups": {
     "message": "Show help popups"
   },
+  "show_help_popups_popover": {
+    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+  },
   "language": {
     "message": "Language"
   },
@@ -547,6 +553,6 @@ locales["en"] = {
     "message": "Close"
   },
   "advanced_help": {
-    "message": "For advanced help, see the help icon in the lower-right corner."
+    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
   }
 }
