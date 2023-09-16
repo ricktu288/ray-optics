@@ -108,8 +108,8 @@ locales["zh-CN"] = {
   "toolname_text": {
     "message": "文字"
   },
-  "toolname_more_": {
-    "message": "更多"
+  "tool_more_": {
+    "message": "其他"
   },
   "toolname_": {
     "message": "移动画面"
@@ -133,10 +133,10 @@ locales["zh-CN"] = {
     "message": "模拟色彩"
   },
   "File: ": {
-    "message": "文件："
+    "message": "文件"
   },
   "Tools: ": {
-    "message": "工具："
+    "message": "工具"
   },
   "tool_laser": {
     "message": "单一光线"
@@ -145,10 +145,10 @@ locales["zh-CN"] = {
     "message": "光束"
   },
   "tool_radiant": {
-    "message": "360度"
+    "message": "点光源 (360°)"
   },
   "tool_led": {
-    "message": "有限角度"
+    "message": "点光源 (<360°)"
   },
   "tool_radiant_": {
     "message": "点光源"
@@ -220,14 +220,13 @@ locales["zh-CN"] = {
     "message": "移动画面"
   },
   "View: ": {
-    "message": "视图："
+    "message": "视图"
   },
   "Settings: ": {
-    "message": "设定："
+    "message": "设定"
   },
-  "moreoptions": {
-    "incomplete": true,
-    "message": "More"
+  "moresettings": {
+    "message": "更多选项"
   },
   "mode_light": {
     "message": "光线"
@@ -245,7 +244,7 @@ locales["zh-CN"] = {
     "message": "缩放"
   },
   "help": {
-    "message": "ℹ帮助"
+    "message": "帮助"
   },
   "rayDensity": {
     "message": "光线密度"
@@ -254,13 +253,13 @@ locales["zh-CN"] = {
     "message": "光线密度："
   },
   "undo": {
-    "message": "↩撤销"
+    "message": "撤销"
   },
   "redo": {
-    "message": "↪重做"
+    "message": "重做"
   },
   "reset": {
-    "message": "📄清空"
+    "message": "清空"
   },
   "save": {
     "message": "保存"
@@ -275,7 +274,7 @@ locales["zh-CN"] = {
     "message": "浏览作品集"
   },
   "save_name": {
-    "message": "名称："
+    "message": "名称"
   },
   "save_cancel": {
     "message": "取消"
@@ -287,8 +286,7 @@ locales["zh-CN"] = {
     "message": "打开"
   },
   "layoutaids": {
-    "incomplete": true,
-    "message": "Layout Aids"
+    "message": "排版辅助"
   },
   "lockobjs": {
     "message": "锁定物件"
@@ -303,10 +301,10 @@ locales["zh-CN"] = {
     "message": "对齐网格"
   },
   "brightness": {
-    "message": "亮度："
+    "message": "亮度"
   },
   "wavelength": {
-    "message": "波长 (nm):"
+    "message": "波长 (nm)"
   },
   "dichroic": {
     "message": "二色性"
@@ -315,13 +313,13 @@ locales["zh-CN"] = {
     "message": "滤光"
   },
   "bandwidth": {
-    "message": "带宽 (nm)："
+    "message": "带宽 (nm)"
   },
   "invert": {
     "message": "反向"
   },
   "emissionangle": {
-    "message": "发射角 (°)："
+    "message": "发射角 (°)"
   },
   "symmetric": {
     "message": "对称"
@@ -333,7 +331,7 @@ locales["zh-CN"] = {
     "message": "笛卡尔符号约定"
   },
   "refractiveindex": {
-    "message": "折射率："
+    "message": "折射率*"
   },
   "random": {
     "message": "随机"
@@ -362,17 +360,17 @@ locales["zh-CN"] = {
   "beam_warning": {
     "message": "⚠️ 使用发散或随机光束时，像的侦测可能无法正常运作。"
   },
-  "refractiveindex_note": {
-    "message": "（于另一透光物内部时为相对值）"
+  "brightness_note_popover": {
+    "message": "<p>只在「光线密度」够高时才有作用。 </p><p>如需改变射出的光线数量，请调整全域性的「光线密度」滑杆。 </p>"
   },
   "refractiveindex_note_popover": {
-    "message": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。"
+    "message": "<p>*于另一透光物内部时为相对值</p><p>如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。</p>"
   },
   "cauchycoeff": {
     "message": "柯西系数"
   },
   "transmissionratio": {
-    "message": "透光率："
+    "message": "透光率"
   },
   "applytoall": {
     "message": "套用全部"
@@ -383,8 +381,14 @@ locales["zh-CN"] = {
   "delete": {
     "message": "删除"
   },
+  "unselect": {
+    "message": "取消选取"
+  },
+  "unselect_popover": {
+    "message": "取消选取此物件（在空白处按滑鼠右键也有相同的功能）"
+  },
   "showadvanced": {
-    "message": "显示进阶选项"
+    "message": "更多选项…"
   },
   "processing": {
     "message": "处理中…… 按此处以终止。"
@@ -438,7 +442,7 @@ locales["zh-CN"] = {
     "message": "由两点决定一条光线。（拖曳或点击以创建. 第一个点是光源，射向第二个点。）"
   },
   "tool_parallel_popover": {
-    "message": "由一线段产生平行或发散（进阶选项）光束，密度由「光线密度」滑杆决定。 （拖曳或点击以创建。）"
+    "message": "由一线段产生平行或发散光束，密度由「光线密度」滑杆决定。 （拖曳或点击以创建。）"
   },
   "tool_radiant_popover": {
     "message": "由一点向四周发射光线，数量由「光线密度」滑杆决定。 （点击以创建。）"
@@ -516,10 +520,10 @@ locales["zh-CN"] = {
     "message": "模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。 （拖曳大蓝点以移动观察者。）<br>若使用「模拟色彩」，则改以光源颜色显示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模拟光源的颜色（波长）、混色、遮光物与镜子的滤光，以及透光物的色散。选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。屏幕显示之颜色仅为粗略近似，且当「光线密度」太高或太低时可能非常不准确。"
+    "message": "模拟光源的颜色（波长）、混色、遮光物与镜子的滤光，以及透光物的色散。选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。屏幕显示之颜色仅为粗略近似，且当「光线密度」太高或太低时可能非常不准确。"
   },
   "rayDensity_popover": {
-    "message": "决定光线模拟的密度。数值为对数刻度。"
+    "message": "决定从光束与点光源射出的光线数量。这也会影响到像的侦测与颜色渲染的准确性。"
   },
   "showgrid_popover": {
     "message": "决定是否显示背景网格。"
@@ -534,6 +538,21 @@ locales["zh-CN"] = {
     "message": "通过百分比缩放视图。"
   },
   "help_popover": {
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>提示泡泡</b><p>按此钮以切换是否于其他按钮显示提示泡泡。</p><b>限制拖曳行为</b><p>拖曳物件时，按住 Shift 以限制于水平或垂直移动；按住 Ctrl 以复制物件。建立线型物件或拖曳其端点时，按住 Shift 以锁定角度或吸附至 0°、45°、90°；按住 Ctrl 以对于中心点旋转或缩放。</p><b>群组、旋转及缩放物件</b><p>按住 Ctrl，点击多个控制点（如端点），并点击空白处以将这些点群组并建立控制杆。拖曳控制杆（或按方向键）以平移群组；Shift+拖曳以限制于水平或垂直移动；Ctrl+拖曳以旋转；Ctrl+Shift+拖曳以缩放。移动「+」以设定旋转或缩放中心。点击控制杆并按 Ctrl+D 以复制群组；按 Delete 以解散群组。 </p><b>直接编辑座标</b><p>对控制点（如端点）点两下或按右键，输入 (x,y) 座标（单位为像素），然后按 Enter。 </p><b>键盘快速键</b><p>当一物件在被选取的状态（被点击）时，按方向键以移动；Ctrl+D 以复制；Delete 以删除。 </div>"
+    "message": "<b>限制拖曳行为</b><p>拖曳物件时，按住 Shift 以限制于水平或垂直移动；按住 Ctrl 以复制物件。建立线型物件或拖曳其端点时，按住 Shift 以锁定角度或吸附至 0°、45°、90°；按住 Ctrl 以对于中心点旋转或缩放。</p><b>群组、旋转及缩放物件</b><p>按住 Ctrl，点击多个控制点（如端点），并点击空白处以将这些点群组并建立控制杆。拖曳控制杆（或按方向键）以平移群组；Shift+拖曳以限制于水平或垂直移动；Ctrl+拖曳以旋转；Ctrl+Shift+拖曳以缩放。移动「+」以设定旋转或缩放中心。点击控制杆并按 Ctrl+D 以复制群组；按 Delete 以解散群组。 </p><b>直接编辑座标</b><p>对控制点（如端点）点两下或按右键，输入 (x,y) 座标（单位为像素），然后按 Enter。 </p><b>键盘快速键</b><p>当一物件在被选取的状态（被点击）时，按方向键以移动；Ctrl+D 以复制；Delete 以删除。"
+  },
+  "show_help_popups": {
+    "message": "显示提示泡泡"
+  },
+  "show_help_popups_popover": {
+    "message": "决定滑鼠移到按钮上方时是否显示提示泡泡（须重新载入网页以套用变更）"
+  },
+  "language": {
+    "message": "语言"
+  },
+  "close": {
+    "message": "关闭"
+  },
+  "advanced_help": {
+    "message": "进阶说明详见右下角的说明图示。 <br>无法正常运作吗？ <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">按这里</a>可回到旧版。"
   }
 }

@@ -108,9 +108,8 @@ locales["pl"] = {
   "toolname_text": {
     "message": "Tekst"
   },
-  "toolname_more_": {
-    "incomplete": true,
-    "message": "More"
+  "tool_more_": {
+    "message": "Inne"
   },
   "toolname_": {
     "message": "Przesuń widok"
@@ -134,10 +133,10 @@ locales["pl"] = {
     "message": "Symuluj kolory"
   },
   "File: ": {
-    "message": "Plik: "
+    "message": "Plik"
   },
   "Tools: ": {
-    "message": "Narzędzia: "
+    "message": "Narzędzia"
   },
   "tool_laser": {
     "message": "Promień"
@@ -146,17 +145,16 @@ locales["pl"] = {
     "message": "Wiązka"
   },
   "tool_radiant": {
-    "message": "360 stopni"
+    "message": "Źródło punktowe (360°)"
   },
   "tool_led": {
-    "message": "Kąt ostry"
+    "message": "Źródło punktowe (<360°)"
   },
   "tool_radiant_": {
     "message": "Źródło punktowe"
   },
   "tool_lightsource_": {
-    "incomplete": true,
-    "message": "Light Source"
+    "message": "Źródło światła"
   },
   "tool_mirror_": {
     "message": "Zwierciadła"
@@ -222,12 +220,12 @@ locales["pl"] = {
     "message": "Przesuń widok"
   },
   "View: ": {
-    "message": "Widok: "
+    "message": "Widok"
   },
   "Settings: ": {
-    "message": "Ustawienia: "
+    "message": "Ustawienia"
   },
-  "moreoptions": {
+  "moresettings": {
     "incomplete": true,
     "message": "More"
   },
@@ -277,7 +275,7 @@ locales["pl"] = {
     "message": "Zobacz Galerię"
   },
   "save_name": {
-    "message": "Nazwa:"
+    "message": "Nazwa"
   },
   "save_cancel": {
     "message": "Anuluj"
@@ -305,10 +303,10 @@ locales["pl"] = {
     "message": "Przyciągaj do siatki"
   },
   "brightness": {
-    "message": "Jasność:"
+    "message": "Jasność"
   },
   "wavelength": {
-    "message": "Długość fali (nm):"
+    "message": "Długość fali (nm)"
   },
   "dichroic": {
     "message": "Dichroiczne"
@@ -317,13 +315,13 @@ locales["pl"] = {
     "message": "Filtr"
   },
   "bandwidth": {
-    "message": "Szerokość pasma (nm):"
+    "message": "Szerokość pasma (nm)"
   },
   "invert": {
     "message": "Odwróć"
   },
   "emissionangle": {
-    "message": "Kąt emisji (°):"
+    "message": "Kąt emisji (°)"
   },
   "symmetric": {
     "message": "Symetryczna"
@@ -335,7 +333,7 @@ locales["pl"] = {
     "message": "Konwencja znaków"
   },
   "refractiveindex": {
-    "message": "Współczynnik załamania:"
+    "message": "Współczynnik załamania*"
   },
   "random": {
     "incomplete": true,
@@ -373,17 +371,18 @@ locales["pl"] = {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
-  "refractiveindex_note": {
-    "message": "(względny, jeśli znajduje się w innym szkle)"
+  "brightness_note_popover": {
+    "incomplete": true,
+    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
   "refractiveindex_note_popover": {
-    "message": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł."
+    "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
   },
   "cauchycoeff": {
     "message": "Współczynnik Cauchy'ego"
   },
   "transmissionratio": {
-    "message": "Współczynnik transmisji:"
+    "message": "Współczynnik transmisji"
   },
   "applytoall": {
     "message": "Zastosuj do wszystkich"
@@ -394,9 +393,17 @@ locales["pl"] = {
   "delete": {
     "message": "Usuń"
   },
+  "unselect": {
+    "incomplete": true,
+    "message": "Unselect"
+  },
+  "unselect_popover": {
+    "incomplete": true,
+    "message": "Unselect this object (Right-click on blank space has the same function.)"
+  },
   "showadvanced": {
     "incomplete": true,
-    "message": "Show advanced options"
+    "message": "More options..."
   },
   "processing": {
     "message": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
@@ -451,7 +458,7 @@ locales["pl"] = {
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"
@@ -530,10 +537,11 @@ locales["pl"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "message": "Decyduje o tym, jaka ma być gęstość promieni symulowanego światła. Liczba jest w skali logarytmicznej."
+    "incomplete": true,
+    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
     "message": "Określa widoczność siatki tła."
@@ -548,6 +556,26 @@ locales["pl"] = {
     "message": "Wielkość widoku w procentach."
   },
   "help_popover": {
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>Wyskakujące okienka pomocy</b><p>Kliknij ten przycisk, aby przełączyć (wł/wył) wyskakujące okienka pomocy pozostałych przycisków.</p><b>Ograniczone przeciąganie</b><p>Podczas przeciągania obiektu przytrzymaj klawisz Shift, aby ograniczyć do poziomego/pionowego; przytrzymaj Ctrl, aby powielić obiekt. Podczas tworzenia obiektu w kształcie linii lub przeciągania jego punktów końcowych przytrzymaj klawisz Shift, aby zablokować kąt lub przeskakiwać między 0°, 45°, 90°; przytrzymaj klawisz Ctrl, aby obrócić/skalować wokół jego środka.</p><b>Grupuj, obracaj i skaluj obiekty</b><p> Przytrzymaj klawisz Ctrl, kliknij kilka punktów kontrolnych (np. punkty końcowe), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomego/pionowego ruchu; Ctrl+przeciągnij, aby obrócić, Ctrl+Shift+przeciągnij, aby skalować. Przeciągnij \"+\", aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij klawisze Ctrl+D, aby powielić grupę; naciśnij Usuń, aby rozgrupować. </p><b>Bezpośrednia edycja współrzędnych</b><p>Kliknij dwukrotnie lub kliknij prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y) w pikselach, a następnie naciśnij klawisz Enter.</p><b>Skróty klawiaturowe</b><p>Gdy obiekt jest zaznaczony (przez kliknięcie go), naciskaj klawisze strzałek, aby się poruszać; Ctrl+D, aby powielić; Klawisz Delete, aby usunąć.</p></div>"
+    "message": "<b>Ograniczone przeciąganie</b><p>Podczas przeciągania obiektu przytrzymaj klawisz Shift, aby ograniczyć do poziomego/pionowego; przytrzymaj Ctrl, aby powielić obiekt. Podczas tworzenia obiektu w kształcie linii lub przeciągania jego punktów końcowych przytrzymaj klawisz Shift, aby zablokować kąt lub przeskakiwać między 0°, 45°, 90°; przytrzymaj klawisz Ctrl, aby obrócić/skalować wokół jego środka.</p><b>Grupuj, obracaj i skaluj obiekty</b><p> Przytrzymaj klawisz Ctrl, kliknij kilka punktów kontrolnych (np. punkty końcowe), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomego/pionowego ruchu; Ctrl+przeciągnij, aby obrócić, Ctrl+Shift+przeciągnij, aby skalować. Przeciągnij \"+\", aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij klawisze Ctrl+D, aby powielić grupę; naciśnij Usuń, aby rozgrupować. </p><b>Bezpośrednia edycja współrzędnych</b><p>Kliknij dwukrotnie lub kliknij prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y) w pikselach, a następnie naciśnij klawisz Enter.</p><b>Skróty klawiaturowe</b><p>Gdy obiekt jest zaznaczony (przez kliknięcie go), naciskaj klawisze strzałek, aby się poruszać; Ctrl+D, aby powielić; Klawisz Delete, aby usunąć.</p>"
+  },
+  "show_help_popups": {
+    "incomplete": true,
+    "message": "Show help popups"
+  },
+  "show_help_popups_popover": {
+    "incomplete": true,
+    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+  },
+  "language": {
+    "incomplete": true,
+    "message": "Language"
+  },
+  "close": {
+    "incomplete": true,
+    "message": "Close"
+  },
+  "advanced_help": {
+    "incomplete": true,
+    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
   }
 }

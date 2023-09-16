@@ -108,11 +108,8 @@ locales["zh-TW"] = {
   "toolname_text": {
     "message": "文字"
   },
-  "toolname_more_": {
-    "message": "其他"
-  },
   "tool_more_": {
-    "message": "更多"
+    "message": "其他"
   },
   "toolname_": {
     "message": "移動畫面"
@@ -148,10 +145,10 @@ locales["zh-TW"] = {
     "message": "光束"
   },
   "tool_radiant": {
-    "message": "360度"
+    "message": "點光源 (360°)"
   },
   "tool_led": {
-    "message": "有限角度"
+    "message": "點光源 (<360°)"
   },
   "tool_radiant_": {
     "message": "點光源"
@@ -363,11 +360,11 @@ locales["zh-TW"] = {
   "beam_warning": {
     "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"
   },
-  "refractiveindex_note": {
-    "message": "（於另一透光物內部時為相對值）"
+  "brightness_note_popover": {
+    "message": "<p>只在「光線密度」夠高時才有作用。</p><p>如需改變射出的光線數量，請調整全域性的「光線密度」滑桿。</p>"
   },
   "refractiveindex_note_popover": {
-    "message": "如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。"
+    "message": "<p>*於另一透光物內部時為相對值</p><p>如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。</p>"
   },
   "cauchycoeff": {
     "message": "柯西係數"
@@ -386,6 +383,9 @@ locales["zh-TW"] = {
   },
   "unselect": {
     "message": "取消選取"
+  },
+  "unselect_popover": {
+    "message": "取消選取此物件（在空白處按滑鼠右鍵也有相同的功能）"
   },
   "showadvanced": {
     "message": "更多選項…"
@@ -442,7 +442,7 @@ locales["zh-TW"] = {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
   },
   "tool_parallel_popover": {
-    "message": "由一線段產生平行或發散（進階選項）光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
+    "message": "由一線段產生平行或發散光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
   },
   "tool_radiant_popover": {
     "message": "由一點向四周發射光線，數量由「光線密度」滑桿決定。（點擊以創建。）"
@@ -538,10 +538,13 @@ locales["zh-TW"] = {
     "message": "透過百分比縮放視窗。"
   },
   "help_popover": {
-    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</div>"
+    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。"
   },
   "show_help_popups": {
     "message": "顯示提示泡泡"
+  },
+  "show_help_popups_popover": {
+    "message": "決定滑鼠移到按鈕上方時是否顯示提示泡泡（須重新載入網頁以套用變更）"
   },
   "language": {
     "message": "語言"
@@ -550,6 +553,6 @@ locales["zh-TW"] = {
     "message": "關閉"
   },
   "advanced_help": {
-    "message": "進階說明詳見右下角的說明圖示。"
+    "message": "進階說明詳見右下角的說明圖示。<br>無法正常運作嗎？<a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">按這裡</a>可回到舊版。"
   }
 }

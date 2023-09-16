@@ -127,9 +127,8 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Text"
   },
-  "toolname_more_": {
-    "incomplete": true,
-    "message": "More"
+  "tool_more_": {
+    "message": "Overig"
   },
   "toolname_": {
     "message": "Verplaats beeld"
@@ -154,10 +153,10 @@ locales["nl"] = {
     "message": "Simulate Colors"
   },
   "File: ": {
-    "message": "Bestand: "
+    "message": "Bestand"
   },
   "Tools: ": {
-    "message": "Gereedschap: "
+    "message": "Gereedschap"
   },
   "tool_laser": {
     "message": "Straal"
@@ -166,19 +165,16 @@ locales["nl"] = {
     "message": "Bundel"
   },
   "tool_radiant": {
-    "incomplete": true,
-    "message": "360 degrees"
+    "message": "Punt bron (360°)"
   },
   "tool_led": {
-    "incomplete": true,
-    "message": "Finite angle"
+    "message": "Punt bron (<360°)"
   },
   "tool_radiant_": {
     "message": "Punt bron"
   },
   "tool_lightsource_": {
-    "incomplete": true,
-    "message": "Light Source"
+    "message": "Lichtbron"
   },
   "tool_mirror_": {
     "message": "spiegels"
@@ -252,12 +248,12 @@ locales["nl"] = {
     "message": "Verplaats beeld"
   },
   "View: ": {
-    "message": "Beeld: "
+    "message": "Beeld"
   },
   "Settings: ": {
-    "message": "Instellingen: "
+    "message": "Instellingen"
   },
-  "moreoptions": {
+  "moresettings": {
     "incomplete": true,
     "message": "More"
   },
@@ -315,7 +311,7 @@ locales["nl"] = {
     "message": "View Gallery"
   },
   "save_name": {
-    "message": "Naam:"
+    "message": "Naam"
   },
   "save_cancel": {
     "incomplete": true,
@@ -350,10 +346,10 @@ locales["nl"] = {
     "message": "Snap to Grid"
   },
   "brightness": {
-    "message": "Helderheid:"
+    "message": "Helderheid"
   },
   "wavelength": {
-    "message": "Golflengte (nm):"
+    "message": "Golflengte (nm)"
   },
   "dichroic": {
     "message": "Dichroïde"
@@ -362,28 +358,28 @@ locales["nl"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "message": "Bandbreedte (nm):"
+    "message": "Bandbreedte (nm)"
   },
   "invert": {
     "message": "Omkeren"
   },
   "emissionangle": {
     "incomplete": true,
-    "message": "Emission Angle (°):"
+    "message": "Emission Angle (°)"
   },
   "symmetric": {
     "incomplete": true,
     "message": "Symmetric"
   },
   "focallength": {
-    "message": "Brandpuntafstand:"
+    "message": "Brandpuntafstand"
   },
   "cartesiansign": {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Brekingsindex:"
+    "message": "Brekingsindex*"
   },
   "random": {
     "incomplete": true,
@@ -421,13 +417,13 @@ locales["nl"] = {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
-  "refractiveindex_note": {
+  "brightness_note_popover": {
     "incomplete": true,
-    "message": "(relative if inside another glass)"
+    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
   "refractiveindex_note_popover": {
     "incomplete": true,
-    "message": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones."
+    "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -435,7 +431,7 @@ locales["nl"] = {
   },
   "transmissionratio": {
     "incomplete": true,
-    "message": "Transmission Ratio:"
+    "message": "Transmission Ratio"
   },
   "applytoall": {
     "message": "Overal toepassen"
@@ -446,9 +442,17 @@ locales["nl"] = {
   "delete": {
     "message": "Verwijder"
   },
+  "unselect": {
+    "incomplete": true,
+    "message": "Unselect"
+  },
+  "unselect_popover": {
+    "incomplete": true,
+    "message": "Unselect this object (Right-click on blank space has the same function.)"
+  },
   "showadvanced": {
     "incomplete": true,
-    "message": "Show advanced options"
+    "message": "More options..."
   },
   "processing": {
     "message": "Rekenen... Klik hier om te stoppen."
@@ -514,7 +518,7 @@ locales["nl"] = {
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"
@@ -605,11 +609,11 @@ locales["nl"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
     "incomplete": true,
-    "message": "Instellen van de straaldichtheid van de lichtsimulatie. The number is in log scale."
+    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
     "message": "Toont of verbergt het achtergrondraster."
@@ -625,6 +629,26 @@ locales["nl"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>Help popups</b><p>Click this button to toggle help popups for other buttons.</p><b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p></div>"
+    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p>"
+  },
+  "show_help_popups": {
+    "incomplete": true,
+    "message": "Show help popups"
+  },
+  "show_help_popups_popover": {
+    "incomplete": true,
+    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+  },
+  "language": {
+    "incomplete": true,
+    "message": "Language"
+  },
+  "close": {
+    "incomplete": true,
+    "message": "Close"
+  },
+  "advanced_help": {
+    "incomplete": true,
+    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
   }
 }
