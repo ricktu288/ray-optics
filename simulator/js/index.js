@@ -53,6 +53,7 @@ window.onload = function (e) {
 
 
   canvas.onmousedown = function (e) {
+    console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
 
@@ -61,10 +62,12 @@ window.onload = function (e) {
   };
 
   canvas.onmousemove = function (e) {
+    console.log("mousemove");
     canvas_onmousemove(e);
   };
 
   canvas.onmouseup = function (e) {
+    console.log("mouseup");
     canvas_onmouseup(e);
   };
 
@@ -75,27 +78,29 @@ window.onload = function (e) {
 
 
   canvas.ontouchstart = function (e) {
+    console.log("touchstart");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
 
     document.body.focus();
+    canvas_onmousemove(e);
     canvas_onmousedown(e);
   };
 
   canvas.ontouchmove = function (e) {
+    console.log("touchmove");
     canvas_onmousemove(e);
-    e.preventDefault();
   };
 
   canvas.ontouchend = function (e) {
+    console.log("touchend");
     canvas_onmouseup(e);
-    e.preventDefault();
   };
 
   canvas.ontouchcancel = function (e) {
+    console.log("touchcancel");
     canvas_onmouseup(e);
     undo();
-    e.preventDefault();
   };
 
   canvas.ondblclick = function (e) {
