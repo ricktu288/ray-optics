@@ -79,7 +79,7 @@ window.onload = function (e) {
 
   let initialPinchDistance = null;
   let lastScale = 1;
-  
+
   canvas.addEventListener('touchstart',  function (e) {
     if (e.touches.length === 2) {
       // Pinch to zoom
@@ -99,6 +99,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchmove',  function (e) {
+    e.preventDefault();
     console.log("touchmove");
     if (e.touches.length === 2) {
       // Pinch to zoom
@@ -124,7 +125,7 @@ window.onload = function (e) {
       newScale = Math.max(0.25, Math.min(5.00, newScale));
   
       // Apply the scale transformation
-      setScaleWithCenter(newScale, (e.touches[0].pageX - e.target.offsetLeft) / scale, (e.touches[0].pageY - e.target.offsetTop) / scale);
+      setScaleWithCenter(newScale, ((e.touches[0].pageX + e.touches[1].pageX) / 2 - e.target.offsetLeft) / scale, ((e.touches[0].pageY + e.touches[1].pageY) / 2 - e.target.offsetTop) / scale);
       //window.toolBarViewModel.zoom.value(newScale * 100);
     } else {
       canvas_onmousemove(e);
