@@ -290,6 +290,7 @@ function createAdvancedOptions(condition) {
     return true
   } else {
     document.getElementById('showAdvanced').style.display = '';
+    document.getElementById('showAdvanced_mobile_container').style.display = '';
     return false
   }
 }
