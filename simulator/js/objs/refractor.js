@@ -11,28 +11,17 @@ objTypes['refractor'] = {
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     if (colorMode) {
-      createNumberAttr(getMsg('cauchycoeff') + " A:", 1, 3, 0.01, obj.p, function(obj, value) {
+      createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
-      }, elem);
-      createNumberAttr("B(μm²):", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
+      }, elem, getMsg('refractiveindex_note_popover'));
+      createNumberAttr("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         obj.cauchyCoeff = value;
       }, elem);
     } else {
       createNumberAttr(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
-      }, elem);
+      }, elem, getMsg('refractiveindex_note_popover'));
     }
-    var note = document.createElement('span');
-    note.innerHTML = getMsg('refractiveindex_note');
-    note.id = "refractiveindex_note";
-    note.style.marginLeft = "0.2em";
-    note.style.marginRight = "0.2em";
-    note.style.borderBottom = "1px dotted white";
-    note.style.color = "white";
-    note.style.cursor = "help";
-    note.title = getMsg('refractiveindex_note_popover');
-    elem.appendChild(note);
-    cancelMousedownEvent("refractiveindex_note");
   },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user

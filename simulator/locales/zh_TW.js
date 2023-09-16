@@ -109,7 +109,7 @@ locales["zh-TW"] = {
     "message": "文字"
   },
   "toolname_more_": {
-    "message": "更多"
+    "message": "其他"
   },
   "tool_more_": {
     "message": "更多"
@@ -304,10 +304,10 @@ locales["zh-TW"] = {
     "message": "對齊格線"
   },
   "brightness": {
-    "message": "亮度："
+    "message": "亮度"
   },
   "wavelength": {
-    "message": "波長 (nm)："
+    "message": "波長 (nm)"
   },
   "dichroic": {
     "message": "二色性"
@@ -316,25 +316,25 @@ locales["zh-TW"] = {
     "message": "濾光"
   },
   "bandwidth": {
-    "message": "帶寬 (nm)："
+    "message": "帶寬 (nm)"
   },
   "invert": {
     "message": "反向"
   },
   "emissionangle": {
-    "message": "發射角 (°)："
+    "message": "發射角 (°)"
   },
   "symmetric": {
     "message": "對稱"
   },
   "focallength": {
-    "message": "焦距："
+    "message": "焦距"
   },
   "cartesiansign": {
     "message": "卡氏符號約定"
   },
   "refractiveindex": {
-    "message": "折射率："
+    "message": "折射率*"
   },
   "random": {
     "message": "隨機"
@@ -373,7 +373,7 @@ locales["zh-TW"] = {
     "message": "柯西係數"
   },
   "transmissionratio": {
-    "message": "透光率："
+    "message": "透光率"
   },
   "applytoall": {
     "message": "套用全部"

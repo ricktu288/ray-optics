@@ -6,7 +6,17 @@ objTypes['radiant'] = {
   return {type: 'radiant', x: mouse.x, y: mouse.y, p: 0.5};
   },
 
-  p_box: objTypes['laser'].p_box,
+  //顯示屬性方塊 Show the property box
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.p || 1, function(obj, value) {
+      obj.p = value;
+    }, elem, getMsg('brightness_note_popover'));
+    if (colorMode) {
+      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
+        obj.wavelength = value;
+      }, elem);
+    }
+  },
 
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)

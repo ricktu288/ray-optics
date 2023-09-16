@@ -75,7 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-
+  document.getElementById('toolbar-loading').style.display = 'none';
+  document.getElementById('toolbar-wrapper').style.display = '';
+  document.getElementById('saveModal').style.display = '';
+  document.getElementById('languageModal').style.display = '';
+  document.getElementById('footer-left').style.display = '';
+  document.getElementById('footer-right').style.display = '';
 
 });
 
@@ -282,3 +287,12 @@ function initModes() {
 }
 
 initModes();
+
+function hideAllPopovers() {
+  document.querySelectorAll('[data-bs-original-title]').forEach(function(element) {
+    var popoverInstance = bootstrap.Popover.getInstance(element);
+    if (popoverInstance) {
+      popoverInstance.hide();
+    }
+  });
+}

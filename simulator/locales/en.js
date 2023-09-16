@@ -109,7 +109,7 @@ locales["en"] = {
     "message": "Text"
   },
   "tool_more_": {
-    "message": "More"
+    "message": "Other"
   },
   "toolname_": {
     "message": "Move view"
@@ -274,7 +274,7 @@ locales["en"] = {
     "message": "View Gallery"
   },
   "save_name": {
-    "message": "Name:"
+    "message": "Name"
   },
   "save_cancel": {
     "message": "Cancel"
@@ -301,10 +301,10 @@ locales["en"] = {
     "message": "Snap to Grid"
   },
   "brightness": {
-    "message": "Brightness:"
+    "message": "Brightness"
   },
   "wavelength": {
-    "message": "Wavelength (nm):"
+    "message": "Wavelength (nm)"
   },
   "dichroic": {
     "message": "Dichroic"
@@ -313,25 +313,25 @@ locales["en"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "message": "Bandwidth (nm):"
+    "message": "Bandwidth (nm)"
   },
   "invert": {
     "message": "Invert"
   },
   "emissionangle": {
-    "message": "Emission Angle (°):"
+    "message": "Emission Angle (°)"
   },
   "symmetric": {
     "message": "Symmetric"
   },
   "focallength": {
-    "message": "Focal length:"
+    "message": "Focal length"
   },
   "cartesiansign": {
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Refractive index:"
+    "message": "Refractive index*"
   },
   "random": {
     "message": "Random"
@@ -360,17 +360,17 @@ locales["en"] = {
   "beam_warning": {
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
-  "refractiveindex_note": {
-    "message": "(relative if inside another glass)"
+  "brightness_note_popover": {
+    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
   "refractiveindex_note_popover": {
-    "message": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones."
+    "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
   "cauchycoeff": {
     "message": "Cauchy coefficient"
   },
   "transmissionratio": {
-    "message": "Transmission Ratio:"
+    "message": "Transmission Ratio"
   },
   "applytoall": {
     "message": "Apply to All"
@@ -380,6 +380,9 @@ locales["en"] = {
   },
   "delete": {
     "message": "Delete"
+  },
+  "unselect": {
+    "message": "Unselect"
   },
   "showadvanced": {
     "message": "More options..."
@@ -539,6 +542,9 @@ locales["en"] = {
   },
   "language": {
     "message": "Language"
+  },
+  "close": {
+    "message": "Close"
   },
   "advanced_help": {
     "message": "For advanced help, see the help icon in the lower-right corner."

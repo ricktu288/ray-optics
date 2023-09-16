@@ -51,13 +51,6 @@ window.onload = function (e) {
   document.getElementById('undo_mobile').disabled = true;
   document.getElementById('redo_mobile').disabled = true;
 
-  window.onmousedown = function (e) {
-    selectObj(-1);
-  };
-  window.ontouchstart = function (e) {
-    selectObj(-1);
-  };
-
 
   canvas.onmousedown = function (e) {
     //document.getElementById('objAttr_text').blur();
@@ -65,9 +58,6 @@ window.onload = function (e) {
 
     document.body.focus();
     canvas_onmousedown(e);
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-    return false;
   };
 
   canvas.onmousemove = function (e) {
@@ -90,8 +80,6 @@ window.onload = function (e) {
 
     document.body.focus();
     canvas_onmousedown(e);
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
   };
 
   canvas.ontouchmove = function (e) {
@@ -209,28 +197,28 @@ window.onload = function (e) {
       forceStop = true;
     }
   };
-  cancelMousedownEvent('forceStop');
+
   document.getElementById('restore').onclick = function () { restore() };
-  cancelMousedownEvent('restore');
-  cancelMousedownEvent('setAttrAll');
 
   document.getElementById('copy').onclick = function () {
     objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
+    objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
+    selectObj(objs.length - 1);
     draw();
     createUndoPoint();
   };
-  cancelMousedownEvent('copy');
+
   document.getElementById('delete').onclick = function () {
     removeObj(selectedObj);
     draw();
     createUndoPoint();
   };
-  cancelMousedownEvent('delete');
+
   document.getElementById('showAdvanced').onclick = function () {
     showAdvancedOn = true;
     selectObj(selectedObj);
   };
-  cancelMousedownEvent('showAdvanced');
+
   document.getElementById('textarea1').onchange = function () {
     JSONInput();
     createUndoPoint();
@@ -275,8 +263,6 @@ window.onload = function (e) {
       xyBox_cancelContextMenu = false;
     }
   }, false);
-
-  cancelMousedownEvent('xybox');
 
 
   window.ondragenter = function (e) {
@@ -657,30 +643,6 @@ function modebtn_clicked(mode1) {
     console.error(error);
     isDrawing = false;
   }
-}
-
-
-
-function cancelMousedownEvent(id) {
-  document.getElementById(id).onmousedown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById(id).ontouchstart = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-}
-
-function cancelMousedownEvent_(elem) {
-  elem.onmousedown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  elem.ontouchstart = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
 }
 
 

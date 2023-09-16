@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-body {
-  background-image: url("../background.svg");
-  background-position-x: 500px;
-}
-
 #canvas1 {
   background-color: #000;
   position: absolute;
@@ -101,13 +89,6 @@ body {
 }
 
 /* modifications to Bootstrap style */
-
-/*
-.btn:focus,.btn:active {
-  outline: none !important;
-  box-shadow: none;
-}
-*/
 
 .btn-group {
   padding-left: 0px;
@@ -258,6 +239,18 @@ body {
   color: white;
 }
 
+.selected-tool-bar-nobr {
+  white-space: nowrap;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.selected-tool-bar .form-range {
+  width: 125px;
+  padding-top:15px;
+  padding-left: 3px;
+}
+
 .selected-tool-bar .form-range::-webkit-slider-thumb {
   background: gray;
   border: 2px solid white;
@@ -279,6 +272,55 @@ body {
 
 .selected-tool-bar .form-range::-moz-range-track {
   background-color: rgba(255,255,255, 0.5);
+}
+
+.selected-tool-bar-editable {
+  color: white;
+  background-color: rgba(255,255,255,0.2);
+  border: none;
+}
+
+.selected-tool-bar-editable::selection {
+  background-color: gray;
+  color: white;
+}
+
+.mq-cursor {
+  border-color: white !important;
+}
+
+.info-icon {
+  color: rgba(255, 255, 255, 0.6);
+  padding-left:0px;
+  padding-right:0px;
+}
+
+
+.selected-tool-bar .form-switch .form-check-input {
+  margin-top: 10px;
+  background-color: rgba(255,255,255, 0.3);
+  border: none;
+}
+
+.selected-tool-bar .form-switch .form-check-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23f0f0f0'/%3e%3c/svg%3e");
+}
+
+.selected-tool-bar .form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+.selected-tool-bar .form-switch .form-check-input:checked {
+  background-color: gray;
+  border: none;
+}
+
+.selected-tool-bar .form-switch .form-check-input:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+.selected-tool-bar .form-switch .form-check-input:checked:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
 }
 
 #showAdvanced {

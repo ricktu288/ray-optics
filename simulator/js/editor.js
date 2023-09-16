@@ -489,6 +489,8 @@ function canvas_onmousewheel(e) {
 
 
 function selectObj(index) {
+  hideAllPopovers();
+  
   if (index < 0 || index >= objs.length) {
     //若此物件不存在 If this object does not exist
     selectedObj = -1;
