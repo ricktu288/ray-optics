@@ -4,10 +4,6 @@ var ctx;
 var objs = []; //物件 The objects
 var objCount = 0; //物件數量 Number of the objects
 var observer;
-var tools_normal = ['laser', 'parallel', 'ruler', 'protractor', 'power', 'text', ''];
-var tools_withList = ['radiant_', 'mirror_', 'refractor_', 'blocker_'];
-var tools_inList = ['radiant', 'led', 'mirror', 'arcmirror', 'idealmirror', 'lens', 'sphericallens', 'refractor', 'halfplane', 'curvedglass', 'circlelens', 'parabolicmirror', 'curvedmirror', 'beamsplitter', 'blackline', 'blackcircle'];
-var modes = ['light', 'extended_light', 'images', 'observer'];
 var xyBox_cancelContextMenu = false;
 var scale = 1;
 var cartesianSign = false;
@@ -40,7 +36,8 @@ window.onload = function (e) {
     document.getElementById('restore').style.display = '';
     initParameters();
     toolbtn_clicked('');
-    window.toolBarViewModel.tools.selected("Move View");
+    document.getElementById('tool_').checked = true;
+    document.getElementById('tool__mobile').checked = true;
     AddingObjType = '';
   } else {
     restoredData = '';
@@ -51,32 +48,28 @@ window.onload = function (e) {
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
 
-  window.onmousedown = function (e) {
-    selectObj(-1);
-  };
-  window.ontouchstart = function (e) {
-    selectObj(-1);
-  };
+  document.getElementById('undo_mobile').disabled = true;
+  document.getElementById('redo_mobile').disabled = true;
 
 
-  canvas.onmousedown = function (e) {
+  canvas.addEventListener('mousedown', function (e) {
+    console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
 
     document.body.focus();
     canvas_onmousedown(e);
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-    return false;
-  };
+  });
 
-  canvas.onmousemove = function (e) {
+  canvas.addEventListener('mousemove', function (e) {
+    console.log("mousemove");
     canvas_onmousemove(e);
-  };
+  });
 
-  canvas.onmouseup = function (e) {
+  canvas.addEventListener('mouseup',  function (e) {
+    console.log("mouseup");
     canvas_onmouseup(e);
-  };
+  });
 
   // IE9, Chrome, Safari, Opera
   canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
@@ -84,53 +77,89 @@ window.onload = function (e) {
   canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
 
 
-  canvas.ontouchstart = function (e) {
-    //document.getElementById('objAttr_text').blur();
-    // TODO: check that commenting out the above line does not cause problem.
+  let initialPinchDistance = null;
+  let lastScale = 1;
 
-    document.body.focus();
-    canvas_onmousedown(e);
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
+  canvas.addEventListener('touchstart',  function (e) {
+    if (e.touches.length === 2) {
+      // Pinch to zoom
+      e.preventDefault();
+      if (isConstructing || draggingObj >= 0) {
+        canvas_onmouseup(e);
+        undo();
+      } else {
+        canvas_onmouseup(e);
+      }
+    } else {
+      console.log("touchstart");
+      document.body.focus();
+      canvas_onmousemove(e);
+      canvas_onmousedown(e);
+    }
+  });
 
-  canvas.ontouchmove = function (e) {
-    canvas_onmousemove(e);
+  canvas.addEventListener('touchmove',  function (e) {
     e.preventDefault();
-  };
+    console.log("touchmove");
+    if (e.touches.length === 2) {
+      // Pinch to zoom
 
-  canvas.ontouchend = function (e) {
-    canvas_onmouseup(e);
-    e.preventDefault();
-  };
+      // Calculate current distance between two touches
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+  
+      // If initialPinchDistance is null, this is the first move event of the pinch
+      // Set initial distance
+      if (initialPinchDistance === null) {
+        initialPinchDistance = distance;
+        lastScale = scale;
+      }
+  
+      // Calculate the scaling factor
+      const scaleFactor = distance / initialPinchDistance;
+  
+      // Update scale based on previous scale and scaling factor
+      let newScale = lastScale * scaleFactor;
+      
+      newScale = Math.max(0.25, Math.min(5.00, newScale));
+  
+      // Apply the scale transformation
+      setScaleWithCenter(newScale, ((e.touches[0].pageX + e.touches[1].pageX) / 2 - e.target.offsetLeft) / scale, ((e.touches[0].pageY + e.touches[1].pageY) / 2 - e.target.offsetTop) / scale);
+      //window.toolBarViewModel.zoom.value(newScale * 100);
+    } else {
+      canvas_onmousemove(e);
+    }
+  });
 
-  canvas.ontouchcancel = function (e) {
-    canvas_onmouseup(e);
-    undo();
-    e.preventDefault();
-  };
+  canvas.addEventListener('touchend',  function (e) {
+    console.log("touchend");
+    if (e.touches.length < 2) {
+      initialPinchDistance = null;
+      canvas_onmouseup(e);
+    }
+  });
 
-  canvas.ondblclick = function (e) {
+  canvas.addEventListener('touchcancel',  function (e) {
+    console.log("touchcancel");
+    initialPinchDistance = null;
+    if (isConstructing || draggingObj >= 0) {
+      canvas_onmouseup(e);
+      undo();
+    } else {
+      canvas_onmouseup(e);
+    }
+  });
+
+  canvas.addEventListener('dblclick',  function (e) {
     canvas_ondblclick(e);
-  };
-
-
-  tools_normal.forEach(function (element, index) {
-    document.getElementById('tool_' + element).onclick = function (e) { toolbtn_clicked(element, e); };
   });
-
-  tools_withList.forEach(function (element, index) {
-    document.getElementById('tool_' + element).onclick = function (e) { toolbtn_clicked(element, e); };
-  });
-
-  tools_inList.forEach(function (element, index) {
-    document.getElementById('tool_' + element).onclick = function (e) { toolbtn_clicked(element, e); };
-  });
-
 
 
   document.getElementById('undo').onclick = undo;
   document.getElementById('redo').onclick = redo;
+  document.getElementById('undo_mobile').onclick = undo;
+  document.getElementById('redo_mobile').onclick = redo;
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
@@ -140,109 +169,173 @@ window.onload = function (e) {
     isFromGallery = false;
     hasUnsavedChange = false;
   };
-  document.getElementById('save').onclick = function () {
-    document.getElementById('saveBox').style.display = '';
-    document.getElementById('save_name').select();
-  };
+  document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
+  
   document.getElementById('get_link').onclick = getLink;
+  document.getElementById('get_link_mobile').onclick = getLink;
   document.getElementById('export_svg').onclick = exportSVG;
+  document.getElementById('export_svg_mobile').onclick = exportSVG;
   document.getElementById('open').onclick = function () {
     document.getElementById('openfile').click();
   };
+  document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
+  document.getElementById('view_gallery').onclick = function() {
+    window.open(getMsg("gallery_url"));
+  };
+  document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
+
 
   document.getElementById('openfile').onchange = function () {
     openFile(this.files[0]);
   };
 
-  modes.forEach(function (element, index) {
-    document.getElementById('mode_' + element).onclick = function () {
-      modebtn_clicked(element);
-      createUndoPoint();
-    };
-  });
   document.getElementById('color_mode').onclick = function () {
     colorMode = this.checked;
+    document.getElementById('color_mode').checked = colorMode;
+    document.getElementById('color_mode_mobile').checked = colorMode;
     draw();
+  };
+  document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;
+
+  document.getElementById('show_help_popups').onclick = function () {
+    popoversEnabled = this.checked;
+    localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
 
+  document.getElementById('zoomPlus').onclick = function () {
+    setScale(scale * 1.1);
+  }
+  document.getElementById('zoomMinus').onclick = function () {
+    setScale(scale / 1.1);
+  }
+  document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
+  document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
 
-  document.getElementById('zoom').oninput = function () {
-    setScale(this.value / 100);
-    draw();
-  };
-  document.getElementById('zoom_txt').onfocusout = function () {
-    setScale(this.value / 100);
-    draw();
-  };
-  document.getElementById('zoom_txt').onkeyup = function () {
-    if (event.keyCode === 13) {
-      setScale(this.value / 100);
-      draw();
-    }
-  };
-  document.getElementById('zoom').onmouseup = function () {
-    setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
-    createUndoPoint();
-  };
-  document.getElementById('zoom').ontouchend = function () {
-    setScale(this.value / 100); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
-    createUndoPoint();
-  };
+
   document.getElementById('rayDensity').oninput = function () {
     setRayDensity(Math.exp(this.value));
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
   };
-  document.getElementById('rayDensity_txt').onfocusout = function () {
-    setRayDensity(Math.exp(this.value));
-    draw();
-  };
-  document.getElementById('rayDensity_txt').onkeyup = function () {
-    if (event.keyCode === 13) {
-      setRayDensity(Math.exp(this.value));
-      draw();
-    }
-  };
+  document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
+  document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
+
   document.getElementById('rayDensity').onmouseup = function () {
     setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
     createUndoPoint();
   };
+  document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
+  document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
+
   document.getElementById('rayDensity').ontouchend = function () {
     setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    document.getElementById('rayDensity').value = this.value;
+    document.getElementById('rayDensity_more').value = this.value;
+    document.getElementById('rayDensity_mobile').value = this.value;
     draw();
     createUndoPoint();
   };
-  document.getElementById('grid').onclick = function () { draw() };
-  document.getElementById('showgrid').onclick = function () { draw() };
+  document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
+  document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
+
+  document.getElementById('rayDensityPlus').onclick = function () {
+    rayDensityValue = Math.log(getRayDensity()) * 1.0 + 0.1;
+    setRayDensity(Math.exp(rayDensityValue));
+    document.getElementById('rayDensity').value = rayDensityValue;
+    document.getElementById('rayDensity_more').value = rayDensityValue;
+    document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    draw();
+  };
+  document.getElementById('rayDensityMinus').onclick = function () {
+    rayDensityValue = Math.log(getRayDensity()) * 1.0 - 0.1;
+    setRayDensity(Math.exp(rayDensityValue));
+    document.getElementById('rayDensity').value = rayDensityValue;
+    document.getElementById('rayDensity_more').value = rayDensityValue;
+    document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    draw();
+  };
+  document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
+  document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
+  document.getElementById('rayDensityPlus_more').onclick = document.getElementById('rayDensityPlus').onclick;
+  document.getElementById('rayDensityMinus_more').onclick = document.getElementById('rayDensityMinus').onclick;
+
+
+  document.getElementById('grid').onclick = function (e) {
+    document.getElementById('grid').checked = e.target.checked;
+    document.getElementById('grid_more').checked = e.target.checked;
+    document.getElementById('grid_mobile').checked = e.target.checked;
+    draw();
+  };
+  document.getElementById('grid_more').onclick = document.getElementById('grid').onclick;
+  document.getElementById('grid_mobile').onclick = document.getElementById('grid').onclick;
+
+  document.getElementById('showgrid').onclick = function (e) {
+    document.getElementById('showgrid').checked = e.target.checked;
+    document.getElementById('showgrid_more').checked = e.target.checked;
+    document.getElementById('showgrid_mobile').checked = e.target.checked;
+    draw();
+  };
+  document.getElementById('showgrid_more').onclick = document.getElementById('showgrid').onclick;
+  document.getElementById('showgrid_mobile').onclick = document.getElementById('showgrid').onclick;
+
+  document.getElementById('lockobjs').onclick = function (e) {
+    document.getElementById('lockobjs').checked = e.target.checked;
+    document.getElementById('lockobjs_more').checked = e.target.checked;
+    document.getElementById('lockobjs_mobile').checked = e.target.checked;
+  };
+  document.getElementById('lockobjs_more').onclick = document.getElementById('lockobjs').onclick;
+  document.getElementById('lockobjs_mobile').onclick = document.getElementById('lockobjs').onclick;
 
   document.getElementById('forceStop').onclick = function () {
     if (timerID != -1) {
       forceStop = true;
     }
   };
-  cancelMousedownEvent('forceStop');
+
   document.getElementById('restore').onclick = function () { restore() };
-  cancelMousedownEvent('restore');
-  cancelMousedownEvent('setAttrAll');
-  cancelMousedownEvent('setAttrAll_');
+
+  document.getElementById('setAttrAll').onclick = function () {
+    const checked = this.checked;
+    document.getElementById('setAttrAll').checked = checked;
+    document.getElementById('applytoall_mobile').checked = checked;
+  }
+  document.getElementById('applytoall_mobile').onclick = document.getElementById('setAttrAll').onclick;
 
   document.getElementById('copy').onclick = function () {
     objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
+    objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
+    selectObj(objs.length - 1);
     draw();
     createUndoPoint();
   };
-  cancelMousedownEvent('copy');
+  document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
+
   document.getElementById('delete').onclick = function () {
     removeObj(selectedObj);
     draw();
     createUndoPoint();
   };
-  cancelMousedownEvent('delete');
+  document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
+
+  document.getElementById('unselect').onclick = function () {
+    selectObj(-1);
+    draw();
+    createUndoPoint();
+  };
+  document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
+
   document.getElementById('showAdvanced').onclick = function () {
     showAdvancedOn = true;
     selectObj(selectedObj);
   };
-  cancelMousedownEvent('showAdvanced');
+  document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
+
   document.getElementById('textarea1').onchange = function () {
     JSONInput();
     createUndoPoint();
@@ -255,20 +348,11 @@ window.onload = function (e) {
       //enter
       document.getElementById('save_confirm').onclick();
     }
-    if (e.keyCode == 27) {
-      //esc
-      document.getElementById('save_cancel').onclick();
-    }
 
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
-  document.getElementById('save_cancel').onclick = function () {
-    document.getElementById('saveBox').style.display = 'none';
-  };
   document.getElementById('save_confirm').onclick = save;
-
-  cancelMousedownEvent('saveBox');
 
 
   document.getElementById('xybox').onkeydown = function (e) {
@@ -296,8 +380,6 @@ window.onload = function (e) {
       xyBox_cancelContextMenu = false;
     }
   }, false);
-
-  cancelMousedownEvent('xybox');
 
 
   window.ondragenter = function (e) {
@@ -388,7 +470,9 @@ function initParameters() {
 
   rayDensity_light = 0.1; //光線密度(光線相關模式) The Ray Density when View is Rays or Extended rays
   rayDensity_images = 1; //光線密度(像相關模式) The Ray Density when View is All Images or Seen by Observer
-  window.toolBarViewModel.rayDensity.value(rayDensity_light);
+  document.getElementById("rayDensity").value = rayDensity_light;
+  document.getElementById("rayDensity_more").value = rayDensity_light;
+  document.getElementById("rayDensity_mobile").value = rayDensity_light;
   extendLight = false;
   showLight = true;
   origin = { x: 0, y: 0 };
@@ -400,25 +484,38 @@ function initParameters() {
       cartesianSign = true;
     }
   } catch { }
-  window.toolBarViewModel.zoom.value(scale * 100);
+  document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
   colorMode = false;
   backgroundImage = null;
 
   //Reset new UI.
-  window.toolBarViewModel.tools.selected("Move View");
-  window.toolBarViewModel.modes.selected("Rays");
-  window.toolBarViewModel.c1.selected(false);
-  window.toolBarViewModel.c2.selected(false);
-  window.toolBarViewModel.c3.selected(false);
-  window.toolBarViewModel.colorMode.selected(false);
+  
+  resetDropdownButtons();
+  document.getElementById('tool_').checked = true;
+  document.getElementById('tool__mobile').checked = true;
+  document.getElementById('mode_light').checked = true;
+  document.getElementById('mode_light_mobile').checked = true;
 
   document.getElementById('lockobjs').checked = false;
   document.getElementById('grid').checked = false;
   document.getElementById('showgrid').checked = false;
 
+  document.getElementById('lockobjs_more').checked = false;
+  document.getElementById('grid_more').checked = false;
+  document.getElementById('showgrid_more').checked = false;
+
+  document.getElementById('lockobjs_mobile').checked = false;
+  document.getElementById('grid_mobile').checked = false;
+  document.getElementById('showgrid_mobile').checked = false;
+
+  document.getElementById('color_mode').checked = false;
+  document.getElementById('color_mode_mobile').checked = false;
+
   document.getElementById('setAttrAll').checked = false;
+  document.getElementById('applytoall_mobile').checked = false;
 
   draw();
 }
@@ -625,7 +722,8 @@ function JSONInput() {
   origin = jsonData.origin;
   scale = jsonData.scale;
   colorMode = jsonData.colorMode;
-  window.toolBarViewModel.colorMode.selected(colorMode);
+  document.getElementById('color_mode').checked = colorMode;
+  document.getElementById('color_mode_mobile').checked = colorMode;
   modebtn_clicked(jsonData.mode);
   selectObj(selectedObj);
 }
@@ -636,58 +734,20 @@ function toolbtn_clicked(tool, e) {
     document.getElementById('welcome').style.display = 'none';
   }
   AddingObjType = tool;
-  if (tool == "radiant_") {
-    var t = window.toolBarViewModel.point_sources.selected();
-    if (t == "360 degrees")
-      AddingObjType = "radiant";
-    if (t == "Finite angle")
-      AddingObjType = "led";
-  } else if (tool == "mirror_") {
-    var t = window.toolBarViewModel.mirrors.selected();
-    if (t == "Segment")
-      AddingObjType = "mirror";
-    else if (t == "Circular Arc")
-      AddingObjType = "arcmirror";
-    else if (t == "Parabolic")
-      AddingObjType = "parabolicmirror";
-    else if (t == "Custom equation")
-      AddingObjType = "curvedmirror";
-    else if (t == "Beam Splitter")
-      AddingObjType = "beamsplitter";
-    else if (t == "Ideal Curved")
-      AddingObjType = "idealmirror";
-  } else if (tool == "refractor_") {
-    var t = window.toolBarViewModel.glasses.selected();
-    if (t == "Half-plane")
-      AddingObjType = "halfplane";
-    else if (t == "Circle")
-      AddingObjType = "circlelens";
-    else if (t == "Free-shape")
-      AddingObjType = "refractor";
-    else if (t == "Ideal Lens")
-      AddingObjType = "lens";
-    else if (t == "Spherical Lens")
-      AddingObjType = "sphericallens";
-    else if (t == "Custom equation")
-      AddingObjType = "curvedglass";
-  } else if (tool === "blocker_") {
-    var t = window.toolBarViewModel.blockers.selected();
-    if (t === "Line Blocker")
-      AddingObjType = "blackline";
-    else if (t === "Circle Blocker")
-      AddingObjType = "blackcircle";
-  }
 }
 
 
 function modebtn_clicked(mode1) {
-  window.toolBarViewModel.modes.selected({ "light": "Rays", "extended_light": "Extended Rays", "images": "All Images", "observer": "Seen by Observer" }[mode1]);
   mode = mode1;
   if (mode == 'images' || mode == 'observer') {
-    window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_images));
+    document.getElementById("rayDensity").value = Math.log(rayDensity_images);
+    document.getElementById("rayDensity_more").value = Math.log(rayDensity_images);
+    document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_images);
   }
   else {
-    window.toolBarViewModel.rayDensity.value(Math.log(rayDensity_light));
+    document.getElementById("rayDensity").value = Math.log(rayDensity_light);
+    document.getElementById("rayDensity_more").value = Math.log(rayDensity_light);
+    document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_light);
   }
   if (mode == 'observer' && !observer) {
     //初始化觀察者 Initialize the observer
@@ -704,30 +764,6 @@ function modebtn_clicked(mode1) {
 }
 
 
-
-function cancelMousedownEvent(id) {
-  document.getElementById(id).onmousedown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById(id).ontouchstart = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-}
-
-function cancelMousedownEvent_(elem) {
-  elem.onmousedown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  elem.ontouchstart = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-}
-
-
 function setScale(value) {
   setScaleWithCenter(value, canvas.width / scale / 2, canvas.height / scale / 2);
 }
@@ -739,6 +775,8 @@ function setScaleWithCenter(value, centerX, centerY) {
   origin.x -= centerX * scaleChange;
   origin.y -= centerY * scaleChange;
   scale = value;
+  document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   draw();
 }
 

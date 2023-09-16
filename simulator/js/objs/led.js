@@ -11,7 +11,7 @@ objTypes['led'] = {
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
       obj.brightness = value;
-    }, elem);
+    }, elem, getMsg('brightness_note_popover'));
     if (colorMode) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;

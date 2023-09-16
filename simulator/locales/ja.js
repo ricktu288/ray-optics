@@ -144,6 +144,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "テキスト"
   },
+  "tool_more_": {
+    "incomplete": false,
+    "message": "その他"
+  },
   "toolname_": {
     "incomplete": false,
     "message": "ビュー移動"
@@ -174,11 +178,11 @@ locales["ja"] = {
   },
   "File: ": {
     "incomplete": false,
-    "message": "ファイル: "
+    "message": "ファイル"
   },
   "Tools: ": {
     "incomplete": false,
-    "message": "ツール: "
+    "message": "ツール"
   },
   "tool_laser": {
     "incomplete": false,
@@ -190,15 +194,19 @@ locales["ja"] = {
   },
   "tool_radiant": {
     "incomplete": false,
-    "message": "360度"
+    "message": "点光源 (360°)"
   },
   "tool_led": {
     "incomplete": false,
-    "message": "限定角度"
+    "message": "点光源 (<360°)"
   },
   "tool_radiant_": {
     "incomplete": false,
     "message": "点光源"
+  },
+  "tool_lightsource_": {
+    "incomplete": false,
+    "message": "光源"
   },
   "tool_mirror_": {
     "incomplete": false,
@@ -286,11 +294,15 @@ locales["ja"] = {
   },
   "View: ": {
     "incomplete": false,
-    "message": "ビュー: "
+    "message": "ビュー"
   },
   "Settings: ": {
     "incomplete": false,
-    "message": "設定: "
+    "message": "設定"
+  },
+  "moresettings": {
+    "incomplete": true,
+    "message": "More"
   },
   "mode_light": {
     "incomplete": false,
@@ -354,7 +366,7 @@ locales["ja"] = {
   },
   "save_name": {
     "incomplete": false,
-    "message": "名前:"
+    "message": "名前"
   },
   "save_cancel": {
     "incomplete": false,
@@ -367,6 +379,10 @@ locales["ja"] = {
   "open": {
     "incomplete": false,
     "message": "開く"
+  },
+  "layoutaids": {
+    "incomplete": true,
+    "message": "Layout Aids"
   },
   "lockobjs": {
     "incomplete": false,
@@ -386,11 +402,11 @@ locales["ja"] = {
   },
   "brightness": {
     "incomplete": false,
-    "message": "明るさ:"
+    "message": "明るさ"
   },
   "wavelength": {
     "incomplete": false,
-    "message": "波長 (nm):"
+    "message": "波長 (nm)"
   },
   "dichroic": {
     "incomplete": false,
@@ -402,15 +418,15 @@ locales["ja"] = {
   },
   "bandwidth": {
     "incomplete": false,
-    "message": "帯域幅 (nm):"
+    "message": "帯域幅 (nm)"
   },
-  "invert":{
+  "invert": {
     "incomplete": false,
     "message": "反転"
   },
   "emissionangle": {
     "incomplete": false,
-    "message": "放射角度 (°):"
+    "message": "放射角度 (°)"
   },
   "symmetric": {
     "incomplete": false,
@@ -418,7 +434,7 @@ locales["ja"] = {
   },
   "focallength": {
     "incomplete": false,
-    "message": "焦点距離:"
+    "message": "焦点距離"
   },
   "cartesiansign": {
     "incomplete": true,
@@ -426,7 +442,7 @@ locales["ja"] = {
   },
   "refractiveindex": {
     "incomplete": false,
-    "message": "屈折率:"
+    "message": "屈折率*"
   },
   "random": {
     "incomplete": false,
@@ -464,13 +480,13 @@ locales["ja"] = {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
-  "refractiveindex_note": {
-    "incomplete": false,
-    "message": "(relative if inside another glass)"
+  "brightness_note_popover": {
+    "incomplete": true,
+    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
   "refractiveindex_note_popover": {
     "incomplete": false,
-    "message": "もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。"
+    "message": "<p>*relative if inside another glass</p><p>もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -478,7 +494,7 @@ locales["ja"] = {
   },
   "transmissionratio": {
     "incomplete": false,
-    "message": "透過率:"
+    "message": "透過率"
   },
   "applytoall": {
     "incomplete": false,
@@ -492,9 +508,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "消去"
   },
+  "unselect": {
+    "incomplete": true,
+    "message": "Unselect"
+  },
+  "unselect_popover": {
+    "incomplete": true,
+    "message": "Unselect this object (Right-click on blank space has the same function.)"
+  },
   "showadvanced": {
     "incomplete": true,
-    "message": "Show advanced options"
+    "message": "More options..."
   },
   "processing": {
     "incomplete": false,
@@ -566,7 +590,7 @@ locales["ja"] = {
   },
   "tool_parallel_popover": {
     "incomplete": true,
-    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "incomplete": false,
@@ -670,11 +694,11 @@ locales["ja"] = {
   },
   "color_mode_popover": {
     "incomplete": true,
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "incomplete": false,
-    "message": "光をシミュレートする密度を決定します。 数値は対数スケールです。"
+    "incomplete": true,
+    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
     "incomplete": false,
@@ -694,6 +718,26 @@ locales["ja"] = {
   },
   "help_popover": {
     "incomplete": false,
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>ヘルプポップアップ</b><p>このボタンをクリックすると、他のボタンのヘルプ ポップアップが切り替わります。</p><b>ドラッグの制限</b><p>オブジェクトをドラッグするとき、Shift キーを押したままにすると、水平/垂直に制限されます。 Ctrl キーを押したままクローンを作成します。 線状のオブジェクトを作成するか、その端点をドラッグする場合、Shift キーを押したまま角度をロックするか、0°、45°、90° にスナップします。 Ctrl キーを押したままにして、中心を中心に回転/スケールします。</p><b>オブジェクトをグループ化、回転、スケールする</b><p> Ctrl キーを押しながら、いくつかのコントロール ポイント (端点など) をクリックし、空のスペースをクリックしてグループ化します。 をポイントしてハンドルを作成します。 ハンドルをドラッグして (または矢印キーを押して)、グループを移動します。 Shift キーを押しながらドラッグすると、水平/垂直に制限されます。 Ctrl+ドラッグして回転させ、Ctrl+Shift+ドラッグして拡大縮小します。 「+」をドラッグして回転/スケーリングの中心を設定します。 ハンドルをクリックし、Ctrl+D を押してグループを複製します。 グループを解除するには、[削除]を押します。 </p><b>座標を直接編集する</b><p>オブジェクトの制御点 (エンドポイントなど) をダブルクリックまたは右クリックし、(x,y) 座標をピクセル単位で編集し、Enter キーを押します。 </p><b>キーボード ショートカット</b><p>オブジェクトをクリックして選択したら、矢印キーを押して移動します。 Ctrl+D を押して複製します。 Deleteキーで削除できます。</p></div>"
+    "message": "<b>ドラッグの制限</b><p>オブジェクトをドラッグするとき、Shift キーを押したままにすると、水平/垂直に制限されます。 Ctrl キーを押したままクローンを作成します。 線状のオブジェクトを作成するか、その端点をドラッグする場合、Shift キーを押したまま角度をロックするか、0°、45°、90° にスナップします。 Ctrl キーを押したままにして、中心を中心に回転/スケールします。</p><b>オブジェクトをグループ化、回転、スケールする</b><p> Ctrl キーを押しながら、いくつかのコントロール ポイント (端点など) をクリックし、空のスペースをクリックしてグループ化します。 をポイントしてハンドルを作成します。 ハンドルをドラッグして (または矢印キーを押して)、グループを移動します。 Shift キーを押しながらドラッグすると、水平/垂直に制限されます。 Ctrl+ドラッグして回転させ、Ctrl+Shift+ドラッグして拡大縮小します。 「+」をドラッグして回転/スケーリングの中心を設定します。 ハンドルをクリックし、Ctrl+D を押してグループを複製します。 グループを解除するには、[削除]を押します。 </p><b>座標を直接編集する</b><p>オブジェクトの制御点 (エンドポイントなど) をダブルクリックまたは右クリックし、(x,y) 座標をピクセル単位で編集し、Enter キーを押します。 </p><b>キーボード ショートカット</b><p>オブジェクトをクリックして選択したら、矢印キーを押して移動します。 Ctrl+D を押して複製します。 Deleteキーで削除できます。</p>"
+  },
+  "show_help_popups": {
+    "incomplete": true,
+    "message": "Show help popups"
+  },
+  "show_help_popups_popover": {
+    "incomplete": true,
+    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+  },
+  "language": {
+    "incomplete": true,
+    "message": "Language"
+  },
+  "close": {
+    "incomplete": true,
+    "message": "Close"
+  },
+  "advanced_help": {
+    "incomplete": true,
+    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
   }
 }

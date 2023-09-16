@@ -108,6 +108,9 @@ locales["en"] = {
   "toolname_text": {
     "message": "Text"
   },
+  "tool_more_": {
+    "message": "Other"
+  },
   "toolname_": {
     "message": "Move view"
   },
@@ -130,28 +133,31 @@ locales["en"] = {
     "message": "Simulate Colors"
   },
   "File: ": {
-    "message": "File: "
+    "message": "File"
   },
   "Tools: ": {
-    "message": "Tools: "
+    "message": "Tools"
   },
   "tool_laser": {
-    "message": "Ray"
+    "message": "Single ray"
   },
   "tool_parallel": {
     "message": "Beam"
   },
   "tool_radiant": {
-    "message": "360 degrees"
+    "message": "Point source (360°)"
   },
   "tool_led": {
-    "message": "Finite angle"
+    "message": "Point source (<360°)"
   },
   "tool_radiant_": {
     "message": "Point source"
   },
+  "tool_lightsource_": {
+    "message": "Light Source"
+  },
   "tool_mirror_": {
-    "message": "Mirrors"
+    "message": "Mirror"
   },
   "tool_mirror": {
     "message": "Segment"
@@ -172,10 +178,10 @@ locales["en"] = {
     "message": "Ideal Curved"
   },
   "tool_refractor_": {
-    "message": "Glasses"
+    "message": "Glass"
   },
   "tool_blocker_": {
-    "message": "Blockers"
+    "message": "Blocker"
   },
   "tool_halfplane": {
     "message": "Half-plane"
@@ -214,10 +220,13 @@ locales["en"] = {
     "message": "Move view"
   },
   "View: ": {
-    "message": "View: "
+    "message": "View"
   },
   "Settings: ": {
-    "message": "Settings: "
+    "message": "Settings"
+  },
+  "moresettings": {
+    "message": "More"
   },
   "mode_light": {
     "message": "Rays"
@@ -265,7 +274,7 @@ locales["en"] = {
     "message": "View Gallery"
   },
   "save_name": {
-    "message": "Name:"
+    "message": "Name"
   },
   "save_cancel": {
     "message": "Cancel"
@@ -275,6 +284,9 @@ locales["en"] = {
   },
   "open": {
     "message": "Open"
+  },
+  "layoutaids": {
+    "message": "Layout Aids"
   },
   "lockobjs": {
     "message": "Lock Objects"
@@ -289,10 +301,10 @@ locales["en"] = {
     "message": "Snap to Grid"
   },
   "brightness": {
-    "message": "Brightness:"
+    "message": "Brightness"
   },
   "wavelength": {
-    "message": "Wavelength (nm):"
+    "message": "Wavelength (nm)"
   },
   "dichroic": {
     "message": "Dichroic"
@@ -301,25 +313,25 @@ locales["en"] = {
     "message": "Filter"
   },
   "bandwidth": {
-    "message": "Bandwidth (nm):"
+    "message": "Bandwidth (nm)"
   },
   "invert": {
     "message": "Invert"
   },
   "emissionangle": {
-    "message": "Emission Angle (°):"
+    "message": "Emission Angle (°)"
   },
   "symmetric": {
     "message": "Symmetric"
   },
   "focallength": {
-    "message": "Focal length:"
+    "message": "Focal length"
   },
   "cartesiansign": {
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Refractive index:"
+    "message": "Refractive index*"
   },
   "random": {
     "message": "Random"
@@ -348,17 +360,17 @@ locales["en"] = {
   "beam_warning": {
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
-  "refractiveindex_note": {
-    "message": "(relative if inside another glass)"
+  "brightness_note_popover": {
+    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
   "refractiveindex_note_popover": {
-    "message": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones."
+    "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
   "cauchycoeff": {
     "message": "Cauchy coefficient"
   },
   "transmissionratio": {
-    "message": "Transmission Ratio:"
+    "message": "Transmission Ratio"
   },
   "applytoall": {
     "message": "Apply to All"
@@ -369,8 +381,14 @@ locales["en"] = {
   "delete": {
     "message": "Delete"
   },
+  "unselect": {
+    "message": "Unselect"
+  },
+  "unselect_popover": {
+    "message": "Unselect this object (Right-click on blank space has the same function.)"
+  },
   "showadvanced": {
-    "message": "Show advanced options"
+    "message": "More options..."
   },
   "processing": {
     "message": "Processing... Click here to stop."
@@ -424,7 +442,7 @@ locales["en"] = {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {
-    "message": "A parallel or divergent (advanced option) beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
@@ -502,10 +520,10 @@ locales["en"] = {
     "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "message": "Decides how dense should the lights be simulated. The number is in log scale."
+    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
     "message": "Defines the visibility of the background grid."
@@ -520,6 +538,21 @@ locales["en"] = {
     "message": "Zoom the view with percentage."
   },
   "help_popover": {
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>Help popups</b><p>Click this button to toggle help popups for other buttons.</p><b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p></div>"
+    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p>"
+  },
+  "show_help_popups": {
+    "message": "Show help popups"
+  },
+  "show_help_popups_popover": {
+    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+  },
+  "language": {
+    "message": "Language"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "advanced_help": {
+    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
   }
 }

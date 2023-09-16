@@ -20,11 +20,7 @@ For direct contributions, see the following guidelines.
 
 After the steps above, The new tool can be tested by opening `simulator/index.html` locally in your browser and executing <code>AddingObjType = '<var>TOOL_ID</var>'</code> with the developer tool to choose the tool, without being on the toolbar.
 
-5. _(optional)_ Add the corresponding lines in:
-   - `self.tools` of `simulator/js/ToolBarViewModel.js`
-   - The constructor of `ToolBarItem` in `simulator/js/ToolBarGroup.js` (if the dropdown structure is modified)
-   - `tools_normal`, `tools_withList` or `tools_inlist` in `simulator/index.js`
-   - `toolbtn_clicked` in `simulator/index.js` (if inside a dropdown)
+5. _(optional)_ Add the corresponding lines in `simulator/index.html`.
 
 6. _(optional)_ Add the locale strings for the tool to `simulator/locales/en.js`:
    - <code>tool_<var>TOOL_ID</var></code>: the title on the toolbar (or dropdown item)

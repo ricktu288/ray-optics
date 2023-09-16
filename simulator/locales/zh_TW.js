@@ -108,6 +108,9 @@ locales["zh-TW"] = {
   "toolname_text": {
     "message": "文字"
   },
+  "tool_more_": {
+    "message": "其他"
+  },
   "toolname_": {
     "message": "移動畫面"
   },
@@ -130,10 +133,10 @@ locales["zh-TW"] = {
     "message": "模擬色彩"
   },
   "File: ": {
-    "message": "檔案："
+    "message": "檔案"
   },
   "Tools: ": {
-    "message": "工具："
+    "message": "工具"
   },
   "tool_laser": {
     "message": "單一光線"
@@ -142,13 +145,16 @@ locales["zh-TW"] = {
     "message": "光束"
   },
   "tool_radiant": {
-    "message": "360度"
+    "message": "點光源 (360°)"
   },
   "tool_led": {
-    "message": "有限角度"
+    "message": "點光源 (<360°)"
   },
   "tool_radiant_": {
     "message": "點光源"
+  },
+  "tool_lightsource_": {
+    "message": "光源"
   },
   "tool_mirror_": {
     "message": "鏡子"
@@ -214,10 +220,13 @@ locales["zh-TW"] = {
     "message": "移動畫面"
   },
   "View: ": {
-    "message": "檢視："
+    "message": "檢視"
   },
   "Settings: ": {
-    "message": "設定："
+    "message": "設定"
+  },
+  "moresettings": {
+    "message": "更多選項"
   },
   "mode_light": {
     "message": "光線"
@@ -265,7 +274,7 @@ locales["zh-TW"] = {
     "message": "瀏覽作品集"
   },
   "save_name": {
-    "message": "名稱："
+    "message": "名稱"
   },
   "save_cancel": {
     "message": "取消"
@@ -275,6 +284,9 @@ locales["zh-TW"] = {
   },
   "open": {
     "message": "開啟"
+  },
+  "layoutaids": {
+    "message": "排版輔助"
   },
   "lockobjs": {
     "message": "鎖定物件"
@@ -289,10 +301,10 @@ locales["zh-TW"] = {
     "message": "對齊格線"
   },
   "brightness": {
-    "message": "亮度："
+    "message": "亮度"
   },
   "wavelength": {
-    "message": "波長 (nm)："
+    "message": "波長 (nm)"
   },
   "dichroic": {
     "message": "二色性"
@@ -301,25 +313,25 @@ locales["zh-TW"] = {
     "message": "濾光"
   },
   "bandwidth": {
-    "message": "帶寬 (nm)："
+    "message": "帶寬 (nm)"
   },
-  "invert":{
+  "invert": {
     "message": "反向"
   },
   "emissionangle": {
-    "message": "發射角 (°)："
+    "message": "發射角 (°)"
   },
   "symmetric": {
     "message": "對稱"
   },
   "focallength": {
-    "message": "焦距："
+    "message": "焦距"
   },
   "cartesiansign": {
     "message": "卡氏符號約定"
   },
   "refractiveindex": {
-    "message": "折射率："
+    "message": "折射率*"
   },
   "random": {
     "message": "隨機"
@@ -348,17 +360,17 @@ locales["zh-TW"] = {
   "beam_warning": {
     "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"
   },
-  "refractiveindex_note": {
-    "message": "（於另一透光物內部時為相對值）"
+  "brightness_note_popover": {
+    "message": "<p>只在「光線密度」夠高時才有作用。</p><p>如需改變射出的光線數量，請調整全域性的「光線密度」滑桿。</p>"
   },
   "refractiveindex_note_popover": {
-    "message": "如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。"
+    "message": "<p>*於另一透光物內部時為相對值</p><p>如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。</p>"
   },
   "cauchycoeff": {
     "message": "柯西係數"
   },
   "transmissionratio": {
-    "message": "透光率："
+    "message": "透光率"
   },
   "applytoall": {
     "message": "套用全部"
@@ -369,8 +381,14 @@ locales["zh-TW"] = {
   "delete": {
     "message": "刪除"
   },
+  "unselect": {
+    "message": "取消選取"
+  },
+  "unselect_popover": {
+    "message": "取消選取此物件（在空白處按滑鼠右鍵也有相同的功能）"
+  },
   "showadvanced": {
-    "message": "顯示進階選項"
+    "message": "更多選項…"
   },
   "processing": {
     "message": "處理中…… 按此處以終止。"
@@ -424,7 +442,7 @@ locales["zh-TW"] = {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
   },
   "tool_parallel_popover": {
-    "message": "由一線段產生平行或發散（進階選項）光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
+    "message": "由一線段產生平行或發散光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
   },
   "tool_radiant_popover": {
     "message": "由一點向四周發射光線，數量由「光線密度」滑桿決定。（點擊以創建。）"
@@ -502,10 +520,10 @@ locales["zh-TW"] = {
     "message": "模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。（拖曳大藍點以移動觀察者。）<br>若使用「模擬色彩」，則改以光源顏色顯示。"
   },
   "color_mode_popover": {
-    "message": "<img src='../img/simulate_colors.png' align='left' style='margin-right: 10px; margin-bottom: 4px; max-width: 250px'>模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
+    "message": "模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
   },
   "rayDensity_popover": {
-    "message": "決定光線模擬的密度。數值為對數刻度。"
+    "message": "決定從光束與點光源射出的光線數量。這也會影響到像的偵測與顏色渲染的準確性。"
   },
   "showgrid_popover": {
     "message": "決定是否顯示背景格線。"
@@ -520,6 +538,21 @@ locales["zh-TW"] = {
     "message": "透過百分比縮放視窗。"
   },
   "help_popover": {
-    "message": "<div style=\"font-weight: normal; font-size: 10pt;\"><b>提示泡泡</b><p>按此鈕以切換是否於其他按鈕顯示提示泡泡。</p><b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</div>"
+    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。"
+  },
+  "show_help_popups": {
+    "message": "顯示提示泡泡"
+  },
+  "show_help_popups_popover": {
+    "message": "決定滑鼠移到按鈕上方時是否顯示提示泡泡（須重新載入網頁以套用變更）"
+  },
+  "language": {
+    "message": "語言"
+  },
+  "close": {
+    "message": "關閉"
+  },
+  "advanced_help": {
+    "message": "進階說明詳見右下角的說明圖示。<br>無法正常運作嗎？<a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">按這裡</a>可回到舊版。"
   }
 }

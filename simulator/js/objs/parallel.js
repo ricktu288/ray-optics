@@ -12,7 +12,7 @@ objTypes['parallel'] = {
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
-    }, elem);
+    }, elem, getMsg('brightness_note_popover'));
     if (colorMode) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
@@ -37,7 +37,6 @@ objTypes['parallel'] = {
         note.style.marginRight = "0.2em";
         note.style.color = "white";
         elem.appendChild(note);
-        cancelMousedownEvent("beam_warning");
       }
     }
 },
