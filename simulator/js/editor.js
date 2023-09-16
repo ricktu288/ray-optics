@@ -483,14 +483,14 @@ function canvas_onmousewheel(e) {
   }
   d = Math.max(0.25, Math.min(5.00, d)) * 100;
   setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
-  window.toolBarViewModel.zoom.value(d);
+  //window.toolBarViewModel.zoom.value(d);
   return false;
 }
 
 
 function selectObj(index) {
   hideAllPopovers();
-  
+
   if (index < 0 || index >= objs.length) {
     //若此物件不存在 If this object does not exist
     selectedObj = -1;

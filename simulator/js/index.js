@@ -52,24 +52,24 @@ window.onload = function (e) {
   document.getElementById('redo_mobile').disabled = true;
 
 
-  canvas.onmousedown = function (e) {
+  canvas.addEventListener('mousedown', function (e) {
     console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
 
     document.body.focus();
     canvas_onmousedown(e);
-  };
+  });
 
-  canvas.onmousemove = function (e) {
+  canvas.addEventListener('mousemove', function (e) {
     console.log("mousemove");
     canvas_onmousemove(e);
-  };
+  });
 
-  canvas.onmouseup = function (e) {
+  canvas.addEventListener('mouseup',  function (e) {
     console.log("mouseup");
     canvas_onmouseup(e);
-  };
+  });
 
   // IE9, Chrome, Safari, Opera
   canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
@@ -77,35 +77,82 @@ window.onload = function (e) {
   canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
 
 
-  canvas.ontouchstart = function (e) {
-    console.log("touchstart");
-    //document.getElementById('objAttr_text').blur();
-    // TODO: check that commenting out the above line does not cause problem.
+  let initialPinchDistance = null;
+  let lastScale = 1;
+  
+  canvas.addEventListener('touchstart',  function (e) {
+    if (e.touches.length === 2) {
+      // Pinch to zoom
+      e.preventDefault();
+      if (isConstructing || draggingObj >= 0) {
+        canvas_onmouseup(e);
+        undo();
+      } else {
+        canvas_onmouseup(e);
+      }
+    } else {
+      console.log("touchstart");
+      document.body.focus();
+      canvas_onmousemove(e);
+      canvas_onmousedown(e);
+    }
+  });
 
-    document.body.focus();
-    canvas_onmousemove(e);
-    canvas_onmousedown(e);
-  };
-
-  canvas.ontouchmove = function (e) {
+  canvas.addEventListener('touchmove',  function (e) {
     console.log("touchmove");
-    canvas_onmousemove(e);
-  };
+    if (e.touches.length === 2) {
+      // Pinch to zoom
 
-  canvas.ontouchend = function (e) {
+      // Calculate current distance between two touches
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+  
+      // If initialPinchDistance is null, this is the first move event of the pinch
+      // Set initial distance
+      if (initialPinchDistance === null) {
+        initialPinchDistance = distance;
+        lastScale = scale;
+      }
+  
+      // Calculate the scaling factor
+      const scaleFactor = distance / initialPinchDistance;
+  
+      // Update scale based on previous scale and scaling factor
+      let newScale = lastScale * scaleFactor;
+      
+      newScale = Math.max(0.25, Math.min(5.00, newScale));
+  
+      // Apply the scale transformation
+      setScaleWithCenter(newScale, (e.touches[0].pageX - e.target.offsetLeft) / scale, (e.touches[0].pageY - e.target.offsetTop) / scale);
+      //window.toolBarViewModel.zoom.value(newScale * 100);
+    } else {
+      canvas_onmousemove(e);
+    }
+  });
+
+  canvas.addEventListener('touchend',  function (e) {
     console.log("touchend");
-    canvas_onmouseup(e);
-  };
+    if (e.touches.length < 2) {
+      initialPinchDistance = null;
+      canvas_onmouseup(e);
+    }
+  });
 
-  canvas.ontouchcancel = function (e) {
+  canvas.addEventListener('touchcancel',  function (e) {
     console.log("touchcancel");
-    canvas_onmouseup(e);
-    undo();
-  };
+    initialPinchDistance = null;
+    if (isConstructing || draggingObj >= 0) {
+      canvas_onmouseup(e);
+      undo();
+    } else {
+      canvas_onmouseup(e);
+    }
+  });
 
-  canvas.ondblclick = function (e) {
+  canvas.addEventListener('dblclick',  function (e) {
     canvas_ondblclick(e);
-  };
+  });
 
 
   document.getElementById('undo').onclick = undo;
