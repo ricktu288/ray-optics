@@ -24,6 +24,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Home"
   },
+  "home_url": {
+    "incomplete": true,
+    "message": "https://phydemo.app/ray-optics/"
+  },
   "gallery": {
     "incomplete": true,
     "message": "Gallery"

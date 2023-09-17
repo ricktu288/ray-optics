@@ -18,6 +18,9 @@ locales["zh-CN"] = {
   "home": {
     "message": "首页"
   },
+  "home_url": {
+    "message": "https://phydemo.app/ray-optics/cn/"
+  },
   "gallery": {
     "message": "作品集"
   },

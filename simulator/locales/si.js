@@ -22,6 +22,9 @@ locales["si"] = {
     "incomplete": true,
     "message": "Home"
   },
+  "home_url": {
+    "message": "https://phydemo.app/ray-optics/si/"
+  },
   "gallery": {
     "incomplete": true,
     "message": "Gallery"

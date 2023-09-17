@@ -24,6 +24,9 @@ locales["ko"] = {
     "incomplete": false,
     "message": "홈"
   },
+  "home_url": {
+    "message": "https://phydemo.app/ray-optics/ko/"
+  },
   "gallery": {
     "incomplete": false,
     "message": "갤러리"

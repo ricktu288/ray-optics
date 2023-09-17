@@ -119,6 +119,9 @@ function updateUIText(elememt = document) {
 
     document.getElementById('lang-' + lang1).innerText = Math.round(translated/total*100) + '%';
   }
+
+  document.title = getMsg('appName');
+  document.getElementById('home').href = getMsg('home_url');
 }
 
 function updateUIWithPopovers(elememt = document) {

@@ -18,6 +18,9 @@ locales["pl"] = {
   "home": {
     "message": "Strona główna"
   },
+  "home_url": {
+    "message": "https://phydemo.app/ray-optics/pl/"
+  },
   "gallery": {
     "message": "Galeria"
   },

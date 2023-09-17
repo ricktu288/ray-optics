@@ -24,6 +24,9 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ホーム"
   },
+  "home_url": {
+    "message": "https://phydemo.app/ray-optics/jp/"
+  },
   "gallery": {
     "incomplete": false,
     "message": "ギャラリー"
