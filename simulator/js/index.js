@@ -725,6 +725,8 @@ function JSONInput() {
   document.getElementById('color_mode').checked = colorMode;
   document.getElementById('color_mode_mobile').checked = colorMode;
   modebtn_clicked(jsonData.mode);
+  document.getElementById('mode_' + jsonData.mode).checked = true;
+  document.getElementById('mode_' + jsonData.mode + '_mobile').checked = true;
   selectObj(selectedObj);
 }
 
