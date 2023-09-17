@@ -3,13 +3,12 @@
   "short_name": "Ray Optics",
   "icons": [
     {
-      "src": "icon128.png",
+      "src": "/icon128.png",
       "sizes": "128x128"
     }
   ],
-  "start_url": "index.html",
+  "start_url": "/simulator/index.html",
   "display": "standalone",
-  "orientation": "landscape",
   "theme_color": "white",
   "background_color": "black"
 }
