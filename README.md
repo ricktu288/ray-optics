@@ -110,26 +110,3 @@ The source code is available at: https://github.com/mathjax/MathJax-src
 
 json-url is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
 The source code is available at: https://github.com/masotime/json-url
-
-
-# 線光學模擬
-自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。
-
-## 功能
-- 模擬多種光源：光線、平行光、點光源
-- 模擬直線形、弧形、拋物線形鏡子的反射
-- 模擬分光鏡(beam splitter)
-- 模擬直線型與弧形界面的折射，包括反射光與折射光
-- 模擬混色與色散 
-- 模擬理想透鏡/面鏡（符合透鏡/面鏡公式）
-- 顯示光線的延長線以觀察是否成虛像
-- 直接檢視實像、虛像與虛物
-- 顯示從某一位置能觀察到的像
-- 距離、角度、能量流與動量流量測
-- 匯出為SVG圖形
-
-## 連結
-- [**啟動網頁程式**](https://phydemo.app/ray-optics/simulator/)
-- [作品集](https://phydemo.app/ray-optics/gallery/)
-- [原始碼文件](https://github.com/ricktu288/ray-optics/wiki)
-- [關於](https://phydemo.app/ray-optics/about)
