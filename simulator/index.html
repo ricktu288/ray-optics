@@ -44,7 +44,8 @@
           "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
           "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.<br><span style=\"font-size:8pt\">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>",
           "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
-          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>'
+          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>',
+          "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href="https://phydemo.app/ray-optics/gallery/">Gallery page වෙත යන්න</a>.<br><span style="font-size:8pt">Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version.</span>'
         }
         var lang = 'en';
         if (navigator.language) {
@@ -65,6 +66,8 @@
             lang = 'pl';
           } else if (browser_lang == 'ja' || browser_lang.startsWith('ja-')) {
             lang = 'ja';
+          } else if (browser_lang == 'si' || browser_lang.startsWith('si-')) {
+            lang = 'si';
           }
         }
     
@@ -980,6 +983,16 @@
                 </div>
               </div>
             </a>
+            <a href="?si" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  සිංහල
+                </div>
+                <div class="col text-end" id="lang-si">
+                  සිංහල
+                </div>
+              </div>
+            </a>
             <a href="?zh-CN" class="btn btn-primary dropdown-item d-flex align-items-center">
               <div class="d-flex w-100">
                 <div class="col">
@@ -1073,6 +1086,7 @@
     <script src="locales/de.js"></script>
     <script src="locales/pl.js"></script>
     <script src="locales/ja.js"></script>
+    <script src="locales/si.js"></script>
 
     <!--UI scripts-->
     <script src="js/ui.js"></script>
