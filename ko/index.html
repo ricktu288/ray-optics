@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ko">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>射线光学模拟 - PhyDemo</title>
-    <meta property="og:title" content="射线光学模拟 - PhyDemo">
+    <title>광선 광학 시뮬레이션 - PhyDemo</title>
+    <meta property="og:title" content="광선 광학 시뮬레이션 - PhyDemo">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://phydemo.app/ray-optics/cn/">
+    <meta property="og:url" content="https://phydemo.app/ray-optics/ko/">
     <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
-    <meta property="og:description" content="自由、开源的网页程序，用于建立及模拟二维几何光学场景。">
-    <meta property="og:locale" content="zh-CN">
-    <link rel="canonical" href="https://phydemo.app/ray-optics/cn/">
+    <meta property="og:description" content="2D 기하 광학 생성 및 시뮬레이션을 위한 무료 오픈소스 웹 기반 앱입니다.">
+    <meta property="og:locale" content="ko">
+    <link rel="canonical" href="https://phydemo.app/ray-optics/ko/">
     <link rel="alternate" href="https://phydemo.app/ray-optics/" hreflang="en">
     <link rel="alternate" href="https://phydemo.app/ray-optics/de/" hreflang="de">
     <link rel="alternate" href="https://phydemo.app/ray-optics/fr/" hreflang="fr">
@@ -135,14 +135,14 @@
     <div class="navbar navbar-fixed-top container" style="background-color:white">
 
         <a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
-            <img src="../icon128.png" alt="" style="width:18pt; height:18pt"> 射线光学模拟
+            <img src="../icon128.png" alt="" style="width:18pt; height:18pt"> 광선 광학 시뮬레이션
         </a>
         <div class="navbar-right">
 
             <span class="navul">
-     <a href="https://phydemo.app/ray-optics/" class="active">首页</a>
-     <a href="https://phydemo.app/ray-optics/cn/gallery/">作品集</a>
-     <a href="https://phydemo.app/ray-optics/about">关于</a>
+     <a href="https://phydemo.app/ray-optics/" class="active">홈</a>
+     <a href="https://phydemo.app/ray-optics/gallery/">갤러리</a>
+     <a href="https://phydemo.app/ray-optics/about">이 앱에 대하여</a>
 </span>
             <span class="github-button-container">
 <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
@@ -152,10 +152,10 @@
     </div>
     <div class="container">
         <center>
-            <h1><b><span id="title">射线光学模拟</span></b></h1>
-            <p id="description">建立二维几何光学场景，并实时模拟光线行为。<br>完全免费，免下载，源代码<a href="https://github.com/ricktu288/ray-optics">公开于 GitHub</a>。</p>
+            <h1><b><span id="title">광선 광학 시뮬레이션</span></b></h1>
+            <p id="description">2 D 기하 광학을 시뮬레이션할 수 있습니다.<br>무료이며 웹 기반입니다. 소스 코드: <a href="https://github.com/ricktu288/ray-optics"> GitHub 에서 사용 가능</a>.
             <p>
-                <a href="https://phydemo.app/ray-optics/simulator/?zh-CN" target="_blank" class="btn btn-success btn-lg" id="start">启动程序</a>
+                <a href="https://phydemo.app/ray-optics/simulator/?ko" target="_blank" class="btn btn-success btn-lg" id="start">시뮬레이터 실행</a>
             </p>
         </center>
         <br>
@@ -172,19 +172,19 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="https://phydemo.app/ray-optics/simulator/?zh-CN#spherical-lens-and-mirror" target="_blank"><img src="../img/1.jpg" alt="1.jpg"></a>
-                </div>
-                <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/?zh-CN#compound-microscope-cn" target="_blank"><img src="3.svg" alt="3.svg"></a>
-                </div>
-                <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/?zh-CN#apparent-depth-cn" target="_blank"><img src="5.svg" alt="5.svg"></a>
-                </div>
-                <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/?zh-CN#chromatic-dispersion-cn" target="_blank"><img src="6.png" alt="6.png"></a>
+                    <a href="https://phydemo.app/ray-optics/simulator/#spherical-lens-and-mirror" target="_blank"><img src="../img/1.jpg" alt="1.jpg"></a>
                 </div>
                 <div class="item">
                     <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="../img/3.svg" alt="3.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="../img/5.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="../img/6.png"></a>
                 </div>
             </div>
             <!-- Left and right controls -->
@@ -201,114 +201,114 @@
         <div class="row" style="font-size: 10pt">
             <div class="col-sm-6">
                 <div class="col-sm-12">
-                    <h2 id="tools">工具</h2>
+                    <h2 id="tools">도구</h2>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ray.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ray">单一光线</p>
-                            <span id="ray_desc">由两点决定一条光线。</span>
+                            <p class="tool-title" id="ray">단일 광선</p>
+                            <span id="ray_desc">두 점으로 정의된 단일 광선.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="beam">平行光</p>
-                            <span id="beam_desc">由一线段产生一束平行光，密度由"光线密度"滑杆决定。</span>
+                            <p class="tool-title" id="beam">빔 (평행광)</p>
+                            <span id="beam_desc">선분으로 나타나는 평행 또는 발산하는 광선 빔. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="point_source">点光源</p>
-                            <span id="point_source_desc">由一点向四周发射光线，数量由"光线密度"滑杆决定。</span>
+                            <p class="tool-title" id="point_source">점 광원</p>
+                            <span id="point_source_desc">점 광원에서 발생하는 광선. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="mirror">镜子</p>
-                            <span id="mirror_desc">模拟光线射到镜子时的反射。</span>
+                            <p class="tool-title" id="mirror">거울</p>
+                            <span id="mirror_desc">거울에서의 반사 시뮬레이션</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="mirror_arc">镜子 (曲线)</p>
-                            <span id="mirror_arc_desc">曲线形的镜子。可选圆弧、抛物线，或自定义函数 y = f(x)。</span>
+                            <p class="tool-title" id="mirror_arc">거울 (사용자 수식)</p>
+                            <span id="mirror_arc_desc">사용자 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_curved_mirror">理想曲面镜</p>
-                            <span id="ideal_curved_mirror_desc">完全符合面镜公式(1/p + 1/q = 1/f)的理想化"曲面"镜，可直接设定其焦距(单位为像素)。</span>
+                            <p class="tool-title" id="ideal_curved_mirror">이상적인 곡면 거울 (Ideal curved mirror)</p>
+                            <span id="ideal_curved_mirror_desc">거울 방정식 (1/p + 1/q = 1/f)를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="beamsplitter">分光镜</p>
-                            <span id="beamsplitter_desc">能穿透一个比例的光的镜子。</span>
+                            <p class="tool-title" id="beamsplitter">빔 스플리터</p>
+                            <span id="beamsplitter_desc">입사광의 일부를 투과시키는 거울.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass_halfplane">透光物</p>
-                            <span id="glass_halfplane_desc">模拟光线经过透光物体界面时的反射与折射。</span>
+                            <p class="tool-title" id="glass_halfplane">유리</p>
+                            <span id="glass_halfplane_desc">선분과 원호로 구성된 다양한 형태의 유리</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass">透光物 (其他形状)</p>
-                            <span id="glass_desc">任何由线段与圆弧组成的透光物，或自定义不等式 f(x) &lt; y &lt; g(x)。</span>
+                            <p class="tool-title" id="glass">유리 (사용자 수식)</p>
+                            <span id="glass_desc">사용자 수식 f(x) &lt; y &lt; g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_lens">透光物 (理想透镜)</p>
-                            <span id="ideal_lens_desc">完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距(单位为像素)。</span>
+                            <p class="tool-title" id="ideal_lens">ガラス (理想的なレンズ)</p>
+                            <span id="ideal_lens_desc">薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離 (ピクセル単位) を直接設定できます。</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="blocker">吸光片</p>
-                            <span id="blocker_desc">线段形状的吸光片，光线射到其上后就不会再射出。</span>
+                            <p class="tool-title" id="blocker">차단기</p>
+                            <span id="blocker_desc">입사 광선을 흡수하는 선형 차단기입니다.</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ruler.svg" alt="Ruler" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption">
-                            <p class="tool-title" id="ruler">直尺</p>
-                            <span id="ruler_desc">指定原点与另一点。刻度单位为像素。</span>
+                            <p class="tool-title" id="ruler">자</p>
+                            <span id="ruler_desc">픽셀 단위의 눈금자입니다. (시작점이 0)</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption">
-                            <p class="tool-title" id="protractor">量角器</p>
-                            <span id="protractor_desc">指定圆心和圆周上一点作为零度位置。刻度单位为度。</span>
+                            <p class="tool-title" id="protractor">각도기</p>
+                            <span id="protractor_desc">도 단위의 각도기입니다. (시작점이 중심)</span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption">
-                            <p class="tool-title" id="power">探测器</p>
-                            <span id="power_desc">测量通过一线段的能量流率(P)、垂直动量流率(F⊥)与水平动量流率(F∥)。单位为任意。</span>
+                            <p class="tool-title" id="power">검출기 (Detector)</p>
+                            <span id="power_desc">선분을 통해 전달되는 에너지 흐름 (P), 수직 방향 momentum flow (F⊥), 평행 방향 memontum flow (F∥) 을 측정하는 도구입니다. 단위는 임의값 (A.U.).</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="col-sm-12">
-                    <h2 id="views">视图</h2>
+                    <h2 id="views">보기</h2>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="rays">光线</p>
-                            <span id="rays_desc">画出光线。当"光线密度"高时，光线呈现连续。</span>
+                            <p class="mode-title" id="rays">광선</p>
+                            <span id="rays_desc">광선을 나타냅니다. 광선 밀도가 높으면 연속적인 것 처럼 나타납니다.</span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 519/163; max-width: 510px">
@@ -321,8 +321,8 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="extended_rays">延长光线</p>
-                            <span id="extended_rays_desc">除光线实际路径外，亦画出其延长线。橘色、灰色分别表示向后、向前的延长线。</span>
+                            <p class="mode-title" id="extended_rays">연장된 광선</p>
+                            <span id="extended_rays_desc">광선과 연장선을 모두 표시합니다. 회색은 진행 방향을, 주황색은 진행 방향의 반대 방향을 나타냅니다.<br>'색상 (파장) 시뮬레이션'이 켜져 있으면 원본 색상으로 표시되고 점선으로 나타냅니다.</span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -332,8 +332,8 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="all_images">所有像</p>
-                            <span id="all_images_desc">点出像的位置。黄点表示实像，橘点表示虚像，灰点(图中没有)表示虚物。注意"光线密度"不够高时有些像无法正常显示。</span>
+                            <p class="mode-title" id="all_images">전체 이미지</p>
+                            <span id="all_images_desc">모든 상의 위치를 표시합니다. 노란색 점은 실상, 주황색 점은 허상, 회색 (예시 그림에는 없음) 점은 가상 객체를 나타냅니다. '광선 밀도'가 충분히 높지 않으면 일부 이미지를 감지할 수 없습니다.<br>'색상 (파장) 시뮬레이션'이 켜져 있으면 원본 색상으로 표시되고 점 크기로 구분합니다.</span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -343,8 +343,8 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="seen_by_observer">观察者所见</p>
-                            <span id="seen_by_observer_desc">模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。</span>
+                            <p class="mode-title" id="seen_by_observer">관찰된자가 보는 이미지</p>
+                            <span id="seen_by_observer_desc">특정 위치에서 보는 광선과 상을 시뮬레이션합니다. 파란색 원은 관찰자이며 이것을 지나는 광선은 '관찰된 것'으로 간주됩니다. '관찰된 광선'으로부터 관찰자는 광선이 어디에선가 시작되었다고 생각할 수는 있지만, 실제로 어느 위치에서 시작된 광선인지는 알 수 없습니다. 광선들은 파란색으로, 실상과 허상은 각각 노란색과 주황색 점으로 나타납니다. (관찰자의 위치를 옮기려면 큰 파란 점을 드래그하십시오.)<br>'색상 (파장) 시뮬레이션'이 켜져 있으면 원본 색상으로 표시됩니다.</span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -354,10 +354,10 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="simulate_colors">模拟色彩</p>
+                            <p class="mode-title" id="simulate_colors">색상 (파장) 시뮬레이션</p>
                             <span id="simulate_colors_desc">
-模拟光源的颜色（波长）、混色、滤光，以及透光物的色散。
-            </span>
+                                광원의 색상 (파장), 색상 혼합, 차단기와 거울에 의한 파장 필터링, 매질의 색 분산을 시뮬레이션합니다. 개체를 선택할 때 이러한 변수를 설정할 수 있습니다. 색상 스펙트럼을 시뮬레이션 하려면 여러 파장의 광선을 겹치십시오. 화면에 표시되는 색상은 대략적인 근사이며, 광선 밀도가 너무 높거나 낮을 시 매우 부정확할 수 있습니다. 
+                            </span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 445/216; max-width: 510px">
@@ -371,21 +371,21 @@
         <div style="float: right;">
             <div class="dropup">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <span id="language">语言：简体中文</span>
+      <span id="language">언어: 한국어</span>
       <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a href="https://phydemo.app/ray-optics/">English</a></li>
-        <li><a href="https://phydemo.app/ray-optics/de/">Deutsch</a></li>
-        <li><a href="https://phydemo.app/ray-optics/fr/">Français</a></li>
-        <li><a href="https://phydemo.app/ray-optics/jp/">日本語</a></li>
-        <li><a href="https://phydemo.app/ray-optics/ko/">한국어</a></li>
-        <li><a href="https://phydemo.app/ray-optics/nl/">Nederlands</a></li>
-        <li><a href="https://phydemo.app/ray-optics/pl/">polski</a></li>
-        <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
-        <li><a href="https://phydemo.app/ray-optics/si/">සිංහල</a></li>
-        <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>
-        <li><a href="https://phydemo.app/ray-optics/tw/">正體中文</a></li>
-    </ul>
+                <ul class="dropdown-menu">
+                    <li><a href="https://phydemo.app/ray-optics/">English</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/de/">Deutsch</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/fr/">Français</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/jp/">日本語</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/ko/">한국어</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/nl/">Nederlands</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/pl/">polski</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/si/">සිංහල</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>
+                    <li><a href="https://phydemo.app/ray-optics/tw/">正體中文</a></li>
+                </ul>
             </div>
         </div>
     </div>
