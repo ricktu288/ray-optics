@@ -79,11 +79,15 @@ window.onload = function (e) {
 
   let initialPinchDistance = null;
   let lastScale = 1;
+  let lastX = 0;
+  let lastY = 0;
 
   canvas.addEventListener('touchstart',  function (e) {
     if (e.touches.length === 2) {
       // Pinch to zoom
       e.preventDefault();
+      lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+      lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
       if (isConstructing || draggingObj >= 0) {
         canvas_onmouseup(e);
         undo();
@@ -123,10 +127,26 @@ window.onload = function (e) {
       let newScale = lastScale * scaleFactor;
       
       newScale = Math.max(0.25, Math.min(5.00, newScale));
+
+      // Calculate the mid point between the two touches
+      const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+      const y = (e.touches[0].pageY + e.touches[1].pageY) / 2;
+
+      // Calculate the change in scale relative to the center point
+      const dx2 = x - lastX;
+      const dy2 = y - lastY;
+
+      // Apply the translation
+      origin.x += dx2;
+      origin.y += dy2;
   
       // Apply the scale transformation
-      setScaleWithCenter(newScale, ((e.touches[0].pageX + e.touches[1].pageX) / 2 - e.target.offsetLeft) / scale, ((e.touches[0].pageY + e.touches[1].pageY) / 2 - e.target.offsetTop) / scale);
-      //window.toolBarViewModel.zoom.value(newScale * 100);
+      setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scale, (y - e.target.offsetTop) / scale);
+      
+      // Update last values
+      lastX = x;
+      lastY = y;
+
     } else {
       canvas_onmousemove(e);
     }
@@ -548,6 +568,13 @@ window.onkeydown = function (e) {
   //Ctrl+O
   if (e.ctrlKey && e.keyCode == 79) {
     document.getElementById('open').onclick();
+  }
+
+  //esc
+  if (e.keyCode == 27) {
+    if (isConstructing) {
+      undo();
+    }
   }
 
   /*
