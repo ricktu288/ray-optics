@@ -66,10 +66,11 @@ You can submit a complete or partial translation for a new language, make progre
    - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
    - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
    - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ja.js
-   - Korean: _submitted but not yet merged_
+   - Korean: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ko.js
    - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
    - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/pl.js
    - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
+   - Sinhala: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/si.js
    - Traditional Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
    - Simplified Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
    - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/template.js
