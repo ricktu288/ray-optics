@@ -14,7 +14,7 @@ locales["ko"] = {
   },
   "homepage_desc": {
     "incomplete": false,
-    "message": "2 D 기하 광학을 시뮬레이션할 수 있습니다.<br>무료이며 웹 기반입니다. 소스 코드: <a href=\"https://github.com/ricktu288/ray-optics\"> GitHub 에서 사용 가능</a>."
+    "message": "2D 기하 광학을 시뮬레이션할 수 있습니다.<br>무료이며 웹 기반입니다. 소스 코드: <a href=\"https://github.com/ricktu288/ray-optics\"> GitHub 에서 사용 가능</a>."
   },
   "launch_simulator": {
     "incomplete": false,
@@ -229,7 +229,7 @@ locales["ko"] = {
   },
   "tool_curvedmirror": {
     "incomplete": false,
-    "message": "사용자 수식"
+    "message": "사용자 정의 수식"
   },
   "tool_beamsplitter": {
     "incomplete": false,
@@ -237,7 +237,7 @@ locales["ko"] = {
   },
   "tool_idealmirror": {
     "incomplete": false,
-    "message": "이상 곡면 (Ideal Curved)"
+    "message": "이상 곡면 거울 (Ideal Curved)"
   },
   "tool_refractor_": {
     "incomplete": false,
@@ -269,7 +269,7 @@ locales["ko"] = {
   },
   "tool_curvedglass": {
     "incomplete": false,
-    "message": "사용자 수식"
+    "message": "사용자 정의 수식"
   },
   "tool_blackline": {
     "incomplete": false,
@@ -309,19 +309,19 @@ locales["ko"] = {
   },
   "mode_light": {
     "incomplete": false,
-    "message": "광선"
+    "message": "광선 모드"
   },
   "mode_extended_light": {
     "incomplete": false,
-    "message": "연장된 광선"
+    "message": "광선 연장 모드"
   },
   "mode_images": {
     "incomplete": false,
-    "message": "전체 이미지"
+    "message": "전체 이미지 모드"
   },
   "mode_observer": {
     "incomplete": false,
-    "message": "관찰된자가 보는 이미지"
+    "message": "관측자가 보는 이미지 모드"
   },
   "zoom": {
     "incomplete": false,
@@ -481,15 +481,15 @@ locales["ko"] = {
   },
   "beam_warning": {
     "incomplete": false,
-    "message": "⚠️ 발산하거나 랜덤한 빔의 경우 인식이 정상적으로 작동하지 않을 수 있습니다."
+    "message": "⚠️ 발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
   },
   "brightness_note_popover": {
-    "incomplete": true,
-    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
+    "incomplete": false,
+    "message": "<p>'광선 밀도'가 충분히 높을 때 유효합니다.</p><p>방출되는 광선의 개수를 조절하려면 '광선 밀도' 슬라이더를 조절하십시오.</p>"
   },
   "refractiveindex_note_popover": {
     "incomplete": false,
-    "message": "<p>*다른 유리 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
+    "message": "<p>*다른 매질 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
   },
   "cauchycoeff": {
     "incomplete": false,
@@ -512,12 +512,12 @@ locales["ko"] = {
     "message": "삭제"
   },
   "unselect": {
-    "incomplete": true,
-    "message": "Unselect"
+    "incomplete": false,
+    "message": "선택 해제"
   },
   "unselect_popover": {
-    "incomplete": true,
-    "message": "Unselect this object (Right-click on blank space has the same function.)"
+    "incomplete": false,
+    "message": "이 물체의 선택을 해제합니다. (또는 빈 영역에 우클릭합니다.)"
   },
   "showadvanced": {
     "incomplete": false,
@@ -617,7 +617,7 @@ locales["ko"] = {
   },
   "tool_curvedmirror_popover": {
     "incomplete": false,
-    "message": "사용자 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
+    "message": "사용자 정의 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_beamsplitter_popover": {
     "incomplete": false,
@@ -625,7 +625,7 @@ locales["ko"] = {
   },
   "tool_idealmirror_popover": {
     "incomplete": false,
-    "message": "거울 방정식 (1/p + 1/q = 1/f)를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
+    "message": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_halfplane_popover": {
     "incomplete": false,
@@ -641,7 +641,7 @@ locales["ko"] = {
   },
   "tool_lens_popover": {
     "incomplete": false,
-    "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f)를 따르는 이상적인 렌즈. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
+    "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_sphericallens_popover": {
     "incomplete": false,
@@ -649,7 +649,7 @@ locales["ko"] = {
   },
   "tool_curvedglass_popover": {
     "incomplete": false,
-    "message": "사용자 수식 f(x) &lt; y &lt; g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
+    "message": "사용자 정의 수식 f(x) &lt; y &lt; g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_blackline_popover": {
     "incomplete": false,
@@ -669,7 +669,7 @@ locales["ko"] = {
   },
   "tool_power_popover": {
     "incomplete": false,
-    "message": "선분을 통해 전달되는 에너지 흐름 (P), 수직 방향 momentum flow (F⊥), 평행 방향 memontum flow (F∥) 을 측정하는 도구입니다. 단위는 임의값 (A.U.)."
+    "message": "선분을 통해 전달되는 에너지 흐름 (P), 수직 방향 momentum flow (F⊥), 평행 방향 memontum flow (F∥) 을 측정하는 도구입니다. 단위는 임의값 (A.U.) 입니다.."
   },
   "tool_text_popover": {
     "incomplete": false,
@@ -700,8 +700,8 @@ locales["ko"] = {
     "message": "광원의 색상 (파장), 색상 혼합, 차단기와 거울에 의한 파장 필터링, 매질의 색 분산을 시뮬레이션합니다. 개체를 선택할 때 이러한 변수를 설정할 수 있습니다. 색상 스펙트럼을 시뮬레이션 하려면 여러 파장의 광선을 겹치십시오. 화면에 표시되는 색상은 대략적인 근사이며, 광선 밀도가 너무 높거나 낮을 시 매우 부정확할 수 있습니다. "
   },
   "rayDensity_popover": {
-    "incomplete": true,
-    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
+    "incomplete": false,
+    "message": "빔이나 점광원으로부터 발생하는 광선의 개수를 결정합니다. 상 검출과 색 표현에도 영향을 미칩니다."
   },
   "showgrid_popover": {
     "incomplete": false,
@@ -728,19 +728,19 @@ locales["ko"] = {
     "message": "도움말 팝업 표시"
   },
   "show_help_popups_popover": {
-    "incomplete": true,
-    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+    "incomplete": false,
+    "message": "버튼 위를 지날 때 도움말을 표시할 지 결정합니다. (효과 반영을 위해 페이지를 다시 불러옵니다.)"
   },
   "language": {
     "incomplete": false,
     "message": "언어"
   },
   "close": {
-    "incomplete": true,
-    "message": "Close"
+    "incomplete": false,
+    "message": "닫기"
   },
   "advanced_help": {
-    "incomplete": true,
-    "message": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
+    "incomplete": false,
+    "message": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오.<br>정상적으로 작동하지 않나요? 이전 버전으로 가려면 <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">이 링크</a>를 누르십시오."
   }
 }
