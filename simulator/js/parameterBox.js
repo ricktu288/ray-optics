@@ -90,6 +90,68 @@ function createNumberAttr(label, min, max, step, value, func, elem, info) {
   };
 }
 
+function createTupleAttr(label, value, func, elem, info) {
+  var nobr = document.createElement('span');
+  nobr.className = 'selected-tool-bar-nobr';
+
+
+
+  if (info) {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = label;
+    nobr.appendChild(p_name);
+    var infoIcon = document.createElement('span');
+    infoIcon.className = 'info-icon';
+    infoIcon.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+    </svg>
+    `;
+    infoIcon.style.cursor = 'pointer';
+    infoIcon.setAttribute('data-bs-toggle', 'popover');
+    infoIcon.setAttribute('data-bs-trigger', 'click');
+    infoIcon.setAttribute('data-bs-placement', 'bottom');
+    infoIcon.setAttribute('data-bs-html', 'true');
+    infoIcon.setAttribute('data-bs-content', info);
+    nobr.appendChild(infoIcon);
+    new bootstrap.Popover(infoIcon);
+  } else {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = label + '&nbsp;';
+    nobr.appendChild(p_name);
+  }
+
+
+  var objAttr_text = document.createElement('input');
+  objAttr_text.type = 'text';
+  objAttr_text.value = value;
+  objAttr_text.style.width = '100px';
+  objAttr_text.className = 'selected-tool-bar-editable';
+  nobr.appendChild(objAttr_text);
+
+  elem.appendChild(nobr);
+
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
+
+  objAttr_text.onchange = function()
+  {
+    setAttr(function(obj) {
+      func(obj, objAttr_text.value);
+    });
+  };
+  objAttr_text.onkeydown = function(e)
+  {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  };
+  objAttr_text.onclick = function(e)
+  {
+    this.select();
+  };
+}
+
 function createStringAttr(label, value, func, elem) {
   var p_name = document.createElement('span');
   p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
@@ -97,7 +159,7 @@ function createStringAttr(label, value, func, elem) {
   var objAttr_text = document.createElement('input');
   objAttr_text.type = 'text';
   objAttr_text.value = value;
-  objAttr_text.style.width = '200px';
+  objAttr_text.style.width = '100px';
   elem.appendChild(objAttr_text);
   objAttr_text.onchange = function()
   {
