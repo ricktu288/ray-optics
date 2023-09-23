@@ -159,7 +159,7 @@ function createStringAttr(label, value, func, elem) {
   var objAttr_text = document.createElement('input');
   objAttr_text.type = 'text';
   objAttr_text.value = value;
-  objAttr_text.style.width = '100px';
+  objAttr_text.style.width = '200px';
   elem.appendChild(objAttr_text);
   objAttr_text.onchange = function()
   {
