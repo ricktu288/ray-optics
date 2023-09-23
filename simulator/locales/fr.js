@@ -88,8 +88,16 @@ locales["fr"] = {
   "toolname_circlelens": {
     "message": "Verre"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "message": "Verre"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "Lentille idéale"
@@ -212,8 +220,16 @@ locales["fr"] = {
   "tool_circlelens": {
     "message": "Cercle"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "message": "Forme libre"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "message": "Lentille idéale"
@@ -369,6 +385,18 @@ locales["fr"] = {
   "refractiveindex": {
     "message": "Indice de réfraction*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "incomplete": true,
     "message": "Random"
@@ -412,6 +440,18 @@ locales["fr"] = {
   "refractiveindex_note_popover": {
     "incomplete": true,
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -542,8 +582,16 @@ locales["fr"] = {
   "tool_circlelens_popover": {
     "message": "Verre avec une forme circulaire, définie par son centre et un point sur sa surface. (Glisser ou cliquer pour le créer.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "message": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires. (Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner.)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"

@@ -78,7 +78,13 @@ locales["en"] = {
   "toolname_circlelens": {
     "message": "Glass"
   },
+  "toolname_grin_circlelens": {
+    "message": "Glass"
+  },
   "toolname_refractor": {
+    "message": "Glass"
+  },
+  "toolname_grin_refractor": {
     "message": "Glass"
   },
   "toolname_lens": {
@@ -192,8 +198,14 @@ locales["en"] = {
   "tool_circlelens": {
     "message": "Circle"
   },
+  "tool_grin_circlelens": {
+    "message": "GRIN Circle"
+  },
   "tool_refractor": {
     "message": "Free-shape"
+  },
+  "tool_grin_refractor": {
+    "message": "GRIN Free-shape"
   },
   "tool_lens": {
     "message": "Ideal Lens"
@@ -334,7 +346,16 @@ locales["en"] = {
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Refractive index*"
+    "message": "Refractive index"
+  },
+  "refractiveindex_origin": {
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "message": "Numerical tolerance"
   },
   "random": {
     "message": "Random"
@@ -368,6 +389,15 @@ locales["en"] = {
   },
   "refractiveindex_note_popover": {
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
+  },
+  "step_size_note_popover": {
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "message": "Cauchy coefficient"
@@ -477,8 +507,14 @@ locales["en"] = {
   "tool_circlelens_popover": {
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
+  "tool_grin_circlelens_popover": {
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function n(x,y). (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+  },
+  "tool_grin_refractor_popover": {
+    "message": "Glass with any shapes constructed from line segments , and a refractive index function n(x,y). WARNING: the GRIN functionality works with simple polygon shapes only! Otherwise the behavior can be unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"

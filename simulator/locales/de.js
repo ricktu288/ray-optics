@@ -79,8 +79,16 @@ locales["de"] = {
   "toolname_circlelens": {
     "message": "Kreisförmiger Glaskörper"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "message": "Glas"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "Ideale Linse"
@@ -193,8 +201,16 @@ locales["de"] = {
   "tool_circlelens": {
     "message": "Kugellinse"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "message": "Freiform"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "message": "Ideale Linse"
@@ -340,6 +356,18 @@ locales["de"] = {
   "refractiveindex": {
     "message": "Brechungsindex*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "incomplete": true,
     "message": "Random emission"
@@ -382,6 +410,18 @@ locales["de"] = {
   },
   "refractiveindex_note_popover": {
     "message": "<p>*relativ, wenn Glaskörper überlappen</p><p>Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "message": "Cauchy Koeffizient"
@@ -495,8 +535,16 @@ locales["de"] = {
   "tool_circlelens_popover": {
     "message": "Kreisförmiger Glaskörper, definiert durch Mittelpunkt und einen Punkt auf dem Umfang. (Ziehen oder Klicken zum Erzeugen.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "message": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert. (Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen.)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"

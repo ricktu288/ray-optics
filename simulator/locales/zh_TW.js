@@ -78,8 +78,16 @@ locales["zh-TW"] = {
   "toolname_circlelens": {
     "message": "透光物"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "message": "透光物"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "理想透鏡"
@@ -192,8 +200,16 @@ locales["zh-TW"] = {
   "tool_circlelens": {
     "message": "圓形"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "message": "自訂形狀"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "message": "理想透鏡"
@@ -336,6 +352,18 @@ locales["zh-TW"] = {
   "refractiveindex": {
     "message": "折射率*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "message": "隨機"
   },
@@ -368,6 +396,18 @@ locales["zh-TW"] = {
   },
   "refractiveindex_note_popover": {
     "message": "<p>*於另一透光物內部時為相對值</p><p>如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "message": "柯西係數"
@@ -477,8 +517,16 @@ locales["zh-TW"] = {
   "tool_circlelens_popover": {
     "message": "圓形透光物，由圓心與表面上一點決定。（拖曳或點擊以創建。）"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "message": "任何由線段與圓弧組成的透光物。（點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。）"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（曳或點擊以創建。）"

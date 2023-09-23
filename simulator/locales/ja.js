@@ -103,9 +103,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ガラス"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "incomplete": false,
     "message": "ガラス"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "incomplete": false,
@@ -255,9 +263,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "円"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "incomplete": false,
     "message": "任意の形"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "incomplete": false,
@@ -447,6 +463,18 @@ locales["ja"] = {
     "incomplete": false,
     "message": "屈折率*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "incomplete": false,
     "message": "ランダム"
@@ -490,6 +518,18 @@ locales["ja"] = {
   "refractiveindex_note_popover": {
     "incomplete": false,
     "message": "<p>*relative if inside another glass</p><p>もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -635,9 +675,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "中心と表面上の点によって定義される円形のガラス。 (ドラッグまたはクリックして作成します。)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "incomplete": false,
     "message": "線分と円弧から構成される任意の形状のガラス。 (クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "incomplete": false,

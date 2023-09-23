@@ -104,7 +104,15 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Glass"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
+    "incomplete": true,
+    "message": "Glass"
+  },
+  "toolname_grin_refractor": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -256,7 +264,15 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Circle"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
+  },
+  "tool_grin_refractor": {
     "incomplete": true,
     "message": "Free-shape"
   },
@@ -448,6 +464,18 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Refractive index*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "incomplete": true,
     "message": "Random"
@@ -491,6 +519,18 @@ locales["LOCALE_ID"] = {
   "refractiveindex_note_popover": {
     "incomplete": true,
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -636,7 +676,15 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+  },
+  "tool_grin_refractor_popover": {
     "incomplete": true,
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },

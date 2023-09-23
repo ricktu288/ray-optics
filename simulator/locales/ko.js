@@ -103,9 +103,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "유리"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "incomplete": false,
     "message": "유리"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "incomplete": false,
@@ -255,9 +263,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "incomplete": false,
     "message": "자유 형태 (Free-shape)"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "incomplete": false,
@@ -447,6 +463,18 @@ locales["ko"] = {
     "incomplete": false,
     "message": "굴절률*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "incomplete": false,
     "message": "랜덤"
@@ -490,6 +518,18 @@ locales["ko"] = {
   "refractiveindex_note_popover": {
     "incomplete": false,
     "message": "<p>*다른 매질 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": false,
@@ -635,9 +675,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "구면 유리. (중심과 표면의 한 점으로 정의된 원) (드래그 또는 클릭하여 생성.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "incomplete": false,
     "message": "선분과 원호로 구성된 다양한 형태의 유리 (선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭.)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "incomplete": false,

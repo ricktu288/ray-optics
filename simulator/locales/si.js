@@ -83,8 +83,16 @@ locales["si"] = {
   "toolname_circlelens": {
     "message": "වීදුරු"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Glass"
+  },
   "toolname_refractor": {
     "message": "වීදුරු"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "සාමාන්‍ය කාච"
@@ -206,8 +214,16 @@ locales["si"] = {
   "tool_circlelens": {
     "message": "වෘත්ත"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Circle"
+  },
   "tool_refractor": {
     "message": "නිදහස් හැඩතල"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Free-shape"
   },
   "tool_lens": {
     "message": "පරිපූර්ණ කාච"
@@ -377,6 +393,18 @@ locales["si"] = {
   "refractiveindex": {
     "message": "වර්තන අංකය*"
   },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Numerical tolerance"
+  },
   "random": {
     "message": "අහඹු"
   },
@@ -416,6 +444,18 @@ locales["si"] = {
   },
   "refractiveindex_note_popover": {
     "message": "<p>*වෙනත් වීදුරුවක් ඇතුළත නම් සාපේක්ෂ</p><p>මෙම වස්තුව (නිරපේක්ෂ) වර්තන දර්ශකය n₁ සමඟ අනුකරණය කළ යුතු නමුත්, වර්තන දර්ශකය n₀ සහිත වෙනත් වීදුරුවක් තුළ තබා තිබේ නම්, ඔබ මෙහි වර්තන දර්ශකය n₁/n₀ ලෙස සැකසිය යුතුය. වීදුරු කිහිපයක් එකට අතිච්ඡාදනය වන වඩාත් සංකීර්ණ අවස්ථාවන්හිදී, අතිච්ඡාදනය වන කලාපයේ ඵලදායී පරාවර්තක දර්ශකය එක් එක් ඒවායේ පරාවර්තක දර්ශකවල ගුණිතයට සමාන වේ.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_circle_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "message": "Cauchy සංගුණකය"
@@ -543,7 +583,15 @@ locales["si"] = {
     "incomplete": true,
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+  },
+  "tool_grin_refractor_popover": {
     "incomplete": true,
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
