@@ -5,23 +5,24 @@ objTypes['grin_circlelens'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-	const p = "\\sqrt{2-\\frac{\\left(x^2+y^2\\right)}{100^2}}";
-	const mathJSTree = math.parse(parseTex(p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-	const p_der_x = math.derivative(mathJSTree, 'x').toTex();
-	const p_der_y = math.derivative(mathJSTree, 'y').toTex();
-	const origin = graphs.point(0, 0);
-    return {type: 'grin_circlelens', p1: mouse, p2: mouse, origin: origin, p: p, mathJSTree: mathJSTree, p_der_x: p_der_x, p_der_y: p_der_y, fn_p: evaluateLatex(p) ,fn_p_der_x: evaluateLatex(p_der_x), fn_p_der_y: evaluateLatex(p_der_y), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]^2
+		const p = '1 + e ^ (-0.01 (x ^ 2 + y ^ 2))';
+		const p_tex = '1+e^{-0.01\\left(x^2+y^2\\right)}';
+		const p_der_x = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 100) * x * -1 / 50';
+		const p_der_x_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{100}\\right)}\\cdot x\\cdot-1}{50}';
+		const p_der_y = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 100) * y * -1 / 50';
+		const p_der_y_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{100}\\right)}\\cdot y\\cdot-1}{50}';
+		const origin = graphs.point(mouse.x, mouse.y); // origin of refractive index function n(x,y)
+		return {type: 'grin_circlelens', p1: mouse, p2: mouse, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]^2  },
   },
-
+	
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
 	if (!obj.fn_p)
 	{ // to maintain the ctrl+z functionality
 		try {
-			obj.mathJSTree = math.parse(parseTex(obj.p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-			obj.fn_p = evaluateLatex(obj.p);
-			obj.fn_p_der_x = evaluateLatex(obj.p_der_x);
-			obj.fn_p_der_y = evaluateLatex(obj.p_der_y);
+			obj.fn_p = evaluateLatex(obj.p_tex);
+			obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
+			obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
 		} catch (e) {
 			delete obj.fn_p;
 			delete obj.fn_p_der_x;
@@ -29,32 +30,38 @@ objTypes['grin_circlelens'] = {
 			return;
 		}
 	}
-    createEquationAttr('n(x,y) = ', obj.mathJSTree.toTex(), function(obj, value) {
-	obj.p = value;
-	obj.mathJSTree = math.parse(parseTex(obj.p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-	obj.p_der_x = math.derivative(obj.mathJSTree, 'x').toTex();
-	obj.p_der_y = math.derivative(obj.mathJSTree, 'y').toTex();
-	obj.fn_p = evaluateLatex(obj.p);
-	obj.fn_p_der_x = evaluateLatex(obj.p_der_x);
-	obj.fn_p_der_y = evaluateLatex(obj.p_der_y);
-    }, elem);
+    createEquationAttr('n(x,y) = ', obj.p_tex, function(obj, value) {
+	obj.p = parseTex(value).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/");
+	obj.p_tex = value;
+	obj.p_der_x = math.derivative(obj.p, 'x').toString();
+	obj.p_der_x_tex = math.parse(obj.p_der_x).toTex();
+	obj.p_der_y = math.derivative(obj.p, 'y').toString();
+	obj.p_der_y_tex = math.parse(obj.p_der_y).toTex();
+	obj.fn_p = evaluateLatex(obj.p_tex);
+	obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
+	obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
+    }, elem, getMsg('grin_refractive_index'));
 	
     createTupleAttr(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
 	  const commaPosition = value.indexOf(',');
 	  if (commaPosition != -1) {
-		  const n_origin_x = parseInt(value.slice(1, commaPosition));
-		  const n_origin_y = parseInt(value.slice(commaPosition + 1, -1));
+		  const n_origin_x = parseFloat(value.slice(1, commaPosition));
+		  const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
 		  obj.origin = graphs.point(n_origin_x ,n_origin_y);
 	  }
     }, elem);
 	
     createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
-      obj.step_size = value;
+      obj.step_size = parseFloat(value);
     }, elem, getMsg('step_size_note_popover'));
 	
     createNumberAttr(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
-      obj.eps = value;
-    }, elem, getMsg('eps_circle_note_popover'));
+      obj.eps = parseFloat(value);
+    }, elem, getMsg('eps_' + obj.type + '_note_popover'));
+	
+	createBooleanAttr(getMsg('symbolic_grin'), symbolicGrin, function(obj, value) {
+      symbolicGrin = value;
+    }, elem, getMsg('symbolic_grin_note_popover'));
   },
 
   //使用lineobj原型 Use the prototype lineobj
@@ -70,12 +77,37 @@ objTypes['grin_circlelens'] = {
 
   zIndex: objTypes['refractor'].zIndex,
 
+  fillGlass: function(n, obj, aboveLight)
+  {
+    if (aboveLight) {
+      // Draw the highlight only
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = getMouseStyle(obj, 'transparent');
+      ctx.fill('evenodd');
+      ctx.globalAlpha = 1;
+      return;
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    var alpha = Math.log(n) / Math.log(1.5) * 0.2;
+    if (ctx.constructor != C2S) {
+    ctx.fillStyle = "rgb(" + (alpha * 0) + "%," + (alpha * 0) + "%," + (alpha * 80) + "%)";
+    } else {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle ="white";
+    }
+    ctx.fill('evenodd');
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+
+
+  },
+
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas, aboveLight) {
 
   ctx.beginPath();
   ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-  objTypes['refractor'].fillGlass(2, obj, aboveLight);
+  this.fillGlass(2.3, obj, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
   ctx.fillStyle = 'red';
@@ -95,10 +127,9 @@ objTypes['grin_circlelens'] = {
 	if (!obj.fn_p)
 	{ // to maintain the ctrl+z functionality
 		try {
-			obj.mathJSTree = math.parse(parseTex(obj.p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-			obj.fn_p = evaluateLatex(obj.p);
-			obj.fn_p_der_x = evaluateLatex(obj.p_der_x);
-			obj.fn_p_der_y = evaluateLatex(obj.p_der_y);
+			obj.fn_p = evaluateLatex(obj.p_tex);
+			obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
+			obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
 		} catch (e) {
 			delete obj.fn_p;
 			delete obj.fn_p_der_x;
@@ -109,8 +140,8 @@ objTypes['grin_circlelens'] = {
 	if (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOnBoundary(obj, ray.p1) ) // if the first point of the ray is inside the circle, or on its boundary
 	{
 		let len = graphs.length(ray.p1, ray.p2);
-		let x = ray.p1.x + (obj.step_size / len) * (ray.p2.x - ray.p1.x)
-		let y = ray.p1.y + (obj.step_size / len) * (ray.p2.y - ray.p1.y)
+		let x = ray.p1.x + (obj.step_size / len) * (ray.p2.x - ray.p1.x);
+		let y = ray.p1.y + (obj.step_size / len) * (ray.p2.y - ray.p1.y);
 		intersection_point = graphs.point(x, y);
 		if (objTypes[obj.type].isInsideGlass(obj, intersection_point)) // if intersection_point is inside the circle
 			return intersection_point;
@@ -124,7 +155,7 @@ objTypes['grin_circlelens'] = {
 	{
 		var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
 		var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
-		let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}) // refractive index at the intersection point - rp
+		let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}); // refractive index at the intersection point - rp
 		if (d > 0)
 		{
 		  //從內部射向外部 Shot from inside to outside
@@ -193,16 +224,17 @@ objTypes['grin_circlelens'] = {
 			{	
 				if (ray.bodyMerging_obj === undefined)
 					ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-				r_bodyMerging_obj=ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
 				ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+				
 			}
 			else
 			{
-				r_bodyMerging_obj=ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
 				if (ray.bodyMerging_obj !== undefined)
 					ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
 				else
-					ray.bodyMerging_obj = {fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
+					ray.bodyMerging_obj = {p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
 			}
 		}
 		objTypes[obj.type].refract(ray, rayIndex, rp, normal, n1, r_bodyMerging_obj);
@@ -313,8 +345,7 @@ objTypes['grin_circlelens'] = {
   /*
 	For example, "fn_p" is constructed by going through all of the grin objects in the "objs" array,
 	such that ray.p1 in their interior or on their boundary, and creating a product of all of their
-	refractive index functions. "fn_p_der_x" and "fn_p_der_y" are created similarly, but instead, using
-	the product chain rule (since they represent partial derivatives).
+	refractive index functions. "fn_p_der_x" and "fn_p_der_y" are created similarly, taking into account the partial derivative.
   */
   initRefIndex: function(obj, ray)
   {
@@ -325,12 +356,14 @@ objTypes['grin_circlelens'] = {
 			{
 				if (obj_tmp.fn_p === undefined)
 				{
+					obj_tmp.p = objs[i].p;
 					obj_tmp.fn_p = objs[i].fn_p;
 					obj_tmp.fn_p_der_x = objs[i].fn_p_der_x;
 					obj_tmp.fn_p_der_y = objs[i].fn_p_der_y;
 				}
 				else
 					obj_tmp = objTypes[obj.type].multRefIndex(obj_tmp, objs[i]);
+
 			}
 		}
 	return obj_tmp;
@@ -338,54 +371,80 @@ objTypes['grin_circlelens'] = {
   
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMerging_obj"
-  multRefIndex: function(obj, bodyMerging_obj) {
-	let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
-	
-	let mul_fn_p = (function(fn_p, new_fn_p) {
-		return function(param) {
-			return fn_p(param) * new_fn_p(param);
-		};
-	})(fn_p, new_fn_p);
-	
-	let mul_fn_p_der_x = (function(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x) {
-		return function(param) {
-			return fn_p(param) * new_fn_p_der_x(param) + fn_p_der_x(param) * new_fn_p(param); // product chain rule
-		};
-	})(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x);
+  multRefIndex: function(bodyMerging_obj, obj) {
+	if (symbolicGrin) {
+		let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + obj.p + ')').toString();
 		
-	let mul_fn_p_der_y = (function(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y) {
-		return function(param) {
-			return fn_p(param) * new_fn_p_der_y(param) + fn_p_der_y(param) * new_fn_p(param); // product chain rule
-		};
-	})(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
-	
-	return {fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y};
+		let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
+		
+		let mul_fn_p_der_x = evaluateLatex(math.derivative(mul_p, 'x').toTex());
+			
+		let mul_fn_p_der_y = evaluateLatex(math.derivative(mul_p, 'y').toTex());
+		
+		return {p: mul_p, fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y};
+	}
+	else {
+		let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
+		
+		let mul_fn_p = (function(fn_p, new_fn_p) {
+			return function(param) {
+				return fn_p(param) * new_fn_p(param);
+			};
+		})(fn_p, new_fn_p);
+		
+		let mul_fn_p_der_x = (function(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x) {
+			return function(param) {
+				return fn_p(param) * new_fn_p_der_x(param) + fn_p_der_x(param) * new_fn_p(param); // product chain rule
+			};
+		})(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x);
+			
+		let mul_fn_p_der_y = (function(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y) {
+			return function(param) {
+				return fn_p(param) * new_fn_p_der_y(param) + fn_p_der_y(param) * new_fn_p(param); // product chain rule
+			};
+		})(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
+		
+		return {fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y};
+	}
   },
   
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the region which includes "bodyMerging_obj" and excludes "obj"
-  devRefIndex: function(obj, bodyMerging_obj) {
-	let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
-	
-	let dev_fn_p = (function(fn_p, new_fn_p) {
-		return function(param) {
-			return fn_p(param) / new_fn_p(param);
-		};
-	})(fn_p, new_fn_p);
-	
-	let dev_fn_p_der_x = (function(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x) {
-		return function(param) {
-			return fn_p_der_x(param) / new_fn_p(param) - fn_p(param) * new_fn_p_der_x(param) / (new_fn_p(param) ** 2); // product chain rule
-		};
-	})(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x);
+  devRefIndex: function(bodyMerging_obj, obj) {
+	if (symbolicGrin) {
+		let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + obj.p + ')').toString();
 		
-	let dev_fn_p_der_y = (function(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y) {
-		return function(param) {
-			return fn_p_der_y(param) / new_fn_p(param) - fn_p(param) * new_fn_p_der_y(param) / (new_fn_p(param) ** 2); // product chain rule
-		};
-	})(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
-	
-	return {fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y};
+		let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());
+		
+		let dev_fn_p_der_x = evaluateLatex(math.derivative(dev_p, 'x').toTex());
+			
+		let dev_fn_p_der_y = evaluateLatex(math.derivative(dev_p, 'y').toTex());
+		
+		return {p: dev_p, fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y};
+	}
+	else {
+		let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
+		
+		let dev_fn_p = (function(fn_p, new_fn_p) {
+			return function(param) {
+				return new_fn_p(param) / fn_p(param);
+			};
+		})(fn_p, new_fn_p);
+		
+		let dev_fn_p_der_x = (function(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x) {
+			return function(param) {
+				return new_fn_p_der_x(param) / fn_p(param) - new_fn_p(param) * fn_p_der_x(param) / (fn_p(param) ** 2); // product chain rule
+			};
+		})(fn_p, fn_p_der_x, new_fn_p, new_fn_p_der_x);
+			
+		let dev_fn_p_der_y = (function(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y) {
+			return function(param) {
+				return new_fn_p_der_y(param) / fn_p(param) - new_fn_p(param) * fn_p_der_y(param) / (fn_p(param) ** 2); // product chain rule
+			};
+		})(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
+		
+		return {fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y};
+	}
   },
 
   // Returns true if point is outside the circular glass, otherwise returns false

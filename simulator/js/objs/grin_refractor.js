@@ -5,19 +5,21 @@ objTypes['grin_refractor'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-	const p = "2\\cdot\\sqrt{1-\\frac{3}{40000}\\cdot y^2}";
-	const mathJSTree = math.parse(parseTex(p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-	const p_der_x = math.derivative(mathJSTree, 'x').toTex();
-	const p_der_y = math.derivative(mathJSTree, 'y').toTex();
-	const origin = graphs.point(0, 0);
-	return {type: 'grin_refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, origin: origin, p: p, mathJSTree: mathJSTree, p_der_x: p_der_x, p_der_y: p_der_y, fn_p: evaluateLatex(p) ,fn_p_der_x: evaluateLatex(p_der_x), fn_p_der_y: evaluateLatex(p_der_y), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]
+	const p = '2 + cos(0.1 * y)';
+	const p_tex = '2+\\cos\\left(0.1\\cdot y\\right)';
+	const p_der_x = '0';
+	const p_der_x_tex = '0';
+	const p_der_y = 'sin(y / 10) * -1 / 10';
+	const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{10}';
+	const origin = graphs.point(0, 0); // origin of refractive index function n(x,y)
+	return {type: 'grin_refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]
   },
 
   // Use the prototype reftactor
   c_mousemove: objTypes['refractor'].c_mousemove,
   c_mouseup: objTypes['refractor'].c_mouseup,
   zIndex: objTypes['refractor'].zIndex,
-  fillGlass: objTypes['refractor'].fillGlass,
+  fillGlass: objTypes['grin_circlelens'].fillGlass,
   move: objTypes['refractor'].move,
   clicked: objTypes['refractor'].clicked,
   dragging: objTypes['refractor'].dragging,
@@ -31,50 +33,7 @@ objTypes['grin_refractor'] = {
   devRefIndex: objTypes['grin_circlelens'].devRefIndex,
   rayIntersection: objTypes['grin_circlelens'].rayIntersection,
   refract: objTypes['grin_circlelens'].refract,
-
-  //顯示屬性方塊 Show the property box
-  p_box: function(obj, elem) {
-	if (!obj.fn_p)
-	{ // to maintain the ctrl+z functionality
-		try {
-			obj.mathJSTree = math.parse(parseTex(obj.p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-			obj.fn_p = evaluateLatex(obj.p);
-			obj.fn_p_der_x = evaluateLatex(obj.p_der_x);
-			obj.fn_p_der_y = evaluateLatex(obj.p_der_y);
-		} catch (e) {
-			delete obj.fn_p;
-			delete obj.fn_p_der_x;
-			delete obj.fn_p_der_y;
-			return;
-		}
-	}
-    createEquationAttr('n(x,y) = ', obj.mathJSTree.toTex(), function(obj, value) {
-	obj.p = value;
-	obj.mathJSTree = math.parse(parseTex(obj.p).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/"));
-	obj.p_der_x = math.derivative(obj.mathJSTree, 'x').toTex();
-	obj.p_der_y = math.derivative(obj.mathJSTree, 'y').toTex();
-	obj.fn_p = evaluateLatex(obj.p);
-	obj.fn_p_der_x = evaluateLatex(obj.p_der_x);
-	obj.fn_p_der_y = evaluateLatex(obj.p_der_y);
-    }, elem);
-	
-    createTupleAttr(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
-	  const commaPosition = value.indexOf(',');
-	  if (commaPosition != -1) {
-		  const n_origin_x = parseInt(value.slice(1, commaPosition));
-		  const n_origin_y = parseInt(value.slice(commaPosition + 1, -1));
-		  obj.origin = graphs.point(n_origin_x, n_origin_y);
-	  }
-    }, elem);
-	
-    createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
-      obj.step_size = value;
-    }, elem, getMsg('step_size_note_popover'));
-	
-    createNumberAttr(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
-      obj.eps = value;
-    }, elem, getMsg('eps_refractor_note_popover'));
-  },
+  p_box: objTypes['grin_circlelens'].p_box,
 
   // Similar to the c_mousedown function of the refractor object, except here the arc functionality is removed
   c_mousedown: function(obj, mouse, ctrl, shift) {
@@ -169,16 +128,16 @@ objTypes['grin_refractor'] = {
 			{	
 				if (ray.bodyMerging_obj === undefined)
 					ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-				r_bodyMerging_obj=ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
 				ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
 			}
 			else
 			{
-				r_bodyMerging_obj=ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
 				if (ray.bodyMerging_obj !== undefined)
 					ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
 				else
-					ray.bodyMerging_obj = {fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
+					ray.bodyMerging_obj = {p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
 			}
 		}
 		objTypes[obj.type].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1, r_bodyMerging_obj);
@@ -284,7 +243,7 @@ objTypes['grin_refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(2, obj, aboveLight);
+      this.fillGlass(2.3, obj, aboveLight);
     }
     ctx.lineWidth = 1;
 
