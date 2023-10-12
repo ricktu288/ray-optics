@@ -6,6 +6,7 @@ var mode = 'light';
 var extendLight = false;
 var showLight = true;
 var colorMode = false;
+var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
 var isDrawing = false;
 var hasExceededTime = false;
