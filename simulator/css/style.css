@@ -298,9 +298,10 @@
 
 
 .selected-tool-bar .form-switch .form-check-input {
-  margin-top: 10px;
+  margin-top: 0px;
   background-color: rgba(255,255,255, 0.3);
   border: none;
+  vertical-align: middle;
 }
 
 .selected-tool-bar .form-switch .form-check-input {
