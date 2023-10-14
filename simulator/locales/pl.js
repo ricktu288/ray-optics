@@ -229,8 +229,7 @@ locales["pl"] = {
     "message": "Ustawienia"
   },
   "moresettings": {
-    "incomplete": true,
-    "message": "More"
+    "message": "Więcej"
   },
   "mode_light": {
     "message": "Promienie"
@@ -290,8 +289,7 @@ locales["pl"] = {
     "message": "Otwórz"
   },
   "layoutaids": {
-    "incomplete": true,
-    "message": "Layout Aids"
+    "message": "Opcje układu"
   },
   "lockobjs": {
     "message": "Zablokuj obiekty"
@@ -339,44 +337,34 @@ locales["pl"] = {
     "message": "Współczynnik załamania*"
   },
   "random": {
-    "incomplete": true,
-    "message": "Random"
+    "message": "Losowo"
   },
   "lambertian": {
-    "incomplete": true,
-    "message": "Lambertian"
+    "message": "Lambertowskie"
   },
   "fontsize": {
-    "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "Rozmiar czcionki (px)"
   },
   "fontname": {
-    "incomplete": true,
-    "message": "Font"
+    "message": "Czcionka"
   },
   "fontstyle": {
-    "incomplete": true,
-    "message": "Style"
+    "message": "Styl"
   },
   "fontalignment": {
-    "incomplete": true,
-    "message": "Alignment"
+    "message": "Wyrównanie"
   },
   "smallcaps": {
-    "incomplete": true,
-    "message": "Small Caps"
+    "message": "Małe litery"
   },
   "angle": {
-    "incomplete": true,
-    "message": "Angle (°)"
+    "message": "Kąt (°)"
   },
   "beam_warning": {
-    "incomplete": true,
-    "message": "⚠️ Image detection may not work with divergent/random beams."
+    "message": "⚠️ Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
   },
   "brightness_note_popover": {
-    "incomplete": true,
-    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
+    "message": "<p>Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.</p><p>Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'.</p>"
   },
   "refractiveindex_note_popover": {
     "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
@@ -397,16 +385,13 @@ locales["pl"] = {
     "message": "Usuń"
   },
   "unselect": {
-    "incomplete": true,
-    "message": "Unselect"
+    "message": "Odznacz"
   },
   "unselect_popover": {
-    "incomplete": true,
-    "message": "Unselect this object (Right-click on blank space has the same function.)"
+    "message": "Usuń zaznaczenie tego obiektu (kliknięcie prawym przyciskiem myszy pustego miejsca ma tę samą funkcję)."
   },
   "showadvanced": {
-    "incomplete": true,
-    "message": "More options..."
+    "message": "Więcej opcji..."
   },
   "processing": {
     "message": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
@@ -460,8 +445,7 @@ locales["pl"] = {
     "message": "Pojedynczy promień światła określony przez dwa punkty. (Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu.)"
   },
   "tool_parallel_popover": {
-    "incomplete": true,
-    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "Z odcinka wyłania się równoległa lub rozbieżna wiązka promieni o gęstości kontrolowanej przez suwak 'Gęstość promieni'. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_radiant_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"
@@ -539,12 +523,10 @@ locales["pl"] = {
     "message": "Symuluje promienie i obrazy widziane z określonego miejsca. Obserwatora symbolizuje niebieskie kółko. Wszelkie przecinające je promienie uważa się za 'obserwowane'. Obserwator nie wie, gdzie faktycznie zaczynają się promienie, ale będzie mu się wydawało, że zaczynają się w pewnym punkcie (punktach), jeśli się tam przecinają. Promienie są pokazane na niebiesko, a punkty na żółto (rzeczywiste) lub pomarańczowo (pozorne). (Przeciągnij dużą niebieską kropkę, aby przesunąć obserwatora.)<br>Gdy opcja „Symuluj kolory” jest włączona, zamiast tego są one wyświetlane w kolorach źródłowych."
   },
   "color_mode_popover": {
-    "incomplete": true,
-    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Symulacja kolorów (długości fal) źródeł światła, mieszania kolorów, filtrowania kolorów przez filtry blokujące i lustra oraz dyspersji chromatycznej szkieł. Po wybraniu można ustawić te parametry dla tych obiektów. Aby symulować widma kolorów, należy nałożyć na siebie promienie o różnych długościach fal. Kolory wyświetlane na ekranie są jedynie przybliżone i mogą być bardzo niedokładne, gdy 'Gęstość promieni' jest zbyt wysoka lub zbyt niska."
   },
   "rayDensity_popover": {
-    "incomplete": true,
-    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
+    "message": "Określa liczbę promieni emitowanych przez belki i źródła punktowe. Ma to również wpływ na dokładność wykrywania obrazu i renderowania kolorów."
   },
   "showgrid_popover": {
     "message": "Określa widoczność siatki tła."
@@ -562,23 +544,18 @@ locales["pl"] = {
     "message": "<b>Ograniczone przeciąganie</b><p>Podczas przeciągania obiektu przytrzymaj klawisz Shift, aby ograniczyć do poziomego/pionowego; przytrzymaj Ctrl, aby powielić obiekt. Podczas tworzenia obiektu w kształcie linii lub przeciągania jego punktów końcowych przytrzymaj klawisz Shift, aby zablokować kąt lub przeskakiwać między 0°, 45°, 90°; przytrzymaj klawisz Ctrl, aby obrócić/skalować wokół jego środka.</p><b>Grupuj, obracaj i skaluj obiekty</b><p> Przytrzymaj klawisz Ctrl, kliknij kilka punktów kontrolnych (np. punkty końcowe), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomego/pionowego ruchu; Ctrl+przeciągnij, aby obrócić, Ctrl+Shift+przeciągnij, aby skalować. Przeciągnij \"+\", aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij klawisze Ctrl+D, aby powielić grupę; naciśnij Usuń, aby rozgrupować. </p><b>Bezpośrednia edycja współrzędnych</b><p>Kliknij dwukrotnie lub kliknij prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y) w pikselach, a następnie naciśnij klawisz Enter.</p><b>Skróty klawiaturowe</b><p>Gdy obiekt jest zaznaczony (przez kliknięcie go), naciskaj klawisze strzałek, aby się poruszać; Ctrl+D, aby powielić; Klawisz Delete, aby usunąć.</p>"
   },
   "show_help_popups": {
-    "incomplete": true,
-    "message": "Show help popups"
+    "message": "Pokaż okienka pomocy"
   },
   "show_help_popups_popover": {
-    "incomplete": true,
-    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+    "message": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)"
   },
   "language": {
-    "incomplete": true,
-    "message": "Language"
+    "message": "Język"
   },
   "close": {
-    "incomplete": true,
-    "message": "Close"
+    "message": "Zamknij"
   },
   "advanced_help": {
-    "incomplete": true,
-    "message": "For advanced help, see the help icon in the lower-right corner."
+    "message": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
   }
 }
