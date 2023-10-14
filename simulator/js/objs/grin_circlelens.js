@@ -24,6 +24,7 @@ objTypes['grin_circlelens'] = {
 			obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
 			obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
 		} catch (e) {
+			obj.error = e.toString();
 			delete obj.fn_p;
 			delete obj.fn_p_der_x;
 			delete obj.fn_p_der_y;
@@ -31,6 +32,7 @@ objTypes['grin_circlelens'] = {
 		}
 	}
     createEquationAttr('n(x,y) = ', obj.p_tex, function(obj, value) {
+	try {
 	obj.p = parseTex(value).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/");
 	obj.p_tex = value;
 	obj.p_der_x = math.derivative(obj.p, 'x').toString();
@@ -40,7 +42,11 @@ objTypes['grin_circlelens'] = {
 	obj.fn_p = evaluateLatex(obj.p_tex);
 	obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
 	obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
-    }, elem, getMsg('grin_refractive_index'));
+	delete obj.error;
+	} catch (e) {
+		obj.error = e.toString();
+	}
+    }, elem); //, getMsg('grin_refractive_index'));
 	
     createTupleAttr(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
 	  const commaPosition = value.indexOf(',');
@@ -51,17 +57,19 @@ objTypes['grin_circlelens'] = {
 	  }
     }, elem);
 	
-    createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
-      obj.step_size = parseFloat(value);
-    }, elem, getMsg('step_size_note_popover'));
-	
-    createNumberAttr(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
-      obj.eps = parseFloat(value);
-    }, elem, getMsg('eps_' + obj.type + '_note_popover'));
-	
-	createBooleanAttr(getMsg('symbolic_grin'), symbolicGrin, function(obj, value) {
-      symbolicGrin = value;
-    }, elem, getMsg('symbolic_grin_note_popover'));
+	if (createAdvancedOptions(typeof obj.divergence != 'undefined' && (obj.step_size != 1 || obj.eps != 0.001 || symbolicGrin))) {
+		createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
+		obj.step_size = parseFloat(value);
+		}, elem, getMsg('step_size_note_popover'));
+		
+		createNumberAttr(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
+		obj.eps = parseFloat(value);
+		}, elem, getMsg('eps_' + obj.type + '_note_popover'));
+		
+		createBooleanAttr(getMsg('symbolic_grin'), symbolicGrin, function(obj, value) {
+		symbolicGrin = value;
+		}, elem, getMsg('symbolic_grin_note_popover'));
+	}
   },
 
   //使用lineobj原型 Use the prototype lineobj
@@ -104,6 +112,14 @@ objTypes['grin_circlelens'] = {
 
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, canvas, aboveLight) {
+
+  if (obj.error) {
+	ctx.textAlign = 'left';
+	ctx.textBaseline = 'bottom';
+	ctx.font = '12px serif';
+	ctx.fillStyle = "red"
+	ctx.fillText(obj.error.toString(), obj.p1.x, obj.p1.y);
+  }
 
   ctx.beginPath();
   ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);

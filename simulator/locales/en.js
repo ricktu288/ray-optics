@@ -79,13 +79,13 @@ locales["en"] = {
     "message": "Glass"
   },
   "toolname_grin_circlelens": {
-    "message": "Glass"
+    "message": "Gradient-index glass"
   },
   "toolname_refractor": {
     "message": "Glass"
   },
   "toolname_grin_refractor": {
-    "message": "Glass"
+    "message": "Gradient-index glass"
   },
   "toolname_lens": {
     "message": "Ideal lens"
@@ -184,7 +184,7 @@ locales["en"] = {
     "message": "Beam Splitter"
   },
   "tool_idealmirror": {
-    "message": "Ideal Curved"
+    "message": "Ideal curved mirror"
   },
   "tool_refractor_": {
     "message": "Glass"
@@ -199,13 +199,13 @@ locales["en"] = {
     "message": "Circle"
   },
   "tool_grin_circlelens": {
-    "message": "GRIN Circle"
+    "message": "Gradient-index circle"
   },
   "tool_refractor": {
-    "message": "Free-shape"
+    "message": "Free-shape / Prism"
   },
   "tool_grin_refractor": {
-    "message": "GRIN Free-shape"
+    "message": "Gradient-index polygon"
   },
   "tool_lens": {
     "message": "Ideal Lens"

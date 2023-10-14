@@ -5,12 +5,12 @@ objTypes['grin_refractor'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-	const p = '2 + cos(0.1 * y)';
-	const p_tex = '2+\\cos\\left(0.1\\cdot y\\right)';
+	const p = '2 + 0.1 * cos(0.1 * y)';
+	const p_tex = '2+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)';
 	const p_der_x = '0';
 	const p_der_x_tex = '0';
-	const p_der_y = 'sin(y / 10) * -1 / 10';
-	const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{10}';
+	const p_der_y = 'sin(y / 10) * -1 / 100';
+	const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{100}';
 	const origin = graphs.point(0, 0); // origin of refractive index function n(x,y)
 	return {type: 'grin_refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]
   },
@@ -163,6 +163,14 @@ objTypes['grin_refractor'] = {
     var a2;
     var a3;
     var acw;
+
+    if (obj.error) {
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.font = '12px serif';
+      ctx.fillStyle = "red"
+      ctx.fillText(obj.error.toString(), obj.path[0].x, obj.path[0].y);
+      }
 
     if (obj.notDone)
     {
