@@ -556,6 +556,6 @@ locales["zh-CN"] = {
     "message": "关闭"
   },
   "advanced_help": {
-    "message": "进阶说明详见右下角的说明图示。 <br>无法正常运作吗？ <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">按这里</a>可回到旧版。"
+    "message": "进阶说明详见右下角的说明图示。"
   }
 }

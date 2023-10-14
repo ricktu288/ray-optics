@@ -556,6 +556,6 @@ locales["en"] = {
     "message": "Close"
   },
   "advanced_help": {
-    "message": "For advanced help, see the help icon in the lower-right corner.<br>Not working properly? <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">Click here</a> to go back to the old version."
+    "message": "For advanced help, see the help icon in the lower-right corner."
   }
 }

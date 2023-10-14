@@ -741,6 +741,6 @@ locales["ko"] = {
   },
   "advanced_help": {
     "incomplete": false,
-    "message": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오.<br>정상적으로 작동하지 않나요? 이전 버전으로 가려면 <a href=\"https://phydemo-ray-optics-v3-archive.vercel.app/simulator/\" rel=\"nofollow\">이 링크</a>를 누르십시오."
+    "message": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오."
   }
 }
