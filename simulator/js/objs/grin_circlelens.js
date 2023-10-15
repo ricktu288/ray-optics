@@ -23,6 +23,7 @@ objTypes['grin_circlelens'] = {
 			obj.fn_p = evaluateLatex(obj.p_tex);
 			obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
 			obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
+			delete obj.error;
 		} catch (e) {
 			obj.error = e.toString();
 			delete obj.fn_p;
@@ -33,16 +34,16 @@ objTypes['grin_circlelens'] = {
 	}
     createEquationAttr('n(x,y) = ', obj.p_tex, function(obj, value) {
 	try {
-	obj.p = parseTex(value).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/");
-	obj.p_tex = value;
-	obj.p_der_x = math.derivative(obj.p, 'x').toString();
-	obj.p_der_x_tex = math.parse(obj.p_der_x).toTex();
-	obj.p_der_y = math.derivative(obj.p, 'y').toString();
-	obj.p_der_y_tex = math.parse(obj.p_der_y).toTex();
-	obj.fn_p = evaluateLatex(obj.p_tex);
-	obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
-	obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
-	delete obj.error;
+		obj.p = parseTex(value).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/");
+		obj.p_tex = value;
+		obj.p_der_x = math.derivative(obj.p, 'x').toString();
+		obj.p_der_x_tex = math.parse(obj.p_der_x).toTex();
+		obj.p_der_y = math.derivative(obj.p, 'y').toString();
+		obj.p_der_y_tex = math.parse(obj.p_der_y).toTex();
+		obj.fn_p = evaluateLatex(obj.p_tex);
+		obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
+		obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
+		delete obj.error;
 	} catch (e) {
 		obj.error = e.toString();
 	}
@@ -167,101 +168,106 @@ objTypes['grin_circlelens'] = {
   
   //當物件被光射到時 When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
-	if ( (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1) ) && objTypes[obj.type].isOnBoundary(obj, rp) ) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
-	{
-		var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
-		var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
-		let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}); // refractive index at the intersection point - rp
-		if (d > 0)
+	try {
+		if ( (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1) ) && objTypes[obj.type].isOnBoundary(obj, rp) ) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
 		{
-		  //從內部射向外部 Shot from inside to outside
-		  var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
-		  var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
-		}
-		else if (d < 0)
-		{
-		  //從外部射向內部 Shot from outside to inside
-		  var n1 = 1 / ((!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
-		  var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
-		}
-		else
-		{
-		  //可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-		  //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
-		  ray.exist = false;
-		  return;
-		}
-		
-		/*
-		A bodyMerging object is an object containing three properties - "fn_p", "fn_p_der_x" and "fn_p_der_y", 
-		which are the refractive index and its partial derivative functions, respectively, for some region of the simulation.
-		Every ray has a temporary bodyMerging object ("bodyMerging_obj") as a property
-		(this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor),
-		which gets updated as the ray enters/exits into/from grin objects, using the
-		"multRefIndex"/"devRefIndex" function, respectively.
-		*/
-		let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
-		if (surfaceMerging_objs.length)
-		{
-			var shotType;
-
-			//界面融合 Surface merging
-			for (var i = 0; i < surfaceMerging_objs.length; i++)
+			var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
+			var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+			let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}); // refractive index at the intersection point - rp
+			if (d > 0)
 			{
-			  let p = surfaceMerging_objs[i].fn_p({x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y}) // refractive index at the intersection point - rp
-			  shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-			  if (shotType == 1)
-			  {
-				//從內部射向外部 Shot from inside to outside
-				n1 *= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
-			  }
-			  else if (shotType == -1)
-			  {
-				//從外部射向內部 Shot from outside to inside
-				n1 /= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
-			  }
-			  else if (shotType == 0)
-			  {
-				//等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
-				//n1=n1;
-			  }
-			  else
-			  {
-				//可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-				//為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
-				ray.exist = false;
-				return;
-			  }
+			//從內部射向外部 Shot from inside to outside
+			var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
+			var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
 			}
-		}
-		else
-		{
-			if (objTypes[obj.type].isInsideGlass(obj, ray.p1))
-			{	
-				if (ray.bodyMerging_obj === undefined)
-					ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
-				ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
-				
+			else if (d < 0)
+			{
+			//從外部射向內部 Shot from outside to inside
+			var n1 = 1 / ((!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+			var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
 			}
 			else
 			{
-				r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
-				if (ray.bodyMerging_obj !== undefined)
-					ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
-				else
-					ray.bodyMerging_obj = {p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
+			//可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
+			//為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+			ray.exist = false;
+			return;
 			}
+			
+			/*
+			A bodyMerging object is an object containing three properties - "fn_p", "fn_p_der_x" and "fn_p_der_y", 
+			which are the refractive index and its partial derivative functions, respectively, for some region of the simulation.
+			Every ray has a temporary bodyMerging object ("bodyMerging_obj") as a property
+			(this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor),
+			which gets updated as the ray enters/exits into/from grin objects, using the
+			"multRefIndex"/"devRefIndex" function, respectively.
+			*/
+			let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
+			if (surfaceMerging_objs.length)
+			{
+				var shotType;
+
+				//界面融合 Surface merging
+				for (var i = 0; i < surfaceMerging_objs.length; i++)
+				{
+				let p = surfaceMerging_objs[i].fn_p({x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y}) // refractive index at the intersection point - rp
+				shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
+				if (shotType == 1)
+				{
+					//從內部射向外部 Shot from inside to outside
+					n1 *= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+				}
+				else if (shotType == -1)
+				{
+					//從外部射向內部 Shot from outside to inside
+					n1 /= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+				}
+				else if (shotType == 0)
+				{
+					//等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+					//n1=n1;
+				}
+				else
+				{
+					//可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
+					//為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+					ray.exist = false;
+					return;
+				}
+				}
+			}
+			else
+			{
+				if (objTypes[obj.type].isInsideGlass(obj, ray.p1))
+				{	
+					if (ray.bodyMerging_obj === undefined)
+						ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+					r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+					ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+					
+				}
+				else
+				{
+					r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+					if (ray.bodyMerging_obj !== undefined)
+						ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
+					else
+						ray.bodyMerging_obj = {p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y}; // Initialize the bodyMerging object of the ray
+				}
+			}
+			objTypes[obj.type].refract(ray, rayIndex, rp, normal, n1, r_bodyMerging_obj);
 		}
-		objTypes[obj.type].refract(ray, rayIndex, rp, normal, n1, r_bodyMerging_obj);
-	}
-	else
-	{
-		if (ray.bodyMerging_obj === undefined)
-			ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-		next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, rp, ray);
-		ray.p1 = rp;
-		ray.p2 = next_point;
+		else
+		{
+			if (ray.bodyMerging_obj === undefined)
+				ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+			next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, rp, ray);
+			ray.p1 = rp;
+			ray.p2 = next_point;
+		}
+	} catch (e) {
+		ray.exist = false;
+		return;
 	}
 
   },
