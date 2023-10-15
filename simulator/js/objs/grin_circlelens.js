@@ -344,7 +344,7 @@ objTypes['grin_circlelens'] = {
   // Receives an instance of a grin object(e.g. grin_circlelens and grin_refractor), and two points inside this lens,
   // and returns the next point to where the ray, connecting these two points, will travel, based on the ray trajectory equation (equation 11.1 in the cited text below)
   /*
-	using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://sci-hub.ru/10.1007/BFb0012092)
+	using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://doi.org/10.1007/BFb0012092)
 	x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
   */
   step: function(obj, origin, p1, p2, ray) {
