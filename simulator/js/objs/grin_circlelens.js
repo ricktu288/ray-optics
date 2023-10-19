@@ -5,12 +5,12 @@ objTypes['grin_circlelens'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-		const p = '1 + e ^ (-0.01 (x ^ 2 + y ^ 2))';
-		const p_tex = '1+e^{-0.01\\left(x^2+y^2\\right)}';
-		const p_der_x = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 100) * x * -1 / 50';
-		const p_der_x_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{100}\\right)}\\cdot x\\cdot-1}{50}';
-		const p_der_y = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 100) * y * -1 / 50';
-		const p_der_y_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{100}\\right)}\\cdot y\\cdot-1}{50}';
+		const p = '1 + e ^ (-((x ^ 2 + y ^ 2) / 50 ^ 2))';
+		const p_tex = '1+e^{-\\frac{x^2+y^2}{50^2}}';
+		const p_der_x = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 2500) * x * -1 / 1250';
+		const p_der_x_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{2500}\\right)}\\cdot x\\cdot-1}{1250}';
+		const p_der_y = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 2500) * y * -1 / 1250';
+		const p_der_y_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{2500}\\right)}\\cdot y\\cdot-1}{1250}';
 		const origin = graphs.point(mouse.x, mouse.y); // origin of refractive index function n(x,y)
 		return {type: 'grin_circlelens', p1: mouse, p2: mouse, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]^2  },
   },
@@ -96,19 +96,9 @@ objTypes['grin_circlelens'] = {
       ctx.globalAlpha = 1;
       return;
     }
-    ctx.globalCompositeOperation = 'lighter';
-    var alpha = Math.log(n) / Math.log(1.5) * 0.2;
-    if (ctx.constructor != C2S) {
-    ctx.fillStyle = "rgb(" + (alpha * 0) + "%," + (alpha * 0) + "%," + (alpha * 80) + "%)";
-    } else {
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle ="white";
-    }
+    ctx.fillStyle = "rgba(255,0,255,0.15)";
     ctx.fill('evenodd');
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-
-
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas

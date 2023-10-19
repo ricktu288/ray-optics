@@ -5,8 +5,8 @@ objTypes['grin_refractor'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-	const p = '2 + 0.1 * cos(0.1 * y)';
-	const p_tex = '2+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)';
+	const p = '1.1 + 0.1 * cos(0.1 * y)';
+	const p_tex = '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)';
 	const p_der_x = '0';
 	const p_der_x_tex = '0';
 	const p_der_y = 'sin(y / 10) * -1 / 100';
