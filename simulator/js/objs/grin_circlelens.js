@@ -47,7 +47,7 @@ objTypes['grin_circlelens'] = {
 	} catch (e) {
 		obj.error = e.toString();
 	}
-    }, elem); //, getMsg('grin_refractive_index'));
+    }, elem, getMsg('grin_refractive_index'));
 	
     createTupleAttr(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
 	  const commaPosition = value.indexOf(',');

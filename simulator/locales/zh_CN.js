@@ -79,15 +79,13 @@ locales["zh-CN"] = {
     "message": "透光物"
   },
   "toolname_grin_circlelens": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "渐变折射率透光物"
   },
   "toolname_refractor": {
     "message": "透光物"
   },
   "toolname_grin_refractor": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "渐变折射率透光物"
   },
   "toolname_lens": {
     "message": "理想透镜"
@@ -201,15 +199,13 @@ locales["zh-CN"] = {
     "message": "圆形"
   },
   "tool_grin_circlelens": {
-    "incomplete": true,
-    "message": "Circle"
+    "message": "渐变折射率圆形<sup>Beta</sup>"
   },
   "tool_refractor": {
-    "message": " 自定义形状"
+    "message": "多边形 / 圆弧"
   },
   "tool_grin_refractor": {
-    "incomplete": true,
-    "message": "Free-shape"
+    "message": "渐变折射率多边形<sup>Beta</sup>"
   },
   "tool_lens": {
     "message": "理想透镜"
@@ -344,19 +340,16 @@ locales["zh-CN"] = {
     "message": "对称"
   },
   "symbolic_grin": {
-    "incomplete": true,
-    "message": "Symbolic computation"
+    "message": "符号式物体融合"
   },
   "grin_refractive_index": {
-    "incomplete": true,
-    "message": "As opposed to the non-GRIN glass objects, the coloration of this GRIN object doesn't corrolate with its refractive index function n(x,y)."
+    "message": "<ul><li>仅支持可微函数。 </li><li>n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。 </li><li>如需较精确的模拟，请见「更多选项...」</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "incomplete": true,
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>本选项会套用至所有渐变折射率透光物。 </p><p>本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'grin_circlelens.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。 </p><p>数值的实作较快，但使用多个渐变折射率介质，<b>且至少有一个介质的折射率没有在<u>整个</u>平面上有定义</b>时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。 </p>"
   },
   "focallength": {
-    "message": "焦距："
+    "message": "焦距"
   },
   "cartesiansign": {
     "message": "笛卡尔符号约定"
@@ -365,16 +358,13 @@ locales["zh-CN"] = {
     "message": "折射率*"
   },
   "refractiveindex_origin": {
-    "incomplete": true,
-    "message": "Origin of n(x,y)"
+    "message": "n(x,y)的原点"
   },
   "step_size": {
-    "incomplete": true,
-    "message": "Numerical solver step size"
+    "message": "数值求解器步长"
   },
   "eps": {
-    "incomplete": true,
-    "message": "Numerical tolerance"
+    "message": "相交容忍度"
   },
   "random": {
     "message": "随机"
@@ -410,16 +400,13 @@ locales["zh-CN"] = {
     "message": "<p>*于另一透光物内部时为相对值</p><p>如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。</p>"
   },
   "step_size_note_popover": {
-    "incomplete": true,
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+    "message": "<p>用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'grin_circlelens.js' 中的 'step' 函数与原始码文件。 </p>"
   },
   "eps_grin_circlelens_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+    "message": "<p>单位 - [长度]^2.</p><p>本数值容忍度被用于 'grin_circlelens.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
   "eps_grin_refractor_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
   "cauchycoeff": {
     "message": "柯西系数"
@@ -530,15 +517,13 @@ locales["zh-CN"] = {
     "message": "圆形透光物，由圆心与表面上一点决定。（拖曳或点击以创建。）"
   },
   "tool_grin_circlelens_popover": {
-    "incomplete": true,
-    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+    "message": "折射率为自定义函数 n(x,y)，边界为圆形的透光物。（拖曳或点击以创建。）"
   },
   "tool_refractor_popover": {
     "message": "任何由线段与圆弧组成的透光物。 （点击以建立线段，拖曳以建立弧形，点击一开始的点以结束绘制。）"
   },
   "tool_grin_refractor_popover": {
-    "incomplete": true,
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+    "message": "折射率为自定义函数 n(x,y)，边界为多边形的透光物。警告：仅支持简单多边形，否则行为无法预测。（点击以建立线段，点击一开始的点以结束绘制。）"
   },
   "tool_lens_popover": {
     "message": "完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"

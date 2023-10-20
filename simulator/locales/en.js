@@ -199,13 +199,13 @@ locales["en"] = {
     "message": "Circle"
   },
   "tool_grin_circlelens": {
-    "message": "Gradient-index circle"
+    "message": "Gradient-index circle<sup>Beta</sup>"
   },
   "tool_refractor": {
-    "message": "Free-shape / Prism"
+    "message": "Polygon / Circular Arcs"
   },
   "tool_grin_refractor": {
-    "message": "Gradient-index polygon"
+    "message": "Gradient-index polygon<sup>Beta</sup>"
   },
   "tool_lens": {
     "message": "Ideal Lens"
@@ -340,10 +340,10 @@ locales["en"] = {
     "message": "Symmetric"
   },
   "symbolic_grin": {
-    "message": "Symbolic computation"
+    "message": "Symbolic body-merging"
   },
   "grin_refractive_index": {
-    "message": "As opposed to the non-GRIN glass objects, the coloration of this GRIN object doesn't corrolate with its refractive index function n(x,y)."
+    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
@@ -355,7 +355,7 @@ locales["en"] = {
     "message": "Cartesian Sign Convention"
   },
   "refractiveindex": {
-    "message": "Refractive index"
+    "message": "Refractive index*"
   },
   "refractiveindex_origin": {
     "message": "Origin of n(x,y)"
@@ -364,7 +364,7 @@ locales["en"] = {
     "message": "Numerical solver step size"
   },
   "eps": {
-    "message": "Numerical tolerance"
+    "message": "Intersection tolerance"
   },
   "random": {
     "message": "Random"
@@ -517,13 +517,13 @@ locales["en"] = {
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
   "tool_grin_circlelens_popover": {
-    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function n(x,y). (Drag or click to create.)"
+    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
   "tool_refractor_popover": {
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
   "tool_grin_refractor_popover": {
-    "message": "Glass with any shapes constructed from line segments , and a refractive index function n(x,y). WARNING: the GRIN functionality works with simple polygon shapes only! Otherwise the behavior can be unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
+    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"

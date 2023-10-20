@@ -106,15 +106,15 @@ locales["LOCALE_ID"] = {
   },
   "toolname_grin_circlelens": {
     "incomplete": true,
-    "message": "Glass"
+    "message": "Gradient-index circle<sup>Beta</sup>"
   },
   "toolname_refractor": {
     "incomplete": true,
-    "message": "Glass"
+    "message": "Polygon / Circular Arcs"
   },
   "toolname_grin_refractor": {
     "incomplete": true,
-    "message": "Glass"
+    "message": "Gradient-index polygon<sup>Beta</sup>"
   },
   "toolname_lens": {
     "incomplete": true,
@@ -454,11 +454,11 @@ locales["LOCALE_ID"] = {
   },
   "symbolic_grin": {
     "incomplete": true,
-    "message": "Symbolic computation"
+    "message": "Symbolic body-merging"
   },
   "grin_refractive_index": {
     "incomplete": true,
-    "message": "As opposed to the non-GRIN glass objects, the coloration of this GRIN object doesn't corrolate with its refractive index function n(x,y)."
+    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "incomplete": true,
@@ -486,7 +486,7 @@ locales["LOCALE_ID"] = {
   },
   "eps": {
     "incomplete": true,
-    "message": "Numerical tolerance"
+    "message": "Intersection tolerance"
   },
   "random": {
     "incomplete": true,
@@ -690,7 +690,7 @@ locales["LOCALE_ID"] = {
   },
   "tool_grin_circlelens_popover": {
     "incomplete": true,
-    "message": "Glass with a circle shape, defined by its center, a point on the surface, and a refractive index function. (Drag or click to create.)"
+    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
   "tool_refractor_popover": {
     "incomplete": true,
@@ -698,7 +698,7 @@ locales["LOCALE_ID"] = {
   },
   "tool_grin_refractor_popover": {
     "incomplete": true,
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "incomplete": true,
