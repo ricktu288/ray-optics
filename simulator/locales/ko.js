@@ -103,9 +103,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "유리"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index glass"
+  },
   "toolname_refractor": {
     "incomplete": false,
     "message": "유리"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "incomplete": false,
@@ -255,9 +263,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index circle<sup>Beta</sup>"
+  },
   "tool_refractor": {
-    "incomplete": false,
-    "message": "자유 형태 (Free-shape)"
+    "incomplete": true,
+    "message": "자유 형태 / Polygon"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Gradient-index polygon<sup>Beta</sup>"
   },
   "tool_lens": {
     "incomplete": false,
@@ -435,6 +451,18 @@ locales["ko"] = {
     "incomplete": false,
     "message": "대칭"
   },
+  "symbolic_grin": {
+    "incomplete": true,
+    "message": "Symbolic body-merging"
+  },
+  "grin_refractive_index": {
+    "incomplete": true,
+    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+  },
+  "symbolic_grin_note_popover": {
+    "incomplete": true,
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+  },
   "focallength": {
     "incomplete": false,
     "message": "초점 거리"
@@ -446,6 +474,18 @@ locales["ko"] = {
   "refractiveindex": {
     "incomplete": false,
     "message": "굴절률*"
+  },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Intersection tolerance"
   },
   "random": {
     "incomplete": false,
@@ -490,6 +530,18 @@ locales["ko"] = {
   "refractiveindex_note_popover": {
     "incomplete": false,
     "message": "<p>*다른 매질 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_grin_circlelens_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_grin_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": false,
@@ -635,9 +687,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "구면 유리. (중심과 표면의 한 점으로 정의된 원) (드래그 또는 클릭하여 생성.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "incomplete": false,
     "message": "선분과 원호로 구성된 다양한 형태의 유리 (선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭.)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "incomplete": false,

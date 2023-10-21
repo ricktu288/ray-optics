@@ -103,9 +103,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ガラス"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index glass"
+  },
   "toolname_refractor": {
     "incomplete": false,
     "message": "ガラス"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "incomplete": false,
@@ -255,9 +263,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "円"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index circle<sup>Beta</sup>"
+  },
   "tool_refractor": {
-    "incomplete": false,
-    "message": "任意の形"
+    "incomplete": true,
+    "message": "任意の形 / Polygon"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Gradient-index polygon<sup>Beta</sup>"
   },
   "tool_lens": {
     "incomplete": false,
@@ -435,6 +451,18 @@ locales["ja"] = {
     "incomplete": false,
     "message": "対称"
   },
+  "symbolic_grin": {
+    "incomplete": true,
+    "message": "Symbolic body-merging"
+  },
+  "grin_refractive_index": {
+    "incomplete": true,
+    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+  },
+  "symbolic_grin_note_popover": {
+    "incomplete": true,
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+  },
   "focallength": {
     "incomplete": false,
     "message": "焦点距離"
@@ -446,6 +474,18 @@ locales["ja"] = {
   "refractiveindex": {
     "incomplete": false,
     "message": "屈折率*"
+  },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Intersection tolerance"
   },
   "random": {
     "incomplete": false,
@@ -490,6 +530,18 @@ locales["ja"] = {
   "refractiveindex_note_popover": {
     "incomplete": false,
     "message": "<p>*relative if inside another glass</p><p>もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_grin_circlelens_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_grin_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -635,9 +687,17 @@ locales["ja"] = {
     "incomplete": false,
     "message": "中心と表面上の点によって定義される円形のガラス。 (ドラッグまたはクリックして作成します。)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "incomplete": false,
     "message": "線分と円弧から構成される任意の形状のガラス。 (クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "incomplete": false,

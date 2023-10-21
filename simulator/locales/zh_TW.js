@@ -78,8 +78,14 @@ locales["zh-TW"] = {
   "toolname_circlelens": {
     "message": "透光物"
   },
+  "toolname_grin_circlelens": {
+    "message": "漸變折射率透光物"
+  },
   "toolname_refractor": {
     "message": "透光物"
+  },
+  "toolname_grin_refractor": {
+    "message": "漸變折射率透光物"
   },
   "toolname_lens": {
     "message": "理想透鏡"
@@ -192,8 +198,14 @@ locales["zh-TW"] = {
   "tool_circlelens": {
     "message": "圓形"
   },
+  "tool_grin_circlelens": {
+    "message": "漸變折射率圓形<sup>Beta</sup>"
+  },
   "tool_refractor": {
-    "message": "自訂形狀"
+    "message": "多邊形 / 圓弧"
+  },
+  "tool_grin_refractor": {
+    "message": "漸變折射率多邊形<sup>Beta</sup>"
   },
   "tool_lens": {
     "message": "理想透鏡"
@@ -327,6 +339,15 @@ locales["zh-TW"] = {
   "symmetric": {
     "message": "對稱"
   },
+  "symbolic_grin": {
+    "message": "符號式物體融合"
+  },
+  "grin_refractive_index": {
+    "message": "<ul><li>僅支援可微函數。</li><li>n(x,y)的原點為絕對座標，不跟隨物件移動。在控制點上點兩下可顯示其絕對座標。</li><li>如需較精確的模擬，請見「更多選項...」</li></ul>"
+  },
+  "symbolic_grin_note_popover": {
+    "message": "<p>本選項會套用至所有漸變折射率透光物。</p><p>本模擬器目前有兩種光線經過不同漸變折射率介質的實作 - 數值與符號(見 'grin_circlelens.js' 中的 'multRefIndex' 與 'devRefIndex' 函數)。</p><p>數值的實作較快，但使用多個漸變折射率介質，<b>且至少有一個介質的折射率沒有在<u>整個</u>平面上有定義</b>時，無法在所有情況下正常運作(取決於具體情況)。相較之下，符號的實作較慢但在這種情況下仍可正常運作。</p>"
+  },
   "focallength": {
     "message": "焦距"
   },
@@ -335,6 +356,15 @@ locales["zh-TW"] = {
   },
   "refractiveindex": {
     "message": "折射率*"
+  },
+  "refractiveindex_origin": {
+    "message": "n(x,y)的原點"
+  },
+  "step_size": {
+    "message": "數值求解器步長"
+  },
+  "eps": {
+    "message": "相交容忍度"
   },
   "random": {
     "message": "隨機"
@@ -368,6 +398,15 @@ locales["zh-TW"] = {
   },
   "refractiveindex_note_popover": {
     "message": "<p>*於另一透光物內部時為相對值</p><p>如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。</p>"
+  },
+  "step_size_note_popover": {
+    "message": "<p>用歐拉法求解光線程函方程(eikonal ray equation)的步長 - 更多資訊詳見 'grin_circlelens.js' 中的 'step' 函數與原始碼文件。</p>"
+  },
+  "eps_grin_circlelens_note_popover": {
+    "message": "<p>單位 - [長度]^2.</p><p>本數值容忍度被用於 'grin_circlelens.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
+  },
+  "eps_grin_refractor_note_popover": {
+    "message": "<p>單位 - [長度].</p><p>本數值容忍度被用於 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
   },
   "cauchycoeff": {
     "message": "柯西係數"
@@ -477,8 +516,14 @@ locales["zh-TW"] = {
   "tool_circlelens_popover": {
     "message": "圓形透光物，由圓心與表面上一點決定。（拖曳或點擊以創建。）"
   },
+  "tool_grin_circlelens_popover": {
+    "message": "折射率為自訂函數 n(x,y)，邊界為圓形的透光物。（拖曳或點擊以創建。）"
+  },
   "tool_refractor_popover": {
     "message": "任何由線段與圓弧組成的透光物。（點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。）"
+  },
+  "tool_grin_refractor_popover": {
+    "message": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。警告：僅支援簡單多邊形，否則行為無法預測。（點擊以建立線段，點擊一開始的點以結束繪製。）"
   },
   "tool_lens_popover": {
     "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（曳或點擊以創建。）"

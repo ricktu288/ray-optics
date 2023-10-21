@@ -88,8 +88,16 @@ locales["fr"] = {
   "toolname_circlelens": {
     "message": "Verre"
   },
+  "toolname_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index glass"
+  },
   "toolname_refractor": {
     "message": "Verre"
+  },
+  "toolname_grin_refractor": {
+    "incomplete": true,
+    "message": "Glass"
   },
   "toolname_lens": {
     "message": "Lentille idéale"
@@ -212,8 +220,17 @@ locales["fr"] = {
   "tool_circlelens": {
     "message": "Cercle"
   },
+  "tool_grin_circlelens": {
+    "incomplete": true,
+    "message": "Gradient-index circle<sup>Beta</sup>"
+  },
   "tool_refractor": {
-    "message": "Forme libre"
+    "incomplete": true,
+    "message": "Forme libre / Polygon"
+  },
+  "tool_grin_refractor": {
+    "incomplete": true,
+    "message": "Gradient-index polygon<sup>Beta</sup>"
   },
   "tool_lens": {
     "message": "Lentille idéale"
@@ -359,6 +376,18 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Symmetric"
   },
+  "symbolic_grin": {
+    "incomplete": true,
+    "message": "Symbolic body-merging"
+  },
+  "grin_refractive_index": {
+    "incomplete": true,
+    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+  },
+  "symbolic_grin_note_popover": {
+    "incomplete": true,
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+  },
   "focallength": {
     "message": "Distance focale"
   },
@@ -368,6 +397,18 @@ locales["fr"] = {
   },
   "refractiveindex": {
     "message": "Indice de réfraction*"
+  },
+  "refractiveindex_origin": {
+    "incomplete": true,
+    "message": "Origin of n(x,y)"
+  },
+  "step_size": {
+    "incomplete": true,
+    "message": "Numerical solver step size"
+  },
+  "eps": {
+    "incomplete": true,
+    "message": "Intersection tolerance"
   },
   "random": {
     "incomplete": true,
@@ -412,6 +453,18 @@ locales["fr"] = {
   "refractiveindex_note_popover": {
     "incomplete": true,
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
+  },
+  "step_size_note_popover": {
+    "incomplete": true,
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+  },
+  "eps_grin_circlelens_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  },
+  "eps_grin_refractor_note_popover": {
+    "incomplete": true,
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
     "incomplete": true,
@@ -542,8 +595,16 @@ locales["fr"] = {
   "tool_circlelens_popover": {
     "message": "Verre avec une forme circulaire, définie par son centre et un point sur sa surface. (Glisser ou cliquer pour le créer.)"
   },
+  "tool_grin_circlelens_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+  },
   "tool_refractor_popover": {
     "message": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires. (Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner.)"
+  },
+  "tool_grin_refractor_popover": {
+    "incomplete": true,
+    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_lens_popover": {
     "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
