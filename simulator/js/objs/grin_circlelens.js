@@ -58,7 +58,7 @@ objTypes['grin_circlelens'] = {
 	  }
     }, elem);
 	
-	if (createAdvancedOptions(typeof obj.divergence != 'undefined' && (obj.step_size != 1 || obj.eps != 0.001 || symbolicGrin))) {
+	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || symbolicGrin)) {
 		createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
 		obj.step_size = parseFloat(value);
 		}, elem, getMsg('step_size_note_popover'));
