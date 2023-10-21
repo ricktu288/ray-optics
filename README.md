@@ -110,3 +110,14 @@ The source code is available at: https://github.com/mathjax/MathJax-src
 
 json-url is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
 The source code is available at: https://github.com/masotime/json-url
+
+### Math.js
+
+Math.js is distributed under the [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+The source code is available at: https://github.com/josdejong/mathjs
+
+### TeX Math Parser
+TeX Math Parser is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
+The source code is available at: https://github.com/davidtranhq/tex-math-parser
+
+
