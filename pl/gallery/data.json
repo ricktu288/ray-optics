@@ -307,6 +307,14 @@
         ],
         "title": "Soczewka rybie oko Maxwella",
         "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę rybie oko Maxwella złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Logarithmic spiral lens",
+        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0&middot;e^{-k&middot;θ}\\), where \\(r_0 > 0\\) and \\(α = arctan(k)\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
       }
     ]
   },

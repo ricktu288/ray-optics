@@ -307,6 +307,14 @@
         ],
         "title": "馬克士威魚眼透鏡",
         "description": "<p>馬克士威魚眼透鏡（Maxwell fisheye lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>這個模擬顯示了一個由 \\(N=20\\) 個同心球組成的馬克士威魚眼透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。</p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Logarithmic spiral lens",
+        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0&middot;e^{-k&middot;θ}\\), where \\(r_0 > 0\\) and \\(α = arctan(k)\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
       }
     ]
   },
