@@ -131,6 +131,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ラインブロッカー"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "incomplete": false,
     "message": "円形ブロッカー"
@@ -290,6 +294,10 @@ locales["ja"] = {
   "tool_blackline": {
     "incomplete": false,
     "message": "ラインブロッカー"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "incomplete": false,
@@ -494,6 +502,10 @@ locales["ja"] = {
   "lambertian": {
     "incomplete": false,
     "message": "ランバーシアン"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "incomplete": false,
@@ -714,6 +726,10 @@ locales["ja"] = {
   "tool_blackline_popover": {
     "incomplete": false,
     "message": "入射光線を吸収する線分型の遮光板です。(ドラッグまたはクリックで作成)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": false,

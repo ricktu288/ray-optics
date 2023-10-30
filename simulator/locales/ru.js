@@ -113,6 +113,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "incomplete": true,
     "message": "Circle Blocker"
@@ -246,6 +250,10 @@ locales["ru"] = {
   "tool_blackline": {
     "incomplete": true,
     "message": "Line Blocker"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "incomplete": true,
@@ -419,6 +427,10 @@ locales["ru"] = {
   "lambertian": {
     "incomplete": true,
     "message": "Lambertian"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "incomplete": true,
@@ -622,6 +634,10 @@ locales["ru"] = {
   },
   "tool_blackline_popover": {
     "message": "Отрезок, поглощающий попадающие на него лучи. (Потяните или нажмите, чтобы создать.)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": true,

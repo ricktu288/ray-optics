@@ -131,6 +131,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "선형 차단기"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "incomplete": false,
     "message": "원형 차단기"
@@ -290,6 +294,10 @@ locales["ko"] = {
   "tool_blackline": {
     "incomplete": false,
     "message": "선형 차단기"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "incomplete": false,
@@ -494,6 +502,10 @@ locales["ko"] = {
   "lambertian": {
     "incomplete": false,
     "message": "램버시안 (Lambertian)"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "incomplete": false,
@@ -714,6 +726,10 @@ locales["ko"] = {
   "tool_blackline_popover": {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 선형 차단기입니다. (드래그 또는 클릭하여 생성.)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": false,

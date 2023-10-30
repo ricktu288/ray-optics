@@ -99,6 +99,9 @@ locales["zh-TW"] = {
   "toolname_blackline": {
     "message": "吸光片"
   },
+  "toolname_aperture": {
+    "message": "光圈"
+  },
   "toolname_blackcircle": {
     "message": "圓形遮光物"
   },
@@ -218,6 +221,9 @@ locales["zh-TW"] = {
   },
   "tool_blackline": {
     "message": "吸光片"
+  },
+  "tool_aperture": {
+    "message": "光圈"
   },
   "tool_blackcircle": {
     "message": "圓形遮光物"
@@ -371,6 +377,9 @@ locales["zh-TW"] = {
   },
   "lambertian": {
     "message": "朗伯"
+  },
+  "diameter": {
+    "message": "直徑 (px)"
   },
   "fontsize": {
     "message": "字型大小 (px)"
@@ -536,6 +545,9 @@ locales["zh-TW"] = {
   },
   "tool_blackline_popover": {
     "message": "線段形狀的吸光片，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
+  },
+  "tool_aperture_popover": {
+    "message": "一對線段形狀的吸光片，可用對稱方式調整其孔洞的大小。（拖曳或點擊兩個端點以創建。）"
   },
   "tool_blackcircle_popover": {
     "message": "圓形遮光物，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"

@@ -132,6 +132,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "incomplete": true,
     "message": "Circle Blocker"
@@ -291,6 +295,10 @@ locales["LOCALE_ID"] = {
   "tool_blackline": {
     "incomplete": true,
     "message": "Line Blocker"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "incomplete": true,
@@ -495,6 +503,10 @@ locales["LOCALE_ID"] = {
   "lambertian": {
     "incomplete": true,
     "message": "Lambertian"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "incomplete": true,
@@ -715,6 +727,10 @@ locales["LOCALE_ID"] = {
   "tool_blackline_popover": {
     "incomplete": true,
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "incomplete": true,

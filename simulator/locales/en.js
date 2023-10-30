@@ -99,6 +99,9 @@ locales["en"] = {
   "toolname_blackline": {
     "message": "Line Blocker"
   },
+  "toolname_aperture": {
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "message": "Circle Blocker"
   },
@@ -218,6 +221,9 @@ locales["en"] = {
   },
   "tool_blackline": {
     "message": "Line Blocker"
+  },
+  "tool_aperture": {
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "message": "Circle Blocker"
@@ -371,6 +377,9 @@ locales["en"] = {
   },
   "lambertian": {
     "message": "Lambertian"
+  },
+  "diameter": {
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "message": "Font Size (px)"
@@ -536,6 +545,9 @@ locales["en"] = {
   },
   "tool_blackline_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_aperture_popover": {
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"

@@ -102,6 +102,10 @@ locales["de"] = {
   "toolname_blackline": {
     "message": "Linienförmiger Absorber"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "message": "Kreisförmiger Absorber"
   },
@@ -224,6 +228,10 @@ locales["de"] = {
   },
   "tool_blackline": {
     "message": "Linienförmiger Absorber"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "message": "Kreisförmiger Absorber"
@@ -388,6 +396,10 @@ locales["de"] = {
   "lambertian": {
     "incomplete": true,
     "message": "Lambertian emission"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "incomplete": true,
@@ -570,6 +582,10 @@ locales["de"] = {
   },
   "tool_blackline_popover": {
     "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Ziehen oder Klicken zum Erzeugen.)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "message": "Ein kreisförmiger Absorber. (Ziehen oder Klicken zum Erzeugen.)"

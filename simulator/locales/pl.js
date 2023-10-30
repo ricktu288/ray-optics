@@ -101,6 +101,10 @@ locales["pl"] = {
   "toolname_blackline": {
     "message": "Przesłona liniowa"
   },
+  "toolname_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
+  },
   "toolname_blackcircle": {
     "message": "Przesłona kołowa"
   },
@@ -223,6 +227,10 @@ locales["pl"] = {
   },
   "tool_blackline": {
     "message": "Przesłona liniowa"
+  },
+  "tool_aperture": {
+    "incomplete": true,
+    "message": "Aperture"
   },
   "tool_blackcircle": {
     "message": "Przesłona kołowa"
@@ -382,6 +390,10 @@ locales["pl"] = {
   },
   "lambertian": {
     "message": "Lambertowskie"
+  },
+  "diameter": {
+    "incomplete": true,
+    "message": "Diameter (px)"
   },
   "fontsize": {
     "message": "Rozmiar czcionki (px)"
@@ -552,6 +564,10 @@ locales["pl"] = {
   },
   "tool_blackline_popover": {
     "message": "Przeszkoda - odcinek - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
+  },
+  "tool_aperture_popover": {
+    "incomplete": true,
+    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_blackcircle_popover": {
     "message": "Przeszkoda - okrąg - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"

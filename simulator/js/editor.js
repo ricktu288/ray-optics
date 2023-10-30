@@ -369,6 +369,9 @@ function canvas_onmouseup(e) {
       pendingControlPointSelection = false
       addControlPointsForHandle(pendingControlPoints);
     }
+    if (draggingPart.requiresPBoxUpdate) {
+      selectObj(selectedObj);
+    }
     if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mouse0.x && mouse.y == draggingPart.mouse0.y) {
       draggingObj = -1;
       draggingPart = {};
