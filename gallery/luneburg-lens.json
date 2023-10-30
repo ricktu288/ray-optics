@@ -369,22 +369,6 @@
       }
     },
     {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 840,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 840,
-        "exist": true
-      },
-      "p": 1.5
-    },
-    {
       "type": "led",
       "p1": {
         "type": 1,
@@ -403,25 +387,79 @@
     },
     {
       "type": "text",
-      "x": 174.19555848924676,
+      "x": 162.19555848924676,
       "y": 489.1654958865022,
-      "p": "Luneburg lens"
+      "p": "Approximated multilayer\nluneburg lens"
     },
     {
       "type": "text",
       "x": 162.05791104625422,
       "y": 846.441503719748,
-      "p": "Glass with a circle shape"
+      "p": "Classical luneburg lens"
+    },
+    {
+      "type": "grin_circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 840,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 840,
+        "exist": true
+      },
+      "origin": {
+        "type": 1,
+        "x": 600,
+        "y": 840,
+        "exist": true
+      },
+      "p": "sqrt(2 - (x ^ 2 + y ^ 2) / 100 ^ 2)",
+      "p_tex": "\\sqrt{2-\\frac{\\left(x^2+y^2\\right)}{100^2}}",
+      "p_der_x": "x * -1 / 10000 / sqrt((x ^ 2 + y ^ 2) * -1 / 10000 + 2)",
+      "p_der_x_tex": "\\frac{\\frac{ x\\cdot-1}{10000}}{\\sqrt{\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{10000}+2}}",
+      "p_der_y": "y * -1 / 10000 / sqrt((x ^ 2 + y ^ 2) * -1 / 10000 + 2)",
+      "p_der_y_tex": "\\frac{\\frac{ y\\cdot-1}{10000}}{\\sqrt{\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{10000}+2}}",
+      "step_size": 0.1,
+      "eps": 0.001
+    },
+    {
+      "type": "text",
+      "x": 784,
+      "y": 647.6666666666666,
+      "p": "See how the numerical solver step size of this lens\neffects the rays path",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": -55,
+      "y": 363.66666666666663,
+      "p": "Warning: The sequence of appearing light does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": 37,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
     }
   ],
   "mode": "light",
-  "rayDensity_light": 4.4816890703380645,
+  "rayDensity_light": 0.1,
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 163.5299998870674,
-    "y": -216.30377364882975
+    "x": 92.99999999999994,
+    "y": -173.66666666666663
   },
-  "scale": 1.1438396227480496,
-  "colorMode": false
+  "scale": 1,
+  "colorMode": false,
+  "symbolicGrin": false
 }

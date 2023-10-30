@@ -189,22 +189,6 @@
         "description": "<p>光线射到光学元件上的偏向角有多种定义。下方的截图中可以看到对于三棱镜和球形透镜的定义。在本模拟中，光线进入光学元件的入射角与偏向角之间的关系在某个角度有局部极小值，这个偏向角被称为“最小偏向角”。这个局部极小值可以解释如<a href=\"https://phydemo.app/ray-optics/cn/gallery/rainbows\" target=\"_blank\">彩虹</a>和光晕这样的光学现象。由于这个局部极小值，偏转的光线在特定的方向上堆积，产生“光学焦散”（如在模拟中的例子C中看到的）我们会将其视为彩虹/光晕。 </p>"
       },
       {
-        "id": "inferior-mirage",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "下蜃景",
-        "description": "<p>此为下蜃景效果的模拟。将天空的折射率模拟为 \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\)，其中 \\(h=600\\) 代表太阳在地面以上的高度。在此模拟中，进一步将其近似为一系列矩形，每个矩形具有恒定折射率， 按照 \\(n(y)\\) 的方程式来排列。此模拟旨在定性地演示下蜃景的效果。 </p>"
-      },
-      {
-        "id": "GRIN-slab",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "渐变折射率平板",
-        "description": "<p>模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。请注意，本模拟中将此介电材料近似为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。 <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">产生这些薄矩形的脚本</a></p>"
-      },
-      {
         "id": "aplanatic-points",
         "contributors": [
           "Stas Fainer"
@@ -291,22 +275,6 @@
         ],
         "title": "菲涅耳透镜",
         "description": "<p>这是球面镜与菲涅耳透镜（Fresnel lens）的对比。菲涅耳透镜的优点：它的功能与常规的球面镜相似，但占用的空间少很多 - 因此重量更轻。 </p>"
-      },
-      {
-        "id": "luneburg-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "龙勃透镜",
-        "description": "<p>龙勃透镜（Luneburg lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>这个模拟显示了一个由 \\(N=20\\) 个同心球组成的龙勃透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。 </p>"
-      },
-      {
-        "id": "maxwell-fisheye-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "麦克斯韦鱼眼透镜",
-        "description": "<p>麦克斯韦鱼眼透镜（Maxwell fisheye lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>这个模拟显示了一个由 \\(N=20\\) 个同心球组成的麦克斯韦鱼眼透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。 </p>"
       }
     ]
   },
@@ -361,6 +329,52 @@
         ],
         "title": "罗切斯特斗篷",
         "description": "<p>罗切斯特斗篷（Rochester cloak）是一种使用4个透镜构成的隐形装置。在这个模拟中，两个外部透镜的焦距为 \\(f_1\\)，两个中间的透镜的焦距为 \\(f_2\\)，使得焦距为 \\(f_1\\) 和 \\(f_2\\) 的相邻透镜之间的距离 \\(t_1=f_1+f_2\\)，中间两个透镜之间的距离为 \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\)。 </p>"
+      }
+    ]
+  },
+  {
+    "id": "GRIN-optics",
+    "title": "渐变折射率光学",
+    "content": [
+      {
+        "id": "GRIN-slab",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "渐变折射率平板",
+        "description": "<p>模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。请注意，本模拟中将此介电材料近似为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。 <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">产生这些薄矩形的脚本</a></p>"
+      },
+      {
+        "id": "inferior-mirage",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "下蜃景",
+        "description": "<p>此为下蜃景效果的模拟。将天空的折射率模拟为 \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\)，其中 \\(h=600\\) 代表太阳在地面以上的高度。在此模拟中，进一步将其近似为一系列矩形，每个矩形具有恒定折射率， 按照 \\(n(y)\\) 的方程式来排列。此模拟旨在定性地演示下蜃景的效果。 </p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Logarithmic spiral ray path",
+        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
+      },
+      {
+        "id": "luneburg-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "龙勃透镜",
+        "description": "<p>龙勃透镜（Luneburg lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>这个模拟显示了一个由 \\(N=20\\) 个同心球组成的龙勃透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。 </p>"
+      },
+      {
+        "id": "maxwell-fisheye-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "麦克斯韦鱼眼透镜",
+        "description": "<p>麦克斯韦鱼眼透镜（Maxwell fisheye lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>这个模拟显示了一个由 \\(N=20\\) 个同心球组成的麦克斯韦鱼眼透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。 </p>"
       }
     ]
   },

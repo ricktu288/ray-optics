@@ -4,18 +4,15 @@
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GRIN slab - Ray Optics Simulation</title>
-<meta property="og:title" content="GRIN slab - Ray Optics Simulation">
+<title>Logarithmic spiral ray path - Ray Optics Simulation</title>
+<meta property="og:title" content="Logarithmic spiral ray path - Ray Optics Simulation">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://phydemo.app/ray-optics/gallery/GRIN-slab">
-<meta property="og:image" content="https://phydemo.app/ray-optics/gallery/GRIN-slab-thumbnail.png">
+<meta property="og:url" content="https://phydemo.app/ray-optics/gallery/logarithmic-spiral-lens">
+<meta property="og:image" content="https://phydemo.app/ray-optics/gallery/logarithmic-spiral-lens-thumbnail.png">
 <meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
 <meta property="og:locale" content="en">
-<link rel="canonical" href="https://phydemo.app/ray-optics/gallery/GRIN-slab">
-<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/GRIN-slab" hreflang="en">
-<link rel="alternate" href="https://phydemo.app/ray-optics/pl/gallery/GRIN-slab" hreflang="pl">
-<link rel="alternate" href="https://phydemo.app/ray-optics/cn/gallery/GRIN-slab" hreflang="zh-CN">
-<link rel="alternate" href="https://phydemo.app/ray-optics/tw/gallery/GRIN-slab" hreflang="zh-TW">
+<link rel="canonical" href="https://phydemo.app/ray-optics/gallery/logarithmic-spiral-lens">
+<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/logarithmic-spiral-lens" hreflang="en">
 
 <link rel="stylesheet" href="../thirdparty/bootstrap-3.3.7/bootstrap.min.css">
 <link rel="stylesheet" href="gallery.css">
@@ -40,17 +37,17 @@ Ray Optics Simulation
 </div>
 <div class="container">
 <center>
-<h1><b><span>GRIN slab</span></b></h1>
+<h1><b><span>Logarithmic spiral ray path</span></b></h1>
 <p>
 Contributor: Stas Fainer
 </p>
 <div class="description">
-<p>This is a simulation of a rectangular dielectric material with a refractive index \(n(\rho) = n_0 \sqrt{1-(\alpha \rho)^2}\), where \(n_0=2\) is the refractive index on its central axis and \(\rho \) is the radial distance from its central axis, such that \(\alpha=\frac{\sqrt{3}}{2R} \) where \(R=100 \) is its radius.<br>The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \(n(\rho)\) (the script for creating this dialectric is available <a href="https://phydemo.app/ray-optics/gallery/GRIN-slab.py" target="_blank">here</a>), while the bottom dielectric is a gradient-index material with the refractive index \(n(\rho)\).</p>
+<p>The refractive index function that supports logarithmic spiral ray paths of the form \(r(θ) = r_0\,e^{-k\theta}\), where \(r_0,k > 0\) and \(\alpha = \arctan k\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href="https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif" target="_blank">this</a> animation), is \(n(r) &prop; \frac{1}{r} \) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>
 </div>
 <p>
-<a href="https://phydemo.app/ray-optics/simulator/#GRIN-slab" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
+<a href="https://phydemo.app/ray-optics/simulator/#logarithmic-spiral-lens" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
 </p>
-<img src="GRIN-slab.png" alt="GRIN slab" style="width:100%">
+<img src="logarithmic-spiral-lens.png" alt="Logarithmic spiral ray path" style="width:100%">
 </center>
 
   <div style="float: right; padding-top: 10px;">
@@ -59,7 +56,7 @@ Contributor: Stas Fainer
       <span id="language">Language: English</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li><a href="https://phydemo.app/ray-optics/gallery/GRIN-slab">English</a></li><li><a href="https://phydemo.app/ray-optics/pl/gallery/GRIN-slab">polski</a></li><li><a href="https://phydemo.app/ray-optics/cn/gallery/GRIN-slab">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/gallery/GRIN-slab">正體中文</a></li>
+        <li><a href="https://phydemo.app/ray-optics/gallery/logarithmic-spiral-lens">English</a></li>
       </ul>
     </div>
   </div>

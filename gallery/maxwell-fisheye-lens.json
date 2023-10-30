@@ -388,7 +388,19 @@
       }
     },
     {
-      "type": "circlelens",
+      "type": "text",
+      "x": 161.2860309773148,
+      "y": 471.2749618914204,
+      "p": "Approximated multilayer\nmaxwell fisheye lens"
+    },
+    {
+      "type": "text",
+      "x": 162.59767248968467,
+      "y": 793.4494049417917,
+      "p": "Classical maxwell fisheye lens"
+    },
+    {
+      "type": "grin_circlelens",
       "p1": {
         "type": 1,
         "x": 600,
@@ -401,29 +413,70 @@
         "y": 780,
         "exist": true
       },
-      "p": 1.5
+      "origin": {
+        "type": 1,
+        "x": 600,
+        "y": 780,
+        "exist": true
+      },
+      "p": "2 / (1 + (x ^ 2 + y ^ 2) / 100 ^ 2)",
+      "p_tex": "\\frac{2}{1+\\frac{x^2+y^2}{100^2}}",
+      "p_der_x": "x * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
+      "p_der_x_tex": "\\frac{\\frac{ x\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
+      "p_der_y": "y * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
+      "p_der_y_tex": "\\frac{\\frac{ y\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
+      "step_size": 0.1,
+      "eps": 0.001
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 149.57170081859684,
+        "y": 630,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1959.0436846097498,
+        "y": 630,
+        "exist": true
+      }
     },
     {
       "type": "text",
-      "x": 201.28603097731485,
-      "y": 451.27496189142045,
-      "p": "Maxwell fisheye lens"
+      "x": 692.4799789109935,
+      "y": 666.1197390445199,
+      "p": "See how the numerical solver step size of this lens\neffects the rays path",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
     },
     {
       "type": "text",
-      "x": 202.59767248968467,
-      "y": 753.4494049417918,
-      "p": "Glass with a circle shape"
+      "x": 110.69400953239574,
+      "y": 352.0816798542129,
+      "p": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": "37",
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
     }
   ],
   "mode": "light",
-  "rayDensity_light": 12.182493960703473,
+  "rayDensity_light": 0.1,
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 213.6947308806634,
-    "y": -184.94574895747175
+    "x": -57.177954798380796,
+    "y": -173.09891325178066
   },
-  "scale": 1.1438396227480496,
-  "colorMode": false
+  "scale": 0.9832235850228547,
+  "colorMode": false,
+  "symbolicGrin": false
 }
