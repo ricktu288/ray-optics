@@ -5582,7 +5582,7 @@
     }
   ],
   "mode": "light",
-  "rayDensity_light": 2.718281828459045,
+  "rayDensity_light": 0.1,
   "rayDensity_images": 1,
   "observer": null,
   "origin": {

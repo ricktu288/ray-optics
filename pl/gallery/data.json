@@ -189,22 +189,6 @@
         "description": "<p>Definicja kąta odchylenia promienia padającego na element optyczny zależy od kontekstu - na poniższym zrzucie ekranu możesz zobaczyć jego definicję dla pryzmatu trójkątnego i sferycznego. W przykładach zawartych w tej symulacji kąt odchylenia jako funkcja kąta padania promienia wchodzącego do elementu optycznego ma lokalne minimum, które nazywa się \"minimalnym kątem odchylenia\". To lokalne minimum może wyjaśniać zjawiska optyczne, takie jak <a href=\"https://phydemo.app/ray-optics/pl/gallery/rainbows\" target=\"_blank\">tęcze</a> i halo - z powodu tego lokalnego minimum, odchylone promienie gromadzą się w określonych kierunkach, tworząc \"optyczną kaustykę\" (jak widać w przykładzie C w symulacji), którą postrzegamy jako tęcze/halo.</p>"
       },
       {
-        "id": "inferior-mirage",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Miraż dolny",
-        "description": "<p>Symulacja efektu mirażu dolnego. Niebo z tym efektem jest modelowane (konkretnie w tym przykładzie) ze współczynnikiem załamania światła \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\) reprezentuje wysokość słońca nad ziemią. W tej symulacji niebo składa się z prostokątów o stałym współczynniku załamania zgodnie z \\(n(y)\\). Ta symulacja ma na celujedynie jakościowe zademonstrowanie tego efektu.</p>"
-      },
-      {
-        "id": "GRIN-slab",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Płyta GRIN (gradientowa)",
-        "description": "<p>Jest to symulacja materiału dielektrycznego o współczynniku załamania światła \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\) jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem. Zauważ, że dielektryk w tej symulacji składa się z cienkich prostokątów dielektryka o stałym współczynniku załamania światła, zgodnie z poprzednim równaniem dla \\(n(\\rho)\\).</p>"
-      },
-      {
         "id": "aplanatic-points",
         "contributors": [
           "Stas Fainer"
@@ -291,30 +275,6 @@
         ],
         "title": "Soczewka Fresnela",
         "description": "<p>Jest to symulacja i porównanie soczewki sferycznej i soczewki Fresnela. Łatwo zauważyć jedną z zalet soczewki Fresnela: działa ona podobnie jak zwykła soczewka sferyczna, a jednocześnie zajmuje znacznie mniej miejsca - a co za tym idzie - mniej waży.</p>"
-      },
-      {
-        "id": "luneburg-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Soczewka Luneburga",
-        "description": "<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę Luneburga złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
-      },
-      {
-        "id": "maxwell-fisheye-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Soczewka rybie oko Maxwella",
-        "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę rybie oko Maxwella złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
-      },
-      {
-        "id": "logarithmic-spiral-lens",
-        "contributors": [
-          "Stas Fainer"
-        ],
-        "title": "Logarithmic spiral lens",
-        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0&middot;e^{-k&middot;θ}\\), where \\(r_0,k > 0\\) and \\(α = arctan(k)\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
       }
     ]
   },
@@ -369,6 +329,52 @@
         ],
         "title": "Rochesterski płaszcz",
         "description": "<p>Rochesterski płaszcz (Rochester cloak) to rodzaj urządzenia maskującego, które wykorzystuje tylko 4 soczewki. W wersji przedstawionej w tej symulacji ogniskowa dwóch soczewek zewnętrznych wynosi \\(f_1\\), a dwóch soczewek środkowych \\(f_2\\). Odległość między kolejnymi soczewkami o ogniskowych \\(f_1\\) i \\(f_2\\) równa się \\(t_1=f_1+f_2\\), a odległość między środkowymi soczewkami wynosi \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).</p>"
+      }
+    ]
+  },
+  {
+    "id": "GRIN-optics",
+    "title": "Gradient-index Optics",
+    "content": [
+      {
+        "id": "GRIN-slab",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Płyta GRIN (gradientowa)",
+        "description": "<p>Jest to symulacja materiału dielektrycznego o współczynniku załamania światła \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\) jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem. Zauważ, że dielektryk w tej symulacji składa się z cienkich prostokątów dielektryka o stałym współczynniku załamania światła, zgodnie z poprzednim równaniem dla \\(n(\\rho)\\).</p>"
+      },
+      {
+        "id": "inferior-mirage",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Miraż dolny",
+        "description": "<p>Symulacja efektu mirażu dolnego. Niebo z tym efektem jest modelowane (konkretnie w tym przykładzie) ze współczynnikiem załamania światła \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\) reprezentuje wysokość słońca nad ziemią. W tej symulacji niebo składa się z prostokątów o stałym współczynniku załamania zgodnie z \\(n(y)\\). Ta symulacja ma na celujedynie jakościowe zademonstrowanie tego efektu.</p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Logarithmic spiral ray path",
+        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
+      },
+      {
+        "id": "luneburg-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Soczewka Luneburga",
+        "description": "<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę Luneburga złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+      },
+      {
+        "id": "maxwell-fisheye-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Soczewka rybie oko Maxwella",
+        "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę rybie oko Maxwella złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
       }
     ]
   },

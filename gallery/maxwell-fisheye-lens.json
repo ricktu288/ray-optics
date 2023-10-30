@@ -469,7 +469,7 @@
     }
   ],
   "mode": "light",
-  "rayDensity_light": 12.182493960703473,
+  "rayDensity_light": 0.1,
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
