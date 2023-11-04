@@ -350,7 +350,7 @@
           "Stas Fainer"
         ],
         "title": "Inferior mirage",
-        "description": "<p>This is a simulation of the Inferior mirage effect. The sky with this effect is modeled (specifically in this example) with the refractive index \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of the sun above the ground. In this simulation the sky is composed of rectangles with constant refractive index according to \\(n(y)\\). This simulation aims to demonstrate this effect qualitatively.</p>"
+        "description": "<p>This is a qualitative simulation of the inferior mirage effect.<br>The refractive index of the air in this example, is approximated with the function \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of a light emitting/reflecting object above the ground.</p>"
       },
       {
         "id": "logarithmic-spiral-lens",
