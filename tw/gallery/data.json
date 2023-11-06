@@ -342,7 +342,7 @@
           "Stas Fainer"
         ],
         "title": "漸變折射率平板",
-        "description": "<p>模擬折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介電材料，其中 \\(n_0\\) 是其中央軸的折射率，\\(\\rho \\) 是從其中央軸的徑向距離，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半徑。請注意，本模擬中將此介電材料近似為一系列的薄矩形，每個矩形具有恆定的折射率（根據前述 \\(n(\\rho)\\) 的式子）。<a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">產生這些薄矩形的程式碼</a></p>"
+        "description": "<p>模擬折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介電材料，其中 \\(n_0\\) 是其中央軸的折射率，\\(\\rho \\) 是從其中央軸的徑向距離，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半徑。上方的介電材料為一系列的薄矩形，每個矩形具有恆定的折射率（根據前述 \\(n(\\rho)\\) 的式子）。產生這些薄矩形的程式碼詳見<a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">此連結</a>；下方的介電材料是折射率為\\(n(\\rho)\\)的漸變折射率材料。</p>"
       },
       {
         "id": "inferior-mirage",
@@ -357,8 +357,8 @@
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Logarithmic spiral ray path",
-        "description": "<p>The refractive index function that supports logarithmic spiral ray paths of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
+        "title": "等角螺線形的光線路徑",
+        "description": "<p>能使光線路徑呈現等角螺線形（ \\(r(θ) = r_0\\,e^{-k\\theta}\\)，其中 \\(r_0,k > 0\\) 且 \\(\\alpha = \\arctan k\\) 為等角螺線與同心圓形的交點上兩切線的固定夾角，見<a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">這個</a>動畫）的折射率函數為 \\(n(r) &prop; \\frac{1}{r} \\) (這可用將光線路徑以極座標表示並使用費馬原理來證明）。 </p>"
       },
       {
         "id": "luneburg-lens",
@@ -366,7 +366,7 @@
           "Stas Fainer"
         ],
         "title": "龍伯透鏡",
-        "description": "<p>龍伯透鏡（Luneburg lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>這個模擬顯示了一個由 \\(N=20\\) 個同心球組成的龍伯透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。</p>"
+        "description": "<p>龍伯透鏡（Luneburg lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>上方的介電材料為由 \\(N=20\\) 個同心球組成的龍伯透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。</p><p>下方的介電材料是折射率為\\(n(r)\\)的漸變折射率材料。</p>"
       },
       {
         "id": "maxwell-fisheye-lens",
@@ -374,7 +374,7 @@
           "Stas Fainer"
         ],
         "title": "馬克士威魚眼透鏡",
-        "description": "<p>馬克士威魚眼透鏡（Maxwell fisheye lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>這個模擬顯示了一個由 \\(N=20\\) 個同心球組成的馬克士威魚眼透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。</p>"
+        "description": "<p>馬克士威魚眼透鏡（Maxwell fisheye lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>上方的介電材料為由 \\(N=20\\) 個同心球組成的馬克士威魚眼透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\)。</p><p>下方的介電材料是折射率為\\(n(r)\\)的漸變折射率材料。</p>"
       }
     ]
   },
