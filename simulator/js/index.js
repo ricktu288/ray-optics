@@ -562,12 +562,14 @@ window.onkeydown = function (e) {
 
   //Ctrl+S
   if (e.ctrlKey && e.keyCode == 83) {
-    document.getElementById('save').onclick();
+    save();
+    return false;
   }
 
   //Ctrl+O
   if (e.ctrlKey && e.keyCode == 79) {
     document.getElementById('open').onclick();
+    return false;
   }
 
   //esc
@@ -818,8 +820,10 @@ function save() {
 
   var blob = new Blob([document.getElementById('textarea1').value], { type: 'application/json' });
   saveAs(blob, document.getElementById('save_name').value);
-
-  document.getElementById('saveBox').style.display = 'none';
+  var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
+  if (saveModal) {
+    saveModal.hide();
+  }
   hasUnsavedChange = false;
 }
 
