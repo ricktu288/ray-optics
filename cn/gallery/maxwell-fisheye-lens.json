@@ -1,429 +1,482 @@
 {
-    "version": 2,
-    "objs": [
-        {
-            "type": "ruler",
-            "p1": {
-                "type": 1,
-                "x": 500,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 700,
-                "y": 480,
-                "exist": true
-            }
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 685.2,
-                "y": 480.2567901234568,
-                "exist": true
-            },
-            "p": 1.0508
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 664.953086419753,
-                "y": 480.2567901234568,
-                "exist": true
-            },
-            "p": 1.0475
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 695.0765432098766,
-                "y": 480.0098765432099,
-                "exist": true
-            },
-            "p": 1.0512
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 690.1382716049383,
-                "y": 480.0098765432099,
-                "exist": true
-            },
-            "p": 1.0511
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 700,
-                "y": 480,
-                "exist": true
-            },
-            "p": 1
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 645.1999999999999,
-                "y": 480.39999999999986,
-                "exist": true
-            },
-            "p": 1.0395
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 675.0765432098766,
-                "y": 480.2567901234568,
-                "exist": true
-            },
-            "p": 1.0496
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 670.1382716049383,
-                "y": 480.2567901234568,
-                "exist": true
-            },
-            "p": 1.0487
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 680,
-                "y": 480,
-                "exist": true
-            },
-            "p": 1.0503
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 625.1999999999999,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0259
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 655,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0441
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 649.9999999999999,
-                "y": 480.39999999999986,
-                "exist": true
-            },
-            "p": 1.042
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 660,
-                "y": 480,
-                "exist": true
-            },
-            "p": 1.046
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 620,
-                "y": 480,
-                "exist": true
-            },
-            "p": 1.0216
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 635.1999999999999,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0334
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 629.9999999999999,
-                "y": 479.9999999999999,
-                "exist": true
-            },
-            "p": 1.0298
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 640,
-                "y": 480,
-                "exist": true
-            },
-            "p": 1.0366
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 604.9999999999999,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0075
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 614.9999999999999,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0171
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 609.9999999999999,
-                "y": 480.1999999999999,
-                "exist": true
-            },
-            "p": 1.0124
-        },
-        {
-            "type": "led",
-            "p1": {
-                "type": 1,
-                "x": 500,
-                "y": 780,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 720,
-                "y": 780,
-                "exist": true
-            },
-            "p": 30,
-            "symmetric": true,
-            "brightness": 1
-        },
-        {
-            "type": "led",
-            "p1": {
-                "type": 1,
-                "x": 500,
-                "y": 480,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 720,
-                "y": 480,
-                "exist": true
-            },
-            "p": 30,
-            "symmetric": true,
-            "brightness": 1
-        },
-        {
-            "type": "ruler",
-            "p1": {
-                "type": 1,
-                "x": 500,
-                "y": 780,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 700,
-                "y": 780,
-                "exist": true
-            }
-        },
-        {
-            "type": "circlelens",
-            "p1": {
-                "type": 1,
-                "x": 600,
-                "y": 780,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 700,
-                "y": 780,
-                "exist": true
-            },
-            "p": 1.5
-        },
-        {
-            "type": "text",
-            "x": 201.28603097731485,
-            "y": 451.27496189142045,
-            "p": "麦克斯韦鱼眼透镜"
-        },
-        {
-            "type": "text",
-            "x": 202.59767248968467,
-            "y": 753.4494049417918,
-            "p": "圆形透镜"
-        }
-    ],
-    "mode": "light",
-    "rayDensity_light": 12.182493960703473,
-    "rayDensity_images": 1,
-    "observer": null,
-    "origin": {
-        "x": 213.6947308806634,
-        "y": -184.94574895747175
+  "version": 2,
+  "objs": [
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 480,
+        "exist": true
+      }
     },
-    "scale": 1.1438396227480496,
-    "colorMode": false
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 685.2,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0508
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 664.953086419753,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0475
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 695.0765432098766,
+        "y": 480.0098765432099,
+        "exist": true
+      },
+      "p": 1.0512
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 690.1382716049383,
+        "y": 480.0098765432099,
+        "exist": true
+      },
+      "p": 1.0511
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 645.1999999999999,
+        "y": 480.39999999999986,
+        "exist": true
+      },
+      "p": 1.0395
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 675.0765432098766,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0496
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 670.1382716049383,
+        "y": 480.2567901234568,
+        "exist": true
+      },
+      "p": 1.0487
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 680,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0503
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 625.1999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0259
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 655,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0441
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 649.9999999999999,
+        "y": 480.39999999999986,
+        "exist": true
+      },
+      "p": 1.042
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 660,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.046
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 620,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0216
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 635.1999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0334
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 629.9999999999999,
+        "y": 479.9999999999999,
+        "exist": true
+      },
+      "p": 1.0298
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 640,
+        "y": 480,
+        "exist": true
+      },
+      "p": 1.0366
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 604.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0075
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 614.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0171
+    },
+    {
+      "type": "circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 609.9999999999999,
+        "y": 480.1999999999999,
+        "exist": true
+      },
+      "p": 1.0124
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 780,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 780,
+        "exist": true
+      },
+      "p": 30,
+      "symmetric": true,
+      "brightness": 1
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 480,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 720,
+        "y": 480,
+        "exist": true
+      },
+      "p": 30,
+      "symmetric": true,
+      "brightness": 1
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 500,
+        "y": 780,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 780,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 161.2860309773148,
+      "y": 471.2749618914204,
+      "p": "用多层近似的\n麦克斯韦鱼眼透镜"
+    },
+    {
+      "type": "text",
+      "x": 162.59767248968467,
+      "y": 793.4494049417917,
+      "p": "正统的麦克斯韦鱼眼透镜"
+    },
+    {
+      "type": "grin_circlelens",
+      "p1": {
+        "type": 1,
+        "x": 600,
+        "y": 780,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 700,
+        "y": 780,
+        "exist": true
+      },
+      "origin": {
+        "type": 1,
+        "x": 600,
+        "y": 780,
+        "exist": true
+      },
+      "p": "2 / (1 + (x ^ 2 + y ^ 2) / 100 ^ 2)",
+      "p_tex": "\\frac{2}{1+\\frac{x^2+y^2}{100^2}}",
+      "p_der_x": "x * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
+      "p_der_x_tex": "\\frac{\\frac{ x\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
+      "p_der_y": "y * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
+      "p_der_y_tex": "\\frac{\\frac{ y\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
+      "step_size": 0.1,
+      "eps": 0.001
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 149.57170081859684,
+        "y": 630,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1959.0436846097498,
+        "y": 630,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 692.4799789109935,
+      "y": 666.1197390445199,
+      "p": "可观察数值求解器步长如何影响光线路径",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 110.69400953239574,
+      "y": 352.0816798542129,
+      "p": "警告：光线出现的顺序并不代表实际的光速。只有最终的图像有意义。",
+      "fontSize": "37",
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": -106.44131966853259,
+    "y": -276.24187008423434
+  },
+  "scale": 0.9934666999797073,
+  "colorMode": false,
+  "symbolicGrin": false
 }
