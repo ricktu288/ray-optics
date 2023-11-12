@@ -1,6 +1,11 @@
 ﻿var objTypes = {};
 var canvas;
+var canvas0;
+var canvasLight;
 var ctx;
+var ctx0;
+var ctxLight;
+var dpr = 1;
 var objs = []; //物件 The objects
 var objCount = 0; //物件數量 Number of the objects
 var observer;
@@ -15,10 +20,25 @@ var showAdvancedOn = false;
 var MQ;
 
 window.onload = function (e) {
+  if (window.devicePixelRatio) {
+    dpr = window.devicePixelRatio;
+  }
+
   canvas = document.getElementById('canvas1');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas0 = document.getElementById('canvas0');
+  canvasLight = document.getElementById('canvasLight');
+
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
   ctx = canvas.getContext('2d');
+
+  canvas0.width = window.innerWidth * dpr;
+  canvas0.height = window.innerHeight * dpr;
+  ctx0 = canvas0.getContext('2d');
+
+  canvasLight.width = window.innerWidth * dpr;
+  canvasLight.height = window.innerHeight * dpr;
+  ctxLight = canvasLight.getContext('2d');
 
 
 
@@ -472,9 +492,17 @@ function openSample(name) {
 
 
 window.onresize = function (e) {
+  if (window.devicePixelRatio) {
+    dpr = window.devicePixelRatio;
+  }
+
   if (ctx) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas0.width = window.innerWidth * dpr;
+    canvas0.height = window.innerHeight * dpr;
+    canvasLight.width = window.innerWidth * dpr;
+    canvasLight.height = window.innerHeight * dpr;
     draw();
   }
 };

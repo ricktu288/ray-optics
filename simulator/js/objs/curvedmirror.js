@@ -22,7 +22,7 @@ objTypes['curvedmirror'] = {
   c_mouseup: objTypes['lineobj'].c_mouseup,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
     var fn;
     try {
       fn = evaluateLatex(obj.p);
@@ -208,8 +208,6 @@ objTypes['curvedmirror'] = {
         outyFinal = outyA * (frac-0.5) + outy * (1.5-frac);
       }
       console.log(frac);
-      //canvasPainter.draw(graphs.ray(rp,graphs.point(outx, outy)),"white");
-      //canvasPainter.draw(graphs.ray(rp,graphs.point(outxA, outyA)),"white");
       ray.p2 = graphs.point(outxFinal, outyFinal);
     }
   }

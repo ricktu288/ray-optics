@@ -72,7 +72,7 @@ objTypes['text'] = {
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
-    draw();
+    
   },
 
   //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
@@ -80,7 +80,6 @@ objTypes['text'] = {
   {
     obj.x=mouse.x;
     obj.y=mouse.y;
-    draw();
   },
 
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
@@ -90,7 +89,7 @@ objTypes['text'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx ,aboveLight) {
     ctx.fillStyle = getMouseStyle(obj, 'white');
     ctx.textAlign = obj.fontAlignment || 'left';
     ctx.textBaseline = 'bottom';

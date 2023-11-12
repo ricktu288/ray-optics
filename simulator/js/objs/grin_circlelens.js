@@ -86,7 +86,7 @@ objTypes['grin_circlelens'] = {
 
   zIndex: objTypes['refractor'].zIndex,
 
-  fillGlass: function(n, obj, aboveLight)
+  fillGlass: function(n, obj, ctx, aboveLight)
   {
     if (aboveLight) {
       // Draw the highlight only
@@ -102,7 +102,7 @@ objTypes['grin_circlelens'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
 
   if (obj.error) {
 	ctx.textAlign = 'left';
@@ -114,7 +114,7 @@ objTypes['grin_circlelens'] = {
 
   ctx.beginPath();
   ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-  this.fillGlass(2.3, obj, aboveLight);
+  this.fillGlass(2.3, obj, ctx, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
   ctx.fillStyle = 'red';

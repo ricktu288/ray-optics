@@ -16,7 +16,6 @@ objTypes['arcmirror'] = {
   {
     if (!obj.p2 && !obj.p3)
     {
-      draw();
       obj.p2 = mouse;
       return;
     }
@@ -30,7 +29,6 @@ objTypes['arcmirror'] = {
       {
         obj.p2 = mouse;
       }
-      draw();
       obj.p3 = mouse;
       return;
     }
@@ -51,13 +49,11 @@ objTypes['arcmirror'] = {
 
       obj.p1 = ctrl ? graphs.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
 
-      draw();
       return;
     }
-    if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
+    if (obj.p3)
     {
       obj.p3 = mouse;
-      draw();
       return;
     }
   },
@@ -72,14 +68,13 @@ objTypes['arcmirror'] = {
     if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
     {
       obj.p3 = mouse;
-      draw();
       isConstructing = false;
       return;
     }
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2)
     {

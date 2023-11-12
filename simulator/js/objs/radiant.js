@@ -21,7 +21,7 @@ objTypes['radiant'] = {
   //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
-    draw();
+    
   },
   //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
@@ -35,7 +35,7 @@ objTypes['radiant'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
   ctx.fillStyle = colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
   if (colorMode) {

@@ -19,7 +19,7 @@ objTypes['parabolicmirror'] = {
   c_mouseup: objTypes['arcmirror'].c_mouseup,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2)
     {

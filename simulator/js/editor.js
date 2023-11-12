@@ -117,6 +117,7 @@ function canvas_onmousedown(e) {
       //只有滑鼠左鍵才反應 Only react for left click
       //若有一個物件正在被建立,則將動作直接傳給它 If an obj is being created, pass the action to it
       objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      draw();
     }
   }
   else {
@@ -189,6 +190,7 @@ function canvas_onmousedown(e) {
         }
         selectObj(objs.length - 1);
         objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse);
+        draw();
         cancelRestore();
       }
     }
@@ -278,6 +280,7 @@ function canvas_onmousemove(e) {
 
     //若有一個物件正在被建立,則將動作直接傳給它 If some object is being created, pass the action to it
     objTypes[objs[objs.length - 1].type].c_mousemove(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+    draw();
   }
   else {
     var instantObserver = mode == 'observed_light' || mode == 'observed_images';
@@ -358,6 +361,7 @@ function canvas_onmouseup(e) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       //若有一個物件正在被建立,則將動作直接傳給它 If an object is being created, pass the action to it
       objTypes[objs[objs.length - 1].type].c_mouseup(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      draw();
       if (!isConstructing) {
         //該物件已經表示建立完畢 The object says the contruction is done
         createUndoPoint();

@@ -34,7 +34,7 @@ objTypes['idealmirror'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
   var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
   var par_x = (obj.p2.x - obj.p1.x) / len;
   var par_y = (obj.p2.y - obj.p1.y) / len;

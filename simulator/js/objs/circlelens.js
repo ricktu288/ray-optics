@@ -73,11 +73,11 @@ objTypes['circlelens'] = {
   zIndex: objTypes['refractor'].zIndex,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
 
   ctx.beginPath();
   ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
-  objTypes['refractor'].fillGlass(obj.p, obj, aboveLight);
+  objTypes['refractor'].fillGlass(obj.p, obj, ctx, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
   ctx.fillStyle = 'red';

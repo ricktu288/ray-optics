@@ -16,7 +16,7 @@ objTypes['power'] = {
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 

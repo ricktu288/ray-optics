@@ -33,7 +33,7 @@ objTypes['handle'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
 
     for (var i in obj.controlPoints) {
       // If user drags some target objs, restore them back to avoid unexpected behavior.

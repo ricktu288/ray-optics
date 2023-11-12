@@ -50,8 +50,7 @@ objTypes['parallel'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
-    //var ctx = canvas.getContext('2d');
+  draw: function(obj, ctx, aboveLight) {
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     ctx.strokeStyle = getMouseStyle(obj, colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
     

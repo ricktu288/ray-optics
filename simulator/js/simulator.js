@@ -16,6 +16,7 @@ var stateOutdated = false; //上次繪圖完後狀態已經變更 The state has 
 var minShotLength = 1e-6; //光線兩次作用的最短距離(小於此距離的光線作用會被忽略) The minimal length between two interactions with rays (when smaller than this, the interaction will be ignored)
 var minShotLength_squared = minShotLength * minShotLength;
 var totalTruncation = 0;
+var canvasPainter;
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -57,7 +58,16 @@ function draw_() {
   stateOutdated = false;
 
   JSONOutput();
+
+  delete canvasPainter;
+  canvasPainter = new CanvasPainter(ctxLight, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+  var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr), backgroundImage);
+  var canvasPainter1 = new CanvasPainter(ctx, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+
   canvasPainter.cls();
+  canvasPainter0.cls();
+  canvasPainter1.cls();
+
   ctx.globalAlpha = 1;
   hasExceededTime = false;
   waitingRays = [];
@@ -65,33 +75,33 @@ function draw_() {
 
 
 
-  ctx.save();
-  ctx.setTransform(scale, 0, 0, scale, 0, 0);
-  if (document.getElementById('showgrid').checked && ctx.constructor != C2S)
+  ctx0.save();
+  ctx0.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
+  if (document.getElementById('showgrid').checked && ctx0.constructor != C2S)
   {
     //畫出格線 Draw the grid
-    ctx.strokeStyle = 'rgb(64,64,64)';
+    ctx0.strokeStyle = 'rgb(64,64,64)';
     var dashstep = 4;
-    ctx.beginPath();
-    for (var x = origin.x / scale % gridSize; x <= canvas.width / scale; x += gridSize)
+    ctx0.beginPath();
+    for (var x = origin.x / (scale*dpr) % gridSize; x <= canvas.width / (scale*dpr); x += gridSize)
     {
-      for (var y = 0; y <= canvas.height / scale; y += dashstep)
+      for (var y = 0; y <= canvas.height / (scale*dpr); y += dashstep)
       {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + dashstep * 0.5);
+        ctx0.moveTo(x, y);
+        ctx0.lineTo(x, y + dashstep * 0.5);
       }
     }
-    for (var y = origin.y / scale % gridSize; y <= canvas.height / scale; y += gridSize)
+    for (var y = origin.y / (scale*dpr) % gridSize; y <= canvas.height / (scale*dpr); y += gridSize)
     {
-      for (var x = 0; x <= canvas.width / scale; x += dashstep)
+      for (var x = 0; x <= canvas.width / (scale*dpr); x += dashstep)
       {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + dashstep * 0.5, y);
+        ctx0.moveTo(x, y);
+        ctx0.lineTo(x + dashstep * 0.5, y);
       }
     }
-    ctx.stroke();
+    ctx0.stroke();
   }
-  ctx.restore();
+  ctx0.restore();
 
   // Sort the objects with z-index.
   var mapped = objs.map(function(obj, i) {
@@ -108,28 +118,11 @@ function draw_() {
   for (var j = 0; j < objs.length; j++)
   {
     var i = mapped[j].index;
-    objTypes[objs[i].type].draw(objs[i], canvas);
+    objTypes[objs[i].type].draw(objs[i], ctx0, false);
     if (objTypes[objs[i].type].shoot)
     {
       objTypes[objs[i].type].shoot(objs[i]); //若objs[i]能射出光線,讓它射出 If objs[i] can shoot rays, shoot them.
     }
-  }
-  if (colorMode && ctx.constructor != C2S) {
-    // Transformation the color to the same representation as color rendering.
-    // This is to avoid the color satiation problem when using the 'lighter' composition.
-    // Currently not supported when exporting to SVG.
-    var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
-    var data = imageData.data;
-    for (var i = 0; i < data.length; i += 4) {
-        var R = 1 - Math.exp(-data[i] / 256);
-        var G = 1 - Math.exp(-data[i+1] / 256);
-        var B = 1 - Math.exp(-data[i+2] / 256);
-        data[i] = 255 * R;
-        data[i+1] = 255 * G;
-        data[i+2] = 255 * B;
-    }
-    ctx.putImageData(imageData, 0, 0);
-    ctx.globalCompositeOperation = 'source-over';
   }
 
   leftRayCount = 0;
@@ -142,11 +135,11 @@ function draw_() {
   if (mode == 'observer')
   {
     //畫出即時觀察者 Draw the observer
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-    ctx.fillStyle = 'blue';
-    ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
-    ctx.fill();
+    ctx0.globalAlpha = 1;
+    ctx0.beginPath();
+    ctx0.fillStyle = 'blue';
+    ctx0.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
+    ctx0.fill();
   }
   lastDrawTime = new Date();
 }
@@ -191,7 +184,7 @@ function shootWaitingRays() {
   timerID = -1;
   var st_time = new Date();
   var alpha0 = 1;
-  ctx.globalAlpha = alpha0;
+  ctxLight.globalAlpha = alpha0;
   var observed;
   var s_obj;
   var s_obj_index;
@@ -206,11 +199,11 @@ function shootWaitingRays() {
 
   
   if (colorMode) {
-    ctx.globalCompositeOperation = 'screen';
+    ctxLight.globalCompositeOperation = 'screen';
   }
 
   while (true) {
-    if (new Date() - st_time > 50 && ctx.constructor != C2S)
+    if (new Date() - st_time > 50 && ctxLight.constructor != C2S)
     {
       //若已計算超過200ms If already run for 200ms
       //先休息10ms後再繼續(防止程式沒有回應) Pause for 10ms and continue (prevent not responding)
@@ -220,7 +213,7 @@ function shootWaitingRays() {
       document.getElementById('forceStop').style.display = '';
       return;
     }
-    if (new Date() - st_time > 5000 && ctx.constructor == C2S)
+    if (new Date() - st_time > 5000 && ctxLight.constructor == C2S)
     {
       isDrawing = false;
       return;
@@ -305,7 +298,7 @@ function shootWaitingRays() {
       if (colorMode) {
         var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p), true);
       } else {
-        ctx.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
+        ctxLight.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
       }
       //↓若光線沒有射到任何物件 If not shot on any object
       if (s_lensq == Infinity)
@@ -321,9 +314,9 @@ function shootWaitingRays() {
         if (mode == 'extended_light' && !waitingRays[j].isNew)
         {
           if (colorMode) {
-            ctx.setLineDash([2, 2]);
+            ctxLight.setLineDash([2, 2]);
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the extension of the ray
-            ctx.setLineDash([]);
+            ctxLight.setLineDash([]);
           } else {
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the extension of the ray
           }
@@ -355,11 +348,11 @@ function shootWaitingRays() {
         if (mode == 'extended_light' && !waitingRays[j].isNew)
         {
           if (colorMode) {
-            ctx.setLineDash([2, 2]);
+            ctxLight.setLineDash([2, 2]);
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); //畫出這條光的延長線 Draw the backward extension of the ray
-            ctx.setLineDash([1, 5]);
+            ctxLight.setLineDash([1, 5]);
             canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); //畫出這條光向前的延長線 Draw the forward extension of the ray
-            ctx.setLineDash([]);
+            ctxLight.setLineDash([]);
           } else {
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); //畫出這條光的延長線 Draw the backward extension of the ray
             canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); //畫出這條光向前的延長線 Draw the forward extension of the ray
@@ -399,7 +392,7 @@ function shootWaitingRays() {
                 if (colorMode) {
                   var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
                 } else {
-                  ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+                  ctxLight.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
                 }
                 if (s_point)
                 {
@@ -413,8 +406,8 @@ function shootWaitingRays() {
                 {
                   //虛像 Virtual image
                   if (colorMode) {
-                    ctx.fillStyle = color;
-                    ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                    ctxLight.fillStyle = color;
+                    ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
                   }
@@ -429,9 +422,9 @@ function shootWaitingRays() {
                   }
                 }
                   if (colorMode) {
-                    ctx.setLineDash([1, 2]);
+                    ctxLight.setLineDash([1, 2]);
                     canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); // Draw the observed ray
-                    ctx.setLineDash([]);
+                    ctxLight.setLineDash([]);
                   } else {
                     canvasPainter.draw(graphs.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
                   }
@@ -439,9 +432,9 @@ function shootWaitingRays() {
               else
               {
                 if (colorMode) {
-                  ctx.setLineDash([1, 2]);
+                  ctxLight.setLineDash([1, 2]);
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
-                  ctx.setLineDash([]);
+                  ctxLight.setLineDash([]);
                 } else {
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
                 }
@@ -452,9 +445,9 @@ function shootWaitingRays() {
               if (last_intersection)
               {
                 if (colorMode) {
-                  ctx.setLineDash([1, 2]);
+                  ctxLight.setLineDash([1, 2]);
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); //畫出觀察到的光線(射線) // Draw the observed ray
-                  ctx.setLineDash([]);
+                  ctxLight.setLineDash([]);
                 } else {
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); //畫出觀察到的光線(射線) // Draw the observed ray
                 }
@@ -480,7 +473,7 @@ function shootWaitingRays() {
             if (colorMode) {
               var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
             } else {
-              ctx.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
+              ctxLight.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
             }
 
             if (s_point)
@@ -496,8 +489,8 @@ function shootWaitingRays() {
             {
               //虛像 Virtual image
               if (colorMode) {
-                ctx.fillStyle = color;
-                ctx.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                ctxLight.fillStyle = color;
+                ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
               } else {
                 canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); //畫出像 Draw the image
               }
@@ -515,8 +508,8 @@ function shootWaitingRays() {
             {
               //虛物 Virtual object
               if (colorMode) {
-                ctx.fillStyle = color;
-                ctx.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
+                ctxLight.fillStyle = color;
+                ctxLight.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
               } else {
                 canvasPainter.draw(observed_intersection, 'rgb(80,80,80)');
               }
@@ -553,28 +546,34 @@ function shootWaitingRays() {
   }
 
   //}
-  if (colorMode && ctx.constructor != C2S) {
+  if (colorMode && ctxLight.constructor != C2S) {
     // Inverse transformation of the color adjustment made in wavelengthToColor.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
     // Currently not supported when exporting to SVG.
-    var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
+    var imageData = ctxLight.getImageData(0.0, 0.0, canvas.width, canvas.height);
     var data = imageData.data;
     for (var i = 0; i < data.length; i += 4) {
-        var R = - Math.log(1-(data[i] / 256));
-        var G = - Math.log(1-(data[i+1] / 256));
-        var B = - Math.log(1-(data[i+2] / 256));
-        var factor = Math.max(R,G,B,1);
-        data[i] = 255 * R / factor;
-        data[i+1] = 255 * G / factor;
-        data[i+2] = 255 * B / factor;
+      if (data[i+3] == 0) continue; // Skip transparent pixels
+      var a0 = data[i+3] / 256;
+      var R = - Math.log(1-(data[i] / 256)) * a0;
+      var G = - Math.log(1-(data[i+1] / 256)) * a0;
+      var B = - Math.log(1-(data[i+2] / 256)) * a0;
+      var factor = Math.max(R,G,B);
+      var r = 255 * R / factor;
+      var g = 255 * G / factor;
+      var b = 255 * B / factor;
+      data[i] = r;
+      data[i+1] = g;
+      data[i+2] = b;
+      data[i+3] = 255 * Math.min(factor, 1);
     }
-    ctx.putImageData(imageData, 0, 0);
-    ctx.globalCompositeOperation = 'source-over';
+    ctxLight.putImageData(imageData, 0, 0);
+    ctxLight.globalCompositeOperation = 'source-over';
   }
-  ctx.globalAlpha = 1.0;
+  ctxLight.globalAlpha = 1.0;
   for (var i = 0; i < objs.length; i++)
   {
-    objTypes[objs[i].type].draw(objs[i], canvas, true); //畫出objs[i] Draw objs[i]
+    objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]
   }
   if (mode == 'observer')
   {

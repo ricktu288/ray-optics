@@ -44,7 +44,6 @@ objTypes['grin_refractor'] = {
         //滑鼠按了第一點 Clicked the first point
         obj.path.length--;
         obj.notDone = false;
-        draw();
         return;
       }
       obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
@@ -157,7 +156,7 @@ objTypes['grin_refractor'] = {
     }
   },
 
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
     var p1;
     var p2;
     var p3;
@@ -255,7 +254,7 @@ objTypes['grin_refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(2.3, obj, aboveLight);
+      this.fillGlass(2.3, obj, ctx, aboveLight);
     }
     ctx.lineWidth = 1;
 

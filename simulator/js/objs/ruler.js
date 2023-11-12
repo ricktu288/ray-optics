@@ -15,7 +15,7 @@ objTypes['ruler'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
   if (aboveLight)return;
   ctx.globalCompositeOperation = 'lighter';
   var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));

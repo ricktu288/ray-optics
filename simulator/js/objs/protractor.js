@@ -41,7 +41,7 @@ objTypes['protractor'] = {
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {objTypes['lineobj'].dragging(obj, mouse, draggingPart, false, shift)},
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
   if (!aboveLight)
   {
     ctx.globalCompositeOperation = 'lighter';

@@ -24,9 +24,9 @@ objTypes['curvedglass'] = {
   c_mouseup: objTypes['lineobj'].c_mouseup,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
     if (aboveLight && obj.tmp_glass) {
-      objTypes['refractor'].draw(obj.tmp_glass, canvas, true);
+      objTypes['refractor'].draw(obj.tmp_glass, ctx, true);
       ctx.globalAlpha = 0.1;
       ctx.fillStyle = getMouseStyle(obj, 'transparent');
       ctx.fill('evenodd');
@@ -102,7 +102,7 @@ objTypes['curvedglass'] = {
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }
-    objTypes['refractor'].draw(obj.tmp_glass, canvas);
+    objTypes['refractor'].draw(obj.tmp_glass, ctx, aboveLight);
   },
 
   move: objTypes['lineobj'].move,

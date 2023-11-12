@@ -27,7 +27,7 @@ objTypes['beamsplitter'] = {
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
     ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);

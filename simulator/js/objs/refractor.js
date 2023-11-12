@@ -34,7 +34,6 @@ objTypes['refractor'] = {
         //滑鼠按了第一點 Clicked the first point
         obj.path.length--;
         obj.notDone = false;
-        draw();
         return;
       }
       obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
@@ -50,13 +49,11 @@ objTypes['refractor'] = {
       if (obj.path[obj.path.length - 1].arc && Math.sqrt(Math.pow(obj.path[obj.path.length - 1].x - mouse.x, 2) + Math.pow(obj.path[obj.path.length - 1].y - mouse.y, 2)) >= 5)
       {
         obj.path[obj.path.length] = mouse;
-        draw();
       }
     }
     else
     {
       obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
-      draw();
     }
   },
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
@@ -64,7 +61,6 @@ objTypes['refractor'] = {
   {
     if (!obj.notDone) {
       isConstructing = false;
-      draw();
       return;
     }
     if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
@@ -73,7 +69,6 @@ objTypes['refractor'] = {
       obj.path.length--;
       obj.notDone = false;
       isConstructing = false;
-      draw();
       return;
     }
     if (obj.path[obj.path.length - 2] && !obj.path[obj.path.length - 2].arc && mouseOnPoint_construct(mouse, obj.path[obj.path.length - 2]))
@@ -87,7 +82,6 @@ objTypes['refractor'] = {
       obj.path[obj.path.length] = {x: mouse.x, y: mouse.y}; //建立新的一點 Create a new point
 
     }
-    draw();
   },
   
   zIndex: function(obj) {
@@ -95,7 +89,7 @@ objTypes['refractor'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas, aboveLight) {
+  draw: function(obj, ctx, aboveLight) {
     var p1;
     var p2;
     var p3;
@@ -185,7 +179,7 @@ objTypes['refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(obj.p, obj, aboveLight);
+      this.fillGlass(obj.p, obj, ctx, aboveLight);
     }
     ctx.lineWidth = 1;
 
@@ -211,8 +205,9 @@ objTypes['refractor'] = {
     }
   },
 
-  fillGlass: function(n, obj, aboveLight)
+  fillGlass: function(n, obj, ctx, aboveLight)
   {
+    console.log(aboveLight)
     if (aboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
@@ -245,7 +240,7 @@ objTypes['refractor'] = {
 
         // A trick to work around a buggy behavior in some browser (at least in Google Chrome 105 on macOS 12.2.1 on iMac 2021) that the color in the lower left corner of the canvas is filled to the glass. Reason unknown.
         // TODO: Find out the reason behind this behavior.
-        var imageData = ctx.getImageData(0.0, 0.0, canvas.width, canvas.height);
+        var imageData = ctx.getImageData(0.0, 0.0, ctx.canvas.width, ctx.canvas.height);
         var data = imageData.data;
         ctx.putImageData(imageData, 0, 0);
 
@@ -256,7 +251,7 @@ objTypes['refractor'] = {
         ctx.setTransform(1,0,0,1,0,0);
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
         
         ctx.globalCompositeOperation = 'lighter';
@@ -268,7 +263,7 @@ objTypes['refractor'] = {
 
         ctx.setTransform(1,0,0,1,0,0);
         ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.setTransform(scale,0,0,scale,origin.x, origin.y);
 
         ctx.globalCompositeOperation = 'source-over';

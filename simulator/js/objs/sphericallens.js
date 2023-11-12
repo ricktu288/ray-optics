@@ -35,7 +35,6 @@ objTypes['sphericallens'] = {
       obj.path[5] = {x: cx-dpx*thick*2, y: cy-dpy*thick*2, arc: true};
       obj.notDone = false;
       isConstructing = false;
-      draw();
     }
   },
 
@@ -93,8 +92,8 @@ objTypes['sphericallens'] = {
 
   zIndex: objTypes['refractor'].zIndex,
 
-  draw: function(obj, canvas, aboveLight) {
-    objTypes['refractor'].draw(obj, canvas, aboveLight);
+  draw: function(obj, ctx, aboveLight) {
+    objTypes['refractor'].draw(obj, ctx, aboveLight);
     if (obj.path.length < 6)
       return;
 

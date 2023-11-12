@@ -21,11 +21,6 @@ objTypes['aperture'] = {
     obj.p3 = graphs.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
     obj.p4 = graphs.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
     
-
-    if (!mouseOnPoint_construct(mouse, obj.p1))
-    {
-      draw();
-    }
   },
 
   //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
@@ -44,12 +39,6 @@ objTypes['aperture'] = {
 
     obj.p3 = graphs.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
     obj.p4 = graphs.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
-    
-
-    if (!mouseOnPoint_construct(mouse, obj.p1))
-    {
-      draw();
-    }
 
   },
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
@@ -203,8 +192,7 @@ objTypes['aperture'] = {
   },
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
-  //var ctx = canvas.getContext('2d');
+  draw: function(obj, ctx, aboveLight) {
   ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
   ctx.lineWidth = 3;
   ctx.lineCap = 'butt';

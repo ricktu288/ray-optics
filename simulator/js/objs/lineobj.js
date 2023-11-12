@@ -12,10 +12,6 @@ objTypes['lineobj'] = {
     {
       obj.p2 = mouse;
     }
-    if (!mouseOnPoint_construct(mouse, obj.p1))
-    {
-      draw();
-    }
   },
 
   //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
@@ -31,12 +27,6 @@ objTypes['lineobj'] = {
     }
 
     obj.p1 = ctrl ? graphs.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
-
-    if (!mouseOnPoint_construct(mouse, obj.p1))
-    {
-      draw();
-    }
-
   },
   //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)

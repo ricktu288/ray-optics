@@ -16,7 +16,7 @@ objTypes['mirror'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {    
+  draw: function(obj, ctx, aboveLight) {    
     ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);

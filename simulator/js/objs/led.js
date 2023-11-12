@@ -36,7 +36,7 @@ objTypes['led'] = {
   dragging: objTypes['lineobj'].dragging,
 
   //將物件畫到Canvas上 Draw the obj on canvas
-  draw: function(obj, canvas) {
+  draw: function(obj, ctx, aboveLight) {
   ctx.fillStyle = colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
   if (colorMode) {
