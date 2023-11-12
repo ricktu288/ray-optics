@@ -550,7 +550,16 @@ function shootWaitingRays() {
     // Inverse transformation of the color adjustment made in wavelengthToColor.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
     // Currently not supported when exporting to SVG.
-    var imageData = ctxLight.getImageData(0.0, 0.0, canvas.width, canvas.height);
+
+    var virtualCanvas = document.createElement('canvas');
+    var virtualCtx = virtualCanvas.getContext('2d');
+
+    virtualCanvas.width = ctxLight.canvas.width;
+    virtualCanvas.height = ctxLight.canvas.height;
+
+    virtualCtx.drawImage(ctxLight.canvas, 0, 0);
+
+    var imageData = virtualCtx.getImageData(0.0, 0.0, virtualCanvas.width, virtualCanvas.height);
     var data = imageData.data;
     for (var i = 0; i < data.length; i += 4) {
       if (data[i+3] == 0) continue; // Skip transparent pixels
@@ -567,8 +576,13 @@ function shootWaitingRays() {
       data[i+2] = b;
       data[i+3] = 255 * Math.min(factor, 1);
     }
-    ctxLight.putImageData(imageData, 0, 0);
+    virtualCtx.putImageData(imageData, 0, 0);
     ctxLight.globalCompositeOperation = 'source-over';
+
+    ctxLight.setTransform(1,0,0,1,0,0);
+    ctxLight.clearRect(0, 0, ctxLight.canvas.width, ctxLight.canvas.height);
+    ctxLight.drawImage(virtualCanvas, 0, 0);
+    ctx.setTransform(scale*dpr,0,0,scale*dpr,origin.x*dpr, origin.y*dpr);
   }
   ctxLight.globalAlpha = 1.0;
   for (var i = 0; i < objs.length; i++)
