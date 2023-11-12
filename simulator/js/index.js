@@ -814,7 +814,7 @@ function modebtn_clicked(mode1) {
   }
   if (mode == 'observer' && !observer) {
     //初始化觀察者 Initialize the observer
-    observer = graphs.circle(graphs.point((canvas.width * 0.5 - origin.x) / scale, (canvas.height * 0.5 - origin.y) / scale), 20);
+    observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), 20);
   }
 
 
