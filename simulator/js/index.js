@@ -2,9 +2,11 @@
 var canvas;
 var canvas0;
 var canvasLight;
+var canvasBackground;
 var ctx;
 var ctx0;
 var ctxLight;
+var ctxBackground;
 var dpr = 1;
 var objs = []; //物件 The objects
 var objCount = 0; //物件數量 Number of the objects
@@ -27,6 +29,7 @@ window.onload = function (e) {
   canvas = document.getElementById('canvas1');
   canvas0 = document.getElementById('canvas0');
   canvasLight = document.getElementById('canvasLight');
+  canvasBackground = document.getElementById('canvasBackground');
 
   canvas.width = window.innerWidth * dpr;
   canvas.height = window.innerHeight * dpr;
@@ -39,6 +42,10 @@ window.onload = function (e) {
   canvasLight.width = window.innerWidth * dpr;
   canvasLight.height = window.innerHeight * dpr;
   ctxLight = canvasLight.getContext('2d');
+
+  canvasBackground.width = window.innerWidth * dpr;
+  canvasBackground.height = window.innerHeight * dpr;
+  ctxBackground = canvasBackground.getContext('2d');
 
 
 
@@ -503,6 +510,8 @@ window.onresize = function (e) {
     canvas0.height = window.innerHeight * dpr;
     canvasLight.width = window.innerWidth * dpr;
     canvasLight.height = window.innerHeight * dpr;
+    canvasBackground.width = window.innerWidth * dpr;
+    canvasBackground.height = window.innerHeight * dpr;
     draw();
   }
 };

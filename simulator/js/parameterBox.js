@@ -390,7 +390,7 @@ function setAttr(func)
       }
     }
   }
-  draw();
+  draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
 }
 
 function createAdvancedOptions(condition) {

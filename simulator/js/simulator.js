@@ -28,28 +28,27 @@ const RED_WAVELENGTH = 620;
 const INFRARED_WAVELENGTH = 700;
 
 // Draw the scene
-function draw()
+function draw(skipLight, skipBackground)
 {
   stateOutdated = true;
   totalTruncation = 0;
-  document.getElementById('forceStop').style.display = 'none';
-  if (timerID != -1)
+  if (!skipLight) {
+    document.getElementById('forceStop').style.display = 'none';
+  }
+
+  if (!skipLight && timerID != -1)
   {
     //若程式正在處理上一次的繪圖,則停止處理 If still handling the last draw, then stop
     clearTimeout(timerID);
     timerID = -1;
-    isDrawing = false;
   }
 
-  if (!isDrawing)
-  {
-    isDrawing = true;
-    draw_();
-  }
+  draw_(skipLight, skipBackground);
+  
 }
 
 
-function draw_() {
+function draw_(skipLight, skipBackground) {
   if (!stateOutdated)
   {
     isDrawing = false;
@@ -59,49 +58,71 @@ function draw_() {
 
   JSONOutput();
 
-  delete canvasPainter;
-  canvasPainter = new CanvasPainter(ctxLight, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
-  var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr), backgroundImage);
+  var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
   var canvasPainter1 = new CanvasPainter(ctx, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
-
-  canvasPainter.cls();
+  
   canvasPainter0.cls();
   canvasPainter1.cls();
 
-  ctx.globalAlpha = 1;
-  hasExceededTime = false;
-  waitingRays = [];
-  shotRayCount = 0;
+  if (!skipLight) {
+    delete canvasPainter;
+    canvasPainter = new CanvasPainter(ctxLight, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+    canvasPainter.cls();
 
-
-
-  ctx0.save();
-  ctx0.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
-  if (document.getElementById('showgrid').checked && ctx0.constructor != C2S)
-  {
-    //畫出格線 Draw the grid
-    ctx0.strokeStyle = 'rgb(64,64,64)';
-    var dashstep = 4;
-    ctx0.beginPath();
-    for (var x = origin.x / (scale*dpr) % gridSize; x <= canvas.width / (scale*dpr); x += gridSize)
-    {
-      for (var y = 0; y <= canvas.height / (scale*dpr); y += dashstep)
-      {
-        ctx0.moveTo(x, y);
-        ctx0.lineTo(x, y + dashstep * 0.5);
-      }
-    }
-    for (var y = origin.y / (scale*dpr) % gridSize; y <= canvas.height / (scale*dpr); y += gridSize)
-    {
-      for (var x = 0; x <= canvas.width / (scale*dpr); x += dashstep)
-      {
-        ctx0.moveTo(x, y);
-        ctx0.lineTo(x + dashstep * 0.5, y);
-      }
-    }
-    ctx0.stroke();
+    ctx.globalAlpha = 1;
+    hasExceededTime = false;
+    waitingRays = [];
+    shotRayCount = 0;
   }
-  ctx0.restore();
+
+  if (!skipBackground && ctx0.constructor != C2S)
+  {
+
+    var canvasPainterBackground = new CanvasPainter(ctxBackground, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr), backgroundImage);
+    canvasPainterBackground.cls();
+
+    if (document.getElementById('showgrid').checked) {
+      //畫出格線 Draw the grid
+
+      ctxBackground.save();
+      ctxBackground.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
+      var dashstep = 4;
+
+      ctxBackground.strokeStyle = 'rgb(64,64,64)';
+
+      var dashPattern;
+      if (dashstep * scale <= 1) {
+        // The dash pattern is too dense, so we just draw a solid line
+        dashPattern = [];
+        ctxBackground.strokeStyle = 'rgb(64,64,64)';
+      } else {
+        // Set up the dash pattern: [dash length, space length]
+        var dashPattern = [dashstep * 0.5, dashstep * 0.5];
+      }
+
+      // Apply the dash pattern to the context
+      ctxBackground.setLineDash(dashPattern);
+
+      // Draw vertical dashed lines
+      ctxBackground.beginPath();
+      for (var x = origin.x / scale % gridSize; x <= ctxBackground.canvas.width / (scale * dpr); x += gridSize) {
+        ctxBackground.moveTo(x, 0);
+        ctxBackground.lineTo(x, ctxBackground.canvas.height / (scale * dpr));
+      }
+      ctxBackground.stroke();
+
+      // Draw horizontal dashed lines
+      ctxBackground.beginPath();
+      for (var y = origin.y / scale % gridSize; y <= ctxBackground.canvas.height / (scale * dpr); y += gridSize) {
+        ctxBackground.moveTo(0, y);
+        ctxBackground.lineTo(ctxBackground.canvas.width / (scale * dpr), y);
+      }
+      ctxBackground.stroke();
+      ctxBackground.setLineDash([]);
+      ctxBackground.restore();
+    }
+  }
+  
 
   // Sort the objects with z-index.
   var mapped = objs.map(function(obj, i) {
@@ -119,28 +140,36 @@ function draw_() {
   {
     var i = mapped[j].index;
     objTypes[objs[i].type].draw(objs[i], ctx0, false);
-    if (objTypes[objs[i].type].shoot)
+    if (!skipLight && objTypes[objs[i].type].shoot)
     {
       objTypes[objs[i].type].shoot(objs[i]); //若objs[i]能射出光線,讓它射出 If objs[i] can shoot rays, shoot them.
     }
   }
 
-  leftRayCount = 0;
-  last_s_obj_index = -1;
-  last_ray = null;
-  last_intersection = null;
-  waitingRaysIndex = -1;
-  firstBreak = true;
-  shootWaitingRays();
+  if (!skipLight) {
+    leftRayCount = 0;
+    last_s_obj_index = -1;
+    last_ray = null;
+    last_intersection = null;
+    waitingRaysIndex = -1;
+    firstBreak = true;
+    shootWaitingRays();
+  }
+
+  for (var i = 0; i < objs.length; i++)
+  {
+    objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]
+  }
   if (mode == 'observer')
   {
     //畫出即時觀察者 Draw the observer
-    ctx0.globalAlpha = 1;
-    ctx0.beginPath();
-    ctx0.fillStyle = 'blue';
-    ctx0.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
-    ctx0.fill();
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.fillStyle = 'blue';
+    ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
+    ctx.fill();
   }
+
   lastDrawTime = new Date();
 }
 
@@ -585,19 +614,7 @@ function shootWaitingRays() {
     ctx.setTransform(scale*dpr,0,0,scale*dpr,origin.x*dpr, origin.y*dpr);
   }
   ctxLight.globalAlpha = 1.0;
-  for (var i = 0; i < objs.length; i++)
-  {
-    objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]
-  }
-  if (mode == 'observer')
-  {
-    //畫出即時觀察者 Draw the observer
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-    ctx.fillStyle = 'blue';
-    ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
-    ctx.fill();
-  }
+  
   if (forceStop)
   {
     document.getElementById('status').innerHTML = shotRayCount + ' rays (stopped)';

@@ -117,7 +117,7 @@ function canvas_onmousedown(e) {
       //只有滑鼠左鍵才反應 Only react for left click
       //若有一個物件正在被建立,則將動作直接傳給它 If an obj is being created, pass the action to it
       objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
-      draw();
+      draw(!(objTypes[objs[objs.length - 1].type].shoot || objTypes[objs[objs.length - 1].type].rayIntersection), true);
     }
   }
   else {
@@ -190,7 +190,7 @@ function canvas_onmousedown(e) {
         }
         selectObj(objs.length - 1);
         objTypes[objs[objs.length - 1].type].c_mousedown(objs[objs.length - 1], mouse);
-        draw();
+        draw(!(objTypes[objs[objs.length - 1].type].shoot || objTypes[objs[objs.length - 1].type].rayIntersection), true);
         cancelRestore();
       }
     }
@@ -280,7 +280,7 @@ function canvas_onmousemove(e) {
 
     //若有一個物件正在被建立,則將動作直接傳給它 If some object is being created, pass the action to it
     objTypes[objs[objs.length - 1].type].c_mousemove(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
-    draw();
+    draw(!(objTypes[objs[objs.length - 1].type].shoot || objTypes[objs[objs.length - 1].type].rayIntersection), true);
   }
   else {
     var instantObserver = mode == 'observed_light' || mode == 'observed_images';
@@ -301,7 +301,7 @@ function canvas_onmousemove(e) {
 
       //更新滑鼠位置 Update the mouse position
       draggingPart.mouse1 = mouse_snapped;
-      draw();
+      draw(false, true);
     }
 
     var returndata;
@@ -322,7 +322,7 @@ function canvas_onmousemove(e) {
         }
       }
 
-      draw();
+      draw(!(objTypes[objs[draggingObj].type].shoot || objTypes[objs[draggingObj].type].rayIntersection), true);
     }
 
     if (draggingObj == -3) {
@@ -350,7 +350,7 @@ function canvas_onmousemove(e) {
       var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
       if (mouseObj != newMouseObj) {
         mouseObj = newMouseObj;
-        draw();
+        draw(true, true);
       }
     }
   }
@@ -361,7 +361,7 @@ function canvas_onmouseup(e) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       //若有一個物件正在被建立,則將動作直接傳給它 If an object is being created, pass the action to it
       objTypes[objs[objs.length - 1].type].c_mouseup(objs[objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
-      draw();
+      draw(!(objTypes[objs[objs.length - 1].type].shoot || objTypes[objs[objs.length - 1].type].rayIntersection), true);
       if (!isConstructing) {
         //該物件已經表示建立完畢 The object says the contruction is done
         createUndoPoint();
@@ -411,13 +411,13 @@ function addControlPointsForHandle(controlPoints) {
   for (var i in controlPoints) {
     objTypes["handle"].c_addControlPoint(objs[0], controlPoints[i]);
   }
-  draw();
+  draw(true, true);
 }
 
 
 function finishHandleCreation(point) {
   objTypes["handle"].c_finishHandle(objs[0], point);
-  draw();
+  draw(true, true);
 }
 
 
@@ -553,12 +553,14 @@ function confirmPositioning(ctrl, shift) {
       //觀察者 Observer
       observer.c.x = xyData[0];
       observer.c.y = xyData[1];
+      draw(false, true);
     }
     else {
       //物件 Object
       objTypes[objs[positioningObj].type].dragging(objs[positioningObj], graphs.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
+      draw(!(objTypes[objs[positioningObj].type].shoot || objTypes[objs[positioningObj].type].rayIntersection), true);
     }
-    draw();
+    
     createUndoPoint();
   }
 
