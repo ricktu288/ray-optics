@@ -2,11 +2,11 @@
 var canvas;
 var canvas0;
 var canvasLight;
-var canvasBackground;
+var canvasGrid;
 var ctx;
 var ctx0;
 var ctxLight;
-var ctxBackground;
+var ctxGrid;
 var dpr = 1;
 var objs = []; //物件 The objects
 var objCount = 0; //物件數量 Number of the objects
@@ -29,7 +29,7 @@ window.onload = function (e) {
   canvas = document.getElementById('canvas1');
   canvas0 = document.getElementById('canvas0');
   canvasLight = document.getElementById('canvasLight');
-  canvasBackground = document.getElementById('canvasBackground');
+  canvasGrid = document.getElementById('canvasGrid');
 
   canvas.width = window.innerWidth * dpr;
   canvas.height = window.innerHeight * dpr;
@@ -43,9 +43,9 @@ window.onload = function (e) {
   canvasLight.height = window.innerHeight * dpr;
   ctxLight = canvasLight.getContext('2d');
 
-  canvasBackground.width = window.innerWidth * dpr;
-  canvasBackground.height = window.innerHeight * dpr;
-  ctxBackground = canvasBackground.getContext('2d');
+  canvasGrid.width = window.innerWidth * dpr;
+  canvasGrid.height = window.innerHeight * dpr;
+  ctxGrid = canvasGrid.getContext('2d');
 
 
 
@@ -511,8 +511,8 @@ window.onresize = function (e) {
     canvas0.height = window.innerHeight * dpr;
     canvasLight.width = window.innerWidth * dpr;
     canvasLight.height = window.innerHeight * dpr;
-    canvasBackground.width = window.innerWidth * dpr;
-    canvasBackground.height = window.innerHeight * dpr;
+    canvasGrid.width = window.innerWidth * dpr;
+    canvasGrid.height = window.innerHeight * dpr;
     draw();
   }
 };
@@ -783,7 +783,7 @@ function JSONInput() {
     backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
     backgroundImage.onload = function (e1) {
       setTimeout(function() {
-        draw(true, false);
+        draw(true, true);
       }, 1);
     }
   }
@@ -887,7 +887,7 @@ function openFile(readFile) {
         backgroundImage = new Image();
         backgroundImage.src = e.target.result;
         backgroundImage.onload = function (e1) {
-          draw(true, false);
+          draw(true, true);
           cancelRestore();
         }
       }
@@ -916,7 +916,7 @@ function exportSVG() {
   var ctx_backup = ctx;
   var ctx0_backup = ctx0;
   var ctxLight_backup = ctxLight;
-  var ctxBackground_backup = ctxBackground;
+  var ctxGrid_backup = ctxGrid;
   var dpr_backup = dpr;
 
   if (backgroundImage) {
@@ -929,7 +929,7 @@ function exportSVG() {
   ctx = new C2S(svgWidth, svgHeight);
   ctx0 = ctx;
   ctxLight = ctx;
-  ctxBackground = ctx;
+  ctxGrid = ctx;
   dpr = 1;
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, svgWidth, svgHeight);
@@ -940,7 +940,7 @@ function exportSVG() {
   ctx = ctx_backup;
   ctx0 = ctx0_backup;
   ctxLight = ctxLight_backup;
-  ctxBackground = ctxBackground_backup;
+  ctxGrid = ctxGrid_backup;
   dpr = dpr_backup;
 }
 

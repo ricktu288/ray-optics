@@ -28,7 +28,7 @@ const RED_WAVELENGTH = 620;
 const INFRARED_WAVELENGTH = 700;
 
 // Draw the scene
-function draw(skipLight, skipBackground)
+function draw(skipLight, skipGrid)
 {
   stateOutdated = true;
   
@@ -44,12 +44,12 @@ function draw(skipLight, skipBackground)
     timerID = -1;
   }
 
-  draw_(skipLight, skipBackground);
+  draw_(skipLight, skipGrid);
   
 }
 
 
-function draw_(skipLight, skipBackground) {
+function draw_(skipLight, skipGrid) {
   if (!stateOutdated)
   {
     isDrawing = false;
@@ -60,7 +60,7 @@ function draw_(skipLight, skipBackground) {
   JSONOutput();
 
   if (ctx0.constructor != C2S) {
-    var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+    var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr), backgroundImage);
     var canvasPainter1 = new CanvasPainter(ctx, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
     
     canvasPainter0.cls();
@@ -82,51 +82,50 @@ function draw_(skipLight, skipBackground) {
     shotRayCount = 0;
   }
 
-  if (!skipBackground && ctx0.constructor != C2S)
+  if (!skipGrid && ctx0.constructor != C2S)
   {
 
-    var canvasPainterBackground = new CanvasPainter(ctxBackground, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr), backgroundImage);
-    canvasPainterBackground.cls();
+    var canvasPainterGrid = new CanvasPainter(ctxGrid, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+    canvasPainterGrid.cls();
 
     if (document.getElementById('showgrid').checked) {
       //畫出格線 Draw the grid
 
-      ctxBackground.save();
-      ctxBackground.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
+      ctxGrid.save();
+      ctxGrid.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
       var dashstep = 4;
 
-      ctxBackground.strokeStyle = 'rgb(64,64,64)';
+      ctxGrid.strokeStyle = 'rgb(255,255,255,0.25)';
 
       var dashPattern;
       if (dashstep * scale <= 2) {
         // The dash pattern is too dense, so we just draw a solid line
         dashPattern = [];
-        ctxBackground.strokeStyle = 'rgb(64,64,64)';
       } else {
         // Set up the dash pattern: [dash length, space length]
         var dashPattern = [dashstep * 0.5, dashstep * 0.5];
       }
 
       // Apply the dash pattern to the context
-      ctxBackground.setLineDash(dashPattern);
+      ctxGrid.setLineDash(dashPattern);
 
       // Draw vertical dashed lines
-      ctxBackground.beginPath();
-      for (var x = origin.x / scale % gridSize; x <= ctxBackground.canvas.width / (scale * dpr); x += gridSize) {
-        ctxBackground.moveTo(x, origin.y / scale % gridSize - gridSize);
-        ctxBackground.lineTo(x, ctxBackground.canvas.height / (scale * dpr));
+      ctxGrid.beginPath();
+      for (var x = origin.x / scale % gridSize; x <= ctxGrid.canvas.width / (scale * dpr); x += gridSize) {
+        ctxGrid.moveTo(x, origin.y / scale % gridSize - gridSize);
+        ctxGrid.lineTo(x, ctxGrid.canvas.height / (scale * dpr));
       }
-      ctxBackground.stroke();
+      ctxGrid.stroke();
 
       // Draw horizontal dashed lines
-      ctxBackground.beginPath();
-      for (var y = origin.y / scale % gridSize; y <= ctxBackground.canvas.height / (scale * dpr); y += gridSize) {
-        ctxBackground.moveTo(origin.x / scale % gridSize - gridSize, y);
-        ctxBackground.lineTo(ctxBackground.canvas.width / (scale * dpr), y);
+      ctxGrid.beginPath();
+      for (var y = origin.y / scale % gridSize; y <= ctxGrid.canvas.height / (scale * dpr); y += gridSize) {
+        ctxGrid.moveTo(origin.x / scale % gridSize - gridSize, y);
+        ctxGrid.lineTo(ctxGrid.canvas.width / (scale * dpr), y);
       }
-      ctxBackground.stroke();
-      ctxBackground.setLineDash([]);
-      ctxBackground.restore();
+      ctxGrid.stroke();
+      ctxGrid.setLineDash([]);
+      ctxGrid.restore();
     }
   }
   

@@ -1,4 +1,4 @@
-#canvasBackground {
+#canvas0 {
   background-color: #000;
   position: absolute;
   width: 100%;
@@ -7,7 +7,7 @@
   z-index: -6;
 }
 
-#canvas0 {
+#canvasGrid {
   background-color: transparent;
   position: absolute;
   width: 100%;
