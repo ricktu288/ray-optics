@@ -31,8 +31,9 @@ const INFRARED_WAVELENGTH = 700;
 function draw(skipLight, skipBackground)
 {
   stateOutdated = true;
-  totalTruncation = 0;
+  
   if (!skipLight) {
+    totalTruncation = 0;
     document.getElementById('forceStop').style.display = 'none';
   }
 
@@ -156,18 +157,22 @@ function draw_(skipLight, skipBackground) {
     shootWaitingRays();
   }
 
-  for (var i = 0; i < objs.length; i++)
-  {
-    objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]
-  }
-  if (mode == 'observer')
-  {
-    //畫出即時觀察者 Draw the observer
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-    ctx.fillStyle = 'blue';
-    ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
-    ctx.fill();
+  if (skipLight) {
+    // Draw the "above light" layer of objs. Note that we only draw this when skipLight is true because otherwise shootWaitingRays() will be called and the "above light" layer will still be drawn, since draw() is called again in shootWaitingRays() with skipLight set to true.
+    
+    for (var i = 0; i < objs.length; i++)
+    {
+      objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]
+    }
+    if (mode == 'observer')
+    {
+      //畫出即時觀察者 Draw the observer
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.fillStyle = 'blue';
+      ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
   }
 
   lastDrawTime = new Date();
@@ -240,6 +245,8 @@ function shootWaitingRays() {
       timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
       firstBreak = false;
       document.getElementById('forceStop').style.display = '';
+
+      draw(true, true); // Redraw the objs to avoid outdated information (e.g. detector readings).
       return;
     }
     if (new Date() - st_time > 5000 && ctxLight.constructor == C2S)
@@ -631,6 +638,11 @@ function shootWaitingRays() {
   document.getElementById('forceStop').style.display = 'none';
   //ctx.stroke();
   setTimeout(draw_, 10);
+
+
+  
+  draw(true, true);
+  
 
 }
 

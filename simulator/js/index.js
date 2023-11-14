@@ -240,7 +240,7 @@ window.onload = function (e) {
     colorMode = this.checked;
     document.getElementById('color_mode').checked = colorMode;
     document.getElementById('color_mode_mobile').checked = colorMode;
-    draw();
+    draw(false, true);
   };
   document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;
 
@@ -264,7 +264,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
-    draw();
+    draw(false, true);
   };
   document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
   document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
@@ -274,7 +274,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
-    draw();
+    draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
@@ -285,7 +285,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
-    draw();
+    draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
@@ -297,7 +297,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
-    draw();
+    draw(false, true);
   };
   document.getElementById('rayDensityMinus').onclick = function () {
     rayDensityValue = Math.log(getRayDensity()) * 1.0 - 0.1;
@@ -305,7 +305,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
-    draw();
+    draw(false, true);
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
   document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
@@ -317,7 +317,7 @@ window.onload = function (e) {
     document.getElementById('grid').checked = e.target.checked;
     document.getElementById('grid_more').checked = e.target.checked;
     document.getElementById('grid_mobile').checked = e.target.checked;
-    draw();
+    //draw();
   };
   document.getElementById('grid_more').onclick = document.getElementById('grid').onclick;
   document.getElementById('grid_mobile').onclick = document.getElementById('grid').onclick;
@@ -326,7 +326,7 @@ window.onload = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
     document.getElementById('showgrid_more').checked = e.target.checked;
     document.getElementById('showgrid_mobile').checked = e.target.checked;
-    draw();
+    draw(true, false);
   };
   document.getElementById('showgrid_more').onclick = document.getElementById('showgrid').onclick;
   document.getElementById('showgrid_mobile').onclick = document.getElementById('showgrid').onclick;
@@ -358,21 +358,22 @@ window.onload = function (e) {
     objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
     objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
     selectObj(objs.length - 1);
-    draw();
+    draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
+    var selectedObjType = objs[selectedObj].type;
     removeObj(selectedObj);
-    draw();
+    draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
     createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
   document.getElementById('unselect').onclick = function () {
     selectObj(-1);
-    draw();
+    draw(true, true);
     createUndoPoint();
   };
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
@@ -588,7 +589,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw();
+    draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
     createUndoPoint();
     return false;
   }
@@ -635,8 +636,9 @@ window.onkeydown = function (e) {
   //Delete
   if (e.keyCode == 46 || e.keyCode == 8) {
     if (selectedObj != -1) {
+      var selectedObjType = objs[selectedObj].type;
       removeObj(selectedObj);
-      draw();
+      draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
       createUndoPoint();
     }
     return false;
@@ -669,6 +671,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         objTypes[objs[selectedObj].type].move(objs[selectedObj], 0, step);
       }
+      draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
     }
     else if (mode == 'observer') {
       if (e.keyCode == 37) {
@@ -683,6 +686,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         observer.c.y += step;
       }
+      draw(false, true);
     }
     else {
       for (var i = 0; i < objs.length; i++) {
@@ -699,8 +703,8 @@ window.onkeydown = function (e) {
           objTypes[objs[i].type].move(objs[i], 0, step);
         }
       }
+      draw();
     }
-    draw();
   }
 
 
@@ -779,7 +783,7 @@ function JSONInput() {
     backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
     backgroundImage.onload = function (e1) {
       setTimeout(function() {
-        draw();
+        draw(true, false);
       }, 1);
     }
   }
@@ -828,7 +832,7 @@ function modebtn_clicked(mode1) {
 
 
   try {
-    draw();
+    draw(false, true);
   } catch (error) {
     console.error(error);
     isDrawing = false;
@@ -882,7 +886,7 @@ function openFile(readFile) {
         backgroundImage = new Image();
         backgroundImage.src = e.target.result;
         backgroundImage.onload = function (e1) {
-          draw();
+          draw(true, false);
           cancelRestore();
         }
       }
@@ -908,21 +912,35 @@ function getLink() {
 }
 
 function exportSVG() {
-  var ctx1 = ctx;
+  var ctx_backup = ctx;
+  var ctx0_backup = ctx0;
+  var ctxLight_backup = ctxLight;
+  var ctxBackground_backup = ctxBackground;
+  var dpr_backup = dpr;
+
   if (backgroundImage) {
     var svgWidth = backgroundImage.width;
     var svgHeight = backgroundImage.height;
   } else {
-    var svgWidth = canvas.width / scale;
-    var svgHeight = canvas.height / scale;
+    var svgWidth = canvas.width / (scale*dpr);
+    var svgHeight = canvas.height / (scale*dpr);
   }
   ctx = new C2S(svgWidth, svgHeight);
+  ctx0 = ctx;
+  ctxLight = ctx;
+  ctxBackground = ctx;
+  dpr = 1;
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, svgWidth, svgHeight);
   draw();
   var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
   saveAs(blob, "export.svg");
-  ctx = ctx1;
+
+  ctx = ctx_backup;
+  ctx0 = ctx0_backup;
+  ctxLight = ctxLight_backup;
+  ctxBackground = ctxBackground_backup;
+  dpr = dpr_backup;
 }
 
 function restore() {

@@ -156,4 +156,8 @@ objTypes['handle'] = {
     }
   },
 
+  shoot: function(obj) {
+    // A dummy function to tell the simulator that the light layer should be redrawn when this object changes.
+  }
+
 };
