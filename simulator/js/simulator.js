@@ -59,16 +59,22 @@ function draw_(skipLight, skipBackground) {
 
   JSONOutput();
 
-  var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
-  var canvasPainter1 = new CanvasPainter(ctx, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
-  
-  canvasPainter0.cls();
-  canvasPainter1.cls();
+  if (ctx0.constructor != C2S) {
+    var canvasPainter0 = new CanvasPainter(ctx0, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+    var canvasPainter1 = new CanvasPainter(ctx, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
+    
+    canvasPainter0.cls();
+    canvasPainter1.cls();
+  }
 
   if (!skipLight) {
     delete canvasPainter;
     canvasPainter = new CanvasPainter(ctxLight, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
     canvasPainter.cls();
+
+    if (!backgroundImage && ctx0.constructor == C2S) {
+      ctx.translate(origin.x / (scale*dpr), origin.y / (scale*dpr));
+    }
 
     ctx.globalAlpha = 1;
     hasExceededTime = false;
@@ -92,7 +98,7 @@ function draw_(skipLight, skipBackground) {
       ctxBackground.strokeStyle = 'rgb(64,64,64)';
 
       var dashPattern;
-      if (dashstep * scale <= 1) {
+      if (dashstep * scale <= 2) {
         // The dash pattern is too dense, so we just draw a solid line
         dashPattern = [];
         ctxBackground.strokeStyle = 'rgb(64,64,64)';
@@ -107,7 +113,7 @@ function draw_(skipLight, skipBackground) {
       // Draw vertical dashed lines
       ctxBackground.beginPath();
       for (var x = origin.x / scale % gridSize; x <= ctxBackground.canvas.width / (scale * dpr); x += gridSize) {
-        ctxBackground.moveTo(x, 0);
+        ctxBackground.moveTo(x, origin.y / scale % gridSize - gridSize);
         ctxBackground.lineTo(x, ctxBackground.canvas.height / (scale * dpr));
       }
       ctxBackground.stroke();
@@ -115,7 +121,7 @@ function draw_(skipLight, skipBackground) {
       // Draw horizontal dashed lines
       ctxBackground.beginPath();
       for (var y = origin.y / scale % gridSize; y <= ctxBackground.canvas.height / (scale * dpr); y += gridSize) {
-        ctxBackground.moveTo(0, y);
+        ctxBackground.moveTo(origin.x / scale % gridSize - gridSize, y);
         ctxBackground.lineTo(ctxBackground.canvas.width / (scale * dpr), y);
       }
       ctxBackground.stroke();
@@ -125,25 +131,27 @@ function draw_(skipLight, skipBackground) {
   }
   
 
-  // Sort the objects with z-index.
-  var mapped = objs.map(function(obj, i) {
-    if (objTypes[obj.type].zIndex) {
-      return {index: i, value: objTypes[obj.type].zIndex(obj)};
-    } else {
-      return {index: i, value: 0};
-    }
-  });
-  mapped.sort(function(a, b) {
-    return a.value - b.value;
-  });
-  //畫出物件 Draw the objects
-  for (var j = 0; j < objs.length; j++)
-  {
-    var i = mapped[j].index;
-    objTypes[objs[i].type].draw(objs[i], ctx0, false);
-    if (!skipLight && objTypes[objs[i].type].shoot)
+  if (!(ctx0.constructor == C2S && skipLight)) {
+    // Sort the objects with z-index.
+    var mapped = objs.map(function(obj, i) {
+      if (objTypes[obj.type].zIndex) {
+        return {index: i, value: objTypes[obj.type].zIndex(obj)};
+      } else {
+        return {index: i, value: 0};
+      }
+    });
+    mapped.sort(function(a, b) {
+      return a.value - b.value;
+    });
+    //畫出物件 Draw the objects
+    for (var j = 0; j < objs.length; j++)
     {
-      objTypes[objs[i].type].shoot(objs[i]); //若objs[i]能射出光線,讓它射出 If objs[i] can shoot rays, shoot them.
+      var i = mapped[j].index;
+      objTypes[objs[i].type].draw(objs[i], ctx0, false);
+      if (!skipLight && objTypes[objs[i].type].shoot)
+      {
+        objTypes[objs[i].type].shoot(objs[i]); //若objs[i]能射出光線,讓它射出 If objs[i] can shoot rays, shoot them.
+      }
     }
   }
 
@@ -159,7 +167,7 @@ function draw_(skipLight, skipBackground) {
 
   if (skipLight) {
     // Draw the "above light" layer of objs. Note that we only draw this when skipLight is true because otherwise shootWaitingRays() will be called and the "above light" layer will still be drawn, since draw() is called again in shootWaitingRays() with skipLight set to true.
-    
+
     for (var i = 0; i < objs.length; i++)
     {
       objTypes[objs[i].type].draw(objs[i], ctx, true); //畫出objs[i] Draw objs[i]

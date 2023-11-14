@@ -70,6 +70,7 @@ class CanvasPainter {
   * @method cls
   **/
   cls() {
+    console.log([this.scale, 0, 0, this.scale, this.origin.x, this.origin.y])
       if (this.ctx.constructor !== C2S) {
           // only do this when not being exported to SVG to avoid bug
           this.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -79,8 +80,6 @@ class CanvasPainter {
               this.ctx.globalAlpha = 1;
               this.ctx.drawImage(this.backgroundImage, 0, 0);
           }
-      } else if (!this.backgroundImage) {
-          this.ctx.translate(this.origin.x / this.scale, this.origin.y / this.scale);
       }
   }
 }

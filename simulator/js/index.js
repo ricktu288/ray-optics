@@ -802,6 +802,7 @@ function JSONInput() {
   document.getElementById('mode_' + jsonData.mode).checked = true;
   document.getElementById('mode_' + jsonData.mode + '_mobile').checked = true;
   selectObj(selectedObj);
+  draw();
 }
 
 
