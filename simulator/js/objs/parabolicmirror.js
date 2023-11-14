@@ -31,8 +31,8 @@ objTypes['parabolicmirror'] = {
       // get height of (this section of) parabola
       var height = (obj.p3.x-obj.p1.x)*dir2[0]+(obj.p3.y-obj.p1.y)*dir2[1];
       // reposition p3 to be at vertex
-      obj.p3.x = (obj.p1.x+obj.p2.x)*.5 + dir2[0]*height;
-      obj.p3.y = (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height;
+      obj.p3 = graphs.point((obj.p1.x+obj.p2.x)*.5 + dir2[0]*height, (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height);
+      
       var x0 = p12d/2;
       var a = height/(x0*x0); // y=ax^2
       var i;
