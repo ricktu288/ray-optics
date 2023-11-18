@@ -159,6 +159,14 @@ locales["ko"] = {
     "incomplete": false,
     "message": "텍스트"
   },
+  "toolname_line": {
+    "incomplete": true,
+    "message": "Line"
+  },
+  "toolname_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
+  },
   "tool_more_": {
     "incomplete": false,
     "message": "더 보기"
@@ -314,6 +322,14 @@ locales["ko"] = {
   "tool_text": {
     "incomplete": false,
     "message": "텍스트"
+  },
+  "tool_line": {
+    "incomplete": true,
+    "message": "Line / Arrow"
+  },
+  "tool_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
   },
   "tool_": {
     "incomplete": false,
@@ -530,6 +546,18 @@ locales["ko"] = {
   "angle": {
     "incomplete": false,
     "message": "각도 (°)"
+  },
+  "arrow1": {
+    "incomplete": true,
+    "message": "Forward arrow"
+  },
+  "arrow2": {
+    "incomplete": true,
+    "message": "Backward arrow"
+  },
+  "stop_drawing": {
+    "incomplete": true,
+    "message": "Finish Drawing"
   },
   "beam_warning": {
     "incomplete": false,
@@ -750,6 +778,14 @@ locales["ko"] = {
   "tool_text_popover": {
     "incomplete": false,
     "message": "텍스트 추가"
+  },
+  "tool_line_popover": {
+    "incomplete": true,
+    "message": "A line segment or arrow. (Drag or click to create.)"
+  },
+  "tool_drawing_popover": {
+    "incomplete": true,
+    "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {
     "incomplete": false,

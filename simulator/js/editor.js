@@ -633,7 +633,7 @@ function createUndoPoint() {
 }
 
 function undo() {
-  if (isConstructing) {
+  if (isConstructing && !(objs.length > 0 && objs[objs.length - 1].type == 'drawing')) {
     //假如按下復原時,使用者正在建立一個物件,則此時只將建立動作終止,而不做真正的復原 If the user is constructing an object when clicked the undo, then only stop the consturction rather than do the real undo
 
     isConstructing = false;

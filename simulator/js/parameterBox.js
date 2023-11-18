@@ -369,6 +369,16 @@ function createDropdownAttr(label, value, options, func, elem) {
   };
 }
 
+function createButton(label, func, elem) {
+  var button = document.createElement('button');
+  button.className = 'btn btn-secondary';
+  button.innerHTML = label;
+  button.onclick = function() {
+    func(objs[selectedObj]);
+  };
+  elem.appendChild(button);
+}
+
 function hasSameAttrType(obj1, obj2)
 {
   return obj1.type==obj2.type;

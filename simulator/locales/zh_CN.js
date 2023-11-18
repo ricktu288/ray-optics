@@ -120,6 +120,12 @@ locales["zh-CN"] = {
   "toolname_text": {
     "message": "文字"
   },
+  "toolname_line": {
+    "message": "线段"
+  },
+  "toolname_drawing": {
+    "message": "绘图"
+  },
   "tool_more_": {
     "message": "其他"
   },
@@ -236,6 +242,12 @@ locales["zh-CN"] = {
   },
   "tool_text": {
     "message": "文字"
+  },
+  "tool_line": {
+    "message": "线段 / 箭头"
+  },
+  "tool_drawing": {
+    "message": "绘图"
   },
   "tool_": {
     "message": "移动画面"
@@ -398,6 +410,15 @@ locales["zh-CN"] = {
   },
   "angle": {
     "message": "角度 (°)"
+  },
+  "arrow1": {
+    "message": "前向箭头"
+  },
+  "arrow2": {
+    "message": "后向箭头"
+  },
+  "stop_drawing": {
+    "message": "停止绘图"
   },
   "beam_warning": {
     "message": "⚠️ 使用发散或随机光束时，像的侦测可能无法正常运作。"
@@ -563,6 +584,12 @@ locales["zh-CN"] = {
   },
   "tool_text_popover": {
     "message": "文字标签。"
+  },
+  "tool_line_popover": {
+    "message": "线段或箭头。（拖曳或点击以创建。）"
+  },
+  "tool_drawing_popover": {
+    "message": "手绘工具。（拖曳以绘图。）"
   },
   "tool__popover": {
     "message": "拖曳以移动视窗。（滑鼠右键拖曳也有相同的功能）"

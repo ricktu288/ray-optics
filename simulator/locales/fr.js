@@ -139,6 +139,14 @@ locales["fr"] = {
   "toolname_text": {
     "message": "Texte"
   },
+  "toolname_line": {
+    "incomplete": true,
+    "message": "Line"
+  },
+  "toolname_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
+  },
   "tool_more_": {
     "message": "Autre"
   },
@@ -267,6 +275,14 @@ locales["fr"] = {
   },
   "tool_text": {
     "message": "Texte"
+  },
+  "tool_line": {
+    "incomplete": true,
+    "message": "Line / Arrow"
+  },
+  "tool_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
   },
   "tool_": {
     "message": "Bouger la vue"
@@ -453,6 +469,18 @@ locales["fr"] = {
   "angle": {
     "incomplete": true,
     "message": "Angle (°)"
+  },
+  "arrow1": {
+    "incomplete": true,
+    "message": "Forward arrow"
+  },
+  "arrow2": {
+    "incomplete": true,
+    "message": "Backward arrow"
+  },
+  "stop_drawing": {
+    "incomplete": true,
+    "message": "Finish Drawing"
   },
   "beam_warning": {
     "incomplete": true,
@@ -652,6 +680,14 @@ locales["fr"] = {
   },
   "tool_text_popover": {
     "message": "Une légende, pour un objet quelconque."
+  },
+  "tool_line_popover": {
+    "incomplete": true,
+    "message": "A line segment or arrow. (Drag or click to create.)"
+  },
+  "tool_drawing_popover": {
+    "incomplete": true,
+    "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {
     "message": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"

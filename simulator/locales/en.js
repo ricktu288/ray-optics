@@ -120,6 +120,12 @@ locales["en"] = {
   "toolname_text": {
     "message": "Text"
   },
+  "toolname_line": {
+    "message": "Line"
+  },
+  "toolname_drawing": {
+    "message": "Drawing"
+  },
   "tool_more_": {
     "message": "Other"
   },
@@ -236,6 +242,12 @@ locales["en"] = {
   },
   "tool_text": {
     "message": "Text"
+  },
+  "tool_line": {
+    "message": "Line / Arrow"
+  },
+  "tool_drawing": {
+    "message": "Drawing"
   },
   "tool_": {
     "message": "Move view"
@@ -398,6 +410,15 @@ locales["en"] = {
   },
   "angle": {
     "message": "Angle (°)"
+  },
+  "arrow1": {
+    "message": "Forward arrow"
+  },
+  "arrow2": {
+    "message": "Backward arrow"
+  },
+  "stop_drawing": {
+    "message": "Finish Drawing"
   },
   "beam_warning": {
     "message": "⚠️ Image detection may not work with divergent/random beams."
@@ -563,6 +584,12 @@ locales["en"] = {
   },
   "tool_text_popover": {
     "message": "A text label."
+  },
+  "tool_line_popover": {
+    "message": "A line segment or arrow. (Drag or click to create.)"
+  },
+  "tool_drawing_popover": {
+    "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {
     "message": "Drag to move the view. (Mouse right button drag has the same function.)"

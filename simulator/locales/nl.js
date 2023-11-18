@@ -142,6 +142,14 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Text"
   },
+  "toolname_line": {
+    "incomplete": true,
+    "message": "Line"
+  },
+  "toolname_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
+  },
   "tool_more_": {
     "message": "Overig"
   },
@@ -271,6 +279,14 @@ locales["nl"] = {
   "tool_text": {
     "incomplete": true,
     "message": "Text"
+  },
+  "tool_line": {
+    "incomplete": true,
+    "message": "Line / Arrow"
+  },
+  "tool_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
   },
   "tool_": {
     "message": "Verplaats beeld"
@@ -468,6 +484,18 @@ locales["nl"] = {
   "angle": {
     "incomplete": true,
     "message": "Angle (°)"
+  },
+  "arrow1": {
+    "incomplete": true,
+    "message": "Forward arrow"
+  },
+  "arrow2": {
+    "incomplete": true,
+    "message": "Backward arrow"
+  },
+  "stop_drawing": {
+    "incomplete": true,
+    "message": "Finish Drawing"
   },
   "beam_warning": {
     "incomplete": true,
@@ -668,6 +696,14 @@ locales["nl"] = {
   "tool_text_popover": {
     "incomplete": true,
     "message": "A text label."
+  },
+  "tool_line_popover": {
+    "incomplete": true,
+    "message": "A line segment or arrow. (Drag or click to create.)"
+  },
+  "tool_drawing_popover": {
+    "incomplete": true,
+    "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {
     "message": "Sleep om beeld te verplaatsen. (Rechtermuisknop sleep heeft dezelfde functie.)"

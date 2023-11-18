@@ -123,6 +123,14 @@ locales["pl"] = {
   "toolname_text": {
     "message": "Tekst"
   },
+  "toolname_line": {
+    "incomplete": true,
+    "message": "Line"
+  },
+  "toolname_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
+  },
   "tool_more_": {
     "message": "Inne"
   },
@@ -243,6 +251,14 @@ locales["pl"] = {
   },
   "tool_text": {
     "message": "Tekst"
+  },
+  "tool_line": {
+    "incomplete": true,
+    "message": "Line / Arrow"
+  },
+  "tool_drawing": {
+    "incomplete": true,
+    "message": "Drawing"
   },
   "tool_": {
     "message": "Przesuń widok"
@@ -412,6 +428,18 @@ locales["pl"] = {
   },
   "angle": {
     "message": "Kąt (°)"
+  },
+  "arrow1": {
+    "incomplete": true,
+    "message": "Forward arrow"
+  },
+  "arrow2": {
+    "incomplete": true,
+    "message": "Backward arrow"
+  },
+  "stop_drawing": {
+    "incomplete": true,
+    "message": "Finish Drawing"
   },
   "beam_warning": {
     "message": "⚠️ Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
@@ -583,6 +611,14 @@ locales["pl"] = {
   },
   "tool_text_popover": {
     "message": "Etykieta tekstowa."
+  },
+  "tool_line_popover": {
+    "incomplete": true,
+    "message": "A line segment or arrow. (Drag or click to create.)"
+  },
+  "tool_drawing_popover": {
+    "incomplete": true,
+    "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {
     "message": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję)."
