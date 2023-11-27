@@ -393,6 +393,15 @@ locales["zh-TW"] = {
   "diameter": {
     "message": "直徑 (px)"
   },
+  "irradiance_map": {
+    "message": "輻照度圖<sup>Beta</sup>"
+  },
+  "bin_size": {
+    "message": "組距 (px)"
+  },
+  "export_irradiance_map": {
+    "message": "匯出數據"
+  },
   "fontsize": {
     "message": "字型大小 (px)"
   },

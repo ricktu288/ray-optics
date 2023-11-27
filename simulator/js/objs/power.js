@@ -6,6 +6,49 @@ objTypes['power'] = {
     return {type: 'power', p1: mouse, p2: mouse, power: 0, normal: 0, shear: 0};
   },
 
+  //顯示屬性方塊 Show the property box
+  p_box: function(obj, elem) {
+    createBooleanAttr(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
+      obj.irradianceMap = value;
+      if (value) {
+        obj.binSize = 1;
+      }
+      if (obj == objs[selectedObj]) {
+        selectObj(selectedObj);
+      }
+    }, elem);
+    
+    if (obj.irradianceMap) {
+      createNumberAttr(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function(obj, value) {
+        obj.binSize = value;
+      }, elem);
+
+      createButton(getMsg('export_irradiance_map'), function(obj) {
+        // Export the irradiance map to a CSV file
+        var binSize = obj.binSize || 10;
+        var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
+        var binData = obj.binData;
+        var csv = "data:text/csv;charset=utf-8,";
+
+        // Write the header
+        csv += "Position,Irradiance\n";
+
+        // Write the data
+        for (var i = 0; i < binNum; i++) {
+          csv += i * binSize + "," + (binData[i] / binSize) + "\n";
+        }
+        var encodedUri = encodeURI(csv);
+        
+        // Download the file
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "irradiance_map.csv");
+        document.body.appendChild(link);
+        link.click();
+      }, elem);
+    }
+  },
+
   //使用lineobj原型 Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
@@ -52,6 +95,52 @@ objTypes['power'] = {
       ctx.fillText(str2, obj.p2.x, obj.p2.y + 20);
       ctx.fillText(str3, obj.p2.x, obj.p2.y + 40);
       ctx.globalCompositeOperation = 'source-over';
+
+      if (obj.irradianceMap && obj.binData) {
+        // Define the unit vector of the x-axis of the plot (parallel to obj) and the y-axis of the plot (perpendicular to obj)
+        var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+        var ux = (obj.p2.x - obj.p1.x) / len;
+        var uy = (obj.p2.y - obj.p1.y) / len;
+        var vx = uy;
+        var vy = -ux;
+
+        /*
+        // Determine the maximum value of the irradiance map
+        var max = 0;
+        for (var i = 0; i < obj.binData.length; i++) {
+          if (obj.binData[i] > max) {
+            max = obj.binData[i];
+          }
+        }
+
+        // Determine the first and last non-zero bin
+        var first = 0;
+        var last = obj.binData.length - 1;
+        while (first < obj.binData.length && obj.binData[first] == 0) {
+          first++;
+        }
+
+        while (last >= 0 && obj.binData[last] == 0) {
+          last--;
+        }
+        */
+
+        // Draw the irradiance map
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(255,255,255)');
+        ctx.fillStyle = 'blue';
+        ctx.beginPath();
+        ctx.moveTo(obj.p1.x, obj.p1.y);
+        for (var i = 0; i < obj.binData.length; i++) {
+          ctx.lineTo(obj.p1.x + ux * i * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * i * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
+          ctx.lineTo(obj.p1.x + ux * (i+1) * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * (i+1) * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
+        }
+        ctx.lineTo(obj.p2.x, obj.p2.y);
+        ctx.fill();
+        ctx.stroke();
+
+
+      }
     }
 
   },
@@ -61,6 +150,16 @@ objTypes['power'] = {
     obj.power = 0;
     obj.normal = 0;
     obj.shear = 0;
+
+    if (obj.irradianceMap) {
+      var binSize = obj.binSize || 10;
+      var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
+      var binData = [];
+      for (var i = 0; i < binNum; i++) {
+        binData[i] = 0;
+      }
+      obj.binData = binData;
+    }
   },
 
   //當物件被光射到時 When the obj is shot by a ray
@@ -74,6 +173,13 @@ objTypes['power'] = {
     obj.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
     obj.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
     obj.shear -= Math.sign(rcrosss) * cost * (ray.brightness_s + ray.brightness_p);
+
+    if (obj.irradianceMap && obj.binData) {
+      var binSize = obj.binSize || 10;
+      var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
+      var binIndex = Math.floor(Math.sqrt((shootPoint.x - obj.p1.x) * (shootPoint.x - obj.p1.x) + (shootPoint.y - obj.p1.y) * (shootPoint.y - obj.p1.y)) / binSize);
+      obj.binData[binIndex] += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
+    }
   }
 
 };

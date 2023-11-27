@@ -663,8 +663,6 @@ function dichroicSettings(obj, elem){
       obj.isDichroicFilter = obj.isDichroicFilter || false;
       obj.bandwidth = obj.bandwidth || 10
       if (obj == objs[selectedObj]) {
-        cartesianSign = value;
-        localStorage.rayOpticsCartesianSign = value?"true":"false";
         selectObj(selectedObj);
       }
     }, elem);

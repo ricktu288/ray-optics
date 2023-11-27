@@ -524,6 +524,18 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
+  "irradiance_map": {
+    "incomplete": true,
+    "message": "Irradiance Map<sup>Beta</sup>"
+  },
+  "bin_size": {
+    "incomplete": true,
+    "message": "Bin Size (px)"
+  },
+  "export_irradiance_map": {
+    "incomplete": true,
+    "message": "Export data"
+  },
   "fontsize": {
     "incomplete": true,
     "message": "Font Size (px)"

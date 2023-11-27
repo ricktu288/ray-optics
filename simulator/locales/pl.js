@@ -411,6 +411,18 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
+  "irradiance_map": {
+    "incomplete": true,
+    "message": "Irradiance Map<sup>Beta</sup>"
+  },
+  "bin_size": {
+    "incomplete": true,
+    "message": "Bin Size (px)"
+  },
+  "export_irradiance_map": {
+    "incomplete": true,
+    "message": "Export data"
+  },
   "fontsize": {
     "message": "Rozmiar czcionki (px)"
   },

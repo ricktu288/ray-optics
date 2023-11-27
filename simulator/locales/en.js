@@ -393,6 +393,15 @@ locales["en"] = {
   "diameter": {
     "message": "Diameter (px)"
   },
+  "irradiance_map": {
+    "message": "Irradiance Map<sup>Beta</sup>"
+  },
+  "bin_size": {
+    "message": "Bin Size (px)"
+  },
+  "export_irradiance_map": {
+    "message": "Export data"
+  },
   "fontsize": {
     "message": "Font Size (px)"
   },
