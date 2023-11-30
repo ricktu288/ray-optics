@@ -79,15 +79,13 @@ locales["pl"] = {
     "message": "Koło"
   },
   "toolname_grin_circlelens": {
-    "incomplete": true,
-    "message": "Gradient-index glass"
+    "message": "Szkło gradientowe (GRIN)"
   },
   "toolname_refractor": {
     "message": "Soczewki i inne"
   },
   "toolname_grin_refractor": {
-    "incomplete": true,
-    "message": "Gradient-index glass"
+    "message": "Szkło gradientowe (GRIN)"
   },
   "toolname_lens": {
     "message": "Soczewka idealna"
@@ -102,8 +100,7 @@ locales["pl"] = {
     "message": "Przesłona liniowa"
   },
   "toolname_aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "Apertura"
   },
   "toolname_blackcircle": {
     "message": "Przesłona kołowa"
@@ -124,12 +121,10 @@ locales["pl"] = {
     "message": "Tekst"
   },
   "toolname_line": {
-    "incomplete": true,
-    "message": "Line"
+    "message": "Linia"
   },
   "toolname_drawing": {
-    "incomplete": true,
-    "message": "Drawing"
+    "message": "Rysunek"
   },
   "tool_more_": {
     "message": "Inne"
@@ -213,16 +208,13 @@ locales["pl"] = {
     "message": "Koło"
   },
   "tool_grin_circlelens": {
-    "incomplete": true,
-    "message": "Gradient-index circle<sup>Beta</sup>"
+    "message": "Koło gradientowe<sup>Beta</sup>"
   },
   "tool_refractor": {
-    "incomplete": true,
-    "message": "Dowolny kształt / Polygon"
+    "message": "Dowolny kształt / Wielokąt"
   },
   "tool_grin_refractor": {
-    "incomplete": true,
-    "message": "Gradient-index polygon<sup>Beta</sup>"
+    "message": "Wielokąt gradientowy<sup>Beta</sup>"
   },
   "tool_lens": {
     "message": "Soczewka idealna"
@@ -237,8 +229,7 @@ locales["pl"] = {
     "message": "Przesłona liniowa"
   },
   "tool_aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "Apertura"
   },
   "tool_blackcircle": {
     "message": "Przesłona kołowa"
@@ -253,12 +244,10 @@ locales["pl"] = {
     "message": "Tekst"
   },
   "tool_line": {
-    "incomplete": true,
-    "message": "Line / Arrow"
+    "message": "Linia / Strzałka"
   },
   "tool_drawing": {
-    "incomplete": true,
-    "message": "Drawing"
+    "message": "Rysunek"
   },
   "tool_": {
     "message": "Przesuń widok"
@@ -369,16 +358,13 @@ locales["pl"] = {
     "message": "Symetryczna"
   },
   "symbolic_grin": {
-    "incomplete": true,
-    "message": "Symbolic body-merging"
+    "message": "Symboliczne łączenie ciał"
   },
   "grin_refractive_index": {
-    "incomplete": true,
-    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+    "message": "<ul><li>Obsługuje tylko funkcje różniczkowalne.</li><li>Początek n(x,y) jest we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.</li><li>Aby uzyskać dokładniejszą symulację, zobacz \"Więcej opcji...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "incomplete": true,
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.</p><p>Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'grin_circlelens.js').</p><p>Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, <b>takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w <u>całej</u> płaszczyźnie</b>, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy.</p>"
   },
   "focallength": {
     "message": "Ogniskowa:"
@@ -390,16 +376,13 @@ locales["pl"] = {
     "message": "Współczynnik załamania*"
   },
   "refractiveindex_origin": {
-    "incomplete": true,
-    "message": "Origin of n(x,y)"
+    "message": "Początek układu n(x,y)"
   },
   "step_size": {
-    "incomplete": true,
-    "message": "Numerical solver step size"
+    "message": "Rozmiar kroku rozwiązywania numerycznego"
   },
   "eps": {
-    "incomplete": true,
-    "message": "Intersection tolerance"
+    "message": "Tolerancja intersekcji"
   },
   "random": {
     "message": "Losowo"
@@ -408,20 +391,16 @@ locales["pl"] = {
     "message": "Lambertowskie"
   },
   "diameter": {
-    "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Średnica (px)"
   },
   "irradiance_map": {
-    "incomplete": true,
-    "message": "Irradiance Map<sup>Beta</sup>"
+    "message": "Mapa irradiancji<sup>Beta</sup>"
   },
   "bin_size": {
-    "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Rozmiar pojemnika (px)"
   },
   "export_irradiance_map": {
-    "incomplete": true,
-    "message": "Export data"
+    "message": "Eksportuj dane"
   },
   "fontsize": {
     "message": "Rozmiar czcionki (px)"
@@ -442,16 +421,13 @@ locales["pl"] = {
     "message": "Kąt (°)"
   },
   "arrow1": {
-    "incomplete": true,
-    "message": "Forward arrow"
+    "message": "Strzałka do przodu"
   },
   "arrow2": {
-    "incomplete": true,
-    "message": "Backward arrow"
+    "message": "Strzałka do tyłu"
   },
   "stop_drawing": {
-    "incomplete": true,
-    "message": "Finish Drawing"
+    "message": "Zakończ rysowanie"
   },
   "beam_warning": {
     "message": "⚠️ Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
@@ -463,16 +439,13 @@ locales["pl"] = {
     "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
   },
   "step_size_note_popover": {
-    "incomplete": true,
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+    "message": "<p>Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'grin_circlelens.js'.</p>"
   },
   "eps_grin_circlelens_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+    "message": "<p>Jednostki - [długość]^2.</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'grin_circlelens.js'.</p>"
   },
   "eps_grin_refractor_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_refractor.js'.</p>"
   },
   "cauchycoeff": {
     "message": "Współczynnik Cauchy'ego"
@@ -583,15 +556,13 @@ locales["pl"] = {
     "message": "Szkło o przekroju kołowym, określonym przez środek i punkt na brzegu. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_grin_circlelens_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+    "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią. (Przeciągnij lub kliknij, aby utworzyć)."
   },
   "tool_refractor_popover": {
     "message": "Szkło o dowolnych kształtach, mających przekroje ograniczone odcinkami i fragmentami okręgów. (Kliknij, aby utworzyć odcinek; przeciągnij, aby utworzyć łuk; kliknij punkt początkowy, żeby zakończyć rysowanie.)"
   },
   "tool_grin_refractor_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
+    "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią. OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne. (Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.)"
   },
   "tool_lens_popover": {
     "message": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
@@ -606,8 +577,7 @@ locales["pl"] = {
     "message": "Przeszkoda - odcinek - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_aperture_popover": {
-    "incomplete": true,
-    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
+    "message": "Para blokerów światła, które pochłaniają padające promienie. Rozmiar otworu można regulować symetrycznie. (Przeciągnij lub kliknij dwa punkty końcowe, aby utworzyć)."
   },
   "tool_blackcircle_popover": {
     "message": "Przeszkoda - okrąg - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
@@ -625,12 +595,10 @@ locales["pl"] = {
     "message": "Etykieta tekstowa."
   },
   "tool_line_popover": {
-    "incomplete": true,
-    "message": "A line segment or arrow. (Drag or click to create.)"
+    "message": "Odcinek lub strzałka. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_drawing_popover": {
-    "incomplete": true,
-    "message": "A freehand drawing tool. (Drag to draw.)"
+    "message": "Narzędzie do rysowania odręcznego. (Przeciągnij, aby narysować.)"
   },
   "tool__popover": {
     "message": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję)."

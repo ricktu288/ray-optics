@@ -342,7 +342,7 @@
           "Stas Fainer"
         ],
         "title": "GRIN slab",
-        "description": "<p>This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.<br>The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\) (the script for creating this dialectric is available <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">here</a>), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).</p>"
+        "description": "<p>This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.<br>The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\) (the script for creating this dielectric is available <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">here</a>), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).</p>"
       },
       {
         "id": "inferior-mirage",

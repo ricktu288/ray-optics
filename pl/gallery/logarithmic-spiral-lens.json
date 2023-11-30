@@ -1,0 +1,124 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "grin_circlelens",
+      "p1": {
+        "type": 1,
+        "x": 0,
+        "y": 0,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 200,
+        "y": 0,
+        "exist": true
+      },
+      "origin": {
+        "type": 1,
+        "x": 0,
+        "y": 0,
+        "exist": true
+      },
+      "p": "1 / sqrt(x ^ 2 + y ^ 2)",
+      "p_tex": "\\frac{1}{\\sqrt{x^2+y^2}}",
+      "p_der_x": "-(x / sqrt(x ^ 2 + y ^ 2) ^ 3)",
+      "p_der_x_tex": "-\\left(\\frac{ x}{{\\sqrt{{ x}^{2}+{ y}^{2}}}^{3}}\\right)",
+      "p_der_y": "-(y / sqrt(x ^ 2 + y ^ 2) ^ 3)",
+      "p_der_y_tex": "-\\left(\\frac{ y}{{\\sqrt{{ x}^{2}+{ y}^{2}}}^{3}}\\right)",
+      "step_size": 1,
+      "eps": 0.001
+    },
+    {
+      "type": "blackcircle",
+      "p1": {
+        "type": 1,
+        "x": 0,
+        "y": 0,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 10,
+        "y": 0,
+        "exist": true
+      }
+    },
+    {
+      "type": "laser",
+      "p1": {
+        "type": 1,
+        "x": -20,
+        "y": 140,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 276,
+        "y": 165,
+        "exist": true
+      },
+      "p": 1
+    },
+    {
+      "type": "text",
+      "x": -177,
+      "y": -243,
+      "p": "Kołowy bloker znajduje się w środku,\naby uniknąć osobliwości współczynnika załamania",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 184,
+      "y": 232,
+      "p": "Kliknij i przeciągnij, aby zmienić \npoczątkowy kierunek promienia",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 271,
+      "y": 200,
+      "p": "↑",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 256,
+      "y": -78,
+      "p": "Zobacz, jak rozmiar kroku solwera numerycznego\ntej soczewki wpływa na ścieżkę promieni",
+      "fontSize": 24,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.1,
+  "rayDensity_images": 1,
+  "observer": null,
+  "origin": {
+    "x": 859.5,
+    "y": 515
+  },
+  "scale": 1.25,
+  "colorMode": false,
+  "symbolicGrin": false
+}

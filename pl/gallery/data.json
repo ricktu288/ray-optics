@@ -334,7 +334,7 @@
   },
   {
     "id": "GRIN-optics",
-    "title": "Gradient-index Optics",
+    "title": "Optyka gradientowa (GRIN)",
     "content": [
       {
         "id": "GRIN-slab",
@@ -342,7 +342,7 @@
           "Stas Fainer"
         ],
         "title": "Płyta GRIN (gradientowa)",
-        "description": "<p>Jest to symulacja materiału dielektrycznego o współczynniku załamania światła \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\) jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem. Zauważ, że dielektryk w tej symulacji składa się z cienkich prostokątów dielektryka o stałym współczynniku załamania światła, zgodnie z poprzednim równaniem dla \\(n(\\rho)\\).</p>"
+        "description": "<p>Jest to symulacja prostokątnego materiału dielektrycznego o współczynniku załamania \\(n(\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0=2\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\)  jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem.<br>Górny dielektryk w tej symulacji składa się z cienkich prostokątów dielektrycznych o stałym współczynniku załamania światła, zgodnie z \\(n(\\rho)\\) (skrypt do tworzenia tego dielektryka jest dostępny <a href=\"https://phydemo.app/ray-optics/gallery/GRIN-slab.py\" target=\"_blank\">tutaj</a>), podczas gdy dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(\rho)\\).</p>"
       },
       {
         "id": "inferior-mirage",
@@ -350,15 +350,15 @@
           "Stas Fainer"
         ],
         "title": "Miraż dolny",
-        "description": "<p>Symulacja efektu mirażu dolnego. Niebo z tym efektem jest modelowane (konkretnie w tym przykładzie) ze współczynnikiem załamania światła \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\) reprezentuje wysokość słońca nad ziemią. W tej symulacji niebo składa się z prostokątów o stałym współczynniku załamania zgodnie z \\(n(y)\\). Ta symulacja ma na celujedynie jakościowe zademonstrowanie tego efektu.</p>"
+        "description": "<p>Jest to jakościowa symulacja efektu mirażu dolnego.<br>W tym przykładzie współczynnik załamania światła powietrza jest aproksymowany funkcją \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\)  reprezentuje wysokość nad ziemią obiektu emitującego/odbijającego światło.</p>"
       },
       {
         "id": "logarithmic-spiral-lens",
         "contributors": [
           "Stas Fainer"
         ],
-        "title": "Logarithmic spiral ray path",
-        "description": "<p>The refractive index function that supports logarithmic spiral ray paths is of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">this</a> animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle). </p>"
+        "title": "Promień o torze spirali logarytmicznej",
+        "description": "Funkcja współczynnika załamania światła, która wspiera promienie o torach spirali logarytmicznych o postaci \\(r(θ) = r_0\\,e^{-k\\theta}\\), gdzie \\(r_0,k > 0\\) i \\(\\alpha = \\arctan k\\) to stały kąt między dwiema stycznymi w punkcie przecięcia koncentrycznej spirali logarytmicznej z okręgiem (jak pokazuje <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">ta</a> animacja), to \\(n(r) &prop; \\frac{1}{r}\\) (można to wykazać zapisując ścieżkę optyczną we współrzędnych biegunowych i wykorzystując zasadę Fermata). "
       },
       {
         "id": "luneburg-lens",
@@ -366,7 +366,7 @@
           "Stas Fainer"
         ],
         "title": "Soczewka Luneburga",
-        "description": "<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę Luneburga złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+        "description": "<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\rho\\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).</p>"
       },
       {
         "id": "maxwell-fisheye-lens",
@@ -374,7 +374,7 @@
           "Stas Fainer"
         ],
         "title": "Soczewka rybie oko Maxwella",
-        "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Ta symulacja pokazuje soczewkę rybie oko Maxwella złożoną z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p>"
+        "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).</p>"
       }
     ]
   },
