@@ -84,6 +84,7 @@ window.addEventListener('load', function() {
   document.getElementById('languageModal').style.display = '';
   document.getElementById('footer-left').style.display = '';
   document.getElementById('footer-right').style.display = '';
+  document.getElementById('canvas-container').style.display = '';
 });
 
 function getMsg(msg) {
