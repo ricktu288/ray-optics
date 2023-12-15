@@ -35,11 +35,13 @@ objTypes['handle'] = {
   //將物件畫到Canvas上 Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
 
+    /*
     for (var i in obj.controlPoints) {
       // If user drags some target objs, restore them back to avoid unexpected behavior.
       obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(objs[obj.controlPoints[i].targetObj_index]));
       objTypes[objs[obj.controlPoints[i].targetObj_index].type].dragging(objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
     }
+    */
     for (var i in obj.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
