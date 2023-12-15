@@ -268,6 +268,34 @@ function canvas_onmousemove(e) {
     mouse2 = mouse_nogrid;
   }
 
+  if (!isConstructing && draggingObj == -1 && !document.getElementById('lockobjs').checked) {
+    // highlight object under mouse cursor
+    var ret = selectionSearch(mouse_nogrid)[0];
+    console.log(mouse_nogrid);
+    var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
+    if (mouseObj != newMouseObj) {
+      mouseObj = newMouseObj;
+      draw(true, true);
+    }
+    if (ret.mousePart) {
+      if (ret.mousePart.cursor) {
+        canvas.style.cursor = ret.mousePart.cursor;
+      } else if (ret.mousePart.targetPoint || ret.mousePart.targetPoint_) {
+        canvas.style.cursor = 'pointer';
+      } else if (ret.mousePart.part == 0) {
+        canvas.style.cursor = 'move';
+      } else {
+        canvas.style.cursor = '';
+      }
+    } else {
+      if (mode == 'observer' && graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
+        canvas.style.cursor = 'pointer';
+      } else {
+        canvas.style.cursor = '';
+      }
+    }
+  }
+
   if (mouse2.x == mouse.x && mouse2.y == mouse.y) {
     return;
   }
@@ -344,15 +372,7 @@ function canvas_onmousemove(e) {
       draw();
     }
 
-    if (draggingObj == -1 && !document.getElementById('lockobjs').checked) {
-      // highlight object under mouse cursor
-      var ret = selectionSearch(mouse_nogrid)[0];
-      var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
-      if (mouseObj != newMouseObj) {
-        mouseObj = newMouseObj;
-        draw(true, true);
-      }
-    }
+    
   }
 }
 
