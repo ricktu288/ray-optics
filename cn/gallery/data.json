@@ -307,6 +307,14 @@
         "description": "<p>模拟一个简单的望远镜，其由一个凸透镜和一个伽利略<a href=\"https://phydemo.app/ray-optics/cn/gallery/beam-expanders\" target=\"_blank\">扩束镜</a>组成，其作用为增加望远镜的角分辨率，从而更好地分离两颗遥远星体的入射光。 </p><p>在下面的截图中，您可以比较有与没有扩束镜时望远镜的效果差异。 </p>"
       },
       {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "开普勒望远镜",
+        "description": "<p>本模拟案例中描述了开普勒望远镜的光路图。</p>"
+      },
+      {
         "id": "beam-expanders",
         "contributors": [
           "Stas Fainer"

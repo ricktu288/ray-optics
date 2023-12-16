@@ -307,6 +307,14 @@
         "description": "<p>Jest to symulacja prostego teleskopu, złożonego z soczewki wypukłej i <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">ekspandera wiązki</a> Galileusza, który zwiększa rozdzielczość kątową teleskopu, a tym samym lepiej oddziela wpadające światło od dwóch odległych gwiazd.</p><p>Na poniższym zrzucie ekranu można porównać osiągi teleskopu z jego wersją bez ekspandera wiązki (zawierającą jedynie soczewkę wypukłą).</p>"
       },
       {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "Keplerian telescope",
+        "description": "<p>This simulation describes the ray diagram of the Keplerian telescope</p>"
+      },
+      {
         "id": "beam-expanders",
         "contributors": [
           "Stas Fainer"

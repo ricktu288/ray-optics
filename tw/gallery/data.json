@@ -307,6 +307,14 @@
         "description": "<p>模擬一個簡單的望遠鏡，其由一個凸透鏡和一個伽利略<a href=\"https://phydemo.app/ray-optics/tw/gallery/beam-expanders\" target=\"_blank\">擴束鏡</a>組成，其作用為增加望遠鏡的角分辨率，從而更好地分離兩顆遙遠星體的入射光。</p><p>在下面的截圖中，您可以比較有與沒有擴束鏡時望遠鏡的效果差異。</p>"
       },
       {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "克卜勒望遠鏡",
+        "description": "<p>本模擬案例中描述了克卜勒望遠鏡的光路圖。</p>"
+      },
+      {
         "id": "beam-expanders",
         "contributors": [
           "Stas Fainer"
