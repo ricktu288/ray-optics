@@ -9,6 +9,8 @@ var colorMode = false;
 var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
 var isDrawing = false;
+var isExporting = false;
+var exportRayCountLimit = 100000;
 var hasExceededTime = false;
 var forceStop = false;
 var lastDrawTime = -1;
@@ -72,7 +74,7 @@ function draw_(skipLight, skipGrid) {
     canvasPainter = new CanvasPainter(ctxLight, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
     canvasPainter.cls();
 
-    if (!backgroundImage && ctx0.constructor == C2S) {
+    if (ctx0.constructor == C2S) {
       ctx.translate(origin.x / (scale*dpr), origin.y / (scale*dpr));
     }
 
@@ -244,7 +246,7 @@ function shootWaitingRays() {
   }
 
   while (true) {
-    if (new Date() - st_time > 50 && ctxLight.constructor != C2S)
+    if (new Date() - st_time > 50 && !isExporting)
     {
       //若已計算超過200ms If already run for 200ms
       //先休息10ms後再繼續(防止程式沒有回應) Pause for 10ms and continue (prevent not responding)
@@ -256,7 +258,7 @@ function shootWaitingRays() {
       draw(true, true); // Redraw the objs to avoid outdated information (e.g. detector readings).
       return;
     }
-    if (new Date() - st_time > 5000 && ctxLight.constructor == C2S)
+    if (isExporting && shotRayCount > exportRayCountLimit)
     {
       isDrawing = false;
       return;

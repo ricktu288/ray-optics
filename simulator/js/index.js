@@ -20,6 +20,7 @@ var isFromGallery = false;
 var hasUnsavedChange = false;
 var showAdvancedOn = false;
 var MQ;
+var cropMode = false;
 
 window.onload = function (e) {
   if (window.devicePixelRatio) {
@@ -220,8 +221,8 @@ window.onload = function (e) {
   
   document.getElementById('get_link').onclick = getLink;
   document.getElementById('get_link_mobile').onclick = getLink;
-  document.getElementById('export_svg').onclick = exportSVG;
-  document.getElementById('export_svg_mobile').onclick = exportSVG;
+  document.getElementById('export_svg').onclick = enterCropMode;
+  document.getElementById('export_svg_mobile').onclick = enterCropMode;
   document.getElementById('open').onclick = function () {
     document.getElementById('openfile').click();
   };
@@ -912,28 +913,67 @@ function getLink() {
   });
 }
 
-function exportSVG() {
+function enterCropMode() {
+  cropMode = true;
+
+  // Search objs for existing cropBox
+  var cropBoxIndex = -1;
+  for (var i = 0; i < objs.length; i++) {
+    if (objs[i].type == 'cropbox') {
+      cropBoxIndex = i;
+      break;
+    }
+  }
+  if (cropBoxIndex == -1) {
+    // Create a new cropBox
+    var cropBox = {
+      type: 'cropbox',
+      p1: graphs.point((canvas.width * 0.2 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - origin.y) / scale),
+      p2: graphs.point((canvas.width * 0.8 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - origin.y) / scale),
+      p3: graphs.point((canvas.width * 0.2 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - origin.y) / scale),
+      p4: graphs.point((canvas.width * 0.8 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - origin.y) / scale),
+      width: 1280,
+      format: 'png'
+    };
+    objs.push(cropBox);
+    cropBoxIndex = objs.length - 1;
+  }
+
+  selectObj(cropBoxIndex);
+
+  draw(true, true);
+}
+
+function exportSVG(cropBox) {
   var ctx_backup = ctx;
   var ctx0_backup = ctx0;
   var ctxLight_backup = ctxLight;
   var ctxGrid_backup = ctxGrid;
+  var scale_backup = scale;
+  var origin_backup = origin;
   var dpr_backup = dpr;
 
-  if (backgroundImage) {
-    var svgWidth = backgroundImage.width;
-    var svgHeight = backgroundImage.height;
-  } else {
-    var svgWidth = canvas.width / (scale*dpr);
-    var svgHeight = canvas.height / (scale*dpr);
-  }
-  ctx = new C2S(svgWidth, svgHeight);
+  scale = 1;
+  origin = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
+  dpr = 1;
+  imageWidth = cropBox.p4.x - cropBox.p1.x;
+  imageHeight = cropBox.p4.y - cropBox.p1.y;
+
+  selectObj(-1);
+  mouseObj = -1;
+
+  ctx = new C2S(imageWidth, imageHeight);
   ctx0 = ctx;
   ctxLight = ctx;
   ctxGrid = ctx;
-  dpr = 1;
   ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, svgWidth, svgHeight);
+  ctx.fillRect(0, 0, imageWidth, imageHeight);
+
+  exportRayCountLimit = cropBox.rayCountLimit || 1e4;
+  isExporting = true;
+  cropMode = false;
   draw();
+  isExporting = false;
   var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
   saveAs(blob, "export.svg");
 
@@ -941,7 +981,60 @@ function exportSVG() {
   ctx0 = ctx0_backup;
   ctxLight = ctxLight_backup;
   ctxGrid = ctxGrid_backup;
+  scale = scale_backup;
+  origin = origin_backup;
   dpr = dpr_backup;
+  draw(true, true);
+}
+
+function exportImage(cropBox) {
+
+  var scale_backup = scale;
+  var origin_backup = origin;
+  var dpr_backup = dpr;
+
+  scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
+  origin = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
+  dpr = 1;
+  imageWidth = cropBox.width;
+  imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
+
+  selectObj(-1);
+  mouseObj = -1;
+
+  canvas.width = imageWidth;
+  canvas.height = imageHeight;
+  canvas0.width = imageWidth;
+  canvas0.height = imageHeight;
+  canvasLight.width = imageWidth;
+  canvasLight.height = imageHeight;
+  canvasGrid.width = imageWidth;
+  canvasGrid.height = imageHeight;
+  exportRayCountLimit = cropBox.rayCountLimit || 1e7;
+  isExporting = true;
+  cropMode = false;
+  draw();
+  isExporting = false;
+
+  var finalCanvas = document.createElement('canvas');
+  finalCanvas.width = imageWidth;
+  finalCanvas.height = imageHeight;
+  var finalCtx = finalCanvas.getContext('2d');
+  finalCtx.fillStyle = "black";
+  finalCtx.fillRect(0, 0, imageWidth, imageHeight);
+  finalCtx.drawImage(canvasGrid, 0, 0);
+  finalCtx.drawImage(canvas0, 0, 0);
+  finalCtx.drawImage(canvasLight, 0, 0);
+  finalCtx.drawImage(canvas, 0, 0);
+
+  finalCanvas.toBlob(function (blob) {
+    saveAs(blob, "export.png");
+  });
+
+  scale = scale_backup;
+  origin = origin_backup;
+  dpr = dpr_backup;
+  window.onresize();
 }
 
 function restore() {

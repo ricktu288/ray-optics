@@ -1,4 +1,24 @@
-function createNumberAttr(label, min, max, step, value, func, elem, info) {
+function createInfoBox(elem, info) {
+  var infoIcon = document.createElement('span');
+  infoIcon.className = 'info-icon';
+  infoIcon.innerHTML = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+  </svg>
+  `;
+  infoIcon.style.cursor = 'pointer';
+  infoIcon.setAttribute('data-bs-toggle', 'popover');
+  infoIcon.setAttribute('data-bs-trigger', 'click');
+  infoIcon.setAttribute('data-bs-placement', 'bottom');
+  infoIcon.setAttribute('data-bs-html', 'true');
+  infoIcon.setAttribute('data-bs-content', info);
+  elem.appendChild(infoIcon);
+  new bootstrap.Popover(infoIcon);
+}
+
+
+function createNumberAttr(label, min, max, step, value, func, elem, info, hideSlider) {
   var nobr = document.createElement('span');
   nobr.className = 'selected-tool-bar-nobr';
 
@@ -8,22 +28,7 @@ function createNumberAttr(label, min, max, step, value, func, elem, info) {
     var p_name = document.createElement('span');
     p_name.innerHTML = label;
     nobr.appendChild(p_name);
-    var infoIcon = document.createElement('span');
-    infoIcon.className = 'info-icon';
-    infoIcon.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-    </svg>
-    `;
-    infoIcon.style.cursor = 'pointer';
-    infoIcon.setAttribute('data-bs-toggle', 'popover');
-    infoIcon.setAttribute('data-bs-trigger', 'click');
-    infoIcon.setAttribute('data-bs-placement', 'bottom');
-    infoIcon.setAttribute('data-bs-html', 'true');
-    infoIcon.setAttribute('data-bs-content', info);
-    nobr.appendChild(infoIcon);
-    new bootstrap.Popover(infoIcon);
+    createInfoBox(nobr, info);
   } else {
     var p_name = document.createElement('span');
     p_name.innerHTML = label + '&nbsp;';
@@ -45,6 +50,9 @@ function createNumberAttr(label, min, max, step, value, func, elem, info) {
   objAttr_range.step = step;
   objAttr_range.value = value;
   objAttr_range.className = 'form-range';
+  if (hideSlider) {
+    objAttr_range.style.display = 'none';
+  }
   nobr.appendChild(objAttr_range);
 
   elem.appendChild(nobr);
@@ -100,22 +108,7 @@ function createTupleAttr(label, value, func, elem, info) {
     var p_name = document.createElement('span');
     p_name.innerHTML = label;
     nobr.appendChild(p_name);
-    var infoIcon = document.createElement('span');
-    infoIcon.className = 'info-icon';
-    infoIcon.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-    </svg>
-    `;
-    infoIcon.style.cursor = 'pointer';
-    infoIcon.setAttribute('data-bs-toggle', 'popover');
-    infoIcon.setAttribute('data-bs-trigger', 'click');
-    infoIcon.setAttribute('data-bs-placement', 'bottom');
-    infoIcon.setAttribute('data-bs-html', 'true');
-    infoIcon.setAttribute('data-bs-content', info);
-    nobr.appendChild(infoIcon);
-    new bootstrap.Popover(infoIcon);
+    createInfoBox(nobr, info);
   } else {
     var p_name = document.createElement('span');
     p_name.innerHTML = label + '&nbsp;';
@@ -219,22 +212,7 @@ function createBooleanAttr(label, value, func, elem, info) {
     var p_name = document.createElement('span');
     p_name.innerHTML = label;
     nobr.appendChild(p_name);
-    var infoIcon = document.createElement('span');
-    infoIcon.className = 'info-icon';
-    infoIcon.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-    </svg>
-    `;
-    infoIcon.style.cursor = 'pointer';
-    infoIcon.setAttribute('data-bs-toggle', 'popover');
-    infoIcon.setAttribute('data-bs-trigger', 'click');
-    infoIcon.setAttribute('data-bs-placement', 'bottom');
-    infoIcon.setAttribute('data-bs-html', 'true');
-    infoIcon.setAttribute('data-bs-content', info);
-    nobr.appendChild(infoIcon);
-    new bootstrap.Popover(infoIcon);
+    createInfoBox(nobr, info);
   } else {
 	var p_name = document.createElement('span');
 	p_name.innerHTML = label + '&nbsp;';
@@ -272,22 +250,7 @@ function createEquationAttr(label, value, func, elem, info) {
     var p_name = document.createElement('span');
     p_name.innerHTML = label;
     nobr.appendChild(p_name);
-    var infoIcon = document.createElement('span');
-    infoIcon.className = 'info-icon';
-    infoIcon.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-    </svg>
-    `;
-    infoIcon.style.cursor = 'pointer';
-    infoIcon.setAttribute('data-bs-toggle', 'popover');
-    infoIcon.setAttribute('data-bs-trigger', 'click');
-    infoIcon.setAttribute('data-bs-placement', 'bottom');
-    infoIcon.setAttribute('data-bs-html', 'true');
-    infoIcon.setAttribute('data-bs-content', info);
-    nobr.appendChild(infoIcon);
-    new bootstrap.Popover(infoIcon);
+    createInfoBox(nobr, info);
   } else {
     var p_name = document.createElement('span');
     p_name.innerHTML = label + '&nbsp;';
@@ -332,13 +295,20 @@ function createEquationAttr(label, value, func, elem, info) {
   }, 1);
 }
 
-function createDropdownAttr(label, value, options, func, elem) {
+function createDropdownAttr(label, value, options, func, elem, info) {
   var nobr = document.createElement('span');
   nobr.className = 'selected-tool-bar-nobr';
 
-  var p_name = document.createElement('span');
-  p_name.innerHTML = label + '&nbsp;';
-  nobr.appendChild(p_name);
+  if (info) {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = label;
+    nobr.appendChild(p_name);
+    createInfoBox(nobr, info);
+  } else {
+    var p_name = document.createElement('span');
+    p_name.innerHTML = label + '&nbsp;';
+    nobr.appendChild(p_name);
+  }
 
   isArray = Array.isArray(options);
   var dropdown = document.createElement('select');
@@ -365,7 +335,7 @@ function createDropdownAttr(label, value, options, func, elem) {
   };
   dropdown.onclick = function(e)
   {
-    this.select();
+    //this.select();
   };
 }
 
@@ -377,6 +347,8 @@ function createButton(label, func, elem) {
     func(objs[selectedObj]);
   };
   elem.appendChild(button);
+  var space = document.createTextNode(' ');
+  elem.appendChild(space);
 }
 
 function hasSameAttrType(obj1, obj2)

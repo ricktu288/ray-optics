@@ -126,6 +126,9 @@ locales["zh-TW"] = {
   "toolname_drawing": {
     "message": "繪圖"
   },
+  "toolname_cropbox": {
+    "message": "匯出"
+  },
   "tool_more_": {
     "message": "其他"
   },
@@ -428,6 +431,15 @@ locales["zh-TW"] = {
   },
   "stop_drawing": {
     "message": "停止繪圖"
+  },
+  "cropbox_size": {
+    "message": "剪取框大小"
+  },
+  "image_format": {
+    "message": "格式"
+  },
+  "image_width": {
+    "message": "寬度"
   },
   "beam_warning": {
     "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"

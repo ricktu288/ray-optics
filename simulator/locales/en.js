@@ -126,6 +126,9 @@ locales["en"] = {
   "toolname_drawing": {
     "message": "Drawing"
   },
+  "toolname_cropbox": {
+    "message": "Export"
+  },
   "tool_more_": {
     "message": "Other"
   },
@@ -428,6 +431,15 @@ locales["en"] = {
   },
   "stop_drawing": {
     "message": "Finish Drawing"
+  },
+  "cropbox_size": {
+    "message": "Crop Box Size"
+  },
+  "image_format": {
+    "message": "Format"
+  },
+  "image_width": {
+    "message": "Width"
   },
   "beam_warning": {
     "message": "⚠️ Image detection may not work with divergent/random beams."

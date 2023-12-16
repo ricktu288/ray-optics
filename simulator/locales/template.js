@@ -168,6 +168,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Drawing"
   },
+  "toolname_cropbox": {
+    "incomplete": true,
+    "message": "Export"
+  },
   "tool_more_": {
     "incomplete": true,
     "message": "Other"
@@ -571,6 +575,18 @@ locales["LOCALE_ID"] = {
   "stop_drawing": {
     "incomplete": true,
     "message": "Finish Drawing"
+  },
+  "cropbox_size": {
+    "incomplete": true,
+    "message": "Crop Box Size"
+  },
+  "image_format": {
+    "incomplete": true,
+    "message": "Format"
+  },
+  "image_width": {
+    "incomplete": true,
+    "message": "Width"
   },
   "beam_warning": {
     "incomplete": true,

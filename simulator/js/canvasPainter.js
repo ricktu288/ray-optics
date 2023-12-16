@@ -76,7 +76,7 @@ class CanvasPainter {
           this.ctx.setTransform(1, 0, 0, 1, 0, 0);
           this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
           this.ctx.setTransform(this.scale, 0, 0, this.scale, this.origin.x, this.origin.y);
-          if (this.backgroundImage) {
+          if (this.ctx.constructor !== C2S && this.backgroundImage) {
               this.ctx.globalAlpha = 1;
               this.ctx.drawImage(this.backgroundImage, 0, 0);
           }

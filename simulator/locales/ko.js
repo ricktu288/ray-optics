@@ -167,6 +167,10 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Drawing"
   },
+  "toolname_cropbox": {
+    "incomplete": true,
+    "message": "Export"
+  },
   "tool_more_": {
     "incomplete": false,
     "message": "더 보기"
@@ -570,6 +574,18 @@ locales["ko"] = {
   "stop_drawing": {
     "incomplete": true,
     "message": "Finish Drawing"
+  },
+  "cropbox_size": {
+    "incomplete": true,
+    "message": "Crop Box Size"
+  },
+  "image_format": {
+    "incomplete": true,
+    "message": "Format"
+  },
+  "image_width": {
+    "incomplete": true,
+    "message": "Width"
   },
   "beam_warning": {
     "incomplete": false,
