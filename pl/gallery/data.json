@@ -452,8 +452,8 @@
         "contributors": [
           "James Garrard"
         ],
-        "title": "Piksel LCD na bazie GaN",
-        "description": "<p>Model piksela LCD opartego na GaN. Symuluje działanie warstw wyświetlacza mikroledowego i sposób, w jaki nasze oczy postrzegają piksel.</p>"
+        "title": "Piksel LCD",
+        "description": "<p>Model piksela LCD. Symuluje działanie warstw wyświetlacza mikroledowego i sposób, w jaki nasze oczy postrzegają piksel.</p>"
       }
     ]
   }

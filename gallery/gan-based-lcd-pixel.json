@@ -352,6 +352,64 @@
       "p": 0.5,
       "isDichroic": false,
       "isDichroicFilter": false
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": -319.5999999999999,
+        "y": 157.59999999999997,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 1263.300343994497,
+        "y": 157.59999999999997,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": -319.5999999999999,
+        "y": 821.1764534775474,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 1263.300343994497,
+        "y": 821.1764534775474,
+        "exist": true
+      },
+      "width": 1140,
+      "format": "png"
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": 13.200000000000045,
+        "y": 96.39999999999998,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 831.2,
+        "y": 96.39999999999998,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 13.200000000000045,
+        "y": 914.4,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 831.2,
+        "y": 914.4,
+        "exist": true
+      },
+      "width": 250,
+      "format": "png"
     }
   ],
   "mode": "light",
@@ -359,10 +417,10 @@
   "rayDensity_images": 1,
   "observer": null,
   "origin": {
-    "x": 379,
-    "y": -78.99999999999997
+    "x": 372.48652754252976,
+    "y": 71.96107886312505
   },
-  "scale": 1.25,
+  "scale": 0.5127264905780533,
   "colorMode": true,
   "symbolicGrin": false
 }
