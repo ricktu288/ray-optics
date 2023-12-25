@@ -351,6 +351,10 @@ function canvas_onmousemove(e) {
       }
 
       draw(!(objTypes[objs[draggingObj].type].shoot || objTypes[objs[draggingObj].type].rayIntersection), true);
+
+      if (draggingPart.requiresPBoxUpdate) {
+        selectObj(selectedObj);
+      }
     }
 
     if (draggingObj == -3) {
@@ -392,9 +396,6 @@ function canvas_onmouseup(e) {
     if (pendingControlPointSelection) {
       pendingControlPointSelection = false
       addControlPointsForHandle(pendingControlPoints);
-    }
-    if (draggingPart.requiresPBoxUpdate) {
-      selectObj(selectedObj);
     }
     if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mouse0.x && mouse.y == draggingPart.mouse0.y) {
       draggingObj = -1;

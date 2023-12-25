@@ -215,11 +215,14 @@ objTypes['aperture'] = {
   //顯示屬性方塊 Show the property box
   p_box: function(obj, elem) {
     var originalDiameter = graphs.length(obj.p3, obj.p4);
-    createNumberAttr(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
-      var t = 0.5 * (1 - value / graphs.length(obj.p1, obj.p2));
-      obj.p3 = graphs.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
-      obj.p4 = graphs.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
-    }, elem);
+
+    if (!isConstructing) {
+      createNumberAttr(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
+        var t = 0.5 * (1 - value / graphs.length(obj.p1, obj.p2));
+        obj.p3 = graphs.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
+        obj.p4 = graphs.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
+      }, elem);
+    }
     dichroicSettings(obj,elem);
   },
 
