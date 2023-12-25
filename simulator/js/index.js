@@ -1023,8 +1023,8 @@ function exportImage(cropBox) {
   var finalCtx = finalCanvas.getContext('2d');
   finalCtx.fillStyle = "black";
   finalCtx.fillRect(0, 0, imageWidth, imageHeight);
-  finalCtx.drawImage(canvasGrid, 0, 0);
   finalCtx.drawImage(canvas0, 0, 0);
+  finalCtx.drawImage(canvasGrid, 0, 0);
   finalCtx.drawImage(canvasLight, 0, 0);
   finalCtx.drawImage(canvas, 0, 0);
 
