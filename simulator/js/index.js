@@ -241,6 +241,7 @@ window.onload = function (e) {
     colorMode = this.checked;
     document.getElementById('color_mode').checked = colorMode;
     document.getElementById('color_mode_mobile').checked = colorMode;
+    selectObj(selectedObj);
     draw(false, true);
   };
   document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;

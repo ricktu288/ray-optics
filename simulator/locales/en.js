@@ -378,6 +378,15 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index*"
   },
+  "defined_by": {
+    "message": "Defined by<sup>Beta</sup>"
+  },
+  "radii_of_curvature": {
+    "message": "Radii of Curvature"
+  },
+  "focal_distances": {
+    "message": "Focal Distances"
+  },
   "refractiveindex_origin": {
     "message": "Origin of n(x,y)"
   },

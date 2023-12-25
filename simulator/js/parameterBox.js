@@ -38,7 +38,14 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
 
   var objAttr_text = document.createElement('input');
   objAttr_text.type = 'text';
-  objAttr_text.value = value;
+  if (value == Infinity) {
+    objAttr_text.value = 'inf';
+  } else if (value == -Infinity) {
+    objAttr_text.value = '-inf';
+  } else {
+    // Round to 6 decimal places
+    objAttr_text.value = Math.round(value * 1000000) / 1000000;
+  }
   objAttr_text.style.width = '40px';
   objAttr_text.className = 'selected-tool-bar-editable';
   nobr.appendChild(objAttr_text);
@@ -82,10 +89,18 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
   };
   objAttr_text.onchange = function()
   {
-    objAttr_range.value = objAttr_text.value;
+    if (objAttr_text.value.toLowerCase().startsWith('inf')) {
+      var value = Infinity;
+    } else if (objAttr_text.value.toLowerCase().startsWith('-inf')) {
+      var value = -Infinity;
+    } else {
+      var value = objAttr_text.value * 1;
+    }
+    objAttr_range.value = value;
     setAttr(function(obj) {
-      func(obj, objAttr_text.value);
+      func(obj, value);
     });
+    createUndoPoint();
   };
   objAttr_text.onkeydown = function(e)
   {

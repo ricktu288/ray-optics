@@ -378,6 +378,15 @@ locales["zh-CN"] = {
   "refractiveindex": {
     "message": "折射率*"
   },
+  "defined_by": {
+    "message": "定义方式<sup>Beta</sup>"
+  },
+  "radii_of_curvature": {
+    "message": "曲率半径"
+  },
+  "focal_distances": {
+    "message": "前/后焦距"
+  },
   "refractiveindex_origin": {
     "message": "n(x,y)的原点"
   },
