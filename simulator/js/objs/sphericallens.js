@@ -259,6 +259,49 @@ objTypes['sphericallens'] = {
   },
 
   createLensWithDFfdBfd: function(obj, d, ffd, bfd) {
+    if (!obj.path) {
+      var p1 = obj.p1;
+      var p2 = obj.p2;
+    } else {
+      var old_params = this.getDR1R2(obj);
+      var p1 = graphs.midpoint_points(obj.path[0], obj.path[1]);
+      var p2 = graphs.midpoint_points(obj.path[3], obj.path[4]);
+      var old_d = old_params.d;
+      var old_r1 = old_params.r1;
+      var old_r2 = old_params.r2;
+      var old_length = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+      
+      if (old_r1 < Infinity && old_r1 > -Infinity) {
+        var old_curveShift1 = old_r1 - Math.sqrt(old_r1*old_r1 - old_length*old_length/4) * Math.sign(old_r1);
+      } else {
+        var old_curveShift1 = 0;
+      }
+
+      if (old_r2 < Infinity && old_r2 > -Infinity) {
+        var old_curveShift2 = old_r2 - Math.sqrt(old_r2*old_r2 - old_length*old_length/4) * Math.sign(old_r2);
+      } else {
+        var old_curveShift2 = 0;
+      }
+      
+      var old_edgeShift1 = old_d/2 - old_curveShift1;
+      var old_edgeShift2 = old_d/2 + old_curveShift2;
+    }
+
+    var len = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    var dx = (p2.x-p1.x)/len;
+    var dy = (p2.y-p1.y)/len;
+    var dpx = dy;
+    var dpy = -dx;
+
+    if (old_params) {
+      // Correct p1 and p2 so that obj.path[2] and obj.path[5] will move symmetrically from the old lens.
+      var correction = (old_edgeShift1 - old_edgeShift2) / 2;
+      p1.x += dpx*correction;
+      p1.y += dpy*correction;
+      p2.x += dpx*correction;
+      p2.y += dpy*correction;
+    }
+
     var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (546*546*0.000001));
 
     // Solve for r1 and r2
@@ -289,14 +332,47 @@ objTypes['sphericallens'] = {
         obj.tmp_params = {d: d, ffd: ffd, bfd: bfd};
       }
     } else if (!isNaN(r1_1) && !isNaN(r2_1) && !isNaN(r1_2) && !isNaN(r2_2)) {
-      console.log('Warning: Two solutions found for r1 and r2. Try the first solution.');
-      var r1 = r1_1;
-      var r2 = r2_1;
+      // If both solutions are valid, and if the old lens is valid, prefer the solution that is closest to the old lens.
+      if (old_params) {
+        var old_r1_1_diff = Math.abs(old_r1 - r1_1);
+        var old_r2_1_diff = Math.abs(old_r2 - r2_1);
+        var old_r1_2_diff = Math.abs(old_r1 - r1_2);
+        var old_r2_2_diff = Math.abs(old_r2 - r2_2);
+
+        if (old_r1_1_diff + old_r2_1_diff < old_r1_2_diff + old_r2_2_diff) {
+          var r1_a = r1_1;
+          var r2_a = r2_1;
+          var r1_b = r1_2;
+          var r2_b = r2_2;
+        } else {
+          var r1_a = r1_2;
+          var r2_a = r2_2;
+          var r1_b = r1_1;
+          var r2_b = r2_1;
+        }
+      } else {
+        // If the old lens is invalid, prefer the solution with the smaller radius of curvature.
+        if (Math.abs(r1_1) + Math.abs(r2_1) < Math.abs(r1_2) + Math.abs(r2_2)) {
+          var r1_a = r1_1;
+          var r2_a = r2_1;
+          var r1_b = r1_2;
+          var r2_b = r2_2;
+        } else {
+          var r1_a = r1_2;
+          var r2_a = r2_2;
+          var r1_b = r1_1;
+          var r2_b = r2_1;
+        }
+      }
+
+      // Try the preferred solution first.
+      var r1 = r1_a;
+      var r2 = r2_a;
       this.createLensWithDR1R2(obj, d, r1, r2);
       if (!obj.path) {
-        // Try the second solution if the first solution gives an invalid set of d,r1,r2.
-        r1 = r1_2;
-        r2 = r2_2;
+        // Try the other solution if the preferred solution gives an invalid set of d,r1,r2.
+        r1 = r1_b;
+        r2 = r2_b;
         this.createLensWithDR1R2(obj, d, r1, r2);
         if (!obj.path) {
           // If the lens is still invalid, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
@@ -483,7 +559,9 @@ objTypes['sphericallens'] = {
       return false;
     };
     if(objTypes['refractor'].clicked(obj, mouse_nogrid, mouse, draggingPart)) {
-      draggingPart.requiresPBoxUpdate = true;
+      if (draggingPart.part != 0) {
+        draggingPart.requiresPBoxUpdate = true;
+      }
       return true;
     }
     return false;
