@@ -501,8 +501,14 @@ function canvas_ondblclick(e) {
 
 }
 
+var lastZoomTime = 0;
+var zoomThrottle = 100; // 100 ms between zooms
 
 function canvas_onmousewheel(e) {
+  var now = Date.now();
+  if (now - lastZoomTime < zoomThrottle) return; // Too soon since the last zoom
+  lastZoomTime = now;
+
   // cross-browser wheel delta
   var e = window.event || e; // old IE support
   var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
