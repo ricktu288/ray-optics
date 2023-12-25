@@ -389,6 +389,10 @@ function canvas_onmouseup(e) {
       if (!isConstructing) {
         //該物件已經表示建立完畢 The object says the contruction is done
         createUndoPoint();
+        if (document.getElementById('lockobjs').checked) {
+          mouseObj = -1;
+          draw(true, true);
+        }
       }
     }
   }

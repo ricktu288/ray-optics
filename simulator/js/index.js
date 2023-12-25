@@ -99,6 +99,11 @@ window.onload = function (e) {
     canvas_onmouseup(e);
   });
 
+  canvas.addEventListener('mouseout',  function (e) {
+    mouseObj = -1;
+    draw(true, true)
+  });
+
   // IE9, Chrome, Safari, Opera
   canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
   // Firefox
