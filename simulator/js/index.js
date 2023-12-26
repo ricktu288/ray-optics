@@ -737,7 +737,23 @@ function JSONreplacer(name, val) {
 function JSONOutput() {
   var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
-  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale, width: canvasWidth, height: canvasHeight, colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
+  document.getElementById('textarea1').value = JSON.stringify({
+     version: 2,
+     objs: objs,
+     mode: mode,
+     rayDensity_light: rayDensity_light,
+     rayDensity_images: rayDensity_images,
+     showGrid: document.getElementById('showgrid').checked,
+     grid: document.getElementById('grid').checked,
+     lockobjs: document.getElementById('lockobjs').checked,
+     observer: observer,
+     origin: origin,
+     scale: scale,
+     width: canvasWidth,
+     height: canvasHeight,
+     colorMode: colorMode,
+     symbolicGrin: symbolicGrin
+    }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
     localStorage.rayOpticsData = document.getElementById('textarea1').value;
@@ -802,10 +818,30 @@ function JSONInput() {
   if (!jsonData.height) {
     jsonData.height = 900;
   }
+  if (!jsonData.showGrid) {
+    jsonData.showGrid = false;
+  }
+  if (!jsonData.grid) {
+    jsonData.grid = false;
+  }
+  if (!jsonData.lockobjs) {
+    jsonData.lockobjs = false;
+  }
 
   objs = jsonData.objs;
   rayDensity_light = jsonData.rayDensity_light;
   rayDensity_images = jsonData.rayDensity_images;
+
+  document.getElementById('showgrid').checked = jsonData.showGrid;
+  document.getElementById('showgrid_more').checked = jsonData.showGrid;
+  document.getElementById('showgrid_mobile').checked = jsonData.showGrid;
+  document.getElementById('grid').checked = jsonData.grid;
+  document.getElementById('grid_more').checked = jsonData.grid;
+  document.getElementById('grid_mobile').checked = jsonData.grid;
+  document.getElementById('lockobjs').checked = jsonData.lockobjs;
+  document.getElementById('lockobjs_more').checked = jsonData.lockobjs;
+  document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
+
   observer = jsonData.observer;
 
   var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
