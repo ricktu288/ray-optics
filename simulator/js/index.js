@@ -735,11 +735,9 @@ function JSONreplacer(name, val) {
 }
 
 function JSONOutput() {
-  // Normalize scale and origin
-  var normalizeFactor = 1440 / (canvas.width/dpr);
-  var newScale = scale * normalizeFactor;
-  var newOrigin = { x: origin.x * normalizeFactor, y: origin.y * normalizeFactor };
-  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: newOrigin, scale: newScale, colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
+  var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
+  var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
+  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale, width: canvasWidth, height: canvasHeight, colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
     localStorage.rayOpticsData = document.getElementById('textarea1').value;
@@ -798,17 +796,31 @@ function JSONInput() {
       }, 1);
     }
   }
+  if (!jsonData.width) {
+    jsonData.width = 1500;
+  }
+  if (!jsonData.height) {
+    jsonData.height = 900;
+  }
 
   objs = jsonData.objs;
   rayDensity_light = jsonData.rayDensity_light;
   rayDensity_images = jsonData.rayDensity_images;
   observer = jsonData.observer;
 
-  // Un-normalize scale and origin
-  var normalizeFactor = 1440 / (canvas.width/dpr);
-  scale = jsonData.scale / normalizeFactor;
-  origin.x = jsonData.origin.x / normalizeFactor;
-  origin.y = jsonData.origin.y / normalizeFactor;
+  var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
+  var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
+
+  // Rescale the image to fit the screen
+  if (jsonData.width/jsonData.height > canvasWidth/canvasHeight) {
+    var rescaleFactor = jsonData.width / canvasWidth;
+  } else {
+    var rescaleFactor = jsonData.height / canvasHeight;
+  }
+  console.log(rescaleFactor);
+  scale = jsonData.scale / rescaleFactor;
+  origin.x = jsonData.origin.x / rescaleFactor;
+  origin.y = jsonData.origin.y / rescaleFactor;
 
   document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
