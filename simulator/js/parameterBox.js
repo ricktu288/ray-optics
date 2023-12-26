@@ -215,7 +215,7 @@ function createTextAttr(label, value, func, elem) {
   };
   objAttr_text.onclick = function(e)
   {
-    this.select();
+    //this.select();
   };
 }
 

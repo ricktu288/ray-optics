@@ -16,26 +16,26 @@ fonts = [
   'Lucida Sans'
 ];
 
-fontStyles = [
-  'Normal',
-  'Bold',
-  'Italic',
-  'Bold Italic',
-  'Oblique',
-  'Bold Oblique'
-]
+fontStyles = {
+  'Normal': getMsg('normal'),
+  'Bold': getMsg('bold'),
+  'Italic': getMsg('italic'),
+  'Bold Italic': getMsg('bolditalic'),
+  'Oblique': getMsg('oblique'),
+  'Bold Oblique': getMsg('boldoblique')
+}
 
 fontAlignments = {
-  'left': "Left",
-  'center': "Centre",
-  'right': "Right"
+  'left': getMsg('left'),
+  'center': getMsg('center'),
+  'right': getMsg('right')
 }
 
 objTypes['text'] = {
 
   //建立物件 Create the obj
   create: function(mouse) {
-  return {type: 'text', x: mouse.x, y: mouse.y, p: 'text here', fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0};
+  return {type: 'text', x: mouse.x, y: mouse.y, p: getMsg("text_here"), fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0};
   },
 
   //顯示屬性方塊 Show the property box
@@ -50,7 +50,7 @@ objTypes['text'] = {
     if (createAdvancedOptions(typeof obj.fontSize != 'undefined' && (obj.fontSize != 24 || obj.fontName != 'Serif' || obj.fontStyle != 'Normal' || obj.fontAlignment != 'left' || obj.fontSmallCaps || obj.fontAngle != 0))) {
       createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
         obj.fontSize = value;
-      }, elem);
+      }, elem, null, true);
       createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
         obj.fontName = value;
       }, elem);
@@ -65,7 +65,7 @@ objTypes['text'] = {
       }, elem);
       createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
         obj.fontAngle = value;
-      }, elem);
+      }, elem, null, true);
     }
   },
 

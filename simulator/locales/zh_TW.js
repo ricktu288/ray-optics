@@ -423,8 +423,38 @@ locales["zh-TW"] = {
   "fontstyle": {
     "message": "樣式"
   },
+  "normal": {
+    "message": "正常"
+  },
+  "bold": {
+    "message": "粗體"
+  },
+  "italic": {
+    "message": "斜體"
+  },
+  "bolditalic": {
+    "message": "粗斜體"
+  },
+  "oblique": {
+    "message": "傾斜"
+  },
+  "boldoblique": {
+    "message": "粗傾斜"
+  },
   "fontalignment": {
     "message": "對齊"
+  },
+  "left": {
+    "message": "左"
+  },
+  "center": {
+    "message": "中"
+  },
+  "right": {
+    "message": "右"
+  },
+  "text_here": {
+    "message": "在此輸入文字"
   },
   "smallcaps": {
     "message": "小型大寫"

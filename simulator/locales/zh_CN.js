@@ -423,8 +423,38 @@ locales["zh-CN"] = {
   "fontstyle": {
     "message": "样式"
   },
+  "normal": {
+    "message": "正常"
+  },
+  "bold": {
+    "message": "粗体"
+  },
+  "italic": {
+    "message": "斜体"
+  },
+  "bolditalic": {
+    "message": "粗斜体"
+  },
+  "oblique": {
+    "message": "倾斜"
+  },
+  "boldoblique": {
+    "message": "粗倾斜"
+  },
   "fontalignment": {
     "message": "对齐"
+  },
+  "left": {
+    "message": "左"
+  },
+  "center": {
+    "message": "中"
+  },
+  "right": {
+    "message": "右"
+  },
+  "text_here": {
+    "message": "在此输入文字"
   },
   "smallcaps": {
     "message": "小型大写"

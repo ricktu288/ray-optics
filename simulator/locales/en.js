@@ -423,8 +423,38 @@ locales["en"] = {
   "fontstyle": {
     "message": "Style"
   },
+  "normal": {
+    "message": "Normal"
+  },
+  "bold": {
+    "message": "Bold"
+  },
+  "italic": {
+    "message": "Italic"
+  },
+  "bolditalic": {
+    "message": "Bold Italic"
+  },
+  "oblique": {
+    "message": "Oblique"
+  },
+  "boldoblique": {
+    "message": "Bold Oblique"
+  },
   "fontalignment": {
     "message": "Alignment"
+  },
+  "left": {
+    "message": "Left"
+  },
+  "center": {
+    "message": "Centre"
+  },
+  "right": {
+    "message": "Right"
+  },
+  "text_here": {
+    "message": "Text Here"
   },
   "smallcaps": {
     "message": "Small Caps"

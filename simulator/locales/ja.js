@@ -563,9 +563,49 @@ locales["ja"] = {
     "incomplete": false,
     "message": "スタイル"
   },
+  "normal": {
+    "incomplete": true,
+    "message": "Normal"
+  },
+  "bold": {
+    "incomplete": true,
+    "message": "Bold"
+  },
+  "italic": {
+    "incomplete": true,
+    "message": "Italic"
+  },
+  "bolditalic": {
+    "incomplete": true,
+    "message": "Bold Italic"
+  },
+  "oblique": {
+    "incomplete": true,
+    "message": "Oblique"
+  },
+  "boldoblique": {
+    "incomplete": true,
+    "message": "Bold Oblique"
+  },
   "fontalignment": {
     "incomplete": false,
     "message": "文字揃え"
+  },
+  "left": {
+    "incomplete": true,
+    "message": "Left"
+  },
+  "center": {
+    "incomplete": true,
+    "message": "Centre"
+  },
+  "right": {
+    "incomplete": true,
+    "message": "Right"
+  },
+  "text_here": {
+    "incomplete": true,
+    "message": "Text Here"
   },
   "smallcaps": {
     "incomplete": false,

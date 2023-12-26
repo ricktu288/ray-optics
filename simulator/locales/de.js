@@ -459,9 +459,49 @@ locales["de"] = {
     "incomplete": true,
     "message": "Style"
   },
+  "normal": {
+    "incomplete": true,
+    "message": "Normal"
+  },
+  "bold": {
+    "incomplete": true,
+    "message": "Bold"
+  },
+  "italic": {
+    "incomplete": true,
+    "message": "Italic"
+  },
+  "bolditalic": {
+    "incomplete": true,
+    "message": "Bold Italic"
+  },
+  "oblique": {
+    "incomplete": true,
+    "message": "Oblique"
+  },
+  "boldoblique": {
+    "incomplete": true,
+    "message": "Bold Oblique"
+  },
   "fontalignment": {
     "incomplete": true,
     "message": "Alignment"
+  },
+  "left": {
+    "incomplete": true,
+    "message": "Left"
+  },
+  "center": {
+    "incomplete": true,
+    "message": "Centre"
+  },
+  "right": {
+    "incomplete": true,
+    "message": "Right"
+  },
+  "text_here": {
+    "incomplete": true,
+    "message": "Text Here"
   },
   "smallcaps": {
     "incomplete": true,
