@@ -735,7 +735,11 @@ function JSONreplacer(name, val) {
 }
 
 function JSONOutput() {
-  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale * 1280 / (canvas.width/dpr), colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
+  // Normalize scale and origin
+  var normalizeFactor = 1440 / (canvas.width/dpr);
+  var newScale = scale * normalizeFactor;
+  var newOrigin = { x: origin.x * normalizeFactor, y: origin.y * normalizeFactor };
+  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: newOrigin, scale: newScale, colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
     localStorage.rayOpticsData = document.getElementById('textarea1').value;
@@ -799,8 +803,13 @@ function JSONInput() {
   rayDensity_light = jsonData.rayDensity_light;
   rayDensity_images = jsonData.rayDensity_images;
   observer = jsonData.observer;
-  origin = jsonData.origin;
-  scale = jsonData.scale / 1280 * (canvas.width/dpr);
+
+  // Un-normalize scale and origin
+  var normalizeFactor = 1440 / (canvas.width/dpr);
+  scale = jsonData.scale / normalizeFactor;
+  origin.x = jsonData.origin.x / normalizeFactor;
+  origin.y = jsonData.origin.y / normalizeFactor;
+
   document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   colorMode = jsonData.colorMode;
