@@ -301,10 +301,10 @@ locales["zh-CN"] = {
     "message": "保存"
   },
   "get_link": {
-    "message": "取得连结"
+    "message": "复制分享连结"
   },
   "export_svg": {
-    "message": "导出"
+    "message": "导出为PNG/SVG"
   },
   "view_gallery": {
     "message": "浏览作品集"

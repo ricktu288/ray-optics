@@ -338,11 +338,11 @@ locales["si"] = {
   },
   "get_link": {
     "incomplete": true,
-    "message": "Get Link"
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
     "incomplete": true,
-    "message": "Export"
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "incomplete": true,

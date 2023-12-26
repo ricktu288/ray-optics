@@ -301,10 +301,10 @@ locales["en"] = {
     "message": "Save"
   },
   "get_link": {
-    "message": "Get Link"
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
-    "message": "Export"
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "message": "View Gallery"

@@ -315,10 +315,12 @@ locales["de"] = {
     "message": "Speichern"
   },
   "get_link": {
-    "message": "Link kopieren"
+    "incomplete": true,
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
-    "message": "Exportieren"
+    "incomplete": true,
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "message": "Galerie ansehen"

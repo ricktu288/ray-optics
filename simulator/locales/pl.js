@@ -302,10 +302,12 @@ locales["pl"] = {
     "message": "Zapisz"
   },
   "get_link": {
-    "message": "Uzyskaj link"
+    "incomplete": true,
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
-    "message": "Eksportuj"
+    "incomplete": true,
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "message": "Zobacz Galerię"

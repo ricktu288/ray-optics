@@ -400,12 +400,12 @@ locales["ko"] = {
     "message": "저장"
   },
   "get_link": {
-    "incomplete": false,
-    "message": "링크 확인"
+    "incomplete": true,
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
-    "incomplete": false,
-    "message": "추출"
+    "incomplete": true,
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "incomplete": false,

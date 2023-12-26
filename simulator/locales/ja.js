@@ -400,12 +400,12 @@ locales["ja"] = {
     "message": "保存"
   },
   "get_link": {
-    "incomplete": false,
-    "message": "リンク取得"
+    "incomplete": true,
+    "message": "Copy Shareable Link"
   },
   "export_svg": {
-    "incomplete": false,
-    "message": "エクスポート"
+    "incomplete": true,
+    "message": "Export as PNG/SVG"
   },
   "view_gallery": {
     "incomplete": false,
