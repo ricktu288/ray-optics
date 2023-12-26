@@ -663,6 +663,15 @@ locales["zh-TW"] = {
   "show_help_popups_popover": {
     "message": "決定滑鼠移到按鈕上方時是否顯示提示泡泡（須重新載入網頁以套用變更）"
   },
+  "show_status": {
+    "message": "顯示狀態方塊"
+  },
+  "grid_size": {
+    "message": "格線大小 (px)"
+  },
+  "observer_size": {
+    "message": "觀察者大小 (px)"
+  },
   "language": {
     "message": "語言"
   },
@@ -671,5 +680,17 @@ locales["zh-TW"] = {
   },
   "advanced_help": {
     "message": "進階說明詳見右下角的說明圖示。"
+  },
+  "ray_count": {
+    "message": "光線片段數量："
+  },
+  "total_truncation": {
+    "message": "被截斷的亮度："
+  },
+  "time_elapsed": {
+    "message": "花費時間(ms)："
+  },
+  "force_stopped": {
+    "message": "已強制終止。"
   }
 }

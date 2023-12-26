@@ -663,6 +663,15 @@ locales["zh-CN"] = {
   "show_help_popups_popover": {
     "message": "决定滑鼠移到按钮上方时是否显示提示泡泡（须重新载入网页以套用变更）"
   },
+  "show_status": {
+    "message": "显示状态方块"
+  },
+  "grid_size": {
+    "message": "网格大小 (px)"
+  },
+  "observer_size": {
+    "message": "观察者大小 (px)"
+  },
   "language": {
     "message": "语言"
   },
@@ -671,5 +680,17 @@ locales["zh-CN"] = {
   },
   "advanced_help": {
     "message": "进阶说明详见右下角的说明图示。"
+  },
+  "ray_count": {
+    "message": "光线片段数量："
+  },
+  "total_truncation": {
+    "message": "被截断的亮度："
+  },
+  "time_elapsed": {
+    "message": "花费时间(ms)："
+  },
+  "force_stopped": {
+    "message": "已强制终止。"
   }
 }

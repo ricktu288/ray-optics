@@ -256,6 +256,64 @@ window.onload = function (e) {
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
 
+  document.getElementById('show_status').onclick = function () {
+    document.getElementById('show_status').checked = this.checked;
+    document.getElementById('show_status_mobile').checked = this.checked;
+
+    document.getElementById('status').style.display = this.checked ? '' : 'none';
+    localStorage.rayOpticsShowStatus = this.checked ? "on" : "off";
+  };
+  document.getElementById('show_status_mobile').onclick = document.getElementById('show_status').onclick;
+
+  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsShowStatus && localStorage.rayOpticsShowStatus == "on") {
+    document.getElementById('show_status').checked = true;
+    document.getElementById('show_status_mobile').checked = true;
+    document.getElementById('status').style.display = '';
+  }
+
+  document.getElementById('grid_size').onchange = function () {
+    gridSize = parseFloat(this.value);
+    document.getElementById('grid_size').value = gridSize;
+    document.getElementById('grid_size_mobile').value = gridSize;
+    draw(true, false);
+  }
+  document.getElementById('grid_size_mobile').onchange = document.getElementById('grid_size').onchange;
+
+  document.getElementById('grid_size').onclick = function () {
+    this.select();
+  }
+  document.getElementById('grid_size_mobile').onclick = document.getElementById('grid_size').onclick;
+  
+  document.getElementById('grid_size').onkeydown = function(e)
+  {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  };
+  document.getElementById('grid_size_mobile').onkeydown = document.getElementById('grid_size').onkeydown;
+
+  document.getElementById('observer_size').onchange = function () {
+    document.getElementById('observer_size').value = this.value;
+    document.getElementById('observer_size_mobile').value = this.value;
+    if (observer) {
+      observer.r = parseFloat(this.value) * 0.5;
+    }
+    draw(false, true);
+  }
+  document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
+
+  document.getElementById('observer_size').onclick = function () {
+    this.select();
+  }
+  document.getElementById('observer_size_mobile').onclick = document.getElementById('observer_size').onclick;
+  
+  document.getElementById('observer_size').onkeydown = function(e)
+  {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  };
+  document.getElementById('observer_size_mobile').onkeydown = document.getElementById('observer_size').onkeydown;
+
+
   document.getElementById('zoomPlus').onclick = function () {
     setScale(scale * 1.1);
   }
@@ -582,6 +640,13 @@ function initParameters() {
   document.getElementById('setAttrAll').checked = false;
   document.getElementById('applytoall_mobile').checked = false;
 
+  gridSize = 20;
+  document.getElementById('grid_size').value = gridSize;
+  document.getElementById('grid_size_mobile').value = gridSize;
+
+  document.getElementById('observer_size').value = 40;
+  document.getElementById('observer_size_mobile').value = 40;
+  
   draw();
 }
 
@@ -746,6 +811,7 @@ function JSONOutput() {
      showGrid: document.getElementById('showgrid').checked,
      grid: document.getElementById('grid').checked,
      lockobjs: document.getElementById('lockobjs').checked,
+     gridSize: gridSize,
      observer: observer,
      origin: origin,
      scale: scale,
@@ -827,6 +893,9 @@ function JSONInput() {
   if (!jsonData.lockobjs) {
     jsonData.lockobjs = false;
   }
+  if (!jsonData.gridSize) {
+    jsonData.gridSize = 20;
+  }
 
   objs = jsonData.objs;
   rayDensity_light = jsonData.rayDensity_light;
@@ -843,6 +912,18 @@ function JSONInput() {
   document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
 
   observer = jsonData.observer;
+
+  if (observer) {
+    document.getElementById('observer_size').value = Math.round(observer.r * 2 * 1000000) / 1000000;
+    document.getElementById('observer_size_mobile').value = Math.round(observer.r * 2 * 1000000) / 1000000;
+  } else {
+    document.getElementById('observer_size').value = 40;
+    document.getElementById('observer_size_mobile').value = 40;
+  }
+
+  gridSize = jsonData.gridSize;
+  document.getElementById('grid_size').value = gridSize;
+  document.getElementById('grid_size_mobile').value = gridSize;
 
   var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
@@ -894,7 +975,7 @@ function modebtn_clicked(mode1) {
   }
   if (mode == 'observer' && !observer) {
     //初始化觀察者 Initialize the observer
-    observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), 20);
+    observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 

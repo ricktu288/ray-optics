@@ -672,6 +672,18 @@ locales["pl"] = {
   "show_help_popups_popover": {
     "message": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)"
   },
+  "show_status": {
+    "incomplete": true,
+    "message": "Show status box"
+  },
+  "grid_size": {
+    "incomplete": true,
+    "message": "Grid Size (px)"
+  },
+  "observer_size": {
+    "incomplete": true,
+    "message": "Observer Size (px)"
+  },
   "language": {
     "message": "Język"
   },
@@ -680,5 +692,21 @@ locales["pl"] = {
   },
   "advanced_help": {
     "message": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
+  },
+  "ray_count": {
+    "incomplete": true,
+    "message": "Number of ray segments: "
+  },
+  "total_truncation": {
+    "incomplete": true,
+    "message": "Truncated brightness: "
+  },
+  "time_elapsed": {
+    "incomplete": true,
+    "message": "Time elapsed (ms): "
+  },
+  "force_stopped": {
+    "incomplete": true,
+    "message": "Force stopped."
   }
 }

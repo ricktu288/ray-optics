@@ -883,6 +883,18 @@ locales["ko"] = {
     "incomplete": false,
     "message": "버튼 위를 지날 때 도움말을 표시할 지 결정합니다. (효과 반영을 위해 페이지를 다시 불러옵니다.)"
   },
+  "show_status": {
+    "incomplete": true,
+    "message": "Show status box"
+  },
+  "grid_size": {
+    "incomplete": true,
+    "message": "Grid Size (px)"
+  },
+  "observer_size": {
+    "incomplete": true,
+    "message": "Observer Size (px)"
+  },
   "language": {
     "incomplete": false,
     "message": "언어"
@@ -894,5 +906,21 @@ locales["ko"] = {
   "advanced_help": {
     "incomplete": false,
     "message": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오."
+  },
+  "ray_count": {
+    "incomplete": true,
+    "message": "Number of ray segments: "
+  },
+  "total_truncation": {
+    "incomplete": true,
+    "message": "Truncated brightness: "
+  },
+  "time_elapsed": {
+    "incomplete": true,
+    "message": "Time elapsed (ms): "
+  },
+  "force_stopped": {
+    "incomplete": true,
+    "message": "Force stopped."
   }
 }

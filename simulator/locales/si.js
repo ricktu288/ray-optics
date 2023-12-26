@@ -792,6 +792,18 @@ locales["si"] = {
     "incomplete": true,
     "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
   },
+  "show_status": {
+    "incomplete": true,
+    "message": "Show status box"
+  },
+  "grid_size": {
+    "incomplete": true,
+    "message": "Grid Size (px)"
+  },
+  "observer_size": {
+    "incomplete": true,
+    "message": "Observer Size (px)"
+  },
   "language": {
     "incomplete": true,
     "message": "Language"
@@ -803,5 +815,21 @@ locales["si"] = {
   "advanced_help": {
     "incomplete": true,
     "message": "For advanced help, see the help icon in the lower-right corner."
+  },
+  "ray_count": {
+    "incomplete": true,
+    "message": "Number of ray segments: "
+  },
+  "total_truncation": {
+    "incomplete": true,
+    "message": "Truncated brightness: "
+  },
+  "time_elapsed": {
+    "incomplete": true,
+    "message": "Time elapsed (ms): "
+  },
+  "force_stopped": {
+    "incomplete": true,
+    "message": "Force stopped."
   }
 }

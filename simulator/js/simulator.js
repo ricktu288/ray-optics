@@ -14,6 +14,7 @@ var exportRayCountLimit = 100000;
 var hasExceededTime = false;
 var forceStop = false;
 var lastDrawTime = -1;
+var drawBeginTime = -1;
 var stateOutdated = false; //上次繪圖完後狀態已經變更 The state has changed since last draw
 var minShotLength = 1e-6; //光線兩次作用的最短距離(小於此距離的光線作用會被忽略) The minimal length between two interactions with rays (when smaller than this, the interaction will be ignored)
 var minShotLength_squared = minShotLength * minShotLength;
@@ -36,6 +37,7 @@ function draw(skipLight, skipGrid)
   
   if (!skipLight) {
     totalTruncation = 0;
+    drawBeginTime = new Date();
     document.getElementById('forceStop').style.display = 'none';
   }
 
@@ -254,6 +256,7 @@ function shootWaitingRays() {
       timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
       firstBreak = false;
       document.getElementById('forceStop').style.display = '';
+      document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
       draw(true, true); // Redraw the objs to avoid outdated information (e.g. detector readings).
       return;
@@ -633,16 +636,16 @@ function shootWaitingRays() {
   
   if (forceStop)
   {
-    document.getElementById('status').innerHTML = shotRayCount + ' rays (stopped)';
+    document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>' + getMsg("force_stopped");
     forceStop = false;
   }
   else if (hasExceededTime)
   {
-    document.getElementById('status').innerHTML = shotRayCount + ' rays';
+    //document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation;
   }
   else
   {
-    document.getElementById('status').innerHTML = shotRayCount + ' rays (' + (new Date() - st_time) + 'ms)';
+    document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime);
   }
   document.getElementById('forceStop').style.display = 'none';
   //ctx.stroke();

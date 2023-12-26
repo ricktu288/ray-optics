@@ -663,6 +663,15 @@ locales["en"] = {
   "show_help_popups_popover": {
     "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
   },
+  "show_status": {
+    "message": "Show status box"
+  },
+  "grid_size": {
+    "message": "Grid Size (px)"
+  },
+  "observer_size": {
+    "message": "Observer Size (px)"
+  },
   "language": {
     "message": "Language"
   },
@@ -671,5 +680,17 @@ locales["en"] = {
   },
   "advanced_help": {
     "message": "For advanced help, see the help icon in the lower-right corner."
+  },
+  "ray_count": {
+    "message": "Number of ray segments: "
+  },
+  "total_truncation": {
+    "message": "Truncated brightness: "
+  },
+  "time_elapsed": {
+    "message": "Time elapsed (ms): "
+  },
+  "force_stopped": {
+    "message": "Force stopped."
   }
 }

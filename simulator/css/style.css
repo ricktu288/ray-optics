@@ -206,6 +206,14 @@
   padding-right: 0px;
 }
 
+.settings-number {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  width: 40px;
+  text-align: center;
+}
+
 #more-options-dropdown {
   width:300px;
   max-height: 80vh;
@@ -401,4 +409,9 @@
   color:white;
   position:absolute;
   border:none;
+}
+
+#status {
+  color: gray;
+  background-color: rgba(0,0,0,0.8);
 }
