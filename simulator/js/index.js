@@ -735,7 +735,7 @@ function JSONreplacer(name, val) {
 }
 
 function JSONOutput() {
-  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale, colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
+  document.getElementById('textarea1').value = JSON.stringify({ version: 2, objs: objs, mode: mode, rayDensity_light: rayDensity_light, rayDensity_images: rayDensity_images, observer: observer, origin: origin, scale: scale * 1280 / (canvas.width/dpr), colorMode: colorMode, symbolicGrin: symbolicGrin }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
     localStorage.rayOpticsData = document.getElementById('textarea1').value;
@@ -800,7 +800,9 @@ function JSONInput() {
   rayDensity_images = jsonData.rayDensity_images;
   observer = jsonData.observer;
   origin = jsonData.origin;
-  scale = jsonData.scale;
+  scale = jsonData.scale / 1280 * (canvas.width/dpr);
+  document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
   colorMode = jsonData.colorMode;
   symbolicGrin = jsonData.symbolicGrin;
   document.getElementById('color_mode').checked = colorMode;
