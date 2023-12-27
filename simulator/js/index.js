@@ -21,6 +21,8 @@ var hasUnsavedChange = false;
 var showAdvancedOn = false;
 var MQ;
 var cropMode = false;
+var lastDeviceIsTouch = false;
+var lastTouchTime = -1;
 
 window.onload = function (e) {
   if (window.devicePixelRatio) {
@@ -84,27 +86,32 @@ window.onload = function (e) {
     //console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
+    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
+
     document.body.focus();
     canvas_onmousedown(e);
   });
 
   canvas.addEventListener('mousemove', function (e) {
     //console.log("mousemove");
+    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
+
     canvas_onmousemove(e);
   });
 
   canvas.addEventListener('mouseup',  function (e) {
-    //console.log("mouseup");
+    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
+    //console.log("mouseup");
     canvas_onmouseup(e);
   });
 
   canvas.addEventListener('mouseout',  function (e) {
-    if (!lastDeviceIsTouch) {
-      mouseObj = -1;
-    }
+    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
+    lastDeviceIsTouch = false;
+    mouseObj = -1;
     draw(true, true)
   });
 
@@ -121,6 +128,7 @@ window.onload = function (e) {
 
   canvas.addEventListener('touchstart',  function (e) {
     lastDeviceIsTouch = true;
+    lastTouchTime = Date.now();
     if (e.touches.length === 2) {
       // Pinch to zoom
       e.preventDefault();
@@ -142,6 +150,7 @@ window.onload = function (e) {
 
   canvas.addEventListener('touchmove',  function (e) {
     lastDeviceIsTouch = true;
+    lastTouchTime = Date.now();
     e.preventDefault();
     //console.log("touchmove");
     if (e.touches.length === 2) {
@@ -193,6 +202,7 @@ window.onload = function (e) {
 
   canvas.addEventListener('touchend',  function (e) {
     lastDeviceIsTouch = true;
+    lastTouchTime = Date.now();
     //console.log("touchend");
     if (e.touches.length < 2) {
       initialPinchDistance = null;
@@ -202,6 +212,7 @@ window.onload = function (e) {
 
   canvas.addEventListener('touchcancel',  function (e) {
     lastDeviceIsTouch = true;
+    lastTouchTime = Date.now();
     //console.log("touchcancel");
     initialPinchDistance = null;
     if (isConstructing || draggingObj >= 0) {
@@ -213,7 +224,6 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('dblclick',  function (e) {
-    lastDeviceIsTouch = false;
     canvas_ondblclick(e);
   });
 

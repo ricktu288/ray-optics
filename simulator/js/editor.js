@@ -19,7 +19,6 @@ var clickExtent_line = 10;
 var clickExtent_point = 10;
 var clickExtent_point_construct = 10;
 var touchscreenExtentRatio = 2;
-var lastDeviceIsTouch = false;
 
 var gridSize = 20; //格線大小 Size of the grid
 var origin = { x: 0, y: 0 }; //格線原點座標 Origin of the grid
