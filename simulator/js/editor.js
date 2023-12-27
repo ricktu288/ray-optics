@@ -18,6 +18,8 @@ var snapToDirection_lockLimit_squared = 900; //拖曳物件且使用吸附至方
 var clickExtent_line = 10;
 var clickExtent_point = 10;
 var clickExtent_point_construct = 10;
+var touchscreenExtentRatio = 2;
+var lastDeviceIsTouch = false;
 
 var gridSize = 20; //格線大小 Size of the grid
 var origin = { x: 0, y: 0 }; //格線原點座標 Origin of the grid
@@ -31,23 +33,39 @@ function getMouseStyle(obj, style, screen) {
   return style;
 }
 
+function getClickExtent(isPoint, isConstruct) {
+  if (isPoint) {
+    if (isConstruct) {
+      var clickExtent = clickExtent_point_construct / scale;
+    } else {
+      var clickExtent = clickExtent_point / scale;
+    }
+  } else {
+    var clickExtent = clickExtent_line / scale;
+  }
+  if (lastDeviceIsTouch) {
+    clickExtent *= touchscreenExtentRatio;
+  }
+  return clickExtent;
+}
+
 function mouseOnPoint(mouse, point) {
-  return graphs.length_squared(mouse, point) < clickExtent_point * clickExtent_point;
+  return graphs.length_squared(mouse, point) < getClickExtent(true) * getClickExtent(true);
 }
 
 function mouseOnPoint_construct(mouse, point) {
-  return graphs.length_squared(mouse, point) < clickExtent_point_construct * clickExtent_point_construct;
+  return graphs.length_squared(mouse, point) < getClickExtent(true, true) * getClickExtent(true, true);
 }
 
 function mouseOnSegment(mouse, segment) {
   var d_per = Math.pow((mouse.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (mouse.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); //類似於滑鼠與直線垂直距離 Similar to the distance between the mouse and the line
   var d_par = (segment.p2.x - segment.p1.x) * (mouse.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (mouse.y - segment.p1.y); //類似於滑鼠在直線上投影位置 Similar to the projected point of the mouse on the line
-  return d_per < clickExtent_line * clickExtent_line && d_par >= 0 && d_par <= graphs.length_segment_squared(segment);
+  return d_per < getClickExtent() * getClickExtent() && d_par >= 0 && d_par <= graphs.length_segment_squared(segment);
 }
 
 function mouseOnLine(mouse, line) {
   var d_per = Math.pow((mouse.x - line.p1.x) * (line.p1.y - line.p2.y) + (mouse.y - line.p1.y) * (line.p2.x - line.p1.x), 2) / ((line.p1.y - line.p2.y) * (line.p1.y - line.p2.y) + (line.p2.x - line.p1.x) * (line.p2.x - line.p1.x)); //類似於滑鼠與直線垂直距離 Similar to the distance between the mouse and the line
-  return d_per < clickExtent_line * clickExtent_line;
+  return d_per < getClickExtent() * getClickExtent();
 }
 
 //將滑鼠位置吸附至指定的方向中之最接近者(該方向直線上之投影點) Snap the mouse position to the direction nearest to the given directions
@@ -521,6 +539,7 @@ function canvas_onmousewheel(e) {
   d = Math.max(0.25, Math.min(5.00, d)) * 100;
   setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
   //window.toolBarViewModel.zoom.value(d);
+  canvas_onmousemove(e);
   return false;
 }
 

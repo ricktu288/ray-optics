@@ -26,7 +26,7 @@ objTypes['protractor'] = {
       draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent())
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging

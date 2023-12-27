@@ -34,9 +34,9 @@ objTypes['circlelens'] = {
       return true;
     }
     // clicking on outer edge of circle?  then drag entire circle
-    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < clickExtent_line)
+    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent())
     // clicking inside circle?  then drag entire circle
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
+    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging

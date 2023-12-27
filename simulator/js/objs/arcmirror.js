@@ -168,7 +168,7 @@ objTypes['arcmirror'] = {
       var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
       var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
       var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
-      if (Math.abs(graphs.length(center, mouse_nogrid) - r) < clickExtent_line && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
+      if (Math.abs(graphs.length(center, mouse_nogrid) - r) < getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
       {
         //拖曳整個物件 Dragging the entire obj
         draggingPart.part = 0;

@@ -340,7 +340,7 @@ objTypes['refractor'] = {
           a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
           a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
           var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
-          if (Math.abs(graphs.length(center, mouse_nogrid) - r) < clickExtent_line && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
+          if (Math.abs(graphs.length(center, mouse_nogrid) - r) < getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
           {
             //拖曳整個物件 Dragging the entire obj
             draggingPart.part = 0;
