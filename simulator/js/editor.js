@@ -527,6 +527,11 @@ function canvas_onmousewheel(e) {
 
 function selectObj(index) {
   hideAllPopovers();
+  if (pendingPBoxEvent) {
+    // If the user is in the middle of editing a value, then clearing the innerHTML of p_box will cause the change event not to fire, so we need to manually fire it.
+    pendingPBoxEvent();
+    pendingPBoxEvent = null;
+  }
 
   if (index < 0 || index >= objs.length) {
     //若此物件不存在 If this object does not exist

@@ -1,3 +1,5 @@
+var pendingPBoxEvent = null;
+
 function createInfoBox(elem, info) {
   var infoIcon = document.createElement('span');
   infoIcon.className = 'info-icon';
@@ -305,6 +307,20 @@ function createEquationAttr(label, value, func, elem, info) {
       }
     }
   });
+
+  mathField.el().querySelector('textarea').addEventListener('focusout', function() {
+    pendingPBoxEvent();
+    pendingPBoxEvent = null;
+  });
+
+  mathField.el().querySelector('textarea').addEventListener('focusin', function() {
+    pendingPBoxEvent = function() {
+      setAttr(function(obj) {
+        func(obj, mathField.latex());
+      });
+    };
+  });
+
   setTimeout(function() {
     mathField.latex(value);
   }, 1);
