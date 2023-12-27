@@ -4,7 +4,7 @@ objTypes['led'] = {
   
   //建立物件 Create the obj
   create: function(mouse) {
-    return {type: 'led', p1: mouse, p2: mouse, p : 30, symmetric : true};
+    return {type: 'led', p1: mouse, p2: mouse, p : 36.001, symmetric : true};
   },
 
   //顯示屬性方塊 Show the property box
