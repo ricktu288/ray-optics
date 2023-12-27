@@ -48,8 +48,7 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
     // Round to 6 decimal places
     objAttr_text.value = Math.round(value * 1000000) / 1000000;
   }
-  objAttr_text.style.width = '40px';
-  objAttr_text.className = 'selected-tool-bar-editable';
+  objAttr_text.className = 'selected-tool-bar-editable selected-tool-bar-number';
   nobr.appendChild(objAttr_text);
 
   var objAttr_range = document.createElement('input');
