@@ -70,7 +70,7 @@ class CanvasPainter {
   * @method cls
   **/
   cls() {
-    console.log([this.scale, 0, 0, this.scale, this.origin.x, this.origin.y])
+    //console.log([this.scale, 0, 0, this.scale, this.origin.x, this.origin.y])
       if (this.ctx.constructor !== C2S) {
           // only do this when not being exported to SVG to avoid bug
           this.ctx.setTransform(1, 0, 0, 1, 0, 0);

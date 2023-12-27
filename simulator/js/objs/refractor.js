@@ -207,7 +207,7 @@ objTypes['refractor'] = {
 
   fillGlass: function(n, obj, ctx, aboveLight)
   {
-    console.log(aboveLight)
+    //console.log(aboveLight)
     if (aboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;

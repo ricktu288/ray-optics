@@ -116,7 +116,7 @@ function updateUIText(elememt = document) {
         translated++;
       }
     }
-    console.log([lang1, total, translated]);
+    //console.log([lang1, total, translated]);
 
     document.getElementById('lang-' + lang1).innerText = Math.round(translated/total*100) + '%';
   }
@@ -255,7 +255,7 @@ function initTools() {
     if (element.id && element.id.startsWith('tool_')) {
       const toolId = element.id.replace('tool_', '').replace('_mobile', '');
       element.addEventListener('click', (event) => {
-        console.log('tool_' + toolId);
+        //console.log('tool_' + toolId);
         toolbtn_clicked(toolId);
       });
     }
@@ -281,7 +281,7 @@ function initModes() {
     if (element.id && element.id.startsWith('mode_')) {
       const modeId = element.id.replace('mode_', '').replace('_mobile', '');
       element.addEventListener('click', (event) => {
-        console.log('mode_' + modeId);
+        //console.log('mode_' + modeId);
         modebtn_clicked(modeId);
         createUndoPoint();
       });

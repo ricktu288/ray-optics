@@ -81,7 +81,7 @@ window.onload = function (e) {
 
 
   canvas.addEventListener('mousedown', function (e) {
-    console.log("mousedown");
+    //console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
 
@@ -90,12 +90,12 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('mousemove', function (e) {
-    console.log("mousemove");
+    //console.log("mousemove");
     canvas_onmousemove(e);
   });
 
   canvas.addEventListener('mouseup',  function (e) {
-    console.log("mouseup");
+    //console.log("mouseup");
     canvas_onmouseup(e);
   });
 
@@ -128,7 +128,7 @@ window.onload = function (e) {
         canvas_onmouseup(e);
       }
     } else {
-      console.log("touchstart");
+      //console.log("touchstart");
       document.body.focus();
       canvas_onmousemove(e);
       canvas_onmousedown(e);
@@ -137,7 +137,7 @@ window.onload = function (e) {
 
   canvas.addEventListener('touchmove',  function (e) {
     e.preventDefault();
-    console.log("touchmove");
+    //console.log("touchmove");
     if (e.touches.length === 2) {
       // Pinch to zoom
 
@@ -186,7 +186,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchend',  function (e) {
-    console.log("touchend");
+    //console.log("touchend");
     if (e.touches.length < 2) {
       initialPinchDistance = null;
       canvas_onmouseup(e);
@@ -194,7 +194,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchcancel',  function (e) {
-    console.log("touchcancel");
+    //console.log("touchcancel");
     initialPinchDistance = null;
     if (isConstructing || draggingObj >= 0) {
       canvas_onmouseup(e);
@@ -934,7 +934,7 @@ function JSONInput() {
   } else {
     var rescaleFactor = jsonData.height / canvasHeight;
   }
-  console.log(rescaleFactor);
+  //console.log(rescaleFactor);
   scale = jsonData.scale / rescaleFactor;
   origin.x = jsonData.origin.x / rescaleFactor;
   origin.y = jsonData.origin.y / rescaleFactor;
@@ -1049,7 +1049,7 @@ function getLink() {
   JsonUrl('lzma').compress(JSON.parse(document.getElementById('textarea1').value)).then(output => {
     window.location.hash = '#' + output;
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
-    console.log(fullURL.length);
+    //console.log(fullURL.length);
     navigator.clipboard.writeText(fullURL);
     if (fullURL.length > 2043) {
       alert(getMsg("get_link_warning"));

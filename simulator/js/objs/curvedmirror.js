@@ -207,7 +207,7 @@ objTypes['curvedmirror'] = {
         outxFinal = outxA * (frac-0.5) + outx * (1.5-frac);
         outyFinal = outyA * (frac-0.5) + outy * (1.5-frac);
       }
-      console.log(frac);
+      //console.log(frac);
       ray.p2 = graphs.point(outxFinal, outyFinal);
     }
   }

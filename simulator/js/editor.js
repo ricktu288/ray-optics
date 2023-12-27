@@ -271,7 +271,7 @@ function canvas_onmousemove(e) {
   if (!isConstructing && draggingObj == -1 && !document.getElementById('lockobjs').checked) {
     // highlight object under mouse cursor
     var ret = selectionSearch(mouse_nogrid)[0];
-    console.log(mouse_nogrid);
+    //console.log(mouse_nogrid);
     var newMouseObj = (ret.targetObj_index == -1) ? null : objs[ret.targetObj_index];
     if (mouseObj != newMouseObj) {
       mouseObj = newMouseObj;
@@ -449,7 +449,7 @@ function finishHandleCreation(point) {
 
 
 function canvas_ondblclick(e) {
-  console.log("dblclick");
+  //console.log("dblclick");
   var mouse = graphs.point((e.pageX - e.target.offsetLeft - origin.x) / scale, (e.pageY - e.target.offsetTop - origin.y) / scale); //滑鼠實際位置(一律不使用格線) The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
@@ -471,7 +471,7 @@ function canvas_ondblclick(e) {
         document.getElementById('xybox').style.display = '';
         document.getElementById('xybox').select();
         document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-        console.log("show xybox");
+        //console.log("show xybox");
         xyBox_cancelContextMenu = true;
 
         return;
@@ -494,7 +494,7 @@ function canvas_ondblclick(e) {
       document.getElementById('xybox').style.display = '';
       document.getElementById('xybox').select();
       document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-      console.log("show xybox");
+      //console.log("show xybox");
       xyBox_cancelContextMenu = true;
     }
   }
@@ -641,7 +641,7 @@ function cloneObj(index) {
         indices.push(objs[index].controlPoints[j].targetObj_index);
       }
     }
-    console.log(indices);
+    //console.log(indices);
     for (var j in indices) {
       if (objs[indices[j]].type != "handle") {
         cloneObj(indices[j]);

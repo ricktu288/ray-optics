@@ -20,7 +20,7 @@ function evaluateLatex(latex) {
     .replaceAll("\\operatorname{abs}","abs")
     .replaceAll("\\left|","|")
     .replaceAll("\\right|","|");
-  console.log(latex_replaced);
+  //console.log(latex_replaced);
   return evaluatex(
     latex_replaced,
     {

@@ -233,7 +233,7 @@ objTypes['sphericallens'] = {
     var edgeShift1 = d/2 - curveShift1;
     var edgeShift2 = d/2 + curveShift2;
 
-    console.log([edgeShift1,edgeShift2,d])
+    //console.log([edgeShift1,edgeShift2,d])
 
     if (isNaN(curveShift1) || isNaN(curveShift2)) {
       // invalid lens. Store the parameters so we can restore them later.
