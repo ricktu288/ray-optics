@@ -228,10 +228,16 @@ window.onload = function (e) {
   });
 
 
-  document.getElementById('undo').onclick = undo;
-  document.getElementById('redo').onclick = redo;
-  document.getElementById('undo_mobile').onclick = undo;
-  document.getElementById('redo_mobile').onclick = redo;
+  document.getElementById('undo').onclick = function() {
+    this.blur();
+    undo();
+  }
+  document.getElementById('undo_mobile').onclick = document.getElementById('undo').onclick;
+  document.getElementById('redo').onclick = function() {
+    this.blur();
+    redo();
+  }
+  document.getElementById('redo_mobile').onclick = document.getElementById('redo').onclick;
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
@@ -266,16 +272,20 @@ window.onload = function (e) {
     document.getElementById('color_mode').checked = colorMode;
     document.getElementById('color_mode_mobile').checked = colorMode;
     selectObj(selectedObj);
+    this.blur();
     draw(false, true);
   };
   document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;
 
   document.getElementById('show_help_popups').onclick = function () {
+    this.blur();
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
 
   document.getElementById('show_status').onclick = function () {
+    this.blur();
+
     document.getElementById('show_status').checked = this.checked;
     document.getElementById('show_status_mobile').checked = this.checked;
 
@@ -335,9 +345,11 @@ window.onload = function (e) {
 
   document.getElementById('zoomPlus').onclick = function () {
     setScale(scale * 1.1);
+    this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
     setScale(scale / 1.1);
+    this.blur();
   }
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
   document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
@@ -358,6 +370,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
+    this.blur();
     draw(false, true);
     createUndoPoint();
   };
@@ -369,6 +382,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
+    this.blur();
     draw(false, true);
     createUndoPoint();
   };
@@ -381,6 +395,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    this.blur();
     draw(false, true);
   };
   document.getElementById('rayDensityMinus').onclick = function () {
@@ -389,6 +404,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
+    this.blur();
     draw(false, true);
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
@@ -401,6 +417,7 @@ window.onload = function (e) {
     document.getElementById('grid').checked = e.target.checked;
     document.getElementById('grid_more').checked = e.target.checked;
     document.getElementById('grid_mobile').checked = e.target.checked;
+    this.blur();
     //draw();
   };
   document.getElementById('grid_more').onclick = document.getElementById('grid').onclick;
@@ -410,6 +427,7 @@ window.onload = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
     document.getElementById('showgrid_more').checked = e.target.checked;
     document.getElementById('showgrid_mobile').checked = e.target.checked;
+    this.blur();
     draw(true, false);
   };
   document.getElementById('showgrid_more').onclick = document.getElementById('showgrid').onclick;
@@ -419,6 +437,7 @@ window.onload = function (e) {
     document.getElementById('lockobjs').checked = e.target.checked;
     document.getElementById('lockobjs_more').checked = e.target.checked;
     document.getElementById('lockobjs_mobile').checked = e.target.checked;
+    this.blur();
   };
   document.getElementById('lockobjs_more').onclick = document.getElementById('lockobjs').onclick;
   document.getElementById('lockobjs_mobile').onclick = document.getElementById('lockobjs').onclick;
@@ -432,6 +451,7 @@ window.onload = function (e) {
   document.getElementById('restore').onclick = function () { restore() };
 
   document.getElementById('setAttrAll').onclick = function () {
+    this.blur();
     const checked = this.checked;
     document.getElementById('setAttrAll').checked = checked;
     document.getElementById('applytoall_mobile').checked = checked;
@@ -439,6 +459,7 @@ window.onload = function (e) {
   document.getElementById('applytoall_mobile').onclick = document.getElementById('setAttrAll').onclick;
 
   document.getElementById('copy').onclick = function () {
+    this.blur();
     objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
     objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
     selectObj(objs.length - 1);
@@ -449,6 +470,7 @@ window.onload = function (e) {
 
   document.getElementById('delete').onclick = function () {
     var selectedObjType = objs[selectedObj].type;
+    this.blur();
     removeObj(selectedObj);
     draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
     createUndoPoint();

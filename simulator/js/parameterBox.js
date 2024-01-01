@@ -78,11 +78,13 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
 
   objAttr_range.onmouseup = function()
   {
+    this.blur();
     createUndoPoint();
   };
 
   objAttr_range.ontouchend = function()
   {
+    this.blur();
     setAttr(function(obj) {
       func(obj, objAttr_range.value * 1);
     });
@@ -250,6 +252,7 @@ function createBooleanAttr(label, value, func, elem, info) {
   elem.appendChild(space);
 
   objAttr_checkbox.onchange = function() {
+    this.blur();
     setAttr(function(obj) {
       func(obj, objAttr_checkbox.checked);
     });
@@ -374,6 +377,7 @@ function createButton(label, func, elem) {
   button.className = 'btn btn-secondary';
   button.innerHTML = label;
   button.onclick = function() {
+    this.blur();
     func(objs[selectedObj]);
   };
   elem.appendChild(button);
