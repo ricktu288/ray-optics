@@ -2,27 +2,32 @@
 
 | Name on the toolbar | ID of the tool |
 | --- | --- |
-| Ray | `laser` |
-| Beam | `parallel` |
-| Point source -> 360 degrees | `radiant` |
-| Point source -> Finite angle | `led` |
-| Blockers -> Line Blocker | `blackline` |
-| Blockers -> Circle Blocker | `blackcircle` |
-| Mirrors -> Segment | `mirror` |
-| Mirrors -> Circular Arc | `arcmirror` |
-| Mirrors -> Ideal Curved | `idealmirror` |
-| Mirrors -> Parabolic | `parabolicmirror` |
-| Mirrors -> Custom equation | `curvedmirror` |
-| Mirrors -> Beam Splitter | `beamsplitter` |
-| Glasses -> Half-plane | `halfplane` |
-| Glasses -> Circle | `circlelens` |
-| Glasses -> Free-shape | `refractor` |
-| Glasses -> Ideal Lens | `lens` |
-| Glasses -> Spherical Lens | `sphericallens` |
-| Glasses -> Custom equation | `curvedglass` |
-| Ruler | `ruler` |
-| Protractor | `protractor` |
-| Detector | `power` |
-| Text | `text` |
+| Light source -> Single ray | `laser` |
+| Light source -> Beam | `parallel` |
+| Light source -> Point source (360deg) | `radiant` |
+| Light source -> Point source (<360deg) | `led` |
+| Mirror -> Segment | `mirror` |
+| Mirror -> Circular Arc | `arcmirror` |
+| Mirror -> Parabolic | `parabolicmirror` |
+| Mirror -> Custom equation | `curvedmirror` |
+| Mirror -> Ideal curved mirror | `idealmirror` |
+| Mirror -> Beam Splitter | `beamsplitter` |
+| Glass -> Half-plane | `halfplane` |
+| Glass -> Circle | `circlelens` |
+| Glass -> Polygon / Circular Arcs | `refractor` |
+| Glass -> Custom equation | `curvedglass` |
+| Glass -> Ideal Lens | `lens` |
+| Glass -> Spherical Lens | `sphericallens` |
+| Glass -> Gradient-index circle | `grin_circlelens` |
+| Glass -> Gradient-index polygon | `grin_refractor` |
+| Blocker -> Line Blocker | `blackline` |
+| Blocker -> Circle Blocker | `blackcircle` |
+| Blocker -> Aperture | `aperture` |
+| Other -> Ruler | `ruler` |
+| Other -> Protractor | `protractor` |
+| Other -> Detector | `power` |
+| Other -> Text | `text` |
+| Other -> Line / Arrow | `line` |
+| Other -> Drawing | `drawing` |
 
 See [here](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj)) for the structure of a tool.
