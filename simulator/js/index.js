@@ -8,8 +8,8 @@ var ctx0;
 var ctxLight;
 var ctxGrid;
 var dpr = 1;
-var objs = []; //物件 The objects
-var objCount = 0; //物件數量 Number of the objects
+var objs = []; // The objects
+var objCount = 0; // Number of the objects
 var observer;
 var xyBox_cancelContextMenu = false;
 var scale = 1;
@@ -366,7 +366,7 @@ window.onload = function (e) {
   document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
 
   document.getElementById('rayDensity').onmouseup = function () {
-    setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    setRayDensity(Math.exp(this.value)); // For browsers not supporting oninput
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
@@ -378,7 +378,7 @@ window.onload = function (e) {
   document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
 
   document.getElementById('rayDensity').ontouchend = function () {
-    setRayDensity(Math.exp(this.value)); //為了讓不支援oninput的瀏覽器可使用 For browsers not supporting oninput
+    setRayDensity(Math.exp(this.value)); // For browsers not supporting oninput
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
@@ -632,8 +632,8 @@ function initParameters() {
   objs.length = 0;
   selectObj(-1);
 
-  rayDensity_light = 0.1; //光線密度(光線相關模式) The Ray Density when View is Rays or Extended rays
-  rayDensity_images = 1; //光線密度(像相關模式) The Ray Density when View is All Images or Seen by Observer
+  rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
+  rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
   document.getElementById("rayDensity").value = rayDensity_light;
   document.getElementById("rayDensity_more").value = rayDensity_light;
   document.getElementById("rayDensity_mobile").value = rayDensity_light;
@@ -872,7 +872,7 @@ function JSONInput() {
   var jsonData = JSON.parse(document.getElementById('textarea1').value);
   if (typeof jsonData != 'object') return;
   if (!jsonData.version) {
-    //為"線光學模擬1.0"或之前的格式 Earlier than "Ray Optics Simulation 1.0"
+    // Earlier than "Ray Optics Simulation 1.0"
     var str1 = document.getElementById('textarea1').value.replace(/"point"|"xxa"|"aH"/g, '1').replace(/"circle"|"xxf"/g, '5').replace(/"k"/g, '"objs"').replace(/"L"/g, '"p1"').replace(/"G"/g, '"p2"').replace(/"F"/g, '"p3"').replace(/"bA"/g, '"exist"').replace(/"aa"/g, '"parallel"').replace(/"ba"/g, '"mirror"').replace(/"bv"/g, '"lens"').replace(/"av"/g, '"notDone"').replace(/"bP"/g, '"lightAlpha"').replace(/"ab"|"observed_light"|"observed_images"/g, '"observer"');
     jsonData = JSON.parse(str1);
     if (!jsonData.objs) {
@@ -893,11 +893,11 @@ function JSONInput() {
     jsonData.version = 1;
   }
   if (jsonData.version == 1) {
-    //"線光學模擬1.1"至"線光學模擬1.2" "Ray Optics Simulation 1.1" to "Ray Optics Simulation 1.2"
+    // "Ray Optics Simulation 1.1" to "Ray Optics Simulation 1.2"
     jsonData.origin = { x: 0, y: 0 };
   }
   if (jsonData.version > 2) {
-    //為比此版本新的檔案版本 Newer than the current version
+    // Newer than the current version
     return;
   }
   //TODO: Create new version.
@@ -1015,7 +1015,7 @@ function modebtn_clicked(mode1) {
     document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_light);
   }
   if (mode == 'observer' && !observer) {
-    //初始化觀察者 Initialize the observer
+    // Initialize the observer
     observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 

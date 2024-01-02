@@ -1,12 +1,12 @@
-
+// Other -> Line / Arrow
 objTypes['line'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'line', p1: mouse, p2: mouse, arrow1: false, arrow2: false};
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
@@ -14,7 +14,7 @@ objTypes['line'] = {
   clicked: objTypes['lineobj'].clicked,
   dragging: objTypes['lineobj'].dragging,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {    
     ctx.strokeStyle = getMouseStyle(obj, "white");
     ctx.beginPath();
@@ -29,7 +29,7 @@ objTypes['line'] = {
     }
   },
 
-  //畫箭頭 Draw the arrow
+  // Draw the arrow
   drawArrow: function(ctx, p1, p2) {
     var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
     var len = 10;
@@ -41,7 +41,7 @@ objTypes['line'] = {
     ctx.stroke();
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     createBooleanAttr(getMsg('arrow1'), obj.arrow1, function(obj, value) {
       obj.arrow1 = value;

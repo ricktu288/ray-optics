@@ -1,12 +1,12 @@
 // Blocker
 objTypes['aperture'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'aperture', p1: mouse, p2: mouse, p3: mouse, p4: mouse};
   },
 
-  //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
+  // Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
     if (shift)
@@ -23,7 +23,7 @@ objTypes['aperture'] = {
     
   },
 
-  //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
+  // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
   {
     if (shift)
@@ -41,7 +41,7 @@ objTypes['aperture'] = {
     obj.p4 = graphs.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
 
   },
-  //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
+  // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!mouseOnPoint_construct(mouse, obj.p1))
@@ -51,12 +51,12 @@ objTypes['aperture'] = {
     }
   },
 
-  //平移物件 Move the object
+  // Move the object
   move: function(obj, diffX, diffY) {
-    //移動線段的第一點 Move the first point
+    // Move the first point
     obj.p1.x = obj.p1.x + diffX;
     obj.p1.y = obj.p1.y + diffY;
-    //移動線段的第二點 Move the second point
+    // Move the second point
     obj.p2.x = obj.p2.x + diffX;
     obj.p2.y = obj.p2.y + diffY;
 
@@ -68,7 +68,7 @@ objTypes['aperture'] = {
   },
 
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     
 
@@ -104,15 +104,15 @@ objTypes['aperture'] = {
     if (mouseOnSegment(mouse_nogrid, segment1) || mouseOnSegment(mouse_nogrid, segment2))
     {
       draggingPart.part = 0;
-      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+      draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+      draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }
     return false;
   },
 
-  //拖曳物件時 When the user is dragging the obj
+  // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
     var basePoint;
 
@@ -121,7 +121,7 @@ objTypes['aperture'] = {
     {
       if (draggingPart.part == 1)
       {
-        //正在拖曳第一個端點 Dragging the first endpoint Dragging the first endpoint
+        // Dragging the first endpoint Dragging the first endpoint
         basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
         obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -129,7 +129,7 @@ objTypes['aperture'] = {
       }
       else
       {
-        //正在拖曳第二個端點 Dragging the second endpoint Dragging the second endpoint
+        // Dragging the second endpoint Dragging the second endpoint
         basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
         obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
@@ -159,7 +159,7 @@ objTypes['aperture'] = {
     }
     else if (draggingPart.part == 0)
     {
-      //正在拖曳整條線 Dragging the entire line
+      // Dragging the entire line
 
       if (shift)
       {
@@ -168,15 +168,15 @@ objTypes['aperture'] = {
       else
       {
         var mouse_snapped = mouse;
-        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定 Unlock the dragging direction when the user release the shift key
+        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; //目前滑鼠位置與上一次的滑鼠位置的X軸差 The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; //目前滑鼠位置與上一次的滑鼠位置的Y軸差 The Y difference between the mouse position now and at the previous moment The Y difference between the mouse position now and at the previous moment
-      //移動線段的第一點 Move the first point
+      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; // The Y difference between the mouse position now and at the previous moment
+      // Move the first point
       obj.p1.x = obj.p1.x - mouseDiffX;
       obj.p1.y = obj.p1.y - mouseDiffY;
-      //移動線段的第二點 Move the second point
+      // Move the second point
       obj.p2.x = obj.p2.x - mouseDiffX;
       obj.p2.y = obj.p2.y - mouseDiffY;
 
@@ -186,12 +186,12 @@ objTypes['aperture'] = {
       obj.p4.x = obj.p4.x - mouseDiffX;
       obj.p4.y = obj.p4.y - mouseDiffY;
 
-      //更新滑鼠位置 Update the mouse position
+      // Update the mouse position
       draggingPart.mouse1 = mouse_snapped;
     }
   },
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
   ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
   ctx.lineWidth = 3;
@@ -212,7 +212,7 @@ objTypes['aperture'] = {
   }
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     var originalDiameter = graphs.length(obj.p3, obj.p4);
 
@@ -243,7 +243,7 @@ objTypes['aperture'] = {
     return false;
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp) {
     ray.exist = false;
   }

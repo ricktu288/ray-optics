@@ -1,12 +1,12 @@
-// Ruler
+// Other -> Ruler
 objTypes['ruler'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'ruler', p1: mouse, p2: mouse};
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
@@ -14,7 +14,7 @@ objTypes['ruler'] = {
   clicked: objTypes['lineobj'].clicked,
   dragging: objTypes['lineobj'].dragging,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
   if (aboveLight)return;
   ctx.globalCompositeOperation = 'lighter';

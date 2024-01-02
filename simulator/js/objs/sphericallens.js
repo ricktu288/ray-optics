@@ -1,5 +1,4 @@
-// Glasses -> Spherical Lens
-// Originally contributed by Paul Falstad (pfalstad)
+// Glass -> Spherical Lens
 objTypes['sphericallens'] = {
 
   supportSurfaceMerging: true,
@@ -8,7 +7,7 @@ objTypes['sphericallens'] = {
     return {type: 'sphericallens', p1: mouse, p2: mouse, p: 1.5, tmp_params: {r1: NaN, r2: NaN, d: 40}};
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
 
     createDropdownAttr(getMsg('defined_by'), obj.definedBy || 'DR1R2', {
@@ -103,7 +102,7 @@ objTypes['sphericallens'] = {
   },
 
 
-  //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
+  // Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
     if (shift)
@@ -118,7 +117,7 @@ objTypes['sphericallens'] = {
     this.createLens(obj);
   },
 
-  //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
+  // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
   {
     if (shift)
@@ -134,7 +133,7 @@ objTypes['sphericallens'] = {
 
     this.createLens(obj);
   },
-  //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
+  // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!mouseOnPoint_construct(mouse, obj.p1))

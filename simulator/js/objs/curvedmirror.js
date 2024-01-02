@@ -1,7 +1,7 @@
-// Mirrors -> Custom equation
+// Mirror -> Custom equation
 objTypes['curvedmirror'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'curvedmirror', p1: mouse, p2: mouse, p: "0.5\\cdot\\sqrt{1-x^2}"};
   },
@@ -9,7 +9,7 @@ objTypes['curvedmirror'] = {
   dichroicSettings: objTypes['mirror'].dichroicSettings,
   wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
@@ -21,7 +21,7 @@ objTypes['curvedmirror'] = {
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     var fn;
     try {
@@ -95,7 +95,7 @@ objTypes['curvedmirror'] = {
 
   move: objTypes['lineobj'].move,
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
     {
@@ -118,10 +118,10 @@ objTypes['curvedmirror'] = {
       var seg = graphs.segment(pts[i], pts[i+1]);
       if (mouseOnSegment(mouse_nogrid, seg))
       {
-        //拖曳整個物件 Dragging the entire obj
+        // Dragging the entire obj
         draggingPart.part = 0;
-        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+        draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+        draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
         draggingPart.snapData = {};
         return true;
       }
@@ -131,7 +131,7 @@ objTypes['curvedmirror'] = {
 
   dragging: objTypes['lineobj'].dragging,
 
-  //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
+  // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(mirror, ray) {
     if (!mirror.tmp_points || !wavelengthInteraction(mirror,ray)) return;
     var i,j;
@@ -155,7 +155,7 @@ objTypes['curvedmirror'] = {
     if (rp) return rp;
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;

@@ -1,9 +1,9 @@
-// Glasses -> ?
+// Glass -> Gradient-index polygon
 objTypes['grin_refractor'] = {
 
   supportSurfaceMerging: true,
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
 	const p = '1.1 + 0.1 * cos(0.1 * y)';
 	const p_tex = '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)';
@@ -41,16 +41,16 @@ objTypes['grin_refractor'] = {
     {
       if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
       {
-        //滑鼠按了第一點 Clicked the first point
+        // Clicked the first point
         obj.path.length--;
         obj.notDone = false;
         return;
       }
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
+      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
     }
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
     try {
       if ( (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1) ) && objTypes[obj.type].isOnBoundary(obj, rp) ) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
@@ -61,23 +61,23 @@ objTypes['grin_refractor'] = {
         var p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}) // refractive index at the intersection point - rp
         if (shotType == 1)
         {
-          //從內部射向外部 Shot from inside to outside
-          var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
+          // Shot from inside to outside
+          var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
         }
         else if (shotType == -1)
         {
-          //從外部射向內部 Shot from outside to inside
+          // Shot from outside to inside
           var n1 = 1 / ((!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
         }
         else if (shotType == 0)
         {
-          //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+          // Equivalent to not shot on the obj (e.g. two interfaces overlap)
           var n1 = 1;
         }
         else
         {
-          //可能導致Bug的狀況(如射到邊界點) The situation that may cause a bug (e.g. shot at an edge point)
-          //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+          // The situation that may cause bugs (e.g. shot at an edge point)
+          // To prevent shooting the ray to a wrong direction, absorb the ray
           ray.exist = false;
           return;
         }
@@ -93,30 +93,30 @@ objTypes['grin_refractor'] = {
         let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
         if (surfaceMerging_objs.length)
         {
-          //界面融合 Surface merging
+          // Surface merging
           for (var i = 0; i < surfaceMerging_objs.length; i++)
           {
             let p = surfaceMerging_objs[i].fn_p({x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y}) // refractive index at the intersection point - rp
             shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
             if (shotType == 1)
             {
-            //從內部射向外部 Shot from inside to outside
+            // Shot from inside to outside
             n1 *= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
             }
             else if (shotType == -1)
             {
-            //從外部射向內部 Shot from outside to inside
+            // Shot from outside to inside
             n1 /= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
             }
             else if (shotType == 0)
             {
-            //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+            // Equivalent to not shot on the obj (e.g. two interfaces overlap)
             //n1=n1;
             }
             else
             {
-            //可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-            //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+            // The situation that may cause bugs (e.g. shot at an edge point)
+            // To prevent shooting the ray to a wrong direction, absorb the ray
             ray.exist = false;
             return;
             }
@@ -177,7 +177,7 @@ objTypes['grin_refractor'] = {
 
     if (obj.notDone)
     {
-      //使用者尚未畫完物件 The user has not finish drawing the obj yet
+      // The user has not finish drawing the obj yet
 
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
@@ -196,13 +196,13 @@ objTypes['grin_refractor'] = {
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); //p1->p3->p2之旋轉方向,逆時針為true The rotation direction of p1->p3->p2. True indicates counterclockwise
+            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
           else
           {
-            //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
+            // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
           }
 
@@ -220,7 +220,7 @@ objTypes['grin_refractor'] = {
     }
     else
     {
-      //物件已經畫完 The user has completed drawing the obj
+      // The user has completed drawing the obj
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
 
@@ -238,13 +238,13 @@ objTypes['grin_refractor'] = {
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); //p1->p3->p2之旋轉方向,逆時針為true The rotation direction of p1->p3->p2. True indicates counterclockwise
+            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
           else
           {
-            //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
+            // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
           }
 

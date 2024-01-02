@@ -1,9 +1,9 @@
-// Glasses -> ?
+// Glass -> Gradient-index circle
 objTypes['grin_circlelens'] = {
 
-  supportSurfaceMerging: true, //支援界面融合 Surface merging
+  supportSurfaceMerging: true, // Surface merging
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
 		const p = '1 + e ^ (-((x ^ 2 + y ^ 2) / 50 ^ 2))';
 		const p_tex = '1+e^{-\\frac{x^2+y^2}{50^2}}';
@@ -15,7 +15,7 @@ objTypes['grin_circlelens'] = {
 		return {type: 'grin_circlelens', p1: mouse, p2: mouse, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]^2  },
   },
 	
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
 	if (!obj.fn_p)
 	{ // to maintain the ctrl+z functionality
@@ -73,7 +73,7 @@ objTypes['grin_circlelens'] = {
 	}
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mouseup: objTypes['lineobj'].c_mouseup,
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: function(obj, mouse, ctrl, shift) {objTypes['lineobj'].c_mousemove(obj, mouse, false, shift)},
@@ -101,7 +101,7 @@ objTypes['grin_circlelens'] = {
     ctx.globalAlpha = 1;
   },
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
 
   if (obj.error) {
@@ -129,7 +129,7 @@ objTypes['grin_circlelens'] = {
 
   },
 
-  //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
+  // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
 	if (!obj.fn_p)
 	{ // to maintain the ctrl+z functionality
@@ -156,7 +156,7 @@ objTypes['grin_circlelens'] = {
 	return objTypes[obj.type.substring(obj.type.indexOf('_') + 1)].rayIntersection(obj, ray);
   },
   
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
 	try {
 		if ( (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1) ) && objTypes[obj.type].isOnBoundary(obj, rp) ) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
@@ -166,20 +166,20 @@ objTypes['grin_circlelens'] = {
 			let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}); // refractive index at the intersection point - rp
 			if (d > 0)
 			{
-			//從內部射向外部 Shot from inside to outside
-			var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
+			// Shot from inside to outside
+			var n1 = (!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
 			var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
 			}
 			else if (d < 0)
 			{
-			//從外部射向內部 Shot from outside to inside
+			// Shot from outside to inside
 			var n1 = 1 / ((!colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
 			var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
 			}
 			else
 			{
-			//可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-			//為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+			// Situation that may cause bugs (e.g. shot at an edge point)
+			// To prevent shooting the ray to a wrong direction, absorb the ray
 			ray.exist = false;
 			return;
 			}
@@ -197,30 +197,30 @@ objTypes['grin_circlelens'] = {
 			{
 				var shotType;
 
-				//界面融合 Surface merging
+				// Surface merging
 				for (var i = 0; i < surfaceMerging_objs.length; i++)
 				{
 				let p = surfaceMerging_objs[i].fn_p({x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y}) // refractive index at the intersection point - rp
 				shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
 				if (shotType == 1)
 				{
-					//從內部射向外部 Shot from inside to outside
+					// Shot from inside to outside
 					n1 *= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
 				}
 				else if (shotType == -1)
 				{
-					//從外部射向內部 Shot from outside to inside
+					// Shot from outside to inside
 					n1 /= (!colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
 				}
 				else if (shotType == 0)
 				{
-					//等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+					// Equivalent to not shot on the obj (e.g. two interfaces overlap)
 					//n1=n1;
 				}
 				else
 				{
-					//可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-					//為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+					// Situation that may cause bugs (e.g. shot at an edge point)
+					// To prevent shooting the ray to a wrong direction, absorb the ray
 					ray.exist = false;
 					return;
 				}
@@ -274,7 +274,7 @@ objTypes['grin_circlelens'] = {
     var ray_y = (ray.p2.y - ray.p1.y) / ray_len;
 
 
-    //參考 Reference http://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
+    // Reference http://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
 
     var cos1 = -normal_x * ray_x - normal_y * ray_y;
     var sq1 = 1 - n1 * n1 * (1 - cos1 * cos1);
@@ -282,7 +282,7 @@ objTypes['grin_circlelens'] = {
 
     if (sq1 < 0)
     {
-      //全反射 Total internal reflection
+      // Total internal reflection
       ray.p1 = s_point;
       ray.p2 = graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
 
@@ -290,14 +290,14 @@ objTypes['grin_circlelens'] = {
     }
     else
     {
-      //折射 Refraction
+      // Refraction
       var cos2 = Math.sqrt(sq1);
 
       var R_s = Math.pow((n1 * cos1 - cos2) / (n1 * cos1 + cos2), 2);
       var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
-      //參考 Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
+      // Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
 
-      //處理反射光 Handle the reflected ray
+      // Handle the reflected ray
       var ray2 = graphs.ray(s_point, graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
@@ -323,7 +323,7 @@ objTypes['grin_circlelens'] = {
         }
       }
 
-      //處理折射光 Handle the refracted ray
+      // Handle the refracted ray
       ray.p1 = s_point;
       ray.p2 = graphs.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);

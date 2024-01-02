@@ -1,15 +1,14 @@
-// Mirrors -> Parabolic
-// Originally contributed by Paul Falstad (pfalstad)
+// Mirror -> Parabolic
 objTypes['parabolicmirror'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'parabolicmirror', p1: mouse};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     dichroicSettings(obj,elem);
   },
@@ -18,7 +17,7 @@ objTypes['parabolicmirror'] = {
   c_mousemove: objTypes['arcmirror'].c_mousemove,
   c_mouseup: objTypes['arcmirror'].c_mouseup,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2)
@@ -75,7 +74,7 @@ objTypes['parabolicmirror'] = {
 
   move: objTypes['arcmirror'].move,
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p3))
     {
@@ -104,10 +103,10 @@ objTypes['parabolicmirror'] = {
       var seg = graphs.segment(pts[i], pts[i+1]);
       if (mouseOnSegment(mouse_nogrid, seg))
       {
-        //拖曳整個物件 Dragging the entire obj
+        // Dragging the entire obj
         draggingPart.part = 0;
-        draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-        draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+        draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+        draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
         draggingPart.snapData = {};
         return true;
       }
@@ -117,13 +116,13 @@ objTypes['parabolicmirror'] = {
 
   dragging: objTypes['arcmirror'].dragging,
 
-  //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
+  // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
     if (!obj.p3) {return;}
     return objTypes['curvedmirror'].rayIntersection(obj, ray);
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp) {
     return objTypes['curvedmirror'].shot(obj, ray, rayIndex, rp);
   }

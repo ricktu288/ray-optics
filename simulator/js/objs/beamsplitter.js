@@ -1,15 +1,14 @@
-// Mirrors -> Beam Splitter
-// Originally contributed by Paul Falstad (pfalstad)
+// Mirror -> Beam Splitter
 objTypes['beamsplitter'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5, isDichroic: false, isDichroicFilter: false};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
@@ -17,7 +16,7 @@ objTypes['beamsplitter'] = {
     dichroicSettings(obj,elem);
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
@@ -26,7 +25,7 @@ objTypes['beamsplitter'] = {
   dragging: objTypes['lineobj'].dragging,
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
     ctx.beginPath();
@@ -45,7 +44,7 @@ objTypes['beamsplitter'] = {
     return objTypes['mirror'].rayIntersection(obj, ray);
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;

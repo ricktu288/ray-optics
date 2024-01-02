@@ -1,18 +1,18 @@
-// Protractor
+// Other -> Protractor
 objTypes['protractor'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'protractor', p1: mouse, p2: mouse};
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: function(obj, mouse, ctrl, shift) {objTypes['lineobj'].c_mousemove(obj, mouse, false, shift)},
   c_mouseup: objTypes['lineobj'].c_mouseup,
   move: objTypes['lineobj'].move,
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
     {
@@ -29,18 +29,18 @@ objTypes['protractor'] = {
     if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent())
     {
       draggingPart.part = 0;
-      draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-      draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+      draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+      draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }
     return false;
   },
 
-  //拖曳物件時 When the user is dragging the obj
+  // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {objTypes['lineobj'].dragging(obj, mouse, draggingPart, false, shift)},
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
   if (!aboveLight)
   {
@@ -61,14 +61,14 @@ objTypes['protractor'] = {
 
     if (r * scale_step * Math.PI / 180 < scale_width_limit)
     {
-      //刻度太小 The scale is too small
+      // The scale is too small
       scale_step = 2;
       scale_step_mid = 10;
       scale_step_long = 30;
     }
     if (r * scale_step * Math.PI / 180 < scale_width_limit)
     {
-      //刻度太小 The scale is too small
+      // The scale is too small
       scale_step = 5;
       scale_step_mid = 10;
       scale_step_long = 30;
@@ -79,7 +79,7 @@ objTypes['protractor'] = {
     }
     if (r * scale_step * Math.PI / 180 < scale_width_limit)
     {
-      //刻度太小 The scale is too small
+      // The scale is too small
       scale_step = 10;
       scale_step_mid = 30;
       scale_step_long = 90;

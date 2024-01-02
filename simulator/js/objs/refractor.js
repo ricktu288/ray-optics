@@ -1,14 +1,14 @@
-// Glasses -> Free-shape
+// Glass -> Polygon / Circular Arcs
 objTypes['refractor'] = {
 
   supportSurfaceMerging: true,
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     if (colorMode) {
       createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
@@ -24,23 +24,23 @@ objTypes['refractor'] = {
     }
   },
 
-  //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
+  // Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
     if (obj.path.length > 1)
     {
       if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
       {
-        //滑鼠按了第一點 Clicked the first point
+        // Clicked the first point
         obj.path.length--;
         obj.notDone = false;
         return;
       }
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
+      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
       obj.path[obj.path.length - 1].arc = true;
     }
   },
-  //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
+  // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
   {
     if (!obj.notDone) {return;}
@@ -53,10 +53,10 @@ objTypes['refractor'] = {
     }
     else
     {
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
+      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
     }
   },
-  //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
+  // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!obj.notDone) {
@@ -65,7 +65,7 @@ objTypes['refractor'] = {
     }
     if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
     {
-      //滑鼠在第一點處放開 Mouse released at the first point
+      // Mouse released at the first point
       obj.path.length--;
       obj.notDone = false;
       isConstructing = false;
@@ -77,9 +77,9 @@ objTypes['refractor'] = {
     }
     else
     {
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; //移動最後一點 Move the last point
+      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
       obj.path[obj.path.length - 1].arc = false;
-      obj.path[obj.path.length] = {x: mouse.x, y: mouse.y}; //建立新的一點 Create a new point
+      obj.path[obj.path.length] = {x: mouse.x, y: mouse.y}; // Create a new point
 
     }
   },
@@ -88,7 +88,7 @@ objTypes['refractor'] = {
     return obj.p * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
   },
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     var p1;
     var p2;
@@ -102,7 +102,7 @@ objTypes['refractor'] = {
 
     if (obj.notDone)
     {
-      //使用者尚未畫完物件 The user has not finish drawing the obj yet
+      // The user has not finish drawing the obj yet
 
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
@@ -121,13 +121,13 @@ objTypes['refractor'] = {
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); //p1->p3->p2之旋轉方向,逆時針為true The rotation direction of p1->p3->p2. True indicates counterclockwise
+            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
           else
           {
-            //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
+            // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
           }
 
@@ -145,7 +145,7 @@ objTypes['refractor'] = {
     }
     else
     {
-      //物件已經畫完 The user has completed drawing the obj
+      // The user has completed drawing the obj
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
 
@@ -163,13 +163,13 @@ objTypes['refractor'] = {
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); //p1->p3->p2之旋轉方向,逆時針為true The rotation direction of p1->p3->p2. True indicates counterclockwise
+            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
           else
           {
-            //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
+            // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
           }
 
@@ -279,7 +279,7 @@ objTypes['refractor'] = {
 
   },
 
-  //平移物件 Move the object
+  // Move the object
   move: function(obj, diffX, diffY) {
     for (var i = 0; i < obj.path.length; i++)
     {
@@ -289,7 +289,7 @@ objTypes['refractor'] = {
   },
 
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
 
     var p1;
@@ -342,23 +342,23 @@ objTypes['refractor'] = {
           var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
           if (Math.abs(graphs.length(center, mouse_nogrid) - r) < getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
           {
-            //拖曳整個物件 Dragging the entire obj
+            // Dragging the entire obj
             draggingPart.part = 0;
-            draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-            draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+            draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+            draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
         }
         else
         {
-          //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
+          // The three points on the arc is colinear. Treat as a line segment.
           if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length])))
           {
-            //拖曳整個物件 Dragging the entire obj
+            // Dragging the entire obj
             draggingPart.part = 0;
-            draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-            draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+            draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+            draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
@@ -369,10 +369,10 @@ objTypes['refractor'] = {
       {
         if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length])))
         {
-          //拖曳整個物件 Dragging the entire obj
+          // Dragging the entire obj
           draggingPart.part = 0;
-          draggingPart.mouse0 = mouse; //開始拖曳時的滑鼠位置 Mouse position when the user starts dragging
-          draggingPart.mouse1 = mouse; //拖曳時上一點的滑鼠位置 Mouse position at the last moment during dragging
+          draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
+          draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return true;
         }
@@ -381,7 +381,7 @@ objTypes['refractor'] = {
 
   },
 
-  //拖曳物件時 When the user is dragging the obj
+  // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
     if (draggingPart.part == 1)
     {
@@ -398,7 +398,7 @@ objTypes['refractor'] = {
       else
       {
         var mouse_snapped = mouse;
-        draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定 Unlock the dragging direction when the user release the shift key
+        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
       this.move(obj, mouse_snapped.x - draggingPart.mouse1.x, mouse_snapped.y - draggingPart.mouse1.y);
       draggingPart.mouse1 = mouse_snapped;
@@ -407,7 +407,7 @@ objTypes['refractor'] = {
 
 
 
-  //判斷一道光是否會射到此物件(若是,則回傳交點) Test if a ray may shoot on this object (if yes, return the intersection)
+  // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
 
     if (obj.notDone || obj.p <= 0)return;
@@ -431,7 +431,7 @@ objTypes['refractor'] = {
       s_point_temp = null;
       if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
       {
-        //圓弧i->i+1->i+2 The arc i->i+1->i+2
+        // The arc i->i+1->i+2
         p1 = graphs.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
         p2 = graphs.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
         p3 = graphs.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
@@ -458,8 +458,7 @@ objTypes['refractor'] = {
         }
         else
         {
-          //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-          //線段i->i+2
+          // The three points on the arc is colinear. Treat as a line segment.
           var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
           if (graphs.intersection_is_on_segment(rp_temp, graphs.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && graphs.intersection_is_on_ray(rp_temp, ray) && graphs.length_squared(ray.p1, rp_temp) > minShotLength_squared)
@@ -472,12 +471,11 @@ objTypes['refractor'] = {
       else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
       {
         //Line segment i->i+1
-        var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));   //求光(的延長線)與物件(的延長線)的交點
+        var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
 
         if (graphs.intersection_is_on_segment(rp_temp, graphs.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && graphs.intersection_is_on_ray(rp_temp, ray) && graphs.length_squared(ray.p1, rp_temp) > minShotLength_squared)
         {
-          //↑若rp_temp在ray上且rp_temp在obj上(即ray真的有射到obj,不是ray的延長線射到或射到obj的延長線上)
-          s_lensq_temp = graphs.length_squared(ray.p1, rp_temp); //交點到[光線的頭]的距離
+          s_lensq_temp = graphs.length_squared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
         }
       }
@@ -497,7 +495,7 @@ objTypes['refractor'] = {
 
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     if (obj.notDone) {return;}
@@ -505,50 +503,50 @@ objTypes['refractor'] = {
     var shotType = shotData.shotType;
     if (shotType == 1)
     {
-      //從內部射向外部 Shot from inside to outside
-      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); //來源介質的折射率(目的介質假設為1) The refractive index of the source material (assuming the destination has 1)
+      // Shot from inside to outside
+      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
     else if (shotType == -1)
     {
-      //從外部射向內部 Shot from outside to inside
+      // Shot from outside to inside
       var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else if (shotType == 0)
     {
-      //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+      // Equivalent to not shot on the obj (e.g. two interfaces overlap)
       var n1 = 1;
     }
     else
     {
-      //可能導致Bug的狀況(如射到邊界點) The situation that may cause a bug (e.g. shot at an edge point)
-      //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+      // The situation that may cause bugs (e.g. shot at an edge point)
+      // To prevent shooting the ray to a wrong direction, absorb the ray
       ray.exist = false;
       return;
     }
 
-    //界面融合 Surface merging
+    // Surface merging
     for (var i = 0; i < surfaceMerging_objs.length; i++)
     {
       shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
       if (shotType == 1)
       {
-        //從內部射向外部 Shot from inside to outside
+        // Shot from inside to outside
         n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
-        //從外部射向內部 Shot from outside to inside
+        // Shot from outside to inside
         n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {
-        //等同於沒射到 Equivalent to not shot on the obj(例如兩界面重合)
+        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
       }
       else
       {
-        //可能導致Bug的狀況(如射到邊界點 Shot at an edge point)
-        //為防止光線射向錯誤方向導致誤解,將光線吸收 To prevent shooting the ray to a wrong direction, absorb the ray
+        // Situation that may cause bugs (e.g. shot at an edge point)
+        // To prevent shooting the ray to a wrong direction, absorb the ray
         ray.exist = false;
         return;
       }
@@ -557,21 +555,21 @@ objTypes['refractor'] = {
     this.refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
   },
 
-  //判斷光線內部/外部射出 Test if the ray is shot from inside or outside
+  // Test if the ray is shot from inside or outside
   getShotType: function(obj, ray) {
     return this.getShotData(obj, ray).shotType;
   },
 
 
   getShotData: function(obj, ray) {
-    //判斷光射到物件的何處 Test where in the obj does the ray shoot on
+    // Test where in the obj does the ray shoot on
     var s_lensq = Infinity;
     var s_lensq_temp;
     var s_point = null;
     var s_point_temp = null;
     var s_point_index;
 
-    var surfaceMultiplicity = 1; //界面重合次數 How many time the surfaces coincide
+    var surfaceMultiplicity = 1; // How many time the surfaces coincide
 
     var rp_on_ray = [];
     var rp_exist = [];
@@ -598,8 +596,8 @@ objTypes['refractor'] = {
     var p2;
     var p3;
     var center;
-    var ray2 = graphs.ray(ray.p1, graphs.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); //用來作為內外判斷的光線(測試光線) The ray to test the inside/outside (the test ray)
-    var ray_intersect_count = 0; //測試光線與物件的相交次數(奇數表示光線來自內部) The intersection count (odd means from outside)
+    var ray2 = graphs.ray(ray.p1, graphs.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
+    var ray_intersect_count = 0; // The intersection count (odd means from outside)
 
     for (var i = 0; i < obj.path.length; i++)
     {
@@ -607,7 +605,7 @@ objTypes['refractor'] = {
       nearEdge_temp = false;
       if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
       {
-        //圓弧i->i+1->i+2 The arc i->i+1->i+2
+        // The arc i->i+1->i+2
         p1 = graphs.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
         p2 = graphs.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
         p3 = graphs.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
@@ -667,7 +665,7 @@ objTypes['refractor'] = {
             ray_intersect_count++;
           }
 
-          //太靠近邊界的判斷 Test if too close to an edge
+          // Test if too close to an edge
           if (s_point_temp && (graphs.length_squared(s_point_temp, p1) < minShotLength_squared || graphs.length_squared(s_point_temp, p2) < minShotLength_squared))
           {
             nearEdge_temp = true;
@@ -676,8 +674,7 @@ objTypes['refractor'] = {
         }
         else
         {
-          //圓弧三點共線,當作線段處理 The three points on the arc is colinear. Treat as a line segment.
-          //線段i->i+2
+          // The three points on the arc is colinear. Treat as a line segment.
           rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
           rp2_temp = graphs.intersection_2line(graphs.line(ray2.p1, ray2.p2), graphs.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
@@ -700,7 +697,7 @@ objTypes['refractor'] = {
             ray_intersect_count++;
           }
 
-          //太靠近邊界的判斷 Test if too close to an edge
+          // Test if too close to an edge
           if (s_point_temp && (graphs.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || graphs.length_squared(s_point_temp, obj.path[(i + 2) % obj.path.length]) < minShotLength_squared))
           {
             nearEdge_temp = true;
@@ -732,7 +729,7 @@ objTypes['refractor'] = {
           ray_intersect_count++;
         }
 
-        //太靠近邊界的判斷 Test if too close to an edge
+        // Test if too close to an edge
         if (s_point_temp && (graphs.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || graphs.length_squared(s_point_temp, obj.path[(i + 1) % obj.path.length]) < minShotLength_squared))
         {
           nearEdge_temp = true;
@@ -742,7 +739,7 @@ objTypes['refractor'] = {
       {
         if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared)
         {
-          //自我界面融合 Self surface merging
+          // Self surface merging
           surfaceMultiplicity++;
         }
         else if (s_lensq_temp < s_lensq)
@@ -761,25 +758,25 @@ objTypes['refractor'] = {
 
     if (nearEdge)
     {
-      var shotType = 2; //射到邊界點 Shot at an edge point
+      var shotType = 2; // Shot at an edge point
     }
     else if (surfaceMultiplicity % 2 == 0)
     {
-      var shotType = 0; //等同於沒射到 Equivalent to not shot on the obj
+      var shotType = 0; // Equivalent to not shot on the obj
     }
     else if (ray_intersect_count % 2 == 1)
     {
-      var shotType = 1; //從內部射向外部 Shot from inside to outside
+      var shotType = 1; // Shot from inside to outside
     }
     else
     {
-      var shotType = -1; //從外部射向內部 Shot from outside to inside
+      var shotType = -1; // Shot from outside to inside
     }
 
     return {s_point: s_point, normal: {x: normal_x, y: normal_y},shotType: shotType};
   },
 
-  //折射處理 Do the refraction
+  // Do the refraction
   refract: function(ray, rayIndex, s_point, normal, n1)
   {
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
@@ -792,7 +789,7 @@ objTypes['refractor'] = {
     var ray_y = (ray.p2.y - ray.p1.y) / ray_len;
 
 
-    //參考 Reference http://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
+    // Reference http://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
 
     var cos1 = -normal_x * ray_x - normal_y * ray_y;
     var sq1 = 1 - n1 * n1 * (1 - cos1 * cos1);
@@ -800,7 +797,7 @@ objTypes['refractor'] = {
 
     if (sq1 < 0)
     {
-      //全反射 Total internal reflection
+      // Total internal reflection
       ray.p1 = s_point;
       ray.p2 = graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
 
@@ -808,14 +805,14 @@ objTypes['refractor'] = {
     }
     else
     {
-      //折射 Refraction
+      // Refraction
       var cos2 = Math.sqrt(sq1);
 
       var R_s = Math.pow((n1 * cos1 - cos2) / (n1 * cos1 + cos2), 2);
       var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
-      //參考 Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
+      // Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
 
-      //處理反射光 Handle the reflected ray
+      // Handle the reflected ray
       var ray2 = graphs.ray(s_point, graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
@@ -840,7 +837,7 @@ objTypes['refractor'] = {
         }
       }
 
-      //處理折射光 Handle the refracted ray
+      // Handle the refracted ray
       ray.p1 = s_point;
       ray.p2 = graphs.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);

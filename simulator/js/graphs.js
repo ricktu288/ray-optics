@@ -1,6 +1,6 @@
 var graphs = {
   /**
-  * 基本圖型 Basic geometric figures
+  * Basic geometric figures
   **/
   point: function(x, y) {return {type: 1, x: x, y: y, exist: true}},
 
@@ -43,7 +43,7 @@ var graphs = {
   },
 
   /**
-  * 求交點 Find intersection
+  * Find intersection
   * @method intersection
   * @param {graph} obj1
   * @param {graph} obj2
@@ -65,7 +65,7 @@ var graphs = {
   },
 
   /**
-  * 兩直線交點 Intersection of two lines
+  * Intersection of two lines
   * @method intersection_2line
   * @param {graph.line} l1
   * @param {graph.line} l2
@@ -82,7 +82,7 @@ var graphs = {
   },
 
   /**
-  * 直線與圓的交點 Intersection of a line and a circle
+  * Intersection of a line and a circle
   * @method intersection_line_circle
   * @param {graph.line} l1
   * @param {graph.circle} c2
@@ -138,7 +138,7 @@ var graphs = {
   },
 
   /**
-  * 線段長度 Length of a segment
+  * Length of a segment
   * @method length_segment
   * @param {graph.segment} seg
   * @return {Number}
@@ -148,7 +148,7 @@ var graphs = {
   },
 
   /**
-  * 線段長度平方 Square of the length of a segment
+  * Square of the length of a segment
   * @method length_segment_squared
   * @param {graph.segment} seg
   * @return {Number}
@@ -158,7 +158,7 @@ var graphs = {
   },
 
   /**
-  * 兩點距離 Distance between two points
+  * Distance between two points
   * @method length
   * @param {graph.point} p1
   * @param {graph.point} p2
@@ -169,7 +169,7 @@ var graphs = {
   },
 
   /**
-  * 兩點距離平方 Square of the distance between two points
+  * Square of the distance between two points
   * @method length_squared
   * @param {graph.point} p1
   * @param {graph.point} p2
@@ -183,11 +183,11 @@ var graphs = {
 
 
   /*
-  * 基本作圖函數 Basic geometric constructions
+  * Basic geometric constructions
   */
 
   /**
-  * 線段中點 Midpoint of a line segment
+  * Midpoint of a line segment
   * @method midpoint
   * @param {graph.line} l1
   * @return {graph.point}
@@ -212,7 +212,7 @@ var graphs = {
   },
 
   /**
-  * 線段中垂線 Perpendicular bisector of a line segment
+  * Perpendicular bisector of a line segment
   * @method perpendicular_bisector
   * @param {graph.segment} l1
   * @return {graph.line}

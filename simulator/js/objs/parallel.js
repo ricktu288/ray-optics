@@ -1,14 +1,14 @@
-// Beam
+// Light Souce -> Beam
 objTypes['parallel'] = {
 
   tmp_randomNumbers: [],
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'parallel', p1: mouse, p2: mouse, p: 0.5, divergence: 0.0, lambert: false, random: false};
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
@@ -41,7 +41,7 @@ objTypes['parallel'] = {
     }
 },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
@@ -49,7 +49,7 @@ objTypes['parallel'] = {
   clicked: objTypes['lineobj'].clicked,
   dragging: objTypes['lineobj'].dragging,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
     ctx.strokeStyle = getMouseStyle(obj, colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
@@ -105,7 +105,7 @@ objTypes['parallel'] = {
     addRay(ray1);
   },
 
-  //射出光線 Shoot rays
+  // Shoot rays
   shoot: function(obj) {
     var n = graphs.length_segment(obj) * getRayDensity();
     var stepX = (obj.p2.x - obj.p1.x) / n;

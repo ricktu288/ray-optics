@@ -1,12 +1,12 @@
-// Detector
+// Other -> Detector
 objTypes['power'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'power', p1: mouse, p2: mouse, power: 0, normal: 0, shear: 0};
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     createBooleanAttr(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
       obj.irradianceMap = value;
@@ -49,7 +49,7 @@ objTypes['power'] = {
     }
   },
 
-  //使用lineobj原型 Use the prototype lineobj
+  // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
   c_mouseup: objTypes['lineobj'].c_mouseup,
@@ -58,7 +58,7 @@ objTypes['power'] = {
   dragging: objTypes['lineobj'].dragging,
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
@@ -145,7 +145,7 @@ objTypes['power'] = {
 
   },
 
-  //射出光線 Shoot rays
+  // Shoot rays
   shoot: function(obj) {
     obj.power = 0;
     obj.normal = 0;
@@ -162,7 +162,7 @@ objTypes['power'] = {
     }
   },
 
-  //當物件被光射到時 When the obj is shot by a ray
+  // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, shootPoint) {
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
     var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));

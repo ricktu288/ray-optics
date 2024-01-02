@@ -1,5 +1,4 @@
-// Text
-// Originally contributed by Paul Falstad (pfalstad)
+// Other -> Text
 
 // generic list of web safe fonts
 fonts = [
@@ -33,12 +32,12 @@ fontAlignments = {
 
 objTypes['text'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
   return {type: 'text', x: mouse.x, y: mouse.y, p: getMsg("text_here"), fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0};
   },
 
-  //顯示屬性方塊 Show the property box
+  // Show the property box
   p_box: function(obj, elem) {
     // createStringAttr('', obj.p, function(obj, value) {
     //   obj.p = value;
@@ -69,26 +68,26 @@ objTypes['text'] = {
     }
   },
 
-  //建立物件過程滑鼠按下 Mousedown when the obj is being constructed by the user
+  // Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
     
   },
 
-  //建立物件過程滑鼠移動 Mousemove when the obj is being constructed by the user
+  // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
   {
     obj.x=mouse.x;
     obj.y=mouse.y;
   },
 
-  //建立物件過程滑鼠放開 Mouseup when the obj is being constructed by the user
+  // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     isConstructing = false;
   },
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx ,aboveLight) {
     ctx.fillStyle = getMouseStyle(obj, 'white');
     ctx.textAlign = obj.fontAlignment || 'left';
@@ -127,14 +126,14 @@ objTypes['text'] = {
     obj.tmp_cos_angle = Math.cos((obj.fontAngle||0)/180*Math.PI);
   },
 
-  //平移物件 Move the object
+  // Move the object
   move: function(obj, diffX, diffY) {
     obj.x = obj.x + diffX;
     obj.y = obj.y + diffY;
     return obj;
   },
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     
     // translate and rotate the mouse point into the text's reference frame for easy comparison
@@ -154,7 +153,7 @@ objTypes['text'] = {
     return false;
   },
 
-  //拖曳物件時 When the user is dragging the obj
+  // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
     if (shift)
     {
@@ -163,7 +162,7 @@ objTypes['text'] = {
     else
     {
       var mouse_snapped = mouse;
-      draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定 Unlock the dragging direction when the user release the shift key
+      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
 
     // 'mouse' current mouse position, snapped to grid

@@ -1,7 +1,7 @@
 // The handle created when holding ctrl and click several points
 objTypes['handle'] = {
 
-  //建立物件 Create the obj
+  // Create the obj
   create: function(mouse) {
     return {type: 'handle', controlPoints: [], notDone: true};
   },
@@ -32,7 +32,7 @@ objTypes['handle'] = {
     return -Infinity;
   },
 
-  //將物件畫到Canvas上 Draw the obj on canvas
+  // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
 
     /*
@@ -71,12 +71,12 @@ objTypes['handle'] = {
     }
   },
 
-  //平移物件 Move the object
+  // Move the object
   move: function(obj, diffX, diffY) {
     objTypes['handle'].dragging(obj, graphs.point(obj.p1.x + diffX, obj.p1.y + diffY), {targetPoint_: obj.p1, part: 1});
   },
 
-  //繪圖區被按下時(判斷物件被按下的部分) When the drawing area is clicked (test which part of the obj is clicked)
+  // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     if (obj.notDone) return;
     if (mouseOnPoint(mouse_nogrid, obj.p1))
@@ -98,7 +98,7 @@ objTypes['handle'] = {
     return false;
   },
 
-  //拖曳物件時 When the user is dragging the obj
+  // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
     if (obj.notDone) return;
     if (shift)
@@ -108,7 +108,7 @@ objTypes['handle'] = {
     else
     {
       var mouse_snapped = mouse;
-      draggingPart.snapData = {}; //放開shift時解除原先之拖曳方向鎖定 Unlock the dragging direction when the user release the shift key
+      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
     if (draggingPart.part == 1)
     {
