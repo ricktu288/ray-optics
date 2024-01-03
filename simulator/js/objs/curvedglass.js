@@ -1,4 +1,4 @@
-// Mirrors -> Custom equation
+// Glass -> Custom equation
 objTypes['curvedglass'] = {
 
   supportSurfaceMerging: true,

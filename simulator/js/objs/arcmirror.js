@@ -1,4 +1,4 @@
-// Mirrors -> Circular Arc
+// Mirror -> Circular Arc
 objTypes['arcmirror'] = {
 
   // Create the obj

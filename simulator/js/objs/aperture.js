@@ -1,4 +1,4 @@
-// Blocker
+// Blocker -> Aperture
 objTypes['aperture'] = {
 
   // Create the obj

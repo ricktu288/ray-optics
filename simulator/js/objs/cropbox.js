@@ -1,4 +1,4 @@
-// The crop box appear when using File > Export as PNG/SVG
+// The crop box appears when using File -> Export as PNG/SVG
 objTypes['cropbox'] = {
 
   // Show the property box
