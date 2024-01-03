@@ -8,7 +8,7 @@ objTypes['led'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
+    createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
       obj.brightness = value;
     }, elem, getMsg('brightness_note_popover'));
     if (colorMode) {

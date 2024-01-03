@@ -8,7 +8,7 @@ objTypes['radiant'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    createNumberAttr(getMsg('brightness'), 0, 1, 0.01, obj.p || 1, function(obj, value) {
+    createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
     }, elem, getMsg('brightness_note_popover'));
     if (colorMode) {
