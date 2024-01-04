@@ -22,7 +22,7 @@
 <link rel="icon" href="../../icon128.png" type="image/png">
 </head>
 <body>
-<div class="navbar navbar-fixed-top container" style="background-color:white">
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
 <a href="https://phydemo.app/ray-optics/pl/" class="navbar-left brand">
 <img src="../../icon128.png" alt="" style="width:18pt;height:18pt">
 Symulacja promieni optycznych
@@ -45,7 +45,8 @@ Symulacja promieni optycznych
 Osoba wnosząca wkład: Stas Fainer
 </p>
 <div class="description">
-<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \(\rho) = \sqrt{n_0-(\frac{\rho}{R})^2} \), gdzie \(n_0=2\) to współczynnik załamania w środku soczewki soczewki, \(R=100\) to promień soczewki, a \(ho\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \(N=20\) koncentrycznych soczewek sferycznych o promieniu \(R_i=5(N+1-i)\) i współczynniku załamania światła \(n_i = \sqrt{n_0-(\frac{R_i}{R})^2} \), gdzie \(i=1,...,N\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \(i\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \(n_{i}^\text{numerical}=\frac{n_i}{\prod\limits_{k=i+1}^{N}n_k}\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \(n(r)\).</p>
+<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \(\rho) = \sqrt{n_0-(\frac{\rho}{R})^2} \), gdzie \(n_0=2\) to współczynnik załamania w środku soczewki soczewki, \(R=100\) to promień soczewki, a \(
+ho\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \(N=20\) koncentrycznych soczewek sferycznych o promieniu \(R_i=5(N+1-i)\) i współczynniku załamania światła \(n_i = \sqrt{n_0-(\frac{R_i}{R})^2} \), gdzie \(i=1,...,N\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \(i\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \(n_{i}^\text{numerical}=\frac{n_i}{\prod\limits_{k=i+1}^{N}n_k}\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \(n(r)\).</p>
 </div>
 <p>
 <a href="https://phydemo.app/ray-optics/simulator/?pl#../pl/gallery/luneburg-lens" target="_blank" class="btn btn-success btn-lg">Otwórz w symulatorze</a>
