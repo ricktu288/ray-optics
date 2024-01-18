@@ -361,6 +361,14 @@
         "description": "<p>Jest to jakościowa symulacja efektu mirażu dolnego.<br>W tym przykładzie współczynnik załamania światła powietrza jest aproksymowany funkcją \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\)  reprezentuje wysokość nad ziemią obiektu emitującego/odbijającego światło.</p>"
       },
       {
+        "id": "sea-mirage",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "Sea mirage",
+        "description": "<p>This is a qualitative simulation of the effect that an object beyond the horizon can be visible as a superior mirage.</p>"
+      },
+      {
         "id": "logarithmic-spiral-lens",
         "contributors": [
           "Stas Fainer"
@@ -383,6 +391,14 @@
         ],
         "title": "Soczewka rybie oko Maxwella",
         "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{\\prod\\limits_{k=i+1}^{N}n_k}\\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).</p>"
+      },
+      {
+        "id": "branched-flow",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Branched flow",
+        "description": "<p>When light travels through a medium whose refractive index has random spatial fluctuations (with correlation length much larger than the wavelength of the light), a tree-like pattern called branched flow will appear. This simulation shows this phenomenon using a refractive index function which is a sum of several cosine functions with random-like amplitudes, wave vectors, and phases.</p>"
       }
     ]
   },
