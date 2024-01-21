@@ -378,9 +378,6 @@ locales["en"] = {
   "refractiveindex": {
     "message": "Refractive index*"
   },
-  "defined_by": {
-    "message": "Defined by<sup>Beta</sup>"
-  },
   "radii_of_curvature": {
     "message": "Radii of Curvature"
   },

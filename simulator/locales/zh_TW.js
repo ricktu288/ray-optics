@@ -378,9 +378,6 @@ locales["zh-TW"] = {
   "refractiveindex": {
     "message": "折射率*"
   },
-  "defined_by": {
-    "message": "定義方式<sup>Beta</sup>"
-  },
   "radii_of_curvature": {
     "message": "曲率半徑"
   },

@@ -9,14 +9,17 @@ objTypes['sphericallens'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
+    
 
-    createDropdownAttr(getMsg('defined_by'), obj.definedBy || 'DR1R2', {
-      'DR1R2': getMsg('radii_of_curvature'),
-      'DFfdBfd': getMsg('focal_distances')
-    }, function(obj, value) {
-      obj.definedBy = value;
-      selectObj(selectedObj);
-    }, elem);
+    if (!isConstructing) {
+      createDropdownAttr('', obj.definedBy || 'DR1R2', {
+        'DR1R2': getMsg('radii_of_curvature'),
+        'DFfdBfd': getMsg('focal_distances')
+      }, function(obj, value) {
+        obj.definedBy = value;
+        selectObj(selectedObj);
+      }, elem);
+    }
 
     if (!isConstructing && (!obj.definedBy || obj.definedBy == 'DR1R2')) {
       var params = this.getDR1R2(obj);
@@ -46,6 +49,8 @@ objTypes['sphericallens'] = {
         objTypes['sphericallens'].createLensWithDR1R2(obj, value, r1, r2);
       }, elem, null, true);
     } else if (obj.definedBy == 'DFfdBfd') {
+      createInfoBox(elem, '<img src="../img/FFD_BFD.svg" width=100%>');
+
       var params = this.getDFfdBfd(obj);
       var d = params.d;
       var ffd = params.ffd;

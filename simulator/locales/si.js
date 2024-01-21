@@ -434,10 +434,6 @@ locales["si"] = {
   "refractiveindex": {
     "message": "වර්තන අංකය*"
   },
-  "defined_by": {
-    "incomplete": true,
-    "message": "Defined by<sup>Beta</sup>"
-  },
   "radii_of_curvature": {
     "incomplete": true,
     "message": "Radii of Curvature"

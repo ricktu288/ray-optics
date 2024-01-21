@@ -428,10 +428,6 @@ locales["ru"] = {
   "refractiveindex": {
     "message": "Показатель преломления*"
   },
-  "defined_by": {
-    "incomplete": true,
-    "message": "Defined by<sup>Beta</sup>"
-  },
   "radii_of_curvature": {
     "incomplete": true,
     "message": "Radii of Curvature"
