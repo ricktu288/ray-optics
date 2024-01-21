@@ -211,13 +211,13 @@ locales["en"] = {
     "message": "Circle"
   },
   "tool_grin_circlelens": {
-    "message": "Gradient-index circle<sup>Beta</sup>"
+    "message": "Gradient-index circle"
   },
   "tool_refractor": {
     "message": "Polygon / Circular Arcs"
   },
   "tool_grin_refractor": {
-    "message": "Gradient-index polygon<sup>Beta</sup>"
+    "message": "Gradient-index polygon"
   },
   "tool_lens": {
     "message": "Ideal Lens"
@@ -403,7 +403,7 @@ locales["en"] = {
     "message": "Diameter (px)"
   },
   "irradiance_map": {
-    "message": "Irradiance Map<sup>Beta</sup>"
+    "message": "Irradiance Map"
   },
   "bin_size": {
     "message": "Bin Size (px)"

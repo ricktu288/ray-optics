@@ -238,7 +238,7 @@ locales["fr"] = {
   },
   "tool_grin_circlelens": {
     "incomplete": true,
-    "message": "Gradient-index circle<sup>Beta</sup>"
+    "message": "Gradient-index circle"
   },
   "tool_refractor": {
     "incomplete": true,
@@ -246,7 +246,7 @@ locales["fr"] = {
   },
   "tool_grin_refractor": {
     "incomplete": true,
-    "message": "Gradient-index polygon<sup>Beta</sup>"
+    "message": "Gradient-index polygon"
   },
   "tool_lens": {
     "message": "Lentille idéale"
@@ -460,7 +460,7 @@ locales["fr"] = {
   },
   "irradiance_map": {
     "incomplete": true,
-    "message": "Irradiance Map<sup>Beta</sup>"
+    "message": "Irradiance Map"
   },
   "bin_size": {
     "incomplete": true,

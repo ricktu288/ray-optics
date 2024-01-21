@@ -106,7 +106,7 @@ locales["LOCALE_ID"] = {
   },
   "toolname_grin_circlelens": {
     "incomplete": true,
-    "message": "Gradient-index circle<sup>Beta</sup>"
+    "message": "Gradient-index circle"
   },
   "toolname_refractor": {
     "incomplete": true,
@@ -114,7 +114,7 @@ locales["LOCALE_ID"] = {
   },
   "toolname_grin_refractor": {
     "incomplete": true,
-    "message": "Gradient-index polygon<sup>Beta</sup>"
+    "message": "Gradient-index polygon"
   },
   "toolname_lens": {
     "incomplete": true,
@@ -538,7 +538,7 @@ locales["LOCALE_ID"] = {
   },
   "irradiance_map": {
     "incomplete": true,
-    "message": "Irradiance Map<sup>Beta</sup>"
+    "message": "Irradiance Map"
   },
   "bin_size": {
     "incomplete": true,

@@ -212,13 +212,13 @@ locales["pl"] = {
     "message": "Koło"
   },
   "tool_grin_circlelens": {
-    "message": "Koło gradientowe<sup>Beta</sup>"
+    "message": "Koło gradientowe"
   },
   "tool_refractor": {
     "message": "Dowolny kształt / Wielokąt"
   },
   "tool_grin_refractor": {
-    "message": "Wielokąt gradientowy<sup>Beta</sup>"
+    "message": "Wielokąt gradientowy"
   },
   "tool_lens": {
     "message": "Soczewka idealna"
@@ -408,7 +408,7 @@ locales["pl"] = {
     "message": "Średnica (px)"
   },
   "irradiance_map": {
-    "message": "Mapa irradiancji<sup>Beta</sup>"
+    "message": "Mapa irradiancji"
   },
   "bin_size": {
     "message": "Rozmiar pojemnika (px)"

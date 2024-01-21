@@ -211,13 +211,13 @@ locales["zh-CN"] = {
     "message": "圆形"
   },
   "tool_grin_circlelens": {
-    "message": "渐变折射率圆形<sup>Beta</sup>"
+    "message": "渐变折射率圆形"
   },
   "tool_refractor": {
     "message": "多边形 / 圆弧"
   },
   "tool_grin_refractor": {
-    "message": "渐变折射率多边形<sup>Beta</sup>"
+    "message": "渐变折射率多边形"
   },
   "tool_lens": {
     "message": "理想透镜"
@@ -403,7 +403,7 @@ locales["zh-CN"] = {
     "message": "直径 (px)"
   },
   "irradiance_map": {
-    "message": "辐照度图<sup>Beta</sup>"
+    "message": "辐照度图"
   },
   "bin_size": {
     "message": "组距 (px)"
