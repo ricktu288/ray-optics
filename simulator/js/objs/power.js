@@ -3,7 +3,7 @@ objTypes['power'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'power', p1: mouse, p2: mouse, power: 0, normal: 0, shear: 0};
+    return {type: 'power', p1: mouse, p2: mouse, power: 0, normal: 0, shear: 0, irradianceMap: true, binSize: 1};
   },
 
   // Show the property box
