@@ -6,16 +6,19 @@
 A web app for creating and simulating 2D geometric optical scenes. Our goal is to make it easy for students to build physical intuition by "playing around", for teachers to do dynamical demonstrations, and at the same time also include tools for more advanced usage.
 
 ## Features
-- Simulate various light sources: ray, beam, and point source
-- Simulate reflection in linear, circular, and parabolic mirror
-- Simulate beam splitter
-- Simulate refraction in linear or circular interfaces, including both refracted and reflected rays
-- Simulate mixture of colors and chromatic dispersion  
-- Simulate ideal lens/mirror, which obeys lens/mirror equation
+- Simulate various light sources: ray, parallel/divergent beam, and point source
+- Simulate reflection in linear or curved mirrors, which can be defined by a custom equation
+- Simulate beam splitters and dichroic mirrors
+- Simulate refraction in linear or curved interfaces, which can be defined by a custom equation
+- Simulate ideal lens/mirror, which obey the lens/mirror equation
+- Simulate spherical lens defined by front/back focal distances
+- Simulate gradient-index material defined by a custom refractive index function
+- Simulate mixture of colors, color filtering, and chromatic dispersion
 - View extensions of rays to see if they converge to a virtual image
 - View real images, virtual images, and virtual objects directly
 - View images that can be observed from some given position
 - Distance, angular, energy flow, and momentum flow measurements
+- Draw irradiance map and export as CSV data
 - Export as SVG diagram
 
 ## Links
