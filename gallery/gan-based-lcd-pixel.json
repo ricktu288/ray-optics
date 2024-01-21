@@ -202,18 +202,6 @@
     },
     {
       "type": "text",
-      "x": 384,
-      "y": 748,
-      "p": "Change the Rate of Transmission"
-    },
-    {
-      "type": "text",
-      "x": 385.4285714285714,
-      "y": 776.2857142857144,
-      "p": "To Create Any RGB Value"
-    },
-    {
-      "type": "text",
       "x": 385.4285714285714,
       "y": 776.2857142857144,
       "p": "To Create Any RGB Value"
@@ -415,12 +403,18 @@
   "mode": "light",
   "rayDensity_light": 2.718281828459045,
   "rayDensity_images": 1,
+  "showGrid": false,
+  "grid": false,
+  "lockobjs": false,
+  "gridSize": 20,
   "observer": null,
   "origin": {
-    "x": 372.48652754252976,
-    "y": 71.96107886312505
+    "x": 289.71174364418977,
+    "y": 55.969728004652815
   },
-  "scale": 0.5127264905780533,
+  "scale": 0.398787270449597,
+  "width": 1200,
+  "height": 700,
   "colorMode": true,
   "symbolicGrin": false
 }
