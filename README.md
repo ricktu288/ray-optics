@@ -22,7 +22,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 - Export as SVG diagram
 
 ## Links
-- [**Lanuch the Web App**](https://phydemo.app/ray-optics/simulator/)
+- [**Launch the Web App**](https://phydemo.app/ray-optics/simulator/)
 - [Gallery](https://phydemo.app/ray-optics/gallery/)
 - [Documentation](https://github.com/ricktu288/ray-optics/wiki)
 - [About](https://phydemo.app/ray-optics/about)
