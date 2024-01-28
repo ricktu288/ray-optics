@@ -51,7 +51,8 @@
           "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
           "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.',
           "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href="https://phydemo.app/ray-optics/gallery/">Gallery page වෙත යන්න</a>.',
-          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오.'
+          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오.',
+          "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Para añadir un componente óptico, seleccione una herramienta y clique sobre un espacio en blanco.<br>Para cargar un ejemplo, por favor <a href="https://phydemo.app/ray-optics/gallery/">vaya a la página de la galería</a>.'
         }
         var lang = 'en';
         if (navigator.language) {
@@ -74,6 +75,8 @@
             lang = 'ja';
           } else if (browser_lang == 'si' || browser_lang.startsWith('si-')) {
             lang = 'si';
+          } else if (browser_lang == 'es' || browser_lang.startsWith('es-')) {
+            lang = 'es';
           }
         }
     
@@ -298,19 +301,19 @@
                   <div class="btn-group" role="group">
                     <input type="radio" class="btn-check" name="viewradio" id="mode_light" autocomplete="off" checked>
                     <label class="btn shadow-none btn-primary" for="mode_light" data-title="mode_light" data-popover="mode_light_popover" data-image="normal.svg" data-bs-placement="bottom">
-                      <img src="../img/rays_icon.svg" alt="Ray" width="16" height="20">                        
+                      <img src="../../img/rays_icon.svg" alt="Ray" width="16" height="20">                        
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_extended_light" autocomplete="off">
                     <label class="btn shadow-none btn-primary" for="mode_extended_light" data-title="mode_extended_light" data-popover="mode_extended_light_popover" data-image="extended_rays.svg" data-bs-placement="bottom">
-                      <img src="../img/extended_icon.svg" alt="Extended" width="16" height="20">
+                      <img src="../../img/extended_icon.svg" alt="Extended" width="16" height="20">
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_images" autocomplete="off">
                     <label class="btn shadow-none btn-primary" for="mode_images" data-title="mode_images" data-popover="mode_images_popover" data-image="all_images.svg" data-bs-placement="bottom">
-                      <img src="../img/images_icon.svg" alt="Images" width="16" height="20">
+                      <img src="../../img/images_icon.svg" alt="Images" width="16" height="20">
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_observer" autocomplete="off">
                     <label class="btn shadow-none btn-primary" for="mode_observer" data-title="mode_observer" data-popover="mode_observer_popover" data-image="seen_by_observer.svg" data-bs-placement="bottom">
-                      <img src="../img/observer_icon.svg" alt="Observer" width="16" height="20">
+                      <img src="../../img/observer_icon.svg" alt="Observer" width="16" height="20">
                     </label>
                   </div>
                 </div>
@@ -1132,6 +1135,16 @@
                 </div>
                 <div class="col text-end" id="lang-zh-TW">
                   正體中文
+                </div>
+              </div>
+            </a>
+            <a href="?es" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Español
+                </div>
+                <div class="col text-end" id="lang-es">
+                  Español
                 </div>
               </div>
             </a>
