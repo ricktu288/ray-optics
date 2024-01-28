@@ -51,7 +51,8 @@
           "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
           "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.',
           "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href="https://phydemo.app/ray-optics/gallery/">Gallery page වෙත යන්න</a>.',
-          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오.'
+          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오.',
+          "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Para añadir un componente óptico, seleccione una herramienta y clique sobre un espacio en blanco.<br>Para cargar un ejemplo, por favor <a href="https://phydemo.app/ray-optics/gallery/">vaya a la página de la galería</a>.'
         }
         var lang = 'en';
         if (navigator.language) {
@@ -74,6 +75,8 @@
             lang = 'ja';
           } else if (browser_lang == 'si' || browser_lang.startsWith('si-')) {
             lang = 'si';
+          } else if (browser_lang == 'es' || browser_lang.startsWith('es-')) {
+            lang = 'es';
           }
         }
     
@@ -1045,6 +1048,16 @@
                 </div>
               </div>
             </a>
+            <a href="?es" class="btn btn-primary dropdown-item d-flex align-items-center">
+              <div class="d-flex w-100">
+                <div class="col">
+                  Español
+                </div>
+                <div class="col text-end" id="lang-es">
+                  Español
+                </div>
+              </div>
+            </a>
             <a href="?fr" class="btn btn-primary dropdown-item d-flex align-items-center">
               <div class="d-flex w-100">
                 <div class="col">
@@ -1210,6 +1223,7 @@
     <script src="locales/ja.js"></script>
     <script src="locales/si.js"></script>
     <script src="locales/ko.js"></script>
+    <script src="locales/es.js"></script>
 
     <!--UI scripts-->
     <script src="js/ui.js"></script>

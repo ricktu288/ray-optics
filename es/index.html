@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
-<html lang="ru">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Симуляция оптических лучей - PhyDemo</title>
-    <meta property="og:title" content="Симуляция оптических лучей - PhyDemo">
+    <title>Simulador de rayos ópticos - PhyDemo</title>
+    <meta property="og:title" content="Simulador de rayos ópticos - PhyDemo">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://phydemo.app/ray-optics/ru/">
+    <meta property="og:url" content="https://phydemo.app/ray-optics/es/">
     <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
-    <meta property="og:description" content="Веб-приложение с открытым исходным кодом симулируещее отражение и рефракцию света.">
-    <meta property="og:locale" content="ru">
-    <link rel="canonical" href="https://phydemo.app/ray-optics/ru/">
+    <meta property="og:description" content="Una aplicación gratuita y de código abierto para crear y simular escenas 2D de óptica geométrica.">
+    <meta property="og:locale" content="es">
+    <link rel="canonical" href="https://phydemo.app/ray-optics/es/">
     <link rel="alternate" href="https://phydemo.app/ray-optics/" hreflang="en">
     <link rel="alternate" href="https://phydemo.app/ray-optics/de/" hreflang="de">
     <link rel="alternate" href="https://phydemo.app/ray-optics/es/" hreflang="es">
@@ -26,7 +26,7 @@
     <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
     <link rel="alternate" href="https://phydemo.app/ray-optics/tw/" hreflang="zh-TW">
     <link rel="stylesheet" href="../thirdparty/bootstrap-3.3.7/bootstrap.min.css">
-    <link rel="icon" href="../icon128.png" type="image/png">
+    <link rel="icon" href="https://phydemo.app/ray-optics/icon128.png" type="image/png">
     <style>
         .carousel-inner>.item>a>img {
             width: 1920px;
@@ -132,18 +132,17 @@
 </head>
 
 <body>
-
     <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
 
         <a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
-            <img src="../icon128.png" alt="" style="width:18pt; height:18pt"> Симуляция оптических лучей
+            <img src="../icon128.png" alt="" style="width:18pt; height:18pt"> Simulador de óptica de rayos
         </a>
         <div class="navbar-right">
 
             <span class="navul">
-     <a href="https://phydemo.app/ray-optics/" class="active">Home</a>
-     <a href="https://phydemo.app/ray-optics/gallery/">Gallery</a>
-     <a href="https://phydemo.app/ray-optics/about">About</a>
+     <a href="https://phydemo.app/ray-optics/" class="active">Inicio</a>
+     <a href="https://phydemo.app/ray-optics/gallery/">Galería</a>
+     <a href="https://phydemo.app/ray-optics/about">Acerca de</a>
 </span>
             <span class="github-button-container">
 <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
@@ -153,13 +152,15 @@
     </div>
     <div class="container">
         <center>
-            <h1><b><span id="title">Симуляция оптических лучей</span></b></h1>
+            <h1><b><span id="title">Simulador de óptica de rayos</span></b></h1>
             <p id="description">
-                Веб-приложение с открытым исходным кодом симулируещее отражение и рефракцию света.<br> Написано на HTML, CSS и JavaScript.
+                Crear &amp; simular escenas 2D de óptica geométrica interactivamente.<br> Totalmente gratuito y basado en web. El código fuente está <a href="https://github.com/ricktu288/ray-optics">disponible en GitHub</a>.
             </p>
             <p>
-                <a href="https://phydemo.app/ray-optics/simulator/?ru" target="_blank" class="btn btn-success btn-lg" id="start">Запустить приложение</a>
+                <a href="https://phydemo.app/ray-optics/simulator/?es" target="_blank" class="btn btn-success btn-lg" id="start">Iniciar simulador</a>
+                <!--<a href="https://github.com/ricktu288/ray-optics" class="btn btn-success btn-lg" id="github_link">View On GitHub</a><br>-->
             </p>
+
         </center>
         <br>
         <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
@@ -178,139 +179,163 @@
                     <a href="https://phydemo.app/ray-optics/simulator/#spherical-lens-and-mirror" target="_blank"><img src="../img/1.jpg" alt="1.jpg"></a>
                 </div>
                 <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
-                </div>
-                <div class="item">
                     <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="../img/3.svg" alt="3.svg"></a>
                 </div>
                 <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="../img/5.svg"></a>
+                    <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="5.svg"></a>
                 </div>
                 <div class="item">
-                    <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="../img/6.png"></a>
+                    <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="6.png"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
                 </div>
             </div>
 
             <!-- Left and right controls -->
             <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
+                <span class="sr-only">Previo</span>
             </a>
             <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
+                <span class="sr-only">Siguiente</span>
             </a>
         </div>
 
         <div class="row" style="font-size: 10pt">
             <div class="col-sm-6">
                 <div class="col-sm-12">
-                    <h2 id="tools">Инструменты</h2>
+                    <h2 id="tools">Herramientas</h2>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ray.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ray">Луч</p>
+                            <p class="tool-title" id="ray">Rayo</p>
                             <span id="ray_desc">
-              Одиночный луч света определенный двумя точками.
+              Un único rayo de luz definido por dos puntos.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="beam">Пучок</p>
+                            <p class="tool-title" id="beam">Haz</p>
                             <span id="beam_desc">
-              Пучок параллельных лучей исходит из прямой. Плотность лучей конторолируется ползунком "Плотность лучей".
+              Un haz de rayos paralelos emerge de un segmento de recta,
+              con densidad controlada mediante el deslizante "Densidad de rayos".
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/point_source.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="point_source">Точечный источник</p>
+                            <p class="tool-title" id="point_source">Fuente puntual</p>
                             <span id="point_source_desc">
-              Лучи исходят из точки. Плотность лучей конторолируется ползунком "Плотность лучей".
+              Los rayos emergen de un único punto,
+              el número se puede controlar mediante el deslizante "Densidad de rayos".
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="mirror">Зеркало</p>
+                            <p class="tool-title" id="mirror">Espejo</p>
                             <span id="mirror_desc">
-              Симулирует отражение света в зеркале.
+              Simular la reflexión de la luz en un espejo.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/mirror_arc.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="mirror_arc">Зеркало (Дуга)</p>
+                            <p class="tool-title" id="mirror_arc">Espejo (Curvado)</p>
                             <span id="mirror_arc_desc">
-              Зеркало в форме дуги. Задается тремя точками.
+              Un espejo cuya forma es curva. Puede ser circular, parabólico o definido mediante una ecuación de la forma y = f(x).
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_curved_mirror">Идеальное кривое зеркало</p>
+                            <p class="tool-title" id="ideal_curved_mirror">Espejo curvo ideal</p>
                             <span id="ideal_curved_mirror_desc">
-              Идеальное "кривое" зеркало, которое идеально подчиняется уравнению зеркала (1/p + 1/q = 1/f). Фокальное расстояние задается в пикселях.
+              Un espejo curvo ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f).
+              La distancia focal (en píxeles) puede ser establecida directamente.
+            </span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="beamsplitter">Separador de haz</p>
+                            <span id="beamsplitter_desc">
+              Un espejo que transmite un porcentaje de la luz incidente.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass_halfplane">Стекло</p>
+                            <p class="tool-title" id="glass_halfplane">Vidrio</p>
                             <span id="glass_halfplane_desc">
-              Симулирует рефракцию и отражение света на поверхности.
+              Simular la refracción y la reflexión de la luz en una superficie.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass">Стекло (Другие формы)</p>
+                            <p class="tool-title" id="glass">Vidrio (Otras formas)</p>
                             <span id="glass_desc">
-              Стекло, форма которого состоит из отрезков и дуг. Включает в себя призмы и "сферические" линзы.
+              Vidrio con otras formas construidas a partir de segmentos de lineas y arcos, o formas definidas mediante una desigualdad de la forma f(x) &lt; y &lt; g(x).
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_lens">Стекло (Идеальная линза)</p>
+                            <p class="tool-title" id="ideal_lens">Vidrio (lente ideal)</p>
                             <span id="ideal_lens_desc">
-              Идеальная линза, которая строго подчиняется уравнению плоской линзы (1/d + 1/f = 1/F). The focal length (in pixels) can be set directly.
+              Una lente ideal que obedece exactamente la ecuación de las lentes finas (1/p + 1/q = 1/f).
+              La distancia focal (en píxeles) se puede establecer directamente.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="blocker">Блокатор</p>
+                            <p class="tool-title" id="blocker">Bloqueador</p>
                             <span id="blocker_desc">
-              Отрезок, поглощающий свет.
+              Un bloqueador recto que absorbe los rayos incidentes.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/ruler.svg" alt="Ruler" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption" class="img-rounded">
-                            <p class="tool-title" id="ruler">Линейка</p>
+                            <p class="tool-title" id="ruler">Regla</p>
                             <span id="ruler_desc">
-              Линейка от нуля до определенной точки. Масштаб в пикселях.
+              Una regla desde un punto cero hasta otro punto.
+              La escala está en píxeles.
             </span>
                         </div>
                     </div>
                     <div class="row thumbnail right-caption">
                         <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption" class="img-rounded">
-                            <p class="tool-title" id="protractor">Транспортир</p>
+                            <p class="tool-title" id="protractor">Transportador</p>
                             <span id="protractor_desc">
-              Транспортир, нулевое значение которого задается центром и другой точкой. Масштаб в градусах.
+              Un transportador definido a partir del centro y otro punto para la dirección del cero.
+              La escala está en grados.
+            </span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
+                        <div class="caption" class="img-rounded">
+                            <p class="tool-title" id="power">Detector</p>
+                            <span id="power_desc">
+              Una herramienta para medir el flujo de energía (P), el momento de flujo perpendicular (F⊥), y el momento de flujo paralelo  (F∥) a través de un segmento de recta. Las unidades son arbitrarias.
             </span>
                         </div>
                     </div>
@@ -318,12 +343,12 @@
             </div>
             <div class="col-sm-6">
                 <div class="col-sm-12">
-                    <h2 id="views">Виды отображения</h2>
+                    <h2 id="views">Vistas</h2>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="rays">Лучи</p>
+                            <p class="mode-title" id="rays">Rayos</p>
                             <span id="rays_desc">
-              Показываются лучи. Когда "плотность лучей" высока, они выглядят как единый пучок.
+              Mostrar los rayos. Cuando la densidad de rayos es elevada, parecen continuos.
             </span>
                         </div>
                         <center>
@@ -337,9 +362,10 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="extended_rays">Продленные лучи</p>
+                            <p class="mode-title" id="extended_rays">Rayos extendidos</p>
                             <span id="extended_rays_desc">
-              Показываются и лучи, и их продолжения. Оранжевые лучи - продолжения назад, серые - вперед.
+              Mostrar los rayos y su extensión.
+              El color naranja indica extensión hacia detrás, y el gris indica hacia delante.
             </span>
                         </div>
                         <center>
@@ -350,9 +376,11 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="all_images">Все изображения</p>
+                            <p class="mode-title" id="all_images">Todas las imágenes</p>
                             <span id="all_images_desc">
-              Показываются все изображения. Желтые точки означают реальные изображения, оранжевые - мнимые, серые (нет на данном рисунке) - виртуальные обьекты. Заметьте, что если "плотность лучей" недостаточно велика, некоторые изображения не будут видны.
+              Mostrar la posición de todas las imágenes.
+              El amarillo indica imágenes reales, el naranja indica imágenes virtuales, y el gris (no presente en esta figura) indica objetos virtuales.
+              Cabe notar que algunas imágenes no pueden ser detectadas si la "Densidad de rayos" no es suficientemente elevada.
             </span>
                         </div>
                         <center>
@@ -363,14 +391,31 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="seen_by_observer">Видимое наблюдателем</p>
+                            <p class="mode-title" id="seen_by_observer">Visto por el observador</p>
                             <span id="seen_by_observer_desc">
-              Симулировать лучи и изображения, видимые из какой-то позиции. Синий круг - наблюдатель. Лучи пересекающие его, считаются "видимыми". Наблюдатель не знает где лучи начинаются на самом деле, но может думать, что они начинаются в какой-то точке/точках, если они там пересекаются. Видимые лучи показаны синим, а точки оранжевым.
+              Simular los rayos y las imágenes vistas desde una posición..
+              El círculo azul es el observador.
+              Cualquier rayo que lo cruce se considerará "observado".
+              El observador no conoce la posición de inicio de los rayos, pero puede suponer que empiezan en algún punto si se intersecan ahí.
+              Los rayos se muestran en azul, y los puntos en amarillo (reales) o naranja (virtuales).
             </span>
                         </div>
                         <center>
                             <div style="aspect-ratio: 445/216; max-width: 510px">
                                 <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="simulate_colors">Simular colores</p>
+                            <span id="simulate_colors_desc">
+                Simular colores (longitudes de onda) de las fuentes de luz, mezclas de colores, filtros de colores y dispersión cromática de vidrios.
+            </span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 445/216; max-width: 510px">
+                                <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
                             </div>
                         </center>
                     </div>
@@ -380,7 +425,7 @@
         <div style="float: right;">
             <div class="dropup">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <span id="language">Язык: Русский</span>
+      <span id="language">Idioma: Español</span>
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="https://phydemo.app/ray-optics/">English</a></li>
@@ -402,7 +447,6 @@
 
     <script src="../thirdparty/jquery.min.js"></script>
     <script src="../thirdparty/bootstrap-3.3.7/bootstrap.min.js"></script>
-
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 

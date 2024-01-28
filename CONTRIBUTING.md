@@ -64,6 +64,7 @@ _Note: On HiDPI screens, please scale the webpage with the browser first such th
 You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Currently, the translation of the Gallery can only be done manually.
 1. Download the target locale file:
    - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
+   - Spanish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/es.js
    - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
    - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ja.js
    - Korean: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ko.js
