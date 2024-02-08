@@ -299,7 +299,7 @@ function createEquationAttr(label, value, func, elem, info) {
     charsThatBreakOutOfSupSub: '+-=<>',
     autoSubscriptNumerals: true,
     autoCommands: 'pi theta sqrt sum',
-    autoOperatorNames: 'sin cos tan sec csc cot log exp arcsin arccos arctan asin acos atan floor round ceil trunc sign sgn max min abs',
+    autoOperatorNames: 'sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan asin acos atan arcsinh arccosh arctanh asinh acosh atanh floor round ceil trunc sign sgn max min abs',
     maxDepth: 10,
     handlers: {
       enter: function() {
