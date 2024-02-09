@@ -418,6 +418,10 @@ locales["pl"] = {
   "bin_size": {
     "message": "Rozmiar pojemnika (px)"
   },
+  "ruler_scale": {
+    "incomplete": true,
+    "message": "Scale interval (px)"
+  },
   "export_irradiance_map": {
     "message": "Eksportuj dane"
   },

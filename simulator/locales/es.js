@@ -413,6 +413,10 @@ locales["es"] = {
   "bin_size": {
     "message": "Tamaño del contenedor (px)"
   },
+  "ruler_scale": {
+    "incomplete": true,
+    "message": "Scale interval (px)"
+  },
   "export_irradiance_map": {
     "message": "Exportar datos"
   },

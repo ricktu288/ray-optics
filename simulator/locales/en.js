@@ -411,6 +411,9 @@ locales["en"] = {
   "bin_size": {
     "message": "Bin Size (px)"
   },
+  "ruler_scale": {
+    "message": "Scale interval (px)"
+  },
   "export_irradiance_map": {
     "message": "Export data"
   },

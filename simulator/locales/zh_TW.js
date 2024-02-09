@@ -411,6 +411,9 @@ locales["zh-TW"] = {
   "bin_size": {
     "message": "組距 (px)"
   },
+  "ruler_scale": {
+    "message": "刻度間距 (px)"
+  },
   "export_irradiance_map": {
     "message": "匯出數據"
   },

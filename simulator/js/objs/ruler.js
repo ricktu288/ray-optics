@@ -6,6 +6,13 @@ objTypes['ruler'] = {
     return {type: 'ruler', p1: mouse, p2: mouse};
   },
 
+  // Show the property box
+  p_box: function(obj, elem) {
+    createNumberAttr(getMsg('ruler_scale'), 0, 10, 1, obj.p || 10, function(obj, value) {
+      obj.p = value;
+    }, elem, null, true);
+  },
+
   // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,
   c_mousemove: objTypes['lineobj'].c_mousemove,
@@ -25,9 +32,9 @@ objTypes['ruler'] = {
   var per_y = -par_x;
   var ang = Math.atan2(obj.p2.y - obj.p1.y, obj.p2.x - obj.p1.x);
 
-  var scale_step = 10;
-  var scale_step_mid = 50;
-  var scale_step_long = 100;
+  var scale_step = obj.p || 10;
+  var scale_step_mid = scale_step * 5;
+  var scale_step_long = scale_step * 10;
   var scale_len = 10;
   var scale_len_mid = 15;
 

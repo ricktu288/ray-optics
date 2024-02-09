@@ -547,6 +547,10 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Bin Size (px)"
   },
+  "ruler_scale": {
+    "incomplete": true,
+    "message": "Scale interval (px)"
+  },
   "export_irradiance_map": {
     "incomplete": true,
     "message": "Export data"
