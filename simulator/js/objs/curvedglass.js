@@ -12,7 +12,7 @@ objTypes['curvedglass'] = {
   p_box: function(obj, elem) {
     createEquationAttr('', obj.eqn1, function(obj, value) {
       obj.eqn1 = value;
-    }, elem);
+    }, elem, getMsg('custom_equation_note'));
     createEquationAttr(' < y < ', obj.eqn2, function(obj, value) {
       obj.eqn2 = value;
     }, elem);

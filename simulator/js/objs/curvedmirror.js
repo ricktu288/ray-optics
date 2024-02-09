@@ -13,7 +13,7 @@ objTypes['curvedmirror'] = {
   p_box: function(obj, elem) {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
-    }, elem);
+    }, elem, getMsg('custom_equation_note'));
     dichroicSettings(obj,elem);
   },
 

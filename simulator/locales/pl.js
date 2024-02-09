@@ -363,11 +363,16 @@ locales["pl"] = {
   "symmetric": {
     "message": "Symetryczna"
   },
+  "custom_equation_note": {
+    "incomplete": true,
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
+  },
   "symbolic_grin": {
     "message": "Symboliczne łączenie ciał"
   },
   "grin_refractive_index": {
-    "message": "<ul><li>Obsługuje tylko funkcje różniczkowalne.</li><li>Początek n(x,y) jest we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.</li><li>Aby uzyskać dokładniejszą symulację, zobacz \"Więcej opcji...\"</li></ul>"
+    "incomplete": true,
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Obsługuje tylko funkcje różniczkowalne.</li><li>Początek n(x,y) jest we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.</li><li>Aby uzyskać dokładniejszą symulację, zobacz \"Więcej opcji...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "message": "<p>Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.</p><p>Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'grin_circlelens.js').</p><p>Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, <b>takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w <u>całej</u> płaszczyźnie</b>, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy.</p>"

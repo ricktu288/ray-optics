@@ -479,13 +479,17 @@ locales["ko"] = {
     "incomplete": false,
     "message": "대칭"
   },
+  "custom_equation_note": {
+    "incomplete": true,
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
+  },
   "symbolic_grin": {
     "incomplete": true,
     "message": "Symbolic body-merging"
   },
   "grin_refractive_index": {
     "incomplete": true,
-    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "incomplete": true,

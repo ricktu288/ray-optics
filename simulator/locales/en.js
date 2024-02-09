@@ -360,11 +360,14 @@ locales["en"] = {
   "symmetric": {
     "message": "Symmetric"
   },
+  "custom_equation_note": {
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
+  },
   "symbolic_grin": {
     "message": "Symbolic body-merging"
   },
   "grin_refractive_index": {
-    "message": "<ul><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For a more accurate simulation, see \"More options...\"</li></ul>"
+    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For a more accurate simulation, see \"More options...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
