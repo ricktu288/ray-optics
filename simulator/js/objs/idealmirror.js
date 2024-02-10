@@ -15,7 +15,7 @@ objTypes['idealmirror'] = {
     }, elem);
     if (createAdvancedOptions(cartesianSign)) {
       createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-        if (obj == objs[selectedObj]) {
+        if (obj == scene.objsRefactored[selectedObj]) {
           cartesianSign = value;
           localStorage.rayOpticsCartesianSign = value?"true":"false";
           selectObj(selectedObj);

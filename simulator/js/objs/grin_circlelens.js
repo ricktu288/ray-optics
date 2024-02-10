@@ -355,26 +355,26 @@ objTypes['grin_circlelens'] = {
   
   // Receives an instance of a grin object(e.g. grin_circlelens and grin_refractor) and a ray, and returns a bodyMerging object for the point ray.p1
   /*
-	For example, "fn_p" is constructed by going through all of the grin objects in the "objs" array,
+	For example, "fn_p" is constructed by going through all of the grin objects in the "scene.objsRefactored" array,
 	such that ray.p1 in their interior or on their boundary, and creating a product of all of their
 	refractive index functions. "fn_p_der_x" and "fn_p_der_y" are created similarly, taking into account the partial derivative.
   */
   initRefIndex: function(obj, ray)
   {
 	let obj_tmp = {};
-		for (let i = 0; i < objs.length; i++)
+		for (let i = 0; i < scene.objsRefactored.length; i++)
 		{
-			if ((objs[i].type === "grin_circlelens" || objs[i].type === "grin_refractor") && (objTypes[objs[i].type].isOnBoundary(objs[i], ray.p1) || objTypes[objs[i].type].isInsideGlass(objs[i], ray.p1)))
+			if ((scene.objsRefactored[i].type === "grin_circlelens" || scene.objsRefactored[i].type === "grin_refractor") && (objTypes[scene.objsRefactored[i].type].isOnBoundary(scene.objsRefactored[i], ray.p1) || objTypes[scene.objsRefactored[i].type].isInsideGlass(scene.objsRefactored[i], ray.p1)))
 			{
 				if (obj_tmp.fn_p === undefined)
 				{
-					obj_tmp.p = objs[i].p;
-					obj_tmp.fn_p = objs[i].fn_p;
-					obj_tmp.fn_p_der_x = objs[i].fn_p_der_x;
-					obj_tmp.fn_p_der_y = objs[i].fn_p_der_y;
+					obj_tmp.p = scene.objsRefactored[i].p;
+					obj_tmp.fn_p = scene.objsRefactored[i].fn_p;
+					obj_tmp.fn_p_der_x = scene.objsRefactored[i].fn_p_der_x;
+					obj_tmp.fn_p_der_y = scene.objsRefactored[i].fn_p_der_y;
 				}
 				else
-					obj_tmp = objTypes[obj.type].multRefIndex(obj_tmp, objs[i]);
+					obj_tmp = objTypes[obj.type].multRefIndex(obj_tmp, scene.objsRefactored[i]);
 
 			}
 		}

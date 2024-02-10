@@ -378,7 +378,7 @@ function createButton(label, func, elem) {
   button.innerHTML = label;
   button.onclick = function() {
     this.blur();
-    func(objs[selectedObj]);
+    func(scene.objsRefactored[selectedObj]);
   };
   elem.appendChild(button);
   var space = document.createTextNode(' ');
@@ -394,19 +394,19 @@ function setAttr(func)
 {
   if (!document.getElementById('setAttrAll').checked)
   {
-    func(objs[selectedObj]);
+    func(scene.objsRefactored[selectedObj]);
   }
   else
   {
-    for (var i = 0; i < objs.length; i++)
+    for (var i = 0; i < scene.objsRefactored.length; i++)
     {
-      if (hasSameAttrType(objs[i], objs[selectedObj]))
+      if (hasSameAttrType(scene.objsRefactored[i], scene.objsRefactored[selectedObj]))
       {
-        func(objs[i]);
+        func(scene.objsRefactored[i]);
       }
     }
   }
-  draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
+  draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
 }
 
 function createAdvancedOptions(condition) {

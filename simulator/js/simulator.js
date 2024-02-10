@@ -136,7 +136,7 @@ function draw_(skipLight, skipGrid) {
 
   if (!(ctx0.constructor == C2S && skipLight)) {
     // Sort the objects with z-index.
-    var mapped = objs.map(function(obj, i) {
+    var mapped = scene.objsRefactored.map(function(obj, i) {
       if (objTypes[obj.type].zIndex) {
         return {index: i, value: objTypes[obj.type].zIndex(obj)};
       } else {
@@ -147,13 +147,13 @@ function draw_(skipLight, skipGrid) {
       return a.value - b.value;
     });
     // Draw the objects
-    for (var j = 0; j < objs.length; j++)
+    for (var j = 0; j < scene.objsRefactored.length; j++)
     {
       var i = mapped[j].index;
-      objTypes[objs[i].type].draw(objs[i], ctx0, false);
-      if (!skipLight && objTypes[objs[i].type].shoot)
+      objTypes[scene.objsRefactored[i].type].draw(scene.objsRefactored[i], ctx0, false);
+      if (!skipLight && objTypes[scene.objsRefactored[i].type].shoot)
       {
-        objTypes[objs[i].type].shoot(objs[i]); // If objs[i] can shoot rays, shoot them.
+        objTypes[scene.objsRefactored[i].type].shoot(scene.objsRefactored[i]); // If scene.objsRefactored[i] can shoot rays, shoot them.
       }
     }
   }
@@ -169,11 +169,11 @@ function draw_(skipLight, skipGrid) {
   }
 
   if (skipLight) {
-    // Draw the "above light" layer of objs. Note that we only draw this when skipLight is true because otherwise shootWaitingRays() will be called and the "above light" layer will still be drawn, since draw() is called again in shootWaitingRays() with skipLight set to true.
+    // Draw the "above light" layer of scene.objsRefactored. Note that we only draw this when skipLight is true because otherwise shootWaitingRays() will be called and the "above light" layer will still be drawn, since draw() is called again in shootWaitingRays() with skipLight set to true.
 
-    for (var i = 0; i < objs.length; i++)
+    for (var i = 0; i < scene.objsRefactored.length; i++)
     {
-      objTypes[objs[i].type].draw(objs[i], ctx, true); // Draw objs[i]
+      objTypes[scene.objsRefactored[i].type].draw(scene.objsRefactored[i], ctx, true); // Draw scene.objsRefactored[i]
     }
     if (mode == 'observer')
     {
@@ -258,7 +258,7 @@ function shootWaitingRays() {
       document.getElementById('forceStop').style.display = '';
       document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
-      draw(true, true); // Redraw the objs to avoid outdated information (e.g. detector readings).
+      draw(true, true); // Redraw the scene.objsRefactored to avoid outdated information (e.g. detector readings).
       return;
     }
     if (isExporting && shotRayCount > exportRayCountLimit)
@@ -297,32 +297,32 @@ function shootWaitingRays() {
       surfaceMerging_objs = []; // The objects whose surface is to be merged with s_obj
       s_lensq = Infinity;
       observed = false; // Whether waitingRays[j] is observed by the observer
-      for (var i = 0; i < objs.length; i++)
+      for (var i = 0; i < scene.objsRefactored.length; i++)
       {
-        // if objs[i] can affect the ray
-        if (objTypes[objs[i].type].rayIntersection) {
-          // Test whether objs[i] intersects with the ray
-          s_point_temp = objTypes[objs[i].type].rayIntersection(objs[i], waitingRays[j]);
+        // if scene.objsRefactored[i] can affect the ray
+        if (objTypes[scene.objsRefactored[i].type].rayIntersection) {
+          // Test whether scene.objsRefactored[i] intersects with the ray
+          s_point_temp = objTypes[scene.objsRefactored[i].type].rayIntersection(scene.objsRefactored[i], waitingRays[j]);
           if (s_point_temp)
           {
-            // Here objs[i] intersects with the ray at s_point_temp
+            // Here scene.objsRefactored[i] intersects with the ray at s_point_temp
             s_lensq_temp = graphs.length_squared(waitingRays[j].p1, s_point_temp);
-            if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
+            if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[scene.objsRefactored[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
             {
               // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
               if (objTypes[s_obj.type].supportSurfaceMerging)
               {
-                if (objTypes[objs[i].type].supportSurfaceMerging)
+                if (objTypes[scene.objsRefactored[i].type].supportSurfaceMerging)
                 {
                   // Both of them supports surface merging (e.g. two glasses with one common edge
-                  surfaceMerging_objs[surfaceMerging_objs.length] = objs[i];
+                  surfaceMerging_objs[surfaceMerging_objs.length] = scene.objsRefactored[i];
                 }
                 else
                 {
                   // Only the first shot object supports surface merging
                   // Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
-                  s_obj = objs[i];
+                  s_obj = scene.objsRefactored[i];
                   s_obj_index = i;
                   s_point = s_point_temp;
                   s_lensq = s_lensq_temp;
@@ -333,7 +333,7 @@ function shootWaitingRays() {
             }
             else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
             {
-              s_obj = objs[i]; // Update the object to be shot
+              s_obj = scene.objsRefactored[i]; // Update the object to be shot
               s_obj_index = i;
               s_point = s_point_temp;
               s_lensq = s_lensq_temp;
@@ -667,7 +667,7 @@ function dichroicSettings(obj, elem){
       obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
       obj.isDichroicFilter = obj.isDichroicFilter || false;
       obj.bandwidth = obj.bandwidth || 10
-      if (obj == objs[selectedObj]) {
+      if (obj == scene.objsRefactored[selectedObj]) {
         selectObj(selectedObj);
       }
     }, elem);

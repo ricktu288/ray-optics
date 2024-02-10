@@ -8,8 +8,9 @@ var ctx0;
 var ctxLight;
 var ctxGrid;
 var dpr = 1;
-var objs = []; // The objects
-var objCount = 0; // Number of the objects
+var scene = {
+  objsRefactored: []
+}; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
 var observer;
 var xyBox_cancelContextMenu = false;
 var scale = 1;
@@ -460,16 +461,16 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    objs[objs.length] = JSON.parse(JSON.stringify(objs[selectedObj]));
-    objTypes[objs[objs.length - 1].type].move(objs[objs.length - 1], gridSize, gridSize);
-    selectObj(objs.length - 1);
-    draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
+    scene.objsRefactored[scene.objsRefactored.length] = JSON.parse(JSON.stringify(scene.objsRefactored[selectedObj]));
+    objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].move(scene.objsRefactored[scene.objsRefactored.length - 1], gridSize, gridSize);
+    selectObj(scene.objsRefactored.length - 1);
+    draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
-    var selectedObjType = objs[selectedObj].type;
+    var selectedObjType = scene.objsRefactored[selectedObj].type;
     this.blur();
     removeObj(selectedObj);
     draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
@@ -629,7 +630,7 @@ window.onresize = function (e) {
 function initParameters() {
   isConstructing = false;
   endPositioning();
-  objs.length = 0;
+  scene.objsRefactored.length = 0;
   selectObj(-1);
 
   rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
@@ -702,7 +703,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
+    draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
     createUndoPoint();
     return false;
   }
@@ -749,7 +750,7 @@ window.onkeydown = function (e) {
   //Delete
   if (e.keyCode == 46 || e.keyCode == 8) {
     if (selectedObj != -1) {
-      var selectedObjType = objs[selectedObj].type;
+      var selectedObjType = scene.objsRefactored[selectedObj].type;
       removeObj(selectedObj);
       draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
       createUndoPoint();
@@ -773,18 +774,18 @@ window.onkeydown = function (e) {
     var step = document.getElementById('grid').checked ? gridSize : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
-        objTypes[objs[selectedObj].type].move(objs[selectedObj], -step, 0);
+        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], -step, 0);
       }
       if (e.keyCode == 38) {
-        objTypes[objs[selectedObj].type].move(objs[selectedObj], 0, -step);
+        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], 0, -step);
       }
       if (e.keyCode == 39) {
-        objTypes[objs[selectedObj].type].move(objs[selectedObj], step, 0);
+        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], step, 0);
       }
       if (e.keyCode == 40) {
-        objTypes[objs[selectedObj].type].move(objs[selectedObj], 0, step);
+        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], 0, step);
       }
-      draw(!(objTypes[objs[selectedObj].type].shoot || objTypes[objs[selectedObj].type].rayIntersection), true);
+      draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
     }
     else if (mode == 'observer') {
       if (e.keyCode == 37) {
@@ -802,18 +803,18 @@ window.onkeydown = function (e) {
       draw(false, true);
     }
     else {
-      for (var i = 0; i < objs.length; i++) {
+      for (var i = 0; i < scene.objsRefactored.length; i++) {
         if (e.keyCode == 37) {
-          objTypes[objs[i].type].move(objs[i], -step, 0);
+          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], -step, 0);
         }
         if (e.keyCode == 38) {
-          objTypes[objs[i].type].move(objs[i], 0, -step);
+          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], 0, -step);
         }
         if (e.keyCode == 39) {
-          objTypes[objs[i].type].move(objs[i], step, 0);
+          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], step, 0);
         }
         if (e.keyCode == 40) {
-          objTypes[objs[i].type].move(objs[i], 0, step);
+          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], 0, step);
         }
       }
       draw();
@@ -845,7 +846,7 @@ function JSONOutput() {
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
   document.getElementById('textarea1').value = JSON.stringify({
      version: 2,
-     objs: objs,
+     objs: scene.objsRefactored,
      mode: mode,
      rayDensity_light: rayDensity_light,
      rayDensity_images: rayDensity_images,
@@ -938,7 +939,7 @@ function JSONInput() {
     jsonData.gridSize = 20;
   }
 
-  objs = jsonData.objs;
+  scene.objsRefactored = jsonData.objs;
   rayDensity_light = jsonData.rayDensity_light;
   rayDensity_images = jsonData.rayDensity_images;
 
@@ -1105,8 +1106,8 @@ function enterCropMode() {
 
   // Search objs for existing cropBox
   var cropBoxIndex = -1;
-  for (var i = 0; i < objs.length; i++) {
-    if (objs[i].type == 'cropbox') {
+  for (var i = 0; i < scene.objsRefactored.length; i++) {
+    if (scene.objsRefactored[i].type == 'cropbox') {
       cropBoxIndex = i;
       break;
     }
@@ -1122,8 +1123,8 @@ function enterCropMode() {
       width: 1280,
       format: 'png'
     };
-    objs.push(cropBox);
-    cropBoxIndex = objs.length - 1;
+    scene.objsRefactored.push(cropBox);
+    cropBoxIndex = scene.objsRefactored.length - 1;
   }
 
   selectObj(cropBoxIndex);
