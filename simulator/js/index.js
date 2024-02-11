@@ -633,11 +633,11 @@ function initParameters() {
   scene.objsRefactored.length = 0;
   selectObj(-1);
 
-  rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
-  rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
-  document.getElementById("rayDensity").value = rayDensity_light;
-  document.getElementById("rayDensity_more").value = rayDensity_light;
-  document.getElementById("rayDensity_mobile").value = rayDensity_light;
+  scene.rayDensity_lightRefactored = 0.1; // The Ray Density when View is Rays or Extended rays
+  scene.rayDensity_imagesRefactored = 1; // The Ray Density when View is All Images or Seen by Observer
+  document.getElementById("rayDensity").value = scene.rayDensity_lightRefactored;
+  document.getElementById("rayDensity_more").value = scene.rayDensity_lightRefactored;
+  document.getElementById("rayDensity_mobile").value = scene.rayDensity_lightRefactored;
   origin = { x: 0, y: 0 };
   observer = null;
   scale = 1;
@@ -846,8 +846,8 @@ function JSONOutput() {
      version: 2,
      objs: scene.objsRefactored,
      mode: scene.modeRefactored,
-     rayDensity_light: rayDensity_light,
-     rayDensity_images: rayDensity_images,
+     rayDensity_light: scene.rayDensity_lightRefactored,
+     rayDensity_images: scene.rayDensity_imagesRefactored,
      showGrid: document.getElementById('showgrid').checked,
      grid: document.getElementById('grid').checked,
      lockobjs: document.getElementById('lockobjs').checked,
@@ -938,8 +938,8 @@ function JSONInput() {
   }
 
   scene.objsRefactored = jsonData.objs;
-  rayDensity_light = jsonData.rayDensity_light;
-  rayDensity_images = jsonData.rayDensity_images;
+  scene.rayDensity_lightRefactored = jsonData.rayDensity_light;
+  scene.rayDensity_imagesRefactored = jsonData.rayDensity_images;
 
   document.getElementById('showgrid').checked = jsonData.showGrid;
   document.getElementById('showgrid_more').checked = jsonData.showGrid;
@@ -1004,14 +1004,14 @@ function toolbtn_clicked(tool, e) {
 function modebtn_clicked(mode1) {
   scene.modeRefactored = mode1;
   if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer') {
-    document.getElementById("rayDensity").value = Math.log(rayDensity_images);
-    document.getElementById("rayDensity_more").value = Math.log(rayDensity_images);
-    document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_images);
+    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_imagesRefactored);
+    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_imagesRefactored);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_imagesRefactored);
   }
   else {
-    document.getElementById("rayDensity").value = Math.log(rayDensity_light);
-    document.getElementById("rayDensity_more").value = Math.log(rayDensity_light);
-    document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_light);
+    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_lightRefactored);
+    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_lightRefactored);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_lightRefactored);
   }
   if (scene.modeRefactored == 'observer' && !observer) {
     // Initialize the observer

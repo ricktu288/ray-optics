@@ -1,7 +1,5 @@
 var waitingRays = []; // The rays waiting for shooting
 var waitingRayCount = 0; // Number of rays waiting for shooting
-var rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
-var rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
 var colorMode = false;
 var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
@@ -194,11 +192,11 @@ function getRayDensity()
 {
   if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer')
   {
-    return rayDensity_images;
+    return scene.rayDensity_imagesRefactored;
   }
   else
   {
-    return rayDensity_light;
+    return scene.rayDensity_lightRefactored;
   }
 }
 
@@ -206,11 +204,11 @@ function setRayDensity(value)
 {
   if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer')
   {
-    rayDensity_images = value;
+    scene.rayDensity_imagesRefactored = value;
   }
   else
   {
-    rayDensity_light = value;
+    scene.rayDensity_lightRefactored = value;
   }
 }
 
