@@ -87,7 +87,7 @@ function draw_(skipLight, skipGrid) {
     var canvasPainterGrid = new CanvasPainter(ctxGrid, {x: origin.x*dpr, y: origin.y*dpr}, (scale*dpr));
     canvasPainterGrid.cls();
 
-    if (document.getElementById('showgrid').checked) {
+    if (scene.showGridRefactored) {
       // Draw the grid
 
       ctxGrid.save();

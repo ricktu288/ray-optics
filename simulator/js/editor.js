@@ -120,7 +120,7 @@ function canvas_onmousedown(e) {
     return;
   }
 
-  if (document.getElementById('grid').checked) {
+  if (scene.gridRefactored) {
     mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
 
   }
@@ -139,7 +139,7 @@ function canvas_onmousedown(e) {
   }
   else {
     // lockobjs prevents selection, but alt overrides it
-    if ((!(document.getElementById('lockobjs').checked) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
+    if ((!(scene.lockobjsRefactored) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
 
       draggingPart = {};
 
@@ -278,7 +278,7 @@ function canvas_onmousemove(e) {
   }
   var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); // The real position of the mouse
   var mouse2;
-  if (document.getElementById('grid').checked && !(e.altKey && !isConstructing)) {
+  if (scene.gridRefactored && !(e.altKey && !isConstructing)) {
     mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
   }
   else {

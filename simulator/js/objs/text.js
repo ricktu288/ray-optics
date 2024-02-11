@@ -145,7 +145,7 @@ objTypes['text'] = {
         rotatedMouseY <=  obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
       draggingPart.part = 0;
       draggingPart.mouse0 = graphs.point(mouse_nogrid.x, mouse_nogrid.y);
-      draggingPart.mouse0snapped = document.getElementById('grid').checked ? graphs.point(Math.round(draggingPart.mouse0.x / gridSize) * gridSize, Math.round(draggingPart.mouse0.y / gridSize) * gridSize) : draggingPart.mouse0;
+      draggingPart.mouse0snapped = scene.gridRefactored ? graphs.point(Math.round(draggingPart.mouse0.x / gridSize) * gridSize, Math.round(draggingPart.mouse0.y / gridSize) * gridSize) : draggingPart.mouse0;
       draggingPart.targetPoint_ = graphs.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
       return true;

@@ -9,7 +9,13 @@ var ctxLight;
 var ctxGrid;
 var dpr = 1;
 var scene = {
-  objsRefactored: []
+  objsRefactored: [],
+  modeRefactored: 'light',
+  rayDensity_lightRefactored: 0.1,
+  rayDensity_imagesRefactored: 1,
+  showGridRefactored: false,
+  gridRefactored: false,
+  lockobjsRefactored: false
 }; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
 var observer;
 var xyBox_cancelContextMenu = false;
@@ -418,6 +424,7 @@ window.onload = function (e) {
     document.getElementById('grid').checked = e.target.checked;
     document.getElementById('grid_more').checked = e.target.checked;
     document.getElementById('grid_mobile').checked = e.target.checked;
+    scene.gridRefactored = e.target.checked;
     this.blur();
     //draw();
   };
@@ -428,6 +435,7 @@ window.onload = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
     document.getElementById('showgrid_more').checked = e.target.checked;
     document.getElementById('showgrid_mobile').checked = e.target.checked;
+    scene.showGridRefactored = e.target.checked;
     this.blur();
     draw(true, false);
   };
@@ -438,6 +446,7 @@ window.onload = function (e) {
     document.getElementById('lockobjs').checked = e.target.checked;
     document.getElementById('lockobjs_more').checked = e.target.checked;
     document.getElementById('lockobjs_mobile').checked = e.target.checked;
+    scene.lockobjsRefactored = e.target.checked;
     this.blur();
   };
   document.getElementById('lockobjs_more').onclick = document.getElementById('lockobjs').onclick;
@@ -654,6 +663,10 @@ function initParameters() {
   colorMode = false;
   backgroundImage = null;
 
+  scene.lockobjsRefactored = false;
+  scene.gridRefactored = false;
+  scene.showGridRefactored = false;
+
   //Reset new UI.
   
   resetDropdownButtons();
@@ -769,7 +782,7 @@ window.onkeydown = function (e) {
 
   //Arrow Keys
   if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = document.getElementById('grid').checked ? gridSize : 1;
+    var step = scene.gridRefactored ? gridSize : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
         objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], -step, 0);
@@ -848,9 +861,9 @@ function JSONOutput() {
      mode: scene.modeRefactored,
      rayDensity_light: scene.rayDensity_lightRefactored,
      rayDensity_images: scene.rayDensity_imagesRefactored,
-     showGrid: document.getElementById('showgrid').checked,
-     grid: document.getElementById('grid').checked,
-     lockobjs: document.getElementById('lockobjs').checked,
+     showGrid: scene.showGridRefactored,
+     grid: scene.gridRefactored,
+     lockobjs: scene.lockobjsRefactored,
      gridSize: gridSize,
      observer: observer,
      origin: origin,
@@ -944,9 +957,13 @@ function JSONInput() {
   document.getElementById('showgrid').checked = jsonData.showGrid;
   document.getElementById('showgrid_more').checked = jsonData.showGrid;
   document.getElementById('showgrid_mobile').checked = jsonData.showGrid;
+  scene.showGridRefactored = jsonData.showGrid;
+
   document.getElementById('grid').checked = jsonData.grid;
   document.getElementById('grid_more').checked = jsonData.grid;
   document.getElementById('grid_mobile').checked = jsonData.grid;
+  scene.gridRefactored = jsonData.grid;
+
   document.getElementById('lockobjs').checked = jsonData.lockobjs;
   document.getElementById('lockobjs_more').checked = jsonData.lockobjs;
   document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
