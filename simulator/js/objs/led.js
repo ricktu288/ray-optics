@@ -50,7 +50,7 @@ objTypes['led'] = {
   // Shoot rays
   shoot: function(obj) {
   var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
-  var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0;
+  var i0 = (scene.modeRefactored == 'observer') ? (-s * 2 + 1e-6) : 0;
   
   var ang, x1, y1, iStart, iEnd;
   if (obj.symmetric) {

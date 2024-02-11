@@ -83,7 +83,7 @@ objTypes['radiant'] = {
   // Shoot rays
   shoot: function(obj) {
   var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
-  var i0 = (mode == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
+  var i0 = (scene.modeRefactored == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
   for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s)
   {
     var ray1 = graphs.ray(graphs.point(obj.x, obj.y), graphs.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));

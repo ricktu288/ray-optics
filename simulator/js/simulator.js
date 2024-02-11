@@ -2,9 +2,6 @@ var waitingRays = []; // The rays waiting for shooting
 var waitingRayCount = 0; // Number of rays waiting for shooting
 var rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
 var rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
-var mode = 'light';
-var extendLight = false;
-var showLight = true;
 var colorMode = false;
 var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
@@ -175,7 +172,7 @@ function draw_(skipLight, skipGrid) {
     {
       objTypes[scene.objsRefactored[i].type].draw(scene.objsRefactored[i], ctx, true); // Draw scene.objsRefactored[i]
     }
-    if (mode == 'observer')
+    if (scene.modeRefactored == 'observer')
     {
       // Draw the observer
       ctx.globalAlpha = 1;
@@ -195,7 +192,7 @@ function addRay(ray) {
 
 function getRayDensity()
 {
-  if (mode == 'images' || mode == 'observer')
+  if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer')
   {
     return rayDensity_images;
   }
@@ -207,7 +204,7 @@ function getRayDensity()
 
 function setRayDensity(value)
 {
-  if (mode == 'images' || mode == 'observer')
+  if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer')
   {
     rayDensity_images = value;
   }
@@ -351,7 +348,7 @@ function shootWaitingRays() {
       // If not shot on any object
       if (s_lensq == Infinity)
       {
-        if (mode == 'light' || mode == 'extended_light')
+        if (scene.modeRefactored == 'light' || scene.modeRefactored == 'extended_light')
         {
           if (colorMode) {
             canvasPainter.draw(waitingRays[j], color); // Draw the ray
@@ -359,7 +356,7 @@ function shootWaitingRays() {
             canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); // Draw the ray
           }
         }
-        if (mode == 'extended_light' && !waitingRays[j].isNew)
+        if (scene.modeRefactored == 'extended_light' && !waitingRays[j].isNew)
         {
           if (colorMode) {
             ctxLight.setLineDash([2, 2]);
@@ -370,7 +367,7 @@ function shootWaitingRays() {
           }
         }
 
-        if (mode == 'observer')
+        if (scene.modeRefactored == 'observer')
         {
           observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
           if (observed_point)
@@ -385,7 +382,7 @@ function shootWaitingRays() {
       else
       {
         // Here the ray will be shot on s_obj at s_point after traveling for s_len
-        if (mode == 'light' || mode == 'extended_light')
+        if (scene.modeRefactored == 'light' || scene.modeRefactored == 'extended_light')
         {
           if (colorMode) {
             canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); // Draw the ray
@@ -393,7 +390,7 @@ function shootWaitingRays() {
             canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
           }
         }
-        if (mode == 'extended_light' && !waitingRays[j].isNew)
+        if (scene.modeRefactored == 'extended_light' && !waitingRays[j].isNew)
         {
           if (colorMode) {
             ctxLight.setLineDash([2, 2]);
@@ -408,7 +405,7 @@ function shootWaitingRays() {
 
         }
 
-        if (mode == 'observer')
+        if (scene.modeRefactored == 'observer')
         {
           observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
 
@@ -422,7 +419,7 @@ function shootWaitingRays() {
           }
         }
       }
-      if (mode == 'observer' && last_ray)
+      if (scene.modeRefactored == 'observer' && last_ray)
       {
         if (!waitingRays[j].gap)
         {
@@ -510,7 +507,7 @@ function shootWaitingRays() {
         }
       }
 
-      if (mode == 'images' && last_ray)
+      if (scene.modeRefactored == 'images' && last_ray)
       {
         if (!waitingRays[j].gap)
         {

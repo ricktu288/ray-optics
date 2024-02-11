@@ -638,8 +638,6 @@ function initParameters() {
   document.getElementById("rayDensity").value = rayDensity_light;
   document.getElementById("rayDensity_more").value = rayDensity_light;
   document.getElementById("rayDensity_mobile").value = rayDensity_light;
-  extendLight = false;
-  showLight = true;
   origin = { x: 0, y: 0 };
   observer = null;
   scale = 1;
@@ -787,7 +785,7 @@ window.onkeydown = function (e) {
       }
       draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
     }
-    else if (mode == 'observer') {
+    else if (scene.modeRefactored == 'observer') {
       if (e.keyCode == 37) {
         observer.c.x -= step;
       }
@@ -847,7 +845,7 @@ function JSONOutput() {
   document.getElementById('textarea1').value = JSON.stringify({
      version: 2,
      objs: scene.objsRefactored,
-     mode: mode,
+     mode: scene.modeRefactored,
      rayDensity_light: rayDensity_light,
      rayDensity_images: rayDensity_images,
      showGrid: document.getElementById('showgrid').checked,
@@ -1004,8 +1002,8 @@ function toolbtn_clicked(tool, e) {
 
 
 function modebtn_clicked(mode1) {
-  mode = mode1;
-  if (mode == 'images' || mode == 'observer') {
+  scene.modeRefactored = mode1;
+  if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer') {
     document.getElementById("rayDensity").value = Math.log(rayDensity_images);
     document.getElementById("rayDensity_more").value = Math.log(rayDensity_images);
     document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_images);
@@ -1015,7 +1013,7 @@ function modebtn_clicked(mode1) {
     document.getElementById("rayDensity_more").value = Math.log(rayDensity_light);
     document.getElementById("rayDensity_mobile").value = Math.log(rayDensity_light);
   }
-  if (mode == 'observer' && !observer) {
+  if (scene.modeRefactored == 'observer' && !observer) {
     // Initialize the observer
     observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }

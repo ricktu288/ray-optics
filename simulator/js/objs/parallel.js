@@ -29,7 +29,7 @@ objTypes['parallel'] = {
       createBooleanAttr(getMsg('random'), obj.random, function(obj, value) {
         obj.random = value;
       }, elem);
-      if (mode == 'images' || mode == 'observer') {
+      if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer') {
         var note = document.createElement('span');
         note.innerHTML = getMsg('beam_warning');
         note.id = "beam_warning";

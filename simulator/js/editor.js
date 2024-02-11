@@ -143,7 +143,7 @@ function canvas_onmousedown(e) {
 
       draggingPart = {};
 
-      if (mode == 'observer') {
+      if (scene.modeRefactored == 'observer') {
         if (graphs.length_squared(mouse_nogrid, observer.c) < observer.r * observer.r) {
           // The mouse clicked the observer
           draggingObj = -4;
@@ -305,7 +305,7 @@ function canvas_onmousemove(e) {
         canvas.style.cursor = '';
       }
     } else {
-      if (mode == 'observer' && graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
+      if (scene.modeRefactored == 'observer' && graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
         canvas.style.cursor = 'pointer';
       } else {
         canvas.style.cursor = '';
@@ -328,7 +328,6 @@ function canvas_onmousemove(e) {
     draw(!(objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].shoot || objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].rayIntersection), true);
   }
   else {
-    var instantObserver = mode == 'observed_light' || mode == 'observed_images';
     if (draggingObj == -4) {
       if (e.shiftKey) {
         var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
@@ -472,7 +471,7 @@ function canvas_ondblclick(e) {
   }
   else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
     draggingPart = {};
-    if (mode == 'observer') {
+    if (scene.modeRefactored == 'observer') {
       if (graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
 
         // The mouse clicked the observer
