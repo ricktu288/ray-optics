@@ -285,7 +285,7 @@ function canvas_onmousemove(e) {
     mouse2 = mouse_nogrid;
   }
 
-  if (!isConstructing && draggingObj == -1 && !document.getElementById('lockobjs').checked) {
+  if (!isConstructing && draggingObj == -1 && !scene.lockobjsRefactored) {
     // highlight object under mouse cursor
     var ret = selectionSearch(mouse_nogrid)[0];
     //console.log(mouse_nogrid);
