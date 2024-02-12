@@ -20,7 +20,6 @@ var clickExtent_point = 10;
 var clickExtent_point_construct = 10;
 var touchscreenExtentRatio = 2;
 
-var gridSize = 20; // Size of the grid
 var origin = { x: 0, y: 0 }; // Origin of the grid
 
 var pendingControlPointSelection = false;
@@ -121,7 +120,7 @@ function canvas_onmousedown(e) {
   }
 
   if (scene.gridRefactored) {
-    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
+    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
 
   }
   else {
@@ -279,7 +278,7 @@ function canvas_onmousemove(e) {
   var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); // The real position of the mouse
   var mouse2;
   if (scene.gridRefactored && !(e.altKey && !isConstructing)) {
-    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / gridSize) * gridSize, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / gridSize) * gridSize);
+    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
   }
   else {
     mouse2 = mouse_nogrid;

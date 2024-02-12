@@ -3,7 +3,7 @@ objTypes['idealmirror'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + gridSize, mouse.y), p: 100};
+    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + scene.gridSizeRefactored, mouse.y), p: 100};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,

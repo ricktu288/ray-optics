@@ -15,7 +15,8 @@ var scene = {
   rayDensity_imagesRefactored: 1,
   showGridRefactored: false,
   gridRefactored: false,
-  lockobjsRefactored: false
+  lockobjsRefactored: false,
+  gridSizeRefactored: 20,
 }; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
 var observer;
 var xyBox_cancelContextMenu = false;
@@ -308,9 +309,9 @@ window.onload = function (e) {
   }
 
   document.getElementById('grid_size').onchange = function () {
-    gridSize = parseFloat(this.value);
-    document.getElementById('grid_size').value = gridSize;
-    document.getElementById('grid_size_mobile').value = gridSize;
+    scene.gridSizeRefactored = parseFloat(this.value);
+    document.getElementById('grid_size').value = scene.gridSizeRefactored;
+    document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
     draw(true, false);
   }
   document.getElementById('grid_size_mobile').onchange = document.getElementById('grid_size').onchange;
@@ -471,7 +472,7 @@ window.onload = function (e) {
   document.getElementById('copy').onclick = function () {
     this.blur();
     scene.objsRefactored[scene.objsRefactored.length] = JSON.parse(JSON.stringify(scene.objsRefactored[selectedObj]));
-    objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].move(scene.objsRefactored[scene.objsRefactored.length - 1], gridSize, gridSize);
+    objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].move(scene.objsRefactored[scene.objsRefactored.length - 1], scene.gridSizeRefactored, scene.gridSizeRefactored);
     selectObj(scene.objsRefactored.length - 1);
     draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
     createUndoPoint();
@@ -693,9 +694,9 @@ function initParameters() {
   document.getElementById('setAttrAll').checked = false;
   document.getElementById('applytoall_mobile').checked = false;
 
-  gridSize = 20;
-  document.getElementById('grid_size').value = gridSize;
-  document.getElementById('grid_size_mobile').value = gridSize;
+  scene.gridSizeRefactored = 20;
+  document.getElementById('grid_size').value = scene.gridSizeRefactored;
+  document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
 
   document.getElementById('observer_size').value = 40;
   document.getElementById('observer_size_mobile').value = 40;
@@ -782,7 +783,7 @@ window.onkeydown = function (e) {
 
   //Arrow Keys
   if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = scene.gridRefactored ? gridSize : 1;
+    var step = scene.gridRefactored ? scene.gridSizeRefactored : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
         objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], -step, 0);
@@ -864,7 +865,7 @@ function JSONOutput() {
      showGrid: scene.showGridRefactored,
      grid: scene.gridRefactored,
      lockobjs: scene.lockobjsRefactored,
-     gridSize: gridSize,
+     gridSize: scene.gridSizeRefactored,
      observer: observer,
      origin: origin,
      scale: scale,
@@ -978,9 +979,9 @@ function JSONInput() {
     document.getElementById('observer_size_mobile').value = 40;
   }
 
-  gridSize = jsonData.gridSize;
-  document.getElementById('grid_size').value = gridSize;
-  document.getElementById('grid_size_mobile').value = gridSize;
+  scene.gridSizeRefactored = jsonData.gridSize;
+  document.getElementById('grid_size').value = scene.gridSizeRefactored;
+  document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
 
   var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;

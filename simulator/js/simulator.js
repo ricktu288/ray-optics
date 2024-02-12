@@ -110,16 +110,16 @@ function draw_(skipLight, skipGrid) {
 
       // Draw vertical dashed lines
       ctxGrid.beginPath();
-      for (var x = origin.x / scale % gridSize; x <= ctxGrid.canvas.width / (scale * dpr); x += gridSize) {
-        ctxGrid.moveTo(x, origin.y / scale % gridSize - gridSize);
+      for (var x = origin.x / scale % scene.gridSizeRefactored; x <= ctxGrid.canvas.width / (scale * dpr); x += scene.gridSizeRefactored) {
+        ctxGrid.moveTo(x, origin.y / scale % scene.gridSizeRefactored - scene.gridSizeRefactored);
         ctxGrid.lineTo(x, ctxGrid.canvas.height / (scale * dpr));
       }
       ctxGrid.stroke();
 
       // Draw horizontal dashed lines
       ctxGrid.beginPath();
-      for (var y = origin.y / scale % gridSize; y <= ctxGrid.canvas.height / (scale * dpr); y += gridSize) {
-        ctxGrid.moveTo(origin.x / scale % gridSize - gridSize, y);
+      for (var y = origin.y / scale % scene.gridSizeRefactored; y <= ctxGrid.canvas.height / (scale * dpr); y += scene.gridSizeRefactored) {
+        ctxGrid.moveTo(origin.x / scale % scene.gridSizeRefactored - scene.gridSizeRefactored, y);
         ctxGrid.lineTo(ctxGrid.canvas.width / (scale * dpr), y);
       }
       ctxGrid.stroke();
