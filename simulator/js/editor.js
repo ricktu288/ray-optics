@@ -143,7 +143,7 @@ function canvas_onmousedown(e) {
       draggingPart = {};
 
       if (scene.modeRefactored == 'observer') {
-        if (graphs.length_squared(mouse_nogrid, observer.c) < observer.r * observer.r) {
+        if (graphs.length_squared(mouse_nogrid, scene.observerRefactored.c) < scene.observerRefactored.r * scene.observerRefactored.r) {
           // The mouse clicked the observer
           draggingObj = -4;
           draggingPart = {};
@@ -304,7 +304,7 @@ function canvas_onmousemove(e) {
         canvas.style.cursor = '';
       }
     } else {
-      if (scene.modeRefactored == 'observer' && graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
+      if (scene.modeRefactored == 'observer' && graphs.length_squared(mouse, scene.observerRefactored.c) < scene.observerRefactored.r * scene.observerRefactored.r) {
         canvas.style.cursor = 'pointer';
       } else {
         canvas.style.cursor = '';
@@ -339,8 +339,8 @@ function canvas_onmousemove(e) {
       var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); // The X difference between the mouse position now and at the previous moment
       var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); // The Y difference between the mouse position now and at the previous moment
 
-      observer.c.x += mouseDiffX;
-      observer.c.y += mouseDiffY;
+      scene.observerRefactored.c.x += mouseDiffX;
+      scene.observerRefactored.c.y += mouseDiffY;
 
       // Update the mouse position
       draggingPart.mouse1 = mouse_snapped;
@@ -471,12 +471,12 @@ function canvas_ondblclick(e) {
   else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
     draggingPart = {};
     if (scene.modeRefactored == 'observer') {
-      if (graphs.length_squared(mouse, observer.c) < observer.r * observer.r) {
+      if (graphs.length_squared(mouse, scene.observerRefactored.c) < scene.observerRefactored.r * scene.observerRefactored.r) {
 
         // The mouse clicked the observer
         positioningObj = -4;
         draggingPart = {};
-        draggingPart.targetPoint = graphs.point(observer.c.x, observer.c.y);
+        draggingPart.targetPoint = graphs.point(scene.observerRefactored.c.x, scene.observerRefactored.c.y);
         draggingPart.snapData = {};
 
         document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
@@ -603,8 +603,8 @@ function confirmPositioning(ctrl, shift) {
   if (xyData.length == 2) {
     if (positioningObj == -4) {
       // Observer
-      observer.c.x = xyData[0];
-      observer.c.y = xyData[1];
+      scene.observerRefactored.c.x = xyData[0];
+      scene.observerRefactored.c.y = xyData[1];
       draw(false, true);
     }
     else {

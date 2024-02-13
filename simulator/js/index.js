@@ -17,8 +17,8 @@ var scene = {
   gridRefactored: false,
   lockobjsRefactored: false,
   gridSizeRefactored: 20,
+  observerRefactored: null
 }; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
-var observer;
 var xyBox_cancelContextMenu = false;
 var scale = 1;
 var cartesianSign = false;
@@ -331,8 +331,8 @@ window.onload = function (e) {
   document.getElementById('observer_size').onchange = function () {
     document.getElementById('observer_size').value = this.value;
     document.getElementById('observer_size_mobile').value = this.value;
-    if (observer) {
-      observer.r = parseFloat(this.value) * 0.5;
+    if (scene.observerRefactored) {
+      scene.observerRefactored.r = parseFloat(this.value) * 0.5;
     }
     draw(false, true);
   }
@@ -649,7 +649,7 @@ function initParameters() {
   document.getElementById("rayDensity_more").value = scene.rayDensity_lightRefactored;
   document.getElementById("rayDensity_mobile").value = scene.rayDensity_lightRefactored;
   origin = { x: 0, y: 0 };
-  observer = null;
+  scene.observerRefactored = null;
   scale = 1;
   cartesianSign = false;
   try {
@@ -801,16 +801,16 @@ window.onkeydown = function (e) {
     }
     else if (scene.modeRefactored == 'observer') {
       if (e.keyCode == 37) {
-        observer.c.x -= step;
+        scene.observerRefactored.c.x -= step;
       }
       if (e.keyCode == 38) {
-        observer.c.y -= step;
+        scene.observerRefactored.c.y -= step;
       }
       if (e.keyCode == 39) {
-        observer.c.x += step;
+        scene.observerRefactored.c.x += step;
       }
       if (e.keyCode == 40) {
-        observer.c.y += step;
+        scene.observerRefactored.c.y += step;
       }
       draw(false, true);
     }
@@ -866,7 +866,7 @@ function JSONOutput() {
      grid: scene.gridRefactored,
      lockobjs: scene.lockobjsRefactored,
      gridSize: scene.gridSizeRefactored,
-     observer: observer,
+     observer: scene.observerRefactored,
      origin: origin,
      scale: scale,
      width: canvasWidth,
@@ -969,11 +969,11 @@ function JSONInput() {
   document.getElementById('lockobjs_more').checked = jsonData.lockobjs;
   document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
 
-  observer = jsonData.observer;
+  scene.observerRefactored = jsonData.observer;
 
-  if (observer) {
-    document.getElementById('observer_size').value = Math.round(observer.r * 2 * 1000000) / 1000000;
-    document.getElementById('observer_size_mobile').value = Math.round(observer.r * 2 * 1000000) / 1000000;
+  if (scene.observerRefactored) {
+    document.getElementById('observer_size').value = Math.round(scene.observerRefactored.r * 2 * 1000000) / 1000000;
+    document.getElementById('observer_size_mobile').value = Math.round(scene.observerRefactored.r * 2 * 1000000) / 1000000;
   } else {
     document.getElementById('observer_size').value = 40;
     document.getElementById('observer_size_mobile').value = 40;
@@ -1031,9 +1031,9 @@ function modebtn_clicked(mode1) {
     document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_lightRefactored);
     document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_lightRefactored);
   }
-  if (scene.modeRefactored == 'observer' && !observer) {
+  if (scene.modeRefactored == 'observer' && !scene.observerRefactored) {
     // Initialize the observer
-    observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observerRefactored = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 

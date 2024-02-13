@@ -176,7 +176,7 @@ function draw_(skipLight, skipGrid) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.fillStyle = 'blue';
-      ctx.arc(observer.c.x, observer.c.y, observer.r, 0, Math.PI * 2, false);
+      ctx.arc(scene.observerRefactored.c.x, scene.observerRefactored.c.y, scene.observerRefactored.r, 0, Math.PI * 2, false);
       ctx.fill();
     }
   }
@@ -367,7 +367,7 @@ function shootWaitingRays() {
 
         if (scene.modeRefactored == 'observer')
         {
-          observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
+          observed_point = graphs.intersection_line_circle(waitingRays[j], scene.observerRefactored)[2];
           if (observed_point)
           {
             if (graphs.intersection_is_on_ray(observed_point, waitingRays[j]))
@@ -405,7 +405,7 @@ function shootWaitingRays() {
 
         if (scene.modeRefactored == 'observer')
         {
-          observed_point = graphs.intersection_line_circle(waitingRays[j], observer)[2];
+          observed_point = graphs.intersection_line_circle(waitingRays[j], scene.observerRefactored)[2];
 
           if (observed_point)
           {
