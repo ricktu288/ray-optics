@@ -110,7 +110,7 @@ objTypes['halfplane'] = {
   var per_x = par_y;
   var per_y = -par_x;
 
-  var sufficientlyLargeDistance = (Math.abs(obj.p1.x + origin.x) + Math.abs(obj.p1.y + origin.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, scale);
+  var sufficientlyLargeDistance = (Math.abs(obj.p1.x + scene.originRefactored.x) + Math.abs(obj.p1.y + scene.originRefactored.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, scale);
 
   ctx.beginPath();
   ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);

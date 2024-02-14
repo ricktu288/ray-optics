@@ -17,7 +17,8 @@ var scene = {
   gridRefactored: false,
   lockobjsRefactored: false,
   gridSizeRefactored: 20,
-  observerRefactored: null
+  observerRefactored: null,
+  originRefactored: { x: 0, y: 0 }
 }; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
 var xyBox_cancelContextMenu = false;
 var scale = 1;
@@ -193,8 +194,8 @@ window.onload = function (e) {
       const dy2 = y - lastY;
 
       // Apply the translation
-      origin.x += dx2;
-      origin.y += dy2;
+      scene.originRefactored.x += dx2;
+      scene.originRefactored.y += dy2;
   
       // Apply the scale transformation
       setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scale, (y - e.target.offsetTop) / scale);
@@ -648,7 +649,7 @@ function initParameters() {
   document.getElementById("rayDensity").value = scene.rayDensity_lightRefactored;
   document.getElementById("rayDensity_more").value = scene.rayDensity_lightRefactored;
   document.getElementById("rayDensity_mobile").value = scene.rayDensity_lightRefactored;
-  origin = { x: 0, y: 0 };
+  scene.originRefactored = { x: 0, y: 0 };
   scene.observerRefactored = null;
   scale = 1;
   cartesianSign = false;
@@ -867,7 +868,7 @@ function JSONOutput() {
      lockobjs: scene.lockobjsRefactored,
      gridSize: scene.gridSizeRefactored,
      observer: scene.observerRefactored,
-     origin: origin,
+     origin: scene.originRefactored,
      scale: scale,
      width: canvasWidth,
      height: canvasHeight,
@@ -994,8 +995,8 @@ function JSONInput() {
   }
   //console.log(rescaleFactor);
   scale = jsonData.scale / rescaleFactor;
-  origin.x = jsonData.origin.x / rescaleFactor;
-  origin.y = jsonData.origin.y / rescaleFactor;
+  scene.originRefactored.x = jsonData.origin.x / rescaleFactor;
+  scene.originRefactored.y = jsonData.origin.y / rescaleFactor;
 
   document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
@@ -1033,7 +1034,7 @@ function modebtn_clicked(mode1) {
   }
   if (scene.modeRefactored == 'observer' && !scene.observerRefactored) {
     // Initialize the observer
-    scene.observerRefactored = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - origin.x) / scale, (canvas.height * 0.5 / dpr - origin.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observerRefactored = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - scene.originRefactored.x) / scale, (canvas.height * 0.5 / dpr - scene.originRefactored.y) / scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 
@@ -1052,10 +1053,10 @@ function setScale(value) {
 
 function setScaleWithCenter(value, centerX, centerY) {
   scaleChange = value - scale;
-  origin.x *= value / scale;
-  origin.y *= value / scale;
-  origin.x -= centerX * scaleChange;
-  origin.y -= centerY * scaleChange;
+  scene.originRefactored.x *= value / scale;
+  scene.originRefactored.y *= value / scale;
+  scene.originRefactored.x -= centerX * scaleChange;
+  scene.originRefactored.y -= centerY * scaleChange;
   scale = value;
   document.getElementById("zoom").innerText = Math.round(scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scale * 100) + '%';
@@ -1132,10 +1133,10 @@ function enterCropMode() {
     // Create a new cropBox
     var cropBox = {
       type: 'cropbox',
-      p1: graphs.point((canvas.width * 0.2 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - origin.y) / scale),
-      p2: graphs.point((canvas.width * 0.8 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - origin.y) / scale),
-      p3: graphs.point((canvas.width * 0.2 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - origin.y) / scale),
-      p4: graphs.point((canvas.width * 0.8 / dpr - origin.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - origin.y) / scale),
+      p1: graphs.point((canvas.width * 0.2 / dpr - scene.originRefactored.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.originRefactored.y) / scale),
+      p2: graphs.point((canvas.width * 0.8 / dpr - scene.originRefactored.x) / scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.originRefactored.y) / scale),
+      p3: graphs.point((canvas.width * 0.2 / dpr - scene.originRefactored.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.originRefactored.y) / scale),
+      p4: graphs.point((canvas.width * 0.8 / dpr - scene.originRefactored.x) / scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.originRefactored.y) / scale),
       width: 1280,
       format: 'png'
     };
@@ -1154,11 +1155,11 @@ function exportSVG(cropBox) {
   var ctxLight_backup = ctxLight;
   var ctxGrid_backup = ctxGrid;
   var scale_backup = scale;
-  var origin_backup = origin;
+  var origin_backup = scene.originRefactored;
   var dpr_backup = dpr;
 
   scale = 1;
-  origin = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
+  scene.originRefactored = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
   dpr = 1;
   imageWidth = cropBox.p4.x - cropBox.p1.x;
   imageHeight = cropBox.p4.y - cropBox.p1.y;
@@ -1186,7 +1187,7 @@ function exportSVG(cropBox) {
   ctxLight = ctxLight_backup;
   ctxGrid = ctxGrid_backup;
   scale = scale_backup;
-  origin = origin_backup;
+  scene.originRefactored = origin_backup;
   dpr = dpr_backup;
   draw(true, true);
 }
@@ -1194,11 +1195,11 @@ function exportSVG(cropBox) {
 function exportImage(cropBox) {
 
   var scale_backup = scale;
-  var origin_backup = origin;
+  var origin_backup = scene.originRefactored;
   var dpr_backup = dpr;
 
   scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-  origin = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
+  scene.originRefactored = { x: -cropBox.p1.x * scale, y: -cropBox.p1.y * scale };
   dpr = 1;
   imageWidth = cropBox.width;
   imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
@@ -1236,7 +1237,7 @@ function exportImage(cropBox) {
   });
 
   scale = scale_backup;
-  origin = origin_backup;
+  scene.originRefactored = origin_backup;
   dpr = dpr_backup;
   window.onresize();
 }

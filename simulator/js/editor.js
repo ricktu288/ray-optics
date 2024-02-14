@@ -20,8 +20,6 @@ var clickExtent_point = 10;
 var clickExtent_point_construct = 10;
 var touchscreenExtentRatio = 2;
 
-var origin = { x: 0, y: 0 }; // Origin of the grid
-
 var pendingControlPointSelection = false;
 var pendingControlPoints;
 
@@ -105,7 +103,7 @@ function canvas_onmousedown(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); // The real position of the mouse
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1) {
     confirmPositioning(e.ctrlKey, e.shiftKey);
@@ -120,7 +118,7 @@ function canvas_onmousedown(e) {
   }
 
   if (scene.gridRefactored) {
-    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
+    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
 
   }
   else {
@@ -189,7 +187,7 @@ function canvas_onmousedown(e) {
         draggingPart = {};
         draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
         draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
-        draggingPart.mouse2 = origin; //Original origin.
+        draggingPart.mouse2 = scene.originRefactored; //Original origin.
         draggingPart.snapData = {};
         selectObj(-1);
       }
@@ -275,10 +273,10 @@ function canvas_onmousemove(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - origin.x) / scale, (et.pageY - e.target.offsetTop - origin.y) / scale); // The real position of the mouse
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse
   var mouse2;
   if (scene.gridRefactored && !(e.altKey && !isConstructing)) {
-    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - origin.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - origin.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
+    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
   }
   else {
     mouse2 = mouse_nogrid;
@@ -386,8 +384,8 @@ function canvas_onmousemove(e) {
 
       var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); // The X difference between the mouse position now and at the previous moment
       var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); // The Y difference between the mouse position now and at the previous moment
-      origin.x = mouseDiffX * scale + draggingPart.mouse2.x;
-      origin.y = mouseDiffY * scale + draggingPart.mouse2.y;
+      scene.originRefactored.x = mouseDiffX * scale + draggingPart.mouse2.x;
+      scene.originRefactored.y = mouseDiffY * scale + draggingPart.mouse2.y;
       draw();
     }
 
@@ -465,7 +463,7 @@ function finishHandleCreation(point) {
 
 function canvas_ondblclick(e) {
   //console.log("dblclick");
-  var mouse = graphs.point((e.pageX - e.target.offsetLeft - origin.x) / scale, (e.pageY - e.target.offsetTop - origin.y) / scale); // The real position of the mouse (never use grid here)
+  var mouse = graphs.point((e.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (e.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
   else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
@@ -479,8 +477,8 @@ function canvas_ondblclick(e) {
         draggingPart.targetPoint = graphs.point(scene.observerRefactored.c.x, scene.observerRefactored.c.y);
         draggingPart.snapData = {};
 
-        document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
-        document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
+        document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + scene.originRefactored.x) + 'px';
+        document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + scene.originRefactored.y) + 'px';
         document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
         document.getElementById('xybox').size = document.getElementById('xybox').value.length;
         document.getElementById('xybox').style.display = '';
@@ -502,8 +500,8 @@ function canvas_ondblclick(e) {
       draggingPart.hasDuplicated = false;
       positioningObj = ret.targetObj_index;
 
-      document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + origin.x) + 'px';
-      document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + origin.y) + 'px';
+      document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + scene.originRefactored.x) + 'px';
+      document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + scene.originRefactored.y) + 'px';
       document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
       document.getElementById('xybox').size = document.getElementById('xybox').value.length;
       document.getElementById('xybox').style.display = '';
