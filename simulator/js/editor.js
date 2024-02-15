@@ -32,12 +32,12 @@ function getMouseStyle(obj, style, screen) {
 function getClickExtent(isPoint, isConstruct) {
   if (isPoint) {
     if (isConstruct) {
-      var clickExtent = clickExtent_point_construct / scale;
+      var clickExtent = clickExtent_point_construct / scene.scaleRefactored;
     } else {
-      var clickExtent = clickExtent_point / scale;
+      var clickExtent = clickExtent_point / scene.scaleRefactored;
     }
   } else {
-    var clickExtent = clickExtent_line / scale;
+    var clickExtent = clickExtent_line / scene.scaleRefactored;
   }
   if (lastDeviceIsTouch) {
     clickExtent *= touchscreenExtentRatio;
@@ -103,7 +103,7 @@ function canvas_onmousedown(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scene.scaleRefactored, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scene.scaleRefactored); // The real position of the mouse
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1) {
     confirmPositioning(e.ctrlKey, e.shiftKey);
@@ -118,7 +118,7 @@ function canvas_onmousedown(e) {
   }
 
   if (scene.gridRefactored) {
-    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
+    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scene.scaleRefactored) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scene.scaleRefactored) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
 
   }
   else {
@@ -273,10 +273,10 @@ function canvas_onmousemove(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse
+  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scene.scaleRefactored, (et.pageY - e.target.offsetTop - scene.originRefactored.y) / scene.scaleRefactored); // The real position of the mouse
   var mouse2;
   if (scene.gridRefactored && !(e.altKey && !isConstructing)) {
-    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scale) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
+    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.originRefactored.x) / scene.scaleRefactored) / scene.gridSizeRefactored) * scene.gridSizeRefactored, Math.round(((et.pageY - e.target.offsetTop - scene.originRefactored.y) / scene.scaleRefactored) / scene.gridSizeRefactored) * scene.gridSizeRefactored);
   }
   else {
     mouse2 = mouse_nogrid;
@@ -384,8 +384,8 @@ function canvas_onmousemove(e) {
 
       var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); // The X difference between the mouse position now and at the previous moment
       var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); // The Y difference between the mouse position now and at the previous moment
-      scene.originRefactored.x = mouseDiffX * scale + draggingPart.mouse2.x;
-      scene.originRefactored.y = mouseDiffY * scale + draggingPart.mouse2.y;
+      scene.originRefactored.x = mouseDiffX * scene.scaleRefactored + draggingPart.mouse2.x;
+      scene.originRefactored.y = mouseDiffY * scene.scaleRefactored + draggingPart.mouse2.y;
       draw();
     }
 
@@ -463,7 +463,7 @@ function finishHandleCreation(point) {
 
 function canvas_ondblclick(e) {
   //console.log("dblclick");
-  var mouse = graphs.point((e.pageX - e.target.offsetLeft - scene.originRefactored.x) / scale, (e.pageY - e.target.offsetTop - scene.originRefactored.y) / scale); // The real position of the mouse (never use grid here)
+  var mouse = graphs.point((e.pageX - e.target.offsetLeft - scene.originRefactored.x) / scene.scaleRefactored, (e.pageY - e.target.offsetTop - scene.originRefactored.y) / scene.scaleRefactored); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
   else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
@@ -477,8 +477,8 @@ function canvas_ondblclick(e) {
         draggingPart.targetPoint = graphs.point(scene.observerRefactored.c.x, scene.observerRefactored.c.y);
         draggingPart.snapData = {};
 
-        document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + scene.originRefactored.x) + 'px';
-        document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + scene.originRefactored.y) + 'px';
+        document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scene.scaleRefactored + scene.originRefactored.x) + 'px';
+        document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scene.scaleRefactored + scene.originRefactored.y) + 'px';
         document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
         document.getElementById('xybox').size = document.getElementById('xybox').value.length;
         document.getElementById('xybox').style.display = '';
@@ -500,8 +500,8 @@ function canvas_ondblclick(e) {
       draggingPart.hasDuplicated = false;
       positioningObj = ret.targetObj_index;
 
-      document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scale + scene.originRefactored.x) + 'px';
-      document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scale + scene.originRefactored.y) + 'px';
+      document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scene.scaleRefactored + scene.originRefactored.x) + 'px';
+      document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scene.scaleRefactored + scene.originRefactored.y) + 'px';
       document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
       document.getElementById('xybox').size = document.getElementById('xybox').value.length;
       document.getElementById('xybox').style.display = '';
@@ -525,14 +525,14 @@ function canvas_onmousewheel(e) {
   // cross-browser wheel delta
   var e = window.event || e; // old IE support
   var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-  var d = scale;
+  var d = scene.scaleRefactored;
   if (delta < 0) {
-    d = scale - 0.25;
+    d = scene.scaleRefactored - 0.25;
   } else if (delta > 0) {
-    d = scale + 0.25;
+    d = scene.scaleRefactored + 0.25;
   }
   d = Math.max(0.25, Math.min(5.00, d)) * 100;
-  setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scale, (e.pageY - e.target.offsetTop) / scale);
+  setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scene.scaleRefactored, (e.pageY - e.target.offsetTop) / scene.scaleRefactored);
   //window.toolBarViewModel.zoom.value(d);
   canvas_onmousemove(e);
   return false;

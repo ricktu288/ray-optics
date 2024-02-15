@@ -252,7 +252,7 @@ objTypes['refractor'] = {
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scale*dpr,0,0,scale*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
+        ctx.setTransform(scene.scaleRefactored*dpr,0,0,scene.scaleRefactored*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
         
         ctx.globalCompositeOperation = 'lighter';
 
@@ -264,7 +264,7 @@ objTypes['refractor'] = {
         ctx.setTransform(1,0,0,1,0,0);
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scale*dpr,0,0,scale*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
+        ctx.setTransform(scene.scaleRefactored*dpr,0,0,scene.scaleRefactored*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;

@@ -59,8 +59,8 @@ function draw_(skipLight, skipGrid) {
   JSONOutput();
 
   if (ctx0.constructor != C2S) {
-    var canvasPainter0 = new CanvasPainter(ctx0, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scale*dpr), backgroundImage);
-    var canvasPainter1 = new CanvasPainter(ctx, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scale*dpr));
+    var canvasPainter0 = new CanvasPainter(ctx0, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scene.scaleRefactored*dpr), backgroundImage);
+    var canvasPainter1 = new CanvasPainter(ctx, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scene.scaleRefactored*dpr));
     
     canvasPainter0.cls();
     canvasPainter1.cls();
@@ -68,11 +68,11 @@ function draw_(skipLight, skipGrid) {
 
   if (!skipLight) {
     delete canvasPainter;
-    canvasPainter = new CanvasPainter(ctxLight, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scale*dpr));
+    canvasPainter = new CanvasPainter(ctxLight, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scene.scaleRefactored*dpr));
     canvasPainter.cls();
 
     if (ctx0.constructor == C2S) {
-      ctx.translate(scene.originRefactored.x / (scale*dpr), scene.originRefactored.y / (scale*dpr));
+      ctx.translate(scene.originRefactored.x / (scene.scaleRefactored*dpr), scene.originRefactored.y / (scene.scaleRefactored*dpr));
     }
 
     ctx.globalAlpha = 1;
@@ -84,20 +84,20 @@ function draw_(skipLight, skipGrid) {
   if (!skipGrid && ctx0.constructor != C2S)
   {
 
-    var canvasPainterGrid = new CanvasPainter(ctxGrid, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scale*dpr));
+    var canvasPainterGrid = new CanvasPainter(ctxGrid, {x: scene.originRefactored.x*dpr, y: scene.originRefactored.y*dpr}, (scene.scaleRefactored*dpr));
     canvasPainterGrid.cls();
 
     if (scene.showGridRefactored) {
       // Draw the grid
 
       ctxGrid.save();
-      ctxGrid.setTransform((scale*dpr), 0, 0, (scale*dpr), 0, 0);
+      ctxGrid.setTransform((scene.scaleRefactored*dpr), 0, 0, (scene.scaleRefactored*dpr), 0, 0);
       var dashstep = 4;
 
       ctxGrid.strokeStyle = 'rgb(255,255,255,0.25)';
 
       var dashPattern;
-      if (dashstep * scale <= 2) {
+      if (dashstep * scene.scaleRefactored <= 2) {
         // The dash pattern is too dense, so we just draw a solid line
         dashPattern = [];
       } else {
@@ -110,17 +110,17 @@ function draw_(skipLight, skipGrid) {
 
       // Draw vertical dashed lines
       ctxGrid.beginPath();
-      for (var x = scene.originRefactored.x / scale % scene.gridSizeRefactored; x <= ctxGrid.canvas.width / (scale * dpr); x += scene.gridSizeRefactored) {
-        ctxGrid.moveTo(x, scene.originRefactored.y / scale % scene.gridSizeRefactored - scene.gridSizeRefactored);
-        ctxGrid.lineTo(x, ctxGrid.canvas.height / (scale * dpr));
+      for (var x = scene.originRefactored.x / scene.scaleRefactored % scene.gridSizeRefactored; x <= ctxGrid.canvas.width / (scene.scaleRefactored * dpr); x += scene.gridSizeRefactored) {
+        ctxGrid.moveTo(x, scene.originRefactored.y / scene.scaleRefactored % scene.gridSizeRefactored - scene.gridSizeRefactored);
+        ctxGrid.lineTo(x, ctxGrid.canvas.height / (scene.scaleRefactored * dpr));
       }
       ctxGrid.stroke();
 
       // Draw horizontal dashed lines
       ctxGrid.beginPath();
-      for (var y = scene.originRefactored.y / scale % scene.gridSizeRefactored; y <= ctxGrid.canvas.height / (scale * dpr); y += scene.gridSizeRefactored) {
-        ctxGrid.moveTo(scene.originRefactored.x / scale % scene.gridSizeRefactored - scene.gridSizeRefactored, y);
-        ctxGrid.lineTo(ctxGrid.canvas.width / (scale * dpr), y);
+      for (var y = scene.originRefactored.y / scene.scaleRefactored % scene.gridSizeRefactored; y <= ctxGrid.canvas.height / (scene.scaleRefactored * dpr); y += scene.gridSizeRefactored) {
+        ctxGrid.moveTo(scene.originRefactored.x / scene.scaleRefactored % scene.gridSizeRefactored - scene.gridSizeRefactored, y);
+        ctxGrid.lineTo(ctxGrid.canvas.width / (scene.scaleRefactored * dpr), y);
       }
       ctxGrid.stroke();
       ctxGrid.setLineDash([]);
@@ -625,7 +625,7 @@ function shootWaitingRays() {
     ctxLight.setTransform(1,0,0,1,0,0);
     ctxLight.clearRect(0, 0, ctxLight.canvas.width, ctxLight.canvas.height);
     ctxLight.drawImage(virtualCanvas, 0, 0);
-    ctx.setTransform(scale*dpr,0,0,scale*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
+    ctx.setTransform(scene.scaleRefactored*dpr,0,0,scene.scaleRefactored*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
   }
   ctxLight.globalAlpha = 1.0;
   
