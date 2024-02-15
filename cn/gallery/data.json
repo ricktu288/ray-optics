@@ -101,6 +101,14 @@
         ],
         "title": "干扰箔",
         "description": "<p>这是一个箔片反射对雷达效应的定性模拟（忽略衍射效应）。 <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">创建箔片的脚本</a></p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "反射性球体的焦散",
+        "description": "<p>一个反射性的积分球。也可以是液滴（如雨滴）中的反射。移动点光源的位置可以看到许多漂亮的图样。</p>"
       }
     ]
   },

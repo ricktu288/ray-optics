@@ -101,6 +101,14 @@
         ],
         "title": "Chaff countermeasure",
         "description": "<p>This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects). The script for creating the chaff is available <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">here</a>.</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "Caustics from a Reflective Sphere",
+        "description": "<p>A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.</p>"
       }
     ]
   },

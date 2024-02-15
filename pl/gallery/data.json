@@ -101,6 +101,14 @@
         ],
         "title": "Dipole odbijające (chaff)",
         "description": "<p>Jest to jakościowa symulacja systemu przeciwdziałania namiarom radarowym (pomijając efekty dyfrakcyjne). Skrypt do tworzenia chaff jest dostępny <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">tu</a>.</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "Caustics from a Reflective Sphere",
+        "description": "<p>A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.</p>"
       }
     ]
   },

@@ -101,6 +101,14 @@
         ],
         "title": "干擾箔",
         "description": "<p>這是一個箔片反射對雷達效應的定性模擬（忽略繞射效應）。<a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">創建箔片的指令碼</a></p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "反射性球體的焦散",
+        "description": "<p>一個反射性的積分球。也可以是液滴（如雨滴）中的反射。移動點光源的位置可以看到許多漂亮的圖樣。</p>"
       }
     ]
   },
