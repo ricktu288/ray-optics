@@ -1,6 +1,5 @@
 var waitingRays = []; // The rays waiting for shooting
 var waitingRayCount = 0; // Number of rays waiting for shooting
-var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
 var isDrawing = false;
 var isExporting = false;

@@ -58,7 +58,7 @@ objTypes['grin_circlelens'] = {
 	  }
     }, elem);
 	
-	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || symbolicGrin)) {
+	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || scene.symbolicGrinRefactored)) {
 		createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
 		obj.step_size = parseFloat(value);
 		}, elem, getMsg('step_size_note_popover'));
@@ -67,8 +67,8 @@ objTypes['grin_circlelens'] = {
 		obj.eps = parseFloat(value);
 		}, elem, getMsg('eps_' + obj.type + '_note_popover'));
 		
-		createBooleanAttr(getMsg('symbolic_grin'), symbolicGrin, function(obj, value) {
-		symbolicGrin = value;
+		createBooleanAttr(getMsg('symbolic_grin'), scene.symbolicGrinRefactored, function(obj, value) {
+		scene.symbolicGrinRefactored = value;
 		}, elem, getMsg('symbolic_grin_note_popover'));
 	}
   },
@@ -384,7 +384,7 @@ objTypes['grin_circlelens'] = {
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMerging_obj"
   multRefIndex: function(bodyMerging_obj, obj) {
-	if (symbolicGrin) {
+	if (scene.symbolicGrinRefactored) {
 		let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + obj.p + ')').toString();
 		
 		let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
@@ -423,7 +423,7 @@ objTypes['grin_circlelens'] = {
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the region which includes "bodyMerging_obj" and excludes "obj"
   devRefIndex: function(bodyMerging_obj, obj) {
-	if (symbolicGrin) {
+	if (scene.symbolicGrinRefactored) {
 		let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + obj.p + ')').toString();
 		
 		let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());

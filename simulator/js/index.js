@@ -19,7 +19,9 @@ var scene = {
   gridSizeRefactored: 20,
   observerRefactored: null,
   originRefactored: { x: 0, y: 0 },
-  scaleRefactored: 1
+  scaleRefactored: 1,
+  colorModeRefactored: false,
+  symbolicGrinRefactored: false // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 }; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
 var xyBox_cancelContextMenu = false;
 var cartesianSign = false;
@@ -873,7 +875,7 @@ function JSONOutput() {
      width: canvasWidth,
      height: canvasHeight,
      colorMode: scene.colorModeRefactored,
-     symbolicGrin: symbolicGrin
+     symbolicGrin: scene.symbolicGrinRefactored
     }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
@@ -1001,7 +1003,7 @@ function JSONInput() {
   document.getElementById("zoom").innerText = Math.round(scene.scaleRefactored * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
   scene.colorModeRefactored = jsonData.colorMode;
-  symbolicGrin = jsonData.symbolicGrin;
+  scene.symbolicGrinRefactored = jsonData.symbolicGrin;
   document.getElementById('color_mode').checked = scene.colorModeRefactored;
   document.getElementById('color_mode_mobile').checked = scene.colorModeRefactored;
   modebtn_clicked(jsonData.mode);
