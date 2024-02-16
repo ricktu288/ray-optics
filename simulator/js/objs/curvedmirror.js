@@ -47,7 +47,7 @@ objTypes['curvedmirror'] = {
     // get height of (this section of) parabola
     var x0 = p12d/2;
     var i;
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     obj.tmp_points = [];
     var lastError = "";

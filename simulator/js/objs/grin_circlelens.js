@@ -58,7 +58,7 @@ objTypes['grin_circlelens'] = {
 	  }
     }, elem);
 	
-	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || scene.symbolicGrinRefactored)) {
+	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || scene.symbolicGrin)) {
 		createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
 		obj.step_size = parseFloat(value);
 		}, elem, getMsg('step_size_note_popover'));
@@ -67,8 +67,8 @@ objTypes['grin_circlelens'] = {
 		obj.eps = parseFloat(value);
 		}, elem, getMsg('eps_' + obj.type + '_note_popover'));
 		
-		createBooleanAttr(getMsg('symbolic_grin'), scene.symbolicGrinRefactored, function(obj, value) {
-		scene.symbolicGrinRefactored = value;
+		createBooleanAttr(getMsg('symbolic_grin'), scene.symbolicGrin, function(obj, value) {
+		scene.symbolicGrin = value;
 		}, elem, getMsg('symbolic_grin_note_popover'));
 	}
   },
@@ -167,13 +167,13 @@ objTypes['grin_circlelens'] = {
 			if (d > 0)
 			{
 			// Shot from inside to outside
-			var n1 = (!scene.colorModeRefactored)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+			var n1 = (!scene.colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
 			var normal = {x: obj.p1.x - rp.x, y: obj.p1.y - rp.y};
 			}
 			else if (d < 0)
 			{
 			// Shot from outside to inside
-			var n1 = 1 / ((!scene.colorModeRefactored)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+			var n1 = 1 / ((!scene.colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
 			var normal = {x: rp.x - obj.p1.x, y: rp.y - obj.p1.y};
 			}
 			else
@@ -205,12 +205,12 @@ objTypes['grin_circlelens'] = {
 				if (shotType == 1)
 				{
 					// Shot from inside to outside
-					n1 *= (!scene.colorModeRefactored)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+					n1 *= (!scene.colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
 				}
 				else if (shotType == -1)
 				{
 					// Shot from outside to inside
-					n1 /= (!scene.colorModeRefactored)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+					n1 /= (!scene.colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
 				}
 				else if (shotType == 0)
 				{
@@ -355,26 +355,26 @@ objTypes['grin_circlelens'] = {
   
   // Receives an instance of a grin object(e.g. grin_circlelens and grin_refractor) and a ray, and returns a bodyMerging object for the point ray.p1
   /*
-	For example, "fn_p" is constructed by going through all of the grin objects in the "scene.objsRefactored" array,
+	For example, "fn_p" is constructed by going through all of the grin objects in the "scene.objs" array,
 	such that ray.p1 in their interior or on their boundary, and creating a product of all of their
 	refractive index functions. "fn_p_der_x" and "fn_p_der_y" are created similarly, taking into account the partial derivative.
   */
   initRefIndex: function(obj, ray)
   {
 	let obj_tmp = {};
-		for (let i = 0; i < scene.objsRefactored.length; i++)
+		for (let i = 0; i < scene.objs.length; i++)
 		{
-			if ((scene.objsRefactored[i].type === "grin_circlelens" || scene.objsRefactored[i].type === "grin_refractor") && (objTypes[scene.objsRefactored[i].type].isOnBoundary(scene.objsRefactored[i], ray.p1) || objTypes[scene.objsRefactored[i].type].isInsideGlass(scene.objsRefactored[i], ray.p1)))
+			if ((scene.objs[i].type === "grin_circlelens" || scene.objs[i].type === "grin_refractor") && (objTypes[scene.objs[i].type].isOnBoundary(scene.objs[i], ray.p1) || objTypes[scene.objs[i].type].isInsideGlass(scene.objs[i], ray.p1)))
 			{
 				if (obj_tmp.fn_p === undefined)
 				{
-					obj_tmp.p = scene.objsRefactored[i].p;
-					obj_tmp.fn_p = scene.objsRefactored[i].fn_p;
-					obj_tmp.fn_p_der_x = scene.objsRefactored[i].fn_p_der_x;
-					obj_tmp.fn_p_der_y = scene.objsRefactored[i].fn_p_der_y;
+					obj_tmp.p = scene.objs[i].p;
+					obj_tmp.fn_p = scene.objs[i].fn_p;
+					obj_tmp.fn_p_der_x = scene.objs[i].fn_p_der_x;
+					obj_tmp.fn_p_der_y = scene.objs[i].fn_p_der_y;
 				}
 				else
-					obj_tmp = objTypes[obj.type].multRefIndex(obj_tmp, scene.objsRefactored[i]);
+					obj_tmp = objTypes[obj.type].multRefIndex(obj_tmp, scene.objs[i]);
 
 			}
 		}
@@ -384,7 +384,7 @@ objTypes['grin_circlelens'] = {
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMerging_obj"
   multRefIndex: function(bodyMerging_obj, obj) {
-	if (scene.symbolicGrinRefactored) {
+	if (scene.symbolicGrin) {
 		let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + obj.p + ')').toString();
 		
 		let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
@@ -423,7 +423,7 @@ objTypes['grin_circlelens'] = {
   // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
   // and returns a bodyMerging object for the region which includes "bodyMerging_obj" and excludes "obj"
   devRefIndex: function(bodyMerging_obj, obj) {
-	if (scene.symbolicGrinRefactored) {
+	if (scene.symbolicGrin) {
 		let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + obj.p + ')').toString();
 		
 		let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());

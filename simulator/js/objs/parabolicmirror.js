@@ -35,7 +35,7 @@ objTypes['parabolicmirror'] = {
       var x0 = p12d/2;
       var a = height/(x0*x0); // y=ax^2
       var i;
-      ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.beginPath();
       obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);

@@ -110,7 +110,7 @@ objTypes['halfplane'] = {
   var per_x = par_y;
   var per_y = -par_x;
 
-  var sufficientlyLargeDistance = (Math.abs(obj.p1.x + scene.originRefactored.x) + Math.abs(obj.p1.y + scene.originRefactored.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, scene.scaleRefactored);
+  var sufficientlyLargeDistance = (Math.abs(obj.p1.x + scene.origin.x) + Math.abs(obj.p1.y + scene.origin.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, scene.scale);
 
   ctx.beginPath();
   ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
@@ -139,12 +139,12 @@ objTypes['halfplane'] = {
     if (shotType == 1)
     {
       // Shot from inside to outside
-      var n1 = (!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+      var n1 = (!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
     else if (shotType == -1)
     {
       // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else
     {
@@ -162,12 +162,12 @@ objTypes['halfplane'] = {
       if (shotType == 1)
       {
         // Shot from inside to outside
-        n1 *= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         // Shot from outside to inside
-        n1 /= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {

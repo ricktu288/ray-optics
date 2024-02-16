@@ -85,7 +85,7 @@ objTypes['arcmirror'] = {
         var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
         var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
         var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
-        ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
@@ -99,7 +99,7 @@ objTypes['arcmirror'] = {
       else
       {
         // The three points on the arc is colinear. Treat as a line segment.
-        ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.moveTo(obj.p1.x, obj.p1.y);
         ctx.lineTo(obj.p2.x, obj.p2.y);

@@ -8,11 +8,11 @@ objTypes['handle'] = {
 
   // Add control point when user is creating the handle
   c_addControlPoint: function(obj, controlPoint) {
-    controlPoint.mousePart.originalObj = scene.objsRefactored[controlPoint.targetObj_index];
+    controlPoint.mousePart.originalObj = scene.objs[controlPoint.targetObj_index];
     controlPoint.newPoint = controlPoint.mousePart.targetPoint;
     controlPoint.mousePart.byHandle = true;
     controlPoint = JSON.parse(JSON.stringify(controlPoint));
-    scene.objsRefactored[0].controlPoints.push(controlPoint);
+    scene.objs[0].controlPoints.push(controlPoint);
   },
 
   // Finish creating the handle
@@ -37,9 +37,9 @@ objTypes['handle'] = {
 
     /*
     for (var i in obj.controlPoints) {
-      // If user drags some target scene.objsRefactored, restore them back to avoid unexpected behavior.
-      obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objsRefactored[obj.controlPoints[i].targetObj_index]));
-      objTypes[scene.objsRefactored[obj.controlPoints[i].targetObj_index].type].dragging(scene.objsRefactored[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+      // If user drags some target scene.objs, restore them back to avoid unexpected behavior.
+      obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
+      objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
     }
     */
     for (var i in obj.controlPoints) {
@@ -143,9 +143,9 @@ objTypes['handle'] = {
       trans(obj.p1);
       trans(obj.p2);
       for (var i in obj.controlPoints) {
-        obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objsRefactored[obj.controlPoints[i].targetObj_index]));
+        obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
         trans(obj.controlPoints[i].newPoint);
-        objTypes[scene.objsRefactored[obj.controlPoints[i].targetObj_index].type].dragging(scene.objsRefactored[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
       draggingPart.targetPoint_.x = obj.p1.x;
       draggingPart.targetPoint_.y = obj.p1.y;

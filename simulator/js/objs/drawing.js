@@ -12,7 +12,7 @@ objTypes['drawing'] = {
       createButton(getMsg('stop_drawing'), function(obj) {
         obj.notDone = false;
         isConstructing = false;
-        selectObj(scene.objsRefactored.length - 1);
+        selectObj(scene.objs.length - 1);
       }, elem);
     }
   },
@@ -22,7 +22,7 @@ objTypes['drawing'] = {
   {
     obj.points.push([mouse.x, mouse.y]);
     obj.tmp_isMouseDown = true;
-    selectObj(scene.objsRefactored.length - 1);
+    selectObj(scene.objs.length - 1);
   },
   // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)

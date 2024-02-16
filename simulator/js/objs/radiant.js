@@ -11,7 +11,7 @@ objTypes['radiant'] = {
     createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
     }, elem, getMsg('brightness_note_popover'));
-    if (scene.colorModeRefactored) {
+    if (scene.colorMode) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
       }, elem);
@@ -36,9 +36,9 @@ objTypes['radiant'] = {
 
   // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
-  ctx.fillStyle = scene.colorModeRefactored? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  ctx.fillStyle = scene.colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
-  if (scene.colorModeRefactored) {
+  if (scene.colorMode) {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.x - 1.5, obj.y - 1.5, 3, 3);
   }
@@ -83,14 +83,14 @@ objTypes['radiant'] = {
   // Shoot rays
   shoot: function(obj) {
   var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
-  var i0 = (scene.modeRefactored == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
+  var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
   for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s)
   {
     var ray1 = graphs.ray(graphs.point(obj.x, obj.y), graphs.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));
     ray1.brightness_s = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
-    if (scene.colorModeRefactored) {
+    if (scene.colorMode) {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     if (i == i0)

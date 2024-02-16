@@ -10,7 +10,7 @@ objTypes['refractor'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    if (scene.colorModeRefactored) {
+    if (scene.colorMode) {
       createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
       }, elem, getMsg('refractiveindex_note_popover'));
@@ -252,7 +252,7 @@ objTypes['refractor'] = {
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scene.scaleRefactored*dpr,0,0,scene.scaleRefactored*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
+        ctx.setTransform(scene.scale*dpr,0,0,scene.scale*dpr,scene.origin.x*dpr, scene.origin.y*dpr);
         
         ctx.globalCompositeOperation = 'lighter';
 
@@ -264,7 +264,7 @@ objTypes['refractor'] = {
         ctx.setTransform(1,0,0,1,0,0);
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scene.scaleRefactored*dpr,0,0,scene.scaleRefactored*dpr,scene.originRefactored.x*dpr, scene.originRefactored.y*dpr);
+        ctx.setTransform(scene.scale*dpr,0,0,scene.scale*dpr,scene.origin.x*dpr, scene.origin.y*dpr);
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
@@ -504,12 +504,12 @@ objTypes['refractor'] = {
     if (shotType == 1)
     {
       // Shot from inside to outside
-      var n1 = (!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+      var n1 = (!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
     else if (shotType == -1)
     {
       // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else if (shotType == 0)
     {
@@ -531,12 +531,12 @@ objTypes['refractor'] = {
       if (shotType == 1)
       {
         // Shot from inside to outside
-        n1 *= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         // Shot from outside to inside
-        n1 /= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {

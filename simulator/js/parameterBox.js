@@ -378,7 +378,7 @@ function createButton(label, func, elem) {
   button.innerHTML = label;
   button.onclick = function() {
     this.blur();
-    func(scene.objsRefactored[selectedObj]);
+    func(scene.objs[selectedObj]);
   };
   elem.appendChild(button);
   var space = document.createTextNode(' ');
@@ -394,19 +394,19 @@ function setAttr(func)
 {
   if (!document.getElementById('setAttrAll').checked)
   {
-    func(scene.objsRefactored[selectedObj]);
+    func(scene.objs[selectedObj]);
   }
   else
   {
-    for (var i = 0; i < scene.objsRefactored.length; i++)
+    for (var i = 0; i < scene.objs.length; i++)
     {
-      if (hasSameAttrType(scene.objsRefactored[i], scene.objsRefactored[selectedObj]))
+      if (hasSameAttrType(scene.objs[i], scene.objs[selectedObj]))
       {
-        func(scene.objsRefactored[i]);
+        func(scene.objs[i]);
       }
     }
   }
-  draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
+  draw(!(objTypes[scene.objs[selectedObj].type].shoot || objTypes[scene.objs[selectedObj].type].rayIntersection), true);
 }
 
 function createAdvancedOptions(condition) {

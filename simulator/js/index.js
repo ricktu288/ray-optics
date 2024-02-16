@@ -9,20 +9,20 @@ var ctxLight;
 var ctxGrid;
 var dpr = 1;
 var scene = {
-  objsRefactored: [],
-  modeRefactored: 'light',
-  rayDensity_lightRefactored: 0.1,
-  rayDensity_imagesRefactored: 1,
-  showGridRefactored: false,
-  gridRefactored: false,
-  lockobjsRefactored: false,
-  gridSizeRefactored: 20,
-  observerRefactored: null,
-  originRefactored: { x: 0, y: 0 },
-  scaleRefactored: 1,
-  colorModeRefactored: false,
-  symbolicGrinRefactored: false // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
-}; // This will finally be used to store the entire scene data, but during the refactoring period, it is only for storing part of the data (others are still stored as various global variables). The "Refactored" suffix is temporary.
+  objs: [],
+  mode: 'light',
+  rayDensity_light: 0.1,
+  rayDensity_images: 1,
+  showGrid: false,
+  grid: false,
+  lockobjs: false,
+  gridSize: 20,
+  observer: null,
+  origin: { x: 0, y: 0 },
+  scale: 1,
+  colorMode: false,
+  symbolicGrin: false // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
+};
 var xyBox_cancelContextMenu = false;
 var cartesianSign = false;
 var backgroundImage = null;
@@ -176,7 +176,7 @@ window.onload = function (e) {
       // Set initial distance
       if (initialPinchDistance === null) {
         initialPinchDistance = distance;
-        lastScale = scene.scaleRefactored;
+        lastScale = scene.scale;
       }
   
       // Calculate the scaling factor
@@ -196,11 +196,11 @@ window.onload = function (e) {
       const dy2 = y - lastY;
 
       // Apply the translation
-      scene.originRefactored.x += dx2;
-      scene.originRefactored.y += dy2;
+      scene.origin.x += dx2;
+      scene.origin.y += dy2;
   
       // Apply the scale transformation
-      setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scaleRefactored, (y - e.target.offsetTop) / scene.scaleRefactored);
+      setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
       
       // Update last values
       lastX = x;
@@ -279,9 +279,9 @@ window.onload = function (e) {
   };
 
   document.getElementById('color_mode').onclick = function () {
-    scene.colorModeRefactored = this.checked;
-    document.getElementById('color_mode').checked = scene.colorModeRefactored;
-    document.getElementById('color_mode_mobile').checked = scene.colorModeRefactored;
+    scene.colorMode = this.checked;
+    document.getElementById('color_mode').checked = scene.colorMode;
+    document.getElementById('color_mode_mobile').checked = scene.colorMode;
     selectObj(selectedObj);
     this.blur();
     draw(false, true);
@@ -312,9 +312,9 @@ window.onload = function (e) {
   }
 
   document.getElementById('grid_size').onchange = function () {
-    scene.gridSizeRefactored = parseFloat(this.value);
-    document.getElementById('grid_size').value = scene.gridSizeRefactored;
-    document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
+    scene.gridSize = parseFloat(this.value);
+    document.getElementById('grid_size').value = scene.gridSize;
+    document.getElementById('grid_size_mobile').value = scene.gridSize;
     draw(true, false);
   }
   document.getElementById('grid_size_mobile').onchange = document.getElementById('grid_size').onchange;
@@ -334,8 +334,8 @@ window.onload = function (e) {
   document.getElementById('observer_size').onchange = function () {
     document.getElementById('observer_size').value = this.value;
     document.getElementById('observer_size_mobile').value = this.value;
-    if (scene.observerRefactored) {
-      scene.observerRefactored.r = parseFloat(this.value) * 0.5;
+    if (scene.observer) {
+      scene.observer.r = parseFloat(this.value) * 0.5;
     }
     draw(false, true);
   }
@@ -355,11 +355,11 @@ window.onload = function (e) {
 
 
   document.getElementById('zoomPlus').onclick = function () {
-    setScale(scene.scaleRefactored * 1.1);
+    setScale(scene.scale * 1.1);
     this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
-    setScale(scene.scaleRefactored / 1.1);
+    setScale(scene.scale / 1.1);
     this.blur();
   }
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
@@ -428,7 +428,7 @@ window.onload = function (e) {
     document.getElementById('grid').checked = e.target.checked;
     document.getElementById('grid_more').checked = e.target.checked;
     document.getElementById('grid_mobile').checked = e.target.checked;
-    scene.gridRefactored = e.target.checked;
+    scene.grid = e.target.checked;
     this.blur();
     //draw();
   };
@@ -439,7 +439,7 @@ window.onload = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
     document.getElementById('showgrid_more').checked = e.target.checked;
     document.getElementById('showgrid_mobile').checked = e.target.checked;
-    scene.showGridRefactored = e.target.checked;
+    scene.showGrid = e.target.checked;
     this.blur();
     draw(true, false);
   };
@@ -450,7 +450,7 @@ window.onload = function (e) {
     document.getElementById('lockobjs').checked = e.target.checked;
     document.getElementById('lockobjs_more').checked = e.target.checked;
     document.getElementById('lockobjs_mobile').checked = e.target.checked;
-    scene.lockobjsRefactored = e.target.checked;
+    scene.lockobjs = e.target.checked;
     this.blur();
   };
   document.getElementById('lockobjs_more').onclick = document.getElementById('lockobjs').onclick;
@@ -474,16 +474,16 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.objsRefactored[scene.objsRefactored.length] = JSON.parse(JSON.stringify(scene.objsRefactored[selectedObj]));
-    objTypes[scene.objsRefactored[scene.objsRefactored.length - 1].type].move(scene.objsRefactored[scene.objsRefactored.length - 1], scene.gridSizeRefactored, scene.gridSizeRefactored);
-    selectObj(scene.objsRefactored.length - 1);
-    draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
+    scene.objs[scene.objs.length] = JSON.parse(JSON.stringify(scene.objs[selectedObj]));
+    objTypes[scene.objs[scene.objs.length - 1].type].move(scene.objs[scene.objs.length - 1], scene.gridSize, scene.gridSize);
+    selectObj(scene.objs.length - 1);
+    draw(!(objTypes[scene.objs[selectedObj].type].shoot || objTypes[scene.objs[selectedObj].type].rayIntersection), true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
-    var selectedObjType = scene.objsRefactored[selectedObj].type;
+    var selectedObjType = scene.objs[selectedObj].type;
     this.blur();
     removeObj(selectedObj);
     draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
@@ -643,33 +643,33 @@ window.onresize = function (e) {
 function initParameters() {
   isConstructing = false;
   endPositioning();
-  scene.objsRefactored.length = 0;
+  scene.objs.length = 0;
   selectObj(-1);
 
-  scene.rayDensity_lightRefactored = 0.1; // The Ray Density when View is Rays or Extended rays
-  scene.rayDensity_imagesRefactored = 1; // The Ray Density when View is All Images or Seen by Observer
-  document.getElementById("rayDensity").value = scene.rayDensity_lightRefactored;
-  document.getElementById("rayDensity_more").value = scene.rayDensity_lightRefactored;
-  document.getElementById("rayDensity_mobile").value = scene.rayDensity_lightRefactored;
-  scene.originRefactored = { x: 0, y: 0 };
-  scene.observerRefactored = null;
-  scene.scaleRefactored = 1;
+  scene.rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
+  scene.rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
+  document.getElementById("rayDensity").value = scene.rayDensity_light;
+  document.getElementById("rayDensity_more").value = scene.rayDensity_light;
+  document.getElementById("rayDensity_mobile").value = scene.rayDensity_light;
+  scene.origin = { x: 0, y: 0 };
+  scene.observer = null;
+  scene.scale = 1;
   cartesianSign = false;
   try {
     if (localStorage.rayOpticsCartesianSign == "true") {
       cartesianSign = true;
     }
   } catch { }
-  document.getElementById("zoom").innerText = Math.round(scene.scaleRefactored * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
+  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
-  scene.colorModeRefactored = false;
+  scene.colorMode = false;
   backgroundImage = null;
 
-  scene.lockobjsRefactored = false;
-  scene.gridRefactored = false;
-  scene.showGridRefactored = false;
+  scene.lockobjs = false;
+  scene.grid = false;
+  scene.showGrid = false;
 
   //Reset new UI.
   
@@ -697,9 +697,9 @@ function initParameters() {
   document.getElementById('setAttrAll').checked = false;
   document.getElementById('applytoall_mobile').checked = false;
 
-  scene.gridSizeRefactored = 20;
-  document.getElementById('grid_size').value = scene.gridSizeRefactored;
-  document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
+  scene.gridSize = 20;
+  document.getElementById('grid_size').value = scene.gridSize;
+  document.getElementById('grid_size_mobile').value = scene.gridSize;
 
   document.getElementById('observer_size').value = 40;
   document.getElementById('observer_size_mobile').value = 40;
@@ -718,7 +718,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
+    draw(!(objTypes[scene.objs[selectedObj].type].shoot || objTypes[scene.objs[selectedObj].type].rayIntersection), true);
     createUndoPoint();
     return false;
   }
@@ -765,7 +765,7 @@ window.onkeydown = function (e) {
   //Delete
   if (e.keyCode == 46 || e.keyCode == 8) {
     if (selectedObj != -1) {
-      var selectedObjType = scene.objsRefactored[selectedObj].type;
+      var selectedObjType = scene.objs[selectedObj].type;
       removeObj(selectedObj);
       draw(!(objTypes[selectedObjType].shoot || objTypes[selectedObjType].rayIntersection), true);
       createUndoPoint();
@@ -786,50 +786,50 @@ window.onkeydown = function (e) {
 
   //Arrow Keys
   if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = scene.gridRefactored ? scene.gridSizeRefactored : 1;
+    var step = scene.grid ? scene.gridSize : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
-        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], -step, 0);
+        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], -step, 0);
       }
       if (e.keyCode == 38) {
-        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], 0, -step);
+        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], 0, -step);
       }
       if (e.keyCode == 39) {
-        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], step, 0);
+        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], step, 0);
       }
       if (e.keyCode == 40) {
-        objTypes[scene.objsRefactored[selectedObj].type].move(scene.objsRefactored[selectedObj], 0, step);
+        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], 0, step);
       }
-      draw(!(objTypes[scene.objsRefactored[selectedObj].type].shoot || objTypes[scene.objsRefactored[selectedObj].type].rayIntersection), true);
+      draw(!(objTypes[scene.objs[selectedObj].type].shoot || objTypes[scene.objs[selectedObj].type].rayIntersection), true);
     }
-    else if (scene.modeRefactored == 'observer') {
+    else if (scene.mode == 'observer') {
       if (e.keyCode == 37) {
-        scene.observerRefactored.c.x -= step;
+        scene.observer.c.x -= step;
       }
       if (e.keyCode == 38) {
-        scene.observerRefactored.c.y -= step;
+        scene.observer.c.y -= step;
       }
       if (e.keyCode == 39) {
-        scene.observerRefactored.c.x += step;
+        scene.observer.c.x += step;
       }
       if (e.keyCode == 40) {
-        scene.observerRefactored.c.y += step;
+        scene.observer.c.y += step;
       }
       draw(false, true);
     }
     else {
-      for (var i = 0; i < scene.objsRefactored.length; i++) {
+      for (var i = 0; i < scene.objs.length; i++) {
         if (e.keyCode == 37) {
-          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], -step, 0);
+          objTypes[scene.objs[i].type].move(scene.objs[i], -step, 0);
         }
         if (e.keyCode == 38) {
-          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], 0, -step);
+          objTypes[scene.objs[i].type].move(scene.objs[i], 0, -step);
         }
         if (e.keyCode == 39) {
-          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], step, 0);
+          objTypes[scene.objs[i].type].move(scene.objs[i], step, 0);
         }
         if (e.keyCode == 40) {
-          objTypes[scene.objsRefactored[i].type].move(scene.objsRefactored[i], 0, step);
+          objTypes[scene.objs[i].type].move(scene.objs[i], 0, step);
         }
       }
       draw();
@@ -861,21 +861,21 @@ function JSONOutput() {
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
   document.getElementById('textarea1').value = JSON.stringify({
      version: 2,
-     objs: scene.objsRefactored,
-     mode: scene.modeRefactored,
-     rayDensity_light: scene.rayDensity_lightRefactored,
-     rayDensity_images: scene.rayDensity_imagesRefactored,
-     showGrid: scene.showGridRefactored,
-     grid: scene.gridRefactored,
-     lockobjs: scene.lockobjsRefactored,
-     gridSize: scene.gridSizeRefactored,
-     observer: scene.observerRefactored,
-     origin: scene.originRefactored,
-     scale: scene.scaleRefactored,
+     objs: scene.objs,
+     mode: scene.mode,
+     rayDensity_light: scene.rayDensity_light,
+     rayDensity_images: scene.rayDensity_images,
+     showGrid: scene.showGrid,
+     grid: scene.grid,
+     lockobjs: scene.lockobjs,
+     gridSize: scene.gridSize,
+     observer: scene.observer,
+     origin: scene.origin,
+     scale: scene.scale,
      width: canvasWidth,
      height: canvasHeight,
-     colorMode: scene.colorModeRefactored,
-     symbolicGrin: scene.symbolicGrinRefactored
+     colorMode: scene.colorMode,
+     symbolicGrin: scene.symbolicGrin
     }, JSONreplacer, 2);
   /*
   if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
@@ -954,37 +954,37 @@ function JSONInput() {
     jsonData.gridSize = 20;
   }
 
-  scene.objsRefactored = jsonData.objs;
-  scene.rayDensity_lightRefactored = jsonData.rayDensity_light;
-  scene.rayDensity_imagesRefactored = jsonData.rayDensity_images;
+  scene.objs = jsonData.objs;
+  scene.rayDensity_light = jsonData.rayDensity_light;
+  scene.rayDensity_images = jsonData.rayDensity_images;
 
   document.getElementById('showgrid').checked = jsonData.showGrid;
   document.getElementById('showgrid_more').checked = jsonData.showGrid;
   document.getElementById('showgrid_mobile').checked = jsonData.showGrid;
-  scene.showGridRefactored = jsonData.showGrid;
+  scene.showGrid = jsonData.showGrid;
 
   document.getElementById('grid').checked = jsonData.grid;
   document.getElementById('grid_more').checked = jsonData.grid;
   document.getElementById('grid_mobile').checked = jsonData.grid;
-  scene.gridRefactored = jsonData.grid;
+  scene.grid = jsonData.grid;
 
   document.getElementById('lockobjs').checked = jsonData.lockobjs;
   document.getElementById('lockobjs_more').checked = jsonData.lockobjs;
   document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
 
-  scene.observerRefactored = jsonData.observer;
+  scene.observer = jsonData.observer;
 
-  if (scene.observerRefactored) {
-    document.getElementById('observer_size').value = Math.round(scene.observerRefactored.r * 2 * 1000000) / 1000000;
-    document.getElementById('observer_size_mobile').value = Math.round(scene.observerRefactored.r * 2 * 1000000) / 1000000;
+  if (scene.observer) {
+    document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+    document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
   } else {
     document.getElementById('observer_size').value = 40;
     document.getElementById('observer_size_mobile').value = 40;
   }
 
-  scene.gridSizeRefactored = jsonData.gridSize;
-  document.getElementById('grid_size').value = scene.gridSizeRefactored;
-  document.getElementById('grid_size_mobile').value = scene.gridSizeRefactored;
+  scene.gridSize = jsonData.gridSize;
+  document.getElementById('grid_size').value = scene.gridSize;
+  document.getElementById('grid_size_mobile').value = scene.gridSize;
 
   var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
   var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
@@ -996,16 +996,16 @@ function JSONInput() {
     var rescaleFactor = jsonData.height / canvasHeight;
   }
   //console.log(rescaleFactor);
-  scene.scaleRefactored = jsonData.scale / rescaleFactor;
-  scene.originRefactored.x = jsonData.origin.x / rescaleFactor;
-  scene.originRefactored.y = jsonData.origin.y / rescaleFactor;
+  scene.scale = jsonData.scale / rescaleFactor;
+  scene.origin.x = jsonData.origin.x / rescaleFactor;
+  scene.origin.y = jsonData.origin.y / rescaleFactor;
 
-  document.getElementById("zoom").innerText = Math.round(scene.scaleRefactored * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
-  scene.colorModeRefactored = jsonData.colorMode;
-  scene.symbolicGrinRefactored = jsonData.symbolicGrin;
-  document.getElementById('color_mode').checked = scene.colorModeRefactored;
-  document.getElementById('color_mode_mobile').checked = scene.colorModeRefactored;
+  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
+  scene.colorMode = jsonData.colorMode;
+  scene.symbolicGrin = jsonData.symbolicGrin;
+  document.getElementById('color_mode').checked = scene.colorMode;
+  document.getElementById('color_mode_mobile').checked = scene.colorMode;
   modebtn_clicked(jsonData.mode);
   document.getElementById('mode_' + jsonData.mode).checked = true;
   document.getElementById('mode_' + jsonData.mode + '_mobile').checked = true;
@@ -1023,20 +1023,20 @@ function toolbtn_clicked(tool, e) {
 
 
 function modebtn_clicked(mode1) {
-  scene.modeRefactored = mode1;
-  if (scene.modeRefactored == 'images' || scene.modeRefactored == 'observer') {
-    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_imagesRefactored);
-    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_imagesRefactored);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_imagesRefactored);
+  scene.mode = mode1;
+  if (scene.mode == 'images' || scene.mode == 'observer') {
+    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_images);
+    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_images);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_images);
   }
   else {
-    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_lightRefactored);
-    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_lightRefactored);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_lightRefactored);
+    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_light);
+    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_light);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_light);
   }
-  if (scene.modeRefactored == 'observer' && !scene.observerRefactored) {
+  if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
-    scene.observerRefactored = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - scene.originRefactored.x) / scene.scaleRefactored, (canvas.height * 0.5 / dpr - scene.originRefactored.y) / scene.scaleRefactored), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 
@@ -1050,18 +1050,18 @@ function modebtn_clicked(mode1) {
 
 
 function setScale(value) {
-  setScaleWithCenter(value, canvas.width / scene.scaleRefactored / 2, canvas.height / scene.scaleRefactored / 2);
+  setScaleWithCenter(value, canvas.width / scene.scale / 2, canvas.height / scene.scale / 2);
 }
 
 function setScaleWithCenter(value, centerX, centerY) {
-  scaleChange = value - scene.scaleRefactored;
-  scene.originRefactored.x *= value / scene.scaleRefactored;
-  scene.originRefactored.y *= value / scene.scaleRefactored;
-  scene.originRefactored.x -= centerX * scaleChange;
-  scene.originRefactored.y -= centerY * scaleChange;
-  scene.scaleRefactored = value;
-  document.getElementById("zoom").innerText = Math.round(scene.scaleRefactored * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
+  scaleChange = value - scene.scale;
+  scene.origin.x *= value / scene.scale;
+  scene.origin.y *= value / scene.scale;
+  scene.origin.x -= centerX * scaleChange;
+  scene.origin.y -= centerY * scaleChange;
+  scene.scale = value;
+  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   draw();
 }
 
@@ -1125,8 +1125,8 @@ function enterCropMode() {
 
   // Search objs for existing cropBox
   var cropBoxIndex = -1;
-  for (var i = 0; i < scene.objsRefactored.length; i++) {
-    if (scene.objsRefactored[i].type == 'cropbox') {
+  for (var i = 0; i < scene.objs.length; i++) {
+    if (scene.objs[i].type == 'cropbox') {
       cropBoxIndex = i;
       break;
     }
@@ -1135,15 +1135,15 @@ function enterCropMode() {
     // Create a new cropBox
     var cropBox = {
       type: 'cropbox',
-      p1: graphs.point((canvas.width * 0.2 / dpr - scene.originRefactored.x) / scene.scaleRefactored, ((120 + (canvas.height-120) * 0.2) / dpr - scene.originRefactored.y) / scene.scaleRefactored),
-      p2: graphs.point((canvas.width * 0.8 / dpr - scene.originRefactored.x) / scene.scaleRefactored, ((120 + (canvas.height-120) * 0.2) / dpr - scene.originRefactored.y) / scene.scaleRefactored),
-      p3: graphs.point((canvas.width * 0.2 / dpr - scene.originRefactored.x) / scene.scaleRefactored, ((120 + (canvas.height-120) * 0.8) / dpr - scene.originRefactored.y) / scene.scaleRefactored),
-      p4: graphs.point((canvas.width * 0.8 / dpr - scene.originRefactored.x) / scene.scaleRefactored, ((120 + (canvas.height-120) * 0.8) / dpr - scene.originRefactored.y) / scene.scaleRefactored),
+      p1: graphs.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
+      p2: graphs.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
+      p3: graphs.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
+      p4: graphs.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
       width: 1280,
       format: 'png'
     };
-    scene.objsRefactored.push(cropBox);
-    cropBoxIndex = scene.objsRefactored.length - 1;
+    scene.objs.push(cropBox);
+    cropBoxIndex = scene.objs.length - 1;
   }
 
   selectObj(cropBoxIndex);
@@ -1156,12 +1156,12 @@ function exportSVG(cropBox) {
   var ctx0_backup = ctx0;
   var ctxLight_backup = ctxLight;
   var ctxGrid_backup = ctxGrid;
-  var scale_backup = scene.scaleRefactored;
-  var origin_backup = scene.originRefactored;
+  var scale_backup = scene.scale;
+  var origin_backup = scene.origin;
   var dpr_backup = dpr;
 
-  scene.scaleRefactored = 1;
-  scene.originRefactored = { x: -cropBox.p1.x * scene.scaleRefactored, y: -cropBox.p1.y * scene.scaleRefactored };
+  scene.scale = 1;
+  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
   dpr = 1;
   imageWidth = cropBox.p4.x - cropBox.p1.x;
   imageHeight = cropBox.p4.y - cropBox.p1.y;
@@ -1188,20 +1188,20 @@ function exportSVG(cropBox) {
   ctx0 = ctx0_backup;
   ctxLight = ctxLight_backup;
   ctxGrid = ctxGrid_backup;
-  scene.scaleRefactored = scale_backup;
-  scene.originRefactored = origin_backup;
+  scene.scale = scale_backup;
+  scene.origin = origin_backup;
   dpr = dpr_backup;
   draw(true, true);
 }
 
 function exportImage(cropBox) {
 
-  var scale_backup = scene.scaleRefactored;
-  var origin_backup = scene.originRefactored;
+  var scale_backup = scene.scale;
+  var origin_backup = scene.origin;
   var dpr_backup = dpr;
 
-  scene.scaleRefactored = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-  scene.originRefactored = { x: -cropBox.p1.x * scene.scaleRefactored, y: -cropBox.p1.y * scene.scaleRefactored };
+  scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
+  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
   dpr = 1;
   imageWidth = cropBox.width;
   imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
@@ -1238,8 +1238,8 @@ function exportImage(cropBox) {
     saveAs(blob, "export.png");
   });
 
-  scene.scaleRefactored = scale_backup;
-  scene.originRefactored = origin_backup;
+  scene.scale = scale_backup;
+  scene.origin = origin_backup;
   dpr = dpr_backup;
   window.onresize();
 }

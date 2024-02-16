@@ -3,7 +3,7 @@ objTypes['idealmirror'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + scene.gridSizeRefactored, mouse.y), p: 100};
+    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + scene.gridSize, mouse.y), p: 100};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
@@ -15,7 +15,7 @@ objTypes['idealmirror'] = {
     }, elem);
     if (createAdvancedOptions(cartesianSign)) {
       createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-        if (obj == scene.objsRefactored[selectedObj]) {
+        if (obj == scene.objs[selectedObj]) {
           cartesianSign = value;
           localStorage.rayOpticsCartesianSign = value?"true":"false";
           selectObj(selectedObj);
@@ -46,7 +46,7 @@ objTypes['idealmirror'] = {
   var center_size = 1;
 
   // Draw the line segment
-  ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+  ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
   ctx.beginPath();

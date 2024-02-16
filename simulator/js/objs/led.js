@@ -11,7 +11,7 @@ objTypes['led'] = {
     createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
       obj.brightness = value;
     }, elem, getMsg('brightness_note_popover'));
-    if (scene.colorModeRefactored) {
+    if (scene.colorMode) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
       }, elem);
@@ -36,9 +36,9 @@ objTypes['led'] = {
 
   // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
-  ctx.fillStyle = scene.colorModeRefactored? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  ctx.fillStyle = scene.colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
-  if (scene.colorModeRefactored) {
+  if (scene.colorMode) {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
   }
@@ -50,7 +50,7 @@ objTypes['led'] = {
   // Shoot rays
   shoot: function(obj) {
   var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
-  var i0 = (scene.modeRefactored == 'observer') ? (-s * 2 + 1e-6) : 0;
+  var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0;
   
   var ang, x1, y1, iStart, iEnd;
   if (obj.symmetric) {
@@ -73,7 +73,7 @@ objTypes['led'] = {
 	
     ray1.brightness_s = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
     ray1.brightness_p = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
-    if (scene.colorModeRefactored) {
+    if (scene.colorMode) {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     ray1.isNew = true;

@@ -62,12 +62,12 @@ objTypes['grin_refractor'] = {
         if (shotType == 1)
         {
           // Shot from inside to outside
-          var n1 = (!scene.colorModeRefactored)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+          var n1 = (!scene.colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
         }
         else if (shotType == -1)
         {
           // Shot from outside to inside
-          var n1 = 1 / ((!scene.colorModeRefactored)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+          var n1 = 1 / ((!scene.colorMode)?p:(p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
         }
         else if (shotType == 0)
         {
@@ -101,12 +101,12 @@ objTypes['grin_refractor'] = {
             if (shotType == 1)
             {
             // Shot from inside to outside
-            n1 *= (!scene.colorModeRefactored)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+            n1 *= (!scene.colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
             }
             else if (shotType == -1)
             {
             // Shot from outside to inside
-            n1 /= (!scene.colorModeRefactored)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+            n1 /= (!scene.colorMode)?p:(p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
             }
             else if (shotType == 0)
             {

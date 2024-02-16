@@ -13,7 +13,7 @@ objTypes['power'] = {
       if (value) {
         obj.binSize = 1;
       }
-      if (obj == scene.objsRefactored[selectedObj]) {
+      if (obj == scene.objs[selectedObj]) {
         selectObj(selectedObj);
       }
     }, elem);
