@@ -8,21 +8,7 @@ var ctx0;
 var ctxLight;
 var ctxGrid;
 var dpr = 1;
-var scene = {
-  objs: [],
-  mode: 'light',
-  rayDensity_light: 0.1,
-  rayDensity_images: 1,
-  showGrid: false,
-  grid: false,
-  lockobjs: false,
-  gridSize: 20,
-  observer: null,
-  origin: { x: 0, y: 0 },
-  scale: 1,
-  colorMode: false,
-  symbolicGrin: false // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
-};
+var scene = new Scene();
 var xyBox_cancelContextMenu = false;
 var cartesianSign = false;
 var backgroundImage = null;
@@ -643,18 +629,12 @@ window.onresize = function (e) {
 function initParameters() {
   isConstructing = false;
   endPositioning();
-  scene.objs.length = 0;
+  scene = new Scene();
   selectObj(-1);
 
-  scene.rayDensity_light = 0.1; // The Ray Density when View is Rays or Extended rays
-  scene.rayDensity_images = 1; // The Ray Density when View is All Images or Seen by Observer
   document.getElementById("rayDensity").value = scene.rayDensity_light;
   document.getElementById("rayDensity_more").value = scene.rayDensity_light;
   document.getElementById("rayDensity_mobile").value = scene.rayDensity_light;
-  scene.origin = { x: 0, y: 0 };
-  scene.observer = null;
-  scene.scale = 1;
-  cartesianSign = false;
   try {
     if (localStorage.rayOpticsCartesianSign == "true") {
       cartesianSign = true;
@@ -664,12 +644,7 @@ function initParameters() {
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
-  scene.colorMode = false;
   backgroundImage = null;
-
-  scene.lockobjs = false;
-  scene.grid = false;
-  scene.showGrid = false;
 
   //Reset new UI.
   
@@ -697,7 +672,6 @@ function initParameters() {
   document.getElementById('setAttrAll').checked = false;
   document.getElementById('applytoall_mobile').checked = false;
 
-  scene.gridSize = 20;
   document.getElementById('grid_size').value = scene.gridSize;
   document.getElementById('grid_size_mobile').value = scene.gridSize;
 
