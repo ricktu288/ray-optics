@@ -10,7 +10,7 @@ objTypes['refractor'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
       }, elem, getMsg('refractiveindex_note_popover'));
@@ -504,12 +504,12 @@ objTypes['refractor'] = {
     if (shotType == 1)
     {
       // Shot from inside to outside
-      var n1 = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+      var n1 = (!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
     else if (shotType == -1)
     {
       // Shot from outside to inside
-      var n1 = 1 / ((!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
     }
     else if (shotType == 0)
     {
@@ -531,12 +531,12 @@ objTypes['refractor'] = {
       if (shotType == 1)
       {
         // Shot from inside to outside
-        n1 *= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == -1)
       {
         // Shot from outside to inside
-        n1 /= (!colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!scene.colorModeRefactored)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
       }
       else if (shotType == 0)
       {

@@ -25,7 +25,7 @@ var pendingControlPoints;
 
 function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
-    return (screen && colorMode) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
+    return (screen && scene.colorModeRefactored) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
   return style;
 }
 

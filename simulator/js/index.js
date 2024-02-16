@@ -277,9 +277,9 @@ window.onload = function (e) {
   };
 
   document.getElementById('color_mode').onclick = function () {
-    colorMode = this.checked;
-    document.getElementById('color_mode').checked = colorMode;
-    document.getElementById('color_mode_mobile').checked = colorMode;
+    scene.colorModeRefactored = this.checked;
+    document.getElementById('color_mode').checked = scene.colorModeRefactored;
+    document.getElementById('color_mode_mobile').checked = scene.colorModeRefactored;
     selectObj(selectedObj);
     this.blur();
     draw(false, true);
@@ -662,7 +662,7 @@ function initParameters() {
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
-  colorMode = false;
+  scene.colorModeRefactored = false;
   backgroundImage = null;
 
   scene.lockobjsRefactored = false;
@@ -872,7 +872,7 @@ function JSONOutput() {
      scale: scene.scaleRefactored,
      width: canvasWidth,
      height: canvasHeight,
-     colorMode: colorMode,
+     colorMode: scene.colorModeRefactored,
      symbolicGrin: symbolicGrin
     }, JSONreplacer, 2);
   /*
@@ -1000,10 +1000,10 @@ function JSONInput() {
 
   document.getElementById("zoom").innerText = Math.round(scene.scaleRefactored * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scaleRefactored * 100) + '%';
-  colorMode = jsonData.colorMode;
+  scene.colorModeRefactored = jsonData.colorMode;
   symbolicGrin = jsonData.symbolicGrin;
-  document.getElementById('color_mode').checked = colorMode;
-  document.getElementById('color_mode_mobile').checked = colorMode;
+  document.getElementById('color_mode').checked = scene.colorModeRefactored;
+  document.getElementById('color_mode_mobile').checked = scene.colorModeRefactored;
   modebtn_clicked(jsonData.mode);
   document.getElementById('mode_' + jsonData.mode).checked = true;
   document.getElementById('mode_' + jsonData.mode + '_mobile').checked = true;

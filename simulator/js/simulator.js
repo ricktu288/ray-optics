@@ -1,6 +1,5 @@
 var waitingRays = []; // The rays waiting for shooting
 var waitingRayCount = 0; // Number of rays waiting for shooting
-var colorMode = false;
 var symbolicGrin = false; // Body merging functionality (used in GRIN objects such as 'grin_circlelens' and 'grin_refractor') uses symbolic math
 var timerID = -1;
 var isDrawing = false;
@@ -238,7 +237,7 @@ function shootWaitingRays() {
   var surfaceMerging_objs = [];
 
   
-  if (colorMode) {
+  if (scene.colorModeRefactored) {
     ctxLight.globalCompositeOperation = 'screen';
   }
 
@@ -338,7 +337,7 @@ function shootWaitingRays() {
           }
         }
       }
-      if (colorMode) {
+      if (scene.colorModeRefactored) {
         var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p), true);
       } else {
         ctxLight.globalAlpha = alpha0 * (waitingRays[j].brightness_s + waitingRays[j].brightness_p);
@@ -348,7 +347,7 @@ function shootWaitingRays() {
       {
         if (scene.modeRefactored == 'light' || scene.modeRefactored == 'extended_light')
         {
-          if (colorMode) {
+          if (scene.colorModeRefactored) {
             canvasPainter.draw(waitingRays[j], color); // Draw the ray
           } else {
             canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); // Draw the ray
@@ -356,7 +355,7 @@ function shootWaitingRays() {
         }
         if (scene.modeRefactored == 'extended_light' && !waitingRays[j].isNew)
         {
-          if (colorMode) {
+          if (scene.colorModeRefactored) {
             ctxLight.setLineDash([2, 2]);
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
             ctxLight.setLineDash([]);
@@ -382,7 +381,7 @@ function shootWaitingRays() {
         // Here the ray will be shot on s_obj at s_point after traveling for s_len
         if (scene.modeRefactored == 'light' || scene.modeRefactored == 'extended_light')
         {
-          if (colorMode) {
+          if (scene.colorModeRefactored) {
             canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); // Draw the ray
           } else {
             canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
@@ -390,7 +389,7 @@ function shootWaitingRays() {
         }
         if (scene.modeRefactored == 'extended_light' && !waitingRays[j].isNew)
         {
-          if (colorMode) {
+          if (scene.colorModeRefactored) {
             ctxLight.setLineDash([2, 2]);
             canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
             ctxLight.setLineDash([1, 5]);
@@ -432,7 +431,7 @@ function shootWaitingRays() {
               {
 
 
-                if (colorMode) {
+                if (scene.colorModeRefactored) {
                   var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
                 } else {
                   ctxLight.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
@@ -448,7 +447,7 @@ function shootWaitingRays() {
                 if (rpd < 0)
                 {
                   // Virtual image
-                  if (colorMode) {
+                  if (scene.colorModeRefactored) {
                     ctxLight.fillStyle = color;
                     ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
                   } else {
@@ -458,13 +457,13 @@ function shootWaitingRays() {
                 else if (rpd < s_lensq)
                 {
                   // Real image
-                  if (colorMode) {
+                  if (scene.colorModeRefactored) {
                     canvasPainter.draw(observed_intersection, color); // Draw the image
                   } else {
                     canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); // Draw the image
                   }
                 }
-                  if (colorMode) {
+                  if (scene.colorModeRefactored) {
                     ctxLight.setLineDash([1, 2]);
                     canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); // Draw the observed ray
                     ctxLight.setLineDash([]);
@@ -474,7 +473,7 @@ function shootWaitingRays() {
               }
               else
               {
-                if (colorMode) {
+                if (scene.colorModeRefactored) {
                   ctxLight.setLineDash([1, 2]);
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
@@ -487,7 +486,7 @@ function shootWaitingRays() {
             {
               if (last_intersection)
               {
-                if (colorMode) {
+                if (scene.colorModeRefactored) {
                   ctxLight.setLineDash([1, 2]);
                   canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
@@ -513,7 +512,7 @@ function shootWaitingRays() {
           observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
           if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
           {
-            if (colorMode) {
+            if (scene.colorModeRefactored) {
               var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
             } else {
               ctxLight.globalAlpha = alpha0 * ((waitingRays[j].brightness_s + waitingRays[j].brightness_p) + (last_ray.brightness_s + last_ray.brightness_p)) * 0.5;
@@ -531,7 +530,7 @@ function shootWaitingRays() {
             if (rpd < 0)
             {
               // Virtual image
-              if (colorMode) {
+              if (scene.colorModeRefactored) {
                 ctxLight.fillStyle = color;
                 ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
               } else {
@@ -541,7 +540,7 @@ function shootWaitingRays() {
             else if (rpd < s_lensq)
             {
               // Real image
-              if (colorMode) {
+              if (scene.colorModeRefactored) {
                 canvasPainter.draw(observed_intersection, color); // Draw the image
               } else {
                 canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); // Draw the image
@@ -550,7 +549,7 @@ function shootWaitingRays() {
             else
             {
               // Virtual object
-              if (colorMode) {
+              if (scene.colorModeRefactored) {
                 ctxLight.fillStyle = color;
                 ctxLight.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
               } else {
@@ -589,7 +588,7 @@ function shootWaitingRays() {
   }
 
   //}
-  if (colorMode && ctxLight.constructor != C2S) {
+  if (scene.colorModeRefactored && ctxLight.constructor != C2S) {
     // Inverse transformation of the color adjustment made in wavelengthToColor.
     // This is to avoid the color satiation problem when using the 'lighter' composition.
     // Currently not supported when exporting to SVG.
@@ -656,7 +655,7 @@ function shootWaitingRays() {
 
 //Optical Filter Settings
 function dichroicSettings(obj, elem){
-  if (colorMode) {
+  if (scene.colorModeRefactored) {
     createBooleanAttr(getMsg('filter'), obj.isDichroic, function(obj, value) {
       obj.isDichroic = value;
       obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
@@ -685,7 +684,7 @@ function dichroicSettings(obj, elem){
 //Optical filter wavelength interaction check
 //Checks to see if the wavelength of the ray interacts
 function wavelengthInteraction(obj, ray){
-var dichroicEnabled = colorMode && obj.isDichroic && obj.wavelength;
+var dichroicEnabled = scene.colorModeRefactored && obj.isDichroic && obj.wavelength;
 var rayHueMatchesMirror =  Math.abs(obj.wavelength - ray.wavelength) <= (obj.bandwidth || 0);
 return !dichroicEnabled || (rayHueMatchesMirror != obj.isDichroicFilter);
 }

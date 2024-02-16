@@ -11,7 +11,7 @@ objTypes['radiant'] = {
     createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
     }, elem, getMsg('brightness_note_popover'));
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
       }, elem);
@@ -36,9 +36,9 @@ objTypes['radiant'] = {
 
   // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
-  ctx.fillStyle = colorMode? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  ctx.fillStyle = scene.colorModeRefactored? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
   ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
-  if (colorMode) {
+  if (scene.colorModeRefactored) {
     ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
     ctx.fillRect(obj.x - 1.5, obj.y - 1.5, 3, 3);
   }
@@ -90,7 +90,7 @@ objTypes['radiant'] = {
     ray1.brightness_s = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.brightness_p = Math.min(obj.p / getRayDensity(), 1) * 0.5;
     ray1.isNew = true;
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     if (i == i0)

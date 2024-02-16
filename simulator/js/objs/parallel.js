@@ -13,7 +13,7 @@ objTypes['parallel'] = {
     createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
     }, elem, getMsg('brightness_note_popover'));
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
       }, elem);
@@ -52,7 +52,7 @@ objTypes['parallel'] = {
   // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = getMouseStyle(obj, colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
+    ctx.strokeStyle = getMouseStyle(obj, scene.colorModeRefactored ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
     
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
@@ -98,7 +98,7 @@ objTypes['parallel'] = {
       ray1.brightness_p *= lambert;
     }
     ray1.isNew = true;
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     ray1.gap = gap;

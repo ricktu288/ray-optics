@@ -193,7 +193,7 @@ objTypes['aperture'] = {
 
   // Draw the obj on canvas
   draw: function(obj, ctx, aboveLight) {
-  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+  ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
   ctx.lineWidth = 3;
   ctx.lineCap = 'butt';
   ctx.beginPath();

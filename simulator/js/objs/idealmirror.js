@@ -46,7 +46,7 @@ objTypes['idealmirror'] = {
   var center_size = 1;
 
   // Draw the line segment
-  ctx.strokeStyle = getMouseStyle(obj, (colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+  ctx.strokeStyle = getMouseStyle(obj, (scene.colorModeRefactored && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
   ctx.globalAlpha = 1;
   ctx.lineWidth = 1;
   ctx.beginPath();

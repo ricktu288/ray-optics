@@ -77,7 +77,7 @@ objTypes['sphericallens'] = {
     }
     
 
-    if (colorMode) {
+    if (scene.colorModeRefactored) {
       createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         var old_params = objTypes['sphericallens'].getDFfdBfd(obj);
         obj.p = value * 1;
@@ -306,7 +306,7 @@ objTypes['sphericallens'] = {
       p2.y += dpy*correction;
     }
 
-    var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (546*546*0.000001));
+    var n = (!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (546*546*0.000001));
 
     // Solve for r1 and r2
 
@@ -440,7 +440,7 @@ objTypes['sphericallens'] = {
     var r1 = dR1R2.r1;
     var r2 = dR1R2.r2;
     var d = dR1R2.d;
-    var n = (!colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (546*546*0.000001));
+    var n = (!scene.colorModeRefactored)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (546*546*0.000001));
 
     var f = 1/((n-1)*(1/r1-1/r2+(n-1)*d/(n*r1*r2)));
     var ffd = f*(1+(n-1)*d/(n*r2));
