@@ -11,7 +11,6 @@ var dpr = 1;
 var scene = new Scene();
 var xyBox_cancelContextMenu = false;
 var cartesianSign = false;
-var backgroundImage = null;
 var restoredData = "";
 var isFromGallery = false;
 var hasUnsavedChange = false;
@@ -573,7 +572,7 @@ window.onload = function (e) {
   if (window.location.hash.length > 150) {
     JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
       document.getElementById('textarea1').value = JSON.stringify(json);
-      backgroundImage = null;
+      scene.backgroundImage = null;
       JSONInput();
       createUndoPoint();
       isFromGallery = true;
@@ -593,7 +592,7 @@ function openSample(name) {
     if (client.status >= 300)
       return;
     document.getElementById('textarea1').value = client.responseText;
-    backgroundImage = null;
+    scene.backgroundImage = null;
     JSONInput();
     createUndoPoint();
     isFromGallery = true;
@@ -606,6 +605,8 @@ function openSample(name) {
 
 
 window.onresize = function (e) {
+  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+
   if (window.devicePixelRatio) {
     dpr = window.devicePixelRatio;
   }
@@ -630,6 +631,8 @@ function initParameters() {
   isConstructing = false;
   endPositioning();
   scene = new Scene();
+  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+
   selectObj(-1);
 
   document.getElementById("rayDensity").value = scene.rayDensity_light;
@@ -644,7 +647,7 @@ function initParameters() {
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('light');
-  backgroundImage = null;
+  scene.backgroundImage = null;
 
   //Reset new UI.
   
@@ -822,169 +825,60 @@ window.onkeyup = function (e) {
 
 };
 
-
-// attributes starting with tmp_ are not written to output
-function JSONreplacer(name, val) {
-  if (name.startsWith("tmp_"))
-    return undefined;
-  return val;
-}
-
 function JSONOutput() {
-  var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
-  var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
-  document.getElementById('textarea1').value = JSON.stringify({
-     version: 2,
-     objs: scene.objs,
-     mode: scene.mode,
-     rayDensity_light: scene.rayDensity_light,
-     rayDensity_images: scene.rayDensity_images,
-     showGrid: scene.showGrid,
-     grid: scene.grid,
-     lockobjs: scene.lockobjs,
-     gridSize: scene.gridSize,
-     observer: scene.observer,
-     origin: scene.origin,
-     scale: scene.scale,
-     width: canvasWidth,
-     height: canvasHeight,
-     colorMode: scene.colorMode,
-     symbolicGrin: scene.symbolicGrin
-    }, JSONreplacer, 2);
-  /*
-  if (typeof (Storage) !== "undefined" && !restoredData && !isFromGallery) {
-    localStorage.rayOpticsData = document.getElementById('textarea1').value;
-  }
-  */
+  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+  document.getElementById('textarea1').value = scene.toJSON();
 }
+
 function JSONInput() {
   document.getElementById('welcome').style.display = 'none';
-  var jsonData = JSON.parse(document.getElementById('textarea1').value);
-  if (typeof jsonData != 'object') return;
-  if (!jsonData.version) {
-    // Earlier than "Ray Optics Simulation 1.0"
-    var str1 = document.getElementById('textarea1').value.replace(/"point"|"xxa"|"aH"/g, '1').replace(/"circle"|"xxf"/g, '5').replace(/"k"/g, '"objs"').replace(/"L"/g, '"p1"').replace(/"G"/g, '"p2"').replace(/"F"/g, '"p3"').replace(/"bA"/g, '"exist"').replace(/"aa"/g, '"parallel"').replace(/"ba"/g, '"mirror"').replace(/"bv"/g, '"lens"').replace(/"av"/g, '"notDone"').replace(/"bP"/g, '"lightAlpha"').replace(/"ab"|"observed_light"|"observed_images"/g, '"observer"');
-    jsonData = JSON.parse(str1);
-    if (!jsonData.objs) {
-      jsonData = { objs: jsonData };
-    }
-    if (!jsonData.mode) {
-      jsonData.mode = 'light';
-    }
-    if (!jsonData.rayDensity_light) {
-      jsonData.rayDensity_light = 1;
-    }
-    if (!jsonData.rayDensity_images) {
-      jsonData.rayDensity_images = 1;
-    }
-    if (!jsonData.scale) {
-      jsonData.scale = 1;
-    }
-    jsonData.version = 1;
-  }
-  if (jsonData.version == 1) {
-    // "Ray Optics Simulation 1.1" to "Ray Optics Simulation 1.2"
-    jsonData.origin = { x: 0, y: 0 };
-  }
-  if (jsonData.version > 2) {
-    // Newer than the current version
-    return;
-  }
-  //TODO: Create new version.
-  if (!jsonData.scale) {
-    jsonData.scale = 1;
-  }
-  if (!jsonData.colorMode) {
-    jsonData.colorMode = false;
-  }
-  if (!jsonData.symbolicGrin) {
-    jsonData.symbolicGrin = false;
-  }
-  if (jsonData.backgroundImage) {
-    backgroundImage = new Image();
-    backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
-    backgroundImage.onload = function (e1) {
+
+  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+  scene.fromJSON(document.getElementById('textarea1').value, function (needFullUpdate, completed) {
+    if (needFullUpdate) {
+      // Update the UI for the loaded scene.
+
+      document.getElementById('showgrid').checked = scene.showGrid;
+      document.getElementById('showgrid_more').checked = scene.showGrid;
+      document.getElementById('showgrid_mobile').checked = scene.showGrid;
+
+      document.getElementById('grid').checked = scene.grid;
+      document.getElementById('grid_more').checked = scene.grid;
+      document.getElementById('grid_mobile').checked = scene.grid;
+
+      document.getElementById('lockobjs').checked = scene.lockobjs;
+      document.getElementById('lockobjs_more').checked = scene.lockobjs;
+      document.getElementById('lockobjs_mobile').checked = scene.lockobjs;
+
+      if (scene.observer) {
+        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+      } else {
+        document.getElementById('observer_size').value = 40;
+        document.getElementById('observer_size_mobile').value = 40;
+      }
+
+      document.getElementById('grid_size').value = scene.gridSize;
+      document.getElementById('grid_size_mobile').value = scene.gridSize;
+
+      document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
+      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
+      document.getElementById('color_mode').checked = scene.colorMode;
+      document.getElementById('color_mode_mobile').checked = scene.colorMode;
+      modebtn_clicked(scene.mode);
+      document.getElementById('mode_' + scene.mode).checked = true;
+      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+      selectObj(selectedObj);
+      draw();
+    } else {
+      // Partial update (e.g. when the background image is loaded)
       setTimeout(function() {
         draw(true, true);
       }, 1);
     }
-  }
-  if (!jsonData.width) {
-    jsonData.width = 1500;
-  }
-  if (!jsonData.height) {
-    jsonData.height = 900;
-  }
-  if (!jsonData.showGrid) {
-    jsonData.showGrid = false;
-  }
-  if (!jsonData.grid) {
-    jsonData.grid = false;
-  }
-  if (!jsonData.lockobjs) {
-    jsonData.lockobjs = false;
-  }
-  if (!jsonData.gridSize) {
-    jsonData.gridSize = 20;
-  }
+  });
 
-  scene.objs = jsonData.objs;
-  scene.rayDensity_light = jsonData.rayDensity_light;
-  scene.rayDensity_images = jsonData.rayDensity_images;
-
-  document.getElementById('showgrid').checked = jsonData.showGrid;
-  document.getElementById('showgrid_more').checked = jsonData.showGrid;
-  document.getElementById('showgrid_mobile').checked = jsonData.showGrid;
-  scene.showGrid = jsonData.showGrid;
-
-  document.getElementById('grid').checked = jsonData.grid;
-  document.getElementById('grid_more').checked = jsonData.grid;
-  document.getElementById('grid_mobile').checked = jsonData.grid;
-  scene.grid = jsonData.grid;
-
-  document.getElementById('lockobjs').checked = jsonData.lockobjs;
-  document.getElementById('lockobjs_more').checked = jsonData.lockobjs;
-  document.getElementById('lockobjs_mobile').checked = jsonData.lockobjs;
-
-  scene.observer = jsonData.observer;
-
-  if (scene.observer) {
-    document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-    document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-  } else {
-    document.getElementById('observer_size').value = 40;
-    document.getElementById('observer_size_mobile').value = 40;
-  }
-
-  scene.gridSize = jsonData.gridSize;
-  document.getElementById('grid_size').value = scene.gridSize;
-  document.getElementById('grid_size_mobile').value = scene.gridSize;
-
-  var canvasWidth = Math.ceil((canvas.width/dpr) / 100) * 100;
-  var canvasHeight = Math.ceil((canvas.height/dpr) / 100) * 100;
-
-  // Rescale the image to fit the screen
-  if (jsonData.width/jsonData.height > canvasWidth/canvasHeight) {
-    var rescaleFactor = jsonData.width / canvasWidth;
-  } else {
-    var rescaleFactor = jsonData.height / canvasHeight;
-  }
-  //console.log(rescaleFactor);
-  scene.scale = jsonData.scale / rescaleFactor;
-  scene.origin.x = jsonData.origin.x / rescaleFactor;
-  scene.origin.y = jsonData.origin.y / rescaleFactor;
-
-  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
-  scene.colorMode = jsonData.colorMode;
-  scene.symbolicGrin = jsonData.symbolicGrin;
-  document.getElementById('color_mode').checked = scene.colorMode;
-  document.getElementById('color_mode_mobile').checked = scene.colorMode;
-  modebtn_clicked(jsonData.mode);
-  document.getElementById('mode_' + jsonData.mode).checked = true;
-  document.getElementById('mode_' + jsonData.mode + '_mobile').checked = true;
-  selectObj(selectedObj);
-  draw();
+  
 }
 
 
@@ -1066,9 +960,9 @@ function openFile(readFile) {
       hasUnsavedChange = false;
     } catch (error) {
       reader.onload = function (e) {
-        backgroundImage = new Image();
-        backgroundImage.src = e.target.result;
-        backgroundImage.onload = function (e1) {
+        scene.backgroundImage = new Image();
+        scene.backgroundImage.src = e.target.result;
+        scene.backgroundImage.onload = function (e1) {
           draw(true, true);
           cancelRestore();
         }

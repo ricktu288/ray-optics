@@ -57,7 +57,7 @@ function draw_(skipLight, skipGrid) {
   JSONOutput();
 
   if (ctx0.constructor != C2S) {
-    var canvasPainter0 = new CanvasPainter(ctx0, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), backgroundImage);
+    var canvasPainter0 = new CanvasPainter(ctx0, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.backgroundImage);
     var canvasPainter1 = new CanvasPainter(ctx, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr));
     
     canvasPainter0.cls();
