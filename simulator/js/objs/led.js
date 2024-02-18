@@ -49,7 +49,7 @@ objTypes['led'] = {
 
   // Shoot rays
   shoot: function(obj) {
-  var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
+  var s = Math.PI * 2 / parseInt(scene.rayDensity * 500);
   var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0;
   
   var ang, x1, y1, iStart, iEnd;
@@ -71,8 +71,8 @@ objTypes['led'] = {
 	
     var ray1 = graphs.ray(graphs.point(obj.p1.x, obj.p1.y), graphs.point(x1, y1));
 	
-    ray1.brightness_s = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
-    ray1.brightness_p = Math.min((obj.brightness || 0.5) / getRayDensity(), 1) * 0.5;
+    ray1.brightness_s = Math.min((obj.brightness || 0.5) / scene.rayDensity, 1) * 0.5;
+    ray1.brightness_p = Math.min((obj.brightness || 0.5) / scene.rayDensity, 1) * 0.5;
     if (scene.colorMode) {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }

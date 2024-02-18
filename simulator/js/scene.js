@@ -71,6 +71,20 @@ class Scene {
     this.height = height;
   }
 
+  
+  /** @property {number} rayDensity - The mode-dependent ray density. */
+  get rayDensity() {
+    return this.mode == 'light' || this.mode == 'extended_light' ? this.rayDensity_light : this.rayDensity_images;
+  }
+
+  set rayDensity(val) {
+    if (this.mode == 'light' || this.mode == 'extended_light') {
+      this.rayDensity_light = val;
+    } else {
+      this.rayDensity_images = val;
+    }
+  }
+  
   /**
    * The callback function when the entire scene or a resource (e.g. image) is loaded.
    * @callback fromJSONCallback

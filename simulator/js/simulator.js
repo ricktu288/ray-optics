@@ -186,31 +186,6 @@ function addRay(ray) {
   waitingRays[waitingRays.length] = ray;
 }
 
-function getRayDensity()
-{
-  if (scene.mode == 'images' || scene.mode == 'observer')
-  {
-    return scene.rayDensity_images;
-  }
-  else
-  {
-    return scene.rayDensity_light;
-  }
-}
-
-function setRayDensity(value)
-{
-  if (scene.mode == 'images' || scene.mode == 'observer')
-  {
-    scene.rayDensity_images = value;
-  }
-  else
-  {
-    scene.rayDensity_light = value;
-  }
-}
-
-
 var last_ray;
 var last_intersection;
 var last_s_obj_index;

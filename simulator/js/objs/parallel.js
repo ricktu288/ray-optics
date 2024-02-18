@@ -90,8 +90,8 @@ objTypes['parallel'] = {
 
   newRay: function(obj, x, y, normal, angle, gap, brightness_factor=1.0) {
     var ray1 = graphs.ray(graphs.point(x, y), graphs.point(x + Math.sin(normal+angle), y + Math.cos(normal+angle)));
-    ray1.brightness_s = Math.min(obj.p / getRayDensity() * brightness_factor, 1) * 0.5;
-    ray1.brightness_p = Math.min(obj.p / getRayDensity() * brightness_factor, 1) * 0.5;
+    ray1.brightness_s = Math.min(obj.p / scene.rayDensity * brightness_factor, 1) * 0.5;
+    ray1.brightness_p = Math.min(obj.p / scene.rayDensity * brightness_factor, 1) * 0.5;
     if (obj.lambert) {
       lambert = Math.cos(angle)
       ray1.brightness_s *= lambert;
@@ -107,10 +107,10 @@ objTypes['parallel'] = {
 
   // Shoot rays
   shoot: function(obj) {
-    var n = graphs.length_segment(obj) * getRayDensity();
+    var n = graphs.length_segment(obj) * scene.rayDensity;
     var stepX = (obj.p2.x - obj.p1.x) / n;
     var stepY = (obj.p2.y - obj.p1.y) / n;
-    var s = Math.PI * 2 / parseInt(getRayDensity() * 500);
+    var s = Math.PI * 2 / parseInt(scene.rayDensity * 500);
     var sizeX = (obj.p2.x - obj.p1.x);
     var sizeY = (obj.p2.y - obj.p1.y);
     var normal = Math.atan2(stepX, stepY) + Math.PI / 2.0;

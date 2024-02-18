@@ -352,7 +352,7 @@ window.onload = function (e) {
 
 
   document.getElementById('rayDensity').oninput = function () {
-    setRayDensity(Math.exp(this.value));
+    scene.rayDensity = Math.exp(this.value);
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
@@ -362,7 +362,7 @@ window.onload = function (e) {
   document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
 
   document.getElementById('rayDensity').onmouseup = function () {
-    setRayDensity(Math.exp(this.value)); // For browsers not supporting oninput
+    scene.rayDensity = Math.exp(this.value); // For browsers not supporting oninput
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
@@ -374,7 +374,7 @@ window.onload = function (e) {
   document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
 
   document.getElementById('rayDensity').ontouchend = function () {
-    setRayDensity(Math.exp(this.value)); // For browsers not supporting oninput
+    scene.rayDensity = Math.exp(this.value); // For browsers not supporting oninput
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
@@ -386,8 +386,8 @@ window.onload = function (e) {
   document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
 
   document.getElementById('rayDensityPlus').onclick = function () {
-    rayDensityValue = Math.log(getRayDensity()) * 1.0 + 0.1;
-    setRayDensity(Math.exp(rayDensityValue));
+    rayDensityValue = Math.log(scene.rayDensity) * 1.0 + 0.1;
+    scene.rayDensity = Math.exp(rayDensityValue);
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
@@ -395,8 +395,8 @@ window.onload = function (e) {
     draw(false, true);
   };
   document.getElementById('rayDensityMinus').onclick = function () {
-    rayDensityValue = Math.log(getRayDensity()) * 1.0 - 0.1;
-    setRayDensity(Math.exp(rayDensityValue));
+    rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
+    scene.rayDensity = Math.exp(rayDensityValue);
     document.getElementById('rayDensity').value = rayDensityValue;
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
