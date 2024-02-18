@@ -24,7 +24,7 @@ objTypes['mirror'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     dichroicSettings(obj,elem);
   },
 

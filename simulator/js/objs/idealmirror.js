@@ -9,7 +9,7 @@ objTypes['idealmirror'] = {
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
       obj.p = value * (cartesianSign?-1:1);
     }, elem);

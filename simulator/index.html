@@ -919,70 +919,66 @@
           </div>
         </div>
       </div>
-      <div id="obj_settings" class="selected-tool-bar" style="display: none;">
-        <div class="optionsbar">
-          <div class="">
-            <span class="d-none d-lg-inline" id="obj_name" style="padding-right:5px">Glass</span>
-            <span id="p_box">
+      <div id="obj_bar" class="obj-bar" style="display: none;">
+        <span class="d-none d-lg-inline" id="obj_name" style="padding-right:5px">Glass</span>
+        <span id="obj_bar_main">
+        </span>
+        <span>
+          <nobr>
+            <span class="d-none d-lg-inline">
+              <span id="showAdvanced" data-text="showadvanced"></span>
+              <span id="setAttrAll_box">
+                <input type="checkbox" class="btn-check" id="setAttrAll" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="setAttrAll" data-title="applytoall">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="m11.5 11.932a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
+                    <path d="m11.5 1.1864a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
+                    <path d="m10.049 6.3809v3.1367h1v-3.1367z"/>
+                    <path d="m11.82 6.3809v3.1367h1v-3.1367z"/>
+                  </svg>
+                </label>
+              </span>
+              <button class="btn" data-title="duplicate" id="copy">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 9.766 9.766">
+                  <g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
+                    <path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
+                    <path d="m401.05 0h-227c-21.3 0-38.6 17.3-38.6 38.6 0 7.5 6 13.5 13.5 13.5s13.5-6 13.5-13.5c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6v325.7c0 6.4-5.2 11.6-11.6 11.6-7.5 0-13.5 6-13.5 13.5s6 13.5 13.5 13.5c21.3 0 38.6-17.3 38.6-38.6v-325.7c0-21.3-17.3-38.6-38.6-38.6z"/>
+                  </g>
+                </svg>
+              </button>
+              <button class="btn" data-title="delete" id="delete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                </svg>
+              </button>
+              <button class="btn" id="unselect" data-popover="unselect_popover" data-bs-placement="bottom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </button>
             </span>
-            <span>
-              <nobr>
-                <span class="d-none d-lg-inline">
-                  <span id="showAdvanced" data-text="showadvanced"></span>
-                  <span id="setAttrAll_box">
-                    <input type="checkbox" class="btn-check" id="setAttrAll" autocomplete="off">
-                    <label class="btn btn-outline-secondary" for="setAttrAll" data-title="applytoall">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="m11.5 11.932a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
-                        <path d="m11.5 1.1864a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
-                        <path d="m10.049 6.3809v3.1367h1v-3.1367z"/>
-                        <path d="m11.82 6.3809v3.1367h1v-3.1367z"/>
-                      </svg>
-                    </label>
-                  </span>
-                  <button class="btn" data-title="duplicate" id="copy">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 9.766 9.766">
-                      <g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
-                        <path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
-                        <path d="m401.05 0h-227c-21.3 0-38.6 17.3-38.6 38.6 0 7.5 6 13.5 13.5 13.5s13.5-6 13.5-13.5c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6v325.7c0 6.4-5.2 11.6-11.6 11.6-7.5 0-13.5 6-13.5 13.5s6 13.5 13.5 13.5c21.3 0 38.6-17.3 38.6-38.6v-325.7c0-21.3-17.3-38.6-38.6-38.6z"/>
-                      </g>
-                    </svg>
-                  </button>
-                  <button class="btn" data-title="delete" id="delete">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                      <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                    </svg>
-                  </button>
-                  <button class="btn" id="unselect" data-popover="unselect_popover" data-bs-placement="bottom">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                  </button>
-                </span>
-                
-                <span class="d-inline d-lg-none">
-                  <button class="btn shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="selectedToolDropdownMobile" style="color:white; padding-left:0px;padding-right:5px">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                    </svg>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
-                    <li id="showAdvanced_mobile_container" style="display: none">
-                      <button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button>
-                    </li>
-                    <li id="applytoall_mobile_container" style="display: none">
-                      <input type="checkbox" class="btn-check" autocomplete="off" id="applytoall_mobile" checked>
-                      <label class="dropdown-item" for="applytoall_mobile" data-text="applytoall"></label>
-                    </li>
-                    <li><button class="dropdown-item" data-text="duplicate" id="copy_mobile"></button></li>
-                    <li><button class="dropdown-item" data-text="delete" id="delete_mobile"></button></li>
-                    <li><button class="dropdown-item" data-text="unselect" id="unselect_mobile"></button></li>
-                  </ul>
-                </span>
-              </nobr>
+            
+            <span class="d-inline d-lg-none">
+              <button class="btn shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="selectedToolDropdownMobile" style="color:white; padding-left:0px;padding-right:5px">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                </svg>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
+                <li id="showAdvanced_mobile_container" style="display: none">
+                  <button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button>
+                </li>
+                <li id="applytoall_mobile_container" style="display: none">
+                  <input type="checkbox" class="btn-check" autocomplete="off" id="applytoall_mobile" checked>
+                  <label class="dropdown-item" for="applytoall_mobile" data-text="applytoall"></label>
+                </li>
+                <li><button class="dropdown-item" data-text="duplicate" id="copy_mobile"></button></li>
+                <li><button class="dropdown-item" data-text="delete" id="delete_mobile"></button></li>
+                <li><button class="dropdown-item" data-text="unselect" id="unselect_mobile"></button></li>
+              </ul>
             </span>
-          </div>
-        </div>
+          </nobr>
+        </span>
       </div>
     </div>
 
@@ -1236,7 +1232,7 @@
     <script src="js/canvasPainter.js"></script>
     <script src="js/editor.js"></script>
     <script src="js/simulator.js"></script>
-    <script src="js/parameterBox.js"></script>
+    <script src="js/objBar.js"></script>
     <script src="../thirdparty/FileSaver.js"></script>
     <script src="../thirdparty/canvas2svg.js"></script>
     <script src="../thirdparty/evaluatex.min.js"></script>

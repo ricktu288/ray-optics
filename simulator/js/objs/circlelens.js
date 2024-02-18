@@ -8,7 +8,7 @@ objTypes['circlelens'] = {
     return {type: 'circlelens', p1: mouse, p2: mouse, p: 1.5};
   },
 
-  p_box: objTypes['refractor'].p_box,
+  populateObjBar: objTypes['refractor'].populateObjBar,
 
   // Use the prototype lineobj
   c_mousedown: objTypes['lineobj'].c_mousedown,

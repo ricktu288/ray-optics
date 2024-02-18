@@ -88,14 +88,14 @@ objTypes['aperture'] = {
     {
       draggingPart.part = 3;
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p4))
     {
       draggingPart.part = 4;
       draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
 
@@ -213,7 +213,7 @@ objTypes['aperture'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     var originalDiameter = geometry.length(obj.p3, obj.p4);
 
     if (!isConstructing) {

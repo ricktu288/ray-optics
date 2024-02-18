@@ -16,7 +16,7 @@ objTypes['grin_circlelens'] = {
   },
 	
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
 	if (!obj.fn_p)
 	{ // to maintain the ctrl+z functionality
 		try {

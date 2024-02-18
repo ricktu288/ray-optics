@@ -8,7 +8,7 @@ objTypes['sphericallens'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     
 
     if (!isConstructing) {
@@ -564,7 +564,7 @@ objTypes['sphericallens'] = {
     };
     if(objTypes['refractor'].clicked(obj, mouse_nogrid, mouse, draggingPart)) {
       if (draggingPart.part != 0) {
-        draggingPart.requiresPBoxUpdate = true;
+        draggingPart.requiresObjBarUpdate = true;
       }
       return true;
     }

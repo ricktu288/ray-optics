@@ -7,7 +7,7 @@ objTypes['power'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     createBooleanAttr(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
       obj.irradianceMap = value;
       if (value) {

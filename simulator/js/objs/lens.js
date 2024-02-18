@@ -7,7 +7,7 @@ objTypes['lens'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p, function(obj, value) {
       obj.p = value;
     }, elem);

@@ -33,7 +33,7 @@ objTypes['grin_refractor'] = {
   devRefIndex: objTypes['grin_circlelens'].devRefIndex,
   rayIntersection: objTypes['grin_circlelens'].rayIntersection,
   refract: objTypes['grin_circlelens'].refract,
-  p_box: objTypes['grin_circlelens'].p_box,
+  populateObjBar: objTypes['grin_circlelens'].populateObjBar,
 
   // Similar to the c_mousedown function of the refractor object, except here the arc functionality is removed
   c_mousedown: function(obj, mouse, ctrl, shift) {

@@ -2,7 +2,7 @@
 objTypes['cropbox'] = {
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     var width = geometry.length(obj.p1, obj.p2);
     var height = geometry.length(obj.p1, obj.p3);
     createNumberAttr(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
@@ -67,7 +67,7 @@ objTypes['cropbox'] = {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.cursor = 'nwse-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Top right
@@ -75,7 +75,7 @@ objTypes['cropbox'] = {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.cursor = 'nesw-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Bottom left
@@ -83,7 +83,7 @@ objTypes['cropbox'] = {
       draggingPart.part = 3;
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.cursor = 'nesw-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Bottom right
@@ -91,35 +91,35 @@ objTypes['cropbox'] = {
       draggingPart.part = 4;
       draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.cursor = 'nwse-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Top
     if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p2))) {
       draggingPart.part = 5;
       draggingPart.cursor = 'ns-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Right
     if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p2, obj.p4))) {
       draggingPart.part = 6;
       draggingPart.cursor = 'ew-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Bottom
     if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p3, obj.p4))) {
       draggingPart.part = 7;
       draggingPart.cursor = 'ns-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Left
     if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p3))) {
       draggingPart.part = 8;
       draggingPart.cursor = 'ew-resize';
-      draggingPart.requiresPBoxUpdate = true;
+      draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Inside

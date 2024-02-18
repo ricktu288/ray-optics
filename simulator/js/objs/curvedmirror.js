@@ -10,7 +10,7 @@ objTypes['curvedmirror'] = {
   wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     createEquationAttr('y = ', obj.p, function(obj, value) {
       obj.p = value;
     }, elem, getMsg('custom_equation_note'));

@@ -1,4 +1,4 @@
-var pendingPBoxEvent = null;
+var pendingObjBarEvent = null;
 
 function createInfoBox(elem, info) {
   var infoIcon = document.createElement('span');
@@ -22,7 +22,7 @@ function createInfoBox(elem, info) {
 
 function createNumberAttr(label, min, max, step, value, func, elem, info, hideSlider) {
   var nobr = document.createElement('span');
-  nobr.className = 'selected-tool-bar-nobr';
+  nobr.className = 'obj-bar-nobr';
 
 
 
@@ -48,7 +48,7 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
     // Round to 6 decimal places
     objAttr_text.value = Math.round(value * 1000000) / 1000000;
   }
-  objAttr_text.className = 'selected-tool-bar-editable selected-tool-bar-number';
+  objAttr_text.className = 'obj-bar-editable obj-bar-number';
   nobr.appendChild(objAttr_text);
 
   var objAttr_range = document.createElement('input');
@@ -118,7 +118,7 @@ function createNumberAttr(label, min, max, step, value, func, elem, info, hideSl
 
 function createTupleAttr(label, value, func, elem, info) {
   var nobr = document.createElement('span');
-  nobr.className = 'selected-tool-bar-nobr';
+  nobr.className = 'obj-bar-nobr';
 
 
 
@@ -138,7 +138,7 @@ function createTupleAttr(label, value, func, elem, info) {
   objAttr_text.type = 'text';
   objAttr_text.value = value;
   objAttr_text.style.width = '100px';
-  objAttr_text.className = 'selected-tool-bar-editable';
+  objAttr_text.className = 'obj-bar-editable';
   nobr.appendChild(objAttr_text);
 
   elem.appendChild(nobr);
@@ -194,7 +194,7 @@ function createTextAttr(label, value, func, elem) {
   p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
   elem.appendChild(p_name);
   var objAttr_text = document.createElement('textarea');
-  objAttr_text.className = 'selected-tool-bar-editable';
+  objAttr_text.className = 'obj-bar-editable';
   objAttr_text.value = value;
   objAttr_text.cols = 25;
   objAttr_text.rows = 1;
@@ -224,7 +224,7 @@ function createTextAttr(label, value, func, elem) {
 
 function createBooleanAttr(label, value, func, elem, info) {
   var nobr = document.createElement('span');
-  nobr.className = 'selected-tool-bar-nobr';
+  nobr.className = 'obj-bar-nobr';
 
   if (info) {
     var p_name = document.createElement('span');
@@ -263,7 +263,7 @@ function createBooleanAttr(label, value, func, elem, info) {
 
 function createEquationAttr(label, value, func, elem, info) {
   var nobr = document.createElement('span');
-  nobr.className = 'selected-tool-bar-nobr';
+  nobr.className = 'obj-bar-nobr';
 
   if (info) {
     var p_name = document.createElement('span');
@@ -278,7 +278,7 @@ function createEquationAttr(label, value, func, elem, info) {
 
   var eqnContainer = document.createElement('span');
   var eqnSpan = document.createElement('span');
-  eqnSpan.className = 'selected-tool-bar-editable';
+  eqnSpan.className = 'obj-bar-editable';
   eqnSpan.style.paddingLeft = '3px';
   eqnSpan.style.paddingRight = '3px';
   eqnContainer.appendChild(eqnSpan);
@@ -311,12 +311,12 @@ function createEquationAttr(label, value, func, elem, info) {
   });
 
   mathField.el().querySelector('textarea').addEventListener('focusout', function() {
-    pendingPBoxEvent();
-    pendingPBoxEvent = null;
+    pendingObjBarEvent();
+    pendingObjBarEvent = null;
   });
 
   mathField.el().querySelector('textarea').addEventListener('focusin', function() {
-    pendingPBoxEvent = function() {
+    pendingObjBarEvent = function() {
       setAttr(function(obj) {
         func(obj, mathField.latex());
       });
@@ -330,7 +330,7 @@ function createEquationAttr(label, value, func, elem, info) {
 
 function createDropdownAttr(label, value, options, func, elem, info) {
   var nobr = document.createElement('span');
-  nobr.className = 'selected-tool-bar-nobr';
+  nobr.className = 'obj-bar-nobr';
 
   if (info) {
     var p_name = document.createElement('span');
@@ -345,7 +345,7 @@ function createDropdownAttr(label, value, options, func, elem, info) {
 
   isArray = Array.isArray(options);
   var dropdown = document.createElement('select');
-  dropdown.className = 'selected-tool-bar-editable';
+  dropdown.className = 'obj-bar-editable';
   for (key in options) {
     var option = document.createElement('option');
     option.value = isArray ? options[key] : key;

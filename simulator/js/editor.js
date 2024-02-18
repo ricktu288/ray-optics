@@ -365,7 +365,7 @@ function canvas_onmousemove(e) {
 
       draw(!(objTypes[scene.objs[draggingObj].type].shoot || objTypes[scene.objs[draggingObj].type].rayIntersection), true);
 
-      if (draggingPart.requiresPBoxUpdate) {
+      if (draggingPart.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
     }
@@ -541,33 +541,33 @@ function canvas_onmousewheel(e) {
 
 function selectObj(index) {
   hideAllPopovers();
-  if (pendingPBoxEvent) {
-    // If the user is in the middle of editing a value, then clearing the innerHTML of p_box will cause the change event not to fire, so we need to manually fire it.
-    pendingPBoxEvent();
-    pendingPBoxEvent = null;
+  if (pendingObjBarEvent) {
+    // If the user is in the middle of editing a value, then clearing the innerHTML of obj_bar_main will cause the change event not to fire, so we need to manually fire it.
+    pendingObjBarEvent();
+    pendingObjBarEvent = null;
   }
 
   if (index < 0 || index >= scene.objs.length) {
     // If this object does not exist
     selectedObj = -1;
-    document.getElementById('obj_settings').style.display = 'none';
+    document.getElementById('obj_bar').style.display = 'none';
     showAdvancedOn = false;
     return;
   }
   selectedObj = index;
   if (scene.objs[index].type == 'handle') {
-    document.getElementById('obj_settings').style.display = 'none';
+    document.getElementById('obj_bar').style.display = 'none';
     return;
   }
   document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[index].type);
   document.getElementById('showAdvanced').style.display = 'none';
   document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-  if (objTypes[scene.objs[index].type].p_box) {
-    document.getElementById('p_box').style.display = '';
-    document.getElementById('p_box').innerHTML = '';
-    objTypes[scene.objs[index].type].p_box(scene.objs[index], document.getElementById('p_box'));
+  if (objTypes[scene.objs[index].type].populateObjBar) {
+    document.getElementById('obj_bar_main').style.display = '';
+    document.getElementById('obj_bar_main').innerHTML = '';
+    objTypes[scene.objs[index].type].populateObjBar(scene.objs[index], document.getElementById('obj_bar_main'));
 
-    if (document.getElementById('p_box').innerHTML != '') {
+    if (document.getElementById('obj_bar_main').innerHTML != '') {
       for (var i = 0; i < scene.objs.length; i++) {
         if (i != selectedObj && hasSameAttrType(scene.objs[i], scene.objs[selectedObj])) {
           // If there is an object with the same type, then show "Apply to All"
@@ -586,12 +586,12 @@ function selectObj(index) {
     }
   }
   else {
-    document.getElementById('p_box').style.display = 'none';
+    document.getElementById('obj_bar_main').style.display = 'none';
     document.getElementById('setAttrAll_box').style.display = 'none';
     document.getElementById('applytoall_mobile_container').style.display = 'none';
   }
 
-  document.getElementById('obj_settings').style.display = '';
+  document.getElementById('obj_bar').style.display = '';
 }
 
 

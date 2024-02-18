@@ -9,14 +9,14 @@ objTypes['curvedglass'] = {
   },
 
   // Show the property box
-  p_box: function(obj, elem) {
+  populateObjBar: function(obj, elem) {
     createEquationAttr('', obj.eqn1, function(obj, value) {
       obj.eqn1 = value;
     }, elem, getMsg('custom_equation_note'));
     createEquationAttr(' < y < ', obj.eqn2, function(obj, value) {
       obj.eqn2 = value;
     }, elem);
-    objTypes['refractor'].p_box(obj, elem);
+    objTypes['refractor'].populateObjBar(obj, elem);
   },
 
   c_mousedown: objTypes['lineobj'].c_mousedown,
