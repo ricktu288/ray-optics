@@ -11,7 +11,7 @@ objTypes['grin_refractor'] = {
 	const p_der_x_tex = '0';
 	const p_der_y = 'sin(y / 10) * -1 / 100';
 	const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{100}';
-	const origin = graphs.point(0, 0); // origin of refractive index function n(x,y)
+	const origin = geometry.point(0, 0); // origin of refractive index function n(x,y)
 	return {type: 'grin_refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]
   },
 
@@ -186,13 +186,13 @@ objTypes['grin_refractor'] = {
       {
         if (obj.path[(i + 1)].arc && !obj.path[i].arc && i < obj.path.length - 2)
         {
-          p1 = graphs.point(obj.path[i].x, obj.path[i].y);
-          p2 = graphs.point(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
-          p3 = graphs.point(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
-          center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(p1, p3)), graphs.perpendicular_bisector(graphs.line(p2, p3)));
+          p1 = geometry.point(obj.path[i].x, obj.path[i].y);
+          p2 = geometry.point(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
+          p3 = geometry.point(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
+          center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
           if (isFinite(center.x) && isFinite(center.y))
           {
-            r = graphs.length(center, p3);
+            r = geometry.length(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
@@ -228,13 +228,13 @@ objTypes['grin_refractor'] = {
       {
         if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
         {
-          p1 = graphs.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
-          p2 = graphs.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
-          p3 = graphs.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
-          center = graphs.intersection_2line(graphs.perpendicular_bisector(graphs.line(p1, p3)), graphs.perpendicular_bisector(graphs.line(p2, p3)));
+          p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
+          p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
+          p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
+          center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
           if (isFinite(center.x) && isFinite(center.y))
           {
-            r = graphs.length(center, p3);
+            r = geometry.length(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
@@ -306,12 +306,12 @@ objTypes['grin_refractor'] = {
     {
 		let p1 = obj.path[i];
 		let p2 = obj.path[(i + 1) % obj.path.length];
-		let p1_p2 = graphs.point(p2.x - p1.x, p2.y - p1.y);
-		let p1_p3 = graphs.point(p3.x - p1.x, p3.y - p1.y);
-		if (graphs.cross(p1_p2, p1_p3) - obj.eps < 0 && graphs.cross(p1_p2, p1_p3) + obj.eps > 0) // if p1_p2 and p1_p3 are collinear
+		let p1_p2 = geometry.point(p2.x - p1.x, p2.y - p1.y);
+		let p1_p3 = geometry.point(p3.x - p1.x, p3.y - p1.y);
+		if (geometry.cross(p1_p2, p1_p3) - obj.eps < 0 && geometry.cross(p1_p2, p1_p3) + obj.eps > 0) // if p1_p2 and p1_p3 are collinear
 		{
-			let dot_p2_p3 = graphs.dot(p1_p2, p1_p3);
-			let p1_p2_squared = graphs.length_squared(p1, p2);
+			let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
+			let p1_p2_squared = geometry.length_squared(p1, p2);
 			if (p1_p2_squared - dot_p2_p3 + obj.eps >= 0 && dot_p2_p3 + obj.eps >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
 				return true;
 		}

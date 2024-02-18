@@ -39,7 +39,7 @@ objTypes['curvedmirror'] = {
       return;
     }
     ctx.fillStyle = 'rgb(255,0,255)';
-    var p12d = graphs.length(obj.p1, obj.p2);
+    var p12d = geometry.length(obj.p1, obj.p2);
     // unit vector from p1 to p2
     var dir1 = [(obj.p2.x-obj.p1.x)/p12d, (obj.p2.y-obj.p1.y)/p12d];
     // perpendicular direction
@@ -62,7 +62,7 @@ objTypes['curvedmirror'] = {
       try {
         scaled_y = fn({x: scaled_x, "pi": Math.PI});
         var y = scaled_y*p12d*0.5;
-        var pt = graphs.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
+        var pt = geometry.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
         if (i == -0.1) {
           ctx.moveTo(pt.x, pt.y);
         } else {
@@ -97,16 +97,16 @@ objTypes['curvedmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
 
@@ -115,7 +115,7 @@ objTypes['curvedmirror'] = {
     var pts = obj.tmp_points;
     for (i = 0; i < pts.length-1; i++) {
       
-      var seg = graphs.segment(pts[i], pts[i+1]);
+      var seg = geometry.segment(pts[i], pts[i+1]);
       if (mouseOnSegment(mouse_nogrid, seg))
       {
         // Dragging the entire obj
@@ -136,17 +136,17 @@ objTypes['curvedmirror'] = {
     if (!mirror.tmp_points || !wavelengthInteraction(mirror,ray)) return;
     var i,j;
     var pts = mirror.tmp_points;
-    var dir = graphs.length(mirror.p2, ray.p1) > graphs.length(mirror.p1, ray.p1);
+    var dir = geometry.length(mirror.p2, ray.p1) > geometry.length(mirror.p1, ray.p1);
     var rp;
     for (j = 0; j < pts.length-1; j++) {
       i = dir ? j : (pts.length-2-j);
-      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(pts[i], pts[i+1]));
-      var seg = graphs.segment(pts[i], pts[i+1]);
+      var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i+1]));
+      var seg = geometry.segment(pts[i], pts[i+1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (graphs.length(ray.p1, rp_temp) < minShotLength)
+      if (geometry.length(ray.p1, rp_temp) < minShotLength)
         continue;
-      if (graphs.intersection_is_on_segment(rp_temp, seg) && graphs.intersection_is_on_ray(rp_temp, ray)) {
-          if (!rp || graphs.length(ray.p1, rp_temp) < graphs.length(ray.p1, rp)) {
+      if (geometry.intersection_is_on_segment(rp_temp, seg) && geometry.intersection_is_on_ray(rp_temp, ray)) {
+          if (!rp || geometry.length(ray.p1, rp_temp) < geometry.length(ray.p1, rp)) {
               rp = rp_temp;
               mirror.tmp_i = i;
           }
@@ -161,7 +161,7 @@ objTypes['curvedmirror'] = {
     var ry = ray.p1.y - rp.y;
     var i = mirror.tmp_i;
     var pts = mirror.tmp_points;
-    var seg = graphs.segment(pts[i], pts[i+1]);
+    var seg = geometry.segment(pts[i], pts[i+1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
     
@@ -175,7 +175,7 @@ objTypes['curvedmirror'] = {
     }
 
     if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
-      ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+      ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
       // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
       // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
@@ -185,9 +185,9 @@ objTypes['curvedmirror'] = {
       
       var segA;
       if (frac < 0.5) {
-        segA = graphs.segment(pts[i-1], pts[i]);
+        segA = geometry.segment(pts[i-1], pts[i]);
       } else {
-        segA = graphs.segment(pts[i+1], pts[i+2]);
+        segA = geometry.segment(pts[i+1], pts[i+2]);
       }
       var rxA = ray.p1.x - rp.x;
       var ryA = ray.p1.y - rp.y;
@@ -208,7 +208,7 @@ objTypes['curvedmirror'] = {
         outyFinal = outyA * (frac-0.5) + outy * (1.5-frac);
       }
       //console.log(frac);
-      ray.p2 = graphs.point(outxFinal, outyFinal);
+      ray.p2 = geometry.point(outxFinal, outyFinal);
     }
   }
 

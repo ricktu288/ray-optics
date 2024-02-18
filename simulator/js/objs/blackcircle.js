@@ -18,7 +18,7 @@ objTypes['blackcircle'] = {
     draw: function (obj, ctx, aboveLight) {
 
         ctx.beginPath();
-        ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2);
+        ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2);
         ctx.lineWidth = 3;
         ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
         //ctx.fillStyle="indigo";
@@ -38,19 +38,19 @@ objTypes['blackcircle'] = {
     // When the drawing area is pressed (to determine the part of the object being pressed)
     clicked: function (obj, mouse_nogrid, mouse, draggingPart) {
         // clicking on p1 (center)?
-        if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2)) {
+        if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2)) {
             draggingPart.part = 1;
-            draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+            draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
             return true;
         }
         // clicking on p2 (edge)?
         if (mouseOnPoint(mouse_nogrid, obj.p2)) {
             draggingPart.part = 2;
-            draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+            draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
             return true;
         }
         // clicking on outer edge of circle?  then drag entire circle
-        if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent()) {
+        if (Math.abs(geometry.length(obj.p1, mouse_nogrid) - geometry.length_segment(obj)) < getClickExtent()) {
             draggingPart.part = 0;
             draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
             draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
@@ -68,15 +68,15 @@ objTypes['blackcircle'] = {
     // Test if a ray may shoot on this object (if yes, return the intersection)
     rayIntersection: function (obj, ray) {
         if (obj.p <= 0 || !wavelengthInteraction(obj,ray)) return;
-        var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));
+        var rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(obj.p1, obj.p2));
         var rp_exist = [];
         var rp_lensq = [];
         for (var i = 1; i <= 2; i++) {
 
-            rp_exist[i] = graphs.intersection_is_on_ray(rp_temp[i], ray) && graphs.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+            rp_exist[i] = geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
 
 
-            rp_lensq[i] = graphs.length_squared(ray.p1, rp_temp[i]);
+            rp_lensq[i] = geometry.length_squared(ray.p1, rp_temp[i]);
         }
 
         if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) {

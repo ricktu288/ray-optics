@@ -52,7 +52,7 @@ objTypes['curvedglass'] = {
     for (var side = 0; side <= 1; side++) {
       var p1 = (side == 0) ? obj.p1 : obj.p2;
       var p2 = (side == 0) ? obj.p2 : obj.p1;
-      var p12d = graphs.length(p1, p2);
+      var p12d = geometry.length(p1, p2);
       // unit vector from p1 to p2
       var dir1 = [(p2.x-p1.x)/p12d, (p2.y-p1.y)/p12d];
       // perpendicular direction
@@ -76,7 +76,7 @@ objTypes['curvedglass'] = {
             lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
           }
           var y = scaled_y*p12d*0.5;
-          var pt = graphs.point(p1.x+dir1[0]*ix+dir2[0]*y, p1.y+dir1[1]*ix+dir2[1]*y);
+          var pt = geometry.point(p1.x+dir1[0]*ix+dir2[0]*y, p1.y+dir1[1]*ix+dir2[1]*y);
           pt.arc = false;
           obj.tmp_glass.path.push(pt);
           hasPoints = true;
@@ -109,16 +109,16 @@ objTypes['curvedglass'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
 
@@ -162,16 +162,16 @@ objTypes['curvedglass'] = {
     {
       s_point_temp = null;
       //Line segment i->i+1
-      var rp_temp = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+      var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
 
-      if (graphs.intersection_is_on_segment(rp_temp, graphs.segment(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && graphs.intersection_is_on_ray(rp_temp, ray) && graphs.length_squared(ray.p1, rp_temp) > minShotLength_squared)
+      if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared)
       {
-        s_lensq_temp = graphs.length_squared(ray.p1, rp_temp);
+        s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
 
       if (s_point_temp) {
-        if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i-1) {
+        if (s_point && geometry.length_squared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i-1) {
           // The ray shots on a point where the upper and the lower surfaces overlap.
           return;
         } else if (s_lensq_temp < s_lensq)
@@ -260,10 +260,10 @@ objTypes['curvedglass'] = {
     var i = obj.tmp_i;
     var pts = obj.tmp_glass.path;
 
-    var s_point = graphs.intersection_2line(graphs.line(ray.p1, ray.p2), graphs.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+    var s_point = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
     var rp = s_point;
 
-    var s_lensq = graphs.length_squared(ray.p1, s_point);
+    var s_lensq = geometry.length_squared(ray.p1, s_point);
 
     var rdots = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x);
@@ -284,7 +284,7 @@ objTypes['curvedglass'] = {
     // Use a simple trick to smooth out the normal vector so that image detection works.
     // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
 
-    var seg = graphs.segment(pts[i%pts.length], pts[(i+1)%pts.length]);
+    var seg = geometry.segment(pts[i%pts.length], pts[(i+1)%pts.length]);
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = seg.p2.x - seg.p1.x;
@@ -299,9 +299,9 @@ objTypes['curvedglass'] = {
     
     var segA;
     if (frac < 0.5) {
-      segA = graphs.segment(pts[(i-1+pts.length)%pts.length], pts[i%pts.length]);
+      segA = geometry.segment(pts[(i-1+pts.length)%pts.length], pts[i%pts.length]);
     } else {
-      segA = graphs.segment(pts[(i+1)%pts.length], pts[(i+2)%pts.length]);
+      segA = geometry.segment(pts[(i+1)%pts.length], pts[(i+2)%pts.length]);
     }
 
     var rdotsA = (ray.p2.x - ray.p1.x) * (segA.p2.x - segA.p1.x) + (ray.p2.y - ray.p1.y) * (segA.p2.y - segA.p1.y);

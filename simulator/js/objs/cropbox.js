@@ -3,15 +3,15 @@ objTypes['cropbox'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    var width = graphs.length(obj.p1, obj.p2);
-    var height = graphs.length(obj.p1, obj.p3);
+    var width = geometry.length(obj.p1, obj.p2);
+    var height = geometry.length(obj.p1, obj.p3);
     createNumberAttr(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
-      obj.p2 = graphs.point(obj.p1.x + 1*value, obj.p2.y);
-      obj.p4 = graphs.point(obj.p3.x + 1*value, obj.p4.y);
+      obj.p2 = geometry.point(obj.p1.x + 1*value, obj.p2.y);
+      obj.p4 = geometry.point(obj.p3.x + 1*value, obj.p4.y);
     }, elem, null, true);
     createNumberAttr('x', 0, 1000, 1, height, function(obj, value) {
-      obj.p3 = graphs.point(obj.p3.x, obj.p1.y + 1*value);
-      obj.p4 = graphs.point(obj.p4.x, obj.p2.y + 1*value);
+      obj.p3 = geometry.point(obj.p3.x, obj.p1.y + 1*value);
+      obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1*value);
     }, elem, null, true);
     createDropdownAttr(getMsg('image_format'), obj.format, {
       'png': 'PNG',
@@ -65,7 +65,7 @@ objTypes['cropbox'] = {
     // Top left
     if (mouseOnPoint(mouse_nogrid, obj.p1)) {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.cursor = 'nwse-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
@@ -73,7 +73,7 @@ objTypes['cropbox'] = {
     // Top right
     if (mouseOnPoint(mouse_nogrid, obj.p2)) {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.cursor = 'nesw-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
@@ -81,7 +81,7 @@ objTypes['cropbox'] = {
     // Bottom left
     if (mouseOnPoint(mouse_nogrid, obj.p3)) {
       draggingPart.part = 3;
-      draggingPart.targetPoint = graphs.point(obj.p3.x, obj.p3.y);
+      draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.cursor = 'nesw-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
@@ -89,34 +89,34 @@ objTypes['cropbox'] = {
     // Bottom right
     if (mouseOnPoint(mouse_nogrid, obj.p4)) {
       draggingPart.part = 4;
-      draggingPart.targetPoint = graphs.point(obj.p4.x, obj.p4.y);
+      draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.cursor = 'nwse-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
     // Top
-    if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.p1, obj.p2))) {
+    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p2))) {
       draggingPart.part = 5;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
     // Right
-    if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.p2, obj.p4))) {
+    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p2, obj.p4))) {
       draggingPart.part = 6;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
     // Bottom
-    if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.p3, obj.p4))) {
+    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p3, obj.p4))) {
       draggingPart.part = 7;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
     // Left
-    if (mouseOnSegment(mouse_nogrid, graphs.segment(obj.p1, obj.p3))) {
+    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p3))) {
       draggingPart.part = 8;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresPBoxUpdate = true;

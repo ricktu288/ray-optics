@@ -43,7 +43,7 @@ objTypes['mirror'] = {
     var my = mirror.p2.y - mirror.p1.y;
 
     ray.p1 = rp;
-    ray.p2 = graphs.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
   }
 
 };

@@ -66,7 +66,7 @@ objTypes['drawing'] = {
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
-        if (mouseOnSegment(mouse_nogrid, graphs.segment(graphs.point(obj.points[i][j], obj.points[i][j + 1]), graphs.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
+        if (mouseOnSegment(mouse_nogrid, geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
           draggingPart.part = 0;
           draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
           draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging

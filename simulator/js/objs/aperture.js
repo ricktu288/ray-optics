@@ -18,8 +18,8 @@ objTypes['aperture'] = {
       obj.p2 = mouse;
     }
 
-    obj.p3 = graphs.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
-    obj.p4 = graphs.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
+    obj.p3 = geometry.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
+    obj.p4 = geometry.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
     
   },
 
@@ -35,10 +35,10 @@ objTypes['aperture'] = {
       obj.p2 = mouse;
     }
 
-    obj.p1 = ctrl ? graphs.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
+    obj.p1 = ctrl ? geometry.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
 
-    obj.p3 = graphs.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
-    obj.p4 = graphs.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
+    obj.p3 = geometry.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
+    obj.p4 = geometry.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
 
   },
   // Mouseup when the obj is being constructed by the user
@@ -72,35 +72,35 @@ objTypes['aperture'] = {
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     
 
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (mouseOnPoint(mouse_nogrid, obj.p3) && graphs.length_squared(mouse_nogrid, obj.p3) <= graphs.length_squared(mouse_nogrid, obj.p4))
+    if (mouseOnPoint(mouse_nogrid, obj.p3) && geometry.length_squared(mouse_nogrid, obj.p3) <= geometry.length_squared(mouse_nogrid, obj.p4))
     {
       draggingPart.part = 3;
-      draggingPart.targetPoint = graphs.point(obj.p3.x, obj.p3.y);
+      draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p4))
     {
       draggingPart.part = 4;
-      draggingPart.targetPoint = graphs.point(obj.p4.x, obj.p4.y);
+      draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.requiresPBoxUpdate = true;
       return true;
     }
 
-    var segment1 = graphs.segment(obj.p1, obj.p3);
-    var segment2 = graphs.segment(obj.p2, obj.p4);
+    var segment1 = geometry.segment(obj.p1, obj.p3);
+    var segment2 = geometry.segment(obj.p2, obj.p4);
     if (mouseOnSegment(mouse_nogrid, segment1) || mouseOnSegment(mouse_nogrid, segment2))
     {
       draggingPart.part = 0;
@@ -116,45 +116,45 @@ objTypes['aperture'] = {
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
     var basePoint;
 
-    var originalDiameter = graphs.length(obj.p3, obj.p4);
+    var originalDiameter = geometry.length(obj.p3, obj.p4);
     if (draggingPart.part == 1 || draggingPart.part == 2)
     {
       if (draggingPart.part == 1)
       {
         // Dragging the first endpoint Dragging the first endpoint
-        basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+        basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
         obj.p1 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-        obj.p2 = ctrl ? graphs.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
+        obj.p2 = ctrl ? geometry.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
       }
       else
       {
         // Dragging the second endpoint Dragging the second endpoint
-        basePoint = ctrl ? graphs.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+        basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
         obj.p2 = shift ? snapToDirection(mouse, basePoint, [{x: 1, y: 0},{x: 0, y: 1},{x: 1, y: 1},{x: 1, y: -1},{x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y)}]) : mouse;
-        obj.p1 = ctrl ? graphs.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
+        obj.p1 = ctrl ? geometry.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
       }
       
-      var t = 0.5 * (1 - originalDiameter / graphs.length(obj.p1, obj.p2));
-      obj.p3 = graphs.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
-      obj.p4 = graphs.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
+      var t = 0.5 * (1 - originalDiameter / geometry.length(obj.p1, obj.p2));
+      obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
+      obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
     }
     else if (draggingPart.part == 3 || draggingPart.part == 4)
     {
       if (draggingPart.part == 3)
       {
-        basePoint = graphs.midpoint(obj);
+        basePoint = geometry.midpoint(obj);
 
         obj.p3 = snapToDirection(mouse, basePoint, [{x: (draggingPart.originalObj.p4.x - draggingPart.originalObj.p3.x), y: (draggingPart.originalObj.p4.y - draggingPart.originalObj.p3.y)}]);
-        obj.p4 = graphs.point(2 * basePoint.x - obj.p3.x, 2 * basePoint.y - obj.p3.y);
+        obj.p4 = geometry.point(2 * basePoint.x - obj.p3.x, 2 * basePoint.y - obj.p3.y);
       }
       else
       {
-        basePoint = graphs.midpoint(obj);
+        basePoint = geometry.midpoint(obj);
 
         obj.p4 = snapToDirection(mouse, basePoint, [{x: (draggingPart.originalObj.p4.x - draggingPart.originalObj.p3.x), y: (draggingPart.originalObj.p4.y - draggingPart.originalObj.p3.y)}]);
-        obj.p3 = graphs.point(2 * basePoint.x - obj.p4.x, 2 * basePoint.y - obj.p4.y);
+        obj.p3 = geometry.point(2 * basePoint.x - obj.p4.x, 2 * basePoint.y - obj.p4.y);
       }
     }
     else if (draggingPart.part == 0)
@@ -214,13 +214,13 @@ objTypes['aperture'] = {
 
   // Show the property box
   p_box: function(obj, elem) {
-    var originalDiameter = graphs.length(obj.p3, obj.p4);
+    var originalDiameter = geometry.length(obj.p3, obj.p4);
 
     if (!isConstructing) {
       createNumberAttr(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
-        var t = 0.5 * (1 - value / graphs.length(obj.p1, obj.p2));
-        obj.p3 = graphs.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
-        obj.p4 = graphs.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
+        var t = 0.5 * (1 - value / geometry.length(obj.p1, obj.p2));
+        obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
+        obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
       }, elem);
     }
     dichroicSettings(obj,elem);
@@ -228,8 +228,8 @@ objTypes['aperture'] = {
 
   rayIntersection: function(blackline, ray) {
     if (wavelengthInteraction(blackline,ray)) {
-      var segment1 = graphs.segment(blackline.p1, blackline.p3);
-      var segment2 = graphs.segment(blackline.p2, blackline.p4);
+      var segment1 = geometry.segment(blackline.p1, blackline.p3);
+      var segment2 = geometry.segment(blackline.p2, blackline.p4);
       var rp_temp1 = objTypes['lineobj'].rayIntersection(segment1, ray);
       if (rp_temp1) {
         return rp_temp1;

@@ -24,7 +24,7 @@ objTypes['handle'] = {
       totalX += obj.controlPoints[i].newPoint.x;
       totalY += obj.controlPoints[i].newPoint.y;
     }
-    obj.p2 = graphs.point(totalX / obj.controlPoints.length, totalY / obj.controlPoints.length);
+    obj.p2 = geometry.point(totalX / obj.controlPoints.length, totalY / obj.controlPoints.length);
     obj.notDone = false;
   },
 
@@ -73,7 +73,7 @@ objTypes['handle'] = {
 
   // Move the object
   move: function(obj, diffX, diffY) {
-    objTypes['handle'].dragging(obj, graphs.point(obj.p1.x + diffX, obj.p1.y + diffY), {targetPoint_: obj.p1, part: 1});
+    objTypes['handle'].dragging(obj, geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), {targetPoint_: obj.p1, part: 1});
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
@@ -82,16 +82,16 @@ objTypes['handle'] = {
     if (mouseOnPoint(mouse_nogrid, obj.p1))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint_ = graphs.point(obj.p1.x, obj.p1.y);
-      draggingPart.mouse0 = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
+      draggingPart.mouse0 = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.snapData = {};
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
-      draggingPart.mouse0 = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      draggingPart.mouse0 = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.snapData = {};
       return true;
     }
@@ -114,7 +114,7 @@ objTypes['handle'] = {
     {
       if (ctrl && shift) {
         // Scaling
-        var factor = graphs.length(obj.p2, mouse) / graphs.length(obj.p2, draggingPart.targetPoint_)
+        var factor = geometry.length(obj.p2, mouse) / geometry.length(obj.p2, draggingPart.targetPoint_)
         if (factor < 1e-5) return;
         var trans = function(p) {
           p.x = (p.x - obj.p2.x) * factor + obj.p2.x;

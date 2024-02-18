@@ -274,8 +274,8 @@ function shootWaitingRays() {
           if (s_point_temp)
           {
             // Here scene.objs[i] intersects with the ray at s_point_temp
-            s_lensq_temp = graphs.length_squared(waitingRays[j].p1, s_point_temp);
-            if (s_point && graphs.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[scene.objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
+            s_lensq_temp = geometry.length_squared(waitingRays[j].p1, s_point_temp);
+            if (s_point && geometry.length_squared(s_point_temp, s_point) < minShotLength_squared && (objTypes[scene.objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
             {
               // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
@@ -331,19 +331,19 @@ function shootWaitingRays() {
         {
           if (scene.colorMode) {
             ctxLight.setLineDash([2, 2]);
-            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
+            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
             ctxLight.setLineDash([]);
           } else {
-            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the extension of the ray
+            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the extension of the ray
           }
         }
 
         if (scene.mode == 'observer')
         {
-          observed_point = graphs.intersection_line_circle(waitingRays[j], scene.observer)[2];
+          observed_point = geometry.intersection_line_circle(waitingRays[j], scene.observer)[2];
           if (observed_point)
           {
-            if (graphs.intersection_is_on_ray(observed_point, waitingRays[j]))
+            if (geometry.intersection_is_on_ray(observed_point, waitingRays[j]))
             {
               observed = true;
             }
@@ -356,34 +356,34 @@ function shootWaitingRays() {
         if (scene.mode == 'light' || scene.mode == 'extended_light')
         {
           if (scene.colorMode) {
-            canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), color); // Draw the ray
+            canvasPainter.draw(geometry.segment(waitingRays[j].p1, s_point), color); // Draw the ray
           } else {
-            canvasPainter.draw(graphs.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
+            canvasPainter.draw(geometry.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
           }
         }
         if (scene.mode == 'extended_light' && !waitingRays[j].isNew)
         {
           if (scene.colorMode) {
             ctxLight.setLineDash([2, 2]);
-            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
+            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
             ctxLight.setLineDash([1, 5]);
-            canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); // Draw the forward extension of the ray
+            canvasPainter.draw(geometry.ray(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); // Draw the forward extension of the ray
             ctxLight.setLineDash([]);
           } else {
-            canvasPainter.draw(graphs.ray(waitingRays[j].p1, graphs.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the backward extension of the ray
-            canvasPainter.draw(graphs.ray(s_point, graphs.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); // Draw the forward extension of the ray
+            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the backward extension of the ray
+            canvasPainter.draw(geometry.ray(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); // Draw the forward extension of the ray
           }
 
         }
 
         if (scene.mode == 'observer')
         {
-          observed_point = graphs.intersection_line_circle(waitingRays[j], scene.observer)[2];
+          observed_point = geometry.intersection_line_circle(waitingRays[j], scene.observer)[2];
 
           if (observed_point)
           {
 
-            if (graphs.intersection_is_on_segment(observed_point, graphs.segment(waitingRays[j].p1, s_point)))
+            if (geometry.intersection_is_on_segment(observed_point, geometry.segment(waitingRays[j].p1, s_point)))
             {
               observed = true;
             }
@@ -394,14 +394,14 @@ function shootWaitingRays() {
       {
         if (!waitingRays[j].gap)
         {
-          observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray); // The intersection of the observed rays
+          observed_intersection = geometry.intersection_2line(waitingRays[j], last_ray); // The intersection of the observed rays
 
           if (observed)
           {
-            if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
+            if (last_intersection && geometry.length_squared(last_intersection, observed_intersection) < 25)
             {
               // If the intersections are near each others
-              if (graphs.intersection_is_on_ray(observed_intersection, graphs.ray(observed_point, waitingRays[j].p1)) && graphs.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
+              if (geometry.intersection_is_on_ray(observed_intersection, geometry.ray(observed_point, waitingRays[j].p1)) && geometry.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
               {
 
 
@@ -439,20 +439,20 @@ function shootWaitingRays() {
                 }
                   if (scene.colorMode) {
                     ctxLight.setLineDash([1, 2]);
-                    canvasPainter.draw(graphs.segment(observed_point, observed_intersection), color); // Draw the observed ray
+                    canvasPainter.draw(geometry.segment(observed_point, observed_intersection), color); // Draw the observed ray
                     ctxLight.setLineDash([]);
                   } else {
-                    canvasPainter.draw(graphs.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
+                    canvasPainter.draw(geometry.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
                   }
               }
               else
               {
                 if (scene.colorMode) {
                   ctxLight.setLineDash([1, 2]);
-                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
+                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
-                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
                 }
               }
             }
@@ -462,10 +462,10 @@ function shootWaitingRays() {
               {
                 if (scene.colorMode) {
                   ctxLight.setLineDash([1, 2]);
-                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
+                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
-                  canvasPainter.draw(graphs.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
                 }
               }
             }
@@ -483,8 +483,8 @@ function shootWaitingRays() {
         if (!waitingRays[j].gap)
         {
 
-          observed_intersection = graphs.intersection_2line(waitingRays[j], last_ray);
-          if (last_intersection && graphs.length_squared(last_intersection, observed_intersection) < 25)
+          observed_intersection = geometry.intersection_2line(waitingRays[j], last_ray);
+          if (last_intersection && geometry.length_squared(last_intersection, observed_intersection) < 25)
           {
             if (scene.colorMode) {
               var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);

@@ -14,19 +14,19 @@ objTypes['protractor'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent())
+    if (Math.abs(geometry.length(obj.p1, mouse_nogrid) - geometry.length_segment(obj)) < getClickExtent())
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging

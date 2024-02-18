@@ -22,7 +22,7 @@ objTypes['parabolicmirror'] = {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2)
     {
-      var p12d = graphs.length(obj.p1, obj.p2);
+      var p12d = geometry.length(obj.p1, obj.p2);
       // unit vector from p1 to p2
       var dir1 = [(obj.p2.x-obj.p1.x)/p12d, (obj.p2.y-obj.p1.y)/p12d];
       // perpendicular direction
@@ -30,21 +30,21 @@ objTypes['parabolicmirror'] = {
       // get height of (this section of) parabola
       var height = (obj.p3.x-obj.p1.x)*dir2[0]+(obj.p3.y-obj.p1.y)*dir2[1];
       // reposition p3 to be at vertex
-      obj.p3 = graphs.point((obj.p1.x+obj.p2.x)*.5 + dir2[0]*height, (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height);
+      obj.p3 = geometry.point((obj.p1.x+obj.p2.x)*.5 + dir2[0]*height, (obj.p1.y+obj.p2.y)*.5 + dir2[1]*height);
       
       var x0 = p12d/2;
       var a = height/(x0*x0); // y=ax^2
       var i;
       ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.beginPath();
-      obj.tmp_points = [graphs.point(obj.p1.x, obj.p1.y)];
+      obj.tmp_points = [geometry.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);
       for (i = 0.1; i < p12d; i+=0.1) {
         // avoid using exact integers to avoid problems with detecting intersections
         var ix = i+.001;
         var x = ix-x0;
         var y = height-a*x*x;
-        var pt = graphs.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
+        var pt = geometry.point(obj.p1.x+dir1[0]*ix+dir2[0]*y, obj.p1.y+dir1[1]*ix+dir2[1]*y);
         ctx.lineTo(pt.x, pt.y);
         obj.tmp_points.push(pt);
       }
@@ -76,22 +76,22 @@ objTypes['parabolicmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p3))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
-    if (mouseOnPoint(mouse_nogrid, obj.p2) && graphs.length_squared(mouse_nogrid, obj.p2) <= graphs.length_squared(mouse_nogrid, obj.p3))
+    if (mouseOnPoint(mouse_nogrid, obj.p2) && geometry.length_squared(mouse_nogrid, obj.p2) <= geometry.length_squared(mouse_nogrid, obj.p3))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
     if (mouseOnPoint(mouse_nogrid, obj.p3))
     {
       draggingPart.part = 3;
-      draggingPart.targetPoint = graphs.point(obj.p3.x, obj.p3.y);
+      draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       return true;
     }
 
@@ -100,7 +100,7 @@ objTypes['parabolicmirror'] = {
     var pts = obj.tmp_points;
     for (i = 0; i < pts.length-1; i++) {
       
-      var seg = graphs.segment(pts[i], pts[i+1]);
+      var seg = geometry.segment(pts[i], pts[i+1]);
       if (mouseOnSegment(mouse_nogrid, seg))
       {
         // Dragging the entire obj

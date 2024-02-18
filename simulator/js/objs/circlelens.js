@@ -20,23 +20,23 @@ objTypes['circlelens'] = {
   // When the drawing area is pressed (to determine the part of the object being pressed)
   clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
     // clicking on p1 (center)?
-    if (mouseOnPoint(mouse_nogrid, obj.p1) && graphs.length_squared(mouse_nogrid, obj.p1) <= graphs.length_squared(mouse_nogrid, obj.p2))
+    if (mouseOnPoint(mouse_nogrid, obj.p1) && geometry.length_squared(mouse_nogrid, obj.p1) <= geometry.length_squared(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 1;
-      draggingPart.targetPoint = graphs.point(obj.p1.x, obj.p1.y);
+      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
     // clicking on p2 (edge)?
     if (mouseOnPoint(mouse_nogrid, obj.p2))
     {
       draggingPart.part = 2;
-      draggingPart.targetPoint = graphs.point(obj.p2.x, obj.p2.y);
+      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
     // clicking on outer edge of circle?  then drag entire circle
-    if (Math.abs(graphs.length(obj.p1, mouse_nogrid) - graphs.length_segment(obj)) < getClickExtent())
+    if (Math.abs(geometry.length(obj.p1, mouse_nogrid) - geometry.length_segment(obj)) < getClickExtent())
     // clicking inside circle?  then drag entire circle
-    //if (Math.abs(graphs.length(obj.p1, mouse_nogrid) < graphs.length_segment(obj)))
+    //if (Math.abs(geometry.length(obj.p1, mouse_nogrid) < geometry.length_segment(obj)))
     {
       draggingPart.part = 0;
       draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
@@ -53,16 +53,16 @@ objTypes['circlelens'] = {
   // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function(obj, ray) {
     if (obj.p <= 0)return;
-    var rp_temp = graphs.intersection_line_circle(graphs.line(ray.p1, ray.p2), graphs.circle(obj.p1, obj.p2));
+    var rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(obj.p1, obj.p2));
     var rp_exist = [];
     var rp_lensq = [];
     for (var i = 1; i <= 2; i++)
     {
 
-      rp_exist[i] = graphs.intersection_is_on_ray(rp_temp[i], ray) && graphs.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+      rp_exist[i] = geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
 
 
-      rp_lensq[i] = graphs.length_squared(ray.p1, rp_temp[i]);
+      rp_lensq[i] = geometry.length_squared(ray.p1, rp_temp[i]);
     }
 
 
@@ -76,7 +76,7 @@ objTypes['circlelens'] = {
   draw: function(obj, ctx, aboveLight) {
 
   ctx.beginPath();
-  ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
+  ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2, false);
   objTypes['refractor'].fillGlass(obj.p, obj, ctx, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
@@ -95,8 +95,8 @@ objTypes['circlelens'] = {
   // When the obj is shot by a ray
   shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
-    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
-    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
+    var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
     if (d > 0)
     {
       // Shot from inside to outside
@@ -153,8 +153,8 @@ objTypes['circlelens'] = {
 
   getShotType: function(obj, ray) {
 
-    var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, this.rayIntersection(obj, ray)));
-    var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, this.rayIntersection(obj, ray)));
+    var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
 
     if (d > 0)
     {

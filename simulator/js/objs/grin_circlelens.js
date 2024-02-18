@@ -11,7 +11,7 @@ objTypes['grin_circlelens'] = {
 		const p_der_x_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{2500}\\right)}\\cdot x\\cdot-1}{1250}';
 		const p_der_y = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 2500) * y * -1 / 1250';
 		const p_der_y_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{2500}\\right)}\\cdot y\\cdot-1}{1250}';
-		const origin = graphs.point(mouse.x, mouse.y); // origin of refractive index function n(x,y)
+		const origin = geometry.point(mouse.x, mouse.y); // origin of refractive index function n(x,y)
 		return {type: 'grin_circlelens', p1: mouse, p2: mouse, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex) ,fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3}; // Note that in this object, eps has units of [length]^2  },
   },
 	
@@ -54,7 +54,7 @@ objTypes['grin_circlelens'] = {
 	  if (commaPosition != -1) {
 		  const n_origin_x = parseFloat(value.slice(1, commaPosition));
 		  const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
-		  obj.origin = graphs.point(n_origin_x ,n_origin_y);
+		  obj.origin = geometry.point(n_origin_x ,n_origin_y);
 	  }
     }, elem);
 	
@@ -113,7 +113,7 @@ objTypes['grin_circlelens'] = {
   }
 
   ctx.beginPath();
-  ctx.arc(obj.p1.x, obj.p1.y, graphs.length_segment(obj), 0, Math.PI * 2, false);
+  ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2, false);
   this.fillGlass(2.3, obj, ctx, aboveLight);
   ctx.lineWidth = 1;
   //ctx.fillStyle="indigo";
@@ -146,10 +146,10 @@ objTypes['grin_circlelens'] = {
 	}
 	if (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOnBoundary(obj, ray.p1) ) // if the first point of the ray is inside the circle, or on its boundary
 	{
-		let len = graphs.length(ray.p1, ray.p2);
+		let len = geometry.length(ray.p1, ray.p2);
 		let x = ray.p1.x + (obj.step_size / len) * (ray.p2.x - ray.p1.x);
 		let y = ray.p1.y + (obj.step_size / len) * (ray.p2.y - ray.p1.y);
-		intersection_point = graphs.point(x, y);
+		intersection_point = geometry.point(x, y);
 		if (objTypes[obj.type].isInsideGlass(obj, intersection_point)) // if intersection_point is inside the circle
 			return intersection_point;
 	}
@@ -161,8 +161,8 @@ objTypes['grin_circlelens'] = {
 	try {
 		if ( (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1) ) && objTypes[obj.type].isOnBoundary(obj, rp) ) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
 		{
-			var midpoint = graphs.midpoint(graphs.line_segment(ray.p1, rp));
-			var d = graphs.length_squared(obj.p1, obj.p2) - graphs.length_squared(obj.p1, midpoint);
+			var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
+			var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
 			let p = obj.fn_p({x: rp.x - obj.origin.x, y: rp.y - obj.origin.y}); // refractive index at the intersection point - rp
 			if (d > 0)
 			{
@@ -284,7 +284,7 @@ objTypes['grin_circlelens'] = {
     {
       // Total internal reflection
       ray.p1 = s_point;
-      ray.p2 = graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
+      ray.p2 = geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
 
 
     }
@@ -298,7 +298,7 @@ objTypes['grin_circlelens'] = {
       // Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
 
       // Handle the reflected ray
-      var ray2 = graphs.ray(s_point, graphs.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
+      var ray2 = geometry.ray(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
@@ -325,7 +325,7 @@ objTypes['grin_circlelens'] = {
 
       // Handle the refracted ray
       ray.p1 = s_point;
-      ray.p2 = graphs.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
+      ray.p2 = geometry.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);
       ray.brightness_p = ray.brightness_p * (1 - R_p);
     }
@@ -338,7 +338,7 @@ objTypes['grin_circlelens'] = {
 	x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
   */
   step: function(obj, origin, p1, p2, ray) {
-	const len = graphs.length(p1, p2);
+	const len = geometry.length(p1, p2);
 	const x = p2.x - origin.x;
 	const y = p2.y - origin.y;
 	const x_der_s_prev = (p2.x - p1.x) / len;
@@ -350,7 +350,7 @@ objTypes['grin_circlelens'] = {
 	const x_new = origin.x + x + obj.step_size * x_der_s;
 	const y_new = origin.y + y + obj.step_size * y_der_s;
 
-	return graphs.point(x_new, y_new);
+	return geometry.point(x_new, y_new);
   },
   
   // Receives an instance of a grin object(e.g. grin_circlelens and grin_refractor) and a ray, and returns a bodyMerging object for the point ray.p1
@@ -461,20 +461,20 @@ objTypes['grin_circlelens'] = {
 
   // Returns true if point is outside the circular glass, otherwise returns false
   isOutsideGlass: function(obj, point) {
-	R_squared = graphs.length_squared(obj.p1, obj.p2);
-	return (graphs.length_squared(obj.p1, point) - R_squared - obj.eps > 0 && graphs.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
+	R_squared = geometry.length_squared(obj.p1, obj.p2);
+	return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps > 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
   },
   
   // Returns true if point is inside the circular glass, otherwise returns false
   isInsideGlass: function(obj, point) {
-	R_squared = graphs.length_squared(obj.p1, obj.p2);
-	return (graphs.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && graphs.length_squared(obj.p1, point) - R_squared + obj.eps < 0);
+	R_squared = geometry.length_squared(obj.p1, obj.p2);
+	return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps < 0);
   },
   
   // Returns true if point is on the boundary of the circular glass, otherwise returns false
   isOnBoundary: function(obj, point) {
-	R_squared = graphs.length_squared(obj.p1, obj.p2);
-	return (graphs.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && graphs.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
+	R_squared = geometry.length_squared(obj.p1, obj.p2);
+	return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
   }
 
 };

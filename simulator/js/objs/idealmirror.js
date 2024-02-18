@@ -3,7 +3,7 @@ objTypes['idealmirror'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'idealmirror', p1: mouse, p2: graphs.point(mouse.x + scene.gridSize, mouse.y), p: 100};
+    return {type: 'idealmirror', p1: mouse, p2: geometry.point(mouse.x + scene.gridSize, mouse.y), p: 100};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
@@ -57,7 +57,7 @@ objTypes['idealmirror'] = {
 
 
   // Draw the center point of the mirror
-  var center = graphs.midpoint(obj);
+  var center = geometry.midpoint(obj);
   ctx.strokeStyle = 'rgb(255,255,255)';
   ctx.beginPath();
   ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);
@@ -146,7 +146,7 @@ objTypes['idealmirror'] = {
   // When the obj is shot by a ray
   shot: function(mirror, ray, rayIndex, shootPoint) {
     // Treat as a combination of an ideal lens and a planar mirror
-    objTypes['lens'].shot(mirror, ray, rayIndex, graphs.point(shootPoint.x, shootPoint.y));
+    objTypes['lens'].shot(mirror, ray, rayIndex, geometry.point(shootPoint.x, shootPoint.y));
 
     // Pull the ray backwards
     ray.p1.x = 2 * ray.p1.x - ray.p2.x;

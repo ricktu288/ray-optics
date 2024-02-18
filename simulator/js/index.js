@@ -48,7 +48,7 @@ window.onload = function (e) {
 
 
 
-  mouse = graphs.point(0, 0);
+  mouse = geometry.point(0, 0);
   var needRestore = false;
   try {
     restoredData = localStorage.rayOpticsData;
@@ -904,7 +904,7 @@ function modebtn_clicked(mode1) {
   }
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
-    scene.observer = graphs.circle(graphs.point((canvas.width * 0.5 / dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 
@@ -1003,10 +1003,10 @@ function enterCropMode() {
     // Create a new cropBox
     var cropBox = {
       type: 'cropbox',
-      p1: graphs.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p2: graphs.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p3: graphs.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
-      p4: graphs.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
+      p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
+      p2: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
+      p3: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
+      p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
       width: 1280,
       format: 'png'
     };

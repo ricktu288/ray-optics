@@ -1,4 +1,4 @@
-var graphs = {
+var geometry = {
   /**
   * Basic geometric figures
   **/
@@ -78,7 +78,7 @@ var graphs = {
     var xb = l2.p2.x - l2.p1.x;
     var ya = l1.p2.y - l1.p1.y;
     var yb = l2.p2.y - l2.p1.y;
-    return graphs.point((A * xb - B * xa) / (xa * yb - xb * ya), (A * yb - B * ya) / (xa * yb - xb * ya));
+    return geometry.point((A * xb - B * xa) / (xa * yb - xb * ya), (A * yb - B * ya) / (xa * yb - xb * ya));
   },
 
   /**
@@ -107,8 +107,8 @@ var graphs = {
     var d = Math.sqrt(r_sq - (px - cx) * (px - cx) - (py - cy) * (py - cy));
 
     var ret = [];
-    ret[1] = graphs.point(px + ux * d, py + uy * d);
-    ret[2] = graphs.point(px - ux * d, py - uy * d);
+    ret[1] = geometry.point(px + ux * d, py + uy * d);
+    ret[2] = geometry.point(px - ux * d, py - uy * d);
 
     return ret;
   },
@@ -195,7 +195,7 @@ var graphs = {
   midpoint: function(l1) {
     var nx = (l1.p1.x + l1.p2.x) * 0.5;
     var ny = (l1.p1.y + l1.p2.y) * 0.5;
-    return graphs.point(nx, ny);
+    return geometry.point(nx, ny);
   },
 
   /**
@@ -208,7 +208,7 @@ var graphs = {
   midpoint_points: function(p1, p2) {
     var nx = (p1.x + p2.x) * 0.5;
     var ny = (p1.y + p2.y) * 0.5;
-    return graphs.point(nx, ny);
+    return geometry.point(nx, ny);
   },
 
   /**
@@ -218,12 +218,12 @@ var graphs = {
   * @return {graph.line}
   **/
   perpendicular_bisector: function(l1) {
-    return graphs.line(
-        graphs.point(
+    return geometry.line(
+        geometry.point(
           (-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
           (l1.p1.x - l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
         ),
-        graphs.point(
+        geometry.point(
           (l1.p1.y - l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
           (-l1.p1.x + l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
         )
@@ -240,6 +240,6 @@ var graphs = {
   parallel: function(l1, p1) {
     var dx = l1.p2.x - l1.p1.x;
     var dy = l1.p2.y - l1.p1.y;
-    return graphs.line(p1, graphs.point(p1.x + dx, p1.y + dy));
+    return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));
   }
 };

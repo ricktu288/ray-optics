@@ -46,17 +46,17 @@ function getClickExtent(isPoint, isConstruct) {
 }
 
 function mouseOnPoint(mouse, point) {
-  return graphs.length_squared(mouse, point) < getClickExtent(true) * getClickExtent(true);
+  return geometry.length_squared(mouse, point) < getClickExtent(true) * getClickExtent(true);
 }
 
 function mouseOnPoint_construct(mouse, point) {
-  return graphs.length_squared(mouse, point) < getClickExtent(true, true) * getClickExtent(true, true);
+  return geometry.length_squared(mouse, point) < getClickExtent(true, true) * getClickExtent(true, true);
 }
 
 function mouseOnSegment(mouse, segment) {
   var d_per = Math.pow((mouse.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (mouse.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); // Similar to the distance between the mouse and the line
   var d_par = (segment.p2.x - segment.p1.x) * (mouse.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (mouse.y - segment.p1.y); // Similar to the projected point of the mouse on the line
-  return d_per < getClickExtent() * getClickExtent() && d_par >= 0 && d_par <= graphs.length_segment_squared(segment);
+  return d_per < getClickExtent() * getClickExtent() && d_par >= 0 && d_par <= geometry.length_segment_squared(segment);
 }
 
 function mouseOnLine(mouse, line) {
@@ -72,7 +72,7 @@ function snapToDirection(mouse, basePoint, directions, snapData) {
   if (snapData && snapData.locked) {
     // The snap has been locked
     var k = (directions[snapData.i0].x * x + directions[snapData.i0].y * y) / (directions[snapData.i0].x * directions[snapData.i0].x + directions[snapData.i0].y * directions[snapData.i0].y);
-    return graphs.point(basePoint.x + k * directions[snapData.i0].x, basePoint.y + k * directions[snapData.i0].y);
+    return geometry.point(basePoint.x + k * directions[snapData.i0].x, basePoint.y + k * directions[snapData.i0].y);
   }
   else {
     var i0;
@@ -93,7 +93,7 @@ function snapToDirection(mouse, basePoint, directions, snapData) {
     }
 
     var k = (directions[i0].x * x + directions[i0].y * y) / (directions[i0].x * directions[i0].x + directions[i0].y * directions[i0].y);
-    return graphs.point(basePoint.x + k * directions[i0].x, basePoint.y + k * directions[i0].y);
+    return geometry.point(basePoint.x + k * directions[i0].x, basePoint.y + k * directions[i0].y);
   }
 }
 
@@ -103,7 +103,7 @@ function canvas_onmousedown(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
+  var mouse_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
   mouse_lastmousedown = mouse_nogrid;
   if (positioningObj != -1) {
     confirmPositioning(e.ctrlKey, e.shiftKey);
@@ -118,7 +118,7 @@ function canvas_onmousedown(e) {
   }
 
   if (scene.grid) {
-    mouse = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
+    mouse = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
 
   }
   else {
@@ -141,7 +141,7 @@ function canvas_onmousedown(e) {
       draggingPart = {};
 
       if (scene.mode == 'observer') {
-        if (graphs.length_squared(mouse_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
+        if (geometry.length_squared(mouse_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
           // The mouse clicked the observer
           draggingObj = -4;
           draggingPart = {};
@@ -235,7 +235,7 @@ function selectionSearch(mouse_nogrid) {
             targetIsPoint = true; // If the mouse can click a point, then it must click a point
             results = [];
           }
-          var click_lensq_temp = graphs.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
+          var click_lensq_temp = geometry.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
           if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
             // In case of clicking a point, choose the one nearest to the mouse
             // But if the object is the selected object, the points from this object have the highest priority.
@@ -273,10 +273,10 @@ function canvas_onmousemove(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = graphs.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
+  var mouse_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
   var mouse2;
   if (scene.grid && !(e.altKey && !isConstructing)) {
-    mouse2 = graphs.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
+    mouse2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
   }
   else {
     mouse2 = mouse_nogrid;
@@ -302,7 +302,7 @@ function canvas_onmousemove(e) {
         canvas.style.cursor = '';
       }
     } else {
-      if (scene.mode == 'observer' && graphs.length_squared(mouse, scene.observer.c) < scene.observer.r * scene.observer.r) {
+      if (scene.mode == 'observer' && geometry.length_squared(mouse, scene.observer.c) < scene.observer.r * scene.observer.r) {
         canvas.style.cursor = 'pointer';
       } else {
         canvas.style.cursor = '';
@@ -463,18 +463,18 @@ function finishHandleCreation(point) {
 
 function canvas_ondblclick(e) {
   //console.log("dblclick");
-  var mouse = graphs.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
+  var mouse = geometry.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
   else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
     draggingPart = {};
     if (scene.mode == 'observer') {
-      if (graphs.length_squared(mouse, scene.observer.c) < scene.observer.r * scene.observer.r) {
+      if (geometry.length_squared(mouse, scene.observer.c) < scene.observer.r * scene.observer.r) {
 
         // The mouse clicked the observer
         positioningObj = -4;
         draggingPart = {};
-        draggingPart.targetPoint = graphs.point(scene.observer.c.x, scene.observer.c.y);
+        draggingPart.targetPoint = geometry.point(scene.observer.c.x, scene.observer.c.y);
         draggingPart.snapData = {};
 
         document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scene.scale + scene.origin.x) + 'px';
@@ -607,7 +607,7 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      objTypes[scene.objs[positioningObj].type].dragging(scene.objs[positioningObj], graphs.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
+      objTypes[scene.objs[positioningObj].type].dragging(scene.objs[positioningObj], geometry.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
       draw(!(objTypes[scene.objs[positioningObj].type].shoot || objTypes[scene.objs[positioningObj].type].rayIntersection), true);
     }
     

@@ -167,8 +167,8 @@ objTypes['power'] = {
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
     var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var cost = ((ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y)) / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    ray.p2 = graphs.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
-    ray.p1 = graphs.point(shootPoint.x, shootPoint.y);
+    ray.p2 = geometry.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
+    ray.p1 = geometry.point(shootPoint.x, shootPoint.y);
 
     obj.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
     obj.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
