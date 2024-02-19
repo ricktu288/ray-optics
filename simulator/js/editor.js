@@ -197,7 +197,7 @@ function canvas_onmousedown(e) {
         isConstructing = true;
         constructionPoint = mouse;
         if (scene.objs[selectedObj]) {
-          if (hasSameAttrType(scene.objs[selectedObj], scene.objs[scene.objs.length - 1]) && scene.objs[selectedObj].p) {
+          if (scene.objs[selectedObj].type == scene.objs[scene.objs.length - 1].type && scene.objs[selectedObj].p) {
             scene.objs[scene.objs.length - 1].p = scene.objs[selectedObj].p; // Let the property of this obj to be the same as the previously selected obj (if of the same type)
             // TODO: Generalized this to other properties.
           }
@@ -541,10 +541,10 @@ function canvas_onmousewheel(e) {
 
 function selectObj(index) {
   hideAllPopovers();
-  if (pendingObjBarEvent) {
+  if (objBar.pendingEvent) {
     // If the user is in the middle of editing a value, then clearing the innerHTML of obj_bar_main will cause the change event not to fire, so we need to manually fire it.
-    pendingObjBarEvent();
-    pendingObjBarEvent = null;
+    objBar.pendingEvent();
+    objBar.pendingEvent = null;
   }
 
   if (index < 0 || index >= scene.objs.length) {
@@ -569,7 +569,7 @@ function selectObj(index) {
 
     if (document.getElementById('obj_bar_main').innerHTML != '') {
       for (var i = 0; i < scene.objs.length; i++) {
-        if (i != selectedObj && hasSameAttrType(scene.objs[i], scene.objs[selectedObj])) {
+        if (i != selectedObj && scene.objs[i].type == scene.objs[selectedObj].type) {
           // If there is an object with the same type, then show "Apply to All"
           document.getElementById('setAttrAll_box').style.display = '';
           document.getElementById('applytoall_mobile_container').style.display = '';

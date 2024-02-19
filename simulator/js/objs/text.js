@@ -39,32 +39,29 @@ objTypes['text'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    // createStringAttr('', obj.p, function(obj, value) {
-    //   obj.p = value;
-    // }, elem);
-    createTextAttr('', obj.p, function(obj, value) {
+    objBar.createText('', obj.p, function(obj, value) {
       obj.p = value;
-    }, elem);
+    });
 
-    if (createAdvancedOptions(typeof obj.fontSize != 'undefined' && (obj.fontSize != 24 || obj.fontName != 'Serif' || obj.fontStyle != 'Normal' || obj.fontAlignment != 'left' || obj.fontSmallCaps || obj.fontAngle != 0))) {
-      createNumberAttr(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
+    if (objBar.showAdvanced(typeof obj.fontSize != 'undefined' && (obj.fontSize != 24 || obj.fontName != 'Serif' || obj.fontStyle != 'Normal' || obj.fontAlignment != 'left' || obj.fontSmallCaps || obj.fontAngle != 0))) {
+      objBar.createNumber(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
         obj.fontSize = value;
-      }, elem, null, true);
-      createDropdownAttr(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
+      }, null, true);
+      objBar.createDropdown(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
         obj.fontName = value;
-      }, elem);
-      createDropdownAttr(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
+      });
+      objBar.createDropdown(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
         obj.fontStyle = value;
-      }, elem);
-      createDropdownAttr(getMsg('fontalignment'), obj.fontAlignment || 'left', fontAlignments, function(obj, value) {
+      });
+      objBar.createDropdown(getMsg('fontalignment'), obj.fontAlignment || 'left', fontAlignments, function(obj, value) {
         obj.fontAlignment = value;
-      }, elem);
-      createBooleanAttr(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
+      });
+      objBar.createBoolean(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
         obj.fontSmallCaps = value;
-      }, elem);
-      createNumberAttr(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
+      });
+      objBar.createNumber(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
         obj.fontAngle = value;
-      }, elem, null, true);
+      }, null, true);
     }
   },
 

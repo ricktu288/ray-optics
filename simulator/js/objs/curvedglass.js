@@ -10,12 +10,12 @@ objTypes['curvedglass'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createEquationAttr('', obj.eqn1, function(obj, value) {
+    objBar.createEquation('', obj.eqn1, function(obj, value) {
       obj.eqn1 = value;
-    }, elem, getMsg('custom_equation_note'));
-    createEquationAttr(' < y < ', obj.eqn2, function(obj, value) {
+    }, getMsg('custom_equation_note'));
+    objBar.createEquation(' < y < ', obj.eqn2, function(obj, value) {
       obj.eqn2 = value;
-    }, elem);
+    });
     objTypes['refractor'].populateObjBar(obj, elem);
   },
 

@@ -8,21 +8,21 @@ objTypes['led'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
+    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
       obj.brightness = value;
-    }, elem, getMsg('brightness_note_popover'));
+    }, getMsg('brightness_note_popover'));
     if (scene.colorMode) {
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
+      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
-      }, elem);
+      });
     }
-    createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.p, function(obj, value) {
+    objBar.createNumber(getMsg('emissionangle'), 0, 180, 1, obj.p, function(obj, value) {
       obj.p = value;
-    }, elem);
-    if (createAdvancedOptions(!obj.symmetric)) {
-      createBooleanAttr(getMsg('symmetric'), obj.symmetric, function(obj, value) {
+    });
+    if (objBar.showAdvanced(!obj.symmetric)) {
+      objBar.createBoolean(getMsg('symmetric'), obj.symmetric, function(obj, value) {
         obj.symmetric = value;
-      }, elem);
+      });
     }
   },
 

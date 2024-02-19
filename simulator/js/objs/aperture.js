@@ -217,11 +217,11 @@ objTypes['aperture'] = {
     var originalDiameter = geometry.length(obj.p3, obj.p4);
 
     if (!isConstructing) {
-      createNumberAttr(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
+      objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
         var t = 0.5 * (1 - value / geometry.length(obj.p1, obj.p2));
         obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
         obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
-      }, elem);
+      });
     }
     dichroicSettings(obj,elem);
   },

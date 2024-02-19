@@ -10,9 +10,9 @@ objTypes['beamsplitter'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
+    objBar.createNumber(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
-    }, elem);
+    });
     dichroicSettings(obj,elem);
   },
 

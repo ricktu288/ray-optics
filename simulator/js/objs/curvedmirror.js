@@ -11,9 +11,9 @@ objTypes['curvedmirror'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createEquationAttr('y = ', obj.p, function(obj, value) {
+    objBar.createEquation('y = ', obj.p, function(obj, value) {
       obj.p = value;
-    }, elem, getMsg('custom_equation_note'));
+    }, getMsg('custom_equation_note'));
     dichroicSettings(obj,elem);
   },
 

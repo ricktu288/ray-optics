@@ -10,25 +10,25 @@ objTypes['parallel'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
+    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
-    }, elem, getMsg('brightness_note_popover'));
+    }, getMsg('brightness_note_popover'));
     if (scene.colorMode) {
-      createNumberAttr(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
+      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) {
         obj.wavelength = value;
-      }, elem);
+      });
     }
     
-    if (createAdvancedOptions(typeof obj.divergence != 'undefined' && (obj.divergence != 0.0 || obj.random))) {
-      createNumberAttr(getMsg('emissionangle'), 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
+    if (objBar.showAdvanced(typeof obj.divergence != 'undefined' && (obj.divergence != 0.0 || obj.random))) {
+      objBar.createNumber(getMsg('emissionangle'), 0, 180, 1, obj.divergence || 0.0, function(obj, value) {
         obj.divergence = value;
-      }, elem);
-      createBooleanAttr(getMsg('lambertian'), obj.lambert, function(obj, value) {
+      });
+      objBar.createBoolean(getMsg('lambertian'), obj.lambert, function(obj, value) {
         obj.lambert = value;
-      }, elem);
-      createBooleanAttr(getMsg('random'), obj.random, function(obj, value) {
+      });
+      objBar.createBoolean(getMsg('random'), obj.random, function(obj, value) {
         obj.random = value;
-      }, elem);
+      });
       if (scene.mode == 'images' || scene.mode == 'observer') {
         var note = document.createElement('span');
         note.innerHTML = getMsg('beam_warning');

@@ -8,7 +8,7 @@ objTypes['power'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createBooleanAttr(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
+    objBar.createBoolean(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
       obj.irradianceMap = value;
       if (value) {
         obj.binSize = 1;
@@ -16,14 +16,14 @@ objTypes['power'] = {
       if (obj == scene.objs[selectedObj]) {
         selectObj(selectedObj);
       }
-    }, elem);
+    });
     
     if (obj.irradianceMap) {
-      createNumberAttr(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function(obj, value) {
+      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function(obj, value) {
         obj.binSize = value;
-      }, elem);
+      });
 
-      createButton(getMsg('export_irradiance_map'), function(obj) {
+      objBar.createButton(getMsg('export_irradiance_map'), function(obj) {
         // Export the irradiance map to a CSV file
         var binSize = obj.binSize || 10;
         var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
@@ -45,7 +45,7 @@ objTypes['power'] = {
         link.setAttribute("download", "irradiance_map.csv");
         document.body.appendChild(link);
         link.click();
-      }, elem);
+      });
     }
   },
 

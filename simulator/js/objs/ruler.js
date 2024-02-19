@@ -8,9 +8,9 @@ objTypes['ruler'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('ruler_scale'), 0, 10, 1, obj.p || 10, function(obj, value) {
+    objBar.createNumber(getMsg('ruler_scale'), 0, 10, 1, obj.p || 10, function(obj, value) {
       obj.p = value;
-    }, elem, null, true);
+    }, null, true);
   },
 
   // Use the prototype lineobj

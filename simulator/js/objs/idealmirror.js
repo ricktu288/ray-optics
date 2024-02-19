@@ -10,17 +10,17 @@ objTypes['idealmirror'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
+    objBar.createNumber(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
       obj.p = value * (cartesianSign?-1:1);
-    }, elem);
-    if (createAdvancedOptions(cartesianSign)) {
-      createBooleanAttr(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
+    });
+    if (objBar.showAdvanced(cartesianSign)) {
+      objBar.createBoolean(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
         if (obj == scene.objs[selectedObj]) {
           cartesianSign = value;
           localStorage.rayOpticsCartesianSign = value?"true":"false";
           selectObj(selectedObj);
         }
-      }, elem);
+      });
     }
     dichroicSettings(obj,elem);
   },

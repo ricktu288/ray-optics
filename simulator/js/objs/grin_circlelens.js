@@ -32,7 +32,7 @@ objTypes['grin_circlelens'] = {
 			return;
 		}
 	}
-    createEquationAttr('n(x,y) = ', obj.p_tex, function(obj, value) {
+    objBar.createEquation('n(x,y) = ', obj.p_tex, function(obj, value) {
 	try {
 		obj.p = parseTex(value).toString().replaceAll("\\cdot","*").replaceAll("\\frac","/");
 		obj.p_tex = value;
@@ -47,29 +47,29 @@ objTypes['grin_circlelens'] = {
 	} catch (e) {
 		obj.error = e.toString();
 	}
-    }, elem, getMsg('grin_refractive_index'));
+    }, getMsg('grin_refractive_index'));
 	
-    createTupleAttr(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
+    objBar.createTuple(getMsg('refractiveindex_origin'), '(' + obj.origin.x + ',' + obj.origin.y + ')', function(obj, value) {
 	  const commaPosition = value.indexOf(',');
 	  if (commaPosition != -1) {
 		  const n_origin_x = parseFloat(value.slice(1, commaPosition));
 		  const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
 		  obj.origin = geometry.point(n_origin_x ,n_origin_y);
 	  }
-    }, elem);
+    });
 	
-	if (createAdvancedOptions(obj.step_size != 1 || obj.eps != 0.001 || scene.symbolicGrin)) {
-		createNumberAttr(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
+	if (objBar.showAdvanced(obj.step_size != 1 || obj.eps != 0.001 || scene.symbolicGrin)) {
+		objBar.createNumber(getMsg('step_size'), 0.1, 1, 0.1, obj.step_size, function(obj, value) {
 		obj.step_size = parseFloat(value);
-		}, elem, getMsg('step_size_note_popover'));
+		}, getMsg('step_size_note_popover'));
 		
-		createNumberAttr(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
+		objBar.createNumber(getMsg('eps'), 1e-3, 1e-2, 1e-3, obj.eps, function(obj, value) {
 		obj.eps = parseFloat(value);
-		}, elem, getMsg('eps_' + obj.type + '_note_popover'));
+		}, getMsg('eps_' + obj.type + '_note_popover'));
 		
-		createBooleanAttr(getMsg('symbolic_grin'), scene.symbolicGrin, function(obj, value) {
+		objBar.createBoolean(getMsg('symbolic_grin'), scene.symbolicGrin, function(obj, value) {
 		scene.symbolicGrin = value;
-		}, elem, getMsg('symbolic_grin_note_popover'));
+		}, getMsg('symbolic_grin_note_popover'));
 	}
   },
 

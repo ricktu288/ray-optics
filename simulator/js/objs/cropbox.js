@@ -5,43 +5,43 @@ objTypes['cropbox'] = {
   populateObjBar: function(obj, elem) {
     var width = geometry.length(obj.p1, obj.p2);
     var height = geometry.length(obj.p1, obj.p3);
-    createNumberAttr(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
+    objBar.createNumber(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
       obj.p2 = geometry.point(obj.p1.x + 1*value, obj.p2.y);
       obj.p4 = geometry.point(obj.p3.x + 1*value, obj.p4.y);
-    }, elem, null, true);
-    createNumberAttr('x', 0, 1000, 1, height, function(obj, value) {
+    }, null, true);
+    objBar.createNumber('x', 0, 1000, 1, height, function(obj, value) {
       obj.p3 = geometry.point(obj.p3.x, obj.p1.y + 1*value);
       obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1*value);
-    }, elem, null, true);
-    createDropdownAttr(getMsg('image_format'), obj.format, {
+    }, null, true);
+    objBar.createDropdown(getMsg('image_format'), obj.format, {
       'png': 'PNG',
       'svg': 'SVG'
     }, function(obj, value) {
       obj.format = value;
       selectObj(selectedObj);
-    }, elem);
+    });
 
 
     if (obj.format != 'svg') {
-      createNumberAttr(getMsg('image_width'), 0, 1000, 1, obj.width, function(obj, value) {
+      objBar.createNumber(getMsg('image_width'), 0, 1000, 1, obj.width, function(obj, value) {
         obj.width = 1*value;
-      }, elem, null, true);
+      }, null, true);
     } else {
-      createInfoBox(elem, getMsg('export_svg_popover'))
+      objBar.createInfoBox(getMsg('export_svg_popover'))
     }
 
-    createButton(getMsg('save'), function(obj) {
+    objBar.createButton(getMsg('save'), function(obj) {
       if (obj.format == 'svg') {
         exportSVG(obj);
       } else {
         exportImage(obj);
       }
-    }, elem);
-    createButton(getMsg('save_cancel'), function(obj) {
+    });
+    objBar.createButton(getMsg('save_cancel'), function(obj) {
       cropMode = false;
       selectObj(-1);
       draw(true, true);
-    }, elem);
+    });
   },
 
   // Move the object

@@ -8,9 +8,9 @@ objTypes['lens'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    createNumberAttr(getMsg('focallength'), -1000, 1000, 1, obj.p, function(obj, value) {
+    objBar.createNumber(getMsg('focallength'), -1000, 1000, 1, obj.p, function(obj, value) {
       obj.p = value;
-    }, elem);
+    });
   },
 
   // Use the prototype lineobj

@@ -11,16 +11,16 @@ objTypes['refractor'] = {
   // Show the property box
   populateObjBar: function(obj, elem) {
     if (scene.colorMode) {
-      createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
-      }, elem, getMsg('refractiveindex_note_popover'));
-      createNumberAttr("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
+      }, getMsg('refractiveindex_note_popover'));
+      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         obj.cauchyCoeff = value;
-      }, elem);
+      });
     } else {
-      createNumberAttr(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;
-      }, elem, getMsg('refractiveindex_note_popover'));
+      }, getMsg('refractiveindex_note_popover'));
     }
   },
 

@@ -12,13 +12,13 @@ objTypes['sphericallens'] = {
     
 
     if (!isConstructing) {
-      createDropdownAttr('', obj.definedBy || 'DR1R2', {
+      objBar.createDropdown('', obj.definedBy || 'DR1R2', {
         'DR1R2': getMsg('radii_of_curvature'),
         'DFfdBfd': getMsg('focal_distances')
       }, function(obj, value) {
         obj.definedBy = value;
         selectObj(selectedObj);
-      }, elem);
+      });
     }
 
     if (!isConstructing && (!obj.definedBy || obj.definedBy == 'DR1R2')) {
@@ -27,82 +27,82 @@ objTypes['sphericallens'] = {
       var r2 = params.r2;
       var d = params.d;
 
-      createNumberAttr('R<sub>1</sub>', 0, 100, 1, r1, function(obj, value) {
+      objBar.createNumber('R<sub>1</sub>', 0, 100, 1, r1, function(obj, value) {
         var params = objTypes['sphericallens'].getDR1R2(obj);
         var r1 = params.r1;
         var r2 = params.r2;
         var d = params.d;
         objTypes['sphericallens'].createLensWithDR1R2(obj, d, value, r2);
-      }, elem, null, true);
-      createNumberAttr('R<sub>2</sub>', 0, 100, 1, r2, function(obj, value) {
+      }, null, true);
+      objBar.createNumber('R<sub>2</sub>', 0, 100, 1, r2, function(obj, value) {
         var params = objTypes['sphericallens'].getDR1R2(obj);
         var r1 = params.r1;
         var r2 = params.r2;
         var d = params.d;
         objTypes['sphericallens'].createLensWithDR1R2(obj, d, r1, value);
-      }, elem, null, true);
-      createNumberAttr('d', 0, 100, 1, d, function(obj, value) {
+      }, null, true);
+      objBar.createNumber('d', 0, 100, 1, d, function(obj, value) {
         var params = objTypes['sphericallens'].getDR1R2(obj);
         var r1 = params.r1;
         var r2 = params.r2;
         var d = params.d;
         objTypes['sphericallens'].createLensWithDR1R2(obj, value, r1, r2);
-      }, elem, null, true);
+      }, null, true);
     } else if (obj.definedBy == 'DFfdBfd') {
-      createInfoBox(elem, '<img src="../img/FFD_BFD.svg" width=100%>');
+      objBar.createInfoBox('<img src="../img/FFD_BFD.svg" width=100%>');
 
       var params = this.getDFfdBfd(obj);
       var d = params.d;
       var ffd = params.ffd;
       var bfd = params.bfd;
 
-      createNumberAttr('FFD', 0, 100, 1, ffd, function(obj, value) {
+      objBar.createNumber('FFD', 0, 100, 1, ffd, function(obj, value) {
         var params = objTypes['sphericallens'].getDFfdBfd(obj);
         var d = params.d;
         var bfd = params.bfd;
         objTypes['sphericallens'].createLensWithDFfdBfd(obj, d, value, bfd);
-      }, elem, null, true);
-      createNumberAttr('BFD', 0, 100, 1, bfd, function(obj, value) {
+      }, null, true);
+      objBar.createNumber('BFD', 0, 100, 1, bfd, function(obj, value) {
         var params = objTypes['sphericallens'].getDFfdBfd(obj);
         var d = params.d;
         var ffd = params.ffd;
         objTypes['sphericallens'].createLensWithDFfdBfd(obj, d, ffd, value);
-      }, elem, null, true);
-      createNumberAttr('d', 0, 100, 1, d, function(obj, value) {
+      }, null, true);
+      objBar.createNumber('d', 0, 100, 1, d, function(obj, value) {
         var params = objTypes['sphericallens'].getDFfdBfd(obj);
         var ffd = params.ffd;
         var bfd = params.bfd;
         objTypes['sphericallens'].createLensWithDFfdBfd(obj, value, ffd, bfd);
-      }, elem, null, true);
+      }, null, true);
     }
     
 
     if (scene.colorMode) {
-      createNumberAttr(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         var old_params = objTypes['sphericallens'].getDFfdBfd(obj);
         obj.p = value * 1;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           objTypes['sphericallens'].createLensWithDFfdBfd(obj, old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, elem, getMsg('refractiveindex_note_popover'));
-      createNumberAttr("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
+      }, getMsg('refractiveindex_note_popover'));
+      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
         var old_params = objTypes['sphericallens'].getDFfdBfd(obj);
         obj.cauchyCoeff = value;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           objTypes['sphericallens'].createLensWithDFfdBfd(obj, old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, elem);
+      });
     } else {
-      createNumberAttr(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
         var old_params = objTypes['sphericallens'].getDFfdBfd(obj);
         obj.p = value * 1;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           objTypes['sphericallens'].createLensWithDFfdBfd(obj, old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, elem, getMsg('refractiveindex_note_popover'));
+      }, getMsg('refractiveindex_note_popover'));
     }
   },
 
