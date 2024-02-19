@@ -571,24 +571,24 @@ function selectObj(index) {
       for (var i = 0; i < scene.objs.length; i++) {
         if (i != selectedObj && scene.objs[i].type == scene.objs[selectedObj].type) {
           // If there is an object with the same type, then show "Apply to All"
-          document.getElementById('setAttrAll_box').style.display = '';
-          document.getElementById('applytoall_mobile_container').style.display = '';
+          document.getElementById('apply_to_all_box').style.display = '';
+          document.getElementById('apply_to_all_mobile_container').style.display = '';
           break;
         }
         if (i == scene.objs.length - 1) {
-          document.getElementById('setAttrAll_box').style.display = 'none';
-          document.getElementById('applytoall_mobile_container').style.display = 'none';
+          document.getElementById('apply_to_all_box').style.display = 'none';
+          document.getElementById('apply_to_all_mobile_container').style.display = 'none';
         }
       }
     } else {
-      document.getElementById('setAttrAll_box').style.display = 'none';
-      document.getElementById('applytoall_mobile_container').style.display = 'none';
+      document.getElementById('apply_to_all_box').style.display = 'none';
+      document.getElementById('apply_to_all_mobile_container').style.display = 'none';
     }
   }
   else {
     document.getElementById('obj_bar_main').style.display = 'none';
-    document.getElementById('setAttrAll_box').style.display = 'none';
-    document.getElementById('applytoall_mobile_container').style.display = 'none';
+    document.getElementById('apply_to_all_box').style.display = 'none';
+    document.getElementById('apply_to_all_mobile_container').style.display = 'none';
   }
 
   document.getElementById('obj_bar').style.display = '';

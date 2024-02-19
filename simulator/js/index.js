@@ -449,13 +449,13 @@ window.onload = function (e) {
 
   document.getElementById('restore').onclick = function () { restore() };
 
-  document.getElementById('setAttrAll').onclick = function () {
+  document.getElementById('apply_to_all').onclick = function () {
     this.blur();
     const checked = this.checked;
-    document.getElementById('setAttrAll').checked = checked;
-    document.getElementById('applytoall_mobile').checked = checked;
+    document.getElementById('apply_to_all').checked = checked;
+    document.getElementById('apply_to_all_mobile').checked = checked;
   }
-  document.getElementById('applytoall_mobile').onclick = document.getElementById('setAttrAll').onclick;
+  document.getElementById('apply_to_all_mobile').onclick = document.getElementById('apply_to_all').onclick;
 
   document.getElementById('copy').onclick = function () {
     this.blur();
@@ -672,8 +672,8 @@ function initParameters() {
   document.getElementById('color_mode').checked = false;
   document.getElementById('color_mode_mobile').checked = false;
 
-  document.getElementById('setAttrAll').checked = false;
-  document.getElementById('applytoall_mobile').checked = false;
+  document.getElementById('apply_to_all').checked = false;
+  document.getElementById('apply_to_all_mobile').checked = false;
 
   document.getElementById('grid_size').value = scene.gridSize;
   document.getElementById('grid_size_mobile').value = scene.gridSize;

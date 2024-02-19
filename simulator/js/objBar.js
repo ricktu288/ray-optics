@@ -44,76 +44,76 @@ class ObjBar {
     }
 
 
-    var objAttr_text = document.createElement('input');
-    objAttr_text.type = 'text';
+    var objOption_text = document.createElement('input');
+    objOption_text.type = 'text';
     if (value == Infinity) {
-      objAttr_text.value = 'inf';
+      objOption_text.value = 'inf';
     } else if (value == -Infinity) {
-      objAttr_text.value = '-inf';
+      objOption_text.value = '-inf';
     } else {
       // Round to 6 decimal places
-      objAttr_text.value = Math.round(value * 1000000) / 1000000;
+      objOption_text.value = Math.round(value * 1000000) / 1000000;
     }
-    objAttr_text.className = 'obj-bar-editable obj-bar-number';
-    nobr.appendChild(objAttr_text);
+    objOption_text.className = 'obj-bar-editable obj-bar-number';
+    nobr.appendChild(objOption_text);
 
-    var objAttr_range = document.createElement('input');
-    objAttr_range.type = 'range';
-    objAttr_range.min = min;
-    objAttr_range.max = max;
-    objAttr_range.step = step;
-    objAttr_range.value = value;
-    objAttr_range.className = 'form-range';
+    var objOption_range = document.createElement('input');
+    objOption_range.type = 'range';
+    objOption_range.min = min;
+    objOption_range.max = max;
+    objOption_range.step = step;
+    objOption_range.value = value;
+    objOption_range.className = 'form-range';
     if (hideSlider) {
-      objAttr_range.style.display = 'none';
+      objOption_range.style.display = 'none';
     }
-    nobr.appendChild(objAttr_range);
+    nobr.appendChild(objOption_range);
 
     this.elem.appendChild(nobr);
 
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
-    objAttr_range.oninput = function () {
-      objAttr_text.value = objAttr_range.value;
-      setAttr(function (obj) {
-        func(obj, objAttr_range.value * 1);
+    objOption_range.oninput = function () {
+      objOption_text.value = objOption_range.value;
+      setOption(function (obj) {
+        func(obj, objOption_range.value * 1);
       });
     };
 
-    objAttr_range.onmouseup = function () {
+    objOption_range.onmouseup = function () {
       this.blur();
       createUndoPoint();
     };
 
-    objAttr_range.ontouchend = function () {
+    objOption_range.ontouchend = function () {
       this.blur();
-      setAttr(function (obj) {
-        func(obj, objAttr_range.value * 1);
+      setOption(function (obj) {
+        func(obj, objOption_range.value * 1);
       });
       createUndoPoint();
     };
-    objAttr_text.onchange = function () {
-      if (objAttr_text.value.toLowerCase().startsWith('inf')) {
+    objOption_text.onchange = function () {
+      if (objOption_text.value.toLowerCase().startsWith('inf')) {
         var value = Infinity;
-      } else if (objAttr_text.value.toLowerCase().startsWith('-inf')) {
+      } else if (objOption_text.value.toLowerCase().startsWith('-inf')) {
         var value = -Infinity;
       } else {
-        var value = objAttr_text.value * 1;
+        var value = objOption_text.value * 1;
       }
-      objAttr_range.value = value;
-      setAttr(function (obj) {
+      objOption_range.value = value;
+      setOption(function (obj) {
         func(obj, value);
       });
       createUndoPoint();
     };
-    objAttr_text.onkeydown = function (e) {
+    objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
     };
-    objAttr_text.onclick = function (e) {
+    objOption_text.onclick = function (e) {
       this.select();
     };
   }
@@ -144,30 +144,30 @@ class ObjBar {
     }
 
 
-    var objAttr_text = document.createElement('input');
-    objAttr_text.type = 'text';
-    objAttr_text.value = value;
-    objAttr_text.style.width = '100px';
-    objAttr_text.className = 'obj-bar-editable';
-    nobr.appendChild(objAttr_text);
+    var objOption_text = document.createElement('input');
+    objOption_text.type = 'text';
+    objOption_text.value = value;
+    objOption_text.style.width = '100px';
+    objOption_text.className = 'obj-bar-editable';
+    nobr.appendChild(objOption_text);
 
     this.elem.appendChild(nobr);
 
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
-    objAttr_text.onchange = function () {
-      setAttr(function (obj) {
-        func(obj, objAttr_text.value);
+    objOption_text.onchange = function () {
+      setOption(function (obj) {
+        func(obj, objOption_text.value);
       });
     };
-    objAttr_text.onkeydown = function (e) {
+    objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
     };
-    objAttr_text.onclick = function (e) {
+    objOption_text.onclick = function (e) {
       this.select();
     };
   }
@@ -182,31 +182,31 @@ class ObjBar {
     var p_name = document.createElement('span');
     p_name.innerHTML = '&nbsp;' + label + '&nbsp;';
     this.elem.appendChild(p_name);
-    var objAttr_text = document.createElement('textarea');
-    objAttr_text.className = 'obj-bar-editable';
-    objAttr_text.value = value;
-    objAttr_text.cols = 25;
-    objAttr_text.rows = 1;
-    this.elem.appendChild(objAttr_text);
+    var objOption_text = document.createElement('textarea');
+    objOption_text.className = 'obj-bar-editable';
+    objOption_text.value = value;
+    objOption_text.cols = 25;
+    objOption_text.rows = 1;
+    this.elem.appendChild(objOption_text);
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
-    objAttr_text.oninput = function () {
+    objOption_text.oninput = function () {
       // if user starts adding more than one line, auto expand the text area
-      if (objAttr_text.value.split('\n').length > 1 && objAttr_text.rows == 1) {
-        objAttr_text.rows = 3;
+      if (objOption_text.value.split('\n').length > 1 && objOption_text.rows == 1) {
+        objOption_text.rows = 3;
       }
-      setAttr(function (obj) {
-        func(obj, objAttr_text.value);
+      setOption(function (obj) {
+        func(obj, objOption_text.value);
       });
     };
-    objAttr_text.onkeydown = function (e) {
+    objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
     };
-    objAttr_text.onclick = function (e) {
+    objOption_text.onclick = function (e) {
       //this.select();
     };
   }
@@ -236,23 +236,23 @@ class ObjBar {
     var wrapper = document.createElement('span');
     wrapper.className = 'form-switch';
 
-    var objAttr_checkbox = document.createElement('input');
-    objAttr_checkbox.className = 'form-check-input';
-    objAttr_checkbox.type = 'checkbox';
-    objAttr_checkbox.checked = value;
+    var objOption_checkbox = document.createElement('input');
+    objOption_checkbox.className = 'form-check-input';
+    objOption_checkbox.type = 'checkbox';
+    objOption_checkbox.checked = value;
 
-    wrapper.appendChild(objAttr_checkbox);
+    wrapper.appendChild(objOption_checkbox);
     nobr.appendChild(wrapper);
     this.elem.appendChild(nobr);
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
-    objAttr_checkbox.onchange = function () {
+    objOption_checkbox.onchange = function () {
       this.blur();
-      setAttr(function (obj) {
-        func(obj, objAttr_checkbox.checked);
+      setOption(function (obj) {
+        func(obj, objOption_checkbox.checked);
       });
     };
   }
@@ -294,7 +294,7 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
     var mathField = MQ.MathField(eqnSpan, {
       spaceBehavesLikeTab: true,
@@ -309,7 +309,7 @@ class ObjBar {
       maxDepth: 10,
       handlers: {
         enter: function () {
-          setAttr(function (obj) {
+          setOption(function (obj) {
             func(obj, mathField.latex());
           });
         }
@@ -325,7 +325,7 @@ class ObjBar {
 
     mathField.el().querySelector('textarea').addEventListener('focusin', function () {
       self.pendingEvent = function () {
-        setAttr(function (obj) {
+        setOption(function (obj) {
           func(obj, mathField.latex());
         });
       };
@@ -377,10 +377,10 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setAttr = this.setAttr;
+    const setOption = this.setOption;
 
     dropdown.onchange = function () {
-      setAttr(function (obj) {
+      setOption(function (obj) {
         func(obj, dropdown.value);
       });
       createUndoPoint();
@@ -440,13 +440,13 @@ class ObjBar {
    * Wether it is for all objects or just the selected one depends on the "Apply to all" checkbox.
    * @param {objBarValueChangeCallback} func - The function to call.
    */
-  setAttr(func) {
-    if (!document.getElementById('setAttrAll').checked) {
+  setOption(func) {
+    if (!document.getElementById('apply_to_all').checked) {
       func(scene.objs[selectedObj]);
     }
     else {
       for (var i = 0; i < scene.objs.length; i++) {
-        if (scene.objs[i].type == scene.objs[selectedObj]) {
+        if (scene.objs[i].type == scene.objs[selectedObj].type) {
           func(scene.objs[i]);
         }
       }
