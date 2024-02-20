@@ -30,13 +30,7 @@ objTypes['parallel'] = {
         obj.random = value;
       });
       if (scene.mode == 'images' || scene.mode == 'observer') {
-        var note = document.createElement('span');
-        note.innerHTML = getMsg('beam_warning');
-        note.id = "beam_warning";
-        note.style.marginLeft = "0.2em";
-        note.style.marginRight = "0.2em";
-        note.style.color = "white";
-        elem.appendChild(note);
+        objBar.createNote(getMsg('beam_warning'));
       }
     }
 },

@@ -436,8 +436,22 @@ class ObjBar {
   }
 
   /**
-   * Do the callback function that set the options.
-   * Wether it is for all objects or just the selected one depends on the "Apply to all" checkbox.
+   * Create a note in the object bar.
+   * @param {string} content - The HTML content for the note.
+   */
+  createNote(content) {
+    var note = document.createElement('span');
+    note.innerHTML = content;
+    note.id = "beam_warning";
+    note.style.marginLeft = "0.2em";
+    note.style.marginRight = "0.2em";
+    note.style.color = "white";
+    this.elem.appendChild(note);
+  }
+
+  /**
+   * Do the callback function that set the option.
+   * Whether it is for all objects or just the selected one depends on the "Apply to all" checkbox.
    * @param {objBarValueChangeCallback} func - The function to call.
    */
   setOption(func) {
