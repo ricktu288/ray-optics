@@ -130,7 +130,13 @@ function canvas_onmousedown(e) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // Only react for left click
       // If an obj is being created, pass the action to it
-      objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      if (ret && ret.isDone) {
+        isConstructing = false;
+      }
+      if (ret && ret.requiresObjBarUpdate) {
+        selectObj(selectedObj);
+      }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
     }
   }
@@ -203,7 +209,13 @@ function canvas_onmousedown(e) {
           }
         }
         selectObj(scene.objs.length - 1);
-        objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse);
+        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse);
+        if (ret && ret.isDone) {
+          isConstructing = false;
+        }
+        if (ret && ret.requiresObjBarUpdate) {
+          selectObj(selectedObj);
+        }
         draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
         cancelRestore();
       }
@@ -321,7 +333,13 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+    if (ret && ret.isDone) {
+      isConstructing = false;
+    }
+    if (ret && ret.requiresObjBarUpdate) {
+      selectObj(selectedObj);
+    }
     draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
   }
   else {
@@ -397,7 +415,13 @@ function canvas_onmouseup(e) {
   if (isConstructing) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // If an object is being created, pass the action to it
-      objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      if (ret && ret.isDone) {
+        isConstructing = false;
+      }
+      if (ret && ret.requiresObjBarUpdate) {
+        selectObj(selectedObj);
+      }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
       if (!isConstructing) {
         // The object says the contruction is done

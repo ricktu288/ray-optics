@@ -81,7 +81,9 @@ objTypes['text'] = {
   // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
-    isConstructing = false;
+    return {
+      isDone: true
+    };
   },
 
   // Draw the obj on canvas

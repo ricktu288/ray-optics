@@ -3,15 +3,14 @@ objTypes['drawing'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'drawing', points: [], tmp_isMouseDown: false};
+    return {type: 'drawing', points: [], tmp_isMouseDown: false, notDone: true};
   },
 
   // Show the property box
   populateObjBar: function(obj, elem) {
-    if (isConstructing) {
-      createButton(getMsg('stop_drawing'), function(obj) {
-        obj.notDone = false;
-        isConstructing = false;
+    if (obj.notDone) {
+      objBar.createButton(getMsg('stop_drawing'), function(obj) {
+        delete obj.notDone;
         selectObj(scene.objs.length - 1);
       }, elem);
     }
@@ -20,6 +19,11 @@ objTypes['drawing'] = {
   // Mousedown when the obj is being constructed by the user
   c_mousedown: function(obj, mouse, ctrl, shift)
   {
+    if (!obj.notDone) {
+      return {
+        isDone: true
+      };
+    }
     obj.points.push([mouse.x, mouse.y]);
     obj.tmp_isMouseDown = true;
     selectObj(scene.objs.length - 1);
@@ -27,6 +31,11 @@ objTypes['drawing'] = {
   // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)
   {
+    if (!obj.notDone) {
+      return {
+        isDone: true
+      };
+    }
     if (!obj.tmp_isMouseDown) return;
     obj.points[obj.points.length - 1].push(mouse.x, mouse.y);
   },

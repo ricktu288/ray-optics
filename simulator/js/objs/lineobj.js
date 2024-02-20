@@ -33,7 +33,9 @@ objTypes['lineobj'] = {
   {
     if (!mouseOnPoint_construct(mouse, obj.p1))
     {
-      isConstructing = false;
+      return {
+        isDone: true
+      };
     }
   },
 

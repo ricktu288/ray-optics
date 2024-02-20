@@ -68,8 +68,9 @@ objTypes['arcmirror'] = {
     if (obj.p3 && !mouseOnPoint_construct(mouse, obj.p2))
     {
       obj.p3 = mouse;
-      isConstructing = false;
-      return;
+      return {
+        isDone: true
+      };
     }
   },
 

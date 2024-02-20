@@ -40,14 +40,19 @@ objTypes['aperture'] = {
     obj.p3 = geometry.point(obj.p1.x * 0.6 + obj.p2.x * 0.4, obj.p1.y * 0.6 + obj.p2.y * 0.4);
     obj.p4 = geometry.point(obj.p1.x * 0.4 + obj.p2.x * 0.6, obj.p1.y * 0.4 + obj.p2.y * 0.6);
 
+    return {
+      requiresObjBarUpdate: true
+    }
   },
   // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!mouseOnPoint_construct(mouse, obj.p1))
     {
-      isConstructing = false;
-      selectObj(selectedObj);
+      return {
+        isDone: true,
+        requiresObjBarUpdate: true
+      };
     }
   },
 
@@ -216,13 +221,11 @@ objTypes['aperture'] = {
   populateObjBar: function(obj, elem) {
     var originalDiameter = geometry.length(obj.p3, obj.p4);
 
-    if (!isConstructing) {
-      objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
-        var t = 0.5 * (1 - value / geometry.length(obj.p1, obj.p2));
-        obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
-        obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
-      });
-    }
+    objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
+      var t = 0.5 * (1 - value / geometry.length(obj.p1, obj.p2));
+      obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
+      obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
+    });
     dichroicSettings(obj,elem);
   },
 

@@ -4,24 +4,21 @@ objTypes['sphericallens'] = {
   supportSurfaceMerging: true,
 
   create: function(mouse) {
-    return {type: 'sphericallens', p1: mouse, p2: mouse, p: 1.5, tmp_params: {r1: NaN, r2: NaN, d: 40}};
+    return {type: 'sphericallens', p1: mouse, p2: mouse, p: 1.5, path: [mouse, mouse, mouse, mouse, mouse, mouse]};
   },
 
   // Show the property box
   populateObjBar: function(obj, elem) {
     
+    objBar.createDropdown('', obj.definedBy || 'DR1R2', {
+      'DR1R2': getMsg('radii_of_curvature'),
+      'DFfdBfd': getMsg('focal_distances')
+    }, function(obj, value) {
+      obj.definedBy = value;
+      selectObj(selectedObj);
+    });
 
-    if (!isConstructing) {
-      objBar.createDropdown('', obj.definedBy || 'DR1R2', {
-        'DR1R2': getMsg('radii_of_curvature'),
-        'DFfdBfd': getMsg('focal_distances')
-      }, function(obj, value) {
-        obj.definedBy = value;
-        selectObj(selectedObj);
-      });
-    }
-
-    if (!isConstructing && (!obj.definedBy || obj.definedBy == 'DR1R2')) {
+    if (!obj.definedBy || obj.definedBy == 'DR1R2') {
       var params = this.getDR1R2(obj);
       var r1 = params.r1;
       var r2 = params.r2;
@@ -137,17 +134,23 @@ objTypes['sphericallens'] = {
     obj.p1 = ctrl ? geometry.point(2 * constructionPoint.x - obj.p2.x, 2 * constructionPoint.y - obj.p2.y) : constructionPoint;
 
     this.createLens(obj);
+
+    return {
+      requiresObjBarUpdate: true
+    }
   },
   // Mouseup when the obj is being constructed by the user
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!mouseOnPoint_construct(mouse, obj.p1))
     {
-      isConstructing = false;
       delete obj.p1;
       delete obj.p2;
       delete obj.tmp_params;
-      selectObj(selectedObj);
+      return {
+        isDone: true,
+        requiresObjBarUpdate: true
+      };
     }
   },
 

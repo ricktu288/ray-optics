@@ -60,16 +60,18 @@ objTypes['refractor'] = {
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     if (!obj.notDone) {
-      isConstructing = false;
-      return;
+      return {
+        isDone: true
+      };
     }
     if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
     {
       // Mouse released at the first point
       obj.path.length--;
       obj.notDone = false;
-      isConstructing = false;
-      return;
+      return {
+        isDone: true
+      };
     }
     if (obj.path[obj.path.length - 2] && !obj.path[obj.path.length - 2].arc && mouseOnPoint_construct(mouse, obj.path[obj.path.length - 2]))
     {
