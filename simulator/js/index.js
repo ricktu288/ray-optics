@@ -1019,6 +1019,20 @@ function enterCropMode() {
   draw(true, true);
 }
 
+function confirmCrop(cropBox) {
+  if (cropBox.format == 'svg') {
+    exportSVG(cropBox);
+  } else {
+    exportImage(cropBox);
+  }
+}
+
+function cancelCrop() {
+  cropMode = false;
+  selectObj(-1);
+  draw(true, true);
+}
+
 function exportSVG(cropBox) {
   var ctx_backup = ctx;
   var ctx0_backup = ctx0;

@@ -30,16 +30,10 @@ objTypes['cropbox'] = {
     }
 
     objBar.createButton(getMsg('save'), function(obj) {
-      if (obj.format == 'svg') {
-        exportSVG(obj);
-      } else {
-        exportImage(obj);
-      }
+      confirmCrop(obj);
     });
     objBar.createButton(getMsg('save_cancel'), function(obj) {
-      cropMode = false;
-      selectObj(-1);
-      draw(true, true);
+      cancelCrop();
     });
   },
 
