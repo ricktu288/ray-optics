@@ -10,7 +10,6 @@ var ctxGrid;
 var dpr = 1;
 var scene = new Scene();
 var xyBox_cancelContextMenu = false;
-var cartesianSign = false;
 var restoredData = "";
 var isFromGallery = false;
 var hasUnsavedChange = false;
@@ -638,11 +637,6 @@ function initParameters() {
   document.getElementById("rayDensity").value = scene.rayDensity_light;
   document.getElementById("rayDensity_more").value = scene.rayDensity_light;
   document.getElementById("rayDensity_mobile").value = scene.rayDensity_light;
-  try {
-    if (localStorage.rayOpticsCartesianSign == "true") {
-      cartesianSign = true;
-    }
-  } catch { }
   document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   toolbtn_clicked('');

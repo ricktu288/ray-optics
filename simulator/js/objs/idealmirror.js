@@ -10,12 +10,15 @@ objTypes['idealmirror'] = {
 
   // Show the property box
   populateObjBar: function(obj, elem) {
+    var cartesianSign = false;
+    if (localStorage && localStorage.rayOpticsCartesianSign) {
+      cartesianSign = localStorage.rayOpticsCartesianSign == "true";
+    }
     objBar.createNumber(getMsg('focallength'), -1000, 1000, 1, obj.p * (cartesianSign?-1:1), function(obj, value) {
       obj.p = value * (cartesianSign?-1:1);
     });
     if (objBar.showAdvanced(cartesianSign)) {
       objBar.createBoolean(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-        cartesianSign = value;
         localStorage.rayOpticsCartesianSign = value?"true":"false";
       }, null, true);
     }
