@@ -130,6 +130,9 @@ function canvas_onmousedown(e) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // Only react for left click
       // If an obj is being created, pass the action to it
+      if (selectedObj != scene.objs.length - 1) {
+        selectObj(scene.objs.length - 1); // Keep the constructing obj selected
+      }
       const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;

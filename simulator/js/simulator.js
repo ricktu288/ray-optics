@@ -635,10 +635,7 @@ function dichroicSettings(obj, elem){
       obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
       obj.isDichroicFilter = obj.isDichroicFilter || false;
       obj.bandwidth = obj.bandwidth || 10
-      if (obj == scene.objs[selectedObj]) {
-        selectObj(selectedObj);
-      }
-    });
+    }, null, true);
     if (obj.isDichroic) {
       objBar.createBoolean(getMsg('invert'), obj.isDichroicFilter, function(obj, value) {
         if(obj.isDichroic){

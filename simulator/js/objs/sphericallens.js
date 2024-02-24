@@ -15,8 +15,7 @@ objTypes['sphericallens'] = {
       'DFfdBfd': getMsg('focal_distances')
     }, function(obj, value) {
       obj.definedBy = value;
-      selectObj(selectedObj);
-    });
+    }, null, true);
 
     if (!obj.definedBy || obj.definedBy == 'DR1R2') {
       var params = this.getDR1R2(obj);

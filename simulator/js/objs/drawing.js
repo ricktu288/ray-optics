@@ -11,8 +11,7 @@ objTypes['drawing'] = {
     if (obj.notDone) {
       objBar.createButton(getMsg('stop_drawing'), function(obj) {
         delete obj.notDone;
-        selectObj(scene.objs.length - 1);
-      }, elem);
+      }, elem, true);
     }
   },
 
@@ -26,7 +25,6 @@ objTypes['drawing'] = {
     }
     obj.points.push([mouse.x, mouse.y]);
     obj.tmp_isMouseDown = true;
-    selectObj(scene.objs.length - 1);
   },
   // Mousemove when the obj is being constructed by the user
   c_mousemove: function(obj, mouse, ctrl, shift)

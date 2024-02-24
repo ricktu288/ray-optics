@@ -13,10 +13,7 @@ objTypes['power'] = {
       if (value) {
         obj.binSize = 1;
       }
-      if (obj == scene.objs[selectedObj]) {
-        selectObj(selectedObj);
-      }
-    });
+    }, null, true);
     
     if (obj.irradianceMap) {
       objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function(obj, value) {

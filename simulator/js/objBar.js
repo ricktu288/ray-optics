@@ -217,8 +217,9 @@ class ObjBar {
    * @param {boolean} value - The initial value.
    * @param {objBarValueChangeCallback} func - The function to call when the value changes.
    * @param {string|null} info - The HTML content for the popover info box. If null (default), no info box is created.
+   * @param {boolean} [updateOnChange=false] - Whether to update the entire obj bar (e.g. show different options) when the checkbox changes.
    */
-  createBoolean(label, value, func, info) {
+  createBoolean(label, value, func, info, updateOnChange = false) {
     var nobr = document.createElement('span');
     nobr.className = 'obj-bar-nobr';
 
@@ -254,6 +255,9 @@ class ObjBar {
       setOption(function (obj) {
         func(obj, objOption_checkbox.checked);
       });
+      if (updateOnChange) {
+        selectObj(selectedObj);
+      }
     };
   }
 
@@ -344,8 +348,9 @@ class ObjBar {
    * @param {Object|Array} options - The options for the dropdown. If an array, the keys are the same as the values.
    * @param {objBarValueChangeCallback} func - The function to call when the value changes.
    * @param {string|null} info - The HTML content for the popover info box. If null (default), no info box is created.
+   * @param {boolean} [updateOnChange=false] - Whether to update the entire obj bar (e.g. show different options) when the dropdown changes.
    */
-  createDropdown(label, value, options, func, info) {
+  createDropdown(label, value, options, func, info, updateOnChange = false) {
     var nobr = document.createElement('span');
     nobr.className = 'obj-bar-nobr';
 
@@ -383,6 +388,9 @@ class ObjBar {
       setOption(function (obj) {
         func(obj, dropdown.value);
       });
+      if (updateOnChange) {
+        selectObj(selectedObj);
+      }
       createUndoPoint();
     };
     dropdown.onclick = function (e) {
@@ -394,14 +402,18 @@ class ObjBar {
    * Create a button in the object bar.
    * @param {string} label - The label for the button.
    * @param {function} func - The function to call when the button is clicked.
+   * @param {boolean} [updateOnChange=false] - Whether to update the entire obj bar (e.g. show different options) when the button is clicked.
    */
-  createButton(label, func) {
+  createButton(label, func, updateOnChange = false) {
     var button = document.createElement('button');
     button.className = 'btn btn-secondary';
     button.innerHTML = label;
     button.onclick = function () {
       this.blur();
       func(scene.objs[selectedObj]);
+      if (updateOnChange) {
+        selectObj(selectedObj);
+      }
     };
     this.elem.appendChild(button);
     var space = document.createTextNode(' ');

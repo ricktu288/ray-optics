@@ -15,12 +15,9 @@ objTypes['idealmirror'] = {
     });
     if (objBar.showAdvanced(cartesianSign)) {
       objBar.createBoolean(getMsg('cartesiansign'), cartesianSign, function(obj, value) {
-        if (obj == scene.objs[selectedObj]) {
-          cartesianSign = value;
-          localStorage.rayOpticsCartesianSign = value?"true":"false";
-          selectObj(selectedObj);
-        }
-      });
+        cartesianSign = value;
+        localStorage.rayOpticsCartesianSign = value?"true":"false";
+      }, null, true);
     }
     dichroicSettings(obj,elem);
   },

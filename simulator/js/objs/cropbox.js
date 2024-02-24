@@ -18,8 +18,7 @@ objTypes['cropbox'] = {
       'svg': 'SVG'
     }, function(obj, value) {
       obj.format = value;
-      selectObj(selectedObj);
-    });
+    }, null, true);
 
 
     if (obj.format != 'svg') {
