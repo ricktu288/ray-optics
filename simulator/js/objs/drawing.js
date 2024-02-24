@@ -41,7 +41,9 @@ objTypes['drawing'] = {
   c_mouseup: function(obj, mouse, ctrl, shift)
   {
     obj.tmp_isMouseDown = false;
-    createUndoPoint();
+    return {
+      newUndoPoint: true
+    }
   },
 
   // Draw the obj on canvas

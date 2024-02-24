@@ -140,6 +140,9 @@ function canvas_onmousedown(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
+      if (ret && ret.newUndoPoint) {
+        createUndoPoint();
+      }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
     }
   }
@@ -218,6 +221,9 @@ function canvas_onmousedown(e) {
         }
         if (ret && ret.requiresObjBarUpdate) {
           selectObj(selectedObj);
+        }
+        if (ret && ret.newUndoPoint) {
+          createUndoPoint();
         }
         draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
         cancelRestore();
@@ -343,6 +349,9 @@ function canvas_onmousemove(e) {
     if (ret && ret.requiresObjBarUpdate) {
       selectObj(selectedObj);
     }
+    if (ret && ret.newUndoPoint) {
+      createUndoPoint();
+    }
     draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
   }
   else {
@@ -424,6 +433,9 @@ function canvas_onmouseup(e) {
       }
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
+      }
+      if (ret && ret.newUndoPoint) {
+        createUndoPoint();
       }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
       if (!isConstructing) {
