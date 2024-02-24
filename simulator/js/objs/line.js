@@ -42,7 +42,7 @@ objTypes['line'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createBoolean(getMsg('arrow1'), obj.arrow1, function(obj, value) {
       obj.arrow1 = value;
     });

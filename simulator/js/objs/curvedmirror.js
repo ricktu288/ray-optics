@@ -10,11 +10,11 @@ objTypes['curvedmirror'] = {
   wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createEquation('y = ', obj.p, function(obj, value) {
       obj.p = value;
     }, getMsg('custom_equation_note'));
-    dichroicSettings(obj,elem);
+    dichroicSettings(obj, objBar);
   },
 
   c_mousedown: objTypes['lineobj'].c_mousedown,

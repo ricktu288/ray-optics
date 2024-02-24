@@ -218,7 +218,7 @@ objTypes['aperture'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     var originalDiameter = geometry.length(obj.p3, obj.p4);
 
     objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function(obj, value) {
@@ -226,7 +226,7 @@ objTypes['aperture'] = {
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
     });
-    dichroicSettings(obj,elem);
+    dichroicSettings(obj, objBar);
   },
 
   rayIntersection: function(blackline, ray) {

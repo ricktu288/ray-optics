@@ -7,7 +7,7 @@ objTypes['led'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, obj.brightness || 0.5, function(obj, value) {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));

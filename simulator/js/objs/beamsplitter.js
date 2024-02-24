@@ -9,11 +9,11 @@ objTypes['beamsplitter'] = {
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createNumber(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
       obj.p = value;
     });
-    dichroicSettings(obj,elem);
+    dichroicSettings(obj, objBar);
   },
 
   // Use the prototype lineobj

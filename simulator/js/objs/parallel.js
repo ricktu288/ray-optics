@@ -9,7 +9,7 @@ objTypes['parallel'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, obj.p || 1, function(obj, value) {
       obj.p = value;
     }, getMsg('brightness_note_popover'));

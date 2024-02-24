@@ -9,7 +9,7 @@ objTypes['refractor'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     if (scene.colorMode) {
       objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
         obj.p = value * 1;

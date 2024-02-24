@@ -27,8 +27,8 @@ objTypes['blackline'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
-    dichroicSettings(obj,elem);
+  populateObjBar: function(obj, objBar) {
+    dichroicSettings(obj, objBar);
   },
 
   //Describes how the ray 

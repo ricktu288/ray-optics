@@ -628,7 +628,7 @@ function shootWaitingRays() {
 
 
 //Optical Filter Settings
-function dichroicSettings(obj, elem){
+function dichroicSettings(obj, objBar){
   if (scene.colorMode) {
     objBar.createBoolean(getMsg('filter'), obj.isDichroic, function(obj, value) {
       obj.isDichroic = value;

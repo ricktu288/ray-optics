@@ -7,8 +7,8 @@ objTypes['arcmirror'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
-    dichroicSettings(obj,elem);
+  populateObjBar: function(obj, objBar) {
+    dichroicSettings(obj, objBar);
   },
 
   // Mousedown when the obj is being constructed by the user

@@ -9,7 +9,7 @@ objTypes['idealmirror'] = {
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     var cartesianSign = false;
     if (localStorage && localStorage.rayOpticsCartesianSign) {
       cartesianSign = localStorage.rayOpticsCartesianSign == "true";
@@ -22,7 +22,7 @@ objTypes['idealmirror'] = {
         localStorage.rayOpticsCartesianSign = value?"true":"false";
       }, null, true);
     }
-    dichroicSettings(obj,elem);
+    dichroicSettings(obj, objBar);
   },
 
   // Use the prototype lineobj

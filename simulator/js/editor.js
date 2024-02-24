@@ -604,7 +604,7 @@ function selectObj(index) {
   if (objTypes[scene.objs[index].type].populateObjBar) {
     document.getElementById('obj_bar_main').style.display = '';
     document.getElementById('obj_bar_main').innerHTML = '';
-    objTypes[scene.objs[index].type].populateObjBar(scene.objs[index], document.getElementById('obj_bar_main'));
+    objTypes[scene.objs[index].type].populateObjBar(scene.objs[index], objBar);
 
     if (document.getElementById('obj_bar_main').innerHTML != '') {
       for (var i = 0; i < scene.objs.length; i++) {

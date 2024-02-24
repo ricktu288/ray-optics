@@ -38,7 +38,7 @@ objTypes['text'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createText('', obj.p, function(obj, value) {
       obj.p = value;
     });

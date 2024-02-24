@@ -9,8 +9,8 @@ objTypes['parabolicmirror'] = {
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
-    dichroicSettings(obj,elem);
+  populateObjBar: function(obj, objBar) {
+    dichroicSettings(obj, objBar);
   },
 
   c_mousedown: objTypes['arcmirror'].c_mousedown,

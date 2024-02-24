@@ -61,8 +61,8 @@ objTypes['blackcircle'] = {
     },
 
     // Show the property box
-    populateObjBar: function(obj, elem) {
-        dichroicSettings(obj,elem);
+    populateObjBar: function(obj, objBar) {
+        dichroicSettings(obj, objBar);
     },
 
     // Test if a ray may shoot on this object (if yes, return the intersection)

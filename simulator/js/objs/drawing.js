@@ -7,7 +7,7 @@ objTypes['drawing'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     if (obj.notDone) {
       objBar.createButton(getMsg('stop_drawing'), function(obj) {
         delete obj.notDone;

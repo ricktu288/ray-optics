@@ -7,7 +7,7 @@ objTypes['ruler'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     objBar.createNumber(getMsg('ruler_scale'), 0, 10, 1, obj.p || 10, function(obj, value) {
       obj.p = value;
     }, null, true);

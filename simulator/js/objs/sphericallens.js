@@ -8,7 +8,7 @@ objTypes['sphericallens'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, elem) {
+  populateObjBar: function(obj, objBar) {
     
     objBar.createDropdown('', obj.definedBy || 'DR1R2', {
       'DR1R2': getMsg('radii_of_curvature'),
