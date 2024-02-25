@@ -14,11 +14,6 @@ var undoIndex = 0; // Current undo position
 var undoLimit = 20; // Limit of undo
 var undoUBound = 0; // Current upper bound of undo data
 var undoLBound = 0; // Current lower bound of undo data
-var snapToDirection_lockLimit_squared = 900; // The square of the legnth needed to snap to a direction when dragging an object with snap-to-direction
-var clickExtent_line = 10;
-var clickExtent_point = 10;
-var clickExtent_point_construct = 10;
-var touchscreenExtentRatio = 2;
 
 var pendingControlPointSelection = false;
 var pendingControlPoints;
@@ -27,74 +22,6 @@ function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
     return (screen && scene.colorMode) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
   return style;
-}
-
-function getClickExtent(isPoint, isConstruct) {
-  if (isPoint) {
-    if (isConstruct) {
-      var clickExtent = clickExtent_point_construct / scene.scale;
-    } else {
-      var clickExtent = clickExtent_point / scene.scale;
-    }
-  } else {
-    var clickExtent = clickExtent_line / scene.scale;
-  }
-  if (lastDeviceIsTouch) {
-    clickExtent *= touchscreenExtentRatio;
-  }
-  return clickExtent;
-}
-
-function mouseOnPoint(mouse, point) {
-  return geometry.length_squared(mouse, point) < getClickExtent(true) * getClickExtent(true);
-}
-
-function mouseOnPoint_construct(mouse, point) {
-  return geometry.length_squared(mouse, point) < getClickExtent(true, true) * getClickExtent(true, true);
-}
-
-function mouseOnSegment(mouse, segment) {
-  var d_per = Math.pow((mouse.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (mouse.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); // Similar to the distance between the mouse and the line
-  var d_par = (segment.p2.x - segment.p1.x) * (mouse.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (mouse.y - segment.p1.y); // Similar to the projected point of the mouse on the line
-  return d_per < getClickExtent() * getClickExtent() && d_par >= 0 && d_par <= geometry.length_segment_squared(segment);
-}
-
-function mouseOnLine(mouse, line) {
-  var d_per = Math.pow((mouse.x - line.p1.x) * (line.p1.y - line.p2.y) + (mouse.y - line.p1.y) * (line.p2.x - line.p1.x), 2) / ((line.p1.y - line.p2.y) * (line.p1.y - line.p2.y) + (line.p2.x - line.p1.x) * (line.p2.x - line.p1.x)); // Similar to the distance between the mouse and the line
-  return d_per < getClickExtent() * getClickExtent();
-}
-
-// Snap the mouse position to the direction nearest to the given directions
-function snapToDirection(mouse, basePoint, directions, snapData) {
-  var x = mouse.x - basePoint.x;
-  var y = mouse.y - basePoint.y;
-
-  if (snapData && snapData.locked) {
-    // The snap has been locked
-    var k = (directions[snapData.i0].x * x + directions[snapData.i0].y * y) / (directions[snapData.i0].x * directions[snapData.i0].x + directions[snapData.i0].y * directions[snapData.i0].y);
-    return geometry.point(basePoint.x + k * directions[snapData.i0].x, basePoint.y + k * directions[snapData.i0].y);
-  }
-  else {
-    var i0;
-    var d_sq;
-    var d0_sq = Infinity;
-    for (var i = 0; i < directions.length; i++) {
-      d_sq = (directions[i].y * x - directions[i].x * y) * (directions[i].y * x - directions[i].x * y) / (directions[i].x * directions[i].x + directions[i].y * directions[i].y);
-      if (d_sq < d0_sq) {
-        d0_sq = d_sq;
-        i0 = i;
-      }
-    }
-
-    if (snapData && x * x + y * y > snapToDirection_lockLimit_squared) {
-      // lock the snap
-      snapData.locked = true;
-      snapData.i0 = i0;
-    }
-
-    var k = (directions[i0].x * x + directions[i0].y * y) / (directions[i0].x * directions[i0].x + directions[i0].y * directions[i0].y);
-    return geometry.point(basePoint.x + k * directions[i0].x, basePoint.y + k * directions[i0].y);
-  }
 }
 
 function canvas_onmousedown(e) {
@@ -133,7 +60,7 @@ function canvas_onmousedown(e) {
       if (selectedObj != scene.objs.length - 1) {
         selectObj(scene.objs.length - 1); // Keep the constructing obj selected
       }
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -215,7 +142,7 @@ function canvas_onmousedown(e) {
           }
         }
         selectObj(scene.objs.length - 1);
-        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], mouse);
+        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
         }
@@ -247,7 +174,7 @@ function selectionSearch(mouse_nogrid) {
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
       mousePart_ = {};
-      if (objTypes[scene.objs[i].type].clicked(scene.objs[i], mouse_nogrid, mouse, mousePart_)) {
+      if (objTypes[scene.objs[i].type].clicked(scene.objs[i], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
         // click(() returns true means the mouse clicked the object
 
         if (mousePart_.targetPoint || mousePart_.targetPoint_) {
@@ -342,7 +269,7 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
     if (ret && ret.isDone) {
       isConstructing = false;
     }
@@ -379,7 +306,7 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      objTypes[scene.objs[draggingObj].type].dragging(scene.objs[draggingObj], mouse, draggingPart, e.ctrlKey, e.shiftKey);
+      objTypes[scene.objs[draggingObj].type].dragging(scene.objs[draggingObj], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
       if (draggingPart.part == 0) {
         if (e.ctrlKey && !draggingPart.hasDuplicated) {
@@ -427,7 +354,7 @@ function canvas_onmouseup(e) {
   if (isConstructing) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // If an object is being created, pass the action to it
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], mouse, e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], new Mouse(mouse, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -499,13 +426,12 @@ function finishHandleCreation(point) {
 
 
 
-
 function canvas_ondblclick(e) {
   //console.log("dblclick");
   var mouse = geometry.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
-  else if (mouseOnPoint(mouse, mouse_lastmousedown)) {
+  else if (new Mouse(mouse, scene, lastDeviceIsTouch).isOnPoint(mouse_lastmousedown)) {
     draggingPart = {};
     if (scene.mode == 'observer') {
       if (geometry.length_squared(mouse, scene.observer.c) < scene.observer.r * scene.observer.r) {
@@ -646,7 +572,7 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      objTypes[scene.objs[positioningObj].type].dragging(scene.objs[positioningObj], geometry.point(xyData[0], xyData[1]), draggingPart, ctrl, shift);
+      objTypes[scene.objs[positioningObj].type].dragging(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch), draggingPart, ctrl, shift);
       draw(!(objTypes[scene.objs[positioningObj].type].shoot || objTypes[scene.objs[positioningObj].type].rayIntersection), true);
     }
     
