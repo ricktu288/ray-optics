@@ -2,15 +2,16 @@
 objTypes['beamsplitter'] = {
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5, isDichroic: false, isDichroicFilter: false};
+  create: function (mouse) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    return { type: 'beamsplitter', p1: mousePos, p2: mousePos, p: .5, isDichroic: false, isDichroicFilter: false };
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
-    objBar.createNumber(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function(obj, value) {
+  populateObjBar: function (obj, objBar) {
+    objBar.createNumber(getMsg('transmissionratio'), 0, 1, 0.01, obj.p, function (obj, value) {
       obj.p = value;
     });
     dichroicSettings(obj, objBar);
@@ -26,7 +27,7 @@ objTypes['beamsplitter'] = {
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
     ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -40,12 +41,12 @@ objTypes['beamsplitter'] = {
     ctx.setLineDash([]);
   },
 
-  rayIntersection: function(obj, ray) {
+  rayIntersection: function (obj, ray) {
     return objTypes['mirror'].rayIntersection(obj, ray);
   },
 
   // When the obj is shot by a ray
-  shot: function(mirror, ray, rayIndex, rp) {
+  shot: function (mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
 
@@ -53,18 +54,18 @@ objTypes['beamsplitter'] = {
     var mx = mirror.p2.x - mirror.p1.x;
     var my = mirror.p2.y - mirror.p1.y;
     ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-    var ray2 = geometry.ray(rp, geometry.point(rp.x-rx, rp.y-ry));
+    var ray2 = geometry.ray(rp, geometry.point(rp.x - rx, rp.y - ry));
     var transmission = mirror.p;
-    ray2.brightness_s = transmission*ray.brightness_s;
-    ray2.brightness_p = transmission*ray.brightness_p;
+    ray2.brightness_s = transmission * ray.brightness_s;
+    ray2.brightness_p = transmission * ray.brightness_p;
     ray2.wavelength = ray.wavelength;
     if (ray2.brightness_s + ray2.brightness_p > .01) {
       addRay(ray2);
     } else {
-        totalTruncation += ray2.brightness_s + ray2.brightness_p;
+      totalTruncation += ray2.brightness_s + ray2.brightness_p;
     }
-    ray.brightness_s *= (1-transmission);
-    ray.brightness_p *= (1-transmission);
+    ray.brightness_s *= (1 - transmission);
+    ray.brightness_p *= (1 - transmission);
   },
 
 };

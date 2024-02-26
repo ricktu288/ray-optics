@@ -132,7 +132,7 @@ function canvas_onmousedown(e) {
       }
       else {
         // Create a new object
-        scene.objs[scene.objs.length] = objTypes[AddingObjType].create(mouse);
+        scene.objs[scene.objs.length] = objTypes[AddingObjType].create(new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
         isConstructing = true;
         constructionPoint = mouse;
         if (scene.objs[selectedObj]) {
