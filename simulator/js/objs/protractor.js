@@ -7,12 +7,12 @@ objTypes['protractor'] = {
   },
 
   // Use the prototype circleobj
-  c_mousedown: objTypes['circleobj'].c_mousedown,
-  c_mousemove: objTypes['circleobj'].c_mousemove,
-  c_mouseup: objTypes['circleobj'].c_mouseup,
+  onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
   move: objTypes['circleobj'].move,
-  clicked: objTypes['circleobj'].clicked,
-  dragging: objTypes['circleobj'].dragging,
+  checkMouseOver: objTypes['circleobj'].checkMouseOver,
+  onDrag: objTypes['circleobj'].onDrag,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {

@@ -104,15 +104,15 @@ objTypes['sphericallens'] = {
 
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
-    objTypes['lineobj'].c_mousedown(obj, constructionPoint, mouse, ctrl, shift);
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
+    objTypes['lineobj'].onConstructMouseDown(obj, constructionPoint, mouse, ctrl, shift);
 
     this.createLens(obj);
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
-    objTypes['lineobj'].c_mousemove(obj, constructionPoint, mouse, ctrl, shift);
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
+    objTypes['lineobj'].onConstructMouseMove(obj, constructionPoint, mouse, ctrl, shift);
 
     this.createLens(obj);
 
@@ -121,7 +121,7 @@ objTypes['sphericallens'] = {
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!mouse.isOnPoint(obj.p1)) {
       delete obj.p1;
       delete obj.p2;
@@ -431,7 +431,7 @@ objTypes['sphericallens'] = {
     return { d: d, ffd: ffd, bfd: bfd };
   },
 
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (draggingPart.part == -1) return;
     var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
     var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
@@ -451,7 +451,7 @@ objTypes['sphericallens'] = {
       oldy = obj.path[draggingPart.index].y;
     }
 
-    objTypes['refractor'].dragging(obj, mouse, draggingPart, ctrl, shift);
+    objTypes['refractor'].onDrag(obj, mouse, draggingPart, ctrl, shift);
     if (draggingPart.byHandle) return;
     if (draggingPart.part != 1)
       return;
@@ -529,7 +529,7 @@ objTypes['sphericallens'] = {
   },
 
   move: objTypes['refractor'].move,
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (!obj.path) {
       if (obj.p1 && obj.p2) {
         if (mouse.isOnPoint(obj.p1)) {
@@ -545,7 +545,7 @@ objTypes['sphericallens'] = {
       }
       return false;
     };
-    if (objTypes['refractor'].clicked(obj, mouse, draggingPart)) {
+    if (objTypes['refractor'].checkMouseOver(obj, mouse, draggingPart)) {
       if (draggingPart.part != 0) {
         draggingPart.requiresObjBarUpdate = true;
       }

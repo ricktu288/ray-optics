@@ -11,14 +11,14 @@ objTypes['halfplane'] = {
   populateObjBar: objTypes['refractor'].populateObjBar,
 
   // Use the prototype lineobj
-  c_mousedown: objTypes['lineobj'].c_mousedown,
-  c_mousemove: objTypes['lineobj'].c_mousemove,
-  c_mouseup: objTypes['lineobj'].c_mouseup,
+  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
   move: objTypes['lineobj'].move,
-  dragging: objTypes['lineobj'].dragging,
+  onDrag: objTypes['lineobj'].onDrag,
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);

@@ -19,15 +19,15 @@ objTypes['radiant'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
 
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
 
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     return {
       isDone: true
     };
@@ -51,7 +51,7 @@ objTypes['radiant'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj)) {
       draggingPart.part = 0;
       draggingPart.mousePos0 = geometry.point(obj.x, obj.y);
@@ -63,7 +63,7 @@ objTypes['radiant'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }

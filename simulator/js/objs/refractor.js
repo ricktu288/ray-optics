@@ -25,7 +25,7 @@ objTypes['refractor'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (obj.path.length > 1) {
       if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
         // Clicked the first point
@@ -39,7 +39,7 @@ objTypes['refractor'] = {
     }
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) { return; }
     const mousePos = mouse.getPosSnappedToGrid();
     if (typeof obj.path[obj.path.length - 1].arc != 'undefined') {
@@ -52,7 +52,7 @@ objTypes['refractor'] = {
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
@@ -263,7 +263,7 @@ objTypes['refractor'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
 
     var p1;
     var p2;
@@ -345,7 +345,7 @@ objTypes['refractor'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
 
     if (draggingPart.part == 1) {

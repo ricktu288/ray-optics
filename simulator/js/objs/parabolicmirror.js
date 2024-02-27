@@ -13,9 +13,9 @@ objTypes['parabolicmirror'] = {
     dichroicSettings(obj, objBar);
   },
 
-  c_mousedown: objTypes['arcmirror'].c_mousedown,
-  c_mousemove: objTypes['arcmirror'].c_mousemove,
-  c_mouseup: objTypes['arcmirror'].c_mouseup,
+  onConstructMouseDown: objTypes['arcmirror'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['arcmirror'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['arcmirror'].onConstructMouseUp,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {
@@ -72,7 +72,7 @@ objTypes['parabolicmirror'] = {
   move: objTypes['arcmirror'].move,
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p3)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
@@ -108,7 +108,7 @@ objTypes['parabolicmirror'] = {
     return false;
   },
 
-  dragging: objTypes['arcmirror'].dragging,
+  onDrag: objTypes['arcmirror'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function (obj, ray) {

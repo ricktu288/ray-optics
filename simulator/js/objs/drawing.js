@@ -16,7 +16,7 @@ objTypes['drawing'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
@@ -27,7 +27,7 @@ objTypes['drawing'] = {
     obj.tmp_isMouseDown = true;
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
@@ -38,7 +38,7 @@ objTypes['drawing'] = {
     obj.points[obj.points.length - 1].push(mousePos.x, mousePos.y);
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     obj.tmp_isMouseDown = false;
     return {
       newUndoPoint: true
@@ -71,7 +71,7 @@ objTypes['drawing'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
         if (mouse.isOnSegment(geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
@@ -88,7 +88,7 @@ objTypes['drawing'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }

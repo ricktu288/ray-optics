@@ -73,14 +73,14 @@ objTypes['grin_circlelens'] = {
 	},
 
 	// Use the prototype circleobj
-	c_mouseup: objTypes['circleobj'].c_mouseup,
-	c_mousedown: objTypes['circleobj'].c_mousedown,
-	c_mousemove: objTypes['circleobj'].c_mousemove,
+	onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
+	onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
+	onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
 	move: objTypes['circleobj'].move,
 
 	// Use the prototype circlelens
-	clicked: objTypes['circlelens'].clicked,
-	dragging: objTypes['circlelens'].dragging,
+	checkMouseOver: objTypes['circlelens'].checkMouseOver,
+	onDrag: objTypes['circlelens'].onDrag,
 	getShotType: objTypes['circlelens'].getShotType,
 
 	zIndex: objTypes['refractor'].zIndex,

@@ -66,19 +66,19 @@ objTypes['text'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
 
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
     obj.x = mousePos.x;
     obj.y = mousePos.y;
   },
 
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     return {
       isDone: true
     };
@@ -131,7 +131,7 @@ objTypes['text'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
 
     // translate and rotate the mouse point into the text's reference frame for easy comparison
     relativeMouseX = mouse.pos.x - obj.x
@@ -151,7 +151,7 @@ objTypes['text'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }

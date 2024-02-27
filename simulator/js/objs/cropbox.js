@@ -51,7 +51,7 @@ objTypes['cropbox'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse, draggingPart) {
+  checkMouseOver: function(obj, mouse, draggingPart) {
     if (!cropMode) return false;
 
     // Top left
@@ -127,7 +127,7 @@ objTypes['cropbox'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function(obj, mouse, draggingPart, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
 
     // Top left

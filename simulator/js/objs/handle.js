@@ -39,7 +39,7 @@ objTypes['handle'] = {
     for (var i in obj.controlPoints) {
       // If user drags some target scene.objs, restore them back to avoid unexpected behavior.
       obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
-      objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+      objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
     }
     */
     for (var i in obj.controlPoints) {
@@ -73,11 +73,11 @@ objTypes['handle'] = {
 
   // Move the object
   move: function (obj, diffX, diffY) {
-    objTypes['handle'].dragging(obj, new Mouse(geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), scene), { targetPoint_: obj.p1, part: 1 });
+    objTypes['handle'].onDrag(obj, new Mouse(geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), scene), { targetPoint_: obj.p1, part: 1 });
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (obj.notDone) return;
     if (mouse.isOnPoint(obj.p1)) {
       draggingPart.part = 1;
@@ -97,7 +97,7 @@ objTypes['handle'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (obj.notDone) return;
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
@@ -140,7 +140,7 @@ objTypes['handle'] = {
       for (var i in obj.controlPoints) {
         obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
         trans(obj.controlPoints[i].newPoint);
-        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
       draggingPart.targetPoint_.x = obj.p1.x;
       draggingPart.targetPoint_.y = obj.p1.y;

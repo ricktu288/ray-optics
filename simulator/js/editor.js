@@ -60,7 +60,7 @@ function canvas_onmousedown(e) {
       if (selectedObj != scene.objs.length - 1) {
         selectObj(scene.objs.length - 1); // Keep the constructing obj selected
       }
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].onConstructMouseDown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -142,7 +142,7 @@ function canvas_onmousedown(e) {
           }
         }
         selectObj(scene.objs.length - 1);
-        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
+        const ret = objTypes[scene.objs[scene.objs.length - 1].type].onConstructMouseDown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
         }
@@ -174,7 +174,7 @@ function selectionSearch(mousePos_nogrid) {
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
       mousePart_ = {};
-      if (objTypes[scene.objs[i].type].clicked(scene.objs[i], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
+      if (objTypes[scene.objs[i].type].checkMouseOver(scene.objs[i], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
         // click(() returns true means the mouse clicked the object
 
         if (mousePart_.targetPoint || mousePart_.targetPoint_) {
@@ -269,7 +269,7 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+    const ret = objTypes[scene.objs[scene.objs.length - 1].type].onConstructMouseMove(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
     if (ret && ret.isDone) {
       isConstructing = false;
     }
@@ -306,7 +306,7 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      objTypes[scene.objs[draggingObj].type].dragging(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
+      objTypes[scene.objs[draggingObj].type].onDrag(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
       if (draggingPart.part == 0) {
         if (e.ctrlKey && !draggingPart.hasDuplicated) {
@@ -354,7 +354,7 @@ function canvas_onmouseup(e) {
   if (isConstructing) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // If an object is being created, pass the action to it
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].onConstructMouseUp(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -572,7 +572,7 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      objTypes[scene.objs[positioningObj].type].dragging(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch), draggingPart, ctrl, shift);
+      objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch), draggingPart, ctrl, shift);
       draw(!(objTypes[scene.objs[positioningObj].type].shoot || objTypes[scene.objs[positioningObj].type].rayIntersection), true);
     }
     

@@ -36,12 +36,12 @@ objTypes['parallel'] = {
   },
 
   // Use the prototype lineobj
-  c_mousedown: objTypes['lineobj'].c_mousedown,
-  c_mousemove: objTypes['lineobj'].c_mousemove,
-  c_mouseup: objTypes['lineobj'].c_mouseup,
+  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
   move: objTypes['lineobj'].move,
-  clicked: objTypes['lineobj'].clicked,
-  dragging: objTypes['lineobj'].dragging,
+  checkMouseOver: objTypes['lineobj'].checkMouseOver,
+  onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {

@@ -12,7 +12,7 @@ objTypes['arcmirror'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.p2 && !obj.p3) {
       obj.p2 = mouse.getPosSnappedToGrid();
       return;
@@ -29,7 +29,7 @@ objTypes['arcmirror'] = {
     }
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.p3 && !mouse.isOnPoint(obj.p1)) {
       if (shift) {
         obj.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
@@ -48,7 +48,7 @@ objTypes['arcmirror'] = {
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (obj.p2 && !obj.p3 && !mouse.isOnPoint(obj.p1)) {
       obj.p3 = mouse.getPosSnappedToGrid();
       return;
@@ -123,7 +123,7 @@ objTypes['arcmirror'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p3)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
@@ -171,7 +171,7 @@ objTypes['arcmirror'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     var basePoint;
     if (draggingPart.part == 1) {
       // Dragging the first endpoint

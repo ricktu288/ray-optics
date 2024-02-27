@@ -2,7 +2,7 @@
 objTypes['circleobj'] = {
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (shift) {
       obj.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
     }
@@ -12,7 +12,7 @@ objTypes['circleobj'] = {
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (shift) {
       obj.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
     }
@@ -23,7 +23,7 @@ objTypes['circleobj'] = {
     obj.p1 = constructionPoint;
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
+  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!mouse.isOnPoint(obj.p1)) {
       return {
         isDone: true
@@ -44,7 +44,7 @@ objTypes['circleobj'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   // When the drawing area is pressed (to determine the part of the object being pressed)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     // clicking on p1 (center)?
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
@@ -70,7 +70,7 @@ objTypes['circleobj'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     var basePoint;
     if (draggingPart.part == 1) {
       // Dragging the center point

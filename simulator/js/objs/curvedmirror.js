@@ -17,9 +17,9 @@ objTypes['curvedmirror'] = {
     dichroicSettings(obj, objBar);
   },
 
-  c_mousedown: objTypes['lineobj'].c_mousedown,
-  c_mousemove: objTypes['lineobj'].c_mousemove,
-  c_mouseup: objTypes['lineobj'].c_mouseup,
+  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {
@@ -96,7 +96,7 @@ objTypes['curvedmirror'] = {
   move: objTypes['lineobj'].move,
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
@@ -127,7 +127,7 @@ objTypes['curvedmirror'] = {
     return false;
   },
 
-  dragging: objTypes['lineobj'].dragging,
+  onDrag: objTypes['lineobj'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
   rayIntersection: function (mirror, ray) {

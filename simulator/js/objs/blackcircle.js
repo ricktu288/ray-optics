@@ -7,12 +7,12 @@ objTypes['blackcircle'] = {
   },
 
   // Use the prototype circleobj
-  c_mousedown: objTypes['circleobj'].c_mousedown,
-  c_mousemove: objTypes['circleobj'].c_mousemove,
-  c_mouseup: objTypes['circleobj'].c_mouseup,
+  onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
+  onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
   move: objTypes['circleobj'].move,
-  clicked: objTypes['circleobj'].clicked,
-  dragging: objTypes['circleobj'].dragging,
+  checkMouseOver: objTypes['circleobj'].checkMouseOver,
+  onDrag: objTypes['circleobj'].onDrag,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {
@@ -36,7 +36,7 @@ objTypes['blackcircle'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   // When the drawing area is pressed (to determine the part of the object being pressed)
-  clicked: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse, draggingPart) {
     // clicking on p1 (center)?
     if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;

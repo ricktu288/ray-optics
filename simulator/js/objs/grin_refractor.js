@@ -16,13 +16,13 @@ objTypes['grin_refractor'] = {
   },
 
   // Use the prototype reftactor
-  c_mousemove: objTypes['refractor'].c_mousemove,
-  c_mouseup: objTypes['refractor'].c_mouseup,
+  onConstructMouseMove: objTypes['refractor'].onConstructMouseMove,
+  onConstructMouseUp: objTypes['refractor'].onConstructMouseUp,
   zIndex: objTypes['refractor'].zIndex,
   fillGlass: objTypes['grin_circlelens'].fillGlass,
   move: objTypes['refractor'].move,
-  clicked: objTypes['refractor'].clicked,
-  dragging: objTypes['refractor'].dragging,
+  checkMouseOver: objTypes['refractor'].checkMouseOver,
+  onDrag: objTypes['refractor'].onDrag,
   getShotType: objTypes['refractor'].getShotType,
   getShotData: objTypes['refractor'].getShotData,
 
@@ -35,8 +35,8 @@ objTypes['grin_refractor'] = {
   refract: objTypes['grin_circlelens'].refract,
   populateObjBar: objTypes['grin_circlelens'].populateObjBar,
 
-  // Similar to the c_mousedown function of the refractor object, except here the arc functionality is removed
-  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+  // Similar to the onConstructMouseDown function of the refractor object, except here the arc functionality is removed
+  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (obj.path.length > 1) {
       if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
         // Clicked the first point
