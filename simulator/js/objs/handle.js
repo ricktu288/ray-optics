@@ -140,7 +140,7 @@ objTypes['handle'] = {
       for (var i in obj.controlPoints) {
         obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
         trans(obj.controlPoints[i].newPoint);
-        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene, false, 2), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
       draggingPart.targetPoint_.x = obj.p1.x;
       draggingPart.targetPoint_.y = obj.p1.y;

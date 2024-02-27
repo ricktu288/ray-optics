@@ -4,7 +4,7 @@ var isConstructing = false; // The user is constructing a new object
 var constructionPoint; // The point where the user starts the construction
 var draggingObj = -1; // Object index in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
 var positioningObj = -1; // Object index in entering the coordinates (-1 for none, -4 for observer)
-var draggingPart = {}; // The part in drag and some mousePos position data
+var draggingPart = {}; // The part in drag and some mouse position data
 var selectedObj = -1; // The index of the selected object (-1 for none)
 var mouseObj = -1;
 var mousePart = {};
@@ -159,7 +159,7 @@ function canvas_onmousedown(e) {
   }
 }
 
-// search for best object to select at mousePos position
+// search for best object to select at mouse position
 function selectionSearch(mousePos_nogrid) {
   var i;
   var mousePart_;
@@ -306,7 +306,7 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      objTypes[scene.objs[draggingObj].type].onDrag(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
+      objTypes[scene.objs[draggingObj].type].onDrag(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch, e.altKey*1), draggingPart, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
       if (draggingPart.part == 0) {
         if (e.ctrlKey && !draggingPart.hasDuplicated) {
@@ -329,7 +329,7 @@ function canvas_onmousemove(e) {
 
     if (draggingObj == -3) {
       // Move the entire scene
-      // Here mousePos is the currect mousePos position, draggingPart.mousePos1 is the mouse position at the previous moment
+      // Here mousePos is the currect mouse position, draggingPart.mousePos1 is the mouse position at the previous moment
 
       if (e.shiftKey) {
         var mousePos_snapped = snapToDirection(mousePos_nogrid, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
@@ -572,7 +572,7 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch), draggingPart, ctrl, shift);
+      objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), draggingPart, ctrl, shift);
       draw(!(objTypes[scene.objs[positioningObj].type].shoot || objTypes[scene.objs[positioningObj].type].rayIntersection), true);
     }
     

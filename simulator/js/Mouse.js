@@ -8,11 +8,13 @@ class Mouse {
    * @param {geometry.point} pos - The position of the mouse within the scene.
    * @param {Scene} scene - The scene in which the mouse operates.
    * @param {boolean} isTouch - Indicates whether the mouse input comes from a touch screen.
+   * @param {number} overrideGrid - Indicates how the grid is overridden (0: not overridden, 1: invert the on/off of the grid, 2: always off).
    */
-  constructor(pos, scene, isTouch) {
+  constructor(pos, scene, isTouch = false, overrideGrid = 0) {
     this.pos = pos;
     this.scene = scene;
     this.isTouch = isTouch;
+    this.overrideGrid = overrideGrid;
   }
 
   /**
@@ -69,7 +71,8 @@ class Mouse {
    * @returns {geometry.point} The mouse position snapped to the grid.
    */
   getPosSnappedToGrid() {
-    if (this.scene.grid) {
+    //console.log(this.overrideGrid)
+    if ((this.overrideGrid === 0 && this.scene.grid) || (this.overrideGrid === 1 && !this.scene.grid)) {
       return geometry.point(
         Math.round(this.pos.x / this.scene.gridSize) * this.scene.gridSize,
         Math.round(this.pos.y / this.scene.gridSize) * this.scene.gridSize
