@@ -19,15 +19,15 @@ objTypes['radiant'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, mouse, ctrl, shift) {
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
 
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, mouse, ctrl, shift) {
+  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
 
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, mouse, ctrl, shift) {
+  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
     return {
       isDone: true
     };

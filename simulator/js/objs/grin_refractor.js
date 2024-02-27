@@ -36,7 +36,7 @@ objTypes['grin_refractor'] = {
   populateObjBar: objTypes['grin_circlelens'].populateObjBar,
 
   // Similar to the c_mousedown function of the refractor object, except here the arc functionality is removed
-  c_mousedown: function (obj, mouse, ctrl, shift) {
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (obj.path.length > 1) {
       if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
         // Clicked the first point

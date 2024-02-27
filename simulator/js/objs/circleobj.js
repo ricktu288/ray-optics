@@ -2,7 +2,7 @@
 objTypes['circleobj'] = {
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, mouse, ctrl, shift) {
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (shift) {
       obj.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
     }
@@ -12,7 +12,7 @@ objTypes['circleobj'] = {
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, mouse, ctrl, shift) {
+  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (shift) {
       obj.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
     }
@@ -23,7 +23,7 @@ objTypes['circleobj'] = {
     obj.p1 = constructionPoint;
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, mouse, ctrl, shift) {
+  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!mouse.isOnPoint(obj.p1)) {
       return {
         isDone: true

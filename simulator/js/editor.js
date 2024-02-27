@@ -60,7 +60,7 @@ function canvas_onmousedown(e) {
       if (selectedObj != scene.objs.length - 1) {
         selectObj(scene.objs.length - 1); // Keep the constructing obj selected
       }
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -142,7 +142,7 @@ function canvas_onmousedown(e) {
           }
         }
         selectObj(scene.objs.length - 1);
-        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
+        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
         }
@@ -269,7 +269,7 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
     if (ret && ret.isDone) {
       isConstructing = false;
     }
@@ -354,7 +354,7 @@ function canvas_onmouseup(e) {
   if (isConstructing) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // If an object is being created, pass the action to it
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], new Mouse(mousePos, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mouseup(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }

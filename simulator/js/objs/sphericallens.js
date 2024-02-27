@@ -104,15 +104,15 @@ objTypes['sphericallens'] = {
 
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, mouse, ctrl, shift) {
-    objTypes['lineobj'].c_mousedown(obj, mouse, ctrl, shift);
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
+    objTypes['lineobj'].c_mousedown(obj, constructionPoint, mouse, ctrl, shift);
 
     this.createLens(obj);
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, mouse, ctrl, shift) {
-    objTypes['lineobj'].c_mousemove(obj, mouse, ctrl, shift);
+  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
+    objTypes['lineobj'].c_mousemove(obj, constructionPoint, mouse, ctrl, shift);
 
     this.createLens(obj);
 
@@ -121,7 +121,7 @@ objTypes['sphericallens'] = {
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, mouse, ctrl, shift) {
+  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!mouse.isOnPoint(obj.p1)) {
       delete obj.p1;
       delete obj.p2;

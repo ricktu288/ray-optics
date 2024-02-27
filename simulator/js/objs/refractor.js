@@ -25,7 +25,7 @@ objTypes['refractor'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, mouse, ctrl, shift) {
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (obj.path.length > 1) {
       if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
         // Clicked the first point
@@ -39,7 +39,7 @@ objTypes['refractor'] = {
     }
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, mouse, ctrl, shift) {
+  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) { return; }
     const mousePos = mouse.getPosSnappedToGrid();
     if (typeof obj.path[obj.path.length - 1].arc != 'undefined') {
@@ -52,7 +52,7 @@ objTypes['refractor'] = {
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, mouse, ctrl, shift) {
+  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true

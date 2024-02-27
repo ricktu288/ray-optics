@@ -16,7 +16,7 @@ objTypes['drawing'] = {
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function (obj, mouse, ctrl, shift) {
+  c_mousedown: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
@@ -27,7 +27,7 @@ objTypes['drawing'] = {
     obj.tmp_isMouseDown = true;
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function (obj, mouse, ctrl, shift) {
+  c_mousemove: function (obj, constructionPoint, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
@@ -38,7 +38,7 @@ objTypes['drawing'] = {
     obj.points[obj.points.length - 1].push(mousePos.x, mousePos.y);
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function (obj, mouse, ctrl, shift) {
+  c_mouseup: function (obj, constructionPoint, mouse, ctrl, shift) {
     obj.tmp_isMouseDown = false;
     return {
       newUndoPoint: true
