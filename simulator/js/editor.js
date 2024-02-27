@@ -1,5 +1,5 @@
 var mousePos; // Position of the mouse
-var mouse_lastmousedown; // Position of the mouse the last time when the user clicked
+var mousePos_lastmousedown; // Position of the mouse the last time when the user clicked
 var isConstructing = false; // The user is constructing a new object
 var constructionPoint; // The point where the user starts the construction
 var draggingObj = -1; // Object index in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
@@ -30,8 +30,8 @@ function canvas_onmousedown(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
-  mouse_lastmousedown = mouse_nogrid;
+  var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
+  mousePos_lastmousedown = mousePos_nogrid;
   if (positioningObj != -1) {
     confirmPositioning(e.ctrlKey, e.shiftKey);
     if (!(e.which && e.which == 3)) {
@@ -49,7 +49,7 @@ function canvas_onmousedown(e) {
 
   }
   else {
-    mousePos = mouse_nogrid;
+    mousePos = mousePos_nogrid;
   }
 
 
@@ -60,7 +60,7 @@ function canvas_onmousedown(e) {
       if (selectedObj != scene.objs.length - 1) {
         selectObj(scene.objs.length - 1); // Keep the constructing obj selected
       }
-      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -80,7 +80,7 @@ function canvas_onmousedown(e) {
       draggingPart = {};
 
       if (scene.mode == 'observer') {
-        if (geometry.length_squared(mouse_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
+        if (geometry.length_squared(mousePos_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
           // The mousePos clicked the observer
           draggingObj = -4;
           draggingPart = {};
@@ -92,7 +92,7 @@ function canvas_onmousedown(e) {
         }
       }
 
-      var rets = selectionSearch(mouse_nogrid);
+      var rets = selectionSearch(mousePos_nogrid);
       var ret = rets[0];
       if (ret.targetObj_index != -1) {
         if (!e.ctrlKey && scene.objs.length > 0 && scene.objs[0].type == "handle" && scene.objs[0].notDone) {
@@ -142,7 +142,7 @@ function canvas_onmousedown(e) {
           }
         }
         selectObj(scene.objs.length - 1);
-        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
+        const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousedown(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
         }
@@ -160,7 +160,7 @@ function canvas_onmousedown(e) {
 }
 
 // search for best object to select at mousePos position
-function selectionSearch(mouse_nogrid) {
+function selectionSearch(mousePos_nogrid) {
   var i;
   var mousePart_;
   var click_lensq = Infinity;
@@ -174,7 +174,7 @@ function selectionSearch(mouse_nogrid) {
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
       mousePart_ = {};
-      if (objTypes[scene.objs[i].type].clicked(scene.objs[i], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
+      if (objTypes[scene.objs[i].type].clicked(scene.objs[i], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
         // click(() returns true means the mouse clicked the object
 
         if (mousePart_.targetPoint || mousePart_.targetPoint_) {
@@ -183,7 +183,7 @@ function selectionSearch(mouse_nogrid) {
             targetIsPoint = true; // If the mouse can click a point, then it must click a point
             results = [];
           }
-          var click_lensq_temp = geometry.length_squared(mouse_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
+          var click_lensq_temp = geometry.length_squared(mousePos_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
           if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
             // In case of clicking a point, choose the one nearest to the mouse
             // But if the object is the selected object, the points from this object have the highest priority.
@@ -221,19 +221,19 @@ function canvas_onmousemove(e) {
   } else {
     var et = e;
   }
-  var mouse_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
+  var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
   var mousePos2;
   if (scene.grid && !(e.altKey && !isConstructing)) {
     mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
   }
   else {
-    mousePos2 = mouse_nogrid;
+    mousePos2 = mousePos_nogrid;
   }
 
   if (!isConstructing && draggingObj == -1 && !scene.lockobjs) {
     // highlight object under mousePos cursor
-    var ret = selectionSearch(mouse_nogrid)[0];
-    //console.log(mouse_nogrid);
+    var ret = selectionSearch(mousePos_nogrid)[0];
+    //console.log(mousePos_nogrid);
     var newMouseObj = (ret.targetObj_index == -1) ? null : scene.objs[ret.targetObj_index];
     if (mouseObj != newMouseObj) {
       mouseObj = newMouseObj;
@@ -269,7 +269,7 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+    const ret = objTypes[scene.objs[scene.objs.length - 1].type].c_mousemove(scene.objs[scene.objs.length - 1], constructionPoint, new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
     if (ret && ret.isDone) {
       isConstructing = false;
     }
@@ -284,21 +284,21 @@ function canvas_onmousemove(e) {
   else {
     if (draggingObj == -4) {
       if (e.shiftKey) {
-        var mouse_snapped = snapToDirection(mousePos, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePos_snapped = snapToDirection(mousePos, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
       else {
-        var mouse_snapped = mousePos;
+        var mousePos_snapped = mousePos;
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = (mousePos_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mousePos_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
 
       scene.observer.c.x += mouseDiffX;
       scene.observer.c.y += mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mousePos1 = mouse_snapped;
+      draggingPart.mousePos1 = mousePos_snapped;
       draw(false, true);
     }
 
@@ -306,7 +306,7 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      objTypes[scene.objs[draggingObj].type].dragging(scene.objs[draggingObj], new Mouse(mouse_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
+      objTypes[scene.objs[draggingObj].type].dragging(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), draggingPart, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
       if (draggingPart.part == 0) {
         if (e.ctrlKey && !draggingPart.hasDuplicated) {
@@ -332,15 +332,15 @@ function canvas_onmousemove(e) {
       // Here mousePos is the currect mousePos position, draggingPart.mousePos1 is the mouse position at the previous moment
 
       if (e.shiftKey) {
-        var mouse_snapped = snapToDirection(mouse_nogrid, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePos_snapped = snapToDirection(mousePos_nogrid, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
       else {
-        var mouse_snapped = mouse_nogrid;
+        var mousePos_snapped = mousePos_nogrid;
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = (mousePos_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mousePos_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
       scene.origin.x = mouseDiffX * scene.scale + draggingPart.mousePos2.x;
       scene.origin.y = mouseDiffY * scene.scale + draggingPart.mousePos2.y;
       draw();
@@ -431,7 +431,7 @@ function canvas_ondblclick(e) {
   var mousePos = geometry.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
-  else if (new Mouse(mousePos, scene, lastDeviceIsTouch).isOnPoint(mouse_lastmousedown)) {
+  else if (new Mouse(mousePos, scene, lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
     draggingPart = {};
     if (scene.mode == 'observer') {
       if (geometry.length_squared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
