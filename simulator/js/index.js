@@ -47,7 +47,7 @@ window.onload = function (e) {
 
 
 
-  mouse = geometry.point(0, 0);
+  mousePos = geometry.point(0, 0);
   var needRestore = false;
   try {
     restoredData = localStorage.rayOpticsData;
