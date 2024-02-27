@@ -2,12 +2,12 @@
 objTypes['handle'] = {
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'handle', controlPoints: [], notDone: true};
+  create: function (constructionPoint) {
+    return { type: 'handle', controlPoints: [], notDone: true };
   },
 
   // Add control point when user is creating the handle
-  c_addControlPoint: function(obj, controlPoint) {
+  c_addControlPoint: function (obj, controlPoint) {
     controlPoint.mousePart.originalObj = scene.objs[controlPoint.targetObj_index];
     controlPoint.newPoint = controlPoint.mousePart.targetPoint;
     controlPoint.mousePart.byHandle = true;
@@ -16,7 +16,7 @@ objTypes['handle'] = {
   },
 
   // Finish creating the handle
-  c_finishHandle: function(obj, point) {
+  c_finishHandle: function (obj, point) {
     obj.p1 = point;
     var totalX = 0;
     var totalY = 0;
@@ -28,12 +28,12 @@ objTypes['handle'] = {
     obj.notDone = false;
   },
 
-  zIndex: function(obj) {
+  zIndex: function (obj) {
     return -Infinity;
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
 
     /*
     for (var i in obj.controlPoints) {
@@ -45,7 +45,7 @@ objTypes['handle'] = {
     for (var i in obj.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = obj.notDone?'cyan':getMouseStyle(obj,'gray');
+      ctx.strokeStyle = obj.notDone ? 'cyan' : getMouseStyle(obj, 'gray');
       ctx.setLineDash([2, 2]);
       ctx.arc(obj.controlPoints[i].newPoint.x, obj.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
       ctx.stroke();
@@ -54,7 +54,7 @@ objTypes['handle'] = {
     if (!obj.notDone) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = getMouseStyle(obj,'gray');
+      ctx.strokeStyle = getMouseStyle(obj, 'gray');
       ctx.arc(obj.p1.x, obj.p1.y, 2, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
@@ -72,23 +72,21 @@ objTypes['handle'] = {
   },
 
   // Move the object
-  move: function(obj, diffX, diffY) {
-    objTypes['handle'].dragging(obj, geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), {targetPoint_: obj.p1, part: 1});
+  move: function (obj, diffX, diffY) {
+    objTypes['handle'].dragging(obj, new Mouse(geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), scene), { targetPoint_: obj.p1, part: 1 });
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+  clicked: function (obj, mouse, draggingPart) {
     if (obj.notDone) return;
-    if (mouseOnPoint(mouse_nogrid, obj.p1))
-    {
+    if (mouse.isOnPoint(obj.p1)) {
       draggingPart.part = 1;
       draggingPart.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.mouse0 = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.snapData = {};
       return true;
     }
-    if (mouseOnPoint(mouse_nogrid, obj.p2))
-    {
+    if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.mouse0 = geometry.point(obj.p2.x, obj.p2.y);
@@ -99,31 +97,28 @@ objTypes['handle'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
     if (obj.notDone) return;
-    if (shift)
-    {
-      var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+    if (shift) {
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
-    else
-    {
-      var mouse_snapped = mouse;
+    else {
+      var mousePos = mouse.getPosSnappedToGrid();
       draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
-    if (draggingPart.part == 1)
-    {
+    if (draggingPart.part == 1) {
       if (ctrl && shift) {
         // Scaling
-        var factor = geometry.length(obj.p2, mouse) / geometry.length(obj.p2, draggingPart.targetPoint_)
+        var factor = geometry.length(obj.p2, mouse.pos) / geometry.length(obj.p2, draggingPart.targetPoint_)
         if (factor < 1e-5) return;
-        var trans = function(p) {
+        var trans = function (p) {
           p.x = (p.x - obj.p2.x) * factor + obj.p2.x;
           p.y = (p.y - obj.p2.y) * factor + obj.p2.y;
         };
       } else if (ctrl) {
         // Rotation
-        var theta = Math.atan2(obj.p2.y - mouse.y, obj.p2.x - mouse.x) - Math.atan2(obj.p2.y - draggingPart.targetPoint_.y, obj.p2.x - draggingPart.targetPoint_.x);
-        var trans = function(p) {
+        var theta = Math.atan2(obj.p2.y - mouse.pos.y, obj.p2.x - mouse.pos.x) - Math.atan2(obj.p2.y - draggingPart.targetPoint_.y, obj.p2.x - draggingPart.targetPoint_.x);
+        var trans = function (p) {
           var x = p.x - obj.p2.x;
           var y = p.y - obj.p2.y;
           p.x = Math.cos(theta) * x - Math.sin(theta) * y + obj.p2.x;
@@ -131,9 +126,9 @@ objTypes['handle'] = {
         };
       } else {
         // Translation
-        var diffX = mouse_snapped.x - draggingPart.targetPoint_.x;
-        var diffY = mouse_snapped.y - draggingPart.targetPoint_.y;
-        var trans = function(p) {
+        var diffX = mousePos.x - draggingPart.targetPoint_.x;
+        var diffY = mousePos.y - draggingPart.targetPoint_.y;
+        var trans = function (p) {
           p.x += diffX;
           p.y += diffY;
         };
@@ -145,20 +140,19 @@ objTypes['handle'] = {
       for (var i in obj.controlPoints) {
         obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
         trans(obj.controlPoints[i].newPoint);
-        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].dragging(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
       draggingPart.targetPoint_.x = obj.p1.x;
       draggingPart.targetPoint_.y = obj.p1.y;
     }
-    
-    if (draggingPart.part == 2)
-    {
-      obj.p2.x = mouse_snapped.x;
-      obj.p2.y = mouse_snapped.y;
+
+    if (draggingPart.part == 2) {
+      obj.p2.x = mousePos.x;
+      obj.p2.y = mousePos.y;
     }
   },
 
-  shoot: function(obj) {
+  shoot: function (obj) {
     // A dummy function to tell the simulator that the light layer should be redrawn when this object changes.
   }
 

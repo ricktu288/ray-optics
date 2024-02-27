@@ -2,9 +2,8 @@
 objTypes['blackline'] = {
 
   // Create the obj
-  create: function (mouse) {
-    const mousePos = mouse.getPosSnappedToGrid();
-    return { type: 'blackline', p1: mousePos, p2: mousePos };
+  create: function (constructionPoint) {
+    return { type: 'blackline', p1: constructionPoint, p2: constructionPoint };
   },
 
   // Use the prototype lineobj

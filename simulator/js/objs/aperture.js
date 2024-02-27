@@ -2,9 +2,8 @@
 objTypes['aperture'] = {
 
   // Create the obj
-  create: function (mouse) {
-    const mousePos = mouse.getPosSnappedToGrid();
-    return { type: 'aperture', p1: mousePos, p2: mousePos, p3: mousePos, p4: mousePos };
+  create: function (constructionPoint) {
+    return { type: 'aperture', p1: constructionPoint, p2: constructionPoint, p3: constructionPoint, p4: constructionPoint };
   },
 
   // Mousedown when the obj is being constructed by the user

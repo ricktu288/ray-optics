@@ -2,44 +2,43 @@
 objTypes['drawing'] = {
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'drawing', points: [], tmp_isMouseDown: false, notDone: true};
+  create: function (constructionPoint) {
+    return { type: 'drawing', points: [], tmp_isMouseDown: false, notDone: true };
   },
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
+  populateObjBar: function (obj, objBar) {
     if (obj.notDone) {
-      objBar.createButton(getMsg('stop_drawing'), function(obj) {
+      objBar.createButton(getMsg('stop_drawing'), function (obj) {
         delete obj.notDone;
-      }, elem, true);
+      }, true);
     }
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function(obj, mouse, ctrl, shift)
-  {
+  c_mousedown: function (obj, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
       };
     }
-    obj.points.push([mouse.x, mouse.y]);
+    const mousePos = mouse.getPosSnappedToGrid();
+    obj.points.push([mousePos.x, mousePos.y]);
     obj.tmp_isMouseDown = true;
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function(obj, mouse, ctrl, shift)
-  {
+  c_mousemove: function (obj, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
       };
     }
+    const mousePos = mouse.getPosSnappedToGrid();
     if (!obj.tmp_isMouseDown) return;
-    obj.points[obj.points.length - 1].push(mouse.x, mouse.y);
+    obj.points[obj.points.length - 1].push(mousePos.x, mousePos.y);
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function(obj, mouse, ctrl, shift)
-  {
+  c_mouseup: function (obj, mouse, ctrl, shift) {
     obj.tmp_isMouseDown = false;
     return {
       newUndoPoint: true
@@ -47,7 +46,7 @@ objTypes['drawing'] = {
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
     ctx.strokeStyle = getMouseStyle(obj, "white");
     ctx.beginPath();
     for (var i = 0; i < obj.points.length; i++) {
@@ -60,7 +59,7 @@ objTypes['drawing'] = {
   },
 
   // Move the object
-  move: function(obj, diffX, diffY) {
+  move: function (obj, diffX, diffY) {
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length; j += 2) {
         obj.points[i][j] += diffX;
@@ -72,13 +71,14 @@ objTypes['drawing'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+  clicked: function (obj, mouse, draggingPart) {
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
-        if (mouseOnSegment(mouse_nogrid, geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
+        if (mouse.isOnSegment(geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
+          const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
-          draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-          draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+          draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
+          draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return true;
         }
@@ -88,20 +88,18 @@ objTypes['drawing'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    if (shift)
-    {
-      var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+    if (shift) {
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
-    else
-    {
-      var mouse_snapped = mouse;
+    else {
+      var mousePos = mouse.getPosSnappedToGrid();
       draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; // The X difference between the mouse position now and at the previous moment
-    var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; // The Y difference between the mouse position now and at the previous moment
-    
+    var mouseDiffX = draggingPart.mouse1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
+    var mouseDiffY = draggingPart.mouse1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+
     if (draggingPart.part == 0) {
       for (var i = 0; i < obj.points.length; i++) {
         for (var j = 0; j < obj.points[i].length; j += 2) {
@@ -112,7 +110,7 @@ objTypes['drawing'] = {
     }
 
     // Update the mouse position
-    draggingPart.mouse1 = mouse_snapped;
+    draggingPart.mouse1 = mousePos;
   }
 
 };

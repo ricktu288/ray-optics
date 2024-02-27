@@ -2,9 +2,8 @@
 objTypes['beamsplitter'] = {
 
   // Create the obj
-  create: function (mouse) {
-    const mousePos = mouse.getPosSnappedToGrid();
-    return { type: 'beamsplitter', p1: mousePos, p2: mousePos, p: .5, isDichroic: false, isDichroicFilter: false };
+  create: function (constructionPoint) {
+    return { type: 'beamsplitter', p1: constructionPoint, p2: constructionPoint, p: .5, isDichroic: false, isDichroicFilter: false };
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,

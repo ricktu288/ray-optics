@@ -2,8 +2,8 @@
 objTypes['mirror'] = {
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'mirror', p1: mouse, p2: mouse};
+  create: function (constructionPoint) {
+    return { type: 'mirror', p1: constructionPoint, p2: constructionPoint };
   },
 
   // Use the prototype lineobj
@@ -15,7 +15,7 @@ objTypes['mirror'] = {
   dragging: objTypes['lineobj'].dragging,
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {    
+  draw: function (obj, ctx, aboveLight) {
     ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -24,19 +24,19 @@ objTypes['mirror'] = {
   },
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
+  populateObjBar: function (obj, objBar) {
     dichroicSettings(obj, objBar);
   },
 
   //Describes how the ray refects off the mirror surface
-  rayIntersection: function(mirror, ray) {
-    if (wavelengthInteraction(mirror,ray)) {
+  rayIntersection: function (mirror, ray) {
+    if (wavelengthInteraction(mirror, ray)) {
       return objTypes['lineobj'].rayIntersection(mirror, ray);
-    }    
+    }
   },
 
   // When the obj is shot by a ray
-  shot: function(mirror, ray, rayIndex, rp) {
+  shot: function (mirror, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = mirror.p2.x - mirror.p1.x;

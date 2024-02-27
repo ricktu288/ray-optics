@@ -4,9 +4,8 @@ objTypes['circlelens'] = {
   supportSurfaceMerging: true, // Surface merging
 
   // Create the obj
-  create: function (mouse) {
-    const mousePos = mouse.getPosSnappedToGrid();
-    return { type: 'circlelens', p1: mousePos, p2: mousePos, p: 1.5 };
+  create: function (constructionPoint) {
+    return { type: 'circlelens', p1: constructionPoint, p2: constructionPoint, p: 1.5 };
   },
 
   populateObjBar: objTypes['refractor'].populateObjBar,

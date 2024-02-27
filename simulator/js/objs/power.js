@@ -2,25 +2,25 @@
 objTypes['power'] = {
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'power', p1: mouse, p2: mouse, power: 0, normal: 0, shear: 0, irradianceMap: true, binSize: 1};
+  create: function (constructionPoint) {
+    return { type: 'power', p1: constructionPoint, p2: constructionPoint, power: 0, normal: 0, shear: 0, irradianceMap: true, binSize: 1 };
   },
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
-    objBar.createBoolean(getMsg('irradiance_map'), !!obj.irradianceMap, function(obj, value) {
+  populateObjBar: function (obj, objBar) {
+    objBar.createBoolean(getMsg('irradiance_map'), !!obj.irradianceMap, function (obj, value) {
       obj.irradianceMap = value;
       if (value) {
         obj.binSize = 1;
       }
     }, null, true);
-    
+
     if (obj.irradianceMap) {
-      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function(obj, value) {
+      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function (obj, value) {
         obj.binSize = value;
       });
 
-      objBar.createButton(getMsg('export_irradiance_map'), function(obj) {
+      objBar.createButton(getMsg('export_irradiance_map'), function (obj) {
         // Export the irradiance map to a CSV file
         var binSize = obj.binSize || 10;
         var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
@@ -35,7 +35,7 @@ objTypes['power'] = {
           csv += i * binSize + "," + (binData[i] / binSize) + "\n";
         }
         var encodedUri = encodeURI(csv);
-        
+
         // Download the file
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -56,12 +56,12 @@ objTypes['power'] = {
   rayIntersection: objTypes['lineobj'].rayIntersection,
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
     if (!aboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
       ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)')
-      ctx.setLineDash([5,5]);
+      ctx.setLineDash([5, 5]);
       ctx.beginPath();
       ctx.moveTo(obj.p1.x, obj.p1.y);
       ctx.lineTo(obj.p2.x, obj.p2.y);
@@ -72,7 +72,7 @@ objTypes['power'] = {
     } else {
       ctx.globalCompositeOperation = 'lighter';
       var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-      
+
       var accuracy = Math.max(-Math.floor(Math.log10(totalTruncation)), 0);
       if (totalTruncation > 0 && accuracy <= 2) {
         var str1 = "P=" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
@@ -130,7 +130,7 @@ objTypes['power'] = {
         ctx.moveTo(obj.p1.x, obj.p1.y);
         for (var i = 0; i < obj.binData.length; i++) {
           ctx.lineTo(obj.p1.x + ux * i * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * i * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
-          ctx.lineTo(obj.p1.x + ux * (i+1) * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * (i+1) * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
+          ctx.lineTo(obj.p1.x + ux * (i + 1) * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * (i + 1) * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
         }
         ctx.lineTo(obj.p2.x, obj.p2.y);
         ctx.fill();
@@ -143,7 +143,7 @@ objTypes['power'] = {
   },
 
   // Shoot rays
-  shoot: function(obj) {
+  shoot: function (obj) {
     obj.power = 0;
     obj.normal = 0;
     obj.shear = 0;
@@ -160,7 +160,7 @@ objTypes['power'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function(obj, ray, rayIndex, shootPoint) {
+  shot: function (obj, ray, rayIndex, shootPoint) {
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
     var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var cost = ((ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y)) / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));

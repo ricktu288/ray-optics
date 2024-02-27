@@ -33,61 +33,59 @@ fontAlignments = {
 objTypes['text'] = {
 
   // Create the obj
-  create: function(mouse) {
-  return {type: 'text', x: mouse.x, y: mouse.y, p: getMsg("text_here"), fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0};
+  create: function (constructionPoint) {
+    return { type: 'text', x: constructionPoint.x, y: constructionPoint.y, p: getMsg("text_here"), fontSize: 24, fontName: 'Serif', fontStyle: 'Normal', fontAlignment: 'left', fontSmallCaps: false, fontAngle: 0 };
   },
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
-    objBar.createText('', obj.p, function(obj, value) {
+  populateObjBar: function (obj, objBar) {
+    objBar.createText('', obj.p, function (obj, value) {
       obj.p = value;
     });
 
     if (objBar.showAdvanced(typeof obj.fontSize != 'undefined' && (obj.fontSize != 24 || obj.fontName != 'Serif' || obj.fontStyle != 'Normal' || obj.fontAlignment != 'left' || obj.fontSmallCaps || obj.fontAngle != 0))) {
-      objBar.createNumber(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function(obj, value) {
+      objBar.createNumber(getMsg('fontsize'), 6, 96, 1, obj.fontSize || 24, function (obj, value) {
         obj.fontSize = value;
       }, null, true);
-      objBar.createDropdown(getMsg('fontname'), obj.fontName || 'Serif', fonts, function(obj, value) {
+      objBar.createDropdown(getMsg('fontname'), obj.fontName || 'Serif', fonts, function (obj, value) {
         obj.fontName = value;
       });
-      objBar.createDropdown(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function(obj, value) {
+      objBar.createDropdown(getMsg('fontstyle'), obj.fontStyle || 'Normal', fontStyles, function (obj, value) {
         obj.fontStyle = value;
       });
-      objBar.createDropdown(getMsg('fontalignment'), obj.fontAlignment || 'left', fontAlignments, function(obj, value) {
+      objBar.createDropdown(getMsg('fontalignment'), obj.fontAlignment || 'left', fontAlignments, function (obj, value) {
         obj.fontAlignment = value;
       });
-      objBar.createBoolean(getMsg('smallcaps'), obj.fontSmallCaps, function(obj, value) {
+      objBar.createBoolean(getMsg('smallcaps'), obj.fontSmallCaps, function (obj, value) {
         obj.fontSmallCaps = value;
       });
-      objBar.createNumber(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function(obj, value) {
+      objBar.createNumber(getMsg('angle'), 0, 360, 1, obj.fontAngle || 0, function (obj, value) {
         obj.fontAngle = value;
       }, null, true);
     }
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function(obj, mouse, ctrl, shift)
-  {
-    
+  c_mousedown: function (obj, mouse, ctrl, shift) {
+
   },
 
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function(obj, mouse, ctrl, shift)
-  {
-    obj.x=mouse.x;
-    obj.y=mouse.y;
+  c_mousemove: function (obj, mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    obj.x = mousePos.x;
+    obj.y = mousePos.y;
   },
 
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function(obj, mouse, ctrl, shift)
-  {
+  c_mouseup: function (obj, mouse, ctrl, shift) {
     return {
       isDone: true
     };
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx ,aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
     ctx.fillStyle = getMouseStyle(obj, 'white');
     ctx.textAlign = obj.fontAlignment || 'left';
     ctx.textBaseline = 'bottom';
@@ -100,7 +98,7 @@ objTypes['text'] = {
 
     ctx.save();
     ctx.translate(obj.x, obj.y);
-    ctx.rotate(-(obj.fontAngle||0)/180*Math.PI);
+    ctx.rotate(-(obj.fontAngle || 0) / 180 * Math.PI);
     y_offset = 0;
     obj.tmp_left = 0;
     obj.tmp_right = 0;
@@ -121,30 +119,30 @@ objTypes['text'] = {
     });
     ctx.restore();
     // precompute triganometry for faster calculations in 'clicked' function
-    obj.tmp_sin_angle = Math.sin((obj.fontAngle||0)/180*Math.PI);
-    obj.tmp_cos_angle = Math.cos((obj.fontAngle||0)/180*Math.PI);
+    obj.tmp_sin_angle = Math.sin((obj.fontAngle || 0) / 180 * Math.PI);
+    obj.tmp_cos_angle = Math.cos((obj.fontAngle || 0) / 180 * Math.PI);
   },
 
   // Move the object
-  move: function(obj, diffX, diffY) {
+  move: function (obj, diffX, diffY) {
     obj.x = obj.x + diffX;
     obj.y = obj.y + diffY;
     return obj;
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
-    
+  clicked: function (obj, mouse, draggingPart) {
+
     // translate and rotate the mouse point into the text's reference frame for easy comparison
-    relativeMouseX = mouse_nogrid.x - obj.x
-    relativeMouseY = mouse_nogrid.y - obj.y
+    relativeMouseX = mouse.pos.x - obj.x
+    relativeMouseY = mouse.pos.y - obj.y
     rotatedMouseX = relativeMouseX * obj.tmp_cos_angle - relativeMouseY * obj.tmp_sin_angle;
     rotatedMouseY = relativeMouseY * obj.tmp_cos_angle + relativeMouseX * obj.tmp_sin_angle;
-    if (rotatedMouseX >= -obj.tmp_left && rotatedMouseX <=  obj.tmp_right &&
-        rotatedMouseY <=  obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
+    if (rotatedMouseX >= -obj.tmp_left && rotatedMouseX <= obj.tmp_right &&
+      rotatedMouseY <= obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
       draggingPart.part = 0;
-      draggingPart.mouse0 = geometry.point(mouse_nogrid.x, mouse_nogrid.y);
-      draggingPart.mouse0snapped = scene.grid ? geometry.point(Math.round(draggingPart.mouse0.x / scene.gridSize) * scene.gridSize, Math.round(draggingPart.mouse0.y / scene.gridSize) * scene.gridSize) : draggingPart.mouse0;
+      draggingPart.mouse0 = geometry.point(mouse.pos.x, mouse.pos.y);
+      draggingPart.mouse0snapped = mouse.getPosSnappedToGrid();
       draggingPart.targetPoint_ = geometry.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
       return true;
@@ -153,26 +151,21 @@ objTypes['text'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    if (shift)
-    {
-      var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+    if (shift) {
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
-    else
-    {
-      var mouse_snapped = mouse;
+    else {
+      var mousePos = mouse.getPosSnappedToGrid();
       draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    // 'mouse' current mouse position, snapped to grid
     // 'draggingPart.targetPoint_' object placement position (bottom left)
     // 'draggingPart.mouse0' is coordiates of where the drag started, not snapped
     // 'draggingPart.mouse0snapped' is coordiates of where the drag started, snapped to grid
-    // 'mouse_snapped' is restriced to horzontal or vertical when shift held, snapped to grid
-
     // new location  =  current location (snapped)  +  object placement location  -  where drag started (snapped)
-    obj.x = mouse_snapped.x + draggingPart.targetPoint_.x - draggingPart.mouse0snapped.x;
-    obj.y = mouse_snapped.y + draggingPart.targetPoint_.y - draggingPart.mouse0snapped.y;
+    obj.x = mousePos.x + draggingPart.targetPoint_.x - draggingPart.mouse0snapped.x;
+    obj.y = mousePos.y + draggingPart.targetPoint_.y - draggingPart.mouse0snapped.y;
   },
 
 };

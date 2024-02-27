@@ -50,13 +50,12 @@ objTypes['cropbox'] = {
     return obj;
   },
 
-
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+  clicked: function(obj, mouse, draggingPart) {
     if (!cropMode) return false;
 
     // Top left
-    if (mouseOnPoint(mouse_nogrid, obj.p1)) {
+    if (mouse.isOnPoint(obj.p1)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.cursor = 'nwse-resize';
@@ -64,7 +63,7 @@ objTypes['cropbox'] = {
       return true;
     }
     // Top right
-    if (mouseOnPoint(mouse_nogrid, obj.p2)) {
+    if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.cursor = 'nesw-resize';
@@ -72,7 +71,7 @@ objTypes['cropbox'] = {
       return true;
     }
     // Bottom left
-    if (mouseOnPoint(mouse_nogrid, obj.p3)) {
+    if (mouse.isOnPoint(obj.p3)) {
       draggingPart.part = 3;
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.cursor = 'nesw-resize';
@@ -80,7 +79,7 @@ objTypes['cropbox'] = {
       return true;
     }
     // Bottom right
-    if (mouseOnPoint(mouse_nogrid, obj.p4)) {
+    if (mouse.isOnPoint(obj.p4)) {
       draggingPart.part = 4;
       draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.cursor = 'nwse-resize';
@@ -88,38 +87,39 @@ objTypes['cropbox'] = {
       return true;
     }
     // Top
-    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p2))) {
+    if (mouse.isOnSegment(geometry.segment(obj.p1, obj.p2))) {
       draggingPart.part = 5;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Right
-    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p2, obj.p4))) {
+    if (mouse.isOnSegment(geometry.segment(obj.p2, obj.p4))) {
       draggingPart.part = 6;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Bottom
-    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p3, obj.p4))) {
+    if (mouse.isOnSegment(geometry.segment(obj.p3, obj.p4))) {
       draggingPart.part = 7;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Left
-    if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.p1, obj.p3))) {
+    if (mouse.isOnSegment(geometry.segment(obj.p1, obj.p3))) {
       draggingPart.part = 8;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Inside
-    if ((obj.p1.x < mouse_nogrid.x && mouse_nogrid.x < obj.p2.x) && (obj.p1.y < mouse_nogrid.y && mouse_nogrid.y < obj.p3.y)) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    if ((obj.p1.x < mousePos.x && mousePos.x < obj.p2.x) && (obj.p1.y < mousePos.y && mousePos.y < obj.p3.y)) {
       draggingPart.part = 0;
-      draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-      draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+      draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
+      draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }
@@ -128,68 +128,70 @@ objTypes['cropbox'] = {
 
   // When the user is dragging the obj
   dragging: function(obj, mouse, draggingPart, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+
     // Top left
     if (draggingPart.part == 1) {
-      obj.p1.x = mouse.x;
-      obj.p1.y = mouse.y;
-      obj.p2.y = mouse.y;
-      obj.p3.x = mouse.x;
+      obj.p1.x = mousePos.x;
+      obj.p1.y = mousePos.y;
+      obj.p2.y = mousePos.y;
+      obj.p3.x = mousePos.x;
     }
     // Top right
     else if (draggingPart.part == 2) {
-      obj.p2.x = mouse.x;
-      obj.p2.y = mouse.y;
-      obj.p1.y = mouse.y;
-      obj.p4.x = mouse.x;
+      obj.p2.x = mousePos.x;
+      obj.p2.y = mousePos.y;
+      obj.p1.y = mousePos.y;
+      obj.p4.x = mousePos.x;
     }
     // Bottom left
     else if (draggingPart.part == 3) {
-      obj.p3.x = mouse.x;
-      obj.p3.y = mouse.y;
-      obj.p1.x = mouse.x;
-      obj.p4.y = mouse.y;
+      obj.p3.x = mousePos.x;
+      obj.p3.y = mousePos.y;
+      obj.p1.x = mousePos.x;
+      obj.p4.y = mousePos.y;
     }
     // Bottom right
     else if (draggingPart.part == 4) {
-      obj.p4.x = mouse.x;
-      obj.p4.y = mouse.y;
-      obj.p2.x = mouse.x;
-      obj.p3.y = mouse.y;
+      obj.p4.x = mousePos.x;
+      obj.p4.y = mousePos.y;
+      obj.p2.x = mousePos.x;
+      obj.p3.y = mousePos.y;
     }
     // Top
     else if (draggingPart.part == 5) {
-      obj.p1.y = mouse.y;
-      obj.p2.y = mouse.y;
+      obj.p1.y = mousePos.y;
+      obj.p2.y = mousePos.y;
     }
     // Right
     else if (draggingPart.part == 6) {
-      obj.p2.x = mouse.x;
-      obj.p4.x = mouse.x;
+      obj.p2.x = mousePos.x;
+      obj.p4.x = mousePos.x;
     }
     // Bottom
     else if (draggingPart.part == 7) {
-      obj.p3.y = mouse.y;
-      obj.p4.y = mouse.y;
+      obj.p3.y = mousePos.y;
+      obj.p4.y = mousePos.y;
     }
     // Left
     else if (draggingPart.part == 8) {
-      obj.p1.x = mouse.x;
-      obj.p3.x = mouse.x;
+      obj.p1.x = mousePos.x;
+      obj.p3.x = mousePos.x;
     }
     // Inside
     else if (draggingPart.part == 0) {
       if (shift)
       {
-        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+        var mousePos1 = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
       }
       else
       {
-        var mouse_snapped = mouse;
+        var mousePos1 = mouse.getPosSnappedToGrid();
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
   
-      var mouseDiffX = draggingPart.mouse1.x - mouse_snapped.x; // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mouse1.y - mouse_snapped.y; // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = draggingPart.mouse1.x - mousePos1.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = draggingPart.mouse1.y - mousePos1.y; // The Y difference between the mouse position now and at the previous moment
       
 
       obj.p1.x -= mouseDiffX;
@@ -202,7 +204,7 @@ objTypes['cropbox'] = {
       obj.p4.y -= mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mouse1 = mouse_snapped;
+      draggingPart.mouse1 = mousePos1;
     }
 
   },

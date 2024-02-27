@@ -4,68 +4,61 @@ objTypes['refractor'] = {
   supportSurfaceMerging: true,
 
   // Create the obj
-  create: function(mouse) {
-    return {type: 'refractor', path: [{x: mouse.x, y: mouse.y, arc: false}], notDone: true, p: 1.5};
+  create: function (constructionPoint) {
+    return { type: 'refractor', path: [{ x: constructionPoint.x, y: constructionPoint.y, arc: false }], notDone: true, p: 1.5 };
   },
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
+  populateObjBar: function (obj, objBar) {
     if (scene.colorMode) {
-      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, obj.p, function (obj, value) {
         obj.p = value * 1;
       }, getMsg('refractiveindex_note_popover'));
-      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function(obj, value) {
+      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, (obj.cauchyCoeff || 0.004), function (obj, value) {
         obj.cauchyCoeff = value;
       });
     } else {
-      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function(obj, value) {
+      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, obj.p, function (obj, value) {
         obj.p = value * 1;
       }, getMsg('refractiveindex_note_popover'));
     }
   },
 
   // Mousedown when the obj is being constructed by the user
-  c_mousedown: function(obj, mouse, ctrl, shift)
-  {
-    if (obj.path.length > 1)
-    {
-      if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
-      {
+  c_mousedown: function (obj, mouse, ctrl, shift) {
+    if (obj.path.length > 1) {
+      if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
         // Clicked the first point
         obj.path.length--;
         obj.notDone = false;
         return;
       }
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
+      const mousePos = mouse.getPosSnappedToGrid();
+      obj.path[obj.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
       obj.path[obj.path.length - 1].arc = true;
     }
   },
   // Mousemove when the obj is being constructed by the user
-  c_mousemove: function(obj, mouse, ctrl, shift)
-  {
-    if (!obj.notDone) {return;}
-    if (typeof obj.path[obj.path.length - 1].arc != 'undefined')
-    {
-      if (obj.path[obj.path.length - 1].arc && Math.sqrt(Math.pow(obj.path[obj.path.length - 1].x - mouse.x, 2) + Math.pow(obj.path[obj.path.length - 1].y - mouse.y, 2)) >= 5)
-      {
-        obj.path[obj.path.length] = mouse;
+  c_mousemove: function (obj, mouse, ctrl, shift) {
+    if (!obj.notDone) { return; }
+    const mousePos = mouse.getPosSnappedToGrid();
+    if (typeof obj.path[obj.path.length - 1].arc != 'undefined') {
+      if (obj.path[obj.path.length - 1].arc && Math.sqrt(Math.pow(obj.path[obj.path.length - 1].x - mousePos.x, 2) + Math.pow(obj.path[obj.path.length - 1].y - mousePos.y, 2)) >= 5) {
+        obj.path[obj.path.length] = mousePos;
       }
     }
-    else
-    {
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
+    else {
+      obj.path[obj.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
     }
   },
   // Mouseup when the obj is being constructed by the user
-  c_mouseup: function(obj, mouse, ctrl, shift)
-  {
+  c_mouseup: function (obj, mouse, ctrl, shift) {
     if (!obj.notDone) {
       return {
         isDone: true
       };
     }
-    if (obj.path.length > 3 && mouseOnPoint(mouse, obj.path[0]))
-    {
+    if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
       // Mouse released at the first point
       obj.path.length--;
       obj.notDone = false;
@@ -73,25 +66,24 @@ objTypes['refractor'] = {
         isDone: true
       };
     }
-    if (obj.path[obj.path.length - 2] && !obj.path[obj.path.length - 2].arc && mouseOnPoint_construct(mouse, obj.path[obj.path.length - 2]))
-    {
+    if (obj.path[obj.path.length - 2] && !obj.path[obj.path.length - 2].arc && mouse.isOnPoint(obj.path[obj.path.length - 2])) {
       delete obj.path[obj.path.length - 1].arc;
     }
-    else
-    {
-      obj.path[obj.path.length - 1] = {x: mouse.x, y: mouse.y}; // Move the last point
+    else {
+      const mousePos = mouse.getPosSnappedToGrid();
+      obj.path[obj.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
       obj.path[obj.path.length - 1].arc = false;
-      obj.path[obj.path.length] = {x: mouse.x, y: mouse.y}; // Create a new point
+      obj.path[obj.path.length] = { x: mousePos.x, y: mousePos.y }; // Create a new point
 
     }
   },
-  
-  zIndex: function(obj) {
+
+  zIndex: function (obj) {
     return obj.p * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {
+  draw: function (obj, ctx, aboveLight) {
     var p1;
     var p2;
     var p3;
@@ -102,23 +94,19 @@ objTypes['refractor'] = {
     var a3;
     var acw;
 
-    if (obj.notDone)
-    {
+    if (obj.notDone) {
       // The user has not finish drawing the obj yet
 
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
 
-      for (var i = 0; i < obj.path.length - 1; i++)
-      {
-        if (obj.path[(i + 1)].arc && !obj.path[i].arc && i < obj.path.length - 2)
-        {
+      for (var i = 0; i < obj.path.length - 1; i++) {
+        if (obj.path[(i + 1)].arc && !obj.path[i].arc && i < obj.path.length - 2) {
           p1 = geometry.point(obj.path[i].x, obj.path[i].y);
           p2 = geometry.point(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
           p3 = geometry.point(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
           center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
-          if (isFinite(center.x) && isFinite(center.y))
-          {
+          if (isFinite(center.x) && isFinite(center.y)) {
             r = geometry.length(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
@@ -127,16 +115,14 @@ objTypes['refractor'] = {
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
-          else
-          {
+          else {
             // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
           }
 
 
         }
-        else if (!obj.path[(i + 1)].arc && !obj.path[i].arc)
-        {
+        else if (!obj.path[(i + 1)].arc && !obj.path[i].arc) {
           ctx.lineTo(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
         }
       }
@@ -145,22 +131,18 @@ objTypes['refractor'] = {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
-    else
-    {
+    else {
       // The user has completed drawing the obj
       ctx.beginPath();
       ctx.moveTo(obj.path[0].x, obj.path[0].y);
 
-      for (var i = 0; i < obj.path.length; i++)
-      {
-        if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-        {
+      for (var i = 0; i < obj.path.length; i++) {
+        if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
           p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
           p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
           p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
           center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
-          if (isFinite(center.x) && isFinite(center.y))
-          {
+          if (isFinite(center.x) && isFinite(center.y)) {
             r = geometry.length(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
@@ -169,15 +151,13 @@ objTypes['refractor'] = {
 
             ctx.arc(center.x, center.y, r, a1, a2, acw);
           }
-          else
-          {
+          else {
             // The three points on the arc is colinear. Treat as a line segment.
             ctx.lineTo(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
           }
 
         }
-        else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-        {
+        else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
@@ -186,19 +166,14 @@ objTypes['refractor'] = {
     ctx.lineWidth = 1;
 
 
-    if (obj == mouseObj)
-    {
-      for (var i = 0; i < obj.path.length; i++)
-      {
-        if (typeof obj.path[i].arc != 'undefined')
-        {
-          if (obj.path[i].arc)
-          {
+    if (obj == mouseObj) {
+      for (var i = 0; i < obj.path.length; i++) {
+        if (typeof obj.path[i].arc != 'undefined') {
+          if (obj.path[i].arc) {
             ctx.fillStyle = 'rgb(255,0,255)';
             ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
           }
-          else
-          {
+          else {
             ctx.fillStyle = 'rgb(255,0,0)';
             ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
           }
@@ -207,8 +182,7 @@ objTypes['refractor'] = {
     }
   },
 
-  fillGlass: function(n, obj, ctx, aboveLight)
-  {
+  fillGlass: function (n, obj, ctx, aboveLight) {
     //console.log(aboveLight)
     if (aboveLight) {
       // Draw the highlight only
@@ -218,24 +192,22 @@ objTypes['refractor'] = {
       ctx.globalAlpha = 1;
       return;
     }
-    if (n >= 1)
-    {
+    if (n >= 1) {
       ctx.globalCompositeOperation = 'lighter';
       var alpha = Math.log(n) / Math.log(1.5) * 0.2;
       if (ctx.constructor != C2S) {
         ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
       } else {
         ctx.globalAlpha = alpha;
-        ctx.fillStyle ="white";
+        ctx.fillStyle = "white";
       }
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
     }
-    else
-    {
-      var alpha = Math.log(1/n) / Math.log(1.5) * 0.2;
+    else {
+      var alpha = Math.log(1 / n) / Math.log(1.5) * 0.2;
       if (ctx.constructor != C2S) {
         // Subtract the gray color.
         // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
@@ -250,12 +222,12 @@ objTypes['refractor'] = {
         ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (0) + "%," + (0) + "%)";
         ctx.fill('evenodd');
 
-        ctx.setTransform(1,0,0,1,0,0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scene.scale*dpr,0,0,scene.scale*dpr,scene.origin.x*dpr, scene.origin.y*dpr);
-        
+        ctx.setTransform(scene.scale * dpr, 0, 0, scene.scale * dpr, scene.origin.x * dpr, scene.origin.y * dpr);
+
         ctx.globalCompositeOperation = 'lighter';
 
         ctx.fillStyle = "rgb(" + (0) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
@@ -263,10 +235,10 @@ objTypes['refractor'] = {
 
         ctx.globalCompositeOperation = 'difference';
 
-        ctx.setTransform(1,0,0,1,0,0);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(scene.scale*dpr,0,0,scene.scale*dpr,scene.origin.x*dpr, scene.origin.y*dpr);
+        ctx.setTransform(scene.scale * dpr, 0, 0, scene.scale * dpr, scene.origin.x * dpr, scene.origin.y * dpr);
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
@@ -282,9 +254,8 @@ objTypes['refractor'] = {
   },
 
   // Move the object
-  move: function(obj, diffX, diffY) {
-    for (var i = 0; i < obj.path.length; i++)
-    {
+  move: function (obj, diffX, diffY) {
+    for (var i = 0; i < obj.path.length; i++) {
       obj.path[i].x += diffX;
       obj.path[i].y += diffY;
     }
@@ -292,7 +263,7 @@ objTypes['refractor'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  clicked: function(obj, mouse_nogrid, mouse, draggingPart) {
+  clicked: function (obj, mouse, draggingPart) {
 
     var p1;
     var p2;
@@ -307,74 +278,64 @@ objTypes['refractor'] = {
     var click_lensq = Infinity;
     var click_lensq_temp;
     var targetPoint_index = -1;
-    for (var i = 0; i < obj.path.length; i++)
-    {
-      if (mouseOnPoint(mouse_nogrid, obj.path[i]))
-      {
-        click_lensq_temp = geometry.length_squared(mouse_nogrid, obj.path[i]);
-        if (click_lensq_temp <= click_lensq)
-        {
+    for (var i = 0; i < obj.path.length; i++) {
+      if (mouse.isOnPoint(obj.path[i])) {
+        click_lensq_temp = geometry.length_squared(mouse.pos, obj.path[i]);
+        if (click_lensq_temp <= click_lensq) {
           click_lensq = click_lensq_temp;
           targetPoint_index = i;
         }
       }
     }
-    if (targetPoint_index != -1)
-    {
+    if (targetPoint_index != -1) {
       draggingPart.part = 1;
       draggingPart.index = targetPoint_index;
       draggingPart.targetPoint = geometry.point(obj.path[targetPoint_index].x, obj.path[targetPoint_index].y);
       return true;
     }
 
-    for (var i = 0; i < obj.path.length; i++)
-    {
-      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
+    for (var i = 0; i < obj.path.length; i++) {
+      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
         p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
         p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
         p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
-        if (isFinite(center.x) && isFinite(center.y))
-        {
+        if (isFinite(center.x) && isFinite(center.y)) {
           r = geometry.length(center, p3);
           a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
           a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
           a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-          var a_m = Math.atan2(mouse_nogrid.y - center.y, mouse_nogrid.x - center.x);
-          if (Math.abs(geometry.length(center, mouse_nogrid) - r) < getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2))))
-          {
+          var a_m = Math.atan2(mouse.pos.y - center.y, mouse.pos.x - center.x);
+          if (Math.abs(geometry.length(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
             // Dragging the entire obj
+            const mousePos = mouse.getPosSnappedToGrid();
             draggingPart.part = 0;
-            draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-            draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+            draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
+            draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
         }
-        else
-        {
+        else {
           // The three points on the arc is colinear. Treat as a line segment.
-          if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length])))
-          {
+          if (mouse.isOnSegment(geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length]))) {
             // Dragging the entire obj
+            const mousePos = mouse.getPosSnappedToGrid();
             draggingPart.part = 0;
-            draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-            draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+            draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
+            draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
         }
-
       }
-      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
-        if (mouseOnSegment(mouse_nogrid, geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length])))
-        {
+      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
+        if (mouse.isOnSegment(geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length]))) {
           // Dragging the entire obj
+          const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
-          draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-          draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+          draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
+          draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return true;
         }
@@ -384,35 +345,33 @@ objTypes['refractor'] = {
   },
 
   // When the user is dragging the obj
-  dragging: function(obj, mouse, draggingPart, ctrl, shift) {
-    if (draggingPart.part == 1)
-    {
-      obj.path[draggingPart.index].x = mouse.x;
-      obj.path[draggingPart.index].y = mouse.y;
+  dragging: function (obj, mouse, draggingPart, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+
+    if (draggingPart.part == 1) {
+      obj.path[draggingPart.index].x = mousePos.x;
+      obj.path[draggingPart.index].y = mousePos.y;
     }
 
-    if (draggingPart.part == 0)
-    {
-      if (shift)
-      {
-        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+    if (draggingPart.part == 0) {
+      if (shift) {
+        var mousePos1 = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
-      else
-      {
-        var mouse_snapped = mouse;
+      else {
+        var mousePos1 = mouse.getPosSnappedToGrid();
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
-      this.move(obj, mouse_snapped.x - draggingPart.mouse1.x, mouse_snapped.y - draggingPart.mouse1.y);
-      draggingPart.mouse1 = mouse_snapped;
+      this.move(obj, mousePos1.x - draggingPart.mouse1.x, mousePos1.y - draggingPart.mouse1.y);
+      draggingPart.mouse1 = mousePos1;
     }
   },
 
 
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function(obj, ray) {
+  rayIntersection: function (obj, ray) {
 
-    if (obj.notDone || obj.p <= 0)return;
+    if (obj.notDone || obj.p <= 0) return;
 
     var s_lensq = Infinity;
     var s_lensq_temp;
@@ -428,98 +387,81 @@ objTypes['refractor'] = {
     var center;
     var r;
 
-    for (var i = 0; i < obj.path.length; i++)
-    {
+    for (var i = 0; i < obj.path.length; i++) {
       s_point_temp = null;
-      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
+      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
         // The arc i->i+1->i+2
         p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
         p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
         p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
-        if (isFinite(center.x) && isFinite(center.y))
-        {
+        if (isFinite(center.x) && isFinite(center.y)) {
           r = geometry.length(center, p3);
           rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(center, p2));
-          for (var ii = 1; ii <= 2; ii++)
-          {
+          for (var ii = 1; ii <= 2; ii++) {
             rp_exist[ii] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.segment(p3, rp_temp[ii])) && geometry.intersection_is_on_ray(rp_temp[ii], ray) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
             rp_lensq[ii] = geometry.length_squared(ray.p1, rp_temp[ii]);
           }
-          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared)
-          {
+          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared) {
             s_point_temp = rp_temp[1];
             s_lensq_temp = rp_lensq[1];
           }
-          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared)
-          {
+          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared) {
             s_point_temp = rp_temp[2];
             s_lensq_temp = rp_lensq[2];
           }
         }
-        else
-        {
+        else {
           // The three points on the arc is colinear. Treat as a line segment.
           var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
-          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared)
-          {
+          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
             s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
           }
         }
       }
-      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
+      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
         //Line segment i->i+1
         var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
 
-        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared)
-        {
+        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
           s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
         }
       }
-      if (s_point_temp)
-      {
-        if (s_lensq_temp < s_lensq)
-        {
+      if (s_point_temp) {
+        if (s_lensq_temp < s_lensq) {
           s_lensq = s_lensq_temp;
           s_point = s_point_temp;
         }
       }
     }
-    if (s_point)
-    {
+    if (s_point) {
       return s_point;
     }
 
   },
 
   // When the obj is shot by a ray
-  shot: function(obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
-    if (obj.notDone) {return;}
+    if (obj.notDone) { return; }
     var shotData = this.getShotData(obj, ray);
     var shotType = shotData.shotType;
-    if (shotType == 1)
-    {
+    if (shotType == 1) {
       // Shot from inside to outside
-      var n1 = (!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)); // The refractive index of the source material (assuming the destination has 1)
+      var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
-    else if (shotType == -1)
-    {
+    else if (shotType == -1) {
       // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorMode)?obj.p:(obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001)));
+      var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
     }
-    else if (shotType == 0)
-    {
+    else if (shotType == 0) {
       // Equivalent to not shot on the obj (e.g. two interfaces overlap)
       var n1 = 1;
     }
-    else
-    {
+    else {
       // The situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       ray.exist = false;
@@ -527,26 +469,21 @@ objTypes['refractor'] = {
     }
 
     // Surface merging
-    for (var i = 0; i < surfaceMerging_objs.length; i++)
-    {
+    for (var i = 0; i < surfaceMerging_objs.length; i++) {
       shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1)
-      {
+      if (shotType == 1) {
         // Shot from inside to outside
-        n1 *= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 *= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == -1)
-      {
+      else if (shotType == -1) {
         // Shot from outside to inside
-        n1 /= (!scene.colorMode)?surfaceMerging_objs[i].p:(surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength*ray.wavelength*0.000001));
+        n1 /= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == 0)
-      {
+      else if (shotType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
       }
-      else
-      {
+      else {
         // Situation that may cause bugs (e.g. shot at an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
         ray.exist = false;
@@ -558,12 +495,12 @@ objTypes['refractor'] = {
   },
 
   // Test if the ray is shot from inside or outside
-  getShotType: function(obj, ray) {
+  getShotType: function (obj, ray) {
     return this.getShotData(obj, ray).shotType;
   },
 
 
-  getShotData: function(obj, ray) {
+  getShotData: function (obj, ray) {
     // Test where in the obj does the ray shoot on
     var s_lensq = Infinity;
     var s_lensq_temp;
@@ -601,23 +538,19 @@ objTypes['refractor'] = {
     var ray2 = geometry.ray(ray.p1, geometry.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
     var ray_intersect_count = 0; // The intersection count (odd means from outside)
 
-    for (var i = 0; i < obj.path.length; i++)
-    {
+    for (var i = 0; i < obj.path.length; i++) {
       s_point_temp = null;
       nearEdge_temp = false;
-      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
+      if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
         // The arc i->i+1->i+2
         p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
         p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
         p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
-        if (isFinite(center.x) && isFinite(center.y))
-        {
+        if (isFinite(center.x) && isFinite(center.y)) {
           rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(center, p2));
           rp2_temp = geometry.intersection_line_circle(geometry.line(ray2.p1, ray2.p2), geometry.circle(center, p2));
-          for (var ii = 1; ii <= 2; ii++)
-          {
+          for (var ii = 1; ii <= 2; ii++) {
             rp_on_ray[ii] = geometry.intersection_is_on_ray(rp_temp[ii], ray);
             rp_exist[ii] = rp_on_ray[ii] && !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.segment(p3, rp_temp[ii])) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
             rp_lensq[ii] = geometry.length_squared(ray.p1, rp_temp[ii]);
@@ -626,62 +559,51 @@ objTypes['refractor'] = {
             rp2_lensq[ii] = geometry.length_squared(ray2.p1, rp2_temp[ii]);
           }
 
-          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared)
-          {
+          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared) {
             s_point_temp = rp_temp[1];
             s_lensq_temp = rp_lensq[1];
-            if (rp_on_ray[2] && rp_lensq[1] < rp_lensq[2])
-            {
+            if (rp_on_ray[2] && rp_lensq[1] < rp_lensq[2]) {
               //The ray is from outside to inside (with respect to the arc itself)
               normal_x_temp = s_point_temp.x - center.x;
               normal_y_temp = s_point_temp.y - center.y;
             }
-            else
-            {
+            else {
               normal_x_temp = center.x - s_point_temp.x;
               normal_y_temp = center.y - s_point_temp.y;
             }
           }
-          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared)
-          {
+          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared) {
             s_point_temp = rp_temp[2];
             s_lensq_temp = rp_lensq[2];
-            if (rp_on_ray[1] && rp_lensq[2] < rp_lensq[1])
-            {
+            if (rp_on_ray[1] && rp_lensq[2] < rp_lensq[1]) {
               //The ray is from outside to inside (with respect to the arc itself)
               normal_x_temp = s_point_temp.x - center.x;
               normal_y_temp = s_point_temp.y - center.y;
             }
-            else
-            {
+            else {
               normal_x_temp = center.x - s_point_temp.x;
               normal_y_temp = center.y - s_point_temp.y;
             }
           }
-          if (rp2_exist[1] && rp2_lensq[1] > minShotLength_squared)
-          {
+          if (rp2_exist[1] && rp2_lensq[1] > minShotLength_squared) {
             ray_intersect_count++;
           }
-          if (rp2_exist[2] && rp2_lensq[2] > minShotLength_squared)
-          {
+          if (rp2_exist[2] && rp2_lensq[2] > minShotLength_squared) {
             ray_intersect_count++;
           }
 
           // Test if too close to an edge
-          if (s_point_temp && (geometry.length_squared(s_point_temp, p1) < minShotLength_squared || geometry.length_squared(s_point_temp, p2) < minShotLength_squared))
-          {
+          if (s_point_temp && (geometry.length_squared(s_point_temp, p1) < minShotLength_squared || geometry.length_squared(s_point_temp, p2) < minShotLength_squared)) {
             nearEdge_temp = true;
           }
 
         }
-        else
-        {
+        else {
           // The three points on the arc is colinear. Treat as a line segment.
           rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
           rp2_temp = geometry.intersection_2line(geometry.line(ray2.p1, ray2.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
-          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared)
-          {
+          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
             s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
 
@@ -694,26 +616,22 @@ objTypes['refractor'] = {
 
           }
 
-          if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared)
-          {
+          if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
             ray_intersect_count++;
           }
 
           // Test if too close to an edge
-          if (s_point_temp && (geometry.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || geometry.length_squared(s_point_temp, obj.path[(i + 2) % obj.path.length]) < minShotLength_squared))
-          {
+          if (s_point_temp && (geometry.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || geometry.length_squared(s_point_temp, obj.path[(i + 2) % obj.path.length]) < minShotLength_squared)) {
             nearEdge_temp = true;
           }
         }
       }
-      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc)
-      {
+      else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
         //Line segment i->i+1
         rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
 
         rp2_temp = geometry.intersection_2line(geometry.line(ray2.p1, ray2.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
-        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared)
-        {
+        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
           s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
 
@@ -726,26 +644,21 @@ objTypes['refractor'] = {
 
         }
 
-        if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared)
-        {
+        if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
           ray_intersect_count++;
         }
 
         // Test if too close to an edge
-        if (s_point_temp && (geometry.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || geometry.length_squared(s_point_temp, obj.path[(i + 1) % obj.path.length]) < minShotLength_squared))
-        {
+        if (s_point_temp && (geometry.length_squared(s_point_temp, obj.path[i % obj.path.length]) < minShotLength_squared || geometry.length_squared(s_point_temp, obj.path[(i + 1) % obj.path.length]) < minShotLength_squared)) {
           nearEdge_temp = true;
         }
       }
-      if (s_point_temp)
-      {
-        if (s_point && geometry.length_squared(s_point_temp, s_point) < minShotLength_squared)
-        {
+      if (s_point_temp) {
+        if (s_point && geometry.length_squared(s_point_temp, s_point) < minShotLength_squared) {
           // Self surface merging
           surfaceMultiplicity++;
         }
-        else if (s_lensq_temp < s_lensq)
-        {
+        else if (s_lensq_temp < s_lensq) {
           s_lensq = s_lensq_temp;
           s_point = s_point_temp;
           s_point_index = i;
@@ -758,29 +671,24 @@ objTypes['refractor'] = {
     }
 
 
-    if (nearEdge)
-    {
+    if (nearEdge) {
       var shotType = 2; // Shot at an edge point
     }
-    else if (surfaceMultiplicity % 2 == 0)
-    {
+    else if (surfaceMultiplicity % 2 == 0) {
       var shotType = 0; // Equivalent to not shot on the obj
     }
-    else if (ray_intersect_count % 2 == 1)
-    {
+    else if (ray_intersect_count % 2 == 1) {
       var shotType = 1; // Shot from inside to outside
     }
-    else
-    {
+    else {
       var shotType = -1; // Shot from outside to inside
     }
 
-    return {s_point: s_point, normal: {x: normal_x, y: normal_y},shotType: shotType};
+    return { s_point: s_point, normal: { x: normal_x, y: normal_y }, shotType: shotType };
   },
 
   // Do the refraction
-  refract: function(ray, rayIndex, s_point, normal, n1)
-  {
+  refract: function (ray, rayIndex, s_point, normal, n1) {
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     var normal_x = normal.x / normal_len;
     var normal_y = normal.y / normal_len;
@@ -797,16 +705,14 @@ objTypes['refractor'] = {
     var sq1 = 1 - n1 * n1 * (1 - cos1 * cos1);
 
 
-    if (sq1 < 0)
-    {
+    if (sq1 < 0) {
       // Total internal reflection
       ray.p1 = s_point;
       ray.p2 = geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
 
 
     }
-    else
-    {
+    else {
       // Refraction
       var cos2 = Math.sqrt(sq1);
 
@@ -820,18 +726,14 @@ objTypes['refractor'] = {
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
-      if (ray2.brightness_s + ray2.brightness_p > 0.01)
-      {
+      if (ray2.brightness_s + ray2.brightness_p > 0.01) {
         addRay(ray2);
       }
-      else 
-      {
+      else {
         totalTruncation += ray2.brightness_s + ray2.brightness_p;
-        if (!ray.gap)
-        {
+        if (!ray.gap) {
           var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
-          if (rayIndex % amp == 0)
-          {
+          if (rayIndex % amp == 0) {
             ray2.brightness_s = ray2.brightness_s * amp;
             ray2.brightness_p = ray2.brightness_p * amp;
             addRay(ray2);

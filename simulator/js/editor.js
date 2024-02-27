@@ -132,9 +132,9 @@ function canvas_onmousedown(e) {
       }
       else {
         // Create a new object
-        scene.objs[scene.objs.length] = objTypes[AddingObjType].create(new Mouse(mouse_nogrid, scene, lastDeviceIsTouch));
-        isConstructing = true;
         constructionPoint = mouse;
+        isConstructing = true;
+        scene.objs[scene.objs.length] = objTypes[AddingObjType].create(constructionPoint);
         if (scene.objs[selectedObj]) {
           if (scene.objs[selectedObj].type == scene.objs[scene.objs.length - 1].type && scene.objs[selectedObj].p) {
             scene.objs[scene.objs.length - 1].p = scene.objs[selectedObj].p; // Let the property of this obj to be the same as the previously selected obj (if of the same type)

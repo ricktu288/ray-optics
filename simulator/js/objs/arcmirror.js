@@ -2,8 +2,8 @@
 objTypes['arcmirror'] = {
 
   // Create the obj
-  create: function (mouse) {
-    return { type: 'arcmirror', p1: mouse.getPosSnappedToGrid() };
+  create: function (constructionPoint) {
+    return { type: 'arcmirror', p1: constructionPoint };
   },
 
   // Show the property box
@@ -159,7 +159,7 @@ objTypes['arcmirror'] = {
     }
     else {
       // The three points on the arc is colinear. Treat as a line segment.
-      if (mouseOnSegment(mouse_nogrid, obj)) {
+      if (mouse.isOnSegment(obj)) {
         draggingPart.part = 0;
         draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
         draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
