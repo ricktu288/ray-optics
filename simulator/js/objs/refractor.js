@@ -310,8 +310,8 @@ objTypes['refractor'] = {
             // Dragging the entire obj
             const mousePos = mouse.getPosSnappedToGrid();
             draggingPart.part = 0;
-            draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-            draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+            draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+            draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
@@ -322,8 +322,8 @@ objTypes['refractor'] = {
             // Dragging the entire obj
             const mousePos = mouse.getPosSnappedToGrid();
             draggingPart.part = 0;
-            draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-            draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+            draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+            draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
             return true;
           }
@@ -334,8 +334,8 @@ objTypes['refractor'] = {
           // Dragging the entire obj
           const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
-          draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-          draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+          draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return true;
         }
@@ -355,14 +355,14 @@ objTypes['refractor'] = {
 
     if (draggingPart.part == 0) {
       if (shift) {
-        var mousePos1 = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
       else {
-        var mousePos1 = mouse.getPosSnappedToGrid();
+        var mousePosSnapped = mouse.getPosSnappedToGrid();
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
-      this.move(obj, mousePos1.x - draggingPart.mouse1.x, mousePos1.y - draggingPart.mouse1.y);
-      draggingPart.mouse1 = mousePos1;
+      this.move(obj, mousePosSnapped.x - draggingPart.mousePos1.x, mousePosSnapped.y - draggingPart.mousePos1.y);
+      draggingPart.mousePos1 = mousePosSnapped;
     }
   },
 

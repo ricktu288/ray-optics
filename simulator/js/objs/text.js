@@ -141,8 +141,8 @@ objTypes['text'] = {
     if (rotatedMouseX >= -obj.tmp_left && rotatedMouseX <= obj.tmp_right &&
       rotatedMouseY <= obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
       draggingPart.part = 0;
-      draggingPart.mouse0 = geometry.point(mouse.pos.x, mouse.pos.y);
-      draggingPart.mouse0snapped = mouse.getPosSnappedToGrid();
+      draggingPart.mousePos0 = geometry.point(mouse.pos.x, mouse.pos.y);
+      draggingPart.mousePos0snapped = mouse.getPosSnappedToGrid();
       draggingPart.targetPoint_ = geometry.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
       return true;
@@ -153,7 +153,7 @@ objTypes['text'] = {
   // When the user is dragging the obj
   dragging: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
@@ -161,11 +161,11 @@ objTypes['text'] = {
     }
 
     // 'draggingPart.targetPoint_' object placement position (bottom left)
-    // 'draggingPart.mouse0' is coordiates of where the drag started, not snapped
-    // 'draggingPart.mouse0snapped' is coordiates of where the drag started, snapped to grid
+    // 'draggingPart.mousePos0' is coordiates of where the drag started, not snapped
+    // 'draggingPart.mousePos0snapped' is coordiates of where the drag started, snapped to grid
     // new location  =  current location (snapped)  +  object placement location  -  where drag started (snapped)
-    obj.x = mousePos.x + draggingPart.targetPoint_.x - draggingPart.mouse0snapped.x;
-    obj.y = mousePos.y + draggingPart.targetPoint_.y - draggingPart.mouse0snapped.y;
+    obj.x = mousePos.x + draggingPart.targetPoint_.x - draggingPart.mousePos0snapped.x;
+    obj.y = mousePos.y + draggingPart.targetPoint_.y - draggingPart.mousePos0snapped.y;
   },
 
 };

@@ -125,8 +125,8 @@ objTypes['curvedglass'] = {
       // Dragging the entire obj
       const mousePos = mouse.getPosSnappedToGrid();
       draggingPart.part = 0;
-      draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }

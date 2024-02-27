@@ -53,8 +53,8 @@ objTypes['blackcircle'] = {
     if (Math.abs(geometry.length(obj.p1, mouse.pos) - geometry.length_segment(obj)) < mouse.getClickExtent()) {
       const mousePos = mouse.getPosSnappedToGrid();
       draggingPart.part = 0;
-      draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }

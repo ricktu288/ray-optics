@@ -82,14 +82,14 @@ objTypes['handle'] = {
     if (mouse.isOnPoint(obj.p1)) {
       draggingPart.part = 1;
       draggingPart.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
-      draggingPart.mouse0 = geometry.point(obj.p1.x, obj.p1.y);
+      draggingPart.mousePos0 = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.snapData = {};
       return true;
     }
     if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      draggingPart.mouse0 = geometry.point(obj.p2.x, obj.p2.y);
+      draggingPart.mousePos0 = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.snapData = {};
       return true;
     }
@@ -100,7 +100,7 @@ objTypes['handle'] = {
   dragging: function (obj, mouse, draggingPart, ctrl, shift) {
     if (obj.notDone) return;
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();

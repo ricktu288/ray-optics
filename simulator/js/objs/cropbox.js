@@ -118,8 +118,8 @@ objTypes['cropbox'] = {
     const mousePos = mouse.getPosSnappedToGrid();
     if ((obj.p1.x < mousePos.x && mousePos.x < obj.p2.x) && (obj.p1.y < mousePos.y && mousePos.y < obj.p3.y)) {
       draggingPart.part = 0;
-      draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
       return true;
     }
@@ -182,16 +182,16 @@ objTypes['cropbox'] = {
     else if (draggingPart.part == 0) {
       if (shift)
       {
-        var mousePos1 = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
       }
       else
       {
-        var mousePos1 = mouse.getPosSnappedToGrid();
+        var mousePosSnapped = mouse.getPosSnappedToGrid();
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
   
-      var mouseDiffX = draggingPart.mouse1.x - mousePos1.x; // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mouse1.y - mousePos1.y; // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = draggingPart.mousePos1.x - mousePosSnapped.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = draggingPart.mousePos1.y - mousePosSnapped.y; // The Y difference between the mouse position now and at the previous moment
       
 
       obj.p1.x -= mouseDiffX;
@@ -204,7 +204,7 @@ objTypes['cropbox'] = {
       obj.p4.y -= mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mouse1 = mousePos1;
+      draggingPart.mousePos1 = mousePosSnapped;
     }
 
   },

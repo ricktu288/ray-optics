@@ -77,8 +77,8 @@ objTypes['drawing'] = {
         if (mouse.isOnSegment(geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
-          draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-          draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+          draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return true;
         }
@@ -90,15 +90,15 @@ objTypes['drawing'] = {
   // When the user is dragging the obj
   dragging: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
       draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    var mouseDiffX = draggingPart.mouse1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
-    var mouseDiffY = draggingPart.mouse1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+    var mouseDiffX = draggingPart.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
+    var mouseDiffY = draggingPart.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
 
     if (draggingPart.part == 0) {
       for (var i = 0; i < obj.points.length; i++) {
@@ -110,7 +110,7 @@ objTypes['drawing'] = {
     }
 
     // Update the mouse position
-    draggingPart.mouse1 = mousePos;
+    draggingPart.mousePos1 = mousePos;
   }
 
 };

@@ -85,8 +85,8 @@ function canvas_onmousedown(e) {
           draggingObj = -4;
           draggingPart = {};
           //draggingPart.part=0;
-          draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-          draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
+          draggingPart.mousePos0 = mouse; // Mouse position when the user starts dragging
+          draggingPart.mousePos1 = mouse; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
           return;
         }
@@ -124,9 +124,9 @@ function canvas_onmousedown(e) {
         // To drag the entire scene
         draggingObj = -3;
         draggingPart = {};
-        draggingPart.mouse0 = mouse; // Mouse position when the user starts dragging
-        draggingPart.mouse1 = mouse; // Mouse position at the last moment during dragging
-        draggingPart.mouse2 = scene.origin; //Original origin.
+        draggingPart.mousePos0 = mouse; // Mouse position when the user starts dragging
+        draggingPart.mousePos1 = mouse; // Mouse position at the last moment during dragging
+        draggingPart.mousePos2 = scene.origin; //Original origin.
         draggingPart.snapData = {};
         selectObj(-1);
       }
@@ -222,12 +222,12 @@ function canvas_onmousemove(e) {
     var et = e;
   }
   var mouse_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
-  var mouse2;
+  var mousePos2;
   if (scene.grid && !(e.altKey && !isConstructing)) {
-    mouse2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
+    mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
   }
   else {
-    mouse2 = mouse_nogrid;
+    mousePos2 = mouse_nogrid;
   }
 
   if (!isConstructing && draggingObj == -1 && !scene.lockobjs) {
@@ -258,10 +258,10 @@ function canvas_onmousemove(e) {
     }
   }
 
-  if (mouse2.x == mouse.x && mouse2.y == mouse.y) {
+  if (mousePos2.x == mouse.x && mousePos2.y == mouse.y) {
     return;
   }
-  mouse = mouse2;
+  mouse = mousePos2;
 
 
   if (isConstructing) {
@@ -284,21 +284,21 @@ function canvas_onmousemove(e) {
   else {
     if (draggingObj == -4) {
       if (e.shiftKey) {
-        var mouse_snapped = snapToDirection(mouse, draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mouse_snapped = snapToDirection(mouse, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
       else {
         var mouse_snapped = mouse;
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = (mouse_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mouse_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
 
       scene.observer.c.x += mouseDiffX;
       scene.observer.c.y += mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mouse1 = mouse_snapped;
+      draggingPart.mousePos1 = mouse_snapped;
       draw(false, true);
     }
 
@@ -329,20 +329,20 @@ function canvas_onmousemove(e) {
 
     if (draggingObj == -3) {
       // Move the entire scene
-      // Here mouse is the currect mouse position, draggingPart.mouse1 is the mouse position at the previous moment
+      // Here mouse is the currect mouse position, draggingPart.mousePos1 is the mouse position at the previous moment
 
       if (e.shiftKey) {
-        var mouse_snapped = snapToDirection(mouse_nogrid, draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mouse_snapped = snapToDirection(mouse_nogrid, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
       else {
         var mouse_snapped = mouse_nogrid;
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mouse_snapped.x - draggingPart.mouse1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mouse_snapped.y - draggingPart.mouse1.y); // The Y difference between the mouse position now and at the previous moment
-      scene.origin.x = mouseDiffX * scene.scale + draggingPart.mouse2.x;
-      scene.origin.y = mouseDiffY * scene.scale + draggingPart.mouse2.y;
+      var mouseDiffX = (mouse_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mouse_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      scene.origin.x = mouseDiffX * scene.scale + draggingPart.mousePos2.x;
+      scene.origin.y = mouseDiffY * scene.scale + draggingPart.mousePos2.y;
       draw();
     }
 
@@ -380,7 +380,7 @@ function canvas_onmouseup(e) {
       pendingControlPointSelection = false
       addControlPointsForHandle(pendingControlPoints);
     }
-    if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mouse0.x && mouse.y == draggingPart.mouse0.y) {
+    if (e.which && e.which == 3 && draggingObj == -3 && mouse.x == draggingPart.mousePos0.x && mouse.y == draggingPart.mousePos0.y) {
       draggingObj = -1;
       draggingPart = {};
       canvas_ondblclick(e);

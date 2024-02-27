@@ -54,7 +54,7 @@ objTypes['radiant'] = {
   clicked: function (obj, mouse, draggingPart) {
     if (mouse.isOnPoint(obj)) {
       draggingPart.part = 0;
-      draggingPart.mouse0 = geometry.point(obj.x, obj.y);
+      draggingPart.mousePos0 = geometry.point(obj.x, obj.y);
       draggingPart.targetPoint = geometry.point(obj.x, obj.y);
       draggingPart.snapData = {};
       return true;
@@ -65,7 +65,7 @@ objTypes['radiant'] = {
   // When the user is dragging the obj
   dragging: function (obj, mouse, draggingPart, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();

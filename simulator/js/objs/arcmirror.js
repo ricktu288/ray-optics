@@ -151,8 +151,8 @@ objTypes['arcmirror'] = {
       if (Math.abs(geometry.length(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
         // Dragging the entire obj
         draggingPart.part = 0;
-        draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-        draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+        draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
         draggingPart.snapData = {};
         return true;
       }
@@ -161,8 +161,8 @@ objTypes['arcmirror'] = {
       // The three points on the arc is colinear. Treat as a line segment.
       if (mouse.isOnSegment(obj)) {
         draggingPart.part = 0;
-        draggingPart.mouse0 = mousePos; // Mouse position when the user starts dragging
-        draggingPart.mouse1 = mousePos; // Mouse position at the last moment during dragging
+        draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
         draggingPart.snapData = {};
         return true;
       }
@@ -197,15 +197,15 @@ objTypes['arcmirror'] = {
       // Dragging the entire obj
 
       if (shift) {
-        var mousePos = mouse.getPosSnappedToDirection(draggingPart.mouse0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }, { x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x) }], draggingPart.snapData);
+        var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }, { x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x) }], draggingPart.snapData);
       }
       else {
         var mousePos = mouse.getPosSnappedToGrid();;
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = draggingPart.mouse1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mouse1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = draggingPart.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = draggingPart.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
       // Move the first point
       obj.p1.x = obj.p1.x - mouseDiffX;
       obj.p1.y = obj.p1.y - mouseDiffY;
@@ -217,7 +217,7 @@ objTypes['arcmirror'] = {
       obj.p3.y = obj.p3.y - mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mouse1 = mousePos;
+      draggingPart.mousePos1 = mousePos;
     }
   },
 
