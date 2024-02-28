@@ -486,6 +486,14 @@
         ],
         "title": "LCD Pixel",
         "description": "<p>This is a model of an LCD pixel. It simulates how new microled display layers function and how our eyes perceive the pixel.</p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "Concave Mirror Wearable Display",
+        "description": "<p>A simple wearable display. A lot of designs use two mirrors and a positive lens, but this is a one-optical-element version. The scale is approximately 5:1mm.</p><p>CC0: This work has been marked as dedicated to the public domain.</p>"
       }
     ]
   }

@@ -1,0 +1,404 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 667.1808510890548,
+        "y": 74.56195880143267,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 730.922853531057,
+        "y": 236.68122842070227,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 697.1808510890548,
+        "y": 137.56195880143267,
+        "exist": true
+      }
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 503.5597069597069,
+        "y": 485.6413919413919,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 707.3852281705217,
+        "y": 484.57955247367005,
+        "exist": true
+      },
+      "p": 10
+    },
+    {
+      "type": "parallel",
+      "p1": {
+        "type": 1,
+        "x": 489.0419011501046,
+        "y": 348.0542442937182,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 498.1808510890548,
+        "y": 356.56195880143264,
+        "exist": true
+      },
+      "p": 1,
+      "divergence": 13,
+      "lambert": false,
+      "random": false,
+      "wavelength": 484
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 445.18085108905484,
+        "y": 119.56195880143267,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 445.8475177557215,
+        "y": 181.2286254680993,
+        "exist": true
+      },
+      "p": 5
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 704.1808510890548,
+        "y": 102.56195880143267,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 733.1808510890548,
+        "y": 167.56195880143267,
+        "exist": true
+      },
+      "p": 5
+    },
+    {
+      "type": "text",
+      "x": 420.09540902027635,
+      "y": 118.16309801309795,
+      "p": "TFT 0.9吋显示屏",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "right",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 727.6318965348369,
+      "y": 134.83842268842255,
+      "p": "凹面镜",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": 488.06840447134493,
+      "y": 363.0447718947717,
+      "p": "眼睛",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "right",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "line",
+      "p1": {
+        "type": 1,
+        "x": 273.1969758999164,
+        "y": 187.08921633921622,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 600.0541187570593,
+        "y": 188.23207348207336,
+        "exist": true
+      },
+      "arrow1": false,
+      "arrow2": false
+    },
+    {
+      "type": "line",
+      "p1": {
+        "type": 1,
+        "x": 602.0969758999163,
+        "y": 483.89874014874005,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 601.4779282808689,
+        "y": 187.265406815407,
+        "exist": true
+      },
+      "arrow1": false,
+      "arrow2": false
+    },
+    {
+      "type": "line",
+      "p1": {
+        "type": 1,
+        "x": 499.1731663761068,
+        "y": 461.61302586302565,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 629.7636425665833,
+        "y": 485.765406815407,
+        "exist": true
+      },
+      "arrow1": false,
+      "arrow2": false
+    },
+    {
+      "type": "line",
+      "p1": {
+        "type": 1,
+        "x": 503.83983304277353,
+        "y": 515.2796925296924,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 628.7636425665833,
+        "y": 487.765406815407,
+        "exist": true
+      },
+      "arrow1": false,
+      "arrow2": false
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 502.9636425665829,
+        "y": 485.63207348207334,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 500.4969758999162,
+        "y": 75.09874014874003,
+        "exist": true
+      }
+    },
+    {
+      "type": "led",
+      "p1": {
+        "type": 1,
+        "x": 7.180851089054765,
+        "y": 427.2286254680993,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 446.2475177557216,
+        "y": 218.82862546809932,
+        "exist": true
+      },
+      "p": 5,
+      "symmetric": true,
+      "brightness": 0.07,
+      "wavelength": 593
+    },
+    {
+      "type": "ruler",
+      "p1": {
+        "type": 1,
+        "x": 5.847517755721409,
+        "y": 429.89529213476595,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 722.2475177557216,
+        "y": 217.49529213476595,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 510.6240155269562,
+      "y": 482.33720168720185,
+      "p": "鼻子",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "text",
+      "x": -1.2229345031940397,
+      "y": 414.68122842070215,
+      "p": "用来测量半径的点光源",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "right",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "sphericallens",
+      "p": 1.5,
+      "path": [
+        {
+          "x": 606.181829665601,
+          "y": 189.54911608858987,
+          "arc": false
+        },
+        {
+          "x": 610.2353059679416,
+          "y": 189.54911608858987,
+          "arc": false
+        },
+        {
+          "x": 613.2085678167713,
+          "y": 308.660227199701,
+          "arc": true
+        },
+        {
+          "x": 610.2353059679416,
+          "y": 427.7713383108121,
+          "arc": false
+        },
+        {
+          "x": 606.181829665601,
+          "y": 427.7713383108121,
+          "arc": false
+        },
+        {
+          "x": 603.2085678167713,
+          "y": 308.660227199701,
+          "arc": true
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "x": 612.2657106739144,
+      "y": 296.0621808016546,
+      "p": "+1.5度阅读眼镜",
+      "fontSize": 12,
+      "fontName": "Arial",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": -289.0340998747197,
+        "y": 9.633780442366021,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 976.2443094380272,
+        "y": 9.633780442366021,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": -289.0340998747197,
+        "y": 607.8264945397603,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 976.2443094380272,
+        "y": 607.8264945397603,
+        "exist": true
+      },
+      "width": 1140,
+      "format": "png"
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": 448.6248930712244,
+        "y": 31.314097054999152,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 828.6248930712244,
+        "y": 31.314097054999152,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 448.6248930712244,
+        "y": 411.31409705499914,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 828.6248930712244,
+        "y": 411.31409705499914,
+        "exist": true
+      },
+      "width": 500,
+      "format": "png"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 0.37719235356315695,
+  "rayDensity_images": 1,
+  "showGrid": true,
+  "grid": false,
+  "lockobjs": false,
+  "gridSize": 20,
+  "observer": {
+    "type": 5,
+    "c": {
+      "type": 1,
+      "x": 530.997802197802,
+      "y": 368.16153846153844,
+      "exist": true
+    },
+    "r": 2.5,
+    "exist": true
+  },
+  "origin": {
+    "x": 390.0116897623184,
+    "y": 196.2666873790711
+  },
+  "scale": 0.5951259378629579,
+  "width": 1200,
+  "height": 700,
+  "colorMode": true,
+  "symbolicGrin": false
+}
