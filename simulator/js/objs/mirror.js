@@ -29,18 +29,18 @@ objTypes['mirror'] = {
   },
 
   //Describes how the ray refects off the mirror surface
-  rayIntersection: function (mirror, ray) {
-    if (wavelengthInteraction(mirror, ray)) {
-      return objTypes['lineobj'].rayIntersection(mirror, ray);
+  rayIntersection: function (obj, ray) {
+    if (wavelengthInteraction(obj, ray)) {
+      return objTypes['lineobj'].rayIntersection(obj, ray);
     }
   },
 
   // When the obj is shot by a ray
-  shot: function (mirror, ray, rayIndex, rp) {
+  shot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
-    var mx = mirror.p2.x - mirror.p1.x;
-    var my = mirror.p2.y - mirror.p1.y;
+    var mx = obj.p2.x - obj.p1.x;
+    var my = obj.p2.y - obj.p1.y;
 
     ray.p1 = rp;
     ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);

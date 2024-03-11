@@ -98,30 +98,30 @@ objTypes['lens'] = {
 
 
   // When the obj is shot by a ray
-  shot: function (lens, ray, rayIndex, shootPoint) {
+  shot: function (obj, ray, rayIndex, shootPoint) {
 
-    var lens_length = geometry.length_segment(lens);
-    var main_line_unitvector_x = (-lens.p1.y + lens.p2.y) / lens_length;
-    var main_line_unitvector_y = (lens.p1.x - lens.p2.x) / lens_length;
-    var mid_point = geometry.midpoint(lens);
+    var lens_length = geometry.length_segment(obj);
+    var main_line_unitvector_x = (-obj.p1.y + obj.p2.y) / lens_length;
+    var main_line_unitvector_y = (obj.p1.x - obj.p2.x) / lens_length;
+    var mid_point = geometry.midpoint(obj);
 
-    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * lens.p, mid_point.y + main_line_unitvector_y * 2 * lens.p);  // The first point at two focal lengths
-    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * lens.p, mid_point.y - main_line_unitvector_y * 2 * lens.p);  // The second point at two focal lengths
+    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * obj.p, mid_point.y + main_line_unitvector_y * 2 * obj.p);  // The first point at two focal lengths
+    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * obj.p, mid_point.y - main_line_unitvector_y * 2 * obj.p);  // The second point at two focal lengths
 
     var twoF_line_near, twoF_line_far;
     if (geometry.length_squared(ray.p1, twoF_point_1) < geometry.length_squared(ray.p1, twoF_point_2)) {
       // The first point at two focal lengths is on the same side as the ray
-      twoF_line_near = geometry.parallel(lens, twoF_point_1);
-      twoF_line_far = geometry.parallel(lens, twoF_point_2);
+      twoF_line_near = geometry.parallel(obj, twoF_point_1);
+      twoF_line_far = geometry.parallel(obj, twoF_point_2);
     }
     else {
       // The second point at two focal lengths is on the same side as the ray
-      twoF_line_near = geometry.parallel(lens, twoF_point_2);
-      twoF_line_far = geometry.parallel(lens, twoF_point_1);
+      twoF_line_near = geometry.parallel(obj, twoF_point_2);
+      twoF_line_far = geometry.parallel(obj, twoF_point_1);
     }
 
 
-    if (lens.p > 0) {
+    if (obj.p > 0) {
       // Converging lens
       ray.p2 = geometry.intersection_2line(twoF_line_far, geometry.line(mid_point, geometry.intersection_2line(twoF_line_near, ray)));
       ray.p1 = shootPoint;

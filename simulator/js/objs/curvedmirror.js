@@ -130,11 +130,11 @@ objTypes['curvedmirror'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (mirror, ray) {
-    if (!mirror.tmp_points || !wavelengthInteraction(mirror, ray)) return;
+  rayIntersection: function (obj, ray) {
+    if (!obj.tmp_points || !wavelengthInteraction(obj, ray)) return;
     var i, j;
-    var pts = mirror.tmp_points;
-    var dir = geometry.length(mirror.p2, ray.p1) > geometry.length(mirror.p1, ray.p1);
+    var pts = obj.tmp_points;
+    var dir = geometry.length(obj.p2, ray.p1) > geometry.length(obj.p1, ray.p1);
     var rp;
     for (j = 0; j < pts.length - 1; j++) {
       i = dir ? j : (pts.length - 2 - j);
@@ -146,7 +146,7 @@ objTypes['curvedmirror'] = {
       if (geometry.intersection_is_on_segment(rp_temp, seg) && geometry.intersection_is_on_ray(rp_temp, ray)) {
         if (!rp || geometry.length(ray.p1, rp_temp) < geometry.length(ray.p1, rp)) {
           rp = rp_temp;
-          mirror.tmp_i = i;
+          obj.tmp_i = i;
         }
       }
     }
@@ -154,11 +154,11 @@ objTypes['curvedmirror'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (mirror, ray, rayIndex, rp) {
+  shot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
-    var i = mirror.tmp_i;
-    var pts = mirror.tmp_points;
+    var i = obj.tmp_i;
+    var pts = obj.tmp_points;
     var seg = geometry.segment(pts[i], pts[i + 1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;

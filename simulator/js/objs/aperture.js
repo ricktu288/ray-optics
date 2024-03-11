@@ -208,10 +208,10 @@ objTypes['aperture'] = {
     dichroicSettings(obj, objBar);
   },
 
-  rayIntersection: function (blackline, ray) {
-    if (wavelengthInteraction(blackline, ray)) {
-      var segment1 = geometry.segment(blackline.p1, blackline.p3);
-      var segment2 = geometry.segment(blackline.p2, blackline.p4);
+  rayIntersection: function (obj, ray) {
+    if (wavelengthInteraction(obj, ray)) {
+      var segment1 = geometry.segment(obj.p1, obj.p3);
+      var segment2 = geometry.segment(obj.p2, obj.p4);
       var rp_temp1 = objTypes['lineobj'].rayIntersection(segment1, ray);
       if (rp_temp1) {
         return rp_temp1;

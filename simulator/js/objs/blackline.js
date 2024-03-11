@@ -32,9 +32,9 @@ objTypes['blackline'] = {
   },
 
   //Describes how the ray 
-  rayIntersection: function (blackline, ray) {
-    if (wavelengthInteraction(blackline, ray)) {
-      return objTypes['lineobj'].rayIntersection(blackline, ray);
+  rayIntersection: function (obj, ray) {
+    if (wavelengthInteraction(obj, ray)) {
+      return objTypes['lineobj'].rayIntersection(obj, ray);
     }
   },
 

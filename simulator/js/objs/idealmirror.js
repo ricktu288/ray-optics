@@ -137,20 +137,20 @@ objTypes['idealmirror'] = {
 
   },
 
-  rayIntersection: function (mirror, ray) {
-    return objTypes['mirror'].rayIntersection(mirror, ray);
+  rayIntersection: function (obj, ray) {
+    return objTypes['mirror'].rayIntersection(obj, ray);
   },
 
   // When the obj is shot by a ray
-  shot: function (mirror, ray, rayIndex, shootPoint) {
+  shot: function (obj, ray, rayIndex, shootPoint) {
     // Treat as a combination of an ideal lens and a planar mirror
-    objTypes['lens'].shot(mirror, ray, rayIndex, geometry.point(shootPoint.x, shootPoint.y));
+    objTypes['lens'].shot(obj, ray, rayIndex, geometry.point(shootPoint.x, shootPoint.y));
 
     // Pull the ray backwards
     ray.p1.x = 2 * ray.p1.x - ray.p2.x;
     ray.p1.y = 2 * ray.p1.y - ray.p2.y;
 
-    objTypes['mirror'].shot(mirror, ray, rayIndex, shootPoint);
+    objTypes['mirror'].shot(obj, ray, rayIndex, shootPoint);
   },
 
 };
