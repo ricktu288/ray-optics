@@ -41,7 +41,7 @@ objTypes['halfplane'] = {
   },
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (obj.p <= 0) return;
     var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.p1, obj.p2));
 
@@ -81,7 +81,7 @@ objTypes['halfplane'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
     var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y);
     var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y);
     var normal = { x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y) };

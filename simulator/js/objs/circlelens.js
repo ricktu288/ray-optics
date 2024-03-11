@@ -19,9 +19,9 @@ objTypes['circlelens'] = {
   onDrag: objTypes['circleobj'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (obj.p <= 0) return;
-    return objTypes['circleobj'].rayIntersection(obj, ray);
+    return objTypes['circleobj'].checkRayIntersects(obj, ray);
   },
 
   zIndex: objTypes['refractor'].zIndex,
@@ -47,7 +47,7 @@ objTypes['circlelens'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
     var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
@@ -99,7 +99,7 @@ objTypes['circlelens'] = {
 
   getShotType: function (obj, ray) {
 
-    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, this.rayIntersection(obj, ray)));
+    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, this.checkRayIntersects(obj, ray)));
     var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
 
     if (d > 0) {

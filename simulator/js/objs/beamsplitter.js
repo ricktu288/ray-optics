@@ -23,7 +23,7 @@ objTypes['beamsplitter'] = {
   move: objTypes['lineobj'].move,
   checkMouseOver: objTypes['lineobj'].checkMouseOver,
   onDrag: objTypes['lineobj'].onDrag,
-  rayIntersection: objTypes['lineobj'].rayIntersection,
+  checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {
@@ -40,12 +40,12 @@ objTypes['beamsplitter'] = {
     ctx.setLineDash([]);
   },
 
-  rayIntersection: function (obj, ray) {
-    return objTypes['mirror'].rayIntersection(obj, ray);
+  checkRayIntersects: function (obj, ray) {
+    return objTypes['mirror'].checkRayIntersects(obj, ray);
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
 

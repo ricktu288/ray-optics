@@ -369,7 +369,7 @@ objTypes['refractor'] = {
 
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
 
     if (obj.notDone || obj.p <= 0) return;
 
@@ -444,7 +444,7 @@ objTypes['refractor'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     if (obj.notDone) { return; }
     var shotData = this.getShotData(obj, ray);

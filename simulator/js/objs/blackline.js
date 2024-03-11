@@ -32,14 +32,14 @@ objTypes['blackline'] = {
   },
 
   //Describes how the ray 
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
-      return objTypes['lineobj'].rayIntersection(obj, ray);
+      return objTypes['lineobj'].checkRayIntersects(obj, ray);
     }
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     ray.exist = false;
   }
 

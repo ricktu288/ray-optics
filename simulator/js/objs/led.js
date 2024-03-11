@@ -48,7 +48,7 @@ objTypes['led'] = {
 
 
   // Shoot rays
-  shoot: function (obj) {
+  onBeginSimulate: function (obj) {
     var s = Math.PI * 2 / parseInt(scene.rayDensity * 500);
     var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0;
 

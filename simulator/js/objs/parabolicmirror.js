@@ -111,14 +111,14 @@ objTypes['parabolicmirror'] = {
   onDrag: objTypes['arcmirror'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (!obj.p3) { return; }
-    return objTypes['curvedmirror'].rayIntersection(obj, ray);
+    return objTypes['curvedmirror'].checkRayIntersects(obj, ray);
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
-    return objTypes['curvedmirror'].shot(obj, ray, rayIndex, rp);
+  onShoot: function (obj, ray, rayIndex, rp) {
+    return objTypes['curvedmirror'].onShoot(obj, ray, rayIndex, rp);
   }
 
 };

@@ -100,7 +100,7 @@ objTypes['parallel'] = {
   },
 
   // Shoot rays
-  shoot: function (obj) {
+  onBeginSimulate: function (obj) {
     var n = geometry.length_segment(obj) * scene.rayDensity;
     var stepX = (obj.p2.x - obj.p1.x) / n;
     var stepY = (obj.p2.y - obj.p1.y) / n;

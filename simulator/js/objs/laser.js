@@ -36,7 +36,7 @@ objTypes['laser'] = {
 
 
   // Shoot rays
-  shoot: function (obj) {
+  onBeginSimulate: function (obj) {
     var ray1 = geometry.ray(obj.p1, obj.p2);
     ray1.brightness_s = 0.5 * (obj.p || 1);
     ray1.brightness_p = 0.5 * (obj.p || 1);

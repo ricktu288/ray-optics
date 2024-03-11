@@ -137,7 +137,7 @@ objTypes['curvedglass'] = {
 
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
 
     if (!obj.tmp_glass) return;
     if (obj.p <= 0) return;
@@ -186,7 +186,7 @@ objTypes['curvedglass'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     var shotData = this.getShotData(obj, ray);
     var shotType = shotData.shotType;

@@ -67,14 +67,14 @@ objTypes['blackcircle'] = {
   },
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
-      return objTypes['circleobj'].rayIntersection(obj, ray);
+      return objTypes['circleobj'].checkRayIntersects(obj, ray);
     }
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     ray.exist = false;
   }
 

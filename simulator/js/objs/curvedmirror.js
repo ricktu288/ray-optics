@@ -130,7 +130,7 @@ objTypes['curvedmirror'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (!obj.tmp_points || !wavelengthInteraction(obj, ray)) return;
     var i, j;
     var pts = obj.tmp_points;
@@ -154,7 +154,7 @@ objTypes['curvedmirror'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var i = obj.tmp_i;

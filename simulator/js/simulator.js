@@ -144,9 +144,9 @@ function draw_(skipLight, skipGrid) {
     {
       var i = mapped[j].index;
       objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0, false);
-      if (!skipLight && objTypes[scene.objs[i].type].shoot)
+      if (!skipLight && objTypes[scene.objs[i].type].onBeginSimulate)
       {
-        objTypes[scene.objs[i].type].shoot(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
+        objTypes[scene.objs[i].type].onBeginSimulate(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
       }
     }
   }
@@ -268,9 +268,9 @@ function shootWaitingRays() {
       for (var i = 0; i < scene.objs.length; i++)
       {
         // if scene.objs[i] can affect the ray
-        if (objTypes[scene.objs[i].type].rayIntersection) {
+        if (objTypes[scene.objs[i].type].checkRayIntersects) {
           // Test whether scene.objs[i] intersects with the ray
-          s_point_temp = objTypes[scene.objs[i].type].rayIntersection(scene.objs[i], waitingRays[j]);
+          s_point_temp = objTypes[scene.objs[i].type].checkRayIntersects(scene.objs[i], waitingRays[j]);
           if (s_point_temp)
           {
             // Here scene.objs[i] intersects with the ray at s_point_temp
@@ -546,7 +546,7 @@ function shootWaitingRays() {
       last_s_obj_index = s_obj_index;
       if (s_obj)
       {
-        objTypes[s_obj.type].shot(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+        objTypes[s_obj.type].onShoot(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
       }
       else
       {

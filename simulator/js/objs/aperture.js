@@ -208,15 +208,15 @@ objTypes['aperture'] = {
     dichroicSettings(obj, objBar);
   },
 
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
       var segment1 = geometry.segment(obj.p1, obj.p3);
       var segment2 = geometry.segment(obj.p2, obj.p4);
-      var rp_temp1 = objTypes['lineobj'].rayIntersection(segment1, ray);
+      var rp_temp1 = objTypes['lineobj'].checkRayIntersects(segment1, ray);
       if (rp_temp1) {
         return rp_temp1;
       }
-      var rp_temp2 = objTypes['lineobj'].rayIntersection(segment2, ray);
+      var rp_temp2 = objTypes['lineobj'].checkRayIntersects(segment2, ray);
       if (rp_temp2) {
         return rp_temp2;
       }
@@ -226,7 +226,7 @@ objTypes['aperture'] = {
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     ray.exist = false;
   }
 

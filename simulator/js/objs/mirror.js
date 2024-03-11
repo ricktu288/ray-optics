@@ -29,14 +29,14 @@ objTypes['mirror'] = {
   },
 
   //Describes how the ray refects off the mirror surface
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
-      return objTypes['lineobj'].rayIntersection(obj, ray);
+      return objTypes['lineobj'].checkRayIntersects(obj, ray);
     }
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = obj.p2.x - obj.p1.x;

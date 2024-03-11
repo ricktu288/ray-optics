@@ -128,7 +128,7 @@ objTypes['grin_circlelens'] = {
 	},
 
 	// Test if a ray may shoot on this object (if yes, return the intersection)
-	rayIntersection: function (obj, ray) {
+	checkRayIntersects: function (obj, ray) {
 		if (!obj.fn_p) { // to maintain the ctrl+z functionality
 			try {
 				obj.fn_p = evaluateLatex(obj.p_tex);
@@ -150,11 +150,11 @@ objTypes['grin_circlelens'] = {
 			if (objTypes[obj.type].isInsideGlass(obj, intersection_point)) // if intersection_point is inside the circle
 				return intersection_point;
 		}
-		return objTypes[obj.type.substring(obj.type.indexOf('_') + 1)].rayIntersection(obj, ray);
+		return objTypes[obj.type.substring(obj.type.indexOf('_') + 1)].checkRayIntersects(obj, ray);
 	},
 
 	// When the obj is shot by a ray
-	shot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+	onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 		try {
 			if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
 			{

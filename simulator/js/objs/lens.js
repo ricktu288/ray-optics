@@ -20,7 +20,7 @@ objTypes['lens'] = {
   move: objTypes['lineobj'].move,
   checkMouseOver: objTypes['lineobj'].checkMouseOver,
   onDrag: objTypes['lineobj'].onDrag,
-  rayIntersection: objTypes['lineobj'].rayIntersection,
+  checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
 
   // Draw the obj on canvas
   draw: function (obj, ctx, aboveLight) {
@@ -98,7 +98,7 @@ objTypes['lens'] = {
 
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, shootPoint) {
+  onShoot: function (obj, ray, rayIndex, shootPoint) {
 
     var lens_length = geometry.length_segment(obj);
     var main_line_unitvector_x = (-obj.p1.y + obj.p2.y) / lens_length;

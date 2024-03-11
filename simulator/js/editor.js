@@ -70,7 +70,7 @@ function canvas_onmousedown(e) {
       if (ret && ret.newUndoPoint) {
         createUndoPoint();
       }
-      draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
+      draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onBeginSimulate || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
     }
   }
   else {
@@ -152,7 +152,7 @@ function canvas_onmousedown(e) {
         if (ret && ret.newUndoPoint) {
           createUndoPoint();
         }
-        draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
+        draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onBeginSimulate || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
         cancelRestore();
       }
     }
@@ -279,7 +279,7 @@ function canvas_onmousemove(e) {
     if (ret && ret.newUndoPoint) {
       createUndoPoint();
     }
-    draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
+    draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onBeginSimulate || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
   }
   else {
     if (draggingObj == -4) {
@@ -320,7 +320,7 @@ function canvas_onmousemove(e) {
         }
       }
 
-      draw(!(objTypes[scene.objs[draggingObj].type].shoot || objTypes[scene.objs[draggingObj].type].rayIntersection), true);
+      draw(!(objTypes[scene.objs[draggingObj].type].onBeginSimulate || objTypes[scene.objs[draggingObj].type].checkRayIntersects), true);
 
       if (draggingPart.requiresObjBarUpdate) {
         selectObj(selectedObj);
@@ -364,7 +364,7 @@ function canvas_onmouseup(e) {
       if (ret && ret.newUndoPoint) {
         createUndoPoint();
       }
-      draw(!(objTypes[scene.objs[scene.objs.length - 1].type].shoot || objTypes[scene.objs[scene.objs.length - 1].type].rayIntersection), true);
+      draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onBeginSimulate || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
       if (!isConstructing) {
         // The object says the contruction is done
         createUndoPoint();
@@ -573,7 +573,7 @@ function confirmPositioning(ctrl, shift) {
     else {
       // Object
       objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), draggingPart, ctrl, shift);
-      draw(!(objTypes[scene.objs[positioningObj].type].shoot || objTypes[scene.objs[positioningObj].type].rayIntersection), true);
+      draw(!(objTypes[scene.objs[positioningObj].type].onBeginSimulate || objTypes[scene.objs[positioningObj].type].checkRayIntersects), true);
     }
     
     createUndoPoint();

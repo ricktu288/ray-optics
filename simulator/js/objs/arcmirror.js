@@ -224,7 +224,7 @@ objTypes['arcmirror'] = {
 
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (!obj.p3 || !wavelengthInteraction(obj, ray)) { return; }
     var center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicular_bisector(geometry.line(obj.p2, obj.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
@@ -246,12 +246,12 @@ objTypes['arcmirror'] = {
     }
     else {
       // The three points on the arc is colinear. Treat as a line segment.
-      return objTypes['lineobj'].rayIntersection(obj, ray);
+      return objTypes['lineobj'].checkRayIntersects(obj, ray);
     }
   },
 
   // When the obj is shot by a ray
-  shot: function (obj, ray, rayIndex, rp) {
+  onShoot: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = obj.p2.x - obj.p1.x;
@@ -268,7 +268,7 @@ objTypes['arcmirror'] = {
     }
     else {
       // The three points on the arc is colinear. Treat as a line segment.
-      return objTypes['mirror'].shot(obj, ray, rayIndex, rp);
+      return objTypes['mirror'].onShoot(obj, ray, rayIndex, rp);
     }
 
   }

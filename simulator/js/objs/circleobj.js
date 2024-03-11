@@ -111,7 +111,7 @@ objTypes['circleobj'] = {
   },
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     var rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(obj.p1, obj.p2));
     var rp_exist = [];
     var rp_lensq = [];

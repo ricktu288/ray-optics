@@ -553,11 +553,11 @@ objTypes['sphericallens'] = {
     }
     return false;
   },
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     if (!obj.path) return false;
-    return objTypes['refractor'].rayIntersection(obj, ray);
+    return objTypes['refractor'].checkRayIntersects(obj, ray);
   },
-  shot: objTypes['refractor'].shot,
+  onShoot: objTypes['refractor'].onShoot,
   fillGlass: objTypes['refractor'].fillGlass,
   getShotData: objTypes['refractor'].getShotData,
   refract: objTypes['refractor'].refract,

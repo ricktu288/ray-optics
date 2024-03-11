@@ -107,7 +107,7 @@ objTypes['lineobj'] = {
   },
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
-  rayIntersection: function (obj, ray) {
+  checkRayIntersects: function (obj, ray) {
     var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.p1, obj.p2));
 
     if (geometry.intersection_is_on_segment(rp_temp, obj) && geometry.intersection_is_on_ray(rp_temp, ray)) {
