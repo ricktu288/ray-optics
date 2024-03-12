@@ -74,7 +74,7 @@ objTypes['blackcircle'] = {
   },
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, rp) {
+  onRayIncident: function (obj, ray, rayIndex, rp) {
     ray.exist = false;
   }
 

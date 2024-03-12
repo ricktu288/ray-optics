@@ -154,7 +154,7 @@ objTypes['grin_circlelens'] = {
 	},
 
 	// When the obj is shot by a ray
-	onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+	onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 		try {
 			if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
 			{

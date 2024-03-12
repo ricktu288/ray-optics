@@ -36,7 +36,7 @@ objTypes['mirror'] = {
   },
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, rp) {
+  onRayIncident: function (obj, ray, rayIndex, rp) {
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = obj.p2.x - obj.p1.x;

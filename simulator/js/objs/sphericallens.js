@@ -557,7 +557,7 @@ objTypes['sphericallens'] = {
     if (!obj.path) return false;
     return objTypes['refractor'].checkRayIntersects(obj, ray);
   },
-  onShoot: objTypes['refractor'].onShoot,
+  onRayIncident: objTypes['refractor'].onRayIncident,
   fillGlass: objTypes['refractor'].fillGlass,
   getShotData: objTypes['refractor'].getShotData,
   refract: objTypes['refractor'].refract,

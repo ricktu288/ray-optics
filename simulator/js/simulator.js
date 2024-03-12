@@ -144,9 +144,9 @@ function draw_(skipLight, skipGrid) {
     {
       var i = mapped[j].index;
       objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0, false);
-      if (!skipLight && objTypes[scene.objs[i].type].onBeginSimulate)
+      if (!skipLight && objTypes[scene.objs[i].type].onSimulationStart)
       {
-        objTypes[scene.objs[i].type].onBeginSimulate(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
+        objTypes[scene.objs[i].type].onSimulationStart(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
       }
     }
   }
@@ -546,7 +546,7 @@ function shootWaitingRays() {
       last_s_obj_index = s_obj_index;
       if (s_obj)
       {
-        objTypes[s_obj.type].onShoot(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+        objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
       }
       else
       {

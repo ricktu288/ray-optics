@@ -47,7 +47,7 @@ objTypes['circlelens'] = {
   },
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
     var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);

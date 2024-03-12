@@ -444,7 +444,7 @@ objTypes['refractor'] = {
   },
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     if (obj.notDone) { return; }
     var shotData = this.getShotData(obj, ray);

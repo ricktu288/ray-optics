@@ -98,7 +98,7 @@ objTypes['lens'] = {
 
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, shootPoint) {
+  onRayIncident: function (obj, ray, rayIndex, shootPoint) {
 
     var lens_length = geometry.length_segment(obj);
     var main_line_unitvector_x = (-obj.p1.y + obj.p2.y) / lens_length;

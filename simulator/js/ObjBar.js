@@ -477,7 +477,7 @@ class ObjBar {
         }
       }
     }
-    draw(!(objTypes[scene.objs[selectedObj].type].onBeginSimulate || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
   }
 
   /**

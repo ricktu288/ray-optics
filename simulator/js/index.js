@@ -461,7 +461,7 @@ window.onload = function (e) {
     scene.objs[scene.objs.length] = JSON.parse(JSON.stringify(scene.objs[selectedObj]));
     objTypes[scene.objs[scene.objs.length - 1].type].move(scene.objs[scene.objs.length - 1], scene.gridSize, scene.gridSize);
     selectObj(scene.objs.length - 1);
-    draw(!(objTypes[scene.objs[selectedObj].type].onBeginSimulate || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
@@ -470,7 +470,7 @@ window.onload = function (e) {
     var selectedObjType = scene.objs[selectedObj].type;
     this.blur();
     removeObj(selectedObj);
-    draw(!(objTypes[selectedObjType].onBeginSimulate || objTypes[selectedObjType].checkRayIntersects), true);
+    draw(!(objTypes[selectedObjType].onSimulationStart || objTypes[selectedObjType].checkRayIntersects), true);
     createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
@@ -689,7 +689,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!(objTypes[scene.objs[selectedObj].type].onBeginSimulate || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
     createUndoPoint();
     return false;
   }
@@ -738,7 +738,7 @@ window.onkeydown = function (e) {
     if (selectedObj != -1) {
       var selectedObjType = scene.objs[selectedObj].type;
       removeObj(selectedObj);
-      draw(!(objTypes[selectedObjType].onBeginSimulate || objTypes[selectedObjType].checkRayIntersects), true);
+      draw(!(objTypes[selectedObjType].onSimulationStart || objTypes[selectedObjType].checkRayIntersects), true);
       createUndoPoint();
     }
     return false;
@@ -771,7 +771,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], 0, step);
       }
-      draw(!(objTypes[scene.objs[selectedObj].type].onBeginSimulate || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+      draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
     }
     else if (scene.mode == 'observer') {
       if (e.keyCode == 37) {

@@ -186,7 +186,7 @@ objTypes['curvedglass'] = {
   },
 
   // When the obj is shot by a ray
-  onShoot: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     var shotData = this.getShotData(obj, ray);
     var shotType = shotData.shotType;
