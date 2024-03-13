@@ -1,7 +1,7 @@
 /**
- * A class to draw geometric figures from geometry.js on a canvas, and to handle the transformation and background image of the canvas.
+ * A class to render geometric figures from geometry.js on a canvas, and to handle the transformation and background image of the canvas.
  */
-class CanvasPainter {
+class CanvasRenderer {
   constructor(ctx, origin, scale, backgroundImage) {
 
     /** @property {Object} ctx - The context of the canvas. */
@@ -95,9 +95,9 @@ class CanvasPainter {
   }
 
   /**
-  * Clean the canvas, and draw the background image if there is one.
+  * Clear the canvas, and draw the background image if there is one.
   **/
-  cls() {
+  clear() {
     //console.log([this.scale, 0, 0, this.scale, this.origin.x, this.origin.y])
     if (this.ctx.constructor !== C2S) {
       // only do this when not being exported to SVG to avoid bug

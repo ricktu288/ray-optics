@@ -69,7 +69,7 @@ objTypes['aperture'] = {
   checkMouseOver: function (obj, mouse, draggingPart) {
 
 
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -79,7 +79,7 @@ objTypes['aperture'] = {
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
     }
-    if (mouse.isOnPoint(obj.p3) && geometry.length_squared(mouse.pos, obj.p3) <= geometry.length_squared(mouse.pos, obj.p4)) {
+    if (mouse.isOnPoint(obj.p3) && geometry.distanceSquared(mouse.pos, obj.p3) <= geometry.distanceSquared(mouse.pos, obj.p4)) {
       draggingPart.part = 3;
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.requiresObjBarUpdate = true;
@@ -109,36 +109,36 @@ objTypes['aperture'] = {
   onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     var basePoint;
 
-    var originalDiameter = geometry.length(obj.p3, obj.p4);
+    var originalDiameter = geometry.distance(obj.p3, obj.p4);
     if (draggingPart.part == 1 || draggingPart.part == 2) {
       if (draggingPart.part == 1) {
         // Dragging the first endpoint Dragging the first endpoint
-        basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+        basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
         obj.p1 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
         obj.p2 = ctrl ? geometry.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
       }
       else {
         // Dragging the second endpoint Dragging the second endpoint
-        basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+        basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
         obj.p2 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
         obj.p1 = ctrl ? geometry.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
       }
 
-      var t = 0.5 * (1 - originalDiameter / geometry.length(obj.p1, obj.p2));
+      var t = 0.5 * (1 - originalDiameter / geometry.distance(obj.p1, obj.p2));
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
     }
     else if (draggingPart.part == 3 || draggingPart.part == 4) {
       if (draggingPart.part == 3) {
-        basePoint = geometry.midpoint(obj);
+        basePoint = geometry.segmentMidpoint(obj);
 
         obj.p3 = mouse.getPosSnappedToDirection(basePoint, [{ x: (draggingPart.originalObj.p4.x - draggingPart.originalObj.p3.x), y: (draggingPart.originalObj.p4.y - draggingPart.originalObj.p3.y) }]);
         obj.p4 = geometry.point(2 * basePoint.x - obj.p3.x, 2 * basePoint.y - obj.p3.y);
       }
       else {
-        basePoint = geometry.midpoint(obj);
+        basePoint = geometry.segmentMidpoint(obj);
 
         obj.p4 = mouse.getPosSnappedToDirection(basePoint, [{ x: (draggingPart.originalObj.p4.x - draggingPart.originalObj.p3.x), y: (draggingPart.originalObj.p4.y - draggingPart.originalObj.p3.y) }]);
         obj.p3 = geometry.point(2 * basePoint.x - obj.p4.x, 2 * basePoint.y - obj.p4.y);
@@ -198,10 +198,10 @@ objTypes['aperture'] = {
 
   // Show the property box
   populateObjBar: function (obj, objBar) {
-    var originalDiameter = geometry.length(obj.p3, obj.p4);
+    var originalDiameter = geometry.distance(obj.p3, obj.p4);
 
     objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function (obj, value) {
-      var t = 0.5 * (1 - value / geometry.length(obj.p1, obj.p2));
+      var t = 0.5 * (1 - value / geometry.distance(obj.p1, obj.p2));
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
     });

@@ -21,7 +21,7 @@ objTypes['parabolicmirror'] = {
   draw: function (obj, ctx, aboveLight) {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2) {
-      var p12d = geometry.length(obj.p1, obj.p2);
+      var p12d = geometry.distance(obj.p1, obj.p2);
       // unit vector from p1 to p2
       var dir1 = [(obj.p2.x - obj.p1.x) / p12d, (obj.p2.y - obj.p1.y) / p12d];
       // perpendicular direction
@@ -73,12 +73,12 @@ objTypes['parabolicmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse, draggingPart) {
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p3)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
-    if (mouse.isOnPoint(obj.p2) && geometry.length_squared(mouse.pos, obj.p2) <= geometry.length_squared(mouse.pos, obj.p3)) {
+    if (mouse.isOnPoint(obj.p2) && geometry.distanceSquared(mouse.pos, obj.p2) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;

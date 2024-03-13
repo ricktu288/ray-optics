@@ -1,4 +1,6 @@
-
+/**
+ * The geometry module, which provides basic geometric figures and operations.
+ */
 var geometry = {
 
   /**
@@ -45,7 +47,7 @@ var geometry = {
    */
   circle: function (c, r) {
     if (typeof r == 'object') {
-      return { c: c, r: this.line(c, r) }
+      return { c: c, r: geometry.line(c, r) }
     } else {
       return { c: c, r: r }
     }
@@ -77,7 +79,7 @@ var geometry = {
   * @param {Line} l2
   * @return {Point}
   **/
-  intersection_2line: function (l1, l2) {
+  linesIntersection: function (l1, l2) {
     var A = l1.p2.x * l1.p1.y - l1.p1.x * l1.p2.y;
     var B = l2.p2.x * l2.p1.y - l2.p1.x * l2.p2.y;
     var xa = l1.p2.x - l1.p1.x;
@@ -88,12 +90,12 @@ var geometry = {
   },
 
   /**
-   * Calculate the intersection of a line and a circle.
+   * Calculate the intersections of a line and a circle.
    * @param {Line} l1
    * @param {Circle} c1
    * @return {Point[]}
    */
-  intersection_line_circle: function (l1, c1) {
+  lineCircleIntersections: function (l1, c1) {
     var xa = l1.p2.x - l1.p1.x;
     var ya = l1.p2.y - l1.p1.y;
     var cx = c1.c.x;
@@ -125,7 +127,7 @@ var geometry = {
    * @param {Line} r1
    * @return {Boolean}
    */
-  intersection_is_on_ray: function (p1, r1) {
+  intersectionIsOnRay: function (p1, r1) {
     return (p1.x - r1.p1.x) * (r1.p2.x - r1.p1.x) + (p1.y - r1.p1.y) * (r1.p2.y - r1.p1.y) >= 0;
   },
 
@@ -136,7 +138,7 @@ var geometry = {
    * @param {Line} s1
    * @return {Boolean}
    */
-  intersection_is_on_segment: function (p1, s1) {
+  intersectionIsOnSegment: function (p1, s1) {
     return (p1.x - s1.p1.x) * (s1.p2.x - s1.p1.x) + (p1.y - s1.p1.y) * (s1.p2.y - s1.p1.y) >= 0 && (p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y) >= 0;
   },
 
@@ -145,8 +147,8 @@ var geometry = {
    * @param {Line} seg
    * @return {Number}
    */
-  length_segment: function (seg) {
-    return Math.sqrt(this.length_segment_squared(seg));
+  segmentLength: function (seg) {
+    return Math.sqrt(geometry.segmentLengthSquared(seg));
   },
 
   /**
@@ -154,27 +156,27 @@ var geometry = {
    * @param {Line} seg
    * @return {Number}
    */
-  length_segment_squared: function (seg) {
-    return this.length_squared(seg.p1, seg.p2);
+  segmentLengthSquared: function (seg) {
+    return geometry.distanceSquared(seg.p1, seg.p2);
   },
 
   /**
-   * Calculate the length between two points.
+   * Calculate the distance between two points.
    * @param {Point} p1
    * @param {Point} p2
    * @return {Number}
    */
-  length: function (p1, p2) {
-    return Math.sqrt(this.length_squared(p1, p2));
+  distance: function (p1, p2) {
+    return Math.sqrt(geometry.distanceSquared(p1, p2));
   },
 
   /**
-   * Calculate the squared length between two points.
+   * Calculate the squared distance between two points.
    * @param {Point} p1
    * @param {Point} p2
    * @return {Number}
    */
-  length_squared: function (p1, p2) {
+  distanceSquared: function (p1, p2) {
     var dx = p1.x - p2.x;
     var dy = p1.y - p2.y;
     return dx * dx + dy * dy;
@@ -186,7 +188,7 @@ var geometry = {
    * @param {Line} l1
    * @return {Point}
    */
-  midpoint: function (l1) {
+  segmentMidpoint: function (l1) {
     var nx = (l1.p1.x + l1.p2.x) * 0.5;
     var ny = (l1.p1.y + l1.p2.y) * 0.5;
     return geometry.point(nx, ny);
@@ -199,7 +201,7 @@ var geometry = {
    * @param {Point} p2
    * @return {Point}
    */
-  midpoint_points: function (p1, p2) {
+  midpoint: function (p1, p2) {
     var nx = (p1.x + p2.x) * 0.5;
     var ny = (p1.y + p2.y) * 0.5;
     return geometry.point(nx, ny);
@@ -210,7 +212,7 @@ var geometry = {
    * @param {Line} l1
    * @return {Line}
    */
-  perpendicular_bisector: function (l1) {
+  perpendicularBisector: function (l1) {
     return geometry.line(
       geometry.point(
         (-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
@@ -229,7 +231,7 @@ var geometry = {
   * @param {Point} p1
   * @return {Line}
   */
-  parallel: function (l1, p1) {
+  parallelLineThroughPoint: function (l1, p1) {
     var dx = l1.p2.x - l1.p1.x;
     var dy = l1.p2.y - l1.p1.y;
     return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));

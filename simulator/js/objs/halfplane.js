@@ -19,7 +19,7 @@ objTypes['halfplane'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse, draggingPart) {
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -43,9 +43,9 @@ objTypes['halfplane'] = {
   // Test if a ray may shoot on this object (if yes, return the intersection)
   checkRayIntersects: function (obj, ray) {
     if (obj.p <= 0) return;
-    var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.p1, obj.p2));
+    var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.p1, obj.p2));
 
-    if (geometry.intersection_is_on_ray(rp_temp, ray)) {
+    if (geometry.intersectionIsOnRay(rp_temp, ray)) {
       return rp_temp;
     }
   },

@@ -46,7 +46,7 @@ objTypes['circleobj'] = {
   // When the drawing area is pressed (to determine the part of the object being pressed)
   checkMouseOver: function (obj, mouse, draggingPart) {
     // clicking on p1 (center)?
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -58,7 +58,7 @@ objTypes['circleobj'] = {
       return true;
     }
     // clicking on outer edge of circle?  then drag entire circle
-    if (Math.abs(geometry.length(obj.p1, mouse.pos) - geometry.length_segment(obj)) < mouse.getClickExtent()) {
+    if (Math.abs(geometry.distance(obj.p1, mouse.pos) - geometry.segmentLength(obj)) < mouse.getClickExtent()) {
       const mousePos = mouse.getPosSnappedToGrid();
       draggingPart.part = 0;
       draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -74,7 +74,7 @@ objTypes['circleobj'] = {
     var basePoint;
     if (draggingPart.part == 1) {
       // Dragging the center point
-      basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+      basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
       obj.p1 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
       obj.p2 = ctrl ? geometry.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
@@ -112,15 +112,15 @@ objTypes['circleobj'] = {
 
   // Test if a ray may shoot on this object (if yes, return the intersection)
   checkRayIntersects: function (obj, ray) {
-    var rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(obj.p1, obj.p2));
+    var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(obj.p1, obj.p2));
     var rp_exist = [];
     var rp_lensq = [];
     for (var i = 1; i <= 2; i++) {
 
-      rp_exist[i] = geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+      rp_exist[i] = geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared;
 
 
-      rp_lensq[i] = geometry.length_squared(ray.p1, rp_temp[i]);
+      rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
     }
 
     if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) {

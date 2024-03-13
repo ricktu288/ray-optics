@@ -3,8 +3,8 @@ objTypes['cropbox'] = {
 
   // Show the property box
   populateObjBar: function(obj, objBar) {
-    var width = geometry.length(obj.p1, obj.p2);
-    var height = geometry.length(obj.p1, obj.p3);
+    var width = geometry.distance(obj.p1, obj.p2);
+    var height = geometry.distance(obj.p1, obj.p3);
     objBar.createNumber(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
       obj.p2 = geometry.point(obj.p1.x + 1*value, obj.p2.y);
       obj.p4 = geometry.point(obj.p3.x + 1*value, obj.p4.y);

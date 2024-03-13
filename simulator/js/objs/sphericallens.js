@@ -134,8 +134,8 @@ objTypes['sphericallens'] = {
   },
 
   createLens: function (obj) {
-    var p1 = obj.p1 || geometry.midpoint_points(obj.path[0], obj.path[1]);
-    var p2 = obj.p2 || geometry.midpoint_points(obj.path[3], obj.path[4]);
+    var p1 = obj.p1 || geometry.midpoint(obj.path[0], obj.path[1]);
+    var p2 = obj.p2 || geometry.midpoint(obj.path[3], obj.path[4]);
     var len = Math.hypot(p1.x - p2.x, p1.y - p2.y);
     var dx = (p2.x - p1.x) / len;
     var dy = (p2.y - p1.y) / len;
@@ -160,8 +160,8 @@ objTypes['sphericallens'] = {
       var p2 = obj.p2;
     } else {
       var old_params = this.getDR1R2(obj);
-      var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
-      var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
+      var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
+      var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
       var old_d = old_params.d;
       var old_r1 = old_params.r1;
       var old_r2 = old_params.r2;
@@ -250,8 +250,8 @@ objTypes['sphericallens'] = {
       var p2 = obj.p2;
     } else {
       var old_params = this.getDR1R2(obj);
-      var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
-      var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
+      var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
+      var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
       var old_d = old_params.d;
       var old_r1 = old_params.r1;
       var old_r2 = old_params.r2;
@@ -382,15 +382,15 @@ objTypes['sphericallens'] = {
     if (obj.tmp_params) return obj.tmp_params;
 
     // get radii of curvature
-    var center1 = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.path[1], obj.path[2])),
-      geometry.perpendicular_bisector(geometry.line(obj.path[3], obj.path[2])));
-    var r2 = geometry.length(center1, obj.path[2]);
-    var center2 = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.path[4], obj.path[5])),
-      geometry.perpendicular_bisector(geometry.line(obj.path[0], obj.path[5])));
-    var r1 = geometry.length(center2, obj.path[5]);
+    var center1 = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.path[1], obj.path[2])),
+      geometry.perpendicularBisector(geometry.line(obj.path[3], obj.path[2])));
+    var r2 = geometry.distance(center1, obj.path[2]);
+    var center2 = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.path[4], obj.path[5])),
+      geometry.perpendicularBisector(geometry.line(obj.path[0], obj.path[5])));
+    var r1 = geometry.distance(center2, obj.path[5]);
 
-    var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
-    var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
+    var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
+    var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
     var len = Math.hypot(p1.x - p2.x, p1.y - p2.y);
     var dx = (p2.x - p1.x) / len;
     var dy = (p2.y - p1.y) / len;
@@ -398,7 +398,7 @@ objTypes['sphericallens'] = {
     var dpy = -dx;
     var cx = (p1.x + p2.x) * .5;
     var cy = (p1.y + p2.y) * .5;
-    var d = geometry.length(obj.path[2], obj.path[5]);
+    var d = geometry.distance(obj.path[2], obj.path[5]);
 
     // correct sign
     if (dpx * (center1.x - obj.path[2].x) + dpy * (center1.y - obj.path[2].y) < 0)
@@ -433,8 +433,8 @@ objTypes['sphericallens'] = {
 
   onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     if (draggingPart.part == -1) return;
-    var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
-    var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
+    var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
+    var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
     var len = Math.hypot(p1.x - p2.x, p1.y - p2.y);
     var dx = (p2.x - p1.x) / len;
     var dy = (p2.y - p1.y) / len;
@@ -507,8 +507,8 @@ objTypes['sphericallens'] = {
     }
     objTypes['refractor'].draw(obj, ctx, aboveLight);
 
-    var p1 = geometry.midpoint_points(obj.path[0], obj.path[1]);
-    var p2 = geometry.midpoint_points(obj.path[3], obj.path[4]);
+    var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
+    var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
     var len = Math.hypot(p1.x - p2.x, p1.y - p2.y);
     var dx = (p2.x - p1.x) / len;
     var dy = (p2.y - p1.y) / len;

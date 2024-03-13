@@ -80,7 +80,7 @@ function canvas_onmousedown(e) {
       draggingPart = {};
 
       if (scene.mode == 'observer') {
-        if (geometry.length_squared(mousePos_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
+        if (geometry.distanceSquared(mousePos_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
           // The mousePos clicked the observer
           draggingObj = -4;
           draggingPart = {};
@@ -183,7 +183,7 @@ function selectionSearch(mousePos_nogrid) {
             targetIsPoint = true; // If the mouse can click a point, then it must click a point
             results = [];
           }
-          var click_lensq_temp = geometry.length_squared(mousePos_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
+          var click_lensq_temp = geometry.distanceSquared(mousePos_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
           if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
             // In case of clicking a point, choose the one nearest to the mouse
             // But if the object is the selected object, the points from this object have the highest priority.
@@ -250,7 +250,7 @@ function canvas_onmousemove(e) {
         canvas.style.cursor = '';
       }
     } else {
-      if (scene.mode == 'observer' && geometry.length_squared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
+      if (scene.mode == 'observer' && geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
         canvas.style.cursor = 'pointer';
       } else {
         canvas.style.cursor = '';
@@ -434,7 +434,7 @@ function canvas_ondblclick(e) {
   else if (new Mouse(mousePos, scene, lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
     draggingPart = {};
     if (scene.mode == 'observer') {
-      if (geometry.length_squared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
+      if (geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
 
         // The mousePos clicked the observer
         positioningObj = -4;

@@ -39,7 +39,7 @@ objTypes['curvedmirror'] = {
       return;
     }
     ctx.fillStyle = 'rgb(255,0,255)';
-    var p12d = geometry.length(obj.p1, obj.p2);
+    var p12d = geometry.distance(obj.p1, obj.p2);
     // unit vector from p1 to p2
     var dir1 = [(obj.p2.x - obj.p1.x) / p12d, (obj.p2.y - obj.p1.y) / p12d];
     // perpendicular direction
@@ -97,7 +97,7 @@ objTypes['curvedmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse, draggingPart) {
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -134,17 +134,17 @@ objTypes['curvedmirror'] = {
     if (!obj.tmp_points || !wavelengthInteraction(obj, ray)) return;
     var i, j;
     var pts = obj.tmp_points;
-    var dir = geometry.length(obj.p2, ray.p1) > geometry.length(obj.p1, ray.p1);
+    var dir = geometry.distance(obj.p2, ray.p1) > geometry.distance(obj.p1, ray.p1);
     var rp;
     for (j = 0; j < pts.length - 1; j++) {
       i = dir ? j : (pts.length - 2 - j);
-      var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
       var seg = geometry.line(pts[i], pts[i + 1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (geometry.length(ray.p1, rp_temp) < minShotLength)
+      if (geometry.distance(ray.p1, rp_temp) < minShotLength)
         continue;
-      if (geometry.intersection_is_on_segment(rp_temp, seg) && geometry.intersection_is_on_ray(rp_temp, ray)) {
-        if (!rp || geometry.length(ray.p1, rp_temp) < geometry.length(ray.p1, rp)) {
+      if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
+        if (!rp || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, rp)) {
           rp = rp_temp;
           obj.tmp_i = i;
         }

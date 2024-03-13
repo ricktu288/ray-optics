@@ -48,7 +48,7 @@ objTypes['lens'] = {
     ctx.fillStyle = 'rgb(255,0,0)';
 
     // Draw the center point of the lens
-    var center = geometry.midpoint(obj);
+    var center = geometry.segmentMidpoint(obj);
     ctx.strokeStyle = 'rgb(255,255,255)';
     ctx.beginPath();
     ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);
@@ -88,7 +88,7 @@ objTypes['lens'] = {
 
     if (obj == mouseObj) {
       // show focal length
-      var mp = geometry.midpoint(obj);
+      var mp = geometry.segmentMidpoint(obj);
       ctx.fillStyle = 'rgb(255,0,255)';
       ctx.fillRect(mp.x + obj.p * per_x - 1.5, mp.y + obj.p * per_y - 1.5, 3, 3);
       ctx.fillRect(mp.x - obj.p * per_x - 1.5, mp.y - obj.p * per_y - 1.5, 3, 3);
@@ -100,35 +100,35 @@ objTypes['lens'] = {
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, shootPoint) {
 
-    var lens_length = geometry.length_segment(obj);
+    var lens_length = geometry.segmentLength(obj);
     var main_line_unitvector_x = (-obj.p1.y + obj.p2.y) / lens_length;
     var main_line_unitvector_y = (obj.p1.x - obj.p2.x) / lens_length;
-    var mid_point = geometry.midpoint(obj);
+    var mid_point = geometry.segmentMidpoint(obj);
 
     var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * obj.p, mid_point.y + main_line_unitvector_y * 2 * obj.p);  // The first point at two focal lengths
     var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * obj.p, mid_point.y - main_line_unitvector_y * 2 * obj.p);  // The second point at two focal lengths
 
     var twoF_line_near, twoF_line_far;
-    if (geometry.length_squared(ray.p1, twoF_point_1) < geometry.length_squared(ray.p1, twoF_point_2)) {
+    if (geometry.distanceSquared(ray.p1, twoF_point_1) < geometry.distanceSquared(ray.p1, twoF_point_2)) {
       // The first point at two focal lengths is on the same side as the ray
-      twoF_line_near = geometry.parallel(obj, twoF_point_1);
-      twoF_line_far = geometry.parallel(obj, twoF_point_2);
+      twoF_line_near = geometry.parallelLineThroughPoint(obj, twoF_point_1);
+      twoF_line_far = geometry.parallelLineThroughPoint(obj, twoF_point_2);
     }
     else {
       // The second point at two focal lengths is on the same side as the ray
-      twoF_line_near = geometry.parallel(obj, twoF_point_2);
-      twoF_line_far = geometry.parallel(obj, twoF_point_1);
+      twoF_line_near = geometry.parallelLineThroughPoint(obj, twoF_point_2);
+      twoF_line_far = geometry.parallelLineThroughPoint(obj, twoF_point_1);
     }
 
 
     if (obj.p > 0) {
       // Converging lens
-      ray.p2 = geometry.intersection_2line(twoF_line_far, geometry.line(mid_point, geometry.intersection_2line(twoF_line_near, ray)));
+      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
       ray.p1 = shootPoint;
     }
     else {
       // Diverging lens
-      ray.p2 = geometry.intersection_2line(twoF_line_far, geometry.line(shootPoint, geometry.intersection_2line(twoF_line_near, geometry.line(mid_point, geometry.intersection_2line(twoF_line_far, ray)))));
+      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(shootPoint, geometry.linesIntersection(twoF_line_near, geometry.line(mid_point, geometry.linesIntersection(twoF_line_far, ray)))));
       ray.p1 = shootPoint;
     }
   }

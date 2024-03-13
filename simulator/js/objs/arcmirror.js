@@ -65,9 +65,9 @@ objTypes['arcmirror'] = {
   draw: function (obj, ctx, aboveLight) {
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2) {
-      var center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicular_bisector(geometry.line(obj.p2, obj.p3)));
+      var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
       if (isFinite(center.x) && isFinite(center.y)) {
-        var r = geometry.length(center, obj.p3);
+        var r = geometry.distance(center, obj.p3);
         var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
         var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
         var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
@@ -124,12 +124,12 @@ objTypes['arcmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse, draggingPart) {
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p3)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
     }
-    if (mouse.isOnPoint(obj.p2) && geometry.length_squared(mouse.pos, obj.p2) <= geometry.length_squared(mouse.pos, obj.p3)) {
+    if (mouse.isOnPoint(obj.p2) && geometry.distanceSquared(mouse.pos, obj.p2) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       return true;
@@ -140,15 +140,15 @@ objTypes['arcmirror'] = {
       return true;
     }
 
-    var center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicular_bisector(geometry.line(obj.p2, obj.p3)));
+    var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
     const mousePos = mouse.getPosSnappedToGrid();
     if (isFinite(center.x) && isFinite(center.y)) {
-      var r = geometry.length(center, obj.p3);
+      var r = geometry.distance(center, obj.p3);
       var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
       var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
       var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
       var a_m = Math.atan2(mouse.pos.y - center.y, mouse.pos.x - center.x);
-      if (Math.abs(geometry.length(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
+      if (Math.abs(geometry.distance(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
         // Dragging the entire obj
         draggingPart.part = 0;
         draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -175,7 +175,7 @@ objTypes['arcmirror'] = {
     var basePoint;
     if (draggingPart.part == 1) {
       // Dragging the first endpoint
-      basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+      basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
 
       obj.p1 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
       obj.p2 = ctrl ? geometry.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
@@ -183,7 +183,7 @@ objTypes['arcmirror'] = {
     if (draggingPart.part == 2) {
       // Dragging the second endpoint
 
-      basePoint = ctrl ? geometry.midpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+      basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
 
       obj.p2 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
       obj.p1 = ctrl ? geometry.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
@@ -226,18 +226,18 @@ objTypes['arcmirror'] = {
   // Test if a ray may shoot on this object (if yes, return the intersection)
   checkRayIntersects: function (obj, ray) {
     if (!obj.p3 || !wavelengthInteraction(obj, ray)) { return; }
-    var center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicular_bisector(geometry.line(obj.p2, obj.p3)));
+    var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
 
-      var rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(center, obj.p2));
+      var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, obj.p2));
       var rp_exist = [];
       var rp_lensq = [];
       for (var i = 1; i <= 2; i++) {
 
-        rp_exist[i] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(obj.p1, obj.p2), geometry.line(obj.p3, rp_temp[i])), geometry.line(obj.p3, rp_temp[i])) && geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+        rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(obj.p1, obj.p2), geometry.line(obj.p3, rp_temp[i])), geometry.line(obj.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared;
 
 
-        rp_lensq[i] = geometry.length_squared(ray.p1, rp_temp[i]);
+        rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
       }
 
 
@@ -257,7 +257,7 @@ objTypes['arcmirror'] = {
     var mx = obj.p2.x - obj.p1.x;
     var my = obj.p2.y - obj.p1.y;
 
-    var center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicular_bisector(geometry.line(obj.p2, obj.p3)));
+    var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
       var cx = center.x - rp.x;
       var cy = center.y - rp.y;

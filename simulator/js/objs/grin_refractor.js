@@ -174,9 +174,9 @@ objTypes['grin_refractor'] = {
           p1 = geometry.point(obj.path[i].x, obj.path[i].y);
           p2 = geometry.point(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
           p3 = geometry.point(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
-          center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
+          center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(p1, p3)), geometry.perpendicularBisector(geometry.line(p2, p3)));
           if (isFinite(center.x) && isFinite(center.y)) {
-            r = geometry.length(center, p3);
+            r = geometry.distance(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
@@ -210,9 +210,9 @@ objTypes['grin_refractor'] = {
           p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
           p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
           p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
-          center = geometry.intersection_2line(geometry.perpendicular_bisector(geometry.line(p1, p3)), geometry.perpendicular_bisector(geometry.line(p2, p3)));
+          center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(p1, p3)), geometry.perpendicularBisector(geometry.line(p2, p3)));
           if (isFinite(center.x) && isFinite(center.y)) {
-            r = geometry.length(center, p3);
+            r = geometry.distance(center, p3);
             a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
             a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
@@ -279,7 +279,7 @@ objTypes['grin_refractor'] = {
       if (geometry.cross(p1_p2, p1_p3) - obj.eps < 0 && geometry.cross(p1_p2, p1_p3) + obj.eps > 0) // if p1_p2 and p1_p3 are collinear
       {
         let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
-        let p1_p2_squared = geometry.length_squared(p1, p2);
+        let p1_p2_squared = geometry.distanceSquared(p1, p2);
         if (p1_p2_squared - dot_p2_p3 + obj.eps >= 0 && dot_p2_p3 + obj.eps >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
           return true;
       }

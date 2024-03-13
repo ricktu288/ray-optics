@@ -52,7 +52,7 @@ objTypes['curvedglass'] = {
     for (var side = 0; side <= 1; side++) {
       var p1 = (side == 0) ? obj.p1 : obj.p2;
       var p2 = (side == 0) ? obj.p2 : obj.p1;
-      var p12d = geometry.length(p1, p2);
+      var p12d = geometry.distance(p1, p2);
       // unit vector from p1 to p2
       var dir1 = [(p2.x - p1.x) / p12d, (p2.y - p1.y) / p12d];
       // perpendicular direction
@@ -109,7 +109,7 @@ objTypes['curvedglass'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse, draggingPart) {
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -160,15 +160,15 @@ objTypes['curvedglass'] = {
     for (var i = 0; i < obj.tmp_glass.path.length; i++) {
       s_point_temp = null;
       //Line segment i->i+1
-      var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
 
-      if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
-        s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+        s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
 
       if (s_point_temp) {
-        if (s_point && geometry.length_squared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i - 1) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i - 1) {
           // The ray shots on a point where the upper and the lower surfaces overlap.
           return;
         } else if (s_lensq_temp < s_lensq) {
@@ -248,10 +248,10 @@ objTypes['curvedglass'] = {
     var i = obj.tmp_i;
     var pts = obj.tmp_glass.path;
 
-    var s_point = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+    var s_point = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
     var rp = s_point;
 
-    var s_lensq = geometry.length_squared(ray.p1, s_point);
+    var s_lensq = geometry.distanceSquared(ray.p1, s_point);
 
     var rdots = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x);

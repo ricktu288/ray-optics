@@ -30,7 +30,7 @@ objTypes['circlelens'] = {
   draw: function (obj, ctx, aboveLight) {
 
     ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2, false);
+    ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2, false);
     objTypes['refractor'].fillGlass(obj.p, obj, ctx, aboveLight);
     ctx.lineWidth = 1;
     //ctx.fillStyle="indigo";
@@ -49,8 +49,8 @@ objTypes['circlelens'] = {
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
-    var midpoint = geometry.midpoint(geometry.line(ray.p1, rp));
-    var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
+    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, rp));
+    var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
     if (d > 0) {
       // Shot from inside to outside
       var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
@@ -101,8 +101,8 @@ objTypes['circlelens'] = {
 
   getShotType: function (obj, ray) {
 
-    var midpoint = geometry.midpoint(geometry.line(ray.p1, this.checkRayIntersects(obj, ray)));
-    var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
+    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, this.checkRayIntersects(obj, ray)));
+    var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
 
     if (d > 0) {
       return 1; // From inside to outside

@@ -109,7 +109,7 @@ objTypes['handle'] = {
     if (draggingPart.part == 1) {
       if (ctrl && shift) {
         // Scaling
-        var factor = geometry.length(obj.p2, mouse.pos) / geometry.length(obj.p2, draggingPart.targetPoint_)
+        var factor = geometry.distance(obj.p2, mouse.pos) / geometry.distance(obj.p2, draggingPart.targetPoint_)
         if (factor < 1e-5) return;
         var trans = function (p) {
           p.x = (p.x - obj.p2.x) * factor + obj.p2.x;

@@ -42,7 +42,7 @@ class Mouse {
    * @returns {boolean} True if the mouse is on the given point, false otherwise.
    */
   isOnPoint(point) {
-    return geometry.length_squared(this.pos, point) < this.getClickExtent(true) * this.getClickExtent(true);
+    return geometry.distanceSquared(this.pos, point) < this.getClickExtent(true) * this.getClickExtent(true);
   }
 
   /**
@@ -53,7 +53,7 @@ class Mouse {
   isOnSegment(segment) {
     var d_per = Math.pow((this.pos.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (this.pos.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); // Similar to the distance between the mouse and the line
     var d_par = (segment.p2.x - segment.p1.x) * (this.pos.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (this.pos.y - segment.p1.y); // Similar to the projected point of the mouse on the line
-    return d_per < this.getClickExtent() * this.getClickExtent() && d_par >= 0 && d_par <= geometry.length_segment_squared(segment);
+    return d_per < this.getClickExtent() * this.getClickExtent() && d_par >= 0 && d_par <= geometry.segmentLengthSquared(segment);
   }
 
   /**

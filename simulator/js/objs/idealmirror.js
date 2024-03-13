@@ -57,7 +57,7 @@ objTypes['idealmirror'] = {
 
 
     // Draw the center point of the mirror
-    var center = geometry.midpoint(obj);
+    var center = geometry.segmentMidpoint(obj);
     ctx.strokeStyle = 'rgb(255,255,255)';
     ctx.beginPath();
     ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);

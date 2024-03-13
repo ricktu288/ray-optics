@@ -111,7 +111,7 @@ objTypes['grin_circlelens'] = {
     }
 
     ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2, false);
+    ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2, false);
     this.fillGlass(2.3, obj, ctx, aboveLight);
     ctx.lineWidth = 1;
     //ctx.fillStyle="indigo";
@@ -143,7 +143,7 @@ objTypes['grin_circlelens'] = {
     }
     if (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOnBoundary(obj, ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
     {
-      let len = geometry.length(ray.p1, ray.p2);
+      let len = geometry.distance(ray.p1, ray.p2);
       let x = ray.p1.x + (obj.step_size / len) * (ray.p2.x - ray.p1.x);
       let y = ray.p1.y + (obj.step_size / len) * (ray.p2.y - ray.p1.y);
       intersection_point = geometry.point(x, y);
@@ -158,8 +158,8 @@ objTypes['grin_circlelens'] = {
     try {
       if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
-        var midpoint = geometry.midpoint(geometry.line(ray.p1, rp));
-        var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
+        var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, rp));
+        var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
         let p = obj.fn_p({ x: rp.x - obj.origin.x, y: rp.y - obj.origin.y }); // refractive index at the intersection point - rp
         if (d > 0) {
           // Shot from inside to outside
@@ -327,7 +327,7 @@ objTypes['grin_circlelens'] = {
   x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
   */
   step: function (obj, origin, p1, p2, ray) {
-    const len = geometry.length(p1, p2);
+    const len = geometry.distance(p1, p2);
     const x = p2.x - origin.x;
     const y = p2.y - origin.y;
     const x_der_s_prev = (p2.x - p1.x) / len;
@@ -446,20 +446,20 @@ objTypes['grin_circlelens'] = {
 
   // Returns true if point is outside the circular glass, otherwise returns false
   isOutsideGlass: function (obj, point) {
-    R_squared = geometry.length_squared(obj.p1, obj.p2);
-    return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps > 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
+    R_squared = geometry.distanceSquared(obj.p1, obj.p2);
+    return (geometry.distanceSquared(obj.p1, point) - R_squared - obj.eps > 0 && geometry.distanceSquared(obj.p1, point) - R_squared + obj.eps > 0);
   },
 
   // Returns true if point is inside the circular glass, otherwise returns false
   isInsideGlass: function (obj, point) {
-    R_squared = geometry.length_squared(obj.p1, obj.p2);
-    return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps < 0);
+    R_squared = geometry.distanceSquared(obj.p1, obj.p2);
+    return (geometry.distanceSquared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.distanceSquared(obj.p1, point) - R_squared + obj.eps < 0);
   },
 
   // Returns true if point is on the boundary of the circular glass, otherwise returns false
   isOnBoundary: function (obj, point) {
-    R_squared = geometry.length_squared(obj.p1, obj.p2);
-    return (geometry.length_squared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.length_squared(obj.p1, point) - R_squared + obj.eps > 0);
+    R_squared = geometry.distanceSquared(obj.p1, obj.p2);
+    return (geometry.distanceSquared(obj.p1, point) - R_squared - obj.eps < 0 && geometry.distanceSquared(obj.p1, point) - R_squared + obj.eps > 0);
   }
 
 };

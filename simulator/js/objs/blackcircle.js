@@ -18,7 +18,7 @@ objTypes['blackcircle'] = {
   draw: function (obj, ctx, aboveLight) {
 
     ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, geometry.length_segment(obj), 0, Math.PI * 2);
+    ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2);
     ctx.lineWidth = 3;
     ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     //ctx.fillStyle="indigo";
@@ -38,7 +38,7 @@ objTypes['blackcircle'] = {
   // When the drawing area is pressed (to determine the part of the object being pressed)
   checkMouseOver: function (obj, mouse, draggingPart) {
     // clicking on p1 (center)?
-    if (mouse.isOnPoint(obj.p1) && geometry.length_squared(mouse.pos, obj.p1) <= geometry.length_squared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       return true;
@@ -50,7 +50,7 @@ objTypes['blackcircle'] = {
       return true;
     }
     // clicking on outer edge of circle?  then drag entire circle
-    if (Math.abs(geometry.length(obj.p1, mouse.pos) - geometry.length_segment(obj)) < mouse.getClickExtent()) {
+    if (Math.abs(geometry.distance(obj.p1, mouse.pos) - geometry.segmentLength(obj)) < mouse.getClickExtent()) {
       const mousePos = mouse.getPosSnappedToGrid();
       draggingPart.part = 0;
       draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
