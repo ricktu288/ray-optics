@@ -96,7 +96,8 @@ objTypes['parallel'] = {
       ray1.wavelength = obj.wavelength || GREEN_WAVELENGTH;
     }
     ray1.gap = gap;
-    addRay(ray1);
+
+    return ray1;
   },
 
   // Shoot rays
@@ -113,30 +114,35 @@ objTypes['parallel'] = {
     var rayBrightness = 1.0 / numnAngledRays;
     this.initRandom(obj);
 
+    let newRays = [];
 
     if (!obj.random) {
       for (var i = 0.5; i <= n; i++) {
         var x = obj.p1.x + i * stepX;
         var y = obj.p1.y + i * stepY;
-        this.newRay(obj, x, y, normal, 0.0, i == 0, rayBrightness);
+        newRays.push(this.newRay(obj, x, y, normal, 0.0, i == 0, rayBrightness));
         for (var angle = s; angle < halfAngle; angle += s) {
-          this.newRay(obj, x, y, normal, angle, i == 0, rayBrightness);
-          this.newRay(obj, x, y, normal, -angle, i == 0, rayBrightness);
+          newRays.push(this.newRay(obj, x, y, normal, angle, i == 0, rayBrightness));
+          newRays.push(this.newRay(obj, x, y, normal, -angle, i == 0, rayBrightness));
         }
       }
     } else {
       for (var i = 0; i < n * numnAngledRays; i++) {
         position = this.getRandom(obj, i * 2);
         angle = this.getRandom(obj, i * 2 + 1);
-        this.newRay(
+        newRays.push(this.newRay(
           obj,
           obj.p1.x + position * sizeX,
           obj.p1.y + position * sizeY,
           normal,
           (angle * 2 - 1) * halfAngle,
           i == 0,
-          rayBrightness);
+          rayBrightness));
       }
+    }
+
+    return {
+      newRays: newRays
     }
   }
 

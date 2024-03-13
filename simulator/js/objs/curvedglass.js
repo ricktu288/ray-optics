@@ -205,8 +205,9 @@ objTypes['curvedglass'] = {
     else {
       // The situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
-      ray.exist = false;
-      return;
+      return {
+        isAbsorbed: true
+      };
     }
 
     // Surface merging
@@ -227,12 +228,13 @@ objTypes['curvedglass'] = {
       else {
         // The situation that may cause bugs (e.g. shot at an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
-        ray.exist = false;
-        return;
+        return {
+          isAbsorbed: true
+        };
       }
     }
 
-    objTypes['refractor'].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
+    return objTypes['refractor'].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
   },
 
   // Test if the ray is shot from inside or outside

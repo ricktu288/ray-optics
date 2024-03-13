@@ -64,8 +64,9 @@ objTypes['circlelens'] = {
     else {
       // Situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
-      ray.exist = false;
-      return;
+      return {
+        isAbsorbed: true
+      };
     }
 
     var shotType;
@@ -88,11 +89,12 @@ objTypes['circlelens'] = {
       else {
         // Situation that may cause bugs (e.g. shot at an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
-        ray.exist = false;
-        return;
+        return {
+          isAbsorbed: true
+        };
       }
     }
-    objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
+    return objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
 
 
   },

@@ -464,8 +464,9 @@ objTypes['refractor'] = {
     else {
       // The situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
-      ray.exist = false;
-      return;
+      return {
+        isAbsorbed: true
+      };
     }
 
     // Surface merging
@@ -486,12 +487,13 @@ objTypes['refractor'] = {
       else {
         // Situation that may cause bugs (e.g. shot at an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
-        ray.exist = false;
-        return;
+        return {
+          isAbsorbed: true
+        };
       }
     }
 
-    this.refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
+    return this.refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
   },
 
   // Test if the ray is shot from inside or outside
@@ -720,6 +722,9 @@ objTypes['refractor'] = {
       var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
       // Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
 
+      let newRays = [];
+      let truncation = 0;
+
       // Handle the reflected ray
       var ray2 = geometry.ray(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
@@ -727,16 +732,16 @@ objTypes['refractor'] = {
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
       if (ray2.brightness_s + ray2.brightness_p > 0.01) {
-        addRay(ray2);
+        newRays.push(ray2);
       }
       else {
-        totalTruncation += ray2.brightness_s + ray2.brightness_p;
+        truncation += ray2.brightness_s + ray2.brightness_p;
         if (!ray.gap) {
           var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
           if (rayIndex % amp == 0) {
             ray2.brightness_s = ray2.brightness_s * amp;
             ray2.brightness_p = ray2.brightness_p * amp;
-            addRay(ray2);
+            newRays.push(ray2);
           }
         }
       }
@@ -747,6 +752,10 @@ objTypes['refractor'] = {
       ray.brightness_s = ray.brightness_s * (1 - R_s);
       ray.brightness_p = ray.brightness_p * (1 - R_p);
 
+      return {
+        newRays: newRays,
+        truncation: truncation
+      };
     }
   }
 

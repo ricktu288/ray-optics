@@ -73,8 +73,9 @@ objTypes['grin_refractor'] = {
         else {
           // The situation that may cause bugs (e.g. shot at an edge point)
           // To prevent shooting the ray to a wrong direction, absorb the ray
-          ray.exist = false;
-          return;
+          return {
+            isAbsorbed: true
+          };
         }
 
         /*
@@ -106,8 +107,9 @@ objTypes['grin_refractor'] = {
             else {
               // The situation that may cause bugs (e.g. shot at an edge point)
               // To prevent shooting the ray to a wrong direction, absorb the ray
-              ray.exist = false;
-              return;
+              return {
+                isAbsorbed: true
+              };
             }
           }
         }
@@ -126,7 +128,7 @@ objTypes['grin_refractor'] = {
               ray.bodyMerging_obj = { p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y }; // Initialize the bodyMerging object of the ray
           }
         }
-        objTypes[obj.type].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1, r_bodyMerging_obj);
+        return objTypes[obj.type].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1, r_bodyMerging_obj);
       }
       else {
         if (ray.bodyMerging_obj === undefined)
@@ -136,8 +138,9 @@ objTypes['grin_refractor'] = {
         ray.p2 = next_point;
       }
     } catch (e) {
-      ray.exist = false;
-      return;
+      return {
+        isAbsorbed: true
+      };
     }
   },
 

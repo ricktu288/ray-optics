@@ -60,6 +60,9 @@ objTypes['led'] = {
       iStart = i0;
       iEnd = (i0 + (Math.PI / 180.0 * obj.p) - 1e-5);
     }
+
+    let newRays = [];
+
     for (var i = iStart; i < iEnd; i = i + s) {
       var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
 
@@ -79,8 +82,12 @@ objTypes['led'] = {
       if (i == i0) {
         ray1.gap = true;
       }
-      addRay(ray1);
+      newRays.push(ray1);
     }
+
+    return {
+      newRays: newRays
+    };
   }
 
 };

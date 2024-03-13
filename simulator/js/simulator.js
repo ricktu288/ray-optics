@@ -146,7 +146,15 @@ function draw_(skipLight, skipGrid) {
       objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0, false);
       if (!skipLight && objTypes[scene.objs[i].type].onSimulationStart)
       {
-        objTypes[scene.objs[i].type].onSimulationStart(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
+        const ret = objTypes[scene.objs[i].type].onSimulationStart(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
+        if (ret) {
+          if (ret.newRays) {
+            waitingRays.push(...ret.newRays);
+          }
+          if (ret.truncation) {
+            totalTruncation += ret.truncation;
+          }
+        }
       }
     }
   }
@@ -180,10 +188,6 @@ function draw_(skipLight, skipGrid) {
   }
 
   lastDrawTime = new Date();
-}
-
-function addRay(ray) {
-  waitingRays[waitingRays.length] = ray;
 }
 
 var last_ray;
@@ -253,7 +257,7 @@ function shootWaitingRays() {
 
 
     var j = waitingRaysIndex;
-    if (waitingRays[j] && waitingRays[j].exist)
+    if (waitingRays[j])
     {
       // Start handling waitingRays[j]
       // Test which object will this ray shoot on first
@@ -546,7 +550,18 @@ function shootWaitingRays() {
       last_s_obj_index = s_obj_index;
       if (s_obj)
       {
-        objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+        const ret = objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+        if (ret) {
+          if (ret.isAbsorbed) {
+            waitingRays[j] = null;
+          }
+          if (ret.newRays) {
+            waitingRays.push(...ret.newRays);
+          }
+          if (ret.truncation) {
+            totalTruncation += ret.truncation;
+          }
+        }
       }
       else
       {
@@ -554,7 +569,7 @@ function shootWaitingRays() {
       }
 
       shotRayCount = shotRayCount + 1;
-      if (waitingRays[j] && waitingRays[j].exist)
+      if (waitingRays[j])
       {
         leftRayCount = leftRayCount + 1;
       }

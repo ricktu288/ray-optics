@@ -78,6 +78,8 @@ objTypes['radiant'] = {
 
   // Shoot rays
   onSimulationStart: function (obj) {
+    let newRays = [];
+
     var s = Math.PI * 2 / parseInt(scene.rayDensity * 500);
     var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
     for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s) {
@@ -91,8 +93,12 @@ objTypes['radiant'] = {
       if (i == i0) {
         ray1.gap = true;
       }
-      addRay(ray1);
+      newRays.push(ray1);
     }
+
+    return {
+      newRays: newRays
+    };
   }
 
 };

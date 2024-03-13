@@ -58,13 +58,17 @@ objTypes['beamsplitter'] = {
     ray2.brightness_s = transmission * ray.brightness_s;
     ray2.brightness_p = transmission * ray.brightness_p;
     ray2.wavelength = ray.wavelength;
-    if (ray2.brightness_s + ray2.brightness_p > .01) {
-      addRay(ray2);
-    } else {
-      totalTruncation += ray2.brightness_s + ray2.brightness_p;
-    }
     ray.brightness_s *= (1 - transmission);
     ray.brightness_p *= (1 - transmission);
-  },
+    if (ray2.brightness_s + ray2.brightness_p > .01) {
+      return {
+        newRays: [ray2]
+      };
+    } else {
+      return {
+        truncation: ray2.brightness_s + ray2.brightness_p
+      };
+    }
+  }
 
 };

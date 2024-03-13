@@ -45,7 +45,9 @@ objTypes['laser'] = {
     }
     ray1.gap = true;
     ray1.isNew = true;
-    addRay(ray1);
+    return {
+      newRays: [ray1]
+    };
   }
 
 };
