@@ -234,7 +234,7 @@ objTypes['arcmirror'] = {
       var rp_lensq = [];
       for (var i = 1; i <= 2; i++) {
 
-        rp_exist[i] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(obj.p1, obj.p2), geometry.line(obj.p3, rp_temp[i])), geometry.segment(obj.p3, rp_temp[i])) && geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
+        rp_exist[i] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(obj.p1, obj.p2), geometry.line(obj.p3, rp_temp[i])), geometry.line(obj.p3, rp_temp[i])) && geometry.intersection_is_on_ray(rp_temp[i], ray) && geometry.length_squared(rp_temp[i], ray.p1) > minShotLength_squared;
 
 
         rp_lensq[i] = geometry.length_squared(ray.p1, rp_temp[i]);

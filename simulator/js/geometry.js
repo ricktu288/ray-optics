@@ -1,77 +1,83 @@
+
 var geometry = {
+
   /**
-  * Basic geometric figures
-  **/
-  point: function(x, y) {return {type: 1, x: x, y: y, exist: true}},
+   * @typedef {Object} Point
+   * @property {number} x
+   * @property {number} y
+   */
 
-  line: function(p1, p2) {return {type: 2, p1: p1, p2: p2, exist: true}},
+  /**
+   * Create a point
+   * @param {number} x - The x-coordinate of the point.
+   * @param {number} y - The y-coordinate of the point.
+   * @returns {Point}
+   */
+  point: function (x, y) { return { x: x, y: y } },
 
-  ray: function(p1, p2) {return {type: 3, p1: p1, p2: p2, exist: true}},
+  /**
+   * @typedef {Object} Line
+   * @property {Point} p1
+   * @property {Point} p2
+   */
 
-  line_segment: function(p1, p2) {return {type: 4, p1: p1, p2: p2, exist: true}},
+  /**
+   * Create a line, which also represents a ray or a segment.
+   * When used as a line, p1 and p2 are two distinct points on the line.
+   * When used as a ray, p1 is the starting point and p2 is another point on the ray.
+   * When used as a segment, p1 and p2 are the two endpoints of the segment.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @returns {Line}
+   */
+  line: function (p1, p2) { return { p1: p1, p2: p2 } },
 
-  segment: function(p1, p2) {return {type: 4, p1: p1, p2: p2, exist: true}},
+  /**
+   * @typedef {Object} Circle
+   * @property {Point} c
+   * @property {number|Line} r
+   */
 
-  circle: function(c, r) {
-    if (typeof r == 'object' && r.type == 1) {
-      return {type: 5, c: c, r: this.line_segment(c, r), exist: true}
+  /**
+   * Create a circle
+   * @param {Point} c - The center point of the circle.
+   * @param {number|Point} r - The radius of the circle or a point on the circle.
+   */
+  circle: function (c, r) {
+    if (typeof r == 'object') {
+      return { c: c, r: this.line(c, r) }
     } else {
-      return {type: 5, c: c, r: r, exist: true}
+      return { c: c, r: r }
     }
   },
 
   /**
-  * inner product
-  * @method dot
-  * @param {graph.point} p1
-  * @param {graph.point} p2
+  * Calculate the dot product, where the two points are treated as vectors.
+  * @param {Point} p1
+  * @param {Point} p2
   * @return {Number}
   **/
-  dot: function(p1, p2) {
+  dot: function (p1, p2) {
     return p1.x * p2.x + p1.y * p2.y;
   },
 
   /**
-  * cross product
-  * @method cross
-  * @param {graph.point} p1
-  * @param {graph.point} p2
+  * Calculate the cross product, where the two points are treated as vectors.
+  * @param {Point} p1
+  * @param {Point} p2
   * @return {Number}
   **/
-  cross: function(p1, p2) {
+  cross: function (p1, p2) {
     return p1.x * p2.y - p1.y * p2.x;
   },
 
   /**
-  * Find intersection
-  * @method intersection
-  * @param {graph} obj1
-  * @param {graph} obj2
-  * @return {graph.point}
+  * Calculate the intersection of two lines.
+  * @param {Line} l1
+  * @param {Line} l2
+  * @return {Point}
   **/
-  intersection: function(obj1, obj2) {
-    // line & line
-    if (obj1.type == 2 && obj2.type == 2) {
-      return this.intersection_2line(obj1, obj2);
-    }
-    // line & circle
-    else if (obj1.type == 2 && obj2.type == 5) {
-      return this.intersection_line_circle(obj1, obj2);
-    }
-    // circle & line
-    else if (obj1.type == 5 && obj2.type == 2) {
-      return this.intersection_line_circle(obj2, obj1);
-    }
-  },
-
-  /**
-  * Intersection of two lines
-  * @method intersection_2line
-  * @param {graph.line} l1
-  * @param {graph.line} l2
-  * @return {graph.point}
-  **/
-  intersection_2line: function(l1, l2) {
+  intersection_2line: function (l1, l2) {
     var A = l1.p2.x * l1.p1.y - l1.p1.x * l1.p2.y;
     var B = l2.p2.x * l2.p1.y - l2.p1.x * l2.p2.y;
     var xa = l1.p2.x - l1.p1.x;
@@ -82,13 +88,12 @@ var geometry = {
   },
 
   /**
-  * Intersection of a line and a circle
-  * @method intersection_line_circle
-  * @param {graph.line} l1
-  * @param {graph.circle} c2
-  * @return {graph.point}
-  **/
-  intersection_line_circle: function(l1, c1) {
+   * Calculate the intersection of a line and a circle.
+   * @param {Line} l1
+   * @param {Circle} c1
+   * @return {Point[]}
+   */
+  intersection_line_circle: function (l1, c1) {
     var xa = l1.p2.x - l1.p1.x;
     var ya = l1.p2.y - l1.p1.y;
     var cx = c1.c.x;
@@ -115,129 +120,116 @@ var geometry = {
 
 
   /**
-  * Test if a point is on a ray.
-  * @method intersection_line_circle
-  * @param {graph.point} p1
-  * @param {graph.ray} r1
-  * @return {Boolean}
-  **/
-  intersection_is_on_ray: function(p1, r1) {
+   * Test if a point on the extension of a ray is actually on the ray.
+   * @param {Point} p1
+   * @param {Line} r1
+   * @return {Boolean}
+   */
+  intersection_is_on_ray: function (p1, r1) {
     return (p1.x - r1.p1.x) * (r1.p2.x - r1.p1.x) + (p1.y - r1.p1.y) * (r1.p2.y - r1.p1.y) >= 0;
   },
 
 
   /**
-  * Test if a point is on a line segment.
-  * @method intersection_line_circle
-  * @param {graph.point} p1
-  * @param {graph.segment} s1
-  * @return {Boolean}
-  **/
-  intersection_is_on_segment: function(p1, s1) {
+   * Test if a point on the extension of a segment is actually on the segment.
+   * @param {Point} p1
+   * @param {Line} s1
+   * @return {Boolean}
+   */
+  intersection_is_on_segment: function (p1, s1) {
     return (p1.x - s1.p1.x) * (s1.p2.x - s1.p1.x) + (p1.y - s1.p1.y) * (s1.p2.y - s1.p1.y) >= 0 && (p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y) >= 0;
   },
 
   /**
-  * Length of a segment
-  * @method length_segment
-  * @param {graph.segment} seg
-  * @return {Number}
-  **/
-  length_segment: function(seg) {
+   * Calculate the length of a line segment.
+   * @param {Line} seg
+   * @return {Number}
+   */
+  length_segment: function (seg) {
     return Math.sqrt(this.length_segment_squared(seg));
   },
 
   /**
-  * Square of the length of a segment
-  * @method length_segment_squared
-  * @param {graph.segment} seg
-  * @return {Number}
-  **/
-  length_segment_squared: function(seg) {
+   * Calculate the squared length of a line segment.
+   * @param {Line} seg
+   * @return {Number}
+   */
+  length_segment_squared: function (seg) {
     return this.length_squared(seg.p1, seg.p2);
   },
 
   /**
-  * Distance between two points
-  * @method length
-  * @param {graph.point} p1
-  * @param {graph.point} p2
-  * @return {Number}
-  **/
-  length: function(p1, p2) {
+   * Calculate the length between two points.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @return {Number}
+   */
+  length: function (p1, p2) {
     return Math.sqrt(this.length_squared(p1, p2));
   },
 
   /**
-  * Square of the distance between two points
-  * @method length_squared
-  * @param {graph.point} p1
-  * @param {graph.point} p2
-  * @return {Number}
-  **/
-  length_squared: function(p1, p2) {
+   * Calculate the squared length between two points.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @return {Number}
+   */
+  length_squared: function (p1, p2) {
     var dx = p1.x - p2.x;
     var dy = p1.y - p2.y;
     return dx * dx + dy * dy;
   },
 
 
-  /*
-  * Basic geometric constructions
-  */
-
   /**
-  * Midpoint of a line segment
-  * @method midpoint
-  * @param {graph.line} l1
-  * @return {graph.point}
-  **/
-  midpoint: function(l1) {
+   * Calculate the midpoint of a segment.
+   * @param {Line} l1
+   * @return {Point}
+   */
+  midpoint: function (l1) {
     var nx = (l1.p1.x + l1.p2.x) * 0.5;
     var ny = (l1.p1.y + l1.p2.y) * 0.5;
     return geometry.point(nx, ny);
   },
 
+
   /**
-  * Midpoint of two points
-  * @method midpoint_points
-  * @param {graph.point} p1
-  * @param {graph.point} p2
-  * @return {graph.point}
-  **/
-  midpoint_points: function(p1, p2) {
+   * Calculate the midpoint between two points.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @return {Point}
+   */
+  midpoint_points: function (p1, p2) {
     var nx = (p1.x + p2.x) * 0.5;
     var ny = (p1.y + p2.y) * 0.5;
     return geometry.point(nx, ny);
   },
 
   /**
-  * Perpendicular bisector of a line segment
-  * @method perpendicular_bisector
-  * @param {graph.segment} l1
-  * @return {graph.line}
-  **/
-  perpendicular_bisector: function(l1) {
+   * Calculate the perpendicular bisector of a segment.
+   * @param {Line} l1
+   * @return {Line}
+   */
+  perpendicular_bisector: function (l1) {
     return geometry.line(
-        geometry.point(
-          (-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
-          (l1.p1.x - l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
-        ),
-        geometry.point(
-          (l1.p1.y - l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
-          (-l1.p1.x + l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
-        )
-      );
+      geometry.point(
+        (-l1.p1.y + l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
+        (l1.p1.x - l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
+      ),
+      geometry.point(
+        (l1.p1.y - l1.p2.y + l1.p1.x + l1.p2.x) * 0.5,
+        (-l1.p1.x + l1.p2.x + l1.p1.y + l1.p2.y) * 0.5
+      )
+    );
   },
 
   /**
-  * Get the line though p1 and parallel to l1.
-  * @method parallel
-  * @param {graph.line} l1
-  * @param {graph.point} p1
-  * @return {graph.line}
-  **/
-  parallel: function(l1, p1) {
+  * Calculate the line though p1 and parallel to l1.
+  * @param {Line} l1
+  * @param {Point} p1
+  * @return {Line}
+  */
+  parallel: function (l1, p1) {
     var dx = l1.p2.x - l1.p1.x;
     var dy = l1.p2.y - l1.p1.y;
     return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));

@@ -326,19 +326,19 @@ function shootWaitingRays() {
         if (scene.mode == 'light' || scene.mode == 'extended_light')
         {
           if (scene.colorMode) {
-            canvasPainter.draw(waitingRays[j], color); // Draw the ray
+            canvasPainter.drawRay(waitingRays[j], color); // Draw the ray
           } else {
-            canvasPainter.draw(waitingRays[j], 'rgb(255,255,128)'); // Draw the ray
+            canvasPainter.drawRay(waitingRays[j], 'rgb(255,255,128)'); // Draw the ray
           }
         }
         if (scene.mode == 'extended_light' && !waitingRays[j].isNew)
         {
           if (scene.colorMode) {
             ctxLight.setLineDash([2, 2]);
-            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
+            canvasPainter.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
             ctxLight.setLineDash([]);
           } else {
-            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the extension of the ray
+            canvasPainter.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the extension of the ray
           }
         }
 
@@ -360,22 +360,22 @@ function shootWaitingRays() {
         if (scene.mode == 'light' || scene.mode == 'extended_light')
         {
           if (scene.colorMode) {
-            canvasPainter.draw(geometry.segment(waitingRays[j].p1, s_point), color); // Draw the ray
+            canvasPainter.drawSegment(geometry.line(waitingRays[j].p1, s_point), color); // Draw the ray
           } else {
-            canvasPainter.draw(geometry.segment(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
+            canvasPainter.drawSegment(geometry.line(waitingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
           }
         }
         if (scene.mode == 'extended_light' && !waitingRays[j].isNew)
         {
           if (scene.colorMode) {
             ctxLight.setLineDash([2, 2]);
-            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
+            canvasPainter.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
             ctxLight.setLineDash([1, 5]);
-            canvasPainter.draw(geometry.ray(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); // Draw the forward extension of the ray
+            canvasPainter.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); // Draw the forward extension of the ray
             ctxLight.setLineDash([]);
           } else {
-            canvasPainter.draw(geometry.ray(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the backward extension of the ray
-            canvasPainter.draw(geometry.ray(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); // Draw the forward extension of the ray
+            canvasPainter.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the backward extension of the ray
+            canvasPainter.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), 'rgb(80,80,80)'); // Draw the forward extension of the ray
           }
 
         }
@@ -387,7 +387,7 @@ function shootWaitingRays() {
           if (observed_point)
           {
 
-            if (geometry.intersection_is_on_segment(observed_point, geometry.segment(waitingRays[j].p1, s_point)))
+            if (geometry.intersection_is_on_segment(observed_point, geometry.line(waitingRays[j].p1, s_point)))
             {
               observed = true;
             }
@@ -405,7 +405,7 @@ function shootWaitingRays() {
             if (last_intersection && geometry.length_squared(last_intersection, observed_intersection) < 25)
             {
               // If the intersections are near each others
-              if (geometry.intersection_is_on_ray(observed_intersection, geometry.ray(observed_point, waitingRays[j].p1)) && geometry.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
+              if (geometry.intersection_is_on_ray(observed_intersection, geometry.line(observed_point, waitingRays[j].p1)) && geometry.length_squared(observed_point, waitingRays[j].p1) > 1e-5)
               {
 
 
@@ -429,34 +429,34 @@ function shootWaitingRays() {
                     ctxLight.fillStyle = color;
                     ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
                   } else {
-                    canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                    canvasPainter.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                   }
                 }
                 else if (rpd < s_lensq)
                 {
                   // Real image
                   if (scene.colorMode) {
-                    canvasPainter.draw(observed_intersection, color); // Draw the image
+                    canvasPainter.drawPoint(observed_intersection, color); // Draw the image
                   } else {
-                    canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); // Draw the image
+                    canvasPainter.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
                   }
                 }
                   if (scene.colorMode) {
                     ctxLight.setLineDash([1, 2]);
-                    canvasPainter.draw(geometry.segment(observed_point, observed_intersection), color); // Draw the observed ray
+                    canvasPainter.drawSegment(geometry.line(observed_point, observed_intersection), color); // Draw the observed ray
                     ctxLight.setLineDash([]);
                   } else {
-                    canvasPainter.draw(geometry.segment(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
+                    canvasPainter.drawSegment(geometry.line(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
                   }
               }
               else
               {
                 if (scene.colorMode) {
                   ctxLight.setLineDash([1, 2]);
-                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
+                  canvasPainter.drawRay(geometry.line(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
-                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                  canvasPainter.drawRay(geometry.line(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
                 }
               }
             }
@@ -466,10 +466,10 @@ function shootWaitingRays() {
               {
                 if (scene.colorMode) {
                   ctxLight.setLineDash([1, 2]);
-                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), color); // Draw the observed ray
+                  canvasPainter.drawRay(geometry.line(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
-                  canvasPainter.draw(geometry.ray(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                  canvasPainter.drawRay(geometry.line(observed_point, waitingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
                 }
               }
             }
@@ -512,16 +512,16 @@ function shootWaitingRays() {
                 ctxLight.fillStyle = color;
                 ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
               } else {
-                canvasPainter.draw(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                canvasPainter.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
               }
             }
             else if (rpd < s_lensq)
             {
               // Real image
               if (scene.colorMode) {
-                canvasPainter.draw(observed_intersection, color); // Draw the image
+                canvasPainter.drawPoint(observed_intersection, color); // Draw the image
               } else {
-                canvasPainter.draw(observed_intersection, 'rgb(255,255,128)'); // Draw the image
+                canvasPainter.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
               }
             }
             else
@@ -531,7 +531,7 @@ function shootWaitingRays() {
                 ctxLight.fillStyle = color;
                 ctxLight.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
               } else {
-                canvasPainter.draw(observed_intersection, 'rgb(80,80,80)');
+                canvasPainter.drawPoint(observed_intersection, 'rgb(80,80,80)');
               }
             }
           }

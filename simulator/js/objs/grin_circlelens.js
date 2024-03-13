@@ -158,7 +158,7 @@ objTypes['grin_circlelens'] = {
     try {
       if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
-        var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
+        var midpoint = geometry.midpoint(geometry.line(ray.p1, rp));
         var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
         let p = obj.fn_p({ x: rp.x - obj.origin.x, y: rp.y - obj.origin.y }); // refractive index at the intersection point - rp
         if (d > 0) {
@@ -286,7 +286,7 @@ objTypes['grin_circlelens'] = {
       let truncation = 0;
 
       // Handle the reflected ray
-      var ray2 = geometry.ray(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
+      var ray2 = geometry.line(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;

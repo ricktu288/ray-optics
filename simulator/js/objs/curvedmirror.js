@@ -113,7 +113,7 @@ objTypes['curvedmirror'] = {
     var pts = obj.tmp_points;
     for (i = 0; i < pts.length - 1; i++) {
 
-      var seg = geometry.segment(pts[i], pts[i + 1]);
+      var seg = geometry.line(pts[i], pts[i + 1]);
       if (mouse.isOnSegment(seg)) {
         // Dragging the entire obj
         const mousePos = mouse.getPosSnappedToGrid();
@@ -139,7 +139,7 @@ objTypes['curvedmirror'] = {
     for (j = 0; j < pts.length - 1; j++) {
       i = dir ? j : (pts.length - 2 - j);
       var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
-      var seg = geometry.segment(pts[i], pts[i + 1]);
+      var seg = geometry.line(pts[i], pts[i + 1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
       if (geometry.length(ray.p1, rp_temp) < minShotLength)
         continue;
@@ -159,7 +159,7 @@ objTypes['curvedmirror'] = {
     var ry = ray.p1.y - rp.y;
     var i = obj.tmp_i;
     var pts = obj.tmp_points;
-    var seg = geometry.segment(pts[i], pts[i + 1]);
+    var seg = geometry.line(pts[i], pts[i + 1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
 
@@ -183,9 +183,9 @@ objTypes['curvedmirror'] = {
 
       var segA;
       if (frac < 0.5) {
-        segA = geometry.segment(pts[i - 1], pts[i]);
+        segA = geometry.line(pts[i - 1], pts[i]);
       } else {
-        segA = geometry.segment(pts[i + 1], pts[i + 2]);
+        segA = geometry.line(pts[i + 1], pts[i + 2]);
       }
       var rxA = ray.p1.x - rp.x;
       var ryA = ray.p1.y - rp.y;

@@ -83,7 +83,7 @@ objTypes['parallel'] = {
   },
 
   newRay: function (obj, x, y, normal, angle, gap, brightness_factor = 1.0) {
-    var ray1 = geometry.ray(geometry.point(x, y), geometry.point(x + Math.sin(normal + angle), y + Math.cos(normal + angle)));
+    var ray1 = geometry.line(geometry.point(x, y), geometry.point(x + Math.sin(normal + angle), y + Math.cos(normal + angle)));
     ray1.brightness_s = Math.min(obj.p / scene.rayDensity * brightness_factor, 1) * 0.5;
     ray1.brightness_p = Math.min(obj.p / scene.rayDensity * brightness_factor, 1) * 0.5;
     if (obj.lambert) {

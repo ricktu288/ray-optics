@@ -49,7 +49,7 @@ objTypes['circlelens'] = {
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
-    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, rp));
+    var midpoint = geometry.midpoint(geometry.line(ray.p1, rp));
     var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
     if (d > 0) {
       // Shot from inside to outside
@@ -101,7 +101,7 @@ objTypes['circlelens'] = {
 
   getShotType: function (obj, ray) {
 
-    var midpoint = geometry.midpoint(geometry.line_segment(ray.p1, this.checkRayIntersects(obj, ray)));
+    var midpoint = geometry.midpoint(geometry.line(ray.p1, this.checkRayIntersects(obj, ray)));
     var d = geometry.length_squared(obj.p1, obj.p2) - geometry.length_squared(obj.p1, midpoint);
 
     if (d > 0) {

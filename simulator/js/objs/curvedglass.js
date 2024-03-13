@@ -162,7 +162,7 @@ objTypes['curvedglass'] = {
       //Line segment i->i+1
       var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
 
-      if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
+      if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
         s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
@@ -270,7 +270,7 @@ objTypes['curvedglass'] = {
     // Use a simple trick to smooth out the normal vector so that image detection works.
     // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
 
-    var seg = geometry.segment(pts[i % pts.length], pts[(i + 1) % pts.length]);
+    var seg = geometry.line(pts[i % pts.length], pts[(i + 1) % pts.length]);
     var rx = ray.p1.x - rp.x;
     var ry = ray.p1.y - rp.y;
     var mx = seg.p2.x - seg.p1.x;
@@ -285,9 +285,9 @@ objTypes['curvedglass'] = {
 
     var segA;
     if (frac < 0.5) {
-      segA = geometry.segment(pts[(i - 1 + pts.length) % pts.length], pts[i % pts.length]);
+      segA = geometry.line(pts[(i - 1 + pts.length) % pts.length], pts[i % pts.length]);
     } else {
-      segA = geometry.segment(pts[(i + 1) % pts.length], pts[(i + 2) % pts.length]);
+      segA = geometry.line(pts[(i + 1) % pts.length], pts[(i + 2) % pts.length]);
     }
 
     var rdotsA = (ray.p2.x - ray.p1.x) * (segA.p2.x - segA.p1.x) + (ray.p2.y - ray.p1.y) * (segA.p2.y - segA.p1.y);

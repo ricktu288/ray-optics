@@ -94,7 +94,7 @@ objTypes['parabolicmirror'] = {
     var pts = obj.tmp_points;
     for (i = 0; i < pts.length - 1; i++) {
 
-      var seg = geometry.segment(pts[i], pts[i + 1]);
+      var seg = geometry.line(pts[i], pts[i + 1]);
       if (mouse.isOnSegment(seg)) {
         // Dragging the entire obj
         const mousePos = mouse.getPosSnappedToGrid();

@@ -6,9 +6,7 @@ const DATA_VERSION = 2;
 
 /**
  * Represents the scene in this simulator.
- * @class Scene
  */
-
 class Scene {
   constructor() {
     /** @property {Object[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene. */

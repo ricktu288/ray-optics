@@ -318,7 +318,7 @@ objTypes['refractor'] = {
         }
         else {
           // The three points on the arc is colinear. Treat as a line segment.
-          if (mouse.isOnSegment(geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length]))) {
+          if (mouse.isOnSegment(geometry.line(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length]))) {
             // Dragging the entire obj
             const mousePos = mouse.getPosSnappedToGrid();
             draggingPart.part = 0;
@@ -330,7 +330,7 @@ objTypes['refractor'] = {
         }
       }
       else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
-        if (mouse.isOnSegment(geometry.segment(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length]))) {
+        if (mouse.isOnSegment(geometry.line(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length]))) {
           // Dragging the entire obj
           const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
@@ -399,7 +399,7 @@ objTypes['refractor'] = {
           r = geometry.length(center, p3);
           rp_temp = geometry.intersection_line_circle(geometry.line(ray.p1, ray.p2), geometry.circle(center, p2));
           for (var ii = 1; ii <= 2; ii++) {
-            rp_exist[ii] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.segment(p3, rp_temp[ii])) && geometry.intersection_is_on_ray(rp_temp[ii], ray) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
+            rp_exist[ii] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.intersection_is_on_ray(rp_temp[ii], ray) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
             rp_lensq[ii] = geometry.length_squared(ray.p1, rp_temp[ii]);
           }
           if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared) {
@@ -415,7 +415,7 @@ objTypes['refractor'] = {
           // The three points on the arc is colinear. Treat as a line segment.
           var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
-          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
+          if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
             s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
           }
@@ -425,7 +425,7 @@ objTypes['refractor'] = {
         //Line segment i->i+1
         var rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
 
-        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
+        if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
           s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
         }
@@ -537,7 +537,7 @@ objTypes['refractor'] = {
     var p2;
     var p3;
     var center;
-    var ray2 = geometry.ray(ray.p1, geometry.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
+    var ray2 = geometry.line(ray.p1, geometry.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
     var ray_intersect_count = 0; // The intersection count (odd means from outside)
 
     for (var i = 0; i < obj.path.length; i++) {
@@ -554,10 +554,10 @@ objTypes['refractor'] = {
           rp2_temp = geometry.intersection_line_circle(geometry.line(ray2.p1, ray2.p2), geometry.circle(center, p2));
           for (var ii = 1; ii <= 2; ii++) {
             rp_on_ray[ii] = geometry.intersection_is_on_ray(rp_temp[ii], ray);
-            rp_exist[ii] = rp_on_ray[ii] && !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.segment(p3, rp_temp[ii])) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
+            rp_exist[ii] = rp_on_ray[ii] && !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.length_squared(rp_temp[ii], ray.p1) > minShotLength_squared;
             rp_lensq[ii] = geometry.length_squared(ray.p1, rp_temp[ii]);
 
-            rp2_exist[ii] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp2_temp[ii])), geometry.segment(p3, rp2_temp[ii])) && geometry.intersection_is_on_ray(rp2_temp[ii], ray2) && geometry.length_squared(rp2_temp[ii], ray2.p1) > minShotLength_squared;
+            rp2_exist[ii] = !geometry.intersection_is_on_segment(geometry.intersection_2line(geometry.line(p1, p2), geometry.line(p3, rp2_temp[ii])), geometry.line(p3, rp2_temp[ii])) && geometry.intersection_is_on_ray(rp2_temp[ii], ray2) && geometry.length_squared(rp2_temp[ii], ray2.p1) > minShotLength_squared;
             rp2_lensq[ii] = geometry.length_squared(ray2.p1, rp2_temp[ii]);
           }
 
@@ -605,7 +605,7 @@ objTypes['refractor'] = {
           rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
 
           rp2_temp = geometry.intersection_2line(geometry.line(ray2.p1, ray2.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length]));
-          if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
+          if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
             s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
 
@@ -618,7 +618,7 @@ objTypes['refractor'] = {
 
           }
 
-          if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
+          if (geometry.intersection_is_on_segment(rp2_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 2) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
             ray_intersect_count++;
           }
 
@@ -633,7 +633,7 @@ objTypes['refractor'] = {
         rp_temp = geometry.intersection_2line(geometry.line(ray.p1, ray.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
 
         rp2_temp = geometry.intersection_2line(geometry.line(ray2.p1, ray2.p2), geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length]));
-        if (geometry.intersection_is_on_segment(rp_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
+        if (geometry.intersection_is_on_segment(rp_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp_temp, ray) && geometry.length_squared(ray.p1, rp_temp) > minShotLength_squared) {
           s_lensq_temp = geometry.length_squared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
 
@@ -646,7 +646,7 @@ objTypes['refractor'] = {
 
         }
 
-        if (geometry.intersection_is_on_segment(rp2_temp, geometry.segment(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
+        if (geometry.intersection_is_on_segment(rp2_temp, geometry.line(obj.path[i % obj.path.length], obj.path[(i + 1) % obj.path.length])) && geometry.intersection_is_on_ray(rp2_temp, ray2) && geometry.length_squared(ray2.p1, rp2_temp) > minShotLength_squared) {
           ray_intersect_count++;
         }
 
@@ -726,7 +726,7 @@ objTypes['refractor'] = {
       let truncation = 0;
 
       // Handle the reflected ray
-      var ray2 = geometry.ray(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
+      var ray2 = geometry.line(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;

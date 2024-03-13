@@ -87,28 +87,28 @@ objTypes['cropbox'] = {
       return true;
     }
     // Top
-    if (mouse.isOnSegment(geometry.segment(obj.p1, obj.p2))) {
+    if (mouse.isOnSegment(geometry.line(obj.p1, obj.p2))) {
       draggingPart.part = 5;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Right
-    if (mouse.isOnSegment(geometry.segment(obj.p2, obj.p4))) {
+    if (mouse.isOnSegment(geometry.line(obj.p2, obj.p4))) {
       draggingPart.part = 6;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Bottom
-    if (mouse.isOnSegment(geometry.segment(obj.p3, obj.p4))) {
+    if (mouse.isOnSegment(geometry.line(obj.p3, obj.p4))) {
       draggingPart.part = 7;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
       return true;
     }
     // Left
-    if (mouse.isOnSegment(geometry.segment(obj.p1, obj.p3))) {
+    if (mouse.isOnSegment(geometry.line(obj.p1, obj.p3))) {
       draggingPart.part = 8;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;

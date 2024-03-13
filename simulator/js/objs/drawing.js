@@ -74,7 +74,7 @@ objTypes['drawing'] = {
   checkMouseOver: function (obj, mouse, draggingPart) {
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
-        if (mouse.isOnSegment(geometry.segment(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
+        if (mouse.isOnSegment(geometry.line(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
           draggingPart.part = 0;
           draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging

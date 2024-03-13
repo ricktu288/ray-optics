@@ -83,7 +83,7 @@ objTypes['radiant'] = {
     var s = Math.PI * 2 / parseInt(scene.rayDensity * 500);
     var i0 = (scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0; // To avoid black gap when using the observer
     for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s) {
-      var ray1 = geometry.ray(geometry.point(obj.x, obj.y), geometry.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));
+      var ray1 = geometry.line(geometry.point(obj.x, obj.y), geometry.point(obj.x + Math.sin(i), obj.y + Math.cos(i)));
       ray1.brightness_s = Math.min(obj.p / scene.rayDensity, 1) * 0.5;
       ray1.brightness_p = Math.min(obj.p / scene.rayDensity, 1) * 0.5;
       ray1.isNew = true;

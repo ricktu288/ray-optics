@@ -71,7 +71,7 @@ objTypes['led'] = {
       x1 = obj.p1.x + r * Math.cos(ang);
       y1 = obj.p1.y + r * Math.sin(ang);
 
-      var ray1 = geometry.ray(geometry.point(obj.p1.x, obj.p1.y), geometry.point(x1, y1));
+      var ray1 = geometry.line(geometry.point(obj.p1.x, obj.p1.y), geometry.point(x1, y1));
 
       ray1.brightness_s = Math.min((obj.brightness || 0.5) / scene.rayDensity, 1) * 0.5;
       ray1.brightness_p = Math.min((obj.brightness || 0.5) / scene.rayDensity, 1) * 0.5;

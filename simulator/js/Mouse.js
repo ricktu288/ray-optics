@@ -47,7 +47,7 @@ class Mouse {
 
   /**
    * Determines if the mouse is currently over a given line segment.
-   * @param {geometry.segment} segment - The line segment to check against the mouse position.
+   * @param {geometry.line} segment - The line segment to check against the mouse position.
    * @returns {boolean} True if the mouse is on the given line segment, false otherwise.
    */
   isOnSegment(segment) {

@@ -92,8 +92,8 @@ objTypes['aperture'] = {
       return true;
     }
 
-    var segment1 = geometry.segment(obj.p1, obj.p3);
-    var segment2 = geometry.segment(obj.p2, obj.p4);
+    var segment1 = geometry.line(obj.p1, obj.p3);
+    var segment2 = geometry.line(obj.p2, obj.p4);
     if (mouse.isOnSegment(segment1) || mouse.isOnSegment(segment2)) {
       const mousePos = mouse.getPosSnappedToGrid();
       draggingPart.part = 0;
@@ -210,8 +210,8 @@ objTypes['aperture'] = {
 
   checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
-      var segment1 = geometry.segment(obj.p1, obj.p3);
-      var segment2 = geometry.segment(obj.p2, obj.p4);
+      var segment1 = geometry.line(obj.p1, obj.p3);
+      var segment2 = geometry.line(obj.p2, obj.p4);
       var rp_temp1 = objTypes['lineobj'].checkRayIntersects(segment1, ray);
       if (rp_temp1) {
         return rp_temp1;
