@@ -23,7 +23,8 @@ objTypes['lens'] = {
   checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var par_x = (obj.p2.x - obj.p1.x) / len;
     var par_y = (obj.p2.y - obj.p1.y) / len;
@@ -35,7 +36,7 @@ objTypes['lens'] = {
     var center_size = 2;
 
     // Draw the line segment
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
     ctx.globalAlpha = 1 / ((Math.abs(obj.p) / 100) + 1);
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -86,7 +87,7 @@ objTypes['lens'] = {
       ctx.fill();
     }
 
-    if (obj == mouseObj) {
+    if (isHovered) {
       // show focal length
       var mp = geometry.segmentMidpoint(obj);
       ctx.fillStyle = 'rgb(255,0,255)';

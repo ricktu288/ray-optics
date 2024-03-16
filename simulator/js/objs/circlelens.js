@@ -27,17 +27,18 @@ objTypes['circlelens'] = {
   zIndex: objTypes['refractor'].zIndex,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p, obj, ctx, aboveLight);
+    objTypes['refractor'].fillGlass(obj.p, obj, canvasRenderer, isAboveLight, isHovered);
     ctx.lineWidth = 1;
     //ctx.fillStyle="indigo";
     ctx.fillStyle = 'red';
     ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     //ctx.fillStyle="rgb(255,0,255)";
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'magenta';
       //ctx.fillStyle="Purple";
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);

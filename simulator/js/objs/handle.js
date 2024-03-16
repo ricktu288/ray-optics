@@ -33,7 +33,8 @@ objTypes['handle'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
     /*
     for (var i in obj.controlPoints) {
@@ -45,7 +46,7 @@ objTypes['handle'] = {
     for (var i in obj.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = obj.notDone ? 'cyan' : getMouseStyle(obj, 'gray');
+      ctx.strokeStyle = obj.notDone ? 'cyan' : isHovered ? 'cyan' : ('gray');
       ctx.setLineDash([2, 2]);
       ctx.arc(obj.controlPoints[i].newPoint.x, obj.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
       ctx.stroke();
@@ -54,7 +55,7 @@ objTypes['handle'] = {
     if (!obj.notDone) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = getMouseStyle(obj, 'gray');
+      ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
       ctx.arc(obj.p1.x, obj.p1.y, 2, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();

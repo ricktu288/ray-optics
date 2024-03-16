@@ -34,11 +34,12 @@ objTypes['radiant'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.fillStyle = scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.fillStyle = scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
     ctx.fillRect(obj.x - 2.5, obj.y - 2.5, 5, 5);
     if (scene.colorMode) {
-      ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
+      ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
       ctx.fillRect(obj.x - 1.5, obj.y - 1.5, 3, 3);
     }
   },

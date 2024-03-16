@@ -496,7 +496,8 @@ objTypes['sphericallens'] = {
 
   zIndex: objTypes['refractor'].zIndex,
 
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     if (!obj.path) {
       if (obj.p1 && obj.p2) {
         ctx.fillStyle = 'rgb(255,0,0)';
@@ -505,7 +506,7 @@ objTypes['sphericallens'] = {
       }
       return;
     }
-    objTypes['refractor'].draw(obj, ctx, aboveLight);
+    objTypes['refractor'].draw(obj, canvasRenderer, isAboveLight, isHovered);
 
     var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
     var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
@@ -515,7 +516,7 @@ objTypes['sphericallens'] = {
     var dpx = dy;
     var dpy = -dx;
 
-    if (obj == mouseObj) {
+    if (isHovered) {
       // Draw the focal points
 
       var params = this.getDFfdBfd(obj);

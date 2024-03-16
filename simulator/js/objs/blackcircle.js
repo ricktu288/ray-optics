@@ -15,12 +15,13 @@ objTypes['blackcircle'] = {
   onDrag: objTypes['circleobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     //ctx.fillStyle="indigo";
 
     ctx.stroke();
@@ -28,7 +29,7 @@ objTypes['blackcircle'] = {
     ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
 
     ctx.lineWidth = 1;
-    if (obj === mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }

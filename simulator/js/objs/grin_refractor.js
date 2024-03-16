@@ -144,7 +144,8 @@ objTypes['grin_refractor'] = {
     }
   },
 
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var p1;
     var p2;
     var p3;
@@ -230,12 +231,12 @@ objTypes['grin_refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(2.3, obj, ctx, aboveLight);
+      this.fillGlass(2.3, obj, canvasRenderer, isAboveLight, isHovered);
     }
     ctx.lineWidth = 1;
 
 
-    if (obj == mouseObj) {
+    if (isHovered) {
       for (var i = 0; i < obj.path.length; i++) {
         if (typeof obj.path[i].arc != 'undefined') {
           if (obj.path[i].arc) {

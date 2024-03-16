@@ -85,8 +85,9 @@ objTypes['text'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.fillStyle = getMouseStyle(obj, 'white');
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.fillStyle = isHovered ? 'cyan' : ('white');
     ctx.textAlign = obj.fontAlignment || 'left';
     ctx.textBaseline = 'bottom';
 

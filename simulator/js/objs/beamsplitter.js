@@ -26,13 +26,14 @@ objTypes['beamsplitter'] = {
   checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(100,100,168)');
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(100,100,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);
     ctx.stroke();
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
     ctx.setLineDash([15, 15]);
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);

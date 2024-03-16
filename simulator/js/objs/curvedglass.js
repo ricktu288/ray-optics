@@ -24,11 +24,12 @@ objTypes['curvedglass'] = {
   onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    if (aboveLight && obj.tmp_glass) {
-      objTypes['refractor'].draw(obj.tmp_glass, ctx, true);
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    if (isAboveLight && obj.tmp_glass) {
+      objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, true, false);
       ctx.globalAlpha = 0.1;
-      ctx.fillStyle = getMouseStyle(obj, 'transparent');
+      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       return;
@@ -97,12 +98,12 @@ objTypes['curvedglass'] = {
         return;
       }
     }
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }
-    objTypes['refractor'].draw(obj.tmp_glass, ctx, aboveLight);
+    objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, isAboveLight, isHovered);
   },
 
   move: objTypes['lineobj'].move,

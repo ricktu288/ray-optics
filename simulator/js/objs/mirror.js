@@ -15,8 +15,9 @@ objTypes['mirror'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);

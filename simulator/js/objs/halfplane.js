@@ -53,7 +53,8 @@ objTypes['halfplane'] = {
   zIndex: objTypes['refractor'].zIndex,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
     var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var par_x = (obj.p2.x - obj.p1.x) / len;
@@ -69,9 +70,9 @@ objTypes['halfplane'] = {
     ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
     ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
 
-    objTypes['refractor'].fillGlass(obj.p, obj, ctx, aboveLight);
+    objTypes['refractor'].fillGlass(obj.p, obj, canvasRenderer, isAboveLight, isHovered);
 
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);

@@ -83,7 +83,8 @@ objTypes['refractor'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var p1;
     var p2;
     var p3;
@@ -161,12 +162,12 @@ objTypes['refractor'] = {
           ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
         }
       }
-      this.fillGlass(obj.p, obj, ctx, aboveLight);
+      this.fillGlass(obj.p, obj, canvasRenderer, isAboveLight, isHovered);
     }
     ctx.lineWidth = 1;
 
 
-    if (obj == mouseObj) {
+    if (isHovered) {
       for (var i = 0; i < obj.path.length; i++) {
         if (typeof obj.path[i].arc != 'undefined') {
           if (obj.path[i].arc) {
@@ -182,12 +183,14 @@ objTypes['refractor'] = {
     }
   },
 
-  fillGlass: function (n, obj, ctx, aboveLight) {
-    //console.log(aboveLight)
-    if (aboveLight) {
+  fillGlass: function (n, obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+
+    //console.log(isAboveLight)
+    if (isAboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
-      ctx.fillStyle = getMouseStyle(obj, 'transparent');
+      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       return;
@@ -245,7 +248,7 @@ objTypes['refractor'] = {
       } else {
         // canvas2svg does not support globalCompositeOperation. Use the old appearance.
         ctx.globalAlpha = 1;
-        ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(70,70,70)');
         ctx.lineWidth = 1;
         ctx.stroke();
       }

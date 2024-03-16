@@ -44,9 +44,10 @@ objTypes['parallel'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var a_l = Math.atan2(obj.p1.x - obj.p2.x, obj.p1.y - obj.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = getMouseStyle(obj, scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
+    ctx.strokeStyle = isHovered ? 'cyan' : (scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(0,255,0)');
 
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';

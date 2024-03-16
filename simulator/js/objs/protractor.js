@@ -15,8 +15,9 @@ objTypes['protractor'] = {
   onDrag: objTypes['circleobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    if (!aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
       var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
       var scale_width_limit = 5;
@@ -28,7 +29,7 @@ objTypes['protractor'] = {
       var scale_len_mid = 15;
       var scale_len_long = 20;
 
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
+      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
       ctx.font = 'bold 14px Arial';
       ctx.fillStyle = 'rgb(128,128,128)';
 
@@ -90,7 +91,7 @@ objTypes['protractor'] = {
     }
     ctx.fillStyle = 'red';
     ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(obj.p2.x - 2.5, obj.p2.y - 2.5, 5, 5);
     }

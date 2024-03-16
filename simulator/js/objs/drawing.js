@@ -46,8 +46,9 @@ objTypes['drawing'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.strokeStyle = getMouseStyle(obj, "white");
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.strokeStyle = isHovered ? 'cyan' : ("white");
     ctx.beginPath();
     for (var i = 0; i < obj.points.length; i++) {
       ctx.moveTo(obj.points[i][0], obj.points[i][1]);

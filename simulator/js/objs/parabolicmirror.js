@@ -18,7 +18,8 @@ objTypes['parabolicmirror'] = {
   onConstructMouseUp: objTypes['arcmirror'].onConstructMouseUp,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2) {
       var p12d = geometry.distance(obj.p1, obj.p2);
@@ -34,7 +35,7 @@ objTypes['parabolicmirror'] = {
       var x0 = p12d / 2;
       var a = height / (x0 * x0); // y=ax^2
       var i;
-      ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.beginPath();
       obj.tmp_points = [geometry.point(obj.p1.x, obj.p1.y)];
       ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -48,7 +49,7 @@ objTypes['parabolicmirror'] = {
         obj.tmp_points.push(pt);
       }
       ctx.stroke();
-      if (obj == mouseObj) {
+      if (isHovered) {
         ctx.fillRect(obj.p3.x - 1.5, obj.p3.y - 1.5, 3, 3);
         var focusx = (obj.p1.x + obj.p2.x) * .5 + dir2[0] * (height - 1 / (4 * a));
         var focusy = (obj.p1.y + obj.p2.y) * .5 + dir2[1] * (height - 1 / (4 * a));

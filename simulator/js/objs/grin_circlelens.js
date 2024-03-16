@@ -85,11 +85,13 @@ objTypes['grin_circlelens'] = {
 
   zIndex: objTypes['refractor'].zIndex,
 
-  fillGlass: function (n, obj, ctx, aboveLight) {
-    if (aboveLight) {
+  fillGlass: function (n, obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+
+    if (isAboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
-      ctx.fillStyle = getMouseStyle(obj, 'transparent');
+      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       return;
@@ -100,7 +102,8 @@ objTypes['grin_circlelens'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
     if (obj.error) {
       ctx.textAlign = 'left';
@@ -112,13 +115,13 @@ objTypes['grin_circlelens'] = {
 
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2, false);
-    this.fillGlass(2.3, obj, ctx, aboveLight);
+    this.fillGlass(2.3, obj, canvasRenderer, isAboveLight, isHovered);
     ctx.lineWidth = 1;
     //ctx.fillStyle="indigo";
     ctx.fillStyle = 'red';
     ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     //ctx.fillStyle="rgb(255,0,255)";
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'magenta';
       //ctx.fillStyle="Purple";
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);

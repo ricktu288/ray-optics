@@ -210,7 +210,7 @@ objTypes['cropbox'] = {
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, aboveLight) {    
+  draw: function(obj, ctx, isAboveLight) {    
     if (!cropMode) return;
 
     // Draw the crop box

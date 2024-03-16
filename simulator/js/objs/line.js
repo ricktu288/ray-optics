@@ -15,8 +15,9 @@ objTypes['line'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.strokeStyle = getMouseStyle(obj, "white");
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.strokeStyle = isHovered ? 'cyan' : ("white");
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
     ctx.lineTo(obj.p2.x, obj.p2.y);

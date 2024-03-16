@@ -56,11 +56,12 @@ objTypes['power'] = {
   checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    if (!aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(192,192,192)')
+      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(192,192,192)')
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
       ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -87,7 +88,7 @@ objTypes['power'] = {
       ctx.font = '16px Arial';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getMouseStyle(obj, 'rgb(192,192,192)');
+      ctx.fillStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
       ctx.fillText(str1, obj.p2.x, obj.p2.y);
       ctx.fillText(str2, obj.p2.x, obj.p2.y + 20);
       ctx.fillText(str3, obj.p2.x, obj.p2.y + 40);
@@ -124,7 +125,7 @@ objTypes['power'] = {
 
         // Draw the irradiance map
         ctx.lineWidth = 1;
-        ctx.strokeStyle = getMouseStyle(obj, 'rgb(255,255,255)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
         ctx.fillStyle = 'blue';
         ctx.beginPath();
         ctx.moveTo(obj.p1.x, obj.p1.y);

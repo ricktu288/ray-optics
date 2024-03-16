@@ -22,8 +22,9 @@ objTypes['ruler'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    if (aboveLight) return;
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    if (isAboveLight) return;
     ctx.globalCompositeOperation = 'lighter';
     var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var par_x = (obj.p2.x - obj.p1.x) / len;
@@ -39,7 +40,7 @@ objTypes['ruler'] = {
     var scale_len_mid = 15;
 
 
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(128,128,128)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
     //ctx.font="bold 14px Arial";
     ctx.font = '14px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';

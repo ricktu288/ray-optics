@@ -22,7 +22,8 @@ objTypes['curvedmirror'] = {
   onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var fn;
     try {
       fn = evaluateLatex(obj.p);
@@ -47,7 +48,7 @@ objTypes['curvedmirror'] = {
     // get height of (this section of) parabola
     var x0 = p12d / 2;
     var i;
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     obj.tmp_points = [];
     var lastError = "";
@@ -86,7 +87,7 @@ objTypes['curvedmirror'] = {
       return;
     }
     ctx.stroke();
-    if (obj == mouseObj) {
+    if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);

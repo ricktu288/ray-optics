@@ -34,7 +34,8 @@ objTypes['idealmirror'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var par_x = (obj.p2.x - obj.p1.x) / len;
     var par_y = (obj.p2.y - obj.p1.y) / len;
@@ -46,7 +47,7 @@ objTypes['idealmirror'] = {
     var center_size = 1;
 
     // Draw the line segment
-    ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
     ctx.beginPath();

@@ -35,14 +35,15 @@ objTypes['led'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
-    ctx.fillStyle = scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : getMouseStyle(obj, 'rgb(0,255,0)');
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.fillStyle = scene.colorMode ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
     ctx.fillRect(obj.p1.x - 2.5, obj.p1.y - 2.5, 5, 5);
     if (scene.colorMode) {
-      ctx.fillStyle = getMouseStyle(obj, 'rgb(255,255,255)');
+      ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
     }
-    ctx.fillStyle = getMouseStyle(obj, 'rgb(255,0,0)');
+    ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,0,0)');
     ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
   },
 

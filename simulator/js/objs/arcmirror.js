@@ -62,7 +62,8 @@ objTypes['arcmirror'] = {
   },
 
   // Draw the obj on canvas
-  draw: function (obj, ctx, aboveLight) {
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
     ctx.fillStyle = 'rgb(255,0,255)';
     if (obj.p3 && obj.p2) {
       var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
@@ -71,11 +72,11 @@ objTypes['arcmirror'] = {
         var a1 = Math.atan2(obj.p1.y - center.y, obj.p1.x - center.x);
         var a2 = Math.atan2(obj.p2.y - center.y, obj.p2.x - center.x);
         var a3 = Math.atan2(obj.p3.y - center.y, obj.p3.x - center.x);
-        ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
-        if (obj == mouseObj) {
+        if (isHovered) {
           ctx.fillRect(obj.p3.x - 1.5, obj.p3.y - 1.5, 3, 3);
           ctx.fillStyle = 'rgb(255,0,0)';
           ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
@@ -84,7 +85,7 @@ objTypes['arcmirror'] = {
       }
       else {
         // The three points on the arc is colinear. Treat as a line segment.
-        ctx.strokeStyle = getMouseStyle(obj, (scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.moveTo(obj.p1.x, obj.p1.y);
         ctx.lineTo(obj.p2.x, obj.p2.y);
