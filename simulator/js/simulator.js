@@ -130,8 +130,8 @@ function draw_(skipLight, skipGrid) {
   if (!(ctx0.constructor == C2S && skipLight)) {
     // Sort the objects with z-index.
     var mapped = scene.objs.map(function(obj, i) {
-      if (objTypes[obj.type].zIndex) {
-        return {index: i, value: objTypes[obj.type].zIndex(obj)};
+      if (objTypes[obj.type].getZIndex) {
+        return {index: i, value: objTypes[obj.type].getZIndex(obj)};
       } else {
         return {index: i, value: 0};
       }

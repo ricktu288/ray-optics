@@ -494,7 +494,7 @@ objTypes['sphericallens'] = {
     }
   },
 
-  zIndex: objTypes['refractor'].zIndex,
+  getZIndex: objTypes['refractor'].getZIndex,
 
   draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
@@ -560,8 +560,8 @@ objTypes['sphericallens'] = {
   },
   onRayIncident: objTypes['refractor'].onRayIncident,
   fillGlass: objTypes['refractor'].fillGlass,
-  getShotData: objTypes['refractor'].getShotData,
+  getIncidentData: objTypes['refractor'].getIncidentData,
   refract: objTypes['refractor'].refract,
-  getShotType: objTypes['refractor'].getShotType,
+  getIncidentType: objTypes['refractor'].getIncidentType,
 
 };

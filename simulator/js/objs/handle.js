@@ -7,7 +7,7 @@ objTypes['handle'] = {
   },
 
   // Add control point when user is creating the handle
-  c_addControlPoint: function (obj, controlPoint) {
+  addControlPoint: function (obj, controlPoint) {
     controlPoint.mousePart.originalObj = scene.objs[controlPoint.targetObj_index];
     controlPoint.newPoint = controlPoint.mousePart.targetPoint;
     controlPoint.mousePart.byHandle = true;
@@ -16,7 +16,7 @@ objTypes['handle'] = {
   },
 
   // Finish creating the handle
-  c_finishHandle: function (obj, point) {
+  finishHandle: function (obj, point) {
     obj.p1 = point;
     var totalX = 0;
     var totalY = 0;
@@ -28,7 +28,7 @@ objTypes['handle'] = {
     obj.notDone = false;
   },
 
-  zIndex: function (obj) {
+  getZIndex: function (obj) {
     return -Infinity;
   },
 

@@ -413,14 +413,14 @@ function addControlPointsForHandle(controlPoints) {
     handleIndex = 0;
   }
   for (var i in controlPoints) {
-    objTypes["handle"].c_addControlPoint(scene.objs[0], controlPoints[i]);
+    objTypes["handle"].addControlPoint(scene.objs[0], controlPoints[i]);
   }
   draw(true, true);
 }
 
 
 function finishHandleCreation(point) {
-  objTypes["handle"].c_finishHandle(scene.objs[0], point);
+  objTypes["handle"].finishHandle(scene.objs[0], point);
   draw(true, true);
 }
 

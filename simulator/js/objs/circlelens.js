@@ -24,7 +24,7 @@ objTypes['circlelens'] = {
     return objTypes['circleobj'].checkRayIntersects(obj, ray);
   },
 
-  zIndex: objTypes['refractor'].zIndex,
+  getZIndex: objTypes['refractor'].getZIndex,
 
   // Draw the obj on canvas
   draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
@@ -70,20 +70,20 @@ objTypes['circlelens'] = {
       };
     }
 
-    var shotType;
+    var incidentType;
 
     // Surface merging
     for (var i = 0; i < surfaceMerging_objs.length; i++) {
-      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1) {
+      incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+      if (incidentType == 1) {
         // Shot from inside to outside
         n1 *= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == -1) {
+      else if (incidentType == -1) {
         // Shot from outside to inside
         n1 /= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == 0) {
+      else if (incidentType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
       }
@@ -100,7 +100,7 @@ objTypes['circlelens'] = {
 
   },
 
-  getShotType: function (obj, ray) {
+  getIncidentType: function (obj, ray) {
 
     var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, this.checkRayIntersects(obj, ray)));
     var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);

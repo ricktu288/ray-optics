@@ -78,7 +78,7 @@ objTypes['refractor'] = {
     }
   },
 
-  zIndex: function (obj) {
+  getZIndex: function (obj) {
     return obj.p * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
   },
 
@@ -450,17 +450,17 @@ objTypes['refractor'] = {
   onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
 
     if (obj.notDone) { return; }
-    var shotData = this.getShotData(obj, ray);
-    var shotType = shotData.shotType;
-    if (shotType == 1) {
+    var incidentData = this.getIncidentData(obj, ray);
+    var incidentType = incidentData.incidentType;
+    if (incidentType == 1) {
       // Shot from inside to outside
       var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
-    else if (shotType == -1) {
+    else if (incidentType == -1) {
       // Shot from outside to inside
       var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
     }
-    else if (shotType == 0) {
+    else if (incidentType == 0) {
       // Equivalent to not shot on the obj (e.g. two interfaces overlap)
       var n1 = 1;
     }
@@ -474,16 +474,16 @@ objTypes['refractor'] = {
 
     // Surface merging
     for (var i = 0; i < surfaceMerging_objs.length; i++) {
-      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1) {
+      incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+      if (incidentType == 1) {
         // Shot from inside to outside
         n1 *= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == -1) {
+      else if (incidentType == -1) {
         // Shot from outside to inside
         n1 /= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == 0) {
+      else if (incidentType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
       }
@@ -496,16 +496,16 @@ objTypes['refractor'] = {
       }
     }
 
-    return this.refract(ray, rayIndex, shotData.s_point, shotData.normal, n1);
+    return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1);
   },
 
   // Test if the ray is shot from inside or outside
-  getShotType: function (obj, ray) {
-    return this.getShotData(obj, ray).shotType;
+  getIncidentType: function (obj, ray) {
+    return this.getIncidentData(obj, ray).incidentType;
   },
 
 
-  getShotData: function (obj, ray) {
+  getIncidentData: function (obj, ray) {
     // Test where in the obj does the ray shoot on
     var s_lensq = Infinity;
     var s_lensq_temp;
@@ -677,19 +677,19 @@ objTypes['refractor'] = {
 
 
     if (nearEdge) {
-      var shotType = 2; // Shot at an edge point
+      var incidentType = 2; // Shot at an edge point
     }
     else if (surfaceMultiplicity % 2 == 0) {
-      var shotType = 0; // Equivalent to not shot on the obj
+      var incidentType = 0; // Equivalent to not shot on the obj
     }
     else if (ray_intersect_count % 2 == 1) {
-      var shotType = 1; // Shot from inside to outside
+      var incidentType = 1; // Shot from inside to outside
     }
     else {
-      var shotType = -1; // Shot from outside to inside
+      var incidentType = -1; // Shot from outside to inside
     }
 
-    return { s_point: s_point, normal: { x: normal_x, y: normal_y }, shotType: shotType };
+    return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };
   },
 
   // Do the refraction

@@ -18,13 +18,13 @@ objTypes['grin_refractor'] = {
   // Use the prototype reftactor
   onConstructMouseMove: objTypes['refractor'].onConstructMouseMove,
   onConstructMouseUp: objTypes['refractor'].onConstructMouseUp,
-  zIndex: objTypes['refractor'].zIndex,
+  getZIndex: objTypes['refractor'].getZIndex,
   fillGlass: objTypes['grin_circlelens'].fillGlass,
   move: objTypes['refractor'].move,
   checkMouseOver: objTypes['refractor'].checkMouseOver,
   onDrag: objTypes['refractor'].onDrag,
-  getShotType: objTypes['refractor'].getShotType,
-  getShotData: objTypes['refractor'].getShotData,
+  getIncidentType: objTypes['refractor'].getIncidentType,
+  getIncidentData: objTypes['refractor'].getIncidentData,
 
   // Use the prototype grin_circlelens
   step: objTypes['grin_circlelens'].step,
@@ -55,18 +55,18 @@ objTypes['grin_refractor'] = {
       if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
         if (obj.notDone) { return; }
-        var shotData = this.getShotData(obj, ray);
-        var shotType = shotData.shotType;
+        var incidentData = this.getIncidentData(obj, ray);
+        var incidentType = incidentData.incidentType;
         var p = obj.fn_p({ x: rp.x - obj.origin.x, y: rp.y - obj.origin.y }) // refractive index at the intersection point - rp
-        if (shotType == 1) {
+        if (incidentType == 1) {
           // Shot from inside to outside
           var n1 = (!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
         }
-        else if (shotType == -1) {
+        else if (incidentType == -1) {
           // Shot from outside to inside
           var n1 = 1 / ((!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
         }
-        else if (shotType == 0) {
+        else if (incidentType == 0) {
           // Equivalent to not shot on the obj (e.g. two interfaces overlap)
           var n1 = 1;
         }
@@ -91,16 +91,16 @@ objTypes['grin_refractor'] = {
           // Surface merging
           for (var i = 0; i < surfaceMerging_objs.length; i++) {
             let p = surfaceMerging_objs[i].fn_p({ x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - rp
-            shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-            if (shotType == 1) {
+            incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+            if (incidentType == 1) {
               // Shot from inside to outside
               n1 *= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
-            else if (shotType == -1) {
+            else if (incidentType == -1) {
               // Shot from outside to inside
               n1 /= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
-            else if (shotType == 0) {
+            else if (incidentType == 0) {
               // Equivalent to not shot on the obj (e.g. two interfaces overlap)
               //n1=n1;
             }
@@ -128,7 +128,7 @@ objTypes['grin_refractor'] = {
               ray.bodyMerging_obj = { p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y }; // Initialize the bodyMerging object of the ray
           }
         }
-        return objTypes[obj.type].refract(ray, rayIndex, shotData.s_point, shotData.normal, n1, r_bodyMerging_obj);
+        return objTypes[obj.type].refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, r_bodyMerging_obj);
       }
       else {
         if (ray.bodyMerging_obj === undefined)

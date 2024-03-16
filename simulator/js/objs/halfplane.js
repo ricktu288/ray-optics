@@ -50,7 +50,7 @@ objTypes['halfplane'] = {
     }
   },
 
-  zIndex: objTypes['refractor'].zIndex,
+  getZIndex: objTypes['refractor'].getZIndex,
 
   // Draw the obj on canvas
   draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
@@ -87,12 +87,12 @@ objTypes['halfplane'] = {
     var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y);
     var normal = { x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y) };
 
-    var shotType = this.getShotType(obj, ray);
-    if (shotType == 1) {
+    var incidentType = this.getIncidentType(obj, ray);
+    if (incidentType == 1) {
       // Shot from inside to outside
       var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
     }
-    else if (shotType == -1) {
+    else if (incidentType == -1) {
       // Shot from outside to inside
       var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
     }
@@ -107,16 +107,16 @@ objTypes['halfplane'] = {
     // Surface merging
     //if(surfaceMerging_obj)
     for (var i = 0; i < surfaceMerging_objs.length; i++) {
-      shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-      if (shotType == 1) {
+      incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+      if (incidentType == 1) {
         // Shot from inside to outside
         n1 *= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == -1) {
+      else if (incidentType == -1) {
         // Shot from outside to inside
         n1 /= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
-      else if (shotType == 0) {
+      else if (incidentType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
       }
@@ -133,7 +133,7 @@ objTypes['halfplane'] = {
 
   },
 
-  getShotType: function (obj, ray) {
+  getIncidentType: function (obj, ray) {
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
     if (rcrosss > 0) {
       return 1; // From inside to outside

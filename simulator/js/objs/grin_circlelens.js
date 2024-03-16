@@ -81,9 +81,9 @@ objTypes['grin_circlelens'] = {
   // Use the prototype circlelens
   checkMouseOver: objTypes['circlelens'].checkMouseOver,
   onDrag: objTypes['circlelens'].onDrag,
-  getShotType: objTypes['circlelens'].getShotType,
+  getIncidentType: objTypes['circlelens'].getIncidentType,
 
-  zIndex: objTypes['refractor'].zIndex,
+  getZIndex: objTypes['refractor'].getZIndex,
 
   fillGlass: function (n, obj, canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
@@ -192,21 +192,21 @@ objTypes['grin_circlelens'] = {
         */
         let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
         if (surfaceMerging_objs.length) {
-          var shotType;
+          var incidentType;
 
           // Surface merging
           for (var i = 0; i < surfaceMerging_objs.length; i++) {
             let p = surfaceMerging_objs[i].fn_p({ x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - rp
-            shotType = objTypes[surfaceMerging_objs[i].type].getShotType(surfaceMerging_objs[i], ray);
-            if (shotType == 1) {
+            incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+            if (incidentType == 1) {
               // Shot from inside to outside
               n1 *= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
-            else if (shotType == -1) {
+            else if (incidentType == -1) {
               // Shot from outside to inside
               n1 /= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
-            else if (shotType == 0) {
+            else if (incidentType == 0) {
               // Equivalent to not shot on the obj (e.g. two interfaces overlap)
               //n1=n1;
             }
