@@ -143,7 +143,7 @@ function draw_(skipLight, skipGrid) {
     for (var j = 0; j < scene.objs.length; j++)
     {
       var i = mapped[j].index;
-      objTypes[scene.objs[i].type].draw(scene.objs[i], canvasRenderer0, false, scene.objs[i] === mouseObj);
+      objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0.constructor == C2S ? canvasRenderer : canvasRenderer0, false, scene.objs[i] === mouseObj);
       if (!skipLight && objTypes[scene.objs[i].type].onSimulationStart)
       {
         const ret = objTypes[scene.objs[i].type].onSimulationStart(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
@@ -174,7 +174,7 @@ function draw_(skipLight, skipGrid) {
 
     for (var i = 0; i < scene.objs.length; i++)
     {
-      objTypes[scene.objs[i].type].draw(scene.objs[i], canvasRenderer1, true, scene.objs[i] === mouseObj); // Draw scene.objs[i]
+      objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0.constructor == C2S ? canvasRenderer : canvasRenderer1, true, scene.objs[i] === mouseObj); // Draw scene.objs[i]
     }
     if (scene.mode == 'observer')
     {

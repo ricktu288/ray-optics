@@ -71,7 +71,7 @@ objTypes['protractor'] = {
           x = obj.p1.x + (r - scale_len_long) * Math.cos(ang);
           y = obj.p1.y + (r - scale_len_long) * Math.sin(ang);
           ctx.lineTo(x, y);
-          if (ctx.constructor == C2S) ctx.stroke();
+          if (canvasRenderer.isSVG) ctx.stroke();
           ctx.save();
           ctx.translate(x, y);
           ctx.rotate(ang + Math.PI * 0.5);

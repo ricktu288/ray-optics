@@ -88,7 +88,7 @@ objTypes['ruler'] = {
         x = obj.p1.x + i * par_x + scale_direction * scale_len_long * per_x;
         y = obj.p1.y + i * par_y + scale_direction * scale_len_long * per_y;
         ctx.lineTo(x, y);
-        if (ctx.constructor == C2S) ctx.stroke();
+        if (canvasRenderer.isSVG) ctx.stroke();
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(text_ang);

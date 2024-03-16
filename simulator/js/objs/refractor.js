@@ -198,7 +198,7 @@ objTypes['refractor'] = {
     if (n >= 1) {
       ctx.globalCompositeOperation = 'lighter';
       var alpha = Math.log(n) / Math.log(1.5) * 0.2;
-      if (ctx.constructor != C2S) {
+      if (!canvasRenderer.isSVG) {
         ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
       } else {
         ctx.globalAlpha = alpha;
@@ -211,7 +211,7 @@ objTypes['refractor'] = {
     }
     else {
       var alpha = Math.log(1 / n) / Math.log(1.5) * 0.2;
-      if (ctx.constructor != C2S) {
+      if (!canvasRenderer.isSVG) {
         // Subtract the gray color.
         // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
 

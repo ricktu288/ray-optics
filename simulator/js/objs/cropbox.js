@@ -210,11 +210,12 @@ objTypes['cropbox'] = {
   },
 
   // Draw the obj on canvas
-  draw: function(obj, ctx, isAboveLight) {    
+  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;  
     if (!cropMode) return;
 
     // Draw the crop box
-    ctx.strokeStyle = getMouseStyle(obj,'white');
+    ctx.strokeStyle = isHovered ? 'cyan' : ('white');
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(obj.p1.x, obj.p1.y);
@@ -225,7 +226,7 @@ objTypes['cropbox'] = {
     ctx.stroke();
 
     // Draw the crop box's corner points
-    ctx.fillStyle = getMouseStyle(obj,'white');
+    ctx.fillStyle = isHovered ? 'cyan' : ('white');
     ctx.beginPath();
     ctx.arc(obj.p1.x, obj.p1.y, 5, 0, 2 * Math.PI);
     ctx.fill();
