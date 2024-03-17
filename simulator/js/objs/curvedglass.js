@@ -103,7 +103,7 @@ objTypes['curvedglass'] = {
       ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
       ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
     }
-    objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, isAboveLight, isHovered);
+    objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, isAboveLight, false);
   },
 
   move: objTypes['lineobj'].move,
@@ -123,7 +123,7 @@ objTypes['curvedglass'] = {
     }
 
     if (!obj.tmp_glass) return false;
-    if (objTypes['refractor'].checkMouseOver(obj.tmp_glass, mouse, {})) {
+    if (objTypes['refractor'].checkMouseOver(obj.tmp_glass, mouse)) {
       // Dragging the entire obj
       const mousePos = mouse.getPosSnappedToGrid();
       dragContext.part = 0;
