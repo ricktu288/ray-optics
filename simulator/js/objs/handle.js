@@ -78,23 +78,23 @@ objTypes['handle'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (obj.notDone) return;
     if (mouse.isOnPoint(obj.p1)) {
       draggingPart.part = 1;
       draggingPart.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.mousePos0 = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.mousePos0 = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // When the user is dragging the obj

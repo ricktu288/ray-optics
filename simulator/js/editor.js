@@ -173,9 +173,9 @@ function selectionSearch(mousePos_nogrid) {
 
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
-      mousePart_ = {};
-      if (objTypes[scene.objs[i].type].checkMouseOver(scene.objs[i], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), mousePart_)) {
-        // click(() returns true means the mouse clicked the object
+      let mousePart_ = objTypes[scene.objs[i].type].checkMouseOver(scene.objs[i], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
+      if (mousePart_) {
+        // the mouse is over the object
 
         if (mousePart_.targetPoint || mousePart_.targetPoint_) {
           // The mousePos clicked a point

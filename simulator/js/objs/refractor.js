@@ -266,7 +266,8 @@ objTypes['refractor'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
 
     var p1;
     var p2;
@@ -294,7 +295,7 @@ objTypes['refractor'] = {
       draggingPart.part = 1;
       draggingPart.index = targetPoint_index;
       draggingPart.targetPoint = geometry.point(obj.path[targetPoint_index].x, obj.path[targetPoint_index].y);
-      return true;
+      return draggingPart;
     }
 
     for (var i = 0; i < obj.path.length; i++) {
@@ -316,7 +317,7 @@ objTypes['refractor'] = {
             draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
             draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
-            return true;
+            return draggingPart;
           }
         }
         else {
@@ -328,7 +329,7 @@ objTypes['refractor'] = {
             draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
             draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
             draggingPart.snapData = {};
-            return true;
+            return draggingPart;
           }
         }
       }
@@ -340,7 +341,7 @@ objTypes['refractor'] = {
           draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
           draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
-          return true;
+          return draggingPart;
         }
       }
     }

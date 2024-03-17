@@ -530,29 +530,30 @@ objTypes['sphericallens'] = {
   },
 
   move: objTypes['refractor'].move,
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (!obj.path) {
       if (obj.p1 && obj.p2) {
         if (mouse.isOnPoint(obj.p1)) {
           draggingPart.part = -1;
           draggingPart.targetPoint = obj.p1;
-          return true;
+          return draggingPart;
         }
         if (mouse.isOnPoint(obj.p2)) {
           draggingPart.part = -1;
           draggingPart.targetPoint = obj.p2;
-          return true;
+          return draggingPart;
         }
       }
-      return false;
     };
-    if (objTypes['refractor'].checkMouseOver(obj, mouse, draggingPart)) {
+    draggingPart = objTypes['refractor'].checkMouseOver(obj, mouse);
+    if (draggingPart) {
       if (draggingPart.part != 0) {
         draggingPart.requiresObjBarUpdate = true;
       }
-      return true;
+      
+      return draggingPart;
     }
-    return false;
   },
   checkRayIntersects: function (obj, ray) {
     if (!obj.path) return false;

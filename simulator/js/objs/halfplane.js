@@ -18,16 +18,17 @@ objTypes['halfplane'] = {
   onDrag: objTypes['lineobj'].onDrag,
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnLine(obj)) {
       const mousePos = mouse.getPosSnappedToGrid();
@@ -35,9 +36,8 @@ objTypes['halfplane'] = {
       draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
       draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // Test if a ray may shoot on this object (if yes, return the intersection)

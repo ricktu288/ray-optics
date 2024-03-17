@@ -66,30 +66,31 @@ objTypes['aperture'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
 
 
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p3) && geometry.distanceSquared(mouse.pos, obj.p3) <= geometry.distanceSquared(mouse.pos, obj.p4)) {
       draggingPart.part = 3;
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p4)) {
       draggingPart.part = 4;
       draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
 
     var segment1 = geometry.line(obj.p1, obj.p3);
@@ -100,9 +101,8 @@ objTypes['aperture'] = {
       draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
       draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // When the user is dragging the obj

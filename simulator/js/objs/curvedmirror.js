@@ -97,19 +97,20 @@ objTypes['curvedmirror'] = {
   move: objTypes['lineobj'].move,
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
       draggingPart.part = 1;
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return true;
+      return draggingPart;
     }
     if (mouse.isOnPoint(obj.p2)) {
       draggingPart.part = 2;
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return true;
+      return draggingPart;
     }
 
-    if (!obj.tmp_points) return false;
+    if (!obj.tmp_points) return;
     var i;
     var pts = obj.tmp_points;
     for (i = 0; i < pts.length - 1; i++) {
@@ -122,10 +123,9 @@ objTypes['curvedmirror'] = {
         draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
         draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
         draggingPart.snapData = {};
-        return true;
+        return draggingPart;
       }
     }
-    return false;
   },
 
   onDrag: objTypes['lineobj'].onDrag,

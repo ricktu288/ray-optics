@@ -52,15 +52,15 @@ objTypes['radiant'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (mouse.isOnPoint(obj)) {
       draggingPart.part = 0;
       draggingPart.mousePos0 = geometry.point(obj.x, obj.y);
       draggingPart.targetPoint = geometry.point(obj.x, obj.y);
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // When the user is dragging the obj

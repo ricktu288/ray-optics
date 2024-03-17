@@ -2,43 +2,43 @@
 objTypes['cropbox'] = {
 
   // Show the property box
-  populateObjBar: function(obj, objBar) {
+  populateObjBar: function (obj, objBar) {
     var width = geometry.distance(obj.p1, obj.p2);
     var height = geometry.distance(obj.p1, obj.p3);
-    objBar.createNumber(getMsg('cropbox_size'), 0, 1000, 1, width, function(obj, value) {
-      obj.p2 = geometry.point(obj.p1.x + 1*value, obj.p2.y);
-      obj.p4 = geometry.point(obj.p3.x + 1*value, obj.p4.y);
+    objBar.createNumber(getMsg('cropbox_size'), 0, 1000, 1, width, function (obj, value) {
+      obj.p2 = geometry.point(obj.p1.x + 1 * value, obj.p2.y);
+      obj.p4 = geometry.point(obj.p3.x + 1 * value, obj.p4.y);
     }, null, true);
-    objBar.createNumber('x', 0, 1000, 1, height, function(obj, value) {
-      obj.p3 = geometry.point(obj.p3.x, obj.p1.y + 1*value);
-      obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1*value);
+    objBar.createNumber('x', 0, 1000, 1, height, function (obj, value) {
+      obj.p3 = geometry.point(obj.p3.x, obj.p1.y + 1 * value);
+      obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1 * value);
     }, null, true);
     objBar.createDropdown(getMsg('image_format'), obj.format, {
       'png': 'PNG',
       'svg': 'SVG'
-    }, function(obj, value) {
+    }, function (obj, value) {
       obj.format = value;
     }, null, true);
 
 
     if (obj.format != 'svg') {
-      objBar.createNumber(getMsg('image_width'), 0, 1000, 1, obj.width, function(obj, value) {
-        obj.width = 1*value;
+      objBar.createNumber(getMsg('image_width'), 0, 1000, 1, obj.width, function (obj, value) {
+        obj.width = 1 * value;
       }, null, true);
     } else {
       objBar.createInfoBox(getMsg('export_svg_popover'))
     }
 
-    objBar.createButton(getMsg('save'), function(obj) {
+    objBar.createButton(getMsg('save'), function (obj) {
       confirmCrop(obj);
     });
-    objBar.createButton(getMsg('save_cancel'), function(obj) {
+    objBar.createButton(getMsg('save_cancel'), function (obj) {
       cancelCrop();
     });
   },
 
   // Move the object
-  move: function(obj, diffX, diffY) {
+  move: function (obj, diffX, diffY) {
     obj.p1.x = obj.p1.x + diffX;
     obj.p1.y = obj.p1.y + diffY;
     obj.p2.x = obj.p2.x + diffX;
@@ -51,7 +51,8 @@ objTypes['cropbox'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function(obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     if (!cropMode) return false;
 
     // Top left
@@ -60,7 +61,7 @@ objTypes['cropbox'] = {
       draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
       draggingPart.cursor = 'nwse-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Top right
     if (mouse.isOnPoint(obj.p2)) {
@@ -68,7 +69,7 @@ objTypes['cropbox'] = {
       draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
       draggingPart.cursor = 'nesw-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Bottom left
     if (mouse.isOnPoint(obj.p3)) {
@@ -76,7 +77,7 @@ objTypes['cropbox'] = {
       draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
       draggingPart.cursor = 'nesw-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Bottom right
     if (mouse.isOnPoint(obj.p4)) {
@@ -84,35 +85,35 @@ objTypes['cropbox'] = {
       draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
       draggingPart.cursor = 'nwse-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Top
     if (mouse.isOnSegment(geometry.line(obj.p1, obj.p2))) {
       draggingPart.part = 5;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Right
     if (mouse.isOnSegment(geometry.line(obj.p2, obj.p4))) {
       draggingPart.part = 6;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Bottom
     if (mouse.isOnSegment(geometry.line(obj.p3, obj.p4))) {
       draggingPart.part = 7;
       draggingPart.cursor = 'ns-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Left
     if (mouse.isOnSegment(geometry.line(obj.p1, obj.p3))) {
       draggingPart.part = 8;
       draggingPart.cursor = 'ew-resize';
       draggingPart.requiresObjBarUpdate = true;
-      return true;
+      return draggingPart;
     }
     // Inside
     const mousePos = mouse.getPosSnappedToGrid();
@@ -121,13 +122,12 @@ objTypes['cropbox'] = {
       draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
       draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // When the user is dragging the obj
-  onDrag: function(obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
 
     // Top left
@@ -180,19 +180,17 @@ objTypes['cropbox'] = {
     }
     // Inside
     else if (draggingPart.part == 0) {
-      if (shift)
-      {
-        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{x: 1, y: 0},{x: 0, y: 1}], draggingPart.snapData);
+      if (shift) {
+        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
       }
-      else
-      {
+      else {
         var mousePosSnapped = mouse.getPosSnappedToGrid();
         draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
       }
-  
+
       var mouseDiffX = draggingPart.mousePos1.x - mousePosSnapped.x; // The X difference between the mouse position now and at the previous moment
       var mouseDiffY = draggingPart.mousePos1.y - mousePosSnapped.y; // The Y difference between the mouse position now and at the previous moment
-      
+
 
       obj.p1.x -= mouseDiffX;
       obj.p1.y -= mouseDiffY;
@@ -211,7 +209,7 @@ objTypes['cropbox'] = {
 
   // Draw the obj on canvas
   draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;  
+    const ctx = canvasRenderer.ctx;
     if (!cropMode) return;
 
     // Draw the crop box
@@ -239,7 +237,7 @@ objTypes['cropbox'] = {
     ctx.beginPath();
     ctx.arc(obj.p4.x, obj.p4.y, 5, 0, 2 * Math.PI);
     ctx.fill();
-    
+
   }
 
 };

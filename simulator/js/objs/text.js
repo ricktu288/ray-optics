@@ -132,7 +132,8 @@ objTypes['text'] = {
   },
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
 
     // translate and rotate the mouse point into the text's reference frame for easy comparison
     relativeMouseX = mouse.pos.x - obj.x
@@ -146,9 +147,8 @@ objTypes['text'] = {
       draggingPart.mousePos0snapped = mouse.getPosSnappedToGrid();
       draggingPart.targetPoint_ = geometry.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
       draggingPart.snapData = {};
-      return true;
+      return draggingPart;
     }
-    return false;
   },
 
   // When the user is dragging the obj

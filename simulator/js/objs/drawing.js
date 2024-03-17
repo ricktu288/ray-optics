@@ -72,7 +72,8 @@ objTypes['drawing'] = {
 
 
   // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse, draggingPart) {
+  checkMouseOver: function (obj, mouse) {
+    let draggingPart = {};
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
         if (mouse.isOnSegment(geometry.line(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
@@ -81,11 +82,10 @@ objTypes['drawing'] = {
           draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
           draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
           draggingPart.snapData = {};
-          return true;
+          return draggingPart;
         }
       }
     }
-    return false;
   },
 
   // When the user is dragging the obj
