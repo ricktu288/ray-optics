@@ -73,35 +73,35 @@ objTypes['drawing'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     for (var i = 0; i < obj.points.length; i++) {
       for (var j = 0; j < obj.points[i].length - 2; j += 2) {
         if (mouse.isOnSegment(geometry.line(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
-          draggingPart.part = 0;
-          draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-          draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-          draggingPart.snapData = {};
-          return draggingPart;
+          dragContext.part = 0;
+          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+          dragContext.snapContext = {};
+          return dragContext;
         }
       }
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+      dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    var mouseDiffX = draggingPart.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
-    var mouseDiffY = draggingPart.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+    var mouseDiffX = dragContext.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
+    var mouseDiffY = dragContext.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
 
-    if (draggingPart.part == 0) {
+    if (dragContext.part == 0) {
       for (var i = 0; i < obj.points.length; i++) {
         for (var j = 0; j < obj.points[i].length; j += 2) {
           obj.points[i][j] -= mouseDiffX;
@@ -111,7 +111,7 @@ objTypes['drawing'] = {
     }
 
     // Update the mouse position
-    draggingPart.mousePos1 = mousePos;
+    dragContext.mousePos1 = mousePos;
   }
 
 };

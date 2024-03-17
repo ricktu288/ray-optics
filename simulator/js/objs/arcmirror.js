@@ -125,21 +125,21 @@ objTypes['arcmirror'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      return dragContext;
     }
     if (mouse.isOnPoint(obj.p2) && geometry.distanceSquared(mouse.pos, obj.p2) <= geometry.distanceSquared(mouse.pos, obj.p3)) {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return draggingPart;
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      return dragContext;
     }
     if (mouse.isOnPoint(obj.p3)) {
-      draggingPart.part = 3;
-      draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
-      return draggingPart;
+      dragContext.part = 3;
+      dragContext.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
+      return dragContext;
     }
 
     var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
@@ -152,61 +152,61 @@ objTypes['arcmirror'] = {
       var a_m = Math.atan2(mouse.pos.y - center.y, mouse.pos.x - center.x);
       if (Math.abs(geometry.distance(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
         // Dragging the entire obj
-        draggingPart.part = 0;
-        draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-        draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-        draggingPart.snapData = {};
-        return draggingPart;
+        dragContext.part = 0;
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.snapContext = {};
+        return dragContext;
       }
     }
     else {
       // The three points on the arc is colinear. Treat as a line segment.
       if (mouse.isOnSegment(obj)) {
-        draggingPart.part = 0;
-        draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-        draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-        draggingPart.snapData = {};
-        return draggingPart;
+        dragContext.part = 0;
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.snapContext = {};
+        return dragContext;
       }
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     var basePoint;
-    if (draggingPart.part == 1) {
+    if (dragContext.part == 1) {
       // Dragging the first endpoint
-      basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p2;
+      basePoint = ctrl ? geometry.segmentMidpoint(dragContext.originalObj) : dragContext.originalObj.p2;
 
-      obj.p1 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
+      obj.p1 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
       obj.p2 = ctrl ? geometry.point(2 * basePoint.x - obj.p1.x, 2 * basePoint.y - obj.p1.y) : basePoint;
     }
-    if (draggingPart.part == 2) {
+    if (dragContext.part == 2) {
       // Dragging the second endpoint
 
-      basePoint = ctrl ? geometry.segmentMidpoint(draggingPart.originalObj) : draggingPart.originalObj.p1;
+      basePoint = ctrl ? geometry.segmentMidpoint(dragContext.originalObj) : dragContext.originalObj.p1;
 
-      obj.p2 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
+      obj.p2 = shift ? mouse.getPosSnappedToDirection(basePoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }]) : mouse.getPosSnappedToGrid();
       obj.p1 = ctrl ? geometry.point(2 * basePoint.x - obj.p2.x, 2 * basePoint.y - obj.p2.y) : basePoint;
     }
-    if (draggingPart.part == 3) {
+    if (dragContext.part == 3) {
       // Dragging the control point of the arc
       obj.p3 = mouse.getPosSnappedToGrid();
     }
 
-    if (draggingPart.part == 0) {
+    if (dragContext.part == 0) {
       // Dragging the entire obj
 
       if (shift) {
-        var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x), y: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y) }, { x: (draggingPart.originalObj.p2.y - draggingPart.originalObj.p1.y), y: -(draggingPart.originalObj.p2.x - draggingPart.originalObj.p1.x) }], draggingPart.snapData);
+        var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }, { x: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y), y: -(dragContext.originalObj.p2.x - dragContext.originalObj.p1.x) }], dragContext.snapContext);
       }
       else {
         var mousePos = mouse.getPosSnappedToGrid();;
-        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = draggingPart.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = dragContext.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = dragContext.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
       // Move the first point
       obj.p1.x = obj.p1.x - mouseDiffX;
       obj.p1.y = obj.p1.y - mouseDiffY;
@@ -218,7 +218,7 @@ objTypes['arcmirror'] = {
       obj.p3.y = obj.p3.y - mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mousePos1 = mousePos;
+      dragContext.mousePos1 = mousePos;
     }
   },
 

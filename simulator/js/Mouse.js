@@ -86,18 +86,18 @@ class Mouse {
    * Get the mouse position snapped to a set of suggested directions.
    * @param {geometry.point} basePoint - The base point for the snapping.
    * @param {Array} directions - The directions to snap to, each a vector with x and y components.
-   * @param {Object} snapData - The object storing the internal state of the snapping process.
+   * @param {Object} snapContext - The object storing the internal state of the snapping process.
    * @returns {geometry.point} The mouse position snapped to some direction.
    */
-  getPosSnappedToDirection(basePoint, directions, snapData) {
+  getPosSnappedToDirection(basePoint, directions, snapContext) {
     const pos = this.getPosSnappedToGrid();
     var x = pos.x - basePoint.x;
     var y = pos.y - basePoint.y;
 
-    if (snapData && snapData.locked) {
+    if (snapContext && snapContext.locked) {
       // The snap has been locked
-      var k = (directions[snapData.i0].x * x + directions[snapData.i0].y * y) / (directions[snapData.i0].x * directions[snapData.i0].x + directions[snapData.i0].y * directions[snapData.i0].y);
-      return geometry.point(basePoint.x + k * directions[snapData.i0].x, basePoint.y + k * directions[snapData.i0].y);
+      var k = (directions[snapContext.i0].x * x + directions[snapContext.i0].y * y) / (directions[snapContext.i0].x * directions[snapContext.i0].x + directions[snapContext.i0].y * directions[snapContext.i0].y);
+      return geometry.point(basePoint.x + k * directions[snapContext.i0].x, basePoint.y + k * directions[snapContext.i0].y);
     } else {
       var i0;
       var d_sq;
@@ -110,10 +110,10 @@ class Mouse {
         }
       }
 
-      if (snapData && x * x + y * y > Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT * Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT) {
+      if (snapContext && x * x + y * y > Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT * Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT) {
         // lock the snap
-        snapData.locked = true;
-        snapData.i0 = i0;
+        snapContext.locked = true;
+        snapContext.i0 = i0;
       }
 
       var k = (directions[i0].x * x + directions[i0].y * y) / (directions[i0].x * directions[i0].x + directions[i0].y * directions[i0].y);

@@ -133,7 +133,7 @@ objTypes['text'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
 
     // translate and rotate the mouse point into the text's reference frame for easy comparison
     relativeMouseX = mouse.pos.x - obj.x
@@ -142,31 +142,31 @@ objTypes['text'] = {
     rotatedMouseY = relativeMouseY * obj.tmp_cos_angle + relativeMouseX * obj.tmp_sin_angle;
     if (rotatedMouseX >= -obj.tmp_left && rotatedMouseX <= obj.tmp_right &&
       rotatedMouseY <= obj.tmp_down && rotatedMouseY >= -obj.tmp_up) {
-      draggingPart.part = 0;
-      draggingPart.mousePos0 = geometry.point(mouse.pos.x, mouse.pos.y);
-      draggingPart.mousePos0snapped = mouse.getPosSnappedToGrid();
-      draggingPart.targetPoint_ = geometry.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 0;
+      dragContext.mousePos0 = geometry.point(mouse.pos.x, mouse.pos.y);
+      dragContext.mousePos0Snapped = mouse.getPosSnappedToGrid();
+      dragContext.targetPoint_ = geometry.point(obj.x, obj.y); // Avoid setting 'targetPoint' (otherwise the xybox will appear and move the text to incorrect coordinates).
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+      dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    // 'draggingPart.targetPoint_' object placement position (bottom left)
-    // 'draggingPart.mousePos0' is coordiates of where the drag started, not snapped
-    // 'draggingPart.mousePos0snapped' is coordiates of where the drag started, snapped to grid
+    // 'dragContext.targetPoint_' object placement position (bottom left)
+    // 'dragContext.mousePos0' is coordiates of where the drag started, not snapped
+    // 'dragContext.mousePos0Snapped' is coordiates of where the drag started, snapped to grid
     // new location  =  current location (snapped)  +  object placement location  -  where drag started (snapped)
-    obj.x = mousePos.x + draggingPart.targetPoint_.x - draggingPart.mousePos0snapped.x;
-    obj.y = mousePos.y + draggingPart.targetPoint_.y - draggingPart.mousePos0snapped.y;
+    obj.x = mousePos.x + dragContext.targetPoint_.x - dragContext.mousePos0Snapped.x;
+    obj.y = mousePos.y + dragContext.targetPoint_.y - dragContext.mousePos0Snapped.y;
   },
 
 };

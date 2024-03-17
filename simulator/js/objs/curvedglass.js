@@ -110,27 +110,27 @@ objTypes['curvedglass'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      return dragContext;
     }
     if (mouse.isOnPoint(obj.p2)) {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return draggingPart;
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      return dragContext;
     }
 
     if (!obj.tmp_glass) return false;
     if (objTypes['refractor'].checkMouseOver(obj.tmp_glass, mouse, {})) {
       // Dragging the entire obj
       const mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.part = 0;
-      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 0;
+      dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 

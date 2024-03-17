@@ -52,144 +52,144 @@ objTypes['cropbox'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (!cropMode) return false;
 
     // Top left
     if (mouse.isOnPoint(obj.p1)) {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      draggingPart.cursor = 'nwse-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.cursor = 'nwse-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Top right
     if (mouse.isOnPoint(obj.p2)) {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      draggingPart.cursor = 'nesw-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.cursor = 'nesw-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Bottom left
     if (mouse.isOnPoint(obj.p3)) {
-      draggingPart.part = 3;
-      draggingPart.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
-      draggingPart.cursor = 'nesw-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 3;
+      dragContext.targetPoint = geometry.point(obj.p3.x, obj.p3.y);
+      dragContext.cursor = 'nesw-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Bottom right
     if (mouse.isOnPoint(obj.p4)) {
-      draggingPart.part = 4;
-      draggingPart.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
-      draggingPart.cursor = 'nwse-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 4;
+      dragContext.targetPoint = geometry.point(obj.p4.x, obj.p4.y);
+      dragContext.cursor = 'nwse-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Top
     if (mouse.isOnSegment(geometry.line(obj.p1, obj.p2))) {
-      draggingPart.part = 5;
-      draggingPart.cursor = 'ns-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 5;
+      dragContext.cursor = 'ns-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Right
     if (mouse.isOnSegment(geometry.line(obj.p2, obj.p4))) {
-      draggingPart.part = 6;
-      draggingPart.cursor = 'ew-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 6;
+      dragContext.cursor = 'ew-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Bottom
     if (mouse.isOnSegment(geometry.line(obj.p3, obj.p4))) {
-      draggingPart.part = 7;
-      draggingPart.cursor = 'ns-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 7;
+      dragContext.cursor = 'ns-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Left
     if (mouse.isOnSegment(geometry.line(obj.p1, obj.p3))) {
-      draggingPart.part = 8;
-      draggingPart.cursor = 'ew-resize';
-      draggingPart.requiresObjBarUpdate = true;
-      return draggingPart;
+      dragContext.part = 8;
+      dragContext.cursor = 'ew-resize';
+      dragContext.requiresObjBarUpdate = true;
+      return dragContext;
     }
     // Inside
     const mousePos = mouse.getPosSnappedToGrid();
     if ((obj.p1.x < mousePos.x && mousePos.x < obj.p2.x) && (obj.p1.y < mousePos.y && mousePos.y < obj.p3.y)) {
-      draggingPart.part = 0;
-      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 0;
+      dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
 
     // Top left
-    if (draggingPart.part == 1) {
+    if (dragContext.part == 1) {
       obj.p1.x = mousePos.x;
       obj.p1.y = mousePos.y;
       obj.p2.y = mousePos.y;
       obj.p3.x = mousePos.x;
     }
     // Top right
-    else if (draggingPart.part == 2) {
+    else if (dragContext.part == 2) {
       obj.p2.x = mousePos.x;
       obj.p2.y = mousePos.y;
       obj.p1.y = mousePos.y;
       obj.p4.x = mousePos.x;
     }
     // Bottom left
-    else if (draggingPart.part == 3) {
+    else if (dragContext.part == 3) {
       obj.p3.x = mousePos.x;
       obj.p3.y = mousePos.y;
       obj.p1.x = mousePos.x;
       obj.p4.y = mousePos.y;
     }
     // Bottom right
-    else if (draggingPart.part == 4) {
+    else if (dragContext.part == 4) {
       obj.p4.x = mousePos.x;
       obj.p4.y = mousePos.y;
       obj.p2.x = mousePos.x;
       obj.p3.y = mousePos.y;
     }
     // Top
-    else if (draggingPart.part == 5) {
+    else if (dragContext.part == 5) {
       obj.p1.y = mousePos.y;
       obj.p2.y = mousePos.y;
     }
     // Right
-    else if (draggingPart.part == 6) {
+    else if (dragContext.part == 6) {
       obj.p2.x = mousePos.x;
       obj.p4.x = mousePos.x;
     }
     // Bottom
-    else if (draggingPart.part == 7) {
+    else if (dragContext.part == 7) {
       obj.p3.y = mousePos.y;
       obj.p4.y = mousePos.y;
     }
     // Left
-    else if (draggingPart.part == 8) {
+    else if (dragContext.part == 8) {
       obj.p1.x = mousePos.x;
       obj.p3.x = mousePos.x;
     }
     // Inside
-    else if (draggingPart.part == 0) {
+    else if (dragContext.part == 0) {
       if (shift) {
-        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePosSnapped = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
       }
       else {
         var mousePosSnapped = mouse.getPosSnappedToGrid();
-        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = draggingPart.mousePos1.x - mousePosSnapped.x; // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = draggingPart.mousePos1.y - mousePosSnapped.y; // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = dragContext.mousePos1.x - mousePosSnapped.x; // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = dragContext.mousePos1.y - mousePosSnapped.y; // The Y difference between the mouse position now and at the previous moment
 
 
       obj.p1.x -= mouseDiffX;
@@ -202,7 +202,7 @@ objTypes['cropbox'] = {
       obj.p4.y -= mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mousePos1 = mousePosSnapped;
+      dragContext.mousePos1 = mousePosSnapped;
     }
 
   },

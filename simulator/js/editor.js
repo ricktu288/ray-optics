@@ -4,7 +4,7 @@ var isConstructing = false; // The user is constructing a new object
 var constructionPoint; // The point where the user starts the construction
 var draggingObj = -1; // Object index in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
 var positioningObj = -1; // Object index in entering the coordinates (-1 for none, -4 for observer)
-var draggingPart = {}; // The part in drag and some mouse position data
+var dragContext = {}; // The part in drag and some mouse position data
 var selectedObj = -1; // The index of the selected object (-1 for none)
 var mouseObj = -1;
 var mousePart = {};
@@ -77,17 +77,17 @@ function canvas_onmousedown(e) {
     // lockobjs prevents selection, but alt overrides it
     if ((!(scene.lockobjs) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
 
-      draggingPart = {};
+      dragContext = {};
 
       if (scene.mode == 'observer') {
         if (geometry.distanceSquared(mousePos_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
           // The mousePos clicked the observer
           draggingObj = -4;
-          draggingPart = {};
-          //draggingPart.part=0;
-          draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-          draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-          draggingPart.snapData = {};
+          dragContext = {};
+          //dragContext.part=0;
+          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+          dragContext.snapContext = {};
           return;
         }
       }
@@ -101,11 +101,11 @@ function canvas_onmousedown(e) {
           ret.targetObj_index--;
         }
         selectObj(ret.targetObj_index);
-        draggingPart = ret.mousePart;
-        draggingPart.originalObj = JSON.parse(JSON.stringify(scene.objs[ret.targetObj_index])); // Store the obj status before dragging
-        draggingPart.hasDuplicated = false;
+        dragContext = ret.mousePart;
+        dragContext.originalObj = JSON.parse(JSON.stringify(scene.objs[ret.targetObj_index])); // Store the obj status before dragging
+        dragContext.hasDuplicated = false;
         draggingObj = ret.targetObj_index;
-        if (e.ctrlKey && draggingPart.targetPoint) {
+        if (e.ctrlKey && dragContext.targetPoint) {
           pendingControlPointSelection = true;
           pendingControlPoints = rets;
         }
@@ -123,11 +123,11 @@ function canvas_onmousedown(e) {
       if ((AddingObjType == '') || (e.which == 3)) {
         // To drag the entire scene
         draggingObj = -3;
-        draggingPart = {};
-        draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-        draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-        draggingPart.mousePos2 = scene.origin; //Original origin.
-        draggingPart.snapData = {};
+        dragContext = {};
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.mousePos2 = scene.origin; //Original origin.
+        dragContext.snapContext = {};
         selectObj(-1);
       }
       else {
@@ -284,21 +284,21 @@ function canvas_onmousemove(e) {
   else {
     if (draggingObj == -4) {
       if (e.shiftKey) {
-        var mousePos_snapped = snapToDirection(mousePos, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePos_snapped = snapToDirection(mousePos, dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
       }
       else {
         var mousePos_snapped = mousePos;
-        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mousePos_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mousePos_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = (mousePos_snapped.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mousePos_snapped.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
 
       scene.observer.c.x += mouseDiffX;
       scene.observer.c.y += mouseDiffY;
 
       // Update the mouse position
-      draggingPart.mousePos1 = mousePos_snapped;
+      dragContext.mousePos1 = mousePos_snapped;
       draw(false, true);
     }
 
@@ -306,43 +306,43 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      objTypes[scene.objs[draggingObj].type].onDrag(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch, e.altKey*1), draggingPart, e.ctrlKey, e.shiftKey);
+      objTypes[scene.objs[draggingObj].type].onDrag(scene.objs[draggingObj], new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch, e.altKey*1), dragContext, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
-      if (draggingPart.part == 0) {
-        if (e.ctrlKey && !draggingPart.hasDuplicated) {
+      if (dragContext.part == 0) {
+        if (e.ctrlKey && !dragContext.hasDuplicated) {
 
-          scene.objs[scene.objs.length] = draggingPart.originalObj;
-          draggingPart.hasDuplicated = true;
+          scene.objs[scene.objs.length] = dragContext.originalObj;
+          dragContext.hasDuplicated = true;
         }
-        if (!e.ctrlKey && draggingPart.hasDuplicated) {
+        if (!e.ctrlKey && dragContext.hasDuplicated) {
           scene.objs.length--;
-          draggingPart.hasDuplicated = false;
+          dragContext.hasDuplicated = false;
         }
       }
 
       draw(!(objTypes[scene.objs[draggingObj].type].onSimulationStart || objTypes[scene.objs[draggingObj].type].checkRayIntersects), true);
 
-      if (draggingPart.requiresObjBarUpdate) {
+      if (dragContext.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
     }
 
     if (draggingObj == -3) {
       // Move the entire scene
-      // Here mousePos is the currect mouse position, draggingPart.mousePos1 is the mouse position at the previous moment
+      // Here mousePos is the currect mouse position, dragContext.mousePos1 is the mouse position at the previous moment
 
       if (e.shiftKey) {
-        var mousePos_snapped = snapToDirection(mousePos_nogrid, draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePos_snapped = snapToDirection(mousePos_nogrid, dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
       }
       else {
         var mousePos_snapped = mousePos_nogrid;
-        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
 
-      var mouseDiffX = (mousePos_snapped.x - draggingPart.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mousePos_snapped.y - draggingPart.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
-      scene.origin.x = mouseDiffX * scene.scale + draggingPart.mousePos2.x;
-      scene.origin.y = mouseDiffY * scene.scale + draggingPart.mousePos2.y;
+      var mouseDiffX = (mousePos_snapped.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mousePos_snapped.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      scene.origin.x = mouseDiffX * scene.scale + dragContext.mousePos2.x;
+      scene.origin.y = mouseDiffY * scene.scale + dragContext.mousePos2.y;
       draw();
     }
 
@@ -380,9 +380,9 @@ function canvas_onmouseup(e) {
       pendingControlPointSelection = false
       addControlPointsForHandle(pendingControlPoints);
     }
-    if (e.which && e.which == 3 && draggingObj == -3 && mousePos.x == draggingPart.mousePos0.x && mousePos.y == draggingPart.mousePos0.y) {
+    if (e.which && e.which == 3 && draggingObj == -3 && mousePos.x == dragContext.mousePos0.x && mousePos.y == dragContext.mousePos0.y) {
       draggingObj = -1;
-      draggingPart = {};
+      dragContext = {};
       canvas_ondblclick(e);
       return;
     }
@@ -391,7 +391,7 @@ function canvas_onmouseup(e) {
       createUndoPoint();
     }
     draggingObj = -1;
-    draggingPart = {};
+    dragContext = {};
   }
 
 }
@@ -432,19 +432,19 @@ function canvas_ondblclick(e) {
   if (isConstructing) {
   }
   else if (new Mouse(mousePos, scene, lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
-    draggingPart = {};
+    dragContext = {};
     if (scene.mode == 'observer') {
       if (geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
 
         // The mousePos clicked the observer
         positioningObj = -4;
-        draggingPart = {};
-        draggingPart.targetPoint = geometry.point(scene.observer.c.x, scene.observer.c.y);
-        draggingPart.snapData = {};
+        dragContext = {};
+        dragContext.targetPoint = geometry.point(scene.observer.c.x, scene.observer.c.y);
+        dragContext.snapContext = {};
 
-        document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scene.scale + scene.origin.x) + 'px';
-        document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scene.scale + scene.origin.y) + 'px';
-        document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
+        document.getElementById('xybox').style.left = (dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
+        document.getElementById('xybox').style.top = (dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
+        document.getElementById('xybox').value = '(' + (dragContext.targetPoint.x) + ',' + (dragContext.targetPoint.y) + ')';
         document.getElementById('xybox').size = document.getElementById('xybox').value.length;
         document.getElementById('xybox').style.display = '';
         document.getElementById('xybox').select();
@@ -459,15 +459,15 @@ function canvas_ondblclick(e) {
     var ret = selectionSearch(mousePos)[0];
     if (ret.targetObj_index != -1 && ret.mousePart.targetPoint) {
       selectObj(ret.targetObj_index);
-      draggingPart = ret.mousePart;
-      draggingPart.originalObj = JSON.parse(JSON.stringify(scene.objs[ret.targetObj_index])); // Store the obj status before dragging
+      dragContext = ret.mousePart;
+      dragContext.originalObj = JSON.parse(JSON.stringify(scene.objs[ret.targetObj_index])); // Store the obj status before dragging
 
-      draggingPart.hasDuplicated = false;
+      dragContext.hasDuplicated = false;
       positioningObj = ret.targetObj_index;
 
-      document.getElementById('xybox').style.left = (draggingPart.targetPoint.x * scene.scale + scene.origin.x) + 'px';
-      document.getElementById('xybox').style.top = (draggingPart.targetPoint.y * scene.scale + scene.origin.y) + 'px';
-      document.getElementById('xybox').value = '(' + (draggingPart.targetPoint.x) + ',' + (draggingPart.targetPoint.y) + ')';
+      document.getElementById('xybox').style.left = (dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
+      document.getElementById('xybox').style.top = (dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
+      document.getElementById('xybox').value = '(' + (dragContext.targetPoint.x) + ',' + (dragContext.targetPoint.y) + ')';
       document.getElementById('xybox').size = document.getElementById('xybox').value.length;
       document.getElementById('xybox').style.display = '';
       document.getElementById('xybox').select();
@@ -572,7 +572,7 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), draggingPart, ctrl, shift);
+      objTypes[scene.objs[positioningObj].type].onDrag(scene.objs[positioningObj], new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), dragContext, ctrl, shift);
       draw(!(objTypes[scene.objs[positioningObj].type].onSimulationStart || objTypes[scene.objs[positioningObj].type].checkRayIntersects), true);
     }
     
@@ -585,7 +585,7 @@ function confirmPositioning(ctrl, shift) {
 function endPositioning() {
   document.getElementById('xybox').style.display = 'none';
   positioningObj = -1;
-  draggingPart = {};
+  dragContext = {};
 }
 
 function removeObj(index) {

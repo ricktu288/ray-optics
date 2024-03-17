@@ -79,38 +79,38 @@ objTypes['handle'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (obj.notDone) return;
     if (mouse.isOnPoint(obj.p1)) {
-      draggingPart.part = 1;
-      draggingPart.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
-      draggingPart.mousePos0 = geometry.point(obj.p1.x, obj.p1.y);
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.mousePos0 = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.snapContext = {};
+      return dragContext;
     }
     if (mouse.isOnPoint(obj.p2)) {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      draggingPart.mousePos0 = geometry.point(obj.p2.x, obj.p2.y);
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.mousePos0 = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     if (obj.notDone) return;
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+      dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
-    if (draggingPart.part == 1) {
+    if (dragContext.part == 1) {
       if (ctrl && shift) {
         // Scaling
-        var factor = geometry.distance(obj.p2, mouse.pos) / geometry.distance(obj.p2, draggingPart.targetPoint_)
+        var factor = geometry.distance(obj.p2, mouse.pos) / geometry.distance(obj.p2, dragContext.targetPoint_)
         if (factor < 1e-5) return;
         var trans = function (p) {
           p.x = (p.x - obj.p2.x) * factor + obj.p2.x;
@@ -118,7 +118,7 @@ objTypes['handle'] = {
         };
       } else if (ctrl) {
         // Rotation
-        var theta = Math.atan2(obj.p2.y - mouse.pos.y, obj.p2.x - mouse.pos.x) - Math.atan2(obj.p2.y - draggingPart.targetPoint_.y, obj.p2.x - draggingPart.targetPoint_.x);
+        var theta = Math.atan2(obj.p2.y - mouse.pos.y, obj.p2.x - mouse.pos.x) - Math.atan2(obj.p2.y - dragContext.targetPoint_.y, obj.p2.x - dragContext.targetPoint_.x);
         var trans = function (p) {
           var x = p.x - obj.p2.x;
           var y = p.y - obj.p2.y;
@@ -127,8 +127,8 @@ objTypes['handle'] = {
         };
       } else {
         // Translation
-        var diffX = mousePos.x - draggingPart.targetPoint_.x;
-        var diffY = mousePos.y - draggingPart.targetPoint_.y;
+        var diffX = mousePos.x - dragContext.targetPoint_.x;
+        var diffY = mousePos.y - dragContext.targetPoint_.y;
         var trans = function (p) {
           p.x += diffX;
           p.y += diffY;
@@ -143,11 +143,11 @@ objTypes['handle'] = {
         trans(obj.controlPoints[i].newPoint);
         objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene, false, 2), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
       }
-      draggingPart.targetPoint_.x = obj.p1.x;
-      draggingPart.targetPoint_.y = obj.p1.y;
+      dragContext.targetPoint_.x = obj.p1.x;
+      dragContext.targetPoint_.y = obj.p1.y;
     }
 
-    if (draggingPart.part == 2) {
+    if (dragContext.part == 2) {
       obj.p2.x = mousePos.x;
       obj.p2.y = mousePos.y;
     }

@@ -267,7 +267,7 @@ objTypes['refractor'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
 
     var p1;
     var p2;
@@ -292,10 +292,10 @@ objTypes['refractor'] = {
       }
     }
     if (targetPoint_index != -1) {
-      draggingPart.part = 1;
-      draggingPart.index = targetPoint_index;
-      draggingPart.targetPoint = geometry.point(obj.path[targetPoint_index].x, obj.path[targetPoint_index].y);
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.index = targetPoint_index;
+      dragContext.targetPoint = geometry.point(obj.path[targetPoint_index].x, obj.path[targetPoint_index].y);
+      return dragContext;
     }
 
     for (var i = 0; i < obj.path.length; i++) {
@@ -313,11 +313,11 @@ objTypes['refractor'] = {
           if (Math.abs(geometry.distance(center, mouse.pos) - r) < mouse.getClickExtent() && (((a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2)) == ((a2 < a_m && a_m < a1) || (a1 < a2 && a2 < a_m) || (a_m < a1 && a1 < a2)))) {
             // Dragging the entire obj
             const mousePos = mouse.getPosSnappedToGrid();
-            draggingPart.part = 0;
-            draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-            draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-            draggingPart.snapData = {};
-            return draggingPart;
+            dragContext.part = 0;
+            dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+            dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+            dragContext.snapContext = {};
+            return dragContext;
           }
         }
         else {
@@ -325,11 +325,11 @@ objTypes['refractor'] = {
           if (mouse.isOnSegment(geometry.line(obj.path[(i) % obj.path.length], obj.path[(i + 2) % obj.path.length]))) {
             // Dragging the entire obj
             const mousePos = mouse.getPosSnappedToGrid();
-            draggingPart.part = 0;
-            draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-            draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-            draggingPart.snapData = {};
-            return draggingPart;
+            dragContext.part = 0;
+            dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+            dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+            dragContext.snapContext = {};
+            return dragContext;
           }
         }
       }
@@ -337,11 +337,11 @@ objTypes['refractor'] = {
         if (mouse.isOnSegment(geometry.line(obj.path[(i) % obj.path.length], obj.path[(i + 1) % obj.path.length]))) {
           // Dragging the entire obj
           const mousePos = mouse.getPosSnappedToGrid();
-          draggingPart.part = 0;
-          draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-          draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-          draggingPart.snapData = {};
-          return draggingPart;
+          dragContext.part = 0;
+          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+          dragContext.snapContext = {};
+          return dragContext;
         }
       }
     }
@@ -349,24 +349,24 @@ objTypes['refractor'] = {
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
 
-    if (draggingPart.part == 1) {
-      obj.path[draggingPart.index].x = mousePos.x;
-      obj.path[draggingPart.index].y = mousePos.y;
+    if (dragContext.part == 1) {
+      obj.path[dragContext.index].x = mousePos.x;
+      obj.path[dragContext.index].y = mousePos.y;
     }
 
-    if (draggingPart.part == 0) {
+    if (dragContext.part == 0) {
       if (shift) {
-        var mousePosSnapped = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+        var mousePosSnapped = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
       }
       else {
         var mousePosSnapped = mouse.getPosSnappedToGrid();
-        draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
-      this.move(obj, mousePosSnapped.x - draggingPart.mousePos1.x, mousePosSnapped.y - draggingPart.mousePos1.y);
-      draggingPart.mousePos1 = mousePosSnapped;
+      this.move(obj, mousePosSnapped.x - dragContext.mousePos1.x, mousePosSnapped.y - dragContext.mousePos1.y);
+      dragContext.mousePos1 = mousePosSnapped;
     }
   },
 

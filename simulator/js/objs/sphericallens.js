@@ -431,8 +431,8 @@ objTypes['sphericallens'] = {
     return { d: d, ffd: ffd, bfd: bfd };
   },
 
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
-    if (draggingPart.part == -1) return;
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
+    if (dragContext.part == -1) return;
     var p1 = geometry.midpoint(obj.path[0], obj.path[1]);
     var p2 = geometry.midpoint(obj.path[3], obj.path[4]);
     var len = Math.hypot(p1.x - p2.x, p1.y - p2.y);
@@ -446,29 +446,29 @@ objTypes['sphericallens'] = {
     var cthick2 = Math.hypot(obj.path[2].x - cx, obj.path[2].y - cy);
     var cthick5 = Math.hypot(obj.path[5].x - cx, obj.path[5].y - cy);
     var oldx, oldy;
-    if (draggingPart.part == 1) {
-      oldx = obj.path[draggingPart.index].x;
-      oldy = obj.path[draggingPart.index].y;
+    if (dragContext.part == 1) {
+      oldx = obj.path[dragContext.index].x;
+      oldy = obj.path[dragContext.index].y;
     }
 
-    objTypes['refractor'].onDrag(obj, mouse, draggingPart, ctrl, shift);
-    if (draggingPart.byHandle) return;
-    if (draggingPart.part != 1)
+    objTypes['refractor'].onDrag(obj, mouse, dragContext, ctrl, shift);
+    if (dragContext.byHandle) return;
+    if (dragContext.part != 1)
       return;
     const mousePos = mouse.getPosSnappedToGrid();
-    if (draggingPart.index == 2 || draggingPart.index == 5) {
+    if (dragContext.index == 2 || dragContext.index == 5) {
       // keep center points on optical axis
       var off = (mousePos.x - cx) * dpx + (mousePos.y - cy) * dpy;
-      obj.path[draggingPart.index] = { x: cx + dpx * off, y: cy + dpy * off, arc: true };
+      obj.path[dragContext.index] = { x: cx + dpx * off, y: cy + dpy * off, arc: true };
     } else {
       var thick = Math.abs(((mousePos.x - cx) * dpx + (mousePos.y - cy) * dpy));
       // adjust center thickness to match so curvature is the same
       cthick2 += thick - othick;
       cthick5 += thick - othick;
-      var mpt = obj.path[draggingPart.index];
+      var mpt = obj.path[dragContext.index];
       var lchange = (mpt.x - oldx) * dx + (mpt.y - oldy) * dy;
       // adjust length
-      if (draggingPart.index < 2) {
+      if (dragContext.index < 2) {
         p1.x += lchange * dx;
         p1.y += lchange * dy;
       } else {
@@ -531,28 +531,28 @@ objTypes['sphericallens'] = {
 
   move: objTypes['refractor'].move,
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (!obj.path) {
       if (obj.p1 && obj.p2) {
         if (mouse.isOnPoint(obj.p1)) {
-          draggingPart.part = -1;
-          draggingPart.targetPoint = obj.p1;
-          return draggingPart;
+          dragContext.part = -1;
+          dragContext.targetPoint = obj.p1;
+          return dragContext;
         }
         if (mouse.isOnPoint(obj.p2)) {
-          draggingPart.part = -1;
-          draggingPart.targetPoint = obj.p2;
-          return draggingPart;
+          dragContext.part = -1;
+          dragContext.targetPoint = obj.p2;
+          return dragContext;
         }
       }
     };
-    draggingPart = objTypes['refractor'].checkMouseOver(obj, mouse);
-    if (draggingPart) {
-      if (draggingPart.part != 0) {
-        draggingPart.requiresObjBarUpdate = true;
+    dragContext = objTypes['refractor'].checkMouseOver(obj, mouse);
+    if (dragContext) {
+      if (dragContext.part != 0) {
+        dragContext.requiresObjBarUpdate = true;
       }
       
-      return draggingPart;
+      return dragContext;
     }
   },
   checkRayIntersects: function (obj, ray) {

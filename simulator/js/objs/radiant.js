@@ -53,24 +53,24 @@ objTypes['radiant'] = {
 
   // When the drawing area is clicked (test which part of the obj is clicked)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     if (mouse.isOnPoint(obj)) {
-      draggingPart.part = 0;
-      draggingPart.mousePos0 = geometry.point(obj.x, obj.y);
-      draggingPart.targetPoint = geometry.point(obj.x, obj.y);
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 0;
+      dragContext.mousePos0 = geometry.point(obj.x, obj.y);
+      dragContext.targetPoint = geometry.point(obj.x, obj.y);
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 
   // When the user is dragging the obj
-  onDrag: function (obj, mouse, draggingPart, ctrl, shift) {
+  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
     if (shift) {
-      var mousePos = mouse.getPosSnappedToDirection(draggingPart.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], draggingPart.snapData);
+      var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
     else {
       var mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.snapData = {}; // Unlock the dragging direction when the user release the shift key
+      dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
 
     obj.x = mousePos.x;

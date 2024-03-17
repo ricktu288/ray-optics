@@ -38,27 +38,27 @@ objTypes['blackcircle'] = {
   // When the drawing area is clicked (test which part of the obj is clicked)
   // When the drawing area is pressed (to determine the part of the object being pressed)
   checkMouseOver: function (obj, mouse) {
-    let draggingPart = {};
+    let dragContext = {};
     // clicking on p1 (center)?
     if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
-      draggingPart.part = 1;
-      draggingPart.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return draggingPart;
+      dragContext.part = 1;
+      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      return dragContext;
     }
     // clicking on p2 (edge)?
     if (mouse.isOnPoint(obj.p2)) {
-      draggingPart.part = 2;
-      draggingPart.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return draggingPart;
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      return dragContext;
     }
     // clicking on outer edge of circle?  then drag entire circle
     if (Math.abs(geometry.distance(obj.p1, mouse.pos) - geometry.segmentLength(obj)) < mouse.getClickExtent()) {
       const mousePos = mouse.getPosSnappedToGrid();
-      draggingPart.part = 0;
-      draggingPart.mousePos0 = mousePos; // Mouse position when the user starts dragging
-      draggingPart.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-      draggingPart.snapData = {};
-      return draggingPart;
+      dragContext.part = 0;
+      dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+      dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+      dragContext.snapContext = {};
+      return dragContext;
     }
   },
 
