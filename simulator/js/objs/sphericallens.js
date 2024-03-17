@@ -452,7 +452,7 @@ objTypes['sphericallens'] = {
     }
 
     objTypes['refractor'].onDrag(obj, mouse, dragContext, ctrl, shift);
-    if (dragContext.byHandle) return;
+    if (dragContext.isByHandle) return;
     if (dragContext.part != 1)
       return;
     const mousePos = mouse.getPosSnappedToGrid();

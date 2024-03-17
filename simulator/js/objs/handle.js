@@ -10,7 +10,7 @@ objTypes['handle'] = {
   addControlPoint: function (obj, controlPoint) {
     controlPoint.mousePart.originalObj = scene.objs[controlPoint.targetObj_index];
     controlPoint.newPoint = controlPoint.mousePart.targetPoint;
-    controlPoint.mousePart.byHandle = true;
+    controlPoint.mousePart.isByHandle = true;
     controlPoint = JSON.parse(JSON.stringify(controlPoint));
     scene.objs[0].controlPoints.push(controlPoint);
   },

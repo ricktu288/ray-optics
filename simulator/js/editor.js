@@ -67,7 +67,7 @@ function canvas_onmousedown(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
-      if (ret && ret.newUndoPoint) {
+      if (ret && ret.requiresUndoPoint) {
         createUndoPoint();
       }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onSimulationStart || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
@@ -149,7 +149,7 @@ function canvas_onmousedown(e) {
         if (ret && ret.requiresObjBarUpdate) {
           selectObj(selectedObj);
         }
-        if (ret && ret.newUndoPoint) {
+        if (ret && ret.requiresUndoPoint) {
           createUndoPoint();
         }
         draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onSimulationStart || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
@@ -276,7 +276,7 @@ function canvas_onmousemove(e) {
     if (ret && ret.requiresObjBarUpdate) {
       selectObj(selectedObj);
     }
-    if (ret && ret.newUndoPoint) {
+    if (ret && ret.requiresUndoPoint) {
       createUndoPoint();
     }
     draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onSimulationStart || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);
@@ -361,7 +361,7 @@ function canvas_onmouseup(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
-      if (ret && ret.newUndoPoint) {
+      if (ret && ret.requiresUndoPoint) {
         createUndoPoint();
       }
       draw(!(objTypes[scene.objs[scene.objs.length - 1].type].onSimulationStart || objTypes[scene.objs[scene.objs.length - 1].type].checkRayIntersects), true);

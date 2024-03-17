@@ -41,7 +41,7 @@ objTypes['drawing'] = {
   onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
     obj.tmp_isMouseDown = false;
     return {
-      newUndoPoint: true
+      requiresUndoPoint: true
     }
   },
 
