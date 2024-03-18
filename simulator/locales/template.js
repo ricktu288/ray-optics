@@ -140,6 +140,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating"
+  },
   "toolname_ruler": {
     "incomplete": true,
     "message": "Ruler"
@@ -315,6 +319,9 @@ locales["LOCALE_ID"] = {
   "tool_blackcircle": {
     "incomplete": true,
     "message": "Circle Blocker"
+  },
+  "tool_diffractiongrating": {
+    "message": "Diffraction Grating"
   },
   "tool_ruler": {
     "incomplete": true,
@@ -847,6 +854,10 @@ locales["LOCALE_ID"] = {
   "tool_blackcircle_popover": {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "incomplete": true,

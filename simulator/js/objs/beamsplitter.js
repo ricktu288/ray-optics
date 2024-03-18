@@ -3,7 +3,7 @@ objTypes['beamsplitter'] = {
 
   // Create the obj
   create: function(mouse) {
-    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5, isDichroic: false, isDichroicFilter: false};
+    return {type: 'beamsplitter', p1: mouse, p2: mouse, p: .5};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,
