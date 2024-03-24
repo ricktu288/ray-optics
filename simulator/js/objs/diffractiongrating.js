@@ -70,7 +70,6 @@ objTypes['diffractiongrating'] = {
                 var angle = (theta_i + m * theta) % (2 * Math.PI);
                 var rx2 = Math.cos(Math.PI - angle);
                 var ry2 = Math.sin(Math.PI - angle);
-                console.log("rx2: ",rx2," ry2: ",ry2);
                 var ray_left = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
                 ray_left.wavelength = wavelength;
                 ray_left.brightness_s = brightness_s * (2 * theta/(Math.PI));
