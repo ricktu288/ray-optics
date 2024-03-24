@@ -483,6 +483,14 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Emission Angle (°)"
   },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
   "symmetric": {
     "incomplete": true,
     "message": "Symmetric"

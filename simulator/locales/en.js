@@ -363,6 +363,12 @@ locales["en"] = {
   "emissionangle": {
     "message": "Emission Angle (°)"
   },
+  "mirrored": {
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "message": "Lines/mm"
+  },
   "symmetric": {
     "message": "Symmetric"
   },
