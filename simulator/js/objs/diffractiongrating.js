@@ -37,13 +37,7 @@ objTypes['diffractiongrating'] = {
 
     //Describes how the ray intersects the grating
     rayIntersection: function(obj, ray) {
-        // Prevent ray spawned by grating from interacting with itself
-        let v1 = { x: ray.p1.x - obj.p1.x, y: ray.p1.y - obj.p1.y };
-        let v2 = { x: obj.p2.x - obj.p1.x, y: obj.p2.y - obj.p1.y };
-        let cross_product = v1.x * v2.y - v1.y * v2.x;
-        if (Math.abs(cross_product) > Number.EPSILON){
-            return objTypes['lineobj'].rayIntersection(obj, ray);
-        }
+        return objTypes['mirror'].rayIntersection(obj, ray);
     },
 
       // When the obj is shot by a ray
@@ -57,7 +51,7 @@ objTypes['diffractiongrating'] = {
         var wavelength = ray.wavelength || GREEN_WAVELENGTH;
         var brightness_s = ray.brightness_s;
         var brightness_p = ray.brightness_p;
-       
+    
         //Find which side the incoming ray is hitting the diffraction line segment
         var crossProduct = rx * my - ry * mx;
         var left_point = crossProduct > 0? diffractiongrating.p1 : diffractiongrating.p2;
@@ -72,12 +66,12 @@ objTypes['diffractiongrating'] = {
             var theta_i = Math.PI - Math.atan2(ry,rx);
             var diff_angle = theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i; 
             //Emit diffracting rays on both sides of m0
-            for (var m = 0; m * theta < diff_angle && m * theta < Math.PI; m++ ){
+            for (var m = 0; m * theta < diff_angle && m * theta < Math.PI; m++){
                 var angle = (theta_i + m * theta) % (2 * Math.PI);
                 var rx2 = Math.cos(Math.PI - angle);
                 var ry2 = Math.sin(Math.PI - angle);
-
-                var ray_left = graphs.ray(rp,graphs.point(rp.x - rx2 * mirror, rp.y - ry2 * mirror));
+                console.log("rx2: ",rx2," ry2: ",ry2);
+                var ray_left = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
                 ray_left.wavelength = wavelength;
                 ray_left.brightness_s = brightness_s * (2 * theta/(Math.PI));
                 ray_left.brightness_p = brightness_p * (2 * theta/(Math.PI));
@@ -86,12 +80,12 @@ objTypes['diffractiongrating'] = {
                 }
             }
 
-            for (var m = 0; m * theta < Math.PI - diff_angle && m * theta < Math.PI; m++ ){
+            for (var m = 0; m * theta < Math.PI - diff_angle && m * theta < Math.PI; m++){
                 var angle = (theta_i - m * theta) % (2 * Math.PI);
                 var rx2 = Math.cos(Math.PI - angle);
                 var ry2 = Math.sin(Math.PI - angle);
 
-                var ray_right = graphs.ray(rp,graphs.point(rp.x - rx2 * mirror, rp.y - ry2 * mirror));
+                var ray_right = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
                 ray_right.wavelength = wavelength;
                 ray_right.brightness_s = brightness_s * (2 * theta/(Math.PI));
                 ray_right.brightness_p = brightness_p * (2 * theta/(Math.PI));
@@ -100,5 +94,6 @@ objTypes['diffractiongrating'] = {
                 }
             }
         }
+        
     },
 };
