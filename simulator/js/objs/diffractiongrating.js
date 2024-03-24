@@ -47,6 +47,7 @@ objTypes['diffractiongrating'] = {
         var ry = ray.p1.y - rp.y;
         var mx = diffractiongrating.p2.x - diffractiongrating.p1.x;
         var my = diffractiongrating.p2.y - diffractiongrating.p1.y;
+        ray.exist = false;
 
         var wavelength = ray.wavelength || GREEN_WAVELENGTH;
         var brightness_s = ray.brightness_s;
@@ -72,8 +73,8 @@ objTypes['diffractiongrating'] = {
                 var ry2 = Math.sin(Math.PI - angle);
                 var ray_left = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
                 ray_left.wavelength = wavelength;
-                ray_left.brightness_s = brightness_s * (2 * theta/(Math.PI));
-                ray_left.brightness_p = brightness_p * (2 * theta/(Math.PI));
+                ray_left.brightness_s = brightness_s * (4 * theta/(Math.PI));
+                ray_left.brightness_p = brightness_p * (4 * theta/(Math.PI));
                 if (ray_left.brightness_s + ray_left.brightness_p > 0.01){
                     addRay(ray_left);
                 }
@@ -86,8 +87,8 @@ objTypes['diffractiongrating'] = {
 
                 var ray_right = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
                 ray_right.wavelength = wavelength;
-                ray_right.brightness_s = brightness_s * (2 * theta/(Math.PI));
-                ray_right.brightness_p = brightness_p * (2 * theta/(Math.PI));
+                ray_right.brightness_s = brightness_s * (4 * theta/(Math.PI));
+                ray_right.brightness_p = brightness_p * (4 * theta/(Math.PI));
                 if (ray_right.brightness_s + ray_right.brightness_p > 0.01){
                     addRay(ray_right);
                 }
