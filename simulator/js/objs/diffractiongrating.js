@@ -51,6 +51,16 @@ objTypes['diffractiongrating'] = {
 
         var wavelength = ray.wavelength? ray.wavelength : GREEN_WAVELENGTH;
        
+        var crossProduct = rx * my - ry * mx;
+
+        if (crossProduct > 0) {
+            var right_point = diffractiongrating.p2;
+            var left_point = diffractiongrating.p1;
+            console.log("s_p2 is to the left of the ray.");
+        } else if (crossProduct < 0) {
+            var right_point = diffractiongrating.p1;
+            var left_point = diffractiongrating.p2;
+        }
         var theta_offset = 0;
         //If mirrored, reflect the rays rather than pass them
         
@@ -66,43 +76,39 @@ objTypes['diffractiongrating'] = {
         ray_diff.brightness = ray.brightness;
 
         addRay(ray_diff);
-
-        //Max number of m before theta > 90 degrees
-        var m = Math.floor(mm_in_nm / (wavelength * diffractiongrating.line_density));
-        //Find angle between coherence
-        magnitude = Math.sqrt(rx * rx + ry * ry);
-        var theta_i = Math.atan2(ry,rx);
-        var theta = Math.asin(this.keepAngleInAsinBounds(wavelength * diffractiongrating.line_density / mm_in_nm)) + theta_offset;
+        
+        //Find angles
+        var theta = Math.asin(wavelength * diffractiongrating.line_density / mm_in_nm) + theta_offset;
+        var theta_left = Math.PI - Math.atan2(left_point.y - rp.y,left_point.x - rp.x);
+        var theta_right = Math.PI - Math.atan2(right_point.y - rp.y,right_point.x - rp.x);
+        var theta_i = Math.PI - Math.atan2(ry,rx);
+        var diff_angle = theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i;
+        console.log("Incident Angle: ",theta_i," Theta: ",theta, " Left Angle: ", theta_left, "Right Angle: ", theta_right," Diff Angle: ", diff_angle);
         
         
-        for (var i = 1; i <= m; i++){
-            var rx2 = magnitude * Math.cos(theta_i - i * theta);
-            var ry2 = magnitude * Math.sin(theta_i - i * theta);
+        for (var m = 1; m * theta < diff_angle && m * theta < Math.PI; m++ ){
+            var angle = (theta_i + m * theta) % (2 * Math.PI);
+            var rx2 = Math.cos(Math.PI - angle);
+            var ry2 = Math.sin(Math.PI - angle);
 
-            var ray_pos = graphs.ray(rp,graphs.point(rp.x - rx2, rp.y - ry2));
-            ray_diff.wavelength = ray.wavelength;
-            ray_diff.brightness = ray.brightness;
+            var ray_left = graphs.ray(rp,graphs.point(rp.x - rx2, rp.y - ry2));
+            ray_left.wavelength = ray.wavelength;
+            ray_left.brightness = ray.brightness * 0.5;
                 
-            addRay(ray_pos);
+            addRay(ray_left);
+        }
 
-            var rx2 = magnitude * Math.cos(theta_i + i * theta);
-            var ry2 = magnitude * Math.sin(theta_i + i * theta);
+        for (var m = 1; m * theta < Math.PI - diff_angle && m * theta < Math.PI; m++ ){
+            var angle = (theta_i - m * theta) % (2 * Math.PI);
+            var rx2 = Math.cos(Math.PI - angle);
+            var ry2 = Math.sin(Math.PI - angle);
 
-            var ray_neg = graphs.ray(rp,graphs.point(rp.x - rx2, rp.y - ry2));
-            ray_diff.wavelength = ray.wavelength;
-            ray_diff.brightness = ray.brightness;
+            var ray_left = graphs.ray(rp,graphs.point(rp.x - rx2, rp.y - ry2));
+            ray_left.wavelength = ray.wavelength;
+            ray_left.brightness = ray.brightness * 0.5;
                 
-            addRay(ray_neg);
+            addRay(ray_left);
         }
 
     },
-    keepAngleInAsinBounds: function(angle) {
-        while (angle < -Math.PI / 2) {
-            angle += 2 * Math.PI;
-        }
-        while (angle > Math.PI / 2) {
-            angle -= 2 * Math.PI;
-        }
-        return angle;
-    }
 };
