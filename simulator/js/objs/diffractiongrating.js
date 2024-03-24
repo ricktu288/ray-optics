@@ -37,7 +37,7 @@ objTypes['diffractiongrating'] = {
 
     //Describes how the ray intersects the grating
     rayIntersection: function(obj, ray) {
-        return objTypes['mirror'].rayIntersection(obj, ray);
+        return objTypes['lineobj'].rayIntersection(obj, ray);
     },
 
       // When the obj is shot by a ray
