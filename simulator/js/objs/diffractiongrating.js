@@ -43,44 +43,38 @@ objTypes['diffractiongrating'] = {
 
       // When the obj is shot by a ray
     shot: function(diffractiongrating, ray, rayIndex, rp) {
-        const mm_in_nm = 1000000;
+        const mm_in_nm = 1/1000000;
         var rx = ray.p1.x - rp.x;
         var ry = ray.p1.y - rp.y;
         var mx = diffractiongrating.p2.x - diffractiongrating.p1.x;
         var my = diffractiongrating.p2.y - diffractiongrating.p1.y;
 
-        var wavelength = ray.wavelength? ray.wavelength : GREEN_WAVELENGTH;
-        var brightness = ray.brightness? ray.brightness : 1;
+        var wavelength = ray.wavelength || GREEN_WAVELENGTH;
+        var brightness_s = ray.brightness_s;
+        var brightness_p = ray.brightness_p;
        
+        //Find which side the incoming ray is hitting the diffraction line segment
         var crossProduct = rx * my - ry * mx;
-
-        if (crossProduct > 0) {
-            var right_point = diffractiongrating.p2;
-            var left_point = diffractiongrating.p1;
-            console.log("s_p2 is to the left of the ray.");
-        } else if (crossProduct < 0) {
-            var right_point = diffractiongrating.p1;
-            var left_point = diffractiongrating.p2;
-        }
+        var left_point = crossProduct > 0? diffractiongrating.p1 : diffractiongrating.p2;
 
         //If mirrored, reflect the rays rather than pass them
         var mirror = diffractiongrating.mirrored? -1 : 1;
-        var ray_diff = graphs.ray(rp,graphs.point(rp.x - rx * mirror, rp.y - ry * mirror));
 
+        //Create center ray at the same angle as incident ray
+        var ray_diff = graphs.ray(rp,graphs.point(rp.x - rx * mirror, rp.y - ry * mirror));
         ray_diff.wavelength = wavelength;
-        ray_diff.brightness = brightness;
+        ray_diff.brightness_s = brightness_s * 0.5;
+        ray_diff.brightness_p = brightness_p * 0.5;
 
         addRay(ray_diff);
         
         //Find angles
-        var theta = Math.asin(wavelength * diffractiongrating.line_density / mm_in_nm);
+        var theta = Math.asin(wavelength * diffractiongrating.line_density * mm_in_nm);
         if (theta){
             var theta_left = Math.PI - Math.atan2(left_point.y - rp.y,left_point.x - rp.x);
             var theta_i = Math.PI - Math.atan2(ry,rx);
-            var diff_angle = theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i;
-            //console.log("Incident Angle: ",theta_i," Theta: ",theta, " Left Angle: ", theta_left, "Right Angle: ", theta_right," Diff Angle: ", diff_angle);
-            
-            
+            var diff_angle = theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i; 
+            //Emit diffracting rays on both sides of m0
             for (var m = 1; m * theta < diff_angle && m * theta < Math.PI; m++ ){
                 var angle = (theta_i + m * theta) % (2 * Math.PI);
                 var rx2 = Math.cos(Math.PI - angle);
@@ -88,9 +82,11 @@ objTypes['diffractiongrating'] = {
 
                 var ray_left = graphs.ray(rp,graphs.point(rp.x - rx2 * mirror, rp.y - ry2 * mirror));
                 ray_left.wavelength = wavelength;
-                ray_left.brightness = brightness * (0.25 * m);
-                    
-                addRay(ray_left);
+                ray_left.brightness_s = brightness_s * (0.25);
+                ray_left.brightness_p = brightness_p * (0.25);
+                if (ray_left.brightness_s + ray_left.brightness_p > 0.01){
+                    addRay(ray_left);
+                }
             }
 
             for (var m = 1; m * theta < Math.PI - diff_angle && m * theta < Math.PI; m++ ){
@@ -100,12 +96,12 @@ objTypes['diffractiongrating'] = {
 
                 var ray_right = graphs.ray(rp,graphs.point(rp.x - rx2 * mirror, rp.y - ry2 * mirror));
                 ray_right.wavelength = wavelength;
-                ray_right.brightness = brightness * (0.25 * m);
-                    
-                addRay(ray_right);
+                ray_right.brightness_s = brightness_s * (0.25);
+                ray_right.brightness_p = brightness_p * (0.25);
+                if (ray_right.brightness_s + ray_right.brightness_p > 0.01){
+                    addRay(ray_right);
+                }
             }
         }
-        
-
     },
 };
