@@ -105,6 +105,9 @@ locales["en"] = {
   "toolname_blackcircle": {
     "message": "Circle Blocker"
   },
+  "toolname_diffractiongrating": {
+    "message": "Diffraction Grating"
+  },
   "toolname_ruler": {
     "message": "Ruler"
   },
@@ -237,6 +240,9 @@ locales["en"] = {
   "tool_blackcircle": {
     "message": "Circle Blocker"
   },
+  "tool_diffractiongrating": {
+    "message": "Diffraction Grating"
+  },
   "tool_ruler": {
     "message": "Ruler"
   },
@@ -356,6 +362,12 @@ locales["en"] = {
   },
   "emissionangle": {
     "message": "Emission Angle (°)"
+  },
+  "mirrored": {
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "message": "Lines/mm"
   },
   "symmetric": {
     "message": "Symmetric"
@@ -635,6 +647,10 @@ locales["en"] = {
   },
   "tool_blackcircle_popover": {
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"

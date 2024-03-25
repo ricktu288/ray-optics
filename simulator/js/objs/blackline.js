@@ -31,7 +31,7 @@ objTypes['blackline'] = {
     dichroicSettings(obj,elem);
   },
 
-  //Describes how the ray 
+  //Describes how the ray hits the object
   rayIntersection: function(blackline, ray) {
     if (wavelengthInteraction(blackline,ray)) {
       return objTypes['lineobj'].rayIntersection(blackline, ray);
