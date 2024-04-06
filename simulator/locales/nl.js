@@ -124,6 +124,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "Lineaal"
   },
@@ -274,6 +278,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "Lineaal"
   },
@@ -414,6 +422,18 @@ locales["nl"] = {
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "incomplete": true,
@@ -584,6 +604,14 @@ locales["nl"] = {
   "beam_warning": {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -766,6 +794,10 @@ locales["nl"] = {
   "tool_blackcircle_popover": {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "Een lineaal van 0 tot een willekeurige afstand. Schaal is in pixels. (Sleep of klik om te maken.)"

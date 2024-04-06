@@ -142,7 +142,7 @@ locales["LOCALE_ID"] = {
   },
   "toolname_diffractiongrating": {
     "incomplete": true,
-    "message": "Diffraction Grating"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "incomplete": true,
@@ -321,7 +321,7 @@ locales["LOCALE_ID"] = {
     "message": "Circle Blocker"
   },
   "tool_diffractiongrating": {
-    "message": "Diffraction Grating"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "incomplete": true,
@@ -490,6 +490,10 @@ locales["LOCALE_ID"] = {
   "lines/mm": {
     "incomplete": true,
     "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "incomplete": true,
@@ -662,6 +666,14 @@ locales["LOCALE_ID"] = {
   "beam_warning": {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,

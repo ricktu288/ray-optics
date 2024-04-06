@@ -139,6 +139,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "円形ブロッカー"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "incomplete": false,
     "message": "定規"
@@ -315,6 +319,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "サークルブロッカー"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "incomplete": false,
     "message": "定規"
@@ -474,6 +482,18 @@ locales["ja"] = {
   "emissionangle": {
     "incomplete": false,
     "message": "放射角度 (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "incomplete": false,
@@ -646,6 +666,14 @@ locales["ja"] = {
   "beam_warning": {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -846,6 +874,10 @@ locales["ja"] = {
   "tool_blackcircle_popover": {
     "incomplete": false,
     "message": "入射光線を吸収する円形の遮光板です。(ドラッグまたはクリックで作成)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "incomplete": false,

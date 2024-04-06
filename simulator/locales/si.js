@@ -113,6 +113,10 @@ locales["si"] = {
   "toolname_blackcircle": {
     "message": "වක්‍ර බාධක"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "රූල"
   },
@@ -261,6 +265,10 @@ locales["si"] = {
   "tool_blackcircle": {
     "message": "වක්‍ර බාධක"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "රූල"
   },
@@ -408,6 +416,18 @@ locales["si"] = {
   },
   "emissionangle": {
     "message": "විමෝචන කෝණය (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "message": "සමමිතික"
@@ -574,6 +594,14 @@ locales["si"] = {
   },
   "beam_warning": {
     "message": "⚠️ අපසාරී/අහඹු කදම්භ සමඟ රූප හඳුනාගැනීම  ක්‍රියා නොකරයි."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -755,6 +783,10 @@ locales["si"] = {
   "tool_blackcircle_popover": {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "incomplete": true,

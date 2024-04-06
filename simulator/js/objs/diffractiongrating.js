@@ -30,12 +30,35 @@ objTypes['diffractiongrating'] = {
         createNumberAttr(getMsg('lines/mm'), 1, 2500, 5, obj.line_density, function(obj, value) {
             obj.line_density = value;
         }, elem);
-        createNumberAttr(getMsg('slit_ratio'), 0, 1, 0.001, obj.slit_ratio, function(obj, value) {
-            obj.slit_ratio = value;
-        }, elem);
-        createBooleanAttr(getMsg('mirrored'), obj.mirrored, function(obj, value) {
-            obj.mirrored = value;
-        }, elem);
+
+        if (createAdvancedOptions(obj.slit_ratio != 0.5 || obj.mirrored)) {
+            createNumberAttr(getMsg('slit_ratio'), 0, 1, 0.001, obj.slit_ratio, function(obj, value) {
+                obj.slit_ratio = value;
+            }, elem);
+            createBooleanAttr(getMsg('mirrored'), obj.mirrored, function(obj, value) {
+                obj.mirrored = value;
+            }, elem);
+        }
+
+        if (mode == 'images' || mode == 'observer') {
+            var note = document.createElement('span');
+            note.innerHTML = getMsg('image_detection_warning');
+            note.id = "image_detection_warning";
+            note.style.marginLeft = "0.2em";
+            note.style.marginRight = "0.2em";
+            note.style.color = "white";
+            elem.appendChild(note);
+        }
+
+        if (!colorMode) {
+            var note = document.createElement('span');
+            note.innerHTML = getMsg('non_color_mode_warning');
+            note.id = "non_color_mode_warning";
+            note.style.marginLeft = "0.2em";
+            note.style.marginRight = "0.2em";
+            note.style.color = "white";
+            elem.appendChild(note);
+        }
     },
 
     //Describes how the ray intersects the grating

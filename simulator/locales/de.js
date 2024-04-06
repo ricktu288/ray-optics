@@ -109,6 +109,10 @@ locales["de"] = {
   "toolname_blackcircle": {
     "message": "Kreisförmiger Absorber"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "Lineal"
   },
@@ -248,6 +252,10 @@ locales["de"] = {
   "tool_blackcircle": {
     "message": "Kreisförmiger Absorber"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "Lineal"
   },
@@ -374,6 +382,18 @@ locales["de"] = {
   },
   "emissionangle": {
     "message": "Emissionswinkel (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "message": "symmetrisch"
@@ -543,6 +563,14 @@ locales["de"] = {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
   },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+  },
   "brightness_note_popover": {
     "incomplete": true,
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
@@ -703,6 +731,10 @@ locales["de"] = {
   },
   "tool_blackcircle_popover": {
     "message": "Ein kreisförmiger Absorber. (Ziehen oder Klicken zum Erzeugen.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Ziehen oder Klicken zum Erzeugen.)"
