@@ -49,9 +49,8 @@ objTypes['diffractiongrating'] = {
         var my = diffractiongrating.p2.y - diffractiongrating.p1.y;
         ray.exist = false;
 
-        var wavelength = ray.wavelength || GREEN_WAVELENGTH;
-        var brightness_s = ray.brightness_s;
-        var brightness_p = ray.brightness_p;
+        var wavelength = (ray.wavelength || GREEN_WAVELENGTH) * mm_in_nm;
+        var interval = 1/diffractiongrating.line_density;
     
         //Find which side the incoming ray is hitting the diffraction line segment
         var crossProduct = rx * my - ry * mx;
@@ -63,36 +62,29 @@ objTypes['diffractiongrating'] = {
         //Find angles
         var theta_left = Math.PI - Math.atan2(left_point.y - rp.y,left_point.x - rp.x);
         var theta_i = Math.PI - Math.atan2(ry,rx);
-        var diff_angle = theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i;
-        var theta = 0;
-        //Emit diffracting rays on both sides of m0
-        //I need to merge the two for loops 
-        for (var m = 0; theta < Math.PI; m++){
-            if (theta < Math.PI - diff_angle){
-                var rx2 = Math.cos(Math.PI - theta_i + theta);
-                var ry2 = Math.sin(Math.PI - theta_i + theta);
-                var ray_left = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
-                ray_left.wavelength = wavelength;
-                ray_left.brightness_s = brightness_s * (0.5);
-                ray_left.brightness_p = brightness_p * (0.5);
-                if (ray_left.brightness_s + ray_left.brightness_p > 0.01){
-                    addRay(ray_left);
-                }
-            }
-            if (theta < diff_angle){
-                var rx2 = Math.cos(Math.PI - theta_i - theta);
-                var ry2 = Math.sin(Math.PI - theta_i - theta);
-                var ray_right = graphs.ray(rp, graphs.point(rp.x - rx2 * mirror,rp.y - ry2 * mirror));
-                ray_right.wavelength = wavelength;
-                ray_right.brightness_s = brightness_s * (0.5);
-                ray_right.brightness_p = brightness_p * (0.5);
-                if (ray_right.brightness_s + ray_right.brightness_p > 0.01){
-                    addRay(ray_right);
-                }
-            }
+        var incidence_angle = Math.PI/2 - (theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i);
+        //console.log(incidence_angle)
+
+        var m_min = -Math.floor(interval/wavelength*(1-Math.sin(incidence_angle)));
+        var m_max = -Math.ceil(interval/wavelength*(-1-Math.sin(incidence_angle)));
+
+        console.log(m_min, m_max);
+        for (var m = m_min; m <= m_max; m++) {
+            var diffracted_angle = Math.asin(Math.sin(incidence_angle) - m * wavelength / interval);
+            //console.log(diffracted_angle);
+
+            var rot_c = Math.cos(mirror * (-Math.PI/2 - diffracted_angle));
+            var rot_s = Math.sin(mirror * (-Math.PI/2 - diffracted_angle));
+            var diffracted_ray = graphs.ray(rp, graphs.point(rp.x + (left_point.x-rp.x) * rot_c - (left_point.y-rp.y) * rot_s, rp.y + (left_point.x-rp.x) * rot_s + (left_point.y-rp.y) * rot_c));
             
-            theta = Math.asin(m * wavelength * diffractiongrating.line_density * mm_in_nm) % (2 * Math.PI);
+            diffracted_ray.wavelength = ray.wavelength;
+            diffracted_ray.brightness_s = ray.brightness_s;
+            diffracted_ray.brightness_p = ray.brightness_p;
+
+            // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
+            diffracted_ray.gap = true;
+
+            addRay(diffracted_ray);
         }
-        
     },
 };
