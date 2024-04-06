@@ -3,7 +3,7 @@ objTypes['diffractiongrating'] = {
 
     // Create the obj
     create: function(mouse) {
-        return {type: 'diffractiongrating', p1: mouse, p2: mouse, line_density: 1000, mirrored: false};
+        return {type: 'diffractiongrating', p1: mouse, p2: mouse, line_density: 1000, slit_ratio: 0.5, mirrored: false};
     },
 
     // Use the prototype lineobj
@@ -30,6 +30,9 @@ objTypes['diffractiongrating'] = {
         createNumberAttr(getMsg('lines/mm'), 1, 2500, 5, obj.line_density, function(obj, value) {
             obj.line_density = value;
         }, elem);
+        createNumberAttr(getMsg('slit_ratio'), 0, 1, 0.001, obj.slit_ratio, function(obj, value) {
+            obj.slit_ratio = value;
+        }, elem);
         createBooleanAttr(getMsg('mirrored'), obj.mirrored, function(obj, value) {
             obj.mirrored = value;
         }, elem);
@@ -51,6 +54,7 @@ objTypes['diffractiongrating'] = {
 
         var wavelength = (ray.wavelength || GREEN_WAVELENGTH) * mm_in_nm;
         var interval = 1/diffractiongrating.line_density;
+        var slit_width = interval * diffractiongrating.slit_ratio;
     
         //Find which side the incoming ray is hitting the diffraction line segment
         var crossProduct = rx * my - ry * mx;
@@ -63,23 +67,27 @@ objTypes['diffractiongrating'] = {
         var theta_left = Math.PI - Math.atan2(left_point.y - rp.y,left_point.x - rp.x);
         var theta_i = Math.PI - Math.atan2(ry,rx);
         var incidence_angle = Math.PI/2 - (theta_left < theta_i? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i);
-        //console.log(incidence_angle)
 
         var m_min = -Math.floor(interval/wavelength*(1-Math.sin(incidence_angle)));
         var m_max = -Math.ceil(interval/wavelength*(-1-Math.sin(incidence_angle)));
 
-        console.log(m_min, m_max);
         for (var m = m_min; m <= m_max; m++) {
             var diffracted_angle = Math.asin(Math.sin(incidence_angle) - m * wavelength / interval);
-            //console.log(diffracted_angle);
 
             var rot_c = Math.cos(mirror * (-Math.PI/2 - diffracted_angle));
             var rot_s = Math.sin(mirror * (-Math.PI/2 - diffracted_angle));
             var diffracted_ray = graphs.ray(rp, graphs.point(rp.x + (left_point.x-rp.x) * rot_c - (left_point.y-rp.y) * rot_s, rp.y + (left_point.x-rp.x) * rot_s + (left_point.y-rp.y) * rot_c));
             
+            var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
+            var sinc_arg = (phase_diff == 0)? 1 : Math.sin(phase_diff/2) / (phase_diff/2);
+            var intensity = slit_width*slit_width/(interval*interval) * Math.pow(sinc_arg, 2);
+
+            if (m==0) {
+            console.log(intensity)
+            }
             diffracted_ray.wavelength = ray.wavelength;
-            diffracted_ray.brightness_s = ray.brightness_s;
-            diffracted_ray.brightness_p = ray.brightness_p;
+            diffracted_ray.brightness_s = ray.brightness_s * intensity;
+            diffracted_ray.brightness_p = ray.brightness_p * intensity;
 
             // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
             diffracted_ray.gap = true;
