@@ -101,6 +101,14 @@
         ],
         "title": "Dipole odbijające (chaff)",
         "description": "<p>Jest to jakościowa symulacja systemu przeciwdziałania namiarom radarowym (pomijając efekty dyfrakcyjne). Skrypt do tworzenia chaff jest dostępny <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">tu</a>.</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "Caustics from a Reflective Sphere",
+        "description": "<p>A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.</p>"
       }
     ]
   },
@@ -478,6 +486,14 @@
         ],
         "title": "Piksel LCD",
         "description": "<p>Model piksela LCD. Symuluje działanie warstw wyświetlacza mikroledowego i sposób, w jaki nasze oczy postrzegają piksel.</p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "Concave Mirror Wearable Display",
+        "description": "<p>A simple wearable display. A lot of designs use two mirrors and a positive lens, but this is a one-optical-element version. The scale is approximately 5:1mm.</p><p>CC0: This work has been marked as dedicated to the public domain.</p>"
       }
     ]
   }

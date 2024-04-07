@@ -105,6 +105,9 @@ locales["zh-TW"] = {
   "toolname_blackcircle": {
     "message": "圓形遮光物"
   },
+  "toolname_diffractiongrating": {
+    "message": "繞射光柵<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "直尺"
   },
@@ -237,6 +240,9 @@ locales["zh-TW"] = {
   "tool_blackcircle": {
     "message": "圓形遮光物"
   },
+  "tool_diffractiongrating": {
+    "message": "繞射光柵<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "直尺"
   },
@@ -356,6 +362,15 @@ locales["zh-TW"] = {
   },
   "emissionangle": {
     "message": "發射角 (°)"
+  },
+  "mirrored": {
+    "message": "反射"
+  },
+  "lines/mm": {
+    "message": "線數/mm"
+  },
+  "slit_ratio": {
+    "message": "狹縫寬度 / 線間距"
   },
   "symmetric": {
     "message": "對稱"
@@ -485,6 +500,12 @@ locales["zh-TW"] = {
   },
   "beam_warning": {
     "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"
+  },
+  "image_detection_warning": {
+    "message": "⚠️ 本工具不支援像的偵測。"
+  },
+  "non_color_mode_warning": {
+    "message": "⚠️ 本工具只在「模擬色彩」模式下運作。"
   },
   "brightness_note_popover": {
     "message": "<p>只在「光線密度」夠高時才有作用。</p><p>如需改變射出的光線數量，請調整全域性的「光線密度」滑桿。</p>"
@@ -635,6 +656,9 @@ locales["zh-TW"] = {
   },
   "tool_blackcircle_popover": {
     "message": "圓形遮光物，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
+  },
+  "tool_diffractiongrating_popover": {
+    "message": "將光線依波長分割成不同角度的繞射光柵。注意：繞射光的強度可能不準確。（拖曳或點擊以創建。）"
   },
   "tool_ruler_popover": {
     "message": "指定原點與另一點。刻度單位為像素。（拖曳或點擊以創建。）"

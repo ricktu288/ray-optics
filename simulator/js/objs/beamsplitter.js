@@ -2,8 +2,8 @@
 objTypes['beamsplitter'] = {
 
   // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'beamsplitter', p1: constructionPoint, p2: constructionPoint, p: .5, isDichroic: false, isDichroicFilter: false };
+  create: function(constructionPoint) {
+    return {type: 'beamsplitter', p1: constructionPoint, p2: constructionPoint, p: .5};
   },
 
   dichroicSettings: objTypes['mirror'].dichroicSettings,

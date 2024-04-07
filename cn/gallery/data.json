@@ -101,6 +101,14 @@
         ],
         "title": "干扰箔",
         "description": "<p>这是一个箔片反射对雷达效应的定性模拟（忽略衍射效应）。 <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">创建箔片的脚本</a></p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "反射性球体的焦散",
+        "description": "<p>一个反射性的积分球。也可以是液滴（如雨滴）中的反射。移动点光源的位置可以看到许多漂亮的图样。</p>"
       }
     ]
   },
@@ -478,6 +486,14 @@
         ],
         "title": "液晶显示器像素",
         "description": "<p>这是一个液晶显示器像素的模型。它模拟了新型的微型发光二极体显示层的功能，以及我们的眼睛是如何感知它的。 </p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "凹面镜可穿戴显示器",
+        "description": "<p>简易的可穿戴显示器。许多设计都使用两个镜子及一个正透镜，但本模拟为只用一个光学元件的版本。比例约为5:1mm。</p>< p>CC0：此作品已被标记为释出至公有领域</p>"
       }
     ]
   }

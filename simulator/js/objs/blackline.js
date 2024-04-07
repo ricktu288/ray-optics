@@ -32,7 +32,7 @@ objTypes['blackline'] = {
     dichroicSettings(obj, objBar);
   },
 
-  //Describes how the ray 
+  //Describes how the ray hits the object
   checkRayIntersects: function (obj, ray) {
     if (wavelengthInteraction(obj, ray)) {
       return objTypes['lineobj'].checkRayIntersects(obj, ray);

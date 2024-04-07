@@ -105,6 +105,9 @@ locales["en"] = {
   "toolname_blackcircle": {
     "message": "Circle Blocker"
   },
+  "toolname_diffractiongrating": {
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "Ruler"
   },
@@ -237,6 +240,9 @@ locales["en"] = {
   "tool_blackcircle": {
     "message": "Circle Blocker"
   },
+  "tool_diffractiongrating": {
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "Ruler"
   },
@@ -356,6 +362,15 @@ locales["en"] = {
   },
   "emissionangle": {
     "message": "Emission Angle (°)"
+  },
+  "mirrored": {
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "message": "Symmetric"
@@ -485,6 +500,12 @@ locales["en"] = {
   },
   "beam_warning": {
     "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
+  "image_detection_warning": {
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
@@ -635,6 +656,9 @@ locales["en"] = {
   },
   "tool_blackcircle_popover": {
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"

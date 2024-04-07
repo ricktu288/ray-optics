@@ -101,6 +101,14 @@
         ],
         "title": "Chaff countermeasure",
         "description": "<p>This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects). The script for creating the chaff is available <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure.py\" target=\"_blank\">here</a>.</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "Caustics from a Reflective Sphere",
+        "description": "<p>A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.</p>"
       }
     ]
   },
@@ -478,6 +486,14 @@
         ],
         "title": "LCD Pixel",
         "description": "<p>This is a model of an LCD pixel. It simulates how new microled display layers function and how our eyes perceive the pixel.</p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "Concave Mirror Wearable Display",
+        "description": "<p>A simple wearable display. A lot of designs use two mirrors and a positive lens, but this is a one-optical-element version. The scale is approximately 5:1mm.</p><p>CC0: This work has been marked as dedicated to the public domain.</p>"
       }
     ]
   }

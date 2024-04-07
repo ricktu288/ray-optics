@@ -670,9 +670,9 @@ function dichroicSettings(obj, objBar){
 //Optical filter wavelength interaction check
 //Checks to see if the wavelength of the ray interacts
 function wavelengthInteraction(obj, ray){
-var dichroicEnabled = scene.colorMode && obj.isDichroic && obj.wavelength;
-var rayHueMatchesMirror =  Math.abs(obj.wavelength - ray.wavelength) <= (obj.bandwidth || 0);
-return !dichroicEnabled || (rayHueMatchesMirror != obj.isDichroicFilter);
+  var dichroicEnabled = scene.colorMode && obj.isDichroic && obj.wavelength;
+  var rayHueMatchesMirror =  Math.abs(obj.wavelength - ray.wavelength) <= (obj.bandwidth || 0);
+  return !dichroicEnabled || (rayHueMatchesMirror != obj.isDichroicFilter);
 }
 
 

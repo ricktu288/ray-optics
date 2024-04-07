@@ -23,6 +23,7 @@
 | Blocker -> Line Blocker | `blackline` |
 | Blocker -> Circle Blocker | `blackcircle` |
 | Blocker -> Aperture | `aperture` |
+| Blocker -> Diffraction Grating | `diffractiongrating` |
 | Other -> Ruler | `ruler` |
 | Other -> Protractor | `protractor` |
 | Other -> Detector | `power` |

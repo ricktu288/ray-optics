@@ -105,6 +105,9 @@ locales["zh-CN"] = {
   "toolname_blackcircle": {
     "message": "圆形遮光物"
   },
+  "toolname_diffractiongrating": {
+    "message": "衍射光栅<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "直尺"
   },
@@ -237,6 +240,9 @@ locales["zh-CN"] = {
   "tool_blackcircle": {
     "message": "圆形遮光物"
   },
+  "tool_diffractiongrating": {
+    "message": "衍射光栅<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "直尺"
   },
@@ -356,6 +362,15 @@ locales["zh-CN"] = {
   },
   "emissionangle": {
     "message": "发射角 (°)"
+  },
+  "mirrored": {
+    "message": "反射"
+  },
+  "lines/mm": {
+    "message": "线数/mm"
+  },
+  "slit_ratio": {
+    "message": "狭缝宽度 / 线间距"
   },
   "symmetric": {
     "message": "对称"
@@ -485,6 +500,12 @@ locales["zh-CN"] = {
   },
   "beam_warning": {
     "message": "⚠️ 使用发散或随机光束时，像的侦测可能无法正常运作。"
+  },
+  "image_detection_warning": {
+    "message": "⚠️ 本工具不支持像的侦测。"
+  },
+  "non_color_mode_warning": {
+    "message": "⚠️ 本工具只在「模拟色彩」模式下运作。"
   },
   "brightness_note_popover": {
     "message": "<p>只在「光线密度」够高时才有作用。 </p><p>如需改变射出的光线数量，请调整全域性的「光线密度」滑杆。 </p>"
@@ -635,6 +656,9 @@ locales["zh-CN"] = {
   },
   "tool_blackcircle_popover": {
     "message": "圆形遮光物，光线射到其上后就不会再射出。（拖曳或点击以创建。）"
+  },
+  "tool_diffractiongrating_popover": {
+    "message": "将光线依波长分割成不同角度的衍射光栅。 注意：衍射光的强度可能不准确。 （拖曳或点击以创建。）"
   },
   "tool_ruler_popover": {
     "message": "指定原点与另一点。刻度单位为像素。（拖曳或点击以创建。）"

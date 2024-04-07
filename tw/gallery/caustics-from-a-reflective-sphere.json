@@ -1,0 +1,168 @@
+{
+  "version": 2,
+  "objs": [
+    {
+      "type": "arcmirror",
+      "p1": {
+        "type": 1,
+        "x": 699.9773664931605,
+        "y": 602.3560439560447,
+        "exist": true
+      },
+      "isDichroic": false,
+      "isDichroicFilter": false,
+      "p2": {
+        "type": 1,
+        "x": 697.8619047619047,
+        "y": 678.3238095238096,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": 695,
+        "y": 512,
+        "exist": true
+      }
+    },
+    {
+      "type": "radiant",
+      "x": 757.9773664931608,
+      "y": 652.3560439560447,
+      "p": 0.5
+    },
+    {
+      "type": "blackline",
+      "p1": {
+        "type": 1,
+        "x": 605.0000000000001,
+        "y": 744.3333333333334,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 471.06190476190505,
+        "y": 743.9904761904763,
+        "exist": true
+      }
+    },
+    {
+      "type": "blackcircle",
+      "p1": {
+        "type": 1,
+        "x": 201.97736649316084,
+        "y": 382.3560439560447,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 241.97736649316084,
+        "y": 412.3560439560447,
+        "exist": true
+      }
+    },
+    {
+      "type": "text",
+      "x": 962.6440331598274,
+      "y": 620.3560439560447,
+      "p": "移動點光源以觀看焦散及節點\n在積分球中是如何變換的。\n改變遮光物的大小與位置，\n以及球的開口大小來觀察更多效果。",
+      "fontSize": 40,
+      "fontName": "Serif",
+      "fontStyle": "Normal",
+      "fontAlignment": "left",
+      "fontSmallCaps": false,
+      "fontAngle": 0
+    },
+    {
+      "type": "line",
+      "p1": {
+        "type": 1,
+        "x": 940.6440331598274,
+        "y": 610.3560439560447,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 778.6440331598274,
+        "y": 658.3560439560447,
+        "exist": true
+      },
+      "arrow1": true,
+      "arrow2": false
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": -1613.3464430306476,
+        "y": -429.1106227106218,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 2014.6535569693524,
+        "y": -429.1106227106218,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": -1613.3464430306476,
+        "y": 1668.4893772893781,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 2014.6535569693524,
+        "y": 1668.4893772893781,
+        "exist": true
+      },
+      "width": 1140,
+      "format": "png"
+    },
+    {
+      "type": "cropbox",
+      "p1": {
+        "type": 1,
+        "x": -1380.3464430306476,
+        "y": -475.5106227106219,
+        "exist": true
+      },
+      "p2": {
+        "type": 1,
+        "x": 803.6535569693524,
+        "y": -475.5106227106219,
+        "exist": true
+      },
+      "p3": {
+        "type": 1,
+        "x": -1380.3464430306476,
+        "y": 1708.4893772893781,
+        "exist": true
+      },
+      "p4": {
+        "type": 1,
+        "x": 803.6535569693524,
+        "y": 1708.4893772893781,
+        "exist": true
+      },
+      "width": 500,
+      "format": "png"
+    }
+  ],
+  "mode": "light",
+  "rayDensity_light": 20.085536923187668,
+  "rayDensity_images": 1,
+  "showGrid": false,
+  "grid": false,
+  "lockobjs": false,
+  "gridSize": 20,
+  "observer": null,
+  "origin": {
+    "x": 541.3366107576619,
+    "y": 186.87765567765547
+  },
+  "scale": 0.25,
+  "width": 1200,
+  "height": 700,
+  "colorMode": true,
+  "symbolicGrin": false
+}

@@ -105,6 +105,10 @@ locales["es"] = {
   "toolname_blackcircle": {
     "message": "Bloqueador circular"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "Regla"
   },
@@ -237,6 +241,10 @@ locales["es"] = {
   "tool_blackcircle": {
     "message": "Bloqueador circular"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "Regla"
   },
@@ -356,6 +364,18 @@ locales["es"] = {
   },
   "emissionangle": {
     "message": "Angulo de emisión (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "message": "Simétrico"
@@ -488,6 +508,14 @@ locales["es"] = {
   },
   "beam_warning": {
     "message": "⚠️ Detección de imagen puede no funcionar con rayos divergentes/ aleatorios"
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Solo es efectivo si la 'Densidad de rayos' es suficientemente alta.</p><p>Para controlar el número de rayos emitidos, por favor ajustar el deslizante global 'Densidad de rayos'.</p>"
@@ -638,6 +666,10 @@ locales["es"] = {
   },
   "tool_blackcircle_popover": {
     "message": "Un bloqueador de luz circular que absorbe los rayos incidentes. (Arrastre o clique para crear.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "Una regla desde un punto cero hasta otro punto. La escala está en pixels. (Arrastre o clique para crear.)"
