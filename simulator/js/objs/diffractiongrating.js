@@ -16,13 +16,23 @@ objTypes['diffractiongrating'] = {
 
     // Draw the obj on canvas
     draw: function(obj, ctx, aboveLight) {
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(70,70,70)');
-    ctx.beginPath();
-    ctx.setLineDash([15, 15]);
-    ctx.moveTo(obj.p1.x, obj.p1.y);
-    ctx.lineTo(obj.p2.x, obj.p2.y);
-    ctx.stroke();
-    ctx.setLineDash([]);
+        if (obj.mirrored) {
+            ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
+            ctx.beginPath();
+            ctx.moveTo(obj.p1.x, obj.p1.y);
+            ctx.lineTo(obj.p2.x, obj.p2.y);
+            ctx.stroke();
+        }
+        ctx.strokeStyle = getMouseStyle(obj, 'rgb(124,62,18)');
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'butt';
+        ctx.beginPath();
+        ctx.setLineDash([4*(1-obj.slit_ratio),4*obj.slit_ratio]);
+        ctx.moveTo(obj.p1.x, obj.p1.y);
+        ctx.lineTo(obj.p2.x, obj.p2.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.lineWidth = 1;
     },
 
     // Show the property box
