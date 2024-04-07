@@ -101,10 +101,7 @@ objTypes['diffractiongrating'] = {
       var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
       var sinc_arg = (phase_diff == 0) ? 1 : Math.sin(phase_diff / 2) / (phase_diff / 2);
       var intensity = slit_width * slit_width / (interval * interval) * Math.pow(sinc_arg, 2);
-
-      if (m == 0) {
-        console.log(intensity)
-      }
+      
       diffracted_ray.wavelength = ray.wavelength;
       diffracted_ray.brightness_s = ray.brightness_s * intensity;
       diffracted_ray.brightness_p = ray.brightness_p * intensity;

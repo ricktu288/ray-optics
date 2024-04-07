@@ -90,7 +90,7 @@ window.addEventListener('load', function() {
 function getMsg(msg) {
   var m = locales[lang][msg];
   if (m == null) {
-    console.log("undefined message: " + msg);
+    //console.log("undefined message: " + msg);
     return msg;
   }
   return m.message;
