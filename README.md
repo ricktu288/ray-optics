@@ -24,7 +24,6 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 ## Links
 - [**Launch the Web App**](https://phydemo.app/ray-optics/simulator/)
 - [Gallery](https://phydemo.app/ray-optics/gallery/)
-- [Documentation](https://github.com/ricktu288/ray-optics/wiki)
 - [About](https://phydemo.app/ray-optics/about)
 
 # Contributing
@@ -56,7 +55,7 @@ BibTeX:
 ```
 
 # License
-Copyright 2016–2023 Yi-Ting Tu
+Copyright 2016–2024 Yi-Ting Tu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

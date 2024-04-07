@@ -10,7 +10,7 @@ For direct contributions, see the following guidelines.
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add a script <code><var>TOOL_ID</var>.js</code> in `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool, and write the code there. See the README there for a correspondence between the id with the name of the existing tools on the toolbar. See [the structure of a tool](https://github.com/ricktu288/ray-optics/wiki/The-structure-of-a-tool-(obj)) for documentation.
+2. Add a script <code><var>TOOL_ID</var>.js</code> in `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool, and write the code there. See the README there for a correspondence between the id with the name of the existing tools on the toolbar.
 
 3. Add a script tag in `simulator/index.html` for the new tool.
 
@@ -28,7 +28,7 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 7. _(optional)_ Run `node sync.js` in `simulator/locales/` to sync to other locales. Translate the added strings to other locales if you speak that language (follow the translation guidelines).
 
-8. _(optional)_ Add an exported SVG image (use the "export" button) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>. You may first open an existing image as the background so that the exported SVG will be cropped automatically.
+8. _(optional)_ Add an exported SVG image (use File -> Export PNG/SVG) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>.
 
 9. Commit your changes (several times maybe), push to your fork, and create a pull request.
 
