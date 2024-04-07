@@ -140,6 +140,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "incomplete": true,
     "message": "Ruler"
@@ -316,6 +320,9 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
+  "tool_diffractiongrating": {
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "incomplete": true,
     "message": "Ruler"
@@ -475,6 +482,18 @@ locales["LOCALE_ID"] = {
   "emissionangle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "incomplete": true,
@@ -647,6 +666,14 @@ locales["LOCALE_ID"] = {
   "beam_warning": {
     "incomplete": true,
     "message": "⚠️ Image detection may not work with divergent/random beams."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -847,6 +874,10 @@ locales["LOCALE_ID"] = {
   "tool_blackcircle_popover": {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "incomplete": true,

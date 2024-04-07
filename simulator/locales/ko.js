@@ -139,6 +139,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형 차단기"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "incomplete": false,
     "message": "자"
@@ -315,6 +319,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형 차단기"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "incomplete": false,
     "message": "자"
@@ -474,6 +482,18 @@ locales["ko"] = {
   "emissionangle": {
     "incomplete": false,
     "message": "방출 각 (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "incomplete": false,
@@ -646,6 +666,14 @@ locales["ko"] = {
   "beam_warning": {
     "incomplete": false,
     "message": "⚠️ 발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": false,
@@ -846,6 +874,10 @@ locales["ko"] = {
   "tool_blackcircle_popover": {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 원형 차단기입니다. (드래그 또는 클릭하여 생성.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "incomplete": false,

@@ -105,6 +105,10 @@ locales["pl"] = {
   "toolname_blackcircle": {
     "message": "Przesłona kołowa"
   },
+  "toolname_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "toolname_ruler": {
     "message": "Linijka"
   },
@@ -238,6 +242,10 @@ locales["pl"] = {
   "tool_blackcircle": {
     "message": "Przesłona kołowa"
   },
+  "tool_diffractiongrating": {
+    "incomplete": true,
+    "message": "Diffraction Grating<sup>Beta</sup>"
+  },
   "tool_ruler": {
     "message": "Linijka"
   },
@@ -359,6 +367,18 @@ locales["pl"] = {
   },
   "emissionangle": {
     "message": "Kąt emisji (°)"
+  },
+  "mirrored": {
+    "incomplete": true,
+    "message": "Mirrored"
+  },
+  "lines/mm": {
+    "incomplete": true,
+    "message": "Lines/mm"
+  },
+  "slit_ratio": {
+    "incomplete": true,
+    "message": "Slit width / line spacing"
   },
   "symmetric": {
     "message": "Symetryczna"
@@ -506,6 +526,14 @@ locales["pl"] = {
   },
   "beam_warning": {
     "message": "⚠️ Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
+  },
+  "image_detection_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool does not support image detection."
+  },
+  "non_color_mode_warning": {
+    "incomplete": true,
+    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.</p><p>Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'.</p>"
@@ -656,6 +684,10 @@ locales["pl"] = {
   },
   "tool_blackcircle_popover": {
     "message": "Przeszkoda - okrąg - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
+  },
+  "tool_diffractiongrating_popover": {
+    "incomplete": true,
+    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {
     "message": "Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie). Wyskalowana w pikselach. (Przeciągnij lub kliknij, aby utworzyć.)"
