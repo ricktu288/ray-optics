@@ -82,7 +82,7 @@ objTypes['halfplane'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
     var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y);
     var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y);
     var normal = { x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y) };
@@ -128,7 +128,7 @@ objTypes['halfplane'] = {
         };
       }
     }
-    return objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
+    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1);
 
 
   },

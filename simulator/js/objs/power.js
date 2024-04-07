@@ -161,12 +161,12 @@ objTypes['power'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, shootPoint) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
     var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
     var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
     var cost = ((ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y)) / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    ray.p2 = geometry.point(shootPoint.x + ray.p2.x - ray.p1.x, shootPoint.y + ray.p2.y - ray.p1.y);
-    ray.p1 = geometry.point(shootPoint.x, shootPoint.y);
+    ray.p2 = geometry.point(incidentPoint.x + ray.p2.x - ray.p1.x, incidentPoint.y + ray.p2.y - ray.p1.y);
+    ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
 
     obj.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
     obj.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
@@ -175,7 +175,7 @@ objTypes['power'] = {
     if (obj.irradianceMap && obj.binData) {
       var binSize = obj.binSize || 10;
       var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
-      var binIndex = Math.floor(Math.sqrt((shootPoint.x - obj.p1.x) * (shootPoint.x - obj.p1.x) + (shootPoint.y - obj.p1.y) * (shootPoint.y - obj.p1.y)) / binSize);
+      var binIndex = Math.floor(Math.sqrt((incidentPoint.x - obj.p1.x) * (incidentPoint.x - obj.p1.x) + (incidentPoint.y - obj.p1.y) * (incidentPoint.y - obj.p1.y)) / binSize);
       obj.binData[binIndex] += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
     }
   }

@@ -227,7 +227,7 @@ objTypes['aperture'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
     return {
       isAbsorbed: true
     };

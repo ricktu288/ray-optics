@@ -63,10 +63,10 @@ objTypes['diffractiongrating'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, shootPoint) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
     const mm_in_nm = 1 / 1000000;
-    var rx = ray.p1.x - shootPoint.x;
-    var ry = ray.p1.y - shootPoint.y;
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
     var mx = obj.p2.x - obj.p1.x;
     var my = obj.p2.y - obj.p1.y;
 
@@ -82,7 +82,7 @@ objTypes['diffractiongrating'] = {
     var mirror = obj.mirrored ? -1 : 1;
 
     //Find angles
-    var theta_left = Math.PI - Math.atan2(left_point.y - shootPoint.y, left_point.x - shootPoint.x);
+    var theta_left = Math.PI - Math.atan2(left_point.y - incidentPoint.y, left_point.x - incidentPoint.x);
     var theta_i = Math.PI - Math.atan2(ry, rx);
     var incidence_angle = Math.PI / 2 - (theta_left < theta_i ? theta_left + 2 * Math.PI - theta_i : theta_left - theta_i);
 
@@ -96,7 +96,7 @@ objTypes['diffractiongrating'] = {
 
       var rot_c = Math.cos(mirror * (-Math.PI / 2 - diffracted_angle));
       var rot_s = Math.sin(mirror * (-Math.PI / 2 - diffracted_angle));
-      var diffracted_ray = geometry.line(shootPoint, geometry.point(shootPoint.x + (left_point.x - shootPoint.x) * rot_c - (left_point.y - shootPoint.y) * rot_s, shootPoint.y + (left_point.x - shootPoint.x) * rot_s + (left_point.y - shootPoint.y) * rot_c));
+      var diffracted_ray = geometry.line(incidentPoint, geometry.point(incidentPoint.x + (left_point.x - incidentPoint.x) * rot_c - (left_point.y - incidentPoint.y) * rot_s, incidentPoint.y + (left_point.x - incidentPoint.x) * rot_s + (left_point.y - incidentPoint.y) * rot_c));
 
       var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
       var sinc_arg = (phase_diff == 0) ? 1 : Math.sin(phase_diff / 2) / (phase_diff / 2);

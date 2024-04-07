@@ -187,7 +187,7 @@ objTypes['curvedglass'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
 
     var incidentData = this.getIncidentData(obj, ray);
     var incidentType = incidentData.incidentType;
@@ -250,7 +250,7 @@ objTypes['curvedglass'] = {
     var pts = obj.tmp_glass.path;
 
     var s_point = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
-    var rp = s_point;
+    var incidentPoint = s_point;
 
     var s_lensq = geometry.distanceSquared(ray.p1, s_point);
 
@@ -272,16 +272,16 @@ objTypes['curvedglass'] = {
     // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
 
     var seg = geometry.line(pts[i % pts.length], pts[(i + 1) % pts.length]);
-    var rx = ray.p1.x - rp.x;
-    var ry = ray.p1.y - rp.y;
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
 
     var frac;
     if (Math.abs(mx) > Math.abs(my)) {
-      frac = (rp.x - seg.p1.x) / mx;
+      frac = (incidentPoint.x - seg.p1.x) / mx;
     } else {
-      frac = (rp.y - seg.p1.y) / my;
+      frac = (incidentPoint.y - seg.p1.y) / my;
     }
 
     var segA;

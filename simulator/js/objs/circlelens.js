@@ -48,19 +48,19 @@ objTypes['circlelens'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
 
-    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, rp));
+    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
     var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
     if (d > 0) {
       // Shot from inside to outside
       var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
-      var normal = { x: obj.p1.x - rp.x, y: obj.p1.y - rp.y };
+      var normal = { x: obj.p1.x - incidentPoint.x, y: obj.p1.y - incidentPoint.y };
     }
     else if (d < 0) {
       // Shot from outside to inside
       var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
-      var normal = { x: rp.x - obj.p1.x, y: rp.y - obj.p1.y };
+      var normal = { x: incidentPoint.x - obj.p1.x, y: incidentPoint.y - obj.p1.y };
     }
     else {
       // Situation that may cause bugs (e.g. shot at an edge point)
@@ -95,7 +95,7 @@ objTypes['circlelens'] = {
         };
       }
     }
-    return objTypes['refractor'].refract(ray, rayIndex, rp, normal, n1);
+    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1);
 
 
   },

@@ -99,7 +99,7 @@ objTypes['lens'] = {
 
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, shootPoint) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
 
     var lens_length = geometry.segmentLength(obj);
     var main_line_unitvector_x = (-obj.p1.y + obj.p2.y) / lens_length;
@@ -125,12 +125,12 @@ objTypes['lens'] = {
     if (obj.p > 0) {
       // Converging lens
       ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
-      ray.p1 = shootPoint;
+      ray.p1 = incidentPoint;
     }
     else {
       // Diverging lens
-      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(shootPoint, geometry.linesIntersection(twoF_line_near, geometry.line(mid_point, geometry.linesIntersection(twoF_line_far, ray)))));
-      ray.p1 = shootPoint;
+      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(incidentPoint, geometry.linesIntersection(twoF_line_near, geometry.line(mid_point, geometry.linesIntersection(twoF_line_far, ray)))));
+      ray.p1 = incidentPoint;
     }
   }
 

@@ -157,22 +157,22 @@ objTypes['grin_circlelens'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
     try {
-      if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, rp)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point rp is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+      if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
-        var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, rp));
+        var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
         var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
-        let p = obj.fn_p({ x: rp.x - obj.origin.x, y: rp.y - obj.origin.y }); // refractive index at the intersection point - rp
+        let p = obj.fn_p({ x: incidentPoint.x - obj.origin.x, y: incidentPoint.y - obj.origin.y }); // refractive index at the intersection point - incidentPoint
         if (d > 0) {
           // Shot from inside to outside
           var n1 = (!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
-          var normal = { x: obj.p1.x - rp.x, y: obj.p1.y - rp.y };
+          var normal = { x: obj.p1.x - incidentPoint.x, y: obj.p1.y - incidentPoint.y };
         }
         else if (d < 0) {
           // Shot from outside to inside
           var n1 = 1 / ((!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
-          var normal = { x: rp.x - obj.p1.x, y: rp.y - obj.p1.y };
+          var normal = { x: incidentPoint.x - obj.p1.x, y: incidentPoint.y - obj.p1.y };
         }
         else {
           // Situation that may cause bugs (e.g. shot at an edge point)
@@ -196,7 +196,7 @@ objTypes['grin_circlelens'] = {
 
           // Surface merging
           for (var i = 0; i < surfaceMerging_objs.length; i++) {
-            let p = surfaceMerging_objs[i].fn_p({ x: rp.x - surfaceMerging_objs[i].origin.x, y: rp.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - rp
+            let p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x - surfaceMerging_objs[i].origin.x, y: incidentPoint.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - incidentPoint
             incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
             if (incidentType == 1) {
               // Shot from inside to outside
@@ -235,13 +235,13 @@ objTypes['grin_circlelens'] = {
               ray.bodyMerging_obj = { p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y }; // Initialize the bodyMerging object of the ray
           }
         }
-        return objTypes[obj.type].refract(ray, rayIndex, rp, normal, n1, r_bodyMerging_obj);
+        return objTypes[obj.type].refract(ray, rayIndex, incidentPoint, normal, n1, r_bodyMerging_obj);
       }
       else {
         if (ray.bodyMerging_obj === undefined)
           ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-        next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, rp, ray);
-        ray.p1 = rp;
+        next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, incidentPoint, ray);
+        ray.p1 = incidentPoint;
         ray.p2 = next_point;
       }
     } catch (e) {

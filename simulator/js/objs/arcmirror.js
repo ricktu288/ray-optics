@@ -252,24 +252,24 @@ objTypes['arcmirror'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp) {
-    var rx = ray.p1.x - rp.x;
-    var ry = ray.p1.y - rp.y;
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
     var mx = obj.p2.x - obj.p1.x;
     var my = obj.p2.y - obj.p1.y;
 
     var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(obj.p1, obj.p3)), geometry.perpendicularBisector(geometry.line(obj.p2, obj.p3)));
     if (isFinite(center.x) && isFinite(center.y)) {
-      var cx = center.x - rp.x;
-      var cy = center.y - rp.y;
+      var cx = center.x - incidentPoint.x;
+      var cy = center.y - incidentPoint.y;
       var c_sq = cx * cx + cy * cy;
       var r_dot_c = rx * cx + ry * cy;
-      ray.p1 = rp;
-      ray.p2 = geometry.point(rp.x - c_sq * rx + 2 * r_dot_c * cx, rp.y - c_sq * ry + 2 * r_dot_c * cy);
+      ray.p1 = incidentPoint;
+      ray.p2 = geometry.point(incidentPoint.x - c_sq * rx + 2 * r_dot_c * cx, incidentPoint.y - c_sq * ry + 2 * r_dot_c * cy);
     }
     else {
       // The three points on the arc is colinear. Treat as a line segment.
-      return objTypes['mirror'].onRayIncident(obj, ray, rayIndex, rp);
+      return objTypes['mirror'].onRayIncident(obj, ray, rayIndex, incidentPoint);
     }
 
   }

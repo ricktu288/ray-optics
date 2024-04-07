@@ -143,15 +143,15 @@ objTypes['idealmirror'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, shootPoint) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
     // Treat as a combination of an ideal lens and a planar mirror
-    objTypes['lens'].onRayIncident(obj, ray, rayIndex, geometry.point(shootPoint.x, shootPoint.y));
+    objTypes['lens'].onRayIncident(obj, ray, rayIndex, geometry.point(incidentPoint.x, incidentPoint.y));
 
     // Pull the ray backwards
     ray.p1.x = 2 * ray.p1.x - ray.p2.x;
     ray.p1.y = 2 * ray.p1.y - ray.p2.y;
 
-    objTypes['mirror'].onRayIncident(obj, ray, rayIndex, shootPoint);
+    objTypes['mirror'].onRayIncident(obj, ray, rayIndex, incidentPoint);
   },
 
 };

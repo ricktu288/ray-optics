@@ -136,7 +136,7 @@ objTypes['curvedmirror'] = {
     var i, j;
     var pts = obj.tmp_points;
     var dir = geometry.distance(obj.p2, ray.p1) > geometry.distance(obj.p1, ray.p1);
-    var rp;
+    var incidentPoint;
     for (j = 0; j < pts.length - 1; j++) {
       i = dir ? j : (pts.length - 2 - j);
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
@@ -145,19 +145,19 @@ objTypes['curvedmirror'] = {
       if (geometry.distance(ray.p1, rp_temp) < minShotLength)
         continue;
       if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-        if (!rp || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, rp)) {
-          rp = rp_temp;
+        if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {
+          incidentPoint = rp_temp;
           obj.tmp_i = i;
         }
       }
     }
-    if (rp) return rp;
+    if (incidentPoint) return incidentPoint;
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp) {
-    var rx = ray.p1.x - rp.x;
-    var ry = ray.p1.y - rp.y;
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
     var i = obj.tmp_i;
     var pts = obj.tmp_points;
     var seg = geometry.line(pts[i], pts[i + 1]);
@@ -165,22 +165,22 @@ objTypes['curvedmirror'] = {
     var my = seg.p2.y - seg.p1.y;
 
 
-    ray.p1 = rp;
+    ray.p1 = incidentPoint;
     var frac;
     if (Math.abs(mx) > Math.abs(my)) {
-      frac = (rp.x - seg.p1.x) / mx;
+      frac = (incidentPoint.x - seg.p1.x) / mx;
     } else {
-      frac = (rp.y - seg.p1.y) / my;
+      frac = (incidentPoint.y - seg.p1.y) / my;
     }
 
     if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
-      ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+      ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
       // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
       // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
 
-      var outx = rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my;
-      var outy = rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
+      var outx = incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my;
+      var outy = incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
 
       var segA;
       if (frac < 0.5) {
@@ -188,13 +188,13 @@ objTypes['curvedmirror'] = {
       } else {
         segA = geometry.line(pts[i + 1], pts[i + 2]);
       }
-      var rxA = ray.p1.x - rp.x;
-      var ryA = ray.p1.y - rp.y;
+      var rxA = ray.p1.x - incidentPoint.x;
+      var ryA = ray.p1.y - incidentPoint.y;
       var mxA = segA.p2.x - segA.p1.x;
       var myA = segA.p2.y - segA.p1.y;
 
-      var outxA = rp.x + rxA * (myA * myA - mxA * mxA) - 2 * ryA * mxA * myA;
-      var outyA = rp.y + ryA * (mxA * mxA - myA * myA) - 2 * rxA * mxA * myA;
+      var outxA = incidentPoint.x + rxA * (myA * myA - mxA * mxA) - 2 * ryA * mxA * myA;
+      var outyA = incidentPoint.y + ryA * (mxA * mxA - myA * myA) - 2 * rxA * mxA * myA;
 
       var outxFinal;
       var outyFinal;

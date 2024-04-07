@@ -46,15 +46,15 @@ objTypes['beamsplitter'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, rp) {
-    var rx = ray.p1.x - rp.x;
-    var ry = ray.p1.y - rp.y;
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
 
-    ray.p1 = rp;
+    ray.p1 = incidentPoint;
     var mx = obj.p2.x - obj.p1.x;
     var my = obj.p2.y - obj.p1.y;
-    ray.p2 = geometry.point(rp.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, rp.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-    var ray2 = geometry.line(rp, geometry.point(rp.x - rx, rp.y - ry));
+    ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+    var ray2 = geometry.line(incidentPoint, geometry.point(incidentPoint.x - rx, incidentPoint.y - ry));
     var transmission = obj.p;
     ray2.brightness_s = transmission * ray.brightness_s;
     ray2.brightness_p = transmission * ray.brightness_p;
