@@ -112,7 +112,7 @@ After that, you can submit the translated file with either method below:
 
 ## More contributions
 
-Such as adding a new parameter to a tool, adding a new mode of viewing light, etc. See [the wiki](https://github.com/ricktu288/ray-optics/wiki) for documentation. For significant changes such as a new framework or a new toolbar design, please open an issue to discuss with the project's developers first.
+Such as adding a new parameter to a tool, adding a new mode of viewing light, etc. For significant changes such as a new framework or a new toolbar design, please open a new discussion first.
 
 ### Requirements on compatibility
 
