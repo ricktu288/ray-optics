@@ -248,6 +248,10 @@
   overflow-y: auto
 }
 
+#help-dropdown a {
+  color: white;
+}
+
 .obj-bar {
   z-index: -1;
   background-color:rgba(23,162,184, 0.5);

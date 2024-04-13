@@ -300,3 +300,6 @@ function hideAllPopovers() {
   });
 }
 
+document.getElementById('help-dropdown').addEventListener('click', function(e) {
+  e.stopPropagation();
+});

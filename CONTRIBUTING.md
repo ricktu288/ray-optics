@@ -2,7 +2,7 @@
 
 Contributions are welcome.
 
-To report bugs, request new features, or share your ideas, feel free to [open issues here](https://github.com/ricktu288/ray-optics/issues).  You can also send an email to ray-optics@phydemo.app if you are not familiar with GitHub.
+To report bugs, request new features, or share your ideas, feel free to open [issues](https://github.com/ricktu288/ray-optics/issues) or [discussion](https://github.com/ricktu288/ray-optics/discussions).  You can also send an email to ray-optics@phydemo.app if you are not familiar with GitHub.
 
 For direct contributions, see the following guidelines.
 
