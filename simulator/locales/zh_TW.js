@@ -749,5 +749,9 @@ locales["zh-TW"] = {
   },
   "force_stopped": {
     "message": "已強制終止。"
+  },
+  "mouse_coordinates": {
+
+    "message": "滑鼠座標："
   }
 }

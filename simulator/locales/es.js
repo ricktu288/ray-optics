@@ -760,5 +760,9 @@ locales["es"] = {
   },
   "force_stopped": {
     "message": "Fuerza detenida."
+  },
+  "mouse_coordinates": {
+    "incomplete": true,
+    "message": "Mouse coordinates: "
   }
 }

@@ -749,5 +749,8 @@ locales["en"] = {
   },
   "force_stopped": {
     "message": "Force stopped."
+  },
+  "mouse_coordinates": {
+    "message": "Mouse coordinates: "
   }
 }

@@ -228,7 +228,7 @@ function shootWaitingRays() {
       timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
       firstBreak = false;
       document.getElementById('forceStop').style.display = '';
-      document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
+      document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
       draw(true, true); // Redraw the scene.objs to avoid outdated information (e.g. detector readings).
       return;
@@ -619,16 +619,16 @@ function shootWaitingRays() {
   
   if (forceStop)
   {
-    document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>' + getMsg("force_stopped");
     forceStop = false;
   }
   else if (hasExceededTime)
   {
-    //document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation;
+    //document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation;
   }
   else
   {
-    document.getElementById('status').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime);
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime);
   }
   document.getElementById('forceStop').style.display = 'none';
   //ctx.stroke();

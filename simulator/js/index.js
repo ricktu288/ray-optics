@@ -107,6 +107,7 @@ window.onload = function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
     mouseObj = -1;
+    document.getElementById('mouseCoordinates').innerHTML = "";
     draw(true, true)
   });
 

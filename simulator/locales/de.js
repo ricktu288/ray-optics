@@ -841,5 +841,9 @@ locales["de"] = {
   "force_stopped": {
     "incomplete": true,
     "message": "Force stopped."
+  },
+  "mouse_coordinates": {
+    "incomplete": true,
+    "message": "Mouse coordinates: "
   }
 }

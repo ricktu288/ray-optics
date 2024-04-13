@@ -264,6 +264,8 @@ function canvas_onmousemove(e) {
   mousePos = mousePos2;
 
 
+  document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + Math.round(mousePos.x) + "," + Math.round(mousePos.y) + ")";
+
   if (isConstructing) {
     // highlight object being constructed
     mouseObj = scene.objs[scene.objs.length - 1];
