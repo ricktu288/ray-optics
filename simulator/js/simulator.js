@@ -130,11 +130,7 @@ function draw_(skipLight, skipGrid) {
   if (!(ctx0.constructor == C2S && skipLight)) {
     // Sort the objects with z-index.
     var mapped = scene.objs.map(function(obj, i) {
-      if (objTypes[obj.type].getZIndex) {
-        return {index: i, value: objTypes[obj.type].getZIndex(obj)};
-      } else {
-        return {index: i, value: 0};
-      }
+      return {index: i, value: obj.getZIndex()};
     });
     mapped.sort(function(a, b) {
       return a.value - b.value;
@@ -143,10 +139,10 @@ function draw_(skipLight, skipGrid) {
     for (var j = 0; j < scene.objs.length; j++)
     {
       var i = mapped[j].index;
-      objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0.constructor == C2S ? canvasRenderer : canvasRenderer0, false, scene.objs[i] === mouseObj);
-      if (!skipLight && objTypes[scene.objs[i].type].onSimulationStart)
+      scene.objs[i].draw(ctx0.constructor == C2S ? canvasRenderer : canvasRenderer0, false, scene.objs[i] === mouseObj);
+      if (!skipLight)
       {
-        const ret = objTypes[scene.objs[i].type].onSimulationStart(scene.objs[i]); // If scene.objs[i] can shoot rays, shoot them.
+        const ret = scene.objs[i].onSimulationStart();
         if (ret) {
           if (ret.newRays) {
             waitingRays.push(...ret.newRays);
@@ -174,7 +170,7 @@ function draw_(skipLight, skipGrid) {
 
     for (var i = 0; i < scene.objs.length; i++)
     {
-      objTypes[scene.objs[i].type].draw(scene.objs[i], ctx0.constructor == C2S ? canvasRenderer : canvasRenderer1, true, scene.objs[i] === mouseObj); // Draw scene.objs[i]
+      scene.objs[i].draw(ctx0.constructor == C2S ? canvasRenderer : canvasRenderer1, true, scene.objs[i] === mouseObj); // Draw scene.objs[i]
     }
     if (scene.mode == 'observer')
     {
@@ -271,47 +267,44 @@ function shootWaitingRays() {
       observed = false; // Whether waitingRays[j] is observed by the observer
       for (var i = 0; i < scene.objs.length; i++)
       {
-        // if scene.objs[i] can affect the ray
-        if (objTypes[scene.objs[i].type].checkRayIntersects) {
-          // Test whether scene.objs[i] intersects with the ray
-          s_point_temp = objTypes[scene.objs[i].type].checkRayIntersects(scene.objs[i], waitingRays[j]);
-          if (s_point_temp)
+        // Test whether scene.objs[i] intersects with the ray
+        s_point_temp = scene.objs[i].checkRayIntersects(waitingRays[j]);
+        if (s_point_temp)
+        {
+          // Here scene.objs[i] intersects with the ray at s_point_temp
+          s_lensq_temp = geometry.distanceSquared(waitingRays[j].p1, s_point_temp);
+          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (scene.objs[i].constructor.supportSurfaceMerging || s_obj.constructor.supportSurfaceMerging))
           {
-            // Here scene.objs[i] intersects with the ray at s_point_temp
-            s_lensq_temp = geometry.distanceSquared(waitingRays[j].p1, s_point_temp);
-            if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (objTypes[scene.objs[i].type].supportSurfaceMerging || objTypes[s_obj.type].supportSurfaceMerging))
+            // The ray is shot on two objects at the same time, and at least one of them supports surface merging
+
+            if (s_obj.constructor.supportSurfaceMerging)
             {
-              // The ray is shot on two objects at the same time, and at least one of them supports surface merging
-
-              if (objTypes[s_obj.type].supportSurfaceMerging)
+              if (scene.objs[i].constructor.supportSurfaceMerging)
               {
-                if (objTypes[scene.objs[i].type].supportSurfaceMerging)
-                {
-                  // Both of them supports surface merging (e.g. two glasses with one common edge
-                  surfaceMergingObjs[surfaceMergingObjs.length] = scene.objs[i];
-                }
-                else
-                {
-                  // Only the first shot object supports surface merging
-                  // Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
-                  s_obj = scene.objs[i];
-                  s_obj_index = i;
-                  s_point = s_point_temp;
-                  s_lensq = s_lensq_temp;
+                // Both of them supports surface merging (e.g. two glasses with one common edge
+                surfaceMergingObjs[surfaceMergingObjs.length] = scene.objs[i];
+              }
+              else
+              {
+                // Only the first shot object supports surface merging
+                // Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
+                s_obj = scene.objs[i];
+                s_obj_index = i;
+                s_point = s_point_temp;
+                s_lensq = s_lensq_temp;
 
-                  surfaceMergingObjs = [];
-                }
+                surfaceMergingObjs = [];
               }
             }
-            else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
-            {
-              s_obj = scene.objs[i]; // Update the object to be shot
-              s_obj_index = i;
-              s_point = s_point_temp;
-              s_lensq = s_lensq_temp;
+          }
+          else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
+          {
+            s_obj = scene.objs[i]; // Update the object to be shot
+            s_obj_index = i;
+            s_point = s_point_temp;
+            s_lensq = s_lensq_temp;
 
-              surfaceMergingObjs = [];
-            }
+            surfaceMergingObjs = [];
           }
         }
       }
@@ -550,7 +543,7 @@ function shootWaitingRays() {
       last_s_obj_index = s_obj_index;
       if (s_obj)
       {
-        const ret = objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMergingObjs);
+        const ret = s_obj.onRayIncident(waitingRays[j], j, s_point, surfaceMergingObjs);
         if (ret) {
           if (ret.isAbsorbed) {
             waitingRays[j] = null;

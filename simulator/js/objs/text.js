@@ -7,12 +7,12 @@
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} p - The text content.
- * @property {number} fontSize - The font size.
+ * @property {number} fontSize - The font size in CSS pixels.
  * @property {string} fontName - The font name.
  * @property {string} fontStyle - The font style.
  * @property {string} fontAlignment - The font alignment.
  * @property {boolean} fontSmallCaps - Whether the text is in small caps.
- * @property {number} fontAngle - The angle of the text.
+ * @property {number} fontAngle - The angle of the text in degrees.
  */
 objTypes['text'] = class extends SceneObj {
   static type = 'text';
@@ -63,22 +63,37 @@ objTypes['text'] = class extends SceneObj {
       obj.p = value;
     });
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSize', 'fontName', 'fontStyle', 'fontAlignment', 'fontSmallCaps', 'fontAngle']))) {
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSize']))) {
       objBar.createNumber(getMsg('fontsize'), 6, 96, 1, this.fontSize, function (obj, value) {
         obj.fontSize = value;
       }, null, true);
-      objBar.createDropdown(getMsg('fontname'), this.fontName, fonts, function (obj, value) {
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontName']))) {
+      objBar.createDropdown(getMsg('fontname'), this.fontName, this.constructor.fonts, function (obj, value) {
         obj.fontName = value;
       });
-      objBar.createDropdown(getMsg('fontstyle'), this.fontStyle, fontStyles, function (obj, value) {
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontStyle']))) {
+      objBar.createDropdown(getMsg('fontstyle'), this.fontStyle, this.constructor.fontStyles, function (obj, value) {
         obj.fontStyle = value;
       });
-      objBar.createDropdown(getMsg('fontalignment'), this.fontAlignment, fontAlignments, function (obj, value) {
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontAlignment']))) {
+      objBar.createDropdown(getMsg('fontalignment'), this.fontAlignment, this.constructor.fontAlignments, function (obj, value) {
         obj.fontAlignment = value;
       });
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSmallCaps']))) {
       objBar.createBoolean(getMsg('smallcaps'), this.fontSmallCaps, function (obj, value) {
         obj.fontSmallCaps = value;
       });
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontAngle']))) {
       objBar.createNumber(getMsg('angle'), 0, 360, 1, this.fontAngle, function (obj, value) {
         obj.fontAngle = value;
       }, null, true);
@@ -107,7 +122,7 @@ objTypes['text'] = class extends SceneObj {
     this.down = 0;
     this.p.split('\n').forEach(line => {
       ctx.fillText(line, 0, y_offset);
-      lineDimensions = ctx.measureText(line);
+      let lineDimensions = ctx.measureText(line);
       this.left = Math.max(this.left, lineDimensions.actualBoundingBoxLeft);
       this.right = Math.max(this.right, lineDimensions.actualBoundingBoxRight);
       this.up = Math.max(this.up, lineDimensions.actualBoundingBoxAscent - y_offset);
@@ -152,10 +167,10 @@ objTypes['text'] = class extends SceneObj {
     let dragContext = {};
 
     // translate and rotate the mouse point into the text's reference frame for easy comparison
-    relativeMouseX = mouse.pos.x - this.x
-    relativeMouseY = mouse.pos.y - this.y
-    rotatedMouseX = relativeMouseX * this.cos_angle - relativeMouseY * this.sin_angle;
-    rotatedMouseY = relativeMouseY * this.cos_angle + relativeMouseX * this.sin_angle;
+    let relativeMouseX = mouse.pos.x - this.x
+    let relativeMouseY = mouse.pos.y - this.y
+    let rotatedMouseX = relativeMouseX * this.cos_angle - relativeMouseY * this.sin_angle;
+    let rotatedMouseY = relativeMouseY * this.cos_angle + relativeMouseX * this.sin_angle;
     if (rotatedMouseX >= -this.left && rotatedMouseX <= this.right &&
       rotatedMouseY <= this.down && rotatedMouseY >= -this.up) {
       dragContext.part = 0;

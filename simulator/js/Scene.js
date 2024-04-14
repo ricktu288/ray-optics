@@ -69,7 +69,7 @@ class Scene {
     this.height = height;
   }
 
-  
+
   /** @property {number} rayDensity - The mode-dependent ray density. */
   get rayDensity() {
     return this.mode == 'light' || this.mode == 'extended_light' ? this.rayDensity_light : this.rayDensity_images;
@@ -82,7 +82,7 @@ class Scene {
       this.rayDensity_images = val;
     }
   }
-  
+
   /**
    * The callback function when the entire scene or a resource (e.g. image) is loaded.
    * @callback fromJSONCallback
@@ -97,7 +97,7 @@ class Scene {
   */
   fromJSON(json, callback) {
     let jsonData = JSON.parse(json);
-    
+
     // Convert the scene from old versions if necessary.
     if (!jsonData.version) {
       // Earlier than "Ray Optics Simulation 1.0"
@@ -156,8 +156,7 @@ class Scene {
       jsonData.gridSize = 20;
     }
 
-    // Set the scene
-    this.objs = jsonData.objs;
+    // Set the scene properties.
     this.mode = jsonData.mode;
     this.rayDensity_light = jsonData.rayDensity_light;
     this.rayDensity_images = jsonData.rayDensity_images;
@@ -170,16 +169,16 @@ class Scene {
     // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
     const approximatedWidth = Math.ceil(this.width / 100) * 100;
     const approximatedHeight = Math.ceil(this.height / 100) * 100;
-    
+
     // Rescale the scene to fit the current viewport.
     let rescaleFactor = 1;
 
-    if (jsonData.width/jsonData.height > approximatedWidth/approximatedHeight) {
+    if (jsonData.width / jsonData.height > approximatedWidth / approximatedHeight) {
       rescaleFactor = jsonData.width / approximatedWidth;
     } else {
       rescaleFactor = jsonData.height / approximatedHeight;
     }
-    
+
     this.scale = jsonData.scale / rescaleFactor;
     this.origin.x = jsonData.origin.x / rescaleFactor;
     this.origin.y = jsonData.origin.y / rescaleFactor;
@@ -187,6 +186,12 @@ class Scene {
     this.colorMode = jsonData.colorMode;
     this.symbolicGrin = jsonData.symbolicGrin;
 
+    // Load the objects in the scene.
+    this.objs = jsonData.objs.map(objData =>
+      new objTypes[objData.type](this, objData)
+    );
+
+    // Load the background image.
     if (jsonData.backgroundImage) {
       this.backgroundImage = new Image();
       this.backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
@@ -211,7 +216,7 @@ class Scene {
 
     return JSON.stringify({
       version: DATA_VERSION,
-      objs: this.objs,
+      objs: this.objs.map(obj => obj.serialize()),
       mode: this.mode,
       rayDensity_light: this.rayDensity_light,
       rayDensity_images: this.rayDensity_images,
@@ -226,10 +231,6 @@ class Scene {
       height: approximatedHeight,
       colorMode: this.colorMode,
       symbolicGrin: this.symbolicGrin
-    }, function (name, val) {
-      if (name.startsWith("tmp_"))
-        return undefined;
-      return val;
-    }, 2);
+    }, null, 2);
   }
 };

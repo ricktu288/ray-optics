@@ -472,12 +472,12 @@ class ObjBar {
     }
     else {
       for (var i = 0; i < scene.objs.length; i++) {
-        if (scene.objs[i].type == scene.objs[selectedObj].type) {
+        if (scene.objs[i].constructor.type == scene.objs[selectedObj].constructor.type) {
           func(scene.objs[i]);
         }
       }
     }
-    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
   }
 
   /**

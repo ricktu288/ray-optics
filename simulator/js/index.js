@@ -459,19 +459,19 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.objs[scene.objs.length] = JSON.parse(JSON.stringify(scene.objs[selectedObj]));
-    objTypes[scene.objs[scene.objs.length - 1].type].move(scene.objs[scene.objs.length - 1], scene.gridSize, scene.gridSize);
+    scene.objs[scene.objs.length] = new objTypes[scene.objs[selectedObj].constructor.type](scene, scene.objs[selectedObj]);
+    scene.objs[scene.objs.length - 1].move(scene.gridSize, scene.gridSize);
     selectObj(scene.objs.length - 1);
-    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
-    var selectedObjType = scene.objs[selectedObj].type;
+    var selectedObjType = scene.objs[selectedObj].constructor.type;
     this.blur();
     removeObj(selectedObj);
-    draw(!(objTypes[selectedObjType].onSimulationStart || objTypes[selectedObjType].checkRayIntersects), true);
+    draw(!objTypes[selectedObjType].interactsWithRays, true);
     createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
@@ -690,7 +690,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
     createUndoPoint();
     return false;
   }
@@ -737,9 +737,9 @@ window.onkeydown = function (e) {
   //Delete
   if (e.keyCode == 46 || e.keyCode == 8) {
     if (selectedObj != -1) {
-      var selectedObjType = scene.objs[selectedObj].type;
+      var selectedObjType = scene.objs[selectedObj].constructor.type;
       removeObj(selectedObj);
-      draw(!(objTypes[selectedObjType].onSimulationStart || objTypes[selectedObjType].checkRayIntersects), true);
+      draw(!objTypes[selectedObjType].interactsWithRays, true);
       createUndoPoint();
     }
     return false;
@@ -761,18 +761,18 @@ window.onkeydown = function (e) {
     var step = scene.grid ? scene.gridSize : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
-        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], -step, 0);
+        scene.objs[selectedObj].move(-step, 0);
       }
       if (e.keyCode == 38) {
-        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], 0, -step);
+        scene.objs[selectedObj].move(0, -step);
       }
       if (e.keyCode == 39) {
-        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], step, 0);
+        scene.objs[selectedObj].move(step, 0);
       }
       if (e.keyCode == 40) {
-        objTypes[scene.objs[selectedObj].type].move(scene.objs[selectedObj], 0, step);
+        scene.objs[selectedObj].move(0, step);
       }
-      draw(!(objTypes[scene.objs[selectedObj].type].onSimulationStart || objTypes[scene.objs[selectedObj].type].checkRayIntersects), true);
+      draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
     }
     else if (scene.mode == 'observer') {
       if (e.keyCode == 37) {
@@ -790,18 +790,19 @@ window.onkeydown = function (e) {
       draw(false, true);
     }
     else {
+      // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
       for (var i = 0; i < scene.objs.length; i++) {
         if (e.keyCode == 37) {
-          objTypes[scene.objs[i].type].move(scene.objs[i], -step, 0);
+          scene.objs[i].move(-step, 0);
         }
         if (e.keyCode == 38) {
-          objTypes[scene.objs[i].type].move(scene.objs[i], 0, -step);
+          scene.objs[i].move(0, -step);
         }
         if (e.keyCode == 39) {
-          objTypes[scene.objs[i].type].move(scene.objs[i], step, 0);
+          scene.objs[i].move(step, 0);
         }
         if (e.keyCode == 40) {
-          objTypes[scene.objs[i].type].move(scene.objs[i], 0, step);
+          scene.objs[i].move(0, step);
         }
       }
       draw();
@@ -989,7 +990,7 @@ function enterCropMode() {
   // Search objs for existing cropBox
   var cropBoxIndex = -1;
   for (var i = 0; i < scene.objs.length; i++) {
-    if (scene.objs[i].type == 'cropbox') {
+    if (scene.objs[i].constructor.type == 'cropbox') {
       cropBoxIndex = i;
       break;
     }
