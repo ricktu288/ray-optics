@@ -83,6 +83,12 @@ class Mouse {
   }
 
   /**
+   * @typedef {Object} SnapContext
+   * @property {boolean} [locked] - Whether the snapping direction is locked.
+   * @property {number} [i0] - The index of the locked direction.
+   */
+
+  /**
    * Get the mouse position snapped to a set of suggested directions.
    * @param {geometry.point} basePoint - The base point for the snapping.
    * @param {Array} directions - The directions to snap to, each a vector with x and y components.
