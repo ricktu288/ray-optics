@@ -2,43 +2,16 @@
  * Base class for objects (optical elements, decorations, etc.) in the scene.
  */
 class SceneObj {
-  /**
-   * The type of the object.
-   */
-  static type = 'SceneObj';
-
-  /**
-   * Whether the object interacts with rays (i.e. is a light source or an optical element).
-   */
-  static interactsWithRays = false;
-
-  /**
-   * Whether the object supports surface merging.
-   */
-  static supportsSurfMerging = false;
-
-  /**
-   * Returns the default properties of the object.
-   * @param {Point|null} constructionPoint - The construction point (the point where the user clicks to create the object), if the object is newly created.
-   * @returns {Object} The default property key-value pairs of the object.
-   */
-  static getDefaults(constructionPoint) {
-    return {};
-  }
 
   /**
    * @param {Scene} scene - The scene the object belongs to.
    * @param {Object|null} jsonObj - The JSON object to be deserialized, if any.
-   * @param {Point|null} constructionPoint - The construction point (the point where the user clicks to create the object), if the object is newly created.
    */
-  constructor(scene, jsonObj, constructionPoint) {
+  constructor(scene, jsonObj) {
     /** @property {Scene} scene - The scene the object belongs to. */
     this.scene = scene;
 
-    /** @property {Point} constructionPoint - The construction point (the point where the user clicks to create the object). */
-    this.constructionPoint = constructionPoint;
-
-    const defaultProperties = this.constructor.getDefaults(constructionPoint);
+    const defaultProperties = this.constructor.defaultProperties;
     for (const prop in defaultProperties) {
       if (jsonObj && jsonObj.hasOwnProperty(prop)) {
         this[prop] = jsonObj[prop];
@@ -54,7 +27,7 @@ class SceneObj {
    */
   serialize() {
     const jsonObj = { type: this.constructor.type };
-    const defaultProperties = this.constructor.getDefaults(null);
+    const defaultProperties = this.constructor.defaultProperties;
 
     for (const prop in defaultProperties) {
       if (this[prop] !== defaultProperties[prop]) {
@@ -64,6 +37,41 @@ class SceneObj {
 
     return jsonObj;
   }
+  
+  /**
+   * Check whether the given properties of the object are all the default values.
+   * @param {string[]} propertyNames - The property names to be checked.
+   * @returns {boolean} Whether the properties are all the default values.
+   */
+  arePropertiesDefault(propertyNames) {
+    const defaultProperties = this.constructor.defaultProperties;
+    for (const propName of propertyNames) {
+      if (this[propName] !== defaultProperties[propName]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  /**
+   * The type of the object.
+   */
+  static type = '';
+
+  /**
+   * The default properties of the object.
+   */
+  static defaultProperties = {};
+
+  /**
+   * Whether the object interacts with rays (i.e. is a light source or an optical element).
+   */
+  static interactsWithRays = false;
+
+  /**
+   * Whether the object supports surface merging.
+   */
+  static supportsSurfMerging = false;
 
   /**
    * Populate the object bar.
