@@ -212,7 +212,7 @@ function shootWaitingRays() {
   var observed_point;
   var observed_intersection;
   var rpd;
-  var surfaceMerging_objs = [];
+  var surfaceMergingObjs = [];
 
   
   if (scene.colorMode) {
@@ -266,7 +266,7 @@ function shootWaitingRays() {
       s_obj = null; // The current nearest object in search
       s_obj_index = -1;
       s_point = null;  // The intersection
-      surfaceMerging_objs = []; // The objects whose surface is to be merged with s_obj
+      surfaceMergingObjs = []; // The objects whose surface is to be merged with s_obj
       s_lensq = Infinity;
       observed = false; // Whether waitingRays[j] is observed by the observer
       for (var i = 0; i < scene.objs.length; i++)
@@ -288,7 +288,7 @@ function shootWaitingRays() {
                 if (objTypes[scene.objs[i].type].supportSurfaceMerging)
                 {
                   // Both of them supports surface merging (e.g. two glasses with one common edge
-                  surfaceMerging_objs[surfaceMerging_objs.length] = scene.objs[i];
+                  surfaceMergingObjs[surfaceMergingObjs.length] = scene.objs[i];
                 }
                 else
                 {
@@ -299,7 +299,7 @@ function shootWaitingRays() {
                   s_point = s_point_temp;
                   s_lensq = s_lensq_temp;
 
-                  surfaceMerging_objs = [];
+                  surfaceMergingObjs = [];
                 }
               }
             }
@@ -310,7 +310,7 @@ function shootWaitingRays() {
               s_point = s_point_temp;
               s_lensq = s_lensq_temp;
 
-              surfaceMerging_objs = [];
+              surfaceMergingObjs = [];
             }
           }
         }
@@ -550,7 +550,7 @@ function shootWaitingRays() {
       last_s_obj_index = s_obj_index;
       if (s_obj)
       {
-        const ret = objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMerging_objs);
+        const ret = objTypes[s_obj.type].onRayIncident(s_obj, waitingRays[j], j, s_point, surfaceMergingObjs);
         if (ret) {
           if (ret.isAbsorbed) {
             waitingRays[j] = null;

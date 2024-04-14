@@ -50,7 +50,7 @@ objTypes['grin_refractor'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     try {
       if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
@@ -87,18 +87,18 @@ objTypes['grin_refractor'] = {
         "multRefIndex"/"devRefIndex" function, respectively.
         */
         let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
-        if (surfaceMerging_objs.length) {
+        if (surfaceMergingObjs.length) {
           // Surface merging
-          for (var i = 0; i < surfaceMerging_objs.length; i++) {
-            let p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x - surfaceMerging_objs[i].origin.x, y: incidentPoint.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - incidentPoint
-            incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+          for (var i = 0; i < surfaceMergingObjs.length; i++) {
+            let p = surfaceMergingObjs[i].fn_p({ x: incidentPoint.x - surfaceMergingObjs[i].origin.x, y: incidentPoint.y - surfaceMergingObjs[i].origin.y }) // refractive index at the intersection point - incidentPoint
+            incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
             if (incidentType == 1) {
               // Shot from inside to outside
-              n1 *= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+              n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
             else if (incidentType == -1) {
               // Shot from outside to inside
-              n1 /= (!scene.colorMode) ? p : (p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+              n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             }
             else if (incidentType == 0) {
               // Equivalent to not shot on the obj (e.g. two interfaces overlap)

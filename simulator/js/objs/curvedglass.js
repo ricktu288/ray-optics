@@ -187,7 +187,7 @@ objTypes['curvedglass'] = {
   },
 
   // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMerging_objs) {
+  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
 
     var incidentData = this.getIncidentData(obj, ray);
     var incidentType = incidentData.incidentType;
@@ -212,15 +212,15 @@ objTypes['curvedglass'] = {
     }
 
     // Surface merging
-    for (var i = 0; i < surfaceMerging_objs.length; i++) {
-      incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
+    for (var i = 0; i < surfaceMergingObjs.length; i++) {
+      incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
       if (incidentType == 1) {
         // Shot from inside to outside
-        n1 *= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+        n1 *= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
       else if (incidentType == -1) {
         // Shot from outside to inside
-        n1 /= (!scene.colorMode) ? surfaceMerging_objs[i].p : (surfaceMerging_objs[i].p + (surfaceMerging_objs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+        n1 /= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
       }
       else if (incidentType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
