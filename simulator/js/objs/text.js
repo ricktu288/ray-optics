@@ -1,7 +1,6 @@
-// Other -> Text
-
 /**
- * Text object
+ * Text label
+ * Tools -> Other -> Text
  * @class
  * @extends SceneObj
  * @property {number} x - The x coordinate.
@@ -149,12 +148,6 @@ objTypes['text'] = class extends SceneObj {
     this.x = mousePos.x;
     this.y = mousePos.y;
     this.p = getMsg('text_here');
-  }
-
-  onConstructMouseMove(mouse, ctrl, shift) {
-    const mousePos = mouse.getPosSnappedToGrid();
-    this.x = mousePos.x;
-    this.y = mousePos.y;
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
