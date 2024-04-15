@@ -311,7 +311,7 @@ function canvas_onmousemove(e) {
       if (dragContext.part == 0) {
         if (e.ctrlKey && !dragContext.hasDuplicated) {
 
-          scene.objs[scene.objs.length] = dragContext.originalObj;
+          scene.objs[scene.objs.length] = new objTypes[dragContext.originalObj.type](scene, dragContext.originalObj);
           dragContext.hasDuplicated = true;
         }
         if (!e.ctrlKey && dragContext.hasDuplicated) {
