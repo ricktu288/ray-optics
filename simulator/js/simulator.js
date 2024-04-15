@@ -54,7 +54,7 @@ function draw_(skipLight, skipGrid) {
   }
   stateOutdated = false;
 
-  JSONOutput();
+  //JSONOutput();
 
   if (ctx0.constructor != C2S) {
     var canvasRenderer0 = new CanvasRenderer(ctx0, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.backgroundImage);

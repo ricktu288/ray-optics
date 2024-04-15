@@ -630,6 +630,7 @@ function cloneObj(index) {
 
 
 function createUndoPoint() {
+  JSONOutput();
   undoIndex = (undoIndex + 1) % undoLimit;
   undoUBound = undoIndex;
   document.getElementById('undo').disabled = false;
