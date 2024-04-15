@@ -6,56 +6,46 @@ const DATA_VERSION = 2;
 
 /**
  * Represents the scene in this simulator.
+ * @class Scene
+ * @property {Object[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
+ * @property {string} mode - The mode of the scene. Possible values: 'light' (Rays), 'extended_light' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
+ * @property {number} rayDensity_light - The density of rays in 'light' and 'extended_light' modes.
+ * @property {number} rayDensity_images - The density of rays in 'images' and 'observer' modes.
+ * @property {boolean} showGrid - The "Grid" option indicating if the grid is visible.
+ * @property {boolean} grid - The "Snap to Grid" option indicating if mouse actions are snapped to the grid.
+ * @property {boolean} lockobjs - The "Lock Objects" option indicating if the objects are locked.
+ * @property {number} gridSize - The size of the grid.
+ * @property {Object|null} observer - The observer of the scene, null if not set.
+ * @property {Object} origin - The origin of the scene in the viewport.
+ * @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene.
+ * @property {number} width - The width (in CSS pixels) of the viewport.
+ * @property {number} height - The height (in CSS pixels) of the viewport.
+ * @property {boolean} colorMode - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.)
+ * @property {boolean} symbolicGrin - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
+ * @property {Object|null} backgroundImage - The background image of the scene, null if not set.
  */
 class Scene {
+  static defaultProperties = {
+    objs: [],
+    mode: 'light',
+    rayDensity_light: 0.1,
+    rayDensity_images: 1,
+    showGrid: false,
+    grid: false,
+    lockobjs: false,
+    gridSize: 20,
+    observer: null,
+    origin: { x: 0, y: 0 },
+    scale: 1,
+    width: 1500,
+    height: 900,
+    colorMode: false,
+    symbolicGrin: false
+  };
+  
   constructor() {
-    /** @property {Object[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene. */
-    this.objs = [];
-
-    /** @property {string} mode - The mode of the scene. Possible values: 'light' (Rays), 'extended_light' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer). */
-    this.mode = 'light';
-
-    /** @property {number} rayDensity_light - The density of rays in 'light' and 'extended_light' modes. */
-    this.rayDensity_light = 0.1;
-
-    /** @property {number} rayDensity_images - The density of rays in 'images' and 'observer' modes. */
-    this.rayDensity_images = 1;
-
-    /** @property {boolean} showGrid - The "Grid" option indicating if the grid is visible. */
-    this.showGrid = false;
-
-    /** @property {boolean} grid - The "Snap to Grid" option indicating if mouse actions are snapped to the grid. */
-    this.grid = false;
-
-    /** @property {boolean} lockobjs - The "Lock Objects" option indicating if the objects are locked. */
-    this.lockobjs = false;
-
-    /** @property {number} gridSize - The size of the grid. */
-    this.gridSize = 20;
-
-    /** @property {Object|null} observer - The observer of the scene, null if not set. */
-    this.observer = null;
-
-    /** @property {Object} origin - The origin of the scene in the viewport. */
-    this.origin = { x: 0, y: 0 };
-
-    /** @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene. */
-    this.scale = 1;
-
-    /** @property {number} width - The width (in CSS pixels) of the viewport. */
-    this.width = 1500;
-
-    /** @property {number} height - The height (in CSS pixels) of the viewport. */
-    this.height = 900;
-
-    /** @property {boolean} colorMode - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.) */
-    this.colorMode = false;
-
-    /** @property {boolean} symbolicGrin - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects. */
-    this.symbolicGrin = false;
-
-    /** @property {Object|null} backgroundImage - The background image of the scene, null if not set. */
     this.backgroundImage = null;
+    this.fromJSON(JSON.stringify({version: DATA_VERSION}), () => {});
   }
 
   /**
@@ -128,43 +118,15 @@ class Scene {
       // Newer than the current version
       throw new Error('The version of the scene is newer than the current version of the simulator.');
     }
-    if (!jsonData.scale) {
-      jsonData.scale = 1;
-    }
-    if (!jsonData.colorMode) {
-      jsonData.colorMode = false;
-    }
-    if (!jsonData.symbolicGrin) {
-      jsonData.symbolicGrin = false;
-    }
-    if (!jsonData.width) {
-      jsonData.width = 1500;
-    }
-    if (!jsonData.height) {
-      jsonData.height = 900;
-    }
-    if (!jsonData.showGrid) {
-      jsonData.showGrid = false;
-    }
-    if (!jsonData.grid) {
-      jsonData.grid = false;
-    }
-    if (!jsonData.lockobjs) {
-      jsonData.lockobjs = false;
-    }
-    if (!jsonData.gridSize) {
-      jsonData.gridSize = 20;
-    }
 
-    // Set the scene properties.
-    this.mode = jsonData.mode;
-    this.rayDensity_light = jsonData.rayDensity_light;
-    this.rayDensity_images = jsonData.rayDensity_images;
-    this.showGrid = jsonData.showGrid;
-    this.grid = jsonData.grid;
-    this.lockobjs = jsonData.lockobjs;
-    this.gridSize = jsonData.gridSize;
-    this.observer = jsonData.observer;
+    // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
+    const defaultProperties = Scene.defaultProperties;
+    for (let key in defaultProperties) {
+      if (!(key in jsonData)) {
+        jsonData[key] = defaultProperties[key];
+      }
+      this[key] = jsonData[key];
+    }
 
     // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
     const approximatedWidth = Math.ceil(this.width / 100) * 100;
@@ -182,9 +144,6 @@ class Scene {
     this.scale = jsonData.scale / rescaleFactor;
     this.origin.x = jsonData.origin.x / rescaleFactor;
     this.origin.y = jsonData.origin.y / rescaleFactor;
-
-    this.colorMode = jsonData.colorMode;
-    this.symbolicGrin = jsonData.symbolicGrin;
 
     // Load the objects in the scene.
     this.objs = jsonData.objs.map(objData =>
@@ -211,26 +170,25 @@ class Scene {
    * @returns {string} The JSON string representing the scene.
    */
   toJSON() {
+    // Only export non-default properties.
+    let jsonData = {version: DATA_VERSION};
+    const defaultProperties = Scene.defaultProperties;
+    for (let key in defaultProperties) {
+      if (this[key] !== defaultProperties[key]) {
+        jsonData[key] = this[key];
+      }
+    }
+
+    // Serialize the objects in the scene.
+    jsonData.objs = this.objs.map(obj => obj.serialize());
+
+    // Use approximated size of the current viewport.
     const approximatedWidth = Math.ceil(this.width / 100) * 100;
     const approximatedHeight = Math.ceil(this.height / 100) * 100;
+    jsonData.width = approximatedWidth;
+    jsonData.height = approximatedHeight;
+    
 
-    return JSON.stringify({
-      version: DATA_VERSION,
-      objs: this.objs.map(obj => obj.serialize()),
-      mode: this.mode,
-      rayDensity_light: this.rayDensity_light,
-      rayDensity_images: this.rayDensity_images,
-      showGrid: this.showGrid,
-      grid: this.grid,
-      lockobjs: this.lockobjs,
-      gridSize: this.gridSize,
-      observer: this.observer,
-      origin: this.origin,
-      scale: this.scale,
-      width: approximatedWidth,
-      height: approximatedHeight,
-      colorMode: this.colorMode,
-      symbolicGrin: this.symbolicGrin
-    }, null, 2);
+    return JSON.stringify(jsonData, null, 2);
   }
 };
