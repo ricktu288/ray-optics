@@ -569,7 +569,7 @@ window.onload = function (e) {
 
   MQ = MathQuill.getInterface(2);
 
-  if (window.location.hash.length > 150) {
+  if (window.location.hash.length > 70) {
     JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
       document.getElementById('textarea1').value = JSON.stringify(json);
       scene.backgroundImage = null;

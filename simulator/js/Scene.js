@@ -123,7 +123,7 @@ class Scene {
     const defaultProperties = Scene.defaultProperties;
     for (let key in defaultProperties) {
       if (!(key in jsonData)) {
-        jsonData[key] = defaultProperties[key];
+        jsonData[key] = JSON.parse(JSON.stringify(defaultProperties[key]));
       }
       this[key] = jsonData[key];
     }
@@ -170,15 +170,8 @@ class Scene {
    * @returns {string} The JSON string representing the scene.
    */
   toJSON() {
-    // Only export non-default properties.
     let jsonData = {version: DATA_VERSION};
-    const defaultProperties = Scene.defaultProperties;
-    for (let key in defaultProperties) {
-      if (this[key] !== defaultProperties[key]) {
-        jsonData[key] = this[key];
-      }
-    }
-
+    
     // Serialize the objects in the scene.
     jsonData.objs = this.objs.map(obj => obj.serialize());
 
@@ -187,7 +180,18 @@ class Scene {
     const approximatedHeight = Math.ceil(this.height / 100) * 100;
     jsonData.width = approximatedWidth;
     jsonData.height = approximatedHeight;
-    
+
+    // Only export non-default properties.
+    const defaultProperties = Scene.defaultProperties;
+    for (let propName in defaultProperties) {
+      if (!jsonData.hasOwnProperty(propName)) {
+        const stringifiedValue = JSON.stringify(this[propName]);
+        const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+        if (stringifiedValue !== stringifiedDefault) {
+          jsonData[propName] = JSON.parse(stringifiedValue);
+        }
+      }
+    }
 
     return JSON.stringify(jsonData, null, 2);
   }

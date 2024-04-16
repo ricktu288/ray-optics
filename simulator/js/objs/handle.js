@@ -1,105 +1,152 @@
-// The handle created when holding ctrl and click several points
-objTypes['handle'] = {
+/**
+ * The handle created when holding ctrl and click several points.
+ * @class
+ * @extends SceneObj
+ * @property {Point} p1 - The position of the handle.
+ * @property {Point} p2 - The position of the rotation/scale center.
+ * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
+ * @property {boolean} notDone - Whether the construction of the handle is complete.
+ */
+objTypes['handle'] = class extends SceneObj {
+  static type = 'handle';
+  static interactsWithRays = true; // As the handle may bind to objects that interact with rays, this should be regarded as true.
+  static defaultProperties = {
+    p1: null,
+    p2: null,
+    controlPoints: [],
+    notDone: false
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'handle', controlPoints: [], notDone: true };
-  },
+  serialize() {
+    let jsonObj = super.serialize();
 
-  // Add control point when user is creating the handle
-  addControlPoint: function (obj, controlPoint) {
-    controlPoint.mousePart.originalObj = scene.objs[controlPoint.targetObj_index];
-    controlPoint.newPoint = controlPoint.mousePart.targetPoint;
+    if (!this.notDone) {
+      // Remove some redundent properties in the control points to reduce the size of the JSON.
+      jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
+        let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));
+        delete controlPointCopy.mousePart.originalObj; // This should be inferred from `scene.objs[controlPoint.targetObj_index]` directly.
+        delete controlPointCopy.mousePart.hasDuplicated; // Always false.
+        delete controlPointCopy.mousePart.isByHandle; // Always true.
+        delete controlPointCopy.mousePart.targetPoint; // The target point is already stored in the newPoint.
+        delete controlPointCopy.mousePart.snapContext; // Snapping is not possible with the handle.
+        
+        return controlPointCopy;
+      });
+    }
+
+    return jsonObj;
+  }
+
+  /* This typedef will eventually be moved elsewhere. */
+  /**
+   * @typedef {Object} ControlPoint
+   * @property {DragContext} mousePart - The drag context of the virtual mouse that is dragging the control point.
+   * @property {Point} newPoint - The new position of the control point.
+   */
+
+  /**
+   * Add (bind) a control point to the handle.
+   * @param {ControlPoint} controlPoint - The control point to be bound.
+   */
+  addControlPoint(controlPoint) {
+    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObj_index];
     controlPoint.mousePart.isByHandle = true;
+    controlPoint.mousePart.hasDuplicated = false;
+    controlPoint.newPoint = controlPoint.mousePart.targetPoint;
     controlPoint = JSON.parse(JSON.stringify(controlPoint));
-    scene.objs[0].controlPoints.push(controlPoint);
-  },
+    this.controlPoints.push(controlPoint);
+  }
 
-  // Finish creating the handle
-  finishHandle: function (obj, point) {
-    obj.p1 = point;
+  /**
+   * Finish creating the handle.
+   * @param {Point} point - The position of the handle.
+   */
+  finishHandle(point) {
+    this.p1 = point;
     var totalX = 0;
     var totalY = 0;
-    for (var i in obj.controlPoints) {
-      totalX += obj.controlPoints[i].newPoint.x;
-      totalY += obj.controlPoints[i].newPoint.y;
+    for (var i in this.controlPoints) {
+      totalX += this.controlPoints[i].newPoint.x;
+      totalY += this.controlPoints[i].newPoint.y;
     }
-    obj.p2 = geometry.point(totalX / obj.controlPoints.length, totalY / obj.controlPoints.length);
-    obj.notDone = false;
-  },
+    this.p2 = geometry.point(totalX / this.controlPoints.length, totalY / this.controlPoints.length);
+    this.notDone = false;
+  }
 
-  getZIndex: function (obj) {
+  getZIndex() {
     return -Infinity;
-  },
+  }
 
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-
-    /*
-    for (var i in obj.controlPoints) {
-      // If user drags some target scene.objs, restore them back to avoid unexpected behavior.
-      obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
-      objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
-    }
-    */
-    for (var i in obj.controlPoints) {
+    for (var i in this.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
-      ctx.strokeStyle = obj.notDone ? 'cyan' : isHovered ? 'cyan' : ('gray');
+      ctx.strokeStyle = this.notDone ? 'cyan' : isHovered ? 'cyan' : ('gray');
       ctx.setLineDash([2, 2]);
-      ctx.arc(obj.controlPoints[i].newPoint.x, obj.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
+      ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.setLineDash([]);
     }
-    if (!obj.notDone) {
+    if (!this.notDone) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
-      ctx.arc(obj.p1.x, obj.p1.y, 2, 0, Math.PI * 2, false);
+      ctx.arc(this.p1.x, this.p1.y, 2, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
-      ctx.arc(obj.p1.x, obj.p1.y, 5, 0, Math.PI * 2, false);
+      ctx.arc(this.p1.x, this.p1.y, 5, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(obj.p2.x - 5, obj.p2.y);
-      ctx.lineTo(obj.p2.x + 5, obj.p2.y);
+      ctx.moveTo(this.p2.x - 5, this.p2.y);
+      ctx.lineTo(this.p2.x + 5, this.p2.y);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(obj.p2.x, obj.p2.y - 5);
-      ctx.lineTo(obj.p2.x, obj.p2.y + 5);
+      ctx.moveTo(this.p2.x, this.p2.y - 5);
+      ctx.lineTo(this.p2.x, this.p2.y + 5);
       ctx.stroke();
     }
-  },
+  }
 
-  // Move the object
-  move: function (obj, diffX, diffY) {
-    objTypes['handle'].onDrag(obj, new Mouse(geometry.point(obj.p1.x + diffX, obj.p1.y + diffY), scene), { targetPoint_: obj.p1, part: 1 });
-  },
+  move(diffX, diffY) {
+    this.p1.x = this.p1.x + diffX;
+    this.p1.y = this.p1.y + diffY;
+    this.p2.x = this.p2.x + diffX;
+    this.p2.y = this.p2.y + diffY;
+    for (var i in this.controlPoints) {
+      this.controlPoints[i].mousePart.originalObj = this.scene.objs[this.controlPoints[i].targetObj_index].serialize();
+      this.controlPoints[i].mousePart.isByHandle = true;
+      this.controlPoints[i].mousePart.hasDuplicated = false;
+      this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
+      this.controlPoints[i].mousePart.snapContext = {};
 
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse) {
+      this.controlPoints[i].newPoint.x = this.controlPoints[i].newPoint.x + diffX;
+      this.controlPoints[i].newPoint.y = this.controlPoints[i].newPoint.y + diffY;
+      this.scene.objs[this.controlPoints[i].targetObj_index].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
+    }
+  }
+
+  checkMouseOver(mouse) {
     let dragContext = {};
-    if (obj.notDone) return;
-    if (mouse.isOnPoint(obj.p1)) {
+    if (this.notDone) return;
+    if (mouse.isOnPoint(this.p1)) {
       dragContext.part = 1;
-      dragContext.targetPoint_ = geometry.point(obj.p1.x, obj.p1.y);
-      dragContext.mousePos0 = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.targetPoint_ = geometry.point(this.p1.x, this.p1.y);
+      dragContext.mousePos0 = geometry.point(this.p1.x, this.p1.y);
       dragContext.snapContext = {};
       return dragContext;
     }
-    if (mouse.isOnPoint(obj.p2)) {
+    if (mouse.isOnPoint(this.p2)) {
       dragContext.part = 2;
-      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      dragContext.mousePos0 = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
+      dragContext.mousePos0 = geometry.point(this.p2.x, this.p2.y);
       dragContext.snapContext = {};
       return dragContext;
     }
-  },
+  }
 
-  // When the user is dragging the obj
-  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
-    if (obj.notDone) return;
+  onDrag(mouse, dragContext, ctrl, shift) {
+    if (this.notDone) return;
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
@@ -110,20 +157,22 @@ objTypes['handle'] = {
     if (dragContext.part == 1) {
       if (ctrl && shift) {
         // Scaling
-        var factor = geometry.distance(obj.p2, mouse.pos) / geometry.distance(obj.p2, dragContext.targetPoint_)
+        var factor = geometry.distance(this.p2, mouse.pos) / geometry.distance(this.p2, dragContext.targetPoint_)
         if (factor < 1e-5) return;
+        var center = this.p2;
         var trans = function (p) {
-          p.x = (p.x - obj.p2.x) * factor + obj.p2.x;
-          p.y = (p.y - obj.p2.y) * factor + obj.p2.y;
+          p.x = (p.x - center.x) * factor + center.x;
+          p.y = (p.y - center.y) * factor + center.y;
         };
       } else if (ctrl) {
         // Rotation
-        var theta = Math.atan2(obj.p2.y - mouse.pos.y, obj.p2.x - mouse.pos.x) - Math.atan2(obj.p2.y - dragContext.targetPoint_.y, obj.p2.x - dragContext.targetPoint_.x);
+        var theta = Math.atan2(this.p2.y - mouse.pos.y, this.p2.x - mouse.pos.x) - Math.atan2(this.p2.y - dragContext.targetPoint_.y, this.p2.x - dragContext.targetPoint_.x);
+        var center = this.p2;
         var trans = function (p) {
-          var x = p.x - obj.p2.x;
-          var y = p.y - obj.p2.y;
-          p.x = Math.cos(theta) * x - Math.sin(theta) * y + obj.p2.x;
-          p.y = Math.sin(theta) * x + Math.cos(theta) * y + obj.p2.y;
+          var x = p.x - center.x;
+          var y = p.y - center.y;
+          p.x = Math.cos(theta) * x - Math.sin(theta) * y + center.x;
+          p.y = Math.sin(theta) * x + Math.cos(theta) * y + center.y;
         };
       } else {
         // Translation
@@ -136,25 +185,24 @@ objTypes['handle'] = {
       }
 
       // Do the transformation
-      trans(obj.p1);
-      trans(obj.p2);
-      for (var i in obj.controlPoints) {
-        obj.controlPoints[i].mousePart.originalObj = JSON.parse(JSON.stringify(scene.objs[obj.controlPoints[i].targetObj_index]));
-        trans(obj.controlPoints[i].newPoint);
-        objTypes[scene.objs[obj.controlPoints[i].targetObj_index].type].onDrag(scene.objs[obj.controlPoints[i].targetObj_index], new Mouse(JSON.parse(JSON.stringify(obj.controlPoints[i].newPoint)), scene, false, 2), JSON.parse(JSON.stringify(obj.controlPoints[i].mousePart)), false, false);
+      trans(this.p1);
+      trans(this.p2);
+      for (var i in this.controlPoints) {
+        this.controlPoints[i].mousePart.originalObj = scene.objs[this.controlPoints[i].targetObj_index].serialize();
+        this.controlPoints[i].mousePart.isByHandle = true;
+        this.controlPoints[i].mousePart.hasDuplicated = false;
+        this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
+        this.controlPoints[i].mousePart.snapContext = {};
+        trans(this.controlPoints[i].newPoint);
+        this.scene.objs[this.controlPoints[i].targetObj_index].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
       }
-      dragContext.targetPoint_.x = obj.p1.x;
-      dragContext.targetPoint_.y = obj.p1.y;
+      dragContext.targetPoint_.x = this.p1.x;
+      dragContext.targetPoint_.y = this.p1.y;
     }
 
     if (dragContext.part == 2) {
-      obj.p2.x = mousePos.x;
-      obj.p2.y = mousePos.y;
+      this.p2.x = mousePos.x;
+      this.p2.y = mousePos.y;
     }
-  },
-
-  onSimulationStart: function (obj) {
-    // A dummy function to tell the simulator that the light layer should be redrawn when this object changes.
   }
-
 };

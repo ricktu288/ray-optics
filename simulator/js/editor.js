@@ -136,7 +136,7 @@ function canvas_onmousedown(e) {
         isConstructing = true;
         let referenceObj = {};
         if (scene.objs[selectedObj]) {
-          if (scene.objs[selectedObj].constructor.type == scene.objs[scene.objs.length - 1].constructor.type) {
+          if (scene.objs[selectedObj].constructor.type == AddingObjType) {
             referenceObj = scene.objs[selectedObj].serialize();
           }
         }
@@ -398,7 +398,7 @@ function canvas_onmouseup(e) {
 
 function addControlPointsForHandle(controlPoints) {
   if (!(scene.objs[0].constructor.type == "handle" && scene.objs[0].notDone)) {
-    scene.objs.unshift(new objTypes["handle"](scene, {}));
+    scene.objs.unshift(new objTypes["handle"](scene, {notDone: true}));
     for (var i in scene.objs) {
       if (scene.objs[i].constructor.type == "handle") {
         for (var j in scene.objs[i].controlPoints) {

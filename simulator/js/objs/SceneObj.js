@@ -12,11 +12,13 @@ class SceneObj {
     this.scene = scene;
 
     const defaultProperties = this.constructor.defaultProperties;
-    for (const prop in defaultProperties) {
-      if (jsonObj && jsonObj.hasOwnProperty(prop)) {
-        this[prop] = jsonObj[prop];
+    for (const propName in defaultProperties) {
+      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+      if (jsonObj && jsonObj.hasOwnProperty(propName)) {
+        const stringifiedValue = JSON.stringify(jsonObj[propName]);
+        this[propName] = JSON.parse(stringifiedValue);
       } else {
-        this[prop] = defaultProperties[prop];
+        this[propName] = JSON.parse(stringifiedDefault);
       }
     }
   }
@@ -29,9 +31,11 @@ class SceneObj {
     const jsonObj = { type: this.constructor.type };
     const defaultProperties = this.constructor.defaultProperties;
 
-    for (const prop in defaultProperties) {
-      if (this[prop] !== defaultProperties[prop]) {
-        jsonObj[prop] = this[prop];
+    for (const propName in defaultProperties) {
+      const stringifiedValue = JSON.stringify(this[propName]);
+      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+      if (stringifiedValue !== stringifiedDefault) {
+        jsonObj[propName] = JSON.parse(stringifiedValue);
       }
     }
 
@@ -46,7 +50,9 @@ class SceneObj {
   arePropertiesDefault(propertyNames) {
     const defaultProperties = this.constructor.defaultProperties;
     for (const propName of propertyNames) {
-      if (this[propName] !== defaultProperties[propName]) {
+      const stringifiedValue = JSON.stringify(this[propName]);
+      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+      if (stringifiedValue !== stringifiedDefault) {
         return false;
       }
     }
@@ -152,7 +158,7 @@ class SceneObj {
     // Do nothing by default
   }
 
-  /* This typedef will eventually be moved to the `Editor` class. */
+  /* This typedef will eventually be moved elsewhere. */
   /**
    * @typedef {Object} DragContext
    * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
