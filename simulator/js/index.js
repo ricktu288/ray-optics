@@ -997,15 +997,10 @@ function enterCropMode() {
   }
   if (cropBoxIndex == -1) {
     // Create a new cropBox
-    var cropBox = {
-      type: 'cropbox',
+    let cropBox = new objTypes['cropbox'](scene, {
       p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p2: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p3: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
       p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
-      width: 1280,
-      format: 'png'
-    };
+    });
     scene.objs.push(cropBox);
     cropBoxIndex = scene.objs.length - 1;
   }
