@@ -1,82 +1,80 @@
-// Other -> Drawing
-objTypes['drawing'] = {
+/**
+ * Drawing tool
+ * Tools -> Other -> Drawing
+ * @class
+ * @extends SceneObj
+ * @property {Array<Array<number>>} points - The points of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`.
+ * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
+ * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
+ */
+objTypes['drawing'] = class extends SceneObj {
+  static type = 'drawing';
+  static defaultProperties = {
+    points: [],
+    isDrawing: false,
+    isMouseDown: false
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'drawing', points: [], tmp_isMouseDown: false, notDone: true };
-  },
-
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    if (obj.notDone) {
+  populateObjBar(objBar) {
+    if (this.isDrawing) {
       objBar.createButton(getMsg('stop_drawing'), function (obj) {
-        delete obj.notDone;
+        obj.isDrawing = false;
+        isConstructing = false;
       }, true);
     }
-  },
+  }
 
-  // Mousedown when the obj is being constructed by the user
-  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
-    if (!obj.notDone) {
-      return {
-        isDone: true
-      };
-    }
-    const mousePos = mouse.getPosSnappedToGrid();
-    obj.points.push([mousePos.x, mousePos.y]);
-    obj.tmp_isMouseDown = true;
-  },
-  // Mousemove when the obj is being constructed by the user
-  onConstructMouseMove: function (obj, constructionPoint, mouse, ctrl, shift) {
-    if (!obj.notDone) {
-      return {
-        isDone: true
-      };
-    }
-    const mousePos = mouse.getPosSnappedToGrid();
-    if (!obj.tmp_isMouseDown) return;
-    obj.points[obj.points.length - 1].push(mousePos.x, mousePos.y);
-  },
-  // Mouseup when the obj is being constructed by the user
-  onConstructMouseUp: function (obj, constructionPoint, mouse, ctrl, shift) {
-    obj.tmp_isMouseDown = false;
-    return {
-      requiresUndoPoint: true
-    }
-  },
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    ctx.strokeStyle = isHovered ? 'cyan' : ("white");
+    ctx.strokeStyle = isHovered ? 'cyan' : 'white';
     ctx.beginPath();
-    for (var i = 0; i < obj.points.length; i++) {
-      ctx.moveTo(obj.points[i][0], obj.points[i][1]);
-      for (var j = 2; j < obj.points[i].length; j += 2) {
-        ctx.lineTo(obj.points[i][j], obj.points[i][j + 1]);
+    for (const stroke of this.points) {
+      ctx.moveTo(stroke[0], stroke[1]);
+      for (let i = 2; i < stroke.length; i += 2) {
+        ctx.lineTo(stroke[i], stroke[i + 1]);
       }
     }
     ctx.stroke();
-  },
+  }
 
-  // Move the object
-  move: function (obj, diffX, diffY) {
-    for (var i = 0; i < obj.points.length; i++) {
-      for (var j = 0; j < obj.points[i].length; j += 2) {
-        obj.points[i][j] += diffX;
-        obj.points[i][j + 1] += diffY;
+  move(diffX, diffY) {
+    for (const stroke of this.points) {
+      for (let i = 0; i < stroke.length; i += 2) {
+        stroke[i] += diffX;
+        stroke[i + 1] += diffY;
       }
     }
-    return obj;
-  },
+  }
 
+  onConstructMouseDown(mouse, ctrl, shift) {
+    if (!this.isDrawing) {
+      // Initialize the drawing
+      this.isDrawing = true;
+      this.points = [];
+    }
+    const mousePos = mouse.getPosSnappedToGrid();
+    this.points.push([mousePos.x, mousePos.y]);
+    this.isMouseDown = true;
+  }
 
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse) {
+  onConstructMouseMove(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    if (!this.isMouseDown) return;
+    this.points[this.points.length - 1].push(mousePos.x, mousePos.y);
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    this.isMouseDown = false;
+    return {
+      requiresUndoPoint: true
+    };
+  }
+
+  checkMouseOver(mouse) {
     let dragContext = {};
-    for (var i = 0; i < obj.points.length; i++) {
-      for (var j = 0; j < obj.points[i].length - 2; j += 2) {
-        if (mouse.isOnSegment(geometry.line(geometry.point(obj.points[i][j], obj.points[i][j + 1]), geometry.point(obj.points[i][j + 2], obj.points[i][j + 3])))) {
+    for (const stroke of this.points) {
+      for (let i = 0; i < stroke.length - 2; i += 2) {
+        if (mouse.isOnSegment(geometry.line(geometry.point(stroke[i], stroke[i + 1]), geometry.point(stroke[i + 2], stroke[i + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
           dragContext.part = 0;
           dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -86,10 +84,9 @@ objTypes['drawing'] = {
         }
       }
     }
-  },
+  }
 
-  // When the user is dragging the obj
-  onDrag: function (obj, mouse, dragContext, ctrl, shift) {
+  onDrag(mouse, dragContext, ctrl, shift) {
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     }
@@ -102,10 +99,10 @@ objTypes['drawing'] = {
     var mouseDiffY = dragContext.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
 
     if (dragContext.part == 0) {
-      for (var i = 0; i < obj.points.length; i++) {
-        for (var j = 0; j < obj.points[i].length; j += 2) {
-          obj.points[i][j] -= mouseDiffX;
-          obj.points[i][j + 1] -= mouseDiffY;
+      for (const stroke of this.points) {
+        for (let i = 0; i < stroke.length; i += 2) {
+          stroke[i] -= mouseDiffX;
+          stroke[i + 1] -= mouseDiffY;
         }
       }
     }
@@ -113,5 +110,4 @@ objTypes['drawing'] = {
     // Update the mouse position
     dragContext.mousePos1 = mousePos;
   }
-
 };
