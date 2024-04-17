@@ -70,12 +70,12 @@ class SceneObj {
   static defaultProperties = {};
 
   /**
-   * Whether the object interacts with rays (i.e. is a light source or an optical element).
+   * Whether the object is optical (i.e. is a light source, interacts with rays, or detects rays).
    */
-  static interactsWithRays = false;
+  static isOptical = false;
 
   /**
-   * Whether the object supports surface merging.
+   * Whether the object supports surface merging. (This is currently only for glasses, where the surfaces of two glasses are merged to form a single surface if the surfaces overlap.)
    */
   static supportsSurfMerging = false;
 

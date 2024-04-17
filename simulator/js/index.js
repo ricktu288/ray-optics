@@ -462,7 +462,7 @@ window.onload = function (e) {
     scene.objs[scene.objs.length] = new objTypes[scene.objs[selectedObj].constructor.type](scene, scene.objs[selectedObj]);
     scene.objs[scene.objs.length - 1].move(scene.gridSize, scene.gridSize);
     selectObj(scene.objs.length - 1);
-    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
+    draw(!scene.objs[selectedObj].constructor.isOptical, true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
@@ -471,7 +471,7 @@ window.onload = function (e) {
     var selectedObjType = scene.objs[selectedObj].constructor.type;
     this.blur();
     removeObj(selectedObj);
-    draw(!objTypes[selectedObjType].interactsWithRays, true);
+    draw(!objTypes[selectedObjType].isOptical, true);
     createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
@@ -690,7 +690,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
+    draw(!scene.objs[selectedObj].constructor.isOptical, true);
     createUndoPoint();
     return false;
   }
@@ -739,7 +739,7 @@ window.onkeydown = function (e) {
     if (selectedObj != -1) {
       var selectedObjType = scene.objs[selectedObj].constructor.type;
       removeObj(selectedObj);
-      draw(!objTypes[selectedObjType].interactsWithRays, true);
+      draw(!objTypes[selectedObjType].isOptical, true);
       createUndoPoint();
     }
     return false;
@@ -772,7 +772,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         scene.objs[selectedObj].move(0, step);
       }
-      draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
+      draw(!scene.objs[selectedObj].constructor.isOptical, true);
     }
     else if (scene.mode == 'observer') {
       if (e.keyCode == 37) {

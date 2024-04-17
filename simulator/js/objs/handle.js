@@ -9,7 +9,7 @@
  */
 objTypes['handle'] = class extends SceneObj {
   static type = 'handle';
-  static interactsWithRays = true; // As the handle may bind to objects that interact with rays, this should be regarded as true.
+  static isOptical = true; // As the handle may bind to objects which are optical, this should be regarded as true.
   static defaultProperties = {
     p1: null,
     p2: null,

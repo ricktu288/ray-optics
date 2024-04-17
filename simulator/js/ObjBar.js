@@ -477,7 +477,7 @@ class ObjBar {
         }
       }
     }
-    draw(!scene.objs[selectedObj].constructor.interactsWithRays, true);
+    draw(!scene.objs[selectedObj].constructor.isOptical, true);
   }
 
   /**

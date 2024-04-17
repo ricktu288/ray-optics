@@ -10,7 +10,7 @@
  */
 objTypes['radiant'] = class extends SceneObj {
   static type = 'radiant';
-  static interactsWithRays = true;
+  static isOptical = true;
   static defaultProperties = {
     x: null,
     y: null,

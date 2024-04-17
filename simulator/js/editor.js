@@ -70,7 +70,7 @@ function canvas_onmousedown(e) {
       if (ret && ret.requiresUndoPoint) {
         createUndoPoint();
       }
-      draw(!scene.objs[scene.objs.length - 1].constructor.interactsWithRays, true);
+      draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
     }
   }
   else {
@@ -150,7 +150,7 @@ function canvas_onmousedown(e) {
           createUndoPoint();
         }
         selectObj(scene.objs.length - 1);
-        draw(!scene.objs[scene.objs.length - 1].constructor.interactsWithRays, true);
+        draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
         cancelRestore();
       }
     }
@@ -279,7 +279,7 @@ function canvas_onmousemove(e) {
     if (ret && ret.requiresUndoPoint) {
       createUndoPoint();
     }
-    draw(!scene.objs[scene.objs.length - 1].constructor.interactsWithRays, true);
+    draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
   }
   else {
     if (draggingObj == -4) {
@@ -320,7 +320,7 @@ function canvas_onmousemove(e) {
         }
       }
 
-      draw(!scene.objs[draggingObj].constructor.interactsWithRays, true);
+      draw(!scene.objs[draggingObj].constructor.isOptical, true);
 
       if (dragContext.requiresObjBarUpdate) {
         selectObj(selectedObj);
@@ -364,7 +364,7 @@ function canvas_onmouseup(e) {
       if (ret && ret.requiresUndoPoint) {
         createUndoPoint();
       }
-      draw(!scene.objs[scene.objs.length - 1].constructor.interactsWithRays, true);
+      draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
       if (!isConstructing) {
         // The object says the contruction is done
         createUndoPoint();
@@ -568,7 +568,7 @@ function confirmPositioning(ctrl, shift) {
     else {
       // Object
       scene.objs[positioningObj].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), dragContext, ctrl, shift);
-      draw(!scene.objs[positioningObj].constructor.interactsWithRays, true);
+      draw(!scene.objs[positioningObj].constructor.isOptical, true);
     }
     
     createUndoPoint();

@@ -9,7 +9,7 @@
  */
 objTypes['lens'] = class extends linearObjMixin(SceneObj) {
   static type = 'lens';
-  static interactsWithRays = true;
+  static isOptical = true;
   static defaultProperties = {
     p1: null,
     p2: null,
@@ -94,6 +94,10 @@ objTypes['lens'] = class extends linearObjMixin(SceneObj) {
       ctx.fillRect(mp.x + this.p * per_x - 1.5, mp.y + this.p * per_y - 1.5, 3, 3);
       ctx.fillRect(mp.x - this.p * per_x - 1.5, mp.y - this.p * per_y - 1.5, 3, 3);
     }
+  }
+
+  checkRayIntersects(ray) {
+    return this.checkRayIntersectsShape(ray);
   }
 
   onRayIncident(ray, rayIndex, incidentPoint) {
