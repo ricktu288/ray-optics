@@ -111,7 +111,7 @@ const linearObjMixin = Base => class extends Base {
   }
 
   checkRayIntersects(ray) {
-    if (Base.interactsWithRays) {
+    if (this.constructor.interactsWithRays) {
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
 
       if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
