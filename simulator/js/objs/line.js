@@ -17,24 +17,6 @@ objTypes['line'] = class extends linearObjMixin(SceneObj) {
     arrow2: false
   };
 
-  /**
-   * Draw an arrowhead at `p2`, pointing from `p1` to `p2`.
-   * @param {CanvasRenderer} canvasRenderer - The canvas renderer.
-   * @param {Point} p1
-   * @param {Point} p2
-   */
-  drawArrow(canvasRenderer, p1, p2) {
-    const ctx = canvasRenderer.ctx;
-    const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-    const len = 10;
-    ctx.beginPath();
-    ctx.moveTo(p2.x, p2.y);
-    ctx.lineTo(p2.x - len * Math.cos(angle - Math.PI / 6), p2.y - len * Math.sin(angle - Math.PI / 6));
-    ctx.moveTo(p2.x, p2.y);
-    ctx.lineTo(p2.x - len * Math.cos(angle + Math.PI / 6), p2.y - len * Math.sin(angle + Math.PI / 6));
-    ctx.stroke();
-  }
-
   populateObjBar(objBar) {
     objBar.createBoolean(getMsg('arrow1'), this.arrow1, function (obj, value) {
       obj.arrow1 = value;
@@ -58,5 +40,20 @@ objTypes['line'] = class extends linearObjMixin(SceneObj) {
     if (this.arrow2) {
       this.drawArrow(canvasRenderer, this.p2, this.p1);
     }
+  }
+  
+
+  /** Utility method */
+
+  drawArrow(canvasRenderer, p1, p2) {
+    const ctx = canvasRenderer.ctx;
+    const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    const len = 10;
+    ctx.beginPath();
+    ctx.moveTo(p2.x, p2.y);
+    ctx.lineTo(p2.x - len * Math.cos(angle - Math.PI / 6), p2.y - len * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(p2.x, p2.y);
+    ctx.lineTo(p2.x - len * Math.cos(angle + Math.PI / 6), p2.y - len * Math.sin(angle + Math.PI / 6));
+    ctx.stroke();
   }
 };

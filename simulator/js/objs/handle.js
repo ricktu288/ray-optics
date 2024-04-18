@@ -37,42 +37,6 @@ objTypes['handle'] = class extends SceneObj {
     return jsonObj;
   }
 
-  /* This typedef will eventually be moved elsewhere. */
-  /**
-   * @typedef {Object} ControlPoint
-   * @property {DragContext} mousePart - The drag context of the virtual mouse that is dragging the control point.
-   * @property {Point} newPoint - The new position of the control point.
-   */
-
-  /**
-   * Add (bind) a control point to the handle.
-   * @param {ControlPoint} controlPoint - The control point to be bound.
-   */
-  addControlPoint(controlPoint) {
-    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObj_index];
-    controlPoint.mousePart.isByHandle = true;
-    controlPoint.mousePart.hasDuplicated = false;
-    controlPoint.newPoint = controlPoint.mousePart.targetPoint;
-    controlPoint = JSON.parse(JSON.stringify(controlPoint));
-    this.controlPoints.push(controlPoint);
-  }
-
-  /**
-   * Finish creating the handle.
-   * @param {Point} point - The position of the handle.
-   */
-  finishHandle(point) {
-    this.p1 = point;
-    var totalX = 0;
-    var totalY = 0;
-    for (var i in this.controlPoints) {
-      totalX += this.controlPoints[i].newPoint.x;
-      totalY += this.controlPoints[i].newPoint.y;
-    }
-    this.p2 = geometry.point(totalX / this.controlPoints.length, totalY / this.controlPoints.length);
-    this.notDone = false;
-  }
-
   getZIndex() {
     return -Infinity;
   }
@@ -204,5 +168,41 @@ objTypes['handle'] = class extends SceneObj {
       this.p2.x = mousePos.x;
       this.p2.y = mousePos.y;
     }
+  }
+
+  /* This typedef will eventually be moved elsewhere. */
+  /**
+   * @typedef {Object} ControlPoint
+   * @property {DragContext} mousePart - The drag context of the virtual mouse that is dragging the control point.
+   * @property {Point} newPoint - The new position of the control point.
+   */
+
+  /**
+   * Add (bind) a control point to the handle.
+   * @param {ControlPoint} controlPoint - The control point to be bound.
+   */
+  addControlPoint(controlPoint) {
+    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObj_index];
+    controlPoint.mousePart.isByHandle = true;
+    controlPoint.mousePart.hasDuplicated = false;
+    controlPoint.newPoint = controlPoint.mousePart.targetPoint;
+    controlPoint = JSON.parse(JSON.stringify(controlPoint));
+    this.controlPoints.push(controlPoint);
+  }
+
+  /**
+   * Finish creating the handle.
+   * @param {Point} point - The position of the handle.
+   */
+  finishHandle(point) {
+    this.p1 = point;
+    var totalX = 0;
+    var totalY = 0;
+    for (var i in this.controlPoints) {
+      totalX += this.controlPoints[i].newPoint.x;
+      totalY += this.controlPoints[i].newPoint.y;
+    }
+    this.p2 = geometry.point(totalX / this.controlPoints.length, totalY / this.controlPoints.length);
+    this.notDone = false;
   }
 };
