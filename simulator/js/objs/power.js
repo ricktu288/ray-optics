@@ -1,28 +1,53 @@
-// Other -> Detector
-objTypes['power'] = {
+/**
+ * The detector tool
+ * Tools -> Other -> Detector
+ * @class
+ * @extends linearObjMixin(SceneObj)
+ * @property {Point} p1 - The first endpoint of the line segment.
+ * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {boolean} irradianceMap - Whether to display the irradiance map.
+ * @property {number} binSize - The size of the bin for the irradiance map.
+ * @property {number} power - The measured power through the detector.
+ * @property {number} normal - The measured normal force through the detector.
+ * @property {number} shear - The measured shear force through the detector.
+ * @property {Array<number>} binData - The measured data for the irradiance map.
+ */
+objTypes['power'] = class extends linearObjMixin(SceneObj) {
+  static type = 'power';
+  static isOptical = true;
+  static defaultProperties = {
+    p1: null,
+    p2: null,
+    irradianceMap: false,
+    binSize: 1
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'power', p1: constructionPoint, p2: constructionPoint, power: 0, normal: 0, shear: 0, irradianceMap: true, binSize: 1 };
-  },
+  constructor(scene, properties) {
+    super(scene, properties);
 
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    objBar.createBoolean(getMsg('irradiance_map'), !!obj.irradianceMap, function (obj, value) {
+    // Initialize the quantities to be measured
+    this.power = 0;
+    this.normal = 0;
+    this.shear = 0;
+    this.binData = null;
+  }
+
+  populateObjBar(objBar) {
+    objBar.createBoolean(getMsg('irradiance_map'), this.irradianceMap, function (obj, value) {
       obj.irradianceMap = value;
       if (value) {
         obj.binSize = 1;
       }
     }, null, true);
 
-    if (obj.irradianceMap) {
-      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, obj.binSize || 1, function (obj, value) {
+    if (this.irradianceMap) {
+      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, this.binSize, function (obj, value) {
         obj.binSize = value;
       });
 
       objBar.createButton(getMsg('export_irradiance_map'), function (obj) {
         // Export the irradiance map to a CSV file
-        var binSize = obj.binSize || 10;
+        var binSize = obj.binSize;
         var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
         var binData = obj.binData;
         var csv = "data:text/csv;charset=utf-8,";
@@ -44,19 +69,9 @@ objTypes['power'] = {
         link.click();
       });
     }
-  },
+  }
 
-  // Use the prototype lineobj
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
-  move: objTypes['lineobj'].move,
-  checkMouseOver: objTypes['lineobj'].checkMouseOver,
-  onDrag: objTypes['lineobj'].onDrag,
-  checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
@@ -64,120 +79,97 @@ objTypes['power'] = {
       ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(192,192,192)')
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
-      ctx.moveTo(obj.p1.x, obj.p1.y);
-      ctx.lineTo(obj.p2.x, obj.p2.y);
+      ctx.moveTo(this.p1.x, this.p1.y);
+      ctx.lineTo(this.p2.x, this.p2.y);
       ctx.stroke();
       ctx.setLineDash([]);
 
       ctx.globalCompositeOperation = 'source-over';
     } else {
       ctx.globalCompositeOperation = 'lighter';
-      var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+      var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
 
       var accuracy = Math.max(-Math.floor(Math.log10(totalTruncation)), 0);
       if (totalTruncation > 0 && accuracy <= 2) {
-        var str1 = "P=" + obj.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str2 = "F⊥=" + obj.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str3 = "F∥=" + obj.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str1 = "P=" + this.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str2 = "F⊥=" + this.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+        var str3 = "F∥=" + this.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
       } else {
-        var str1 = "P=" + obj.power.toFixed(2);
-        var str2 = "F⊥=" + obj.normal.toFixed(2);
-        var str3 = "F∥=" + obj.shear.toFixed(2);
+        var str1 = "P=" + this.power.toFixed(2);
+        var str2 = "F⊥=" + this.normal.toFixed(2);
+        var str3 = "F∥=" + this.shear.toFixed(2);
       }
 
       ctx.font = '16px Arial';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
-      ctx.fillText(str1, obj.p2.x, obj.p2.y);
-      ctx.fillText(str2, obj.p2.x, obj.p2.y + 20);
-      ctx.fillText(str3, obj.p2.x, obj.p2.y + 40);
+      ctx.fillText(str1, this.p2.x, this.p2.y);
+      ctx.fillText(str2, this.p2.x, this.p2.y + 20);
+      ctx.fillText(str3, this.p2.x, this.p2.y + 40);
       ctx.globalCompositeOperation = 'source-over';
 
-      if (obj.irradianceMap && obj.binData) {
+      if (this.irradianceMap && this.binData) {
         // Define the unit vector of the x-axis of the plot (parallel to obj) and the y-axis of the plot (perpendicular to obj)
-        var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-        var ux = (obj.p2.x - obj.p1.x) / len;
-        var uy = (obj.p2.y - obj.p1.y) / len;
+        var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+        var ux = (this.p2.x - this.p1.x) / len;
+        var uy = (this.p2.y - this.p1.y) / len;
         var vx = uy;
         var vy = -ux;
-
-        /*
-        // Determine the maximum value of the irradiance map
-        var max = 0;
-        for (var i = 0; i < obj.binData.length; i++) {
-          if (obj.binData[i] > max) {
-            max = obj.binData[i];
-          }
-        }
-
-        // Determine the first and last non-zero bin
-        var first = 0;
-        var last = obj.binData.length - 1;
-        while (first < obj.binData.length && obj.binData[first] == 0) {
-          first++;
-        }
-
-        while (last >= 0 && obj.binData[last] == 0) {
-          last--;
-        }
-        */
 
         // Draw the irradiance map
         ctx.lineWidth = 1;
         ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
         ctx.fillStyle = 'blue';
         ctx.beginPath();
-        ctx.moveTo(obj.p1.x, obj.p1.y);
-        for (var i = 0; i < obj.binData.length; i++) {
-          ctx.lineTo(obj.p1.x + ux * i * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * i * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
-          ctx.lineTo(obj.p1.x + ux * (i + 1) * obj.binSize + vx * obj.binData[i] / obj.binSize * 20, obj.p1.y + uy * (i + 1) * obj.binSize + vy * obj.binData[i] / obj.binSize * 20);
+        ctx.moveTo(this.p1.x, this.p1.y);
+        for (var i = 0; i < this.binData.length; i++) {
+          ctx.lineTo(this.p1.x + ux * i * this.binSize + vx * this.binData[i] / this.binSize * 20, this.p1.y + uy * i * this.binSize + vy * this.binData[i] / this.binSize * 20);
+          ctx.lineTo(this.p1.x + ux * (i + 1) * this.binSize + vx * this.binData[i] / this.binSize * 20, this.p1.y + uy * (i + 1) * this.binSize + vy * this.binData[i] / this.binSize * 20);
         }
-        ctx.lineTo(obj.p2.x, obj.p2.y);
+        ctx.lineTo(this.p2.x, this.p2.y);
         ctx.fill();
         ctx.stroke();
-
-
       }
     }
+  }
 
-  },
+  onSimulationStart() {
+    this.power = 0;
+    this.normal = 0;
+    this.shear = 0;
 
-  // Shoot rays
-  onSimulationStart: function (obj) {
-    obj.power = 0;
-    obj.normal = 0;
-    obj.shear = 0;
-
-    if (obj.irradianceMap) {
-      var binSize = obj.binSize || 10;
-      var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
+    if (this.irradianceMap) {
+      var binSize = this.binSize;
+      var binNum = Math.ceil(Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y)) / binSize);
       var binData = [];
       for (var i = 0; i < binNum; i++) {
         binData[i] = 0;
       }
-      obj.binData = binData;
-    }
-  },
-
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
-    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
-    var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    var cost = ((ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y)) / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    ray.p2 = geometry.point(incidentPoint.x + ray.p2.x - ray.p1.x, incidentPoint.y + ray.p2.y - ray.p1.y);
-    ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
-
-    obj.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
-    obj.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
-    obj.shear -= Math.sign(rcrosss) * cost * (ray.brightness_s + ray.brightness_p);
-
-    if (obj.irradianceMap && obj.binData) {
-      var binSize = obj.binSize || 10;
-      var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
-      var binIndex = Math.floor(Math.sqrt((incidentPoint.x - obj.p1.x) * (incidentPoint.x - obj.p1.x) + (incidentPoint.y - obj.p1.y) * (incidentPoint.y - obj.p1.y)) / binSize);
-      obj.binData[binIndex] += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
+      this.binData = binData;
     }
   }
 
+  checkRayIntersects(ray) {
+    return this.checkRayIntersectsShape(ray);
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (this.p2.y - this.p1.y) - (ray.p2.y - ray.p1.y) * (this.p2.x - this.p1.x);
+    var sint = rcrosss / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+    var cost = ((ray.p2.x - ray.p1.x) * (this.p2.x - this.p1.x) + (ray.p2.y - ray.p1.y) * (this.p2.y - this.p1.y)) / Math.sqrt((ray.p2.x - ray.p1.x) * (ray.p2.x - ray.p1.x) + (ray.p2.y - ray.p1.y) * (ray.p2.y - ray.p1.y)) / Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+    ray.p2 = geometry.point(incidentPoint.x + ray.p2.x - ray.p1.x, incidentPoint.y + ray.p2.y - ray.p1.y);
+    ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
+
+    this.power += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
+    this.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
+    this.shear -= Math.sign(rcrosss) * cost * (ray.brightness_s + ray.brightness_p);
+
+    if (this.irradianceMap && this.binData) {
+      var binSize = this.binSize;
+      var binNum = Math.ceil(Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y)) / binSize);
+      var binIndex = Math.floor(Math.sqrt((incidentPoint.x - this.p1.x) * (incidentPoint.x - this.p1.x) + (incidentPoint.y - this.p1.y) * (incidentPoint.y - this.p1.y)) / binSize);
+      this.binData[binIndex] += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
+    }
+  }
 };

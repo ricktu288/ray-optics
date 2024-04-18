@@ -256,7 +256,9 @@ class ObjBar {
         func(obj, objOption_checkbox.checked);
       });
       if (updateOnChange) {
-        selectObj(selectedObj);
+        setTimeout(function () {
+          selectObj(selectedObj);
+        }, 250);
       }
     };
   }
