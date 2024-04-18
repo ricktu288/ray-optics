@@ -18,7 +18,7 @@ objTypes['parallel'] = class extends linearObjMixin(SceneObj) {
   static defaultProperties = {
     p1: null,
     p2: null,
-    p: 1,
+    p: 0.5,
     wavelength: GREEN_WAVELENGTH,
     divergence: 0.0,
     lambert: false,
