@@ -1,50 +1,49 @@
 // Other -> Ruler
-objTypes['ruler'] = {
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'ruler', p1: constructionPoint, p2: constructionPoint };
-  },
+/**
+ * The ruler tool
+ * Tools -> Other -> Ruler
+ * @class
+ * @extends LinearObjMixin(SceneObj)
+ * @property {Point} p1 - The first endpoint of the line segment.
+ * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {number} p - The scale interval of the ruler.
+ */
+objTypes['ruler'] = class extends LinearObjMixin(SceneObj) {
+  static type = 'ruler';
+  static defaultProperties = {
+    p1: null,
+    p2: null,
+    p: 10
+  };
 
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    objBar.createNumber(getMsg('ruler_scale'), 0, 10, 1, obj.p || 10, function (obj, value) {
+  populateObjBar(objBar) {
+    objBar.createNumber(getMsg('ruler_scale'), 0, 10, 1, this.p, function (obj, value) {
       obj.p = value;
     }, null, true);
-  },
+  }
 
-  // Use the prototype lineobj
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
-  move: objTypes['lineobj'].move,
-  checkMouseOver: objTypes['lineobj'].checkMouseOver,
-  onDrag: objTypes['lineobj'].onDrag,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;
+  draw(canvasRenderer, isAboveLight, isHovered) {
     if (isAboveLight) return;
+
+    const ctx = canvasRenderer.ctx;
     ctx.globalCompositeOperation = 'lighter';
-    var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    var par_x = (obj.p2.x - obj.p1.x) / len;
-    var par_y = (obj.p2.y - obj.p1.y) / len;
+    var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+    var par_x = (this.p2.x - this.p1.x) / len;
+    var par_y = (this.p2.y - this.p1.y) / len;
     var per_x = par_y;
     var per_y = -par_x;
-    var ang = Math.atan2(obj.p2.y - obj.p1.y, obj.p2.x - obj.p1.x);
+    var ang = Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
 
-    var scale_step = obj.p || 10;
+    var scale_step = this.p;
     var scale_step_mid = scale_step * 5;
     var scale_step_long = scale_step * 10;
     var scale_len = 10;
     var scale_len_mid = 15;
 
-
     ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-    //ctx.font="bold 14px Arial";
     ctx.font = '14px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';
-
     if (ang > Math.PI * (-0.25) && ang <= Math.PI * 0.25) {
       //↘~↗
       var scale_direction = -1;
@@ -79,14 +78,14 @@ objTypes['ruler'] = {
     }
 
     ctx.beginPath();
-    ctx.moveTo(obj.p1.x, obj.p1.y);
-    ctx.lineTo(obj.p2.x, obj.p2.y);
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
     var x, y;
     for (var i = 0; i <= len; i += scale_step) {
-      ctx.moveTo(obj.p1.x + i * par_x, obj.p1.y + i * par_y);
+      ctx.moveTo(this.p1.x + i * par_x, this.p1.y + i * par_y);
       if (i % scale_step_long == 0) {
-        x = obj.p1.x + i * par_x + scale_direction * scale_len_long * per_x;
-        y = obj.p1.y + i * par_y + scale_direction * scale_len_long * per_y;
+        x = this.p1.x + i * par_x + scale_direction * scale_len_long * per_x;
+        y = this.p1.y + i * par_y + scale_direction * scale_len_long * per_y;
         ctx.lineTo(x, y);
         if (canvasRenderer.isSVG) ctx.stroke();
         ctx.save();
@@ -96,15 +95,14 @@ objTypes['ruler'] = {
         ctx.restore();
       }
       else if (i % scale_step_mid == 0) {
-        ctx.lineTo(obj.p1.x + i * par_x + scale_direction * scale_len_mid * per_x, obj.p1.y + i * par_y + scale_direction * scale_len_mid * per_y);
+        ctx.lineTo(this.p1.x + i * par_x + scale_direction * scale_len_mid * per_x, this.p1.y + i * par_y + scale_direction * scale_len_mid * per_y);
       }
       else {
-        ctx.lineTo(obj.p1.x + i * par_x + scale_direction * scale_len * per_x, obj.p1.y + i * par_y + scale_direction * scale_len * per_y);
+        ctx.lineTo(this.p1.x + i * par_x + scale_direction * scale_len * per_x, this.p1.y + i * par_y + scale_direction * scale_len * per_y);
       }
     }
     ctx.stroke();
 
     ctx.globalCompositeOperation = 'source-over';
   }
-
 };

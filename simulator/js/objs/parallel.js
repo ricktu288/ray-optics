@@ -2,7 +2,7 @@
  * A parallel or divergent beam of light.
  * Tools -> Light source -> beam
  * @class
- * @extends linearObjMixin(SceneObj)
+ * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint of the segment perpendicular to the beam.
  * @property {Point} p2 - The second endpoint of the segment perpendicular to the beam.
  * @property {number} p - The brightness of the beam.
@@ -12,7 +12,7 @@
  * @property {boolean} random - Whether the beam is random.
  * @property {Array<number>} randomNumbers - Random numbers used for random beam.
  */
-objTypes['parallel'] = class extends linearObjMixin(SceneObj) {
+objTypes['parallel'] = class extends LinearObjMixin(SceneObj) {
   static type = 'parallel';
   static isOptical = true;
   static defaultProperties = {

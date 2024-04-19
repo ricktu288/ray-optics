@@ -1,13 +1,13 @@
 /**
  * A single ray of light.
  * Tools -> Light source -> Single ray
- * @extends linearObjMixin(SceneObj)
+ * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
  * @property {number} p - The brightness of the ray.
  * @property {number} wavelength - The wavelength of the ray in nm. Only effective in color mode.
  */
-objTypes['laser'] = class extends linearObjMixin(SceneObj) {
+objTypes['laser'] = class extends LinearObjMixin(SceneObj) {
   static type = 'laser';
   static isOptical = true;
   static defaultProperties = {

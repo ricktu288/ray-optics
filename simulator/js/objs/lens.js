@@ -2,12 +2,12 @@
  * Ideal lens
  * Tools -> Glass -> Ideal Lens
  * @class
- * @extends linearObjMixin(SceneObj)
+ * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} p - The focal length.
  */
-objTypes['lens'] = class extends linearObjMixin(SceneObj) {
+objTypes['lens'] = class extends LinearObjMixin(SceneObj) {
   static type = 'lens';
   static isOptical = true;
   static defaultProperties = {

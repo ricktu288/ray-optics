@@ -4,7 +4,7 @@
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  */
-const linearObjMixin = Base => class extends Base {
+const LinearObjMixin = Base => class extends Base {
 
   onConstructMouseDown(mouse, ctrl, shift) {
     if (!this.constructionPoint) {

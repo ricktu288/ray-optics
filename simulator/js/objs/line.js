@@ -2,13 +2,13 @@
  * Line or arrow decoration
  * Tools -> Other -> Line / Arrow
  * @class
- * @extends linearObjMixin(SceneObj)
+ * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} arrow1 - Whether an arrow is pointing from the first endpoint.
  * @property {boolean} arrow2 - Whether an arrow is pointing from the second endpoint.
  */
-objTypes['line'] = class extends linearObjMixin(SceneObj) {
+objTypes['line'] = class extends LinearObjMixin(SceneObj) {
   static type = 'line';
   static defaultProperties = {
     p1: null,
