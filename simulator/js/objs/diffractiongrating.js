@@ -1,85 +1,94 @@
-// Blocker -> Diffraction Grating
-objTypes['diffractiongrating'] = {
+/**
+ * Diffraction Grating
+ * Tools -> Blocker -> Diffraction Grating
+ * It is in the blocker category since the model we use is a blocker with slits.
+ * @class
+ * @extends LinearObjMixin(SceneObj)
+ * @property {Point} p1 - The first endpoint of the line segment.
+ * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {number} line_density - The number of lines per millimeter.
+ * @property {number} slit_ratio - The ratio of the slit width to the line interval.
+ * @property {boolean} mirrored - Whether the diffraction grating is reflective.
+ */
+objTypes['diffractiongrating'] = class extends LinearObjMixin(SceneObj) {
+  static type = 'diffractiongrating';
+  static isOptical = true;
+  static defaultProperties = {
+    p1: null,
+    p2: null,
+    line_density: 1000,
+    slit_ratio: 0.5,
+    mirrored: false
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'diffractiongrating', p1: constructionPoint, p2: constructionPoint, line_density: 1000, slit_ratio: 0.5, mirrored: false };
-  },
-
-
-  // Use the prototype lineobj
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
-  move: objTypes['lineobj'].move,
-  checkMouseOver: objTypes['lineobj'].checkMouseOver,
-  onDrag: objTypes['lineobj'].onDrag,
-  checkRayIntersects: objTypes['lineobj'].checkRayIntersects,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;
-    if (obj.mirrored) {
-      ctx.strokeStyle = getMouseStyle(obj, 'rgb(168,168,168)');
-      ctx.beginPath();
-      ctx.moveTo(obj.p1.x, obj.p1.y);
-      ctx.lineTo(obj.p2.x, obj.p2.y);
-      ctx.stroke();
-    }
-    ctx.strokeStyle = getMouseStyle(obj, 'rgb(124,62,18)');
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'butt';
-    ctx.beginPath();
-    ctx.setLineDash([4 * (1 - obj.slit_ratio), 4 * obj.slit_ratio]);
-    ctx.moveTo(obj.p1.x, obj.p1.y);
-    ctx.lineTo(obj.p2.x, obj.p2.y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.lineWidth = 1;
-  },
-
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    objBar.createNumber(getMsg('lines/mm'), 1, 2500, 5, obj.line_density, function (obj, value) {
+  populateObjBar(objBar) {
+    objBar.createNumber(getMsg('lines/mm'), 1, 2500, 5, this.line_density, function (obj, value) {
       obj.line_density = value;
     });
 
-    if (objBar.showAdvanced(obj.slit_ratio != 0.5 || obj.mirrored)) {
-      objBar.createNumber(getMsg('slit_ratio'), 0, 1, 0.001, obj.slit_ratio, function (obj, value) {
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['slit_ratio']))) {
+      objBar.createNumber(getMsg('slit_ratio'), 0, 1, 0.001, this.slit_ratio, function (obj, value) {
         obj.slit_ratio = value;
       });
-      objBar.createBoolean(getMsg('mirrored'), obj.mirrored, function (obj, value) {
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['mirrored']))) {
+      objBar.createBoolean(getMsg('mirrored'), this.mirrored, function (obj, value) {
         obj.mirrored = value;
       });
     }
 
-    if (scene.mode == 'images' || scene.mode == 'observer') {
+    if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
       objBar.createNote(getMsg('image_detection_warning'));
     }
 
-    if (!scene.colorMode) {
+    if (!this.scene.colorMode) {
       objBar.createNote(getMsg('non_color_mode_warning'));
     }
-  },
+  }
 
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    if (this.mirrored) {
+      ctx.strokeStyle = getMouseStyle(this, 'rgb(168,168,168)');
+      ctx.beginPath();
+      ctx.moveTo(this.p1.x, this.p1.y);
+      ctx.lineTo(this.p2.x, this.p2.y);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = getMouseStyle(this, 'rgb(124,62,18)');
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'butt';
+    ctx.beginPath();
+    ctx.setLineDash([4 * (1 - this.slit_ratio), 4 * this.slit_ratio]);
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.lineWidth = 1;
+  }
+
+  checkRayIntersects(ray) {
+    return this.checkRayIntersectsShape(ray);
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint) {
     const mm_in_nm = 1 / 1000000;
     var rx = ray.p1.x - incidentPoint.x;
     var ry = ray.p1.y - incidentPoint.y;
-    var mx = obj.p2.x - obj.p1.x;
-    var my = obj.p2.y - obj.p1.y;
+    var mx = this.p2.x - this.p1.x;
+    var my = this.p2.y - this.p1.y;
 
     var wavelength = (ray.wavelength || GREEN_WAVELENGTH) * mm_in_nm;
-    var interval = 1 / obj.line_density;
-    var slit_width = interval * obj.slit_ratio;
+    var interval = 1 / this.line_density;
+    var slit_width = interval * this.slit_ratio;
 
     //Find which side the incoming ray is hitting the diffraction line segment
     var crossProduct = rx * my - ry * mx;
-    var left_point = crossProduct > 0 ? obj.p1 : obj.p2;
+    var left_point = crossProduct > 0 ? this.p1 : this.p2;
 
     //If mirrored, reflect the rays rather than pass them
-    var mirror = obj.mirrored ? -1 : 1;
+    var mirror = this.mirrored ? -1 : 1;
 
     //Find angles
     var theta_left = Math.PI - Math.atan2(left_point.y - incidentPoint.y, left_point.x - incidentPoint.x);
@@ -100,6 +109,8 @@ objTypes['diffractiongrating'] = {
 
       var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
       var sinc_arg = (phase_diff == 0) ? 1 : Math.sin(phase_diff / 2) / (phase_diff / 2);
+
+      // This formula may not be accurate when `diffracted_angle` is large. This is warned in the popover of the tool.
       var intensity = slit_width * slit_width / (interval * interval) * Math.pow(sinc_arg, 2);
       
       diffracted_ray.wavelength = ray.wavelength;
@@ -116,5 +127,5 @@ objTypes['diffractiongrating'] = {
       isAbsorbed: true,
       newRays: newRays
     };
-  },
+  }
 };
