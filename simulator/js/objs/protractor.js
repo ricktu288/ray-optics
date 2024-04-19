@@ -1,25 +1,23 @@
-// Other -> Protractor
-objTypes['protractor'] = {
+/**
+ * The protractor tool
+ * Tools -> Other -> Protractor
+ * @class
+ * @extends CircularObjMixin(SceneObj)
+ * @property {Point} p1 - The center of the protractor.
+ * @property {Point} p2 - The zero point on the protractor.
+ */
+objTypes['protractor'] = class extends CircularObjMixin(SceneObj) {
+  static type = 'protractor';
+  static defaultProperties = {
+    p1: null,
+    p2: null
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'protractor', p1: constructionPoint, p2: constructionPoint };
-  },
-
-  // Use the prototype circleobj
-  onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
-  move: objTypes['circleobj'].move,
-  checkMouseOver: objTypes['circleobj'].checkMouseOver,
-  onDrag: objTypes['circleobj'].onDrag,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
-      var r = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
+      var r = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
       var scale_width_limit = 5;
 
       var scale_step = 1;
@@ -61,15 +59,15 @@ objTypes['protractor'] = {
       ctx.textBaseline = 'top';
 
       ctx.beginPath();
-      ctx.arc(obj.p1.x, obj.p1.y, r, 0, Math.PI * 2, false);
+      ctx.arc(this.p1.x, this.p1.y, r, 0, Math.PI * 2, false);
 
       var ang, x, y;
       for (var i = 0; i < 360; i += scale_step) {
-        ang = i * Math.PI / 180 + Math.atan2(obj.p2.y - obj.p1.y, obj.p2.x - obj.p1.x);
-        ctx.moveTo(obj.p1.x + r * Math.cos(ang), obj.p1.y + r * Math.sin(ang));
+        ang = i * Math.PI / 180 + Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
+        ctx.moveTo(this.p1.x + r * Math.cos(ang), this.p1.y + r * Math.sin(ang));
         if (i % scale_step_long == 0) {
-          x = obj.p1.x + (r - scale_len_long) * Math.cos(ang);
-          y = obj.p1.y + (r - scale_len_long) * Math.sin(ang);
+          x = this.p1.x + (r - scale_len_long) * Math.cos(ang);
+          y = this.p1.y + (r - scale_len_long) * Math.sin(ang);
           ctx.lineTo(x, y);
           if (canvasRenderer.isSVG) ctx.stroke();
           ctx.save();
@@ -79,10 +77,10 @@ objTypes['protractor'] = {
           ctx.restore();
         }
         else if (i % scale_step_mid == 0) {
-          ctx.lineTo(obj.p1.x + (r - scale_len_mid) * Math.cos(ang), obj.p1.y + (r - scale_len_mid) * Math.sin(ang));
+          ctx.lineTo(this.p1.x + (r - scale_len_mid) * Math.cos(ang), this.p1.y + (r - scale_len_mid) * Math.sin(ang));
         }
         else {
-          ctx.lineTo(obj.p1.x + (r - scale_len) * Math.cos(ang), obj.p1.y + (r - scale_len) * Math.sin(ang));
+          ctx.lineTo(this.p1.x + (r - scale_len) * Math.cos(ang), this.p1.y + (r - scale_len) * Math.sin(ang));
         }
       }
       ctx.stroke();
@@ -90,12 +88,10 @@ objTypes['protractor'] = {
       ctx.globalCompositeOperation = 'source-over';
     }
     ctx.fillStyle = 'red';
-    ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+    ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      ctx.fillRect(obj.p2.x - 2.5, obj.p2.y - 2.5, 5, 5);
+      ctx.fillRect(this.p2.x - 2.5, this.p2.y - 2.5, 5, 5);
     }
-
   }
-
 };
