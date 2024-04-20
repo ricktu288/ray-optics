@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-  - family-names: Tu
-    given-names: Yi-Ting
-title: "Ray Optics Simulation"
-doi: 10.5281/zenodo.6386611
-date-released: 2016-02-22
-url: "https://phydemo.app/ray-optics/"

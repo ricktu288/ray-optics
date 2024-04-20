@@ -38,21 +38,7 @@ For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/
 
 # Cite this project
 
-APA:
-```
-Tu, Y.-T. (2016). Ray Optics Simulation [Computer software]. https://doi.org/10.5281/zenodo.6386611
-```
-BibTeX:
-```
-@software{Tu_Ray_Optics_Simulation_2016,
-  author = {Tu, Yi-Ting},
-  doi = {10.5281/zenodo.6386611},
-  month = {2},
-  title = {{Ray Optics Simulation}},
-  url = {https://phydemo.app/ray-optics/},
-  year = {2016}
-}
-```
+See [CITATION.bib]{https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib}
 
 # License
 Copyright 2016–2024 Yi-Ting Tu
