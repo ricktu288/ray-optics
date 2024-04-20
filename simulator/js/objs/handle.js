@@ -1,13 +1,11 @@
 /**
  * The handle created when holding ctrl and click several points.
- * @class
- * @extends SceneObj
  * @property {Point} p1 - The position of the handle.
  * @property {Point} p2 - The position of the rotation/scale center.
  * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
-objTypes['handle'] = class extends SceneObj {
+objTypes['handle'] = class extends BaseSceneObj {
   static type = 'handle';
   static isOptical = true; // As the handle may bind to objects which are optical, this should be regarded as true.
   static defaultProperties = {

@@ -1,7 +1,6 @@
 /**
  * Finite angle point source
  * Tools -> Light source -> Point source (<360deg)
- * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The position of the point source.
  * @property {Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.
@@ -9,7 +8,7 @@
  * @property {number} p - The angle of emission in degrees.
  * @property {boolean} symmetric - Whether the emission is symmetric about the reference line. If not, the emission is only on one side of the reference line.
  */
-objTypes['led'] = class extends LinearObjMixin(SceneObj) {
+objTypes['led'] = class extends LinearObjMixin(BaseSceneObj) {
   static type = 'led';
   static isOptical = true;
   static defaultProperties = {

@@ -2,15 +2,13 @@
  * Diffraction Grating
  * Tools -> Blocker -> Diffraction Grating
  * It is in the blocker category since the model we use is a blocker with slits.
- * @class
- * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} line_density - The number of lines per millimeter.
  * @property {number} slit_ratio - The ratio of the slit width to the line interval.
  * @property {boolean} mirrored - Whether the diffraction grating is reflective.
  */
-objTypes['diffractiongrating'] = class extends LinearObjMixin(SceneObj) {
+objTypes['diffractiongrating'] = class extends LinearObjMixin(BaseSceneObj) {
   static type = 'diffractiongrating';
   static isOptical = true;
   static defaultProperties = {

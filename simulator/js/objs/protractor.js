@@ -1,12 +1,10 @@
 /**
  * The protractor tool
  * Tools -> Other -> Protractor
- * @class
- * @extends CircularObjMixin(SceneObj)
  * @property {Point} p1 - The center of the protractor.
  * @property {Point} p2 - The zero point on the protractor.
  */
-objTypes['protractor'] = class extends CircularObjMixin(SceneObj) {
+objTypes['protractor'] = class extends CircularObjMixin(BaseSceneObj) {
   static type = 'protractor';
   static defaultProperties = {
     p1: null,
@@ -53,7 +51,6 @@ objTypes['protractor'] = class extends CircularObjMixin(SceneObj) {
         scale_step_mid = 30;
         scale_step_long = 90;
       }
-
 
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';

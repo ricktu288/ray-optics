@@ -1,14 +1,12 @@
 /**
  * 360 degree point source
  * Tools -> Light Source -> Point source (360deg)
- * @class
- * @extends SceneObj
  * @property {number} x - The x coordinate of the point source.
  * @property {number} y - The y coordinate of the point source.
  * @property {number} p - The brightness of the point source.
  * @property {number} wavelength - The wavelength of the light emitted by the point source in nm. Only effective in color mode.
  */
-objTypes['radiant'] = class extends SceneObj {
+objTypes['radiant'] = class extends BaseSceneObj {
   static type = 'radiant';
   static isOptical = true;
   static defaultProperties = {

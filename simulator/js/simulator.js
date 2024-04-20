@@ -635,38 +635,7 @@ function shootWaitingRays() {
 }
 
 
-//Optical Filter Settings
-function dichroicSettings(obj, objBar){
-  if (scene.colorMode) {
-    objBar.createBoolean(getMsg('filter'), obj.isDichroic, function(obj, value) {
-      obj.isDichroic = value;
-      obj.wavelength = obj.wavelength || GREEN_WAVELENGTH;
-      obj.isDichroicFilter = obj.isDichroicFilter || false;
-      obj.bandwidth = obj.bandwidth || 10
-    }, null, true);
-    if (obj.isDichroic) {
-      objBar.createBoolean(getMsg('invert'), obj.isDichroicFilter, function(obj, value) {
-        if(obj.isDichroic){
-          obj.isDichroicFilter = value;
-        }
-      });
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, obj.wavelength || GREEN_WAVELENGTH, function(obj, value) { 
-        obj.wavelength = value;
-      });
-      objBar.createNumber("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH) , 1, obj.bandwidth || 10, function(obj, value) { 
-        obj.bandwidth = value;
-      });
-    }
-  }
-}
 
-//Optical filter wavelength interaction check
-//Checks to see if the wavelength of the ray interacts
-function wavelengthInteraction(obj, ray){
-  var dichroicEnabled = scene.colorMode && obj.isDichroic && obj.wavelength;
-  var rayHueMatchesMirror =  Math.abs(obj.wavelength - ray.wavelength) <= (obj.bandwidth || 0);
-  return !dichroicEnabled || (rayHueMatchesMirror != obj.isDichroicFilter);
-}
 
 
 // takes wavelength in nm and returns an rgb value

@@ -1,15 +1,11 @@
-// Other -> Ruler
-
 /**
  * The ruler tool
  * Tools -> Other -> Ruler
- * @class
- * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} p - The scale interval of the ruler.
  */
-objTypes['ruler'] = class extends LinearObjMixin(SceneObj) {
+objTypes['ruler'] = class extends LinearObjMixin(BaseSceneObj) {
   static type = 'ruler';
   static defaultProperties = {
     p1: null,

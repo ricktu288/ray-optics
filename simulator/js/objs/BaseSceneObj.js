@@ -1,7 +1,7 @@
 /**
  * Base class for objects (optical elements, decorations, etc.) in the scene.
  */
-class SceneObj {
+class BaseSceneObj {
 
   /**
    * @param {Scene} scene - The scene the object belongs to.
@@ -168,7 +168,7 @@ class SceneObj {
    * @property {string} [cursor] - The cursor to be used during hovering and dragging.
    * @property {SnapContext} [snapContext] - The snap context.
    * @property {boolean} [hasDuplicated] - Whether the object is duplicated during the dragging. This is true when the user holds the Ctrl key and drags the whole object. Only set by the editor.
-   * @property {SceneObj} [originalObj] - The original object when the dragging starts. Only set by the editor.
+   * @property {BaseSceneObj} [originalObj] - The original object when the dragging starts. Only set by the editor.
    * @property {boolean} [isByHandle] - Whether the dragging is initiated by dragging a handle. Only set by the editor.
    */
 
@@ -243,7 +243,7 @@ class SceneObj {
    * @param {Ray} ray - The ray.
    * @param {number} rayIndex - The index of the ray in the array of all rays currently in the scene in the simulator. In particular, in a bunch of continuous rays, the rays are ordered by the time they are emitted, and the index is the order of emission. This can be used to downsample the rays and increase the individual brightness if it is too low.
    * @param {Point} incidentPoint - The point where the ray is incident on the object, which is the intersection point found by `checkRayIntersects`.
-   * @param {Array<SceneObj>} surfaceMergingObjs - The objects that are merged with the current object. If two or more objects with `supportSurfaceMerging === true` has overlapping surfaces (often acheived by using the grid), and if a ray is incident on those surfaces together, only one of the object will be have `onRayIncident` being called, and the other objects will be in `surfaceMergingObjs`. In this case, this function must also deal with the combination of the surface before doing the actual interaction. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
+   * @param {Array<BaseSceneObj>} surfaceMergingObjs - The objects that are merged with the current object. If two or more objects with `supportSurfaceMerging === true` has overlapping surfaces (often acheived by using the grid), and if a ray is incident on those surfaces together, only one of the object will be have `onRayIncident` being called, and the other objects will be in `surfaceMergingObjs`. In this case, this function must also deal with the combination of the surface before doing the actual interaction. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
    */
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     // Do nothing by default

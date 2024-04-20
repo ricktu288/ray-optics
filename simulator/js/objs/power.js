@@ -1,8 +1,6 @@
 /**
  * The detector tool
  * Tools -> Other -> Detector
- * @class
- * @extends LinearObjMixin(SceneObj)
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {boolean} irradianceMap - Whether to display the irradiance map.
@@ -12,7 +10,7 @@
  * @property {number} shear - The measured shear force through the detector.
  * @property {Array<number>} binData - The measured data for the irradiance map.
  */
-objTypes['power'] = class extends LinearObjMixin(SceneObj) {
+objTypes['power'] = class extends LinearObjMixin(BaseSceneObj) {
   static type = 'power';
   static isOptical = true;
   static defaultProperties = {

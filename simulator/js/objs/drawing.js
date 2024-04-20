@@ -1,13 +1,11 @@
 /**
  * Drawing tool
  * Tools -> Other -> Drawing
- * @class
- * @extends SceneObj
  * @property {Array<Array<number>>} points - The points of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`.
  * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
  * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
  */
-objTypes['drawing'] = class extends SceneObj {
+objTypes['drawing'] = class extends BaseSceneObj {
   static type = 'drawing';
   static defaultProperties = {
     points: [],

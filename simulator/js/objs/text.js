@@ -1,8 +1,6 @@
 /**
  * Text label
  * Tools -> Other -> Text
- * @class
- * @extends SceneObj
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} p - The text content.
@@ -13,7 +11,7 @@
  * @property {boolean} fontSmallCaps - Whether the text is in small caps.
  * @property {number} fontAngle - The angle of the text in degrees.
  */
-objTypes['text'] = class extends SceneObj {
+objTypes['text'] = class extends BaseSceneObj {
   static type = 'text';
   static defaultProperties = {
     x: null,
