@@ -38,7 +38,7 @@ For contribution guidelines, see [CONTRIBUTING.md](https://github.com/ricktu288/
 
 # Cite this project
 
-See [CITATION.bib]{https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib}
+See [CITATION.bib](https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib)
 
 # License
 Copyright 2016–2024 Yi-Ting Tu
