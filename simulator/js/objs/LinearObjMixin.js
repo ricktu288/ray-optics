@@ -122,6 +122,8 @@ const LinearObjMixin = Base => class extends Base {
 
       if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
         return rp_temp;
+      } else {
+        return null;
       }
     } else {
       return null;
