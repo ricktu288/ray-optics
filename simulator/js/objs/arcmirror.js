@@ -131,33 +131,6 @@ objTypes['arcmirror'] = class extends BaseFilter {
     }
   }
 
-  checkRayIntersects(ray) {
-    if (this.checkRayIntersectFilter(ray)) {
-      if (!this.p3) { return null; }
-      var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
-      if (isFinite(center.x) && isFinite(center.y)) {
-        var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
-        var rp_exist = [];
-        var rp_lensq = [];
-        for (var i = 1; i <= 2; i++) {
-          rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared;
-          rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
-        }
-        if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
-        if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) { return rp_temp[2]; }
-      } else {
-        // The three points on the arc is colinear. Treat as a line segment.
-        var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
-
-        if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-          return rp_temp;
-        } else {
-          return null;
-        }
-      }
-    }
-  }
-
   checkMouseOver(mouse) {
     let dragContext = {};
     if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p3)) {
@@ -247,6 +220,33 @@ objTypes['arcmirror'] = class extends BaseFilter {
 
       // Update the mouse position
       dragContext.mousePos1 = mousePos;
+    }
+  }
+
+  checkRayIntersects(ray) {
+    if (this.checkRayIntersectFilter(ray)) {
+      if (!this.p3) { return null; }
+      var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
+      if (isFinite(center.x) && isFinite(center.y)) {
+        var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
+        var rp_exist = [];
+        var rp_lensq = [];
+        for (var i = 1; i <= 2; i++) {
+          rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared;
+          rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
+        }
+        if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
+        if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) { return rp_temp[2]; }
+      } else {
+        // The three points on the arc is colinear. Treat as a line segment.
+        var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
+
+        if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
+          return rp_temp;
+        } else {
+          return null;
+        }
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 /**
- * The base class for optical elements with wavelength filter settings, including mirrors (which have the dichroic feature) and blockers.
+ * The base class for optical elements with wavelength filter functionality, including mirrors (which have the dichroic feature) and blockers.
  * @class BaseFilter
  * @property {boolean} isDichroic - Whether the filter feature is enabled. The name comes from the first use case of this feature (dichroic mirrors). This name should be changed in the future. The name on the UI is "Filter".
  * @property {boolean} isDichroicFilter - If true, the element interacts with the ray only if its wavelength is outside the bandwidth of the filter. If false, the element interacts with the ray only if its wavelength is within the bandwidth of the filter. Again, the name should be changed in the future. The name on the UI is "Invert".
