@@ -19,7 +19,7 @@ locales["pt-BR"] = {
     "message": "Início"
   },
   "home_url": {
-    "message": "https://phydemo.app/ray-optics/"
+    "message": "https://phydemo.app/ray-optics/pt-BR/"
   },
   "gallery": {
     "message": "Galeria"
