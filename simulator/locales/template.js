@@ -747,6 +747,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "About"
   },
+  "about_url": {
+    "incomplete": true,
+    "message": "https://phydemo.app/ray-optics/about"
+  },
   "translate": {
     "incomplete": true,
     "message": "Help us translate this app"

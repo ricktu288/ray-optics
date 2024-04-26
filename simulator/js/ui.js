@@ -123,6 +123,7 @@ function updateUIText(elememt = document) {
 
   document.title = getMsg('appName');
   document.getElementById('home').href = getMsg('home_url');
+  document.getElementById('about').href = getMsg('about_url');
 }
 
 function updateUIWithPopovers(elememt = document) {

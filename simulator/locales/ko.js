@@ -747,6 +747,9 @@ locales["ko"] = {
     "incomplete": false,
     "message": "이 앱에 대하여"
   },
+  "about_url": {
+    "message": "https://phydemo.app/ray-optics/about"
+  },
   "translate": {
     "incomplete": false,
     "message": "이 앱의 번역 참여"
