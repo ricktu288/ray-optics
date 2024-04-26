@@ -1,56 +1,66 @@
-// Mirror -> Custom equation
-objTypes['curvedmirror'] = {
+/**
+ * Mirror with shape defined by a custom equation.
+ * Tools -> Mirror -> Custom equation
+ * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
+ * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
+ * @property {string} p - The equation of the mirror. The variable is x.
+ * @property {boolean} isDichroic - Whether it is a dichroic mirror.
+ * @property {boolean} isDichroicFilter - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
+ * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
+ * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
+ * @property {Array<Point>} tmp_points - The points on the curve.
+ * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
+ */
+objTypes['curvedmirror'] = class extends LinearObjMixin(BaseFilter) {
+  static type = 'curvedmirror';
+  static isOptical = true;
+  static defaultProperties = {
+    p1: null,
+    p2: null,
+    p: "0.5\\cdot\\sqrt{1-x^2}",
+    isDichroic: false,
+    isDichroicFilter: false,
+    wavelength: GREEN_WAVELENGTH,
+    bandwidth: 10
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'curvedmirror', p1: constructionPoint, p2: constructionPoint, p: "0.5\\cdot\\sqrt{1-x^2}" };
-  },
-
-  dichroicSettings: objTypes['mirror'].dichroicSettings,
-  wavelengthInteraction: objTypes['mirror'].wavelengthInteraction,
-
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    objBar.createEquation('y = ', obj.p, function (obj, value) {
+  populateObjBar(objBar) {
+    objBar.createEquation('y = ', this.p, function (obj, value) {
       obj.p = value;
     }, getMsg('custom_equation_note'));
-    dichroicSettings(obj, objBar);
-  },
+    
+    super.populateObjBar(objBar);
+  }
 
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     var fn;
     try {
-      fn = evaluateLatex(obj.p);
+      fn = evaluateLatex(this.p);
     } catch (e) {
-      delete obj.tmp_points;
+      delete this.tmp_points;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.font = '12px serif';
       ctx.fillStyle = "gray"
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
       ctx.fillStyle = "red"
-      ctx.fillText(e.toString(), obj.p1.x, obj.p1.y);
+      ctx.fillText(e.toString(), this.p1.x, this.p1.y);
       return;
     }
     ctx.fillStyle = 'rgb(255,0,255)';
-    var p12d = geometry.distance(obj.p1, obj.p2);
+    var p12d = geometry.distance(this.p1, this.p2);
     // unit vector from p1 to p2
-    var dir1 = [(obj.p2.x - obj.p1.x) / p12d, (obj.p2.y - obj.p1.y) / p12d];
+    var dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
     // perpendicular direction
     var dir2 = [dir1[1], -dir1[0]];
     // get height of (this section of) parabola
     var x0 = p12d / 2;
     var i;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
-    obj.tmp_points = [];
+    this.tmp_points = [];
     var lastError = "";
     for (i = -0.1; i < p12d + 0.09; i += 0.1) {
       // avoid using exact integers to avoid problems with detecting intersections
@@ -63,61 +73,58 @@ objTypes['curvedmirror'] = {
       try {
         scaled_y = fn({ x: scaled_x, "pi": Math.PI });
         var y = scaled_y * p12d * 0.5;
-        var pt = geometry.point(obj.p1.x + dir1[0] * ix + dir2[0] * y, obj.p1.y + dir1[1] * ix + dir2[1] * y);
+        var pt = geometry.point(this.p1.x + dir1[0] * ix + dir2[0] * y, this.p1.y + dir1[1] * ix + dir2[1] * y);
         if (i == -0.1) {
           ctx.moveTo(pt.x, pt.y);
         } else {
           ctx.lineTo(pt.x, pt.y);
         }
-        obj.tmp_points.push(pt);
+        this.tmp_points.push(pt);
       } catch (e) {
         lastError = e;
       }
     }
-    if (obj.tmp_points.length == 0) {
-      delete obj.tmp_points;
+    if (this.tmp_points.length == 0) {
+      delete this.tmp_points;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.font = '12px serif';
       ctx.fillStyle = "gray"
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
       ctx.fillStyle = "red"
-      ctx.fillText(lastError.toString(), obj.p1.x, obj.p1.y);
+      ctx.fillText(lastError.toString(), this.p1.x, this.p1.y);
       return;
     }
     ctx.stroke();
     if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
     }
-  },
+  }
 
-  move: objTypes['lineobj'].move,
-
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse) {
+  checkMouseOver(mouse) {
     let dragContext = {};
-    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2)) {
       dragContext.part = 1;
-      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
       return dragContext;
     }
-    if (mouse.isOnPoint(obj.p2)) {
+    if (mouse.isOnPoint(this.p2)) {
       dragContext.part = 2;
-      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
       return dragContext;
     }
 
-    if (!obj.tmp_points) return;
+    if (!this.tmp_points) return;
     var i;
-    var pts = obj.tmp_points;
+    var pts = this.tmp_points;
     for (i = 0; i < pts.length - 1; i++) {
 
       var seg = geometry.line(pts[i], pts[i + 1]);
       if (mouse.isOnSegment(seg)) {
-        // Dragging the entire obj
+        // Dragging the entire this
         const mousePos = mouse.getPosSnappedToGrid();
         dragContext.part = 0;
         dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -126,16 +133,13 @@ objTypes['curvedmirror'] = {
         return dragContext;
       }
     }
-  },
+  }
 
-  onDrag: objTypes['lineobj'].onDrag,
-
-  // Test if a ray may shoot on this object (if yes, return the intersection)
-  checkRayIntersects: function (obj, ray) {
-    if (!obj.tmp_points || !wavelengthInteraction(obj, ray)) return;
+  checkRayIntersects(ray) {
+    if (!this.tmp_points || !this.checkRayIntersectFilter(ray)) return;
     var i, j;
-    var pts = obj.tmp_points;
-    var dir = geometry.distance(obj.p2, ray.p1) > geometry.distance(obj.p1, ray.p1);
+    var pts = this.tmp_points;
+    var dir = geometry.distance(this.p2, ray.p1) > geometry.distance(this.p1, ray.p1);
     var incidentPoint;
     for (j = 0; j < pts.length - 1; j++) {
       i = dir ? j : (pts.length - 2 - j);
@@ -147,19 +151,18 @@ objTypes['curvedmirror'] = {
       if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
         if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {
           incidentPoint = rp_temp;
-          obj.tmp_i = i;
+          this.tmp_i = i;
         }
       }
     }
     if (incidentPoint) return incidentPoint;
-  },
+  }
 
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+  onRayIncident(ray, rayIndex, incidentPoint) {
     var rx = ray.p1.x - incidentPoint.x;
     var ry = ray.p1.y - incidentPoint.y;
-    var i = obj.tmp_i;
-    var pts = obj.tmp_points;
+    var i = this.tmp_i;
+    var pts = this.tmp_points;
     var seg = geometry.line(pts[i], pts[i + 1]);
     var mx = seg.p2.x - seg.p1.x;
     var my = seg.p2.y - seg.p1.y;
@@ -210,5 +213,4 @@ objTypes['curvedmirror'] = {
       ray.p2 = geometry.point(outxFinal, outyFinal);
     }
   }
-
 };
