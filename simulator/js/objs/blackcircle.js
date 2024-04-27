@@ -1,84 +1,55 @@
-// Blocker -> Circle Blocker
-objTypes['blackcircle'] = {
+/**
+ * Circle blocker
+ * Tools -> Blocker -> Circle Blocker
+ * @property {Point} p1 - The center of the circle.
+ * @property {Point} p2 - A point on the circle.
+ * @property {boolean} isDichroic - Whether it is a filter.
+ * @property {boolean} isDichroicFilter - If true, the ray with wavelength outside the bandwidth is blocked. If false, the ray with wavelength inside the bandwidth is blocked.
+ * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
+ * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
+ */
+objTypes['blackcircle'] = class extends CircleObjMixin(BaseFilter) {
+  static type = 'blackcircle';
+  static isOptical = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    isDichroic: false,
+    isDichroicFilter: false,
+    wavelength: GREEN_WAVELENGTH,
+    bandwidth: 10
+  };
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'blackcircle', p1: constructionPoint, p2: constructionPoint };
-  },
-
-  // Use the prototype circleobj
-  onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
-  move: objTypes['circleobj'].move,
-  checkMouseOver: objTypes['circleobj'].checkMouseOver,
-  onDrag: objTypes['circleobj'].onDrag,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-
     ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2);
+    ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && obj.wavelength && obj.isDichroic) ? wavelengthToColor(obj.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     //ctx.fillStyle="indigo";
 
     ctx.stroke();
     ctx.fillStyle = 'red';
-    ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
+    ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
 
     ctx.lineWidth = 1;
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
     }
-  },
+  }
 
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  // When the drawing area is pressed (to determine the part of the object being pressed)
-  checkMouseOver: function (obj, mouse) {
-    let dragContext = {};
-    // clicking on p1 (center)?
-    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
-      dragContext.part = 1;
-      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
-      return dragContext;
+  checkRayIntersects(ray) {
+    if (this.checkRayIntersectFilter(ray)) {
+      return this.checkRayIntersectsShape(ray);
+    } else {
+      return null;
     }
-    // clicking on p2 (edge)?
-    if (mouse.isOnPoint(obj.p2)) {
-      dragContext.part = 2;
-      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
-      return dragContext;
-    }
-    // clicking on outer edge of circle?  then drag entire circle
-    if (Math.abs(geometry.distance(obj.p1, mouse.pos) - geometry.segmentLength(obj)) < mouse.getClickExtent()) {
-      const mousePos = mouse.getPosSnappedToGrid();
-      dragContext.part = 0;
-      dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-      dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-      dragContext.snapContext = {};
-      return dragContext;
-    }
-  },
+  }
 
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    dichroicSettings(obj, objBar);
-  },
-
-  // Test if a ray may shoot on this object (if yes, return the intersection)
-  checkRayIntersects: function (obj, ray) {
-    if (wavelengthInteraction(obj, ray)) {
-      return objTypes['circleobj'].checkRayIntersects(obj, ray);
-    }
-  },
-
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint) {
+  onRayIncident(ray, rayIndex, incidentPoint) {
     return {
       isAbsorbed: true
     };
   }
-
 };

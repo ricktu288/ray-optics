@@ -65,7 +65,7 @@ class BaseSceneObj {
   static type = '';
 
   /**
-   * The default properties of the object.
+   * The default values of the properties of the object which are to be serialized. The keys are the property names and the values are the default values. If some properties is default, they will not be serialized and will be deserialized to the default values.
    */
   static serializableDefaults = {};
 
