@@ -244,6 +244,7 @@ class BaseSceneObj {
    * @param {number} rayIndex - The index of the ray in the array of all rays currently in the scene in the simulator. In particular, in a bunch of continuous rays, the rays are ordered by the time they are emitted, and the index is the order of emission. This can be used to downsample the rays and increase the individual brightness if it is too low.
    * @param {Point} incidentPoint - The point where the ray is incident on the object, which is the intersection point found by `checkRayIntersects`.
    * @param {Array<BaseSceneObj>} surfaceMergingObjs - The objects that are merged with the current object. If two or more objects with `supportSurfaceMerging === true` has overlapping surfaces (often acheived by using the grid), and if a ray is incident on those surfaces together, only one of the object will be have `onRayIncident` being called, and the other objects will be in `surfaceMergingObjs`. In this case, this function must also deal with the combination of the surface before doing the actual interaction. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
+   * @returns {SimulationReturn|null} The return value.
    */
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     // Do nothing by default
