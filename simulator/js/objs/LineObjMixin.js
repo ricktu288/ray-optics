@@ -6,6 +6,15 @@
  */
 const LineObjMixin = Base => class extends Base {
 
+  move(diffX, diffY) {
+    // Move the first point
+    this.p1.x = this.p1.x + diffX;
+    this.p1.y = this.p1.y + diffY;
+    // Move the second point
+    this.p2.x = this.p2.x + diffX;
+    this.p2.y = this.p2.y + diffY;
+  }
+  
   onConstructMouseDown(mouse, ctrl, shift) {
     if (!this.constructionPoint) {
       // Initialize the construction stage.
@@ -37,15 +46,6 @@ const LineObjMixin = Base => class extends Base {
         isDone: true
       };
     }
-  }
-
-  move(diffX, diffY) {
-    // Move the first point
-    this.p1.x = this.p1.x + diffX;
-    this.p1.y = this.p1.y + diffY;
-    // Move the second point
-    this.p2.x = this.p2.x + diffX;
-    this.p2.y = this.p2.y + diffY;
   }
 
   checkMouseOver(mouse) {
@@ -117,14 +117,10 @@ const LineObjMixin = Base => class extends Base {
    * @returns {Point} The intersection point, or null if there is no intersection.
    */
   checkRayIntersectsShape(ray) {
-    if (this.constructor.isOptical) {
-      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
+    var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
 
-      if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-        return rp_temp;
-      } else {
-        return null;
-      }
+    if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
+      return rp_temp;
     } else {
       return null;
     }

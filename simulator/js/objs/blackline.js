@@ -1,5 +1,5 @@
 /**
- * Line blocker
+ * Line blocker / filter.
  * Tools -> Blocker -> Line Blocker
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
