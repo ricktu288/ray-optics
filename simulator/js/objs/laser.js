@@ -6,10 +6,10 @@
  * @property {number} p - The brightness of the ray.
  * @property {number} wavelength - The wavelength of the ray in nm. Only effective in color mode.
  */
-objTypes['laser'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'laser';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 1,

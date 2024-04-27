@@ -13,7 +13,7 @@
  */
 objTypes['text'] = class extends BaseSceneObj {
   static type = 'text';
-  static defaultProperties = {
+  static serializableDefaults = {
     x: null,
     y: null,
     p: '',

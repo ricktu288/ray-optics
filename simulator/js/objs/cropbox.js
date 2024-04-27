@@ -11,7 +11,7 @@
  */
 objTypes['cropbox'] = class extends BaseSceneObj {
   static type = 'cropbox';
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p4: null,
     format: 'png',

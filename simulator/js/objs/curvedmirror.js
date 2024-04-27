@@ -11,10 +11,10 @@
  * @property {Array<Point>} tmp_points - The points on the curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
-objTypes['curvedmirror'] = class extends LinearObjMixin(BaseFilter) {
+objTypes['curvedmirror'] = class extends LineObjMixin(BaseFilter) {
   static type = 'curvedmirror';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: "0.5\\cdot\\sqrt{1-x^2}",

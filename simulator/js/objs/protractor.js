@@ -4,9 +4,9 @@
  * @property {Point} p1 - The center of the protractor.
  * @property {Point} p2 - The zero point on the protractor.
  */
-objTypes['protractor'] = class extends CircularObjMixin(BaseSceneObj) {
+objTypes['protractor'] = class extends CircleObjMixin(BaseSceneObj) {
   static type = 'protractor';
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null
   };

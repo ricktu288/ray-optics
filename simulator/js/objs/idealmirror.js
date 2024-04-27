@@ -6,10 +6,10 @@
  * @property {number} p - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
  * 
  */
-objTypes['idealmirror'] = class extends LinearObjMixin(BaseFilter) {
+objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
   static type = 'idealmirror';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 100,

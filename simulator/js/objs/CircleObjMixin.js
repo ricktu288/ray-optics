@@ -4,7 +4,7 @@
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the circumference of the circle.
  */
-const CircularObjMixin = Base => class extends Base {
+const CircleObjMixin = Base => class extends Base {
 
   onConstructMouseDown(mouse, ctrl, shift) {
     if (!this.constructionPoint) {

@@ -8,10 +8,10 @@
  * @property {number} slit_ratio - The ratio of the slit width to the line interval.
  * @property {boolean} mirrored - Whether the diffraction grating is reflective.
  */
-objTypes['diffractiongrating'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['diffractiongrating'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'diffractiongrating';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     line_density: 1000,

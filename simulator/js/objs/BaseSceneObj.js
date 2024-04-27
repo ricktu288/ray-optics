@@ -11,9 +11,9 @@ class BaseSceneObj {
     /** @property {Scene} scene - The scene the object belongs to. */
     this.scene = scene;
 
-    const defaultProperties = this.constructor.defaultProperties;
-    for (const propName in defaultProperties) {
-      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+    const serializableDefaults = this.constructor.serializableDefaults;
+    for (const propName in serializableDefaults) {
+      const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
       if (jsonObj && jsonObj.hasOwnProperty(propName)) {
         const stringifiedValue = JSON.stringify(jsonObj[propName]);
         this[propName] = JSON.parse(stringifiedValue);
@@ -29,11 +29,11 @@ class BaseSceneObj {
    */
   serialize() {
     const jsonObj = { type: this.constructor.type };
-    const defaultProperties = this.constructor.defaultProperties;
+    const serializableDefaults = this.constructor.serializableDefaults;
 
-    for (const propName in defaultProperties) {
+    for (const propName in serializableDefaults) {
       const stringifiedValue = JSON.stringify(this[propName]);
-      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+      const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
       if (stringifiedValue !== stringifiedDefault) {
         jsonObj[propName] = JSON.parse(stringifiedValue);
       }
@@ -48,10 +48,10 @@ class BaseSceneObj {
    * @returns {boolean} Whether the properties are all the default values.
    */
   arePropertiesDefault(propertyNames) {
-    const defaultProperties = this.constructor.defaultProperties;
+    const serializableDefaults = this.constructor.serializableDefaults;
     for (const propName of propertyNames) {
       const stringifiedValue = JSON.stringify(this[propName]);
-      const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+      const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
       if (stringifiedValue !== stringifiedDefault) {
         return false;
       }
@@ -67,7 +67,7 @@ class BaseSceneObj {
   /**
    * The default properties of the object.
    */
-  static defaultProperties = {};
+  static serializableDefaults = {};
 
   /**
    * Whether the object is optical (i.e. is a light source, interacts with rays, or detects rays).

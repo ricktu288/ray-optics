@@ -10,10 +10,10 @@
  * @property {boolean} random - Whether the beam is random.
  * @property {Array<number>} randomNumbers - Random numbers used for random beam.
  */
-objTypes['parallel'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'parallel';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 0.5,

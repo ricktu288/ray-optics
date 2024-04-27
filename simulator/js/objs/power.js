@@ -10,10 +10,10 @@
  * @property {number} shear - The measured shear force through the detector.
  * @property {Array<number>} binData - The measured data for the irradiance map.
  */
-objTypes['power'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'power';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     irradianceMap: false,

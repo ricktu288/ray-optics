@@ -9,10 +9,10 @@
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-objTypes['beamsplitter'] = class extends LinearObjMixin(BaseFilter) {
+objTypes['beamsplitter'] = class extends LineObjMixin(BaseFilter) {
   static type = 'beamsplitter';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 0.5,

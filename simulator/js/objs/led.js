@@ -8,10 +8,10 @@
  * @property {number} p - The angle of emission in degrees.
  * @property {boolean} symmetric - Whether the emission is symmetric about the reference line. If not, the emission is only on one side of the reference line.
  */
-objTypes['led'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'led';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     brightness: 0.5,

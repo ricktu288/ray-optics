@@ -12,7 +12,7 @@
 objTypes['arcmirror'] = class extends BaseFilter {
   static type = 'arcmirror';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p3: null,

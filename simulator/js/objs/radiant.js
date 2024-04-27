@@ -9,7 +9,7 @@
 objTypes['radiant'] = class extends BaseSceneObj {
   static type = 'radiant';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     x: null,
     y: null,
     p: 0.5,

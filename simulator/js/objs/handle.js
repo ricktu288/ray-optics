@@ -8,7 +8,7 @@
 objTypes['handle'] = class extends BaseSceneObj {
   static type = 'handle';
   static isOptical = true; // As the handle may bind to objects which are optical, this should be regarded as true.
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     controlPoints: [],

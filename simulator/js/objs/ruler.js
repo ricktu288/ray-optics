@@ -5,9 +5,9 @@
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} p - The scale interval of the ruler.
  */
-objTypes['ruler'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['ruler'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'ruler';
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 10

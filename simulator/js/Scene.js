@@ -25,7 +25,7 @@ const DATA_VERSION = 2;
  * @property {Object|null} backgroundImage - The background image of the scene, null if not set.
  */
 class Scene {
-  static defaultProperties = {
+  static serializableDefaults = {
     objs: [],
     mode: 'light',
     rayDensity_light: 0.1,
@@ -120,10 +120,10 @@ class Scene {
     }
 
     // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
-    const defaultProperties = Scene.defaultProperties;
-    for (let key in defaultProperties) {
+    const serializableDefaults = Scene.serializableDefaults;
+    for (let key in serializableDefaults) {
       if (!(key in jsonData)) {
-        jsonData[key] = JSON.parse(JSON.stringify(defaultProperties[key]));
+        jsonData[key] = JSON.parse(JSON.stringify(serializableDefaults[key]));
       }
       this[key] = jsonData[key];
     }
@@ -182,11 +182,11 @@ class Scene {
     jsonData.height = approximatedHeight;
 
     // Only export non-default properties.
-    const defaultProperties = Scene.defaultProperties;
-    for (let propName in defaultProperties) {
+    const serializableDefaults = Scene.serializableDefaults;
+    for (let propName in serializableDefaults) {
       if (!jsonData.hasOwnProperty(propName)) {
         const stringifiedValue = JSON.stringify(this[propName]);
-        const stringifiedDefault = JSON.stringify(defaultProperties[propName]);
+        const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
         if (stringifiedValue !== stringifiedDefault) {
           jsonData[propName] = JSON.parse(stringifiedValue);
         }

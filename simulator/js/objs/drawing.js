@@ -7,7 +7,7 @@
  */
 objTypes['drawing'] = class extends BaseSceneObj {
   static type = 'drawing';
-  static defaultProperties = {
+  static serializableDefaults = {
     points: [],
     isDrawing: false,
     isMouseDown: false

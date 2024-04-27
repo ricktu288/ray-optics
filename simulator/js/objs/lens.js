@@ -5,10 +5,10 @@
  * @property {Point} p2 - The second endpoint.
  * @property {number} p - The focal length.
  */
-objTypes['lens'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'lens';
   static isOptical = true;
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     p: 100

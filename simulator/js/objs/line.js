@@ -6,9 +6,9 @@
  * @property {boolean} arrow1 - Whether an arrow is pointing from the first endpoint.
  * @property {boolean} arrow2 - Whether an arrow is pointing from the second endpoint.
  */
-objTypes['line'] = class extends LinearObjMixin(BaseSceneObj) {
+objTypes['line'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'line';
-  static defaultProperties = {
+  static serializableDefaults = {
     p1: null,
     p2: null,
     arrow1: false,
