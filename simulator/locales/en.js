@@ -561,6 +561,9 @@ locales["en"] = {
   "about": {
     "message": "About"
   },
+  "about_url": {
+    "message": "https://phydemo.app/ray-optics/about"
+  },
   "translate": {
     "message": "Help us translate this app"
   },

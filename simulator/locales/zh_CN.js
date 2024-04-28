@@ -561,6 +561,9 @@ locales["zh-CN"] = {
   "about": {
     "message": "关于"
   },
+  "about_url": {
+    "message": "https://phydemo.app/ray-optics/cn/about"
+  },
   "translate": {
     "message": "协助我们翻译本程序"
   },

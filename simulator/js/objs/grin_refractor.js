@@ -12,7 +12,7 @@ objTypes['grin_refractor'] = {
     const p_der_y = 'sin(y / 10) * -1 / 100';
     const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{100}';
     const origin = geometry.point(0, 0); // origin of refractive index function n(x,y)
-    return { type: 'grin_refractor', path: [{ x: constructionPoint.x, y: constructionPoint.y, arc: false }], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex), fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3 }; // Note that in this object, eps has units of [length]
+    return { type: 'grin_refractor', path: [{ x: constructionPoint.x, y: constructionPoint.y, arc: false }], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, step_size: 1, eps: 1e-3 }; // Note that in this object, eps has units of [length]
   },
 
   // Use the prototype reftactor
@@ -31,6 +31,8 @@ objTypes['grin_refractor'] = {
   initRefIndex: objTypes['grin_circlelens'].initRefIndex,
   multRefIndex: objTypes['grin_circlelens'].multRefIndex,
   devRefIndex: objTypes['grin_circlelens'].devRefIndex,
+  initFns: objTypes['grin_circlelens'].initFns,
+  shiftOrigin: objTypes['grin_circlelens'].shiftOrigin,
   checkRayIntersects: objTypes['grin_circlelens'].checkRayIntersects,
   refract: objTypes['grin_circlelens'].refract,
   populateObjBar: objTypes['grin_circlelens'].populateObjBar,
@@ -57,7 +59,7 @@ objTypes['grin_refractor'] = {
         if (obj.notDone) { return; }
         var incidentData = this.getIncidentData(obj, ray);
         var incidentType = incidentData.incidentType;
-        var p = obj.fn_p({ x: incidentPoint.x - obj.origin.x, y: incidentPoint.y - obj.origin.y }) // refractive index at the intersection point - incidentPoint
+        var p = obj.fn_p({ x: incidentPoint.x, y: incidentPoint.y }) // refractive index at the intersection point - incidentPoint
         if (incidentType == 1) {
           // Shot from inside to outside
           var n1 = (!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
@@ -87,57 +89,66 @@ objTypes['grin_refractor'] = {
         "multRefIndex"/"devRefIndex" function, respectively.
         */
         let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
-        if (surfaceMergingObjs.length) {
-          // Surface merging
-          for (var i = 0; i < surfaceMergingObjs.length; i++) {
-            let p = surfaceMergingObjs[i].fn_p({ x: incidentPoint.x - surfaceMergingObjs[i].origin.x, y: incidentPoint.y - surfaceMergingObjs[i].origin.y }) // refractive index at the intersection point - incidentPoint
-            incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
-            if (incidentType == 1) {
-              // Shot from inside to outside
-              n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-            }
-            else if (incidentType == -1) {
-              // Shot from outside to inside
-              n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-            }
-            else if (incidentType == 0) {
-              // Equivalent to not shot on the obj (e.g. two interfaces overlap)
-              //n1=n1;
-            }
-            else {
-              // The situation that may cause bugs (e.g. shot at an edge point)
-              // To prevent shooting the ray to a wrong direction, absorb the ray
-              return {
-                isAbsorbed: true
-              };
-            }
-          }
+
+        if (ray.bodyMerging_obj === undefined) {
+          ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
         }
-        else {
-          if (objTypes[obj.type].isInsideGlass(obj, ray.p1)) {
-            if (ray.bodyMerging_obj === undefined)
-              ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-            r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
-            ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+
+        r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+
+        for (var i = 0; i < surfaceMergingObjs.length; i++) {
+          let p;
+          if (surfaceMergingObjs[i].type == "grin_circlelens" || surfaceMergingObjs[i].type == "grin_refractor") {
+            p = surfaceMergingObjs[i].fn_p({ x: incidentPoint.x, y: incidentPoint.y }); // refractive index at the intersection point - incidentPoint
+          } else {
+            p = surfaceMergingObjs[i].p; // non-GRIN glass
+          }
+          
+          incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
+          if (incidentType == 1) {
+            // Shot from inside to outside
+            n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+            if (objTypes[surfaceMergingObjs[i].type].devRefIndex)
+              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+          }
+          else if (incidentType == -1) {
+            // Shot from outside to inside
+            n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
+            if (objTypes[surfaceMergingObjs[i].type].multRefIndex)
+              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+          }
+          else if (incidentType == 0) {
+            // Equivalent to not shot on the obj (e.g. two interfaces overlap)
+            //n1=n1;
           }
           else {
-            r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
-            if (ray.bodyMerging_obj !== undefined)
-              ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
-            else
-              ray.bodyMerging_obj = { p: obj.p, fn_p: obj.fn_p, fn_p_der_x: obj.fn_p_der_x, fn_p_der_y: obj.fn_p_der_y }; // Initialize the bodyMerging object of the ray
+            // The situation that may cause bugs (e.g. shot at an edge point)
+            // To prevent shooting the ray to a wrong direction, absorb the ray
+            return {
+              isAbsorbed: true
+            };
           }
         }
+
+        if (objTypes[obj.type].isInsideGlass(obj, ray.p1)) {
+          ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+        }
+        else {
+          ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
+        }
+        
         return objTypes[obj.type].refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, r_bodyMerging_obj);
       }
       else {
         if (ray.bodyMerging_obj === undefined)
           ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-        next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, incidentPoint, ray);
+        next_point = objTypes[obj.type].step(obj, ray.p1, incidentPoint, ray);
         ray.p1 = incidentPoint;
         ray.p2 = next_point;
       }
     } catch (e) {
+      //throw e
+      console.log("Error in onRayIncident of GRIN glass: " + e.toString());
       return {
         isAbsorbed: true
       };

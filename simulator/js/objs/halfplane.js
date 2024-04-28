@@ -83,6 +83,20 @@ objTypes['halfplane'] = {
 
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    // If at least one of the surface merging object is a GRIN glass, the interaction should be handled by the GRIN glass instead.
+    if (surfaceMergingObjs) {
+      for (let i = 0; i < surfaceMergingObjs.length; i++) {
+        if (surfaceMergingObjs[i].type == 'grin_refractor' || surfaceMergingObjs[i].type == 'grin_circlelens') {
+          // Exclude the GRIN glass from the surface merging objects and include obj itself.
+          let new_surfaceMergingObjs = surfaceMergingObjs.filter((value, index, arr) => {
+            return value != surfaceMergingObjs[i];
+          });
+          new_surfaceMergingObjs.push(obj);
+          return objTypes[surfaceMergingObjs[i].type].onRayIncident(surfaceMergingObjs[i], ray, rayIndex, incidentPoint, new_surfaceMergingObjs);
+        }
+      }
+    }
+
     var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y);
     var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y);
     var normal = { x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y) };

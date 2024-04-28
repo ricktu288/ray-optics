@@ -21,6 +21,7 @@
     <link rel="alternate" href="https://phydemo.app/ray-optics/ko/" hreflang="ko">
     <link rel="alternate" href="https://phydemo.app/ray-optics/nl/" hreflang="nl">
     <link rel="alternate" href="https://phydemo.app/ray-optics/pl/" hreflang="pl">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/pt-BR/" hreflang="pt-BR">
     <link rel="alternate" href="https://phydemo.app/ray-optics/ru/" hreflang="ru">
     <link rel="alternate" href="https://phydemo.app/ray-optics/si/" hreflang="si">
     <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
@@ -80,7 +81,7 @@
             margin-right: 0px;
             padding: 0px;
             height: 40px;
-            width: 90px;
+            width: 92px;
             line-height: 40px;
             position: relative;
             text-align: center;
@@ -159,11 +160,10 @@
         <center>
             <h1><b><span id="title">Ray Optics Simulation</span></b></h1>
             <p id="description">
-                Create &amp; simulate 2D geometric optical scenes interactively.<br> Totally free and web-based. Source code is <a href="https://github.com/ricktu288/ray-optics">available on GitHub</a>.
+                ද්විමාන ප්‍රකාශ(ආලෝක) දර්ශන නිර්මාණය කිරීම simulate කිරීම සඳහා free, open-source වෙබ් යෙදුමකි.<br>Source code is <a href="https://github.com/ricktu288/ray-optics">available on GitHub</a>.
             </p>
             <p>
-                <a href="https://phydemo.app/ray-optics/simulator/?si" target="_blank" class="btn btn-success btn-lg" id="start">Simulator Launch</span></a>
-                <!--<a href="https://github.com/ricktu288/ray-optics" class="btn btn-success btn-lg" id="github_link">View On GitHub</a><br>-->
+                <a href="https://phydemo.app/ray-optics/simulator/?si" target="_blank" class="btn btn-success btn-lg" id="start">Simulator Launch කරන්න.</span></a>
             </p>
 
         </center>
@@ -261,7 +261,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_curved_mirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_curved_mirror">Ideal curved mirror</p>
+                            <p class="tool-title" id="ideal_curved_mirror">වක්‍ර දර්පණය</p>
                             <span id="ideal_curved_mirror_desc">
               The idealized "curved" mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f).
               The focal length (in pixels) can be set directly.
@@ -271,7 +271,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/beamsplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="beamsplitter">Beam Splitter</p>
+                            <p class="tool-title" id="beamsplitter">කදම්භ විබෙදුම</p>
                             <span id="beamsplitter_desc">
               A mirror that transmits a percentage of incoming light.
             </span>
@@ -280,7 +280,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass_halfplane.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass_halfplane">Glass</p>
+                            <p class="tool-title" id="glass_halfplane">වීදුරු</p>
                             <span id="glass_halfplane_desc">
               Simulate the refraction and reflection of light on a surface.
             </span>
@@ -289,7 +289,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="glass">Glass (Other shapes)</p>
+                            <p class="tool-title" id="glass">Custom සමීකරණ</p>
                             <span id="glass_desc">
               Glass with any shapes constructed from line segments and circular arcs, or shapes defined by a custom inequality f(x) &lt; y &lt; g(x).
             </span>
@@ -298,7 +298,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/ideal_lens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="ideal_lens">Glass (Ideal lens)</p>
+                            <p class="tool-title" id="ideal_lens">පරිපූර්ණ කාච</p>
                             <span id="ideal_lens_desc">
               An ideal lens that obeys exactly the thin lens equation (1/p + 1/q = 1/f).
               The focal length (in pixels) can be set directly.
@@ -308,7 +308,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
                         <div class="caption">
-                            <p class="tool-title" id="blocker">Blocker</p>
+                            <p class="tool-title" id="blocker">රේඛීය බාධක</p>
                             <span id="blocker_desc">
               A line-segment light blocker that absorbes the incident rays.
             </span>
@@ -317,7 +317,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/ruler.svg" alt="Ruler" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption" class="img-rounded">
-                            <p class="tool-title" id="ruler">Ruler</p>
+                            <p class="tool-title" id="ruler">රූල</p>
                             <span id="ruler_desc">
               A ruler from a point for zero and another point.
               The scale is in pixels.
@@ -327,7 +327,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption" class="img-rounded">
-                            <p class="tool-title" id="protractor">Protractor</p>
+                            <p class="tool-title" id="protractor">කෝණමානය</p>
                             <span id="protractor_desc">
               A protractor defined from the center and another point for the zero direction.
               The scale is in degrees.
@@ -337,7 +337,7 @@
                     <div class="row thumbnail right-caption">
                         <img src="../img/power.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
                         <div class="caption" class="img-rounded">
-                            <p class="tool-title" id="power">Detector</p>
+                            <p class="tool-title" id="power">අනාවරකය</p>
                             <span id="power_desc">
               A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. The units are arbitrary.
             </span>
@@ -350,7 +350,7 @@
                     <h2 id="views">Views</h2>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="rays">Rays</p>
+                            <p class="mode-title" id="rays">කිරණ</p>
                             <span id="rays_desc">
               Show the rays. When the "Ray density" is high, they appear to be continuous.
             </span>
@@ -366,7 +366,7 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="extended_rays">Extended Rays</p>
+                            <p class="mode-title" id="extended_rays">Extended කිරණ</p>
                             <span id="extended_rays_desc">
               Show both the rays and their extension.
               Orange indicates backward extensions, and gray indicates forward ones.
@@ -396,7 +396,7 @@
                     </div>
                     <div class="row thumbnail">
                         <div class="caption">
-                            <p class="mode-title" id="seen_by_observer">Seen by observer</p>
+                            <p class="mode-title" id="seen_by_observer">නිරීක්ෂකයාට පෙනෙන පරිදි</p>
                             <span id="seen_by_observer_desc">
               Simulate the rays and images seen from some position.
               The blue circle is the observer.
@@ -442,6 +442,7 @@ Simulate colors (wavelengths) of light sources, mixture of colors, color filteri
         <li><a href="https://phydemo.app/ray-optics/ko/">한국어</a></li>
         <li><a href="https://phydemo.app/ray-optics/nl/">Nederlands</a></li>
         <li><a href="https://phydemo.app/ray-optics/pl/">polski</a></li>
+        <li><a href="https://phydemo.app/ray-optics/pt-BR/">Português (Brasil)</a></li>
         <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
         <li><a href="https://phydemo.app/ray-optics/si/">සිංහල</a></li>
         <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>

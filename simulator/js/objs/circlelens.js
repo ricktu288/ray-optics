@@ -49,6 +49,19 @@ objTypes['circlelens'] = {
 
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    // If at least one of the surface merging object is a GRIN glass, the interaction should be handled by the GRIN glass instead.
+    if (surfaceMergingObjs) {
+      for (let i = 0; i < surfaceMergingObjs.length; i++) {
+        if (surfaceMergingObjs[i].type == 'grin_refractor' || surfaceMergingObjs[i].type == 'grin_circlelens') {
+          // Exclude the GRIN glass from the surface merging objects and include obj itself.
+          let new_surfaceMergingObjs = surfaceMergingObjs.filter((value, index, arr) => {
+            return value != surfaceMergingObjs[i];
+          });
+          new_surfaceMergingObjs.push(obj);
+          return objTypes[surfaceMergingObjs[i].type].onRayIncident(surfaceMergingObjs[i], ray, rayIndex, incidentPoint, new_surfaceMergingObjs);
+        }
+      }
+    }
 
     var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
     var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);

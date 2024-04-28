@@ -1,691 +1,520 @@
 if (typeof locales == 'undefined') locales = {};
-locales["LOCALE_ID"] = {
+locales["pt-BR"] = {
   "appName": {
-    "incomplete": true,
-    "message": "Simulator - Ray Optics Simulation"
+    "message": "Simulador - Simulação de Óptica de Raios"
   },
   "appShortName": {
-    "incomplete": true,
-    "message": "Ray Optics"
+    "message": "Óptica de Raios"
   },
   "appDesc": {
-    "incomplete": true,
-    "message": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
+    "message": "Uma aplicação web grátis e de código aberto para criação e simulação de cenas de óptica geométrica 2D."
   },
   "homepage_desc": {
-    "incomplete": true,
-    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
+    "message": "Crie e simule cenas ópticas geométricas 2D interativamente.<br>Totalmente gratuito e baseado na web. Código-fonte está <a href=\"https://github.com/ricktu288/ray-optics\">disponível no GitHub</a>."
   },
   "launch_simulator": {
-    "incomplete": true,
-    "message": "Launch Simulator"
+    "message": "Abrir Simulador"
   },
   "home": {
-    "incomplete": true,
-    "message": "Home"
+    "message": "Início"
   },
   "home_url": {
-    "incomplete": true,
-    "message": "https://phydemo.app/ray-optics/"
+    "message": "https://phydemo.app/ray-optics/pt-BR/"
   },
   "gallery": {
-    "incomplete": true,
-    "message": "Gallery"
+    "message": "Galeria"
   },
   "gallery_url": {
-    "incomplete": true,
     "message": "https://phydemo.app/ray-optics/gallery/"
   },
   "welcome": {
-    "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
+    "message": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.<br>Para carregar um exemplo, por favor <a href=\"https://phydemo.app/ray-optics/gallery/\">visite a página da Galeria</a>."
   },
   "toolbar_title": {
-    "incomplete": true,
-    "message": "Tool:&nbsp;"
+    "message": "Ferramenta:&nbsp;"
   },
   "toolname_laser": {
-    "incomplete": true,
-    "message": "Single ray"
+    "message": "Raio único"
   },
   "toolname_led": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Fonte pontual"
   },
   "toolname_radiant": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Fonte pontual"
   },
   "toolname_parallel": {
-    "incomplete": true,
-    "message": "Beam"
+    "message": "Feixe"
   },
   "toolname_mirror_": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "toolname_mirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "toolname_arcmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "toolname_parabolicmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "toolname_curvedmirror": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "toolname_idealmirror": {
-    "incomplete": true,
-    "message": "Ideal curved mirror"
+    "message": "Espelho curvo ideal"
   },
   "toolname_refractor_": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Vidro"
   },
   "toolname_blocker_": {
-    "incomplete": true,
-    "message": "Blocker"
+    "message": "Bloqueador"
   },
   "toolname_beamsplitter": {
-    "incomplete": true,
-    "message": "Beam Splitter"
+    "message": "Divisor de luz"
   },
   "toolname_halfplane": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Vidro"
   },
   "toolname_circlelens": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Vidro"
   },
   "toolname_grin_circlelens": {
-    "incomplete": true,
-    "message": "Gradient-index circle"
+    "message": "Círculo com gradiente de índice"
   },
   "toolname_refractor": {
-    "incomplete": true,
-    "message": "Polygon / Circular Arcs"
+    "message": "Polígono / Arcos Circulares"
   },
   "toolname_grin_refractor": {
-    "incomplete": true,
-    "message": "Gradient-index polygon"
+    "message": "Polígono com gradiente de índice"
   },
   "toolname_lens": {
-    "incomplete": true,
-    "message": "Ideal lens"
+    "message": "Lente ideal"
   },
   "toolname_sphericallens": {
-    "incomplete": true,
-    "message": "Spherical lens"
+    "message": "Lente esférica"
   },
   "toolname_curvedglass": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Vidro"
   },
   "toolname_blackline": {
-    "incomplete": true,
-    "message": "Line Blocker"
+    "message": "Bloqueador reto"
   },
   "toolname_aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "Abertura"
   },
   "toolname_blackcircle": {
-    "incomplete": true,
-    "message": "Circle Blocker"
+    "message": "Bloqueador circular"
   },
   "toolname_diffractiongrating": {
-    "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Grade de difração<sup>Beta</sup>"
   },
   "toolname_ruler": {
-    "incomplete": true,
-    "message": "Ruler"
+    "message": "Régua"
   },
   "toolname_protractor": {
-    "incomplete": true,
-    "message": "Protractor"
+    "message": "Transferidor"
   },
   "tool_power": {
-    "incomplete": true,
     "message": "Detector"
   },
   "toolname_power": {
-    "incomplete": true,
     "message": "Detector"
   },
   "toolname_text": {
-    "incomplete": true,
-    "message": "Text"
+    "message": "Texto"
   },
   "toolname_line": {
-    "incomplete": true,
-    "message": "Line"
+    "message": "Linha"
   },
   "toolname_drawing": {
-    "incomplete": true,
-    "message": "Drawing"
+    "message": "Desenho"
   },
   "toolname_cropbox": {
-    "incomplete": true,
-    "message": "Export"
+    "message": "Exportar"
   },
   "tool_more_": {
-    "incomplete": true,
-    "message": "Other"
+    "message": "Outros"
   },
   "toolname_": {
-    "incomplete": true,
-    "message": "Move view"
+    "message": "Mover vista"
   },
   "modebar_title": {
-    "incomplete": true,
-    "message": "View:"
+    "message": "Ver:"
   },
   "modename_light": {
-    "incomplete": true,
-    "message": "Rays"
+    "message": "Raios"
   },
   "modename_extended_light": {
-    "incomplete": true,
-    "message": "Extended rays"
+    "message": "Raios extendidos"
   },
   "modename_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "Todas Imagens"
   },
   "modename_observer": {
-    "incomplete": true,
-    "message": "Seen by observer"
+    "message": "Visto por Observador"
   },
   "color_mode": {
-    "incomplete": true,
-    "message": "Simulate Colors"
+    "message": "Simular Cores"
   },
   "File: ": {
-    "incomplete": true,
-    "message": "File"
+    "message": "Arquivo"
   },
   "Tools: ": {
-    "incomplete": true,
-    "message": "Tools"
+    "message": "Ferramentas"
   },
   "tool_laser": {
-    "incomplete": true,
-    "message": "Single ray"
+    "message": "Raio único"
   },
   "tool_parallel": {
-    "incomplete": true,
-    "message": "Beam"
+    "message": "Feixe paralelo"
   },
   "tool_radiant": {
-    "incomplete": true,
-    "message": "Point source (360°)"
+    "message": "Fonte pontual (360°)"
   },
   "tool_led": {
-    "incomplete": true,
-    "message": "Point source (<360°)"
+    "message": "Fonte pontual (<360°)"
   },
   "tool_radiant_": {
-    "incomplete": true,
-    "message": "Point source"
+    "message": "Fonte pontual"
   },
   "tool_lightsource_": {
-    "incomplete": true,
-    "message": "Light Source"
+    "message": "Fonte de luz"
   },
   "tool_mirror_": {
-    "incomplete": true,
-    "message": "Mirror"
+    "message": "Espelho"
   },
   "tool_mirror": {
-    "incomplete": true,
-    "message": "Segment"
+    "message": "Segmento"
   },
   "tool_arcmirror": {
-    "incomplete": true,
-    "message": "Circular Arc"
+    "message": "Arco Circular"
   },
   "tool_parabolicmirror": {
-    "incomplete": true,
-    "message": "Parabolic"
+    "message": "Parabólico"
   },
   "tool_curvedmirror": {
-    "incomplete": true,
-    "message": "Custom Equation"
+    "message": "Equação Personalizada"
   },
   "tool_beamsplitter": {
-    "incomplete": true,
-    "message": "Beam Splitter"
+    "message": "Divisor de Luz"
   },
   "tool_idealmirror": {
-    "incomplete": true,
-    "message": "Ideal Curved"
+    "message": "Curvo Ideal"
   },
   "tool_refractor_": {
-    "incomplete": true,
-    "message": "Glass"
+    "message": "Vidro"
   },
   "tool_blocker_": {
-    "incomplete": true,
-    "message": "Blocker"
+    "message": "Bloqueador"
   },
   "tool_halfplane": {
-    "incomplete": true,
-    "message": "Half-plane"
+    "message": "Semi-plano"
   },
   "tool_circlelens": {
-    "incomplete": true,
-    "message": "Circle"
+    "message": "Círculo"
   },
   "tool_grin_circlelens": {
-    "incomplete": true,
-    "message": "Circle"
+    "message": "Círculo"
   },
   "tool_refractor": {
-    "incomplete": true,
-    "message": "Free-shape"
+    "message": "Forma livre"
   },
   "tool_grin_refractor": {
-    "incomplete": true,
-    "message": "Free-shape"
+    "message": "Forma livre"
   },
   "tool_lens": {
-    "incomplete": true,
-    "message": "Ideal Lens"
+    "message": "Lente Ideal"
   },
   "tool_sphericallens": {
-    "incomplete": true,
-    "message": "Spherical Lens"
+    "message": "Lente Esférica"
   },
   "tool_curvedglass": {
-    "incomplete": true,
-    "message": "Custom Equation"
+    "message": "Equação Personalizada"
   },
   "tool_blackline": {
-    "incomplete": true,
-    "message": "Line Blocker"
+    "message": "Bloqueador Reto"
   },
   "tool_aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "Abertura"
   },
   "tool_blackcircle": {
-    "incomplete": true,
-    "message": "Circle Blocker"
+    "message": "Bloqueador Circular"
   },
   "tool_diffractiongrating": {
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Grade de Difração<sup>Beta</sup>"
   },
   "tool_ruler": {
-    "incomplete": true,
-    "message": "Ruler"
+    "message": "Régua"
   },
   "tool_protractor": {
-    "incomplete": true,
-    "message": "Protractor"
+    "message": "Transferidor"
   },
   "tool_text": {
-    "incomplete": true,
-    "message": "Text"
+    "message": "Texto"
   },
   "tool_line": {
-    "incomplete": true,
-    "message": "Line / Arrow"
+    "message": "Linha / Seta"
   },
   "tool_drawing": {
-    "incomplete": true,
-    "message": "Drawing"
+    "message": "Desenhar"
   },
   "tool_": {
-    "incomplete": true,
-    "message": "Move view"
+    "message": "Mover Vista"
   },
   "View: ": {
-    "incomplete": true,
-    "message": "View"
+    "message": "Ver"
   },
   "Settings: ": {
-    "incomplete": true,
-    "message": "Settings"
+    "message": "Configurações"
   },
   "moresettings": {
-    "incomplete": true,
-    "message": "More"
+    "message": "Mais"
   },
   "mode_light": {
-    "incomplete": true,
-    "message": "Rays"
+    "message": "Raios"
   },
   "mode_extended_light": {
-    "incomplete": true,
-    "message": "Extended rays"
+    "message": "Raios extendidos"
   },
   "mode_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "Todas Imagens"
   },
   "mode_observer": {
-    "incomplete": true,
-    "message": "Seen by Observer"
+    "message": "Visto por Observador"
   },
   "zoom": {
-    "incomplete": true,
     "message": "Zoom"
   },
   "help": {
-    "incomplete": true,
-    "message": "Help"
+    "message": "Ajuda"
   },
   "rayDensity": {
-    "incomplete": true,
-    "message": "Ray Density"
+    "message": "Densidade de Raios"
   },
   "raydensity": {
-    "incomplete": true,
-    "message": "Ray Density:"
+    "message": "Densidade de Raios:"
   },
   "undo": {
-    "incomplete": true,
-    "message": "Undo"
+    "message": "Desfazer"
   },
   "redo": {
-    "incomplete": true,
-    "message": "Redo"
+    "message": "Refazer"
   },
   "reset": {
-    "incomplete": true,
-    "message": "Reset"
+    "message": "Reiniciar"
   },
   "save": {
-    "incomplete": true,
-    "message": "Save"
+    "message": "Salvar"
   },
   "get_link": {
-    "incomplete": true,
-    "message": "Copy Shareable Link"
+    "message": "Copiar Link Compartilhável"
   },
   "export_svg": {
-    "incomplete": true,
-    "message": "Export as PNG/SVG"
+    "message": "Exportar como PNG/SVG"
   },
   "view_gallery": {
-    "incomplete": true,
-    "message": "View Gallery"
+    "message": "Ver Galeria"
   },
   "save_name": {
-    "incomplete": true,
-    "message": "Name"
+    "message": "Nome"
   },
   "save_cancel": {
-    "incomplete": true,
-    "message": "Cancel"
+    "message": "Cancelar"
   },
   "save_description": {
-    "incomplete": true,
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
+    "message": "Para compartilhar o seu trabalho, você pode <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribuir com um novo item</a> para a <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Galeria</a>."
   },
   "open": {
-    "incomplete": true,
-    "message": "Open"
+    "message": "Abrir"
   },
   "layoutaids": {
-    "incomplete": true,
-    "message": "Layout Aids"
+    "message": "Auxílio de posicionamento"
   },
   "lockobjs": {
-    "incomplete": true,
-    "message": "Lock Objects"
+    "message": "Travar Objetos"
   },
   "showgrid": {
-    "incomplete": true,
-    "message": "Grid"
+    "message": "Grade"
   },
   "grid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Ajustar na grade"
   },
   "snaptogrid": {
-    "incomplete": true,
-    "message": "Snap to Grid"
+    "message": "Ajustar na grade"
   },
   "brightness": {
-    "incomplete": true,
-    "message": "Brightness"
+    "message": "Brilho"
   },
   "wavelength": {
-    "incomplete": true,
-    "message": "Wavelength (nm)"
+    "message": "Comprimento de onda (nm)"
   },
   "dichroic": {
-    "incomplete": true,
-    "message": "Dichroic"
+    "message": "Dicróico"
   },
   "filter": {
-    "incomplete": true,
-    "message": "Filter"
+    "message": "Filtro"
   },
   "bandwidth": {
-    "incomplete": true,
-    "message": "Bandwidth (nm)"
+    "message": "Largura de banda (nm)"
   },
   "invert": {
-    "incomplete": true,
-    "message": "Invert"
+    "message": "Inverter"
   },
   "emissionangle": {
-    "incomplete": true,
-    "message": "Emission Angle (°)"
+    "message": "Ângulo de Emissão (°)"
   },
   "mirrored": {
-    "incomplete": true,
-    "message": "Mirrored"
+    "message": "Espelhado"
   },
   "lines/mm": {
-    "incomplete": true,
-    "message": "Lines/mm"
+    "message": "Linhas/mm"
   },
   "slit_ratio": {
-    "incomplete": true,
-    "message": "Slit width / line spacing"
+    "message": "Largura de vão / Espaçamento de linha"
   },
   "symmetric": {
-    "incomplete": true,
-    "message": "Symmetric"
+    "message": "Simétrico"
   },
   "custom_equation_note": {
-    "incomplete": true,
-    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
+    "message": "<ul><li>Constantes suportadas:<br><code>pi e</code></li><li>Operadores suportados:<br><code>+ - * / ^</code></li><li>Funções suportadas:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
   "symbolic_grin": {
-    "incomplete": true,
-    "message": "Symbolic body-merging"
+    "message": "União simbólica de corpos"
   },
   "grin_refractive_index": {
-    "incomplete": true,
-    "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For more accurate simulation, see \"More options...\"</li></ul>"
+    "message": "<ul><li>Constantes suportadas:<br><code>pi e</code></li><li>Operadores suportados:<br><code>+ - * / ^</code></li><li>Funções suportadas:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Somente suporta funções diferenciáveis.</li><li>A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas.</li><li>Para simulação mais precisa, veja \"Mais opções...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "incomplete": true,
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>Esta opção se aplica a todos objetos GRIN na simulação.</p><p>Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'grin_circlelens.js').</p><p>A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, <b>tal que ao menos um deles possua uma função de índice refrativo que não é definida <u>todo</u> o plano</b>, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema.</p>"
   },
   "focallength": {
-    "incomplete": true,
-    "message": "Focal length"
+    "message": "Comprimento focal"
   },
   "cartesiansign": {
-    "incomplete": true,
-    "message": "Cartesian Sign Convention"
+    "message": "Convenção de Sinal Cartesiana"
   },
   "refractiveindex": {
-    "incomplete": true,
-    "message": "Refractive index*"
+    "message": "Índice refrativo*"
   },
   "radii_of_curvature": {
-    "incomplete": true,
-    "message": "Radii of Curvature"
+    "message": "Raios de curvatura"
   },
   "focal_distances": {
-    "incomplete": true,
-    "message": "Focal Distances"
+    "message": "Distâncias Focais"
   },
   "refractiveindex_origin": {
-    "incomplete": true,
-    "message": "Origin of n(x,y)"
+    "message": "Origem de n(x,y)"
   },
   "step_size": {
-    "incomplete": true,
-    "message": "Numerical solver step size"
+    "message": "Tamanho de passo da solução numérica"
   },
   "eps": {
-    "incomplete": true,
-    "message": "Intersection tolerance"
+    "message": "Tolerância de Interseção"
   },
   "random": {
-    "incomplete": true,
-    "message": "Random"
+    "message": "Aleatório"
   },
   "lambertian": {
-    "incomplete": true,
-    "message": "Lambertian"
+    "message": "Lambertiano"
   },
   "diameter": {
-    "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Diâmetro (px)"
   },
   "irradiance_map": {
-    "incomplete": true,
-    "message": "Irradiance Map"
+    "message": "Mapa de Irradiância"
   },
   "bin_size": {
-    "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Tamanho do coletor (px)"
   },
   "ruler_scale": {
-    "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Intervalo da escala (px)"
   },
   "export_irradiance_map": {
-    "incomplete": true,
-    "message": "Export data"
+    "message": "Exportar dados"
   },
   "fontsize": {
-    "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "Tamanho da Fonte (px)"
   },
   "fontname": {
-    "incomplete": true,
-    "message": "Font"
+    "message": "Fonte"
   },
   "fontstyle": {
-    "incomplete": true,
-    "message": "Style"
+    "message": "Estilo"
   },
   "normal": {
-    "incomplete": true,
     "message": "Normal"
   },
   "bold": {
-    "incomplete": true,
-    "message": "Bold"
+    "message": "Negrito"
   },
   "italic": {
-    "incomplete": true,
-    "message": "Italic"
+    "message": "Itálico"
   },
   "bolditalic": {
-    "incomplete": true,
-    "message": "Bold Italic"
+    "message": "Negrito Itálico"
   },
   "oblique": {
-    "incomplete": true,
-    "message": "Oblique"
+    "message": "Oblíquo"
   },
   "boldoblique": {
-    "incomplete": true,
-    "message": "Bold Oblique"
+    "message": "Negrito Oblíquo"
   },
   "fontalignment": {
-    "incomplete": true,
-    "message": "Alignment"
+    "message": "Alinhamento"
   },
   "left": {
-    "incomplete": true,
-    "message": "Left"
+    "message": "Esquerda"
   },
   "center": {
-    "incomplete": true,
-    "message": "Centre"
+    "message": "Centro"
   },
   "right": {
-    "incomplete": true,
-    "message": "Right"
+    "message": "Direita"
   },
   "text_here": {
-    "incomplete": true,
-    "message": "Text Here"
+    "message": "Texto Aqui"
   },
   "smallcaps": {
-    "incomplete": true,
-    "message": "Small Caps"
+    "message": "Maiúsculo pequeno"
   },
   "angle": {
-    "incomplete": true,
-    "message": "Angle (°)"
+    "message": "Ângulo (°)"
   },
   "arrow1": {
-    "incomplete": true,
-    "message": "Forward arrow"
+    "message": "Seta frontal"
   },
   "arrow2": {
-    "incomplete": true,
-    "message": "Backward arrow"
+    "message": "Seta traseira"
   },
   "stop_drawing": {
-    "incomplete": true,
-    "message": "Finish Drawing"
+    "message": "Finalizar Desenho"
   },
   "cropbox_size": {
-    "incomplete": true,
-    "message": "Crop Box Size"
+    "message": "Tamanho da Caixa de Corte"
   },
   "image_format": {
-    "incomplete": true,
-    "message": "Format"
+    "message": "Formato"
   },
   "image_width": {
-    "incomplete": true,
-    "message": "Width"
+    "message": "Largura"
   },
   "beam_warning": {
-    "incomplete": true,
-    "message": "⚠️ Image detection may not work with divergent/random beams."
+    "message": "⚠️ Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
   },
   "image_detection_warning": {
-    "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "⚠️ Esta ferramenta não suporta detecção de imagem."
   },
   "non_color_mode_warning": {
-    "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "⚠️ Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
   },
   "brightness_note_popover": {
-    "incomplete": true,
-    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
+    "message": "<p>Somente faz efeito quando 'Densidade de Raios' está alta o suficiente.</p><p>Para controlar o número de raios emitidos, por favor ajuste o controle global de 'Densidade de Raios'.</p>"
   },
   "refractiveindex_note_popover": {
-    "incomplete": true,
-    "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
+    "message": "<p>*Relativo se dentro de outro vidro</p><p>Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.</p>"
   },
   "step_size_note_popover": {
-    "incomplete": true,
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+    "message": "<p>Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'grin_circlelens.js', para mais informações.</p>"
   },
   "eps_grin_circlelens_note_popover": {
     "incomplete": true,
@@ -696,88 +525,68 @@ locales["LOCALE_ID"] = {
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
   "cauchycoeff": {
-    "incomplete": true,
-    "message": "Cauchy coefficient"
+    "message": "Coeficiente de Cauchy"
   },
   "transmissionratio": {
-    "incomplete": true,
-    "message": "Transmission Ratio"
+    "message": "Razão de Transmissão"
   },
   "applytoall": {
-    "incomplete": true,
-    "message": "Apply to All"
+    "message": "Aplicar em Todos"
   },
   "duplicate": {
-    "incomplete": true,
-    "message": "Duplicate"
+    "message": "Duplicar"
   },
   "delete": {
-    "incomplete": true,
-    "message": "Delete"
+    "message": "Apagar"
   },
   "unselect": {
-    "incomplete": true,
-    "message": "Unselect"
+    "message": "Desselecionar"
   },
   "unselect_popover": {
-    "incomplete": true,
-    "message": "Unselect this object (Right-click on blank space has the same function.)"
+    "message": "Desselecionar esse objeto (Botão direito do mouse em espaço vazio tem a mesma função.)"
   },
   "showadvanced": {
-    "incomplete": true,
-    "message": "More options..."
+    "message": "Mais opções..."
   },
   "processing": {
-    "incomplete": true,
-    "message": "Processing... Click here to stop."
+    "message": "Processando... Clique aqui para parar."
   },
   "restore": {
     "incomplete": true,
     "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
-    "incomplete": true,
-    "message": "Contribute"
+    "message": "Contribuir"
   },
   "github": {
-    "incomplete": true,
     "message": "GitHub"
   },
   "about": {
-    "incomplete": true,
-    "message": "About"
+    "message": "Sobre"
   },
   "about_url": {
-    "incomplete": true,
     "message": "https://phydemo.app/ray-optics/about"
   },
   "translate": {
-    "incomplete": true,
-    "message": "Help us translate this app"
+    "message": "Ajude-nos a traduzir este aplicativo"
   },
   "translated": {
-    "incomplete": true,
-    "message": "translated"
+    "message": "traduzido"
   },
   "undo_popover": {
-    "incomplete": true,
-    "message": "Undo last action. (Ctrl+Z)"
+    "message": "Desfazer última ação. (Ctrl+Z)"
   },
   "redo_popover": {
-    "incomplete": true,
-    "message": "Redo last action. (Ctrl+Y)"
+    "message": "Refazer última ação. (Ctrl+Y)"
   },
   "reset_popover": {
-    "incomplete": true,
-    "message": "Reset all changes."
+    "message": "Desfazer todas as mudanças."
   },
   "save_popover": {
-    "incomplete": true,
-    "message": "Save the current scene as a file."
+    "message": "Salvar a cena atual como um arquivo."
   },
   "open_popover": {
-    "incomplete": true,
-    "message": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
+    "message": "Abrir um arquivo existente ou imagem de fundo. A imagem de fundo será exibida a partir origem das coordenadas. (Ou solte o arquivo)"
   },
   "get_link_popover": {
     "incomplete": true,
@@ -936,75 +745,58 @@ locales["LOCALE_ID"] = {
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
   "showgrid_popover": {
-    "incomplete": true,
-    "message": "Defines the visibility of the background grid."
+    "message": "Define a visibilidade da grade de fundo."
   },
   "grid_popover": {
-    "incomplete": true,
-    "message": "Defines whether to snap to grid."
+    "message": "Define se vai ajustar à grade."
   },
   "lockobjs_popover": {
-    "incomplete": true,
-    "message": "Defines whether the objects can be moved or not."
+    "message": "Define se os objetos podem ser movidos ou não."
   },
   "zoom_popover": {
-    "incomplete": true,
-    "message": "Zoom the view with percentage."
+    "message": "Configurar zoom com porcentagem."
   },
   "help_popover": {
     "incomplete": true,
     "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
-    "incomplete": true,
-    "message": "Show help popups"
+    "message": "Exibir popups de ajuda"
   },
   "show_help_popups_popover": {
-    "incomplete": true,
-    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+    "message": "Define se vai exibir popups de ajuda quando pairando sobre botões. (Recarregue a página para fazer efeito.)"
   },
   "show_status": {
-    "incomplete": true,
-    "message": "Show status box"
+    "message": "Exibir caixa de status"
   },
   "grid_size": {
-    "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Tamanho da Grade (px)"
   },
   "observer_size": {
-    "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Tamanho do Observador (px)"
   },
   "language": {
-    "incomplete": true,
-    "message": "Language"
+    "message": "Linguagem"
   },
   "close": {
-    "incomplete": true,
-    "message": "Close"
+    "message": "Fechar"
   },
   "advanced_help": {
-    "incomplete": true,
-    "message": "For advanced help, see the help icon in the lower-right corner."
+    "message": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
   },
   "ray_count": {
-    "incomplete": true,
-    "message": "Number of ray segments: "
+    "message": "Número de segmentos de raio: "
   },
   "total_truncation": {
-    "incomplete": true,
-    "message": "Truncated brightness: "
+    "message": "Brilho truncado: "
   },
   "time_elapsed": {
-    "incomplete": true,
-    "message": "Time elapsed (ms): "
+    "message": "Tempo decorrido (ms): "
   },
   "force_stopped": {
-    "incomplete": true,
-    "message": "Force stopped."
+    "message": "Interrompido à força."
   },
   "mouse_coordinates": {
-    "incomplete": true,
-    "message": "Mouse coordinates: "
+    "message": "Coordenadas do Mouse: "
   }
 }

@@ -668,6 +668,9 @@ locales["si"] = {
     "incomplete": true,
     "message": "About"
   },
+  "about_url": {
+    "message": "https://phydemo.app/ray-optics/about"
+  },
   "translate": {
     "message": "මෙම යෙදුම පරිවර්තනය කිරීමට අපට උදවු කරන්න"
   },

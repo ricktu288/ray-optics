@@ -561,6 +561,9 @@ locales["zh-TW"] = {
   "about": {
     "message": "關於"
   },
+  "about_url": {
+    "message": "https://phydemo.app/ray-optics/tw/about"
+  },
   "translate": {
     "message": "協助我們翻譯本程式"
   },
@@ -751,7 +754,6 @@ locales["zh-TW"] = {
     "message": "已強制終止。"
   },
   "mouse_coordinates": {
-
     "message": "滑鼠座標："
   }
 }
