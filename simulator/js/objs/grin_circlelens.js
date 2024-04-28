@@ -12,24 +12,13 @@ objTypes['grin_circlelens'] = {
     const p_der_y = 'e ^ ((x ^ 2 + y ^ 2) * -1 / 2500) * y * -1 / 1250';
     const p_der_y_tex = '\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{2500}\\right)}\\cdot y\\cdot-1}{1250}';
     const origin = geometry.point(constructionPoint.x, constructionPoint.y); // origin of refractive index function n(x,y)
-    return { type: 'grin_circlelens', p1: constructionPoint, p2: constructionPoint, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, fn_p: evaluateLatex(p_tex), fn_p_der_x: evaluateLatex(p_der_x_tex), fn_p_der_y: evaluateLatex(p_der_y_tex), step_size: 1, eps: 1e-3 }; // Note that in this object, eps has units of [length]^2  },
+    return { type: 'grin_circlelens', p1: constructionPoint, p2: constructionPoint, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, step_size: 1, eps: 1e-3 }; // Note that in this object, eps has units of [length]^2  },
   },
 
   // Show the property box
   populateObjBar: function (obj, objBar) {
     if (!obj.fn_p) { // to maintain the ctrl+z functionality
-      try {
-        obj.fn_p = evaluateLatex(obj.p_tex);
-        obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
-        obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
-        delete obj.error;
-      } catch (e) {
-        obj.error = e.toString();
-        delete obj.fn_p;
-        delete obj.fn_p_der_x;
-        delete obj.fn_p_der_y;
-        return;
-      }
+      this.initFns(obj);
     }
     objBar.createEquation('n(x,y) = ', obj.p_tex, function (obj, value) {
       try {
@@ -39,9 +28,7 @@ objTypes['grin_circlelens'] = {
         obj.p_der_x_tex = math.parse(obj.p_der_x).toTex().replaceAll("{+", "{"); // 'evaluateLatex' function can't and can handle expressions of the form '...num^{+exp}...' and '...num^{exp}...', respectively, where num and exp are numbers
         obj.p_der_y = math.derivative(obj.p, 'y').toString();
         obj.p_der_y_tex = math.parse(obj.p_der_y).toTex().replaceAll("{+", "{"); //
-        obj.fn_p = evaluateLatex(obj.p_tex);
-        obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
-        obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
+        objTypes[obj.type].initFns(obj);
         delete obj.error;
       } catch (e) {
         obj.error = e.toString();
@@ -54,6 +41,7 @@ objTypes['grin_circlelens'] = {
         const n_origin_x = parseFloat(value.slice(1, commaPosition));
         const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
         obj.origin = geometry.point(n_origin_x, n_origin_y);
+        objTypes[obj.type].initFns(obj);
       }
     });
 
@@ -133,16 +121,7 @@ objTypes['grin_circlelens'] = {
   // Test if a ray may shoot on this object (if yes, return the intersection)
   checkRayIntersects: function (obj, ray) {
     if (!obj.fn_p) { // to maintain the ctrl+z functionality
-      try {
-        obj.fn_p = evaluateLatex(obj.p_tex);
-        obj.fn_p_der_x = evaluateLatex(obj.p_der_x_tex);
-        obj.fn_p_der_y = evaluateLatex(obj.p_der_y_tex);
-      } catch (e) {
-        delete obj.fn_p;
-        delete obj.fn_p_der_x;
-        delete obj.fn_p_der_y;
-        return;
-      }
+      this.initFns(obj);
     }
     if (objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOnBoundary(obj, ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
     {
@@ -163,7 +142,7 @@ objTypes['grin_circlelens'] = {
       {
         var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
         var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
-        let p = obj.fn_p({ x: incidentPoint.x - obj.origin.x, y: incidentPoint.y - obj.origin.y }); // refractive index at the intersection point - incidentPoint
+        let p = obj.fn_p({ x: incidentPoint.x, y: incidentPoint.y }); // refractive index at the intersection point - incidentPoint
         if (d > 0) {
           // Shot from inside to outside
           var n1 = (!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
@@ -196,7 +175,7 @@ objTypes['grin_circlelens'] = {
 
           // Surface merging
           for (var i = 0; i < surfaceMerging_objs.length; i++) {
-            let p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x - surfaceMerging_objs[i].origin.x, y: incidentPoint.y - surfaceMerging_objs[i].origin.y }) // refractive index at the intersection point - incidentPoint
+            let p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x, y: incidentPoint.y }) // refractive index at the intersection point - incidentPoint
             incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
             if (incidentType == 1) {
               // Shot from inside to outside
@@ -240,7 +219,7 @@ objTypes['grin_circlelens'] = {
       else {
         if (ray.bodyMerging_obj === undefined)
           ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-        next_point = objTypes[obj.type].step(obj, obj.origin, ray.p1, incidentPoint, ray);
+        next_point = objTypes[obj.type].step(obj, ray.p1, incidentPoint, ray);
         ray.p1 = incidentPoint;
         ray.p2 = next_point;
       }
@@ -329,18 +308,18 @@ objTypes['grin_circlelens'] = {
   using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://doi.org/10.1007/BFb0012092)
   x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
   */
-  step: function (obj, origin, p1, p2, ray) {
+  step: function (obj, p1, p2, ray) {
     const len = geometry.distance(p1, p2);
-    const x = p2.x - origin.x;
-    const y = p2.y - origin.y;
+    const x = p2.x;
+    const y = p2.y;
     const x_der_s_prev = (p2.x - p1.x) / len;
     const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
 
     const x_der_s = x_der_s_prev + obj.step_size * (ray.bodyMerging_obj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMerging_obj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMerging_obj.fn_p({ x: x, y: y });
     const y_der_s = y_der_s_prev + obj.step_size * (ray.bodyMerging_obj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMerging_obj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMerging_obj.fn_p({ x: x, y: y });
 
-    const x_new = origin.x + x + obj.step_size * x_der_s;
-    const y_new = origin.y + y + obj.step_size * y_der_s;
+    const x_new = x + obj.step_size * x_der_s;
+    const y_new = y + obj.step_size * y_der_s;
 
     return geometry.point(x_new, y_new);
   },
@@ -356,7 +335,7 @@ objTypes['grin_circlelens'] = {
     for (let i = 0; i < scene.objs.length; i++) {
       if ((scene.objs[i].type === "grin_circlelens" || scene.objs[i].type === "grin_refractor") && (objTypes[scene.objs[i].type].isOnBoundary(scene.objs[i], ray.p1) || objTypes[scene.objs[i].type].isInsideGlass(scene.objs[i], ray.p1))) {
         if (obj_tmp.fn_p === undefined) {
-          obj_tmp.p = scene.objs[i].p;
+          obj_tmp.p = this.shiftOrigin(scene.objs[i].p, scene.objs[i].origin);
           obj_tmp.fn_p = scene.objs[i].fn_p;
           obj_tmp.fn_p_der_x = scene.objs[i].fn_p_der_x;
           obj_tmp.fn_p_der_y = scene.objs[i].fn_p_der_y;
@@ -373,7 +352,7 @@ objTypes['grin_circlelens'] = {
   // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMerging_obj"
   multRefIndex: function (bodyMerging_obj, obj) {
     if (scene.symbolicGrin) {
-      let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + obj.p + ')').toString();
+      let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
 
       let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
 
@@ -412,7 +391,7 @@ objTypes['grin_circlelens'] = {
   // and returns a bodyMerging object for the region which includes "bodyMerging_obj" and excludes "obj"
   devRefIndex: function (bodyMerging_obj, obj) {
     if (scene.symbolicGrin) {
-      let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + obj.p + ')').toString();
+      let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
 
       let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());
 
@@ -445,6 +424,25 @@ objTypes['grin_circlelens'] = {
 
       return { fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
     }
+  },
+
+  initFns: function (obj) {
+    try {
+      obj.fn_p = evaluateLatex(this.shiftOrigin(obj.p_tex, obj.origin));
+      obj.fn_p_der_x = evaluateLatex(this.shiftOrigin(obj.p_der_x_tex, obj.origin));
+      obj.fn_p_der_y = evaluateLatex(this.shiftOrigin(obj.p_der_y_tex, obj.origin));
+    } catch (e) {
+      console.log("Error initializing functions for GRIN glass: " + e.toString());
+      obj.error = e.toString();
+      delete obj.fn_p;
+      delete obj.fn_p_der_x;
+      delete obj.fn_p_der_y;
+      return;
+    }
+  },
+
+  shiftOrigin: function (equation, origin) {
+    return equation.replaceAll("x", "(x-" + origin.x + ")").replaceAll("y", "(y-" + origin.y + ")");
   },
 
   // Returns true if point is outside the circular glass, otherwise returns false
