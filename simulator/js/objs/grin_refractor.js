@@ -97,7 +97,13 @@ objTypes['grin_refractor'] = {
         r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
 
         for (var i = 0; i < surfaceMerging_objs.length; i++) {
-          let p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x, y: incidentPoint.y }) // refractive index at the intersection point - incidentPoint
+          let p;
+          if (surfaceMerging_objs[i].type == "grin_circlelens" || surfaceMerging_objs[i].type == "grin_refractor") {
+            p = surfaceMerging_objs[i].fn_p({ x: incidentPoint.x, y: incidentPoint.y }); // refractive index at the intersection point - incidentPoint
+          } else {
+            p = surfaceMerging_objs[i].p; // non-GRIN glass
+          }
+          
           incidentType = objTypes[surfaceMerging_objs[i].type].getIncidentType(surfaceMerging_objs[i], ray);
           if (incidentType == 1) {
             // Shot from inside to outside
