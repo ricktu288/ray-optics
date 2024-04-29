@@ -49,19 +49,7 @@ objTypes['circlelens'] = {
 
   // When the obj is shot by a ray
   onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-    // If at least one of the surface merging object is a GRIN glass, the interaction should be handled by the GRIN glass instead.
-    if (surfaceMergingObjs) {
-      for (let i = 0; i < surfaceMergingObjs.length; i++) {
-        if (surfaceMergingObjs[i].type == 'grin_refractor' || surfaceMergingObjs[i].type == 'grin_circlelens') {
-          // Exclude the GRIN glass from the surface merging objects and include obj itself.
-          let new_surfaceMergingObjs = surfaceMergingObjs.filter((value, index, arr) => {
-            return value != surfaceMergingObjs[i];
-          });
-          new_surfaceMergingObjs.push(obj);
-          return objTypes[surfaceMergingObjs[i].type].onRayIncident(surfaceMergingObjs[i], ray, rayIndex, incidentPoint, new_surfaceMergingObjs);
-        }
-      }
-    }
+
 
     var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
     var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
@@ -83,32 +71,8 @@ objTypes['circlelens'] = {
       };
     }
 
-    var incidentType;
 
-    // Surface merging
-    for (var i = 0; i < surfaceMergingObjs.length; i++) {
-      incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
-      if (incidentType == 1) {
-        // Shot from inside to outside
-        n1 *= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == -1) {
-        // Shot from outside to inside
-        n1 /= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == 0) {
-        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
-        //n1=n1;
-      }
-      else {
-        // Situation that may cause bugs (e.g. shot at an edge point)
-        // To prevent shooting the ray to a wrong direction, absorb the ray
-        return {
-          isAbsorbed: true
-        };
-      }
-    }
-    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1);
+    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs);
 
 
   },

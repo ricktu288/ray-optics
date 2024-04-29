@@ -164,18 +164,18 @@ objTypes['grin_circlelens'] = {
         /*
         A bodyMerging object is an object containing three properties - "fn_p", "fn_p_der_x" and "fn_p_der_y", 
         which are the refractive index and its partial derivative functions, respectively, for some region of the simulation.
-        Every ray has a temporary bodyMerging object ("bodyMerging_obj") as a property
+        Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property
         (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor),
         which gets updated as the ray enters/exits into/from grin objects, using the
         "multRefIndex"/"devRefIndex" function, respectively.
         */
-        let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
+        let r_bodyMerging_obj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
 
-        if (ray.bodyMerging_obj === undefined) {
-          ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+        if (ray.bodyMergingObj === undefined) {
+          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
         }
 
-        r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+        r_bodyMerging_obj = ray.bodyMergingObj; // Save the current bodyMerging object of the ray
 
         for (var i = 0; i < surfaceMergingObjs.length; i++) {
           let p;
@@ -190,13 +190,13 @@ objTypes['grin_circlelens'] = {
             // Shot from inside to outside
             n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             if (objTypes[surfaceMergingObjs[i].type].devRefIndex)
-              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
           }
           else if (incidentType == -1) {
             // Shot from outside to inside
             n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             if (objTypes[surfaceMergingObjs[i].type].multRefIndex)
-              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
           }
           else if (incidentType == 0) {
             // Equivalent to not shot on the obj (e.g. two interfaces overlap)
@@ -212,17 +212,17 @@ objTypes['grin_circlelens'] = {
         }
 
         if (objTypes[obj.type].isInsideGlass(obj, ray.p1)) {
-          ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+          ray.bodyMergingObj = objTypes[obj.type].devRefIndex(ray.bodyMergingObj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
         }
         else {
-          ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
+          ray.bodyMergingObj = objTypes[obj.type].multRefIndex(ray.bodyMergingObj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
         }
         
         return objTypes[obj.type].refract(ray, rayIndex, incidentPoint, normal, n1, r_bodyMerging_obj);
       }
       else {
-        if (ray.bodyMerging_obj === undefined)
-          ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+        if (ray.bodyMergingObj === undefined)
+          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
         next_point = objTypes[obj.type].step(obj, ray.p1, incidentPoint, ray);
         ray.p1 = incidentPoint;
         ray.p2 = next_point;
@@ -237,8 +237,8 @@ objTypes['grin_circlelens'] = {
 
   },
 
-  // Identical to the circlelens "refract" function, except for the "r_bodyMerging_obj" parameter and the assigning to ray2.bodyMerging_obj
-  refract: function (ray, rayIndex, s_point, normal, n1, r_bodyMerging_obj) {
+  // Identical to the circlelens "refract" function, except for the "r_bodyMerging_obj" parameter and the assigning to ray2.bodyMergingObj
+  refract: function (ray, rayIndex, s_point, normal, n1, bodyMergingObj) {
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     var normal_x = normal.x / normal_len;
     var normal_y = normal.y / normal_len;
@@ -259,7 +259,7 @@ objTypes['grin_circlelens'] = {
       // Total internal reflection
       ray.p1 = s_point;
       ray.p2 = geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
-      ray.bodyMerging_obj = r_bodyMerging_obj;
+      ray.bodyMergingObj = bodyMergingObj;
 
     }
     else {
@@ -279,7 +279,7 @@ objTypes['grin_circlelens'] = {
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
-      ray2.bodyMerging_obj = r_bodyMerging_obj;
+      ray2.bodyMergingObj = bodyMergingObj;
       if (ray2.brightness_s + ray2.brightness_p > 0.01) {
         newRays.push(ray2);
       }
@@ -321,8 +321,8 @@ objTypes['grin_circlelens'] = {
     const x_der_s_prev = (p2.x - p1.x) / len;
     const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
 
-    const x_der_s = x_der_s_prev + obj.step_size * (ray.bodyMerging_obj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMerging_obj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMerging_obj.fn_p({ x: x, y: y });
-    const y_der_s = y_der_s_prev + obj.step_size * (ray.bodyMerging_obj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMerging_obj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMerging_obj.fn_p({ x: x, y: y });
+    const x_der_s = x_der_s_prev + obj.step_size * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+    const y_der_s = y_der_s_prev + obj.step_size * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
 
     const x_new = x + obj.step_size * x_der_s;
     const y_new = y + obj.step_size * y_der_s;
@@ -357,11 +357,11 @@ objTypes['grin_circlelens'] = {
     return obj_tmp;
   },
 
-  // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
-  // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMerging_obj"
-  multRefIndex: function (bodyMerging_obj, obj) {
+  // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMergingObj"),
+  // and returns a bodyMerging object for the overlapping region of "obj" and "bodyMergingObj"
+  multRefIndex: function (bodyMergingObj, obj) {
     if (scene.symbolicGrin) {
-      let mul_p = math.simplify('(' + bodyMerging_obj.p + ')*' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
+      let mul_p = math.simplify('(' + bodyMergingObj.p + ')*' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
 
       let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
 
@@ -372,7 +372,7 @@ objTypes['grin_circlelens'] = {
       return { p: mul_p, fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y };
     }
     else {
-      let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
+      let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
       let mul_fn_p = (function (fn_p, new_fn_p) {
         return function (param) {
@@ -396,11 +396,11 @@ objTypes['grin_circlelens'] = {
     }
   },
 
-  // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMerging_obj"),
-  // and returns a bodyMerging object for the region which includes "bodyMerging_obj" and excludes "obj"
-  devRefIndex: function (bodyMerging_obj, obj) {
+  // Receives an instance of a grin object("obj" - e.g. grin_circlelens and grin_refractor) and a bodyMerging object("bodyMergingObj"),
+  // and returns a bodyMerging object for the region which includes "bodyMergingObj" and excludes "obj"
+  devRefIndex: function (bodyMergingObj, obj) {
     if (scene.symbolicGrin) {
-      let dev_p = math.simplify('(' + bodyMerging_obj.p + ')/' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
+      let dev_p = math.simplify('(' + bodyMergingObj.p + ')/' + '(' + this.shiftOrigin(obj.p, obj.origin) + ')').toString();
 
       let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());
 
@@ -411,7 +411,7 @@ objTypes['grin_circlelens'] = {
       return { p: dev_p, fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
     }
     else {
-      let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMerging_obj.fn_p, bodyMerging_obj.fn_p_der_x, bodyMerging_obj.fn_p_der_y];
+      let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [obj.fn_p, obj.fn_p_der_x, obj.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
       let dev_fn_p = (function (fn_p, new_fn_p) {
         return function (param) {

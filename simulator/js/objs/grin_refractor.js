@@ -83,18 +83,18 @@ objTypes['grin_refractor'] = {
         /*
         A bodyMerging object is an object containing three properties - "fn_p", "fn_p_der_x" and "fn_p_der_y", 
         which are the refractive index and its partial derivative functions, respectively, for some region of the simulation.
-        Every ray has a temporary bodyMerging object ("bodyMerging_obj") as a property
+        Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property
         (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor),
         which gets updated as the ray enters/exits into/from grin objects, using the
         "multRefIndex"/"devRefIndex" function, respectively.
         */
-        let r_bodyMerging_obj; // save the current bodyMerging_obj of the ray, to pass it later to the reflected ray in the 'refract' function
+        let r_bodyMerging_obj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
 
-        if (ray.bodyMerging_obj === undefined) {
-          ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+        if (ray.bodyMergingObj === undefined) {
+          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
         }
 
-        r_bodyMerging_obj = ray.bodyMerging_obj; // Save the current bodyMerging object of the ray
+        r_bodyMerging_obj = ray.bodyMergingObj; // Save the current bodyMerging object of the ray
 
         for (var i = 0; i < surfaceMergingObjs.length; i++) {
           let p;
@@ -109,13 +109,13 @@ objTypes['grin_refractor'] = {
             // Shot from inside to outside
             n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             if (objTypes[surfaceMergingObjs[i].type].devRefIndex)
-              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
           }
           else if (incidentType == -1) {
             // Shot from outside to inside
             n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
             if (objTypes[surfaceMergingObjs[i].type].multRefIndex)
-              ray.bodyMerging_obj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMerging_obj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
+              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
           }
           else if (incidentType == 0) {
             // Equivalent to not shot on the obj (e.g. two interfaces overlap)
@@ -131,17 +131,17 @@ objTypes['grin_refractor'] = {
         }
 
         if (objTypes[obj.type].isInsideGlass(obj, ray.p1)) {
-          ray.bodyMerging_obj = objTypes[obj.type].devRefIndex(ray.bodyMerging_obj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
+          ray.bodyMergingObj = objTypes[obj.type].devRefIndex(ray.bodyMergingObj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
         }
         else {
-          ray.bodyMerging_obj = objTypes[obj.type].multRefIndex(ray.bodyMerging_obj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
+          ray.bodyMergingObj = objTypes[obj.type].multRefIndex(ray.bodyMergingObj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
         }
         
         return objTypes[obj.type].refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, r_bodyMerging_obj);
       }
       else {
-        if (ray.bodyMerging_obj === undefined)
-          ray.bodyMerging_obj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
+        if (ray.bodyMergingObj === undefined)
+          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
         next_point = objTypes[obj.type].step(obj, ray.p1, incidentPoint, ray);
         ray.p1 = incidentPoint;
         ray.p2 = next_point;

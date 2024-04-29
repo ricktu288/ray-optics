@@ -103,15 +103,46 @@ class BaseFilter extends BaseSceneObj {
   }
 
   /**
-   * Do the refraction calculation.
+   * Do the refraction calculation at the surface of the glass.
    * @param {Ray} ray - The ray to be refracted.
    * @param {number} rayIndex - The index of the ray in the ray array.
-   * @param {Point} s_point - The incident point.
+   * @param {Point} incidentPoint - The incident point.
    * @param {Point} normal - The normal vector at the incident point.
-   * @param {number} n1 - The effective refractive index (after surface merging).
+   * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
+   * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
+   * @param {object|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
    * @returns {SimulationReturn|null} The return value for `onRayIncident`.
    */
-  refract(ray, rayIndex, s_point, normal, n1) {
+  refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, bodyMergingObj) {
+
+    var incidentType;
+
+    // Surface merging
+    for (var i = 0; i < surfaceMergingObjs.length; i++) {
+      incidentType = surfaceMergingObjs[i].getIncidentType(ray);
+      if (incidentType == 1) {
+        // Shot from inside to outside
+        n1 *= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
+        surfaceMergingObjs[i].onRayExit(ray);
+      }
+      else if (incidentType == -1) {
+        // Shot from outside to inside
+        n1 /= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
+        surfaceMergingObjs[i].onRayEnter(ray);
+      }
+      else if (incidentType == 0) {
+        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
+        //n1=n1;
+      }
+      else {
+        // Situation that may cause bugs (e.g. shot at an edge point)
+        // To prevent shooting the ray to a wrong direction, absorb the ray
+        return {
+          isAbsorbed: true
+        };
+      }
+    }
+
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     var normal_x = normal.x / normal_len;
     var normal_y = normal.y / normal_len;
@@ -130,10 +161,11 @@ class BaseFilter extends BaseSceneObj {
 
     if (sq1 < 0) {
       // Total internal reflection
-      ray.p1 = s_point;
-      ray.p2 = geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y);
-
-
+      ray.p1 = incidentPoint;
+      ray.p2 = geometry.point(incidentPoint.x + ray_x + 2 * cos1 * normal_x, incidentPoint.y + ray_y + 2 * cos1 * normal_y);
+      if (bodyMergingObj) {
+        ray.bodyMergingObj = bodyMergingObj;
+      }
     }
     else {
       // Refraction
@@ -147,11 +179,14 @@ class BaseFilter extends BaseSceneObj {
       let truncation = 0;
 
       // Handle the reflected ray
-      var ray2 = geometry.line(s_point, geometry.point(s_point.x + ray_x + 2 * cos1 * normal_x, s_point.y + ray_y + 2 * cos1 * normal_y));
+      var ray2 = geometry.line(incidentPoint, geometry.point(incidentPoint.x + ray_x + 2 * cos1 * normal_x, incidentPoint.y + ray_y + 2 * cos1 * normal_y));
       ray2.brightness_s = ray.brightness_s * R_s;
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
+      if (bodyMergingObj) {
+        ray2.bodyMergingObj = bodyMergingObj;
+      }
       if (ray2.brightness_s + ray2.brightness_p > 0.01) {
         newRays.push(ray2);
       }
@@ -168,8 +203,8 @@ class BaseFilter extends BaseSceneObj {
       }
 
       // Handle the refracted ray
-      ray.p1 = s_point;
-      ray.p2 = geometry.point(s_point.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, s_point.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
+      ray.p1 = incidentPoint;
+      ray.p2 = geometry.point(incidentPoint.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, incidentPoint.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);
       ray.brightness_p = ray.brightness_p * (1 - R_p);
 
@@ -177,6 +212,21 @@ class BaseFilter extends BaseSceneObj {
         newRays: newRays,
         truncation: truncation
       };
+    }
+  }
+
+
+  /**
+   * Get the refractive index at a point for a ray
+   * @param {Point} point - The point to get the refractive index. For normal glasses, this parameter is not used. But it will be used in GRIN glasses.
+   * @param {Ray} ray - The ray to be refracted.
+   * @returns {number} - The refractive index at the point.
+   */
+  getRefIndexAt(point, ray) {
+    if (this.scene.colorMode) {
+      return this.p + (this.p + this.cauchyCoeff / (ray.wavelength * ray.wavelength * 0.000001));
+    } else {
+      return this.p;
     }
   }
 
@@ -190,6 +240,22 @@ class BaseFilter extends BaseSceneObj {
    */
   getIncidentType(ray) {
     // To be implemented in subclasses.
+  }
+
+  /**
+   * Handle the event when a ray enters the glass. For GRIN glasses, the body-merging object in the ray should be updated.
+   * @param {Ray} ray - The ray that enters the glass.
+   */
+  onRayEnter(ray) {
+    // Nothing to do for normal glasses.
+  }
+
+  /**
+   * Handle the event when a ray exits the glass. For GRIN glasses, the body-merging object in the ray should be updated.
+   * @param {Ray} ray - The ray that exits the glass.
+   */
+  onRayExit(ray) {
+    // Nothing to do for normal glasses.
   }
 
 };
