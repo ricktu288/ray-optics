@@ -273,13 +273,13 @@ function shootWaitingRays() {
         {
           // Here scene.objs[i] intersects with the ray at s_point_temp
           s_lensq_temp = geometry.distanceSquared(waitingRays[j].p1, s_point_temp);
-          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (scene.objs[i].constructor.supportSurfaceMerging || s_obj.constructor.supportSurfaceMerging))
+          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (scene.objs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging))
           {
             // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
-            if (s_obj.constructor.supportSurfaceMerging)
+            if (s_obj.constructor.supportsSurfaceMerging)
             {
-              if (scene.objs[i].constructor.supportSurfaceMerging)
+              if (scene.objs[i].constructor.supportsSurfaceMerging)
               {
                 // Both of them supports surface merging (e.g. two glasses with one common edge
                 surfaceMergingObjs[surfaceMergingObjs.length] = scene.objs[i];

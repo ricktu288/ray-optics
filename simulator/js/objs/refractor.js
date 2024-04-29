@@ -1,7 +1,7 @@
 // Glass -> Polygon / Circular Arcs
 objTypes['refractor'] = {
 
-  supportSurfaceMerging: true,
+  supportsSurfaceMerging: true,
 
   // Create the obj
   create: function (constructionPoint) {

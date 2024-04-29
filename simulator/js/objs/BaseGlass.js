@@ -1,9 +1,9 @@
 /**
  * The base class for glasses.
  * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
- * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on.
+ * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
  */
-class BaseFilter extends BaseSceneObj {
+class BaseGlass extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.colorMode) {
@@ -33,6 +33,8 @@ class BaseFilter extends BaseSceneObj {
    * @param {boolean} isHovered - Whether the object is hovered by the mouse, which determines the style of the object to be drawn, e.g., with lighlighted color.
    */
   fillGlass(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+
     const n = this.p;
 
     if (isAboveLight) {
@@ -108,15 +110,21 @@ class BaseFilter extends BaseSceneObj {
    * @param {number} rayIndex - The index of the ray in the ray array.
    * @param {Point} incidentPoint - The incident point.
    * @param {Point} normal - The normal vector at the incident point.
-   * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
    * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
-   * @param {object|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
    * @returns {SimulationReturn|null} The return value for `onRayIncident`.
    */
-  refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, bodyMergingObj) {
+  refract(ray, rayIndex, incidentPoint, normal, surfaceMergingObjs) {
+
+    // The equivalent GRIN glass (body-merging object) the ray was in before incident on the current surface.
+    const originalBodyObj = ray.bodyMergingObj;
+
+    // All the objects with surfaces constituting the surface that the ray is incident on.
+    let allSurfaceObjs = surfaceMergingObjs; 
+    allSurfaceObjs.push(this);
+
+    let n1 = 1;
 
     var incidentType;
-
     // Surface merging
     for (var i = 0; i < surfaceMergingObjs.length; i++) {
       incidentType = surfaceMergingObjs[i].getIncidentType(ray);
@@ -163,8 +171,8 @@ class BaseFilter extends BaseSceneObj {
       // Total internal reflection
       ray.p1 = incidentPoint;
       ray.p2 = geometry.point(incidentPoint.x + ray_x + 2 * cos1 * normal_x, incidentPoint.y + ray_y + 2 * cos1 * normal_y);
-      if (bodyMergingObj) {
-        ray.bodyMergingObj = bodyMergingObj;
+      if (originalBodyObj) {
+        ray.bodyMergingObj = originalBodyObj;
       }
     }
     else {
@@ -184,8 +192,8 @@ class BaseFilter extends BaseSceneObj {
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
-      if (bodyMergingObj) {
-        ray2.bodyMergingObj = bodyMergingObj;
+      if (originalBodyObj) {
+        ray2.bodyMergingObj = originalBodyObj;
       }
       if (ray2.brightness_s + ray2.brightness_p > 0.01) {
         newRays.push(ray2);

@@ -1,7 +1,7 @@
 // Glass -> Circle
 objTypes['circlelens'] = {
 
-  supportSurfaceMerging: true, // Surface merging
+  supportsSurfaceMerging: true, // Surface merging
 
   // Create the obj
   create: function (constructionPoint) {

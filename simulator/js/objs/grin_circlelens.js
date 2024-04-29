@@ -1,7 +1,7 @@
 // Glass -> Gradient-index circle
 objTypes['grin_circlelens'] = {
 
-  supportSurfaceMerging: true, // Surface merging
+  supportsSurfaceMerging: true, // Surface merging
 
   // Create the obj
   create: function (constructionPoint) {

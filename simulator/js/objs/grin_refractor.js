@@ -1,7 +1,7 @@
 // Glass -> Gradient-index polygon
 objTypes['grin_refractor'] = {
 
-  supportSurfaceMerging: true,
+  supportsSurfaceMerging: true,
 
   // Create the obj
   create: function (constructionPoint) {

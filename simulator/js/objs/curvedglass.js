@@ -1,7 +1,7 @@
 // Glass -> Custom equation
 objTypes['curvedglass'] = {
 
-  supportSurfaceMerging: true,
+  supportsSurfaceMerging: true,
 
   // Create the obj
   create: function (constructionPoint) {

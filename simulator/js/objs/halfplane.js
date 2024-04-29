@@ -1,36 +1,61 @@
-// Glass -> Half-plane
-objTypes['halfplane'] = {
+/**
+ * Glass of the shape of a half-plane.
+ * Tools -> Glass -> Half-plane
+ * @property {Point} p1 - A point on the boundary of the half-plane.
+ * @property {Point} p2 - Another point on the boundary of the half-plane.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
+ * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ */
+objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
+  static type = 'halfplane';
+  static isOptical = true;
+  static supportsSurfaceMerging = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    p: 1.5,
+    cauchyCoeff: 0.004
+  };
 
-  supportSurfaceMerging: true,
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'halfplane', p1: constructionPoint, p2: constructionPoint, p: 1.5 };
-  },
+    var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+    var par_x = (this.p2.x - this.p1.x) / len;
+    var par_y = (this.p2.y - this.p1.y) / len;
+    var per_x = par_y;
+    var per_y = -par_x;
 
-  populateObjBar: objTypes['refractor'].populateObjBar,
+    var sufficientlyLargeDistance = (Math.abs(this.p1.x + this.scene.origin.x) + Math.abs(this.p1.y + this.scene.origin.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, this.scene.scale);
 
-  // Use the prototype lineobj
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
-  move: objTypes['lineobj'].move,
-  onDrag: objTypes['lineobj'].onDrag,
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x - par_x * sufficientlyLargeDistance, this.p1.y - par_y * sufficientlyLargeDistance);
+    ctx.lineTo(this.p1.x + par_x * sufficientlyLargeDistance, this.p1.y + par_y * sufficientlyLargeDistance);
+    ctx.lineTo(this.p1.x + (par_x - per_x) * sufficientlyLargeDistance, this.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
+    ctx.lineTo(this.p1.x - (par_x + per_x) * sufficientlyLargeDistance, this.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
 
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse) {
+    this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+
+    if (isHovered) {
+      ctx.fillStyle = 'magenta';
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+    }
+  }
+
+  checkMouseOver(mouse) {
     let dragContext = {};
-    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2)) {
       dragContext.part = 1;
-      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
       return dragContext;
     }
-    if (mouse.isOnPoint(obj.p2)) {
+    if (mouse.isOnPoint(this.p2)) {
       dragContext.part = 2;
-      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
       return dragContext;
     }
-    if (mouse.isOnLine(obj)) {
+    if (mouse.isOnLine(this)) {
       const mousePos = mouse.getPosSnappedToGrid();
       dragContext.part = 0;
       dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -38,117 +63,28 @@ objTypes['halfplane'] = {
       dragContext.snapContext = {};
       return dragContext;
     }
-  },
+  }
 
-  // Test if a ray may shoot on this object (if yes, return the intersection)
-  checkRayIntersects: function (obj, ray) {
-    if (obj.p <= 0) return;
-    var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.p1, obj.p2));
+
+  checkRayIntersects(ray) {
+    if (this.p <= 0) return;
+    var rp_temp = geometry.linesIntersection(ray, this);
 
     if (geometry.intersectionIsOnRay(rp_temp, ray)) {
       return rp_temp;
     }
-  },
+  }
 
-  getZIndex: objTypes['refractor'].getZIndex,
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    var rdots = (ray.p2.x - ray.p1.x) * (this.p2.x - this.p1.x) + (ray.p2.y - ray.p1.y) * (this.p2.y - this.p1.y);
+    var ssq = (this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y);
+    var normal = { x: rdots * (this.p2.x - this.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (this.p2.y - this.p1.y) - ssq * (ray.p2.y - ray.p1.y) };
 
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;
+    return this.refract(ray, rayIndex, incidentPoint, normal, surfaceMergingObjs);
+  }
 
-    var len = Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y));
-    var par_x = (obj.p2.x - obj.p1.x) / len;
-    var par_y = (obj.p2.y - obj.p1.y) / len;
-    var per_x = par_y;
-    var per_y = -par_x;
-
-    var sufficientlyLargeDistance = (Math.abs(obj.p1.x + scene.origin.x) + Math.abs(obj.p1.y + scene.origin.y) + ctx.canvas.height + ctx.canvas.width) / Math.min(1, scene.scale);
-
-    ctx.beginPath();
-    ctx.moveTo(obj.p1.x - par_x * sufficientlyLargeDistance, obj.p1.y - par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + par_x * sufficientlyLargeDistance, obj.p1.y + par_y * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x + (par_x - per_x) * sufficientlyLargeDistance, obj.p1.y + (par_y - per_y) * sufficientlyLargeDistance);
-    ctx.lineTo(obj.p1.x - (par_x + per_x) * sufficientlyLargeDistance, obj.p1.y - (par_y + per_y) * sufficientlyLargeDistance);
-
-    objTypes['refractor'].fillGlass(obj.p, obj, canvasRenderer, isAboveLight, isHovered);
-
-    if (isHovered) {
-      ctx.fillStyle = 'magenta';
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
-    }
-
-
-  },
-
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-    // If at least one of the surface merging object is a GRIN glass, the interaction should be handled by the GRIN glass instead.
-    if (surfaceMergingObjs) {
-      for (let i = 0; i < surfaceMergingObjs.length; i++) {
-        if (surfaceMergingObjs[i].type == 'grin_refractor' || surfaceMergingObjs[i].type == 'grin_circlelens') {
-          // Exclude the GRIN glass from the surface merging objects and include obj itself.
-          let new_surfaceMergingObjs = surfaceMergingObjs.filter((value, index, arr) => {
-            return value != surfaceMergingObjs[i];
-          });
-          new_surfaceMergingObjs.push(obj);
-          return objTypes[surfaceMergingObjs[i].type].onRayIncident(surfaceMergingObjs[i], ray, rayIndex, incidentPoint, new_surfaceMergingObjs);
-        }
-      }
-    }
-
-    var rdots = (ray.p2.x - ray.p1.x) * (obj.p2.x - obj.p1.x) + (ray.p2.y - ray.p1.y) * (obj.p2.y - obj.p1.y);
-    var ssq = (obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y);
-    var normal = { x: rdots * (obj.p2.x - obj.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (obj.p2.y - obj.p1.y) - ssq * (ray.p2.y - ray.p1.y) };
-
-    var incidentType = this.getIncidentType(obj, ray);
-    if (incidentType == 1) {
-      // Shot from inside to outside
-      var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
-    }
-    else if (incidentType == -1) {
-      // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
-    }
-    else {
-      // Situation that may cause bugs (e.g. shot at an edge point)
-      // To prevent shooting the ray to a wrong direction, absorb the ray
-      return {
-        isAbsorbed: true
-      };
-    }
-
-    // Surface merging
-    //if(surfaceMerging_obj)
-    for (var i = 0; i < surfaceMergingObjs.length; i++) {
-      incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
-      if (incidentType == 1) {
-        // Shot from inside to outside
-        n1 *= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == -1) {
-        // Shot from outside to inside
-        n1 /= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == 0) {
-        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
-        //n1=n1;
-      }
-      else {
-        // Situation that may cause bugs (e.g. shot at an edge point)
-        // To prevent shooting the ray to a wrong direction, absorb the ray
-        return {
-          isAbsorbed: true
-        };
-      }
-    }
-    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1);
-
-
-  },
-
-  getIncidentType: function (obj, ray) {
-    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.p2.y - obj.p1.y) - (ray.p2.y - ray.p1.y) * (obj.p2.x - obj.p1.x);
+  getIncidentType(ray) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (this.p2.y - this.p1.y) - (ray.p2.y - ray.p1.y) * (this.p2.x - this.p1.x);
     if (rcrosss > 0) {
       return 1; // From inside to outside
     }
@@ -157,5 +93,4 @@ objTypes['halfplane'] = {
     }
     return 2;
   }
-
 };

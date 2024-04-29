@@ -1,7 +1,7 @@
 // Glass -> Spherical Lens
 objTypes['sphericallens'] = {
 
-  supportSurfaceMerging: true,
+  supportsSurfaceMerging: true,
 
   create: function (contructionPoint) {
     return { type: 'sphericallens', p1: contructionPoint, p2: contructionPoint, p: 1.5, path: [contructionPoint, contructionPoint, contructionPoint, contructionPoint, contructionPoint, contructionPoint] };
