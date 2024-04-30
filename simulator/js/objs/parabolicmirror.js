@@ -65,13 +65,11 @@ objTypes['parabolicmirror'] = class extends BaseFilter {
         ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
         ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
       }
-    }
-    else if (this.p2) {
+    } else if (this.p2) {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
-    }
-    else {
+    } else {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
     }

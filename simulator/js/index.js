@@ -971,6 +971,7 @@ function openFile(readFile) {
 }
 
 function getLink() {
+  JSONOutput();
   JsonUrl('lzma').compress(JSON.parse(document.getElementById('textarea1').value)).then(output => {
     window.location.hash = '#' + output;
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;

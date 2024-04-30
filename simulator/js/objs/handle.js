@@ -111,8 +111,7 @@ objTypes['handle'] = class extends BaseSceneObj {
     if (this.notDone) return;
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-    }
-    else {
+    } else {
       var mousePos = mouse.getPosSnappedToGrid();
       dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }

@@ -219,7 +219,7 @@ class BaseGlass extends BaseSceneObj {
    */
   getRefIndexAt(point, ray) {
     if (this.scene.colorMode) {
-      return this.p + (this.p + this.cauchyCoeff / (ray.wavelength * ray.wavelength * 0.000001));
+      return this.p + this.cauchyCoeff / (ray.wavelength * ray.wavelength * 0.000001);
     } else {
       return this.p;
     }
@@ -238,7 +238,7 @@ class BaseGlass extends BaseSceneObj {
   }
 
   /**
-   * Handle the event when a ray enters the glass. For GRIN glasses, the body-merging object in the ray should be updated.
+   * Handle the event when a ray enters the glass. This is called during the surface merging process, and is called by the glass object who is handling the surface merging, rather than by the simulator. Unlike `onRayIncident` which is only called for one representative object who is responsible for handling the surface merging, this function is called for every object that consistute the merged surface.  For notmal glasses nothing needs to be done in this function, but for GRIN glasses, the body-merging object in the ray should be updated here, so that the ray knows that it now feels a different refractive index gradient.
    * @param {Ray} ray - The ray that enters the glass.
    */
   onRayEnter(ray) {
@@ -246,7 +246,7 @@ class BaseGlass extends BaseSceneObj {
   }
 
   /**
-   * Handle the event when a ray exits the glass. For GRIN glasses, the body-merging object in the ray should be updated.
+   * Handle the event when a ray exits the glass. This is called during the surface merging process, and is called by the glass object who is handling the surface merging, rather than by the simulator. Unlike `onRayIncident` which is only called for one representative object who is responsible for handling the surface merging, this function is called for every object that consistute the merged surface.  For notmal glasses nothing needs to be done in this function, but for GRIN glasses, the body-merging object in the ray should be updated here, so that the ray knows that it now feels a different refractive index gradient.
    * @param {Ray} ray - The ray that exits the glass.
    */
   onRayExit(ray) {

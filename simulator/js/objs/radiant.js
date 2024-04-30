@@ -67,8 +67,7 @@ objTypes['radiant'] = class extends BaseSceneObj {
   onDrag(mouse, dragContext, ctrl, shift) {
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(dragContext.targetPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-    }
-    else {
+    } else {
       var mousePos = mouse.getPosSnappedToGrid();
       dragContext.snapContext = {};
     }

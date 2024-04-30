@@ -126,8 +126,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
       // The first point at two focal lengths is on the same side as the ray
       twoF_line_near = geometry.parallelLineThroughPoint(this, twoF_point_1);
       twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_2);
-    }
-    else {
+    } else {
       // The second point at two focal lengths is on the same side as the ray
       twoF_line_near = geometry.parallelLineThroughPoint(this, twoF_point_2);
       twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_1);
@@ -136,8 +135,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
     if (this.p > 0) {
       ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
       ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
-    }
-    else {
+    } else {
       ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(incidentPoint, geometry.linesIntersection(twoF_line_near, geometry.line(mid_point, geometry.linesIntersection(twoF_line_far, ray)))));
       ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
     }

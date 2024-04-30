@@ -91,8 +91,7 @@ const LineObjMixin = Base => class extends Base {
 
       if (shift) {
         var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }, { x: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y), y: -(dragContext.originalObj.p2.x - dragContext.originalObj.p1.x) }], dragContext.snapContext);
-      }
-      else {
+      } else {
         var mousePos = mouse.getPosSnappedToGrid();
         dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }

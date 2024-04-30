@@ -72,11 +72,9 @@ objTypes['protractor'] = class extends CircleObjMixin(BaseSceneObj) {
           ctx.rotate(ang + Math.PI * 0.5);
           ctx.fillText((i > 180) ? (360 - i) : i, 0, 0);
           ctx.restore();
-        }
-        else if (i % scale_step_mid == 0) {
+        } else if (i % scale_step_mid == 0) {
           ctx.lineTo(this.p1.x + (r - scale_len_mid) * Math.cos(ang), this.p1.y + (r - scale_len_mid) * Math.sin(ang));
-        }
-        else {
+        } else {
           ctx.lineTo(this.p1.x + (r - scale_len) * Math.cos(ang), this.p1.y + (r - scale_len) * Math.sin(ang));
         }
       }

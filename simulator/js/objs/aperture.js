@@ -89,8 +89,7 @@ objTypes['aperture'] = class extends BaseFilter {
   onConstructMouseMove(mouse, ctrl, shift) {
     if (shift) {
       this.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
-    }
-    else {
+    } else {
       this.p2 = mouse.getPosSnappedToGrid();
     }
 

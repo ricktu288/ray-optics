@@ -47,24 +47,21 @@ objTypes['ruler'] = class extends LineObjMixin(BaseSceneObj) {
       var text_ang = ang;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-    }
-    else if (ang > Math.PI * (-0.75) && ang <= Math.PI * (-0.25)) {
+    } else if (ang > Math.PI * (-0.75) && ang <= Math.PI * (-0.25)) {
       //↗~↖
       var scale_direction = 1;
       var scale_len_long = 15;
       var text_ang = ang - Math.PI * (-0.5);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-    }
-    else if (ang > Math.PI * 0.75 || ang <= Math.PI * (-0.75)) {
+    } else if (ang > Math.PI * 0.75 || ang <= Math.PI * (-0.75)) {
       //↖~↙
       var scale_direction = 1;
       var scale_len_long = 20;
       var text_ang = ang - Math.PI;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-    }
-    else {
+    } else {
       //↙~↘
       var scale_direction = -1;
       var scale_len_long = 15;
@@ -89,11 +86,9 @@ objTypes['ruler'] = class extends LineObjMixin(BaseSceneObj) {
         ctx.rotate(text_ang);
         ctx.fillText(i, 0, 0);
         ctx.restore();
-      }
-      else if (i % scale_step_mid == 0) {
+      } else if (i % scale_step_mid == 0) {
         ctx.lineTo(this.p1.x + i * par_x + scale_direction * scale_len_mid * per_x, this.p1.y + i * par_y + scale_direction * scale_len_mid * per_y);
-      }
-      else {
+      } else {
         ctx.lineTo(this.p1.x + i * par_x + scale_direction * scale_len * per_x, this.p1.y + i * par_y + scale_direction * scale_len * per_y);
       }
     }
