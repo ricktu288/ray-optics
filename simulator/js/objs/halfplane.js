@@ -76,11 +76,29 @@ objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
   }
 
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+
     var rdots = (ray.p2.x - ray.p1.x) * (this.p2.x - this.p1.x) + (ray.p2.y - ray.p1.y) * (this.p2.y - this.p1.y);
     var ssq = (this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y);
     var normal = { x: rdots * (this.p2.x - this.p1.x) - ssq * (ray.p2.x - ray.p1.x), y: rdots * (this.p2.y - this.p1.y) - ssq * (ray.p2.y - ray.p1.y) };
 
-    return this.refract(ray, rayIndex, incidentPoint, normal, surfaceMergingObjs);
+    var incidentType = this.getIncidentType(ray);
+    if (incidentType == 1) {
+      // Shot from inside to outside
+      var n1 = this.getRefIndexAt(incidentPoint, ray);
+    }
+    else if (incidentType == -1) {
+      // Shot from outside to inside
+      var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+    }
+    else {
+      // Situation that may cause bugs (e.g. shot at an edge point)
+      // To prevent shooting the ray to a wrong direction, absorb the ray
+      return {
+        isAbsorbed: true
+      };
+    }
+
+    return this.refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
   }
 
   getIncidentType(ray) {
@@ -91,6 +109,6 @@ objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
     if (rcrosss < 0) {
       return -1; // From outside to inside
     }
-    return 2;
+    return NaN;
   }
 };

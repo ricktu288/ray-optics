@@ -110,39 +110,28 @@ class BaseGlass extends BaseSceneObj {
    * @param {number} rayIndex - The index of the ray in the ray array.
    * @param {Point} incidentPoint - The incident point.
    * @param {Point} normal - The normal vector at the incident point.
+   * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
    * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
+   * @param {object|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
    * @returns {SimulationReturn|null} The return value for `onRayIncident`.
    */
-  refract(ray, rayIndex, incidentPoint, normal, surfaceMergingObjs) {
+  refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, bodyMergingObj) {
 
-    // The equivalent GRIN glass (body-merging object) the ray was in before incident on the current surface.
-    const originalBodyObj = ray.bodyMergingObj;
-
-    // All the objects with surfaces constituting the surface that the ray is incident on.
-    let allSurfaceObjs = surfaceMergingObjs; 
-    allSurfaceObjs.push(this);
-
-    let n1 = 1;
-
-    var incidentType;
     // Surface merging
     for (var i = 0; i < surfaceMergingObjs.length; i++) {
-      incidentType = surfaceMergingObjs[i].getIncidentType(ray);
+      let incidentType = surfaceMergingObjs[i].getIncidentType(ray);
       if (incidentType == 1) {
         // Shot from inside to outside
         n1 *= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
         surfaceMergingObjs[i].onRayExit(ray);
-      }
-      else if (incidentType == -1) {
+      } else if (incidentType == -1) {
         // Shot from outside to inside
         n1 /= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
         surfaceMergingObjs[i].onRayEnter(ray);
-      }
-      else if (incidentType == 0) {
+      } else if (incidentType == 0) {
         // Equivalent to not shot on the obj (e.g. two interfaces overlap)
         //n1=n1;
-      }
-      else {
+      } else {
         // Situation that may cause bugs (e.g. shot at an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
         return {
@@ -171,11 +160,10 @@ class BaseGlass extends BaseSceneObj {
       // Total internal reflection
       ray.p1 = incidentPoint;
       ray.p2 = geometry.point(incidentPoint.x + ray_x + 2 * cos1 * normal_x, incidentPoint.y + ray_y + 2 * cos1 * normal_y);
-      if (originalBodyObj) {
-        ray.bodyMergingObj = originalBodyObj;
+      if (bodyMergingObj) {
+        ray.bodyMergingObj = bodyMergingObj;
       }
-    }
-    else {
+    } else {
       // Refraction
       var cos2 = Math.sqrt(sq1);
 
@@ -192,13 +180,12 @@ class BaseGlass extends BaseSceneObj {
       ray2.brightness_p = ray.brightness_p * R_p;
       ray2.wavelength = ray.wavelength;
       ray2.gap = ray.gap;
-      if (originalBodyObj) {
-        ray2.bodyMergingObj = originalBodyObj;
+      if (bodyMergingObj) {
+        ray2.bodyMergingObj = bodyMergingObj;
       }
       if (ray2.brightness_s + ray2.brightness_p > 0.01) {
         newRays.push(ray2);
-      }
-      else {
+      } else {
         truncation += ray2.brightness_s + ray2.brightness_p;
         if (!ray.gap) {
           var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
@@ -244,7 +231,7 @@ class BaseGlass extends BaseSceneObj {
   /**
    * Get whether the ray is incident from inside to outside or from outside to inside.
    * @param {Ray} ray - The ray to be checked.
-   * @returns {number} - 1 if the ray is incident from inside to outside, -1 if the ray is incident from outside to inside, 0 if the ray is equivalent to not intersecting the glass (e.g. intersecting with two overlapping surfaces of the glass), and 2 for other situations (e.g. parallel to a surface).
+   * @returns {number} - 1 if the ray is incident from inside to outside, -1 if the ray is incident from outside to inside, 0 if the ray is equivalent to not intersecting the glass (e.g. intersecting with two overlapping surfaces of the glass), and NaN for other situations (e.g. parallel to a surface).
    */
   getIncidentType(ray) {
     // To be implemented in subclasses.

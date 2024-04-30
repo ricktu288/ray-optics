@@ -1,67 +1,54 @@
-// Glass -> Circle
-objTypes['circlelens'] = {
+/**
+ * Glass of the shape of a circle.
+ * Tools -> Glass -> Circle
+ * @property {Point} p1 - The center of the circle.
+ * @property {Point} p2 - A point on the boundary of the circle.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
+ * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ */
+objTypes['circlelens'] = class extends CircleObjMixin(BaseGlass) {
+  static type = 'circlelens';
+  static isOptical = true;
+  static supportsSurfaceMerging = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    p: 1.5,
+    cauchyCoeff: 0.004
+  };
 
-  supportsSurfaceMerging: true, // Surface merging
-
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'circlelens', p1: constructionPoint, p2: constructionPoint, p: 1.5 };
-  },
-
-  populateObjBar: objTypes['refractor'].populateObjBar,
-
-  // Use the prototype lineobj
-  onConstructMouseDown: objTypes['circleobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['circleobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['circleobj'].onConstructMouseUp,
-  move: objTypes['circleobj'].move,
-  checkMouseOver: objTypes['circleobj'].checkMouseOver,
-  onDrag: objTypes['circleobj'].onDrag,
-
-  // Test if a ray may shoot on this object (if yes, return the intersection)
-  checkRayIntersects: function (obj, ray) {
-    if (obj.p <= 0) return;
-    return objTypes['circleobj'].checkRayIntersects(obj, ray);
-  },
-
-  getZIndex: objTypes['refractor'].getZIndex,
-
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
 
     ctx.beginPath();
-    ctx.arc(obj.p1.x, obj.p1.y, geometry.segmentLength(obj), 0, Math.PI * 2, false);
-    objTypes['refractor'].fillGlass(obj.p, obj, canvasRenderer, isAboveLight, isHovered);
+    ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2, false);
+    this.fillGlass(canvasRenderer, isAboveLight, isHovered);
     ctx.lineWidth = 1;
-    //ctx.fillStyle="indigo";
     ctx.fillStyle = 'red';
-    ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-    //ctx.fillStyle="rgb(255,0,255)";
+    ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      //ctx.fillStyle="Purple";
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
     }
+  }
 
+  checkRayIntersects(ray) {
+    if (this.p <= 0) return;
+    return this.checkRayIntersectsShape(ray);
+  }
 
-  },
-
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-
-
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, incidentPoint));
-    var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
+    var d = geometry.distanceSquared(this.p1, this.p2) - geometry.distanceSquared(this.p1, midpoint);
     if (d > 0) {
       // Shot from inside to outside
-      var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
-      var normal = { x: obj.p1.x - incidentPoint.x, y: obj.p1.y - incidentPoint.y };
+      var n1 = this.getRefIndexAt(incidentPoint, ray);
+      var normal = { x: this.p1.x - incidentPoint.x, y: this.p1.y - incidentPoint.y };
     }
     else if (d < 0) {
       // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
-      var normal = { x: incidentPoint.x - obj.p1.x, y: incidentPoint.y - obj.p1.y };
+      var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+      var normal = { x: incidentPoint.x - this.p1.x, y: incidentPoint.y - this.p1.y };
     }
     else {
       // Situation that may cause bugs (e.g. shot at an edge point)
@@ -71,16 +58,12 @@ objTypes['circlelens'] = {
       };
     }
 
+    return this.refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
+  }
 
-    return objTypes['refractor'].refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs);
-
-
-  },
-
-  getIncidentType: function (obj, ray) {
-
-    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, this.checkRayIntersects(obj, ray)));
-    var d = geometry.distanceSquared(obj.p1, obj.p2) - geometry.distanceSquared(obj.p1, midpoint);
+  getIncidentType(ray) {
+    var midpoint = geometry.segmentMidpoint(geometry.line(ray.p1, this.checkRayIntersects(this, ray)));
+    var d = geometry.distanceSquared(this.p1, this.p2) - geometry.distanceSquared(this.p1, midpoint);
 
     if (d > 0) {
       return 1; // From inside to outside
@@ -88,7 +71,6 @@ objTypes['circlelens'] = {
     if (d < 0) {
       return -1; // From outside to inside
     }
-    return 2;
+    return NaN;
   }
-
 };
