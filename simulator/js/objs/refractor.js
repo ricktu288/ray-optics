@@ -345,7 +345,6 @@ objTypes['refractor'] = class extends BaseGlass {
   }
 
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-    console.log(surfaceMergingObjs)
     if (this.notDone) { return; }
 
     var incidentData = this.getIncidentData(ray);
