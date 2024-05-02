@@ -352,16 +352,13 @@ objTypes['refractor'] = class extends BaseGlass {
     if (incidentType == 1) {
       // Shot from inside to outside
       var n1 = this.getRefIndexAt(incidentPoint, ray);
-    }
-    else if (incidentType == -1) {
+    } else if (incidentType == -1) {
       // Shot from outside to inside
       var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
-    }
-    else if (incidentType == 0) {
+    } else if (incidentType == 0) {
       // Equivalent to not shot on the this (e.g. two interfaces overlap)
       var n1 = 1;
-    }
-    else {
+    } else {
       // The situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
@@ -550,7 +547,7 @@ objTypes['refractor'] = class extends BaseGlass {
 
 
     if (nearEdge) {
-      var incidentType = 2; // Shot at an edge point
+      var incidentType = NaN; // Shot at an edge point
     }
     else if (surfaceMultiplicity % 2 == 0) {
       var incidentType = 0; // Equivalent to not shot on the this

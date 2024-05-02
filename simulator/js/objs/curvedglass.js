@@ -1,70 +1,76 @@
-// Glass -> Custom equation
-objTypes['curvedglass'] = {
+/**
+ * Glass defined by a custom inequality.
+ * Tools -> Glass -> Custom equation
+ * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
+ * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
+ * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
+ * @property {string} eqn2 - The equation of the surface with larger y. The variable is x.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
+ * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ * @property {Array<Point>} path - The points on the calculated curve.
+ * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
+ */
+objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
+  static type = 'curvedglass';
+  static isOptical = true;
+  static supportsSurfaceMerging = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    eqn1: "0",
+    eqn2: "0.5\\cdot\\sqrt{1-x^2}",
+    p: 1.5,
+    cauchyCoeff: 0.004
+  };
 
-  supportsSurfaceMerging: true,
-
-  // Create the obj
-  create: function (constructionPoint) {
-    return { type: 'curvedglass', p1: constructionPoint, p2: constructionPoint, eqn1: "0", eqn2: "0.5\\cdot\\sqrt{1-x^2}", p: 1.5 };
-  },
-
-  // Show the property box
-  populateObjBar: function (obj, objBar) {
-    objBar.createEquation('', obj.eqn1, function (obj, value) {
+  populateObjBar(objBar) {
+    objBar.createEquation('', this.eqn1, function (obj, value) {
       obj.eqn1 = value;
     }, getMsg('custom_equation_note'));
-    objBar.createEquation(' < y < ', obj.eqn2, function (obj, value) {
+    objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
     });
-    objTypes['refractor'].populateObjBar(obj, objBar);
-  },
 
-  onConstructMouseDown: objTypes['lineobj'].onConstructMouseDown,
-  onConstructMouseMove: objTypes['lineobj'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['lineobj'].onConstructMouseUp,
+    super.populateObjBar(objBar);
+  }
 
-  // Draw the obj on canvas
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
+  draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    if (isAboveLight && obj.tmp_glass) {
-      objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, true, false);
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
-      ctx.fill('evenodd');
-      ctx.globalAlpha = 1;
+    if (isAboveLight) {
+      if (this.path) {
+        this.drawGlass(canvasRenderer, isAboveLight, isHovered);
+      }
       return;
     }
-    var fn;
+
+    var fns;
     try {
-      fns = [evaluateLatex(obj.eqn1), evaluateLatex(obj.eqn2)];
+      fns = [evaluateLatex(this.eqn1), evaluateLatex(this.eqn2)];
     } catch (e) {
-      delete obj.tmp_glass;
+      delete this.path;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.font = '12px serif';
       ctx.fillStyle = "gray"
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
       ctx.fillStyle = "red"
-      ctx.fillText(e.toString(), obj.p1.x, obj.p1.y);
+      ctx.fillText(e.toString(), this.p1.x, this.p1.y);
       return;
     }
-    obj.tmp_glass = { path: [{ x: obj.p1.x, y: obj.p1.y, arc: false }], p: obj.p, cauchyCoeff: (obj.cauchyCoeff || 0.004) };
+
+    this.path = [{ x: this.p1.x, y: this.p1.y }];
     for (var side = 0; side <= 1; side++) {
-      var p1 = (side == 0) ? obj.p1 : obj.p2;
-      var p2 = (side == 0) ? obj.p2 : obj.p1;
+      var p1 = (side == 0) ? this.p1 : this.p2;
+      var p2 = (side == 0) ? this.p2 : this.p1;
       var p12d = geometry.distance(p1, p2);
-      // unit vector from p1 to p2
       var dir1 = [(p2.x - p1.x) / p12d, (p2.y - p1.y) / p12d];
-      // perpendicular direction
       var dir2 = [dir1[1], -dir1[0]];
-      // get height of (this section of) parabola
       var x0 = p12d / 2;
       var i;
       var lastError = "";
       var hasPoints = false;
       for (i = -0.1; i < p12d + 0.09; i += 0.1) {
-        // avoid using exact integers to avoid problems with detecting intersections
         var ix = i + 0.05;
         if (ix < 0) ix = 0;
         if (ix > p12d) ix = p12d;
@@ -78,70 +84,64 @@ objTypes['curvedglass'] = {
           }
           var y = scaled_y * p12d * 0.5;
           var pt = geometry.point(p1.x + dir1[0] * ix + dir2[0] * y, p1.y + dir1[1] * ix + dir2[1] * y);
-          pt.arc = false;
-          obj.tmp_glass.path.push(pt);
+          this.path.push(pt);
           hasPoints = true;
         } catch (e) {
           lastError = e;
         }
       }
       if (!hasPoints || lastError.startsWith("Curve generation error:")) {
-        delete obj.tmp_glass;
+        delete this.path;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
         ctx.font = '12px serif';
         ctx.fillStyle = "gray"
-        ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-        ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+        ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+        ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
         ctx.fillStyle = "red"
-        ctx.fillText(lastError.toString(), obj.p1.x, obj.p1.y);
+        ctx.fillText(lastError.toString(), this.p1.x, this.p1.y);
         return;
       }
     }
+
     if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(obj.p1.x - 1.5, obj.p1.y - 1.5, 3, 3);
-      ctx.fillRect(obj.p2.x - 1.5, obj.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
     }
-    objTypes['refractor'].draw(obj.tmp_glass, canvasRenderer, isAboveLight, false);
-  },
 
-  move: objTypes['lineobj'].move,
+    this.drawGlass(canvasRenderer, isAboveLight, isHovered);
+  }
 
-  // When the drawing area is clicked (test which part of the obj is clicked)
-  checkMouseOver: function (obj, mouse) {
+  checkMouseOver(mouse) {
     let dragContext = {};
-    if (mouse.isOnPoint(obj.p1) && geometry.distanceSquared(mouse.pos, obj.p1) <= geometry.distanceSquared(mouse.pos, obj.p2)) {
+    if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2)) {
       dragContext.part = 1;
-      dragContext.targetPoint = geometry.point(obj.p1.x, obj.p1.y);
+      dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
       return dragContext;
     }
-    if (mouse.isOnPoint(obj.p2)) {
+    if (mouse.isOnPoint(this.p2)) {
       dragContext.part = 2;
-      dragContext.targetPoint = geometry.point(obj.p2.x, obj.p2.y);
+      dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
       return dragContext;
     }
 
-    if (!obj.tmp_glass) return false;
-    if (objTypes['refractor'].checkMouseOver(obj.tmp_glass, mouse)) {
-      // Dragging the entire obj
-      const mousePos = mouse.getPosSnappedToGrid();
-      dragContext.part = 0;
-      dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-      dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-      dragContext.snapContext = {};
-      return dragContext;
+    if (!this.path) return false;
+    for (let i = 0; i < this.path.length - 1; i++) {
+      if (mouse.isOnSegment(geometry.line(this.path[i], this.path[(i+1)%this.path.length]))) {
+        const mousePos = mouse.getPosSnappedToGrid();
+        dragContext.part = 0;
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.snapContext = {};
+        return dragContext;
+      }
     }
-  },
+  }
 
-  onDrag: objTypes['lineobj'].onDrag,
-
-
-  // Test if a ray may shoot on this object (if yes, return the intersection)
-  checkRayIntersects: function (obj, ray) {
-
-    if (!obj.tmp_glass) return;
-    if (obj.p <= 0) return;
+  checkRayIntersects(ray) {
+    if (!this.path) return;
+    if (this.p <= 0) return;
 
     var s_lensq = Infinity;
     var s_lensq_temp;
@@ -158,12 +158,12 @@ objTypes['curvedglass'] = {
     var center;
     var r;
 
-    for (var i = 0; i < obj.tmp_glass.path.length; i++) {
+    for (var i = 0; i < this.path.length; i++) {
       s_point_temp = null;
       //Line segment i->i+1
-      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
-      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
         s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
@@ -180,44 +180,24 @@ objTypes['curvedglass'] = {
       }
     }
     if (s_point) {
-      obj.tmp_i = s_point_index;
+      this.tmp_i = s_point_index;
       return s_point;
     }
+  }
 
-  },
-
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-
-    // If at least one of the surface merging object is a GRIN glass, the interaction should be handled by the GRIN glass instead.
-    if (surfaceMerging_objs) {
-      for (let i = 0; i < surfaceMerging_objs.length; i++) {
-        if (surfaceMerging_objs[i].type == 'grin_refractor' || surfaceMerging_objs[i].type == 'grin_circlelens') {
-          // Exclude the GRIN glass from the surface merging objects and include obj itself.
-          let new_surfaceMerging_objs = surfaceMerging_objs.filter((value, index, arr) => {
-            return value != surfaceMerging_objs[i];
-          });
-          new_surfaceMerging_objs.push(obj);
-          return objTypes[surfaceMerging_objs[i].type].onRayIncident(surfaceMerging_objs[i], ray, rayIndex, incidentPoint, new_surfaceMerging_objs);
-        }
-      }
-    }
-
-    var incidentData = this.getIncidentData(obj, ray);
+  onRayIncident(ray, incidentPoint, surfaceMergingObjs) {
+    var incidentData = this.getIncidentData(ray);
     var incidentType = incidentData.incidentType;
     if (incidentType == 1) {
       // Shot from inside to outside
-      var n1 = (!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
-    }
-    else if (incidentType == -1) {
+      var n1 = this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType == -1) {
       // Shot from outside to inside
-      var n1 = 1 / ((!scene.colorMode) ? obj.p : (obj.p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
-    }
-    else if (incidentType == 0) {
-      // Equivalent to not shot on the obj (e.g. two interfaces overlap)
+      var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType == 0) {
+      // Equivalent to not shot on the this (e.g. two interfaces overlap)
       var n1 = 1;
-    }
-    else {
+    } else {
       // The situation that may cause bugs (e.g. shot at an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
@@ -225,60 +205,28 @@ objTypes['curvedglass'] = {
       };
     }
 
-    // Surface merging
-    for (var i = 0; i < surfaceMergingObjs.length; i++) {
-      incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
-      if (incidentType == 1) {
-        // Shot from inside to outside
-        n1 *= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == -1) {
-        // Shot from outside to inside
-        n1 /= (!scene.colorMode) ? surfaceMergingObjs[i].p : (surfaceMergingObjs[i].p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-      }
-      else if (incidentType == 0) {
-        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
-        //n1=n1;
-      }
-      else {
-        // The situation that may cause bugs (e.g. shot at an edge point)
-        // To prevent shooting the ray to a wrong direction, absorb the ray
-        return {
-          isAbsorbed: true
-        };
-      }
-    }
+    return this.refract(ray, rayIndex, incidentPoint, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingthis);
+  }
 
-    return objTypes['refractor'].refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1);
-  },
+  getIncidentData(ray) {
+    var i = this.tmp_i;
+    var pts = this.path;
 
-  // Test if the ray is shot from inside or outside
-  getIncidentType: function (obj, ray) {
-    return this.getIncidentData(obj, ray).incidentType;
-  },
-
-
-  getIncidentData: function (obj, ray) {
-    // Test where in the obj does the ray shoot on
-    var i = obj.tmp_i;
-    var pts = obj.tmp_glass.path;
-
-    var s_point = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(obj.tmp_glass.path[i % obj.tmp_glass.path.length], obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length]));
+    var s_point = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
     var incidentPoint = s_point;
 
     var s_lensq = geometry.distanceSquared(ray.p1, s_point);
 
-    var rdots = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
-    var rcrosss = (ray.p2.x - ray.p1.x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - (ray.p2.y - ray.p1.y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x);
-    var ssq = (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) + (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y);
+    var rdots = (ray.p2.x - ray.p1.x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (ray.p2.y - ray.p1.y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
+    var rcrosss = (ray.p2.x - ray.p1.x) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - (ray.p2.y - ray.p1.y) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x);
+    var ssq = (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
 
-    var normal_x = rdots * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].x - obj.tmp_glass.path[i % obj.tmp_glass.path.length].x) - ssq * (ray.p2.x - ray.p1.x);
-    var normal_y = rdots * (obj.tmp_glass.path[(i + 1) % obj.tmp_glass.path.length].y - obj.tmp_glass.path[i % obj.tmp_glass.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
+    var normal_x = rdots * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) - ssq * (ray.p2.x - ray.p1.x);
+    var normal_y = rdots * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
 
     if (rcrosss < 0) {
       var incidentType = 1; // Shot from inside to outside
-    }
-    else {
+    } else {
       var incidentType = -1; // Shot from outside to inside
     }
 
@@ -324,6 +272,17 @@ objTypes['curvedglass'] = {
 
     return { s_point: s_point, normal: { x: normal_xFinal, y: normal_yFinal }, incidentType: incidentType };
   }
+  
 
+  /* Utility methods */
 
+  drawGlass(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.beginPath();
+    ctx.moveTo(this.path[0].x, this.path[0].y);
+    for (var i = 1; i < this.path.length; i++) {
+      ctx.lineTo(this.path[i].x, this.path[i].y);
+    }
+    this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+  }
 };

@@ -100,6 +100,7 @@ class BaseSceneObj {
   /**
    * Draw the object on the canvas.
    * Called once before the simulator renders the light with `isAboveLight === false` and once after with `isAboveLight === true`.
+   * Due to historical reason, some objects use this function to do some initialization. This should be avoided in the future.
    * @param {CanvasRenderer} canvasRenderer - The canvas renderer.
    * @param {boolean} isAboveLight - Whether the rendering layer is above the light layer.
    * @param {boolean} isHovered - Whether the object is hovered by the mouse, which determines the style of the object to be drawn, e.g., with lighlighted color.
