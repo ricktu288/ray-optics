@@ -30,7 +30,7 @@ objTypes['refractor'] = class extends BaseGlass {
     var acw;
 
     if (this.notDone) {
-      // The user has not finish drawing the this yet
+      // The user has not finish drawing the object yet
 
       ctx.beginPath();
       ctx.moveTo(this.path[0].x, this.path[0].y);
@@ -61,9 +61,8 @@ objTypes['refractor'] = class extends BaseGlass {
       ctx.strokeStyle = 'rgb(128,128,128)';
       ctx.lineWidth = 1;
       ctx.stroke();
-    }
-    else {
-      // The user has completed drawing the this
+    } else {
+      // The user has completed drawing the object
       ctx.beginPath();
       ctx.moveTo(this.path[0].x, this.path[0].y);
 
@@ -224,8 +223,7 @@ objTypes['refractor'] = class extends BaseGlass {
             dragContext.snapContext = {};
             return dragContext;
           }
-        }
-        else {
+        } else {
           // The three points on the arc is colinear. Treat as a line segment.
           if (mouse.isOnSegment(geometry.line(this.path[(i) % this.path.length], this.path[(i + 2) % this.path.length]))) {
             // Dragging the entire this
@@ -237,8 +235,7 @@ objTypes['refractor'] = class extends BaseGlass {
             return dragContext;
           }
         }
-      }
-      else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
+      } else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
         if (mouse.isOnSegment(geometry.line(this.path[(i) % this.path.length], this.path[(i + 1) % this.path.length]))) {
           // Dragging the entire this
           const mousePos = mouse.getPosSnappedToGrid();
@@ -263,8 +260,7 @@ objTypes['refractor'] = class extends BaseGlass {
     if (dragContext.part == 0) {
       if (shift) {
         var mousePosSnapped = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-      }
-      else {
+      } else {
         var mousePosSnapped = mouse.getPosSnappedToGrid();
         dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
@@ -313,8 +309,7 @@ objTypes['refractor'] = class extends BaseGlass {
             s_point_temp = rp_temp[2];
             s_lensq_temp = rp_lensq[2];
           }
-        }
-        else {
+        } else {
           // The three points on the arc is colinear. Treat as a line segment.
           var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length]));
 
@@ -323,8 +318,7 @@ objTypes['refractor'] = class extends BaseGlass {
             s_point_temp = rp_temp;
           }
         }
-      }
-      else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
+      } else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
         //Line segment i->i+1
         var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
@@ -351,16 +345,16 @@ objTypes['refractor'] = class extends BaseGlass {
     var incidentData = this.getIncidentData(ray);
     var incidentType = incidentData.incidentType;
     if (incidentType == 1) {
-      // Shot from inside to outside
+      // From inside to outside
       var n1 = this.getRefIndexAt(incidentPoint, ray);
     } else if (incidentType == -1) {
-      // Shot from outside to inside
+      // From outside to inside
       var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
     } else if (incidentType == 0) {
-      // Equivalent to not shot on the this (e.g. two interfaces overlap)
+      // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
       var n1 = 1;
     } else {
-      // The situation that may cause bugs (e.g. shot at an edge point)
+      // The situation that may cause bugs (e.g. incident on an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
         isAbsorbed: true
@@ -442,8 +436,7 @@ objTypes['refractor'] = class extends BaseGlass {
               //The ray is from outside to inside (with respect to the arc itself)
               normal_x_temp = s_point_temp.x - center.x;
               normal_y_temp = s_point_temp.y - center.y;
-            }
-            else {
+            } else {
               normal_x_temp = center.x - s_point_temp.x;
               normal_y_temp = center.y - s_point_temp.y;
             }
@@ -455,8 +448,7 @@ objTypes['refractor'] = class extends BaseGlass {
               //The ray is from outside to inside (with respect to the arc itself)
               normal_x_temp = s_point_temp.x - center.x;
               normal_y_temp = s_point_temp.y - center.y;
-            }
-            else {
+            } else {
               normal_x_temp = center.x - s_point_temp.x;
               normal_y_temp = center.y - s_point_temp.y;
             }
@@ -473,8 +465,7 @@ objTypes['refractor'] = class extends BaseGlass {
             nearEdge_temp = true;
           }
 
-        }
-        else {
+        } else {
           // The three points on the arc is colinear. Treat as a line segment.
           rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length]));
 
@@ -501,8 +492,7 @@ objTypes['refractor'] = class extends BaseGlass {
             nearEdge_temp = true;
           }
         }
-      }
-      else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
+      } else if (!this.path[(i + 1) % this.path.length].arc && !this.path[i % this.path.length].arc) {
         //Line segment i->i+1
         rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
@@ -533,8 +523,7 @@ objTypes['refractor'] = class extends BaseGlass {
         if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared) {
           // Self surface merging
           surfaceMultiplicity++;
-        }
-        else if (s_lensq_temp < s_lensq) {
+        } else if (s_lensq_temp < s_lensq) {
           s_lensq = s_lensq_temp;
           s_point = s_point_temp;
           s_point_index = i;
@@ -548,16 +537,13 @@ objTypes['refractor'] = class extends BaseGlass {
 
 
     if (nearEdge) {
-      var incidentType = NaN; // Shot at an edge point
-    }
-    else if (surfaceMultiplicity % 2 == 0) {
-      var incidentType = 0; // Equivalent to not shot on the this
-    }
-    else if (ray_intersect_count % 2 == 1) {
-      var incidentType = 1; // Shot from inside to outside
-    }
-    else {
-      var incidentType = -1; // Shot from outside to inside
+      var incidentType = NaN; // Incident on an edge point
+    } else if (surfaceMultiplicity % 2 == 0) {
+      var incidentType = 0; // Equivalent to not intersecting with the object
+    } else if (ray_intersect_count % 2 == 1) {
+      var incidentType = 1; // From inside to outside
+    } else {
+      var incidentType = -1; // From outside to inside
     }
 
     return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };

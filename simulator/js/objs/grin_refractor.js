@@ -142,8 +142,7 @@ objTypes['grin_refractor'] = class extends BaseGrinGlass {
     if (dragContext.part == 0) {
       if (shift) {
         var mousePosSnapped = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-      }
-      else {
+      } else {
         var mousePosSnapped = mouse.getPosSnappedToGrid();
         dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
@@ -208,29 +207,25 @@ objTypes['grin_refractor'] = class extends BaseGrinGlass {
         var incidentData = this.getIncidentData(ray);
         var incidentType = incidentData.incidentType;
         if (incidentType == 1) {
-          // Shot from inside to outside
+          // From inside to outside
           var n1 = this.getRefIndexAt(incidentPoint, ray);
           this.onRayExit(ray);
-        }
-        else if (incidentType == -1) {
-          // Shot from outside to inside
+        } else if (incidentType == -1) {
+          // From outside to inside
           var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
           this.onRayEnter(ray);
-        }
-        else if (incidentType == 0) {
-          // Equivalent to not shot on the this (e.g. two interfaces overlap)
+        } else if (incidentType == 0) {
+          // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
           var n1 = 1;
-        }
-        else {
-          // The situation that may cause bugs (e.g. shot at an edge point)
+        } else {
+          // The situation that may cause bugs (e.g. incident on an edge point)
           // To prevent shooting the ray to a wrong direction, absorb the ray
           return {
             isAbsorbed: true
           };
         }
         return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, r_bodyMerging_obj);
-      }
-      else {
+      } else {
         if (ray.bodyMergingObj === undefined)
           ray.bodyMergingObj = this.initRefIndex(ray); // Initialize the bodyMerging object of the ray
         const next_point = this.step(ray.p1, incidentPoint, ray);
@@ -336,8 +331,7 @@ objTypes['grin_refractor'] = class extends BaseGrinGlass {
         if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared) {
           // Self surface merging
           surfaceMultiplicity++;
-        }
-        else if (s_lensq_temp < s_lensq) {
+        } else if (s_lensq_temp < s_lensq) {
           s_lensq = s_lensq_temp;
           s_point = s_point_temp;
           s_point_index = i;
@@ -351,16 +345,13 @@ objTypes['grin_refractor'] = class extends BaseGrinGlass {
 
 
     if (nearEdge) {
-      var incidentType = NaN; // Shot at an edge point
-    }
-    else if (surfaceMultiplicity % 2 == 0) {
-      var incidentType = 0; // Equivalent to not shot on the this
-    }
-    else if (ray_intersect_count % 2 == 1) {
-      var incidentType = 1; // Shot from inside to outside
-    }
-    else {
-      var incidentType = -1; // Shot from outside to inside
+      var incidentType = NaN; // Incident on an edge point
+    } else if (surfaceMultiplicity % 2 == 0) {
+      var incidentType = 0; // Equivalent to not intersecting with the object
+    } else if (ray_intersect_count % 2 == 1) {
+      var incidentType = 1; // From inside to outside
+    } else {
+      var incidentType = -1; // From outside to inside
     }
 
     return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };

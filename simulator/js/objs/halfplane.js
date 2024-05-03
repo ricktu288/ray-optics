@@ -83,13 +83,13 @@ objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
 
     var incidentType = this.getIncidentType(ray);
     if (incidentType == 1) {
-      // Shot from inside to outside
+      // From inside to outside
       var n1 = this.getRefIndexAt(incidentPoint, ray);
     } else if (incidentType == -1) {
-      // Shot from outside to inside
+      // From outside to inside
       var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
     } else {
-      // Situation that may cause bugs (e.g. shot at an edge point)
+      // Situation that may cause bugs (e.g. incident on an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
         isAbsorbed: true

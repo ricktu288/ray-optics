@@ -189,16 +189,16 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
     var incidentData = this.getIncidentData(ray);
     var incidentType = incidentData.incidentType;
     if (incidentType == 1) {
-      // Shot from inside to outside
+      // From inside to outside
       var n1 = this.getRefIndexAt(incidentPoint, ray);
     } else if (incidentType == -1) {
-      // Shot from outside to inside
+      // From outside to inside
       var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
     } else if (incidentType == 0) {
-      // Equivalent to not shot on the this (e.g. two interfaces overlap)
+      // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
       var n1 = 1;
     } else {
-      // The situation that may cause bugs (e.g. shot at an edge point)
+      // The situation that may cause bugs (e.g. incident on an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
         isAbsorbed: true
@@ -225,9 +225,9 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
     var normal_y = rdots * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
 
     if (rcrosss < 0) {
-      var incidentType = 1; // Shot from inside to outside
+      var incidentType = 1; // From inside to outside
     } else {
-      var incidentType = -1; // Shot from outside to inside
+      var incidentType = -1; // From outside to inside
     }
 
     // Use a simple trick to smooth out the normal vector so that image detection works.

@@ -121,18 +121,18 @@ class BaseGlass extends BaseSceneObj {
     for (var i = 0; i < surfaceMergingObjs.length; i++) {
       let incidentType = surfaceMergingObjs[i].getIncidentType(ray);
       if (incidentType == 1) {
-        // Shot from inside to outside
+        // From inside to outside
         n1 *= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
         surfaceMergingObjs[i].onRayExit(ray);
       } else if (incidentType == -1) {
-        // Shot from outside to inside
+        // From outside to inside
         n1 /= surfaceMergingObjs[i].getRefIndexAt(incidentPoint, ray);
         surfaceMergingObjs[i].onRayEnter(ray);
       } else if (incidentType == 0) {
-        // Equivalent to not shot on the obj (e.g. two interfaces overlap)
+        // Equivalent to not intersecting with the obj (e.g. two interfaces overlap)
         //n1=n1;
       } else {
-        // Situation that may cause bugs (e.g. shot at an edge point)
+        // Situation that may cause bugs (e.g. incident on an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
         return {
           isAbsorbed: true

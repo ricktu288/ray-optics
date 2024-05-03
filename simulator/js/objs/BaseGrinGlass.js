@@ -155,8 +155,7 @@ class BaseGrinGlass extends BaseGlass {
       let mul_fn_p_der_y = evaluateLatex(math.derivative(mul_p, 'y').toTex());
 
       return { p: mul_p, fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y };
-    }
-    else {
+    } else {
       let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [this.fn_p, this.fn_p_der_x, this.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
       let mul_fn_p = (function (fn_p, new_fn_p) {
@@ -197,8 +196,7 @@ class BaseGrinGlass extends BaseGlass {
       let dev_fn_p_der_y = evaluateLatex(math.derivative(dev_p, 'y').toTex());
 
       return { p: dev_p, fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
-    }
-    else {
+    } else {
       let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [this.fn_p, this.fn_p_der_x, this.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
       let dev_fn_p = (function (fn_p, new_fn_p) {
