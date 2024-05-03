@@ -119,12 +119,13 @@ class Scene {
       throw new Error('The version of the scene is newer than the current version of the simulator.');
     }
 
+    const serializableDefaults = Scene.serializableDefaults;
+
     // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
-    const approximatedWidth = Math.ceil(this.width / 100) * 100;
-    const approximatedHeight = Math.ceil(this.height / 100) * 100;
+    const approximatedWidth = Math.ceil((this.width || serializableDefaults.width) / 100) * 100;
+    const approximatedHeight = Math.ceil((this.height || serializableDefaults.height) / 100) * 100;
 
     // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
-    const serializableDefaults = Scene.serializableDefaults;
     for (let key in serializableDefaults) {
       if (!(key in jsonData)) {
         jsonData[key] = JSON.parse(JSON.stringify(serializableDefaults[key]));
