@@ -21,7 +21,7 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   populateObjBar(objBar) {
-    if (!this.fn_p) { // to maintain the ctrl+z functionality
+    if (!this.fn_p) {
       this.initFns();
     }
     objBar.createEquation('n(x,y) = ', this.p_tex, function (obj, value) {
