@@ -327,20 +327,12 @@ function canvas_onmousemove(e) {
       }
     }
 
-    if (draggingObj == -3) {
+    if (draggingObj == -3 && dragContext.mousePos1) {
       // Move the entire scene
       // Here mousePos is the currect mouse position, dragContext.mousePos1 is the mouse position at the previous moment
 
-      if (e.shiftKey) {
-        var mousePos_snapped = snapToDirection(mousePos_nogrid, dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-      }
-      else {
-        var mousePos_snapped = mousePos_nogrid;
-        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
-      }
-
-      var mouseDiffX = (mousePos_snapped.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-      var mouseDiffY = (mousePos_snapped.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+      var mouseDiffX = (mousePos.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+      var mouseDiffY = (mousePos.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
       scene.origin.x = mouseDiffX * scene.scale + dragContext.mousePos2.x;
       scene.origin.y = mouseDiffY * scene.scale + dragContext.mousePos2.y;
       draw();

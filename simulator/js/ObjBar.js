@@ -325,7 +325,9 @@ class ObjBar {
     const self = this;
 
     mathField.el().querySelector('textarea').addEventListener('focusout', function () {
-      self.pendingEvent();
+      if (self.pendingEvent) {
+        self.pendingEvent();
+      }
       self.pendingEvent = null;
     });
 
