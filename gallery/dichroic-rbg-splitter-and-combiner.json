@@ -165,7 +165,7 @@
         "exist": true
       },
       "dichroic": false,
-      "isDichroic": true
+      "isDichroic": false
     },
     {
       "type": "mirror",

@@ -185,7 +185,7 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
     }
   }
 
-  onRayIncident(ray, incidentPoint, surfaceMergingObjs) {
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     var incidentData = this.getIncidentData(ray);
     var incidentType = incidentData.incidentType;
     if (incidentType == 1) {
