@@ -2,6 +2,7 @@
  * Glass of the shape consists of line segments or circular arcs.
  * Tools -> Glass -> Polygon / Circular Arcs
  * @property {Array<object>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates, and a boolean `arc`. If `path[i].arc === false`, it means that `path[i-1]`--`path[i]` and `path[i]`--`path[i+1]` are line segments, if `path[i].arc === true`, it means that `path[i-1]`--`path[i]`--`path[i+1]` is a circular arc.
+ * @property {boolean} notDone - Whether the user is still drawing the glass.
  * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
  * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
  */
@@ -115,10 +116,11 @@ objTypes['refractor'] = class extends BaseGlass {
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
     if (!this.notDone) {
       // Initialize the construction stage
       this.notDone = true;
-      this.path = [{ x: mouse.x, y: mouse.y, arc: false }];
+      this.path = [{ x: mousePos.x, y: mousePos.y, arc: false }];
     }
 
     if (this.path.length > 1) {
@@ -128,7 +130,6 @@ objTypes['refractor'] = class extends BaseGlass {
         this.notDone = false;
         return;
       }
-      const mousePos = mouse.getPosSnappedToGrid();
       this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
       this.path[this.path.length - 1].arc = true;
     }

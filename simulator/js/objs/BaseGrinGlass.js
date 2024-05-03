@@ -10,8 +10,15 @@
  * @property {function} fn_p - The evaluatex function for `p`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_x - The evaluatex function for `p_der_x`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_y - The evaluatex function for `p_der_y`, where (x,y) has been shifted to the absolute coordinates.
+ * @property {number} step_size - The step size for the ray trajectory equation.
+ * @property {number} eps - The epsilon for the intersection calculations.
  */
 class BaseGrinGlass extends BaseGlass {
+
+  constructor(scene, jsonObj) {
+    super(scene, jsonObj);
+    this.initFns();
+  }
 
   populateObjBar(objBar) {
     if (!this.fn_p) { // to maintain the ctrl+z functionality
@@ -42,9 +49,11 @@ class BaseGrinGlass extends BaseGlass {
         obj.eps = parseFloat(value);
       }, getMsg('eps_' + this.constructor.type + '_note_popover'));
     }
+
+    const scene = this.scene;
     if (objBar.showAdvanced(this.scene.symbolicGrin)) {
       objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicGrin, function (obj, value) {
-        this.scene.symbolicGrin = value;
+        scene.symbolicGrin = value;
       }, getMsg('symbolic_grin_note_popover'));
     }
   }
@@ -70,14 +79,20 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   getRefIndexAt(point, ray) {
-    return obj.fn_p({ x: point.x, y: point.y });
+    return this.fn_p({ x: point.x, y: point.y });
   }
 
   onRayEnter(ray) {
+    if (!ray.bodyMergingObj) {
+      ray.bodyMergingObj = this.initRefIndex(ray);
+    }
     ray.bodyMergingObj = this.multRefIndex(ray.bodyMergingObj);
   }
 
   onRayExit(ray) {
+    if (!ray.bodyMergingObj) {
+      ray.bodyMergingObj = this.initRefIndex(ray);
+    }
     ray.bodyMergingObj = this.devRefIndex(ray.bodyMergingObj);
   }
 
@@ -117,9 +132,17 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   /**
+   * @typedef {Object} BodyMergingObj
+   * Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor), which gets updated as the ray enters/exits into/from grin objects, using the "multRefIndex"/"devRefIndex" function, respectively.
+   * @property {function} fn_p - The refractive index function for the equivalent region of the simulation.
+   * @property {function} fn_p_der_x - The x derivative of `fn_p` for the equivalent region of the simulation.
+   * @property {function} fn_p_der_y - The y derivative of `fn_p` for the equivalent region of the simulation.
+   */
+  
+  /**
    * Receives a bodyMerging object and returns a new bodyMerging object for the overlapping region of `bodyMergingObj` and the current GRIN glass.
-   * @param {object} bodyMergingObj 
-   * @returns {object}
+   * @param {BodyMergingObj} bodyMergingObj 
+   * @returns {BodyMergingObj}
    */
   multRefIndex(bodyMergingObj) {
     if (this.scene.symbolicGrin) {
@@ -160,8 +183,8 @@ class BaseGrinGlass extends BaseGlass {
 
   /**
    * Receives a bodyMerging object and returns a new bodyMerging object for the region of `bodyMergingObj` excluding current GRIN glass.
-   * @param {object} bodyMergingObj 
-   * @returns {object}
+   * @param {BodyMergingObj} bodyMergingObj 
+   * @returns {BodyMergingObj}
    */
   devRefIndex(bodyMergingObj) {
     if (this.scene.symbolicGrin) {
@@ -199,6 +222,59 @@ class BaseGrinGlass extends BaseGlass {
       return { fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
     }
   }
+
+  /**
+   * Receives a ray, and returns a bodyMerging object for the point ray.p1
+   * @param {Ray} ray 
+   * @returns {BodyMergingObj}
+   */
+  initRefIndex(ray) {
+    let obj_tmp;
+    for (let i = 0; i < this.scene.objs.length; i++) {
+      if ((this.scene.objs[i] instanceof BaseGrinGlass) && (scene.objs[i].isOnBoundary(ray.p1) || scene.objs[i].isInsideGlass(ray.p1))) {
+        if (!obj_tmp) {
+          obj_tmp = {};
+          obj_tmp.p = scene.objs[i].shiftOrigin(scene.objs[i].p);
+          obj_tmp.fn_p = scene.objs[i].fn_p;
+          obj_tmp.fn_p_der_x = scene.objs[i].fn_p_der_x;
+          obj_tmp.fn_p_der_y = scene.objs[i].fn_p_der_y;
+        } else {
+          obj_tmp = scene.objs[i].multRefIndex(obj_tmp);
+        }
+      }
+    }
+    if (!obj_tmp) {
+      obj_tmp = { p: 1, fn_p: function () { return 1; }, fn_p_der_x: function () { return 0; }, fn_p_der_y: function () { return 0; } };
+    }
+    return obj_tmp;
+  }
+
+  /**
+   * Receives two points inside this lens, and returns the next point to where the ray, connecting these two points, will travel, based on the ray trajectory equation (equation 11.1 in the cited text below)
+   * Using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://doi.org/10.1007/BFb0012092)
+  x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
+   * @param {Point} p1
+   * @param {Point} p2
+   * @param {Ray} ray
+   * @returns 
+   */
+  step(p1, p2, ray) {
+    const len = geometry.distance(p1, p2);
+    const x = p2.x;
+    const y = p2.y;
+    const x_der_s_prev = (p2.x - p1.x) / len;
+    const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
+
+    const x_der_s = x_der_s_prev + this.step_size * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+    const y_der_s = y_der_s_prev + this.step_size * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+
+    const x_new = x + this.step_size * x_der_s;
+    const y_new = y + this.step_size * y_der_s;
+
+    return geometry.point(x_new, y_new);
+  }
+
+
 
 
   /* Abstract methods */

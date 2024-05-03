@@ -1,75 +1,224 @@
-// Glass -> Gradient-index polygon
-objTypes['grin_refractor'] = {
+/**
+ * Gradient-index glass of the shape of a polygon
+ * Tools -> Glass -> Gradient-index polygon
+ * @property {Array<Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
+ * @property {boolean} notDone - Whether the user is still drawing the glass.
+ * @property {string} p_tex - The refractive index function in x and y in LaTeX format.
+ * @property {Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
+ * @property {number} step_size - The step size for the ray trajectory equation.
+ * @property {number} eps - The epsilon for the intersection calculations.
+ */
+objTypes['grin_refractor'] = class extends BaseGrinGlass {
+  static type = 'grin_refractor';
+  static isOptical = true;
+  static supportsSurfaceMerging = true;
+  static serializableDefaults = {
+    path: [],
+    notDone: false,
+    p_tex: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
+    origin: { x: 0, y: 0 },
+    step_size: 1,
+    eps: 1e-3
+  };
+  
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
 
-  supportsSurfaceMerging: true,
-
-  // Create the obj
-  create: function (constructionPoint) {
-    const p = '1.1 + 0.1 * cos(0.1 * y)';
-    const p_tex = '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)';
-    const p_der_x = '0';
-    const p_der_x_tex = '0';
-    const p_der_y = 'sin(y / 10) * -1 / 100';
-    const p_der_y_tex = '\\frac{\\sin\\left(\\frac{ y}{10}\\right)\\cdot-1}{100}';
-    const origin = geometry.point(0, 0); // origin of refractive index function n(x,y)
-    return { type: 'grin_refractor', path: [{ x: constructionPoint.x, y: constructionPoint.y, arc: false }], notDone: true, origin: origin, p: p, p_tex: p_tex, p_der_x: p_der_x, p_der_x_tex: p_der_x_tex, p_der_y: p_der_y, p_der_y_tex: p_der_y_tex, step_size: 1, eps: 1e-3 }; // Note that in this object, eps has units of [length]
-  },
-
-  // Use the prototype reftactor
-  onConstructMouseMove: objTypes['refractor'].onConstructMouseMove,
-  onConstructMouseUp: objTypes['refractor'].onConstructMouseUp,
-  getZIndex: objTypes['refractor'].getZIndex,
-  fillGlass: objTypes['grin_circlelens'].fillGlass,
-  move: objTypes['refractor'].move,
-  checkMouseOver: objTypes['refractor'].checkMouseOver,
-  onDrag: objTypes['refractor'].onDrag,
-  getIncidentType: objTypes['refractor'].getIncidentType,
-  getIncidentData: objTypes['refractor'].getIncidentData,
-
-  // Use the prototype grin_circlelens
-  step: objTypes['grin_circlelens'].step,
-  initRefIndex: objTypes['grin_circlelens'].initRefIndex,
-  multRefIndex: objTypes['grin_circlelens'].multRefIndex,
-  devRefIndex: objTypes['grin_circlelens'].devRefIndex,
-  initFns: objTypes['grin_circlelens'].initFns,
-  shiftOrigin: objTypes['grin_circlelens'].shiftOrigin,
-  checkRayIntersects: objTypes['grin_circlelens'].checkRayIntersects,
-  refract: objTypes['grin_circlelens'].refract,
-  populateObjBar: objTypes['grin_circlelens'].populateObjBar,
-
-  // Similar to the onConstructMouseDown function of the refractor object, except here the arc functionality is removed
-  onConstructMouseDown: function (obj, constructionPoint, mouse, ctrl, shift) {
-    if (obj.path.length > 1) {
-      if (obj.path.length > 3 && mouse.isOnPoint(obj.path[0])) {
-        // Clicked the first point
-        obj.path.length--;
-        obj.notDone = false;
-        return;
-      }
-      const mousePos = mouse.getPosSnappedToGrid();
-      obj.path[obj.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
+    if (this.error) {
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.font = '12px serif';
+      ctx.fillStyle = "red"
+      ctx.fillText(this.error.toString(), this.path[0].x, this.path[0].y);
     }
-  },
 
-  // When the obj is shot by a ray
-  onRayIncident: function (obj, ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    if (this.notDone) {
+      // The user has not finish drawing the object yet
+      ctx.beginPath();
+      ctx.moveTo(this.path[0].x, this.path[0].y);
+
+      for (var i = 0; i < this.path.length - 1; i++) {
+        ctx.lineTo(this.path[(i + 1)].x, this.path[(i + 1)].y);
+      }
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = 'rgb(128,128,128)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    } else {
+      // The user has completed drawing the object
+      ctx.beginPath();
+      ctx.moveTo(this.path[0].x, this.path[0].y);
+
+      for (var i = 0; i < this.path.length; i++) {
+        ctx.lineTo(this.path[(i + 1) % this.path.length].x, this.path[(i + 1) % this.path.length].y);
+      }
+      this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+    }
+    ctx.lineWidth = 1;
+
+
+    if (isHovered) {
+      for (var i = 0; i < this.path.length; i++) {
+        ctx.fillStyle = 'rgb(255,0,0)';
+        ctx.fillRect(this.path[i].x - 1.5, this.path[i].y - 1.5, 3, 3);
+      }
+    }
+  }
+
+  move(diffX, diffY) {
+    for (var i = 0; i < this.path.length; i++) {
+      this.path[i].x += diffX;
+      this.path[i].y += diffY;
+    }
+  }
+
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    if (!this.notDone) {
+      // Initialize the construction stage
+      this.notDone = true;
+      this.path = [{ x: mousePos.x, y: mousePos.y }];
+    }
+
+    if (this.path.length > 3 && mouse.isOnPoint(this.path[0])) {
+      // Clicked the first point
+      this.path.length--;
+      this.notDone = false;
+      return {
+        isDone: true
+      };
+    }
+    this.path.push({ x: mousePos.x, y: mousePos.y }); // Create a new point
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
+  }
+
+  checkMouseOver(mouse) {
+    let dragContext = {};
+
+    var click_lensq = Infinity;
+    var click_lensq_temp;
+    var targetPoint_index = -1;
+    for (var i = 0; i < this.path.length; i++) {
+      if (mouse.isOnPoint(this.path[i])) {
+        click_lensq_temp = geometry.distanceSquared(mouse.pos, this.path[i]);
+        if (click_lensq_temp <= click_lensq) {
+          click_lensq = click_lensq_temp;
+          targetPoint_index = i;
+        }
+      }
+    }
+    if (targetPoint_index != -1) {
+      dragContext.part = 1;
+      dragContext.index = targetPoint_index;
+      dragContext.targetPoint = geometry.point(this.path[targetPoint_index].x, this.path[targetPoint_index].y);
+      return dragContext;
+    }
+
+    for (var i = 0; i < this.path.length; i++) {
+      if (mouse.isOnSegment(geometry.line(this.path[(i) % this.path.length], this.path[(i + 1) % this.path.length]))) {
+        // Dragging the entire this
+        const mousePos = mouse.getPosSnappedToGrid();
+        dragContext.part = 0;
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.snapContext = {};
+        return dragContext;
+      }
+    }
+  }
+
+  onDrag(mouse, dragContext, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+
+    if (dragContext.part == 1) {
+      this.path[dragContext.index].x = mousePos.x;
+      this.path[dragContext.index].y = mousePos.y;
+    }
+
+    if (dragContext.part == 0) {
+      if (shift) {
+        var mousePosSnapped = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+      }
+      else {
+        var mousePosSnapped = mouse.getPosSnappedToGrid();
+        dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
+      }
+      this.move(mousePosSnapped.x - dragContext.mousePos1.x, mousePosSnapped.y - dragContext.mousePos1.y);
+      dragContext.mousePos1 = mousePosSnapped;
+    }
+  }
+
+
+  checkRayIntersects(ray) {
+    if (this.notDone) return;
+
+    if (!this.fn_p) {
+      this.initFns();
+    }
+    if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
+    {
+      let len = geometry.distance(ray.p1, ray.p2);
+      let x = ray.p1.x + (this.step_size / len) * (ray.p2.x - ray.p1.x);
+      let y = ray.p1.y + (this.step_size / len) * (ray.p2.y - ray.p1.y);
+      const intersection_point = geometry.point(x, y);
+      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
+        return intersection_point;
+    }
+
+    var s_lensq = Infinity;
+    var s_lensq_temp;
+    var s_point = null;
+    var s_point_temp = null;
+    var rp_temp;
+
+    for (var i = 0; i < this.path.length; i++) {
+      s_point_temp = null;
+      
+      //Line segment i->i+1
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
+
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+        s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
+        s_point_temp = rp_temp;
+      
+      }
+      if (s_point_temp) {
+        if (s_lensq_temp < s_lensq) {
+          s_lensq = s_lensq_temp;
+          s_point = s_point_temp;
+        }
+      }
+    }
+    if (s_point) {
+      return s_point;
+    }
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    if (this.notDone) { return; }
     try {
-      if ((objTypes[obj.type].isInsideGlass(obj, ray.p1) || objTypes[obj.type].isOutsideGlass(obj, ray.p1)) && objTypes[obj.type].isOnBoundary(obj, incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+      if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
-        if (obj.notDone) { return; }
-        var incidentData = this.getIncidentData(obj, ray);
+        let r_bodyMerging_obj = ray.bodyMergingObj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
+
+        var incidentData = this.getIncidentData(ray);
         var incidentType = incidentData.incidentType;
-        var p = obj.fn_p({ x: incidentPoint.x, y: incidentPoint.y }) // refractive index at the intersection point - incidentPoint
         if (incidentType == 1) {
           // Shot from inside to outside
-          var n1 = (!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)); // The refractive index of the source material (assuming the destination has 1)
+          var n1 = this.getRefIndexAt(incidentPoint, ray);
+          this.onRayExit(ray);
         }
         else if (incidentType == -1) {
           // Shot from outside to inside
-          var n1 = 1 / ((!scene.colorMode) ? p : (p + (obj.cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001)));
+          var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+          this.onRayEnter(ray);
         }
         else if (incidentType == 0) {
-          // Equivalent to not shot on the obj (e.g. two interfaces overlap)
+          // Equivalent to not shot on the this (e.g. two interfaces overlap)
           var n1 = 1;
         }
         else {
@@ -79,70 +228,12 @@ objTypes['grin_refractor'] = {
             isAbsorbed: true
           };
         }
-
-        /*
-        A bodyMerging object is an object containing three properties - "fn_p", "fn_p_der_x" and "fn_p_der_y", 
-        which are the refractive index and its partial derivative functions, respectively, for some region of the simulation.
-        Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property
-        (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_circlelens and grin_refractor),
-        which gets updated as the ray enters/exits into/from grin objects, using the
-        "multRefIndex"/"devRefIndex" function, respectively.
-        */
-        let r_bodyMerging_obj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
-
-        if (ray.bodyMergingObj === undefined) {
-          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-        }
-
-        r_bodyMerging_obj = ray.bodyMergingObj; // Save the current bodyMerging object of the ray
-
-        for (var i = 0; i < surfaceMergingObjs.length; i++) {
-          let p;
-          if (surfaceMergingObjs[i].type == "grin_circlelens" || surfaceMergingObjs[i].type == "grin_refractor") {
-            p = surfaceMergingObjs[i].fn_p({ x: incidentPoint.x, y: incidentPoint.y }); // refractive index at the intersection point - incidentPoint
-          } else {
-            p = surfaceMergingObjs[i].p; // non-GRIN glass
-          }
-          
-          incidentType = objTypes[surfaceMergingObjs[i].type].getIncidentType(surfaceMergingObjs[i], ray);
-          if (incidentType == 1) {
-            // Shot from inside to outside
-            n1 *= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-            if (objTypes[surfaceMergingObjs[i].type].devRefIndex)
-              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].devRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]); // The ray exits the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
-          }
-          else if (incidentType == -1) {
-            // Shot from outside to inside
-            n1 /= (!scene.colorMode) ? p : (p + (surfaceMergingObjs[i].cauchyCoeff || 0.004) / (ray.wavelength * ray.wavelength * 0.000001));
-            if (objTypes[surfaceMergingObjs[i].type].multRefIndex)
-              ray.bodyMergingObj = objTypes[surfaceMergingObjs[i].type].multRefIndex(ray.bodyMergingObj, surfaceMergingObjs[i]);	// The ray enters the "surfaceMergingObjs[i]" grin object, and therefore its bodyMerging object is to be updated
-          }
-          else if (incidentType == 0) {
-            // Equivalent to not shot on the obj (e.g. two interfaces overlap)
-            //n1=n1;
-          }
-          else {
-            // The situation that may cause bugs (e.g. shot at an edge point)
-            // To prevent shooting the ray to a wrong direction, absorb the ray
-            return {
-              isAbsorbed: true
-            };
-          }
-        }
-
-        if (objTypes[obj.type].isInsideGlass(obj, ray.p1)) {
-          ray.bodyMergingObj = objTypes[obj.type].devRefIndex(ray.bodyMergingObj, obj);	// The ray exits the "obj" grin object, and therefore its bodyMerging object is to be updated
-        }
-        else {
-          ray.bodyMergingObj = objTypes[obj.type].multRefIndex(ray.bodyMergingObj, obj); // The ray enters the "obj" grin object, and therefore its bodyMerging object is to be updated
-        }
-        
-        return objTypes[obj.type].refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, r_bodyMerging_obj);
+        return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, r_bodyMerging_obj);
       }
       else {
         if (ray.bodyMergingObj === undefined)
-          ray.bodyMergingObj = objTypes[obj.type].initRefIndex(obj, ray); // Initialize the bodyMerging object of the ray
-        next_point = objTypes[obj.type].step(obj, ray.p1, incidentPoint, ray);
+          ray.bodyMergingObj = this.initRefIndex(ray); // Initialize the bodyMerging object of the ray
+        const next_point = this.step(ray.p1, incidentPoint, ray);
         ray.p1 = incidentPoint;
         ray.p2 = next_point;
       }
@@ -153,160 +244,143 @@ objTypes['grin_refractor'] = {
         isAbsorbed: true
       };
     }
-  },
+  }
 
-  draw: function (obj, canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;
-    var p1;
-    var p2;
-    var p3;
-    var center;
-    var r;
-    var a1;
-    var a2;
-    var a3;
-    var acw;
+  getIncidentType(ray) {
+    return this.getIncidentData(ray).incidentType;
+  }
 
-    if (obj.error) {
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px serif';
-      ctx.fillStyle = "red"
-      ctx.fillText(obj.error.toString(), obj.path[0].x, obj.path[0].y);
-    }
+  isOutsideGlass(point) {
+    return (!this.isOnBoundary(point) && this.countIntersections(point) % 2 == 0)
+  }
 
-    if (obj.notDone) {
-      // The user has not finish drawing the obj yet
-
-      ctx.beginPath();
-      ctx.moveTo(obj.path[0].x, obj.path[0].y);
-
-      for (var i = 0; i < obj.path.length - 1; i++) {
-        if (obj.path[(i + 1)].arc && !obj.path[i].arc && i < obj.path.length - 2) {
-          p1 = geometry.point(obj.path[i].x, obj.path[i].y);
-          p2 = geometry.point(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
-          p3 = geometry.point(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
-          center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(p1, p3)), geometry.perpendicularBisector(geometry.line(p2, p3)));
-          if (isFinite(center.x) && isFinite(center.y)) {
-            r = geometry.distance(center, p3);
-            a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
-            a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
-            a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
-
-            ctx.arc(center.x, center.y, r, a1, a2, acw);
-          }
-          else {
-            // The three points on the arc is colinear. Treat as a line segment.
-            ctx.lineTo(obj.path[(i + 2)].x, obj.path[(i + 2)].y);
-          }
-
-
-        }
-        else if (!obj.path[(i + 1)].arc && !obj.path[i].arc) {
-          ctx.lineTo(obj.path[(i + 1)].x, obj.path[(i + 1)].y);
-        }
-      }
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = 'rgb(128,128,128)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    }
-    else {
-      // The user has completed drawing the obj
-      ctx.beginPath();
-      ctx.moveTo(obj.path[0].x, obj.path[0].y);
-
-      for (var i = 0; i < obj.path.length; i++) {
-        if (obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
-          p1 = geometry.point(obj.path[i % obj.path.length].x, obj.path[i % obj.path.length].y);
-          p2 = geometry.point(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
-          p3 = geometry.point(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
-          center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(p1, p3)), geometry.perpendicularBisector(geometry.line(p2, p3)));
-          if (isFinite(center.x) && isFinite(center.y)) {
-            r = geometry.distance(center, p3);
-            a1 = Math.atan2(p1.y - center.y, p1.x - center.x);
-            a2 = Math.atan2(p2.y - center.y, p2.x - center.x);
-            a3 = Math.atan2(p3.y - center.y, p3.x - center.x);
-            acw = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2); // The rotation direction of p1->p3->p2. True indicates counterclockwise
-
-            ctx.arc(center.x, center.y, r, a1, a2, acw);
-          }
-          else {
-            // The three points on the arc is colinear. Treat as a line segment.
-            ctx.lineTo(obj.path[(i + 2) % obj.path.length].x, obj.path[(i + 2) % obj.path.length].y);
-          }
-
-        }
-        else if (!obj.path[(i + 1) % obj.path.length].arc && !obj.path[i % obj.path.length].arc) {
-          ctx.lineTo(obj.path[(i + 1) % obj.path.length].x, obj.path[(i + 1) % obj.path.length].y);
-        }
-      }
-      this.fillGlass(2.3, obj, canvasRenderer, isAboveLight, isHovered);
-    }
-    ctx.lineWidth = 1;
-
-
-    if (isHovered) {
-      for (var i = 0; i < obj.path.length; i++) {
-        if (typeof obj.path[i].arc != 'undefined') {
-          if (obj.path[i].arc) {
-            ctx.fillStyle = 'rgb(255,0,255)';
-            ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
-          }
-          else {
-            ctx.fillStyle = 'rgb(255,0,0)';
-            ctx.fillRect(obj.path[i].x - 1.5, obj.path[i].y - 1.5, 3, 3);
-          }
-        }
-      }
-    }
-  },
-
-  // Implementation of the "crossing number algorithm" (see - https://en.wikipedia.org/wiki/Point_in_polygon)
-  countIntersections: function (obj, p3) {
-    var cnt = 0;
-    for (let i = 0; i < obj.path.length; i++) {
-      let p1 = obj.path[i];
-      let p2 = obj.path[(i + 1) % obj.path.length];
-      let y_max = Math.max(p1.y, p2.y);
-      let y_min = Math.min(p1.y, p2.y);
-      if ((y_max - p3.y - obj.eps > 0 && y_max - p3.y + obj.eps > 0) && (y_min - p3.y - obj.eps < 0 && y_min - p3.y + obj.eps < 0)) {
-        if (p1.x == p2.x && (p1.x - p3.x + obj.eps > 0 && p1.x - p3.x - obj.eps > 0)) // in case the current segment is vertical
-          cnt++;
-        else if ((p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x - obj.eps > 0 && (p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x + obj.eps > 0)
-          cnt++;
-      }
-    }
-    return cnt; // Returns the number of intersections between a horizontal ray (that originates from the point - p3) and the Free-shape glass object - obj.
-  },
-
-  // Returns true if the point p3 is on the boundary of the simple polygon glass, otherwise returns false
-  isOnBoundary: function (obj, p3) {
-    for (let i = 0; i < obj.path.length; i++) {
-      let p1 = obj.path[i];
-      let p2 = obj.path[(i + 1) % obj.path.length];
+  isInsideGlass(point) {
+    return (!this.isOnBoundary(point) && this.countIntersections(point) % 2 == 1)
+  }
+  
+  isOnBoundary(p3) {
+    for (let i = 0; i < this.path.length; i++) {
+      let p1 = this.path[i];
+      let p2 = this.path[(i + 1) % this.path.length];
       let p1_p2 = geometry.point(p2.x - p1.x, p2.y - p1.y);
       let p1_p3 = geometry.point(p3.x - p1.x, p3.y - p1.y);
-      if (geometry.cross(p1_p2, p1_p3) - obj.eps < 0 && geometry.cross(p1_p2, p1_p3) + obj.eps > 0) // if p1_p2 and p1_p3 are collinear
+      if (geometry.cross(p1_p2, p1_p3) - this.eps < 0 && geometry.cross(p1_p2, p1_p3) + this.eps > 0) // if p1_p2 and p1_p3 are collinear
       {
         let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
         let p1_p2_squared = geometry.distanceSquared(p1, p2);
-        if (p1_p2_squared - dot_p2_p3 + obj.eps >= 0 && dot_p2_p3 + obj.eps >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
+        if (p1_p2_squared - dot_p2_p3 + this.eps >= 0 && dot_p2_p3 + this.eps >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
           return true;
       }
     }
     return false;
-  },
-
-  // Returns true if point is outside the simple polygon glass, otherwise returns false
-  isOutsideGlass: function (obj, point) {
-    return (!this.isOnBoundary(obj, point) && this.countIntersections(obj, point) % 2 == 0)
-  },
-
-  // Returns true if point is inside the simple polygon glass, otherwise returns false
-  isInsideGlass: function (obj, point) {
-    return (!this.isOnBoundary(obj, point) && this.countIntersections(obj, point) % 2 == 1)
   }
 
+  /* Utility methods */
+
+  getIncidentData(ray) {
+    var s_lensq = Infinity;
+    var s_lensq_temp;
+    var s_point = null;
+    var s_point_temp = null;
+    var s_point_index;
+
+    var surfaceMultiplicity = 1; // How many time the surfaces coincide
+
+    var rp_temp;
+
+    var rp2_temp;
+
+    var normal_x;
+    var normal_x_temp;
+
+    var normal_y;
+    var normal_y_temp;
+
+    var rdots;
+    var ssq;
+
+    var nearEdge = false;
+    var nearEdge_temp = false;
+
+    var ray2 = geometry.line(ray.p1, geometry.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
+    var ray_intersect_count = 0; // The intersection count (odd means from outside)
+
+    for (var i = 0; i < this.path.length; i++) {
+      s_point_temp = null;
+      nearEdge_temp = false;
+      rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
+
+      rp2_temp = geometry.linesIntersection(geometry.line(ray2.p1, ray2.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+        s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
+        s_point_temp = rp_temp;
+
+        rdots = (ray.p2.x - ray.p1.x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (ray.p2.y - ray.p1.y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
+        ssq = (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
+
+        normal_x_temp = rdots * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) - ssq * (ray.p2.x - ray.p1.x);
+        normal_y_temp = rdots * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
+
+      }
+
+      if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared) {
+        ray_intersect_count++;
+      }
+
+      // Test if too close to an edge
+      if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared || geometry.distanceSquared(s_point_temp, this.path[(i + 1) % this.path.length]) < minShotLength_squared)) {
+        nearEdge_temp = true;
+      }
+      
+      if (s_point_temp) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared) {
+          // Self surface merging
+          surfaceMultiplicity++;
+        }
+        else if (s_lensq_temp < s_lensq) {
+          s_lensq = s_lensq_temp;
+          s_point = s_point_temp;
+          s_point_index = i;
+          normal_x = normal_x_temp;
+          normal_y = normal_y_temp;
+          nearEdge = nearEdge_temp;
+          surfaceMultiplicity = 1;
+        }
+      }
+    }
+
+
+    if (nearEdge) {
+      var incidentType = NaN; // Shot at an edge point
+    }
+    else if (surfaceMultiplicity % 2 == 0) {
+      var incidentType = 0; // Equivalent to not shot on the this
+    }
+    else if (ray_intersect_count % 2 == 1) {
+      var incidentType = 1; // Shot from inside to outside
+    }
+    else {
+      var incidentType = -1; // Shot from outside to inside
+    }
+
+    return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };
+  }
+
+  // Implementation of the "crossing number algorithm" (see - https://en.wikipedia.org/wiki/Point_in_polygon)
+  countIntersections(p3) {
+    var cnt = 0;
+    for (let i = 0; i < this.path.length; i++) {
+      let p1 = this.path[i];
+      let p2 = this.path[(i + 1) % this.path.length];
+      let y_max = Math.max(p1.y, p2.y);
+      let y_min = Math.min(p1.y, p2.y);
+      if ((y_max - p3.y - this.eps > 0 && y_max - p3.y + this.eps > 0) && (y_min - p3.y - this.eps < 0 && y_min - p3.y + this.eps < 0)) {
+        if (p1.x == p2.x && (p1.x - p3.x + this.eps > 0 && p1.x - p3.x - this.eps > 0)) // in case the current segment is vertical
+          cnt++;
+        else if ((p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x - this.eps > 0 && (p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x + this.eps > 0)
+          cnt++;
+      }
+    }
+    return cnt; // Returns the number of intersections between a horizontal ray (that originates from the point - p3) and the Free-shape glass object - this.
+  }
 };

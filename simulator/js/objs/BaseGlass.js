@@ -112,8 +112,8 @@ class BaseGlass extends BaseSceneObj {
    * @param {Point} normal - The normal vector at the incident point.
    * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
    * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
-   * @param {object|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
-   * @returns {SimulationReturn|null} The return value for `onRayIncident`.
+   * @param {BodyMergingObj|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
+   * @returns {SimulationReturn} The return value for `onRayIncident`.
    */
   refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, bodyMergingObj) {
 
