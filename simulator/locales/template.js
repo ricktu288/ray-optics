@@ -44,7 +44,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Tool:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "incomplete": true,
     "message": "Single ray"
   },
@@ -216,7 +216,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Tools"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "incomplete": true,
     "message": "Single ray"
   },
@@ -795,7 +795,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "incomplete": true,
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },

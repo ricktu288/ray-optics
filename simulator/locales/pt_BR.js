@@ -33,7 +33,7 @@ locales["pt-BR"] = {
   "toolbar_title": {
     "message": "Ferramenta:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Raio único"
   },
   "toolname_led": {
@@ -162,7 +162,7 @@ locales["pt-BR"] = {
   "Tools: ": {
     "message": "Ferramentas"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Raio único"
   },
   "tool_parallel": {
@@ -604,7 +604,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "incomplete": true,
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },

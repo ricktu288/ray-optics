@@ -33,7 +33,7 @@ locales["en"] = {
   "toolbar_title": {
     "message": "Tool:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Single ray"
   },
   "toolname_led": {
@@ -162,7 +162,7 @@ locales["en"] = {
   "Tools: ": {
     "message": "Tools"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Single ray"
   },
   "tool_parallel": {
@@ -597,7 +597,7 @@ locales["en"] = {
   "view_gallery_popover": {
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
   "tool_parallel_popover": {

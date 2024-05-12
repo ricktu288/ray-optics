@@ -42,7 +42,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Tool:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Enkele straal"
   },
   "toolname_led": {
@@ -189,7 +189,7 @@ locales["nl"] = {
   "Tools: ": {
     "message": "Gereedschap"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Straal"
   },
   "tool_parallel": {
@@ -724,7 +724,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "Één straal door twee punten. (Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting.)"
   },
   "tool_parallel_popover": {

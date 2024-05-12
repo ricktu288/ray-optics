@@ -34,7 +34,7 @@ locales["de"] = {
   "toolbar_title": {
     "message": "Werkzeug:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Einzelstrahl"
   },
   "toolname_led": {
@@ -170,7 +170,7 @@ locales["de"] = {
   "Tools: ": {
     "message": "Werkzeuge"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Strahl"
   },
   "tool_parallel": {
@@ -668,7 +668,7 @@ locales["de"] = {
   "view_gallery_popover": {
     "message": "Zur Galerie-Seite wechseln und ein Beispiel laden."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt.)"
   },
   "tool_parallel_popover": {

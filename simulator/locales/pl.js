@@ -33,7 +33,7 @@ locales["pl"] = {
   "toolbar_title": {
     "message": "Narzędzie:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Pojedynczy promień"
   },
   "toolname_led": {
@@ -164,7 +164,7 @@ locales["pl"] = {
   "Tools: ": {
     "message": "Narzędzia"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Promień"
   },
   "tool_parallel": {
@@ -625,7 +625,7 @@ locales["pl"] = {
   "view_gallery_popover": {
     "message": "Przejdź do strony Galerii, aby załadować przykład."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "Pojedynczy promień światła określony przez dwa punkty. (Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu.)"
   },
   "tool_parallel_popover": {

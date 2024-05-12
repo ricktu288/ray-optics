@@ -40,7 +40,7 @@ locales["fr"] = {
   "toolbar_title": {
     "message": "Outils:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Rayon"
   },
   "toolname_led": {
@@ -186,7 +186,7 @@ locales["fr"] = {
   "Tools: ": {
     "message": "Outils"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Rayon"
   },
   "tool_parallel": {
@@ -709,7 +709,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "Un rayon de lumière unique définit par deux points. (Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.)"
   },
   "tool_parallel_popover": {

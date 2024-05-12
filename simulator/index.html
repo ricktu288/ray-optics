@@ -157,8 +157,8 @@
                       <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_lightsource_"></button>
                       <ul class="dropdown-menu" aria-labelledby="sourceToolsDropdown">
                         <li>
-                          <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_laser">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_laser" data-text="tool_laser" data-popover="tool_laser_popover" data-image="ray.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SingleRay">
+                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_SingleRay" data-text="tool_SingleRay" data-popover="tool_SingleRay_popover" data-image="SingleRay.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_parallel">
@@ -628,8 +628,8 @@
 
                         <ul id="mobile-dropdown-source" style="display:none">
                           <li>
-                            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_laser_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_laser_mobile" data-text="tool_laser"></label>
+                            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_SingleRay_mobile">
+                            <label class="btn btn-primary dropdown-item" for="tool_SingleRay_mobile" data-text="tool_SingleRay"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_parallel_mobile">
@@ -1286,7 +1286,7 @@
   <script src="js/objs/LineObjMixin.js"></script>
   <script src="js/objs/CircleObjMixin.js"></script>
 
-  <script src="js/objs/laser.js"></script>
+  <script src="js/objs/source/SingleRay.js"></script>
   <script src="js/objs/parallel.js"></script>
   <script src="js/objs/radiant.js"></script>
   <script src="js/objs/led.js"></script>

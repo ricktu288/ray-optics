@@ -40,7 +40,7 @@ locales["ru"] = {
   "toolbar_title": {
     "message": "Инструмент:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "Луч"
   },
   "toolname_led": {
@@ -186,7 +186,7 @@ locales["ru"] = {
   "Tools: ": {
     "message": "Инструменты"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "Луч"
   },
   "tool_parallel": {
@@ -712,7 +712,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Go to the Gallery webpage to load an example."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "Одиночный луч света, задаваемый двумя точками. (Потяните или нажмите, чтобы создать. Первая точка - источник, испускающий луч в сторону второй точки.)"
   },
   "tool_parallel_popover": {

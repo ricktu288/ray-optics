@@ -43,7 +43,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "도구:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "incomplete": false,
     "message": "단일 광선"
   },
@@ -215,7 +215,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "도구"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "incomplete": false,
     "message": "광선"
   },
@@ -794,7 +794,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "예제를 불러오기 위해 갤러리로 이동."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "incomplete": false,
     "message": "두 점으로 정의된 단일 광선. (드래그 또는 클릭하여 생성. 첫 번째 지점에서 두 번째 지점을 향하는 방향.)"
   },

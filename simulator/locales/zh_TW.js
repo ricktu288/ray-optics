@@ -33,7 +33,7 @@ locales["zh-TW"] = {
   "toolbar_title": {
     "message": "工具："
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "單一光線"
   },
   "toolname_led": {
@@ -162,7 +162,7 @@ locales["zh-TW"] = {
   "Tools: ": {
     "message": "工具"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "單一光線"
   },
   "tool_parallel": {
@@ -597,7 +597,7 @@ locales["zh-TW"] = {
   "view_gallery_popover": {
     "message": "前往「作品集」頁面以載入範例。"
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "由兩點決定一條光線。（拖曳或點擊以創建. 第一個點是光源，射向第二個點。）"
   },
   "tool_parallel_popover": {

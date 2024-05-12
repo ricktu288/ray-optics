@@ -43,7 +43,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ツール:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "incomplete": false,
     "message": "単一光線"
   },
@@ -215,7 +215,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ツール"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "incomplete": false,
     "message": "光線"
   },
@@ -794,7 +794,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ギャラリー Web ページに移動してサンプルをロードします。"
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "incomplete": false,
     "message": "2 つの点によって定義される単一光線。 (ドラッグまたはクリックして作成します。最初のポイントがソースとなり、2 番目のポイントで発射方向を決めます。)"
   },

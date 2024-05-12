@@ -38,7 +38,7 @@ locales["si"] = {
   "toolbar_title": {
     "message": "Tool:&nbsp;"
   },
-  "toolname_laser": {
+  "toolname_SingleRay": {
     "message": "තනි කිරණ"
   },
   "toolname_led": {
@@ -182,7 +182,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Tools"
   },
-  "tool_laser": {
+  "tool_SingleRay": {
     "message": "තනි ආලෝක කිරණයක්"
   },
   "tool_parallel": {
@@ -709,7 +709,7 @@ locales["si"] = {
   "view_gallery_popover": {
     "message": "උදාහරණ සදහා Galleryට යන්න."
   },
-  "tool_laser_popover": {
+  "tool_SingleRay_popover": {
     "message": "ලක්ෂ්‍යය දෙකකින් අර්ථ දක්වා ඇති තනි ආලෝක කිරණකි. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය ප්‍රභවය ද, දෙවන ලක්ෂ්‍යය කිරණයේ දිශාව ද වේ.)"
   },
   "tool_parallel_popover": {

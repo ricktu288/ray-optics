@@ -3,22 +3,22 @@
  * Tools -> Light source -> Single ray
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
- * @property {number} p - The brightness of the ray.
+ * @property {number} brightness - The brightness of the ray.
  * @property {number} wavelength - The wavelength of the ray in nm. Only effective in color mode.
  */
-objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'laser';
+objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'SingleRay';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 1,
+    brightness: 1,
     wavelength: GREEN_WAVELENGTH
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
+      obj.brightness = value;
     });
     if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
@@ -37,8 +37,8 @@ objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
 
   onSimulationStart() {
     var ray1 = geometry.line(this.p1, this.p2);
-    ray1.brightness_s = 0.5 * this.p;
-    ray1.brightness_p = 0.5 * this.p;
+    ray1.brightness_s = 0.5 * this.brightness;
+    ray1.brightness_p = 0.5 * this.brightness;
     if (this.scene.simulateColors) {
       ray1.wavelength = this.wavelength;
     }
