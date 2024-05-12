@@ -411,14 +411,14 @@ window.onload = function (e) {
 
   document.getElementById('snapToGrid').onclick = function (e) {
     document.getElementById('snapToGrid').checked = e.target.checked;
-    document.getElementById('grid_more').checked = e.target.checked;
-    document.getElementById('grid_mobile').checked = e.target.checked;
+    document.getElementById('snapToGrid_more').checked = e.target.checked;
+    document.getElementById('snapToGrid_mobile').checked = e.target.checked;
     scene.snapToGrid = e.target.checked;
     this.blur();
     //draw();
   };
-  document.getElementById('grid_more').onclick = document.getElementById('snapToGrid').onclick;
-  document.getElementById('grid_mobile').onclick = document.getElementById('snapToGrid').onclick;
+  document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
+  document.getElementById('snapToGrid_mobile').onclick = document.getElementById('snapToGrid').onclick;
 
   document.getElementById('showgrid').onclick = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
@@ -657,11 +657,11 @@ function initParameters() {
   document.getElementById('showgrid').checked = false;
 
   document.getElementById('lockObjs_more').checked = false;
-  document.getElementById('grid_more').checked = false;
+  document.getElementById('snapToGrid_more').checked = false;
   document.getElementById('showgrid_more').checked = false;
 
   document.getElementById('lockObjs_mobile').checked = false;
-  document.getElementById('grid_mobile').checked = false;
+  document.getElementById('snapToGrid_mobile').checked = false;
   document.getElementById('showgrid_mobile').checked = false;
 
   document.getElementById('simulateColors').checked = false;
@@ -839,8 +839,8 @@ function JSONInput() {
       document.getElementById('showgrid_mobile').checked = scene.showGrid;
 
       document.getElementById('snapToGrid').checked = scene.snapToGrid;
-      document.getElementById('grid_more').checked = scene.snapToGrid;
-      document.getElementById('grid_mobile').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
 
       document.getElementById('lockObjs').checked = scene.lockObjs;
       document.getElementById('lockObjs_more').checked = scene.lockObjs;
