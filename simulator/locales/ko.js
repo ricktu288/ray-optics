@@ -443,7 +443,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "사물 고정"
   },
-  "showgrid": {
+  "showGrid": {
     "incomplete": false,
     "message": "격자"
   },
@@ -934,7 +934,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "빔이나 점광원으로부터 발생하는 광선의 개수를 결정합니다. 상 검출과 색 표현에도 영향을 미칩니다."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "incomplete": false,
     "message": "배경 격자의 가시성을 결정합니다. "
   },
@@ -966,7 +966,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

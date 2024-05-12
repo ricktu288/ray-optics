@@ -443,7 +443,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "オブジェクトを固定"
   },
-  "showgrid": {
+  "showGrid": {
     "incomplete": false,
     "message": "グリッド"
   },
@@ -934,7 +934,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "incomplete": false,
     "message": "背景グリッドの可視性を切り替えます。"
   },
@@ -966,7 +966,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

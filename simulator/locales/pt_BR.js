@@ -333,7 +333,7 @@ locales["pt-BR"] = {
   "lockObjs": {
     "message": "Travar Objetos"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Grade"
   },
   "snapToGrid": {
@@ -744,7 +744,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Define a visibilidade da grade de fundo."
   },
   "grid_popover": {
@@ -769,7 +769,7 @@ locales["pt-BR"] = {
   "show_status": {
     "message": "Exibir caixa de status"
   },
-  "grid_size": {
+  "gridSize": {
     "message": "Tamanho da Grade (px)"
   },
   "observer_size": {

@@ -443,7 +443,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Lock Objects"
   },
-  "showgrid": {
+  "showGrid": {
     "incomplete": true,
     "message": "Grid"
   },
@@ -935,7 +935,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "incomplete": true,
     "message": "Defines the visibility of the background grid."
   },
@@ -967,7 +967,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

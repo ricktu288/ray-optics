@@ -333,7 +333,7 @@ locales["en"] = {
   "lockObjs": {
     "message": "Lock Objects"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Grid"
   },
   "snapToGrid": {
@@ -702,7 +702,7 @@ locales["en"] = {
   "rayDensity_popover": {
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Defines the visibility of the background grid."
   },
   "grid_popover": {
@@ -726,7 +726,7 @@ locales["en"] = {
   "show_status": {
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "message": "Grid Size (px)"
   },
   "observer_size": {

@@ -352,7 +352,7 @@ locales["de"] = {
   "lockObjs": {
     "message": "Objekte sperren"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Raster"
   },
   "snapToGrid": {
@@ -782,7 +782,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Sichtbarkeit des Gitters."
   },
   "grid_popover": {
@@ -810,7 +810,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

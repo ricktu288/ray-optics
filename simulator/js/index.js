@@ -296,25 +296,25 @@ window.onload = function (e) {
     document.getElementById('status').style.display = '';
   }
 
-  document.getElementById('grid_size').onchange = function () {
+  document.getElementById('gridSize').onchange = function () {
     scene.gridSize = parseFloat(this.value);
-    document.getElementById('grid_size').value = scene.gridSize;
-    document.getElementById('grid_size_mobile').value = scene.gridSize;
+    document.getElementById('gridSize').value = scene.gridSize;
+    document.getElementById('gridSize_mobile').value = scene.gridSize;
     draw(true, false);
   }
-  document.getElementById('grid_size_mobile').onchange = document.getElementById('grid_size').onchange;
+  document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
 
-  document.getElementById('grid_size').onclick = function () {
+  document.getElementById('gridSize').onclick = function () {
     this.select();
   }
-  document.getElementById('grid_size_mobile').onclick = document.getElementById('grid_size').onclick;
+  document.getElementById('gridSize_mobile').onclick = document.getElementById('gridSize').onclick;
   
-  document.getElementById('grid_size').onkeydown = function(e)
+  document.getElementById('gridSize').onkeydown = function(e)
   {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
-  document.getElementById('grid_size_mobile').onkeydown = document.getElementById('grid_size').onkeydown;
+  document.getElementById('gridSize_mobile').onkeydown = document.getElementById('gridSize').onkeydown;
 
   document.getElementById('observer_size').onchange = function () {
     document.getElementById('observer_size').value = this.value;
@@ -420,16 +420,16 @@ window.onload = function (e) {
   document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
   document.getElementById('snapToGrid_mobile').onclick = document.getElementById('snapToGrid').onclick;
 
-  document.getElementById('showgrid').onclick = function (e) {
-    document.getElementById('showgrid').checked = e.target.checked;
-    document.getElementById('showgrid_more').checked = e.target.checked;
-    document.getElementById('showgrid_mobile').checked = e.target.checked;
+  document.getElementById('showGrid').onclick = function (e) {
+    document.getElementById('showGrid').checked = e.target.checked;
+    document.getElementById('showGrid_more').checked = e.target.checked;
+    document.getElementById('showGrid_mobile').checked = e.target.checked;
     scene.showGrid = e.target.checked;
     this.blur();
     draw(true, false);
   };
-  document.getElementById('showgrid_more').onclick = document.getElementById('showgrid').onclick;
-  document.getElementById('showgrid_mobile').onclick = document.getElementById('showgrid').onclick;
+  document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
+  document.getElementById('showGrid_mobile').onclick = document.getElementById('showGrid').onclick;
 
   document.getElementById('lockObjs').onclick = function (e) {
     document.getElementById('lockObjs').checked = e.target.checked;
@@ -654,15 +654,15 @@ function initParameters() {
 
   document.getElementById('lockObjs').checked = false;
   document.getElementById('snapToGrid').checked = false;
-  document.getElementById('showgrid').checked = false;
+  document.getElementById('showGrid').checked = false;
 
   document.getElementById('lockObjs_more').checked = false;
   document.getElementById('snapToGrid_more').checked = false;
-  document.getElementById('showgrid_more').checked = false;
+  document.getElementById('showGrid_more').checked = false;
 
   document.getElementById('lockObjs_mobile').checked = false;
   document.getElementById('snapToGrid_mobile').checked = false;
-  document.getElementById('showgrid_mobile').checked = false;
+  document.getElementById('showGrid_mobile').checked = false;
 
   document.getElementById('simulateColors').checked = false;
   document.getElementById('simulateColors_mobile').checked = false;
@@ -670,8 +670,8 @@ function initParameters() {
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
 
-  document.getElementById('grid_size').value = scene.gridSize;
-  document.getElementById('grid_size_mobile').value = scene.gridSize;
+  document.getElementById('gridSize').value = scene.gridSize;
+  document.getElementById('gridSize_mobile').value = scene.gridSize;
 
   document.getElementById('observer_size').value = 40;
   document.getElementById('observer_size_mobile').value = 40;
@@ -834,9 +834,9 @@ function JSONInput() {
     if (needFullUpdate) {
       // Update the UI for the loaded scene.
 
-      document.getElementById('showgrid').checked = scene.showGrid;
-      document.getElementById('showgrid_more').checked = scene.showGrid;
-      document.getElementById('showgrid_mobile').checked = scene.showGrid;
+      document.getElementById('showGrid').checked = scene.showGrid;
+      document.getElementById('showGrid_more').checked = scene.showGrid;
+      document.getElementById('showGrid_mobile').checked = scene.showGrid;
 
       document.getElementById('snapToGrid').checked = scene.snapToGrid;
       document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
@@ -854,8 +854,8 @@ function JSONInput() {
         document.getElementById('observer_size_mobile').value = 40;
       }
 
-      document.getElementById('grid_size').value = scene.gridSize;
-      document.getElementById('grid_size_mobile').value = scene.gridSize;
+      document.getElementById('gridSize').value = scene.gridSize;
+      document.getElementById('gridSize_mobile').value = scene.gridSize;
 
       document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';

@@ -338,7 +338,7 @@ locales["pl"] = {
   "lockObjs": {
     "message": "Zablokuj obiekty"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Siatka"
   },
   "snapToGrid": {
@@ -731,7 +731,7 @@ locales["pl"] = {
   "rayDensity_popover": {
     "message": "Określa liczbę promieni emitowanych przez belki i źródła punktowe. Ma to również wpływ na dokładność wykrywania obrazu i renderowania kolorów."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Określa widoczność siatki tła."
   },
   "grid_popover": {
@@ -757,7 +757,7 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

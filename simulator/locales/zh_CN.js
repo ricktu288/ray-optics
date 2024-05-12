@@ -333,7 +333,7 @@ locales["zh-CN"] = {
   "lockObjs": {
     "message": "锁定物件"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "网格"
   },
   "snapToGrid": {
@@ -702,7 +702,7 @@ locales["zh-CN"] = {
   "rayDensity_popover": {
     "message": "决定从光束与点光源射出的光线数量。这也会影响到像的侦测与颜色渲染的准确性。"
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "决定是否显示背景网格。"
   },
   "grid_popover": {
@@ -726,7 +726,7 @@ locales["zh-CN"] = {
   "show_status": {
     "message": "显示状态方块"
   },
-  "grid_size": {
+  "gridSize": {
     "message": "网格大小 (px)"
   },
   "observer_size": {

@@ -335,7 +335,7 @@ locales["es"] = {
   "lockObjs": {
     "message": "Bloquear objetos"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Cuadrícula"
   },
   "snapToGrid": {
@@ -713,7 +713,7 @@ locales["es"] = {
   "rayDensity_popover": {
     "message": "Determinar el numero de rayos emitidos por haces y fuentes puntuales. Esto también afecta a la precisión de la detección de las imágenes y a la renderización del color."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Define la visibilidad de la cuadrícula de fondo."
   },
   "grid_popover": {
@@ -738,7 +738,7 @@ locales["es"] = {
   "show_status": {
     "message": "Mostrar diálogo de estado"
   },
-  "grid_size": {
+  "gridSize": {
     "message": "Tamaño de la cuadrícula (px)"
   },
   "observer_size": {

@@ -333,7 +333,7 @@ locales["zh-TW"] = {
   "lockObjs": {
     "message": "鎖定物件"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "格線"
   },
   "snapToGrid": {
@@ -702,7 +702,7 @@ locales["zh-TW"] = {
   "rayDensity_popover": {
     "message": "決定從光束與點光源射出的光線數量。這也會影響到像的偵測與顏色渲染的準確性。"
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "決定是否顯示背景格線。"
   },
   "grid_popover": {
@@ -726,7 +726,7 @@ locales["zh-TW"] = {
   "show_status": {
     "message": "顯示狀態方塊"
   },
-  "grid_size": {
+  "gridSize": {
     "message": "格線大小 (px)"
   },
   "observer_size": {

@@ -379,7 +379,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Lock Objects"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Сетка"
   },
   "snapToGrid": {
@@ -838,7 +838,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Включить или выключить сетку."
   },
   "grid_popover": {
@@ -866,7 +866,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },

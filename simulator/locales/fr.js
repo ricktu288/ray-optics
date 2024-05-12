@@ -377,7 +377,7 @@ locales["fr"] = {
   "lockObjs": {
     "message": "Verrouiller les objets"
   },
-  "showgrid": {
+  "showGrid": {
     "message": "Grille"
   },
   "snapToGrid": {
@@ -834,7 +834,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
   },
-  "showgrid_popover": {
+  "showGrid_popover": {
     "message": "Défini la visibilité de l'arrière-plan de la grille."
   },
   "grid_popover": {
@@ -862,7 +862,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Show status box"
   },
-  "grid_size": {
+  "gridSize": {
     "incomplete": true,
     "message": "Grid Size (px)"
   },
