@@ -32,7 +32,7 @@ objTypes['arcmirror'] = class extends BaseFilter {
         var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
         var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
         var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
-        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
@@ -44,7 +44,7 @@ objTypes['arcmirror'] = class extends BaseFilter {
         }
       } else {
         // The three points on the arc is colinear. Treat as a line segment.
-        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);

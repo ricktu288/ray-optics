@@ -25,7 +25,7 @@ objTypes['blackcircle'] = class extends CircleObjMixin(BaseFilter) {
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     //ctx.fillStyle="indigo";
 
     ctx.stroke();

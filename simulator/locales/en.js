@@ -153,7 +153,7 @@ locales["en"] = {
   "modename_observer": {
     "message": "Seen by observer"
   },
-  "color_mode": {
+  "simulateColors": {
     "message": "Simulate Colors"
   },
   "File: ": {
@@ -270,10 +270,10 @@ locales["en"] = {
   "moresettings": {
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Rays"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Extended rays"
   },
   "mode_images": {
@@ -330,13 +330,13 @@ locales["en"] = {
   "layoutaids": {
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "Lock Objects"
   },
   "showgrid": {
     "message": "Grid"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Snap to Grid"
   },
   "snaptogrid": {
@@ -504,7 +504,7 @@ locales["en"] = {
   "image_detection_warning": {
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
@@ -684,10 +684,10 @@ locales["en"] = {
   "tool__popover": {
     "message": "Drag to move the view. (Mouse right button drag has the same function.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
   "mode_images_popover": {
@@ -696,7 +696,7 @@ locales["en"] = {
   "mode_observer_popover": {
     "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
@@ -708,7 +708,7 @@ locales["en"] = {
   "grid_popover": {
     "message": "Defines whether to snap to grid."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Defines whether the objects can be moved or not."
   },
   "zoom_popover": {

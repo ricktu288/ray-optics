@@ -72,7 +72,7 @@ class Mouse {
    */
   getPosSnappedToGrid() {
     //console.log(this.overrideGrid)
-    if ((this.overrideGrid === 0 && this.scene.grid) || (this.overrideGrid === 1 && !this.scene.grid)) {
+    if ((this.overrideGrid === 0 && this.scene.snapToGrid) || (this.overrideGrid === 1 && !this.scene.snapToGrid)) {
       return geometry.point(
         Math.round(this.pos.x / this.scene.gridSize) * this.scene.gridSize,
         Math.round(this.pos.y / this.scene.gridSize) * this.scene.gridSize

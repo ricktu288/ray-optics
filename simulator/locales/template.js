@@ -204,7 +204,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Seen by observer"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": true,
     "message": "Simulate Colors"
   },
@@ -359,11 +359,11 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "incomplete": true,
     "message": "Rays"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "incomplete": true,
     "message": "Extended rays"
   },
@@ -439,7 +439,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "incomplete": true,
     "message": "Lock Objects"
   },
@@ -447,7 +447,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Grid"
   },
-  "grid": {
+  "snapToGrid": {
     "incomplete": true,
     "message": "Snap to Grid"
   },
@@ -671,7 +671,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -911,11 +911,11 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Drag to move the view. (Mouse right button drag has the same function.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "incomplete": true,
     "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": true,
     "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
@@ -927,7 +927,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -943,7 +943,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Defines whether to snap to grid."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "incomplete": true,
     "message": "Defines whether the objects can be moved or not."
   },

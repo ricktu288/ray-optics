@@ -99,7 +99,7 @@ objTypes['sphericallens'] = class extends objTypes['refractor'] {
       }, null, true);
     }
 
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, this.p, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.p = value * 1;

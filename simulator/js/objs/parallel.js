@@ -27,7 +27,7 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
       obj.p = value;
     }, getMsg('brightness_note_popover'));
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
@@ -52,7 +52,7 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.colorMode ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
+    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
     ctx.lineWidth = 4;
     ctx.lineCap = 'butt';
     ctx.beginPath();
@@ -144,7 +144,7 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
       ray1.brightness_p *= lambert;
     }
     ray1.isNew = true;
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       ray1.wavelength = this.wavelength;
     }
     ray1.gap = gap;

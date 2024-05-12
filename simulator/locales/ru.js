@@ -176,7 +176,7 @@ locales["ru"] = {
   "modename_observer": {
     "message": "Видимые наблюдателем"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": true,
     "message": "Simulate Colors"
   },
@@ -310,10 +310,10 @@ locales["ru"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Лучи"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Лучи с продолжениями"
   },
   "mode_images": {
@@ -375,14 +375,14 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "incomplete": true,
     "message": "Lock Objects"
   },
   "showgrid": {
     "message": "Сетка"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Клеиться к сетке"
   },
   "snaptogrid": {
@@ -596,7 +596,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -815,10 +815,10 @@ locales["ru"] = {
   "tool__popover": {
     "message": "Потяните, чтобы переместить камеру. (Также можно потянуть правой кнопкой мыши.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Показывает лучи. Если 'Плотность лучей' высока, они выглядят цельным пучком."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": true,
     "message": "Показывает и лучи, и их продолжения. Оранжевые лучи - продолжения назад, серые - вперед.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
@@ -830,7 +830,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Симулировать лучи и изображения, видимые из какой-то позиции. Синий круг - наблюдатель. Лучи пересекающие его, считаются \"видимыми\". Наблюдатель не знает где лучи начинаются на самом деле, но может думать, что они начинаются в какой-то точке/точках, если они там пересекаются. Видимые лучи показаны синим, а точки оранжевым. (Потяните большую синюю точку, чтобы переместить наблюдателя.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -844,7 +844,7 @@ locales["ru"] = {
   "grid_popover": {
     "message": "Включить или выключить приклейку к сетке."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Разрешить или нет перемещение объектов."
   },
   "zoom_popover": {

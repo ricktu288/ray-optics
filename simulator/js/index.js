@@ -263,15 +263,15 @@ window.onload = function (e) {
     openFile(this.files[0]);
   };
 
-  document.getElementById('color_mode').onclick = function () {
-    scene.colorMode = this.checked;
-    document.getElementById('color_mode').checked = scene.colorMode;
-    document.getElementById('color_mode_mobile').checked = scene.colorMode;
+  document.getElementById('simulateColors').onclick = function () {
+    scene.simulateColors = this.checked;
+    document.getElementById('simulateColors').checked = scene.simulateColors;
+    document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
     selectObj(selectedObj);
     this.blur();
     draw(false, true);
   };
-  document.getElementById('color_mode_mobile').onclick = document.getElementById('color_mode').onclick;
+  document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
 
   document.getElementById('show_help_popups').onclick = function () {
     this.blur();
@@ -409,16 +409,16 @@ window.onload = function (e) {
   document.getElementById('rayDensityMinus_more').onclick = document.getElementById('rayDensityMinus').onclick;
 
 
-  document.getElementById('grid').onclick = function (e) {
-    document.getElementById('grid').checked = e.target.checked;
+  document.getElementById('snapToGrid').onclick = function (e) {
+    document.getElementById('snapToGrid').checked = e.target.checked;
     document.getElementById('grid_more').checked = e.target.checked;
     document.getElementById('grid_mobile').checked = e.target.checked;
-    scene.grid = e.target.checked;
+    scene.snapToGrid = e.target.checked;
     this.blur();
     //draw();
   };
-  document.getElementById('grid_more').onclick = document.getElementById('grid').onclick;
-  document.getElementById('grid_mobile').onclick = document.getElementById('grid').onclick;
+  document.getElementById('grid_more').onclick = document.getElementById('snapToGrid').onclick;
+  document.getElementById('grid_mobile').onclick = document.getElementById('snapToGrid').onclick;
 
   document.getElementById('showgrid').onclick = function (e) {
     document.getElementById('showgrid').checked = e.target.checked;
@@ -431,15 +431,15 @@ window.onload = function (e) {
   document.getElementById('showgrid_more').onclick = document.getElementById('showgrid').onclick;
   document.getElementById('showgrid_mobile').onclick = document.getElementById('showgrid').onclick;
 
-  document.getElementById('lockobjs').onclick = function (e) {
-    document.getElementById('lockobjs').checked = e.target.checked;
-    document.getElementById('lockobjs_more').checked = e.target.checked;
-    document.getElementById('lockobjs_mobile').checked = e.target.checked;
-    scene.lockobjs = e.target.checked;
+  document.getElementById('lockObjs').onclick = function (e) {
+    document.getElementById('lockObjs').checked = e.target.checked;
+    document.getElementById('lockObjs_more').checked = e.target.checked;
+    document.getElementById('lockObjs_mobile').checked = e.target.checked;
+    scene.lockObjs = e.target.checked;
     this.blur();
   };
-  document.getElementById('lockobjs_more').onclick = document.getElementById('lockobjs').onclick;
-  document.getElementById('lockobjs_mobile').onclick = document.getElementById('lockobjs').onclick;
+  document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
+  document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
 
   document.getElementById('forceStop').onclick = function () {
     if (timerID != -1) {
@@ -635,13 +635,13 @@ function initParameters() {
 
   selectObj(-1);
 
-  document.getElementById("rayDensity").value = scene.rayDensity_light;
-  document.getElementById("rayDensity_more").value = scene.rayDensity_light;
-  document.getElementById("rayDensity_mobile").value = scene.rayDensity_light;
+  document.getElementById("rayDensity").value = scene.rayModeDensity;
+  document.getElementById("rayDensity_more").value = scene.rayModeDensity;
+  document.getElementById("rayDensity_mobile").value = scene.rayModeDensity;
   document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
   toolbtn_clicked('');
-  modebtn_clicked('light');
+  modebtn_clicked('rays');
   scene.backgroundImage = null;
 
   //Reset new UI.
@@ -649,23 +649,23 @@ function initParameters() {
   resetDropdownButtons();
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
-  document.getElementById('mode_light').checked = true;
-  document.getElementById('mode_light_mobile').checked = true;
+  document.getElementById('mode_rays').checked = true;
+  document.getElementById('mode_rays_mobile').checked = true;
 
-  document.getElementById('lockobjs').checked = false;
-  document.getElementById('grid').checked = false;
+  document.getElementById('lockObjs').checked = false;
+  document.getElementById('snapToGrid').checked = false;
   document.getElementById('showgrid').checked = false;
 
-  document.getElementById('lockobjs_more').checked = false;
+  document.getElementById('lockObjs_more').checked = false;
   document.getElementById('grid_more').checked = false;
   document.getElementById('showgrid_more').checked = false;
 
-  document.getElementById('lockobjs_mobile').checked = false;
+  document.getElementById('lockObjs_mobile').checked = false;
   document.getElementById('grid_mobile').checked = false;
   document.getElementById('showgrid_mobile').checked = false;
 
-  document.getElementById('color_mode').checked = false;
-  document.getElementById('color_mode_mobile').checked = false;
+  document.getElementById('simulateColors').checked = false;
+  document.getElementById('simulateColors_mobile').checked = false;
 
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
@@ -758,7 +758,7 @@ window.onkeydown = function (e) {
 
   //Arrow Keys
   if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = scene.grid ? scene.gridSize : 1;
+    var step = scene.snapToGrid ? scene.gridSize : 1;
     if (selectedObj >= 0) {
       if (e.keyCode == 37) {
         scene.objs[selectedObj].move(-step, 0);
@@ -838,13 +838,13 @@ function JSONInput() {
       document.getElementById('showgrid_more').checked = scene.showGrid;
       document.getElementById('showgrid_mobile').checked = scene.showGrid;
 
-      document.getElementById('grid').checked = scene.grid;
-      document.getElementById('grid_more').checked = scene.grid;
-      document.getElementById('grid_mobile').checked = scene.grid;
+      document.getElementById('snapToGrid').checked = scene.snapToGrid;
+      document.getElementById('grid_more').checked = scene.snapToGrid;
+      document.getElementById('grid_mobile').checked = scene.snapToGrid;
 
-      document.getElementById('lockobjs').checked = scene.lockobjs;
-      document.getElementById('lockobjs_more').checked = scene.lockobjs;
-      document.getElementById('lockobjs_mobile').checked = scene.lockobjs;
+      document.getElementById('lockObjs').checked = scene.lockObjs;
+      document.getElementById('lockObjs_more').checked = scene.lockObjs;
+      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
 
       if (scene.observer) {
         document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
@@ -859,8 +859,8 @@ function JSONInput() {
 
       document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
-      document.getElementById('color_mode').checked = scene.colorMode;
-      document.getElementById('color_mode_mobile').checked = scene.colorMode;
+      document.getElementById('simulateColors').checked = scene.simulateColors;
+      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
@@ -889,14 +889,14 @@ function toolbtn_clicked(tool, e) {
 function modebtn_clicked(mode1) {
   scene.mode = mode1;
   if (scene.mode == 'images' || scene.mode == 'observer') {
-    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_images);
-    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_images);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_images);
+    document.getElementById("rayDensity").value = Math.log(scene.imageModeDensity);
+    document.getElementById("rayDensity_more").value = Math.log(scene.imageModeDensity);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.imageModeDensity);
   }
   else {
-    document.getElementById("rayDensity").value = Math.log(scene.rayDensity_light);
-    document.getElementById("rayDensity_more").value = Math.log(scene.rayDensity_light);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayDensity_light);
+    document.getElementById("rayDensity").value = Math.log(scene.rayModeDensity);
+    document.getElementById("rayDensity_more").value = Math.log(scene.rayModeDensity);
+    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayModeDensity);
   }
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer

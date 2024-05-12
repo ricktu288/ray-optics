@@ -203,7 +203,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "관찰자가 보는 이미지"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": false,
     "message": "색상 (파장) 시뮬레이션"
   },
@@ -359,11 +359,11 @@ locales["ko"] = {
     "incomplete": false,
     "message": "더 보기"
   },
-  "mode_light": {
+  "mode_rays": {
     "incomplete": false,
     "message": "광선 모드"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "incomplete": false,
     "message": "광선 연장 모드"
   },
@@ -439,7 +439,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "레이아웃 도구"
   },
-  "lockobjs": {
+  "lockObjs": {
     "incomplete": false,
     "message": "사물 고정"
   },
@@ -447,7 +447,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "격자"
   },
-  "grid": {
+  "snapToGrid": {
     "incomplete": false,
     "message": "격자선에 물리기"
   },
@@ -671,7 +671,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -910,11 +910,11 @@ locales["ko"] = {
     "incomplete": false,
     "message": "화면을 이동하려면 드래그하십시오. (이 버튼을 누르지 않고, 마우스 우클릭 드래그를 사용해도 됩니다.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "incomplete": false,
     "message": "광선을 나타냅니다. 광선 밀도가 높으면 연속적인 것 처럼 나타납니다."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": false,
     "message": "광선과 연장선을 모두 표시합니다. 회색은 진행 방향을, 주황색은 진행 방향의 반대 방향을 나타냅니다.<br>'색상 (파장) 시뮬레이션'이 켜져 있으면 원본 색상으로 표시되고 점선으로 나타냅니다."
   },
@@ -926,7 +926,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "특정 위치에서 보는 광선과 상을 시뮬레이션합니다. 파란색 원은 관찰자이며 이것을 지나는 광선은 '관찰된 것'으로 간주됩니다. '관찰된 광선'으로부터 관찰자는 광선이 어디에선가 시작되었다고 생각할 수는 있지만, 실제로 어느 위치에서 시작된 광선인지는 알 수 없습니다. 광선들은 파란색으로, 실상과 허상은 각각 노란색과 주황색 점으로 나타납니다. (관찰자의 위치를 옮기려면 큰 파란 점을 드래그하십시오.)<br>'색상 (파장) 시뮬레이션'이 켜져 있으면 원본 색상으로 표시됩니다."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": false,
     "message": "광원의 색상 (파장), 색상 혼합, 차단기와 거울에 의한 파장 필터링, 매질의 색 분산을 시뮬레이션합니다. 개체를 선택할 때 이러한 변수를 설정할 수 있습니다. 색상 스펙트럼을 시뮬레이션 하려면 여러 파장의 광선을 겹치십시오. 화면에 표시되는 색상은 대략적인 근사이며, 광선 밀도가 너무 높거나 낮을 시 매우 부정확할 수 있습니다. "
   },
@@ -942,7 +942,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "객체를 위치시킬 때 격자선에 물릴지 결정합니다."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "incomplete": false,
     "message": "객체의 이동 가능 여부를 결정합니다."
   },

@@ -51,9 +51,9 @@ class BaseGrinGlass extends BaseGlass {
     }
 
     const scene = this.scene;
-    if (objBar.showAdvanced(this.scene.symbolicGrin)) {
-      objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicGrin, function (obj, value) {
-        scene.symbolicGrin = value;
+    if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
+      objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicBodyMerging, function (obj, value) {
+        scene.symbolicBodyMerging = value;
       }, getMsg('symbolic_grin_note_popover'));
     }
   }
@@ -145,7 +145,7 @@ class BaseGrinGlass extends BaseGlass {
    * @returns {BodyMergingObj}
    */
   multRefIndex(bodyMergingObj) {
-    if (this.scene.symbolicGrin) {
+    if (this.scene.symbolicBodyMerging) {
       let mul_p = math.simplify('(' + bodyMergingObj.p + ')*' + '(' + this.shiftOrigin(this.p) + ')').toString();
 
       let mul_fn_p = evaluateLatex(math.parse(mul_p).toTex());
@@ -186,7 +186,7 @@ class BaseGrinGlass extends BaseGlass {
    * @returns {BodyMergingObj}
    */
   devRefIndex(bodyMergingObj) {
-    if (this.scene.symbolicGrin) {
+    if (this.scene.symbolicBodyMerging) {
       let dev_p = math.simplify('(' + bodyMergingObj.p + ')/' + '(' + this.shiftOrigin(this.p) + ')').toString();
 
       let dev_fn_p = evaluateLatex(math.parse(dev_p).toTex());

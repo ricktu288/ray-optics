@@ -155,7 +155,7 @@ locales["pl"] = {
   "modename_observer": {
     "message": "Widziane przez obserwatora"
   },
-  "color_mode": {
+  "simulateColors": {
     "message": "Symuluj kolory"
   },
   "File: ": {
@@ -273,10 +273,10 @@ locales["pl"] = {
   "moresettings": {
     "message": "Więcej"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Promienie"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Rozszerzone promienie"
   },
   "mode_images": {
@@ -335,13 +335,13 @@ locales["pl"] = {
   "layoutaids": {
     "message": "Opcje układu"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "Zablokuj obiekty"
   },
   "showgrid": {
     "message": "Siatka"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Przyciągaj do siatki"
   },
   "snaptogrid": {
@@ -531,7 +531,7 @@ locales["pl"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -713,10 +713,10 @@ locales["pl"] = {
   "tool__popover": {
     "message": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję)."
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Pokaż promienie. Gdy 'Gęstość promieni' jest duża, wiązka pojawia się jako ciągła."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "message": "Pokaż zarówno promienie, jak i ich przedłużenia. Kolor pomarańczowy wskazuje przedłużenia do tyłu, a szary do przodu.<br>Gdy opcja „Symuluj kolory” jest włączona, są one wyświetlane w kolorach źródłowych i zamiast tego wyróżniane linią przerywaną."
   },
   "mode_images_popover": {
@@ -725,7 +725,7 @@ locales["pl"] = {
   "mode_observer_popover": {
     "message": "Symuluje promienie i obrazy widziane z określonego miejsca. Obserwatora symbolizuje niebieskie kółko. Wszelkie przecinające je promienie uważa się za 'obserwowane'. Obserwator nie wie, gdzie faktycznie zaczynają się promienie, ale będzie mu się wydawało, że zaczynają się w pewnym punkcie (punktach), jeśli się tam przecinają. Promienie są pokazane na niebiesko, a punkty na żółto (rzeczywiste) lub pomarańczowo (pozorne). (Przeciągnij dużą niebieską kropkę, aby przesunąć obserwatora.)<br>Gdy opcja „Symuluj kolory” jest włączona, zamiast tego są one wyświetlane w kolorach źródłowych."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "message": "Symulacja kolorów (długości fal) źródeł światła, mieszania kolorów, filtrowania kolorów przez filtry blokujące i lustra oraz dyspersji chromatycznej szkieł. Po wybraniu można ustawić te parametry dla tych obiektów. Aby symulować widma kolorów, należy nałożyć na siebie promienie o różnych długościach fal. Kolory wyświetlane na ekranie są jedynie przybliżone i mogą być bardzo niedokładne, gdy 'Gęstość promieni' jest zbyt wysoka lub zbyt niska."
   },
   "rayDensity_popover": {
@@ -737,7 +737,7 @@ locales["pl"] = {
   "grid_popover": {
     "message": "Określa, czy przyciągać do węzłów siatki."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Określa, czy obiekty mogą być przenoszone, czy nie."
   },
   "zoom_popover": {

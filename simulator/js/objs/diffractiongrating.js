@@ -40,8 +40,8 @@ objTypes['diffractiongrating'] = class extends LineObjMixin(BaseSceneObj) {
       objBar.createNote(getMsg('image_detection_warning'));
     }
 
-    if (!this.scene.colorMode) {
-      objBar.createNote(getMsg('non_color_mode_warning'));
+    if (!this.scene.simulateColors) {
+      objBar.createNote(getMsg('non_simulateColors_warning'));
     }
   }
 

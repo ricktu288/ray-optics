@@ -20,7 +20,7 @@ objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
       obj.p = value;
     });
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
@@ -29,7 +29,7 @@ objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.colorMode ? wavelengthToColor(this.wavelength, 1) : 'rgb(255,0,0)');
+    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(255,0,0)');
     ctx.fillRect(this.p1.x - 2.5, this.p1.y - 2.5, 5, 5);
     ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,0,0)');
     ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
@@ -39,7 +39,7 @@ objTypes['laser'] = class extends LineObjMixin(BaseSceneObj) {
     var ray1 = geometry.line(this.p1, this.p2);
     ray1.brightness_s = 0.5 * this.p;
     ray1.brightness_p = 0.5 * this.p;
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       ray1.wavelength = this.wavelength;
     }
     ray1.gap = true;

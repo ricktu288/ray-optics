@@ -24,7 +24,7 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
@@ -41,9 +41,9 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.colorMode ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
+    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
     ctx.fillRect(this.p1.x - 2.5, this.p1.y - 2.5, 5, 5);
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
     }
@@ -78,7 +78,7 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
 
       ray1.brightness_s = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
       ray1.brightness_p = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
-      if (this.scene.colorMode) {
+      if (this.scene.simulateColors) {
         ray1.wavelength = this.wavelength;
       }
       ray1.isNew = true;

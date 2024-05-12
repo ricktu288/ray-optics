@@ -8,7 +8,7 @@
 class BaseFilter extends BaseSceneObj {
 
   populateObjBar(objBar) {
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createBoolean(getMsg('filter'), this.isDichroic, function (obj, value) {
         obj.isDichroic = value;
         obj.wavelength = obj.wavelength;
@@ -37,7 +37,7 @@ class BaseFilter extends BaseSceneObj {
    * @returns {boolean} - If true, the ray interacts with the filter at the level of the wavelength.
    */
   checkRayIntersectFilter(ray) {
-    var dichroicEnabled = this.scene.colorMode && this.isDichroic && this.wavelength;
+    var dichroicEnabled = this.scene.simulateColors && this.isDichroic && this.wavelength;
     var rayHueMatchesMirror =  Math.abs(this.wavelength - ray.wavelength) <= this.bandwidth;
     return !dichroicEnabled || (rayHueMatchesMirror != this.isDichroicFilter);
   }

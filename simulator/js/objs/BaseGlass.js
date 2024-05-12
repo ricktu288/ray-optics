@@ -6,7 +6,7 @@
 class BaseGlass extends BaseSceneObj {
 
   populateObjBar(objBar) {
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, this.p, function (obj, value) {
         obj.p = value * 1;
       }, getMsg('refractiveindex_note_popover'));
@@ -218,7 +218,7 @@ class BaseGlass extends BaseSceneObj {
    * @returns {number} - The refractive index at the point.
    */
   getRefIndexAt(point, ray) {
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       return this.p + this.cauchyCoeff / (ray.wavelength * ray.wavelength * 0.000001);
     } else {
       return this.p;

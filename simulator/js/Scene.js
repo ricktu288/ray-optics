@@ -8,39 +8,39 @@ const DATA_VERSION = 2;
  * Represents the scene in this simulator.
  * @class Scene
  * @property {Object[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
- * @property {string} mode - The mode of the scene. Possible values: 'light' (Rays), 'extended_light' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
- * @property {number} rayDensity_light - The density of rays in 'light' and 'extended_light' modes.
- * @property {number} rayDensity_images - The density of rays in 'images' and 'observer' modes.
+ * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
+ * @property {number} rayModeDensity - The density of rays in 'rays' and 'extended' modes.
+ * @property {number} imageModeDensity - The density of rays in 'images' and 'observer' modes.
  * @property {boolean} showGrid - The "Grid" option indicating if the grid is visible.
- * @property {boolean} grid - The "Snap to Grid" option indicating if mouse actions are snapped to the grid.
- * @property {boolean} lockobjs - The "Lock Objects" option indicating if the objects are locked.
+ * @property {boolean} snapToGrid - The "Snap to Grid" option indicating if mouse actions are snapped to the grid.
+ * @property {boolean} lockObjs - The "Lock Objects" option indicating if the objects are locked.
  * @property {number} gridSize - The size of the grid.
  * @property {Object|null} observer - The observer of the scene, null if not set.
  * @property {Object} origin - The origin of the scene in the viewport.
  * @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene.
  * @property {number} width - The width (in CSS pixels) of the viewport.
  * @property {number} height - The height (in CSS pixels) of the viewport.
- * @property {boolean} colorMode - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.)
- * @property {boolean} symbolicGrin - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
+ * @property {boolean} simulateColors - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.)
+ * @property {boolean} symbolicBodyMerging - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
  * @property {Object|null} backgroundImage - The background image of the scene, null if not set.
  */
 class Scene {
   static serializableDefaults = {
     objs: [],
-    mode: 'light',
-    rayDensity_light: 0.1,
-    rayDensity_images: 1,
+    mode: 'rays',
+    rayModeDensity: 0.1,
+    imageModeDensity: 1,
     showGrid: false,
-    grid: false,
-    lockobjs: false,
+    snapToGrid: false,
+    lockObjs: false,
     gridSize: 20,
     observer: null,
     origin: { x: 0, y: 0 },
     scale: 1,
     width: 1500,
     height: 900,
-    colorMode: false,
-    symbolicGrin: false
+    simulateColors: false,
+    symbolicBodyMerging: false
   };
   
   constructor() {
@@ -62,14 +62,14 @@ class Scene {
 
   /** @property {number} rayDensity - The mode-dependent ray density. */
   get rayDensity() {
-    return this.mode == 'light' || this.mode == 'extended_light' ? this.rayDensity_light : this.rayDensity_images;
+    return this.mode == 'rays' || this.mode == 'extended' ? this.rayModeDensity : this.imageModeDensity;
   }
 
   set rayDensity(val) {
-    if (this.mode == 'light' || this.mode == 'extended_light') {
-      this.rayDensity_light = val;
+    if (this.mode == 'rays' || this.mode == 'extended') {
+      this.rayModeDensity = val;
     } else {
-      this.rayDensity_images = val;
+      this.imageModeDensity = val;
     }
   }
 
@@ -97,13 +97,13 @@ class Scene {
         jsonData = { objs: jsonData };
       }
       if (!jsonData.mode) {
-        jsonData.mode = 'light';
+        jsonData.mode = 'rays';
       }
-      if (!jsonData.rayDensity_light) {
-        jsonData.rayDensity_light = 1;
+      if (!jsonData.rayModeDensity) {
+        jsonData.rayModeDensity = 1;
       }
-      if (!jsonData.rayDensity_images) {
-        jsonData.rayDensity_images = 1;
+      if (!jsonData.imageModeDensity) {
+        jsonData.imageModeDensity = 1;
       }
       if (!jsonData.scale) {
         jsonData.scale = 1;

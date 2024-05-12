@@ -20,7 +20,7 @@ var pendingControlPoints;
 
 function getMouseStyle(obj, style, screen) {
   if (obj == mouseObj && mouseObj)
-    return (screen && scene.colorMode) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
+    return (screen && scene.simulateColors) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
   return style;
 }
 
@@ -44,7 +44,7 @@ function canvas_onmousedown(e) {
     return;
   }
 
-  if (scene.grid) {
+  if (scene.snapToGrid) {
     mousePos = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
 
   }
@@ -74,8 +74,8 @@ function canvas_onmousedown(e) {
     }
   }
   else {
-    // lockobjs prevents selection, but alt overrides it
-    if ((!(scene.lockobjs) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
+    // lockObjs prevents selection, but alt overrides it
+    if ((!(scene.lockObjs) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
 
       dragContext = {};
 
@@ -221,14 +221,14 @@ function canvas_onmousemove(e) {
   }
   var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
   var mousePos2;
-  if (scene.grid && !(e.altKey && !isConstructing)) {
+  if (scene.snapToGrid && !(e.altKey && !isConstructing)) {
     mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
   }
   else {
     mousePos2 = mousePos_nogrid;
   }
 
-  if (!isConstructing && draggingObj == -1 && !scene.lockobjs) {
+  if (!isConstructing && draggingObj == -1 && !scene.lockObjs) {
     // highlight object under mousePos cursor
     var ret = selectionSearch(mousePos_nogrid)[0];
     //console.log(mousePos_nogrid);
@@ -360,7 +360,7 @@ function canvas_onmouseup(e) {
       if (!isConstructing) {
         // The object says the contruction is done
         createUndoPoint();
-        if (document.getElementById('lockobjs').checked) {
+        if (document.getElementById('lockObjs').checked) {
           mouseObj = -1;
           draw(true, true);
         }

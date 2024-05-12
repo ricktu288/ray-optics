@@ -161,7 +161,7 @@ locales["de"] = {
   "modename_observer": {
     "message": "Beobachterperspektive"
   },
-  "color_mode": {
+  "simulateColors": {
     "message": "Farben simulieren"
   },
   "File: ": {
@@ -286,10 +286,10 @@ locales["de"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Strahlen"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Virtuelle Strahlen"
   },
   "mode_images": {
@@ -349,13 +349,13 @@ locales["de"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "Objekte sperren"
   },
   "showgrid": {
     "message": "Raster"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Anrasten"
   },
   "snaptogrid": {
@@ -567,7 +567,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -762,10 +762,10 @@ locales["de"] = {
   "tool__popover": {
     "message": "Ziehen um die Ansicht zu Verschieben. (Rechte Maustaste hat die gleiche Funktion.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "In dieser Ansicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "message": "In dieser Ansicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.<br>Wenn 'Farben simulieren' aktiv ist, werden die Quellfarben verwendet und stattdessen durch Strichelung unterschieden."
   },
   "mode_images_popover": {
@@ -774,7 +774,7 @@ locales["de"] = {
   "mode_observer_popover": {
     "message": "In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Punkt ist der Beobachter. Alle Strahlen, die ihn kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, 'denkt' aber, dass sie an einem Punkt beginnen, an dem sie sich schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt. (Ziehen Sie den großen blauen Kreis um den Beobachter zu bewegen.)<br>Wenn 'Farben simulieren' aktiv ist, werden die Strahlen mit den Quellfarben dargestellt."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -788,7 +788,7 @@ locales["de"] = {
   "grid_popover": {
     "message": "Objekte auf dem Gitter einrasten."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Verschieben von Objekten sperren."
   },
   "zoom_popover": {

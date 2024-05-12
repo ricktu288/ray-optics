@@ -154,7 +154,7 @@ locales["es"] = {
   "modename_observer": {
     "message": "Visto por un observador"
   },
-  "color_mode": {
+  "simulateColors": {
     "message": "Simular colores"
   },
   "File: ": {
@@ -272,10 +272,10 @@ locales["es"] = {
   "moresettings": {
     "message": "Más"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Rayos"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Rayos extendidos"
   },
   "mode_images": {
@@ -332,13 +332,13 @@ locales["es"] = {
   "layoutaids": {
     "message": "Ayuda con el diseño"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "Bloquear objetos"
   },
   "showgrid": {
     "message": "Cuadrícula"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Ajustar a la cuadrícula"
   },
   "snaptogrid": {
@@ -513,7 +513,7 @@ locales["es"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -695,10 +695,10 @@ locales["es"] = {
   "tool__popover": {
     "message": "Arrastre para mover la vista. (El botón derecho del ratón tiene la misma función.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Mostrar los rayos. Cuando la 'Densidad de rayos' es elevada, estos parecen continuos."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "message": "Mostrar los rayos y su extensión. El color naranja indica extensiones hacia atrás, y el gris indica hacia delante. <br>Cuando 'Simular colores' está seleccionado, estos se muestran en los colores de la fuente y se distinguen por un trazo discontinuo."
   },
   "mode_images_popover": {
@@ -707,7 +707,7 @@ locales["es"] = {
   "mode_observer_popover": {
     "message": "Simular los rayos y las imágenes vistos desde una posición. El circulo azul es el observador. Cualquier rayo que lo cruce se considera 'observado'. El observador no sabe donde inician los rayos, pero puede pensar que tienen inicio en algún(os) punto(s) si se intersectan ahí. Los rayos se muestran en azul, y los puntos en amarillo (reales) o naranja (virtuales). (Arrastre el punto azul grande para mover al observador.)<br>Cuando 'Simular colores' está seleccionado, se muestran en los colores de la fuente."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "message": "Simular colores (longitudes de onda), mezclas de colores, filtros de color de bloqueadores y espejos y dispersión cromática de vidrios. Puede ajustar los parámetros de estos objetos cuando los seleccione. Para simular el espectro de colores, sobreponga rayos con diferentes longitudes de onda. Los colores mostrados en pantalla son solo aproximaciones burdas y puede ser muy impreciso cuando 'Densidad de rayos' es demasiado alta o demasiado baja."
   },
   "rayDensity_popover": {
@@ -719,7 +719,7 @@ locales["es"] = {
   "grid_popover": {
     "message": "Define si ajustar a la cuadrícula."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Define si los objetos pueden ser movidos o no."
   },
   "zoom_popover": {

@@ -42,7 +42,7 @@ objTypes['parabolicmirror'] = class extends BaseFilter {
       var x0 = p12d / 2;
       var a = height / (x0 * x0); // y=ax^2
       var i;
-      ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.beginPath();
       this.tmp_points = [geometry.point(this.p1.x, this.p1.y)];
       ctx.moveTo(this.p1.x, this.p1.y);

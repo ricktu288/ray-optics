@@ -176,7 +176,7 @@ locales["fr"] = {
   "modename_observer": {
     "message": "Vu par un observateur"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": true,
     "message": "Simulate Colors"
   },
@@ -309,10 +309,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Rayons"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Rayons étendus"
   },
   "mode_images": {
@@ -374,13 +374,13 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "Verrouiller les objets"
   },
   "showgrid": {
     "message": "Grille"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "Attacher à la grille"
   },
   "snaptogrid": {
@@ -594,7 +594,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -811,10 +811,10 @@ locales["fr"] = {
   "tool__popover": {
     "message": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Montre les rayons. Quand la 'Densité de rayons' est élevée, elles paraissent continues."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": true,
     "message": "Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
@@ -826,7 +826,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l'observateur. N'importe quel rayon traversant ce cercle est consideré comme 'observé'. L'observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu'il commence à un certain point s'ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange. (Glisser le cercle bleu bougera l'observateur.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -840,7 +840,7 @@ locales["fr"] = {
   "grid_popover": {
     "message": "Défini si l'on s'accorche à la grille."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "Défini si l'objet peut être bougé ou non."
   },
   "zoom_popover": {

@@ -153,7 +153,7 @@ locales["zh-CN"] = {
   "modename_observer": {
     "message": "观察者所见"
   },
-  "color_mode": {
+  "simulateColors": {
     "message": "模拟色彩"
   },
   "File: ": {
@@ -270,10 +270,10 @@ locales["zh-CN"] = {
   "moresettings": {
     "message": "更多选项"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "光线"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "延长光线"
   },
   "mode_images": {
@@ -330,13 +330,13 @@ locales["zh-CN"] = {
   "layoutaids": {
     "message": "排版辅助"
   },
-  "lockobjs": {
+  "lockObjs": {
     "message": "锁定物件"
   },
   "showgrid": {
     "message": "网格"
   },
-  "grid": {
+  "snapToGrid": {
     "message": "对齐网格"
   },
   "snaptogrid": {
@@ -504,7 +504,7 @@ locales["zh-CN"] = {
   "image_detection_warning": {
     "message": "⚠️ 本工具不支持像的侦测。"
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "message": "⚠️ 本工具只在「模拟色彩」模式下运作。"
   },
   "brightness_note_popover": {
@@ -684,10 +684,10 @@ locales["zh-CN"] = {
   "tool__popover": {
     "message": "拖曳以移动视窗。（滑鼠右键拖曳也有相同的功能）"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "画出光线。当「光线密度」高时，光线呈现连续。 "
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "message": "除光线实际路径外，亦画出其延长线。橘色、灰色分别表示向后、向前的延长线。<br>若使用「模拟色彩」，则改以光源颜色显示并以虚线区分。"
   },
   "mode_images_popover": {
@@ -696,7 +696,7 @@ locales["zh-CN"] = {
   "mode_observer_popover": {
     "message": "模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。 （拖曳大蓝点以移动观察者。）<br>若使用「模拟色彩」，则改以光源颜色显示。"
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "message": "模拟光源的颜色（波长）、混色、遮光物与镜子的滤光，以及透光物的色散。选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。屏幕显示之颜色仅为粗略近似，且当「光线密度」太高或太低时可能非常不准确。"
   },
   "rayDensity_popover": {
@@ -708,7 +708,7 @@ locales["zh-CN"] = {
   "grid_popover": {
     "message": "决定是否对齐网格。"
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "决定物件是否能被移动。"
   },
   "zoom_popover": {

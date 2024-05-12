@@ -179,7 +179,7 @@ locales["nl"] = {
   "modename_observer": {
     "message": "Zichtbaar voor waarnemer"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": true,
     "message": "Simulate Colors"
   },
@@ -313,10 +313,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "message": "Stralen"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "message": "Virtuele stralen"
   },
   "mode_images": {
@@ -385,7 +385,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "incomplete": true,
     "message": "Lock Objects"
   },
@@ -393,7 +393,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Grid"
   },
-  "grid": {
+  "snapToGrid": {
     "incomplete": true,
     "message": "Snap to Grid"
   },
@@ -609,7 +609,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -827,10 +827,10 @@ locales["nl"] = {
   "tool__popover": {
     "message": "Sleep om beeld te verplaatsen. (Rechtermuisknop sleep heeft dezelfde functie.)"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "message": "Toont de stralen. Als de 'Straaldichtheid' groot is lijkt het continu."
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": true,
     "message": "Toont stralen en uitgebreide (gereflecteerde/virtuele) stralen. Oranje betekent 'backtrace', grijs betekent 'vooruit' berekend.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
   },
@@ -842,7 +842,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Simuleert de stralen en beelden zoals gezien vanaf een positie. De blauwe cirkel is de waarnemer (het oog). Een straal die er op komt wordt beschouwd als zichtbaar. De waarnemer ('het oog') 'weet' niet waar die stralen in werkelijkheid beginnen, maar gaat uit van een rechte lijn vanaf het punt van waarneming. De stralen zijn blauw en de 'licht'punten zijn oranje. (Sleep de blauwe stip om 'het oog' te verplaatsen.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -856,7 +856,7 @@ locales["nl"] = {
   "grid_popover": {
     "message": "Zet verplaatsen op raster aan of uit."
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "message": "(De)Blokkeert de verplaatsing van objecten."
   },
   "zoom_popover": {

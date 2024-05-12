@@ -203,7 +203,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "観察者から見た画像"
   },
-  "color_mode": {
+  "simulateColors": {
     "incomplete": false,
     "message": "色のシミュレーション"
   },
@@ -359,11 +359,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "More"
   },
-  "mode_light": {
+  "mode_rays": {
     "incomplete": false,
     "message": "光線"
   },
-  "mode_extended_light": {
+  "mode_extended": {
     "incomplete": false,
     "message": "拡張光線"
   },
@@ -439,7 +439,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Layout Aids"
   },
-  "lockobjs": {
+  "lockObjs": {
     "incomplete": false,
     "message": "オブジェクトを固定"
   },
@@ -447,7 +447,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "グリッド"
   },
-  "grid": {
+  "snapToGrid": {
     "incomplete": false,
     "message": "グリッドにスナップ"
   },
@@ -671,7 +671,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "⚠️ This tool does not support image detection."
   },
-  "non_color_mode_warning": {
+  "non_simulateColors_warning": {
     "incomplete": true,
     "message": "⚠️ This tool only works when \"Simulate Color\" is on."
   },
@@ -910,11 +910,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ドラッグでビューを移動します。(マウスの右ボタンでドラッグしても同じ機能です）。"
   },
-  "mode_light_popover": {
+  "mode_rays_popover": {
     "incomplete": false,
     "message": "光線を表示します。光線密度が高いと、連続しているように見えます。"
   },
-  "mode_extended_light_popover": {
+  "mode_extended_popover": {
     "incomplete": false,
     "message": "光線とその延長線の両方を表示します。 オレンジは後方拡張を示し、グレーは前方拡張を示します。<br>「カラーのシミュレート」がオンの場合、それらはソース カラーで表示され、代わりにダッシュで区別されます。"
   },
@@ -926,7 +926,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ある位置から見た光線と画像をシミュレートします。 青い丸が観察者です。 それを横切る光線はすべて「観測された」とみなされます。 観察者は、光線が実際にどこから始まるのかを知りませんが、光線が交差する場合、ある点で光線が始まると考えるかもしれません。 光線は青、点は黄色 (現実) またはオレンジ (仮想) で表示されます。 (大きな青い点をドラッグして観察者を移動します。)<br>「カラーのシミュレート」がオンの場合、代わりにソース カラーで表示されます。"
   },
-  "color_mode_popover": {
+  "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
@@ -942,7 +942,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "グリッドにスナップするかどうかを切り替えます。"
   },
-  "lockobjs_popover": {
+  "lockObjs_popover": {
     "incomplete": false,
     "message": "オブジェクトを移動できるかどうかを切り替えます。"
   },

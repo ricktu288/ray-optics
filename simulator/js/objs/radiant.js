@@ -20,7 +20,7 @@ objTypes['radiant'] = class extends BaseSceneObj {
     objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
       obj.p = value;
     }, getMsg('brightness_note_popover'));
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
@@ -29,9 +29,9 @@ objTypes['radiant'] = class extends BaseSceneObj {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    ctx.fillStyle = this.scene.colorMode ? wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
+    ctx.fillStyle = this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
     ctx.fillRect(this.x - 2.5, this.y - 2.5, 5, 5);
-    if (this.scene.colorMode) {
+    if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
       ctx.fillRect(this.x - 1.5, this.y - 1.5, 3, 3);
     }
@@ -86,7 +86,7 @@ objTypes['radiant'] = class extends BaseSceneObj {
       ray1.brightness_s = Math.min(this.p / this.scene.rayDensity, 1) * 0.5;
       ray1.brightness_p = Math.min(this.p / this.scene.rayDensity, 1) * 0.5;
       ray1.isNew = true;
-      if (this.scene.colorMode) {
+      if (this.scene.simulateColors) {
         ray1.wavelength = this.wavelength;
       }
       if (i == i0) {

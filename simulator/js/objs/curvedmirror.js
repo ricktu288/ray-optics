@@ -58,7 +58,7 @@ objTypes['curvedmirror'] = class extends LineObjMixin(BaseFilter) {
     // get height of (this section of) parabola
     var x0 = p12d / 2;
     var i;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.colorMode && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     this.tmp_points = [];
     var lastError = "";
