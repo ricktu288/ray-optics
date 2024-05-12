@@ -42,7 +42,7 @@ locales["pl"] = {
   "toolname_radiant": {
     "message": "Źródło punktowe"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Wiązka"
   },
   "toolname_mirror_": {
@@ -167,7 +167,7 @@ locales["pl"] = {
   "tool_SingleRay": {
     "message": "Promień"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Wiązka"
   },
   "tool_radiant": {
@@ -179,7 +179,7 @@ locales["pl"] = {
   "tool_radiant_": {
     "message": "Źródło punktowe"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Źródło światła"
   },
   "tool_mirror_": {
@@ -365,7 +365,7 @@ locales["pl"] = {
   "invert": {
     "message": "Odwróć"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "Kąt emisji (°)"
   },
   "mirrored": {
@@ -426,7 +426,7 @@ locales["pl"] = {
   "random": {
     "message": "Losowo"
   },
-  "lambertian": {
+  "lambert": {
     "message": "Lambertowskie"
   },
   "diameter": {
@@ -628,7 +628,7 @@ locales["pl"] = {
   "tool_SingleRay_popover": {
     "message": "Pojedynczy promień światła określony przez dwa punkty. (Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "message": "Z odcinka wyłania się równoległa lub rozbieżna wiązka promieni o gęstości kontrolowanej przez suwak 'Gęstość promieni'. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_radiant_popover": {

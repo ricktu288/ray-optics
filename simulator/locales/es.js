@@ -42,7 +42,7 @@ locales["es"] = {
   "toolname_radiant": {
     "message": "Fuente puntual"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Rayo"
   },
   "toolname_mirror_": {
@@ -166,7 +166,7 @@ locales["es"] = {
   "tool_SingleRay": {
     "message": "Rayo único"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Haz"
   },
   "tool_radiant": {
@@ -178,7 +178,7 @@ locales["es"] = {
   "tool_radiant_": {
     "message": "Fuente puntual"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Fuente de luz"
   },
   "tool_mirror_": {
@@ -362,7 +362,7 @@ locales["es"] = {
   "invert": {
     "message": "Invertir"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "Angulo de emisión (°)"
   },
   "mirrored": {
@@ -421,7 +421,7 @@ locales["es"] = {
   "random": {
     "message": "Aleatorio"
   },
-  "lambertian": {
+  "lambert": {
     "message": "Lambertiana"
   },
   "diameter": {
@@ -610,7 +610,7 @@ locales["es"] = {
   "tool_SingleRay_popover": {
     "message": "Un único rayo de luz definido mediante dos puntos. (Arrastre o clique para crear. El primer punto es la fuente, emitiendo en dirección al segundo punto.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "message": "Un haz de rayos paralelo o divergente emerge de un segmento de recta, con una densidad controlada por el deslizante 'Densidad de rayos' (Arrastre o clique para crear.)"
   },
   "tool_radiant_popover": {

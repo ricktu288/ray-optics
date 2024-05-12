@@ -42,7 +42,7 @@ locales["pt-BR"] = {
   "toolname_radiant": {
     "message": "Fonte pontual"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Feixe"
   },
   "toolname_mirror_": {
@@ -165,7 +165,7 @@ locales["pt-BR"] = {
   "tool_SingleRay": {
     "message": "Raio único"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Feixe paralelo"
   },
   "tool_radiant": {
@@ -177,7 +177,7 @@ locales["pt-BR"] = {
   "tool_radiant_": {
     "message": "Fonte pontual"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Fonte de luz"
   },
   "tool_mirror_": {
@@ -360,7 +360,7 @@ locales["pt-BR"] = {
   "invert": {
     "message": "Inverter"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "Ângulo de Emissão (°)"
   },
   "mirrored": {
@@ -414,7 +414,7 @@ locales["pt-BR"] = {
   "random": {
     "message": "Aleatório"
   },
-  "lambertian": {
+  "lambert": {
     "message": "Lambertiano"
   },
   "diameter": {
@@ -608,7 +608,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

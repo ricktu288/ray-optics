@@ -43,7 +43,7 @@ locales["de"] = {
   "toolname_radiant": {
     "message": "Punktquelle"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Paralleles Bündel"
   },
   "toolname_mirror_": {
@@ -173,7 +173,7 @@ locales["de"] = {
   "tool_SingleRay": {
     "message": "Strahl"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Bündel"
   },
   "tool_radiant": {
@@ -185,7 +185,7 @@ locales["de"] = {
   "tool_radiant_": {
     "message": "Punktquelle"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Lichtquelle"
   },
   "tool_mirror_": {
@@ -380,7 +380,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Invertieren"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "Emissionswinkel (°)"
   },
   "mirrored": {
@@ -447,7 +447,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Random emission"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian emission"
   },
@@ -671,7 +671,7 @@ locales["de"] = {
   "tool_SingleRay_popover": {
     "message": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist. (Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

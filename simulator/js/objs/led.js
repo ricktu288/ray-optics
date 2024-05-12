@@ -29,7 +29,7 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
         obj.wavelength = value;
       });
     }
-    objBar.createNumber(getMsg('emissionangle'), 0, 180, 1, this.p, function (obj, value) {
+    objBar.createNumber(getMsg('emisAngle'), 0, 180, 1, this.p, function (obj, value) {
       obj.p = value;
     });
     if (objBar.showAdvanced(!this.arePropertiesDefault(['symmetric']))) {

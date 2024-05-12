@@ -49,7 +49,7 @@ locales["fr"] = {
   "toolname_radiant": {
     "message": "Source de lumière"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Faisceau"
   },
   "toolname_mirror_": {
@@ -189,7 +189,7 @@ locales["fr"] = {
   "tool_SingleRay": {
     "message": "Rayon"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Faisceau"
   },
   "tool_radiant": {
@@ -201,7 +201,7 @@ locales["fr"] = {
   "tool_radiant_": {
     "message": "Source de lumière"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Source de lumière"
   },
   "tool_mirror_": {
@@ -404,7 +404,7 @@ locales["fr"] = {
   "invert": {
     "message": "Renverser"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
   },
@@ -474,7 +474,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Random"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian"
   },
@@ -712,7 +712,7 @@ locales["fr"] = {
   "tool_SingleRay_popover": {
     "message": "Un rayon de lumière unique définit par deux points. (Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

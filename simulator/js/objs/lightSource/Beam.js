@@ -3,29 +3,29 @@
  * Tools -> Light source -> beam
  * @property {Point} p1 - The first endpoint of the segment perpendicular to the beam.
  * @property {Point} p2 - The second endpoint of the segment perpendicular to the beam.
- * @property {number} p - The brightness of the beam.
+ * @property {number} brightness - The brightness of the beam.
  * @property {number} wavelength - The wavelength of the beam in nm. Only effective in color mode.
- * @property {number} divergence - The angle of divergence in degrees.
+ * @property {number} emisAngle - The angle of divergence in degrees.
  * @property {boolean} lambert - Whether the beam is Lambertian.
  * @property {boolean} random - Whether the beam is random.
  * @property {Array<number>} randomNumbers - Random numbers used for random beam.
  */
-objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'parallel';
+objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'Beam';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 0.5,
+    brightness: 0.5,
     wavelength: GREEN_WAVELENGTH,
-    divergence: 0.0,
+    emisAngle: 0.0,
     lambert: false,
     random: false
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
+      obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
@@ -33,11 +33,11 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
       });
     }
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['divergence', 'lambert', 'random']))) {
-      objBar.createNumber(getMsg('emissionangle'), 0, 180, 1, this.divergence, function (obj, value) {
-        obj.divergence = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['emisAngle', 'lambert', 'random']))) {
+      objBar.createNumber(getMsg('emisAngle'), 0, 180, 1, this.emisAngle, function (obj, value) {
+        obj.emisAngle = value;
       });
-      objBar.createBoolean(getMsg('lambertian'), this.lambert, function (obj, value) {
+      objBar.createBoolean(getMsg('lambert'), this.lambert, function (obj, value) {
         obj.lambert = value;
       });
       objBar.createBoolean(getMsg('random'), this.random, function (obj, value) {
@@ -78,7 +78,7 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
     var sizeX = (this.p2.x - this.p1.x);
     var sizeY = (this.p2.y - this.p1.y);
     var normal = Math.atan2(stepX, stepY) + Math.PI / 2.0;
-    var halfAngle = this.divergence / 180.0 * Math.PI * 0.5;
+    var halfAngle = this.emisAngle / 180.0 * Math.PI * 0.5;
     var numnAngledRays = 1.0 + Math.floor(halfAngle / s) * 2.0;
     var rayBrightness = 1.0 / numnAngledRays;
     this.initRandom();
@@ -136,8 +136,8 @@ objTypes['parallel'] = class extends LineObjMixin(BaseSceneObj) {
 
   newRay(x, y, normal, angle, gap, brightness_factor = 1.0) {
     var ray1 = geometry.line(geometry.point(x, y), geometry.point(x + Math.sin(normal + angle), y + Math.cos(normal + angle)));
-    ray1.brightness_s = Math.min(this.p / this.scene.rayDensity * brightness_factor, 1) * 0.5;
-    ray1.brightness_p = Math.min(this.p / this.scene.rayDensity * brightness_factor, 1) * 0.5;
+    ray1.brightness_s = Math.min(this.brightness / this.scene.rayDensity * brightness_factor, 1) * 0.5;
+    ray1.brightness_p = Math.min(this.brightness / this.scene.rayDensity * brightness_factor, 1) * 0.5;
     if (this.lambert) {
       const lambert = Math.cos(angle)
       ray1.brightness_s *= lambert;

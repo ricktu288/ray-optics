@@ -47,7 +47,7 @@ locales["si"] = {
   "toolname_radiant": {
     "message": "ආලෝක ප්‍රභවය"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "ආලෝක කදම්භය"
   },
   "toolname_mirror_": {
@@ -185,7 +185,7 @@ locales["si"] = {
   "tool_SingleRay": {
     "message": "තනි ආලෝක කිරණයක්"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "ආලෝක කදම්භය"
   },
   "tool_radiant": {
@@ -197,7 +197,7 @@ locales["si"] = {
   "tool_radiant_": {
     "message": "ආලෝක ප්‍රභවය"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "incomplete": true,
     "message": "Light Source"
   },
@@ -414,7 +414,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Invert"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "විමෝචන කෝණය (°)"
   },
   "mirrored": {
@@ -481,7 +481,7 @@ locales["si"] = {
   "random": {
     "message": "අහඹු"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian"
   },
@@ -712,7 +712,7 @@ locales["si"] = {
   "tool_SingleRay_popover": {
     "message": "ලක්ෂ්‍යය දෙකකින් අර්ථ දක්වා ඇති තනි ආලෝක කිරණකි. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය ප්‍රභවය ද, දෙවන ලක්ෂ්‍යය කිරණයේ දිශාව ද වේ.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "message": "රේඛීය සමාන්තර හෝ අපසාරී කිරණ කදම්භයක් මතු වන අතර 'කිරණ ඝනත්වය' slider මගින් ඝනත්වය පාලනය කරයි. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
   },
   "tool_radiant_popover": {

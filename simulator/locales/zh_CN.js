@@ -42,7 +42,7 @@ locales["zh-CN"] = {
   "toolname_radiant": {
     "message": "点光源"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "光束"
   },
   "toolname_mirror_": {
@@ -165,7 +165,7 @@ locales["zh-CN"] = {
   "tool_SingleRay": {
     "message": "单一光线"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "光束"
   },
   "tool_radiant": {
@@ -177,7 +177,7 @@ locales["zh-CN"] = {
   "tool_radiant_": {
     "message": "点光源"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "光源"
   },
   "tool_mirror_": {
@@ -360,7 +360,7 @@ locales["zh-CN"] = {
   "invert": {
     "message": "反向"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "发射角 (°)"
   },
   "mirrored": {
@@ -414,7 +414,7 @@ locales["zh-CN"] = {
   "random": {
     "message": "随机"
   },
-  "lambertian": {
+  "lambert": {
     "message": "朗伯"
   },
   "diameter": {
@@ -600,7 +600,7 @@ locales["zh-CN"] = {
   "tool_SingleRay_popover": {
     "message": "由两点决定一条光线。（拖曳或点击以创建. 第一个点是光源，射向第二个点。）"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "message": "由一线段产生平行或发散光束，密度由「光线密度」滑杆决定。 （拖曳或点击以创建。）"
   },
   "tool_radiant_popover": {

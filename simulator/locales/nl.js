@@ -51,7 +51,7 @@ locales["nl"] = {
   "toolname_radiant": {
     "message": "Punt bron"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Bundel"
   },
   "toolname_mirror_": {
@@ -192,7 +192,7 @@ locales["nl"] = {
   "tool_SingleRay": {
     "message": "Straal"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Bundel"
   },
   "tool_radiant": {
@@ -204,7 +204,7 @@ locales["nl"] = {
   "tool_radiant_": {
     "message": "Punt bron"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Lichtbron"
   },
   "tool_mirror_": {
@@ -419,7 +419,7 @@ locales["nl"] = {
   "invert": {
     "message": "Omkeren"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
   },
@@ -489,7 +489,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Random"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian"
   },
@@ -727,7 +727,7 @@ locales["nl"] = {
   "tool_SingleRay_popover": {
     "message": "Één straal door twee punten. (Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

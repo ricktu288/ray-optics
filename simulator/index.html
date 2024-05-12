@@ -154,15 +154,15 @@
                 <div class="row">
                   <div class="btn-group" role="group">
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_lightsource_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_lightSource_"></button>
                       <ul class="dropdown-menu" aria-labelledby="sourceToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SingleRay">
                           <label class="btn shadow-none btn-primary dropdown-item" for="tool_SingleRay" data-text="tool_SingleRay" data-popover="tool_SingleRay_popover" data-image="SingleRay.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
-                          <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_parallel">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_parallel" data-text="tool_parallel" data-popover="tool_parallel_popover" data-image="beam.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Beam">
+                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Beam" data-text="tool_Beam" data-popover="tool_Beam_popover" data-image="Beam.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_radiant">
@@ -572,7 +572,7 @@
                         <ul id="mobile-dropdown-tools-root">
                           <li>
                             <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-source">
-                              <div class="col" data-text="tool_lightsource_"></div>
+                              <div class="col" data-text="tool_lightSource_"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -632,8 +632,8 @@
                             <label class="btn btn-primary dropdown-item" for="tool_SingleRay_mobile" data-text="tool_SingleRay"></label>
                           </li>
                           <li>
-                            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_parallel_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_parallel_mobile" data-text="tool_parallel"></label>
+                            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Beam_mobile">
+                            <label class="btn btn-primary dropdown-item" for="tool_Beam_mobile" data-text="tool_Beam"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_radiant_mobile">
@@ -1286,8 +1286,8 @@
   <script src="js/objs/LineObjMixin.js"></script>
   <script src="js/objs/CircleObjMixin.js"></script>
 
-  <script src="js/objs/source/SingleRay.js"></script>
-  <script src="js/objs/parallel.js"></script>
+  <script src="js/objs/lightSource/SingleRay.js"></script>
+  <script src="js/objs/lightSource/Beam.js"></script>
   <script src="js/objs/radiant.js"></script>
   <script src="js/objs/led.js"></script>
 

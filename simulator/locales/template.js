@@ -56,7 +56,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "incomplete": true,
     "message": "Beam"
   },
@@ -220,7 +220,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Single ray"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "incomplete": true,
     "message": "Beam"
   },
@@ -236,7 +236,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "incomplete": true,
     "message": "Light Source"
   },
@@ -479,7 +479,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Invert"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
   },
@@ -551,7 +551,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Random"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian"
   },
@@ -799,7 +799,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

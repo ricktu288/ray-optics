@@ -55,7 +55,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "incomplete": false,
     "message": "빔 (평행광)"
   },
@@ -219,7 +219,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "광선"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "incomplete": false,
     "message": "빔 (평행광)"
   },
@@ -235,7 +235,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "incomplete": false,
     "message": "광원"
   },
@@ -479,7 +479,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "반전"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": false,
     "message": "방출 각 (°)"
   },
@@ -551,7 +551,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "랜덤"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": false,
     "message": "램버시안 (Lambertian)"
   },
@@ -798,7 +798,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "두 점으로 정의된 단일 광선. (드래그 또는 클릭하여 생성. 첫 번째 지점에서 두 번째 지점을 향하는 방향.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": false,
     "message": "선분으로 나타나는 평행 또는 발산하는 광선 빔. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절. (드래그 또는 클릭하여 생성.)"
   },

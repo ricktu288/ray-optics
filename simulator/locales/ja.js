@@ -55,7 +55,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "点源"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "incomplete": false,
     "message": "光束"
   },
@@ -219,7 +219,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "光線"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "incomplete": false,
     "message": "光束"
   },
@@ -235,7 +235,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "点光源"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "incomplete": false,
     "message": "光源"
   },
@@ -479,7 +479,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "反転"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": false,
     "message": "放射角度 (°)"
   },
@@ -551,7 +551,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ランダム"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": false,
     "message": "ランバーシアン"
   },
@@ -798,7 +798,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "2 つの点によって定義される単一光線。 (ドラッグまたはクリックして作成します。最初のポイントがソースとなり、2 番目のポイントで発射方向を決めます。)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },

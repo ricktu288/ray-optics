@@ -42,7 +42,7 @@ locales["en"] = {
   "toolname_radiant": {
     "message": "Point source"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Beam"
   },
   "toolname_mirror_": {
@@ -165,7 +165,7 @@ locales["en"] = {
   "tool_SingleRay": {
     "message": "Single ray"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Beam"
   },
   "tool_radiant": {
@@ -177,7 +177,7 @@ locales["en"] = {
   "tool_radiant_": {
     "message": "Point source"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Light Source"
   },
   "tool_mirror_": {
@@ -360,7 +360,7 @@ locales["en"] = {
   "invert": {
     "message": "Invert"
   },
-  "emissionangle": {
+  "emisAngle": {
     "message": "Emission Angle (°)"
   },
   "mirrored": {
@@ -414,7 +414,7 @@ locales["en"] = {
   "random": {
     "message": "Random"
   },
-  "lambertian": {
+  "lambert": {
     "message": "Lambertian"
   },
   "diameter": {
@@ -600,7 +600,7 @@ locales["en"] = {
   "tool_SingleRay_popover": {
     "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
   "tool_radiant_popover": {

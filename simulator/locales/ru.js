@@ -49,7 +49,7 @@ locales["ru"] = {
   "toolname_radiant": {
     "message": "Точечный источник"
   },
-  "toolname_parallel": {
+  "toolname_Beam": {
     "message": "Пучок"
   },
   "toolname_mirror_": {
@@ -189,7 +189,7 @@ locales["ru"] = {
   "tool_SingleRay": {
     "message": "Луч"
   },
-  "tool_parallel": {
+  "tool_Beam": {
     "message": "Пучок"
   },
   "tool_radiant": {
@@ -201,7 +201,7 @@ locales["ru"] = {
   "tool_radiant_": {
     "message": "Точечный источник"
   },
-  "tool_lightsource_": {
+  "tool_lightSource_": {
     "message": "Источник света"
   },
   "tool_mirror_": {
@@ -406,7 +406,7 @@ locales["ru"] = {
   "invert": {
     "message": "Инвертировать"
   },
-  "emissionangle": {
+  "emisAngle": {
     "incomplete": true,
     "message": "Emission Angle (°)"
   },
@@ -476,7 +476,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Random"
   },
-  "lambertian": {
+  "lambert": {
     "incomplete": true,
     "message": "Lambertian"
   },
@@ -715,7 +715,7 @@ locales["ru"] = {
   "tool_SingleRay_popover": {
     "message": "Одиночный луч света, задаваемый двумя точками. (Потяните или нажмите, чтобы создать. Первая точка - источник, испускающий луч в сторону второй точки.)"
   },
-  "tool_parallel_popover": {
+  "tool_Beam_popover": {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
