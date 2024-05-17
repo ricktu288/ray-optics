@@ -40,7 +40,7 @@ locales["de"] = {
   "toolname_led": {
     "message": "Punktquelle"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Punktquelle"
   },
   "toolname_Beam": {
@@ -176,13 +176,13 @@ locales["de"] = {
   "tool_Beam": {
     "message": "Bündel"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Punktquelle (360°)"
   },
   "tool_led": {
     "message": "Punktquelle (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Punktquelle"
   },
   "tool_lightSource_": {
@@ -675,7 +675,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Klicken zum Erzeugen.)"
   },
   "tool_led_popover": {

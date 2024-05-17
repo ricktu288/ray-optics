@@ -39,7 +39,7 @@ locales["es"] = {
   "toolname_led": {
     "message": "Fuente puntual"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Fuente puntual"
   },
   "toolname_Beam": {
@@ -169,13 +169,13 @@ locales["es"] = {
   "tool_Beam": {
     "message": "Haz"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Fuente puntual (360°)"
   },
   "tool_led": {
     "message": "Fuente puntual (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Fuente puntual"
   },
   "tool_lightSource_": {
@@ -613,7 +613,7 @@ locales["es"] = {
   "tool_Beam_popover": {
     "message": "Un haz de rayos paralelo o divergente emerge de un segmento de recta, con una densidad controlada por el deslizante 'Densidad de rayos' (Arrastre o clique para crear.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Los rayos emergen de un único punto, con un número controlado por el deslizante 'Densidad de rayos'. (Clique para crear)."
   },
   "tool_led_popover": {

@@ -46,7 +46,7 @@ locales["fr"] = {
   "toolname_led": {
     "message": "Source de lumière"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Source de lumière"
   },
   "toolname_Beam": {
@@ -192,13 +192,13 @@ locales["fr"] = {
   "tool_Beam": {
     "message": "Faisceau"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Source de lumière (360°)"
   },
   "tool_led": {
     "message": "Source de lumière (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Source de lumière"
   },
   "tool_lightSource_": {
@@ -716,7 +716,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'. (Cliquer pour le créer.)"
   },
   "tool_led_popover": {

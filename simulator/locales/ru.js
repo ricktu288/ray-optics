@@ -46,7 +46,7 @@ locales["ru"] = {
   "toolname_led": {
     "message": "Точечный источник"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Точечный источник"
   },
   "toolname_Beam": {
@@ -192,13 +192,13 @@ locales["ru"] = {
   "tool_Beam": {
     "message": "Пучок"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Точечный источник (360°)"
   },
   "tool_led": {
     "message": "Точечный источник (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Точечный источник"
   },
   "tool_lightSource_": {
@@ -719,7 +719,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Лучи исходят из одной точки во всех направлениях. Количество лучей задается ползунком 'Плотность лучей'. (Нажмите, чтобы создать.)"
   },
   "tool_led_popover": {

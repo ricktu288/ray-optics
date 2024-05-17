@@ -52,7 +52,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "incomplete": true,
     "message": "Point source"
   },
@@ -224,7 +224,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Beam"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "incomplete": true,
     "message": "Point source (360°)"
   },
@@ -232,7 +232,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "incomplete": true,
     "message": "Point source"
   },
@@ -803,7 +803,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "incomplete": true,
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
   },

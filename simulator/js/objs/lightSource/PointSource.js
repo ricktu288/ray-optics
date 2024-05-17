@@ -3,22 +3,22 @@
  * Tools -> Light Source -> Point source (360deg)
  * @property {number} x - The x coordinate of the point source.
  * @property {number} y - The y coordinate of the point source.
- * @property {number} p - The brightness of the point source.
+ * @property {number} brightness - The brightness of the point source.
  * @property {number} wavelength - The wavelength of the light emitted by the point source in nm. Only effective in color mode.
  */
-objTypes['radiant'] = class extends BaseSceneObj {
-  static type = 'radiant';
+objTypes['PointSource'] = class extends BaseSceneObj {
+  static type = 'PointSource';
   static isOptical = true;
   static serializableDefaults = {
     x: null,
     y: null,
-    p: 0.5,
+    brightness: 0.5,
     wavelength: GREEN_WAVELENGTH
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
+      obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
       objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
@@ -83,8 +83,8 @@ objTypes['radiant'] = class extends BaseSceneObj {
     var i0 = (this.scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0;
     for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s) {
       var ray1 = geometry.line(geometry.point(this.x, this.y), geometry.point(this.x + Math.sin(i), this.y + Math.cos(i)));
-      ray1.brightness_s = Math.min(this.p / this.scene.rayDensity, 1) * 0.5;
-      ray1.brightness_p = Math.min(this.p / this.scene.rayDensity, 1) * 0.5;
+      ray1.brightness_s = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
+      ray1.brightness_p = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
       ray1.isNew = true;
       if (this.scene.simulateColors) {
         ray1.wavelength = this.wavelength;

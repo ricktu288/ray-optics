@@ -48,7 +48,7 @@ locales["nl"] = {
   "toolname_led": {
     "message": "Punt bron"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Punt bron"
   },
   "toolname_Beam": {
@@ -195,13 +195,13 @@ locales["nl"] = {
   "tool_Beam": {
     "message": "Bundel"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Punt bron (360°)"
   },
   "tool_led": {
     "message": "Punt bron (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Punt bron"
   },
   "tool_lightSource_": {
@@ -731,7 +731,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"
   },
   "tool_led_popover": {

@@ -39,7 +39,7 @@ locales["pl"] = {
   "toolname_led": {
     "message": "Źródło punktowe"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Źródło punktowe"
   },
   "toolname_Beam": {
@@ -170,13 +170,13 @@ locales["pl"] = {
   "tool_Beam": {
     "message": "Wiązka"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Źródło punktowe (360°)"
   },
   "tool_led": {
     "message": "Źródło punktowe (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Źródło punktowe"
   },
   "tool_lightSource_": {
@@ -631,7 +631,7 @@ locales["pl"] = {
   "tool_Beam_popover": {
     "message": "Z odcinka wyłania się równoległa lub rozbieżna wiązka promieni o gęstości kontrolowanej przez suwak 'Gęstość promieni'. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"
   },
   "tool_led_popover": {

@@ -51,7 +51,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "点源"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "incomplete": false,
     "message": "点源"
   },
@@ -223,7 +223,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "光束"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "incomplete": false,
     "message": "点光源 (360°)"
   },
@@ -231,7 +231,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "点光源 (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "incomplete": false,
     "message": "点光源"
   },
@@ -802,7 +802,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "incomplete": false,
     "message": "光線は 1 つの点から出現し、その数は「光線密度」スライダーで調整できます。 (クリックして作成します。)"
   },

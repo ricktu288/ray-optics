@@ -39,7 +39,7 @@ locales["zh-TW"] = {
   "toolname_led": {
     "message": "點光源"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "點光源"
   },
   "toolname_Beam": {
@@ -168,13 +168,13 @@ locales["zh-TW"] = {
   "tool_Beam": {
     "message": "光束"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "點光源 (360°)"
   },
   "tool_led": {
     "message": "點光源 (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "點光源"
   },
   "tool_lightSource_": {
@@ -603,7 +603,7 @@ locales["zh-TW"] = {
   "tool_Beam_popover": {
     "message": "由一線段產生平行或發散光束，密度由「光線密度」滑桿決定。（拖曳或點擊以創建。）"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "由一點向四周發射光線，數量由「光線密度」滑桿決定。（點擊以創建。）"
   },
   "tool_led_popover": {

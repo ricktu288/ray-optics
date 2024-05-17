@@ -44,7 +44,7 @@ locales["si"] = {
   "toolname_led": {
     "message": "ආලෝක ප්‍රභවය"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "ආලෝක ප්‍රභවය"
   },
   "toolname_Beam": {
@@ -188,13 +188,13 @@ locales["si"] = {
   "tool_Beam": {
     "message": "ආලෝක කදම්භය"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "ආලෝක ප්‍රභවය (360°)"
   },
   "tool_led": {
     "message": "ආලෝක ප්‍රභවය (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "ආලෝක ප්‍රභවය"
   },
   "tool_lightSource_": {
@@ -715,7 +715,7 @@ locales["si"] = {
   "tool_Beam_popover": {
     "message": "රේඛීය සමාන්තර හෝ අපසාරී කිරණ කදම්භයක් මතු වන අතර 'කිරණ ඝනත්වය' slider මගින් ඝනත්වය පාලනය කරයි. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "message": "එක් ලක්ෂ්‍යයකින් කිරණ මතු වේ.'කිරණ ඝනත්වය' slider මඟින් සංඛ්‍යාව පාලනය වේ.(නිර්මාණය කිරීමට click කරන්න.)"
   },
   "tool_led_popover": {

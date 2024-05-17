@@ -51,7 +51,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "incomplete": false,
     "message": "점 광원"
   },
@@ -223,7 +223,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "빔 (평행광)"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "incomplete": false,
     "message": "점 광원 (360°)"
   },
@@ -231,7 +231,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원 (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "incomplete": false,
     "message": "점 광원"
   },
@@ -802,7 +802,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "선분으로 나타나는 평행 또는 발산하는 광선 빔. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "incomplete": false,
     "message": "점 광원에서 발생하는 광선. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절. (드래그 또는 클릭하여 생성.)"
   },

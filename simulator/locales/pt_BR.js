@@ -39,7 +39,7 @@ locales["pt-BR"] = {
   "toolname_led": {
     "message": "Fonte pontual"
   },
-  "toolname_radiant": {
+  "toolname_PointSource": {
     "message": "Fonte pontual"
   },
   "toolname_Beam": {
@@ -168,13 +168,13 @@ locales["pt-BR"] = {
   "tool_Beam": {
     "message": "Feixe paralelo"
   },
-  "tool_radiant": {
+  "tool_PointSource": {
     "message": "Fonte pontual (360°)"
   },
   "tool_led": {
     "message": "Fonte pontual (<360°)"
   },
-  "tool_radiant_": {
+  "tool_PointSource_": {
     "message": "Fonte pontual"
   },
   "tool_lightSource_": {
@@ -612,7 +612,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
   },
-  "tool_radiant_popover": {
+  "tool_PointSource_popover": {
     "incomplete": true,
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
   },
