@@ -4,8 +4,8 @@
  * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} p - The equation of the mirror. The variable is x.
- * @property {boolean} isDichroic - Whether it is a dichroic mirror.
- * @property {boolean} isDichroicFilter - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
+ * @property {boolean} filter - Whether it is a dichroic mirror.
+ * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  * @property {Array<Point>} tmp_points - The points on the curve.
@@ -18,8 +18,8 @@ objTypes['curvedmirror'] = class extends LineObjMixin(BaseFilter) {
     p1: null,
     p2: null,
     p: "0.5\\cdot\\sqrt{1-x^2}",
-    isDichroic: false,
-    isDichroicFilter: false,
+    filter: false,
+    invert: false,
     wavelength: GREEN_WAVELENGTH,
     bandwidth: 10
   };
@@ -58,7 +58,7 @@ objTypes['curvedmirror'] = class extends LineObjMixin(BaseFilter) {
     // get height of (this section of) parabola
     var x0 = p12d / 2;
     var i;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     this.tmp_points = [];
     var lastError = "";

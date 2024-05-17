@@ -13,8 +13,8 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
     p1: null,
     p2: null,
     p: 100,
-    isDichroic: false,
-    isDichroicFilter: false,
+    filter: false,
+    invert: false,
     wavelength: GREEN_WAVELENGTH,
     bandwidth: 10
   };
@@ -49,7 +49,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
     var center_size = 1;
 
     // Draw the line segment
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
     ctx.beginPath();

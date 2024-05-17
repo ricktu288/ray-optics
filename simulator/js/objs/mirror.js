@@ -3,8 +3,8 @@
  * Tools -> Mirror -> Segment
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
- * @property {boolean} isDichroic - Whether it is a dichroic mirror.
- * @property {boolean} isDichroicFilter - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
+ * @property {boolean} filter - Whether it is a dichroic mirror.
+ * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
@@ -14,15 +14,15 @@ objTypes['mirror'] = class extends LineObjMixin(BaseFilter) {
   static serializableDefaults = {
     p1: null,
     p2: null,
-    isDichroic: false,
-    isDichroicFilter: false,
+    filter: false,
+    invert: false,
     wavelength: GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.isDichroic) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
