@@ -61,7 +61,7 @@ locales["fr"] = {
   "toolname_ArcMirror": {
     "message": "Miroir"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Miroir"
   },
   "toolname_curvedmirror": {
@@ -213,7 +213,7 @@ locales["fr"] = {
   "tool_ArcMirror": {
     "message": "Arc circulaire"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "incomplete": true,
     "message": "Parabolic"
   },
@@ -729,7 +729,7 @@ locales["fr"] = {
   "tool_ArcMirror_popover": {
     "message": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points. (Glisser ou cliquer pour le créer. Les deux premiers points définissent l'espace entre les bords de l'arc, le dernier point définit la taille de l'arc.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },

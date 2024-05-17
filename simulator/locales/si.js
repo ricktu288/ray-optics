@@ -59,7 +59,7 @@ locales["si"] = {
   "toolname_ArcMirror": {
     "message": "දර්පණය"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "දර්පණය"
   },
   "toolname_curvedmirror": {
@@ -210,7 +210,7 @@ locales["si"] = {
   "tool_ArcMirror": {
     "message": "වෘත්තාකාර චාප"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "message": "පරාවලයික"
   },
   "tool_curvedmirror": {
@@ -727,7 +727,7 @@ locales["si"] = {
   "tool_ArcMirror_popover": {
     "message": "ලක්ෂ්‍ය තුනකින් අර්ථ දක්වා ඇති රවුමක කොටසක් වන දර්පණයක්. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය 2 චාපයේ දාර අතර පරතරය නිරූපණය කරයි, අවසාන ලක්ෂ්‍යය චාපයේ විශාලත්වය නිරූපණය කරයි.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },

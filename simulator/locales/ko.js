@@ -71,7 +71,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "incomplete": false,
     "message": "거울"
   },
@@ -251,7 +251,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형 호"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "incomplete": false,
     "message": "포물면"
   },
@@ -818,7 +818,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "구면 거울. (세 개의 점으로 정의된 원) (드래그 또는 클릭하여 생성. 첫 두 점은 호의 가장자리 사이 간격을 정의하고, 마지막 점은 호의 크기를 정의합니다.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": false,
     "message": "포물면 거울. (세 개의 점으로 정의된 포물선) (드래그 또는 클릭하여 생성.)"
   },

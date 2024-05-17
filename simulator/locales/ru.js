@@ -61,7 +61,7 @@ locales["ru"] = {
   "toolname_ArcMirror": {
     "message": "Зеркало"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Зеркало"
   },
   "toolname_curvedmirror": {
@@ -213,7 +213,7 @@ locales["ru"] = {
   "tool_ArcMirror": {
     "message": "Дуговое"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "incomplete": true,
     "message": "Parabolic"
   },
@@ -732,7 +732,7 @@ locales["ru"] = {
   "tool_ArcMirror_popover": {
     "message": "Зеркало в форме дуги. Задается тремя точками. (Потяните или нажмите, чтобы создать. Первые две точки задают концы дуги, последняя точка задает радиус окружности.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },

@@ -54,7 +54,7 @@ locales["es"] = {
   "toolname_ArcMirror": {
     "message": "Espejo"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Espejo"
   },
   "toolname_curvedmirror": {
@@ -190,7 +190,7 @@ locales["es"] = {
   "tool_ArcMirror": {
     "message": "Arco circular"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "message": "Parabólico"
   },
   "tool_curvedmirror": {
@@ -625,7 +625,7 @@ locales["es"] = {
   "tool_ArcMirror_popover": {
     "message": "Un espejo cuya forma es parte de un círculo, el cual está definido por tres puntos. (Arrastre o clique para crear. Los dos primeros puntos definen el espacio entre los bordes del arco. El último define el tamaño del arco.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "message": "Un espejo cuya forma es una parábola, la cual está definida pr tres puntos. (Arrastre o clique para crear.)"
   },
   "tool_curvedmirror_popover": {

@@ -12,8 +12,8 @@
  * @property {Array<Point>} tmp_points - The points on the parabola.
  * @property {number} tmp_i - The index of the point on the parabola where the ray is incident.
  */
-objTypes['parabolicmirror'] = class extends BaseFilter {
-  static type = 'parabolicmirror';
+objTypes['ParabolicMirror'] = class extends BaseFilter {
+  static type = 'ParabolicMirror';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

@@ -54,7 +54,7 @@ locales["pt-BR"] = {
   "toolname_ArcMirror": {
     "message": "Espelho"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Espelho"
   },
   "toolname_curvedmirror": {
@@ -189,7 +189,7 @@ locales["pt-BR"] = {
   "tool_ArcMirror": {
     "message": "Arco Circular"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "message": "Parabólico"
   },
   "tool_curvedmirror": {
@@ -628,7 +628,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },

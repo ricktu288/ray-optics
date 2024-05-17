@@ -54,7 +54,7 @@ locales["zh-CN"] = {
   "toolname_ArcMirror": {
     "message": "镜子"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "镜子"
   },
   "toolname_curvedmirror": {
@@ -189,7 +189,7 @@ locales["zh-CN"] = {
   "tool_ArcMirror": {
     "message": "圆弧"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "message": "抛物线"
   },
   "tool_curvedmirror": {
@@ -615,7 +615,7 @@ locales["zh-CN"] = {
   "tool_ArcMirror_popover": {
     "message": "圆弧形的镜子，由三点决定。（拖曳或点击以创建。前两个点定义弧形两边间的空隙，第三点决定弧的大小。）"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "message": "抛物线形的镜子，由三点决定。（拖曳或点击以创建。）"
   },
   "tool_curvedmirror_popover": {

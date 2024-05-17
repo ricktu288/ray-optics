@@ -54,7 +54,7 @@ locales["pl"] = {
   "toolname_ArcMirror": {
     "message": "Zwierciadło"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Zwierciadło"
   },
   "toolname_curvedmirror": {
@@ -191,7 +191,7 @@ locales["pl"] = {
   "tool_ArcMirror": {
     "message": "Sferyczne"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "message": "Paraboliczne"
   },
   "tool_curvedmirror": {
@@ -643,7 +643,7 @@ locales["pl"] = {
   "tool_ArcMirror_popover": {
     "message": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem okręgu, określonym za pomocą trzech punktów. (Przeciągnij lub kliknij, aby utworzyć. Pierwsze 2 punkty określają odstęp między końcami łuku, ostatni punkt określa promień krzywizny.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "message": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem paraboli, określonej za pomocą trzech punktów. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_curvedmirror_popover": {

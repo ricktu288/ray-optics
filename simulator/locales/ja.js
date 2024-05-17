@@ -71,7 +71,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "incomplete": false,
     "message": "鏡"
   },
@@ -251,7 +251,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "円弧鏡"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "incomplete": false,
     "message": "放物線鏡"
   },
@@ -818,7 +818,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "3 つの点で定義される円の一部の形状を持つ鏡。 (ドラッグまたはクリックして作成します。最初の 2 点は円弧のエッジ間のギャップを定義し、最後の点は円弧のサイズを定義します。)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": false,
     "message": "3 つの点で定義される放物線の形状を持つ鏡。 (ドラッグまたはクリックして作成します。)"
   },

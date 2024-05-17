@@ -63,7 +63,7 @@ locales["nl"] = {
   "toolname_ArcMirror": {
     "message": "Spiegel"
   },
-  "toolname_parabolicmirror": {
+  "toolname_ParabolicMirror": {
     "message": "Spiegel"
   },
   "toolname_curvedmirror": {
@@ -216,7 +216,7 @@ locales["nl"] = {
   "tool_ArcMirror": {
     "message": "Cirkelboog"
   },
-  "tool_parabolicmirror": {
+  "tool_ParabolicMirror": {
     "incomplete": true,
     "message": "Parabolic"
   },
@@ -744,7 +744,7 @@ locales["nl"] = {
   "tool_ArcMirror_popover": {
     "message": "Een spiegel in de vorm van een cirkelboog, door drie punten vastgelegd. De eerste twee punten leggen de afstand tussen de randen vast, het laatste punt de grootte.)"
   },
-  "tool_parabolicmirror_popover": {
+  "tool_ParabolicMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
