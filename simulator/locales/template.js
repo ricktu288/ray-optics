@@ -64,7 +64,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Mirror"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "incomplete": true,
     "message": "Mirror"
   },
@@ -244,7 +244,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Mirror"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "incomplete": true,
     "message": "Segment"
   },
@@ -811,7 +811,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "incomplete": true,
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
   },

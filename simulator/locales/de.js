@@ -49,7 +49,7 @@ locales["de"] = {
   "toolname_mirror_": {
     "message": "Spiegel"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Spiegel"
   },
   "toolname_arcmirror": {
@@ -191,7 +191,7 @@ locales["de"] = {
   "tool_mirror_": {
     "message": "Spiegel"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Segment"
   },
   "tool_arcmirror": {
@@ -681,7 +681,7 @@ locales["de"] = {
   "tool_AngleSource_popover": {
     "message": "Punktquelle mit definiertem Emissions-Winkel."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Simulieren Sie die Reflexion von Licht auf einem Spiegel. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_arcmirror_popover": {

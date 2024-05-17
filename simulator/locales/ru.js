@@ -55,7 +55,7 @@ locales["ru"] = {
   "toolname_mirror_": {
     "message": "Зеркало"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Зеркало"
   },
   "toolname_arcmirror": {
@@ -207,7 +207,7 @@ locales["ru"] = {
   "tool_mirror_": {
     "message": "Зеркала"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Плоское"
   },
   "tool_arcmirror": {
@@ -726,7 +726,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Симулирует отражение в зеркале. (Потяните или нажмите, чтобы создать.)"
   },
   "tool_arcmirror_popover": {

@@ -55,7 +55,7 @@ locales["fr"] = {
   "toolname_mirror_": {
     "message": "Miroir"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Miroir"
   },
   "toolname_arcmirror": {
@@ -207,7 +207,7 @@ locales["fr"] = {
   "tool_mirror_": {
     "message": "Miroirs"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Segment"
   },
   "tool_arcmirror": {
@@ -723,7 +723,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Simule la reflexion de la lumière sur un miroir. (Glisser ou cliquer pour le créer.)"
   },
   "tool_arcmirror_popover": {

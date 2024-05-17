@@ -48,7 +48,7 @@ locales["es"] = {
   "toolname_mirror_": {
     "message": "Espejo"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Espejo"
   },
   "toolname_arcmirror": {
@@ -184,7 +184,7 @@ locales["es"] = {
   "tool_mirror_": {
     "message": "Espejo"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Segmento"
   },
   "tool_arcmirror": {
@@ -619,7 +619,7 @@ locales["es"] = {
   "tool_AngleSource_popover": {
     "message": "Fuente puntual con un ángulo de emisión dado."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Simular la reflexión de la luz en un espejo. (Arrastre o clique para crear)."
   },
   "tool_arcmirror_popover": {

@@ -63,7 +63,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "incomplete": false,
     "message": "거울"
   },
@@ -243,7 +243,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "incomplete": false,
     "message": "부분 (Segment)"
   },
@@ -810,7 +810,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "주어진 각도 범위에서 방출하는 점 광원."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "incomplete": false,
     "message": "거울에서의 반사 시뮬레이션 (드래그 또는 클릭하여 생성)"
   },

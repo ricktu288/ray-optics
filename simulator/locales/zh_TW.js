@@ -48,7 +48,7 @@ locales["zh-TW"] = {
   "toolname_mirror_": {
     "message": "鏡子"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "鏡子"
   },
   "toolname_arcmirror": {
@@ -183,7 +183,7 @@ locales["zh-TW"] = {
   "tool_mirror_": {
     "message": "鏡子"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "線段"
   },
   "tool_arcmirror": {
@@ -609,7 +609,7 @@ locales["zh-TW"] = {
   "tool_AngleSource_popover": {
     "message": "指定發射角之點光源。"
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "模擬光線射到鏡子時的反射。（拖曳或點擊以創建。）"
   },
   "tool_arcmirror_popover": {

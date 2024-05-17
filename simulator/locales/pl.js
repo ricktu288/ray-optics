@@ -48,7 +48,7 @@ locales["pl"] = {
   "toolname_mirror_": {
     "message": "Zwierciadło"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Zwierciadło"
   },
   "toolname_arcmirror": {
@@ -185,7 +185,7 @@ locales["pl"] = {
   "tool_mirror_": {
     "message": "Zwierciadła"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Płaskie"
   },
   "tool_arcmirror": {
@@ -637,7 +637,7 @@ locales["pl"] = {
   "tool_AngleSource_popover": {
     "message": "Źródło punktowe o zadanym kącie emisji."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Symuluje odbicie światła w zwierciadle płaskim. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_arcmirror_popover": {

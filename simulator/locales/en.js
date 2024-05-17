@@ -48,7 +48,7 @@ locales["en"] = {
   "toolname_mirror_": {
     "message": "Mirror"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Mirror"
   },
   "toolname_arcmirror": {
@@ -183,7 +183,7 @@ locales["en"] = {
   "tool_mirror_": {
     "message": "Mirror"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Segment"
   },
   "tool_arcmirror": {
@@ -609,7 +609,7 @@ locales["en"] = {
   "tool_AngleSource_popover": {
     "message": "Point source with a given emission angle."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
   },
   "tool_arcmirror_popover": {

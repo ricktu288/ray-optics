@@ -57,7 +57,7 @@ locales["nl"] = {
   "toolname_mirror_": {
     "message": "Spiegel"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "Spiegel"
   },
   "toolname_arcmirror": {
@@ -210,7 +210,7 @@ locales["nl"] = {
   "tool_mirror_": {
     "message": "spiegels"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "Lijnstuk"
   },
   "tool_arcmirror": {
@@ -738,7 +738,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "Simuleert de reflectie van licht op een spiegel. (Sleep of klik om te maken.)"
   },
   "tool_arcmirror_popover": {

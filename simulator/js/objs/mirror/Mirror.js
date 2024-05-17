@@ -8,8 +8,8 @@
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-objTypes['mirror'] = class extends LineObjMixin(BaseFilter) {
-  static type = 'mirror';
+objTypes['Mirror'] = class extends LineObjMixin(BaseFilter) {
+  static type = 'Mirror';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

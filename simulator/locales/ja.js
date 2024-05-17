@@ -63,7 +63,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "incomplete": false,
     "message": "鏡"
   },
@@ -243,7 +243,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "incomplete": false,
     "message": "分割鏡"
   },
@@ -810,7 +810,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "指定された放射角度を持つ点光源。"
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "incomplete": false,
     "message": "鏡での光の反射をシミュレートします。 (ドラッグまたはクリックして作成します。)"
   },

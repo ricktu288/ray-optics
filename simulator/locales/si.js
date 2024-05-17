@@ -53,7 +53,7 @@ locales["si"] = {
   "toolname_mirror_": {
     "message": "දර්පණය"
   },
-  "toolname_mirror": {
+  "toolname_Mirror": {
     "message": "දර්පණය"
   },
   "toolname_arcmirror": {
@@ -204,7 +204,7 @@ locales["si"] = {
   "tool_mirror_": {
     "message": "දර්පණ"
   },
-  "tool_mirror": {
+  "tool_Mirror": {
     "message": "කොටසක්"
   },
   "tool_arcmirror": {
@@ -721,7 +721,7 @@ locales["si"] = {
   "tool_AngleSource_popover": {
     "message": "දී ඇති විමෝචන කෝණයක් සහිත ලක්ෂ්‍යය ප්‍රභවක්."
   },
-  "tool_mirror_popover": {
+  "tool_Mirror_popover": {
     "message": "දර්පණයක් මත ආලෝකයේ පරාවර්තනය අනුකරණය (simulate) කරන්න. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
   },
   "tool_arcmirror_popover": {
