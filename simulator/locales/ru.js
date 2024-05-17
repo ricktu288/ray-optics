@@ -64,7 +64,7 @@ locales["ru"] = {
   "toolname_ParabolicMirror": {
     "message": "Зеркало"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "incomplete": true,
     "message": "Mirror"
   },
@@ -217,7 +217,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Parabolic"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "incomplete": true,
     "message": "Custom Equation"
   },
@@ -426,7 +426,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Symmetric"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -736,7 +736,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },

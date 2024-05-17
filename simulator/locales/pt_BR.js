@@ -57,7 +57,7 @@ locales["pt-BR"] = {
   "toolname_ParabolicMirror": {
     "message": "Espelho"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "message": "Espelho"
   },
   "toolname_idealmirror": {
@@ -192,7 +192,7 @@ locales["pt-BR"] = {
   "tool_ParabolicMirror": {
     "message": "Parabólico"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "message": "Equação Personalizada"
   },
   "tool_beamsplitter": {
@@ -375,7 +375,7 @@ locales["pt-BR"] = {
   "symmetric": {
     "message": "Simétrico"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "message": "<ul><li>Constantes suportadas:<br><code>pi e</code></li><li>Operadores suportados:<br><code>+ - * / ^</code></li><li>Funções suportadas:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
   "symbolic_grin": {
@@ -632,7 +632,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },

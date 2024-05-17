@@ -26,7 +26,7 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
   populateObjBar(objBar) {
     objBar.createEquation('', this.eqn1, function (obj, value) {
       obj.eqn1 = value;
-    }, getMsg('custom_equation_note'));
+    }, getMsg('eqn_note'));
     objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
     });

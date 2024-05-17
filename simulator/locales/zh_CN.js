@@ -57,7 +57,7 @@ locales["zh-CN"] = {
   "toolname_ParabolicMirror": {
     "message": "镜子"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "message": "镜子"
   },
   "toolname_idealmirror": {
@@ -192,7 +192,7 @@ locales["zh-CN"] = {
   "tool_ParabolicMirror": {
     "message": "抛物线"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "message": "自定义函数"
   },
   "tool_beamsplitter": {
@@ -375,7 +375,7 @@ locales["zh-CN"] = {
   "symmetric": {
     "message": "对称"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "message": "<ul><li>支持的常数：<br><code>pi e</code></li><li>支持的运算符：<br><code>+ - * / ^ </code></li><li>支持的函数：<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code ></li></ul>"
   },
   "symbolic_grin": {
@@ -618,7 +618,7 @@ locales["zh-CN"] = {
   "tool_ParabolicMirror_popover": {
     "message": "抛物线形的镜子，由三点决定。（拖曳或点击以创建。）"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "message": "形状为自订等式 y = f(x) 的镜子，其中 (x,y) 为变换过的座标，使得两控制点为 (-1,0) 及 (1,0)。 （拖曳或点击以创建。）"
   },
   "tool_beamsplitter_popover": {

@@ -57,7 +57,7 @@ locales["es"] = {
   "toolname_ParabolicMirror": {
     "message": "Espejo"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "message": "Espejo"
   },
   "toolname_idealmirror": {
@@ -193,7 +193,7 @@ locales["es"] = {
   "tool_ParabolicMirror": {
     "message": "Parabólico"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "message": "Ecuación personalizada"
   },
   "tool_beamsplitter": {
@@ -380,7 +380,7 @@ locales["es"] = {
   "symmetric": {
     "message": "Simétrico"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -628,7 +628,7 @@ locales["es"] = {
   "tool_ParabolicMirror_popover": {
     "message": "Un espejo cuya forma es una parábola, la cual está definida pr tres puntos. (Arrastre o clique para crear.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "message": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0). (Arrastre o clique para crear.)"
   },
   "tool_beamsplitter_popover": {

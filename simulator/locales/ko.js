@@ -75,7 +75,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "incomplete": false,
     "message": "거울"
   },
@@ -255,7 +255,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "포물면"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "incomplete": false,
     "message": "사용자 정의 수식"
   },
@@ -499,7 +499,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "대칭"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -822,7 +822,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "포물면 거울. (세 개의 점으로 정의된 포물선) (드래그 또는 클릭하여 생성.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "incomplete": false,
     "message": "사용자 정의 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
   },

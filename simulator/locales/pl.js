@@ -57,7 +57,7 @@ locales["pl"] = {
   "toolname_ParabolicMirror": {
     "message": "Zwierciadło"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "message": "Zakrzywione zwierciadło"
   },
   "toolname_idealmirror": {
@@ -194,7 +194,7 @@ locales["pl"] = {
   "tool_ParabolicMirror": {
     "message": "Paraboliczne"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "message": "Równanie niestandardowe"
   },
   "tool_beamsplitter": {
@@ -383,7 +383,7 @@ locales["pl"] = {
   "symmetric": {
     "message": "Symetryczna"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -646,7 +646,7 @@ locales["pl"] = {
   "tool_ParabolicMirror_popover": {
     "message": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem paraboli, określonej za pomocą trzech punktów. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "message": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0). (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_beamsplitter_popover": {

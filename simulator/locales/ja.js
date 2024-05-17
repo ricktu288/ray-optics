@@ -75,7 +75,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "incomplete": false,
     "message": "鏡"
   },
@@ -255,7 +255,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "放物線鏡"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "incomplete": false,
     "message": "カスタム式"
   },
@@ -499,7 +499,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "対称"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -822,7 +822,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "3 つの点で定義される放物線の形状を持つ鏡。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "incomplete": false,
     "message": "カスタム方程式 y = f(x) によって形状が定義されるミラー。ここで (x,y) は、2 つの制御点が (-1,0) と (1,0) である変換された座標にあります。 (ドラッグまたはクリックして作成します。)"
   },

@@ -58,7 +58,7 @@ locales["de"] = {
   "toolname_ParabolicMirror": {
     "message": "Parabolspiegel"
   },
-  "toolname_curvedmirror": {
+  "toolname_CustomMirror": {
     "message": "Spiegel"
   },
   "toolname_idealmirror": {
@@ -200,7 +200,7 @@ locales["de"] = {
   "tool_ParabolicMirror": {
     "message": "Parabolspiegel"
   },
-  "tool_curvedmirror": {
+  "tool_CustomMirror": {
     "message": "Benutzerdefinierte Gleichung"
   },
   "tool_beamsplitter": {
@@ -398,7 +398,7 @@ locales["de"] = {
   "symmetric": {
     "message": "symmetrisch"
   },
-  "custom_equation_note": {
+  "eqn_note": {
     "incomplete": true,
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>"
   },
@@ -690,7 +690,7 @@ locales["de"] = {
   "tool_ParabolicMirror_popover": {
     "message": "Ein parabolischer Spiegel, definiert durch drei Punkte. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_curvedmirror_popover": {
+  "tool_CustomMirror_popover": {
     "message": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_beamsplitter_popover": {
