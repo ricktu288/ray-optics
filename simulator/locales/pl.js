@@ -36,7 +36,7 @@ locales["pl"] = {
   "toolname_SingleRay": {
     "message": "Pojedynczy promień"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Źródło punktowe"
   },
   "toolname_PointSource": {
@@ -173,7 +173,7 @@ locales["pl"] = {
   "tool_PointSource": {
     "message": "Źródło punktowe (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Źródło punktowe (<360°)"
   },
   "tool_PointSource_": {
@@ -634,7 +634,7 @@ locales["pl"] = {
   "tool_PointSource_popover": {
     "message": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'. (Kliknij, aby utworzyć.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "Źródło punktowe o zadanym kącie emisji."
   },
   "tool_mirror_popover": {

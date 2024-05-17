@@ -47,7 +47,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "단일 광선"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "incomplete": false,
     "message": "점 광원"
   },
@@ -227,7 +227,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원 (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "incomplete": false,
     "message": "점 광원 (<360°)"
   },
@@ -806,7 +806,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "점 광원에서 발생하는 광선. 밀도 조절은 '광선 밀도' 슬라이더를 통해 조절. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": false,
     "message": "주어진 각도 범위에서 방출하는 점 광원."
   },

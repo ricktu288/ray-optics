@@ -48,7 +48,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Single ray"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "incomplete": true,
     "message": "Point source"
   },
@@ -228,7 +228,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Point source (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "incomplete": true,
     "message": "Point source (<360°)"
   },
@@ -807,7 +807,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },

@@ -45,7 +45,7 @@ locales["nl"] = {
   "toolname_SingleRay": {
     "message": "Enkele straal"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Punt bron"
   },
   "toolname_PointSource": {
@@ -198,7 +198,7 @@ locales["nl"] = {
   "tool_PointSource": {
     "message": "Punt bron (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Punt bron (<360°)"
   },
   "tool_PointSource_": {
@@ -734,7 +734,7 @@ locales["nl"] = {
   "tool_PointSource_popover": {
     "message": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Klik om te maken.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },

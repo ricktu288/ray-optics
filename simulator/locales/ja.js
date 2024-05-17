@@ -47,7 +47,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "単一光線"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "incomplete": false,
     "message": "点源"
   },
@@ -227,7 +227,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "点光源 (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "incomplete": false,
     "message": "点光源 (<360°)"
   },
@@ -806,7 +806,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "光線は 1 つの点から出現し、その数は「光線密度」スライダーで調整できます。 (クリックして作成します。)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": false,
     "message": "指定された放射角度を持つ点光源。"
   },

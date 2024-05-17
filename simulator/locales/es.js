@@ -36,7 +36,7 @@ locales["es"] = {
   "toolname_SingleRay": {
     "message": "Rayo único"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Fuente puntual"
   },
   "toolname_PointSource": {
@@ -172,7 +172,7 @@ locales["es"] = {
   "tool_PointSource": {
     "message": "Fuente puntual (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Fuente puntual (<360°)"
   },
   "tool_PointSource_": {
@@ -616,7 +616,7 @@ locales["es"] = {
   "tool_PointSource_popover": {
     "message": "Los rayos emergen de un único punto, con un número controlado por el deslizante 'Densidad de rayos'. (Clique para crear)."
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "Fuente puntual con un ángulo de emisión dado."
   },
   "tool_mirror_popover": {

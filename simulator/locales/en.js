@@ -36,7 +36,7 @@ locales["en"] = {
   "toolname_SingleRay": {
     "message": "Single ray"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Point source"
   },
   "toolname_PointSource": {
@@ -171,7 +171,7 @@ locales["en"] = {
   "tool_PointSource": {
     "message": "Point source (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Point source (<360°)"
   },
   "tool_PointSource_": {
@@ -606,7 +606,7 @@ locales["en"] = {
   "tool_PointSource_popover": {
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "Point source with a given emission angle."
   },
   "tool_mirror_popover": {

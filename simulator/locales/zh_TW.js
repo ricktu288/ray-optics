@@ -36,7 +36,7 @@ locales["zh-TW"] = {
   "toolname_SingleRay": {
     "message": "單一光線"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "點光源"
   },
   "toolname_PointSource": {
@@ -171,7 +171,7 @@ locales["zh-TW"] = {
   "tool_PointSource": {
     "message": "點光源 (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "點光源 (<360°)"
   },
   "tool_PointSource_": {
@@ -606,7 +606,7 @@ locales["zh-TW"] = {
   "tool_PointSource_popover": {
     "message": "由一點向四周發射光線，數量由「光線密度」滑桿決定。（點擊以創建。）"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "指定發射角之點光源。"
   },
   "tool_mirror_popover": {

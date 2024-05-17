@@ -37,7 +37,7 @@ locales["de"] = {
   "toolname_SingleRay": {
     "message": "Einzelstrahl"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Punktquelle"
   },
   "toolname_PointSource": {
@@ -179,7 +179,7 @@ locales["de"] = {
   "tool_PointSource": {
     "message": "Punktquelle (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Punktquelle (<360°)"
   },
   "tool_PointSource_": {
@@ -678,7 +678,7 @@ locales["de"] = {
   "tool_PointSource_popover": {
     "message": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird. (Klicken zum Erzeugen.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "Punktquelle mit definiertem Emissions-Winkel."
   },
   "tool_mirror_popover": {

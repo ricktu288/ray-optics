@@ -5,18 +5,18 @@
  * @property {Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.
  * @property {number} wavelength - The wavelength of the point source in nm. Only effective in color mode.
- * @property {number} p - The angle of emission in degrees.
+ * @property {number} emisAngle - The angle of emission in degrees.
  * @property {boolean} symmetric - Whether the emission is symmetric about the reference line. If not, the emission is only on one side of the reference line.
  */
-objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'led';
+objTypes['AngleSource'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'AngleSource';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
     brightness: 0.5,
     wavelength: GREEN_WAVELENGTH,
-    p: 36.001,
+    emisAngle: 36.001,
     symmetric: true
   };
 
@@ -29,8 +29,8 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
         obj.wavelength = value;
       });
     }
-    objBar.createNumber(getMsg('emisAngle'), 0, 180, 1, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('emisAngle'), 0, 180, 1, this.emisAngle, function (obj, value) {
+      obj.emisAngle = value;
     });
     if (objBar.showAdvanced(!this.arePropertiesDefault(['symmetric']))) {
       objBar.createBoolean(getMsg('symmetric'), this.symmetric, function (obj, value) {
@@ -57,11 +57,11 @@ objTypes['led'] = class extends LineObjMixin(BaseSceneObj) {
 
     var ang, x1, y1, iStart, iEnd;
     if (this.symmetric) {
-      iStart = (i0 - (Math.PI / 180.0 * this.p) / 2.0);
-      iEnd = (i0 + (Math.PI / 180.0 * this.p) / 2.0 - 1e-5);
+      iStart = (i0 - (Math.PI / 180.0 * this.emisAngle) / 2.0);
+      iEnd = (i0 + (Math.PI / 180.0 * this.emisAngle) / 2.0 - 1e-5);
     } else {
       iStart = i0;
-      iEnd = (i0 + (Math.PI / 180.0 * this.p) - 1e-5);
+      iEnd = (i0 + (Math.PI / 180.0 * this.emisAngle) - 1e-5);
     }
 
     let newRays = [];

@@ -43,7 +43,7 @@ locales["fr"] = {
   "toolname_SingleRay": {
     "message": "Rayon"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Source de lumière"
   },
   "toolname_PointSource": {
@@ -195,7 +195,7 @@ locales["fr"] = {
   "tool_PointSource": {
     "message": "Source de lumière (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Source de lumière (<360°)"
   },
   "tool_PointSource_": {
@@ -719,7 +719,7 @@ locales["fr"] = {
   "tool_PointSource_popover": {
     "message": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'. (Cliquer pour le créer.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },

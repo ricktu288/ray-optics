@@ -41,7 +41,7 @@ locales["si"] = {
   "toolname_SingleRay": {
     "message": "තනි කිරණ"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "ආලෝක ප්‍රභවය"
   },
   "toolname_PointSource": {
@@ -191,7 +191,7 @@ locales["si"] = {
   "tool_PointSource": {
     "message": "ආලෝක ප්‍රභවය (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "ආලෝක ප්‍රභවය (<360°)"
   },
   "tool_PointSource_": {
@@ -718,7 +718,7 @@ locales["si"] = {
   "tool_PointSource_popover": {
     "message": "එක් ලක්ෂ්‍යයකින් කිරණ මතු වේ.'කිරණ ඝනත්වය' slider මඟින් සංඛ්‍යාව පාලනය වේ.(නිර්මාණය කිරීමට click කරන්න.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "message": "දී ඇති විමෝචන කෝණයක් සහිත ලක්ෂ්‍යය ප්‍රභවක්."
   },
   "tool_mirror_popover": {

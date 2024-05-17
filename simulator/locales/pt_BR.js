@@ -36,7 +36,7 @@ locales["pt-BR"] = {
   "toolname_SingleRay": {
     "message": "Raio único"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Fonte pontual"
   },
   "toolname_PointSource": {
@@ -171,7 +171,7 @@ locales["pt-BR"] = {
   "tool_PointSource": {
     "message": "Fonte pontual (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Fonte pontual (<360°)"
   },
   "tool_PointSource_": {
@@ -616,7 +616,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },

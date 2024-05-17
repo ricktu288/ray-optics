@@ -43,7 +43,7 @@ locales["ru"] = {
   "toolname_SingleRay": {
     "message": "Луч"
   },
-  "toolname_led": {
+  "toolname_AngleSource": {
     "message": "Точечный источник"
   },
   "toolname_PointSource": {
@@ -195,7 +195,7 @@ locales["ru"] = {
   "tool_PointSource": {
     "message": "Точечный источник (360°)"
   },
-  "tool_led": {
+  "tool_AngleSource": {
     "message": "Точечный источник (<360°)"
   },
   "tool_PointSource_": {
@@ -722,7 +722,7 @@ locales["ru"] = {
   "tool_PointSource_popover": {
     "message": "Лучи исходят из одной точки во всех направлениях. Количество лучей задается ползунком 'Плотность лучей'. (Нажмите, чтобы создать.)"
   },
-  "tool_led_popover": {
+  "tool_AngleSource_popover": {
     "incomplete": true,
     "message": "Point source with a given emission angle."
   },
