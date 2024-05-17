@@ -68,7 +68,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Mirror"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "incomplete": true,
     "message": "Mirror"
   },
@@ -248,7 +248,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Segment"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "incomplete": true,
     "message": "Circular Arc"
   },
@@ -815,7 +815,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },

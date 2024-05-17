@@ -51,7 +51,7 @@ locales["zh-TW"] = {
   "toolname_Mirror": {
     "message": "鏡子"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "鏡子"
   },
   "toolname_parabolicmirror": {
@@ -186,7 +186,7 @@ locales["zh-TW"] = {
   "tool_Mirror": {
     "message": "線段"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "圓弧"
   },
   "tool_parabolicmirror": {
@@ -612,7 +612,7 @@ locales["zh-TW"] = {
   "tool_Mirror_popover": {
     "message": "模擬光線射到鏡子時的反射。（拖曳或點擊以創建。）"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "圓弧形的鏡子，由三點決定。（拖曳或點擊以創建。前兩個點定義弧形兩邊間的空隙，第三點決定弧的大小。）"
   },
   "tool_parabolicmirror_popover": {

@@ -56,7 +56,7 @@ locales["si"] = {
   "toolname_Mirror": {
     "message": "දර්පණය"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "දර්පණය"
   },
   "toolname_parabolicmirror": {
@@ -207,7 +207,7 @@ locales["si"] = {
   "tool_Mirror": {
     "message": "කොටසක්"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "වෘත්තාකාර චාප"
   },
   "tool_parabolicmirror": {
@@ -724,7 +724,7 @@ locales["si"] = {
   "tool_Mirror_popover": {
     "message": "දර්පණයක් මත ආලෝකයේ පරාවර්තනය අනුකරණය (simulate) කරන්න. (නිර්මාණය කිරීමට drag හෝ click කරන්න.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "ලක්ෂ්‍ය තුනකින් අර්ථ දක්වා ඇති රවුමක කොටසක් වන දර්පණයක්. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය 2 චාපයේ දාර අතර පරතරය නිරූපණය කරයි, අවසාන ලක්ෂ්‍යය චාපයේ විශාලත්වය නිරූපණය කරයි.)"
   },
   "tool_parabolicmirror_popover": {

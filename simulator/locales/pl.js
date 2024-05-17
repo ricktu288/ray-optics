@@ -51,7 +51,7 @@ locales["pl"] = {
   "toolname_Mirror": {
     "message": "Zwierciadło"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Zwierciadło"
   },
   "toolname_parabolicmirror": {
@@ -188,7 +188,7 @@ locales["pl"] = {
   "tool_Mirror": {
     "message": "Płaskie"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Sferyczne"
   },
   "tool_parabolicmirror": {
@@ -640,7 +640,7 @@ locales["pl"] = {
   "tool_Mirror_popover": {
     "message": "Symuluje odbicie światła w zwierciadle płaskim. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem okręgu, określonym za pomocą trzech punktów. (Przeciągnij lub kliknij, aby utworzyć. Pierwsze 2 punkty określają odstęp między końcami łuku, ostatni punkt określa promień krzywizny.)"
   },
   "tool_parabolicmirror_popover": {

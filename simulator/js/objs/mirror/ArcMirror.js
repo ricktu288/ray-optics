@@ -9,8 +9,8 @@
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-objTypes['arcmirror'] = class extends BaseFilter {
-  static type = 'arcmirror';
+objTypes['ArcMirror'] = class extends BaseFilter {
+  static type = 'ArcMirror';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

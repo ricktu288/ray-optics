@@ -58,7 +58,7 @@ locales["ru"] = {
   "toolname_Mirror": {
     "message": "Зеркало"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Зеркало"
   },
   "toolname_parabolicmirror": {
@@ -210,7 +210,7 @@ locales["ru"] = {
   "tool_Mirror": {
     "message": "Плоское"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Дуговое"
   },
   "tool_parabolicmirror": {
@@ -729,7 +729,7 @@ locales["ru"] = {
   "tool_Mirror_popover": {
     "message": "Симулирует отражение в зеркале. (Потяните или нажмите, чтобы создать.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "Зеркало в форме дуги. Задается тремя точками. (Потяните или нажмите, чтобы создать. Первые две точки задают концы дуги, последняя точка задает радиус окружности.)"
   },
   "tool_parabolicmirror_popover": {

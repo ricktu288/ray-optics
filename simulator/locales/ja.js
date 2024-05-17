@@ -67,7 +67,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "incomplete": false,
     "message": "鏡"
   },
@@ -247,7 +247,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "分割鏡"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "incomplete": false,
     "message": "円弧鏡"
   },
@@ -814,7 +814,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡での光の反射をシミュレートします。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "incomplete": false,
     "message": "3 つの点で定義される円の一部の形状を持つ鏡。 (ドラッグまたはクリックして作成します。最初の 2 点は円弧のエッジ間のギャップを定義し、最後の点は円弧のサイズを定義します。)"
   },

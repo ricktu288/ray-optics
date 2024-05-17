@@ -51,7 +51,7 @@ locales["pt-BR"] = {
   "toolname_Mirror": {
     "message": "Espelho"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Espelho"
   },
   "toolname_parabolicmirror": {
@@ -186,7 +186,7 @@ locales["pt-BR"] = {
   "tool_Mirror": {
     "message": "Segmento"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Arco Circular"
   },
   "tool_parabolicmirror": {
@@ -624,7 +624,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "incomplete": true,
     "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
   },

@@ -52,7 +52,7 @@ locales["de"] = {
   "toolname_Mirror": {
     "message": "Spiegel"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Gebogener Spiegel"
   },
   "toolname_parabolicmirror": {
@@ -194,7 +194,7 @@ locales["de"] = {
   "tool_Mirror": {
     "message": "Segment"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Kreisbogen"
   },
   "tool_parabolicmirror": {
@@ -684,7 +684,7 @@ locales["de"] = {
   "tool_Mirror_popover": {
     "message": "Simulieren Sie die Reflexion von Licht auf einem Spiegel. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "Ein Spiegel bestehend aus einem Kreisbogen, definiert durch drei Punkte. (Ziehen oder Klicken zum Erzeugen. Die ersten 2 Punkte definieren die Länge des Bogens, der letzte die Bogenkrümmung.)"
   },
   "tool_parabolicmirror_popover": {

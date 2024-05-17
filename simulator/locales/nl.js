@@ -60,7 +60,7 @@ locales["nl"] = {
   "toolname_Mirror": {
     "message": "Spiegel"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Spiegel"
   },
   "toolname_parabolicmirror": {
@@ -213,7 +213,7 @@ locales["nl"] = {
   "tool_Mirror": {
     "message": "Lijnstuk"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Cirkelboog"
   },
   "tool_parabolicmirror": {
@@ -741,7 +741,7 @@ locales["nl"] = {
   "tool_Mirror_popover": {
     "message": "Simuleert de reflectie van licht op een spiegel. (Sleep of klik om te maken.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "Een spiegel in de vorm van een cirkelboog, door drie punten vastgelegd. De eerste twee punten leggen de afstand tussen de randen vast, het laatste punt de grootte.)"
   },
   "tool_parabolicmirror_popover": {

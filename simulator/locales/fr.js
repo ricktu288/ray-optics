@@ -58,7 +58,7 @@ locales["fr"] = {
   "toolname_Mirror": {
     "message": "Miroir"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "message": "Miroir"
   },
   "toolname_parabolicmirror": {
@@ -210,7 +210,7 @@ locales["fr"] = {
   "tool_Mirror": {
     "message": "Segment"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "message": "Arc circulaire"
   },
   "tool_parabolicmirror": {
@@ -726,7 +726,7 @@ locales["fr"] = {
   "tool_Mirror_popover": {
     "message": "Simule la reflexion de la lumière sur un miroir. (Glisser ou cliquer pour le créer.)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "message": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points. (Glisser ou cliquer pour le créer. Les deux premiers points définissent l'espace entre les bords de l'arc, le dernier point définit la taille de l'arc.)"
   },
   "tool_parabolicmirror_popover": {

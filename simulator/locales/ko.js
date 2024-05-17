@@ -67,7 +67,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "toolname_arcmirror": {
+  "toolname_ArcMirror": {
     "incomplete": false,
     "message": "거울"
   },
@@ -247,7 +247,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "부분 (Segment)"
   },
-  "tool_arcmirror": {
+  "tool_ArcMirror": {
     "incomplete": false,
     "message": "원형 호"
   },
@@ -814,7 +814,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울에서의 반사 시뮬레이션 (드래그 또는 클릭하여 생성)"
   },
-  "tool_arcmirror_popover": {
+  "tool_ArcMirror_popover": {
     "incomplete": false,
     "message": "구면 거울. (세 개의 점으로 정의된 원) (드래그 또는 클릭하여 생성. 첫 두 점은 호의 가장자리 사이 간격을 정의하고, 마지막 점은 호의 크기를 정의합니다.)"
   },
