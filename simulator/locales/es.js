@@ -60,7 +60,7 @@ locales["es"] = {
   "toolname_CustomMirror": {
     "message": "Espejo"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "message": "Espejo curvo ideal"
   },
   "toolname_refractor_": {
@@ -199,7 +199,7 @@ locales["es"] = {
   "tool_beamsplitter": {
     "message": "Separador de haz"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "message": "Curvo ideal"
   },
   "tool_refractor_": {
@@ -394,10 +394,10 @@ locales["es"] = {
   "symbolic_grin_note_popover": {
     "message": "<p>Esta opción se aplica a todos los objetos GRIN de la simulación.</p><p>Actualmente este simulador tiene dos implementaciones de propagación de la luz entre medios, para objetos GRIN - numéricos y simbólicos (vea las funciones 'multRefIndex' y 'devRefIndex' en 'grin_circlelens.js').</p><p>La implementación numérica es más rápida pero no siempre funciona correctamente (dependiendo del caso en concreto) en escenarios donde se usa más de un objeto GRIN,<b>tal que al menos una de ellas tiene una función de índice de refracción que no está definida en <u>todo</u> el plano</b>, mientras que la implementación simbólica és más lenta pero robusta con estos problemas.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "message": "Distancia focal"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "message": "Convenio de signos cartesiano"
   },
   "refractiveindex": {
@@ -634,7 +634,7 @@ locales["es"] = {
   "tool_beamsplitter_popover": {
     "message": "Un espejo que transmite un porcentaje de la luz incidente. (Arrastre o clique para crear.)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "message": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal (en pixels) puede establecerse directamente. (Arrastre o clique para crear.)"
   },
   "tool_halfplane_popover": {

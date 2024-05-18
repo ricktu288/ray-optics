@@ -61,7 +61,7 @@ locales["de"] = {
   "toolname_CustomMirror": {
     "message": "Spiegel"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "message": "Ideal gebogener Spiegel"
   },
   "toolname_refractor_": {
@@ -206,7 +206,7 @@ locales["de"] = {
   "tool_beamsplitter": {
     "message": "Strahlteiler"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "message": "Ideal gebogen"
   },
   "tool_refractor_": {
@@ -414,10 +414,10 @@ locales["de"] = {
     "incomplete": true,
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "message": "Brennweite"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "message": "Kartesische Zeichenkonvention"
   },
   "refractiveindex": {
@@ -696,7 +696,7 @@ locales["de"] = {
   "tool_beamsplitter_popover": {
     "message": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "message": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_halfplane_popover": {

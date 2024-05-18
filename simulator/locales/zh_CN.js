@@ -60,7 +60,7 @@ locales["zh-CN"] = {
   "toolname_CustomMirror": {
     "message": "镜子"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "message": "理想曲面镜"
   },
   "toolname_refractor_": {
@@ -198,7 +198,7 @@ locales["zh-CN"] = {
   "tool_beamsplitter": {
     "message": "分光镜"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "message": "理想曲面镜"
   },
   "tool_refractor_": {
@@ -387,10 +387,10 @@ locales["zh-CN"] = {
   "symbolic_grin_note_popover": {
     "message": "<p>本选项会套用至所有渐变折射率透光物。 </p><p>本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'grin_circlelens.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。 </p><p>数值的实作较快，但使用多个渐变折射率介质，<b>且至少有一个介质的折射率没有在<u>整个</u>平面上有定义</b>时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。 </p>"
   },
-  "focallength": {
+  "focalLength": {
     "message": "焦距"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "message": "笛卡尔符号约定"
   },
   "refractiveindex": {
@@ -624,7 +624,7 @@ locales["zh-CN"] = {
   "tool_beamsplitter_popover": {
     "message": "能穿透一个比例的光的镜子。（拖曳或点击以创建。）"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
   },
   "tool_halfplane_popover": {

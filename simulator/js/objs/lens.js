@@ -15,7 +15,7 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('focallength'), -1000, 1000, 1, this.p, function (obj, value) {
+    objBar.createNumber(getMsg('focalLength'), -1000, 1000, 1, this.p, function (obj, value) {
       obj.p = value;
     });
   }

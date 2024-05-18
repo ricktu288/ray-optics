@@ -3,16 +3,16 @@
  * Tools -> Mirror -> Ideal curved mirror
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
- * @property {number} p - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
+ * @property {number} focalLength - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
  * 
  */
-objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
-  static type = 'idealmirror';
+objTypes['IdealMirror'] = class extends LineObjMixin(BaseFilter) {
+  static type = 'IdealMirror';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 100,
+    focalLength: 100,
     filter: false,
     invert: false,
     wavelength: GREEN_WAVELENGTH,
@@ -24,11 +24,11 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
     if (localStorage && localStorage.rayOpticsCartesianSign) {
       cartesianSign = localStorage.rayOpticsCartesianSign == "true";
     }
-    objBar.createNumber(getMsg('focallength'), -1000, 1000, 1, this.p * (cartesianSign ? -1 : 1), function (obj, value) {
-      obj.p = value * (cartesianSign ? -1 : 1);
+    objBar.createNumber(getMsg('focalLength'), -1000, 1000, 1, this.focalLength * (cartesianSign ? -1 : 1), function (obj, value) {
+      obj.focalLength = value * (cartesianSign ? -1 : 1);
     });
     if (objBar.showAdvanced(cartesianSign)) {
-      objBar.createBoolean(getMsg('cartesiansign'), cartesianSign, function (obj, value) {
+      objBar.createBoolean(getMsg('cartesianSign'), cartesianSign, function (obj, value) {
         localStorage.rayOpticsCartesianSign = value ? "true" : "false";
       }, null, true);
     }
@@ -72,7 +72,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
 
 
     // Draw the arrow for the two-sided version
-    if (this.p < 0) {
+    if (this.focalLength < 0) {
       // Draw the arrow (p1)
       ctx.beginPath();
       ctx.moveTo(this.p1.x - par_x * arrow_size_par, this.p1.y - par_y * arrow_size_par);
@@ -87,7 +87,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
       ctx.lineTo(this.p2.x - par_x * arrow_size_par - per_x * arrow_size_per, this.p2.y - par_y * arrow_size_par - per_y * arrow_size_per);
       ctx.fill();
     }
-    if (this.p > 0) {
+    if (this.focalLength > 0) {
       // Draw the arrow (p1)
       ctx.beginPath();
       ctx.moveTo(this.p1.x + par_x * arrow_size_par, this.p1.y + par_y * arrow_size_par);
@@ -118,8 +118,8 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
     var main_line_unitvector_y = (this.p1.x - this.p2.x) / mirror_length;
     var mid_point = geometry.segmentMidpoint(this);
 
-    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * this.p, mid_point.y + main_line_unitvector_y * 2 * this.p);  // The first point at two focal lengths
-    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * this.p, mid_point.y - main_line_unitvector_y * 2 * this.p);  // The second point at two focal lengths
+    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * this.focalLength, mid_point.y + main_line_unitvector_y * 2 * this.focalLength);  // The first point at two focal lengths
+    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * this.focalLength, mid_point.y - main_line_unitvector_y * 2 * this.focalLength);  // The second point at two focal lengths
 
     var twoF_line_near, twoF_line_far;
     if (geometry.distanceSquared(ray.p1, twoF_point_1) < geometry.distanceSquared(ray.p1, twoF_point_2)) {
@@ -132,7 +132,7 @@ objTypes['idealmirror'] = class extends LineObjMixin(BaseFilter) {
       twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_1);
     }
 
-    if (this.p > 0) {
+    if (this.focalLength > 0) {
       ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
       ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
     } else {

@@ -68,7 +68,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Mirror"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "message": "Miroir parfaitement courbé"
   },
   "toolname_refractor_": {
@@ -225,7 +225,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Beam Splitter"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "message": "Courbure idéale"
   },
   "tool_refractor_": {
@@ -440,10 +440,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "message": "Distance focale"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
@@ -741,7 +741,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "message": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_halfplane_popover": {

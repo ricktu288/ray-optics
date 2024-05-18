@@ -79,7 +79,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "incomplete": false,
     "message": "이상적인 곡면 거울 (Ideal curved mirror)"
   },
@@ -263,7 +263,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "빔 스플리터"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "incomplete": false,
     "message": "이상 곡면 거울 (Ideal Curved)"
   },
@@ -515,11 +515,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "incomplete": false,
     "message": "초점 거리"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "incomplete": false,
     "message": "직교좌표계 부호 변환"
   },
@@ -830,7 +830,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "입사광의 일부를 투과시키는 거울. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "incomplete": false,
     "message": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },

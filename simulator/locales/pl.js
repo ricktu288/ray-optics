@@ -60,7 +60,7 @@ locales["pl"] = {
   "toolname_CustomMirror": {
     "message": "Zakrzywione zwierciadło"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "message": "Idealnie zakrzywione zwierciadło"
   },
   "toolname_refractor_": {
@@ -200,7 +200,7 @@ locales["pl"] = {
   "tool_beamsplitter": {
     "message": "Rozdzielacz wiązki"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "message": "Idealnie zakrzywione"
   },
   "tool_refractor_": {
@@ -397,10 +397,10 @@ locales["pl"] = {
   "symbolic_grin_note_popover": {
     "message": "<p>Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.</p><p>Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'grin_circlelens.js').</p><p>Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, <b>takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w <u>całej</u> płaszczyźnie</b>, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "message": "Ogniskowa:"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "message": "Konwencja znaków"
   },
   "refractiveindex": {
@@ -652,7 +652,7 @@ locales["pl"] = {
   "tool_beamsplitter_popover": {
     "message": "Zwierciadło odbijające pewien procent padającego światła. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "message": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_halfplane_popover": {

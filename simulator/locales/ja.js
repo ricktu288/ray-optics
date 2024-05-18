@@ -79,7 +79,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "鏡"
   },
-  "toolname_idealmirror": {
+  "toolname_IdealMirror": {
     "incomplete": false,
     "message": "理想的なカーブミラー"
   },
@@ -263,7 +263,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ビームスプリッター"
   },
-  "tool_idealmirror": {
+  "tool_IdealMirror": {
     "incomplete": false,
     "message": "理想的なカーブ"
   },
@@ -515,11 +515,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
-  "focallength": {
+  "focalLength": {
     "incomplete": false,
     "message": "焦点距離"
   },
-  "cartesiansign": {
+  "cartesianSign": {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
@@ -830,7 +830,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "入ってくる光の一定の割合を透過するミラー。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_idealmirror_popover": {
+  "tool_IdealMirror_popover": {
     "incomplete": false,
     "message": "ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },
