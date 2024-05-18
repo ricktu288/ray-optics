@@ -73,7 +73,7 @@ locales["nl"] = {
   "toolname_IdealMirror": {
     "message": "Ideale gebogen spiegel"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "Glas"
   },
   "toolname_blocker_": {
@@ -94,10 +94,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "Glas"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
@@ -231,7 +231,7 @@ locales["nl"] = {
   "tool_IdealMirror": {
     "message": "Ideaal gebogen"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "Glas"
   },
   "tool_blocker_": {
@@ -247,11 +247,11 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "incomplete": true,
     "message": "Vrije-vorm / Polygon"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -629,9 +629,9 @@ locales["nl"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
-  "eps_grin_refractor_note_popover": {
+  "eps_grin_Glass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": true,
@@ -769,10 +769,10 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "Glas in willekeurige vorm uit lijnstukken en cirkelbogen. (Klik om een lijnstuk te maken, sleep om een cirkelboog te maken, klik op startpunt om tekenen te sluiten.)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

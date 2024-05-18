@@ -63,7 +63,7 @@ locales["zh-TW"] = {
   "toolname_IdealMirror": {
     "message": "理想曲面鏡"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "透光物"
   },
   "toolname_blocker_": {
@@ -81,10 +81,10 @@ locales["zh-TW"] = {
   "toolname_grin_CircleGlass": {
     "message": "漸變折射率透光物"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "透光物"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "message": "漸變折射率透光物"
   },
   "toolname_lens": {
@@ -201,7 +201,7 @@ locales["zh-TW"] = {
   "tool_IdealMirror": {
     "message": "理想曲面鏡"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "透光物"
   },
   "tool_blocker_": {
@@ -216,10 +216,10 @@ locales["zh-TW"] = {
   "tool_grin_CircleGlass": {
     "message": "漸變折射率圓形"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "message": "多邊形 / 圓弧"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "message": "漸變折射率多邊形"
   },
   "tool_lens": {
@@ -519,8 +519,8 @@ locales["zh-TW"] = {
   "eps_grin_CircleGlass_note_popover": {
     "message": "<p>單位 - [長度]^2.</p><p>本數值容忍度被用於 'grin_CircleGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
   },
-  "eps_grin_refractor_note_popover": {
-    "message": "<p>單位 - [長度].</p><p>本數值容忍度被用於 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
+  "eps_grin_Glass_note_popover": {
+    "message": "<p>單位 - [長度].</p><p>本數值容忍度被用於 'grin_Glass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
   },
   "cauchyCoeff": {
     "message": "柯西係數"
@@ -636,10 +636,10 @@ locales["zh-TW"] = {
   "tool_grin_CircleGlass_popover": {
     "message": "折射率為自訂函數 n(x,y)，邊界為圓形的透光物。（拖曳或點擊以創建。）"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "任何由線段與圓弧組成的透光物。（點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。）"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "message": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。警告：僅支援簡單多邊形，否則行為無法預測。（點擊以建立線段，點擊一開始的點以結束繪製。）"
   },
   "tool_lens_popover": {

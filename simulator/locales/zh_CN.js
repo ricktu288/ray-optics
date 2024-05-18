@@ -63,7 +63,7 @@ locales["zh-CN"] = {
   "toolname_IdealMirror": {
     "message": "理想曲面镜"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "透光物"
   },
   "toolname_blocker_": {
@@ -81,10 +81,10 @@ locales["zh-CN"] = {
   "toolname_grin_CircleGlass": {
     "message": "渐变折射率透光物"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "透光物"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "message": "渐变折射率透光物"
   },
   "toolname_lens": {
@@ -201,7 +201,7 @@ locales["zh-CN"] = {
   "tool_IdealMirror": {
     "message": "理想曲面镜"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "透光物"
   },
   "tool_blocker_": {
@@ -216,10 +216,10 @@ locales["zh-CN"] = {
   "tool_grin_CircleGlass": {
     "message": "渐变折射率圆形"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "message": "多边形 / 圆弧"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "message": "渐变折射率多边形"
   },
   "tool_lens": {
@@ -519,8 +519,8 @@ locales["zh-CN"] = {
   "eps_grin_CircleGlass_note_popover": {
     "message": "<p>单位 - [长度]^2.</p><p>本数值容忍度被用于 'grin_CircleGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
-  "eps_grin_refractor_note_popover": {
-    "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
+  "eps_grin_Glass_note_popover": {
+    "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_Glass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
   "cauchyCoeff": {
     "message": "柯西系数"
@@ -636,10 +636,10 @@ locales["zh-CN"] = {
   "tool_grin_CircleGlass_popover": {
     "message": "折射率为自定义函数 n(x,y)，边界为圆形的透光物。（拖曳或点击以创建。）"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "任何由线段与圆弧组成的透光物。 （点击以建立线段，拖曳以建立弧形，点击一开始的点以结束绘制。）"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "message": "折射率为自定义函数 n(x,y)，边界为多边形的透光物。警告：仅支持简单多边形，否则行为无法预测。（点击以建立线段，点击一开始的点以结束绘制。）"
   },
   "tool_lens_popover": {

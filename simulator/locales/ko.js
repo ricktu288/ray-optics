@@ -83,7 +83,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "이상적인 곡면 거울 (Ideal curved mirror)"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "incomplete": false,
     "message": "유리"
   },
@@ -107,11 +107,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "incomplete": false,
     "message": "유리"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -267,7 +267,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "이상 곡면 거울 (Ideal Curved)"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "incomplete": false,
     "message": "유리"
   },
@@ -287,11 +287,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "incomplete": true,
     "message": "자유 형태 / Polygon"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -691,9 +691,9 @@ locales["ko"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
-  "eps_grin_refractor_note_popover": {
+  "eps_grin_Glass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": false,
@@ -846,11 +846,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "incomplete": false,
     "message": "선분과 원호로 구성된 다양한 형태의 유리 (선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭.)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

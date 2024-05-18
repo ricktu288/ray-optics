@@ -71,7 +71,7 @@ locales["fr"] = {
   "toolname_IdealMirror": {
     "message": "Miroir parfaitement courbé"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "Verre"
   },
   "toolname_blocker_": {
@@ -92,10 +92,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "Verre"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -228,7 +228,7 @@ locales["fr"] = {
   "tool_IdealMirror": {
     "message": "Courbure idéale"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "Verres"
   },
   "tool_blocker_": {
@@ -244,11 +244,11 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "incomplete": true,
     "message": "Forme libre / Polygon"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -614,9 +614,9 @@ locales["fr"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
-  "eps_grin_refractor_note_popover": {
+  "eps_grin_Glass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": true,
@@ -754,10 +754,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires. (Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner.)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

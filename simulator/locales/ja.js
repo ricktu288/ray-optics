@@ -83,7 +83,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "理想的なカーブミラー"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "incomplete": false,
     "message": "ガラス"
   },
@@ -107,11 +107,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "incomplete": false,
     "message": "ガラス"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -267,7 +267,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "理想的なカーブ"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "incomplete": false,
     "message": "ガラス"
   },
@@ -287,11 +287,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "incomplete": true,
     "message": "任意の形 / Polygon"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -691,9 +691,9 @@ locales["ja"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
-  "eps_grin_refractor_note_popover": {
+  "eps_grin_Glass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": true,
@@ -846,11 +846,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "incomplete": false,
     "message": "線分と円弧から構成される任意の形状のガラス。 (クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

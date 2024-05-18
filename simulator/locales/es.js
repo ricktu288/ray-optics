@@ -63,7 +63,7 @@ locales["es"] = {
   "toolname_IdealMirror": {
     "message": "Espejo curvo ideal"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "Vidrio"
   },
   "toolname_blocker_": {
@@ -81,10 +81,10 @@ locales["es"] = {
   "toolname_grin_CircleGlass": {
     "message": "Círculo con gradiente de índice"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "Arcos poligonales/ circulares"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "message": "Polígono con gradiente de índice"
   },
   "toolname_lens": {
@@ -202,7 +202,7 @@ locales["es"] = {
   "tool_IdealMirror": {
     "message": "Curvo ideal"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "Vidrio"
   },
   "tool_blocker_": {
@@ -217,10 +217,10 @@ locales["es"] = {
   "tool_grin_CircleGlass": {
     "message": "Círculo"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "message": "Forma libre"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "message": "Forma libre"
   },
   "tool_lens": {
@@ -529,8 +529,8 @@ locales["es"] = {
   "eps_grin_CircleGlass_note_popover": {
     "message": "<p>Unidades - [longitud]^2.</p><p>Esta tolerancia numérica se usa en las funciones 'isOutsideGlass', 'isInsideGlass' y 'isOnBoundary', dentro del archivo 'grin_CircleGlass.js'.</p>"
   },
-  "eps_grin_refractor_note_popover": {
-    "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'grin_refractor.js'.</p>"
+  "eps_grin_Glass_note_popover": {
+    "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'grin_Glass.js'.</p>"
   },
   "cauchyCoeff": {
     "message": "Coeficiente de Cauchy"
@@ -646,10 +646,10 @@ locales["es"] = {
   "tool_grin_CircleGlass_popover": {
     "message": "Vidrio con una función de índice refractivo n(x,y) y un borde circular. (Arrastre o clique para crear.)"
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "Vidrio con cualquier forma construida mediante segmentos de línea o arco. (Clique para crear un segmento, arrastre para crear un arco, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "message": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal. ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible. (Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
   "tool_lens_popover": {

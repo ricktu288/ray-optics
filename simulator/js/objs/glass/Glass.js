@@ -3,17 +3,17 @@
  * Tools -> Glass -> Polygon / Circular Arcs
  * @property {Array<object>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates, and a boolean `arc`. If `path[i].arc === false`, it means that `path[i-1]`--`path[i]` and `path[i]`--`path[i+1]` are line segments, if `path[i].arc === true`, it means that `path[i-1]`--`path[i]`--`path[i+1]` is a circular arc.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-objTypes['refractor'] = class extends BaseGlass {
-  static type = 'refractor';
+objTypes['Glass'] = class extends BaseGlass {
+  static type = 'Glass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
     path: [],
     notDone: false,
-    p: 1.5,
+    refIndex: 1.5,
     cauchyB: 0.004
   };
 
@@ -270,7 +270,7 @@ objTypes['refractor'] = class extends BaseGlass {
   }
 
   checkRayIntersects(ray) {
-    if (this.notDone || this.p <= 0) return;
+    if (this.notDone || this.refIndex <= 0) return;
 
     var s_lensq = Infinity;
     var s_lensq_temp;

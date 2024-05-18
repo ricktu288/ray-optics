@@ -63,7 +63,7 @@ locales["pl"] = {
   "toolname_IdealMirror": {
     "message": "Idealnie zakrzywione zwierciadło"
   },
-  "toolname_refractor_": {
+  "toolname_glass_": {
     "message": "Szkło"
   },
   "toolname_blocker_": {
@@ -81,10 +81,10 @@ locales["pl"] = {
   "toolname_grin_CircleGlass": {
     "message": "Szkło gradientowe (GRIN)"
   },
-  "toolname_refractor": {
+  "toolname_Glass": {
     "message": "Soczewki i inne"
   },
-  "toolname_grin_refractor": {
+  "toolname_grin_Glass": {
     "message": "Szkło gradientowe (GRIN)"
   },
   "toolname_lens": {
@@ -203,7 +203,7 @@ locales["pl"] = {
   "tool_IdealMirror": {
     "message": "Idealnie zakrzywione"
   },
-  "tool_refractor_": {
+  "tool_glass_": {
     "message": "Szkła"
   },
   "tool_blocker_": {
@@ -218,10 +218,10 @@ locales["pl"] = {
   "tool_grin_CircleGlass": {
     "message": "Koło gradientowe"
   },
-  "tool_refractor": {
+  "tool_Glass": {
     "message": "Dowolny kształt / Wielokąt"
   },
-  "tool_grin_refractor": {
+  "tool_grin_Glass": {
     "message": "Wielokąt gradientowy"
   },
   "tool_lens": {
@@ -547,8 +547,8 @@ locales["pl"] = {
   "eps_grin_CircleGlass_note_popover": {
     "message": "<p>Jednostki - [długość]^2.</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'grin_CircleGlass.js'.</p>"
   },
-  "eps_grin_refractor_note_popover": {
-    "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_refractor.js'.</p>"
+  "eps_grin_Glass_note_popover": {
+    "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_Glass.js'.</p>"
   },
   "cauchyCoeff": {
     "message": "Współczynnik Cauchy'ego"
@@ -664,10 +664,10 @@ locales["pl"] = {
   "tool_grin_CircleGlass_popover": {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią. (Przeciągnij lub kliknij, aby utworzyć)."
   },
-  "tool_refractor_popover": {
+  "tool_Glass_popover": {
     "message": "Szkło o dowolnych kształtach, mających przekroje ograniczone odcinkami i fragmentami okręgów. (Kliknij, aby utworzyć odcinek; przeciągnij, aby utworzyć łuk; kliknij punkt początkowy, żeby zakończyć rysowanie.)"
   },
-  "tool_grin_refractor_popover": {
+  "tool_grin_Glass_popover": {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią. OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne. (Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.)"
   },
   "tool_lens_popover": {
