@@ -100,7 +100,7 @@ locales["si"] = {
   "toolname_sphericallens": {
     "message": "වක්‍ර කාච"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "message": "වීදුරු"
   },
   "toolname_blackline": {
@@ -252,7 +252,7 @@ locales["si"] = {
   "tool_sphericallens": {
     "message": "වක්‍ර කාච"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "message": "Custom සමීකරණ"
   },
   "tool_blackline": {
@@ -771,7 +771,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },

@@ -105,7 +105,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Spherical lens"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -259,7 +259,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Spherical Lens"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "incomplete": true,
     "message": "Custom Equation"
   },
@@ -771,7 +771,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },

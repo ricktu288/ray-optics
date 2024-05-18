@@ -93,7 +93,7 @@ locales["zh-TW"] = {
   "toolname_sphericallens": {
     "message": "球面透鏡"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "message": "透光物"
   },
   "toolname_blackline": {
@@ -228,7 +228,7 @@ locales["zh-TW"] = {
   "tool_sphericallens": {
     "message": "球面透鏡"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "message": "自訂函數"
   },
   "tool_blackline": {
@@ -648,7 +648,7 @@ locales["zh-TW"] = {
   "tool_sphericallens_popover": {
     "message": "球面透鏡。（點擊以創建。）"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "message": "形狀為自訂不等式 f(x) &lt; y &lt; g(x) 的透光物，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。 （拖曳或點擊以創建。）"
   },
   "tool_blackline_popover": {

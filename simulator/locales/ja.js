@@ -123,7 +123,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "球面レンズ"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "incomplete": false,
     "message": "ガラス"
   },
@@ -303,7 +303,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "球面レンズ"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "incomplete": false,
     "message": "カスタム式"
   },
@@ -862,7 +862,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "球面レンズ (クリックして作成します。)"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "incomplete": false,
     "message": "カスタム不等式f(x) &lt; y &lt; g(x)で定義される形状を持つガラスで、（x,y）は2つの制御点が（-1,0）と（1,0）である変換後の座標であるもの。(ドラッグまたはクリックで作成)"
   },

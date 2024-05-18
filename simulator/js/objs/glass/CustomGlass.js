@@ -5,13 +5,13 @@
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
  * @property {string} eqn2 - The equation of the surface with larger y. The variable is x.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  * @property {Array<Point>} path - The points on the calculated curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
-objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
-  static type = 'curvedglass';
+objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
+  static type = 'CustomGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
@@ -19,7 +19,7 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
     p2: null,
     eqn1: "0",
     eqn2: "0.5\\cdot\\sqrt{1-x^2}",
-    p: 1.5,
+    refIndex: 1.5,
     cauchyB: 0.004
   };
 
@@ -141,7 +141,7 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
 
   checkRayIntersects(ray) {
     if (!this.path) return;
-    if (this.p <= 0) return;
+    if (this.refIndex <= 0) return;
 
     var s_lensq = Infinity;
     var s_lensq_temp;

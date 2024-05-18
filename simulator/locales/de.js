@@ -96,7 +96,7 @@ locales["de"] = {
   "toolname_sphericallens": {
     "message": "Sphärische Linse"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "message": "Glas"
   },
   "toolname_blackline": {
@@ -239,7 +239,7 @@ locales["de"] = {
   "tool_sphericallens": {
     "message": "Sphärische Linse"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "message": "Benutzerdefinierte Gleichung"
   },
   "tool_blackline": {
@@ -722,7 +722,7 @@ locales["de"] = {
   "tool_sphericallens_popover": {
     "message": "Eine sphärische Linse. (Klicken zum Erzeugen.)"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "message": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) &lt; y &lt; g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_blackline_popover": {

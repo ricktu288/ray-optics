@@ -93,7 +93,7 @@ locales["pt-BR"] = {
   "toolname_sphericallens": {
     "message": "Lente esférica"
   },
-  "toolname_curvedglass": {
+  "toolname_CustomGlass": {
     "message": "Vidro"
   },
   "toolname_blackline": {
@@ -228,7 +228,7 @@ locales["pt-BR"] = {
   "tool_sphericallens": {
     "message": "Lente Esférica"
   },
-  "tool_curvedglass": {
+  "tool_CustomGlass": {
     "message": "Equação Personalizada"
   },
   "tool_blackline": {
@@ -672,7 +672,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },
-  "tool_curvedglass_popover": {
+  "tool_CustomGlass_popover": {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
