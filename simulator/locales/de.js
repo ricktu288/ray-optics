@@ -70,7 +70,7 @@ locales["de"] = {
   "toolname_blocker_": {
     "message": "Absorber"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "message": "Strahlteiler"
   },
   "toolname_halfplane": {
@@ -203,7 +203,7 @@ locales["de"] = {
   "tool_CustomMirror": {
     "message": "Benutzerdefinierte Gleichung"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "message": "Strahlteiler"
   },
   "tool_IdealMirror": {
@@ -593,7 +593,7 @@ locales["de"] = {
   "cauchycoeff": {
     "message": "Cauchy Koeffizient"
   },
-  "transmissionratio": {
+  "transRatio": {
     "message": "Transmissionsgrad"
   },
   "applytoall": {
@@ -693,7 +693,7 @@ locales["de"] = {
   "tool_CustomMirror_popover": {
     "message": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "message": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_IdealMirror_popover": {

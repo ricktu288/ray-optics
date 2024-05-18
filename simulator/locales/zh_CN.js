@@ -69,7 +69,7 @@ locales["zh-CN"] = {
   "toolname_blocker_": {
     "message": "遮光物"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "message": "分光镜"
   },
   "toolname_halfplane": {
@@ -195,7 +195,7 @@ locales["zh-CN"] = {
   "tool_CustomMirror": {
     "message": "自定义函数"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "message": "分光镜"
   },
   "tool_IdealMirror": {
@@ -525,7 +525,7 @@ locales["zh-CN"] = {
   "cauchycoeff": {
     "message": "柯西系数"
   },
-  "transmissionratio": {
+  "transRatio": {
     "message": "透光率"
   },
   "applytoall": {
@@ -621,7 +621,7 @@ locales["zh-CN"] = {
   "tool_CustomMirror_popover": {
     "message": "形状为自订等式 y = f(x) 的镜子，其中 (x,y) 为变换过的座标，使得两控制点为 (-1,0) 及 (1,0)。 （拖曳或点击以创建。）"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "message": "能穿透一个比例的光的镜子。（拖曳或点击以创建。）"
   },
   "tool_IdealMirror_popover": {

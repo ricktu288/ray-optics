@@ -3,19 +3,19 @@
  * Tools -> Mirror -> Beam splitter
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
- * @property {number} p - The transmission ratio.
+ * @property {number} transRatio - The transmission ratio.
  * @property {boolean} filter - Whether it is a dichroic beam splitter.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth interacts with the beam splitter. If false, the ray with wavelength inside the bandwidth interacts with the beam splitter.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-objTypes['beamsplitter'] = class extends LineObjMixin(BaseFilter) {
-  static type = 'beamsplitter';
+objTypes['BeamSplitter'] = class extends LineObjMixin(BaseFilter) {
+  static type = 'BeamSplitter';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 0.5,
+    transRatio: 0.5,
     filter: false,
     invert: false,
     wavelength: GREEN_WAVELENGTH,
@@ -23,8 +23,8 @@ objTypes['beamsplitter'] = class extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('transmissionratio'), 0, 1, 0.01, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('transRatio'), 0, 1, 0.01, this.transRatio, function (obj, value) {
+      obj.transRatio = value;
     });
 
     super.populateObjBar(objBar);
@@ -62,7 +62,7 @@ objTypes['beamsplitter'] = class extends LineObjMixin(BaseFilter) {
     var my = this.p2.y - this.p1.y;
     ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     var ray2 = geometry.line(incidentPoint, geometry.point(incidentPoint.x - rx, incidentPoint.y - ry));
-    var transmission = this.p;
+    var transmission = this.transRatio;
     ray2.brightness_s = transmission * ray.brightness_s;
     ray2.brightness_p = transmission * ray.brightness_p;
     ray2.wavelength = ray.wavelength;

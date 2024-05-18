@@ -78,7 +78,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Diaphragme"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "incomplete": true,
     "message": "Beam Splitter"
   },
@@ -221,7 +221,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Custom Equation"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "incomplete": true,
     "message": "Beam Splitter"
   },
@@ -622,7 +622,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Cauchy coefficient"
   },
-  "transmissionratio": {
+  "transRatio": {
     "incomplete": true,
     "message": "Transmission Ratio"
   },
@@ -737,7 +737,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "incomplete": true,
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },

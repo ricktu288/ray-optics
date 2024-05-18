@@ -91,7 +91,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "차단기"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "incomplete": false,
     "message": "빔 스플리터"
   },
@@ -259,7 +259,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "사용자 정의 수식"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "incomplete": false,
     "message": "빔 스플리터"
   },
@@ -699,7 +699,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "코시 계수 (Cauchy coefficient)"
   },
-  "transmissionratio": {
+  "transRatio": {
     "incomplete": false,
     "message": "전송률"
   },
@@ -826,7 +826,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "사용자 정의 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "incomplete": false,
     "message": "입사광의 일부를 투과시키는 거울. (드래그 또는 클릭하여 생성.)"
   },

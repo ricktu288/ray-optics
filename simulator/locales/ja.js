@@ -91,7 +91,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "遮断物"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "incomplete": false,
     "message": "ビームスプリッター"
   },
@@ -259,7 +259,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "カスタム式"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "incomplete": false,
     "message": "ビームスプリッター"
   },
@@ -699,7 +699,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Cauchy coefficient"
   },
-  "transmissionratio": {
+  "transRatio": {
     "incomplete": false,
     "message": "透過率"
   },
@@ -826,7 +826,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "カスタム方程式 y = f(x) によって形状が定義されるミラー。ここで (x,y) は、2 つの制御点が (-1,0) と (1,0) である変換された座標にあります。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "incomplete": false,
     "message": "入ってくる光の一定の割合を透過するミラー。 (ドラッグまたはクリックして作成します。)"
   },

@@ -69,7 +69,7 @@ locales["en"] = {
   "toolname_blocker_": {
     "message": "Blocker"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "message": "Beam Splitter"
   },
   "toolname_halfplane": {
@@ -195,7 +195,7 @@ locales["en"] = {
   "tool_CustomMirror": {
     "message": "Custom Equation"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "message": "Beam Splitter"
   },
   "tool_IdealMirror": {
@@ -525,7 +525,7 @@ locales["en"] = {
   "cauchycoeff": {
     "message": "Cauchy coefficient"
   },
-  "transmissionratio": {
+  "transRatio": {
     "message": "Transmission Ratio"
   },
   "applytoall": {
@@ -621,7 +621,7 @@ locales["en"] = {
   "tool_CustomMirror_popover": {
     "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
   "tool_IdealMirror_popover": {

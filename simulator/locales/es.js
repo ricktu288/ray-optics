@@ -69,7 +69,7 @@ locales["es"] = {
   "toolname_blocker_": {
     "message": "Bloqueador"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "message": "Separador de haz"
   },
   "toolname_halfplane": {
@@ -196,7 +196,7 @@ locales["es"] = {
   "tool_CustomMirror": {
     "message": "Ecuación personalizada"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "message": "Separador de haz"
   },
   "tool_IdealMirror": {
@@ -535,7 +535,7 @@ locales["es"] = {
   "cauchycoeff": {
     "message": "Coeficiente de Cauchy"
   },
-  "transmissionratio": {
+  "transRatio": {
     "message": "Cociente de transmisión"
   },
   "applytoall": {
@@ -631,7 +631,7 @@ locales["es"] = {
   "tool_CustomMirror_popover": {
     "message": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0). (Arrastre o clique para crear.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "message": "Un espejo que transmite un porcentaje de la luz incidente. (Arrastre o clique para crear.)"
   },
   "tool_IdealMirror_popover": {

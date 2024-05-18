@@ -69,7 +69,7 @@ locales["pl"] = {
   "toolname_blocker_": {
     "message": "Blokada"
   },
-  "toolname_beamsplitter": {
+  "toolname_BeamSplitter": {
     "message": "Rozdzielacz wiązki"
   },
   "toolname_halfplane": {
@@ -197,7 +197,7 @@ locales["pl"] = {
   "tool_CustomMirror": {
     "message": "Równanie niestandardowe"
   },
-  "tool_beamsplitter": {
+  "tool_BeamSplitter": {
     "message": "Rozdzielacz wiązki"
   },
   "tool_IdealMirror": {
@@ -553,7 +553,7 @@ locales["pl"] = {
   "cauchycoeff": {
     "message": "Współczynnik Cauchy'ego"
   },
-  "transmissionratio": {
+  "transRatio": {
     "message": "Współczynnik transmisji"
   },
   "applytoall": {
@@ -649,7 +649,7 @@ locales["pl"] = {
   "tool_CustomMirror_popover": {
     "message": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0). (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_beamsplitter_popover": {
+  "tool_BeamSplitter_popover": {
     "message": "Zwierciadło odbijające pewien procent padającego światła. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_IdealMirror_popover": {
