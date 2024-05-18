@@ -75,10 +75,10 @@ locales["en"] = {
   "toolname_PlaneGlass": {
     "message": "Glass"
   },
-  "toolname_circlelens": {
+  "toolname_CircleGlass": {
     "message": "Glass"
   },
-  "toolname_grin_circlelens": {
+  "toolname_grin_CircleGlass": {
     "message": "Gradient-index glass"
   },
   "toolname_refractor": {
@@ -210,10 +210,10 @@ locales["en"] = {
   "tool_PlaneGlass": {
     "message": "Half-plane"
   },
-  "tool_circlelens": {
+  "tool_CircleGlass": {
     "message": "Circle"
   },
-  "tool_grin_circlelens": {
+  "tool_grin_CircleGlass": {
     "message": "Gradient-index circle"
   },
   "tool_refractor": {
@@ -385,7 +385,7 @@ locales["en"] = {
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Only supports differentiable functions.</li><li>The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.</li><li>For a more accurate simulation, see \"More options...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_CircleGlass.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
   "focalLength": {
     "message": "Focal length"
@@ -514,10 +514,10 @@ locales["en"] = {
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
   "step_size_note_popover": {
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },
-  "eps_grin_circlelens_note_popover": {
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+  "eps_grin_CircleGlass_note_popover": {
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
   "eps_grin_refractor_note_popover": {
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
@@ -630,10 +630,10 @@ locales["en"] = {
   "tool_PlaneGlass_popover": {
     "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },
-  "tool_circlelens_popover": {
+  "tool_CircleGlass_popover": {
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
-  "tool_grin_circlelens_popover": {
+  "tool_grin_CircleGlass_popover": {
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
   "tool_refractor_popover": {

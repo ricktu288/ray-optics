@@ -75,10 +75,10 @@ locales["pl"] = {
   "toolname_PlaneGlass": {
     "message": "Półpłaszczyzna"
   },
-  "toolname_circlelens": {
+  "toolname_CircleGlass": {
     "message": "Koło"
   },
-  "toolname_grin_circlelens": {
+  "toolname_grin_CircleGlass": {
     "message": "Szkło gradientowe (GRIN)"
   },
   "toolname_refractor": {
@@ -212,10 +212,10 @@ locales["pl"] = {
   "tool_PlaneGlass": {
     "message": "Półpłaszczyzna"
   },
-  "tool_circlelens": {
+  "tool_CircleGlass": {
     "message": "Koło"
   },
-  "tool_grin_circlelens": {
+  "tool_grin_CircleGlass": {
     "message": "Koło gradientowe"
   },
   "tool_refractor": {
@@ -395,7 +395,7 @@ locales["pl"] = {
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Obsługuje tylko funkcje różniczkowalne.</li><li>Początek n(x,y) jest we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.</li><li>Aby uzyskać dokładniejszą symulację, zobacz \"Więcej opcji...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "message": "<p>Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.</p><p>Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'grin_circlelens.js').</p><p>Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, <b>takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w <u>całej</u> płaszczyźnie</b>, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy.</p>"
+    "message": "<p>Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.</p><p>Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'grin_CircleGlass.js').</p><p>Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, <b>takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w <u>całej</u> płaszczyźnie</b>, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy.</p>"
   },
   "focalLength": {
     "message": "Ogniskowa:"
@@ -542,10 +542,10 @@ locales["pl"] = {
     "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
   },
   "step_size_note_popover": {
-    "message": "<p>Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'grin_circlelens.js'.</p>"
+    "message": "<p>Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'grin_CircleGlass.js'.</p>"
   },
-  "eps_grin_circlelens_note_popover": {
-    "message": "<p>Jednostki - [długość]^2.</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'grin_circlelens.js'.</p>"
+  "eps_grin_CircleGlass_note_popover": {
+    "message": "<p>Jednostki - [długość]^2.</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'grin_CircleGlass.js'.</p>"
   },
   "eps_grin_refractor_note_popover": {
     "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_refractor.js'.</p>"
@@ -658,10 +658,10 @@ locales["pl"] = {
   "tool_PlaneGlass_popover": {
     "message": "Symuluje załamanie i odbicie światła na granicy ośrodków. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_circlelens_popover": {
+  "tool_CircleGlass_popover": {
     "message": "Szkło o przekroju kołowym, określonym przez środek i punkt na brzegu. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_grin_circlelens_popover": {
+  "tool_grin_CircleGlass_popover": {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią. (Przeciągnij lub kliknij, aby utworzyć)."
   },
   "tool_refractor_popover": {

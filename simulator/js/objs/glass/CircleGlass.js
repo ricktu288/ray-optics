@@ -3,17 +3,17 @@
  * Tools -> Glass -> Circle
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-objTypes['circlelens'] = class extends CircleObjMixin(BaseGlass) {
-  static type = 'circlelens';
+objTypes['CircleGlass'] = class extends CircleObjMixin(BaseGlass) {
+  static type = 'CircleGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 1.5,
+    refIndex: 1.5,
     cauchyB: 0.004
   };
 
@@ -33,7 +33,7 @@ objTypes['circlelens'] = class extends CircleObjMixin(BaseGlass) {
   }
 
   checkRayIntersects(ray) {
-    if (this.p <= 0) return;
+    if (this.refIndex <= 0) return;
     return this.checkRayIntersectsShape(ray);
   }
 

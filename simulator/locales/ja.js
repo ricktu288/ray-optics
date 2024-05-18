@@ -99,11 +99,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ガラス"
   },
-  "toolname_circlelens": {
+  "toolname_CircleGlass": {
     "incomplete": false,
     "message": "ガラス"
   },
-  "toolname_grin_circlelens": {
+  "toolname_grin_CircleGlass": {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
@@ -279,11 +279,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "半平面"
   },
-  "tool_circlelens": {
+  "tool_CircleGlass": {
     "incomplete": false,
     "message": "円"
   },
-  "tool_grin_circlelens": {
+  "tool_grin_CircleGlass": {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
@@ -513,7 +513,7 @@ locales["ja"] = {
   },
   "symbolic_grin_note_popover": {
     "incomplete": true,
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_circlelens.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_CircleGlass.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
   "focalLength": {
     "incomplete": false,
@@ -685,11 +685,11 @@ locales["ja"] = {
   },
   "step_size_note_popover": {
     "incomplete": true,
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_circlelens.js' file, for more information.</p>"
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },
-  "eps_grin_circlelens_note_popover": {
+  "eps_grin_CircleGlass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_circlelens.js' file.</p>"
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
   },
   "eps_grin_refractor_note_popover": {
     "incomplete": true,
@@ -838,11 +838,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "表面上の光の屈折と反射をシミュレートします。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_circlelens_popover": {
+  "tool_CircleGlass_popover": {
     "incomplete": false,
     "message": "中心と表面上の点によって定義される円形のガラス。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_grin_circlelens_popover": {
+  "tool_grin_CircleGlass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },

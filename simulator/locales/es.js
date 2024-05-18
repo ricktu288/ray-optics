@@ -75,10 +75,10 @@ locales["es"] = {
   "toolname_PlaneGlass": {
     "message": "Vidrio"
   },
-  "toolname_circlelens": {
+  "toolname_CircleGlass": {
     "message": "Vidrio"
   },
-  "toolname_grin_circlelens": {
+  "toolname_grin_CircleGlass": {
     "message": "Círculo con gradiente de índice"
   },
   "toolname_refractor": {
@@ -211,10 +211,10 @@ locales["es"] = {
   "tool_PlaneGlass": {
     "message": "Semi-plano"
   },
-  "tool_circlelens": {
+  "tool_CircleGlass": {
     "message": "Círculo"
   },
-  "tool_grin_circlelens": {
+  "tool_grin_CircleGlass": {
     "message": "Círculo"
   },
   "tool_refractor": {
@@ -392,7 +392,7 @@ locales["es"] = {
     "message": "<ul><li>Supported constants:<br><code>pi e</code></li><li>Supported operators:<br><code>+ - * / ^</code></li><li>Supported functions:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Sólo soporta funciones diferenciables.</li><li>El origen de n(x,y) está en las coordenadas absolutas y no se mueve con el objeto. Puede hacer doble click sobre un punto de control para inspeccionar sus coordenadas absolutas.</li><li>Para una simulación más precisa, vea \"Más opciones...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "message": "<p>Esta opción se aplica a todos los objetos GRIN de la simulación.</p><p>Actualmente este simulador tiene dos implementaciones de propagación de la luz entre medios, para objetos GRIN - numéricos y simbólicos (vea las funciones 'multRefIndex' y 'devRefIndex' en 'grin_circlelens.js').</p><p>La implementación numérica es más rápida pero no siempre funciona correctamente (dependiendo del caso en concreto) en escenarios donde se usa más de un objeto GRIN,<b>tal que al menos una de ellas tiene una función de índice de refracción que no está definida en <u>todo</u> el plano</b>, mientras que la implementación simbólica és más lenta pero robusta con estos problemas.</p>"
+    "message": "<p>Esta opción se aplica a todos los objetos GRIN de la simulación.</p><p>Actualmente este simulador tiene dos implementaciones de propagación de la luz entre medios, para objetos GRIN - numéricos y simbólicos (vea las funciones 'multRefIndex' y 'devRefIndex' en 'grin_CircleGlass.js').</p><p>La implementación numérica es más rápida pero no siempre funciona correctamente (dependiendo del caso en concreto) en escenarios donde se usa más de un objeto GRIN,<b>tal que al menos una de ellas tiene una función de índice de refracción que no está definida en <u>todo</u> el plano</b>, mientras que la implementación simbólica és más lenta pero robusta con estos problemas.</p>"
   },
   "focalLength": {
     "message": "Distancia focal"
@@ -526,8 +526,8 @@ locales["es"] = {
   "step_size_note_popover": {
     "message": "<p>Tamaño de paso para el método de Euler para resolver la ecuación de la eikonal de rayos - ver la función 'step' y la documentación dentro del archivo 'grin_ciclelens.js' para más información.</p>"
   },
-  "eps_grin_circlelens_note_popover": {
-    "message": "<p>Unidades - [longitud]^2.</p><p>Esta tolerancia numérica se usa en las funciones 'isOutsideGlass', 'isInsideGlass' y 'isOnBoundary', dentro del archivo 'grin_circlelens.js'.</p>"
+  "eps_grin_CircleGlass_note_popover": {
+    "message": "<p>Unidades - [longitud]^2.</p><p>Esta tolerancia numérica se usa en las funciones 'isOutsideGlass', 'isInsideGlass' y 'isOnBoundary', dentro del archivo 'grin_CircleGlass.js'.</p>"
   },
   "eps_grin_refractor_note_popover": {
     "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'grin_refractor.js'.</p>"
@@ -640,10 +640,10 @@ locales["es"] = {
   "tool_PlaneGlass_popover": {
     "message": "Simular la refracción y la reflexión de luz sobre una superficie. (Arrastre o clique para crear.)"
   },
-  "tool_circlelens_popover": {
+  "tool_CircleGlass_popover": {
     "message": "Vidrio con una forma circular, definida mediante su centro y un punto sobre la superficie. (Arrastre o clique para crear.)"
   },
-  "tool_grin_circlelens_popover": {
+  "tool_grin_CircleGlass_popover": {
     "message": "Vidrio con una función de índice refractivo n(x,y) y un borde circular. (Arrastre o clique para crear.)"
   },
   "tool_refractor_popover": {

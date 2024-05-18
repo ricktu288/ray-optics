@@ -75,10 +75,10 @@ locales["zh-CN"] = {
   "toolname_PlaneGlass": {
     "message": "透光物"
   },
-  "toolname_circlelens": {
+  "toolname_CircleGlass": {
     "message": "透光物"
   },
-  "toolname_grin_circlelens": {
+  "toolname_grin_CircleGlass": {
     "message": "渐变折射率透光物"
   },
   "toolname_refractor": {
@@ -210,10 +210,10 @@ locales["zh-CN"] = {
   "tool_PlaneGlass": {
     "message": "半平面"
   },
-  "tool_circlelens": {
+  "tool_CircleGlass": {
     "message": "圆形"
   },
-  "tool_grin_circlelens": {
+  "tool_grin_CircleGlass": {
     "message": "渐变折射率圆形"
   },
   "tool_refractor": {
@@ -385,7 +385,7 @@ locales["zh-CN"] = {
     "message": "<ul><li>支持的常数：<br><code>pi e</code></li><li>支持的运算符：<br><code>+ - * / ^</code></li><li>支持的函数：<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>仅支持可微函数。 </li><li>n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。 </li><li>如需较精确的模拟，请见「更多选项...」</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "message": "<p>本选项会套用至所有渐变折射率透光物。 </p><p>本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'grin_circlelens.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。 </p><p>数值的实作较快，但使用多个渐变折射率介质，<b>且至少有一个介质的折射率没有在<u>整个</u>平面上有定义</b>时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。 </p>"
+    "message": "<p>本选项会套用至所有渐变折射率透光物。 </p><p>本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'grin_CircleGlass.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。 </p><p>数值的实作较快，但使用多个渐变折射率介质，<b>且至少有一个介质的折射率没有在<u>整个</u>平面上有定义</b>时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。 </p>"
   },
   "focalLength": {
     "message": "焦距"
@@ -514,10 +514,10 @@ locales["zh-CN"] = {
     "message": "<p>*于另一透光物内部时为相对值</p><p>如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。</p>"
   },
   "step_size_note_popover": {
-    "message": "<p>用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'grin_circlelens.js' 中的 'step' 函数与原始码文件。 </p>"
+    "message": "<p>用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'grin_CircleGlass.js' 中的 'step' 函数与原始码文件。 </p>"
   },
-  "eps_grin_circlelens_note_popover": {
-    "message": "<p>单位 - [长度]^2.</p><p>本数值容忍度被用于 'grin_circlelens.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
+  "eps_grin_CircleGlass_note_popover": {
+    "message": "<p>单位 - [长度]^2.</p><p>本数值容忍度被用于 'grin_CircleGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
   "eps_grin_refractor_note_popover": {
     "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
@@ -630,10 +630,10 @@ locales["zh-CN"] = {
   "tool_PlaneGlass_popover": {
     "message": "模拟光线经过透光物体界面时的反射与折射。（拖曳或点击以创建。）"
   },
-  "tool_circlelens_popover": {
+  "tool_CircleGlass_popover": {
     "message": "圆形透光物，由圆心与表面上一点决定。（拖曳或点击以创建。）"
   },
-  "tool_grin_circlelens_popover": {
+  "tool_grin_CircleGlass_popover": {
     "message": "折射率为自定义函数 n(x,y)，边界为圆形的透光物。（拖曳或点击以创建。）"
   },
   "tool_refractor_popover": {

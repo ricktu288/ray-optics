@@ -8,8 +8,8 @@
  * @property {number} step_size - The step size for the ray trajectory equation.
  * @property {number} eps - The epsilon for the intersection calculations.
  */
-objTypes['grin_circlelens'] = class extends CircleObjMixin(BaseGrinGlass) {
-  static type = 'grin_circlelens';
+objTypes['grin_CircleGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
+  static type = 'grin_CircleGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
