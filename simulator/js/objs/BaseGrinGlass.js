@@ -29,7 +29,7 @@ class BaseGrinGlass extends BaseGlass {
       obj.initFns();
     }, getMsg('grin_refractive_index'));
 
-    objBar.createTuple(getMsg('refractiveindex_origin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
+    objBar.createTuple(getMsg('refIndex_origin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
       const commaPosition = value.indexOf(',');
       if (commaPosition != -1) {
         const n_origin_x = parseFloat(value.slice(1, commaPosition));

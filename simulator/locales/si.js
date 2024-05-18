@@ -455,7 +455,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "වර්තන අංකය*"
   },
   "radii_of_curvature": {
@@ -466,7 +466,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
@@ -607,7 +607,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*වෙනත් වීදුරුවක් ඇතුළත නම් සාපේක්ෂ</p><p>මෙම වස්තුව (නිරපේක්ෂ) වර්තන දර්ශකය n₁ සමඟ අනුකරණය කළ යුතු නමුත්, වර්තන දර්ශකය n₀ සහිත වෙනත් වීදුරුවක් තුළ තබා තිබේ නම්, ඔබ මෙහි වර්තන දර්ශකය n₁/n₀ ලෙස සැකසිය යුතුය. වීදුරු කිහිපයක් එකට අතිච්ඡාදනය වන වඩාත් සංකීර්ණ අවස්ථාවන්හිදී, අතිච්ඡාදනය වන කලාපයේ ඵලදායී පරාවර්තක දර්ශකය එක් එක් ඒවායේ පරාවර්තක දර්ශකවල ගුණිතයට සමාන වේ.</p>"
   },
   "step_size_note_popover": {
@@ -622,7 +622,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "Cauchy සංගුණකය"
   },
   "transRatio": {

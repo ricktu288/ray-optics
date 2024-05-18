@@ -1,27 +1,27 @@
 /**
  * The base class for glasses.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
- * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
 class BaseGlass extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, this.p, function (obj, value) {
-        obj.p = value * 1;
-      }, getMsg('refractiveindex_note_popover'));
-      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyCoeff, function (obj, value) {
-        obj.cauchyCoeff = value;
+      objBar.createNumber(getMsg('cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
+        obj.refIndex = value * 1;
+      }, getMsg('refIndex_note_popover'));
+      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyB, function (obj, value) {
+        obj.cauchyB = value;
       });
     } else {
-      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, this.p, function (obj, value) {
-        obj.p = value * 1;
-      }, getMsg('refractiveindex_note_popover'));
+      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
+        obj.refIndex = value * 1;
+      }, getMsg('refIndex_note_popover'));
     }
   }
 
   getZIndex() {
-    return this.p * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
+    return this.refIndex * (-1); // The material with (relative) refractive index < 1 should be draw after the one with > 1 so that the color subtraction in fillGlass works.
   }
 
   /* Utility methods */
@@ -35,7 +35,7 @@ class BaseGlass extends BaseSceneObj {
   fillGlass(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
 
-    const n = this.p;
+    const n = this.refIndex;
 
     if (isAboveLight) {
       // Draw the highlight only
@@ -219,9 +219,9 @@ class BaseGlass extends BaseSceneObj {
    */
   getRefIndexAt(point, ray) {
     if (this.scene.simulateColors) {
-      return this.p + this.cauchyCoeff / (ray.wavelength * ray.wavelength * 0.000001);
+      return this.refIndex + this.cauchyB / (ray.wavelength * ray.wavelength * 0.000001);
     } else {
-      return this.p;
+      return this.refIndex;
     }
   }
 

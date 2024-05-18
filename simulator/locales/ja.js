@@ -523,7 +523,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
-  "refractiveindex": {
+  "refIndex": {
     "incomplete": false,
     "message": "屈折率*"
   },
@@ -535,7 +535,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
@@ -679,7 +679,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "incomplete": false,
     "message": "<p>*relative if inside another glass</p><p>もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。</p>"
   },
@@ -695,7 +695,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "incomplete": true,
     "message": "Cauchy coefficient"
   },

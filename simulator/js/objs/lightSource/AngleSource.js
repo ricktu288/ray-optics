@@ -4,7 +4,7 @@
  * @property {Point} p1 - The position of the point source.
  * @property {Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.
- * @property {number} wavelength - The wavelength of the point source in nm. Only effective in color mode.
+ * @property {number} wavelength - The wavelength of the point source in nm. Only effective when "Simulate Colors" is on.
  * @property {number} emisAngle - The angle of emission in degrees.
  * @property {boolean} symmetric - Whether the emission is symmetric about the reference line. If not, the emission is only on one side of the reference line.
  */

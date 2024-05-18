@@ -447,7 +447,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Cartesian Sign Convention"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "Indice de réfraction*"
   },
   "radii_of_curvature": {
@@ -458,7 +458,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
@@ -602,7 +602,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "incomplete": true,
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
@@ -618,7 +618,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "incomplete": true,
     "message": "Cauchy coefficient"
   },

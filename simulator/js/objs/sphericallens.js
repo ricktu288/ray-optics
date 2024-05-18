@@ -8,8 +8,8 @@
  * @property {Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.
  * @property {Point} p2 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the bottom edge of the lens, if it is not built.
  * @property {object} params - The parameters of the lens if it is not built. It has the following properties: `d`, `r1`, and `r2` if `definedBy` is 'DR1R2', and `d`, `ffd`, and `bfd` if `definedBy` is 'DFfdBfd'.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
- * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
 objTypes['sphericallens'] = class extends objTypes['refractor'] {
   static type = 'sphericallens';
@@ -22,7 +22,7 @@ objTypes['sphericallens'] = class extends objTypes['refractor'] {
     p2: null,
     params: null,
     p: 1.5,
-    cauchyCoeff: 0.004
+    cauchyB: 0.004
   };
 
   constructor(scene, jsonObj) {
@@ -100,31 +100,31 @@ objTypes['sphericallens'] = class extends objTypes['refractor'] {
     }
 
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchycoeff') + " A", 1, 3, 0.01, this.p, function (obj, value) {
+      objBar.createNumber(getMsg('cauchyB') + " A", 1, 3, 0.01, this.p, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.p = value * 1;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, getMsg('refractiveindex_note_popover'));
-      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyCoeff, function (obj, value) {
+      }, getMsg('refIndex_note_popover'));
+      objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyB, function (obj, value) {
         var old_params = obj.getDFfdBfd();
-        obj.cauchyCoeff = value;
+        obj.cauchyB = value;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
       });
     } else {
-      objBar.createNumber(getMsg('refractiveindex'), 0.5, 2.5, 0.01, this.p, function (obj, value) {
+      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.p, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.p = value * 1;
         if (obj.definedBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, getMsg('refractiveindex_note_popover'));
+      }, getMsg('refIndex_note_popover'));
     }
   }
 

@@ -200,7 +200,7 @@ class BaseSceneObj {
    * @property {Point} p2 - Another point on the ray.
    * @property {number} brightness_s - he intensity of the s-polarization component of the ray.
    * @property {number} brightness_p - The intensity of the p-polarization component of the ray. In this simulator the two polarization components are assumed to be of no phase coherence.
-   * @property {number} [wavelength] - The wavelength of the ray in nanometers. Only has effect in color mode.
+   * @property {number} [wavelength] - The wavelength of the ray in nanometers. Only has effect when "Simulate Colors" is on.
    * @property {boolean} gap - Whether the ray is the first ray in a bunch of "continuous" rays. This is for the detection of images to work correctly. The intersection of two rays is considered as a candidate of an image only if the second ray has `gap === false`.
    * @property {boolean} isNew - Whether the ray is just emitted by a source. This is to avoid drawing trivial initial extensions in the "Extended rays" mode.
    */

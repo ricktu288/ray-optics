@@ -393,7 +393,7 @@ locales["pt-BR"] = {
   "cartesianSign": {
     "message": "Convenção de Sinal Cartesiana"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "Índice refrativo*"
   },
   "radii_of_curvature": {
@@ -402,7 +402,7 @@ locales["pt-BR"] = {
   "focal_distances": {
     "message": "Distâncias Focais"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "message": "Origem de n(x,y)"
   },
   "step_size": {
@@ -510,7 +510,7 @@ locales["pt-BR"] = {
   "brightness_note_popover": {
     "message": "<p>Somente faz efeito quando 'Densidade de Raios' está alta o suficiente.</p><p>Para controlar o número de raios emitidos, por favor ajuste o controle global de 'Densidade de Raios'.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*Relativo se dentro de outro vidro</p><p>Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.</p>"
   },
   "step_size_note_popover": {
@@ -524,7 +524,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "Coeficiente de Cauchy"
   },
   "transRatio": {

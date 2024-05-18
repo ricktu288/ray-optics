@@ -4,7 +4,7 @@
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
  * @property {number} brightness - The brightness of the ray.
- * @property {number} wavelength - The wavelength of the ray in nm. Only effective in color mode.
+ * @property {number} wavelength - The wavelength of the ray in nm. Only effective when "Simulate Colors" is on.
  */
 objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
   static type = 'SingleRay';

@@ -400,7 +400,7 @@ locales["es"] = {
   "cartesianSign": {
     "message": "Convenio de signos cartesiano"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "Indice de refracción*"
   },
   "radii_of_curvature": {
@@ -409,7 +409,7 @@ locales["es"] = {
   "focal_distances": {
     "message": "Distancias focales"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "message": "Origen de n(x,y)"
   },
   "step_size": {
@@ -520,7 +520,7 @@ locales["es"] = {
   "brightness_note_popover": {
     "message": "<p>Solo es efectivo si la 'Densidad de rayos' es suficientemente alta.</p><p>Para controlar el número de rayos emitidos, por favor ajustar el deslizante global 'Densidad de rayos'.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*Relativo si esta dentro de otro vidrio</p><p>Si este objeto se tiene que simular con un índice de refracción (absoluto) n₁, pero esta situado dentro de otro vidrio con índice de refracción n₀, entonces deberá establecer el índice de refracción en n₁/n₀ aquí. En casos más complicados donde varios vidrios se sobrepongan, el índice de refracción efectivo de la región sobrepuesta es igual al producto de los índices de refracción por separado.</p>"
   },
   "step_size_note_popover": {
@@ -532,7 +532,7 @@ locales["es"] = {
   "eps_grin_refractor_note_popover": {
     "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'grin_refractor.js'.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "Coeficiente de Cauchy"
   },
   "transRatio": {

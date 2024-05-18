@@ -403,7 +403,7 @@ locales["pl"] = {
   "cartesianSign": {
     "message": "Konwencja znaków"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "Współczynnik załamania*"
   },
   "radii_of_curvature": {
@@ -414,7 +414,7 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "message": "Początek układu n(x,y)"
   },
   "step_size": {
@@ -538,7 +538,7 @@ locales["pl"] = {
   "brightness_note_popover": {
     "message": "<p>Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.</p><p>Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
   },
   "step_size_note_popover": {
@@ -550,7 +550,7 @@ locales["pl"] = {
   "eps_grin_refractor_note_popover": {
     "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_refractor.js'.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "Współczynnik Cauchy'ego"
   },
   "transRatio": {

@@ -5,8 +5,8 @@
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
  * @property {string} eqn2 - The equation of the surface with larger y. The variable is x.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
- * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  * @property {Array<Point>} path - The points on the calculated curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
@@ -20,7 +20,7 @@ objTypes['curvedglass'] = class extends LineObjMixin(BaseGlass) {
     eqn1: "0",
     eqn2: "0.5\\cdot\\sqrt{1-x^2}",
     p: 1.5,
-    cauchyCoeff: 0.004
+    cauchyB: 0.004
   };
 
   populateObjBar(objBar) {

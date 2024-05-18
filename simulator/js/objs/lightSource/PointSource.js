@@ -4,7 +4,7 @@
  * @property {number} x - The x coordinate of the point source.
  * @property {number} y - The y coordinate of the point source.
  * @property {number} brightness - The brightness of the point source.
- * @property {number} wavelength - The wavelength of the light emitted by the point source in nm. Only effective in color mode.
+ * @property {number} wavelength - The wavelength of the light emitted by the point source in nm. Only effective when "Simulate Colors" is on.
  */
 objTypes['PointSource'] = class extends BaseSceneObj {
   static type = 'PointSource';

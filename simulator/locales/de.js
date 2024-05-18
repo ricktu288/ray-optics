@@ -420,7 +420,7 @@ locales["de"] = {
   "cartesianSign": {
     "message": "Kartesische Zeichenkonvention"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "Brechungsindex*"
   },
   "radii_of_curvature": {
@@ -431,7 +431,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
@@ -575,7 +575,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*relativ, wenn Glaskörper überlappen</p><p>Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes.</p>"
   },
   "step_size_note_popover": {
@@ -590,7 +590,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "Cauchy Koeffizient"
   },
   "transRatio": {

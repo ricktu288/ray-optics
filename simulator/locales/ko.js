@@ -523,7 +523,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "직교좌표계 부호 변환"
   },
-  "refractiveindex": {
+  "refIndex": {
     "incomplete": false,
     "message": "굴절률*"
   },
@@ -535,7 +535,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Focal Distances"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
@@ -679,7 +679,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "<p>'광선 밀도'가 충분히 높을 때 유효합니다.</p><p>방출되는 광선의 개수를 조절하려면 '광선 밀도' 슬라이더를 조절하십시오.</p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "incomplete": false,
     "message": "<p>*다른 매질 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
   },
@@ -695,7 +695,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_refractor.js' file.</p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "incomplete": false,
     "message": "코시 계수 (Cauchy coefficient)"
   },

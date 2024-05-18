@@ -393,7 +393,7 @@ locales["zh-CN"] = {
   "cartesianSign": {
     "message": "笛卡尔符号约定"
   },
-  "refractiveindex": {
+  "refIndex": {
     "message": "折射率*"
   },
   "radii_of_curvature": {
@@ -402,7 +402,7 @@ locales["zh-CN"] = {
   "focal_distances": {
     "message": "前/后焦距"
   },
-  "refractiveindex_origin": {
+  "refIndex_origin": {
     "message": "n(x,y)的原点"
   },
   "step_size": {
@@ -510,7 +510,7 @@ locales["zh-CN"] = {
   "brightness_note_popover": {
     "message": "<p>只在「光线密度」够高时才有作用。 </p><p>如需改变射出的光线数量，请调整全域性的「光线密度」滑杆。 </p>"
   },
-  "refractiveindex_note_popover": {
+  "refIndex_note_popover": {
     "message": "<p>*于另一透光物内部时为相对值</p><p>如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。</p>"
   },
   "step_size_note_popover": {
@@ -522,7 +522,7 @@ locales["zh-CN"] = {
   "eps_grin_refractor_note_popover": {
     "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_refractor.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
-  "cauchycoeff": {
+  "cauchyCoeff": {
     "message": "柯西系数"
   },
   "transRatio": {

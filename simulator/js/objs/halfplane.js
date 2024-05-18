@@ -3,8 +3,8 @@
  * Tools -> Glass -> Half-plane
  * @property {Point} p1 - A point on the boundary of the half-plane.
  * @property {Point} p2 - Another point on the boundary of the half-plane.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if color mode is on.
- * @property {number} cauchyCoeff - The Cauchy coefficient B of the glass if color mode is on, in micrometer squared.
+ * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
 objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
   static type = 'halfplane';
@@ -14,7 +14,7 @@ objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
     p1: null,
     p2: null,
     p: 1.5,
-    cauchyCoeff: 0.004
+    cauchyB: 0.004
   };
 
   draw(canvasRenderer, isAboveLight, isHovered) {
