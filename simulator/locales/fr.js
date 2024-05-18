@@ -99,7 +99,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Lentille idéale"
   },
   "toolname_SphericalLens": {
@@ -252,7 +252,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Lentille idéale"
   },
   "tool_SphericalLens": {
@@ -761,7 +761,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_SphericalLens_popover": {

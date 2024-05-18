@@ -87,7 +87,7 @@ locales["en"] = {
   "toolname_grin_Glass": {
     "message": "Gradient-index glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Ideal lens"
   },
   "toolname_SphericalLens": {
@@ -222,7 +222,7 @@ locales["en"] = {
   "tool_grin_Glass": {
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Ideal Lens"
   },
   "tool_SphericalLens": {
@@ -642,7 +642,7 @@ locales["en"] = {
   "tool_grin_Glass_popover": {
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
   "tool_SphericalLens_popover": {

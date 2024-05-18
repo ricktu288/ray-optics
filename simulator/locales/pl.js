@@ -87,7 +87,7 @@ locales["pl"] = {
   "toolname_grin_Glass": {
     "message": "Szkło gradientowe (GRIN)"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Soczewka idealna"
   },
   "toolname_SphericalLens": {
@@ -224,7 +224,7 @@ locales["pl"] = {
   "tool_grin_Glass": {
     "message": "Wielokąt gradientowy"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Soczewka idealna"
   },
   "tool_SphericalLens": {
@@ -670,7 +670,7 @@ locales["pl"] = {
   "tool_grin_Glass_popover": {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią. OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne. (Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_SphericalLens_popover": {

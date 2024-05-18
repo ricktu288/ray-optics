@@ -115,7 +115,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "incomplete": false,
     "message": "理想的なレンズ"
   },
@@ -295,7 +295,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "incomplete": false,
     "message": "理想的なレンズ"
   },
@@ -854,7 +854,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "incomplete": false,
     "message": "薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },

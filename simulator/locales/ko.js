@@ -115,7 +115,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "incomplete": false,
     "message": "이상적인 렌즈 (Ideal lens)"
   },
@@ -295,7 +295,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "incomplete": false,
     "message": "이상적인 렌즈 (Ideal lens)"
   },
@@ -854,7 +854,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "incomplete": false,
     "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },

@@ -87,7 +87,7 @@ locales["es"] = {
   "toolname_grin_Glass": {
     "message": "Polígono con gradiente de índice"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Lente ideal"
   },
   "toolname_SphericalLens": {
@@ -223,7 +223,7 @@ locales["es"] = {
   "tool_grin_Glass": {
     "message": "Forma libre"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Lente ideal"
   },
   "tool_SphericalLens": {
@@ -652,7 +652,7 @@ locales["es"] = {
   "tool_grin_Glass_popover": {
     "message": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal. ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible. (Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal (en pixels) se puede establecer directamente. (Arrastre o clique para crear.)"
   },
   "tool_SphericalLens_popover": {

@@ -87,7 +87,7 @@ locales["zh-TW"] = {
   "toolname_grin_Glass": {
     "message": "漸變折射率透光物"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "理想透鏡"
   },
   "toolname_SphericalLens": {
@@ -222,7 +222,7 @@ locales["zh-TW"] = {
   "tool_grin_Glass": {
     "message": "漸變折射率多邊形"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "理想透鏡"
   },
   "tool_SphericalLens": {
@@ -642,7 +642,7 @@ locales["zh-TW"] = {
   "tool_grin_Glass_popover": {
     "message": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。警告：僅支援簡單多邊形，否則行為無法預測。（點擊以建立線段，點擊一開始的點以結束繪製。）"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（曳或點擊以創建。）"
   },
   "tool_SphericalLens_popover": {

@@ -101,7 +101,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Ideale lens"
   },
   "toolname_SphericalLens": {
@@ -255,7 +255,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Ideale Lens"
   },
   "tool_SphericalLens": {
@@ -776,7 +776,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Een ideale lens die de lenzenformule volgt (1/v + 1/b = 1/f). De brandpuntafstand (in pixels) kan worden ingevoerd. (Sleep of klik om te maken.)"
   },
   "tool_SphericalLens_popover": {

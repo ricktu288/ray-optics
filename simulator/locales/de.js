@@ -90,7 +90,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Ideale Linse"
   },
   "toolname_SphericalLens": {
@@ -233,7 +233,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Ideale Linse"
   },
   "tool_SphericalLens": {
@@ -716,7 +716,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_SphericalLens_popover": {

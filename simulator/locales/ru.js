@@ -98,7 +98,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Идеальная линза"
   },
   "toolname_SphericalLens": {
@@ -252,7 +252,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Идеальная линза"
   },
   "tool_SphericalLens": {
@@ -764,7 +764,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "message": "Идеальная линза, строго подчиняющаяся уравнению плоской линзы (1/d + 1/f = 1/F). Фокальное расстояние задается в пикселях. (Потяните или нажмите, чтобы создать.)"
   },
   "tool_SphericalLens_popover": {

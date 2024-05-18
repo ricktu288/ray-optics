@@ -87,7 +87,7 @@ locales["pt-BR"] = {
   "toolname_grin_Glass": {
     "message": "Polígono com gradiente de índice"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "Lente ideal"
   },
   "toolname_SphericalLens": {
@@ -222,7 +222,7 @@ locales["pt-BR"] = {
   "tool_grin_Glass": {
     "message": "Forma livre"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "Lente Ideal"
   },
   "tool_SphericalLens": {
@@ -664,7 +664,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "incomplete": true,
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },

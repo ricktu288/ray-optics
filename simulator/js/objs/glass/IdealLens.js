@@ -3,20 +3,20 @@
  * Tools -> Glass -> Ideal Lens
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
- * @property {number} p - The focal length.
+ * @property {number} focalLength - The focal length.
  */
-objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'lens';
+objTypes['IdealLens'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'IdealLens';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 100
+    focalLength: 100
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('focalLength'), -1000, 1000, 1, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('focalLength'), -1000, 1000, 1, this.focalLength, function (obj, value) {
+      obj.focalLength = value;
     });
   }
 
@@ -34,7 +34,7 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
 
     // Draw the line segment
     ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-    ctx.globalAlpha = 1 / ((Math.abs(this.p) / 100) + 1);
+    ctx.globalAlpha = 1 / ((Math.abs(this.focalLength) / 100) + 1);
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -53,7 +53,7 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
     ctx.lineTo(center.x + per_x * center_size, center.y + per_y * center_size);
     ctx.stroke();
 
-    if (this.p > 0) {
+    if (this.focalLength > 0) {
       // Draw the arrow (p1)
       ctx.beginPath();
       ctx.moveTo(this.p1.x - par_x * arrow_size_par, this.p1.y - par_y * arrow_size_par);
@@ -69,7 +69,7 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
       ctx.fill();
     }
 
-    if (this.p < 0) {
+    if (this.focalLength < 0) {
       // Draw the arrow (p1)
       ctx.beginPath();
       ctx.moveTo(this.p1.x + par_x * arrow_size_par, this.p1.y + par_y * arrow_size_par);
@@ -89,8 +89,8 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
       // show focal length
       var mp = geometry.segmentMidpoint(this);
       ctx.fillStyle = 'rgb(255,0,255)';
-      ctx.fillRect(mp.x + this.p * per_x - 1.5, mp.y + this.p * per_y - 1.5, 3, 3);
-      ctx.fillRect(mp.x - this.p * per_x - 1.5, mp.y - this.p * per_y - 1.5, 3, 3);
+      ctx.fillRect(mp.x + this.focalLength * per_x - 1.5, mp.y + this.focalLength * per_y - 1.5, 3, 3);
+      ctx.fillRect(mp.x - this.focalLength * per_x - 1.5, mp.y - this.focalLength * per_y - 1.5, 3, 3);
     }
   }
 
@@ -104,8 +104,8 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
     var main_line_unitvector_y = (this.p1.x - this.p2.x) / lens_length;
     var mid_point = geometry.segmentMidpoint(this);
 
-    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * this.p, mid_point.y + main_line_unitvector_y * 2 * this.p);  // The first point at two focal lengths
-    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * this.p, mid_point.y - main_line_unitvector_y * 2 * this.p);  // The second point at two focal lengths
+    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * this.focalLength, mid_point.y + main_line_unitvector_y * 2 * this.focalLength);  // The first point at two focal lengths
+    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * this.focalLength, mid_point.y - main_line_unitvector_y * 2 * this.focalLength);  // The second point at two focal lengths
 
     var twoF_line_near, twoF_line_far;
     if (geometry.distanceSquared(ray.p1, twoF_point_1) < geometry.distanceSquared(ray.p1, twoF_point_2)) {
@@ -118,7 +118,7 @@ objTypes['lens'] = class extends LineObjMixin(BaseSceneObj) {
       twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_1);
     }
 
-    if (this.p > 0) {
+    if (this.focalLength > 0) {
       // Converging lens
       ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
       ray.p1 = incidentPoint;

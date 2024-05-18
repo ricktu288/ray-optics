@@ -94,7 +94,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "message": "සාමාන්‍ය කාච"
   },
   "toolname_SphericalLens": {
@@ -246,7 +246,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "message": "පරිපූර්ණ කාච"
   },
   "tool_SphericalLens": {
@@ -763,7 +763,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "incomplete": true,
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },

@@ -116,7 +116,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
-  "toolname_lens": {
+  "toolname_IdealLens": {
     "incomplete": true,
     "message": "Ideal lens"
   },
@@ -296,7 +296,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Free-shape"
   },
-  "tool_lens": {
+  "tool_IdealLens": {
     "incomplete": true,
     "message": "Ideal Lens"
   },
@@ -855,7 +855,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
-  "tool_lens_popover": {
+  "tool_IdealLens_popover": {
     "incomplete": true,
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
