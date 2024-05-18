@@ -3,10 +3,10 @@
  * Tools -> Glass -> Gradient-index Circle
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
- * @property {string} p_tex - The refractive index function in x and y in LaTeX format.
+ * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
  * @property {Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
- * @property {number} step_size - The step size for the ray trajectory equation.
- * @property {number} eps - The epsilon for the intersection calculations.
+ * @property {number} stepSize - The step size for the ray trajectory equation.
+ * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
 objTypes['grin_CircleGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
   static type = 'grin_CircleGlass';
@@ -15,10 +15,10 @@ objTypes['grin_CircleGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p_tex: '1+e^{-\\frac{x^2+y^2}{50^2}}',
+    refIndexFn: '1+e^{-\\frac{x^2+y^2}{50^2}}',
     origin: { x: 0, y: 0 },
-    step_size: 1,
-    eps: 1e-3
+    stepSize: 1,
+    intersectTol: 1e-3
   };
 
   draw(canvasRenderer, isAboveLight, isHovered) {
@@ -57,8 +57,8 @@ objTypes['grin_CircleGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
     if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
     {
       let len = geometry.distance(ray.p1, ray.p2);
-      let x = ray.p1.x + (this.step_size / len) * (ray.p2.x - ray.p1.x);
-      let y = ray.p1.y + (this.step_size / len) * (ray.p2.y - ray.p1.y);
+      let x = ray.p1.x + (this.stepSize / len) * (ray.p2.x - ray.p1.x);
+      let y = ray.p1.y + (this.stepSize / len) * (ray.p2.y - ray.p1.y);
       const intersection_point = geometry.point(x, y);
       if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
         return intersection_point;
@@ -123,16 +123,16 @@ objTypes['grin_CircleGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
 
   isOutsideGlass(point) {
     const R_squared = geometry.distanceSquared(this.p1, this.p2);
-    return (geometry.distanceSquared(this.p1, point) - R_squared - this.eps > 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.eps > 0);
+    return (geometry.distanceSquared(this.p1, point) - R_squared - this.intersectTol > 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.intersectTol > 0);
   }
 
   isInsideGlass(point) {
     const R_squared = geometry.distanceSquared(this.p1, this.p2);
-    return (geometry.distanceSquared(this.p1, point) - R_squared - this.eps < 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.eps < 0);
+    return (geometry.distanceSquared(this.p1, point) - R_squared - this.intersectTol < 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.intersectTol < 0);
   }
 
   isOnBoundary(point) {
     const R_squared = geometry.distanceSquared(this.p1, this.p2);
-    return (geometry.distanceSquared(this.p1, point) - R_squared - this.eps < 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.eps > 0);
+    return (geometry.distanceSquared(this.p1, point) - R_squared - this.intersectTol < 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.intersectTol > 0);
   }
 };

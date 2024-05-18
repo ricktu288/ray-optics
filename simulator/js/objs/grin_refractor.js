@@ -3,10 +3,10 @@
  * Tools -> Glass -> Gradient-index polygon
  * @property {Array<Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
- * @property {string} p_tex - The refractive index function in x and y in LaTeX format.
+ * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
  * @property {Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
- * @property {number} step_size - The step size for the ray trajectory equation.
- * @property {number} eps - The epsilon for the intersection calculations.
+ * @property {number} stepSize - The step size for the ray trajectory equation.
+ * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
 objTypes['grin_Glass'] = class extends BaseGrinGlass {
   static type = 'grin_Glass';
@@ -15,10 +15,10 @@ objTypes['grin_Glass'] = class extends BaseGrinGlass {
   static serializableDefaults = {
     path: [],
     notDone: false,
-    p_tex: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
+    refIndexFn: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
     origin: { x: 0, y: 0 },
-    step_size: 1,
-    eps: 1e-3
+    stepSize: 1,
+    intersectTol: 1e-3
   };
   
   draw(canvasRenderer, isAboveLight, isHovered) {
@@ -161,8 +161,8 @@ objTypes['grin_Glass'] = class extends BaseGrinGlass {
     if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
     {
       let len = geometry.distance(ray.p1, ray.p2);
-      let x = ray.p1.x + (this.step_size / len) * (ray.p2.x - ray.p1.x);
-      let y = ray.p1.y + (this.step_size / len) * (ray.p2.y - ray.p1.y);
+      let x = ray.p1.x + (this.stepSize / len) * (ray.p2.x - ray.p1.x);
+      let y = ray.p1.y + (this.stepSize / len) * (ray.p2.y - ray.p1.y);
       const intersection_point = geometry.point(x, y);
       if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
         return intersection_point;
@@ -259,11 +259,11 @@ objTypes['grin_Glass'] = class extends BaseGrinGlass {
       let p2 = this.path[(i + 1) % this.path.length];
       let p1_p2 = geometry.point(p2.x - p1.x, p2.y - p1.y);
       let p1_p3 = geometry.point(p3.x - p1.x, p3.y - p1.y);
-      if (geometry.cross(p1_p2, p1_p3) - this.eps < 0 && geometry.cross(p1_p2, p1_p3) + this.eps > 0) // if p1_p2 and p1_p3 are collinear
+      if (geometry.cross(p1_p2, p1_p3) - this.intersectTol < 0 && geometry.cross(p1_p2, p1_p3) + this.intersectTol > 0) // if p1_p2 and p1_p3 are collinear
       {
         let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
         let p1_p2_squared = geometry.distanceSquared(p1, p2);
-        if (p1_p2_squared - dot_p2_p3 + this.eps >= 0 && dot_p2_p3 + this.eps >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
+        if (p1_p2_squared - dot_p2_p3 + this.intersectTol >= 0 && dot_p2_p3 + this.intersectTol >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
           return true;
       }
     }
@@ -365,10 +365,10 @@ objTypes['grin_Glass'] = class extends BaseGrinGlass {
       let p2 = this.path[(i + 1) % this.path.length];
       let y_max = Math.max(p1.y, p2.y);
       let y_min = Math.min(p1.y, p2.y);
-      if ((y_max - p3.y - this.eps > 0 && y_max - p3.y + this.eps > 0) && (y_min - p3.y - this.eps < 0 && y_min - p3.y + this.eps < 0)) {
-        if (p1.x == p2.x && (p1.x - p3.x + this.eps > 0 && p1.x - p3.x - this.eps > 0)) // in case the current segment is vertical
+      if ((y_max - p3.y - this.intersectTol > 0 && y_max - p3.y + this.intersectTol > 0) && (y_min - p3.y - this.intersectTol < 0 && y_min - p3.y + this.intersectTol < 0)) {
+        if (p1.x == p2.x && (p1.x - p3.x + this.intersectTol > 0 && p1.x - p3.x - this.intersectTol > 0)) // in case the current segment is vertical
           cnt++;
-        else if ((p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x - this.eps > 0 && (p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x + this.eps > 0)
+        else if ((p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x - this.intersectTol > 0 && (p1.x + ((p3.y - p1.y) / (p2.y - p1.y)) * (p2.x - p1.x)) - p3.x + this.intersectTol > 0)
           cnt++;
       }
     }

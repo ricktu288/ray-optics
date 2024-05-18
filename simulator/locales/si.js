@@ -470,11 +470,11 @@ locales["si"] = {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "incomplete": true,
     "message": "Numerical solver step size"
   },
-  "eps": {
+  "intersectTol": {
     "incomplete": true,
     "message": "Intersection tolerance"
   },
@@ -610,7 +610,7 @@ locales["si"] = {
   "refIndex_note_popover": {
     "message": "<p>*වෙනත් වීදුරුවක් ඇතුළත නම් සාපේක්ෂ</p><p>මෙම වස්තුව (නිරපේක්ෂ) වර්තන දර්ශකය n₁ සමඟ අනුකරණය කළ යුතු නමුත්, වර්තන දර්ශකය n₀ සහිත වෙනත් වීදුරුවක් තුළ තබා තිබේ නම්, ඔබ මෙහි වර්තන දර්ශකය n₁/n₀ ලෙස සැකසිය යුතුය. වීදුරු කිහිපයක් එකට අතිච්ඡාදනය වන වඩාත් සංකීර්ණ අවස්ථාවන්හිදී, අතිච්ඡාදනය වන කලාපයේ ඵලදායී පරාවර්තක දර්ශකය එක් එක් ඒවායේ පරාවර්තක දර්ශකවල ගුණිතයට සමාන වේ.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "incomplete": true,
     "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },

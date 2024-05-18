@@ -405,10 +405,10 @@ locales["pt-BR"] = {
   "refIndex_origin": {
     "message": "Origem de n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "message": "Tamanho de passo da solução numérica"
   },
-  "eps": {
+  "intersectTol": {
     "message": "Tolerância de Interseção"
   },
   "random": {
@@ -513,7 +513,7 @@ locales["pt-BR"] = {
   "refIndex_note_popover": {
     "message": "<p>*Relativo se dentro de outro vidro</p><p>Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "message": "<p>Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'grin_CircleGlass.js', para mais informações.</p>"
   },
   "eps_grin_CircleGlass_note_popover": {

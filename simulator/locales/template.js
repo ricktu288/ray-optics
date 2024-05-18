@@ -539,11 +539,11 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "incomplete": true,
     "message": "Numerical solver step size"
   },
-  "eps": {
+  "intersectTol": {
     "incomplete": true,
     "message": "Intersection tolerance"
   },
@@ -683,7 +683,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "<p>*Relative if inside another glass</p><p>If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective reflective index of the overlapping region equals the product of the reflective indices of individual ones.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "incomplete": true,
     "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },

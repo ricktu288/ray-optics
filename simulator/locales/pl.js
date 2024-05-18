@@ -417,10 +417,10 @@ locales["pl"] = {
   "refIndex_origin": {
     "message": "Początek układu n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "message": "Rozmiar kroku rozwiązywania numerycznego"
   },
-  "eps": {
+  "intersectTol": {
     "message": "Tolerancja intersekcji"
   },
   "random": {
@@ -541,7 +541,7 @@ locales["pl"] = {
   "refIndex_note_popover": {
     "message": "<p>*względny, jeśli znajduje się w innym szkle</p><p>Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "message": "<p>Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'grin_CircleGlass.js'.</p>"
   },
   "eps_grin_CircleGlass_note_popover": {

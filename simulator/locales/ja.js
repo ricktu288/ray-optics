@@ -539,11 +539,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "incomplete": true,
     "message": "Numerical solver step size"
   },
-  "eps": {
+  "intersectTol": {
     "incomplete": true,
     "message": "Intersection tolerance"
   },
@@ -683,7 +683,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "<p>*relative if inside another glass</p><p>もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "incomplete": true,
     "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },

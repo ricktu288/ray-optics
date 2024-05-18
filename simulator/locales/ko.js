@@ -539,11 +539,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "incomplete": true,
     "message": "Numerical solver step size"
   },
-  "eps": {
+  "intersectTol": {
     "incomplete": true,
     "message": "Intersection tolerance"
   },
@@ -683,7 +683,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "<p>*다른 매질 내부에 있다면 상대 굴절률</p><p>이 객체가 (절대) 굴절률 n₁으로 시뮬레이션되어야 하는데 굴절률이 n₀인 다른 매질 내부에 있다면 상대 굴절률인 n₁/n₀ 를 입력해야합니다. 여러 장의 매질이 겹쳐진 복잡한 경우에는 겹친 영역의 실질적인 굴절률 (effective refractive index)은 매질 각각의 굴절률의 곱과 같습니다.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "incomplete": true,
     "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },

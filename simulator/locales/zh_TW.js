@@ -405,10 +405,10 @@ locales["zh-TW"] = {
   "refIndex_origin": {
     "message": "n(x,y)的原點"
   },
-  "step_size": {
+  "stepSize": {
     "message": "數值求解器步長"
   },
-  "eps": {
+  "intersectTol": {
     "message": "相交容忍度"
   },
   "random": {
@@ -513,7 +513,7 @@ locales["zh-TW"] = {
   "refIndex_note_popover": {
     "message": "<p>*於另一透光物內部時為相對值</p><p>如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "message": "<p>用歐拉法求解光線程函方程(eikonal ray equation)的步長 - 更多資訊詳見 'grin_CircleGlass.js' 中的 'step' 函數與原始碼文件。</p>"
   },
   "eps_grin_CircleGlass_note_popover": {

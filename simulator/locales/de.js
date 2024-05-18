@@ -435,11 +435,11 @@ locales["de"] = {
     "incomplete": true,
     "message": "Origin of n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "incomplete": true,
     "message": "Numerical solver step size"
   },
-  "eps": {
+  "intersectTol": {
     "incomplete": true,
     "message": "Intersection tolerance"
   },
@@ -578,7 +578,7 @@ locales["de"] = {
   "refIndex_note_popover": {
     "message": "<p>*relativ, wenn Glaskörper überlappen</p><p>Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "incomplete": true,
     "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
   },

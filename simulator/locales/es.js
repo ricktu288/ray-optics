@@ -412,10 +412,10 @@ locales["es"] = {
   "refIndex_origin": {
     "message": "Origen de n(x,y)"
   },
-  "step_size": {
+  "stepSize": {
     "message": "Tamaño de paso de la solución numérica"
   },
-  "eps": {
+  "intersectTol": {
     "message": "Tolerancia de la intersección"
   },
   "random": {
@@ -523,7 +523,7 @@ locales["es"] = {
   "refIndex_note_popover": {
     "message": "<p>*Relativo si esta dentro de otro vidrio</p><p>Si este objeto se tiene que simular con un índice de refracción (absoluto) n₁, pero esta situado dentro de otro vidrio con índice de refracción n₀, entonces deberá establecer el índice de refracción en n₁/n₀ aquí. En casos más complicados donde varios vidrios se sobrepongan, el índice de refracción efectivo de la región sobrepuesta es igual al producto de los índices de refracción por separado.</p>"
   },
-  "step_size_note_popover": {
+  "stepSize_note_popover": {
     "message": "<p>Tamaño de paso para el método de Euler para resolver la ecuación de la eikonal de rayos - ver la función 'step' y la documentación dentro del archivo 'grin_ciclelens.js' para más información.</p>"
   },
   "eps_grin_CircleGlass_note_popover": {

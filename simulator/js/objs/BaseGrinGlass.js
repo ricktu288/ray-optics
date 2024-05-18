@@ -1,7 +1,7 @@
 /**
  * The base class for glasses.
  * @property {string} p - The refractive index function (a function of x and y, related to `origin`) of the glass in math.js string.
- * @property {string} p_tex - The refractive index function of the glass in LaTeX.
+ * @property {string} refIndexFn - The refractive index function of the glass in LaTeX.
  * @property {string} p_der_x - The x derivative of `p` in math.js string.
  * @property {string} p_der_x_tex - The x derivative of `p` in LaTeX.
  * @property {string} p_der_y - The y derivative of `p` in math.js string.
@@ -10,8 +10,8 @@
  * @property {function} fn_p - The evaluatex function for `p`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_x - The evaluatex function for `p_der_x`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_y - The evaluatex function for `p_der_y`, where (x,y) has been shifted to the absolute coordinates.
- * @property {number} step_size - The step size for the ray trajectory equation.
- * @property {number} eps - The epsilon for the intersection calculations.
+ * @property {number} stepSize - The step size for the ray trajectory equation.
+ * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
 class BaseGrinGlass extends BaseGlass {
 
@@ -24,8 +24,8 @@ class BaseGrinGlass extends BaseGlass {
     if (!this.fn_p) {
       this.initFns();
     }
-    objBar.createEquation('n(x,y) = ', this.p_tex, function (obj, value) {
-      obj.p_tex = value;
+    objBar.createEquation('n(x,y) = ', this.refIndexFn, function (obj, value) {
+      obj.refIndexFn = value;
       obj.initFns();
     }, getMsg('grin_refractive_index'));
 
@@ -39,14 +39,14 @@ class BaseGrinGlass extends BaseGlass {
       }
     });
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['step_size']))) {
-      objBar.createNumber(getMsg('step_size'), 0.1, 1, 0.1, this.step_size, function (obj, value) {
-        obj.step_size = parseFloat(value);
-      }, getMsg('step_size_note_popover'));
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
+      objBar.createNumber(getMsg('stepSize'), 0.1, 1, 0.1, this.stepSize, function (obj, value) {
+        obj.stepSize = parseFloat(value);
+      }, getMsg('stepSize_note_popover'));
     }
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['eps']))) {
-      objBar.createNumber(getMsg('eps'), 1e-3, 1e-2, 1e-3, this.eps, function (obj, value) {
-        obj.eps = parseFloat(value);
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
+      objBar.createNumber(getMsg('intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
+        obj.intersectTol = parseFloat(value);
       }, getMsg('eps_' + this.constructor.type + '_note_popover'));
     }
 
@@ -104,12 +104,12 @@ class BaseGrinGlass extends BaseGlass {
    */
   initFns() {
     try {
-      this.p = parseTex(this.p_tex).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
+      this.p = parseTex(this.refIndexFn).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
       this.p_der_x = math.derivative(this.p, 'x').toString();
       this.p_der_x_tex = math.parse(this.p_der_x).toTex().replaceAll("{+", "{"); // 'evaluateLatex' function can't and can handle expressions of the form '...num^{+exp}...' and '...num^{exp}...', respectively, where num and exp are numbers
       this.p_der_y = math.derivative(this.p, 'y').toString();
       this.p_der_y_tex = math.parse(this.p_der_y).toTex().replaceAll("{+", "{");
-      this.fn_p = evaluateLatex(this.shiftOrigin(this.p_tex));
+      this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn));
       this.fn_p_der_x = evaluateLatex(this.shiftOrigin(this.p_der_x_tex));
       this.fn_p_der_y = evaluateLatex(this.shiftOrigin(this.p_der_y_tex));
     } catch (e) {
@@ -263,11 +263,11 @@ class BaseGrinGlass extends BaseGlass {
     const x_der_s_prev = (p2.x - p1.x) / len;
     const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
 
-    const x_der_s = x_der_s_prev + this.step_size * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
-    const y_der_s = y_der_s_prev + this.step_size * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+    const x_der_s = x_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+    const y_der_s = y_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
 
-    const x_new = x + this.step_size * x_der_s;
-    const y_new = y + this.step_size * y_der_s;
+    const x_new = x + this.stepSize * x_der_s;
+    const y_new = y + this.stepSize * y_der_s;
 
     return geometry.point(x_new, y_new);
   }
