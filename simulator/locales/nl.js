@@ -90,7 +90,7 @@ locales["nl"] = {
   "toolname_CircleGlass": {
     "message": "Glas"
   },
-  "toolname_grin_CircleGlass": {
+  "toolname_CircleGrinGlass": {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
@@ -243,7 +243,7 @@ locales["nl"] = {
   "tool_CircleGlass": {
     "message": "Cirkel"
   },
-  "tool_grin_CircleGlass": {
+  "tool_CircleGrinGlass": {
     "incomplete": true,
     "message": "Gradient-index circle"
   },
@@ -453,7 +453,7 @@ locales["nl"] = {
   },
   "symbolic_grin_note_popover": {
     "incomplete": true,
-    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'grin_CircleGlass.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
+    "message": "<p>This toggle applies to all GRIN objects in the simulation.</p><p>This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'CircleGrinGlass.js').</p><p>The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, <b>such that at least one of them has a refractive index function which is not defined in the <u>entire</u> plane</b>, while the symbolic implementation is slower but robust to such problems.</p>"
   },
   "focalLength": {
     "message": "Brandpuntafstand"
@@ -623,11 +623,11 @@ locales["nl"] = {
   },
   "stepSize_note_popover": {
     "incomplete": true,
-    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'grin_CircleGlass.js' file, for more information.</p>"
+    "message": "<p>Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'CircleGrinGlass.js' file, for more information.</p>"
   },
-  "eps_grin_CircleGlass_note_popover": {
+  "eps_CircleGrinGlass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
   },
   "eps_grin_Glass_note_popover": {
     "incomplete": true,
@@ -765,7 +765,7 @@ locales["nl"] = {
   "tool_CircleGlass_popover": {
     "message": "Glasschijf, gedefinieerd door middelpunt en een punt op de rand. (Sleep of klik om te maken.)"
   },
-  "tool_grin_CircleGlass_popover": {
+  "tool_CircleGrinGlass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },

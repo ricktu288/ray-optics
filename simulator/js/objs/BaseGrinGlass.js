@@ -133,7 +133,7 @@ class BaseGrinGlass extends BaseGlass {
 
   /**
    * @typedef {Object} BodyMergingObj
-   * Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. grin_CircleGlass and grin_Glass), which gets updated as the ray enters/exits into/from grin objects, using the "multRefIndex"/"devRefIndex" function, respectively.
+   * Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. CircleGrinGlass and grin_Glass), which gets updated as the ray enters/exits into/from grin objects, using the "multRefIndex"/"devRefIndex" function, respectively.
    * @property {function} fn_p - The refractive index function for the equivalent region of the simulation.
    * @property {function} fn_p_der_x - The x derivative of `fn_p` for the equivalent region of the simulation.
    * @property {function} fn_p_der_y - The y derivative of `fn_p` for the equivalent region of the simulation.

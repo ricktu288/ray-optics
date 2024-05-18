@@ -78,7 +78,7 @@ locales["pt-BR"] = {
   "toolname_CircleGlass": {
     "message": "Vidro"
   },
-  "toolname_grin_CircleGlass": {
+  "toolname_CircleGrinGlass": {
     "message": "Círculo com gradiente de índice"
   },
   "toolname_Glass": {
@@ -213,7 +213,7 @@ locales["pt-BR"] = {
   "tool_CircleGlass": {
     "message": "Círculo"
   },
-  "tool_grin_CircleGlass": {
+  "tool_CircleGrinGlass": {
     "message": "Círculo"
   },
   "tool_Glass": {
@@ -385,7 +385,7 @@ locales["pt-BR"] = {
     "message": "<ul><li>Constantes suportadas:<br><code>pi e</code></li><li>Operadores suportados:<br><code>+ - * / ^</code></li><li>Funções suportadas:<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>Somente suporta funções diferenciáveis.</li><li>A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas.</li><li>Para simulação mais precisa, veja \"Mais opções...\"</li></ul>"
   },
   "symbolic_grin_note_popover": {
-    "message": "<p>Esta opção se aplica a todos objetos GRIN na simulação.</p><p>Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'grin_CircleGlass.js').</p><p>A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, <b>tal que ao menos um deles possua uma função de índice refrativo que não é definida <u>todo</u> o plano</b>, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema.</p>"
+    "message": "<p>Esta opção se aplica a todos objetos GRIN na simulação.</p><p>Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'CircleGrinGlass.js').</p><p>A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, <b>tal que ao menos um deles possua uma função de índice refrativo que não é definida <u>todo</u> o plano</b>, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema.</p>"
   },
   "focalLength": {
     "message": "Comprimento focal"
@@ -514,11 +514,11 @@ locales["pt-BR"] = {
     "message": "<p>*Relativo se dentro de outro vidro</p><p>Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.</p>"
   },
   "stepSize_note_popover": {
-    "message": "<p>Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'grin_CircleGlass.js', para mais informações.</p>"
+    "message": "<p>Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'CircleGrinGlass.js', para mais informações.</p>"
   },
-  "eps_grin_CircleGlass_note_popover": {
+  "eps_CircleGrinGlass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'grin_CircleGlass.js' file.</p>"
+    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
   },
   "eps_grin_Glass_note_popover": {
     "incomplete": true,
@@ -652,7 +652,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
   },
-  "tool_grin_CircleGlass_popover": {
+  "tool_CircleGrinGlass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
   },
