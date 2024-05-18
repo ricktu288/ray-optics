@@ -120,7 +120,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Ideal lens"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": true,
     "message": "Spherical lens"
   },
@@ -300,7 +300,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Ideal Lens"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": true,
     "message": "Spherical Lens"
   },
@@ -859,7 +859,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },

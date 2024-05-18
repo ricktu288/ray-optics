@@ -119,7 +119,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "理想的なレンズ"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": false,
     "message": "球面レンズ"
   },
@@ -299,7 +299,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "理想的なレンズ"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": false,
     "message": "球面レンズ"
   },
@@ -858,7 +858,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": false,
     "message": "球面レンズ (クリックして作成します。)"
   },

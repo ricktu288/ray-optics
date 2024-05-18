@@ -90,7 +90,7 @@ locales["pt-BR"] = {
   "toolname_lens": {
     "message": "Lente ideal"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "message": "Lente esférica"
   },
   "toolname_CustomGlass": {
@@ -225,7 +225,7 @@ locales["pt-BR"] = {
   "tool_lens": {
     "message": "Lente Ideal"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "message": "Lente Esférica"
   },
   "tool_CustomGlass": {
@@ -668,7 +668,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },

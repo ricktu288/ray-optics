@@ -90,7 +90,7 @@ locales["pl"] = {
   "toolname_lens": {
     "message": "Soczewka idealna"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "message": "Soczewka sferyczna"
   },
   "toolname_CustomGlass": {
@@ -227,7 +227,7 @@ locales["pl"] = {
   "tool_lens": {
     "message": "Soczewka idealna"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "message": "Soczewka sferyczna"
   },
   "tool_CustomGlass": {
@@ -673,7 +673,7 @@ locales["pl"] = {
   "tool_lens_popover": {
     "message": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "message": "Soczewka sferyczna. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_CustomGlass_popover": {

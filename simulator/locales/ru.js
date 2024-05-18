@@ -101,7 +101,7 @@ locales["ru"] = {
   "toolname_lens": {
     "message": "Идеальная линза"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": true,
     "message": "Spherical lens"
   },
@@ -255,7 +255,7 @@ locales["ru"] = {
   "tool_lens": {
     "message": "Идеальная линза"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": true,
     "message": "Spherical Lens"
   },
@@ -767,7 +767,7 @@ locales["ru"] = {
   "tool_lens_popover": {
     "message": "Идеальная линза, строго подчиняющаяся уравнению плоской линзы (1/d + 1/f = 1/F). Фокальное расстояние задается в пикселях. (Потяните или нажмите, чтобы создать.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },

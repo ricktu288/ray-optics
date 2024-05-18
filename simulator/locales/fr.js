@@ -102,7 +102,7 @@ locales["fr"] = {
   "toolname_lens": {
     "message": "Lentille idéale"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": true,
     "message": "Spherical lens"
   },
@@ -255,7 +255,7 @@ locales["fr"] = {
   "tool_lens": {
     "message": "Lentille idéale"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": true,
     "message": "Spherical Lens"
   },
@@ -764,7 +764,7 @@ locales["fr"] = {
   "tool_lens_popover": {
     "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },

@@ -90,7 +90,7 @@ locales["zh-TW"] = {
   "toolname_lens": {
     "message": "理想透鏡"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "message": "球面透鏡"
   },
   "toolname_CustomGlass": {
@@ -225,7 +225,7 @@ locales["zh-TW"] = {
   "tool_lens": {
     "message": "理想透鏡"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "message": "球面透鏡"
   },
   "tool_CustomGlass": {
@@ -645,7 +645,7 @@ locales["zh-TW"] = {
   "tool_lens_popover": {
     "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（曳或點擊以創建。）"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "message": "球面透鏡。（點擊以創建。）"
   },
   "tool_CustomGlass_popover": {

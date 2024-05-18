@@ -119,7 +119,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "이상적인 렌즈 (Ideal lens)"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": false,
     "message": "구면 렌즈"
   },
@@ -299,7 +299,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "이상적인 렌즈 (Ideal lens)"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": false,
     "message": "구면 렌즈"
   },
@@ -858,7 +858,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": false,
     "message": "구면 렌즈. (클릭하여 생성.)"
   },

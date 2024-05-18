@@ -93,7 +93,7 @@ locales["de"] = {
   "toolname_lens": {
     "message": "Ideale Linse"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "message": "Sphärische Linse"
   },
   "toolname_CustomGlass": {
@@ -236,7 +236,7 @@ locales["de"] = {
   "tool_lens": {
     "message": "Ideale Linse"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "message": "Sphärische Linse"
   },
   "tool_CustomGlass": {
@@ -719,7 +719,7 @@ locales["de"] = {
   "tool_lens_popover": {
     "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "message": "Eine sphärische Linse. (Klicken zum Erzeugen.)"
   },
   "tool_CustomGlass_popover": {

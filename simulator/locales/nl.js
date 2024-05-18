@@ -104,7 +104,7 @@ locales["nl"] = {
   "toolname_lens": {
     "message": "Ideale lens"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "incomplete": true,
     "message": "Spherical lens"
   },
@@ -258,7 +258,7 @@ locales["nl"] = {
   "tool_lens": {
     "message": "Ideale Lens"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "incomplete": true,
     "message": "Spherical Lens"
   },
@@ -779,7 +779,7 @@ locales["nl"] = {
   "tool_lens_popover": {
     "message": "Een ideale lens die de lenzenformule volgt (1/v + 1/b = 1/f). De brandpuntafstand (in pixels) kan worden ingevoerd. (Sleep of klik om te maken.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "incomplete": true,
     "message": "A spherical lens. (Click to create.)"
   },

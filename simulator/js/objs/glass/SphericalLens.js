@@ -4,24 +4,24 @@
  * It is essentially a special case of `objTypes['Glass']` that has the shape of a lens, but it provides a more user-friendly interface to create a lens using more familliar parameters.
  * In the state where the lens is built, it behaves exactly like `objTypes['Glass']`, and `p1`, `p2`, and `parames` are null. But when the lens is not built (which happens when the user enters a set of invalid parameters, or if the JSON data is defined using parameters directly), it is defined using `p1`, `p2`, and `params`, and `path` is null.
  * @property {Array<object>} path - The path of the lens if it is built.
- * @property {string} definedBy - The way the lens is defined. Either 'DR1R2' or 'DFfdBfd'.
+ * @property {string} defBy - The way the lens is defined. Either 'DR1R2' or 'DFfdBfd'.
  * @property {Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.
  * @property {Point} p2 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the bottom edge of the lens, if it is not built.
- * @property {object} params - The parameters of the lens if it is not built. It has the following properties: `d`, `r1`, and `r2` if `definedBy` is 'DR1R2', and `d`, `ffd`, and `bfd` if `definedBy` is 'DFfdBfd'.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {object} params - The parameters of the lens if it is not built. It has the following properties: `d`, `r1`, and `r2` if `defBy` is 'DR1R2', and `d`, `ffd`, and `bfd` if `defBy` is 'DFfdBfd'.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-objTypes['sphericallens'] = class extends objTypes['Glass'] {
-  static type = 'sphericallens';
+objTypes['SphericalLens'] = class extends objTypes['Glass'] {
+  static type = 'SphericalLens';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
     path: null,
-    definedBy: 'DR1R2',
+    defBy: 'DR1R2',
     p1: null,
     p2: null,
     params: null,
-    p: 1.5,
+    refIndex: 1.5,
     cauchyB: 0.004
   };
 
@@ -30,9 +30,9 @@ objTypes['sphericallens'] = class extends objTypes['Glass'] {
 
     if (!this.path && this.p1 && this.p2) {
       // If the lens is not built in the JSON data, build the lens here.
-      if (this.definedBy == 'DR1R2') {
+      if (this.defBy == 'DR1R2') {
         this.createLensWithDR1R2(this.params.d, this.params.r1, this.params.r2);
-      } else if (this.definedBy == 'DFfdBfd') {
+      } else if (this.defBy == 'DFfdBfd') {
         this.createLensWithDFfdBfd(this.params.d, this.params.ffd, this.params.bfd);
       }
     }
@@ -40,14 +40,14 @@ objTypes['sphericallens'] = class extends objTypes['Glass'] {
 
   populateObjBar(objBar) {
 
-    objBar.createDropdown('', this.definedBy, {
+    objBar.createDropdown('', this.defBy, {
       'DR1R2': getMsg('radii_of_curvature'),
       'DFfdBfd': getMsg('focal_distances')
     }, function (obj, value) {
-      obj.definedBy = value;
+      obj.defBy = value;
     }, null, true);
 
-    if (this.definedBy == 'DR1R2') {
+    if (this.defBy == 'DR1R2') {
       var params = this.getDR1R2();
       var r1 = params.r1;
       var r2 = params.r2;
@@ -71,7 +71,7 @@ objTypes['sphericallens'] = class extends objTypes['Glass'] {
         var r2 = params.r2;
         obj.createLensWithDR1R2(value, r1, r2);
       }, null, true);
-    } else if (this.definedBy == 'DFfdBfd') {
+    } else if (this.defBy == 'DFfdBfd') {
       objBar.createInfoBox('<img src="../img/FFD_BFD.svg" width=100%>');
 
       var params = this.getDFfdBfd();
@@ -100,10 +100,10 @@ objTypes['sphericallens'] = class extends objTypes['Glass'] {
     }
 
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchyB') + " A", 1, 3, 0.01, this.p, function (obj, value) {
+      objBar.createNumber(getMsg('cauchyB') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
         var old_params = obj.getDFfdBfd();
-        obj.p = value * 1;
-        if (obj.definedBy == 'DFfdBfd') {
+        obj.refIndex = value * 1;
+        if (obj.defBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
@@ -111,16 +111,16 @@ objTypes['sphericallens'] = class extends objTypes['Glass'] {
       objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyB, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.cauchyB = value;
-        if (obj.definedBy == 'DFfdBfd') {
+        if (obj.defBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
       });
     } else {
-      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.p, function (obj, value) {
+      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
         var old_params = obj.getDFfdBfd();
-        obj.p = value * 1;
-        if (obj.definedBy == 'DFfdBfd') {
+        obj.refIndex = value * 1;
+        if (obj.defBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }

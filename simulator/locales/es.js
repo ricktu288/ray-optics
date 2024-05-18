@@ -90,7 +90,7 @@ locales["es"] = {
   "toolname_lens": {
     "message": "Lente ideal"
   },
-  "toolname_sphericallens": {
+  "toolname_SphericalLens": {
     "message": "Lente esférica"
   },
   "toolname_CustomGlass": {
@@ -226,7 +226,7 @@ locales["es"] = {
   "tool_lens": {
     "message": "Lente ideal"
   },
-  "tool_sphericallens": {
+  "tool_SphericalLens": {
     "message": "Lente esférica"
   },
   "tool_CustomGlass": {
@@ -655,7 +655,7 @@ locales["es"] = {
   "tool_lens_popover": {
     "message": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal (en pixels) se puede establecer directamente. (Arrastre o clique para crear.)"
   },
-  "tool_sphericallens_popover": {
+  "tool_SphericalLens_popover": {
     "message": "Una lente esférica. (Click para crear.)"
   },
   "tool_CustomGlass_popover": {
