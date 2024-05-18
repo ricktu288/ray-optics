@@ -94,7 +94,7 @@ locales["ru"] = {
   "toolname_Glass": {
     "message": "Стекло"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "incomplete": true,
     "message": "Gradient-index glass"
   },
@@ -248,7 +248,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Свободная форма / Polygon"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -616,9 +616,9 @@ locales["ru"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
   },
-  "eps_grin_Glass_note_popover": {
+  "eps_GrinGlass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": true,
@@ -760,7 +760,7 @@ locales["ru"] = {
   "tool_Glass_popover": {
     "message": "Стекло с формой, состоящей из отрезков и дуг. (Нажмите, чтобы создать отрезок, потяните, чтобы создать дугу, нажмите на начальную точку, чтобы закончить фигуру.)"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

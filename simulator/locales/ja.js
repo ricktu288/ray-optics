@@ -111,7 +111,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ガラス"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -291,7 +291,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "任意の形 / Polygon"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "incomplete": true,
     "message": "Gradient-index polygon"
   },
@@ -691,9 +691,9 @@ locales["ja"] = {
     "incomplete": true,
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
   },
-  "eps_grin_Glass_note_popover": {
+  "eps_GrinGlass_note_popover": {
     "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file.</p>"
   },
   "cauchyCoeff": {
     "incomplete": true,
@@ -850,7 +850,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "線分と円弧から構成される任意の形状のガラス。 (クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。)"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "incomplete": true,
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },

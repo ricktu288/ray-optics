@@ -84,7 +84,7 @@ locales["zh-TW"] = {
   "toolname_Glass": {
     "message": "透光物"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "message": "漸變折射率透光物"
   },
   "toolname_IdealLens": {
@@ -219,7 +219,7 @@ locales["zh-TW"] = {
   "tool_Glass": {
     "message": "多邊形 / 圓弧"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "message": "漸變折射率多邊形"
   },
   "tool_IdealLens": {
@@ -519,8 +519,8 @@ locales["zh-TW"] = {
   "eps_CircleGrinGlass_note_popover": {
     "message": "<p>單位 - [長度]^2.</p><p>本數值容忍度被用於 'CircleGrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
   },
-  "eps_grin_Glass_note_popover": {
-    "message": "<p>單位 - [長度].</p><p>本數值容忍度被用於 'grin_Glass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
+  "eps_GrinGlass_note_popover": {
+    "message": "<p>單位 - [長度].</p><p>本數值容忍度被用於 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。</p>"
   },
   "cauchyCoeff": {
     "message": "柯西係數"
@@ -639,7 +639,7 @@ locales["zh-TW"] = {
   "tool_Glass_popover": {
     "message": "任何由線段與圓弧組成的透光物。（點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。）"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "message": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。警告：僅支援簡單多邊形，否則行為無法預測。（點擊以建立線段，點擊一開始的點以結束繪製。）"
   },
   "tool_IdealLens_popover": {

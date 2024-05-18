@@ -84,7 +84,7 @@ locales["zh-CN"] = {
   "toolname_Glass": {
     "message": "透光物"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "message": "渐变折射率透光物"
   },
   "toolname_IdealLens": {
@@ -219,7 +219,7 @@ locales["zh-CN"] = {
   "tool_Glass": {
     "message": "多边形 / 圆弧"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "message": "渐变折射率多边形"
   },
   "tool_IdealLens": {
@@ -519,8 +519,8 @@ locales["zh-CN"] = {
   "eps_CircleGrinGlass_note_popover": {
     "message": "<p>单位 - [长度]^2.</p><p>本数值容忍度被用于 'CircleGrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
-  "eps_grin_Glass_note_popover": {
-    "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'grin_Glass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
+  "eps_GrinGlass_note_popover": {
+    "message": "<p>单位 - [长度].</p><p>本数值容忍度被用于 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。 </p>"
   },
   "cauchyCoeff": {
     "message": "柯西系数"
@@ -639,7 +639,7 @@ locales["zh-CN"] = {
   "tool_Glass_popover": {
     "message": "任何由线段与圆弧组成的透光物。 （点击以建立线段，拖曳以建立弧形，点击一开始的点以结束绘制。）"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "message": "折射率为自定义函数 n(x,y)，边界为多边形的透光物。警告：仅支持简单多边形，否则行为无法预测。（点击以建立线段，点击一开始的点以结束绘制。）"
   },
   "tool_IdealLens_popover": {

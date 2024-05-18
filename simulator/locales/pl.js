@@ -84,7 +84,7 @@ locales["pl"] = {
   "toolname_Glass": {
     "message": "Soczewki i inne"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "message": "Szkło gradientowe (GRIN)"
   },
   "toolname_IdealLens": {
@@ -221,7 +221,7 @@ locales["pl"] = {
   "tool_Glass": {
     "message": "Dowolny kształt / Wielokąt"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "message": "Wielokąt gradientowy"
   },
   "tool_IdealLens": {
@@ -547,8 +547,8 @@ locales["pl"] = {
   "eps_CircleGrinGlass_note_popover": {
     "message": "<p>Jednostki - [długość]^2.</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'CircleGrinGlass.js'.</p>"
   },
-  "eps_grin_Glass_note_popover": {
-    "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'grin_Glass.js'.</p>"
+  "eps_GrinGlass_note_popover": {
+    "message": "<p>Jednostki - [długość].</p><p>Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'GrinGlass.js'.</p>"
   },
   "cauchyCoeff": {
     "message": "Współczynnik Cauchy'ego"
@@ -667,7 +667,7 @@ locales["pl"] = {
   "tool_Glass_popover": {
     "message": "Szkło o dowolnych kształtach, mających przekroje ograniczone odcinkami i fragmentami okręgów. (Kliknij, aby utworzyć odcinek; przeciągnij, aby utworzyć łuk; kliknij punkt początkowy, żeby zakończyć rysowanie.)"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią. OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne. (Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.)"
   },
   "tool_IdealLens_popover": {

@@ -84,7 +84,7 @@ locales["es"] = {
   "toolname_Glass": {
     "message": "Arcos poligonales/ circulares"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "message": "Polígono con gradiente de índice"
   },
   "toolname_IdealLens": {
@@ -220,7 +220,7 @@ locales["es"] = {
   "tool_Glass": {
     "message": "Forma libre"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "message": "Forma libre"
   },
   "tool_IdealLens": {
@@ -529,8 +529,8 @@ locales["es"] = {
   "eps_CircleGrinGlass_note_popover": {
     "message": "<p>Unidades - [longitud]^2.</p><p>Esta tolerancia numérica se usa en las funciones 'isOutsideGlass', 'isInsideGlass' y 'isOnBoundary', dentro del archivo 'CircleGrinGlass.js'.</p>"
   },
-  "eps_grin_Glass_note_popover": {
-    "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'grin_Glass.js'.</p>"
+  "eps_GrinGlass_note_popover": {
+    "message": "<p>Unidades - [longitud].</p><p>Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'GrinGlass.js'.</p>"
   },
   "cauchyCoeff": {
     "message": "Coeficiente de Cauchy"
@@ -649,7 +649,7 @@ locales["es"] = {
   "tool_Glass_popover": {
     "message": "Vidrio con cualquier forma construida mediante segmentos de línea o arco. (Clique para crear un segmento, arrastre para crear un arco, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "message": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal. ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible. (Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
   "tool_IdealLens_popover": {

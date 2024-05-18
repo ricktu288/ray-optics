@@ -8,8 +8,8 @@
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
-objTypes['grin_Glass'] = class extends BaseGrinGlass {
-  static type = 'grin_Glass';
+objTypes['GrinGlass'] = class extends BaseGrinGlass {
+  static type = 'GrinGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {

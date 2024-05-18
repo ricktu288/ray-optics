@@ -84,7 +84,7 @@ locales["en"] = {
   "toolname_Glass": {
     "message": "Glass"
   },
-  "toolname_grin_Glass": {
+  "toolname_GrinGlass": {
     "message": "Gradient-index glass"
   },
   "toolname_IdealLens": {
@@ -219,7 +219,7 @@ locales["en"] = {
   "tool_Glass": {
     "message": "Polygon / Circular Arcs"
   },
-  "tool_grin_Glass": {
+  "tool_GrinGlass": {
     "message": "Gradient-index polygon"
   },
   "tool_IdealLens": {
@@ -519,8 +519,8 @@ locales["en"] = {
   "eps_CircleGrinGlass_note_popover": {
     "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
   },
-  "eps_grin_Glass_note_popover": {
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'grin_Glass.js' file.</p>"
+  "eps_GrinGlass_note_popover": {
+    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file.</p>"
   },
   "cauchyCoeff": {
     "message": "Cauchy coefficient"
@@ -639,7 +639,7 @@ locales["en"] = {
   "tool_Glass_popover": {
     "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
   },
-  "tool_grin_Glass_popover": {
+  "tool_GrinGlass_popover": {
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_IdealLens_popover": {
