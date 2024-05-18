@@ -95,7 +95,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "빔 스플리터"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "incomplete": false,
     "message": "유리"
   },
@@ -275,7 +275,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "차단기"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "incomplete": false,
     "message": "반 평면 (Half-plane)"
   },
@@ -834,7 +834,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "incomplete": false,
     "message": "표면에서의 굴절 및 반사 시뮬레이션. (드래그 또는 클릭하여 생성.)"
   },

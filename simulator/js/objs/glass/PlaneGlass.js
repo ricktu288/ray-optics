@@ -3,17 +3,17 @@
  * Tools -> Glass -> Half-plane
  * @property {Point} p1 - A point on the boundary of the half-plane.
  * @property {Point} p2 - Another point on the boundary of the half-plane.
- * @property {number} p - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
-  static type = 'halfplane';
+objTypes['PlaneGlass'] = class extends LineObjMixin(BaseGlass) {
+  static type = 'PlaneGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 1.5,
+    refIndex: 1.5,
     cauchyB: 0.004
   };
 
@@ -67,7 +67,7 @@ objTypes['halfplane'] = class extends LineObjMixin(BaseGlass) {
 
 
   checkRayIntersects(ray) {
-    if (this.p <= 0) return;
+    if (this.refIndex <= 0) return;
     var rp_temp = geometry.linesIntersection(ray, this);
 
     if (geometry.intersectionIsOnRay(rp_temp, ray)) {

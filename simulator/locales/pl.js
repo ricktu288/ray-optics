@@ -72,7 +72,7 @@ locales["pl"] = {
   "toolname_BeamSplitter": {
     "message": "Rozdzielacz wiązki"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Półpłaszczyzna"
   },
   "toolname_circlelens": {
@@ -209,7 +209,7 @@ locales["pl"] = {
   "tool_blocker_": {
     "message": "Przesłony"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Półpłaszczyzna"
   },
   "tool_circlelens": {
@@ -655,7 +655,7 @@ locales["pl"] = {
   "tool_IdealMirror_popover": {
     "message": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Symuluje załamanie i odbicie światła na granicy ośrodków. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_circlelens_popover": {

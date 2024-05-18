@@ -96,7 +96,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Beam Splitter"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "incomplete": true,
     "message": "Glass"
   },
@@ -276,7 +276,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Blocker"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "incomplete": true,
     "message": "Half-plane"
   },
@@ -835,7 +835,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "incomplete": true,
     "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },

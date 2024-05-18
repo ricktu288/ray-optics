@@ -73,7 +73,7 @@ locales["de"] = {
   "toolname_BeamSplitter": {
     "message": "Strahlteiler"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Glas"
   },
   "toolname_circlelens": {
@@ -215,7 +215,7 @@ locales["de"] = {
   "tool_blocker_": {
     "message": "Absorber"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Halbraum"
   },
   "tool_circlelens": {
@@ -699,7 +699,7 @@ locales["de"] = {
   "tool_IdealMirror_popover": {
     "message": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_circlelens_popover": {

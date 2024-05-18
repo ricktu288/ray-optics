@@ -72,7 +72,7 @@ locales["pt-BR"] = {
   "toolname_BeamSplitter": {
     "message": "Divisor de luz"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Vidro"
   },
   "toolname_circlelens": {
@@ -207,7 +207,7 @@ locales["pt-BR"] = {
   "tool_blocker_": {
     "message": "Bloqueador"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Semi-plano"
   },
   "tool_circlelens": {
@@ -644,7 +644,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "incomplete": true,
     "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },

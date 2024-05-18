@@ -82,7 +82,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Beam Splitter"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Verre"
   },
   "toolname_circlelens": {
@@ -234,7 +234,7 @@ locales["fr"] = {
   "tool_blocker_": {
     "message": "Diaphragme"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Demi-plan"
   },
   "tool_circlelens": {
@@ -744,7 +744,7 @@ locales["fr"] = {
   "tool_IdealMirror_popover": {
     "message": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Simule la réfraction et la reflexion de la lumière sur une surface. (Glisser ou cliquer pour le créer.)"
   },
   "tool_circlelens_popover": {

@@ -77,7 +77,7 @@ locales["si"] = {
   "toolname_BeamSplitter": {
     "message": "කදම්භ විබෙදුම"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "වීදුරු"
   },
   "toolname_circlelens": {
@@ -228,7 +228,7 @@ locales["si"] = {
   "tool_blocker_": {
     "message": "බාධක"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "අර්ධ තලයක්"
   },
   "tool_circlelens": {
@@ -743,7 +743,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "incomplete": true,
     "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
   },

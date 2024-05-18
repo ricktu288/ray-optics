@@ -95,7 +95,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ビームスプリッター"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "incomplete": false,
     "message": "ガラス"
   },
@@ -275,7 +275,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ブロッカ"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "incomplete": false,
     "message": "半平面"
   },
@@ -834,7 +834,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "incomplete": false,
     "message": "表面上の光の屈折と反射をシミュレートします。 (ドラッグまたはクリックして作成します。)"
   },

@@ -72,7 +72,7 @@ locales["zh-CN"] = {
   "toolname_BeamSplitter": {
     "message": "分光镜"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "透光物"
   },
   "toolname_circlelens": {
@@ -207,7 +207,7 @@ locales["zh-CN"] = {
   "tool_blocker_": {
     "message": "遮光物"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "半平面"
   },
   "tool_circlelens": {
@@ -627,7 +627,7 @@ locales["zh-CN"] = {
   "tool_IdealMirror_popover": {
     "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "模拟光线经过透光物体界面时的反射与折射。（拖曳或点击以创建。）"
   },
   "tool_circlelens_popover": {

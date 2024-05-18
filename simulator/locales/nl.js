@@ -84,7 +84,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Beam Splitter"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Glas"
   },
   "toolname_circlelens": {
@@ -237,7 +237,7 @@ locales["nl"] = {
   "tool_blocker_": {
     "message": "Scherm"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Halve vlak"
   },
   "tool_circlelens": {
@@ -759,7 +759,7 @@ locales["nl"] = {
   "tool_IdealMirror_popover": {
     "message": "Een ideale 'gebogen' spiegel die precies de spiegel formule volgt (1/p + 1/q = 1/f). De brandpuntsafstand (in pixels) kan worden ingevoerd. (Sleep of klik om te maken.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Simuleert de refractie en reflectie van licht op/door een oppervlak. (Sleep of klik om te maken.)"
   },
   "tool_circlelens_popover": {

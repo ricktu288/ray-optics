@@ -81,7 +81,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Beam Splitter"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Стекло"
   },
   "toolname_circlelens": {
@@ -234,7 +234,7 @@ locales["ru"] = {
   "tool_blocker_": {
     "message": "Блокиратор"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Полуплоскость"
   },
   "tool_circlelens": {
@@ -747,7 +747,7 @@ locales["ru"] = {
   "tool_IdealMirror_popover": {
     "message": "Идеальное 'кривое' зеркало, строго подчиняющееся уравнению зеркала (1/d + 1/f = 1/F). Фокальное расстояние задается в пикселях. (Потяните или нажмите, чтобы создать.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Симулирует отражение и преломление света на поверхности. (Потяните или нажмите, чтобы создать.)"
   },
   "tool_circlelens_popover": {

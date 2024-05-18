@@ -72,7 +72,7 @@ locales["es"] = {
   "toolname_BeamSplitter": {
     "message": "Separador de haz"
   },
-  "toolname_halfplane": {
+  "toolname_PlaneGlass": {
     "message": "Vidrio"
   },
   "toolname_circlelens": {
@@ -208,7 +208,7 @@ locales["es"] = {
   "tool_blocker_": {
     "message": "Bloqueador"
   },
-  "tool_halfplane": {
+  "tool_PlaneGlass": {
     "message": "Semi-plano"
   },
   "tool_circlelens": {
@@ -637,7 +637,7 @@ locales["es"] = {
   "tool_IdealMirror_popover": {
     "message": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal (en pixels) puede establecerse directamente. (Arrastre o clique para crear.)"
   },
-  "tool_halfplane_popover": {
+  "tool_PlaneGlass_popover": {
     "message": "Simular la refracción y la reflexión de luz sobre una superficie. (Arrastre o clique para crear.)"
   },
   "tool_circlelens_popover": {
