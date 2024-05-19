@@ -127,7 +127,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ガラス"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "incomplete": false,
     "message": "ラインブロッカー"
   },
@@ -307,7 +307,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "カスタム式"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "incomplete": false,
     "message": "ラインブロッカー"
   },
@@ -866,7 +866,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "カスタム不等式f(x) &lt; y &lt; g(x)で定義される形状を持つガラスで、（x,y）は2つの制御点が（-1,0）と（1,0）である変換後の座標であるもの。(ドラッグまたはクリックで作成)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "incomplete": false,
     "message": "入射光線を吸収する線分型の遮光板です。(ドラッグまたはクリックで作成)"
   },

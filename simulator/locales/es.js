@@ -96,7 +96,7 @@ locales["es"] = {
   "toolname_CustomGlass": {
     "message": "Vidrio"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "Bloqueador recto"
   },
   "toolname_aperture": {
@@ -232,7 +232,7 @@ locales["es"] = {
   "tool_CustomGlass": {
     "message": "Ecuación personalizada"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "Bloqueador recto"
   },
   "tool_aperture": {
@@ -661,7 +661,7 @@ locales["es"] = {
   "tool_CustomGlass_popover": {
     "message": "Vidrio con una forma definida por una desigualdad f(x) &lt; y &lt; g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0). (Arrastre o clique para crear.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "message": "Un bloqueador de luz recto que absorbe los rayos incidentes. (Arrastre o clique para crear.)"
   },
   "tool_aperture_popover": {

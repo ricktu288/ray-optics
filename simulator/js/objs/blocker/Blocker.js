@@ -8,8 +8,8 @@
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-objTypes['blackline'] = class extends LineObjMixin(BaseFilter) {
-  static type = 'blackline';
+objTypes['Blocker'] = class extends LineObjMixin(BaseFilter) {
+  static type = 'Blocker';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

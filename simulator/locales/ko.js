@@ -127,7 +127,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "유리"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "incomplete": false,
     "message": "선형 차단기"
   },
@@ -307,7 +307,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "사용자 정의 수식"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "incomplete": false,
     "message": "선형 차단기"
   },
@@ -866,7 +866,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "사용자 정의 수식 f(x) &lt; y &lt; g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 선형 차단기입니다. (드래그 또는 클릭하여 생성.)"
   },

@@ -96,7 +96,7 @@ locales["pl"] = {
   "toolname_CustomGlass": {
     "message": "Szkło"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "Przesłona liniowa"
   },
   "toolname_aperture": {
@@ -233,7 +233,7 @@ locales["pl"] = {
   "tool_CustomGlass": {
     "message": "Równanie niestandardowe"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "Przesłona liniowa"
   },
   "tool_aperture": {
@@ -679,7 +679,7 @@ locales["pl"] = {
   "tool_CustomGlass_popover": {
     "message": "Szkło o kształcie zdefiniowanym przez niestandardową nierówność f(x) &lt; y &lt; g(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0). (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "message": "Przeszkoda - odcinek - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_aperture_popover": {

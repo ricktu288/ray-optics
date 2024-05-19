@@ -96,7 +96,7 @@ locales["zh-TW"] = {
   "toolname_CustomGlass": {
     "message": "透光物"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "吸光片"
   },
   "toolname_aperture": {
@@ -231,7 +231,7 @@ locales["zh-TW"] = {
   "tool_CustomGlass": {
     "message": "自訂函數"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "吸光片"
   },
   "tool_aperture": {
@@ -651,7 +651,7 @@ locales["zh-TW"] = {
   "tool_CustomGlass_popover": {
     "message": "形狀為自訂不等式 f(x) &lt; y &lt; g(x) 的透光物，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。 （拖曳或點擊以創建。）"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "message": "線段形狀的吸光片，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
   },
   "tool_aperture_popover": {

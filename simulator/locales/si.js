@@ -103,7 +103,7 @@ locales["si"] = {
   "toolname_CustomGlass": {
     "message": "වීදුරු"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "රේඛීය බාධක"
   },
   "toolname_aperture": {
@@ -255,7 +255,7 @@ locales["si"] = {
   "tool_CustomGlass": {
     "message": "Custom සමීකරණ"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "‌රේඛීය බාධක"
   },
   "tool_aperture": {
@@ -775,7 +775,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "incomplete": true,
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },

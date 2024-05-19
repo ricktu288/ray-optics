@@ -96,7 +96,7 @@ locales["pt-BR"] = {
   "toolname_CustomGlass": {
     "message": "Vidro"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "Bloqueador reto"
   },
   "toolname_aperture": {
@@ -231,7 +231,7 @@ locales["pt-BR"] = {
   "tool_CustomGlass": {
     "message": "Equação Personalizada"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "Bloqueador Reto"
   },
   "tool_aperture": {
@@ -676,7 +676,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "incomplete": true,
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },

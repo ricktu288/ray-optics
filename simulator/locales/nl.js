@@ -112,7 +112,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Glass"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "incomplete": true,
     "message": "Line Blocker"
   },
@@ -266,7 +266,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Custom Equation"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "incomplete": true,
     "message": "Line Blocker"
   },
@@ -787,7 +787,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "message": "Een lichtblokkerend lijnstuk (scherm). (Sleep of klik om te maken.)"
   },
   "tool_aperture_popover": {

@@ -99,7 +99,7 @@ locales["de"] = {
   "toolname_CustomGlass": {
     "message": "Glas"
   },
-  "toolname_blackline": {
+  "toolname_Blocker": {
     "message": "Linienförmiger Absorber"
   },
   "toolname_aperture": {
@@ -242,7 +242,7 @@ locales["de"] = {
   "tool_CustomGlass": {
     "message": "Benutzerdefinierte Gleichung"
   },
-  "tool_blackline": {
+  "tool_Blocker": {
     "message": "Linienförmiger Absorber"
   },
   "tool_aperture": {
@@ -725,7 +725,7 @@ locales["de"] = {
   "tool_CustomGlass_popover": {
     "message": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) &lt; y &lt; g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0). (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_blackline_popover": {
+  "tool_Blocker_popover": {
     "message": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_aperture_popover": {
