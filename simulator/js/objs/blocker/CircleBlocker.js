@@ -8,8 +8,8 @@
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-objTypes['blackcircle'] = class extends CircleObjMixin(BaseFilter) {
-  static type = 'blackcircle';
+objTypes['CircleBlocker'] = class extends CircleObjMixin(BaseFilter) {
+  static type = 'CircleBlocker';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

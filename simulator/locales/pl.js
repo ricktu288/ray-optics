@@ -102,7 +102,7 @@ locales["pl"] = {
   "toolname_aperture": {
     "message": "Apertura"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "message": "Przesłona kołowa"
   },
   "toolname_diffractiongrating": {
@@ -239,7 +239,7 @@ locales["pl"] = {
   "tool_aperture": {
     "message": "Apertura"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "message": "Przesłona kołowa"
   },
   "tool_diffractiongrating": {
@@ -685,7 +685,7 @@ locales["pl"] = {
   "tool_aperture_popover": {
     "message": "Para blokerów światła, które pochłaniają padające promienie. Rozmiar otworu można regulować symetrycznie. (Przeciągnij lub kliknij dwa punkty końcowe, aby utworzyć)."
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "message": "Przeszkoda - okrąg - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_diffractiongrating_popover": {

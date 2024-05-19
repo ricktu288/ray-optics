@@ -106,7 +106,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "message": "Kreisförmiger Absorber"
   },
   "toolname_diffractiongrating": {
@@ -249,7 +249,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "message": "Kreisförmiger Absorber"
   },
   "tool_diffractiongrating": {
@@ -732,7 +732,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "message": "Ein kreisförmiger Absorber. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_diffractiongrating_popover": {

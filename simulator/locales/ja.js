@@ -135,7 +135,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "incomplete": false,
     "message": "円形ブロッカー"
   },
@@ -315,7 +315,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "incomplete": false,
     "message": "サークルブロッカー"
   },
@@ -874,7 +874,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "incomplete": false,
     "message": "入射光線を吸収する円形の遮光板です。(ドラッグまたはクリックで作成)"
   },

@@ -135,7 +135,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "incomplete": false,
     "message": "원형 차단기"
   },
@@ -315,7 +315,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Aperture"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "incomplete": false,
     "message": "원형 차단기"
   },
@@ -874,7 +874,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 원형 차단기입니다. (드래그 또는 클릭하여 생성.)"
   },

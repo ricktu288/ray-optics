@@ -102,7 +102,7 @@ locales["zh-CN"] = {
   "toolname_aperture": {
     "message": "光圈"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "message": "圆形遮光物"
   },
   "toolname_diffractiongrating": {
@@ -237,7 +237,7 @@ locales["zh-CN"] = {
   "tool_aperture": {
     "message": "光圈"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "message": "圆形遮光物"
   },
   "tool_diffractiongrating": {
@@ -657,7 +657,7 @@ locales["zh-CN"] = {
   "tool_aperture_popover": {
     "message": "一对线段形状的吸光片，可用对称方式调整其孔洞的大小。（拖曳或点击两个端点以创建。）"
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "message": "圆形遮光物，光线射到其上后就不会再射出。（拖曳或点击以创建。）"
   },
   "tool_diffractiongrating_popover": {

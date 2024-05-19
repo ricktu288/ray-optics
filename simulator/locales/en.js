@@ -102,7 +102,7 @@ locales["en"] = {
   "toolname_aperture": {
     "message": "Aperture"
   },
-  "toolname_blackcircle": {
+  "toolname_CircleBlocker": {
     "message": "Circle Blocker"
   },
   "toolname_diffractiongrating": {
@@ -237,7 +237,7 @@ locales["en"] = {
   "tool_aperture": {
     "message": "Aperture"
   },
-  "tool_blackcircle": {
+  "tool_CircleBlocker": {
     "message": "Circle Blocker"
   },
   "tool_diffractiongrating": {
@@ -657,7 +657,7 @@ locales["en"] = {
   "tool_aperture_popover": {
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
-  "tool_blackcircle_popover": {
+  "tool_CircleBlocker_popover": {
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
   "tool_diffractiongrating_popover": {
