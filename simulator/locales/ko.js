@@ -139,9 +139,9 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형 차단기"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "incomplete": false,
@@ -319,9 +319,9 @@ locales["ko"] = {
     "incomplete": false,
     "message": "원형 차단기"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "incomplete": false,
@@ -487,11 +487,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Mirrored"
   },
-  "lines/mm": {
+  "lineDensity": {
     "incomplete": true,
     "message": "Lines/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "incomplete": true,
     "message": "Slit width / line spacing"
   },
@@ -878,7 +878,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 원형 차단기입니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },

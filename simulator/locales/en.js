@@ -105,8 +105,8 @@ locales["en"] = {
   "toolname_CircleBlocker": {
     "message": "Circle Blocker"
   },
-  "toolname_diffractiongrating": {
-    "message": "Diffraction Grating<sup>Beta</sup>"
+  "toolname_DiffractionGrating": {
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "message": "Ruler"
@@ -240,8 +240,8 @@ locales["en"] = {
   "tool_CircleBlocker": {
     "message": "Circle Blocker"
   },
-  "tool_diffractiongrating": {
-    "message": "Diffraction Grating<sup>Beta</sup>"
+  "tool_DiffractionGrating": {
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "message": "Ruler"
@@ -366,10 +366,10 @@ locales["en"] = {
   "mirrored": {
     "message": "Mirrored"
   },
-  "lines/mm": {
+  "lineDensity": {
     "message": "Lines/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "message": "Slit width / line spacing"
   },
   "symmetric": {
@@ -660,7 +660,7 @@ locales["en"] = {
   "tool_CircleBlocker_popover": {
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_ruler_popover": {

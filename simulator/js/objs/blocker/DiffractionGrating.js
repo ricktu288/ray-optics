@@ -1,32 +1,32 @@
 /**
- * Diffraction Grating
- * Tools -> Blocker -> Diffraction Grating
+ * Diffraction DiffractionGrating
+ * Tools -> Blocker -> Diffraction DiffractionGrating
  * It is in the blocker category since the model we use is a blocker with slits.
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
- * @property {number} line_density - The number of lines per millimeter.
- * @property {number} slit_ratio - The ratio of the slit width to the line interval.
+ * @property {number} lineDensity - The number of lines per millimeter.
+ * @property {number} slitRatio - The ratio of the slit width to the line interval.
  * @property {boolean} mirrored - Whether the diffraction grating is reflective.
  */
-objTypes['diffractiongrating'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'diffractiongrating';
+objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'DiffractionGrating';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    line_density: 1000,
-    slit_ratio: 0.5,
+    lineDensity: 1000,
+    slitRatio: 0.5,
     mirrored: false
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('lines/mm'), 1, 2500, 5, this.line_density, function (obj, value) {
-      obj.line_density = value;
+    objBar.createNumber(getMsg('lineDensity'), 1, 2500, 5, this.lineDensity, function (obj, value) {
+      obj.lineDensity = value;
     });
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['slit_ratio']))) {
-      objBar.createNumber(getMsg('slit_ratio'), 0, 1, 0.001, this.slit_ratio, function (obj, value) {
-        obj.slit_ratio = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['slitRatio']))) {
+      objBar.createNumber(getMsg('slitRatio'), 0, 1, 0.001, this.slitRatio, function (obj, value) {
+        obj.slitRatio = value;
       });
     }
 
@@ -58,7 +58,7 @@ objTypes['diffractiongrating'] = class extends LineObjMixin(BaseSceneObj) {
     ctx.lineWidth = 2;
     ctx.lineCap = 'butt';
     ctx.beginPath();
-    ctx.setLineDash([4 * (1 - this.slit_ratio), 4 * this.slit_ratio]);
+    ctx.setLineDash([4 * (1 - this.slitRatio), 4 * this.slitRatio]);
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
@@ -78,8 +78,8 @@ objTypes['diffractiongrating'] = class extends LineObjMixin(BaseSceneObj) {
     var my = this.p2.y - this.p1.y;
 
     var wavelength = (ray.wavelength || GREEN_WAVELENGTH) * mm_in_nm;
-    var interval = 1 / this.line_density;
-    var slit_width = interval * this.slit_ratio;
+    var interval = 1 / this.lineDensity;
+    var slit_width = interval * this.slitRatio;
 
     //Find which side the incoming ray is hitting the diffraction line segment
     var crossProduct = rx * my - ry * mx;

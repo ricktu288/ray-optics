@@ -105,7 +105,7 @@ locales["zh-TW"] = {
   "toolname_CircleBlocker": {
     "message": "圓形遮光物"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "message": "繞射光柵<sup>Beta</sup>"
   },
   "toolname_ruler": {
@@ -240,7 +240,7 @@ locales["zh-TW"] = {
   "tool_CircleBlocker": {
     "message": "圓形遮光物"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "message": "繞射光柵<sup>Beta</sup>"
   },
   "tool_ruler": {
@@ -366,10 +366,10 @@ locales["zh-TW"] = {
   "mirrored": {
     "message": "反射"
   },
-  "lines/mm": {
+  "lineDensity": {
     "message": "線數/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "message": "狹縫寬度 / 線間距"
   },
   "symmetric": {
@@ -660,7 +660,7 @@ locales["zh-TW"] = {
   "tool_CircleBlocker_popover": {
     "message": "圓形遮光物，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "message": "將光線依波長分割成不同角度的繞射光柵。注意：繞射光的強度可能不準確。（拖曳或點擊以創建。）"
   },
   "tool_ruler_popover": {

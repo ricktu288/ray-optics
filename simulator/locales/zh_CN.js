@@ -105,7 +105,7 @@ locales["zh-CN"] = {
   "toolname_CircleBlocker": {
     "message": "圆形遮光物"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "message": "衍射光栅<sup>Beta</sup>"
   },
   "toolname_ruler": {
@@ -240,7 +240,7 @@ locales["zh-CN"] = {
   "tool_CircleBlocker": {
     "message": "圆形遮光物"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "message": "衍射光栅<sup>Beta</sup>"
   },
   "tool_ruler": {
@@ -366,10 +366,10 @@ locales["zh-CN"] = {
   "mirrored": {
     "message": "反射"
   },
-  "lines/mm": {
+  "lineDensity": {
     "message": "线数/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "message": "狭缝宽度 / 线间距"
   },
   "symmetric": {
@@ -660,7 +660,7 @@ locales["zh-CN"] = {
   "tool_CircleBlocker_popover": {
     "message": "圆形遮光物，光线射到其上后就不会再射出。（拖曳或点击以创建。）"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "message": "将光线依波长分割成不同角度的衍射光栅。 注意：衍射光的强度可能不准确。 （拖曳或点击以创建。）"
   },
   "tool_ruler_popover": {

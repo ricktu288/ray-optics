@@ -105,7 +105,7 @@ locales["pt-BR"] = {
   "toolname_CircleBlocker": {
     "message": "Bloqueador circular"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "message": "Grade de difração<sup>Beta</sup>"
   },
   "toolname_ruler": {
@@ -240,7 +240,7 @@ locales["pt-BR"] = {
   "tool_CircleBlocker": {
     "message": "Bloqueador Circular"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "message": "Grade de Difração<sup>Beta</sup>"
   },
   "tool_ruler": {
@@ -366,10 +366,10 @@ locales["pt-BR"] = {
   "mirrored": {
     "message": "Espelhado"
   },
-  "lines/mm": {
+  "lineDensity": {
     "message": "Linhas/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "message": "Largura de vão / Espaçamento de linha"
   },
   "symmetric": {
@@ -688,7 +688,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
   },

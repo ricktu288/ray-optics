@@ -139,9 +139,9 @@ locales["ja"] = {
     "incomplete": false,
     "message": "円形ブロッカー"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "incomplete": false,
@@ -319,9 +319,9 @@ locales["ja"] = {
     "incomplete": false,
     "message": "サークルブロッカー"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "incomplete": false,
@@ -487,11 +487,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Mirrored"
   },
-  "lines/mm": {
+  "lineDensity": {
     "incomplete": true,
     "message": "Lines/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "incomplete": true,
     "message": "Slit width / line spacing"
   },
@@ -878,7 +878,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "入射光線を吸収する円形の遮光板です。(ドラッグまたはクリックで作成)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },

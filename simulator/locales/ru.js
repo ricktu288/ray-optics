@@ -121,9 +121,9 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "message": "Линейка"
@@ -275,9 +275,9 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Circle Blocker"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "message": "Линейка"
@@ -414,11 +414,11 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Mirrored"
   },
-  "lines/mm": {
+  "lineDensity": {
     "incomplete": true,
     "message": "Lines/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "incomplete": true,
     "message": "Slit width / line spacing"
   },
@@ -786,7 +786,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },

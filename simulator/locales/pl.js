@@ -105,9 +105,9 @@ locales["pl"] = {
   "toolname_CircleBlocker": {
     "message": "Przesłona kołowa"
   },
-  "toolname_diffractiongrating": {
+  "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "toolname_ruler": {
     "message": "Linijka"
@@ -242,9 +242,9 @@ locales["pl"] = {
   "tool_CircleBlocker": {
     "message": "Przesłona kołowa"
   },
-  "tool_diffractiongrating": {
+  "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
   "tool_ruler": {
     "message": "Linijka"
@@ -372,11 +372,11 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Mirrored"
   },
-  "lines/mm": {
+  "lineDensity": {
     "incomplete": true,
     "message": "Lines/mm"
   },
-  "slit_ratio": {
+  "slitRatio": {
     "incomplete": true,
     "message": "Slit width / line spacing"
   },
@@ -688,7 +688,7 @@ locales["pl"] = {
   "tool_CircleBlocker_popover": {
     "message": "Przeszkoda - okrąg - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_diffractiongrating_popover": {
+  "tool_DiffractionGrating_popover": {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
