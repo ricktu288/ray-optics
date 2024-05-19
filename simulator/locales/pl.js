@@ -99,7 +99,7 @@ locales["pl"] = {
   "toolname_Blocker": {
     "message": "Przesłona liniowa"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "message": "Apertura"
   },
   "toolname_CircleBlocker": {
@@ -236,7 +236,7 @@ locales["pl"] = {
   "tool_Blocker": {
     "message": "Przesłona liniowa"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "message": "Apertura"
   },
   "tool_CircleBlocker": {
@@ -682,7 +682,7 @@ locales["pl"] = {
   "tool_Blocker_popover": {
     "message": "Przeszkoda - odcinek - pochłaniająca padające promienie. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "message": "Para blokerów światła, które pochłaniają padające promienie. Rozmiar otworu można regulować symetrycznie. (Przeciągnij lub kliknij dwa punkty końcowe, aby utworzyć)."
   },
   "tool_CircleBlocker_popover": {

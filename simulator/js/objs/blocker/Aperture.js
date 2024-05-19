@@ -1,8 +1,8 @@
 /**
- * Aperature / filter with a hole.
- * Tools -> Blocker -> Aperature
- * @property {Point} p1 - The first endpoint of the aperature.
- * @property {Point} p2 - The second endpoint of the aperature.
+ * Aperture / filter with a hole.
+ * Tools -> Blocker -> Aperture
+ * @property {Point} p1 - The first endpoint of the aperture.
+ * @property {Point} p2 - The second endpoint of the aperture.
  * @property {Point} p3 - The first endpoint of the hole.
  * @property {Point} p4 - The second endpoint of the hole.
  * @property {boolean} filter - Whether it is a filter.
@@ -10,8 +10,8 @@
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-objTypes['aperture'] = class extends BaseFilter {
-  static type = 'aperture';
+objTypes['Aperture'] = class extends BaseFilter {
+  static type = 'Aperture';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,

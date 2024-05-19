@@ -131,7 +131,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "선형 차단기"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -311,7 +311,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "선형 차단기"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -870,7 +870,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "입사 광선을 흡수하는 선형 차단기입니다. (드래그 또는 클릭하여 생성.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },

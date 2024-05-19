@@ -132,7 +132,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -312,7 +312,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -871,7 +871,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },

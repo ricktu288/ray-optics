@@ -131,7 +131,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ラインブロッカー"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -311,7 +311,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "ラインブロッカー"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -870,7 +870,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "入射光線を吸収する線分型の遮光板です。(ドラッグまたはクリックで作成)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },

@@ -113,7 +113,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -267,7 +267,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -778,7 +778,7 @@ locales["ru"] = {
   "tool_Blocker_popover": {
     "message": "Отрезок, поглощающий попадающие на него лучи. (Потяните или нажмите, чтобы создать.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },

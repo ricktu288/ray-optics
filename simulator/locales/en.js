@@ -99,7 +99,7 @@ locales["en"] = {
   "toolname_Blocker": {
     "message": "Line Blocker"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "message": "Aperture"
   },
   "toolname_CircleBlocker": {
@@ -234,7 +234,7 @@ locales["en"] = {
   "tool_Blocker": {
     "message": "Line Blocker"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "message": "Aperture"
   },
   "tool_CircleBlocker": {
@@ -654,7 +654,7 @@ locales["en"] = {
   "tool_Blocker_popover": {
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
   "tool_CircleBlocker_popover": {

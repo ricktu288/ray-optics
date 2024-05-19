@@ -99,7 +99,7 @@ locales["es"] = {
   "toolname_Blocker": {
     "message": "Bloqueador recto"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "message": "Apertura"
   },
   "toolname_CircleBlocker": {
@@ -235,7 +235,7 @@ locales["es"] = {
   "tool_Blocker": {
     "message": "Bloqueador recto"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "message": "Apertura"
   },
   "tool_CircleBlocker": {
@@ -664,7 +664,7 @@ locales["es"] = {
   "tool_Blocker_popover": {
     "message": "Un bloqueador de luz recto que absorbe los rayos incidentes. (Arrastre o clique para crear.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "message": "Un par de bloqueadores de luz que absorben los rayos incidentes. El tamaño del agujero puede ajustarse simétricamente. (Arrastre o clique los dos puntos extremales para crear.)"
   },
   "tool_CircleBlocker_popover": {

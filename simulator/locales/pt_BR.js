@@ -99,7 +99,7 @@ locales["pt-BR"] = {
   "toolname_Blocker": {
     "message": "Bloqueador reto"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "message": "Abertura"
   },
   "toolname_CircleBlocker": {
@@ -234,7 +234,7 @@ locales["pt-BR"] = {
   "tool_Blocker": {
     "message": "Bloqueador Reto"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "message": "Abertura"
   },
   "tool_CircleBlocker": {
@@ -680,7 +680,7 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },

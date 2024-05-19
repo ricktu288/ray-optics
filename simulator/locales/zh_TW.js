@@ -99,7 +99,7 @@ locales["zh-TW"] = {
   "toolname_Blocker": {
     "message": "吸光片"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "message": "光圈"
   },
   "toolname_CircleBlocker": {
@@ -234,7 +234,7 @@ locales["zh-TW"] = {
   "tool_Blocker": {
     "message": "吸光片"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "message": "光圈"
   },
   "tool_CircleBlocker": {
@@ -654,7 +654,7 @@ locales["zh-TW"] = {
   "tool_Blocker_popover": {
     "message": "線段形狀的吸光片，光線射到其上後就不會再射出。（拖曳或點擊以創建。）"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "message": "一對線段形狀的吸光片，可用對稱方式調整其孔洞的大小。（拖曳或點擊兩個端點以創建。）"
   },
   "tool_CircleBlocker_popover": {

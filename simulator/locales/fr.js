@@ -114,7 +114,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "toolname_aperture": {
+  "toolname_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -267,7 +267,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Line Blocker"
   },
-  "tool_aperture": {
+  "tool_Aperture": {
     "incomplete": true,
     "message": "Aperture"
   },
@@ -775,7 +775,7 @@ locales["fr"] = {
   "tool_Blocker_popover": {
     "message": "Un segment absorbant les rayons incidents. (Glisser ou cliquer pour le créer.)"
   },
-  "tool_aperture_popover": {
+  "tool_Aperture_popover": {
     "incomplete": true,
     "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
   },
