@@ -124,7 +124,7 @@ locales["es"] = {
   "toolname_TextLabel": {
     "message": "Texto"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "message": "Línea"
   },
   "toolname_drawing": {
@@ -254,7 +254,7 @@ locales["es"] = {
   "tool_TextLabel": {
     "message": "Texto"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "message": "Línea / Flecha"
   },
   "tool_drawing": {
@@ -488,10 +488,10 @@ locales["es"] = {
   "angle": {
     "message": "Angulo (°)"
   },
-  "arrow1": {
+  "arrow": {
     "message": "Flecha adelante"
   },
-  "arrow2": {
+  "backArrow": {
     "message": "Flecha atrás"
   },
   "stop_drawing": {
@@ -683,10 +683,10 @@ locales["es"] = {
   "tool_Detector_popover": {
     "message": "Una herramienta para medir el flujo de energía (P), el momento perpendicular de flujo (F⊥), y el momento paralelo de flujo (F∥) a través de un segmento de recta. (Arrastre o clique para crear el segmento de recta.) Las unidades son arbitrarias."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "message": "Un cuadro de texto."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "message": "Un segmento de recta o flecha. (Arrastre o clique para crear.)"
   },
   "tool_drawing_popover": {

@@ -163,7 +163,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "텍스트"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "incomplete": true,
     "message": "Line"
   },
@@ -335,7 +335,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "텍스트"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "incomplete": true,
     "message": "Line / Arrow"
   },
@@ -639,11 +639,11 @@ locales["ko"] = {
     "incomplete": false,
     "message": "각도 (°)"
   },
-  "arrow1": {
+  "arrow": {
     "incomplete": true,
     "message": "Forward arrow"
   },
-  "arrow2": {
+  "backArrow": {
     "incomplete": true,
     "message": "Backward arrow"
   },
@@ -894,11 +894,11 @@ locales["ko"] = {
     "incomplete": false,
     "message": "선분을 통해 전달되는 에너지 흐름 (P), 수직 방향 momentum flow (F⊥), 평행 방향 memontum flow (F∥) 을 측정하는 도구입니다. 단위는 임의값 (A.U.) 입니다.."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "incomplete": false,
     "message": "텍스트 추가"
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "incomplete": true,
     "message": "A line segment or arrow. (Drag or click to create.)"
   },

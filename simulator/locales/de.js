@@ -128,7 +128,7 @@ locales["de"] = {
   "toolname_TextLabel": {
     "message": "Text"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "incomplete": true,
     "message": "Line"
   },
@@ -265,7 +265,7 @@ locales["de"] = {
   "tool_TextLabel": {
     "message": "Text"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "incomplete": true,
     "message": "Line / Arrow"
   },
@@ -535,11 +535,11 @@ locales["de"] = {
     "incomplete": true,
     "message": "Angle (°)"
   },
-  "arrow1": {
+  "arrow": {
     "incomplete": true,
     "message": "Forward arrow"
   },
-  "arrow2": {
+  "backArrow": {
     "incomplete": true,
     "message": "Backward arrow"
   },
@@ -748,10 +748,10 @@ locales["de"] = {
   "tool_Detector_popover": {
     "message": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment. (Ziehen oder Klicken zum Erzeugen.) Die Einheiten sind willkürlich."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "message": "Ein Text-Label."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "incomplete": true,
     "message": "A line segment or arrow. (Drag or click to create.)"
   },

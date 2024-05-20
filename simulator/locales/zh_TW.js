@@ -123,7 +123,7 @@ locales["zh-TW"] = {
   "toolname_TextLabel": {
     "message": "文字"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "message": "線段"
   },
   "toolname_drawing": {
@@ -252,7 +252,7 @@ locales["zh-TW"] = {
   "tool_TextLabel": {
     "message": "文字"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "message": "線段 / 箭頭"
   },
   "tool_drawing": {
@@ -480,10 +480,10 @@ locales["zh-TW"] = {
   "angle": {
     "message": "角度 (°)"
   },
-  "arrow1": {
+  "arrow": {
     "message": "前向箭頭"
   },
-  "arrow2": {
+  "backArrow": {
     "message": "後向箭頭"
   },
   "stop_drawing": {
@@ -672,10 +672,10 @@ locales["zh-TW"] = {
   "tool_Detector_popover": {
     "message": "測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。（拖曳或點擊以創建該線段。）單位為任意。"
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "message": "文字標籤。"
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "message": "線段或箭頭。（拖曳或點擊以創建。）"
   },
   "tool_drawing_popover": {

@@ -124,7 +124,7 @@ locales["pl"] = {
   "toolname_TextLabel": {
     "message": "Tekst"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "message": "Linia"
   },
   "toolname_drawing": {
@@ -255,7 +255,7 @@ locales["pl"] = {
   "tool_TextLabel": {
     "message": "Tekst"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "message": "Linia / Strzałka"
   },
   "tool_drawing": {
@@ -503,10 +503,10 @@ locales["pl"] = {
   "angle": {
     "message": "Kąt (°)"
   },
-  "arrow1": {
+  "arrow": {
     "message": "Strzałka do przodu"
   },
-  "arrow2": {
+  "backArrow": {
     "message": "Strzałka do tyłu"
   },
   "stop_drawing": {
@@ -701,10 +701,10 @@ locales["pl"] = {
   "tool_Detector_popover": {
     "message": "Narzędzie do pomiaru szybkości przepływu energii (P), szybkości prostopadłego przepływu pędu (F⊥), i szybkości równoległego przepływu pędu (F∥) przez odcinek. (Przeciągnij lub kliknij, aby utworzyć odcinek). Jednostki są umowne."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "message": "Etykieta tekstowa."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "message": "Odcinek lub strzałka. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_drawing_popover": {

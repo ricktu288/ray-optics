@@ -3,25 +3,25 @@
  * Tools -> Other -> Line / Arrow
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
- * @property {boolean} arrow1 - Whether an arrow is pointing from the first endpoint.
- * @property {boolean} arrow2 - Whether an arrow is pointing from the second endpoint.
+ * @property {boolean} arrow - Whether an arrow is pointing from the first endpoint.
+ * @property {boolean} backArrow - Whether an arrow is pointing from the second endpoint.
  */
-objTypes['line'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'line';
+objTypes['LineArrow'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'LineArrow';
   static serializableDefaults = {
     p1: null,
     p2: null,
-    arrow1: false,
-    arrow2: false
+    arrow: false,
+    backArrow: false
   };
 
   populateObjBar(objBar) {
-    objBar.createBoolean(getMsg('arrow1'), this.arrow1, function (obj, value) {
-      obj.arrow1 = value;
+    objBar.createBoolean(getMsg('arrow'), this.arrow, function (obj, value) {
+      obj.arrow = value;
     });
 
-    objBar.createBoolean(getMsg('arrow2'), this.arrow2, function (obj, value) {
-      obj.arrow2 = value;
+    objBar.createBoolean(getMsg('backArrow'), this.backArrow, function (obj, value) {
+      obj.backArrow = value;
     });
   }
 
@@ -32,10 +32,10 @@ objTypes['line'] = class extends LineObjMixin(BaseSceneObj) {
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    if (this.arrow1) {
+    if (this.arrow) {
       this.drawArrow(canvasRenderer, this.p1, this.p2);
     }
-    if (this.arrow2) {
+    if (this.backArrow) {
       this.drawArrow(canvasRenderer, this.p2, this.p1);
     }
   }

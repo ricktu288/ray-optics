@@ -133,7 +133,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Text"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "incomplete": true,
     "message": "Line"
   },
@@ -279,7 +279,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Text"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "incomplete": true,
     "message": "Line / Arrow"
   },
@@ -568,11 +568,11 @@ locales["si"] = {
   "angle": {
     "message": "කෝණය (°)"
   },
-  "arrow1": {
+  "arrow": {
     "incomplete": true,
     "message": "Forward arrow"
   },
-  "arrow2": {
+  "backArrow": {
     "incomplete": true,
     "message": "Backward arrow"
   },
@@ -803,11 +803,11 @@ locales["si"] = {
     "incomplete": true,
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "incomplete": true,
     "message": "A text label."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "incomplete": true,
     "message": "A line segment or arrow. (Drag or click to create.)"
   },

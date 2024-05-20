@@ -163,7 +163,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "テキスト"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "incomplete": true,
     "message": "Line"
   },
@@ -335,7 +335,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "テキスト"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "incomplete": true,
     "message": "Line / Arrow"
   },
@@ -639,11 +639,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "角度 (°)"
   },
-  "arrow1": {
+  "arrow": {
     "incomplete": true,
     "message": "Forward arrow"
   },
-  "arrow2": {
+  "backArrow": {
     "incomplete": true,
     "message": "Backward arrow"
   },
@@ -894,11 +894,11 @@ locales["ja"] = {
     "incomplete": false,
     "message": "線分を通るエネルギー流の速度 (P)、垂直運動量流の速度 (F⊥)、および平行運動量流の速度 (F∥) を測定するためのツールです。 （ドラッグまたはクリックで線分を作成します。）単位は任意です。"
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "incomplete": false,
     "message": "テキストラベル."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "incomplete": true,
     "message": "A line segment or arrow. (Drag or click to create.)"
   },

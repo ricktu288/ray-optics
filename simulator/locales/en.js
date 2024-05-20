@@ -123,7 +123,7 @@ locales["en"] = {
   "toolname_TextLabel": {
     "message": "Text"
   },
-  "toolname_line": {
+  "toolname_LineArrow": {
     "message": "Line"
   },
   "toolname_drawing": {
@@ -252,7 +252,7 @@ locales["en"] = {
   "tool_TextLabel": {
     "message": "Text"
   },
-  "tool_line": {
+  "tool_LineArrow": {
     "message": "Line / Arrow"
   },
   "tool_drawing": {
@@ -480,10 +480,10 @@ locales["en"] = {
   "angle": {
     "message": "Angle (°)"
   },
-  "arrow1": {
+  "arrow": {
     "message": "Forward arrow"
   },
-  "arrow2": {
+  "backArrow": {
     "message": "Backward arrow"
   },
   "stop_drawing": {
@@ -672,10 +672,10 @@ locales["en"] = {
   "tool_Detector_popover": {
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
-  "tool_text_popover": {
+  "tool_TextLabel_popover": {
     "message": "A text label."
   },
-  "tool_line_popover": {
+  "tool_LineArrow_popover": {
     "message": "A line segment or arrow. (Drag or click to create.)"
   },
   "tool_drawing_popover": {
