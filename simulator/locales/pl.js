@@ -130,7 +130,7 @@ locales["pl"] = {
   "toolname_Drawing": {
     "message": "Rysunek"
   },
-  "toolname_cropbox": {
+  "toolname_CropBox": {
     "incomplete": true,
     "message": "Export"
   },
@@ -512,15 +512,15 @@ locales["pl"] = {
   "stop_drawing": {
     "message": "Zakończ rysowanie"
   },
-  "cropbox_size": {
+  "cropBoxSize": {
     "incomplete": true,
     "message": "Crop Box Size"
   },
-  "image_format": {
+  "format": {
     "incomplete": true,
     "message": "Format"
   },
-  "image_width": {
+  "width": {
     "incomplete": true,
     "message": "Width"
   },

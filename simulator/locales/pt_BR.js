@@ -129,7 +129,7 @@ locales["pt-BR"] = {
   "toolname_Drawing": {
     "message": "Desenho"
   },
-  "toolname_cropbox": {
+  "toolname_CropBox": {
     "message": "Exportar"
   },
   "tool_more_": {
@@ -489,13 +489,13 @@ locales["pt-BR"] = {
   "stop_drawing": {
     "message": "Finalizar Desenho"
   },
-  "cropbox_size": {
+  "cropBoxSize": {
     "message": "Tamanho da Caixa de Corte"
   },
-  "image_format": {
+  "format": {
     "message": "Formato"
   },
-  "image_width": {
+  "width": {
     "message": "Largura"
   },
   "beam_warning": {

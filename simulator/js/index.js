@@ -991,14 +991,14 @@ function enterCropMode() {
   // Search objs for existing cropBox
   var cropBoxIndex = -1;
   for (var i = 0; i < scene.objs.length; i++) {
-    if (scene.objs[i].constructor.type == 'cropbox') {
+    if (scene.objs[i].constructor.type == 'CropBox') {
       cropBoxIndex = i;
       break;
     }
   }
   if (cropBoxIndex == -1) {
     // Create a new cropBox
-    let cropBox = new objTypes['cropbox'](scene, {
+    let cropBox = new objTypes['CropBox'](scene, {
       p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
       p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
     });

@@ -141,7 +141,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Drawing"
   },
-  "toolname_cropbox": {
+  "toolname_CropBox": {
     "incomplete": true,
     "message": "Export"
   },
@@ -580,15 +580,15 @@ locales["si"] = {
     "incomplete": true,
     "message": "Finish Drawing"
   },
-  "cropbox_size": {
+  "cropBoxSize": {
     "incomplete": true,
     "message": "Crop Box Size"
   },
-  "image_format": {
+  "format": {
     "incomplete": true,
     "message": "Format"
   },
-  "image_width": {
+  "width": {
     "incomplete": true,
     "message": "Width"
   },

@@ -129,7 +129,7 @@ locales["zh-TW"] = {
   "toolname_Drawing": {
     "message": "繪圖"
   },
-  "toolname_cropbox": {
+  "toolname_CropBox": {
     "message": "匯出"
   },
   "tool_more_": {
@@ -489,13 +489,13 @@ locales["zh-TW"] = {
   "stop_drawing": {
     "message": "停止繪圖"
   },
-  "cropbox_size": {
+  "cropBoxSize": {
     "message": "剪取框大小"
   },
-  "image_format": {
+  "format": {
     "message": "格式"
   },
-  "image_width": {
+  "width": {
     "message": "寬度"
   },
   "beam_warning": {

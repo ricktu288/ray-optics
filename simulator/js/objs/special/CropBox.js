@@ -9,8 +9,8 @@
  * @property {number} width - The width of the image to be exported. Not effective when the format is 'svg'.
  * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`. This is only intended for gallery auto-screenshot in the future and currently not shown in the UI.
  */
-objTypes['cropbox'] = class extends BaseSceneObj {
-  static type = 'cropbox';
+objTypes['CropBox'] = class extends BaseSceneObj {
+  static type = 'CropBox';
   static serializableDefaults = {
     p1: null,
     p4: null,
@@ -33,7 +33,7 @@ objTypes['cropbox'] = class extends BaseSceneObj {
     var width = geometry.distance(this.p1, this.p2);
     var height = geometry.distance(this.p1, this.p3);
 
-    objBar.createNumber(getMsg('cropbox_size'), 0, 1000, 1, width, function (obj, value) {
+    objBar.createNumber(getMsg('cropBoxSize'), 0, 1000, 1, width, function (obj, value) {
       obj.p2 = geometry.point(obj.p1.x + 1 * value, obj.p2.y);
       obj.p4 = geometry.point(obj.p3.x + 1 * value, obj.p4.y);
     }, null, true);
@@ -42,7 +42,7 @@ objTypes['cropbox'] = class extends BaseSceneObj {
       obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1 * value);
     }, null, true);
 
-    objBar.createDropdown(getMsg('image_format'), this.format, {
+    objBar.createDropdown(getMsg('format'), this.format, {
       'png': 'PNG',
       'svg': 'SVG'
     }, function (obj, value) {
@@ -50,7 +50,7 @@ objTypes['cropbox'] = class extends BaseSceneObj {
     }, null, true);
 
     if (this.format != 'svg') {
-      objBar.createNumber(getMsg('image_width'), 0, 1000, 1, this.width, function (obj, value) {
+      objBar.createNumber(getMsg('width'), 0, 1000, 1, this.width, function (obj, value) {
         obj.width = 1 * value;
       }, null, true);
     } else {
