@@ -113,16 +113,16 @@ locales["de"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "Lineal"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "Winkelmesser"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "Detektor"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "Detektor"
   },
   "toolname_text": {
@@ -256,10 +256,10 @@ locales["de"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "Lineal"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "Winkelmesser"
   },
   "tool_text": {
@@ -455,19 +455,19 @@ locales["de"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "incomplete": true,
     "message": "Irradiance Map"
   },
-  "bin_size": {
+  "binSize": {
     "incomplete": true,
     "message": "Bin Size (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "incomplete": true,
     "message": "Export data"
   },
@@ -739,13 +739,13 @@ locales["de"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "message": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad. (Ziehen oder Klicken zum Erzeugen.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "message": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment. (Ziehen oder Klicken zum Erzeugen.) Die Einheiten sind willkürlich."
   },
   "tool_text_popover": {

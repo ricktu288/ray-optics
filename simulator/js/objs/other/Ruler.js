@@ -3,19 +3,19 @@
  * Tools -> Other -> Ruler
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
- * @property {number} p - The scale interval of the ruler.
+ * @property {number} scaleInterval - The scale interval of the ruler.
  */
-objTypes['ruler'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'ruler';
+objTypes['Ruler'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'Ruler';
   static serializableDefaults = {
     p1: null,
     p2: null,
-    p: 10
+    scaleInterval: 10
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('ruler_scale'), 0, 10, 1, this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createNumber(getMsg('scaleInterval'), 0, 10, 1, this.scaleInterval, function (obj, value) {
+      obj.scaleInterval = value;
     }, null, true);
   }
 
@@ -31,7 +31,7 @@ objTypes['ruler'] = class extends LineObjMixin(BaseSceneObj) {
     var per_y = -par_x;
     var ang = Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
 
-    var scale_step = this.p;
+    var scale_step = this.scaleInterval;
     var scale_step_mid = scale_step * 5;
     var scale_step_long = scale_step * 10;
     var scale_len = 10;

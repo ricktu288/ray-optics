@@ -109,16 +109,16 @@ locales["es"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "Regla"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "Transportador"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "Detector"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "Detector"
   },
   "toolname_text": {
@@ -245,10 +245,10 @@ locales["es"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "Regla"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "Transportador"
   },
   "tool_text": {
@@ -427,17 +427,17 @@ locales["es"] = {
   "diameter": {
     "message": "Diámetro (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "message": "Mapa de irradiación"
   },
-  "bin_size": {
+  "binSize": {
     "message": "Tamaño del contenedor (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "message": "Exportar datos"
   },
   "fontsize": {
@@ -674,13 +674,13 @@ locales["es"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "message": "Una regla desde un punto cero hasta otro punto. La escala está en pixels. (Arrastre o clique para crear.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "message": "Un transportador definido desde el centro y otro punto para la dirección cero. La escala está en grados. (Arrastre o clique para crear.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "message": "Una herramienta para medir el flujo de energía (P), el momento perpendicular de flujo (F⊥), y el momento paralelo de flujo (F∥) a través de un segmento de recta. (Arrastre o clique para crear el segmento de recta.) Las unidades son arbitrarias."
   },
   "tool_text_popover": {

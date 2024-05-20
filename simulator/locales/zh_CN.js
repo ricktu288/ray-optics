@@ -108,16 +108,16 @@ locales["zh-CN"] = {
   "toolname_DiffractionGrating": {
     "message": "衍射光栅<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "直尺"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "量角器"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "探测器"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "探测器"
   },
   "toolname_text": {
@@ -243,10 +243,10 @@ locales["zh-CN"] = {
   "tool_DiffractionGrating": {
     "message": "衍射光栅<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "直尺"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "量角器"
   },
   "tool_text": {
@@ -420,16 +420,16 @@ locales["zh-CN"] = {
   "diameter": {
     "message": "直径 (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "message": "辐照度图"
   },
-  "bin_size": {
+  "binSize": {
     "message": "组距 (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "message": "刻度间距 (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "message": "导出数据"
   },
   "fontsize": {
@@ -663,13 +663,13 @@ locales["zh-CN"] = {
   "tool_DiffractionGrating_popover": {
     "message": "将光线依波长分割成不同角度的衍射光栅。 注意：衍射光的强度可能不准确。 （拖曳或点击以创建。）"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "message": "指定原点与另一点。刻度单位为像素。（拖曳或点击以创建。）"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "message": "指定圆心和圆周上一点作为零度位置。刻度单位为度。（拖曳或点击以创建。）"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "message": "测量通过一线段的能量流率(P)、垂直动量流率(F⊥)与水平动量流率(F∥)。（拖曳或点击以创建该线段。）单位为任意。"
   },
   "tool_text_popover": {

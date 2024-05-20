@@ -117,16 +117,16 @@ locales["si"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "රූල"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "කෝණමානය"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "අනාවරකය"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "අනාවරකය"
   },
   "toolname_text": {
@@ -269,10 +269,10 @@ locales["si"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "රූල"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "කෝණමානය"
   },
   "tool_text": {
@@ -489,19 +489,19 @@ locales["si"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "incomplete": true,
     "message": "Irradiance Map"
   },
-  "bin_size": {
+  "binSize": {
     "incomplete": true,
     "message": "Bin Size (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "incomplete": true,
     "message": "Export data"
   },
@@ -791,15 +791,15 @@ locales["si"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "incomplete": true,
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "incomplete": true,
     "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "incomplete": true,
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },

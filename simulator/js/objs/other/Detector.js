@@ -3,20 +3,20 @@
  * Tools -> Other -> Detector
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
- * @property {boolean} irradianceMap - Whether to display the irradiance map.
+ * @property {boolean} irradMap - Whether to display the irradiance map.
  * @property {number} binSize - The size of the bin for the irradiance map.
  * @property {number} power - The measured power through the detector.
  * @property {number} normal - The measured normal force through the detector.
  * @property {number} shear - The measured shear force through the detector.
  * @property {Array<number>} binData - The measured data for the irradiance map.
  */
-objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
-  static type = 'power';
+objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
+  static type = 'Detector';
   static isOptical = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
-    irradianceMap: false,
+    irradMap: false,
     binSize: 1
   };
 
@@ -31,16 +31,16 @@ objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
   }
 
   populateObjBar(objBar) {
-    objBar.createBoolean(getMsg('irradiance_map'), this.irradianceMap, function (obj, value) {
-      obj.irradianceMap = value;
+    objBar.createBoolean(getMsg('irradMap'), this.irradMap, function (obj, value) {
+      obj.irradMap = value;
     }, null, true);
 
-    if (this.irradianceMap) {
-      objBar.createNumber(getMsg('bin_size'), 0.01, 10, 0.01, this.binSize, function (obj, value) {
+    if (this.irradMap) {
+      objBar.createNumber(getMsg('binSize'), 0.01, 10, 0.01, this.binSize, function (obj, value) {
         obj.binSize = value;
       });
 
-      objBar.createButton(getMsg('export_irradiance_map'), function (obj) {
+      objBar.createButton(getMsg('exportData'), function (obj) {
         // Export the irradiance map to a CSV file
         var binSize = obj.binSize;
         var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);
@@ -104,7 +104,7 @@ objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
       ctx.fillText(str3, this.p2.x, this.p2.y + 40);
       ctx.globalCompositeOperation = 'source-over';
 
-      if (this.irradianceMap && this.binData) {
+      if (this.irradMap && this.binData) {
         // Define the unit vector of the x-axis of the plot (parallel to obj) and the y-axis of the plot (perpendicular to obj)
         var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
         var ux = (this.p2.x - this.p1.x) / len;
@@ -134,7 +134,7 @@ objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
     this.normal = 0;
     this.shear = 0;
 
-    if (this.irradianceMap) {
+    if (this.irradMap) {
       var binSize = this.binSize;
       var binNum = Math.ceil(Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y)) / binSize);
       var binData = [];
@@ -160,7 +160,7 @@ objTypes['power'] = class extends LineObjMixin(BaseSceneObj) {
     this.normal += Math.sign(rcrosss) * sint * (ray.brightness_s + ray.brightness_p);
     this.shear -= Math.sign(rcrosss) * cost * (ray.brightness_s + ray.brightness_p);
 
-    if (this.irradianceMap && this.binData) {
+    if (this.irradMap && this.binData) {
       var binSize = this.binSize;
       var binNum = Math.ceil(Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y)) / binSize);
       var binIndex = Math.floor(Math.sqrt((incidentPoint.x - this.p1.x) * (incidentPoint.x - this.p1.x) + (incidentPoint.y - this.p1.y) * (incidentPoint.y - this.p1.y)) / binSize);

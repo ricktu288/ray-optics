@@ -143,19 +143,19 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "incomplete": false,
     "message": "자"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "incomplete": false,
     "message": "각도기"
   },
-  "tool_power": {
+  "tool_Detector": {
     "incomplete": false,
     "message": "검출기 (Detector)"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "incomplete": false,
     "message": "검출기 (Detector)"
   },
@@ -323,11 +323,11 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "incomplete": false,
     "message": "자"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "incomplete": false,
     "message": "각도기"
   },
@@ -559,19 +559,19 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "incomplete": true,
     "message": "Irradiance Map"
   },
-  "bin_size": {
+  "binSize": {
     "incomplete": true,
     "message": "Bin Size (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "incomplete": true,
     "message": "Export data"
   },
@@ -882,15 +882,15 @@ locales["ko"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "incomplete": false,
     "message": "픽셀 단위의 눈금자입니다. (시작점이 0) (드래그 또는 클릭하여 생성.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "incomplete": false,
     "message": "도 단위의 각도기입니다. (시작점이 중심) (드래그 또는 클릭하여 생성.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "incomplete": false,
     "message": "선분을 통해 전달되는 에너지 흐름 (P), 수직 방향 momentum flow (F⊥), 평행 방향 memontum flow (F∥) 을 측정하는 도구입니다. 단위는 임의값 (A.U.) 입니다.."
   },

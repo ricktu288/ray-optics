@@ -108,16 +108,16 @@ locales["zh-TW"] = {
   "toolname_DiffractionGrating": {
     "message": "繞射光柵<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "直尺"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "量角器"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "探測器"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "探測器"
   },
   "toolname_text": {
@@ -243,10 +243,10 @@ locales["zh-TW"] = {
   "tool_DiffractionGrating": {
     "message": "繞射光柵<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "直尺"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "量角器"
   },
   "tool_text": {
@@ -420,16 +420,16 @@ locales["zh-TW"] = {
   "diameter": {
     "message": "直徑 (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "message": "輻照度圖"
   },
-  "bin_size": {
+  "binSize": {
     "message": "組距 (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "message": "刻度間距 (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "message": "匯出數據"
   },
   "fontsize": {
@@ -663,13 +663,13 @@ locales["zh-TW"] = {
   "tool_DiffractionGrating_popover": {
     "message": "將光線依波長分割成不同角度的繞射光柵。注意：繞射光的強度可能不準確。（拖曳或點擊以創建。）"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "message": "指定原點與另一點。刻度單位為像素。（拖曳或點擊以創建。）"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "message": "指定圓心和圓周上一點作為零度位置。刻度單位為度。（拖曳或點擊以創建。）"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "message": "測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。（拖曳或點擊以創建該線段。）單位為任意。"
   },
   "tool_text_popover": {

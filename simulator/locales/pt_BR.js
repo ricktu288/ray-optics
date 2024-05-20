@@ -108,16 +108,16 @@ locales["pt-BR"] = {
   "toolname_DiffractionGrating": {
     "message": "Grade de difração<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "Régua"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "Transferidor"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "Detector"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "Detector"
   },
   "toolname_text": {
@@ -243,10 +243,10 @@ locales["pt-BR"] = {
   "tool_DiffractionGrating": {
     "message": "Grade de Difração<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "Régua"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "Transferidor"
   },
   "tool_text": {
@@ -420,16 +420,16 @@ locales["pt-BR"] = {
   "diameter": {
     "message": "Diâmetro (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "message": "Mapa de Irradiância"
   },
-  "bin_size": {
+  "binSize": {
     "message": "Tamanho do coletor (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "message": "Intervalo da escala (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "message": "Exportar dados"
   },
   "fontsize": {
@@ -692,15 +692,15 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "incomplete": true,
     "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "incomplete": true,
     "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "incomplete": true,
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },

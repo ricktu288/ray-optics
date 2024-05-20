@@ -143,19 +143,19 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "incomplete": false,
     "message": "定規"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "incomplete": false,
     "message": "分度器"
   },
-  "tool_power": {
+  "tool_Detector": {
     "incomplete": false,
     "message": "検出器"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "incomplete": false,
     "message": "検出器"
   },
@@ -323,11 +323,11 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "incomplete": false,
     "message": "定規"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "incomplete": false,
     "message": "分度器"
   },
@@ -559,19 +559,19 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Diameter (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "incomplete": true,
     "message": "Irradiance Map"
   },
-  "bin_size": {
+  "binSize": {
     "incomplete": true,
     "message": "Bin Size (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "incomplete": true,
     "message": "Export data"
   },
@@ -882,15 +882,15 @@ locales["ja"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "incomplete": false,
     "message": "ゼロと別の点の点からの定規。 スケールはピクセル単位です。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "incomplete": false,
     "message": "中心とゼロ方向の別の点から定義された分度器。 スケールは度単位です。 (ドラッグまたはクリックして作成します。)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "incomplete": false,
     "message": "線分を通るエネルギー流の速度 (P)、垂直運動量流の速度 (F⊥)、および平行運動量流の速度 (F∥) を測定するためのツールです。 （ドラッグまたはクリックで線分を作成します。）単位は任意です。"
   },

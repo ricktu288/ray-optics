@@ -109,16 +109,16 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "toolname_ruler": {
+  "toolname_Ruler": {
     "message": "Linijka"
   },
-  "toolname_protractor": {
+  "toolname_Protractor": {
     "message": "Kątomierz"
   },
-  "tool_power": {
+  "tool_Detector": {
     "message": "Detektor"
   },
-  "toolname_power": {
+  "toolname_Detector": {
     "message": "Detektor"
   },
   "toolname_text": {
@@ -246,10 +246,10 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
   },
-  "tool_ruler": {
+  "tool_Ruler": {
     "message": "Linijka"
   },
-  "tool_protractor": {
+  "tool_Protractor": {
     "message": "Kątomierz"
   },
   "tool_text": {
@@ -432,17 +432,17 @@ locales["pl"] = {
   "diameter": {
     "message": "Średnica (px)"
   },
-  "irradiance_map": {
+  "irradMap": {
     "message": "Mapa irradiancji"
   },
-  "bin_size": {
+  "binSize": {
     "message": "Rozmiar pojemnika (px)"
   },
-  "ruler_scale": {
+  "scaleInterval": {
     "incomplete": true,
     "message": "Scale interval (px)"
   },
-  "export_irradiance_map": {
+  "exportData": {
     "message": "Eksportuj dane"
   },
   "fontsize": {
@@ -692,13 +692,13 @@ locales["pl"] = {
     "incomplete": true,
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
-  "tool_ruler_popover": {
+  "tool_Ruler_popover": {
     "message": "Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie). Wyskalowana w pikselach. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_protractor_popover": {
+  "tool_Protractor_popover": {
     "message": "Kątomierz określony przez środek (wierzchołek kąta - pierwsze kliknięcie) i inny punkt dla kierunku zerowego (drugie kliknięcie). Skala jest w stopniach. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_power_popover": {
+  "tool_Detector_popover": {
     "message": "Narzędzie do pomiaru szybkości przepływu energii (P), szybkości prostopadłego przepływu pędu (F⊥), i szybkości równoległego przepływu pędu (F∥) przez odcinek. (Przeciągnij lub kliknij, aby utworzyć odcinek). Jednostki są umowne."
   },
   "tool_text_popover": {
