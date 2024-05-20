@@ -150,7 +150,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Line"
   },
-  "toolname_drawing": {
+  "toolname_Drawing": {
     "incomplete": true,
     "message": "Drawing"
   },
@@ -296,7 +296,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Line / Arrow"
   },
-  "tool_drawing": {
+  "tool_Drawing": {
     "incomplete": true,
     "message": "Drawing"
   },
@@ -820,7 +820,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "A line segment or arrow. (Drag or click to create.)"
   },
-  "tool_drawing_popover": {
+  "tool_Drawing_popover": {
     "incomplete": true,
     "message": "A freehand drawing tool. (Drag to draw.)"
   },

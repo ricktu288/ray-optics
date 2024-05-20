@@ -127,7 +127,7 @@ locales["es"] = {
   "toolname_LineArrow": {
     "message": "Línea"
   },
-  "toolname_drawing": {
+  "toolname_Drawing": {
     "message": "Dibujar"
   },
   "toolname_cropbox": {
@@ -257,7 +257,7 @@ locales["es"] = {
   "tool_LineArrow": {
     "message": "Línea / Flecha"
   },
-  "tool_drawing": {
+  "tool_Drawing": {
     "message": "Dibujar"
   },
   "tool_": {
@@ -689,7 +689,7 @@ locales["es"] = {
   "tool_LineArrow_popover": {
     "message": "Un segmento de recta o flecha. (Arrastre o clique para crear.)"
   },
-  "tool_drawing_popover": {
+  "tool_Drawing_popover": {
     "message": "Una herramienta para dibujar a mano alzada. (Arrastre para dibujar.)"
   },
   "tool__popover": {

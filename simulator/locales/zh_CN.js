@@ -126,7 +126,7 @@ locales["zh-CN"] = {
   "toolname_LineArrow": {
     "message": "线段"
   },
-  "toolname_drawing": {
+  "toolname_Drawing": {
     "message": "绘图"
   },
   "toolname_cropbox": {
@@ -255,7 +255,7 @@ locales["zh-CN"] = {
   "tool_LineArrow": {
     "message": "线段 / 箭头"
   },
-  "tool_drawing": {
+  "tool_Drawing": {
     "message": "绘图"
   },
   "tool_": {
@@ -678,7 +678,7 @@ locales["zh-CN"] = {
   "tool_LineArrow_popover": {
     "message": "线段或箭头。（拖曳或点击以创建。）"
   },
-  "tool_drawing_popover": {
+  "tool_Drawing_popover": {
     "message": "手绘工具。（拖曳以绘图。）"
   },
   "tool__popover": {

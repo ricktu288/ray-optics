@@ -126,7 +126,7 @@ locales["en"] = {
   "toolname_LineArrow": {
     "message": "Line"
   },
-  "toolname_drawing": {
+  "toolname_Drawing": {
     "message": "Drawing"
   },
   "toolname_cropbox": {
@@ -255,7 +255,7 @@ locales["en"] = {
   "tool_LineArrow": {
     "message": "Line / Arrow"
   },
-  "tool_drawing": {
+  "tool_Drawing": {
     "message": "Drawing"
   },
   "tool_": {
@@ -678,7 +678,7 @@ locales["en"] = {
   "tool_LineArrow_popover": {
     "message": "A line segment or arrow. (Drag or click to create.)"
   },
-  "tool_drawing_popover": {
+  "tool_Drawing_popover": {
     "message": "A freehand drawing tool. (Drag to draw.)"
   },
   "tool__popover": {

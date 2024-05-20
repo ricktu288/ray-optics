@@ -1,14 +1,14 @@
 /**
  * Drawing tool
  * Tools -> Other -> Drawing
- * @property {Array<Array<number>>} points - The points of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`.
+ * @property {Array<Array<number>>} strokes - The strokes of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`.
  * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
  * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
  */
-objTypes['drawing'] = class extends BaseSceneObj {
-  static type = 'drawing';
+objTypes['Drawing'] = class extends BaseSceneObj {
+  static type = 'Drawing';
   static serializableDefaults = {
-    points: [],
+    strokes: [],
     isDrawing: false
   };
 
@@ -25,7 +25,7 @@ objTypes['drawing'] = class extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     ctx.strokeStyle = isHovered ? 'cyan' : 'white';
     ctx.beginPath();
-    for (const stroke of this.points) {
+    for (const stroke of this.strokes) {
       ctx.moveTo(stroke[0], stroke[1]);
       for (let i = 2; i < stroke.length; i += 2) {
         ctx.lineTo(stroke[i], stroke[i + 1]);
@@ -35,7 +35,7 @@ objTypes['drawing'] = class extends BaseSceneObj {
   }
 
   move(diffX, diffY) {
-    for (const stroke of this.points) {
+    for (const stroke of this.strokes) {
       for (let i = 0; i < stroke.length; i += 2) {
         stroke[i] += diffX;
         stroke[i + 1] += diffY;
@@ -47,17 +47,17 @@ objTypes['drawing'] = class extends BaseSceneObj {
     if (!this.isDrawing) {
       // Initialize the drawing
       this.isDrawing = true;
-      this.points = [];
+      this.strokes = [];
     }
     const mousePos = mouse.getPosSnappedToGrid();
-    this.points.push([mousePos.x, mousePos.y]);
+    this.strokes.push([mousePos.x, mousePos.y]);
     this.isMouseDown = true;
   }
 
   onConstructMouseMove(mouse, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
     if (!this.isMouseDown) return;
-    this.points[this.points.length - 1].push(mousePos.x, mousePos.y);
+    this.strokes[this.strokes.length - 1].push(mousePos.x, mousePos.y);
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
@@ -69,7 +69,7 @@ objTypes['drawing'] = class extends BaseSceneObj {
 
   checkMouseOver(mouse) {
     let dragContext = {};
-    for (const stroke of this.points) {
+    for (const stroke of this.strokes) {
       for (let i = 0; i < stroke.length - 2; i += 2) {
         if (mouse.isOnSegment(geometry.line(geometry.point(stroke[i], stroke[i + 1]), geometry.point(stroke[i + 2], stroke[i + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
@@ -95,7 +95,7 @@ objTypes['drawing'] = class extends BaseSceneObj {
     var mouseDiffY = dragContext.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
 
     if (dragContext.part == 0) {
-      for (const stroke of this.points) {
+      for (const stroke of this.strokes) {
         for (let i = 0; i < stroke.length; i += 2) {
           stroke[i] -= mouseDiffX;
           stroke[i + 1] -= mouseDiffY;

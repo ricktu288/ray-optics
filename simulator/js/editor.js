@@ -638,7 +638,7 @@ function createUndoPoint() {
 }
 
 function undo() {
-  if (isConstructing && !(scene.objs.length > 0 && scene.objs[scene.objs.length - 1].constructor.type == 'drawing')) {
+  if (isConstructing && !(scene.objs.length > 0 && scene.objs[scene.objs.length - 1].constructor.type == 'Drawing')) {
     // If the user is constructing an object when clicked the undo, then only stop the consturction rather than do the real undo
 
     isConstructing = false;

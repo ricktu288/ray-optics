@@ -127,7 +127,7 @@ locales["pl"] = {
   "toolname_LineArrow": {
     "message": "Linia"
   },
-  "toolname_drawing": {
+  "toolname_Drawing": {
     "message": "Rysunek"
   },
   "toolname_cropbox": {
@@ -258,7 +258,7 @@ locales["pl"] = {
   "tool_LineArrow": {
     "message": "Linia / Strzałka"
   },
-  "tool_drawing": {
+  "tool_Drawing": {
     "message": "Rysunek"
   },
   "tool_": {
@@ -707,7 +707,7 @@ locales["pl"] = {
   "tool_LineArrow_popover": {
     "message": "Odcinek lub strzałka. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
-  "tool_drawing_popover": {
+  "tool_Drawing_popover": {
     "message": "Narzędzie do rysowania odręcznego. (Przeciągnij, aby narysować.)"
   },
   "tool__popover": {
