@@ -95,7 +95,7 @@ function canvas_onmousedown(e) {
       var rets = selectionSearch(mousePos_nogrid);
       var ret = rets[0];
       if (ret.targetObj_index != -1) {
-        if (!e.ctrlKey && scene.objs.length > 0 && scene.objs[0].constructor.type == "handle" && scene.objs[0].notDone) {
+        if (!e.ctrlKey && scene.objs.length > 0 && scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone) {
           // User is creating a handle
           removeObj(0);
           ret.targetObj_index--;
@@ -115,7 +115,7 @@ function canvas_onmousedown(e) {
 
     if (draggingObj == -1) {
       // The mousePos clicked the blank area
-      if (scene.objs.length > 0 && scene.objs[0].constructor.type == "handle" && scene.objs[0].notDone) {
+      if (scene.objs.length > 0 && scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone) {
         // User is creating a handle
         finishHandleCreation(mousePos);
         return;
@@ -389,10 +389,10 @@ function canvas_onmouseup(e) {
 }
 
 function addControlPointsForHandle(controlPoints) {
-  if (!(scene.objs[0].constructor.type == "handle" && scene.objs[0].notDone)) {
-    scene.objs.unshift(new objTypes["handle"](scene, {notDone: true}));
+  if (!(scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone)) {
+    scene.objs.unshift(new objTypes["Handle"](scene, {notDone: true}));
     for (var i in scene.objs) {
-      if (scene.objs[i].constructor.type == "handle") {
+      if (scene.objs[i].constructor.type == "Handle") {
         for (var j in scene.objs[i].controlPoints) {
           scene.objs[i].controlPoints[j].targetObj_index++;
         }
@@ -512,7 +512,7 @@ function selectObj(index) {
     return;
   }
   selectedObj = index;
-  if (scene.objs[index].constructor.type == 'handle') {
+  if (scene.objs[index].constructor.type == 'Handle') {
     document.getElementById('obj_bar').style.display = 'none';
     return;
   }
@@ -582,7 +582,7 @@ function removeObj(index) {
   }
 
   for (var i in scene.objs) {
-    if (scene.objs[i].constructor.type == "handle") {
+    if (scene.objs[i].constructor.type == "Handle") {
       for (var j in scene.objs[i].controlPoints) {
         if (scene.objs[i].controlPoints[j].targetObj_index > index) {
           scene.objs[i].controlPoints[j].targetObj_index--;
@@ -601,7 +601,7 @@ function removeObj(index) {
 }
 
 function cloneObj(index) {
-  if (scene.objs[index].constructor.type == "handle") {
+  if (scene.objs[index].constructor.type == "Handle") {
     var indices = [];
     for (var j in scene.objs[index].controlPoints) {
       if (indices.indexOf(scene.objs[index].controlPoints[j].targetObj_index) == -1) {
@@ -610,7 +610,7 @@ function cloneObj(index) {
     }
     //console.log(indices);
     for (var j in indices) {
-      if (scene.objs[indices[j]].constructor.type != "handle") {
+      if (scene.objs[indices[j]].constructor.type != "Handle") {
         cloneObj(indices[j]);
       }
     }

@@ -5,8 +5,8 @@
  * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
-objTypes['handle'] = class extends BaseSceneObj {
-  static type = 'handle';
+objTypes['Handle'] = class extends BaseSceneObj {
+  static type = 'Handle';
   static isOptical = true; // As the handle may bind to objects which are optical, this should be regarded as true.
   static serializableDefaults = {
     p1: null,
@@ -18,7 +18,7 @@ objTypes['handle'] = class extends BaseSceneObj {
   serialize() {
     let jsonObj = super.serialize();
 
-    if (!this.notDone) {
+    if (!this.notDone && jsonObj.controlPoints) {
       // Remove some redundent properties in the control points to reduce the size of the JSON.
       jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
         let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));
