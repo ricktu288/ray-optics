@@ -159,7 +159,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "검출기 (Detector)"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": false,
     "message": "텍스트"
   },
@@ -331,7 +331,7 @@ locales["ko"] = {
     "incomplete": false,
     "message": "각도기"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": false,
     "message": "텍스트"
   },
@@ -575,15 +575,15 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": false,
     "message": "폰트 크기 (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": false,
     "message": "폰트"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": false,
     "message": "스타일"
   },
@@ -611,7 +611,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": false,
     "message": "정렬"
   },
@@ -631,7 +631,7 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": false,
     "message": "Small Caps"
   },

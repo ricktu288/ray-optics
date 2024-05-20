@@ -159,7 +159,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "検出器"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": false,
     "message": "テキスト"
   },
@@ -331,7 +331,7 @@ locales["ja"] = {
     "incomplete": false,
     "message": "分度器"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": false,
     "message": "テキスト"
   },
@@ -575,15 +575,15 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": false,
     "message": "フォントサイズ (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": false,
     "message": "フォント"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": false,
     "message": "スタイル"
   },
@@ -611,7 +611,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": false,
     "message": "文字揃え"
   },
@@ -631,7 +631,7 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": false,
     "message": "スモールキャピタル"
   },

@@ -142,7 +142,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -288,7 +288,7 @@ locales["nl"] = {
   "tool_Protractor": {
     "message": "Gradenboog"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -513,15 +513,15 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -549,7 +549,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -569,7 +569,7 @@ locales["nl"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

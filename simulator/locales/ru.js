@@ -139,7 +139,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -285,7 +285,7 @@ locales["ru"] = {
   "tool_Protractor": {
     "message": "Транспортир"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -500,15 +500,15 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -536,7 +536,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -556,7 +556,7 @@ locales["ru"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

@@ -121,7 +121,7 @@ locales["es"] = {
   "toolname_Detector": {
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "Texto"
   },
   "toolname_line": {
@@ -251,7 +251,7 @@ locales["es"] = {
   "tool_Protractor": {
     "message": "Transportador"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "Texto"
   },
   "tool_line": {
@@ -440,13 +440,13 @@ locales["es"] = {
   "exportData": {
     "message": "Exportar datos"
   },
-  "fontsize": {
+  "fontSize": {
     "message": "Tamaño de fuente (px)"
   },
-  "fontname": {
+  "font": {
     "message": "Fuente"
   },
-  "fontstyle": {
+  "fontStyle": {
     "message": "Estilo"
   },
   "normal": {
@@ -467,7 +467,7 @@ locales["es"] = {
   "boldoblique": {
     "message": "Negrita oblicua"
   },
-  "fontalignment": {
+  "alignment": {
     "message": "Alineamiento"
   },
   "left": {
@@ -482,7 +482,7 @@ locales["es"] = {
   "text_here": {
     "message": "Texto Aquí"
   },
-  "smallcaps": {
+  "smallCaps": {
     "message": "Mayúsculas pequeñas"
   },
   "angle": {

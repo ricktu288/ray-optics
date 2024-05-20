@@ -129,7 +129,7 @@ locales["si"] = {
   "toolname_Detector": {
     "message": "අනාවරකය"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -275,7 +275,7 @@ locales["si"] = {
   "tool_Protractor": {
     "message": "කෝණමානය"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -505,15 +505,15 @@ locales["si"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -541,7 +541,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -561,7 +561,7 @@ locales["si"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

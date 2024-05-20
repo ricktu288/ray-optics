@@ -120,7 +120,7 @@ locales["zh-CN"] = {
   "toolname_Detector": {
     "message": "探测器"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "文字"
   },
   "toolname_line": {
@@ -249,7 +249,7 @@ locales["zh-CN"] = {
   "tool_Protractor": {
     "message": "量角器"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "文字"
   },
   "tool_line": {
@@ -432,13 +432,13 @@ locales["zh-CN"] = {
   "exportData": {
     "message": "导出数据"
   },
-  "fontsize": {
+  "fontSize": {
     "message": "字型大小 (px)"
   },
-  "fontname": {
+  "font": {
     "message": "字型"
   },
-  "fontstyle": {
+  "fontStyle": {
     "message": "样式"
   },
   "normal": {
@@ -459,7 +459,7 @@ locales["zh-CN"] = {
   "boldoblique": {
     "message": "粗倾斜"
   },
-  "fontalignment": {
+  "alignment": {
     "message": "对齐"
   },
   "left": {
@@ -474,7 +474,7 @@ locales["zh-CN"] = {
   "text_here": {
     "message": "在此输入文字"
   },
-  "smallcaps": {
+  "smallCaps": {
     "message": "小型大写"
   },
   "angle": {

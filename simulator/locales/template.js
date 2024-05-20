@@ -160,7 +160,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -331,7 +331,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Protractor"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "incomplete": true,
     "message": "Text"
   },
@@ -575,15 +575,15 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -611,7 +611,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -631,7 +631,7 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

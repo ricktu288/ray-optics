@@ -120,7 +120,7 @@ locales["en"] = {
   "toolname_Detector": {
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "Text"
   },
   "toolname_line": {
@@ -249,7 +249,7 @@ locales["en"] = {
   "tool_Protractor": {
     "message": "Protractor"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "Text"
   },
   "tool_line": {
@@ -432,13 +432,13 @@ locales["en"] = {
   "exportData": {
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "message": "Style"
   },
   "normal": {
@@ -459,7 +459,7 @@ locales["en"] = {
   "boldoblique": {
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "message": "Alignment"
   },
   "left": {
@@ -474,7 +474,7 @@ locales["en"] = {
   "text_here": {
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "message": "Small Caps"
   },
   "angle": {

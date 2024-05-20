@@ -125,7 +125,7 @@ locales["de"] = {
   "toolname_Detector": {
     "message": "Detektor"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "Text"
   },
   "toolname_line": {
@@ -262,7 +262,7 @@ locales["de"] = {
   "tool_Protractor": {
     "message": "Winkelmesser"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "Text"
   },
   "tool_line": {
@@ -471,15 +471,15 @@ locales["de"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -507,7 +507,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -527,7 +527,7 @@ locales["de"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

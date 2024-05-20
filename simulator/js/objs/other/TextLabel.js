@@ -3,26 +3,26 @@
  * Tools -> Other -> Text
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
- * @property {string} p - The text content.
+ * @property {string} text - The text content.
  * @property {number} fontSize - The font size in CSS pixels.
- * @property {string} fontName - The font name.
+ * @property {string} font - The font name.
  * @property {string} fontStyle - The font style.
- * @property {string} fontAlignment - The font alignment.
- * @property {boolean} fontSmallCaps - Whether the text is in small caps.
- * @property {number} fontAngle - The angle of the text in degrees.
+ * @property {string} alignment - The font alignment.
+ * @property {boolean} smallCaps - Whether the text is in small caps.
+ * @property {number} angle - The angle of the text in degrees.
  */
-objTypes['text'] = class extends BaseSceneObj {
-  static type = 'text';
+objTypes['TextLabel'] = class extends BaseSceneObj {
+  static type = 'TextLabel';
   static serializableDefaults = {
     x: null,
     y: null,
-    p: '',
+    text: '',
     fontSize: 24,
-    fontName: 'Serif',
+    font: 'Serif',
     fontStyle: 'Normal',
-    fontAlignment: 'left',
-    fontSmallCaps: false,
-    fontAngle: 0
+    alignment: 'left',
+    smallCaps: false,
+    angle: 0
   };
 
   // generic list of web safe fonts
@@ -49,50 +49,50 @@ objTypes['text'] = class extends BaseSceneObj {
     'Bold Oblique': getMsg('boldoblique')
   };
 
-  static fontAlignments = {
+  static alignments = {
     'left': getMsg('left'),
     'center': getMsg('center'),
     'right': getMsg('right')
   };
 
   populateObjBar(objBar) {
-    objBar.createText('', this.p, function (obj, value) {
-      obj.p = value;
+    objBar.createText('', this.text, function (obj, value) {
+      obj.text = value;
     });
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSize']))) {
-      objBar.createNumber(getMsg('fontsize'), 6, 96, 1, this.fontSize, function (obj, value) {
+      objBar.createNumber(getMsg('fontSize'), 6, 96, 1, this.fontSize, function (obj, value) {
         obj.fontSize = value;
       }, null, true);
     }
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontName']))) {
-      objBar.createDropdown(getMsg('fontname'), this.fontName, this.constructor.fonts, function (obj, value) {
-        obj.fontName = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['font']))) {
+      objBar.createDropdown(getMsg('font'), this.font, this.constructor.fonts, function (obj, value) {
+        obj.font = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontStyle']))) {
-      objBar.createDropdown(getMsg('fontstyle'), this.fontStyle, this.constructor.fontStyles, function (obj, value) {
+      objBar.createDropdown(getMsg('fontStyle'), this.fontStyle, this.constructor.fontStyles, function (obj, value) {
         obj.fontStyle = value;
       });
     }
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontAlignment']))) {
-      objBar.createDropdown(getMsg('fontalignment'), this.fontAlignment, this.constructor.fontAlignments, function (obj, value) {
-        obj.fontAlignment = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['alignment']))) {
+      objBar.createDropdown(getMsg('alignment'), this.alignment, this.constructor.alignments, function (obj, value) {
+        obj.alignment = value;
       });
     }
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSmallCaps']))) {
-      objBar.createBoolean(getMsg('smallcaps'), this.fontSmallCaps, function (obj, value) {
-        obj.fontSmallCaps = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['smallCaps']))) {
+      objBar.createBoolean(getMsg('smallCaps'), this.smallCaps, function (obj, value) {
+        obj.smallCaps = value;
       });
     }
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['fontAngle']))) {
-      objBar.createNumber(getMsg('angle'), 0, 360, 1, this.fontAngle, function (obj, value) {
-        obj.fontAngle = value;
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['angle']))) {
+      objBar.createNumber(getMsg('angle'), 0, 360, 1, this.angle, function (obj, value) {
+        obj.angle = value;
       }, null, true);
     }
   }
@@ -100,24 +100,24 @@ objTypes['text'] = class extends BaseSceneObj {
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     ctx.fillStyle = isHovered ? 'cyan' : ('white');
-    ctx.textAlign = this.fontAlignment;
+    ctx.textAlign = this.alignment;
     ctx.textBaseline = 'bottom';
 
-    let fontName = '';
-    if (this.fontStyle && this.fontStyle != 'Normal') fontName += this.fontStyle + ' ';
-    if (this.fontSmallCaps) fontName += 'small-caps '
-    fontName += this.fontSize + 'px ' + this.fontName;
-    ctx.font = fontName;
+    let font = '';
+    if (this.fontStyle && this.fontStyle != 'Normal') font += this.fontStyle + ' ';
+    if (this.smallCaps) font += 'small-caps '
+    font += this.fontSize + 'px ' + this.font;
+    ctx.font = font;
 
     ctx.save();
     ctx.translate(this.x, this.y);
-    ctx.rotate(-this.fontAngle / 180 * Math.PI);
+    ctx.rotate(-this.angle / 180 * Math.PI);
     let y_offset = 0;
     this.left = 0;
     this.right = 0;
     this.up = 0;
     this.down = 0;
-    this.p.split('\n').forEach(line => {
+    this.text.split('\n').forEach(line => {
       ctx.fillText(line, 0, y_offset);
       let lineDimensions = ctx.measureText(line);
       this.left = Math.max(this.left, lineDimensions.actualBoundingBoxLeft);
@@ -132,8 +132,8 @@ objTypes['text'] = class extends BaseSceneObj {
     });
     ctx.restore();
     // precompute triganometry for faster calculations in 'clicked' function
-    this.sin_angle = Math.sin(this.fontAngle / 180 * Math.PI);
-    this.cos_angle = Math.cos(this.fontAngle / 180 * Math.PI);
+    this.sin_angle = Math.sin(this.angle / 180 * Math.PI);
+    this.cos_angle = Math.cos(this.angle / 180 * Math.PI);
   }
 
   move(diffX, diffY) {
@@ -145,7 +145,7 @@ objTypes['text'] = class extends BaseSceneObj {
     const mousePos = mouse.getPosSnappedToGrid();
     this.x = mousePos.x;
     this.y = mousePos.y;
-    this.p = getMsg('text_here');
+    this.text = getMsg('text_here');
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {

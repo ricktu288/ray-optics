@@ -140,7 +140,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Detector"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "Texte"
   },
   "toolname_line": {
@@ -285,7 +285,7 @@ locales["fr"] = {
   "tool_Protractor": {
     "message": "Rapporteur"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "Texte"
   },
   "tool_line": {
@@ -498,15 +498,15 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Export data"
   },
-  "fontsize": {
+  "fontSize": {
     "incomplete": true,
     "message": "Font Size (px)"
   },
-  "fontname": {
+  "font": {
     "incomplete": true,
     "message": "Font"
   },
-  "fontstyle": {
+  "fontStyle": {
     "incomplete": true,
     "message": "Style"
   },
@@ -534,7 +534,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "incomplete": true,
     "message": "Alignment"
   },
@@ -554,7 +554,7 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "incomplete": true,
     "message": "Small Caps"
   },

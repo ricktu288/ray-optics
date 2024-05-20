@@ -121,7 +121,7 @@ locales["pl"] = {
   "toolname_Detector": {
     "message": "Detektor"
   },
-  "toolname_text": {
+  "toolname_TextLabel": {
     "message": "Tekst"
   },
   "toolname_line": {
@@ -252,7 +252,7 @@ locales["pl"] = {
   "tool_Protractor": {
     "message": "Kątomierz"
   },
-  "tool_text": {
+  "tool_TextLabel": {
     "message": "Tekst"
   },
   "tool_line": {
@@ -445,13 +445,13 @@ locales["pl"] = {
   "exportData": {
     "message": "Eksportuj dane"
   },
-  "fontsize": {
+  "fontSize": {
     "message": "Rozmiar czcionki (px)"
   },
-  "fontname": {
+  "font": {
     "message": "Czcionka"
   },
-  "fontstyle": {
+  "fontStyle": {
     "message": "Styl"
   },
   "normal": {
@@ -478,7 +478,7 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Bold Oblique"
   },
-  "fontalignment": {
+  "alignment": {
     "message": "Wyrównanie"
   },
   "left": {
@@ -497,7 +497,7 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Text Here"
   },
-  "smallcaps": {
+  "smallCaps": {
     "message": "Małe litery"
   },
   "angle": {
