@@ -107,7 +107,7 @@ locales["es"] = {
   },
   "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "toolname_Ruler": {
     "message": "Regla"
@@ -243,7 +243,7 @@ locales["es"] = {
   },
   "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "tool_Ruler": {
     "message": "Regla"

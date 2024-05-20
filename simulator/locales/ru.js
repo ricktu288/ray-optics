@@ -123,7 +123,7 @@ locales["ru"] = {
   },
   "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "toolname_Ruler": {
     "message": "Линейка"
@@ -277,7 +277,7 @@ locales["ru"] = {
   },
   "tool_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "tool_Ruler": {
     "message": "Линейка"

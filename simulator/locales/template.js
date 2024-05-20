@@ -142,7 +142,7 @@ locales["LOCALE_ID"] = {
   },
   "toolname_DiffractionGrating": {
     "incomplete": true,
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "toolname_Ruler": {
     "incomplete": true,
@@ -321,7 +321,7 @@ locales["LOCALE_ID"] = {
     "message": "Circle Blocker"
   },
   "tool_DiffractionGrating": {
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "tool_Ruler": {
     "incomplete": true,

@@ -106,7 +106,7 @@ locales["en"] = {
     "message": "Circle Blocker"
   },
   "toolname_DiffractionGrating": {
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "toolname_Ruler": {
     "message": "Ruler"
@@ -241,7 +241,7 @@ locales["en"] = {
     "message": "Circle Blocker"
   },
   "tool_DiffractionGrating": {
-    "message": "Diffraction DiffractionGrating<sup>Beta</sup>"
+    "message": "Diffraction Grating<sup>Beta</sup>"
   },
   "tool_Ruler": {
     "message": "Ruler"
