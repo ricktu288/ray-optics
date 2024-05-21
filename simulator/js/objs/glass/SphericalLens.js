@@ -100,7 +100,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
     }
 
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchyB') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
+      objBar.createNumber(getMsg('cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.refIndex = value * 1;
         if (obj.defBy == 'DFfdBfd') {
