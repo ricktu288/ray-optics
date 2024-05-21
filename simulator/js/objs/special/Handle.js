@@ -22,7 +22,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
       // Remove some redundent properties in the control points to reduce the size of the JSON.
       jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
         let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));
-        delete controlPointCopy.mousePart.originalObj; // This should be inferred from `scene.objs[controlPoint.targetObj_index]` directly.
+        delete controlPointCopy.mousePart.originalObj; // This should be inferred from `scene.objs[controlPoint.targetObjIndex]` directly.
         delete controlPointCopy.mousePart.hasDuplicated; // Always false.
         delete controlPointCopy.mousePart.isByHandle; // Always true.
         delete controlPointCopy.mousePart.targetPoint; // The target point is already stored in the newPoint.
@@ -76,7 +76,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
     this.p2.x = this.p2.x + diffX;
     this.p2.y = this.p2.y + diffY;
     for (var i in this.controlPoints) {
-      this.controlPoints[i].mousePart.originalObj = this.scene.objs[this.controlPoints[i].targetObj_index].serialize();
+      this.controlPoints[i].mousePart.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
       this.controlPoints[i].mousePart.isByHandle = true;
       this.controlPoints[i].mousePart.hasDuplicated = false;
       this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
@@ -84,7 +84,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
 
       this.controlPoints[i].newPoint.x = this.controlPoints[i].newPoint.x + diffX;
       this.controlPoints[i].newPoint.y = this.controlPoints[i].newPoint.y + diffY;
-      this.scene.objs[this.controlPoints[i].targetObj_index].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
+      this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
     }
   }
 
@@ -149,13 +149,13 @@ objTypes['Handle'] = class extends BaseSceneObj {
       trans(this.p1);
       trans(this.p2);
       for (var i in this.controlPoints) {
-        this.controlPoints[i].mousePart.originalObj = scene.objs[this.controlPoints[i].targetObj_index].serialize();
+        this.controlPoints[i].mousePart.originalObj = scene.objs[this.controlPoints[i].targetObjIndex].serialize();
         this.controlPoints[i].mousePart.isByHandle = true;
         this.controlPoints[i].mousePart.hasDuplicated = false;
         this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
         this.controlPoints[i].mousePart.snapContext = {};
         trans(this.controlPoints[i].newPoint);
-        this.scene.objs[this.controlPoints[i].targetObj_index].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
+        this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
       }
       dragContext.targetPoint_.x = this.p1.x;
       dragContext.targetPoint_.y = this.p1.y;
@@ -179,7 +179,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
    * @param {ControlPoint} controlPoint - The control point to be bound.
    */
   addControlPoint(controlPoint) {
-    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObj_index];
+    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObjIndex];
     controlPoint.mousePart.isByHandle = true;
     controlPoint.mousePart.hasDuplicated = false;
     controlPoint.newPoint = controlPoint.mousePart.targetPoint;

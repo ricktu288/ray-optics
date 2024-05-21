@@ -94,17 +94,17 @@ function canvas_onmousedown(e) {
 
       var rets = selectionSearch(mousePos_nogrid);
       var ret = rets[0];
-      if (ret.targetObj_index != -1) {
+      if (ret.targetObjIndex != -1) {
         if (!e.ctrlKey && scene.objs.length > 0 && scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone) {
           // User is creating a handle
           removeObj(0);
-          ret.targetObj_index--;
+          ret.targetObjIndex--;
         }
-        selectObj(ret.targetObj_index);
+        selectObj(ret.targetObjIndex);
         dragContext = ret.mousePart;
-        dragContext.originalObj = scene.objs[ret.targetObj_index].serialize(); // Store the obj status before dragging
+        dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
         dragContext.hasDuplicated = false;
-        draggingObj = ret.targetObj_index;
+        draggingObj = ret.targetObjIndex;
         if (e.ctrlKey && dragContext.targetPoint) {
           pendingControlPointSelection = true;
           pendingControlPoints = rets;
@@ -163,7 +163,7 @@ function selectionSearch(mousePos_nogrid) {
   var mousePart_;
   var click_lensq = Infinity;
   var click_lensq_temp;
-  var targetObj_index = -1;
+  var targetObjIndex = -1;
   var targetIsPoint = false;
   var mousePart;
   var targetIsSelected = false;
@@ -182,30 +182,30 @@ function selectionSearch(mousePos_nogrid) {
             results = [];
           }
           var click_lensq_temp = geometry.distanceSquared(mousePos_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
-          if (click_lensq_temp <= click_lensq || targetObj_index == selectedObj) {
+          if (click_lensq_temp <= click_lensq || targetObjIndex == selectedObj) {
             // In case of clicking a point, choose the one nearest to the mouse
             // But if the object is the selected object, the points from this object have the highest priority.
-            targetObj_index = i;
+            targetObjIndex = i;
             click_lensq = click_lensq_temp;
             mousePart = mousePart_;
             if (!targetIsSelected) {
-              results.unshift({mousePart: mousePart, targetObj_index: targetObj_index});
+              results.unshift({mousePart: mousePart, targetObjIndex: targetObjIndex});
             } else {
-              results.push({mousePart: mousePart, targetObj_index: targetObj_index});
+              results.push({mousePart: mousePart, targetObjIndex: targetObjIndex});
             }
-            if (targetObj_index == selectedObj) targetIsSelected = true;
+            if (targetObjIndex == selectedObj) targetIsSelected = true;
           }
         } else if (!targetIsPoint) {
           // If not clicking a point, and until now not clicking any point
-          targetObj_index = i; // If clicking non-point, choose the most newly created one
+          targetObjIndex = i; // If clicking non-point, choose the most newly created one
           mousePart = mousePart_;
-          results.unshift({mousePart: mousePart, targetObj_index: targetObj_index});
+          results.unshift({mousePart: mousePart, targetObjIndex: targetObjIndex});
         }
       }
     }
   }
   if (results.length == 0) {
-    results.push({targetObj_index: -1});
+    results.push({targetObjIndex: -1});
   }
   return results;
 }
@@ -232,7 +232,7 @@ function canvas_onmousemove(e) {
     // highlight object under mousePos cursor
     var ret = selectionSearch(mousePos_nogrid)[0];
     //console.log(mousePos_nogrid);
-    var newMouseObj = (ret.targetObj_index == -1) ? null : scene.objs[ret.targetObj_index];
+    var newMouseObj = (ret.targetObjIndex == -1) ? null : scene.objs[ret.targetObjIndex];
     if (mouseObj != newMouseObj) {
       mouseObj = newMouseObj;
       draw(true, true);
@@ -394,13 +394,13 @@ function addControlPointsForHandle(controlPoints) {
     for (var i in scene.objs) {
       if (scene.objs[i].constructor.type == "Handle") {
         for (var j in scene.objs[i].controlPoints) {
-          scene.objs[i].controlPoints[j].targetObj_index++;
+          scene.objs[i].controlPoints[j].targetObjIndex++;
         }
       }
     }
     if (selectedObj >= 0) selectedObj++;
     for (var i in controlPoints) {
-      controlPoints[i].targetObj_index++;
+      controlPoints[i].targetObjIndex++;
     }
     handleIndex = 0;
   }
@@ -449,13 +449,13 @@ function canvas_ondblclick(e) {
     }
 
     var ret = selectionSearch(mousePos)[0];
-    if (ret.targetObj_index != -1 && ret.mousePart.targetPoint) {
-      selectObj(ret.targetObj_index);
+    if (ret.targetObjIndex != -1 && ret.mousePart.targetPoint) {
+      selectObj(ret.targetObjIndex);
       dragContext = ret.mousePart;
-      dragContext.originalObj = scene.objs[ret.targetObj_index].serialize(); // Store the obj status before dragging
+      dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
 
       dragContext.hasDuplicated = false;
-      positioningObj = ret.targetObj_index;
+      positioningObj = ret.targetObjIndex;
 
       document.getElementById('xybox').style.left = (dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
       document.getElementById('xybox').style.top = (dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
@@ -584,9 +584,9 @@ function removeObj(index) {
   for (var i in scene.objs) {
     if (scene.objs[i].constructor.type == "Handle") {
       for (var j in scene.objs[i].controlPoints) {
-        if (scene.objs[i].controlPoints[j].targetObj_index > index) {
-          scene.objs[i].controlPoints[j].targetObj_index--;
-        } else if (scene.objs[i].controlPoints[j].targetObj_index == index) {
+        if (scene.objs[i].controlPoints[j].targetObjIndex > index) {
+          scene.objs[i].controlPoints[j].targetObjIndex--;
+        } else if (scene.objs[i].controlPoints[j].targetObjIndex == index) {
           scene.objs[i].controlPoints = [];
           break;
         }
@@ -604,8 +604,8 @@ function cloneObj(index) {
   if (scene.objs[index].constructor.type == "Handle") {
     var indices = [];
     for (var j in scene.objs[index].controlPoints) {
-      if (indices.indexOf(scene.objs[index].controlPoints[j].targetObj_index) == -1) {
-        indices.push(scene.objs[index].controlPoints[j].targetObj_index);
+      if (indices.indexOf(scene.objs[index].controlPoints[j].targetObjIndex) == -1) {
+        indices.push(scene.objs[index].controlPoints[j].targetObjIndex);
       }
     }
     //console.log(indices);

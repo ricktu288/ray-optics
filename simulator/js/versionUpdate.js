@@ -212,7 +212,7 @@ function versionUpdate(jsonData) {
       jsonData.mode = mode_update[jsonData.mode];
     }
 
-    // Update objects
+    // Update object types and their properties
     jsonData.objs = jsonData.objs.map(objData => {
       if (objData.type in obj_update) {
         for (let key in obj_update[objData.type]) {
@@ -226,18 +226,23 @@ function versionUpdate(jsonData) {
       return objData;
     });
 
-    // Remove unused properties recursively.
+    // Update deep properties
     function updateProperties(obj) {
       if (typeof obj === 'object') {
         if (obj.exist !== undefined) {
           delete obj.exist;
         }
-        if (obj.byHandle !== undefined) {
-          delete obj.byHandle;
-        }
         if (typeof obj.type === 'number') {
           delete obj.type;
         }
+        if (obj.byHandle !== undefined) {
+          delete obj.byHandle;
+        }
+        if (obj.targetObj_index !== undefined) {
+          obj.targetObjIndex = obj.targetObj_index;
+          delete obj.targetObj_index;
+        }
+
         for (let key in obj) {
           updateProperties(obj[key]);
         }
