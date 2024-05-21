@@ -1,13 +1,13 @@
 /**
- * The version of the JSON data format of the scene.
+ * The version of the JSON data format of the scene, which matches the major version number of the app starting from version 5.0.
  * @const {number}
  */
-const DATA_VERSION = 2;
+const DATA_VERSION = 5;
 
 /**
  * Represents the scene in this simulator.
  * @class Scene
- * @property {Object[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
+ * @property {BaseSceneObj[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
  * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
  * @property {number} rayModeDensity - The density of rays in 'rays' and 'extended' modes.
  * @property {number} imageModeDensity - The density of rays in 'images' and 'observer' modes.
@@ -15,8 +15,8 @@ const DATA_VERSION = 2;
  * @property {boolean} snapToGrid - The "Snap to Grid" option indicating if mouse actions are snapped to the grid.
  * @property {boolean} lockObjs - The "Lock Objects" option indicating if the objects are locked.
  * @property {number} gridSize - The size of the grid.
- * @property {Object|null} observer - The observer of the scene, null if not set.
- * @property {Object} origin - The origin of the scene in the viewport.
+ * @property {Circle|null} observer - The observer of the scene, null if not set.
+ * @property {Point} origin - The origin of the scene in the viewport.
  * @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene.
  * @property {number} width - The width (in CSS pixels) of the viewport.
  * @property {number} height - The height (in CSS pixels) of the viewport.
@@ -89,32 +89,9 @@ class Scene {
     let jsonData = JSON.parse(json);
 
     // Convert the scene from old versions if necessary.
-    if (!jsonData.version) {
-      // Earlier than "Ray Optics Simulation 1.0"
-      let str1 = json.replace(/"point"|"xxa"|"aH"/g, '1').replace(/"circle"|"xxf"/g, '5').replace(/"k"/g, '"objs"').replace(/"L"/g, '"p1"').replace(/"G"/g, '"p2"').replace(/"F"/g, '"p3"').replace(/"bA"/g, '"exist"').replace(/"aa"/g, '"parallel"').replace(/"ba"/g, '"mirror"').replace(/"bv"/g, '"lens"').replace(/"av"/g, '"notDone"').replace(/"bP"/g, '"lightAlpha"').replace(/"ab"|"observed_light"|"observed_images"/g, '"observer"');
-      jsonData = JSON.parse(str1);
-      if (!jsonData.objs) {
-        jsonData = { objs: jsonData };
-      }
-      if (!jsonData.mode) {
-        jsonData.mode = 'rays';
-      }
-      if (!jsonData.rayModeDensity) {
-        jsonData.rayModeDensity = 1;
-      }
-      if (!jsonData.imageModeDensity) {
-        jsonData.imageModeDensity = 1;
-      }
-      if (!jsonData.scale) {
-        jsonData.scale = 1;
-      }
-      jsonData.version = 1;
-    }
-    if (jsonData.version == 1) {
-      // "Ray Optics Simulation 1.1" to "Ray Optics Simulation 1.2"
-      jsonData.origin = { x: 0, y: 0 };
-    }
-    if (jsonData.version > DATA_VERSION) {
+    if (!jsonData.version || jsonData.version < DATA_VERSION) {
+      jsonData = versionUpdate(jsonData);
+    } else if (jsonData.version > DATA_VERSION) {
       // Newer than the current version
       throw new Error('The version of the scene is newer than the current version of the simulator.');
     }
