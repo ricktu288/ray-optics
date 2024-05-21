@@ -228,16 +228,16 @@ class BaseGrinGlass extends BaseGlass {
    */
   initRefIndex(ray) {
     let obj_tmp;
-    for (let i = 0; i < this.scene.objs.length; i++) {
-      if ((this.scene.objs[i] instanceof BaseGrinGlass) && (scene.objs[i].isOnBoundary(ray.p1) || scene.objs[i].isInsideGlass(ray.p1))) {
+    for (let obj of this.scene.opticalObjs) {
+      if ((obj instanceof BaseGrinGlass) && (obj.isOnBoundary(ray.p1) || obj.isInsideGlass(ray.p1))) {
         if (!obj_tmp) {
           obj_tmp = {};
-          obj_tmp.p = scene.objs[i].shiftOrigin(scene.objs[i].p);
-          obj_tmp.fn_p = scene.objs[i].fn_p;
-          obj_tmp.fn_p_der_x = scene.objs[i].fn_p_der_x;
-          obj_tmp.fn_p_der_y = scene.objs[i].fn_p_der_y;
+          obj_tmp.p = obj.shiftOrigin(obj.p);
+          obj_tmp.fn_p = obj.fn_p;
+          obj_tmp.fn_p_der_x = obj.fn_p_der_x;
+          obj_tmp.fn_p_der_y = obj.fn_p_der_y;
         } else {
-          obj_tmp = scene.objs[i].multRefIndex(obj_tmp);
+          obj_tmp = obj.multRefIndex(obj_tmp);
         }
       }
     }

@@ -140,9 +140,13 @@ function draw_(skipLight, skipGrid) {
     {
       var i = mapped[j].index;
       scene.objs[i].draw(ctx0.constructor == C2S ? canvasRenderer : canvasRenderer0, false, scene.objs[i] === mouseObj);
-      if (!skipLight)
-      {
-        const ret = scene.objs[i].onSimulationStart();
+
+    }
+
+    if (!skipLight) {
+      // Initialize the simulation (e.g. add the rays and reset the detector readings)
+      for (let obj of scene.opticalObjs) {
+        const ret = obj.onSimulationStart();
         if (ret) {
           if (ret.newRays) {
             waitingRays.push(...ret.newRays);
@@ -153,6 +157,7 @@ function draw_(skipLight, skipGrid) {
         }
       }
     }
+
   }
 
   if (!skipLight) {
@@ -210,6 +215,7 @@ function shootWaitingRays() {
   var rpd;
   var surfaceMergingObjs = [];
 
+  const opticalObjs = scene.opticalObjs;
   
   if (scene.simulateColors) {
     ctxLight.globalCompositeOperation = 'screen';
@@ -226,7 +232,7 @@ function shootWaitingRays() {
       document.getElementById('forceStop').style.display = '';
       document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
-      draw(true, true); // Redraw the scene.objs to avoid outdated information (e.g. detector readings).
+      draw(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
       return;
     }
     if (isExporting && shotRayCount > exportRayCountLimit)
@@ -265,30 +271,30 @@ function shootWaitingRays() {
       surfaceMergingObjs = []; // The objects whose surface is to be merged with s_obj
       s_lensq = Infinity;
       observed = false; // Whether waitingRays[j] is observed by the observer
-      for (var i = 0; i < scene.objs.length; i++)
+      for (var i = 0; i < opticalObjs.length; i++)
       {
-        // Test whether scene.objs[i] intersects with the ray
-        s_point_temp = scene.objs[i].checkRayIntersects(waitingRays[j]);
+        // Test whether opticalObjs[i] intersects with the ray
+        s_point_temp = opticalObjs[i].checkRayIntersects(waitingRays[j]);
         if (s_point_temp)
         {
-          // Here scene.objs[i] intersects with the ray at s_point_temp
+          // Here opticalObjs[i] intersects with the ray at s_point_temp
           s_lensq_temp = geometry.distanceSquared(waitingRays[j].p1, s_point_temp);
-          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (scene.objs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging))
+          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging))
           {
             // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
             if (s_obj.constructor.supportsSurfaceMerging)
             {
-              if (scene.objs[i].constructor.supportsSurfaceMerging)
+              if (opticalObjs[i].constructor.supportsSurfaceMerging)
               {
                 // Both of them supports surface merging (e.g. two glasses with one common edge
-                surfaceMergingObjs[surfaceMergingObjs.length] = scene.objs[i];
+                surfaceMergingObjs[surfaceMergingObjs.length] = opticalObjs[i];
               }
               else
               {
                 // Only the first shot object supports surface merging
                 // Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
-                s_obj = scene.objs[i];
+                s_obj = opticalObjs[i];
                 s_obj_index = i;
                 s_point = s_point_temp;
                 s_lensq = s_lensq_temp;
@@ -299,7 +305,7 @@ function shootWaitingRays() {
           }
           else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
           {
-            s_obj = scene.objs[i]; // Update the object to be shot
+            s_obj = opticalObjs[i]; // Update the object to be shot
             s_obj_index = i;
             s_point = s_point_temp;
             s_lensq = s_lensq_temp;

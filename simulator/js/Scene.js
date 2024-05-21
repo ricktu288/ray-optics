@@ -7,7 +7,7 @@ const DATA_VERSION = 5;
 /**
  * Represents the scene in this simulator.
  * @class Scene
- * @property {BaseSceneObj[]} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
+ * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
  * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
  * @property {number} rayModeDensity - The density of rays in 'rays' and 'extended' modes.
  * @property {number} imageModeDensity - The density of rays in 'images' and 'observer' modes.
@@ -71,6 +71,11 @@ class Scene {
     } else {
       this.imageModeDensity = val;
     }
+  }
+
+  /** @property {Array<BaseSceneObj>} opticalObjs - The objects in the scene which are optical. If the user edits only the non-optical part of the scene, then the content of this array will not change. */
+  get opticalObjs() {
+    return this.objs.filter(obj => obj.constructor.isOptical);
   }
 
   /**
