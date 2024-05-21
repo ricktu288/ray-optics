@@ -7,7 +7,6 @@ var positioningObj = -1; // Object index in entering the coordinates (-1 for non
 var dragContext = {}; // The part in drag and some mouse position data
 var selectedObj = -1; // The index of the selected object (-1 for none)
 var mouseObj = -1;
-var mousePart = {};
 var AddingObjType = ''; // The type of the object to add when user click the canvas
 var undoArr = []; // Undo data
 var undoIndex = 0; // Current undo position
@@ -101,7 +100,7 @@ function canvas_onmousedown(e) {
           ret.targetObjIndex--;
         }
         selectObj(ret.targetObjIndex);
-        dragContext = ret.mousePart;
+        dragContext = ret.dragContext;
         dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
         dragContext.hasDuplicated = false;
         draggingObj = ret.targetObjIndex;
@@ -160,46 +159,46 @@ function canvas_onmousedown(e) {
 // search for best object to select at mouse position
 function selectionSearch(mousePos_nogrid) {
   var i;
-  var mousePart_;
+  var dragContext_;
   var click_lensq = Infinity;
   var click_lensq_temp;
   var targetObjIndex = -1;
   var targetIsPoint = false;
-  var mousePart;
+  var dragContext;
   var targetIsSelected = false;
   var results = [];
 
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
-      let mousePart_ = scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
-      if (mousePart_) {
+      let dragContext_ = scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
+      if (dragContext_) {
         // the mouse is over the object
 
-        if (mousePart_.targetPoint || mousePart_.targetPoint_) {
+        if (dragContext_.targetPoint || dragContext_.targetPoint_) {
           // The mousePos clicked a point
           if (!targetIsPoint) {
             targetIsPoint = true; // If the mouse can click a point, then it must click a point
             results = [];
           }
-          var click_lensq_temp = geometry.distanceSquared(mousePos_nogrid, (mousePart_.targetPoint || mousePart_.targetPoint_));
+          var click_lensq_temp = geometry.distanceSquared(mousePos_nogrid, (dragContext_.targetPoint || dragContext_.targetPoint_));
           if (click_lensq_temp <= click_lensq || targetObjIndex == selectedObj) {
             // In case of clicking a point, choose the one nearest to the mouse
             // But if the object is the selected object, the points from this object have the highest priority.
             targetObjIndex = i;
             click_lensq = click_lensq_temp;
-            mousePart = mousePart_;
+            dragContext = dragContext_;
             if (!targetIsSelected) {
-              results.unshift({mousePart: mousePart, targetObjIndex: targetObjIndex});
+              results.unshift({dragContext: dragContext, targetObjIndex: targetObjIndex});
             } else {
-              results.push({mousePart: mousePart, targetObjIndex: targetObjIndex});
+              results.push({dragContext: dragContext, targetObjIndex: targetObjIndex});
             }
             if (targetObjIndex == selectedObj) targetIsSelected = true;
           }
         } else if (!targetIsPoint) {
           // If not clicking a point, and until now not clicking any point
           targetObjIndex = i; // If clicking non-point, choose the most newly created one
-          mousePart = mousePart_;
-          results.unshift({mousePart: mousePart, targetObjIndex: targetObjIndex});
+          dragContext = dragContext_;
+          results.unshift({dragContext: dragContext, targetObjIndex: targetObjIndex});
         }
       }
     }
@@ -237,12 +236,12 @@ function canvas_onmousemove(e) {
       mouseObj = newMouseObj;
       draw(true, true);
     }
-    if (ret.mousePart) {
-      if (ret.mousePart.cursor) {
-        canvas.style.cursor = ret.mousePart.cursor;
-      } else if (ret.mousePart.targetPoint || ret.mousePart.targetPoint_) {
+    if (ret.dragContext) {
+      if (ret.dragContext.cursor) {
+        canvas.style.cursor = ret.dragContext.cursor;
+      } else if (ret.dragContext.targetPoint || ret.dragContext.targetPoint_) {
         canvas.style.cursor = 'pointer';
-      } else if (ret.mousePart.part == 0) {
+      } else if (ret.dragContext.part == 0) {
         canvas.style.cursor = 'move';
       } else {
         canvas.style.cursor = '';
@@ -449,9 +448,9 @@ function canvas_ondblclick(e) {
     }
 
     var ret = selectionSearch(mousePos)[0];
-    if (ret.targetObjIndex != -1 && ret.mousePart.targetPoint) {
+    if (ret.targetObjIndex != -1 && ret.dragContext.targetPoint) {
       selectObj(ret.targetObjIndex);
-      dragContext = ret.mousePart;
+      dragContext = ret.dragContext;
       dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
 
       dragContext.hasDuplicated = false;

@@ -242,6 +242,10 @@ function versionUpdate(jsonData) {
           obj.targetObjIndex = obj.targetObj_index;
           delete obj.targetObj_index;
         }
+        if (obj.mousePart !== undefined) {
+          obj.dragContext = obj.mousePart;
+          delete obj.mousePart;
+        }
 
         for (let key in obj) {
           updateProperties(obj[key]);

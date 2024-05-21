@@ -22,11 +22,11 @@ objTypes['Handle'] = class extends BaseSceneObj {
       // Remove some redundent properties in the control points to reduce the size of the JSON.
       jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
         let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));
-        delete controlPointCopy.mousePart.originalObj; // This should be inferred from `scene.objs[controlPoint.targetObjIndex]` directly.
-        delete controlPointCopy.mousePart.hasDuplicated; // Always false.
-        delete controlPointCopy.mousePart.isByHandle; // Always true.
-        delete controlPointCopy.mousePart.targetPoint; // The target point is already stored in the newPoint.
-        delete controlPointCopy.mousePart.snapContext; // Snapping is not possible with the handle.
+        delete controlPointCopy.dragContext.originalObj; // This should be inferred from `scene.objs[controlPoint.targetObjIndex]` directly.
+        delete controlPointCopy.dragContext.hasDuplicated; // Always false.
+        delete controlPointCopy.dragContext.isByHandle; // Always true.
+        delete controlPointCopy.dragContext.targetPoint; // The target point is already stored in the newPoint.
+        delete controlPointCopy.dragContext.snapContext; // Snapping is not possible with the handle.
         
         return controlPointCopy;
       });
@@ -76,15 +76,15 @@ objTypes['Handle'] = class extends BaseSceneObj {
     this.p2.x = this.p2.x + diffX;
     this.p2.y = this.p2.y + diffY;
     for (var i in this.controlPoints) {
-      this.controlPoints[i].mousePart.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
-      this.controlPoints[i].mousePart.isByHandle = true;
-      this.controlPoints[i].mousePart.hasDuplicated = false;
-      this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
-      this.controlPoints[i].mousePart.snapContext = {};
+      this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+      this.controlPoints[i].dragContext.isByHandle = true;
+      this.controlPoints[i].dragContext.hasDuplicated = false;
+      this.controlPoints[i].dragContext.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
+      this.controlPoints[i].dragContext.snapContext = {};
 
       this.controlPoints[i].newPoint.x = this.controlPoints[i].newPoint.x + diffX;
       this.controlPoints[i].newPoint.y = this.controlPoints[i].newPoint.y + diffY;
-      this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
+      this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)), false, false);
     }
   }
 
@@ -149,13 +149,13 @@ objTypes['Handle'] = class extends BaseSceneObj {
       trans(this.p1);
       trans(this.p2);
       for (var i in this.controlPoints) {
-        this.controlPoints[i].mousePart.originalObj = scene.objs[this.controlPoints[i].targetObjIndex].serialize();
-        this.controlPoints[i].mousePart.isByHandle = true;
-        this.controlPoints[i].mousePart.hasDuplicated = false;
-        this.controlPoints[i].mousePart.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
-        this.controlPoints[i].mousePart.snapContext = {};
+        this.controlPoints[i].dragContext.originalObj = scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+        this.controlPoints[i].dragContext.isByHandle = true;
+        this.controlPoints[i].dragContext.hasDuplicated = false;
+        this.controlPoints[i].dragContext.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
+        this.controlPoints[i].dragContext.snapContext = {};
         trans(this.controlPoints[i].newPoint);
-        this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].mousePart)), false, false);
+        this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)), false, false);
       }
       dragContext.targetPoint_.x = this.p1.x;
       dragContext.targetPoint_.y = this.p1.y;
@@ -170,7 +170,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
   /* This typedef will eventually be moved elsewhere. */
   /**
    * @typedef {Object} ControlPoint
-   * @property {DragContext} mousePart - The drag context of the virtual mouse that is dragging the control point.
+   * @property {DragContext} dragContext - The drag context of the virtual mouse that is dragging the control point.
    * @property {Point} newPoint - The new position of the control point.
    */
 
@@ -179,10 +179,10 @@ objTypes['Handle'] = class extends BaseSceneObj {
    * @param {ControlPoint} controlPoint - The control point to be bound.
    */
   addControlPoint(controlPoint) {
-    controlPoint.mousePart.originalObj = this.scene.objs[controlPoint.targetObjIndex];
-    controlPoint.mousePart.isByHandle = true;
-    controlPoint.mousePart.hasDuplicated = false;
-    controlPoint.newPoint = controlPoint.mousePart.targetPoint;
+    controlPoint.dragContext.originalObj = this.scene.objs[controlPoint.targetObjIndex];
+    controlPoint.dragContext.isByHandle = true;
+    controlPoint.dragContext.hasDuplicated = false;
+    controlPoint.newPoint = controlPoint.dragContext.targetPoint;
     controlPoint = JSON.parse(JSON.stringify(controlPoint));
     this.controlPoints.push(controlPoint);
   }
