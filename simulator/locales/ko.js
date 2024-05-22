@@ -175,6 +175,10 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "toolname_ModuleObj": {
+    "incomplete": true,
+    "message": "Module<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "incomplete": false,
     "message": "더 보기"
@@ -574,6 +578,10 @@ locales["ko"] = {
   "exportData": {
     "incomplete": true,
     "message": "Export data"
+  },
+  "demodulize": {
+    "incomplete": true,
+    "message": "Demodulize"
   },
   "fontSize": {
     "incomplete": false,

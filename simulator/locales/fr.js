@@ -155,6 +155,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "toolname_ModuleObj": {
+    "incomplete": true,
+    "message": "Module<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "Autre"
   },
@@ -497,6 +501,10 @@ locales["fr"] = {
   "exportData": {
     "incomplete": true,
     "message": "Export data"
+  },
+  "demodulize": {
+    "incomplete": true,
+    "message": "Demodulize"
   },
   "fontSize": {
     "incomplete": true,

@@ -132,6 +132,9 @@ locales["zh-CN"] = {
   "toolname_CropBox": {
     "message": "导出"
   },
+  "toolname_ModuleObj": {
+    "message": "模块<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "其他"
   },
@@ -431,6 +434,9 @@ locales["zh-CN"] = {
   },
   "exportData": {
     "message": "导出数据"
+  },
+  "demodulize": {
+    "message": "取消模块化"
   },
   "fontSize": {
     "message": "字型大小 (px)"

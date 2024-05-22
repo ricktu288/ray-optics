@@ -134,6 +134,10 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Export"
   },
+  "toolname_ModuleObj": {
+    "incomplete": true,
+    "message": "Module<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "Inne"
   },
@@ -444,6 +448,10 @@ locales["pl"] = {
   },
   "exportData": {
     "message": "Eksportuj dane"
+  },
+  "demodulize": {
+    "incomplete": true,
+    "message": "Demodulize"
   },
   "fontSize": {
     "message": "Rozmiar czcionki (px)"

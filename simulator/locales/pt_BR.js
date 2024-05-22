@@ -132,6 +132,10 @@ locales["pt-BR"] = {
   "toolname_CropBox": {
     "message": "Exportar"
   },
+  "toolname_ModuleObj": {
+    "incomplete": true,
+    "message": "Module<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "Outros"
   },
@@ -431,6 +435,10 @@ locales["pt-BR"] = {
   },
   "exportData": {
     "message": "Exportar dados"
+  },
+  "demodulize": {
+    "incomplete": true,
+    "message": "Demodulize"
   },
   "fontSize": {
     "message": "Tamanho da Fonte (px)"

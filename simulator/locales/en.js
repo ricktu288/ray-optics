@@ -132,6 +132,9 @@ locales["en"] = {
   "toolname_CropBox": {
     "message": "Export"
   },
+  "toolname_ModuleObj": {
+    "message": "Module<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "Other"
   },
@@ -431,6 +434,9 @@ locales["en"] = {
   },
   "exportData": {
     "message": "Export data"
+  },
+  "demodulize": {
+    "message": "Demodulize"
   },
   "fontSize": {
     "message": "Font Size (px)"

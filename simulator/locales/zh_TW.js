@@ -132,6 +132,9 @@ locales["zh-TW"] = {
   "toolname_CropBox": {
     "message": "匯出"
   },
+  "toolname_ModuleObj": {
+    "message": "模組<sup>Alpha</sup>"
+  },
   "tool_more_": {
     "message": "其他"
   },
@@ -431,6 +434,9 @@ locales["zh-TW"] = {
   },
   "exportData": {
     "message": "匯出數據"
+  },
+  "demodulize": {
+    "message": "取消模組化"
   },
   "fontSize": {
     "message": "字型大小 (px)"
