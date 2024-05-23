@@ -304,3 +304,47 @@ function hideAllPopovers() {
 document.getElementById('help-dropdown').addEventListener('click', function(e) {
   e.stopPropagation();
 });
+
+var aceEditor;
+var lastCodeChangeIsFromScene = false;
+
+function enableJsonEditor() {
+  aceEditor = ace.edit("jsonEditor");
+  aceEditor.setTheme("ace/theme/github_dark");
+  aceEditor.session.setMode("ace/mode/json");
+  aceEditor.session.setUseWrapMode(true);
+  aceEditor.session.setUseSoftTabs(true);
+  aceEditor.session.setTabSize(2);
+  aceEditor.session.setValue(latestJsonCode);
+
+  var debounceTimer;
+
+  aceEditor.session.on('change', function(delta) {
+    if (lastCodeChangeIsFromScene) {
+      setTimeout(function() {
+        lastCodeChangeIsFromScene = false;
+      }, 100);
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() {
+      latestJsonCode = aceEditor.session.getValue();
+      newJsonCode = latestJsonCode;
+      try {
+        JSONInput();
+      } catch (e) {
+        console.log(e);
+      }
+    }, 500);
+  });
+
+  document.getElementById('footer-left').style.left = '350px';
+  document.getElementById('sideBar').style.display = '';
+}
+
+function disableJsonEditor() {
+  aceEditor.destroy();
+  aceEditor = null;
+  document.getElementById('footer-left').style.left = '0px';
+  document.getElementById('sideBar').style.display = 'none';
+}

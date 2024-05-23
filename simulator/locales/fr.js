@@ -866,6 +866,10 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
   },
+  "show_json_editor": {
+    "incomplete": true,
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "incomplete": true,
     "message": "Show status box"

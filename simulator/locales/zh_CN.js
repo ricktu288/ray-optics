@@ -729,6 +729,9 @@ locales["zh-CN"] = {
   "show_help_popups_popover": {
     "message": "决定滑鼠移到按钮上方时是否显示提示泡泡（须重新载入网页以套用变更）"
   },
+  "show_json_editor": {
+    "message": "显示 JSON 编辑器<sup>Beta</sup>"
+  },
   "show_status": {
     "message": "显示状态方块"
   },

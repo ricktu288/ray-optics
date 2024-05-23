@@ -761,6 +761,10 @@ locales["pl"] = {
   "show_help_popups_popover": {
     "message": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)"
   },
+  "show_json_editor": {
+    "incomplete": true,
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "incomplete": true,
     "message": "Show status box"

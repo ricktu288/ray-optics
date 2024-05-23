@@ -69,7 +69,8 @@ window.onload = function (e) {
     initParameters();
   }
 
-  undoArr[0] = document.getElementById('textarea1').value;
+  JSONOutput();
+  undoArr[0] = latestJsonCode;
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
 
@@ -270,6 +271,7 @@ window.onload = function (e) {
     selectObj(selectedObj);
     this.blur();
     draw(false, true);
+    createUndoPoint();
   };
   document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
 
@@ -278,6 +280,28 @@ window.onload = function (e) {
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
+
+  document.getElementById('show_json_editor').onclick = function () {
+    this.blur();
+
+    document.getElementById('show_json_editor').checked = this.checked;
+    document.getElementById('show_json_editor_mobile').checked = this.checked;
+
+    if (this.checked) {
+      enableJsonEditor();
+    } else {
+      disableJsonEditor();
+    }
+
+    localStorage.rayOpticsShowJsonEditor = this.checked ? "on" : "off";
+  };
+  document.getElementById('show_json_editor_mobile').onclick = document.getElementById('show_json_editor').onclick;
+
+  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsShowJsonEditor && localStorage.rayOpticsShowJsonEditor == "on") {
+    enableJsonEditor();
+    document.getElementById('show_json_editor').checked = true;
+    document.getElementById('show_json_editor_mobile').checked = true;
+  }
 
   document.getElementById('show_status').onclick = function () {
     this.blur();
@@ -489,11 +513,6 @@ window.onload = function (e) {
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
-  document.getElementById('textarea1').onchange = function () {
-    JSONInput();
-    createUndoPoint();
-  };
-
 
 
   document.getElementById('save_name').onkeydown = function (e) {
@@ -556,7 +575,7 @@ window.onload = function (e) {
     }
     else {
       var fileString = dt.getData('text');
-      document.getElementById('textarea1').value = fileString;
+      latestJsonCode = fileString;
       selectedObj = -1;
       JSONInput();
       createUndoPoint();
@@ -571,7 +590,7 @@ window.onload = function (e) {
 
   if (window.location.hash.length > 70) {
     JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
-      document.getElementById('textarea1').value = JSON.stringify(json);
+      latestJsonCode = JSON.stringify(json);
       scene.backgroundImage = null;
       JSONInput();
       createUndoPoint();
@@ -591,7 +610,7 @@ function openSample(name) {
   client.onload = function () {
     if (client.status >= 300)
       return;
-    document.getElementById('textarea1').value = client.responseText;
+    latestJsonCode = client.responseText;
     scene.backgroundImage = null;
     JSONInput();
     createUndoPoint();
@@ -823,14 +842,49 @@ window.onkeyup = function (e) {
 
 function JSONOutput() {
   scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-  document.getElementById('textarea1').value = scene.toJSON();
+  
+  newJsonCode = scene.toJSON();
+  if (aceEditor && newJsonCode != latestJsonCode) {
+
+    // Calculate the position of the first and last character that has changed
+    var minLen = Math.min(newJsonCode.length, latestJsonCode.length);
+    var startChar = 0;
+    while (startChar < minLen && newJsonCode[startChar] == latestJsonCode[startChar]) {
+      startChar++;
+    }
+    var endChar = 0;
+    while (endChar < minLen && newJsonCode[newJsonCode.length - 1 - endChar] == latestJsonCode[latestJsonCode.length - 1 - endChar]) {
+      endChar++;
+    }
+
+    console.log(startChar, endChar);
+
+    // Convert the character positions to line numbers
+    var startLineNum = newJsonCode.substr(0, startChar).split("\n").length - 1;
+    var endLineNum = newJsonCode.substr(0, newJsonCode.length - endChar).split("\n").length - 1;
+
+    console.log(startLineNum, endLineNum);
+
+    // Set selection range to highlight changes using the Range object
+    var Range = require("ace/range").Range;
+    var selectionRange = new Range(startLineNum, 0, endLineNum+1, 0);
+
+    lastCodeChangeIsFromScene = true;
+    aceEditor.setValue(newJsonCode);
+    aceEditor.selection.setSelectionRange(selectionRange);
+
+    // Scroll to the first line that has changed
+    aceEditor.scrollToLine(startLineNum, true, true, function () { });
+  }
+  latestJsonCode = newJsonCode;
+  
 }
 
 function JSONInput() {
   document.getElementById('welcome').style.display = 'none';
 
   scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-  scene.fromJSON(document.getElementById('textarea1').value, function (needFullUpdate, completed) {
+  scene.fromJSON(latestJsonCode, function (needFullUpdate, completed) {
     if (needFullUpdate) {
       // Update the UI for the loaded scene.
 
@@ -932,7 +986,7 @@ function setScaleWithCenter(value, centerX, centerY) {
 function save() {
   JSONOutput();
 
-  var blob = new Blob([document.getElementById('textarea1').value], { type: 'application/json' });
+  var blob = new Blob([latestJsonCode], { type: 'application/json' });
   saveAs(blob, document.getElementById('save_name').value);
   var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
   if (saveModal) {
@@ -947,7 +1001,7 @@ function openFile(readFile) {
   reader.readAsText(readFile);
   reader.onload = function (evt) {
     var fileString = evt.target.result;
-    document.getElementById('textarea1').value = fileString;
+    latestJsonCode = fileString;
     endPositioning();
     selectedObj = -1;
     try {
@@ -972,7 +1026,7 @@ function openFile(readFile) {
 
 function getLink() {
   JSONOutput();
-  JsonUrl('lzma').compress(JSON.parse(document.getElementById('textarea1').value)).then(output => {
+  JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
     window.location.hash = '#' + output;
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
     //console.log(fullURL.length);
@@ -1119,7 +1173,7 @@ function exportImage(cropBox) {
 }
 
 function restore() {
-  document.getElementById('textarea1').value = restoredData;
+  latestJsonCode = restoredData;
   document.getElementById('restore').style.display = 'none';
   restoredData = '';
   JSONInput();

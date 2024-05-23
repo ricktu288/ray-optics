@@ -108,4 +108,6 @@ The source code is available at: https://github.com/josdejong/mathjs
 TeX Math Parser is distributed under the [MIT license](https://opensource.org/licenses/mit-license.php).
 The source code is available at: https://github.com/davidtranhq/tex-math-parser
 
-
+### Ace
+Ace is distributed under the [BSD license](https://github.com/ajaxorg/ace/blob/master/LICENSE).
+The source code is available at: https://github.com/ajaxorg/ace

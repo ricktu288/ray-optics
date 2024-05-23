@@ -743,6 +743,10 @@ locales["es"] = {
   "show_help_popups_popover": {
     "message": "Definir si mostrar ventanas de ayuda al pasar sobre los botones (Volver a cargar las páginas para que tome efecto.)"
   },
+  "show_json_editor": {
+    "incomplete": true,
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "message": "Mostrar diálogo de estado"
   },

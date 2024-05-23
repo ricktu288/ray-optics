@@ -774,6 +774,10 @@ locales["pt-BR"] = {
   "show_help_popups_popover": {
     "message": "Define se vai exibir popups de ajuda quando pairando sobre botões. (Recarregue a página para fazer efeito.)"
   },
+  "show_json_editor": {
+    "incomplete": true,
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "message": "Exibir caixa de status"
   },

@@ -729,6 +729,9 @@ locales["en"] = {
   "show_help_popups_popover": {
     "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
   },
+  "show_json_editor": {
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "message": "Show status box"
   },

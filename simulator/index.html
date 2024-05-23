@@ -32,7 +32,7 @@
         <canvas id="canvasLight"></canvas>
         <canvas id="canvas1"></canvas>
       </div>
-      <div id="welcome" style="position:absolute; top: calc(50% + 34px); left: 0; width: 100%; transform: translate(0%, -50%); z-index:-2; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
+      <div id="welcome" style="position:absolute; top: calc(50% + 34px); left: 0; width: 100%; transform: translate(0%, -50%); z-index:-3; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
         <span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href="https://phydemo-ray-optics-v3-archive.vercel.app/simulator/" rel="nofollow">Click here</a> to go back to the old version.</span>
       </div>
       <script>
@@ -108,6 +108,9 @@
           <!-- Loading Spinner -->
           <div style="border: 4px solid rgba(0, 0, 0, 0.1); border-top: 4px solid gray; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;"></div>
         </div>
+      </div>
+      <div id="sideBar" style="display: none;">
+        <div id="jsonEditor"></div>
       </div>
 
       <!-- Actual toolbar -->
@@ -483,6 +486,17 @@
                               <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language">
                                 English
                               </button>
+                            </div>
+                          </div>
+
+                          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div class="col-auto" data-text="show_json_editor"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="form-check form-switch align-items-center">
+                                  <input class="form-check-input" type="checkbox" id="show_json_editor">
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -901,6 +915,18 @@
                           </div>
 
                           <hr class="dropdown-divider">
+
+                          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div class="col-auto" data-text="show_json_editor"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="form-check form-switch align-items-center">
+                                  <input class="form-check-input" type="checkbox" id="show_json_editor_mobile">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
                             <div class="col-auto" data-text="show_status"></div>
                             <div class="col-auto d-flex align-items-center">
@@ -1001,7 +1027,7 @@
     </div>
 
     <div id="restore" style="display:none;"></div>
-    <textarea id="textarea1" style="display:none;"></textarea>
+    
   
     <!-- Save modal -->
     <div class="modal fade" id="saveModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1237,6 +1263,7 @@
     <script src="../thirdparty/evaluatex.min.js"></script>
     <script src="../thirdparty/mathquill/mathquill.min.js"></script>
     <script src="../thirdparty/json-url/json-url.js"></script>
+    <script src="../thirdparty/ace-builds/src-min/ace.js"></script>
 
     <!--Locale scripts-->
     <script src="locales/en.js"></script>
@@ -1273,61 +1300,63 @@
     <script src="../thirdparty/mathquill/mathquill.min.js"></script>
     <script src="../thirdparty/json-url/json-url.js"></script>
     <script src="js/equation.js"></script>
-	<script src="../thirdparty/mathjs.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/Token.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/tokenizeTex.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/customMath.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/parseTokens.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/ParseError.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/lastFunctionNode.js"></script>
-	<script src="../thirdparty/tex-to-mathjs/tex-to-mathjs.js"></script>
 
-  <!--Objs scripts-->
-  <script src="js/objs/BaseSceneObj.js"></script>
-  <script src="js/objs/LineObjMixin.js"></script>
-  <script src="js/objs/CircleObjMixin.js"></script>
+    <!--More thirdparty scripts-->
+    <script src="../thirdparty/mathjs.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/Token.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/tokenizeTex.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/customMath.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/parseTokens.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/ParseError.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/lastFunctionNode.js"></script>
+    <script src="../thirdparty/tex-to-mathjs/tex-to-mathjs.js"></script>
 
-  <script src="js/objs/lightSource/SingleRay.js"></script>
-  <script src="js/objs/lightSource/Beam.js"></script>
-  <script src="js/objs/lightSource/PointSource.js"></script>
-  <script src="js/objs/lightSource/AngleSource.js"></script>
+    <!--Objs scripts-->
+    <script src="js/objs/BaseSceneObj.js"></script>
+    <script src="js/objs/LineObjMixin.js"></script>
+    <script src="js/objs/CircleObjMixin.js"></script>
 
-  <script src="js/objs/BaseFilter.js"></script>
+    <script src="js/objs/lightSource/SingleRay.js"></script>
+    <script src="js/objs/lightSource/Beam.js"></script>
+    <script src="js/objs/lightSource/PointSource.js"></script>
+    <script src="js/objs/lightSource/AngleSource.js"></script>
 
-  <script src="js/objs/mirror/Mirror.js"></script>
-  <script src="js/objs/mirror/ArcMirror.js"></script>
-  <script src="js/objs/mirror/ParabolicMirror.js"></script>
-  <script src="js/objs/mirror/CustomMirror.js"></script>
-  <script src="js/objs/mirror/IdealMirror.js"></script>
-  <script src="js/objs/mirror/BeamSplitter.js"></script>
+    <script src="js/objs/BaseFilter.js"></script>
 
-  <script src="js/objs/BaseGlass.js"></script>
-  <script src="js/objs/BaseGrinGlass.js"></script>
+    <script src="js/objs/mirror/Mirror.js"></script>
+    <script src="js/objs/mirror/ArcMirror.js"></script>
+    <script src="js/objs/mirror/ParabolicMirror.js"></script>
+    <script src="js/objs/mirror/CustomMirror.js"></script>
+    <script src="js/objs/mirror/IdealMirror.js"></script>
+    <script src="js/objs/mirror/BeamSplitter.js"></script>
 
-  <script src="js/objs/glass/PlaneGlass.js"></script>
-  <script src="js/objs/glass/CircleGlass.js"></script>
-  <script src="js/objs/glass/Glass.js"></script>
-  <script src="js/objs/glass/CustomGlass.js"></script>
-  <script src="js/objs/glass/IdealLens.js"></script>
-  <script src="js/objs/glass/SphericalLens.js"></script>
-  <script src="js/objs/glass/CircleGrinGlass.js"></script>
-  <script src="js/objs/glass/GrinGlass.js"></script>
+    <script src="js/objs/BaseGlass.js"></script>
+    <script src="js/objs/BaseGrinGlass.js"></script>
 
-  <script src="js/objs/blocker/Blocker.js"></script>
-  <script src="js/objs/blocker/CircleBlocker.js"></script>
-  <script src="js/objs/blocker/Aperture.js"></script>
-  <script src="js/objs/blocker/DiffractionGrating.js"></script>
+    <script src="js/objs/glass/PlaneGlass.js"></script>
+    <script src="js/objs/glass/CircleGlass.js"></script>
+    <script src="js/objs/glass/Glass.js"></script>
+    <script src="js/objs/glass/CustomGlass.js"></script>
+    <script src="js/objs/glass/IdealLens.js"></script>
+    <script src="js/objs/glass/SphericalLens.js"></script>
+    <script src="js/objs/glass/CircleGrinGlass.js"></script>
+    <script src="js/objs/glass/GrinGlass.js"></script>
 
-  <script src="js/objs/other/Ruler.js"></script>
-  <script src="js/objs/other/Protractor.js"></script>
-  <script src="js/objs/other/Detector.js"></script>
-  <script src="js/objs/other/TextLabel.js"></script>
-  <script src="js/objs/other/LineArrow.js"></script>
-  <script src="js/objs/other/Drawing.js"></script>
-  
-  <script src="js/objs/special/Handle.js"></script>
-  <script src="js/objs/special/CropBox.js"></script>
-  <script src="js/objs/special/ModuleObj.js"></script>
+    <script src="js/objs/blocker/Blocker.js"></script>
+    <script src="js/objs/blocker/CircleBlocker.js"></script>
+    <script src="js/objs/blocker/Aperture.js"></script>
+    <script src="js/objs/blocker/DiffractionGrating.js"></script>
+
+    <script src="js/objs/other/Ruler.js"></script>
+    <script src="js/objs/other/Protractor.js"></script>
+    <script src="js/objs/other/Detector.js"></script>
+    <script src="js/objs/other/TextLabel.js"></script>
+    <script src="js/objs/other/LineArrow.js"></script>
+    <script src="js/objs/other/Drawing.js"></script>
+    
+    <script src="js/objs/special/Handle.js"></script>
+    <script src="js/objs/special/CropBox.js"></script>
+    <script src="js/objs/special/ModuleObj.js"></script>
 
   </body>
 </html>

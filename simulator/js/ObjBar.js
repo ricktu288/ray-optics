@@ -167,8 +167,8 @@ class ObjBar {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
     };
-    objOption_text.onclick = function (e) {
-      this.select();
+    objOption_text.onblur = function () {
+      createUndoPoint();
     };
   }
 
@@ -206,8 +206,8 @@ class ObjBar {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
     };
-    objOption_text.onclick = function (e) {
-      //this.select();
+    objOption_text.onblur = function () {
+      createUndoPoint();
     };
   }
 
@@ -255,6 +255,7 @@ class ObjBar {
       setOption(function (obj) {
         func(obj, objOption_checkbox.checked);
       });
+      createUndoPoint();
       if (updateOnChange) {
         setTimeout(function () {
           selectObj(selectedObj);
@@ -336,6 +337,7 @@ class ObjBar {
         setOption(function (obj) {
           func(obj, mathField.latex());
         });
+        createUndoPoint();
       };
     });
 
@@ -418,6 +420,7 @@ class ObjBar {
       if (updateOnChange) {
         selectObj(selectedObj);
       }
+      createUndoPoint();
     };
     this.elem.appendChild(button);
     var space = document.createTextNode(' ');

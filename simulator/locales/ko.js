@@ -970,6 +970,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "버튼 위를 지날 때 도움말을 표시할 지 결정합니다. (효과 반영을 위해 페이지를 다시 불러옵니다.)"
   },
+  "show_json_editor": {
+    "incomplete": true,
+    "message": "Show JSON editor<sup>Beta</sup>"
+  },
   "show_status": {
     "incomplete": true,
     "message": "Show status box"

@@ -8,6 +8,7 @@ var dragContext = {}; // The part in drag and some mouse position data
 var selectedObj = -1; // The index of the selected object (-1 for none)
 var mouseObj = -1;
 var AddingObjType = ''; // The type of the object to add when user click the canvas
+var latestJsonCode = ''; // The latest JSON code
 var undoArr = []; // Undo data
 var undoIndex = 0; // Current undo position
 var undoLimit = 20; // Limit of undo
@@ -628,7 +629,7 @@ function createUndoPoint() {
   document.getElementById('redo').disabled = true;
   document.getElementById('undo_mobile').disabled = false;
   document.getElementById('redo_mobile').disabled = true;
-  undoArr[undoIndex] = document.getElementById('textarea1').value;
+  undoArr[undoIndex] = latestJsonCode;
   if (undoUBound == undoLBound) {
     // The limit of undo is reached
     undoLBound = (undoLBound + 1) % undoLimit;
@@ -656,7 +657,7 @@ function undo() {
     // The lower bound of undo data is reached
     return;
   undoIndex = (undoIndex + (undoLimit - 1)) % undoLimit;
-  document.getElementById('textarea1').value = undoArr[undoIndex];
+  latestJsonCode = undoArr[undoIndex];
   JSONInput();
   document.getElementById('redo').disabled = false;
   document.getElementById('redo_mobile').disabled = false;
@@ -675,7 +676,7 @@ function redo() {
     // The lower bound of undo data is reached
     return;
   undoIndex = (undoIndex + 1) % undoLimit;
-  document.getElementById('textarea1').value = undoArr[undoIndex];
+  latestJsonCode = undoArr[undoIndex];
   JSONInput();
   document.getElementById('undo').disabled = false;
   document.getElementById('undo_mobile').disabled = false;
