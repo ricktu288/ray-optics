@@ -1,0 +1,14 @@
+# Module
+The "module" is a currently experimental feature that allows you to combine several objects (optical elements, etc.) into a single reusable "module object" with custom parameters and control points. The objects within a module are defined with a template, which allows the creation of arrays of objects.
+
+Some examples modified from the gallery:
+- [Ray relaying](https://phydemo.app/ray-optics/simulator/#XQAAAALNAgAAAAAAAABEKcrGU8hqLFnpmU9EnTFrVrEZ-XiP9Y4HuGzkTtfkdLAcV4PlE_n715BYnB0GyE3sVlRnfU24-GUn5R1H7p60iuYQ6utSiplbWmlf2JrQyEVBa0X-oq_p3kCyvDWNsCQMbSS4sjwjAQ7fkRZauXzrSfVZ90DNKKSZ1IwD42qNm--HwyZAncvSeBS9QRY44Mbb1h4PkHOdFji3QUfqqvTGfBV52iaXS18WwGzygrAgjNRDKRN1cjBHSQcDVtrXveQzVfOlYvagIddm85Hb_7_5gycMcUpVskh-_DnfJXEooBmiElCOhyPrtZ8H8IyiZmUIl-eTQzptMUJAmZCqYcvcsvRl_GzI6BX6a7QdVva9QVF0I1Gq3l6vb26ZbC0j4jaV_p42jEQqIXcdxM5MlNy_9FwjCemDNENZv68O41XFKUfT7YWDUuKoPv8niKz7olOyzCnB4b1F9OE4flHVhySlkf__sDlBUHEFyxFnvG3b5x3Cy-vCfeaSkKSkNIIb39qJzV_rHGMlE36XcI6gtTiu-IuBqZIOKnmR4vb-49Pn72ApRBllTlcoM_lpuind9-5QquEP63jjF-Qvda5XSnYpzyxrB_syog4)
+- [Fresnel lens](https://phydemo.app/ray-optics/simulator/#XQAAAAJRAwAAAAAAAABEKcrGU8hqLFnpmU9EnTFrVs72uHiP9Y30xRLJ53U7Paz6ugLBF2nCIu2CEGpT6FQSknlyAG7YKvq5V1IlM8avfQ3XWHLptuH6Gox4yCNPedr9qKXfuk7O4rn7DjIV5E6WL08tNh3lVZmzvmR_tIXohi1M6ynjf2cC0d55xmLlA5wgyjFz0fE09Y0JpmN4Au_36OFNuUOANwkQx3jCtODONAxZG5bezZSKVKlPRNx9KVPgs6JqyjUX2hguF6szK0YvUvT-tb3j2DbOD9QcPTgTmBSn9MBZul5sDk3bDbqIR-ae3-NlSYZuH6XexnCi2az_UExGQNIJ8-rjvOf2VascM0WERz0ymgzfzuyZQS-pgkq0fwakWoiOzPN5bzFoQgx6Ny3BDacHWatwctIWHwcEtgOZcJxKA3E0xp8MQr7MPW1yTzceWgbyoKUUa8rEgR0O7POcNpckrqS1uI0tSssCmdrxna0qzj6fqqOQ0PWjaDBgyQIDqn3qDqFvQT5I4-0sM-mCQjk6KoS7iHgTHkTz78Xfk4t17vxpz-ofxlR_pKRZZKYZwTAl2vQMGfXYuCD68nzS7OMFcQs13aiv25YtOC8AHHyuOmsC7XSSqav6vnEiauja_QYKrEGcStj3mLpXzSCwvCIQSDuY9MjpUO47OdYo7vSZO6c93F4YbJiUyc-PNFofpyYaMjVGAeYerZ4wRSHP2mGUoqAZZOpes9aid70-D2cS3WXJaT1RKt1lmwDTBIq7tF__i41RYA)
+
+(More documentation and functionality coming soon. For now, see https://github.com/ricktu288/ray-optics/discussions/141#discussioncomment-9515057).
+
+Contribution of new modules is welcome. Please open PR with the the new module JSON file put in this `modules` directory, or send the file to ray-optics@phydemo.app if you are not familiar with GitHub.
+
+Not all custom control points requires a module. Some simple cases may be achieved by the "handle" feature. See "Group, rotate, and scale objects" section in the help popup at the bottom right corner of the simulator.
+
+_Note: The `modulize` branch is not related to this feature; the "module" there refers to the different concept of (slowly) refactoring the code of the app itself towards a modular structure._

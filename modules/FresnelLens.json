@@ -1,0 +1,26 @@
+{
+  "version": 5,
+  "modules": {
+    "FresnelLens": {
+      "numPoints": 2,
+      "params": [
+        "N_slice=1:1:100:50"
+      ],
+      "objs": [
+        {
+          "type": "CustomGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "eqn1": "-0.05",
+          "eqn2": "\\sqrt{1-x^2}-\\frac{\\operatorname{floor}\\left(`N_slice`\\cdot\\sqrt{1-x^2}\\right)}{`N_slice`}"
+        }
+      ]
+    }
+  }
+}
