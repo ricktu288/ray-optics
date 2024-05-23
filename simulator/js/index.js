@@ -844,7 +844,7 @@ function JSONOutput() {
   scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
   
   newJsonCode = scene.toJSON();
-  if (aceEditor && newJsonCode != latestJsonCode) {
+  if (aceEditor && newJsonCode != latestJsonCode && !aceEditor.isFocused()) {
 
     // Calculate the position of the first and last character that has changed
     var minLen = Math.min(newJsonCode.length, latestJsonCode.length);

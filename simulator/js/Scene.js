@@ -169,6 +169,11 @@ class Scene {
   toJSON() {
     let jsonData = {version: DATA_VERSION};
     
+    // Put the modules first.
+    if (Object.keys(this.modules).length > 0) {
+      jsonData.modules = this.modules;
+    }
+
     // Serialize the objects in the scene.
     jsonData.objs = this.objs.map(obj => obj.serialize());
 
@@ -178,7 +183,7 @@ class Scene {
     jsonData.width = approximatedWidth;
     jsonData.height = approximatedHeight;
 
-    // Only export non-default properties.
+    // Export the rest of non-default properties.
     const serializableDefaults = Scene.serializableDefaults;
     for (let propName in serializableDefaults) {
       if (!jsonData.hasOwnProperty(propName)) {
