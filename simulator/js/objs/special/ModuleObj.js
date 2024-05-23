@@ -1,5 +1,6 @@
 /**
  * @typedef {Object} ModuleDef
+ * @property {number} numPoints - The number of control points of the module.
  * @property {Array<string>} params - The parameters of the module.
  * @property {Array<Object>} objs - The objects in the module in the form of JSON objects with template syntax.
  */
@@ -19,18 +20,35 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
   static isOptical = true;
   static serializableDefaults = {
     module: null,
-    points: [],
-    params: {}
+    points: null,
+    params: null
   };
 
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
 
     this.moduleDef = this.scene.modules[this.module];
+
+    // Initialize the control points if not defined
+    if (!this.points) {
+      this.points = [];
+      for (let i = 0; i < this.moduleDef.numPoints; i++) {
+        this.points.push(geometry.point(0, 0));
+      }
+    }
+
+    // Initialize the parameters if not defined
+    if (!this.params) {
+      this.params = {};
+      for (let param of this.moduleDef.params) {
+        const parsed = this.parseVariableRange(param, {});
+        this.params[parsed.name] = parsed.defaultVal;
+      }
+    }
+
+    // Expand the objects
     this.objs = [];
     this.expandObjs();
-
-    console.log(this.moduleDef, this.objs);
   }
 
   populateObjBar(objBar) {
@@ -170,7 +188,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
 
 
   /**
-   * Parse the variable range description of the form "name=start:step:end", where start, step, and end are ASCIIMath expressions to be evaluated with the given parameters.
+   * Parse the variable range description of the form "name=start:step:end" or "name=start:step:end:default", where start, step, and end are math.js strings.
    * @param {string} str - The variable range description.
    * @param {Object} params - The parameters to be used for evaluating the expressions.
    * @returns {Object} The parsed variable range.
@@ -183,10 +201,11 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       let start = parts2[0];
       let step = parts2[1];
       let end = parts2[2];
-      let startVal = evaluatex(start, params)();
-      let stepVal = evaluatex(step, params)();
-      let endVal = evaluatex(end, params)();
-      return {name: name, start: startVal, step: stepVal, end: endVal};
+      let defaultVal = parts2.length == 4 ? parts2[3] : null;
+      let startVal = math.evaluate(start, params);
+      let stepVal = math.evaluate(step, params);
+      let endVal = math.evaluate(end, params);
+      return {name: name, start: startVal, step: stepVal, end: endVal, defaultVal: defaultVal};
     } catch (e) {
       console.log(`Error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`);
     }

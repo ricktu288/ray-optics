@@ -857,13 +857,9 @@ function JSONOutput() {
       endChar++;
     }
 
-    console.log(startChar, endChar);
-
     // Convert the character positions to line numbers
     var startLineNum = newJsonCode.substr(0, startChar).split("\n").length - 1;
     var endLineNum = newJsonCode.substr(0, newJsonCode.length - endChar).split("\n").length - 1;
-
-    console.log(startLineNum, endLineNum);
 
     // Set selection range to highlight changes using the Range object
     var Range = require("ace/range").Range;
