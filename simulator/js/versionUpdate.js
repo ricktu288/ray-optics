@@ -228,7 +228,7 @@ function versionUpdate(jsonData) {
 
     // Update deep properties
     function updateProperties(obj) {
-      if (typeof obj === 'object') {
+      if (typeof obj === 'object' && obj !== null) {
         if (obj.exist !== undefined) {
           delete obj.exist;
         }
@@ -252,7 +252,7 @@ function versionUpdate(jsonData) {
         }
       }
     }
-    updateProperties(jsonData.objs);
+    updateProperties(jsonData);
 
 
     // Data version number 3 and 4 do not exist since app version 3.x and 4.x do not change the data format. The next app release will be called version 5.0 so the data version number is updated to 5 to match the app version. Starting from this version, the data version number will always match the app version major number.

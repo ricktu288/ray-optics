@@ -1005,6 +1005,7 @@ function openFile(readFile) {
       cancelRestore();
       hasUnsavedChange = false;
     } catch (error) {
+      console.log(error);
       reader.onload = function (e) {
         scene.backgroundImage = new Image();
         scene.backgroundImage.src = e.target.result;
