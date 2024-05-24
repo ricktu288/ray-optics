@@ -379,8 +379,10 @@ function canvas_onmouseup(e) {
       return;
     }
     if (draggingObj != -3) {
-      // If user is moving the view, do not create undo point.
       createUndoPoint();
+    } else {
+      // If user is moving the view, do not create undo point, but still updating the JSON code.
+      JSONOutput();
     }
     draggingObj = -1;
     dragContext = {};
@@ -490,6 +492,7 @@ function canvas_onmousewheel(e) {
   }
   d = Math.max(0.25, Math.min(5.00, d)) * 100;
   setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scene.scale, (e.pageY - e.target.offsetTop) / scene.scale);
+  JSONOutput();
   //window.toolBarViewModel.zoom.value(d);
   canvas_onmousemove(e);
   return false;

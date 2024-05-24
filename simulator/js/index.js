@@ -204,6 +204,7 @@ window.onload = function (e) {
     if (e.touches.length < 2) {
       initialPinchDistance = null;
       canvas_onmouseup(e);
+      JSONOutput();
     }
   });
 
@@ -365,10 +366,12 @@ window.onload = function (e) {
 
   document.getElementById('zoomPlus').onclick = function () {
     setScale(scene.scale * 1.1);
+    JSONOutput();
     this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
     setScale(scene.scale / 1.1);
+    JSONOutput();
     this.blur();
   }
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
