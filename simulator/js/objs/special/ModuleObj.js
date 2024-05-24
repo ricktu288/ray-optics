@@ -14,6 +14,7 @@
  * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
+ * @property {number} maxLoopLength - The maximum length of the list in for loops to prevent infinite loops.
  */
 objTypes['ModuleObj'] = class extends BaseSceneObj {
   static type = 'ModuleObj';
@@ -21,7 +22,8 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
   static serializableDefaults = {
     module: null,
     points: null,
-    params: null
+    params: null,
+    maxLoopLength: 1000,
   };
 
   constructor(scene, jsonObj) {
@@ -284,6 +286,8 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
             }
           }
 
+          const self = this;
+
           // Expand `loopVars` to a list of objects, each a key-value pair of loop variable names and values (the Cartesian product of the ranges)
           function expandLoopVars(loopVars) {
             if (loopVars.length == 0) {
@@ -291,6 +295,10 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
             } else {
               let result = [];
               let loopVars1 = loopVars.slice(1);
+              const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
+              if (loopLength > self.maxLoopLength) {
+                throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxListLength to a larger value.`;
+              }
               for (let value = loopVars[0].start; value <= loopVars[0].end; value += loopVars[0].step) {
                 for (let obj of expandLoopVars(loopVars1)) {
                   let obj1 = Object.assign({}, obj);
@@ -303,6 +311,11 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
           }
 
           const loopParams = expandLoopVars(loopVars);
+
+          if (loopParams.length > this.maxLoopLength) {
+            throw `The length of the loop is too large. Please set maxListLength to a larger value.`;
+          }
+
           for (let loopParam of loopParams) {
             if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
               continue;
