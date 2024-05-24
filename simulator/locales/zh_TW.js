@@ -764,5 +764,8 @@ locales["zh-TW"] = {
   },
   "mouse_coordinates": {
     "message": "滑鼠座標："
+  },
+  "custom_modules": {
+    "message": "自訂模組..."
   }
 }

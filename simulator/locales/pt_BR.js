@@ -810,5 +810,9 @@ locales["pt-BR"] = {
   },
   "mouse_coordinates": {
     "message": "Coordenadas do Mouse: "
+  },
+  "custom_modules": {
+    "incomplete": true,
+    "message": "Custom Modules..."
   }
 }

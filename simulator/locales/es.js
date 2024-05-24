@@ -780,5 +780,9 @@ locales["es"] = {
   "mouse_coordinates": {
     "incomplete": true,
     "message": "Mouse coordinates: "
+  },
+  "custom_modules": {
+    "incomplete": true,
+    "message": "Custom Modules..."
   }
 }

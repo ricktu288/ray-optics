@@ -764,5 +764,8 @@ locales["en"] = {
   },
   "mouse_coordinates": {
     "message": "Mouse coordinates: "
+  },
+  "custom_modules": {
+    "message": "Custom Modules..."
   }
 }
