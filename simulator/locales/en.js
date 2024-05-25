@@ -732,8 +732,14 @@ locales["en"] = {
   "show_json_editor": {
     "message": "Show JSON editor<sup>Beta</sup>"
   },
+  "show_json_editor_popover": {
+    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Create Modules...)."
+  },
   "show_status": {
     "message": "Show status box"
+  },
+  "show_status_popover": {
+    "message": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
   },
   "gridSize": {
     "message": "Grid Size (px)"
@@ -765,7 +771,10 @@ locales["en"] = {
   "mouse_coordinates": {
     "message": "Mouse coordinates: "
   },
-  "custom_modules": {
-    "message": "Custom Modules..."
+  "create_modules": {
+    "message": "<i>Create Modules...</i>"
+  },
+  "create_modules_popover": {
+    "message": "Create modularized combinations of objects with JSON templates, which allow custom parameters and arrays of objects. <br><br><i>Warning: This feature is experimental.</i>"
   }
 }

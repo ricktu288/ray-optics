@@ -778,8 +778,16 @@ locales["pt-BR"] = {
     "incomplete": true,
     "message": "Show JSON editor<sup>Beta</sup>"
   },
+  "show_json_editor_popover": {
+    "incomplete": true,
+    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Create Modules...)."
+  },
   "show_status": {
     "message": "Exibir caixa de status"
+  },
+  "show_status_popover": {
+    "incomplete": true,
+    "message": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
   },
   "gridSize": {
     "message": "Tamanho da Grade (px)"
@@ -811,8 +819,12 @@ locales["pt-BR"] = {
   "mouse_coordinates": {
     "message": "Coordenadas do Mouse: "
   },
-  "custom_modules": {
+  "create_modules": {
     "incomplete": true,
-    "message": "Custom Modules..."
+    "message": "<i>Create Modules...</i>"
+  },
+  "create_modules_popover": {
+    "incomplete": true,
+    "message": "Create modularized combinations of objects with JSON templates, which allow custom parameters and arrays of objects. <br><br><i>Warning: This feature is experimental.</i>"
   }
 }

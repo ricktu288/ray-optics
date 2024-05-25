@@ -732,8 +732,14 @@ locales["zh-TW"] = {
   "show_json_editor": {
     "message": "顯示 JSON 編輯器<sup>Beta</sup>"
   },
+  "show_json_editor_popover": {
+    "message": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->建立模組...）。"
+  },
   "show_status": {
     "message": "顯示狀態方塊"
+  },
+  "show_status_popover": {
+    "message": "顯示狀態方塊，其中包含滑鼠座標，效能資訊，以及被截斷的亮度（光線在內反射的無窮級數中被截斷的總亮度）。"
   },
   "gridSize": {
     "message": "格線大小 (px)"
@@ -765,7 +771,10 @@ locales["zh-TW"] = {
   "mouse_coordinates": {
     "message": "滑鼠座標："
   },
-  "custom_modules": {
-    "message": "自訂模組..."
+  "create_modules": {
+    "message": "<i>建立模組...</i>"
+  },
+  "create_modules_popover": {
+    "message": "使用 JSON 模板建立模組化的物件組合，其中可包含自訂參數與物件陣列。<br><br><i>警告：此為實驗性功能。</i>"
   }
 }
