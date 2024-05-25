@@ -18,6 +18,9 @@ var MQ;
 var cropMode = false;
 var lastDeviceIsTouch = false;
 var lastTouchTime = -1;
+var autoSyncUrl = false;
+var warning = null;
+var error = null;
 
 window.onload = function (e) {
   if (window.devicePixelRatio) {
@@ -323,6 +326,9 @@ window.onload = function (e) {
     enableJsonEditor();
     document.getElementById('show_json_editor').checked = true;
     document.getElementById('show_json_editor_mobile').checked = true;
+  } else {
+    document.getElementById('show_json_editor').checked = false;
+    document.getElementById('show_json_editor_mobile').checked = false;
   }
 
   document.getElementById('show_status').onclick = function () {
@@ -340,6 +346,33 @@ window.onload = function (e) {
     document.getElementById('show_status').checked = true;
     document.getElementById('show_status_mobile').checked = true;
     document.getElementById('status').style.display = '';
+  } else {
+    document.getElementById('show_status').checked = false;
+    document.getElementById('show_status_mobile').checked = false;
+    document.getElementById('status').style.display = 'none';
+  }
+
+  document.getElementById('auto_sync_url').onclick = function () {
+    this.blur();
+
+    document.getElementById('auto_sync_url').checked = this.checked;
+    document.getElementById('auto_sync_url_mobile').checked = this.checked;
+
+    localStorage.rayOpticsAutoSyncUrl = this.checked ? "on" : "off";
+    autoSyncUrl = this.checked;
+
+    JSONOutput();
+  };
+  document.getElementById('auto_sync_url_mobile').onclick = document.getElementById('auto_sync_url').onclick;
+
+  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsAutoSyncUrl && localStorage.rayOpticsAutoSyncUrl == "on") {
+    document.getElementById('auto_sync_url').checked = true;
+    document.getElementById('auto_sync_url_mobile').checked = true;
+    autoSyncUrl = true;
+  } else {
+    document.getElementById('auto_sync_url').checked = false;
+    document.getElementById('auto_sync_url_mobile').checked = false;
+    autoSyncUrl = false;
   }
 
   document.getElementById('gridSize').onchange = function () {
@@ -617,20 +650,28 @@ window.onload = function (e) {
 
   MQ = MathQuill.getInterface(2);
 
-  if (window.location.hash.length > 70) {
-    JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
-      latestJsonCode = JSON.stringify(json);
-      scene.backgroundImage = null;
-      JSONInput();
-      createUndoPoint();
+  // Update the scene when the URL changes
+  window.onpopstate = function (event) {
+    console.log("onpopstate");
+    if (window.location.hash.length > 70) {
+      // The URL contains a compressed JSON scene.
+      JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
+        latestJsonCode = JSON.stringify(json);
+        scene.backgroundImage = null;
+        JSONInput();
+        createUndoPoint();
+        isFromGallery = true;
+        hasUnsavedChange = false;
+      });
+    } else if (window.location.hash.length > 1) {
+      // The URL contains a link to a gallery item.
+      openSample(window.location.hash.substr(1) + ".json");
+      history.replaceState('', document.title, window.location.pathname+window.location.search);
       isFromGallery = true;
-      hasUnsavedChange = false;
-    });
-  } else if (window.location.hash.length > 1) {
-    openSample(window.location.hash.substr(1) + ".json");
-    history.replaceState('', document.title, window.location.pathname+window.location.search);
-    isFromGallery = true;
-  }
+    }
+  };
+
+  window.onpopstate();
 };
 
 function openSample(name) {
@@ -907,7 +948,41 @@ function JSONOutput() {
   }
   latestJsonCode = newJsonCode;
   
+  syncUrl();
 }
+
+var lastFullURL = "";
+
+function syncUrl() {
+  if (autoSyncUrl) {
+    var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
+      var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+      if (fullURL.length > 2043) {
+        warning = getMsg('auto_sync_url_warning');
+        updateErrorAndWarning();
+      } else {
+        if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
+          // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
+          lastFullURL = fullURL;
+          window.history.pushState(undefined, undefined, '#' + output);
+        } else {
+          lastFullURL = fullURL;
+          window.history.replaceState(undefined, undefined, '#' + output);
+        }
+        hasUnsavedChange = false;
+        warning = "";
+        updateErrorAndWarning();
+      }
+    });
+  } else {
+    warning = "";
+    updateErrorAndWarning();
+  }
+}
+
+
+
+
 
 function JSONInput() {
   document.getElementById('welcome').style.display = 'none';
@@ -1070,8 +1145,9 @@ function openFile(readFile) {
 function getLink() {
   JSONOutput();
   JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
-    window.location.hash = '#' + output;
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+    lastFullURL = fullURL;
+    window.history.pushState(undefined, undefined, '#' + output);
     //console.log(fullURL.length);
     navigator.clipboard.writeText(fullURL);
     if (fullURL.length > 2043) {

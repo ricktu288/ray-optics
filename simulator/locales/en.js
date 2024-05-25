@@ -741,6 +741,15 @@ locales["en"] = {
   "show_status_popover": {
     "message": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
   },
+  "auto_sync_url": {
+    "message": "Auto sync URL"
+  },
+  "auto_sync_url_popover": {
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+  },
+  "auto_sync_url_warning": {
+    "message": "The scene is too large to sync with URL. Please save it manually."
+  },
   "gridSize": {
     "message": "Grid Size (px)"
   },

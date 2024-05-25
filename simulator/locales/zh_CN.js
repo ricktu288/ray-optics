@@ -741,6 +741,15 @@ locales["zh-CN"] = {
   "show_status_popover": {
     "message": "显示状态方块，其中包含滑鼠座标，效能信息，以及被截断的亮度（光线在内反射的无穷级数中被截断的总亮度）。"
   },
+  "auto_sync_url": {
+    "message": "自动同步网址"
+  },
+  "auto_sync_url_popover": {
+    "message": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。"
+  },
+  "auto_sync_url_warning": {
+    "message": "本场景过大，无法与网址同步。 请自行储存场景。"
+  },
   "gridSize": {
     "message": "网格大小 (px)"
   },

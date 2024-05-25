@@ -349,6 +349,14 @@ function updateErrorAndWarning() {
   let errors = [];
   let warnings = [];
 
+  if (error) {
+    errors.push("App: " + error);
+  }
+
+  if (warning) {
+    warnings.push("App: " + warning);
+  }
+
   if (scene.error) {
     errors.push("Scene: " + scene.error);
   }

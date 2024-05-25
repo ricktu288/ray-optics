@@ -673,6 +673,7 @@ function undo() {
   if (aceEditor) {
     aceEditor.session.setValue(latestJsonCode);
   }
+  syncUrl();
 }
 
 function redo() {
@@ -694,4 +695,5 @@ function redo() {
   if (aceEditor) {
     aceEditor.session.setValue(latestJsonCode);
   }
+  syncUrl();
 }

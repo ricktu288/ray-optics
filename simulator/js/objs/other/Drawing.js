@@ -35,10 +35,12 @@ objTypes['Drawing'] = class extends BaseSceneObj {
   }
 
   move(diffX, diffY) {
+    let roundedDiffX = Math.round(diffX);
+    let roundedDiffY = Math.round(diffY);
     for (const stroke of this.strokes) {
       for (let i = 0; i < stroke.length; i += 2) {
-        stroke[i] += diffX;
-        stroke[i + 1] += diffY;
+        stroke[i] += roundedDiffX;
+        stroke[i + 1] += roundedDiffY;
       }
     }
   }
@@ -50,14 +52,20 @@ objTypes['Drawing'] = class extends BaseSceneObj {
       this.strokes = [];
     }
     const mousePos = mouse.getPosSnappedToGrid();
-    this.strokes.push([mousePos.x, mousePos.y]);
+    this.strokes.push([Math.round(mousePos.x), Math.round(mousePos.y)]);
     this.isMouseDown = true;
   }
 
   onConstructMouseMove(mouse, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
     if (!this.isMouseDown) return;
-    this.strokes[this.strokes.length - 1].push(mousePos.x, mousePos.y);
+    if (this.strokes.length === 0 || this.strokes[this.strokes.length - 1].length < 2) return;
+
+    const distance = (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 2] - mousePos.x) ** 2 + (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 1] - mousePos.y) ** 2;
+    
+    if (distance < 2) return;
+
+    this.strokes[this.strokes.length - 1].push(Math.round(mousePos.x), Math.round(mousePos.y));
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
