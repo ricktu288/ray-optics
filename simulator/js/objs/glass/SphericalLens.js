@@ -279,7 +279,6 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
 
     super.onDrag(mouse, dragContext, ctrl, shift);
 
-    console.log(dragContext.isByHandle)
     if (dragContext.isByHandle) return;
     if (dragContext.part != 1)
       return;

@@ -167,7 +167,6 @@ class Scene {
         callback(true, true);
       }
     } catch (e) {
-      console.log(e);
       this.error = e.toString();
       this.objs = [];
       callback(true, true);

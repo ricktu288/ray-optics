@@ -632,7 +632,6 @@ window.onload = function (e) {
 
   // Update the scene when the URL changes
   window.onpopstate = function (event) {
-    console.log("onpopstate");
     if (window.location.hash.length > 70) {
       // The URL contains a compressed JSON scene.
       JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
