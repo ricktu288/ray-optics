@@ -312,6 +312,10 @@ locales["es"] = {
   "save": {
     "message": "Guardar"
   },
+  "rename": {
+    "incomplete": true,
+    "message": "Rename"
+  },
   "get_link": {
     "message": "Copiar enlace compartible"
   },
@@ -328,7 +332,8 @@ locales["es"] = {
     "message": "Cancelar"
   },
   "save_description": {
-    "message": "Para compartir su trabajo, puede <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribuir con un nuevo elemento</a> a la <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">galería</a>."
+    "incomplete": true,
+    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
     "message": "Abrir"
@@ -567,9 +572,6 @@ locales["es"] = {
   "processing": {
     "message": "Procesando... Click aquí para detener."
   },
-  "restore": {
-    "message": "Click aquí para restablecer su sesión anterior.<br>Cambio importante: Esta aplicación no guardará su sesión automáticamente a partir de ahora. Por favor guarde su progreso antes de cerrar esta página."
-  },
   "contribute": {
     "message": "Contribuir"
   },
@@ -604,7 +606,8 @@ locales["es"] = {
     "message": "Abrir un archivo existente o una imagen de fondo. La imagen de fondo se mostrará desde el origen de coordenadas. (O arrastre el archivo)."
   },
   "get_link_popover": {
-    "message": "Copiar e ir directamente a la URL para la escena actual, lo cual puede ser usado para compartir (posiblemente mediante un acortador de URL)."
+    "incomplete": true,
+    "message": "Copiar e ir directamente a la URL para la escena actual, lo cual puede ser usado para compartir (posiblemente mediante un acortador de URL). Also see Settings -> Auto sync URL."
   },
   "get_link_warning": {
     "message": "La URL es demasiado larga y posiblemente no funcione en algunas plataformas. Posiblemente deba usar \"Guardar\" y compartir el archivo."
@@ -764,7 +767,7 @@ locales["es"] = {
   },
   "auto_sync_url_popover": {
     "incomplete": true,
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
   },
   "auto_sync_url_warning": {
     "incomplete": true,

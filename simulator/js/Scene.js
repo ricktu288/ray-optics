@@ -7,6 +7,7 @@ const DATA_VERSION = 5;
 /**
  * Represents the scene in this simulator.
  * @class Scene
+ * @property {string} name - The name of the scene.
  * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
  * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
  * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
@@ -27,6 +28,7 @@ const DATA_VERSION = 5;
  */
 class Scene {
   static serializableDefaults = {
+    name: '',
     modules: {},
     objs: [],
     mode: 'rays',
@@ -179,8 +181,13 @@ class Scene {
    */
   toJSON() {
     let jsonData = {version: DATA_VERSION};
+
+    // Put the name of the scene first.
+    if (this.name) {
+      jsonData.name = this.name;
+    }
     
-    // Put the modules first.
+    // And then the module definitions.
     if (Object.keys(this.modules).length > 0) {
       jsonData.modules = this.modules;
     }

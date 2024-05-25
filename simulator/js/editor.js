@@ -151,7 +151,6 @@ function canvas_onmousedown(e) {
         }
         selectObj(scene.objs.length - 1);
         draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
-        cancelRestore();
       }
     }
   }

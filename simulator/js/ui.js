@@ -331,6 +331,9 @@ function enableJsonEditor() {
       latestJsonCode = aceEditor.session.getValue();
       newJsonCode = latestJsonCode;
       JSONInput();
+      if (!scene.error) {
+        syncUrl();
+      }
     }, 500);
   });
 

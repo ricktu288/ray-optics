@@ -350,6 +350,10 @@ locales["ru"] = {
   "save": {
     "message": "Сохранить"
   },
+  "rename": {
+    "incomplete": true,
+    "message": "Rename"
+  },
   "get_link": {
     "incomplete": true,
     "message": "Copy Shareable Link"
@@ -370,7 +374,7 @@ locales["ru"] = {
   },
   "save_description": {
     "incomplete": true,
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
+    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
     "message": "Открыть"
@@ -660,10 +664,6 @@ locales["ru"] = {
   "processing": {
     "message": "Вычисление... Нажмите, чтобы остановить."
   },
-  "restore": {
-    "incomplete": true,
-    "message": "Click here to restore your previous session.<br>Important Change: This app will no longer store your session. Please save your work before closing this page."
-  },
   "contribute": {
     "incomplete": true,
     "message": "Contribute"
@@ -706,7 +706,7 @@ locales["ru"] = {
   },
   "get_link_popover": {
     "incomplete": true,
-    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener)."
+    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener). Also see Settings -> Auto sync URL."
   },
   "get_link_warning": {
     "incomplete": true,
@@ -892,7 +892,7 @@ locales["ru"] = {
   },
   "auto_sync_url_popover": {
     "incomplete": true,
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
   },
   "auto_sync_url_warning": {
     "incomplete": true,

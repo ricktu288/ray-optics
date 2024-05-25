@@ -313,6 +313,10 @@ locales["pl"] = {
   "save": {
     "message": "Zapisz"
   },
+  "rename": {
+    "incomplete": true,
+    "message": "Rename"
+  },
   "get_link": {
     "incomplete": true,
     "message": "Copy Shareable Link"
@@ -331,7 +335,8 @@ locales["pl"] = {
     "message": "Anuluj"
   },
   "save_description": {
-    "message": "Aby udostępnić swoją pracę, możesz <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">dodać nowy element</a> do <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Galerii</a>."
+    "incomplete": true,
+    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
     "message": "Otwórz"
@@ -585,9 +590,6 @@ locales["pl"] = {
   "processing": {
     "message": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
   },
-  "restore": {
-    "message": "Kliknij tutaj, aby przywrócić poprzednią sesję.<br>Ważna zmiana: Ta aplikacja nie będzie już przechowywać Twojej sesji. Zapisz swoją pracę przed zamknięciem tej strony."
-  },
   "contribute": {
     "message": "Wnieś wkład"
   },
@@ -622,7 +624,8 @@ locales["pl"] = {
     "message": "Otwórz istniejący plik lub obraz tła. Obraz tła zostanie wyświetlony z punktu początkowego współrzędnych. (Lub upuść plik)"
   },
   "get_link_popover": {
-    "message": "Skopiuj i przejdź do bezpośredniego adresu URL bieżącej sceny, którego można użyć do udostępniania (możliwe za pomocą narzędzia do skracania adresów URL)."
+    "incomplete": true,
+    "message": "Skopiuj i przejdź do bezpośredniego adresu URL bieżącej sceny, którego można użyć do udostępniania (możliwe za pomocą narzędzia do skracania adresów URL). Also see Settings -> Auto sync URL."
   },
   "get_link_warning": {
     "message": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Może być konieczne użycie \"Zapisz\" i zamiast tego udostępnienie pliku."
@@ -783,7 +786,7 @@ locales["pl"] = {
   },
   "auto_sync_url_popover": {
     "incomplete": true,
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
   },
   "auto_sync_url_warning": {
     "incomplete": true,

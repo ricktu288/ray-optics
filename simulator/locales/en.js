@@ -309,6 +309,9 @@ locales["en"] = {
   "save": {
     "message": "Save"
   },
+  "rename": {
+    "message": "Rename"
+  },
   "get_link": {
     "message": "Copy Shareable Link"
   },
@@ -325,7 +328,7 @@ locales["en"] = {
     "message": "Cancel"
   },
   "save_description": {
-    "message": "To share your work, you can <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>."
+    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
     "message": "Open"
@@ -555,9 +558,6 @@ locales["en"] = {
   "processing": {
     "message": "Processing... Click here to stop."
   },
-  "restore": {
-    "message": "Click here to restore your previous session.<br>Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
-  },
   "contribute": {
     "message": "Contribute"
   },
@@ -592,7 +592,7 @@ locales["en"] = {
     "message": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
   },
   "get_link_popover": {
-    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener)."
+    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener). Also see Settings -> Auto sync URL."
   },
   "get_link_warning": {
     "message": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
@@ -745,7 +745,7 @@ locales["en"] = {
     "message": "Auto sync URL"
   },
   "auto_sync_url_popover": {
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
   },
   "auto_sync_url_warning": {
     "message": "The scene is too large to sync with URL. Please save it manually."

@@ -40,6 +40,8 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
         obj.binSize = value;
       });
 
+      const self = this;
+
       objBar.createButton(getMsg('exportData'), function (obj) {
         // Export the irradiance map to a CSV file
         var binSize = obj.binSize;
@@ -59,7 +61,7 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
         // Download the file
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "irradiance_map.csv");
+        link.setAttribute("download", (self.scene.name || "irradiance_map") + ".csv");
         document.body.appendChild(link);
         link.click();
       });

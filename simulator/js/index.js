@@ -10,7 +10,6 @@ var ctxGrid;
 var dpr = 1;
 var scene = new Scene();
 var xyBox_cancelContextMenu = false;
-var restoredData = "";
 var isFromGallery = false;
 var hasUnsavedChange = false;
 var showAdvancedOn = false;
@@ -51,26 +50,8 @@ window.onload = function (e) {
 
 
   mousePos = geometry.point(0, 0);
-  var needRestore = false;
-  try {
-    restoredData = localStorage.rayOpticsData;
-    var jsonData = JSON.parse(restoredData);
-    if (jsonData.objs.length > 0) {
-      needRestore = true;
-    }
-  } catch { }
 
-  if (needRestore) {
-    document.getElementById('restore').style.display = '';
-    initParameters();
-    toolbtn_clicked('');
-    document.getElementById('tool_').checked = true;
-    document.getElementById('tool__mobile').checked = true;
-    AddingObjType = '';
-  } else {
-    restoredData = '';
-    initParameters();
-  }
+  initParameters();
 
   JSONOutput();
   undoArr[0] = latestJsonCode;
@@ -263,7 +244,6 @@ window.onload = function (e) {
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
-    cancelRestore();
     createUndoPoint();
     document.getElementById('welcome').style.display = '';
     isFromGallery = false;
@@ -533,8 +513,6 @@ window.onload = function (e) {
     }
   };
 
-  document.getElementById('restore').onclick = function () { restore() };
-
   document.getElementById('apply_to_all').onclick = function () {
     this.blur();
     const checked = this.checked;
@@ -587,7 +565,7 @@ window.onload = function (e) {
     if (e.stopPropagation) e.stopPropagation();
   };
   document.getElementById('save_confirm').onclick = save;
-
+  document.getElementById('save_rename').onclick = rename;
 
   document.getElementById('xybox').onkeydown = function (e) {
     //console.log(e.keyCode)
@@ -717,6 +695,9 @@ window.onresize = function (e) {
 
 
 function initParameters() {
+  document.title = getMsg('appName');
+  document.getElementById('save_name').value = "";
+
   isConstructing = false;
   endPositioning();
   scene = new Scene();
@@ -992,6 +973,13 @@ function JSONInput() {
     if (needFullUpdate) {
       // Update the UI for the loaded scene.
 
+      if (scene.name) {
+        document.title = scene.name + " - " + getMsg("appName");
+        document.getElementById('save_name').value = scene.name;
+      } else {
+        document.title = getMsg("appName");
+      }
+
       document.getElementById('showGrid').checked = scene.showGrid;
       document.getElementById('showGrid_more').checked = scene.showGrid;
       document.getElementById('showGrid_mobile').checked = scene.showGrid;
@@ -1085,11 +1073,21 @@ function setScaleWithCenter(value, centerX, centerY) {
   draw();
 }
 
-function save() {
+function rename() {
+  scene.name = document.getElementById('save_name').value;
+  if (scene.name) {
+    document.title = scene.name + " - " + getMsg("appName");
+  } else {
+    document.title = getMsg("appName");
+  }
   JSONOutput();
+}
+
+function save() {
+  rename();
 
   var blob = new Blob([latestJsonCode], { type: 'application/json' });
-  saveAs(blob, document.getElementById('save_name').value);
+  saveAs(blob, (scene.name || "scene") + ".json");
   var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
   if (saveModal) {
     saveModal.hide();
@@ -1099,7 +1097,6 @@ function save() {
 
 function openFile(readFile) {
   var reader = new FileReader();
-  document.getElementById('save_name').value = readFile.name;
   reader.readAsText(readFile);
   reader.onload = function (evt) {
     var fileString = evt.target.result;
@@ -1120,7 +1117,6 @@ function openFile(readFile) {
       endPositioning();
       selectedObj = -1;
       JSONInput();
-      cancelRestore();
       hasUnsavedChange = false;
       createUndoPoint();
       if (aceEditor) {
@@ -1133,7 +1129,6 @@ function openFile(readFile) {
         scene.backgroundImage.src = e.target.result;
         scene.backgroundImage.onload = function (e1) {
           draw(true, true);
-          cancelRestore();
         }
       }
       reader.readAsDataURL(readFile);
@@ -1229,7 +1224,7 @@ function exportSVG(cropBox) {
   draw();
   isExporting = false;
   var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
-  saveAs(blob, "export.svg");
+  saveAs(blob, (scene.name || "export") + ".svg");
 
   ctx = ctx_backup;
   ctx0 = ctx0_backup;
@@ -1282,7 +1277,7 @@ function exportImage(cropBox) {
   finalCtx.drawImage(canvas, 0, 0);
 
   finalCanvas.toBlob(function (blob) {
-    saveAs(blob, "export.png");
+    saveAs(blob, (scene.name || "export") + ".png");
   });
 
   scene.scale = scale_backup;
@@ -1291,25 +1286,7 @@ function exportImage(cropBox) {
   window.onresize();
 }
 
-function restore() {
-  latestJsonCode = restoredData;
-  document.getElementById('restore').style.display = 'none';
-  restoredData = '';
-  JSONInput();
-  createUndoPoint();
-}
-
-function cancelRestore() {
-  isFromGallery = false;
-  restoredData = '';
-  document.getElementById('restore').style.display = 'none';
-  document.getElementById('welcome').style.display = 'none';
-}
-
 window.onbeforeunload = function(e) {
-  if (!restoredData) {
-    localStorage.rayOpticsData = '';
-  }
   if (hasUnsavedChange) {
     return "You have unsaved change.";
   }

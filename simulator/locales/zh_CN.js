@@ -309,6 +309,9 @@ locales["zh-CN"] = {
   "save": {
     "message": "保存"
   },
+  "rename": {
+    "message": "重命名"
+  },
   "get_link": {
     "message": "复制分享连结"
   },
@@ -325,7 +328,7 @@ locales["zh-CN"] = {
     "message": "取消"
   },
   "save_description": {
-    "message": "如欲分享您的作品，可以<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">贡献新的项目</a>到<a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。"
+    "message": "<ul><li>您可使用设定->自动同步网址而不必存成文件。</li><li>按「重命名」会改变标题但不会存成文件。</li><li>您可以考虑<a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target= \"_blank\">贡献新的项目</a>到<a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">「作品集」</a>中。</li></ul>"
   },
   "open": {
     "message": "打开"
@@ -555,9 +558,6 @@ locales["zh-CN"] = {
   "processing": {
     "message": "处理中…… 按此处以终止。"
   },
-  "restore": {
-    "message": "按此处以恢复先前的进度。.<br>重要更动：本程序即日起不再自动保存您的进度，请在关闭此网页前保存您的作品。"
-  },
   "contribute": {
     "message": "贡献"
   },
@@ -592,7 +592,7 @@ locales["zh-CN"] = {
     "message": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
   },
   "get_link_popover": {
-    "message": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。"
+    "message": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。另见设定->自动同步网址。"
   },
   "get_link_warning": {
     "message": "本网址过长，在部分平台上可能无法正常运作。建议改用「保存」并分享文件。 "
@@ -745,7 +745,7 @@ locales["zh-CN"] = {
     "message": "自动同步网址"
   },
   "auto_sync_url_popover": {
-    "message": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。"
+    "message": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。如需设定标题，请用文件->保存->重命名。"
   },
   "auto_sync_url_warning": {
     "message": "本场景过大，无法与网址同步。 请自行储存场景。"

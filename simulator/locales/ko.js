@@ -411,6 +411,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "저장"
   },
+  "rename": {
+    "incomplete": true,
+    "message": "Rename"
+  },
   "get_link": {
     "incomplete": true,
     "message": "Copy Shareable Link"
@@ -432,8 +436,8 @@ locales["ko"] = {
     "message": "취소"
   },
   "save_description": {
-    "incomplete": false,
-    "message": "작업을 공유하려면 <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">갤러리</a>에 <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">'새 항목'</a>을 입력하십시오."
+    "incomplete": true,
+    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
     "incomplete": false,
@@ -739,10 +743,6 @@ locales["ko"] = {
     "incomplete": false,
     "message": "작업중... 중단하려면 클릭."
   },
-  "restore": {
-    "incomplete": false,
-    "message": "이전 세션을 복원하려면 클릭.<br>중요: 이 앱에 더 이상 세션이 보관되지 않습니다. 이 페이지를 닫기 전 작업을 저장하십시오."
-  },
   "contribute": {
     "incomplete": false,
     "message": "기여하기"
@@ -787,8 +787,8 @@ locales["ko"] = {
     "message": "기존 파일이나 배경 이미지 열기. 배경 이미지는 좌표 원점을 기준으로 표시됩니다. (또는 파일을 올려놓으십시오.)"
   },
   "get_link_popover": {
-    "incomplete": false,
-    "message": "현재 장면 공유를 위한 URL 복사 및 이동 (URL 단축 기능 사용)."
+    "incomplete": true,
+    "message": "현재 장면 공유를 위한 URL 복사 및 이동 (URL 단축 기능 사용). Also see Settings -> Auto sync URL."
   },
   "get_link_warning": {
     "incomplete": false,
@@ -992,7 +992,7 @@ locales["ko"] = {
   },
   "auto_sync_url_popover": {
     "incomplete": true,
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually."
+    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
   },
   "auto_sync_url_warning": {
     "incomplete": true,
