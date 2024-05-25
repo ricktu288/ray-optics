@@ -35,14 +35,6 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
         obj.mirrored = value;
       });
     }
-
-    if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
-      objBar.createNote(getMsg('image_detection_warning'));
-    }
-
-    if (!this.scene.simulateColors) {
-      objBar.createNote(getMsg('non_simulateColors_warning'));
-    }
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
@@ -64,6 +56,17 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.lineWidth = 1;
+  }
+
+  onSimulationStart() {
+    this.warning = null;
+    if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
+      this.warning = (this.warning || "") + getMsg('image_detection_warning');
+    }
+
+    if (!this.scene.simulateColors) {
+      this.warning = (this.warning || "") + getMsg('non_simulateColors_warning');
+    }
   }
 
   checkRayIntersects(ray) {

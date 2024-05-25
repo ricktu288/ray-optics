@@ -505,13 +505,13 @@ locales["en"] = {
     "message": "Width"
   },
   "beam_warning": {
-    "message": "⚠️ Image detection may not work with divergent/random beams."
+    "message": "Image detection may not work with divergent/random beams."
   },
   "image_detection_warning": {
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
@@ -556,7 +556,7 @@ locales["en"] = {
     "message": "Processing... Click here to stop."
   },
   "restore": {
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
+    "message": "Click here to restore your previous session.<br>Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
     "message": "Contribute"

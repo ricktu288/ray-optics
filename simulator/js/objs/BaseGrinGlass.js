@@ -103,6 +103,7 @@ class BaseGrinGlass extends BaseGlass {
    * Do the partial derivatives of the refractive index function and parse the functions.
    */
   initFns() {
+    this.error = null;
     try {
       this.p = parseTex(this.refIndexFn).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
       this.p_der_x = math.derivative(this.p, 'x').toString();
@@ -113,12 +114,10 @@ class BaseGrinGlass extends BaseGlass {
       this.fn_p_der_x = evaluateLatex(this.shiftOrigin(this.p_der_x_tex));
       this.fn_p_der_y = evaluateLatex(this.shiftOrigin(this.p_der_y_tex));
     } catch (e) {
-      console.log("Error initializing functions for GRIN glass: " + e.toString());
-      this.error = e.toString();
       delete this.fn_p;
       delete this.fn_p_der_x;
       delete this.fn_p_der_y;
-      return;
+      this.error = e.toString();
     }
   }
 

@@ -35,6 +35,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
+    if (geometry.distance(this.p1, this.p2) == 0) return;
+    
     const ctx = canvasRenderer.ctx;
     if (isAboveLight) {
       if (this.path) {
@@ -48,14 +50,10 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       fns = [evaluateLatex(this.eqn1), evaluateLatex(this.eqn2)];
     } catch (e) {
       delete this.path;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px serif';
-      ctx.fillStyle = "gray"
+      ctx.fillStyle = "red"
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
-      ctx.fillStyle = "red"
-      ctx.fillText(e.toString(), this.p1.x, this.p1.y);
+      this.error = e.toString();
       return;
     }
 
@@ -92,14 +90,10 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       }
       if (!hasPoints || lastError.startsWith("Curve generation error:")) {
         delete this.path;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.font = '12px serif';
-        ctx.fillStyle = "gray"
+        ctx.fillStyle = "red"
         ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
         ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
-        ctx.fillStyle = "red"
-        ctx.fillText(lastError.toString(), this.p1.x, this.p1.y);
+        this.error = lastError.toString();
         return;
       }
     }
@@ -111,6 +105,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
     }
 
     this.drawGlass(canvasRenderer, isAboveLight, isHovered);
+
+    this.error = null;
   }
 
   checkMouseOver(mouse) {

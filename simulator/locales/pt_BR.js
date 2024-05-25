@@ -507,13 +507,13 @@ locales["pt-BR"] = {
     "message": "Largura"
   },
   "beam_warning": {
-    "message": "⚠️ Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
+    "message": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
   },
   "image_detection_warning": {
-    "message": "⚠️ Esta ferramenta não suporta detecção de imagem."
+    "message": "Esta ferramenta não suporta detecção de imagem."
   },
   "non_simulateColors_warning": {
-    "message": "⚠️ Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
+    "message": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
   },
   "brightness_note_popover": {
     "message": "<p>Somente faz efeito quando 'Densidade de Raios' está alta o suficiente.</p><p>Para controlar o número de raios emitidos, por favor ajuste o controle global de 'Densidade de Raios'.</p>"
@@ -561,7 +561,7 @@ locales["pt-BR"] = {
   },
   "restore": {
     "incomplete": true,
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
+    "message": "Click here to restore your previous session.<br>Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
     "message": "Contribuir"

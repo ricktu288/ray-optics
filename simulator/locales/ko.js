@@ -673,15 +673,15 @@ locales["ko"] = {
   },
   "beam_warning": {
     "incomplete": false,
-    "message": "⚠️ 발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
+    "message": "발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": false,
@@ -741,7 +741,7 @@ locales["ko"] = {
   },
   "restore": {
     "incomplete": false,
-    "message": "이전 세션을 복원하려면 클릭.<br>⚠️ 중요: 이 앱에 더 이상 세션이 보관되지 않습니다. 이 페이지를 닫기 전 작업을 저장하십시오."
+    "message": "이전 세션을 복원하려면 클릭.<br>중요: 이 앱에 더 이상 세션이 보관되지 않습니다. 이 페이지를 닫기 전 작업을 저장하십시오."
   },
   "contribute": {
     "incomplete": false,

@@ -673,15 +673,15 @@ locales["LOCALE_ID"] = {
   },
   "beam_warning": {
     "incomplete": true,
-    "message": "⚠️ Image detection may not work with divergent/random beams."
+    "message": "Image detection may not work with divergent/random beams."
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -741,7 +741,7 @@ locales["LOCALE_ID"] = {
   },
   "restore": {
     "incomplete": true,
-    "message": "Click here to restore your previous session.<br>⚠️ Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
+    "message": "Click here to restore your previous session.<br>Important Change: This app will not store your session automatically from now on. Please save your work before closing this page."
   },
   "contribute": {
     "incomplete": true,

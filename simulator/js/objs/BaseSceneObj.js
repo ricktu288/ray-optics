@@ -10,6 +10,10 @@ class BaseSceneObj {
   constructor(scene, jsonObj) {
     /** @property {Scene} scene - The scene the object belongs to. */
     this.scene = scene;
+    /** @property {string|null} error - The error message of the object. */
+    this.error = null;
+    /** @property {string|null} warning - The warning message of the object. */
+    this.warning = null;
 
     const serializableDefaults = this.constructor.serializableDefaults;
     for (const propName in serializableDefaults) {
@@ -251,7 +255,21 @@ class BaseSceneObj {
     // Do nothing by default
   }
 
+  /**
+   * Get the error message of the object.
+   * @returns {string|null} The error message.
+   */
+  getError() {
+    return this.error;
+  }
 
+  /**
+   * Get the warning message of the object.
+   * @returns {string|null} The warning message.
+   */
+  getWarning() {
+    return this.warning;
+  }
 
 
 }

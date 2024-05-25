@@ -30,6 +30,8 @@ function draw(skipLight, skipGrid)
   
   if (!skipLight) {
     totalTruncation = 0;
+    //clearError();
+    //clearWarning();
     drawBeginTime = new Date();
     document.getElementById('forceStop').style.display = 'none';
   }
@@ -189,6 +191,7 @@ function draw_(skipLight, skipGrid) {
   }
 
   lastDrawTime = new Date();
+  updateErrorAndWarning();
 }
 
 var last_ray;

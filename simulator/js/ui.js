@@ -330,11 +330,7 @@ function enableJsonEditor() {
     debounceTimer = setTimeout(function() {
       latestJsonCode = aceEditor.session.getValue();
       newJsonCode = latestJsonCode;
-      try {
-        JSONInput();
-      } catch (e) {
-        console.log(e);
-      }
+      JSONInput();
     }, 500);
   });
 
@@ -347,4 +343,43 @@ function disableJsonEditor() {
   aceEditor = null;
   document.getElementById('footer-left').style.left = '0px';
   document.getElementById('sideBar').style.display = 'none';
+}
+
+function updateErrorAndWarning() {
+  let errors = [];
+  let warnings = [];
+
+  if (scene.error) {
+    errors.push("Scene: " + scene.error);
+  }
+
+  if (scene.warning) {
+    warnings.push("Scene: " + scene.warning);
+  }
+
+  for (let i in scene.objs) {
+    let error = scene.objs[i].getError();
+    if (error) {
+      errors.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${error}`);
+    }
+
+    let warning = scene.objs[i].getWarning();
+    if (warning) {
+      warnings.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${warning}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    document.getElementById('errorText').innerText = errors.join('\n');
+    document.getElementById('error').style.display = '';
+  } else {
+    document.getElementById('error').style.display = 'none';
+  }
+
+  if (warnings.length > 0) {
+    document.getElementById('warningText').innerText = warnings.join('\n');
+    document.getElementById('warning').style.display = '';
+  } else {
+    document.getElementById('warning').style.display = 'none';
+  }
 }

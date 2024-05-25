@@ -533,15 +533,15 @@ locales["pl"] = {
     "message": "Width"
   },
   "beam_warning": {
-    "message": "⚠️ Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
+    "message": "Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.</p><p>Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'.</p>"
@@ -586,7 +586,7 @@ locales["pl"] = {
     "message": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
   },
   "restore": {
-    "message": "Kliknij tutaj, aby przywrócić poprzednią sesję.<br>⚠️ Ważna zmiana: Ta aplikacja nie będzie już przechowywać Twojej sesji. Zapisz swoją pracę przed zamknięciem tej strony."
+    "message": "Kliknij tutaj, aby przywrócić poprzednią sesję.<br>Ważna zmiana: Ta aplikacja nie będzie już przechowywać Twojej sesji. Zapisz swoją pracę przed zamknięciem tej strony."
   },
   "contribute": {
     "message": "Wnieś wkład"

@@ -515,15 +515,15 @@ locales["es"] = {
     "message": "Ancho"
   },
   "beam_warning": {
-    "message": "⚠️ Detección de imagen puede no funcionar con rayos divergentes/ aleatorios"
+    "message": "Detección de imagen puede no funcionar con rayos divergentes/ aleatorios"
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "message": "<p>Solo es efectivo si la 'Densidad de rayos' es suficientemente alta.</p><p>Para controlar el número de rayos emitidos, por favor ajustar el deslizante global 'Densidad de rayos'.</p>"
@@ -568,7 +568,7 @@ locales["es"] = {
     "message": "Procesando... Click aquí para detener."
   },
   "restore": {
-    "message": "Click aquí para restablecer su sesión anterior.<br>⚠️ Cambio importante: Esta aplicación no guardará su sesión automáticamente a partir de ahora. Por favor guarde su progreso antes de cerrar esta página."
+    "message": "Click aquí para restablecer su sesión anterior.<br>Cambio importante: Esta aplicación no guardará su sesión automáticamente a partir de ahora. Por favor guarde su progreso antes de cerrar esta página."
   },
   "contribute": {
     "message": "Contribuir"

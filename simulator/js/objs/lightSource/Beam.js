@@ -43,9 +43,6 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
       objBar.createBoolean(getMsg('random'), this.random, function (obj, value) {
         obj.random = value;
       });
-      if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
-        objBar.createNote(getMsg('beam_warning'));
-      }
     }
   }
 
@@ -71,6 +68,12 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
   }
 
   onSimulationStart() {
+    if ((this.scene.mode == 'images' || this.scene.mode == 'observer') && (this.emisAngle > 0 || this.random)) {
+      this.warning = getMsg('beam_warning');
+    } else {
+      this.warning = null;
+    }
+
     var n = geometry.segmentLength(this) * this.scene.rayDensity;
     var stepX = (this.p2.x - this.p1.x) / n;
     var stepY = (this.p2.y - this.p1.y) / n;

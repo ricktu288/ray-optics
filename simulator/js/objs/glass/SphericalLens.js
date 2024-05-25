@@ -345,6 +345,8 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
   }
 
   createLensWithDR1R2(d, r1, r2) {
+    this.error = null;
+
     if (!this.path) {
       var p1 = this.p1;
       var p2 = this.p2;
@@ -417,6 +419,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       this.p2 = p2;
       this.path = null;
       this.params = { r1: r1, r2: r2, d: d };
+      this.error = 'Invalid lens parameters';
     } else {
       // create lens
       if (!this.path) this.path = [];
@@ -435,6 +438,8 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
   }
 
   createLensWithDFfdBfd(d, ffd, bfd) {
+    this.error = null;
+
     if (!this.path) {
       var p1 = this.p1;
       var p2 = this.p2;
@@ -498,6 +503,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       if (!this.path) {
         // If the lens is invalid as defined by d,r1,r2, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
         this.params = { d: d, ffd: ffd, bfd: bfd };
+        this.error = 'Invalid lens parameters';
       }
     } else if (!isNaN(r1_2) && !isNaN(r2_2) && (isNaN(r1_1) || isNaN(r2_1))) {
       // If only the second solution is valid, use that.
@@ -507,6 +513,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       if (!this.path) {
         // If the lens is invalid as defined by d,r1,r2, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
         this.params = { d: d, ffd: ffd, bfd: bfd };
+        this.error = 'Invalid lens parameters';
       }
     } else if (!isNaN(r1_1) && !isNaN(r2_1) && !isNaN(r1_2) && !isNaN(r2_2)) {
       // If both solutions are valid, and if the old lens is valid, prefer the solution that is closest to the old lens.
@@ -554,6 +561,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
         if (!this.path) {
           // If the lens is still invalid, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
           this.params = { d: d, ffd: ffd, bfd: bfd };
+          this.error = 'Invalid lens parameters';
         }
       }
     } else {
@@ -562,6 +570,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       this.p2 = p2;
       this.path = null;
       this.params = { d: d, ffd: ffd, bfd: bfd };
+      this.error = 'Invalid lens parameters';
       return;
     }
   }

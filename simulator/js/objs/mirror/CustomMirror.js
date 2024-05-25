@@ -33,20 +33,18 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
+    if (geometry.distance(this.p1, this.p2) == 0) return;
+
     const ctx = canvasRenderer.ctx;
     var fn;
     try {
       fn = evaluateLatex(this.eqn);
     } catch (e) {
       delete this.tmp_points;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px serif';
-      ctx.fillStyle = "gray"
+      ctx.fillStyle = "red"
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
-      ctx.fillStyle = "red"
-      ctx.fillText(e.toString(), this.p1.x, this.p1.y);
+      this.error = e.toString();
       return;
     }
     ctx.fillStyle = 'rgb(255,0,255)';
@@ -86,15 +84,10 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
     }
     if (this.tmp_points.length == 0) {
       delete this.tmp_points;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px serif';
-      ctx.fillStyle = "gray"
+      ctx.fillStyle = "red"
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
-      ctx.fillStyle = "red"
-      ctx.fillText(lastError.toString(), this.p1.x, this.p1.y);
-      return;
+      this.error = lastError.toString();
     }
     ctx.stroke();
     if (isHovered) {
@@ -102,6 +95,8 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
     }
+
+    this.error = null;
   }
 
   checkMouseOver(mouse) {

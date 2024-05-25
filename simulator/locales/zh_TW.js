@@ -505,13 +505,13 @@ locales["zh-TW"] = {
     "message": "寬度"
   },
   "beam_warning": {
-    "message": "⚠️ 使用發散或隨機光束時，像的偵測可能無法正常運作。"
+    "message": "使用發散或隨機光束時，像的偵測可能無法正常運作。"
   },
   "image_detection_warning": {
-    "message": "⚠️ 本工具不支援像的偵測。"
+    "message": "本工具不支援像的偵測。"
   },
   "non_simulateColors_warning": {
-    "message": "⚠️ 本工具只在「模擬色彩」模式下運作。"
+    "message": "本工具只在「模擬色彩」模式下運作。"
   },
   "brightness_note_popover": {
     "message": "<p>只在「光線密度」夠高時才有作用。</p><p>如需改變射出的光線數量，請調整全域性的「光線密度」滑桿。</p>"
@@ -556,7 +556,7 @@ locales["zh-TW"] = {
     "message": "處理中…… 按此處以終止。"
   },
   "restore": {
-    "message": "按此處以恢復先前的工作階段。.<br>⚠️ 重要更動：本程式即日起不再自動儲存您的工作階段，請在關閉此網頁前儲存您的作品。"
+    "message": "按此處以恢復先前的工作階段。.<br>重要更動：本程式即日起不再自動儲存您的工作階段，請在關閉此網頁前儲存您的作品。"
   },
   "contribute": {
     "message": "貢獻"

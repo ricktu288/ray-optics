@@ -24,14 +24,6 @@ objTypes['CircleGrinGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
 
-    if (this.error) {
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.font = '12px serif';
-      ctx.fillStyle = "red"
-      ctx.fillText(this.error.toString(), this.p1.x, this.p1.y);
-    }
-
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2, false);
     this.fillGlass(canvasRenderer, isAboveLight, isHovered);
@@ -51,6 +43,7 @@ objTypes['CircleGrinGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
   }
 
   checkRayIntersects(ray) {
+    if (this.notDone) { return; }
     if (!this.fn_p) {
       this.initFns();
     }
@@ -67,8 +60,15 @@ objTypes['CircleGrinGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
   }
 
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
-    if (this.notDone) { return; }
+    if (!this.fn_p) {
+      // This means that some error has been occuring eariler in parsing the equation.
+      return {
+        isAbsorbed: true
+      };
+    }
     try {
+      this.error = null;
+
       if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
         let r_bodyMerging_obj = ray.bodyMergingObj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
@@ -101,8 +101,7 @@ objTypes['CircleGrinGlass'] = class extends CircleObjMixin(BaseGrinGlass) {
         ray.p2 = next_point;
       }
     } catch (e) {
-      //throw e
-      console.log("Error in onRayIncident of GRIN glass: " + e.toString());
+      this.error = e.toString();
       return {
         isAbsorbed: true
       };

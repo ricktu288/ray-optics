@@ -56,12 +56,16 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
   populateObjBar(objBar) {
     objBar.createNote(this.module);
 
-    for (let param of this.moduleDef.params) {
-      const parsed = this.parseVariableRange(param, {});
-      objBar.createNumber(parsed.name, parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
-        obj.params[parsed.name] = value;
-        obj.expandObjs();
-      });
+    try {
+      for (let param of this.moduleDef.params) {
+        const parsed = this.parseVariableRange(param, {});
+        objBar.createNumber(parsed.name, parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
+          obj.params[parsed.name] = value;
+          obj.expandObjs();
+        });
+      }
+    } catch (e) {
+      this.error = e;
     }
 
     objBar.createButton(getMsg('demodulize'), function (obj) {
@@ -184,6 +188,44 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     this.expandObjs();
   }
 
+  getError() {
+    if (this.error) {
+      return this.error;
+    } else {
+      let errors = [];
+      for (let i in this.objs) {
+        let error = this.objs[i].getError();
+        if (error) {
+          errors.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${error}`);
+        }
+      }
+      
+      if (errors.length > 0) {
+        return "In expanded objects:\n" + errors.join("\n");
+      }
+    }
+
+    return null;
+  }
+
+  getWarning() {
+    let warnings = [];
+    for (let i in this.objs) {
+      let warning = this.objs[i].getWarning();
+      if (warning) {
+        warnings.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${warning}`);
+      }
+    }
+
+    if (warnings.length > 0) {
+      return "In expanded objects:\n" + warnings.join("\n");
+    }
+
+    return null;
+  }
+
+
+
   // Optical methods are not implemented for the module class, since the simulator operates on `scene.opticalObjs` which already expands all the modules.
 
   /* Utility methods */
@@ -209,7 +251,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       let endVal = math.evaluate(end, params);
       return {name: name, start: startVal, step: stepVal, end: endVal, defaultVal: defaultVal};
     } catch (e) {
-      console.log(`Error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`);
+      throw `error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
     }
   }
 
@@ -237,7 +279,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
         return result;
       }
     } catch (e) {
-      console.log(`Error expanding string "${str}" with parameters ${JSON.stringify(params)}: ${e}`);
+      throw `error expanding string "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
     }
   }
 
@@ -314,13 +356,13 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
 
           if (loopParams.length > this.maxLoopLength) {
             throw `The length of the loop is too large. Please set maxListLength to a larger value.`;
-          }
-
-          for (let loopParam of loopParams) {
-            if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
-              continue;
+          } else {
+            for (let loopParam of loopParams) {
+              if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
+                continue;
+              }
+              result.push(this.expandObject(obj, loopParam));
             }
-            result.push(this.expandObject(obj, loopParam));
           }
 
         } else if ('if' in obj) {
@@ -337,7 +379,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
           result.push(obj);
         }
       } catch (e) {
-        console.log(`Error expanding object ${JSON.stringify(obj)} in array with parameters ${JSON.stringify(params)}: ${e}`);
+        throw `error expanding object ${JSON.stringify(obj)} in array with parameters ${JSON.stringify(params)}: ${e}`;
       }
     }
     return result;
@@ -357,12 +399,17 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       fullParams['y_' + (i+1)] = this.points[i].y;
     }
     
+    this.error = null;
 
-    const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
+    try {
+      const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
 
-    this.objs = expandedObjs.map(objData =>
-      new objTypes[objData.type](this.scene, objData)
-    );
+      this.objs = expandedObjs.map(objData =>
+        new objTypes[objData.type](this.scene, objData)
+      );
+    } catch (e) {
+      this.error = e;
+    }
   }
 
   /**

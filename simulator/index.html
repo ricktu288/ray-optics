@@ -113,6 +113,30 @@
         <div id="jsonEditor"></div>
       </div>
 
+      <!-- "Processing..."  spinner -->
+      <div class="footer-left" id="footer-left" style="display: none">
+        <div id="forceStop">
+          <div class="spinner-border text-secondary" role="status"></div>
+          <span data-text="processing"></span>
+        </div>
+        <div id="status" style="display: none;">
+          <div id="mouseCoordinates"></div>
+          <div id="simulatorStatus"></div>
+        </div>
+        <div id="warning" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+          </svg>
+          <span id="warningText"></span>
+        </div>
+        <div id="error" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+          </svg>
+          <span id="errorText"></span>
+        </div>
+      </div>
+
       <!-- Actual toolbar -->
       <div id="toolbar-wrapper" style="display: none;">
         <div id="toolbar" class="container-fluid d-none d-lg-block">
@@ -1216,17 +1240,7 @@
     <!-- Coordinates entering popup -->
     <input type="text" id="xybox" style="display:none;" value="">
   
-    <!-- "Processing..."  spinner -->
-    <div class="footer-left" id="footer-left" style="display: none">
-      <div id="forceStop">
-        <div class="spinner-border text-secondary" role="status"></div>
-        <span data-text="processing"></span>
-      </div>
-      <div id="status" style="display: none;">
-        <div id="mouseCoordinates"></div>
-        <div id="simulatorStatus"></div>
-      </div>
-    </div>
+    
 
     <!-- Footer buttons -->
     <div class="footer-right" id="footer-right" style="display: none">

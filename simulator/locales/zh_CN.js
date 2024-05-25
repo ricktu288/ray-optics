@@ -505,13 +505,13 @@ locales["zh-CN"] = {
     "message": "宽度"
   },
   "beam_warning": {
-    "message": "⚠️ 使用发散或随机光束时，像的侦测可能无法正常运作。"
+    "message": "使用发散或随机光束时，像的侦测可能无法正常运作。"
   },
   "image_detection_warning": {
-    "message": "⚠️ 本工具不支持像的侦测。"
+    "message": "本工具不支持像的侦测。"
   },
   "non_simulateColors_warning": {
-    "message": "⚠️ 本工具只在「模拟色彩」模式下运作。"
+    "message": "本工具只在「模拟色彩」模式下运作。"
   },
   "brightness_note_popover": {
     "message": "<p>只在「光线密度」够高时才有作用。 </p><p>如需改变射出的光线数量，请调整全域性的「光线密度」滑杆。 </p>"
@@ -556,7 +556,7 @@ locales["zh-CN"] = {
     "message": "处理中…… 按此处以终止。"
   },
   "restore": {
-    "message": "按此处以恢复先前的进度。.<br>⚠️ 重要更动：本程序即日起不再自动保存您的进度，请在关闭此网页前保存您的作品。"
+    "message": "按此处以恢复先前的进度。.<br>重要更动：本程序即日起不再自动保存您的进度，请在关闭此网页前保存您的作品。"
   },
   "contribute": {
     "message": "贡献"

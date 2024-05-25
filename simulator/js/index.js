@@ -85,6 +85,11 @@ window.onload = function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
 
+    if (scene.error) {
+      canvas.style.cursor = 'not-allowed';
+      return;
+    }
+
     document.body.focus();
     canvas_onmousedown(e);
   });
@@ -94,12 +99,23 @@ window.onload = function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
 
+    if (scene.error) {
+      canvas.style.cursor = 'not-allowed';
+      return;
+    }
+
     canvas_onmousemove(e);
   });
 
   canvas.addEventListener('mouseup',  function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
+
+    if (scene.error) {
+      canvas.style.cursor = 'not-allowed';
+      return;
+    }
+
     //console.log("mouseup");
     canvas_onmouseup(e);
   });
@@ -124,6 +140,7 @@ window.onload = function (e) {
   let lastY = 0;
 
   canvas.addEventListener('touchstart',  function (e) {
+    if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
     if (e.touches.length === 2) {
@@ -146,6 +163,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchmove',  function (e) {
+    if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
     e.preventDefault();
@@ -198,6 +216,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchend',  function (e) {
+    if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
     //console.log("touchend");
@@ -209,6 +228,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('touchcancel',  function (e) {
+    if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
     //console.log("touchcancel");
@@ -222,6 +242,7 @@ window.onload = function (e) {
   });
 
   canvas.addEventListener('dblclick',  function (e) {
+    if (scene.error) return;
     canvas_ondblclick(e);
   });
 
@@ -844,6 +865,10 @@ window.onkeyup = function (e) {
 };
 
 function JSONOutput() {
+  if (scene.error) {
+    return;
+  }
+
   scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
   
   newJsonCode = scene.toJSON();
@@ -926,8 +951,6 @@ function JSONInput() {
       }, 1);
     }
   });
-
-  
 }
 
 
@@ -1000,15 +1023,31 @@ function openFile(readFile) {
   reader.readAsText(readFile);
   reader.onload = function (evt) {
     var fileString = evt.target.result;
-    latestJsonCode = fileString;
-    endPositioning();
-    selectedObj = -1;
+
+    let isJSON = true;
     try {
+      const parsed = JSON.parse(fileString);
+      if (typeof parsed !== 'object' || parsed === null) {
+        isJSON = false;
+      }
+    } catch (e) {
+      isJSON = false;
+    }
+
+    if (isJSON) {
+      // Load the scene file
+      latestJsonCode = fileString;
+      endPositioning();
+      selectedObj = -1;
       JSONInput();
       cancelRestore();
       hasUnsavedChange = false;
-    } catch (error) {
-      console.log(error);
+      createUndoPoint();
+      if (aceEditor) {
+        aceEditor.setValue(latestJsonCode);
+      }
+    } else {
+      // Load the background image file
       reader.onload = function (e) {
         scene.backgroundImage = new Image();
         scene.backgroundImage.src = e.target.result;
@@ -1019,7 +1058,6 @@ function openFile(readFile) {
       }
       reader.readAsDataURL(readFile);
     }
-    createUndoPoint();
   };
 
 }

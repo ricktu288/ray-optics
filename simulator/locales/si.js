@@ -601,15 +601,15 @@ locales["si"] = {
     "message": "Width"
   },
   "beam_warning": {
-    "message": "⚠️ අපසාරී/අහඹු කදම්භ සමඟ රූප හඳුනාගැනීම  ක්‍රියා නොකරයි."
+    "message": "අපසාරී/අහඹු කදම්භ සමඟ රූප හඳුනාගැනීම  ක්‍රියා නොකරයි."
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -663,7 +663,7 @@ locales["si"] = {
     "message": "සකසමින්... නතර කිරීමට මෙතන click කරන්න."
   },
   "restore": {
-    "message": "ඔබේ previous session එක restore කිරීමට මෙතන Click කරන්න.<br>⚠️ වැදගත් වෙනසක්: මෙම යෙදුම තවදුරටත් sessions ගබඩා නොකරයි. මෙම page එක close කිරීමට පෙර කරුණාකර ඔබගේ වැඩ save කරගන්න."
+    "message": "ඔබේ previous session එක restore කිරීමට මෙතන Click කරන්න.<br>වැදගත් වෙනසක්: මෙම යෙදුම තවදුරටත් sessions ගබඩා නොකරයි. මෙම page එක close කිරීමට පෙර කරුණාකර ඔබගේ වැඩ save කරගන්න."
   },
   "contribute": {
     "message": "දායක වන්න"

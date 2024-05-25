@@ -47,6 +47,8 @@ class Scene {
   
   constructor() {
     this.backgroundImage = null;
+    this.error = null;
+    this.warning = null;
     this.fromJSON(JSON.stringify({version: DATA_VERSION}), () => {});
   }
 
@@ -105,58 +107,67 @@ class Scene {
   * @param {fromJSONCallback} callback - The callback function when the entire scene or a resource (e.g. image) is loaded.
   */
   fromJSON(json, callback) {
-    let jsonData = JSON.parse(json);
+    this.error = null;
+    this.warning = null;
+    try {
+      let jsonData = JSON.parse(json);
 
-    // Convert the scene from old versions if necessary.
-    if (!jsonData.version || jsonData.version < DATA_VERSION) {
-      jsonData = versionUpdate(jsonData);
-    } else if (jsonData.version > DATA_VERSION) {
-      // Newer than the current version
-      throw new Error('The version of the scene is newer than the current version of the simulator.');
-    }
-
-    const serializableDefaults = Scene.serializableDefaults;
-
-    // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
-    const approximatedWidth = Math.ceil((this.width || serializableDefaults.width) / 100) * 100;
-    const approximatedHeight = Math.ceil((this.height || serializableDefaults.height) / 100) * 100;
-
-    // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
-    for (let key in serializableDefaults) {
-      if (!(key in jsonData)) {
-        jsonData[key] = JSON.parse(JSON.stringify(serializableDefaults[key]));
+      // Convert the scene from old versions if necessary.
+      if (!jsonData.version || jsonData.version < DATA_VERSION) {
+        jsonData = versionUpdate(jsonData);
+      } else if (jsonData.version > DATA_VERSION) {
+        // Newer than the current version
+        throw new Error('The version of the scene is newer than the current version of the simulator.');
       }
-      this[key] = jsonData[key];
-    }
-    
-    // Rescale the scene to fit the current viewport.
-    let rescaleFactor = 1;
 
-    if (jsonData.width / jsonData.height > approximatedWidth / approximatedHeight) {
-      rescaleFactor = jsonData.width / approximatedWidth;
-    } else {
-      rescaleFactor = jsonData.height / approximatedHeight;
-    }
+      const serializableDefaults = Scene.serializableDefaults;
 
-    this.scale = jsonData.scale / rescaleFactor;
-    this.origin.x = jsonData.origin.x / rescaleFactor;
-    this.origin.y = jsonData.origin.y / rescaleFactor;
+      // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
+      const approximatedWidth = Math.ceil((this.width || serializableDefaults.width) / 100) * 100;
+      const approximatedHeight = Math.ceil((this.height || serializableDefaults.height) / 100) * 100;
 
-    // Load the objects in the scene.
-    this.objs = jsonData.objs.map(objData =>
-      new objTypes[objData.type](this, objData)
-    );
-
-    // Load the background image.
-    if (jsonData.backgroundImage) {
-      this.backgroundImage = new Image();
-      this.backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
-      this.backgroundImage.onload = function (e1) {
-        callback(false, true);
+      // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
+      for (let key in serializableDefaults) {
+        if (!(key in jsonData)) {
+          jsonData[key] = JSON.parse(JSON.stringify(serializableDefaults[key]));
+        }
+        this[key] = jsonData[key];
       }
-      callback(true, false);
-    } else {
-      // The JSON data does not contain the background image. Currently this does not mean that we should clear the background image (as the undo/redo history does not currently store it). However, this may change in the future.
+      
+      // Rescale the scene to fit the current viewport.
+      let rescaleFactor = 1;
+
+      if (jsonData.width / jsonData.height > approximatedWidth / approximatedHeight) {
+        rescaleFactor = jsonData.width / approximatedWidth;
+      } else {
+        rescaleFactor = jsonData.height / approximatedHeight;
+      }
+
+      this.scale = jsonData.scale / rescaleFactor;
+      this.origin.x = jsonData.origin.x / rescaleFactor;
+      this.origin.y = jsonData.origin.y / rescaleFactor;
+
+      // Load the objects in the scene.
+      this.objs = jsonData.objs.map(objData =>
+        new objTypes[objData.type](this, objData)
+      );
+
+      // Load the background image.
+      if (jsonData.backgroundImage) {
+        this.backgroundImage = new Image();
+        this.backgroundImage.src = "../gallery/" + jsonData.backgroundImage;
+        this.backgroundImage.onload = function (e1) {
+          callback(false, true);
+        }
+        callback(true, false);
+      } else {
+        // The JSON data does not contain the background image. Currently this does not mean that we should clear the background image (as the undo/redo history does not currently store it). However, this may change in the future.
+        callback(true, true);
+      }
+    } catch (e) {
+      console.log(e);
+      this.error = e.toString();
+      this.objs = [];
       callback(true, true);
     }
   }

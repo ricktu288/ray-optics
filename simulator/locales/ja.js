@@ -673,15 +673,15 @@ locales["ja"] = {
   },
   "beam_warning": {
     "incomplete": true,
-    "message": "⚠️ Image detection may not work with divergent/random beams."
+    "message": "Image detection may not work with divergent/random beams."
   },
   "image_detection_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool does not support image detection."
+    "message": "This tool does not support image detection."
   },
   "non_simulateColors_warning": {
     "incomplete": true,
-    "message": "⚠️ This tool only works when \"Simulate Color\" is on."
+    "message": "This tool only works when \"Simulate Color\" is on."
   },
   "brightness_note_popover": {
     "incomplete": true,
@@ -741,7 +741,7 @@ locales["ja"] = {
   },
   "restore": {
     "incomplete": false,
-    "message": "以前のセッションを復元するには、ここをクリックしてください。<br>⚠️ 注意: このアプリはセッションを保存しなくなります。 このページを閉じる前に、作業内容を保存してください。"
+    "message": "以前のセッションを復元するには、ここをクリックしてください。<br>注意: このアプリはセッションを保存しなくなります。 このページを閉じる前に、作業内容を保存してください。"
   },
   "contribute": {
     "incomplete": false,
