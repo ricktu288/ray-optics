@@ -375,6 +375,7 @@ function canvas_onmouseup(e) {
     if (e.which && e.which == 3 && draggingObj == -3 && mousePos.x == dragContext.mousePos0.x && mousePos.y == dragContext.mousePos0.y) {
       draggingObj = -1;
       dragContext = {};
+      JSONOutput();
       canvas_ondblclick(e);
       return;
     }
@@ -669,7 +670,9 @@ function undo() {
     document.getElementById('undo').disabled = true;
     document.getElementById('undo_mobile').disabled = true;
   }
-
+  if (aceEditor) {
+    aceEditor.session.setValue(latestJsonCode);
+  }
 }
 
 function redo() {
@@ -687,5 +690,8 @@ function redo() {
     // The lower bound of undo data is reached
     document.getElementById('redo').disabled = true;
     document.getElementById('redo_mobile').disabled = true;
+  }
+  if (aceEditor) {
+    aceEditor.session.setValue(latestJsonCode);
   }
 }

@@ -347,6 +347,7 @@ window.onload = function (e) {
     document.getElementById('gridSize').value = scene.gridSize;
     document.getElementById('gridSize_mobile').value = scene.gridSize;
     draw(true, false);
+    JSONOutput();
   }
   document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
 
@@ -369,6 +370,7 @@ window.onload = function (e) {
       scene.observer.r = parseFloat(this.value) * 0.5;
     }
     draw(false, true);
+    JSONOutput();
   }
   document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
 
@@ -463,6 +465,7 @@ window.onload = function (e) {
     document.getElementById('snapToGrid_mobile').checked = e.target.checked;
     scene.snapToGrid = e.target.checked;
     this.blur();
+    JSONOutput();
     //draw();
   };
   document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
@@ -475,6 +478,7 @@ window.onload = function (e) {
     scene.showGrid = e.target.checked;
     this.blur();
     draw(true, false);
+    JSONOutput();
   };
   document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
   document.getElementById('showGrid_mobile').onclick = document.getElementById('showGrid').onclick;
@@ -485,6 +489,7 @@ window.onload = function (e) {
     document.getElementById('lockObjs_mobile').checked = e.target.checked;
     scene.lockObjs = e.target.checked;
     this.blur();
+    JSONOutput();
   };
   document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
   document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
