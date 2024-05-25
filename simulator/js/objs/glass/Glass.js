@@ -32,6 +32,11 @@ objTypes['Glass'] = class extends BaseGlass {
     if (this.notDone) {
       // The user has not finish drawing the object yet
 
+      if (this.path.length === 2 && this.path[0].x === this.path[1].x && this.path[0].y === this.path[1].y) {
+        ctx.fillStyle = 'rgb(255,0,0)';
+        ctx.fillRect(this.path[0].x - 1.5, this.path[0].y - 1.5, 3, 3);
+        return;
+      }
       ctx.beginPath();
       ctx.moveTo(this.path[0].x, this.path[0].y);
 

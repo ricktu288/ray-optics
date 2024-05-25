@@ -38,6 +38,13 @@ objTypes['IdealMirror'] = class extends LineObjMixin(BaseFilter) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+
+    if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
+      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      return;
+    }
+
     var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
     var par_x = (this.p2.x - this.p1.x) / len;
     var par_y = (this.p2.y - this.p1.y) / len;

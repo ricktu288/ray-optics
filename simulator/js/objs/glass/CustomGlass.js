@@ -35,9 +35,14 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
-    if (geometry.distance(this.p1, this.p2) == 0) return;
-    
     const ctx = canvasRenderer.ctx;
+
+    if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
+      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      return;
+    }
+    
     if (isAboveLight) {
       if (this.path) {
         this.drawGlass(canvasRenderer, isAboveLight, isHovered);
