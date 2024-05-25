@@ -791,5 +791,8 @@ locales["zh-TW"] = {
   },
   "create_modules_popover": {
     "message": "使用 JSON 模板建立模組化的物件組合，其中可包含自訂參數與物件陣列。<br><br><i>警告：此為實驗性功能。</i>"
+  },
+  "identical_optical_objects_warning": {
+    "message": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。"
   }
 }

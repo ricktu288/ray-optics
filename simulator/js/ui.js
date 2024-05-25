@@ -333,6 +333,7 @@ function enableJsonEditor() {
       JSONInput();
       if (!scene.error) {
         syncUrl();
+        requireOccasionalCheck();
       }
     }, 500);
   });

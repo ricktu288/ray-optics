@@ -932,6 +932,44 @@ function JSONOutput() {
   latestJsonCode = newJsonCode;
   
   syncUrl();
+  requireOccasionalCheck();
+}
+
+var requireOccasionalCheckTimeout = null;
+
+function requireOccasionalCheck() {
+  if (scene.error) {
+    return;
+  }
+
+  if (requireOccasionalCheckTimeout) {
+    clearTimeout(requireOccasionalCheckTimeout);
+  }
+
+  requireOccasionalCheckTimeout = setTimeout(occasionalCheck, scene.warning ? 500 : 5000);
+}
+
+function occasionalCheck() {
+  if (scene.error) {
+    return;
+  }
+  scene.warning = null;
+
+  // Check if there are identical optical objects
+  const opticalObjs = scene.opticalObjs;
+
+  if (opticalObjs.length < 100) {
+    const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj));
+    for (var i = 0; i < opticalObjs.length; i++) {
+      for (var j = i + 1; j < opticalObjs.length; j++) {
+        if (stringifiedObjs[i] == stringifiedObjs[j]) {
+          scene.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + getMsg('identical_optical_objects_warning');
+          break;
+        }
+      }
+    }
+  }
+  updateErrorAndWarning();
 }
 
 var lastFullURL = "";

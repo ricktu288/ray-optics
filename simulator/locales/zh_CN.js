@@ -791,5 +791,8 @@ locales["zh-CN"] = {
   },
   "create_modules_popover": {
     "message": "使用 JSON 模板创建模块化的物件组合，其中可包含自定义参数与物件阵列。<br><br><i>警告：此为实验性功能。</i>"
+  },
+  "identical_optical_objects_warning": {
+    "message": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。"
   }
 }

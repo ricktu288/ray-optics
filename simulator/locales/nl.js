@@ -965,5 +965,9 @@ locales["nl"] = {
   "create_modules_popover": {
     "incomplete": true,
     "message": "Create modularized combinations of objects with JSON templates, which allow custom parameters and arrays of objects. <br><br><i>Warning: This feature is experimental.</i>"
+  },
+  "identical_optical_objects_warning": {
+    "incomplete": true,
+    "message": "There are two identical optical elements in the scene that overlap completely."
   }
 }
