@@ -456,6 +456,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     draw(false, true);
+    createUndoPoint();
   };
   document.getElementById('rayDensityMinus').onclick = function () {
     rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
@@ -465,6 +466,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     draw(false, true);
+    createUndoPoint();
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
   document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
