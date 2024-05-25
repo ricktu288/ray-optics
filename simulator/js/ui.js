@@ -107,7 +107,7 @@ function updateUIText(elememt = document) {
 
   document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
   document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
-  for (var lang1 in locales) {
+  for (let lang1 in locales) {
     var translated = 0;
     var total = 0;
     for (var item in locales[lang1]) {
@@ -119,12 +119,32 @@ function updateUIText(elememt = document) {
     //console.log([lang1, total, translated]);
 
     document.getElementById('lang-' + lang1).innerText = Math.round(translated/total*100) + '%';
+    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function(e) {
+      if (autoSyncUrl && !hasUnsavedChange) {
+        // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
+        e.preventDefault();
+        e.stopPropagation();
+        navigateToNewQuery(lang1)
+      }
+    }, true);
   }
 
   document.title = getMsg('appName');
   document.getElementById('home').href = getMsg('home_url');
   document.getElementById('about').href = getMsg('about_url');
 }
+
+function navigateToNewQuery(newQuery) {
+  let currentUrl = window.location.href;
+  let baseUrl = currentUrl.split('?')[0];  // Remove current query if exists
+  baseUrl = baseUrl.split('#')[0];         // Further remove the hash to get the base URL
+
+  let hash = window.location.hash;         // Capture the existing hash
+  let newUrl = baseUrl + "?" + newQuery + hash;  // Construct the new URL with the query and hash
+
+  window.location.href = newUrl;  // Set the new URL
+}
+
 
 function updateUIWithPopovers(elememt = document) {
   const elements = elememt.querySelectorAll('[data-title], [data-popover]');
