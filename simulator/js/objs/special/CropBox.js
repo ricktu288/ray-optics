@@ -7,7 +7,7 @@
  * @property {Point} p4 - The bottom right corner of the crop box.
  * @property {string} format - The format of the image to be exported.
  * @property {number} width - The width of the image to be exported. Not effective when the format is 'svg'.
- * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`. This is only intended for gallery auto-screenshot in the future and currently not shown in the UI.
+ * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`.
  */
 objTypes['CropBox'] = class extends BaseSceneObj {
   static type = 'CropBox';
@@ -53,16 +53,50 @@ objTypes['CropBox'] = class extends BaseSceneObj {
       objBar.createNumber(getMsg('width'), 0, 1000, 1, this.width, function (obj, value) {
         obj.width = 1 * value;
       }, null, true);
-    } else {
-      objBar.createInfoBox(getMsg('export_svg_popover'));
     }
 
+    const rayCountLimit = this.rayCountLimit || (this.format === 'svg' ? 1e4 : 1e7);
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault('rayCountLimit'))) {
+      objBar.createNumber(getMsg('rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
+        obj.rayCountLimit = value;
+        if (shotRayCount > obj.rayCountLimit) {
+          obj.warning = getMsg('export_ray_count_warning');
+        } else {
+          obj.warning = null;
+        }
+      }, null, true);
+    }
+
+    const self = this;
     objBar.createButton(getMsg('save'), function (obj) {
+      self.warning = null;
       confirmCrop(obj);
     });
     objBar.createButton(getMsg('save_cancel'), function (obj) {
+      self.warning = null;
       cancelCrop();
     });
+
+    this.warning = null;
+
+    if (this.format === 'svg') {
+      if (this.scene.simulateColors) {
+        this.warning = getMsg('export_svg_warning');
+      }
+
+      // Check if there are any objects with `refIndex < 1`
+      for (var obj of this.scene.opticalObjs) {
+        if (obj.refIndex && obj.refIndex < 1) {
+          this.warning = getMsg('export_svg_warning');
+          break;
+        }
+      }
+    }
+
+    if (shotRayCount > rayCountLimit) {
+      this.warning = getMsg('export_ray_count_warning');
+    }
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {

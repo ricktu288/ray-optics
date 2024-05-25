@@ -507,6 +507,9 @@ locales["zh-TW"] = {
   "width": {
     "message": "寬度"
   },
+  "rayCountLimit": {
+    "message": "光線數量上限"
+  },
   "beam_warning": {
     "message": "使用發散或隨機光束時，像的偵測可能無法正常運作。"
   },
@@ -597,8 +600,11 @@ locales["zh-TW"] = {
   "get_link_warning": {
     "message": "本網址過長，在部分平臺上可能無法正常運作。建議改用「儲存」並分享檔案。"
   },
-  "export_svg_popover": {
-    "message": "匯出為SVG。不支援混色與相對折射率低於1的情形。"
+  "export_svg_warning": {
+    "message": "匯出為SVG：不支援混色與相對折射率低於1的情形。"
+  },
+  "export_ray_count_warning": {
+    "message": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。"
   },
   "view_gallery_popover": {
     "message": "前往「作品集」頁面以載入範例。"

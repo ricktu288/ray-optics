@@ -675,6 +675,10 @@ locales["ko"] = {
     "incomplete": true,
     "message": "Width"
   },
+  "rayCountLimit": {
+    "incomplete": true,
+    "message": "Ray count limit"
+  },
   "beam_warning": {
     "incomplete": false,
     "message": "발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
@@ -794,9 +798,13 @@ locales["ko"] = {
     "incomplete": false,
     "message": "URL이 너무 길어서 일부 플랫폼에서 작동하지 않을 수 있습니다. 이 경우 \"저장\"을 사용해 파일을 공유하십시오."
   },
-  "export_svg_popover": {
+  "export_svg_warning": {
     "incomplete": false,
     "message": "SVG로 추출하기. 색상 혼합 및 1 미만의 상대 굴절율은 지원되지 않습니다."
+  },
+  "export_ray_count_warning": {
+    "incomplete": true,
+    "message": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
   },
   "view_gallery_popover": {
     "incomplete": false,

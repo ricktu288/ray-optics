@@ -507,6 +507,9 @@ locales["zh-CN"] = {
   "width": {
     "message": "宽度"
   },
+  "rayCountLimit": {
+    "message": "光线数量上限"
+  },
   "beam_warning": {
     "message": "使用发散或随机光束时，像的侦测可能无法正常运作。"
   },
@@ -597,8 +600,11 @@ locales["zh-CN"] = {
   "get_link_warning": {
     "message": "本网址过长，在部分平台上可能无法正常运作。建议改用「保存」并分享文件。 "
   },
-  "export_svg_popover": {
-    "message": "导出为SVG。不支持混色与相对折射率低于1的情形。"
+  "export_svg_warning": {
+    "message": "导出为SVG：不支持混色与相对折射率低于1的情形。"
+  },
+  "export_ray_count_warning": {
+    "message": "目前场景中的光线数量大于光线数量上限。 您可能需要将剪取框选项中的光线数量上限调高。"
   },
   "view_gallery_popover": {
     "message": "前往「作品集」页面以载入示例。"

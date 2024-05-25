@@ -507,6 +507,9 @@ locales["en"] = {
   "width": {
     "message": "Width"
   },
+  "rayCountLimit": {
+    "message": "Ray count limit"
+  },
   "beam_warning": {
     "message": "Image detection may not work with divergent/random beams."
   },
@@ -597,8 +600,11 @@ locales["en"] = {
   "get_link_warning": {
     "message": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
   },
-  "export_svg_popover": {
-    "message": "Export to SVG. Color mixtures and relative refractive indices below 1 are not supported."
+  "export_svg_warning": {
+    "message": "Export to SVG: Color mixtures and relative refractive indices below 1 are not supported."
+  },
+  "export_ray_count_warning": {
+    "message": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
   },
   "view_gallery_popover": {
     "message": "Go to the Gallery webpage to load an example."

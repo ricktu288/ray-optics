@@ -675,6 +675,10 @@ locales["ja"] = {
     "incomplete": true,
     "message": "Width"
   },
+  "rayCountLimit": {
+    "incomplete": true,
+    "message": "Ray count limit"
+  },
   "beam_warning": {
     "incomplete": true,
     "message": "Image detection may not work with divergent/random beams."
@@ -794,9 +798,13 @@ locales["ja"] = {
     "incomplete": false,
     "message": "URL が長すぎるため、一部のプラットフォームでは機能しない可能性があります。 代わりに「保存」を使用してファイルを共有する必要がある場合があります。"
   },
-  "export_svg_popover": {
+  "export_svg_warning": {
     "incomplete": false,
     "message": "SVG にエクスポートします。 色の混合と 1 未満の相対屈折率はサポートされていません."
+  },
+  "export_ray_count_warning": {
+    "incomplete": true,
+    "message": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
   },
   "view_gallery_popover": {
     "incomplete": false,
