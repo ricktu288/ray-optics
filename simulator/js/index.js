@@ -63,6 +63,7 @@ window.onload = function (e) {
 
 
   canvas.addEventListener('mousedown', function (e) {
+    error = null;
     //console.log("mousedown");
     //document.getElementById('objAttr_text').blur();
     // TODO: check that commenting out the above line does not cause problem.
@@ -647,7 +648,10 @@ window.onload = function (e) {
         if (aceEditor) {
           aceEditor.session.setValue(latestJsonCode);
         }
-      });
+      }).catch(e => {
+        error = "JsonUrl: " + e;
+        updateErrorAndWarning();
+      });;
     } else if (window.location.hash.length > 1) {
       // The URL contains a link to a gallery item.
       openSample(window.location.hash.substr(1) + ".json");
@@ -675,6 +679,15 @@ function openSample(name) {
       aceEditor.session.setValue(latestJsonCode);
     }
   }
+  client.onerror = function () {
+    error = "openSample: Error";
+    updateErrorAndWarning();
+  }
+  client.ontimeout = function () {
+    error = "openSample: Timeout";
+    updateErrorAndWarning();
+  }
+
   client.send();
 }
 
@@ -1177,6 +1190,10 @@ function openFile(readFile) {
         scene.backgroundImage.src = e.target.result;
         scene.backgroundImage.onload = function (e1) {
           draw(true, true);
+        }
+        scene.backgroundImage.onerror = function (e1) {
+          error = "openFile: The file is neither a valid JSON scene nor an image file.";
+          updateErrorAndWarning();
         }
       }
       reader.readAsDataURL(readFile);
