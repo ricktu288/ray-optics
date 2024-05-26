@@ -335,8 +335,11 @@ function enableJsonEditor() {
   aceEditor.session.setUseWrapMode(true);
   aceEditor.session.setUseSoftTabs(true);
   aceEditor.session.setTabSize(2);
+  aceEditor.setHighlightActiveLine(false)
+  aceEditor.container.style.background="transparent"
+  aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background="transparent"
   aceEditor.session.setValue(latestJsonCode);
-
+  
   var debounceTimer;
 
   aceEditor.session.on('change', function(delta) {

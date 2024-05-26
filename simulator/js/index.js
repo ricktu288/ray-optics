@@ -641,6 +641,9 @@ window.onload = function (e) {
         createUndoPoint();
         isFromGallery = true;
         hasUnsavedChange = false;
+        if (aceEditor) {
+          aceEditor.session.setValue(latestJsonCode);
+        }
       });
     } else if (window.location.hash.length > 1) {
       // The URL contains a link to a gallery item.
@@ -665,6 +668,9 @@ function openSample(name) {
     createUndoPoint();
     isFromGallery = true;
     hasUnsavedChange = false;
+    if (aceEditor) {
+      aceEditor.session.setValue(latestJsonCode);
+    }
   }
   client.send();
 }
@@ -1159,7 +1165,7 @@ function openFile(readFile) {
       hasUnsavedChange = false;
       createUndoPoint();
       if (aceEditor) {
-        aceEditor.setValue(latestJsonCode);
+        aceEditor.session.setValue(latestJsonCode);
       }
     } else {
       // Load the background image file

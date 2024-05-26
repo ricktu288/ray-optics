@@ -215,7 +215,7 @@
 }
 
 #more-options-dropdown {
-  width:300px;
+  width:350px;
   max-height: 80vh;
   overflow-y: auto;
 }
@@ -426,7 +426,11 @@
 
 #status {
   color: gray;
-  background-color: rgba(0,0,0,0.8);
+  background-color:rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  width: fit-content;
 }
 
 #sideBar {
@@ -436,6 +440,9 @@
   left: 0;
   width: 350px;
   height: calc(100% - 68px);
+  background-color:rgba(45, 51, 57,0.8);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 #jsonEditor {
@@ -445,12 +452,18 @@
 
 #warning {
   color: rgb(255,255,0,0.75);
-  background-color: rgba(0,0,0,0.8);
   font-family: monospace;
+  background-color:rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
 }
 
 #error {
   color: red;
-  background-color: rgba(0,0,0,0.8);
   font-family: monospace;
+  background-color:rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
 }
