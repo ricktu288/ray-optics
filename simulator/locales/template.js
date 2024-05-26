@@ -40,6 +40,10 @@ locales["LOCALE_ID"] = {
     "incomplete": true,
     "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
   },
+  "loading_msg": {
+    "incomplete": true,
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+  },
   "toolbar_title": {
     "incomplete": true,
     "message": "Tool:&nbsp;"

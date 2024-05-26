@@ -33,7 +33,7 @@
         <canvas id="canvas1"></canvas>
       </div>
       <div id="welcome" style="position:absolute; top: calc(50% + 34px); left: 0; width: 100%; transform: translate(0%, -50%); z-index:-3; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
-        <span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.<br><span style="font-size:8pt">Not working properly? <a href="https://phydemo-ray-optics-v3-archive.vercel.app/simulator/" rel="nofollow">Click here</a> to go back to the old version.</span>
+        <span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.</span>
       </div>
       <script>
         // The strings for the welcome message is handled separately here, rather than in locales/.
@@ -55,6 +55,23 @@
           "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Para añadir un componente óptico, seleccione una herramienta y clique sobre un espacio en blanco.<br>Para cargar un ejemplo, por favor <a href="https://phydemo.app/ray-optics/gallery/">vaya a la página de la galería</a>.',
           "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.<br>Para carregar um exemplo, por favor <a href=\"https://phydemo.app/ray-optics/gallery/\">visite a página da Galeria</a>."
         }
+
+        var loading_msgs = {
+          "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
+          "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>正在從網址載入場景... 請稍候。',
+          "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>正在从网址载入场景... 请稍候。',
+          "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
+          "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
+          "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
+          "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Loading scene from URL...",
+          "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Loading scene from URL... Please wait.',
+          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>Loading scene from URL... Please wait.',
+          "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>Loading scene from URL... Please wait.',
+          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>Loading scene from URL... Please wait.',
+          "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Loading scene from URL... Please wait.',
+          "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Loading scene from URL... Please wait."
+        }
+
         var lang = 'en';
         if (navigator.language) {
           var browser_lang = navigator.language.toLowerCase();
@@ -89,8 +106,12 @@
         if (url_lang && welcome_msgs[url_lang]) {
           lang = url_lang;
         }
-    
-        document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+        
+        if (location.hash) {
+          document.getElementById("welcome").innerHTML = loading_msgs[lang];
+        } else {
+          document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+        }
     
       </script>
 

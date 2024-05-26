@@ -39,6 +39,10 @@ locales["ja"] = {
     "incomplete": false,
     "message": "<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>."
   },
+  "loading_msg": {
+    "incomplete": true,
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+  },
   "toolbar_title": {
     "incomplete": false,
     "message": "ツール:&nbsp;"

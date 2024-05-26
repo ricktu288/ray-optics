@@ -30,6 +30,10 @@ locales["pl"] = {
   "welcome": {
     "message": "<span style=\"font-size:22pt\">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href=\"https://phydemo.app/ray-optics/gallery/\">przejdź do strony Galerii</a>."
   },
+  "loading_msg": {
+    "incomplete": true,
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+  },
   "toolbar_title": {
     "message": "Narzędzie:&nbsp;"
   },

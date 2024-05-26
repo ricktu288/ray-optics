@@ -39,6 +39,10 @@ locales["ko"] = {
     "incomplete": false,
     "message": "<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오."
   },
+  "loading_msg": {
+    "incomplete": true,
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+  },
   "toolbar_title": {
     "incomplete": false,
     "message": "도구:&nbsp;"

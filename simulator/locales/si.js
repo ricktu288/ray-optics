@@ -35,6 +35,10 @@ locales["si"] = {
   "welcome": {
     "message": "<span style=\"font-size:22pt\">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href=\"https://phydemo.app/ray-optics/gallery/\">Gallery page වෙත යන්න</a>."
   },
+  "loading_msg": {
+    "incomplete": true,
+    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+  },
   "toolbar_title": {
     "message": "Tool:&nbsp;"
   },
