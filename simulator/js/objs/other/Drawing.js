@@ -1,7 +1,7 @@
 /**
  * Drawing tool
  * Tools -> Other -> Drawing
- * @property {Array<Array<number>>} strokes - The strokes of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`.
+ * @property {Array<Array<number>>} strokes - The strokes of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`. The coordinates are rounded to integers to reduce the size of the JSON data.
  * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
  * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
  */
@@ -61,18 +61,25 @@ objTypes['Drawing'] = class extends BaseSceneObj {
     if (!this.isMouseDown) return;
     if (this.strokes.length === 0 || this.strokes[this.strokes.length - 1].length < 2) return;
 
-    const distance = (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 2] - mousePos.x) ** 2 + (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 1] - mousePos.y) ** 2;
+    const distanceSq = (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 2] - mousePos.x) ** 2 + (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 1] - mousePos.y) ** 2;
     
-    if (distance < 2) return;
+    if (distanceSq < 4) return;
 
     this.strokes[this.strokes.length - 1].push(Math.round(mousePos.x), Math.round(mousePos.y));
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
     this.isMouseDown = false;
-    return {
-      requiresUndoPoint: true
-    };
+  }
+
+  onConstructUndo() {
+    if (this.strokes.length < 2) {
+      return {
+        isCancelled: true
+      }
+    } else {
+      this.strokes.pop();
+    }
   }
 
   checkMouseOver(mouse) {
@@ -81,9 +88,10 @@ objTypes['Drawing'] = class extends BaseSceneObj {
       for (let i = 0; i < stroke.length - 2; i += 2) {
         if (mouse.isOnSegment(geometry.line(geometry.point(stroke[i], stroke[i + 1]), geometry.point(stroke[i + 2], stroke[i + 3])))) {
           const mousePos = mouse.getPosSnappedToGrid();
+          const roundedMousePos = geometry.point(Math.round(mousePos.x), Math.round(mousePos.y));
           dragContext.part = 0;
-          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+          dragContext.mousePos0 = roundedMousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = roundedMousePos; // Mouse position at the last moment during dragging
           dragContext.snapContext = {};
           return dragContext;
         }
@@ -99,8 +107,10 @@ objTypes['Drawing'] = class extends BaseSceneObj {
       dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
 
-    var mouseDiffX = dragContext.mousePos1.x - mousePos.x; // The X difference between the mouse position now and at the previous moment
-    var mouseDiffY = dragContext.mousePos1.y - mousePos.y; // The Y difference between the mouse position now and at the previous moment
+    const roundedMousePos = geometry.point(Math.round(mousePos.x), Math.round(mousePos.y));
+
+    var mouseDiffX = dragContext.mousePos1.x - roundedMousePos.x; // The X difference between the mouse position now and at the previous moment
+    var mouseDiffY = dragContext.mousePos1.y - roundedMousePos.y; // The Y difference between the mouse position now and at the previous moment
 
     if (dragContext.part == 0) {
       for (const stroke of this.strokes) {
@@ -112,6 +122,6 @@ objTypes['Drawing'] = class extends BaseSceneObj {
     }
 
     // Update the mouse position
-    dragContext.mousePos1 = mousePos;
+    dragContext.mousePos1 = roundedMousePos;
   }
 };

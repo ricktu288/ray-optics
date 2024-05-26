@@ -127,7 +127,7 @@ class BaseSceneObj {
    * @typedef {Object} ConstructReturn
    * @property {boolean} [isDone] - Whether the construction is done.
    * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated.
-   * @property {boolean} [requiresUndoPoint] - Whether a new undo point should be created.
+   * @property {boolean} [isCancelled] - Whether the construction is cancelled.
    */
 
   /**
@@ -161,6 +161,16 @@ class BaseSceneObj {
    */
   onConstructMouseUp(mouse, ctrl, shift) {
     // Do nothing by default
+  }
+
+  /**
+   * Undo event when the object is being constructed by the user.
+   * @returns {ConstructReturn} The return value.
+   */
+  onConstructUndo() {
+    return {
+      isCancelled: true
+    }
   }
 
   /* This typedef will eventually be moved elsewhere. */

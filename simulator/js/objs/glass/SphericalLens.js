@@ -229,6 +229,12 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       };
     }
   }
+  
+  onConstructUndo() {
+    return {
+      isCancelled: true
+    }
+  }
 
   checkMouseOver(mouse) {
     let dragContext = {};

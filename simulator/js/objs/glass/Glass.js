@@ -175,6 +175,20 @@ objTypes['Glass'] = class extends BaseGlass {
     }
   }
 
+  onConstructUndo() {
+    if (this.path.length <= 2) {
+      return {
+        isCancelled: true
+      };
+    } else {
+      this.path.pop();
+      if (this.path[this.path.length - 2].arc) {
+        this.path.pop();
+      }
+      delete this.path[this.path.length - 1].arc
+    }
+  }
+
   checkMouseOver(mouse) {
     let dragContext = {};
 

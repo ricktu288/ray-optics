@@ -67,9 +67,6 @@ function canvas_onmousedown(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
-      if (ret && ret.requiresUndoPoint) {
-        createUndoPoint();
-      }
       draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
     }
   }
@@ -145,9 +142,6 @@ function canvas_onmousedown(e) {
         const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
-        }
-        if (ret && ret.requiresUndoPoint) {
-          createUndoPoint();
         }
         selectObj(scene.objs.length - 1);
         draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
@@ -275,9 +269,6 @@ function canvas_onmousemove(e) {
     if (ret && ret.requiresObjBarUpdate) {
       selectObj(selectedObj);
     }
-    if (ret && ret.requiresUndoPoint) {
-      createUndoPoint();
-    }
     draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
   }
   else {
@@ -351,9 +342,6 @@ function canvas_onmouseup(e) {
       }
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
-      }
-      if (ret && ret.requiresUndoPoint) {
-        createUndoPoint();
       }
       draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
       if (!isConstructing) {
@@ -641,14 +629,15 @@ function createUndoPoint() {
 }
 
 function undo() {
-  if (isConstructing && !(scene.objs.length > 0 && scene.objs[scene.objs.length - 1].constructor.type == 'Drawing')) {
-    // If the user is constructing an object when clicked the undo, then only stop the consturction rather than do the real undo
-
-    isConstructing = false;
-    scene.objs.length--;
-    selectObj(-1);
-
-    draw();
+  if (isConstructing) {
+    const constructingObjType = scene.objs[scene.objs.length - 1].constructor.type;
+    const ret = scene.objs[scene.objs.length - 1].onConstructUndo();
+    if (ret && ret.isCancelled) {
+      isConstructing = false;
+      scene.objs.length--;
+      selectObj(-1);
+    }
+    draw(!objTypes[constructingObjType].isOptical, true);
     return;
   }
   if (positioningObj != -1) {

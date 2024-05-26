@@ -94,6 +94,16 @@ objTypes['GrinGlass'] = class extends BaseGrinGlass {
     this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
   }
 
+  onConstructUndo() {
+    if (this.path.length <= 2) {
+      return {
+        isCancelled: true
+      };
+    } else {
+      this.path.pop();
+    }
+  }
+
   checkMouseOver(mouse) {
     let dragContext = {};
 
