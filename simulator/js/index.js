@@ -651,6 +651,7 @@ window.onload = function (e) {
         }
       }).catch(e => {
         error = "JsonUrl: " + e;
+        document.getElementById('welcome').style.display = 'none';
         updateErrorAndWarning();
       });;
     } else if (window.location.hash.length > 1) {
@@ -670,6 +671,7 @@ function openSample(name) {
   client.onload = function () {
     if (client.status >= 300) {
       error = "openSample: " + client.status;
+      document.getElementById('welcome').style.display = 'none';
       updateErrorAndWarning();
       return;
     }
@@ -685,10 +687,12 @@ function openSample(name) {
   }
   client.onerror = function () {
     error = "openSample: Error";
+    document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
     error = "openSample: Timeout";
+    document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
 
