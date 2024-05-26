@@ -635,6 +635,12 @@ window.onload = function (e) {
 
   MQ = MathQuill.getInterface(2);
 
+  window.onerror = function (msg, url) {
+    error = `Error: ${msg} at ${url}`;
+    document.getElementById('welcome').style.display = 'none';
+    updateErrorAndWarning();
+  }
+
   // Update the scene when the URL changes
   window.onpopstate = function (event) {
     if (window.location.hash.length > 70) {

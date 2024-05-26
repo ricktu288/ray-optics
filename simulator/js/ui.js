@@ -352,6 +352,7 @@ function enableJsonEditor() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(function() {
       latestJsonCode = aceEditor.session.getValue();
+      error = null;
       newJsonCode = latestJsonCode;
       JSONInput();
       if (!scene.error) {
