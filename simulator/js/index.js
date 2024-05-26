@@ -668,8 +668,11 @@ function openSample(name) {
   var client = new XMLHttpRequest();
   client.open('GET', '../gallery/' + name);
   client.onload = function () {
-    if (client.status >= 300)
+    if (client.status >= 300) {
+      error = "openSample: " + client.status;
+      updateErrorAndWarning();
       return;
+    }
     latestJsonCode = client.responseText;
     scene.backgroundImage = null;
     JSONInput();
@@ -682,12 +685,10 @@ function openSample(name) {
   }
   client.onerror = function () {
     error = "openSample: Error";
-    console.log(error);
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
     error = "openSample: Timeout";
-    console.log(error);
     updateErrorAndWarning();
   }
 
