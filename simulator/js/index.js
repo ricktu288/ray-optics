@@ -107,6 +107,9 @@ window.onload = function (e) {
   canvas.addEventListener('mouseout',  function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
+    if (draggingObj != -1) {
+      canvas_onmouseup(e);
+    }
     mouseObj = -1;
     document.getElementById('mouseCoordinates').innerHTML = "";
     draw(true, true)
