@@ -249,6 +249,7 @@ window.onload = function (e) {
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
     createUndoPoint();
+    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
     isFromGallery = false;
     hasUnsavedChange = false;
@@ -681,10 +682,12 @@ function openSample(name) {
   }
   client.onerror = function () {
     error = "openSample: Error";
+    console.log(error);
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
     error = "openSample: Timeout";
+    console.log(error);
     updateErrorAndWarning();
   }
 
