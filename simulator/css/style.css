@@ -451,18 +451,20 @@
 }
 
 #warning {
-  color: rgb(255,255,0,0.75);
+  color: black;
   font-family: monospace;
-  background-color:rgba(0,0,0,0.7);
+  padding-right: 0.5em;
+  background-color:rgb(255,255,0,0.8);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;
 }
 
 #error {
-  color: red;
+  color: white;
   font-family: monospace;
-  background-color:rgba(0,0,0,0.7);
+  padding-right: 0.5em;
+  background-color:rgba(255,0,0,0.7);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;
