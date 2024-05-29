@@ -93,6 +93,7 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
       ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
       ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
       this.error = lastError.toString();
+      return;
     }
     ctx.stroke();
     if (isHovered) {
