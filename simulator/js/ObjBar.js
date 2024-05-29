@@ -411,11 +411,21 @@ class ObjBar {
    * @param {string} label - The label for the button.
    * @param {function} func - The function to call when the button is clicked.
    * @param {boolean} [updateOnChange=false] - Whether to update the entire obj bar (e.g. show different options) when the button is clicked.
+   * @param {string|null} [icon=null] - The svg icon for the button. If null (default), a default button is created.
    */
-  createButton(label, func, updateOnChange = false) {
+  createButton(label, func, updateOnChange = false, icon = null) {
     var button = document.createElement('button');
-    button.className = 'btn btn-secondary';
-    button.innerHTML = label;
+    if (icon) {
+      button.innerHTML = icon;
+      button.className = 'btn';
+      button.setAttribute('data-bs-toggle', 'tooltip');
+      button.setAttribute('title', label);
+      button.setAttribute('data-bs-placement', 'bottom');
+      new bootstrap.Tooltip(button);
+    } else {
+      button.className = 'btn btn-secondary';
+      button.innerHTML = label;
+    }
     button.onclick = function () {
       this.blur();
       func(scene.objs[selectedObj]);
@@ -463,7 +473,6 @@ class ObjBar {
   createNote(content) {
     var note = document.createElement('span');
     note.innerHTML = content;
-    note.id = "beam_warning";
     note.style.marginLeft = "0.2em";
     note.style.marginRight = "0.2em";
     note.style.color = "white";

@@ -318,6 +318,10 @@ function hideAllPopovers() {
     if (popoverInstance) {
       popoverInstance.hide();
     }
+    var tooltipInstance = bootstrap.Tooltip.getInstance(element);
+    if (tooltipInstance) {
+      tooltipInstance.hide();
+    }
   });
 }
 
