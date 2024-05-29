@@ -1013,7 +1013,7 @@ function syncUrl() {
   if (autoSyncUrl) {
     var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
       var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
-      if (fullURL.length > 2043) {
+      if (fullURL.length > 2041) {
         warning = getMsg('auto_sync_url_warning');
         updateErrorAndWarning();
       } else {
@@ -1206,6 +1206,7 @@ function openFile(readFile) {
           draw(true, true);
         }
         scene.backgroundImage.onerror = function (e1) {
+          scene.backgroundImage = null;
           error = "openFile: The file is neither a valid JSON scene nor an image file.";
           updateErrorAndWarning();
         }
@@ -1224,7 +1225,7 @@ function getLink() {
     window.history.pushState(undefined, undefined, '#' + output);
     //console.log(fullURL.length);
     navigator.clipboard.writeText(fullURL);
-    if (fullURL.length > 2043) {
+    if (fullURL.length > 2041) {
       alert(getMsg("get_link_warning"));
     } else {
       hasUnsavedChange = false;

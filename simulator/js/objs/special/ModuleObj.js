@@ -339,7 +339,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
               let loopVars1 = loopVars.slice(1);
               const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
               if (loopLength > self.maxLoopLength) {
-                throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxListLength to a larger value.`;
+                throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxLoopLength to a larger value.`;
               }
               for (let value = loopVars[0].start; value <= loopVars[0].end; value += loopVars[0].step) {
                 for (let obj of expandLoopVars(loopVars1)) {
@@ -355,7 +355,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
           const loopParams = expandLoopVars(loopVars);
 
           if (loopParams.length > this.maxLoopLength) {
-            throw `The length of the loop is too large. Please set maxListLength to a larger value.`;
+            throw `The length of the loop is too large. Please set maxLoopLength to a larger value.`;
           } else {
             for (let loopParam of loopParams) {
               if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
