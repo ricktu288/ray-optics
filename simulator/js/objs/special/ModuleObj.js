@@ -3,6 +3,7 @@
  * @property {number} numPoints - The number of control points of the module.
  * @property {Array<string>} params - The parameters of the module.
  * @property {Array<Object>} objs - The objects in the module in the form of JSON objects with template syntax.
+ * @property {number} maxLoopLength - The maximum length of the list in for loops to prevent infinite loops.
  */
 
 /**
@@ -14,7 +15,6 @@
  * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
- * @property {number} maxLoopLength - The maximum length of the list in for loops to prevent infinite loops.
  */
 objTypes['ModuleObj'] = class extends BaseSceneObj {
   static type = 'ModuleObj';
@@ -23,7 +23,6 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     module: null,
     points: null,
     params: null,
-    maxLoopLength: 1000,
     notDone: false
   };
 
@@ -382,7 +381,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
               let result = [];
               let loopVars1 = loopVars.slice(1);
               const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
-              if (loopLength > self.maxLoopLength) {
+              if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
                 throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxLoopLength to a larger value.`;
               }
               for (let value = loopVars[0].start; value <= loopVars[0].end; value += loopVars[0].step) {
@@ -398,7 +397,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
 
           const loopParams = expandLoopVars(loopVars);
 
-          if (loopParams.length > this.maxLoopLength) {
+          if (loopParams.length > (this.moduleDef.maxLoopLength || 1000)) {
             throw `The length of the loop is too large. Please set maxLoopLength to a larger value.`;
           } else {
             for (let loopParam of loopParams) {
