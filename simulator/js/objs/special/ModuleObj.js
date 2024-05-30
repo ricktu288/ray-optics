@@ -288,10 +288,11 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       let start = parts2[0];
       let step = parts2[1];
       let end = parts2[2];
-      let defaultVal = parts2.length == 4 ? parts2[3] : null;
+      let default_ = parts2.length == 4 ? parts2[3] : null;
       let startVal = math.evaluate(start, params);
       let stepVal = math.evaluate(step, params);
       let endVal = math.evaluate(end, params);
+      let defaultVal = default_ === null ? startVal : math.evaluate(default_, params);
       return {name: name, start: startVal, step: stepVal, end: endVal, defaultVal: defaultVal};
     } catch (e) {
       throw `error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
