@@ -248,11 +248,14 @@ window.onload = function (e) {
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname+window.location.search);
     initParameters();
-    createUndoPoint();
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
+    createUndoPoint();
     isFromGallery = false;
     hasUnsavedChange = false;
+    if (aceEditor) {
+      aceEditor.session.setValue(latestJsonCode);
+    }
   };
   document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
   
@@ -754,6 +757,8 @@ function initParameters() {
   //Reset new UI.
   
   resetDropdownButtons();
+  updateModuleObjsMenu();
+  
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
   document.getElementById('mode_rays').checked = true;
@@ -967,6 +972,8 @@ function JSONOutput() {
   latestJsonCode = newJsonCode;
   
   syncUrl();
+  warning = "";
+  updateErrorAndWarning();
   requireOccasionalCheck();
 }
 
@@ -1010,30 +1017,28 @@ function occasionalCheck() {
 var lastFullURL = "";
 
 function syncUrl() {
-  if (autoSyncUrl) {
-    var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
-      var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
-      if (fullURL.length > 2041) {
-        warning = getMsg('auto_sync_url_warning');
-        updateErrorAndWarning();
+  if (!autoSyncUrl) return;
+  if (document.getElementById('welcome').style.display != 'none') return;
+  
+  var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
+    var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+    if (fullURL.length > 2041) {
+      warning = getMsg('auto_sync_url_warning');
+      updateErrorAndWarning();
+    } else {
+      if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
+        // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
+        lastFullURL = fullURL;
+        window.history.pushState(undefined, undefined, '#' + output);
       } else {
-        if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
-          // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
-          lastFullURL = fullURL;
-          window.history.pushState(undefined, undefined, '#' + output);
-        } else {
-          lastFullURL = fullURL;
-          window.history.replaceState(undefined, undefined, '#' + output);
-        }
-        hasUnsavedChange = false;
-        warning = "";
-        updateErrorAndWarning();
+        lastFullURL = fullURL;
+        window.history.replaceState(undefined, undefined, '#' + output);
       }
-    });
-  } else {
-    warning = "";
-    updateErrorAndWarning();
-  }
+      hasUnsavedChange = false;
+      warning = "";
+      updateErrorAndWarning();
+    }
+  });
 }
 
 
