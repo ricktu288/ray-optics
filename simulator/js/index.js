@@ -1055,6 +1055,10 @@ function JSONInput() {
         document.title = getMsg("appName");
       }
 
+      if (Object.keys(scene.modules).length > 0) {
+        updateModuleObjsMenu();
+      }
+
       document.getElementById('showGrid').checked = scene.showGrid;
       document.getElementById('showGrid_more').checked = scene.showGrid;
       document.getElementById('showGrid_mobile').checked = scene.showGrid;

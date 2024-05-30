@@ -797,5 +797,8 @@ locales["en"] = {
   },
   "identical_optical_objects_warning": {
     "message": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior."
+  },
+  "remove_module": {
+    "message": "Remove module"
   }
 }

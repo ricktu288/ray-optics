@@ -214,4 +214,22 @@ class Scene {
 
     return JSON.stringify(jsonData, null, 2);
   }
+
+  /**
+   * Remove a given module and demodulize all corresponding module objects.
+   * @param {string} moduleName 
+   */
+  removeModule(moduleName) {
+    mainLoop: while (true) {
+      for (let obj of this.objs) {
+        if (obj.constructor.type === "ModuleObj" && obj.module === moduleName) {
+          obj.demodulize();
+          continue mainLoop;
+        }
+      }
+      break;
+    }
+
+    delete this.modules[moduleName];
+  }
 };

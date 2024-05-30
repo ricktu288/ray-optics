@@ -8,6 +8,7 @@ var dragContext = {}; // The part in drag and some mouse position data
 var selectedObj = -1; // The index of the selected object (-1 for none)
 var mouseObj = -1;
 var AddingObjType = ''; // The type of the object to add when user click the canvas
+var addingModuleName = '';
 var latestJsonCode = ''; // The latest JSON code
 var undoArr = []; // Undo data
 var undoIndex = 0; // Current undo position

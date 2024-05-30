@@ -24,11 +24,13 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     points: null,
     params: null,
     maxLoopLength: 1000,
+    notDone: false
   };
 
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
 
+    if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
 
     // Initialize the control points if not defined
@@ -117,6 +119,43 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       point.y += diffY;
     }
     this.expandObjs();
+  }
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    if (!this.notDone) {
+      // Initialize the construction stage
+      this.notDone = true;
+      if (this.module !== addingModuleName) {
+        this.module = addingModuleName;
+        this.moduleDef = this.scene.modules[this.module];
+        // Initialize the parameters
+        this.params = {};
+        for (let param of this.moduleDef.params) {
+          const parsed = this.parseVariableRange(param, {});
+          this.params[parsed.name] = parsed.defaultVal;
+        }
+      }
+      this.points = [];
+      this.objs = [];
+    }
+
+    if (this.moduleDef.numPoints > 0) {
+      this.points.push({ x: mousePos.x, y: mousePos.y });
+    }
+
+    if (this.points.length === this.moduleDef.numPoints) {
+      // All control points have been added.
+      this.notDone = false;
+
+      // Expand the objects
+      this.expandObjs();
+
+      return {
+        isDone: true
+      };
+    }
+    console.log(this.notDone)
   }
 
   checkMouseOver(mouse) {
