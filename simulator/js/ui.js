@@ -366,7 +366,7 @@ function enableJsonEditor() {
     }, 500);
   });
 
-  document.getElementById('footer-left').style.left = '355px';
+  document.getElementById('footer-left').style.left = '400px';
   document.getElementById('sideBar').style.display = '';
 }
 
