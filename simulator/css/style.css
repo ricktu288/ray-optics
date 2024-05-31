@@ -436,10 +436,21 @@
 #sideBar {
   position: absolute;
   z-index: -2;
-  top: 68px;
+  top: 46px;
   left: 0;
-  width: 350px;
-  height: calc(100% - 68px);
+  width: 355px;
+  height: calc(100% - 46px);
+  display: flex;
+  flex-direction: column;
+}
+
+#sideBarMobileHeightDiff {
+  height: 22px;
+}
+
+#jsonEditorContainer {
+  width: 100%;
+  flex-grow: 1;
   background-color:rgba(45, 51, 57,0.8);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -447,7 +458,7 @@
 
 #jsonEditor {
   width: 100%;
-  height: 100%;
+  height: 100%
 }
 
 #warning {
