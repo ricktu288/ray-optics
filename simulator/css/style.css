@@ -439,6 +439,7 @@
   top: 46px;
   left: 0;
   width: 400px;
+  max-width: 100%;
   height: calc(100% - 46px);
   display: flex;
   flex-direction: column;
