@@ -957,5 +957,9 @@ locales["fr"] = {
   "identical_optical_objects_warning": {
     "incomplete": true,
     "message": "There are two identical optical elements in the scene that overlap completely."
+  },
+  "remove_module": {
+    "incomplete": true,
+    "message": "Remove module"
   }
 }

@@ -797,5 +797,8 @@ locales["zh-TW"] = {
   },
   "identical_optical_objects_warning": {
     "message": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。"
+  },
+  "remove_module": {
+    "message": "移除模組"
   }
 }
