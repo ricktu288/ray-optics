@@ -1,0 +1,104 @@
+{
+  "version": 5,
+  "name": "Chaff",
+  "modules": {
+    "ChaffPiece": {
+      "numPoints": 0,
+      "params": [
+        "x=0:1:1000:0",
+        "y=0:1:1000:0",
+        "theta=0:0.001:2pi:0",
+        "L=0.01:0.01:10:5"
+      ],
+      "objs": [
+        {
+          "type": "Mirror",
+          "p1": {
+            "x": "`x`",
+            "y": "`y`"
+          },
+          "p2": {
+            "x": "`x+L*cos(theta)`",
+            "y": "`y+L*sin(theta)`"
+          }
+        }
+      ]
+    },
+    "Chaff": {
+      "numPoints": 2,
+      "params": [
+        "N=1:1:10000:10",
+        "L=0.01:0.01:10:5"
+      ],
+      "objs": [
+        {
+          "for": "i=1:1:N",
+          "type": "ModuleObj",
+          "module": "ChaffPiece",
+          "points": [],
+          "params": {
+            "x": "`x_1+random()*(x_2-x_1)`",
+            "y": "`y_1+random()*(y_2-y_1)`",
+            "L": "`L`",
+            "theta": "`random()*pi`"
+          }
+        }
+      ],
+      "maxLoopLength": 10000
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "Chaff",
+      "points": [
+        {
+          "x": -900,
+          "y": 200
+        },
+        {
+          "x": -760,
+          "y": 400
+        }
+      ],
+      "params": {
+        "N": 200,
+        "L": 5
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": -1040,
+        "y": 300
+      },
+      "p2": {
+        "x": -1000,
+        "y": 300
+      },
+      "brightness": 0.35,
+      "emisAngle": 15
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -960,
+        "y": 180
+      },
+      "p4": {
+        "x": -720,
+        "y": 420
+      },
+      "width": 300
+    }
+  ],
+  "width": 1500,
+  "height": 900,
+  "rayModeDensity": 0.1963807307786659,
+  "snapToGrid": true,
+  "origin": {
+    "x": 1880.083333333333,
+    "y": 14.916666666666657
+  },
+  "scale": 1.25
+}
