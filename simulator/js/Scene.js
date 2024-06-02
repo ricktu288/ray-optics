@@ -216,6 +216,25 @@ class Scene {
   }
 
   /**
+   * Add a module definition.
+   * @param {string} moduleName
+   * @param {ModuleDef} moduleDef
+   * @returns {boolean} Whether the module is successfully added.
+   */
+  addModule(moduleName, moduleDef) {
+    this.modules[moduleName] = moduleDef;
+
+    // Update all module objects.
+    for (let i in this.objs) {
+      if (this.objs[i].constructor.type === "ModuleObj") {
+        this.objs[i] = new objTypes.ModuleObj(this, this.objs[i].serialize());
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Remove a given module and demodulize all corresponding module objects.
    * @param {string} moduleName 
    */

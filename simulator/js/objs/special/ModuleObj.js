@@ -57,6 +57,8 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
   populateObjBar(objBar) {
     objBar.createNote('<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>');
 
+    if (this.notDone) return;
+
     try {
       for (let param of this.moduleDef.params) {
         const parsed = this.parseVariableRange(param, {});
@@ -142,7 +144,9 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     if (this.moduleDef.numPoints > 0) {
       this.points.push({ x: mousePos.x, y: mousePos.y });
     }
+  }
 
+  onConstructMouseUp(mouse, ctrl, shift) {
     if (this.points.length === this.moduleDef.numPoints) {
       // All control points have been added.
       this.notDone = false;
@@ -151,7 +155,8 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       this.expandObjs();
 
       return {
-        isDone: true
+        isDone: true,
+        requiresObjBarUpdate: true
       };
     }
   }

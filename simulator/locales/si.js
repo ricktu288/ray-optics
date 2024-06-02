@@ -987,6 +987,6 @@ locales["si"] = {
   },
   "module_conflict": {
     "incomplete": true,
-    "message": "A module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+    "message": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
   }
 }

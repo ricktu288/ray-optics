@@ -729,13 +729,13 @@ function importModule(name) {
       for (let moduleName in moduleJSON.modules) {
         if (moduleJSON.modules.hasOwnProperty(moduleName)) {
           let newModuleName = moduleName;
-          if (scene.modules[moduleName]) {
+          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])){
             newModuleName = prompt(getMsg('module_conflict'), moduleName);
             if (!newModuleName) {
               continue;
             }
           }
-          scene.modules[newModuleName] = moduleJSON.modules[moduleName];
+          scene.addModule(newModuleName, moduleJSON.modules[moduleName]);
         }
       }
     } catch (e) {
