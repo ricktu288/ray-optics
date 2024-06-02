@@ -685,7 +685,7 @@ function openSample(name) {
   client.open('GET', '../gallery/' + name);
   client.onload = function () {
     if (client.status >= 300) {
-      error = "openSample: " + client.status;
+      error = "openSample: HTTP Request Error: " + client.status;
       document.getElementById('welcome').style.display = 'none';
       updateErrorAndWarning();
       return;
@@ -701,12 +701,12 @@ function openSample(name) {
     }
   }
   client.onerror = function () {
-    error = "openSample: Error";
+    error = "openSample: HTTP Request Error";
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
-    error = "openSample: Timeout";
+    error = "openSample: HTTP Request Timeout";
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
@@ -720,7 +720,7 @@ function importModule(name) {
   client.onload = function () {
     document.getElementById('welcome').style.display = 'none';
     if (client.status >= 300) {
-      error = "importModule: " + client.status;
+      error = "importModule: HTTP Request Error: " + client.status;
       updateErrorAndWarning();
       return;
     }
@@ -748,12 +748,12 @@ function importModule(name) {
     updateModuleObjsMenu();
   }
   client.onerror = function () {
-    error = "importModule: Error";
+    error = "importModule: HTTP Request Error";
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
-    error = "importModule: Timeout";
+    error = "importModule: HTTP Request Timeout";
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }

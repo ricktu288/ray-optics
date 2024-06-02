@@ -9,7 +9,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Fresnel Lens",
-        "description": "<p>A Fresnel lens made from a half circle piece of glass. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/fresnel-lens\" target=\"_blank\">this example</a>.</p>",
+        "description": "<p>A Fresnel lens made from a half circle piece of glass. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/fresnel-lens\" target=\"_blank\">this Gallery example</a>.</p>",
         "points": [
           "The first endpoint of the lens",
           "The second endpoint of the lens"
@@ -60,7 +60,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Chaff",
-        "description": "<p>A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure\" target=\"_blank\">this example</a>.</p>",
+        "description": "<p>A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure\" target=\"_blank\">this Gallery example</a>.</p>",
         "points": [
           "The top-left corner of the chaff",
           "The bottom-right corner of the chaff"
@@ -76,7 +76,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Beam Expander",
-        "description": "<p>The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expand or reduce the diameter of a beam of collimated light. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">this example</a>.</p>",
+        "description": "<p>The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expand or reduce the diameter of a beam of collimated light. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">this Gallery example</a>.</p>",
         "points": [
           "The center of the first lens",
           "The second point of the second lens",
@@ -91,7 +91,7 @@
           "Yi-Ting Tu"
         ],
         "title": "Ray Relay",
-        "description": "<p>A series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/ray-relaying\" target=\"_blank\">this example</a>.</p>",
+        "description": "<p>A series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/ray-relaying\" target=\"_blank\">this Gallery example</a>.</p>",
         "points": [
           "The first endpoint of the first lens",
           "The second endpoint of the first lens (should have the same \\(x\\) as the first point)"

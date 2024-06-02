@@ -742,7 +742,7 @@ locales["zh-TW"] = {
     "message": "顯示 JSON 編輯器<sup>Beta</sup>"
   },
   "show_json_editor_popover": {
-    "message": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->建立模組...）。"
+    "message": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->匯入模組->建立自訂模組）。"
   },
   "show_status": {
     "message": "顯示狀態方塊"

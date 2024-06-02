@@ -742,7 +742,7 @@ locales["zh-CN"] = {
     "message": "显示 JSON 编辑器<sup>Beta</sup>"
   },
   "show_json_editor_popover": {
-    "message": "显示表达场景代码的 JSON 编辑器。 在创建自定义模块时需要使用（见工具->其他->创建模块...）。"
+    "message": "显示表达场景代码的 JSON 编辑器。在创建自定义模块时需要使用（见工具->其他->导入模块->创建自定义模块）。"
   },
   "show_status": {
     "message": "显示状态方块"

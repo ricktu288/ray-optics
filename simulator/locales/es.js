@@ -764,7 +764,7 @@ locales["es"] = {
   },
   "show_json_editor_popover": {
     "incomplete": true,
-    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Create Modules...)."
+    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Create custom modules)."
   },
   "show_status": {
     "message": "Mostrar diálogo de estado"
