@@ -154,7 +154,6 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
         isDone: true
       };
     }
-    console.log(this.notDone)
   }
 
   checkMouseOver(mouse) {

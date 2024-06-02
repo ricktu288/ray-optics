@@ -139,7 +139,7 @@ locales["es"] = {
   },
   "toolname_ModuleObj": {
     "incomplete": true,
-    "message": "Module<sup>Alpha</sup>"
+    "message": "Module<sup>Beta</sup>"
   },
   "tool_more_": {
     "message": "Otros"
@@ -818,18 +818,30 @@ locales["es"] = {
   },
   "create_modules": {
     "incomplete": true,
-    "message": "<i>Create Modules...</i>"
-  },
-  "create_modules_popover": {
-    "incomplete": true,
-    "message": "Create modularized combinations of objects with JSON templates, which allow custom parameters and arrays of objects. <br><br><i>Warning: This feature is experimental.</i>"
+    "message": "Create custom modules"
   },
   "identical_optical_objects_warning": {
     "incomplete": true,
     "message": "There are two identical optical elements in the scene that overlap completely."
   },
+  "import_modules": {
+    "incomplete": true,
+    "message": "<i>Import Modules...</i>"
+  },
+  "import_modules_title": {
+    "incomplete": true,
+    "message": "Import Modules"
+  },
+  "modules_url": {
+    "incomplete": true,
+    "message": "../modules/modules.html"
+  },
   "remove_module": {
     "incomplete": true,
     "message": "Remove module"
+  },
+  "module_conflict": {
+    "incomplete": true,
+    "message": "A module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
   }
 }

@@ -11,7 +11,7 @@
       ],
       "objs": [
         {
-          "for": "theta=0:2pi/N:2pi",
+          "for": "theta=0:2pi/N:2pi-0.0001",
           "type": "AngleSource",
           "p1": {
             "x": "`x_1+r*cos(theta)`",

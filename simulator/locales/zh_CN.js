@@ -136,7 +136,7 @@ locales["zh-CN"] = {
     "message": "导出"
   },
   "toolname_ModuleObj": {
-    "message": "模块<sup>Alpha</sup>"
+    "message": "模块<sup>Beta</sup>"
   },
   "tool_more_": {
     "message": "其他"
@@ -790,15 +790,25 @@ locales["zh-CN"] = {
     "message": "滑鼠座标："
   },
   "create_modules": {
-    "message": "<i>创建模块...</i>"
-  },
-  "create_modules_popover": {
-    "message": "使用 JSON 模板创建模块化的物件组合，其中可包含自定义参数与物件阵列。<br><br><i>警告：此为实验性功能。</i>"
+    "message": "创建自定义模块"
   },
   "identical_optical_objects_warning": {
     "message": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。"
   },
+  "import_modules": {
+    "message": "<i>导入模块...</i>"
+  },
+  "import_modules_title": {
+    "message": "导入模块"
+  },
+  "modules_url": {
+    "incomplete": true,
+    "message": "../modules/modules.html"
+  },
   "remove_module": {
     "message": "移除模块"
+  },
+  "module_conflict": {
+    "message": "场景中已有一个同名的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
   }
 }

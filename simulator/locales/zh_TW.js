@@ -136,7 +136,7 @@ locales["zh-TW"] = {
     "message": "匯出"
   },
   "toolname_ModuleObj": {
-    "message": "模組<sup>Alpha</sup>"
+    "message": "模組<sup>Beta</sup>"
   },
   "tool_more_": {
     "message": "其他"
@@ -790,15 +790,25 @@ locales["zh-TW"] = {
     "message": "滑鼠座標："
   },
   "create_modules": {
-    "message": "<i>建立模組...</i>"
-  },
-  "create_modules_popover": {
-    "message": "使用 JSON 模板建立模組化的物件組合，其中可包含自訂參數與物件陣列。<br><br><i>警告：此為實驗性功能。</i>"
+    "message": "建立自訂模組"
   },
   "identical_optical_objects_warning": {
     "message": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。"
   },
+  "import_modules": {
+    "message": "<i>匯入模組...</i>"
+  },
+  "import_modules_title": {
+    "message": "匯入模組"
+  },
+  "modules_url": {
+    "incomplete": true,
+    "message": "../modules/modules.html"
+  },
   "remove_module": {
     "message": "移除模組"
+  },
+  "module_conflict": {
+    "message": "場景中已有一個同名的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。"
   }
 }

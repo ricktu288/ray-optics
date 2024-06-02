@@ -1,0 +1,216 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../thirdparty/bootstrap-3.3.7/bootstrap.min.css">
+  <link rel="icon" href="../icon128.png" type="image/png">
+  <style>
+
+.module-image {
+  width:150px;
+  height:150px !important;
+}
+
+.right-caption>img {
+    float: left;
+    margin-right: 9px;
+}
+
+.caption{
+  padding: 0px !important;
+}
+
+.module-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.import-btn {
+  float: right;
+  margin-right: 8px;
+}
+
+.module-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapse {
+  padding-top: 8px;
+}
+
+body { 
+  padding-top: 0px; 
+  padding-bottom: 0px;
+  font-size: 12pt;
+}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <ul>
+    <li>This is an experimental feature of creating modularized combinations of objects with templates, which allow custom parameters and arrays of objects.</li>
+    <li>Imported modules will appear in Tools -> Other. To add to your scene, please select and click the blank space according to the order of the control point sequence (see "Specification").</li>
+    <li>Modules are embedded in the scene, so will not change when the authors update them. You may customize them with the JSON editor, and will only affect the ones in your scene.</li>
+  </ul>
+  ﻿﻿<div class="row right-caption">
+  <img src="FresnelLens.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Fresnel Lens (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>A Fresnel lens made from a half circle piece of glass. Modularized version of <a href="https://phydemo.app/ray-optics/gallery/fresnel-lens" target="_blank">this example</a>.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-FresnelLens" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The first endpoint of the lens</li><li>The second endpoint of the lens</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>N_slice</code>: The number of slices</li><li><code>refIndex</code>: The refractive index of the lens</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="ContSpectrum.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Continuous spectrum light source (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>A light source with a uniform continuous spectrum decretized with a given constant step. Only works when "Simulate Colors" is on.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-ContSpectrum" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The origin of the rays</li><li>Determines the direction of the rays</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>min</code>: The minimum wavelength</li><li><code>step</code>: The step of the wavelength</li><li><code>max</code>: The maximum wavelength</li><li><code>brightness</code>: The total brightness</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="CircleSource.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Circular light source (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>A circle with uniform 180 degree point sources places alone its circumference.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-CircleSource" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The center of the circle</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>r</code>: The radius of the circle</li><li><code>N</code>: The number of point sources</li><li><code>brightness</code>: The total brightness</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="Chaff.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Chaff (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of <a href="https://phydemo.app/ray-optics/gallery/chaff-countermeasure" target="_blank">this example</a>.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-Chaff" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The top-left corner of the chaff</li><li>The bottom-right corner of the chaff</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>N</code>: The number of mirrors in the chaff</li><li><code>L</code>: The length of the mirrors</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="BeamExpander.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Beam Expander (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expands or reduces the diameter of a beam of collimated light. Modularized version of <a href="https://phydemo.app/ray-optics/gallery/beam-expanders" target="_blank">this example</a>.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-BeamExpander" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The center of the first lens</li><li>The second point of the second lens</li><li>Determines the common focal point of the lenses</li>
+  </ol>
+  Parameters
+  <ul>
+    -
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="RayRelay.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Ray Relay (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>A series of ideal identical lenses with focal length \(f\) and distance \(d\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \(d\leq 4f\). Modularized version of <a href="https://phydemo.app/ray-optics/gallery/ray-relaying" target="_blank">this example</a>.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-RayRelay" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The first endpoint of the first lens</li><li>The second endpoint of the first lens (should have the same \(x\) as the first point)</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>f</code>: The focal length of the lenses</li><li><code>d</code>: The distance between the lenses</li><li><code>N</code>: The number of lenses</li>
+  </ul>
+</div>
+<br>
+
+
+  <h2>Contributing</h2>
+ Contributing to the list above is welcome. Please add items to <a href="https://github.com/ricktu288/ray-optics/tree/master/modules" target="_blank">this folder</a> and open a pull request, or send the file containing your module to <a href="mailto:ray-optics@phydemo.app" target="_blank">ray-optics@phydemo.app</a> if you are not familiar with GitHub.
+</div>
+
+<script src="../thirdparty/jquery.min.js"></script>
+<script src="../thirdparty/bootstrap-3.3.7/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

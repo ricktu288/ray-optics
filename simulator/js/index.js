@@ -672,6 +672,12 @@ window.onload = function (e) {
   };
 
   window.onpopstate();
+
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.rayOpticsModuleName) {
+      importModule(event.data.rayOpticsModuleName + '.json');
+    }
+  });
 };
 
 function openSample(name) {
@@ -701,6 +707,53 @@ function openSample(name) {
   }
   client.ontimeout = function () {
     error = "openSample: Timeout";
+    document.getElementById('welcome').style.display = 'none';
+    updateErrorAndWarning();
+  }
+
+  client.send();
+}
+
+function importModule(name) {
+  var client = new XMLHttpRequest();
+  client.open('GET', '../modules/' + name);
+  client.onload = function () {
+    document.getElementById('welcome').style.display = 'none';
+    if (client.status >= 300) {
+      error = "importModule: " + client.status;
+      updateErrorAndWarning();
+      return;
+    }
+    try {
+      const moduleJSON = JSON.parse(client.responseText);
+      for (let moduleName in moduleJSON.modules) {
+        if (moduleJSON.modules.hasOwnProperty(moduleName)) {
+          let newModuleName = moduleName;
+          if (scene.modules[moduleName]) {
+            newModuleName = prompt(getMsg('module_conflict'), moduleName);
+            if (!newModuleName) {
+              continue;
+            }
+          }
+          scene.modules[newModuleName] = moduleJSON.modules[moduleName];
+        }
+      }
+    } catch (e) {
+      error = "importModule: " + e.toString();
+      updateErrorAndWarning();
+      return;
+    }
+    draw(false, true);
+    createUndoPoint();
+    updateModuleObjsMenu();
+  }
+  client.onerror = function () {
+    error = "importModule: Error";
+    document.getElementById('welcome').style.display = 'none';
+    updateErrorAndWarning();
+  }
+  client.ontimeout = function () {
+    error = "importModule: Timeout";
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }

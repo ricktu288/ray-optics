@@ -512,3 +512,10 @@
 .ace_scrollbar-h{
   margin: 0 2px
 }
+
+#moduleIframe {
+  width: 100%;
+  height: 500px;
+  max-height: 60vh;
+  border: none;
+}

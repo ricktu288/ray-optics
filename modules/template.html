@@ -1,0 +1,76 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../thirdparty/bootstrap-3.3.7/bootstrap.min.css">
+  <link rel="icon" href="../icon128.png" type="image/png">
+  <style>
+
+.module-image {
+  width:150px;
+  height:150px !important;
+}
+
+.right-caption>img {
+    float: left;
+    margin-right: 9px;
+}
+
+.caption{
+  padding: 0px !important;
+}
+
+.module-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.import-btn {
+  float: right;
+  margin-right: 8px;
+}
+
+.module-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapse {
+  padding-top: 8px;
+}
+
+body { 
+  padding-top: 0px; 
+  padding-bottom: 0px;
+  font-size: 12pt;
+}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <ul>
+    <li>This is an experimental feature of creating modularized combinations of objects with templates, which allow custom parameters and arrays of objects.</li>
+    <li>Imported modules will appear in Tools -> Other. To add to your scene, please select and click the blank space according to the order of the control point sequence (see "Specification").</li>
+    <li>Modules are embedded in the scene, so will not change when the authors update them. You may customize them with the JSON editor, and will only affect the ones in your scene.</li>
+  </ul>
+  {CATEGORIES}
+
+  <h2>Contributing</h2>
+ Contributing to the list above is welcome. Please add items to <a href="https://github.com/ricktu288/ray-optics/tree/master/modules" target="_blank">this folder</a> and open a pull request, or send the file containing your module to <a href="mailto:ray-optics@phydemo.app" target="_blank">ray-optics@phydemo.app</a> if you are not familiar with GitHub.
+</div>
+
+<script src="../thirdparty/jquery.min.js"></script>
+<script src="../thirdparty/bootstrap-3.3.7/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

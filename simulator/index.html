@@ -346,7 +346,7 @@
                           <label class="btn shadow-none btn-primary dropdown-item" for="tool_Drawing" data-text="tool_Drawing" data-popover="tool_Drawing_popover" data-bs-placement="right" data-bs-offset="0,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li id="create_modules"><a class="dropdown-item" data-text="create_modules" data-popover="create_modules_popover" data-image="module-example.gif" href="https://github.com/ricktu288/ray-optics/discussions/145" target="_blank"></a></li>
+                        <li id="module_start"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal" data-text="import_modules"></button></li>
                       </ul>
                     </div>
                     <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
@@ -832,7 +832,7 @@
                             <label class="btn btn-primary dropdown-item" for="tool_Drawing_mobile" data-text="tool_Drawing"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
-                          <li id="create_modules_mobile"><a class="dropdown-item" data-text="create_modules" href="https://github.com/ricktu288/ray-optics/discussions/145" target="_blank"></a></li>
+                          <li id="module_start_mobile"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal" data-text="import_modules"></button></li>
                         </ul>                      
                       </div>
                       
@@ -1279,6 +1279,27 @@
         </div>
       </div>
     </div>
+
+    <!-- Module modal -->
+    <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel" data-text="import_modules_title"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <iframe id="moduleIframe" loading="lazy" src=""></iframe>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success me-auto" href="https://github.com/ricktu288/ray-optics/discussions/145" target="_blank" data-text="create_modules"></a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
     
   
     <!-- Coordinates entering popup -->

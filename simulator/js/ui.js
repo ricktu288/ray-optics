@@ -132,6 +132,7 @@ function updateUIText(elememt = document) {
   document.title = getMsg('appName');
   document.getElementById('home').href = getMsg('home_url');
   document.getElementById('about').href = getMsg('about_url');
+  document.getElementById('moduleIframe').src = getMsg('modules_url');
 }
 
 function navigateToNewQuery(newQuery) {
@@ -372,7 +373,7 @@ function enableJsonEditor() {
 
 function updateModuleObjsMenu() {
   for (let suffix of ['', '_mobile']) {
-    const moduleStartLi = document.getElementById('create_modules' + suffix);
+    const moduleStartLi = document.getElementById('module_start' + suffix);
 
     // Remove all children after moduleStartLi
     while (moduleStartLi.nextElementSibling) {
@@ -394,7 +395,7 @@ function updateModuleObjsMenu() {
           resetDropdownButtons();
           document.getElementById('moreToolsDropdown').classList.add('selected');
           document.getElementById('mobile-dropdown-trigger-more').classList.add('selected');
-          AddingObjType = 'ModuleObj'
+          toolbtn_clicked('ModuleObj');
           addingModuleName = moduleName;
         }
       });

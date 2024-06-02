@@ -1,117 +1,107 @@
 [
   {
-    "id": "RayRelay",
-    "contributors": [
-      "Stas Fainer",
-      "Yi-Ting Tu"
-    ],
-    "title": "Ray Relay",
-    "description": "<p>A series of ideal identical lenses.</p>",
-    "points": [
-      "The first endpoint of the first lens",
-      "The second endpoint of the first lens"
-    ],
-    "params": {
-      "f": "The focal length of the lenses",
-      "d": "The distance between the lenses",
-      "N": "The number of lenses"
-    },
-    "gallery": [
-      "ray-relaying"
+    "id": "default",
+    "title": "",
+    "content": [
+      {
+        "id": "FresnelLens",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Fresnel Lens",
+        "description": "<p>A Fresnel lens made from a half circle piece of glass. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/fresnel-lens\" target=\"_blank\">this example</a>.</p>",
+        "points": [
+          "The first endpoint of the lens",
+          "The second endpoint of the lens"
+        ],
+        "params": {
+          "N_slice": "The number of slices",
+          "refIndex": "The refractive index of the lens"
+        }
+      },
+      {
+        "id": "ContSpectrum",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Continuous spectrum light source",
+        "description": "<p>A light source with a uniform continuous spectrum decretized with a given constant step. Only works when \"Simulate Colors\" is on.</p>",
+        "points": [
+          "The origin of the rays",
+          "Determines the direction of the rays"
+        ],
+        "params": {
+          "min": "The minimum wavelength",
+          "step": "The step of the wavelength",
+          "max": "The maximum wavelength",
+          "brightness": "The total brightness"
+        }
+      },
+      {
+        "id": "CircleSource",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Circular light source",
+        "description": "<p>A circle with uniform 180-degree point sources places along its circumference.</p>",
+        "points": [
+          "The center of the circle"
+        ],
+        "params": {
+          "r": "The radius of the circle",
+          "N": "The number of point sources",
+          "brightness": "The total brightness"
+        }
+      },
+      {
+        "id": "Chaff",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Chaff",
+        "description": "<p>A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/chaff-countermeasure\" target=\"_blank\">this example</a>.</p>",
+        "points": [
+          "The top-left corner of the chaff",
+          "The bottom-right corner of the chaff"
+        ],
+        "params": {
+          "N": "The number of mirrors in the chaff",
+          "L": "The length of the mirrors"
+        }
+      },
+      {
+        "id": "BeamExpander",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Beam Expander",
+        "description": "<p>The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expand or reduce the diameter of a beam of collimated light. Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">this example</a>.</p>",
+        "points": [
+          "The center of the first lens",
+          "The second point of the second lens",
+          "Determines the common focal point of the lenses"
+        ],
+        "params": {}
+      },
+      {
+        "id": "RayRelay",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Ray Relay",
+        "description": "<p>A series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). Modularized version of <a href=\"https://phydemo.app/ray-optics/gallery/ray-relaying\" target=\"_blank\">this example</a>.</p>",
+        "points": [
+          "The first endpoint of the first lens",
+          "The second endpoint of the first lens (should have the same \\(x\\) as the first point)"
+        ],
+        "params": {
+          "f": "The focal length of the lenses",
+          "d": "The distance between the lenses",
+          "N": "The number of lenses"
+        }
+      }
     ]
-  },
-  {
-    "id": "BeamExpander",
-    "contributors": [
-      "Stas Fainer",
-      "Yi-Ting Tu"
-    ],
-    "title": "Beam Expander",
-    "description": "<p>The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expands or reduces the diameter of a beam of collimated light.</p>",
-    "points": [
-      "The center of the first lens",
-      "The second point of the second lens",
-      "Determines the common focal point of the lenses"
-    ],
-    "params": {},
-    "gallery": [
-      "beam-expanders"
-    ]
-  },
-  {
-    "id": "Chaff",
-    "contributors": [
-      "Stas Fainer",
-      "Yi-Ting Tu"
-    ],
-    "title": "Chaff",
-    "description": "<p>A chaff of a rectangular shape consisting of random pieces of mirrors.</p>",
-    "points": [
-      "The top-left corner of the chaff",
-      "The bottom-right corner of the chaff"
-    ],
-    "params": {
-      "N": "The number of mirrors in the chaff",
-      "L": "The length of the mirrors"
-    },
-    "gallery": [
-      "chaff-countermeasure"
-    ]
-  },
-  {
-    "id": "FresnelLens",
-    "contributors": [
-      "Stas Fainer",
-      "Yi-Ting Tu"
-    ],
-    "title": "Fresnel Lens",
-    "description": "<p>A Fresnel lens made from a half circle.</p>",
-    "points": [
-      "The first endpoint of the lens",
-      "The second endpoint of the lens"
-    ],
-    "params": {
-      "N_slice": "The number of slices",
-      "refIndex": "The refractive index of the lens"
-    },
-    "gallery": [
-      "fresnel-lens"
-    ]
-  },
-  {
-    "id": "ContSpectrum",
-    "contributors": [
-      "Yi-Ting Tu"
-    ],
-    "title": "Continuous spectrum light source",
-    "description": "<p>A light source with a uniform continuous spectrum.</p>",
-    "points": [
-      "The origin of the rays",
-      "Determines the direction of the rays"
-    ],
-    "params": {
-      "min": "The minimum wavelength",
-      "step": "The step of the wavelength",
-      "max": "The maximum wavelength",
-      "brightness": "The total brightness"
-    },
-    "gallery": []
-  },
-  {
-    "id": "CircleSource",
-    "contributors": [
-      "Yi-Ting Tu"
-    ],
-    "title": "Circular light source",
-    "description": "<p>A circle with 180 degree point sources places alone its circumference.</p>",
-    "points": [
-      "The center of the circle"
-    ],
-    "params": {
-      "r": "The radius of the circle",
-      "N": "The number of point sources",
-      "brightness": "The total brightness"
-    },
-    "gallery": []
   }
 ]
