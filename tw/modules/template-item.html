@@ -1,0 +1,24 @@
+﻿<div class="row right-caption">
+  <img src="../../modules/{ID}.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">{TITLE} (<code>{ID}</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: '{ID}'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">{CONTRIBUTORS}</p>
+    <span id="module-desc">
+      {DESCRIPTION}
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-{ID}">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-{ID}" class="collapse">
+  控制點順序
+  <ol>
+    {POINTS}
+  </ol>
+  參數
+  <ul>
+    {PARAMS}
+  </ul>
+</div>

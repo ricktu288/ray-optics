@@ -802,8 +802,7 @@ locales["zh-CN"] = {
     "message": "导入模块"
   },
   "modules_url": {
-    "incomplete": true,
-    "message": "../modules/modules.html"
+    "message": "../cn/modules/modules.html"
   },
   "remove_module": {
     "message": "移除模块"

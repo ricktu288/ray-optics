@@ -1,9 +1,9 @@
 // Run this script with node.js whenever some items in the gallery change
 
-langs = ['en']//, 'zh-CN', 'zh-TW'];
-lang_names = ['English']//, '简体中文', '正體中文'];
-translated_str = ['translated']//, '已翻译', '已翻譯'];
-paths = ['']//, '../cn/modules/', '../tw/modules/'];
+langs = ['en', 'zh-CN', 'zh-TW'];
+lang_names = ['English', '简体中文', '正體中文'];
+translated_str = ['translated', '已翻译', '已翻譯'];
+paths = ['', '../cn/modules/', '../tw/modules/'];
 
 fs = require('fs');
 data_en_str = fs.readFileSync("data.json").toString()

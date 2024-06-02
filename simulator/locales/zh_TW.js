@@ -802,8 +802,7 @@ locales["zh-TW"] = {
     "message": "匯入模組"
   },
   "modules_url": {
-    "incomplete": true,
-    "message": "../modules/modules.html"
+    "message": "../tw/modules/modules.html"
   },
   "remove_module": {
     "message": "移除模組"
