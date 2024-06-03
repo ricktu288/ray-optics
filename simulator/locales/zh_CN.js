@@ -789,10 +789,10 @@ locales["zh-CN"] = {
   "mouse_coordinates": {
     "message": "滑鼠座标："
   },
-  "create_modules": {
-    "message": "创建自定义模块"
+  "modules_tutorial": {
+    "message": "制作自定义模块"
   },
-  "create_modules_url": {
+  "modules_tutorial_url": {
     "message": "https://phydemo.app/ray-optics/cn/modules/tutorial"
   },
   "identical_optical_objects_warning": {

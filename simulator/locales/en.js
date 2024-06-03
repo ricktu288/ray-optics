@@ -742,7 +742,7 @@ locales["en"] = {
     "message": "Show JSON editor<sup>Beta</sup>"
   },
   "show_json_editor_popover": {
-    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Create custom modules)."
+    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
   },
   "show_status": {
     "message": "Show status box"
@@ -789,10 +789,10 @@ locales["en"] = {
   "mouse_coordinates": {
     "message": "Mouse coordinates: "
   },
-  "create_modules": {
-    "message": "Create custom modules"
+  "modules_tutorial": {
+    "message": "Make custom modules"
   },
-  "create_modules_url": {
+  "modules_tutorial_url": {
     "message": "https://phydemo.app/ray-optics/modules/tutorial"
   },
   "identical_optical_objects_warning": {

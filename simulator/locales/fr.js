@@ -884,7 +884,7 @@ locales["fr"] = {
   },
   "show_json_editor_popover": {
     "incomplete": true,
-    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Create custom modules)."
+    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
   },
   "show_status": {
     "incomplete": true,
@@ -946,11 +946,11 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Mouse coordinates: "
   },
-  "create_modules": {
+  "modules_tutorial": {
     "incomplete": true,
-    "message": "Create custom modules"
+    "message": "Make custom modules"
   },
-  "create_modules_url": {
+  "modules_tutorial_url": {
     "incomplete": true,
     "message": "https://phydemo.app/ray-optics/modules/tutorial"
   },

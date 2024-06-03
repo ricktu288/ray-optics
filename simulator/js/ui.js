@@ -133,7 +133,7 @@ function updateUIText(elememt = document) {
   document.getElementById('home').href = getMsg('home_url');
   document.getElementById('about').href = getMsg('about_url');
   document.getElementById('moduleIframe').src = getMsg('modules_url');
-  document.getElementById('create_modules').href = getMsg('create_modules_url');
+  document.getElementById('modules_tutorial').href = getMsg('modules_tutorial_url');
 }
 
 function navigateToNewQuery(newQuery) {

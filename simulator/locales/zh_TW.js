@@ -789,10 +789,10 @@ locales["zh-TW"] = {
   "mouse_coordinates": {
     "message": "滑鼠座標："
   },
-  "create_modules": {
-    "message": "建立自訂模組"
+  "modules_tutorial": {
+    "message": "製作自訂模組"
   },
-  "create_modules_url": {
+  "modules_tutorial_url": {
     "message": "https://phydemo.app/ray-optics/tw/modules/tutorial"
   },
   "identical_optical_objects_warning": {
