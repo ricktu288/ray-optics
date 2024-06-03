@@ -792,6 +792,9 @@ locales["en"] = {
   "create_modules": {
     "message": "Create custom modules"
   },
+  "create_modules_url": {
+    "message": "https://phydemo.app/ray-optics/modules/tutorial"
+  },
   "identical_optical_objects_warning": {
     "message": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior."
   },

@@ -792,6 +792,9 @@ locales["zh-TW"] = {
   "create_modules": {
     "message": "建立自訂模組"
   },
+  "create_modules_url": {
+    "message": "https://phydemo.app/ray-optics/tw/modules/tutorial"
+  },
   "identical_optical_objects_warning": {
     "message": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。"
   },

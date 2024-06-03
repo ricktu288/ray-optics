@@ -845,6 +845,10 @@ locales["pl"] = {
     "incomplete": true,
     "message": "Create custom modules"
   },
+  "create_modules_url": {
+    "incomplete": true,
+    "message": "https://phydemo.app/ray-optics/modules/tutorial"
+  },
   "identical_optical_objects_warning": {
     "incomplete": true,
     "message": "There are two identical optical elements in the scene that overlap completely."
