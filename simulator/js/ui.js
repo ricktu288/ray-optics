@@ -432,6 +432,9 @@ function updateModuleObjsMenu() {
       removeButton.addEventListener('click', function() {
         console.log(moduleName);
         scene.removeModule(moduleName);
+        if (AddingObjType == 'ModuleObj' && addingModuleName == moduleName) {
+          toolbtn_clicked('');  // Deselect the module object tool
+        }
         draw(false, true);
         hideAllPopovers();
         updateModuleObjsMenu();
