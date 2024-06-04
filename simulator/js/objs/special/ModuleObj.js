@@ -141,22 +141,25 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
       this.objs = [];
     }
 
-    if (this.moduleDef.numPoints > 0) {
+    if (this.points.length < this.moduleDef.numPoints) {
       this.points.push({ x: mousePos.x, y: mousePos.y });
     }
-  }
-
-  onConstructMouseUp(mouse, ctrl, shift) {
-    if (this.points.length === this.moduleDef.numPoints) {
+    if (this.points.length == this.moduleDef.numPoints) {
       // All control points have been added.
       this.notDone = false;
 
       // Expand the objects
       this.expandObjs();
-
       return {
-        isDone: true,
         requiresObjBarUpdate: true
+      };
+    }
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    if (this.points.length == this.moduleDef.numPoints) {
+      return {
+        isDone: true
       };
     }
   }
