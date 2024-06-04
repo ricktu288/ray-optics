@@ -46,7 +46,7 @@
         "step": 1,
         "min": 380,
         "max": 700,
-        "brightness": 100
+        "brightness": 500
       }
     },
     {
@@ -59,7 +59,7 @@
         "x": 980,
         "y": 500
       },
-      "lineDensity": 1096,
+      "lineDensity": 1461,
       "mirrored": true
     },
     {
@@ -75,14 +75,14 @@
       "width": 300
     }
   ],
-  "width": 1500,
-  "height": 900,
+  "width": 1300,
+  "height": 800,
   "snapToGrid": true,
   "gridSize": 10,
   "origin": {
-    "x": -698.6250000000001,
-    "y": -200.68333333333345
+    "x": -605.4750000000001,
+    "y": -173.92555555555566
   },
-  "scale": 1.75,
+  "scale": 1.5166666666666668,
   "simulateColors": true
 }
