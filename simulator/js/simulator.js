@@ -241,7 +241,7 @@ function shootWaitingRays() {
     if (isExporting && shotRayCount > exportRayCountLimit)
     {
       isDrawing = false;
-      return;
+      break;
     }
     if (forceStop) break;
     if (waitingRaysIndex >= waitingRays.length) {

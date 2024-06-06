@@ -57,7 +57,7 @@ objTypes['CropBox'] = class extends BaseSceneObj {
 
     const rayCountLimit = this.rayCountLimit || (this.format === 'svg' ? 1e4 : 1e7);
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault('rayCountLimit'))) {
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['rayCountLimit']))) {
       objBar.createNumber(getMsg('rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
         obj.rayCountLimit = value;
         if (shotRayCount > obj.rayCountLimit) {
