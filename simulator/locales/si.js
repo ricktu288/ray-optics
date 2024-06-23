@@ -13,20 +13,18 @@ locales["si"] = {
   },
   "homepage_desc": {
     "incomplete": true,
-    "message": "Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
+    "message": "ද්විමාන ප්‍රකාශ(ආලෝක) දර්ශන නිර්මාණය කිරීම simulate කිරීම සඳහා free, open-source වෙබ් යෙදුමකි. Source code is <a href=\"https://github.com/ricktu288/ray-optics\">available on GitHub</a>."
   },
   "launch_simulator": {
     "message": "Simulator Launch කරන්න."
   },
   "home": {
-    "incomplete": true,
-    "message": "Home"
+    "message": "මුල් පිටුව"
   },
   "home_url": {
     "message": "https://phydemo.app/ray-optics/si/"
   },
   "gallery": {
-    "incomplete": true,
     "message": "Gallery"
   },
   "gallery_url": {
@@ -36,8 +34,7 @@ locales["si"] = {
     "message": "<span style=\"font-size:22pt\">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href=\"https://phydemo.app/ray-optics/gallery/\">Gallery page වෙත යන්න</a>."
   },
   "loading_msg": {
-    "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+    "message": "<span style=\"font-size:22pt\">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>URL වෙතින් දර්ශනය load වේ... කරුණාකර රැඳී සිටින්න."
   },
   "toolbar_title": {
     "message": "Tool:&nbsp;"
@@ -88,15 +85,13 @@ locales["si"] = {
     "message": "වීදුරු"
   },
   "toolname_CircleGrinGlass": {
-    "incomplete": true,
-    "message": "Gradient-index glass"
+    "message": "අනුක්‍රමිකව වර්තනාංකය වෙනස් වන වීදුරු"
   },
   "toolname_Glass": {
     "message": "වීදුරු"
   },
   "toolname_GrinGlass": {
-    "incomplete": true,
-    "message": "Gradient-index glass"
+    "message": "අනුක්‍රමිකව වර්තනාංකය වෙනස් වන වීදුරු"
   },
   "toolname_IdealLens": {
     "message": "සාමාන්‍ය කාච"
@@ -111,15 +106,13 @@ locales["si"] = {
     "message": "රේඛීය බාධක"
   },
   "toolname_Aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "විවරය"
   },
   "toolname_CircleBlocker": {
     "message": "වක්‍ර බාධක"
   },
   "toolname_DiffractionGrating": {
-    "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "විවර්තන තලය<sup>Beta</sup>"
   },
   "toolname_Ruler": {
     "message": "රූල"
@@ -138,49 +131,40 @@ locales["si"] = {
     "message": "Text"
   },
   "toolname_LineArrow": {
-    "incomplete": true,
-    "message": "Line"
+    "message": "රේඛාව"
   },
   "toolname_Drawing": {
-    "incomplete": true,
     "message": "Drawing"
   },
   "toolname_CropBox": {
-    "incomplete": true,
     "message": "Export"
   },
   "toolname_ModuleObj": {
-    "incomplete": true,
-    "message": "Module<sup>Beta</sup>"
+    "message": "මොඩියුල<sup>Beta</sup>"
   },
   "tool_more_": {
-    "incomplete": true,
-    "message": "Other"
+    "message": "අමතර"
   },
   "toolname_": {
-    "incomplete": true,
     "message": "Move view"
   },
   "modebar_title": {
-    "incomplete": true,
     "message": "View"
   },
   "modename_light": {
     "message": "කිරණ"
   },
   "modename_extended_light": {
-    "message": "Extended කිරණ"
+    "message": "දිගුකල කිරණ"
   },
   "modename_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "ප්‍රතිබිම්භ සියල්ල"
   },
   "modename_observer": {
     "message": "නිරීක්ෂකයාට පෙනෙන පරිදි"
   },
   "simulateColors": {
-    "incomplete": true,
-    "message": "Simulate Colors"
+    "message": "වර්ණ අනුකරණය"
   },
   "File: ": {
     "incomplete": true,
@@ -188,7 +172,7 @@ locales["si"] = {
   },
   "Tools: ": {
     "incomplete": true,
-    "message": "Tools"
+    "message": "මෙවලම්"
   },
   "tool_SingleRay": {
     "message": "තනි ආලෝක කිරණයක්"
@@ -206,8 +190,7 @@ locales["si"] = {
     "message": "ආලෝක ප්‍රභවය"
   },
   "tool_lightSource_": {
-    "incomplete": true,
-    "message": "Light Source"
+    "message": "ආලෝක ප්‍රභවයන්"
   },
   "tool_mirror_": {
     "message": "දර්පණ"
@@ -243,16 +226,14 @@ locales["si"] = {
     "message": "වෘත්ත"
   },
   "tool_CircleGrinGlass": {
-    "incomplete": true,
-    "message": "Gradient-index circle"
+    "message": "අනුක්‍රමිකව වර්තනාංකය වෙනස් වන වෘත්තාකාර වීදුරුව"
   },
   "tool_Glass": {
     "incomplete": true,
-    "message": "නිදහස් හැඩතල / Polygon"
+    "message": "නිදහස් හැඩතල / බහුඅස්‍ර"
   },
   "tool_GrinGlass": {
-    "incomplete": true,
-    "message": "Gradient-index polygon"
+    "message": "අනුක්‍රමිකව වර්තනාංකය වෙනස් වන බහුඅස්‍ර"
   },
   "tool_IdealLens": {
     "message": "පරිපූර්ණ කාච"
@@ -267,15 +248,13 @@ locales["si"] = {
     "message": "‌රේඛීය බාධක"
   },
   "tool_Aperture": {
-    "incomplete": true,
-    "message": "Aperture"
+    "message": "විවරය"
   },
   "tool_CircleBlocker": {
     "message": "වක්‍ර බාධක"
   },
   "tool_DiffractionGrating": {
-    "incomplete": true,
-    "message": "Diffraction Grating<sup>Beta</sup>"
+    "message": "විවර්තන තලය<sup>Beta</sup>"
   },
   "tool_Ruler": {
     "message": "රූල"
@@ -284,32 +263,25 @@ locales["si"] = {
     "message": "කෝණමානය"
   },
   "tool_TextLabel": {
-    "incomplete": true,
     "message": "Text"
   },
   "tool_LineArrow": {
-    "incomplete": true,
-    "message": "Line / Arrow"
+    "message": "රේඛා / ඊතල"
   },
   "tool_Drawing": {
-    "incomplete": true,
     "message": "Drawing"
   },
   "tool_": {
-    "incomplete": true,
     "message": "Move view"
   },
   "View: ": {
-    "incomplete": true,
     "message": "View"
   },
   "Settings: ": {
-    "incomplete": true,
-    "message": "Settings"
+    "message": "සැකසුම්"
   },
   "moresettings": {
-    "incomplete": true,
-    "message": "More"
+    "message": "තවත්"
   },
   "mode_rays": {
     "message": "කිරණ"
@@ -318,14 +290,13 @@ locales["si"] = {
     "message": "දිගුකල කිරණ"
   },
   "mode_images": {
-    "incomplete": true,
-    "message": "All Images"
+    "message": "ප්‍රතිබිම්භ සියල්ල"
   },
   "mode_observer": {
     "message": "නිරීක්ෂකයාට පෙනෙන පරිදි"
   },
   "zoom": {
-    "message": "Zoom"
+    "message": "විශාලනය"
   },
   "help": {
     "message": "උදව්"
@@ -337,52 +308,41 @@ locales["si"] = {
     "message": "කිරණ ඝණත්වය"
   },
   "undo": {
-    "incomplete": true,
     "message": "Undo"
   },
   "redo": {
-    "incomplete": true,
     "message": "Redo"
   },
   "reset": {
-    "incomplete": true,
     "message": "Reset"
   },
   "save": {
-    "incomplete": true,
     "message": "Save"
   },
   "rename": {
-    "incomplete": true,
     "message": "Rename"
   },
   "get_link": {
-    "incomplete": true,
-    "message": "Copy Shareable Link"
+    "message": "Share කිරීමට Link ඒක copy කරන්න."
   },
   "export_svg": {
-    "incomplete": true,
-    "message": "Export as PNG/SVG"
+    "message": "PNG/SVG ලෙස save කරන්න"
   },
   "view_gallery": {
-    "incomplete": true,
-    "message": "View Gallery"
+    "message": "Gallery බලන්න"
   },
   "save_name": {
-    "incomplete": true,
-    "message": "name"
+    "message": "නම"
   },
   "save_cancel": {
-    "incomplete": true,
-    "message": "Cancel"
+    "message": "අවලංගු කරන්න"
   },
   "save_description": {
     "incomplete": true,
     "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
   },
   "open": {
-    "incomplete": true,
-    "message": "Open"
+    "message": "විවෘත කරන්න"
   },
   "layoutaids": {
     "incomplete": true,
@@ -393,7 +353,6 @@ locales["si"] = {
     "message": "Lock Objects"
   },
   "showGrid": {
-    "incomplete": true,
     "message": "Grid"
   },
   "snapToGrid": {
@@ -412,19 +371,15 @@ locales["si"] = {
     "message": "තරංග ආයාමය (nm)"
   },
   "dichroic": {
-    "incomplete": true,
-    "message": "Dichroic"
+    "message": "ද්වි වර්ණ"
   },
   "filter": {
-    "incomplete": true,
-    "message": "Filter"
+    "message": "පෙරහන"
   },
   "bandwidth": {
-    "incomplete": true,
     "message": "Bandwidth (nm)"
   },
   "invert": {
-    "incomplete": true,
     "message": "Invert"
   },
   "emisAngle": {
@@ -435,12 +390,10 @@ locales["si"] = {
     "message": "Mirrored"
   },
   "lineDensity": {
-    "incomplete": true,
-    "message": "Lines/mm"
+    "message": "රේඛා/mm"
   },
   "slitRatio": {
-    "incomplete": true,
-    "message": "Slit width / line spacing"
+    "message": "ස්ලිට් පළල / රේඛා පරතරය"
   },
   "symmetric": {
     "message": "සමමිතික"
