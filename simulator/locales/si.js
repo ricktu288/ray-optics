@@ -429,8 +429,7 @@ locales["si"] = {
     "message": "Radii of Curvature"
   },
   "focal_distances": {
-    "incomplete": true,
-    "message": "Focal Distances"
+    "message": "නාභීය දුර"
   },
   "refIndex_origin": {
     "incomplete": true,
@@ -452,8 +451,7 @@ locales["si"] = {
     "message": "Lambertian"
   },
   "diameter": {
-    "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "විෂ්කම්භය (px)"
   },
   "irradMap": {
     "incomplete": true,
@@ -464,8 +462,7 @@ locales["si"] = {
     "message": "Bin Size (px)"
   },
   "scaleInterval": {
-    "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "පරිමාණ පරතරය (px)"
   },
   "exportData": {
     "incomplete": true,
@@ -476,110 +473,85 @@ locales["si"] = {
     "message": "Demodulize"
   },
   "fontSize": {
-    "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "අකුරු ප්‍රමාණය (px)"
   },
   "font": {
-    "incomplete": true,
-    "message": "Font"
+    "message": "අකුරු"
   },
   "fontStyle": {
-    "incomplete": true,
     "message": "Style"
   },
   "normal": {
-    "incomplete": true,
-    "message": "Normal"
+    "message": "සාමාන්‍ය අකුරු"
   },
   "bold": {
-    "incomplete": true,
-    "message": "Bold"
+    "message": "තද අකුරු"
   },
   "italic": {
-    "incomplete": true,
-    "message": "Italic"
+    "message": "ඇල අකුරු"
   },
   "bolditalic": {
-    "incomplete": true,
-    "message": "Bold Italic"
+    "message": "තද ඇල අකුරු"
   },
   "oblique": {
-    "incomplete": true,
-    "message": "Oblique"
+    "message": "ආනත අකුරු"
   },
   "boldoblique": {
-    "incomplete": true,
-    "message": "Bold Oblique"
+    "message": "තද ආනත අකුරු"
   },
   "alignment": {
-    "incomplete": true,
-    "message": "Alignment"
+    "message": "පෙළගැස්ම"
   },
   "left": {
-    "incomplete": true,
-    "message": "Left"
+    "message": "වම"
   },
   "center": {
-    "incomplete": true,
-    "message": "Centre"
+    "message": "මධ්‍ය"
   },
   "right": {
-    "incomplete": true,
-    "message": "Right"
+    "message": "දකුණ"
   },
   "text_here": {
-    "incomplete": true,
-    "message": "Text Here"
+    "message": "මෙතනින් ලියන්න"
   },
   "smallCaps": {
-    "incomplete": true,
     "message": "Small Caps"
   },
   "angle": {
     "message": "කෝණය (°)"
   },
   "arrow": {
-    "incomplete": true,
-    "message": "Forward arrow"
+    "message": "ඉදිරියට ඊතලය"
   },
   "backArrow": {
-    "incomplete": true,
-    "message": "Backward arrow"
+    "message": "පසුපසට ඊතලය"
   },
   "stop_drawing": {
-    "incomplete": true,
-    "message": "Finish Drawing"
+    "message": "ඇඳීම අවසන් කරන්න"
   },
   "cropBoxSize": {
-    "incomplete": true,
-    "message": "Crop Box Size"
+    "message": "කොටුව crop කරන්න"
   },
   "format": {
-    "incomplete": true,
-    "message": "Format"
+    "message": "ආකෘතිය"
   },
   "width": {
-    "incomplete": true,
-    "message": "Width"
+    "message": "පළල"
   },
   "rayCountLimit": {
-    "incomplete": true,
-    "message": "Ray count limit"
+    "message": "කිරණ ගණන සීමාව"
   },
   "beam_warning": {
-    "message": "අපසාරී/අහඹු කදම්භ සමඟ රූප හඳුනාගැනීම  ක්‍රියා නොකරයි."
+    "message": "අපසාරී/අහඹු කදම්භ සමඟ ප්‍රතිබිම්භ හඳුනාගැනීම ක්‍රියා නොකරයි."
   },
   "image_detection_warning": {
-    "incomplete": true,
-    "message": "This tool does not support image detection."
+    "message": "මෙම මෙවලම ප්‍රතිබිම්භ හඳුනා ගැනීමට සහාය නොදක්වයි."
   },
   "non_simulateColors_warning": {
-    "incomplete": true,
-    "message": "This tool only works when \"Simulate Color\" is on."
+    "message": "මෙම මෙවලම ක්‍රියා කරන්නේ \"වර්ණ අනුකරණය\" ක්‍රියාත්මක විට පමණි."
   },
   "brightness_note_popover": {
-    "incomplete": true,
-    "message": "<p>Only effective if 'Ray Density' is high enough.</p><p>To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.</p>"
+    "message": "<p>'කිරණ ඝනත්වය' ප්‍රමාණවත් තරම් ඉහළ නම් පමණක් ඵලදායී වේ.</p><p>විමෝචනය වන කිරණ සංඛ්‍යාව පාලනය කිරීමට, කරුණාකර ගෝලීය 'කිරණ ඝනත්වය' ස්ලයිඩරය සීරුමාරු කරන්න.</p>"
   },
   "refIndex_note_popover": {
     "message": "<p>*වෙනත් වීදුරුවක් ඇතුළත නම් සාපේක්ෂ</p><p>මෙම වස්තුව (නිරපේක්ෂ) වර්තන දර්ශකය n₁ සමඟ අනුකරණය කළ යුතු නමුත්, වර්තන දර්ශකය n₀ සහිත වෙනත් වීදුරුවක් තුළ තබා තිබේ නම්, ඔබ මෙහි වර්තන දර්ශකය n₁/n₀ ලෙස සැකසිය යුතුය. වීදුරු කිහිපයක් එකට අතිච්ඡාදනය වන වඩාත් සංකීර්ණ අවස්ථාවන්හිදී, අතිච්ඡාදනය වන කලාපයේ ඵලදායී පරාවර්තක දර්ශකය එක් එක් ඒවායේ පරාවර්තක දර්ශකවල ගුණිතයට සමාන වේ.</p>"
@@ -603,27 +575,22 @@ locales["si"] = {
     "message": "සම්ප්‍රේෂණ අනුපාතය"
   },
   "applytoall": {
-    "incomplete": true,
-    "message": "Apply to All"
+    "message": "සියල්ලටම අයදුම් කරන්න"
   },
   "duplicate": {
-    "incomplete": true,
-    "message": "Duplicate"
+    "message": "අනුපිටපත් කරන්න"
   },
   "delete": {
     "message": "මකන්න"
   },
   "unselect": {
-    "incomplete": true,
-    "message": "Unselect"
+    "message": "තේරීම ඉවත් කරන්න"
   },
   "unselect_popover": {
-    "incomplete": true,
-    "message": "Unselect this object (Right-click on blank space has the same function.)"
+    "message": "මෙම වස්තුව තේරීමෙන් ඉවත් කරන්න (හිස් අවකාශය මත දකුණු-ක්ලික් කීරීමෙන්ද කළ හැක)"
   },
   "showadvanced": {
-    "incomplete": true,
-    "message": "More options..."
+    "message": "තවත් විකල්පයන්..."
   },
   "processing": {
     "message": "සකසමින්... නතර කිරීමට මෙතන click කරන්න."
@@ -632,12 +599,10 @@ locales["si"] = {
     "message": "දායක වන්න"
   },
   "github": {
-    "incomplete": true,
     "message": "GitHub"
   },
   "about": {
-    "incomplete": true,
-    "message": "About"
+    "message": "මේ පිළිබඳව"
   },
   "about_url": {
     "message": "https://phydemo.app/ray-optics/about"
@@ -658,8 +623,7 @@ locales["si"] = {
     "message": "සියලු වෙනස්කම් Reset කරන්න."
   },
   "save_popover": {
-    "incomplete": true,
-    "message": "Save the current scene as a file."
+    "message": "වත්මන් දර්ශනය ගොනුවක්(file) ලෙස සුරකින්න."
   },
   "open_popover": {
     "incomplete": true,
@@ -703,160 +667,125 @@ locales["si"] = {
     "message": "ලක්ෂ්‍ය තුනකින් අර්ථ දක්වා ඇති රවුමක කොටසක් වන දර්පණයක්. (නිර්මාණය කිරීමට drag හෝ click කරන්න. පළමු ලක්ෂ්‍යය 2 චාපයේ දාර අතර පරතරය නිරූපණය කරයි, අවසාන ලක්ෂ්‍යය චාපයේ විශාලත්වය නිරූපණය කරයි.)"
   },
   "tool_ParabolicMirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
+    "message": "ලක්ෂ්‍ය තුනකින් අර්ථ දක්වා ඇති පැරබෝලා හැඩයක් ඇති කැඩපතකි. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_CustomMirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "අභිරුචි සමීකරණයකින් y = f(x) හැඩය නිර්වචනය කරන ලද කැඩපතක්, එහිදී (x,y) පාලන ලක්ෂ්‍ය දෙක (-1,0) සහ (1,0) වන පරිණාමනය වූ ඛණ්ඩාංකවල ඇත. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_BeamSplitter_popover": {
-    "incomplete": true,
-    "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
+    "message": "එන ආලෝකයේ ප්‍රතිශතයක් සම්ප්‍රේෂණය කරන කැඩපතක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_IdealMirror_popover": {
-    "incomplete": true,
-    "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
+    "message": "(1/p + 1/q = 1/f) දර්පණ සමීකරණයට ඒකග වන දර්ශීය 'වක්‍ර' දර්පණය. නාභීය දුර (පික්සල වලින්) සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_PlaneGlass_popover": {
-    "incomplete": true,
-    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
+    "message": "පෘෂ්ඨයක් මත ආලෝකයේ වර්තනය සහ පරාවර්තනය අනුකරණය කරන්න. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_CircleGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
+    "message": "රවුම් හැඩයක් සහිත වීදුරු, එහි කේන්ද්‍රය සහ මතුපිට ලක්ෂ්‍යයක් මගින් අර්ථ දක්වා ඇත. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_CircleGrinGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+    "message": "අභිරුචි වර්තන දර්ශක ශ්‍රිතයක් n(x,y) සහ චක්‍ර මායිමක් සහිත වීදුරු. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Glass_popover": {
-    "incomplete": true,
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+    "message": "රේඛා කොටස් සහ වෘත්තාකාර චාප වලින් සාදන ලද ඕනෑම හැඩයක් සහිත වීදුරු. (කොටසක් සෑදීමට ක්ලික් කරන්න, චාපයක් සෑදීමට අදින්න, ඇඳීම අවසන් කරන විට ආරම්භක ස්ථානය මත ක්ලික් කරන්න.)"
   },
   "tool_GrinGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
+    "message": "අභිරුචි වර්තන දර්ශක ශ්‍රිතයක් n(x,y) සහ බහුඅස්‍ර මායිමක් සහිත වීදුරු. අවවාදයයි: සරල බහුඅස්ර පමණක් සහාය දක්වයි, එසේ නොමැති නම් හැසිරීම අනපේක්ෂිත වේ. (කොටසක් සෑදීමට ක්ලික් කරන්න, ඇඳීම අවසන් වන විට ආරම්භක ස්ථානය මත ක්ලික් කරන්න.)"
   },
   "tool_IdealLens_popover": {
-    "incomplete": true,
-    "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length (in pixels) can be set directly. (Drag or click to create.)"
+    "message": "සිහින් කාච සමීකරණයට (1/p + 1/q = 1/f) අවනත වන දර්ශීය කාචයකි. නාභීය දුර (පික්සල වලින්) සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_SphericalLens_popover": {
-    "incomplete": true,
-    "message": "A spherical lens. (Click to create.)"
+    "message": "ගෝලාකාර කාචයක්. (නිර්මාණය කිරීමට ක්ලික් කරන්න.)"
   },
   "tool_CustomGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "අභිරුචි අසමානතාවයකින් අර්ථ දක්වා ඇති හැඩය සහිත වීදුරු f(x) &lt; y &lt; g(x), (x,y) යනු පාලන ලක්ෂ්‍ය දෙක (-1,0) සහ (1,0) වන පරිණාමනය කරන ලද ඛණ්ඩාංකවල ඇත. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Blocker_popover": {
-    "incomplete": true,
-    "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "රේඛීය ආලෝක අවහිරකයක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Aperture_popover": {
-    "incomplete": true,
-    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
+    "message": "ආලෝක අවහිරක යුගලයක්. කුහරයේ විශාලත්වය සමමිතිකව සකස් කළ හැක. (නිර්මාණය කිරීමට අන්ත ලක්ෂ්‍ය දෙක අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_CircleBlocker_popover": {
-    "incomplete": true,
-    "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "රවුම් ආලෝකය අවහිරකයක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_DiffractionGrating_popover": {
-    "incomplete": true,
-    "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
+    "message": "තරංග ආයාමය මත විවිධ කෝණවලින් ආලෝකය වර්තන කරන විවර්තන තලයක්. අවවාදයයි: විවර්තන කිරණවල තීව්‍රතාවය නිවැරදි නොවිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Ruler_popover": {
-    "incomplete": true,
-    "message": "A ruler from a point for zero and another point. The scale is in pixels. (Drag or click to create.)"
+    "message": "පරිමාණය පික්සල වලින් ඇති රූලක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Protractor_popover": {
-    "incomplete": true,
-    "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+    "message": "පරිමාණය අංශක වලින් ඇති කෝණමානයක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Detector_popover": {
-    "incomplete": true,
-    "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
+    "message": "ශක්ති ප්‍රවාහයේ වේගය (P), ලම්බක ගම්‍යතා ප්‍රවාහයේ වේගය (F⊥) සහ රේඛා ඛණ්ඩයක් හරහා සමාන්තර ගම්‍යතා ප්‍රවාහයේ වේගය (F∥) මැනීම සඳහා මෙවලමකි. (රේඛා ඛණ්ඩය සෑදීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_TextLabel_popover": {
     "incomplete": true,
     "message": "A text label."
   },
   "tool_LineArrow_popover": {
-    "incomplete": true,
-    "message": "A line segment or arrow. (Drag or click to create.)"
+    "message": "රේඛා ඛණ්ඩයක් හෝ ඊතලයක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Drawing_popover": {
-    "incomplete": true,
-    "message": "A freehand drawing tool. (Drag to draw.)"
+    "message": "නිදහස් අතින් ඇඳීමේ මෙවලමක්. (ඇඳීමට ඇදගෙන යන්න.)"
   },
   "tool__popover": {
-    "incomplete": true,
-    "message": "Drag to move the view. (Mouse right button drag has the same function.)"
+    "message": "දසුන ගෙනයාමට අදින්න. (Mouse right button dragට සමානවේ.)"
   },
   "mode_rays_popover": {
-    "incomplete": true,
-    "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
+    "message": "කිරණ පෙන්වන්න. 'කිරණ ඝනත්වය' වැඩි වූ විට ඒවා අඛණ්ඩව පවතින බව පෙනේ."
   },
   "mode_extended_popover": {
-    "incomplete": true,
-    "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    "message": "කිරණ සහ එහි දිගු දෙකම පෙන්වන්න. තැඹිලි මගින් පසුගාමී දිගුවන් සහ අළු යනු මගින් ඉදිරි දිගුවන් පෙන්නුම් කරයි<br>'වර්ණ අනුකරණය' සක්‍රීය කර ඇති විට, ඒවා ප්‍රභව වර්ණවලින් පෙන්වයි."
   },
   "mode_images_popover": {
-    "incomplete": true,
-    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    "message": "සියලුම ප්‍රතිබිම්භ පිහිටීම පෙන්වන්න. කහ පැහැති ලක්ෂ්‍ය තාත්වික ප්‍රතිබිම්භ ද, තැඹිලි පැහැයෙන් අතාත්වික ප්‍රතිබිම්භ ද, අළු (මෙම පින්තූරයේ කිසිවක් නැත) අථත්‍ය වස්තු ද දක්වයි. 'කිරණ ඝනත්වය' ප්‍රමාණවත් නොවේ නම් සමහර පින්තූර අනාවරණය කර ගත නොහැකි බව සලකන්න.<br>'වර්ණ අනුකරණය' ක්‍රියාත්මක වන විට, ඒවා ප්‍රභව වර්ණවලින් පෙන්වන අතර ඒ වෙනුවට තිත් ප්‍රමාණයෙන් වෙන්කර හඳුනා ගනී."
   },
   "mode_observer_popover": {
-    "incomplete": true,
-    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+    "message": "යම් ස්ථානයක සිට දකින කිරණ සහ රූප අනුකරණය කරන්න. නිල් කවය නිරීක්ෂකයා වේ. එය හරහා යන ඕනෑම කිරණ 'නිරීක්ෂණය' ලෙස සැලකේ. කිරණ ඇත්ත වශයෙන්ම ආරම්භ වන්නේ කොතැනින්ද යන්න නිරීක්ෂකයා නොදනී, නමුත් ඒවා යම් ස්ථානයක ඡේදනය වුවහොත් ඒවා ආරම්භ වන්නේ යැයි සිතිය හැකිය. කිරණ නිල් පැහැයෙන් ද, ලක්ෂ්‍ය කහ (තාත්වික ප්‍රතිබිම්භ) හෝ තැඹිලි (අතාත්වික ප්‍රතිබිම්භ) ලෙස ද දැක්වේ. (නිරීක්ෂකයා ගෙන යාමට විශාල නිල් තිත අදින්න.)<br>'වර්ණ අනුකරණය' ක්‍රියාත්මක විට, ඒ වෙනුවට ඒවා ප්‍රභව වර්ණවලින් පෙන්වනු ලැබේ."
   },
   "simulateColors_popover": {
     "incomplete": true,
     "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
   },
   "rayDensity_popover": {
-    "incomplete": true,
-    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
+    "message": "කදම්භ සහ ලක්ෂ්‍ය මූලාශ්‍ර මගින් විමෝචනය කළ යුතු කිරණ ගණන තීරණය කරයි. මෙය රූප හඳුනාගැනීමේ සහ වර්ණ විදැහුම්කරණයේ නිරවද්‍යතාවයට ද බලපායි."
   },
   "showGrid_popover": {
-    "incomplete": true,
-    "message": "Defines the visibility of the background grid."
+    "message": "පසුබිම් ජාලයේ දෘශ්‍යතාව නිර්ණය."
   },
   "grid_popover": {
-    "incomplete": true,
-    "message": "Defines whether to snap to grid."
+    "message": "Grid එකට snap කළ යුතුද යන්න නිර්ණය."
   },
   "lockObjs_popover": {
-    "incomplete": true,
-    "message": "Defines whether the objects can be moved or not."
+    "message": "වස්තු චලනය කළ හැකිද නැද්ද යන්න නිර්ණය."
   },
   "zoom_popover": {
-    "incomplete": true,
-    "message": "Zoom the view with percentage."
+    "message": "දර්ශනය ප්‍රතිශතයක් සමඟ විශාලනය කරන්න."
   },
   "help_popover": {
     "incomplete": true,
     "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
-    "incomplete": true,
-    "message": "Show help popups"
+    "message": "උදවු popup පෙන්වන්න"
   },
   "show_help_popups_popover": {
-    "incomplete": true,
-    "message": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+    "message": "බොත්තම් මත සැරිසරන විට උපකාර popup පෙන්විය යුතුද යන්න නිර්ණය. (බලපෑමට පිටුව refresh කරන්න.)"
   },
   "show_json_editor": {
-    "incomplete": true,
-    "message": "Show JSON editor<sup>Beta</sup>"
+    "message": "JSON editor පෙන්වන්න<sup>Beta</sup>"
   },
   "show_json_editor_popover": {
     "incomplete": true,
     "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
   },
   "show_status": {
-    "incomplete": true,
-    "message": "Show status box"
+    "message": "Status box පෙන්වන්න"
   },
   "show_status_popover": {
     "incomplete": true,
@@ -875,72 +804,56 @@ locales["si"] = {
     "message": "The scene is too large to sync with URL. Please save it manually."
   },
   "gridSize": {
-    "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "ජාලක ප්‍රමාණය (px)"
   },
   "observer_size": {
-    "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "නිරීක්ෂකයාගේ ප්‍රමාණය (px)"
   },
   "language": {
-    "incomplete": true,
-    "message": "Language"
+    "message": "භාෂාව"
   },
   "close": {
-    "incomplete": true,
-    "message": "Close"
+    "message": "වසන්න"
   },
   "advanced_help": {
-    "incomplete": true,
-    "message": "For advanced help, see the help icon in the lower-right corner."
+    "message": "වැඩිදුර උදව් සඳහා, පහළ-දකුණු කෙළවරේ ඇති help icon බලන්න."
   },
   "ray_count": {
-    "incomplete": true,
-    "message": "Number of ray segments: "
+    "message": "කිරණ කොටස් සංඛ්‍යාව: "
   },
   "total_truncation": {
-    "incomplete": true,
-    "message": "Truncated brightness: "
+    "message": "කපා දැමූ දීප්තිය: "
   },
   "time_elapsed": {
-    "incomplete": true,
-    "message": "Time elapsed (ms): "
+    "message": "ගතවූ කාලය (ms): "
   },
   "force_stopped": {
-    "incomplete": true,
-    "message": "Force stopped."
+    "message": "බලහත්කාරයෙන් නතර විය."
   },
   "mouse_coordinates": {
-    "incomplete": true,
-    "message": "Mouse coordinates: "
+    "message": "Mouse ඛණ්ඩාංක: "
   },
   "modules_tutorial": {
     "incomplete": true,
     "message": "Make custom modules"
   },
   "modules_tutorial_url": {
-    "incomplete": true,
     "message": "https://phydemo.app/ray-optics/modules/tutorial"
   },
   "identical_optical_objects_warning": {
-    "incomplete": true,
-    "message": "There are two identical optical elements in the scene that overlap completely."
+    "message": "දර්ශනයේ සම්පූර්ණයෙන්ම අතිච්ඡාදනය වන සමාන දෘශ්‍ය මූලද්‍රව්‍ය දෙකක් ඇත."
   },
   "import_modules": {
-    "incomplete": true,
     "message": "<i>Import Modules...</i>"
   },
   "import_modules_title": {
-    "incomplete": true,
     "message": "Import Modules"
   },
   "modules_url": {
-    "incomplete": true,
     "message": "../modules/modules.html"
   },
   "remove_module": {
-    "incomplete": true,
-    "message": "Remove module"
+    "message": "module ඉවත් කරන්න"
   },
   "module_conflict": {
     "incomplete": true,
