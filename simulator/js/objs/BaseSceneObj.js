@@ -222,8 +222,9 @@ class BaseSceneObj {
   /**
    * @typedef {Object} SimulationReturn
    * @property {boolean} [isAbsorbed] - Whether the object absorbs the ray.
-   * @property {Array<Ray>} [newRays] - The new rays to be added to the scene.
-   * @property {number} [truncation] - The brightness of truncated rays due to numerical cutoff.
+   * @property {Array<Ray>} [newRays] - The new rays to be added.
+   * @property {number} [truncation] - The brightness of truncated rays due to numerical cutoff (e.g. after a large number of partial internal reflections within a glass). This is used to estimate the error of the simulation.
+   * @property {number} [brightnessScale] - The actual brightness of the ray divided by the brightness inferred from the properties of the object. This should be 1 when "ray density" is high enough. When "ray density" is low, the calculated brightness of the individual rays will be too high (alpha value for rendering will be larger than 1). In this case, the object should rescale all the brightness of the rays by a factor to keep the maximum alpha value to be 1. This factor should be returned here and is used to generate warnings.
    */
 
   /**

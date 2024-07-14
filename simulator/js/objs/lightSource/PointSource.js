@@ -96,7 +96,8 @@ objTypes['PointSource'] = class extends BaseSceneObj {
     }
 
     return {
-      newRays: newRays
+      newRays: newRays,
+      brightnessScale: Math.min(this.brightness / this.scene.rayDensity, 1) / (this.brightness / this.scene.rayDensity)
     };
   }
 };

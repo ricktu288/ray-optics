@@ -812,5 +812,8 @@ locales["en"] = {
   },
   "module_conflict": {
     "message": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+  },
+  "brightness_inconsistent_warning": {
+    "message": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources."
   }
 }

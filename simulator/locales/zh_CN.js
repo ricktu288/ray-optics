@@ -812,5 +812,8 @@ locales["zh-CN"] = {
   },
   "module_conflict": {
     "message": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
+  },
+  "brightness_inconsistent_warning": {
+    "message": "有至少两个光源的亮度以不一致的比例达到饱和。这可能会导致探测器的读数与色彩渲染错误。请提高光线密度或降低光源亮度。"
   }
 }

@@ -812,5 +812,8 @@ locales["zh-TW"] = {
   },
   "module_conflict": {
     "message": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。"
+  },
+  "brightness_inconsistent_warning": {
+    "message": "有至少兩個光源的亮度以不一致的比例達到飽和。這可能會導致探測器的讀數與色彩渲染錯誤。請提高光線密度或降低光源亮度。"
   }
 }

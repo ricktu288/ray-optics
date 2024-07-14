@@ -479,6 +479,14 @@ function updateErrorAndWarning() {
     warnings.push("Scene: " + scene.warning);
   }
 
+  if (simulatorError) {
+    errors.push("Simulator: " + simulatorError);
+  }
+
+  if (simulatorWarning) {
+    warnings.push("Simulator: " + simulatorWarning);
+  }
+
   for (let i in scene.objs) {
     let error = scene.objs[i].getError();
     if (error) {

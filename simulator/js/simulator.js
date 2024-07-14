@@ -12,6 +12,7 @@ var stateOutdated = false; // The state has changed since last draw
 var minShotLength = 1e-6; // The minimal length between two interactions with rays (when smaller than this, the interaction will be ignored)
 var minShotLength_squared = minShotLength * minShotLength;
 var totalTruncation = 0;
+var brightnessScale = 0; // 0 if undetermined, -1 if inconsistent, otherwise the brightness scale.
 var canvasRenderer;
 
 const UV_WAVELENGTH = 380;
@@ -30,6 +31,7 @@ function draw(skipLight, skipGrid)
   
   if (!skipLight) {
     totalTruncation = 0;
+    brightnessScale = 0;
     //clearError();
     //clearWarning();
     drawBeginTime = new Date();
@@ -156,6 +158,13 @@ function draw_(skipLight, skipGrid) {
           if (ret.truncation) {
             totalTruncation += ret.truncation;
           }
+          if (ret.brightnessScale) {
+            if (brightnessScale == 0) {
+              brightnessScale = ret.brightnessScale;
+            } else if (brightnessScale != ret.brightnessScale) {
+              brightnessScale = -1;
+            }
+          }
         }
       }
     }
@@ -236,6 +245,8 @@ function shootWaitingRays() {
       document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
       draw(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
+
+      simulatorCheck();
       return;
     }
     if (isExporting && shotRayCount > exportRayCountLimit)
@@ -639,10 +650,31 @@ function shootWaitingRays() {
 
   
   draw(true, true);
-  
 
+  simulatorCheck();
 }
 
+let simulatorWarning = null;
+let simulatorError = null;
+
+function simulatorCheck() {
+  if (brightnessScale == -1) {
+    let hasDetector = false;
+    for (let obj of scene.opticalObjs) {
+      if (obj instanceof objTypes["Detector"]) {
+        hasDetector = true;
+        break;
+      }
+    }
+    if (hasDetector || scene.simulateColors) {
+      simulatorWarning = getMsg("brightness_inconsistent_warning");
+    } else {
+      simulatorWarning = null;
+    }
+  } else {
+    simulatorWarning = null;
+  }
+}
 
 
 

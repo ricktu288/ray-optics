@@ -89,7 +89,8 @@ objTypes['AngleSource'] = class extends LineObjMixin(BaseSceneObj) {
     }
 
     return {
-      newRays: newRays
+      newRays: newRays,
+      brightnessScale: Math.min(this.brightness / this.scene.rayDensity, 1) / (this.brightness / this.scene.rayDensity)
     };
   }
 };
