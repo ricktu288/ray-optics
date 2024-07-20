@@ -5,6 +5,8 @@
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} lineDensity - The number of lines per millimeter.
+ * @property {boolean} customBrightness - Whether the output brightness are customized.
+ * @property {number[]} brightnesses - The brightnesses of the diffracted rays for m = 0, 1, -1, 2, -2, ... when `customBrightness` is true. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0.
  * @property {number} slitRatio - The ratio of the slit width to the line interval.
  * @property {boolean} mirrored - Whether the diffraction grating is reflective.
  */
@@ -15,6 +17,8 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
     p1: null,
     p2: null,
     lineDensity: 1000,
+    customBrightness: false,
+    brightnesses: [1, 0.5, 0.5],
     slitRatio: 0.5,
     mirrored: false
   };
@@ -24,7 +28,15 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
       obj.lineDensity = value;
     });
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['slitRatio']))) {
+    objBar.createBoolean(getMsg('customBrightness'), this.customBrightness, function (obj, value) {
+      obj.customBrightness = value;
+    }, getMsg('customBrightness_note_popover'), true);
+
+    if (this.customBrightness) {
+      objBar.createTuple('', this.brightnesses.join(', '), function (obj, value) {
+        obj.brightnesses = value.split(',').map(parseFloat);
+      });
+    } else if (objBar.showAdvanced(!this.arePropertiesDefault(['slitRatio']))) {
       objBar.createNumber(getMsg('slitRatio'), 0, 1, 0.001, this.slitRatio, function (obj, value) {
         obj.slitRatio = value;
       });
@@ -57,7 +69,11 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
     ctx.lineWidth = 2;
     ctx.lineCap = 'butt';
     ctx.beginPath();
-    ctx.setLineDash([4 * (1 - this.slitRatio), 4 * this.slitRatio]);
+    if (this.customBrightness) {
+      ctx.setLineDash([2, 2]);
+    } else {
+      ctx.setLineDash([4 * (1 - this.slitRatio), 4 * this.slitRatio]);
+    }
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
@@ -115,11 +131,21 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
       var rot_s = Math.sin(mirror * (-Math.PI / 2 - diffracted_angle));
       var diffracted_ray = geometry.line(incidentPoint, geometry.point(incidentPoint.x + (left_point.x - incidentPoint.x) * rot_c - (left_point.y - incidentPoint.y) * rot_s, incidentPoint.y + (left_point.x - incidentPoint.x) * rot_s + (left_point.y - incidentPoint.y) * rot_c));
 
-      var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
-      var sinc_arg = (phase_diff == 0) ? 1 : Math.sin(phase_diff / 2) / (phase_diff / 2);
+      // Calculate intensity
+      if (this.customBrightness) {
+        var intensity = this.brightnesses[m<=0 ? -2*m : 2*m-1] || 0;
+      } else {
+        // Treat the gratings as a blocker with slits
+        var phase_diff = 2 * Math.PI * slit_width / wavelength * (Math.sin(incidence_angle) - Math.sin(diffracted_angle))
+        var sinc_arg = (phase_diff == 0) ? 1 : Math.sin(phase_diff / 2) / (phase_diff / 2);
 
-      // This formula may not be accurate when `diffracted_angle` is large. This is warned in the popover of the tool.
-      var intensity = slit_width * slit_width / (interval * interval) * Math.pow(sinc_arg, 2);
+        // This formula may not be accurate when `diffracted_angle` is large. This is warned in the popover of the tool.
+        var intensity = slit_width * slit_width / (interval * interval) * Math.pow(sinc_arg, 2);
+      }
+
+      if (intensity == 0) {
+        continue;
+      }
       
       diffracted_ray.wavelength = ray.wavelength;
       diffracted_ray.brightness_s = ray.brightness_s * intensity;

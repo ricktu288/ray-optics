@@ -381,6 +381,12 @@ locales["zh-TW"] = {
   "slitRatio": {
     "message": "狹縫寬度 / 線間距"
   },
+  "customBrightness": {
+    "message": "自訂亮度"
+  },
+  "customBrightness_note_popover": {
+    "message": "啟用時，繞射光的亮度將由一數值陣列來決定，對應到 m = 0, 1, -1, 2, -2, ...。這些數字為相對於入射光的亮度。陣列中沒有的數值將被設為 0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光線與入射光的亮度相同，m=1 與 m=-1 的光線為入射光的一半，其他光線則被忽略。"
+  },
   "symmetric": {
     "message": "對稱"
   },

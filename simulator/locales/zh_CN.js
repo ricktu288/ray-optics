@@ -381,6 +381,12 @@ locales["zh-CN"] = {
   "slitRatio": {
     "message": "狭缝宽度 / 线间距"
   },
+  "customBrightness": {
+    "message": "自定义亮度"
+  },
+  "customBrightness_note_popover": {
+    "message": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, ...。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。"
+  },
   "symmetric": {
     "message": "对称"
   },

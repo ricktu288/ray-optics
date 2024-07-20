@@ -432,6 +432,14 @@ locales["fr"] = {
     "incomplete": true,
     "message": "Slit width / line spacing"
   },
+  "customBrightness": {
+    "incomplete": true,
+    "message": "Custom Brightness"
+  },
+  "customBrightness_note_popover": {
+    "incomplete": true,
+    "message": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, .... The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored."
+  },
   "symmetric": {
     "incomplete": true,
     "message": "Symmetric"
