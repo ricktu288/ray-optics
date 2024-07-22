@@ -467,6 +467,18 @@ locales["ja"] = {
     "incomplete": false,
     "message": "グリッドにスナップ"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "incomplete": false,
     "message": "明るさ"
@@ -577,7 +589,7 @@ locales["ja"] = {
   },
   "diameter": {
     "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Diameter"
   },
   "irradMap": {
     "incomplete": true,
@@ -585,11 +597,11 @@ locales["ja"] = {
   },
   "binSize": {
     "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Bin Size"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "incomplete": true,
@@ -601,7 +613,7 @@ locales["ja"] = {
   },
   "fontSize": {
     "incomplete": false,
-    "message": "フォントサイズ (px)"
+    "message": "フォントサイズ"
   },
   "font": {
     "incomplete": false,
@@ -860,7 +872,7 @@ locales["ja"] = {
   },
   "tool_IdealMirror_popover": {
     "incomplete": false,
-    "message": "ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
+    "message": "ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },
   "tool_PlaneGlass_popover": {
     "incomplete": false,
@@ -884,7 +896,7 @@ locales["ja"] = {
   },
   "tool_IdealLens_popover": {
     "incomplete": false,
-    "message": "薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離 (ピクセル単位) を直接設定できます。 (ドラッグまたはクリックして作成します。)"
+    "message": "薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離を直接設定できます。 (ドラッグまたはクリックして作成します。)"
   },
   "tool_SphericalLens_popover": {
     "incomplete": false,
@@ -912,7 +924,7 @@ locales["ja"] = {
   },
   "tool_Ruler_popover": {
     "incomplete": false,
-    "message": "ゼロと別の点の点からの定規。 スケールはピクセル単位です。 (ドラッグまたはクリックして作成します。)"
+    "message": "ゼロと別の点の点からの定規。 (ドラッグまたはクリックして作成します。)"
   },
   "tool_Protractor_popover": {
     "incomplete": false,
@@ -980,7 +992,7 @@ locales["ja"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>ドラッグの制限</b><p>オブジェクトをドラッグするとき、Shift キーを押したままにすると、水平/垂直に制限されます。 Ctrl キーを押したままクローンを作成します。 線状のオブジェクトを作成するか、その端点をドラッグする場合、Shift キーを押したまま角度をロックするか、0°、45°、90° にスナップします。 Ctrl キーを押したままにして、中心を中心に回転/スケールします。</p><b>オブジェクトをグループ化、回転、スケールする</b><p> Ctrl キーを押しながら、いくつかのコントロール ポイント (端点など) をクリックし、空のスペースをクリックしてグループ化します。 をポイントしてハンドルを作成します。 ハンドルをドラッグして (または矢印キーを押して)、グループを移動します。 Shift キーを押しながらドラッグすると、水平/垂直に制限されます。 Ctrl+ドラッグして回転させ、Ctrl+Shift+ドラッグして拡大縮小します。 「+」をドラッグして回転/スケーリングの中心を設定します。 ハンドルをクリックし、Ctrl+D を押してグループを複製します。 グループを解除するには、[削除]を押します。 </p><b>座標を直接編集する</b><p>オブジェクトの制御点 (エンドポイントなど) をダブルクリックまたは右クリックし、(x,y) 座標をピクセル単位で編集し、Enter キーを押します。 </p><b>キーボード ショートカット</b><p>オブジェクトをクリックして選択したら、矢印キーを押して移動します。 Ctrl+D を押して複製します。 Deleteキーで削除できます。</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>ドラッグの制限</b><p>オブジェクトをドラッグするとき、Shift キーを押したままにすると、水平/垂直に制限されます。 Ctrl キーを押したままクローンを作成します。 線状のオブジェクトを作成するか、その端点をドラッグする場合、Shift キーを押したまま角度をロックするか、0°、45°、90° にスナップします。 Ctrl キーを押したままにして、中心を中心に回転/スケールします。</p><b>オブジェクトをグループ化、回転、スケールする</b><p> Ctrl キーを押しながら、いくつかのコントロール ポイント (端点など) をクリックし、空のスペースをクリックしてグループ化します。 をポイントしてハンドルを作成します。 ハンドルをドラッグして (または矢印キーを押して)、グループを移動します。 Shift キーを押しながらドラッグすると、水平/垂直に制限されます。 Ctrl+ドラッグして回転させ、Ctrl+Shift+ドラッグして拡大縮小します。 「+」をドラッグして回転/スケーリングの中心を設定します。 ハンドルをクリックし、Ctrl+D を押してグループを複製します。 グループを解除するには、[削除]を押します。 </p><b>座標を直接編集する</b><p>オブジェクトの制御点 (エンドポイントなど) をダブルクリックまたは右クリックし、(x,y) 座標を編集し、Enter キーを押します。 </p><b>キーボード ショートカット</b><p>オブジェクトをクリックして選択したら、矢印キーを押して移動します。 Ctrl+D を押して複製します。 Deleteキーで削除できます。</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "incomplete": true,
@@ -1020,11 +1032,11 @@ locales["ja"] = {
   },
   "gridSize": {
     "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Grid Size"
   },
   "observer_size": {
     "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Observer Size"
   },
   "language": {
     "incomplete": true,

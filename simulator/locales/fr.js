@@ -398,6 +398,18 @@ locales["fr"] = {
   "snaptogrid": {
     "message": "Attacher à la grille"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "message": "Luminosité"
   },
@@ -500,7 +512,7 @@ locales["fr"] = {
   },
   "diameter": {
     "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Diameter"
   },
   "irradMap": {
     "incomplete": true,
@@ -508,11 +520,11 @@ locales["fr"] = {
   },
   "binSize": {
     "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Bin Size"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "incomplete": true,
@@ -524,7 +536,7 @@ locales["fr"] = {
   },
   "fontSize": {
     "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "Font Size"
   },
   "font": {
     "incomplete": true,
@@ -770,7 +782,7 @@ locales["fr"] = {
     "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
   },
   "tool_IdealMirror_popover": {
-    "message": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
+    "message": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_PlaneGlass_popover": {
     "message": "Simule la réfraction et la reflexion de la lumière sur une surface. (Glisser ou cliquer pour le créer.)"
@@ -790,7 +802,7 @@ locales["fr"] = {
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_IdealLens_popover": {
-    "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale (en pixels) peut être défini directement. (Glisser ou cliquer pour le créer.)"
+    "message": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale peut être défini directement. (Glisser ou cliquer pour le créer.)"
   },
   "tool_SphericalLens_popover": {
     "incomplete": true,
@@ -816,7 +828,7 @@ locales["fr"] = {
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_Ruler_popover": {
-    "message": "Une règle de zéro à un autre point. L'échelle est en pixels. (Glisser ou cliquer pour le créer.)"
+    "message": "Une règle de zéro à un autre point. (Glisser ou cliquer pour le créer.)"
   },
   "tool_Protractor_popover": {
     "message": "Un rapporteur défini par le centre et un autre point pour la direction zero. L'echelle est en degrès. (Glisser ou cliquer pour le créer.)"
@@ -876,7 +888,7 @@ locales["fr"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates , then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "incomplete": true,
@@ -916,11 +928,11 @@ locales["fr"] = {
   },
   "gridSize": {
     "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Grid Size"
   },
   "observer_size": {
     "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Observer Size"
   },
   "language": {
     "incomplete": true,

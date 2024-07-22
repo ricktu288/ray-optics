@@ -351,6 +351,15 @@ locales["zh-TW"] = {
   "snaptogrid": {
     "message": "對齊格線"
   },
+  "length_unit_popover": {
+    "message": "本模擬器中的長度單位（除波長外）為一個任意單位。您可將其視為任何物理單位（例如毫米），只要在整個模擬中保持一致。如果單位看起來太小或太大，請調整設定->長度尺度。"
+  },
+  "lengthScale": {
+    "message": "長度尺度<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "message": "如果將預設的長度單位視為常見的物理單位（例如毫米）時，模擬的物理系統看起來太小或太大，則可以使用此比例來縮放場景中的外觀（例如線寬）。"
+  },
   "brightness": {
     "message": "亮度"
   },
@@ -433,16 +442,16 @@ locales["zh-TW"] = {
     "message": "朗伯"
   },
   "diameter": {
-    "message": "直徑 (px)"
+    "message": "直徑"
   },
   "irradMap": {
     "message": "輻照度圖"
   },
   "binSize": {
-    "message": "組距 (px)"
+    "message": "組距"
   },
   "scaleInterval": {
-    "message": "刻度間距 (px)"
+    "message": "刻度間距"
   },
   "exportData": {
     "message": "匯出數據"
@@ -451,7 +460,7 @@ locales["zh-TW"] = {
     "message": "取消模組化"
   },
   "fontSize": {
-    "message": "字型大小 (px)"
+    "message": "字型大小"
   },
   "font": {
     "message": "字型"
@@ -646,7 +655,7 @@ locales["zh-TW"] = {
     "message": "能穿透一個比例的光的鏡子。（拖曳或點擊以創建。）"
   },
   "tool_IdealMirror_popover": {
-    "message": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距(單位為像素)。（拖曳或點擊以創建。）"
+    "message": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距。（拖曳或點擊以創建。）"
   },
   "tool_PlaneGlass_popover": {
     "message": "模擬光線經過透光物體界面時的反射與折射。（拖曳或點擊以創建。）"
@@ -664,7 +673,7 @@ locales["zh-TW"] = {
     "message": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。警告：僅支援簡單多邊形，否則行為無法預測。（點擊以建立線段，點擊一開始的點以結束繪製。）"
   },
   "tool_IdealLens_popover": {
-    "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距(單位為像素)。（曳或點擊以創建。）"
+    "message": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距。（曳或點擊以創建。）"
   },
   "tool_SphericalLens_popover": {
     "message": "球面透鏡。（點擊以創建。）"
@@ -685,7 +694,7 @@ locales["zh-TW"] = {
     "message": "將光線依波長分割成不同角度的繞射光柵。注意：繞射光的強度可能不準確。（拖曳或點擊以創建。）"
   },
   "tool_Ruler_popover": {
-    "message": "指定原點與另一點。刻度單位為像素。（拖曳或點擊以創建。）"
+    "message": "指定原點與另一點。（拖曳或點擊以創建。）"
   },
   "tool_Protractor_popover": {
     "message": "指定圓心和圓周上一點作為零度位置。刻度單位為度。（拖曳或點擊以創建。）"
@@ -736,7 +745,7 @@ locales["zh-TW"] = {
     "message": "透過百分比縮放視窗。"
   },
   "help_popover": {
-    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標（單位為像素），然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</p><b>聯絡我們</b><p>建議使用 GitHub 上的 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> 或 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> 功能（請使用英文）。若您對 GitHub 不熟，也可發送電子郵件至 <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a>（可使用中文）。</p><p>也歡迎直接進行貢獻（見<a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">貢獻指南</a>）。</p>"
+    "message": "<b>限制拖曳行為</b><p>拖曳物件時，按住 Shift 以限制於水平或垂直移動；按住 Ctrl 以複製物件。建立線型物件或拖曳其端點時，按住 Shift 以鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 以對於中心點旋轉或縮放。</p><b>群組、旋轉及縮放物件</b><p>按住 Ctrl，點擊多個控制點（如端點），並點擊空白處以將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）以平移群組；Shift+拖曳以限制於水平或垂直移動；Ctrl+拖曳以旋轉；Ctrl+Shift+拖曳以縮放。移動「+」以設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 以複製群組；按 Delete 以解散群組。</p><b>直接編輯座標</b><p>對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標，然後按 Enter。</p><b>鍵盤快速鍵</b><p>當一物件在被選取的狀態（被點擊）時，按方向鍵以移動；Ctrl+D 以複製；Delete 以刪除。</p><b>聯絡我們</b><p>建議使用 GitHub 上的 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> 或 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> 功能（請使用英文）。若您對 GitHub 不熟，也可發送電子郵件至 <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a>（可使用中文）。</p><p>也歡迎直接進行貢獻（見<a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">貢獻指南</a>）。</p>"
   },
   "show_help_popups": {
     "message": "顯示提示泡泡"
@@ -766,10 +775,10 @@ locales["zh-TW"] = {
     "message": "本場景過大，無法與網址同步。請自行儲存場景。"
   },
   "gridSize": {
-    "message": "格線大小 (px)"
+    "message": "格線大小"
   },
   "observer_size": {
-    "message": "觀察者大小 (px)"
+    "message": "觀察者大小"
   },
   "language": {
     "message": "語言"

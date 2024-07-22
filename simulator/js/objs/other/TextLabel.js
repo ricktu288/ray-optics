@@ -4,7 +4,7 @@
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} text - The text content.
- * @property {number} fontSize - The font size in CSS pixels.
+ * @property {number} fontSize - The font size.
  * @property {string} font - The font name.
  * @property {string} fontStyle - The font style.
  * @property {string} alignment - The font alignment.

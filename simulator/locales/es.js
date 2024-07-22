@@ -357,6 +357,18 @@ locales["es"] = {
   "snaptogrid": {
     "message": "Ajustar a la cuadrícula"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "message": "Brillo"
   },
@@ -446,17 +458,17 @@ locales["es"] = {
     "message": "Lambertiana"
   },
   "diameter": {
-    "message": "Diámetro (px)"
+    "message": "Diámetro"
   },
   "irradMap": {
     "message": "Mapa de irradiación"
   },
   "binSize": {
-    "message": "Tamaño del contenedor (px)"
+    "message": "Tamaño del contenedor"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "message": "Exportar datos"
@@ -466,7 +478,7 @@ locales["es"] = {
     "message": "Demodulize"
   },
   "fontSize": {
-    "message": "Tamaño de fuente (px)"
+    "message": "Tamaño de fuente"
   },
   "font": {
     "message": "Fuente"
@@ -666,7 +678,7 @@ locales["es"] = {
     "message": "Un espejo que transmite un porcentaje de la luz incidente. (Arrastre o clique para crear.)"
   },
   "tool_IdealMirror_popover": {
-    "message": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal (en pixels) puede establecerse directamente. (Arrastre o clique para crear.)"
+    "message": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal puede establecerse directamente. (Arrastre o clique para crear.)"
   },
   "tool_PlaneGlass_popover": {
     "message": "Simular la refracción y la reflexión de luz sobre una superficie. (Arrastre o clique para crear.)"
@@ -684,7 +696,7 @@ locales["es"] = {
     "message": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal. ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible. (Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.)"
   },
   "tool_IdealLens_popover": {
-    "message": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal (en pixels) se puede establecer directamente. (Arrastre o clique para crear.)"
+    "message": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal se puede establecer directamente. (Arrastre o clique para crear.)"
   },
   "tool_SphericalLens_popover": {
     "message": "Una lente esférica. (Click para crear.)"
@@ -706,7 +718,7 @@ locales["es"] = {
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_Ruler_popover": {
-    "message": "Una regla desde un punto cero hasta otro punto. La escala está en pixels. (Arrastre o clique para crear.)"
+    "message": "Una regla desde un punto cero hasta otro punto. (Arrastre o clique para crear.)"
   },
   "tool_Protractor_popover": {
     "message": "Un transportador definido desde el centro y otro punto para la dirección cero. La escala está en grados. (Arrastre o clique para crear.)"
@@ -758,7 +770,7 @@ locales["es"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>Arrastre restringido</b><p>Cuando arrastre un objeto, presione Shift para limitar a horizontal/vertical; presione Ctrl para clonar. Cuando cree un objeto lineal o arrastre sus puntos extremales, presione Shift para bloquear el ángulo o fijarlo a 0°, 45°, 90°; presione Ctrl para rotar/escalar sobre su centro.</p><b>Agrupar, rotar y escalar objetos</b><p> Presione Ctrl, clique múltiples puntos de control (por ejemplo, puntos extremales), después clique en un espacio vacío para agrupar estos puntos y crear un punto de manejo. Arrastre el punto de manejo (o presione las flechas) para mover el grupo; Shift+arrastrar para limitar a horizontal/vertical; Ctrl+arrastrar para rotar, Ctrl+Shift+arrastrar para escalar. Arrastre el \"+\" para establecer un centro de rotación/ escala. Clique el punto de manejo y presione Ctrl+D para duplicar el grupo; Presione Supr para desagrupar. </p><b>Editar las coordenadas directamente</b><p>Doble-click o click derecho sobre un punto de control (por ejemplo, un punto extremal) del objeto, edite las coordenadas (x,y) en píxeles, después presione Enter.</p><b>Atajos de teclado</b><p>Cuando un objeto está seleccionado (al clicarlo), presione las flechas para moverlo; Ctrl+D para duplicarlo o Supr para suprimirlo.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>Arrastre restringido</b><p>Cuando arrastre un objeto, presione Shift para limitar a horizontal/vertical; presione Ctrl para clonar. Cuando cree un objeto lineal o arrastre sus puntos extremales, presione Shift para bloquear el ángulo o fijarlo a 0°, 45°, 90°; presione Ctrl para rotar/escalar sobre su centro.</p><b>Agrupar, rotar y escalar objetos</b><p> Presione Ctrl, clique múltiples puntos de control (por ejemplo, puntos extremales), después clique en un espacio vacío para agrupar estos puntos y crear un punto de manejo. Arrastre el punto de manejo (o presione las flechas) para mover el grupo; Shift+arrastrar para limitar a horizontal/vertical; Ctrl+arrastrar para rotar, Ctrl+Shift+arrastrar para escalar. Arrastre el \"+\" para establecer un centro de rotación/ escala. Clique el punto de manejo y presione Ctrl+D para duplicar el grupo; Presione Supr para desagrupar. </p><b>Editar las coordenadas directamente</b><p>Doble-click o click derecho sobre un punto de control (por ejemplo, un punto extremal) del objeto, edite las coordenadas (x,y), después presione Enter.</p><b>Atajos de teclado</b><p>Cuando un objeto está seleccionado (al clicarlo), presione las flechas para moverlo; Ctrl+D para duplicarlo o Supr para suprimirlo.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "message": "Mostrar ventanas de ayuda"
@@ -794,10 +806,10 @@ locales["es"] = {
     "message": "The scene is too large to sync with URL. Please save it manually."
   },
   "gridSize": {
-    "message": "Tamaño de la cuadrícula (px)"
+    "message": "Tamaño de la cuadrícula"
   },
   "observer_size": {
-    "message": "Tamaño del observador (px)"
+    "message": "Tamaño del observador"
   },
   "language": {
     "message": "Idioma"

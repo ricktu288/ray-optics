@@ -407,6 +407,28 @@ window.onload = function (e) {
   };
   document.getElementById('observer_size_mobile').onkeydown = document.getElementById('observer_size').onkeydown;
 
+  document.getElementById('lengthScale').onchange = function () {
+    scene.lengthScale = parseFloat(this.value);
+    document.getElementById('lengthScale').value = scene.lengthScale;
+    document.getElementById('lengthScale_mobile').value = scene.lengthScale;
+    setScale(scene.scale);
+    draw();
+    JSONOutput();
+  }
+  document.getElementById('lengthScale_mobile').onchange = document.getElementById('lengthScale').onchange;
+
+  document.getElementById('lengthScale').onclick = function () {
+    this.select();
+  }
+  document.getElementById('lengthScale_mobile').onclick = document.getElementById('lengthScale').onclick;
+  
+  document.getElementById('lengthScale').onkeydown = function(e)
+  {
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+  };
+  document.getElementById('lengthScale_mobile').onkeydown = document.getElementById('lengthScale').onkeydown;
+
 
   document.getElementById('zoomPlus').onclick = function () {
     setScale(scene.scale * 1.1);
@@ -840,6 +862,9 @@ function initParameters() {
 
   document.getElementById('observer_size').value = 40;
   document.getElementById('observer_size_mobile').value = 40;
+
+  document.getElementById('lengthScale').value = scene.lengthScale;
+  document.getElementById('lengthScale_mobile').value = scene.lengthScale;
   
   draw();
 }
@@ -1139,6 +1164,9 @@ function JSONInput() {
 
       document.getElementById('gridSize').value = scene.gridSize;
       document.getElementById('gridSize_mobile').value = scene.gridSize;
+
+      document.getElementById('lengthScale').value = scene.lengthScale;
+      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
 
       document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';

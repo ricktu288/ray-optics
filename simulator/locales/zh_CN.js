@@ -351,6 +351,15 @@ locales["zh-CN"] = {
   "snaptogrid": {
     "message": "对齐网格"
   },
+  "length_unit_popover": {
+    "message": "本模拟器中的长度单位（除波长外）为一个任意单位。您可将其视为任何物理单位（例如毫米），只要在整个模拟中保持一致。如果单位看起来太小或太大，请调整设定->长度尺度。"
+  },
+  "lengthScale": {
+    "message": "长度尺度<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "message": "如果将默认的长度单位视为常见的物理单位（例如毫米）时，模拟的物理系统看起来太小或太大，则可以使用此比例来缩放场景中的外观（例如线宽）。"
+  },
   "brightness": {
     "message": "亮度"
   },
@@ -433,16 +442,16 @@ locales["zh-CN"] = {
     "message": "朗伯"
   },
   "diameter": {
-    "message": "直径 (px)"
+    "message": "直径"
   },
   "irradMap": {
     "message": "辐照度图"
   },
   "binSize": {
-    "message": "组距 (px)"
+    "message": "组距"
   },
   "scaleInterval": {
-    "message": "刻度间距 (px)"
+    "message": "刻度间距"
   },
   "exportData": {
     "message": "导出数据"
@@ -451,7 +460,7 @@ locales["zh-CN"] = {
     "message": "取消模块化"
   },
   "fontSize": {
-    "message": "字型大小 (px)"
+    "message": "字型大小"
   },
   "font": {
     "message": "字型"
@@ -646,7 +655,7 @@ locales["zh-CN"] = {
     "message": "能穿透一个比例的光的镜子。（拖曳或点击以创建。）"
   },
   "tool_IdealMirror_popover": {
-    "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
+    "message": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距。 （拖曳或点击以创建。）"
   },
   "tool_PlaneGlass_popover": {
     "message": "模拟光线经过透光物体界面时的反射与折射。（拖曳或点击以创建。）"
@@ -664,7 +673,7 @@ locales["zh-CN"] = {
     "message": "折射率为自定义函数 n(x,y)，边界为多边形的透光物。警告：仅支持简单多边形，否则行为无法预测。（点击以建立线段，点击一开始的点以结束绘制。）"
   },
   "tool_IdealLens_popover": {
-    "message": "完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距(单位为像素)。 （拖曳或点击以创建。）"
+    "message": "完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距。 （拖曳或点击以创建。）"
   },
   "tool_SphericalLens_popover": {
     "message": "球面透镜。（点击以创建。）"
@@ -685,7 +694,7 @@ locales["zh-CN"] = {
     "message": "将光线依波长分割成不同角度的衍射光栅。 注意：衍射光的强度可能不准确。 （拖曳或点击以创建。）"
   },
   "tool_Ruler_popover": {
-    "message": "指定原点与另一点。刻度单位为像素。（拖曳或点击以创建。）"
+    "message": "指定原点与另一点。（拖曳或点击以创建。）"
   },
   "tool_Protractor_popover": {
     "message": "指定圆心和圆周上一点作为零度位置。刻度单位为度。（拖曳或点击以创建。）"
@@ -736,7 +745,7 @@ locales["zh-CN"] = {
     "message": "通过百分比缩放视图。"
   },
   "help_popover": {
-    "message": "<b>限制拖曳行为</b><p>拖曳物件时，按住 Shift 以限制于水平或垂直移动；按住 Ctrl 以复制物件。建立线型物件或拖曳其端点时，按住 Shift 以锁定角度或吸附至 0°、45°、90°；按住 Ctrl 以对于中心点旋转或缩放。</p><b>群组、旋转及缩放物件</b><p>按住 Ctrl，点击多个控制点（如端点），并点击空白处以将这些点群组并建立控制杆。拖曳控制杆（或按方向键）以平移群组；Shift+拖曳以限制于水平或垂直移动；Ctrl+拖曳以旋转；Ctrl+Shift+拖曳以缩放。移动「+」以设定旋转或缩放中心。点击控制杆并按 Ctrl+D 以复制群组；按 Delete 以解散群组。 </p><b>直接编辑座标</b><p>对控制点（如端点）点两下或按右键，输入 (x,y) 座标（单位为像素），然后按 Enter。 </p><b>键盘快速键</b><p>当一物件在被选取的状态（被点击）时，按方向键以移动；Ctrl+D 以复制；Delete 以删除。</p><b>联络我们</b><p>建议使用 GitHub 上的 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> 或 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> 功能（请使用英文）。若您对 GitHub 不熟，也可发送电子邮件至 <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a>（可使用中文）。</p><p>也欢迎直接进行贡献（见<a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">贡献指南</a>）。 </p>"
+    "message": "<b>限制拖曳行为</b><p>拖曳物件时，按住 Shift 以限制于水平或垂直移动；按住 Ctrl 以复制物件。建立线型物件或拖曳其端点时，按住 Shift 以锁定角度或吸附至 0°、45°、90°；按住 Ctrl 以对于中心点旋转或缩放。</p><b>群组、旋转及缩放物件</b><p>按住 Ctrl，点击多个控制点（如端点），并点击空白处以将这些点群组并建立控制杆。拖曳控制杆（或按方向键）以平移群组；Shift+拖曳以限制于水平或垂直移动；Ctrl+拖曳以旋转；Ctrl+Shift+拖曳以缩放。移动「+」以设定旋转或缩放中心。点击控制杆并按 Ctrl+D 以复制群组；按 Delete 以解散群组。 </p><b>直接编辑座标</b><p>对控制点（如端点）点两下或按右键，输入 (x,y) 座标，然后按 Enter。 </p><b>键盘快速键</b><p>当一物件在被选取的状态（被点击）时，按方向键以移动；Ctrl+D 以复制；Delete 以删除。</p><b>联络我们</b><p>建议使用 GitHub 上的 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> 或 <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> 功能（请使用英文）。若您对 GitHub 不熟，也可发送电子邮件至 <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a>（可使用中文）。</p><p>也欢迎直接进行贡献（见<a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">贡献指南</a>）。 </p>"
   },
   "show_help_popups": {
     "message": "显示提示泡泡"
@@ -766,10 +775,10 @@ locales["zh-CN"] = {
     "message": "本场景过大，无法与网址同步。 请自行储存场景。"
   },
   "gridSize": {
-    "message": "网格大小 (px)"
+    "message": "网格大小"
   },
   "observer_size": {
-    "message": "观察者大小 (px)"
+    "message": "观察者大小"
   },
   "language": {
     "message": "语言"

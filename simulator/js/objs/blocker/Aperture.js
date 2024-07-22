@@ -31,7 +31,7 @@ objTypes['Aperture'] = class extends BaseFilter {
       var t = 0.5 * (1 - value / geometry.distance(obj.p1, obj.p2));
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
-    });
+    }, getMsg('length_unit_popover'));
 
     super.populateObjBar(objBar);
   }

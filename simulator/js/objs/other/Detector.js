@@ -38,7 +38,7 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
     if (this.irradMap) {
       objBar.createNumber(getMsg('binSize'), 0.01 * this.scene.lengthScale, 10 * this.scene.lengthScale, 0.01 * this.scene.lengthScale, this.binSize, function (obj, value) {
         obj.binSize = value;
-      });
+      }, getMsg('length_unit_popover'));
 
       const self = this;
 

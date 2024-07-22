@@ -374,6 +374,18 @@ locales["de"] = {
   "snaptogrid": {
     "message": "Anrasten"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "message": "Helligkeit"
   },
@@ -474,7 +486,7 @@ locales["de"] = {
   },
   "diameter": {
     "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Diameter"
   },
   "irradMap": {
     "incomplete": true,
@@ -482,11 +494,11 @@ locales["de"] = {
   },
   "binSize": {
     "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Bin Size"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "incomplete": true,
@@ -498,7 +510,7 @@ locales["de"] = {
   },
   "fontSize": {
     "incomplete": true,
-    "message": "Font Size (px)"
+    "message": "Font Size"
   },
   "font": {
     "incomplete": true,
@@ -728,7 +740,7 @@ locales["de"] = {
     "message": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_IdealMirror_popover": {
-    "message": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
+    "message": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_PlaneGlass_popover": {
     "message": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche. (Ziehen oder Klicken zum Erzeugen.)"
@@ -748,7 +760,7 @@ locales["de"] = {
     "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
   },
   "tool_IdealLens_popover": {
-    "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite (in Pixel) kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
+    "message": "Eine ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_SphericalLens_popover": {
     "message": "Eine sphärische Linse. (Klicken zum Erzeugen.)"
@@ -771,7 +783,7 @@ locales["de"] = {
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_Ruler_popover": {
-    "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. Die Skala ist in Pixeln angegeben. (Ziehen oder Klicken zum Erzeugen.)"
+    "message": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt. (Ziehen oder Klicken zum Erzeugen.)"
   },
   "tool_Protractor_popover": {
     "message": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad. (Ziehen oder Klicken zum Erzeugen.)"
@@ -827,7 +839,7 @@ locales["de"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>Ziehen einschränken</b><p>Wenn Sie ein Objekt ziehen, halten Sie Shift gedrückt, um die Bewegung horizontal/vertikal einzuschränken; halten Sie Strg um zu duplizieren. Wenn Sie ein Linien-Objekt erzeugen oder seine Endpunkte ziehen, halten Sie Shift, um den Winkel zu fixieren oder auf 0°, 45°, 90° einzurasten; halten Sie Strg, um um das Zentrum zu rotieren/zu skalieren.</p><b>Objekte gruppieren, rotieren und skalieren</b><p> Halten Sie Strg, klicken mehrere Kontrollpunkte (z.B. Endpunkte); dann klicken Sie in den leeren Raum, um die gewählten Punkte zu gruppieren und einen 'Griff' zu erzeugen. Ziehen Sie den Griff (oder verwenden Sie die Pfeiltasten) um die Gruppe zu verschieben; Shift+Ziehen um die Bewegung horizontal/vertikal zu begrenzen; Strg+Ziehen Rotieren, Strg+Shift+Ziehen Skalieren. Ziehen Sie \"x\" um das Rotations/Skalierzentrum zu setzen. Klicken Sie den Griff und drücken Strg+D, um die Gruppe zu duplizieren; drücken Sie Delete, zum Auflösen der Gruppe.</p><b>Koordinaten direkt editieren</b><p>Doppel-Klick oder Rechts-Klick auf einen Kontrollpunkt (z.B. Endpunkt) eines Objekts, editieren Sie die (x,y)-Koordinaten in Pixeln, dann drücken Sie Enter.</p><b>Tastenkürzel</b><p>Wenn ein Objekt durck Klicken ausgewählt wurde, verwenden Sie die Pfeiltasten zum Verschieben; Strg+D zum Duplizieren; Löschen-Taste zum Löschen.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>Ziehen einschränken</b><p>Wenn Sie ein Objekt ziehen, halten Sie Shift gedrückt, um die Bewegung horizontal/vertikal einzuschränken; halten Sie Strg um zu duplizieren. Wenn Sie ein Linien-Objekt erzeugen oder seine Endpunkte ziehen, halten Sie Shift, um den Winkel zu fixieren oder auf 0°, 45°, 90° einzurasten; halten Sie Strg, um um das Zentrum zu rotieren/zu skalieren.</p><b>Objekte gruppieren, rotieren und skalieren</b><p> Halten Sie Strg, klicken mehrere Kontrollpunkte (z.B. Endpunkte); dann klicken Sie in den leeren Raum, um die gewählten Punkte zu gruppieren und einen 'Griff' zu erzeugen. Ziehen Sie den Griff (oder verwenden Sie die Pfeiltasten) um die Gruppe zu verschieben; Shift+Ziehen um die Bewegung horizontal/vertikal zu begrenzen; Strg+Ziehen Rotieren, Strg+Shift+Ziehen Skalieren. Ziehen Sie \"x\" um das Rotations/Skalierzentrum zu setzen. Klicken Sie den Griff und drücken Strg+D, um die Gruppe zu duplizieren; drücken Sie Delete, zum Auflösen der Gruppe.</p><b>Koordinaten direkt editieren</b><p>Doppel-Klick oder Rechts-Klick auf einen Kontrollpunkt (z.B. Endpunkt) eines Objekts, editieren Sie die (x,y)-Koordinaten, dann drücken Sie Enter.</p><b>Tastenkürzel</b><p>Wenn ein Objekt durck Klicken ausgewählt wurde, verwenden Sie die Pfeiltasten zum Verschieben; Strg+D zum Duplizieren; Löschen-Taste zum Löschen.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "incomplete": true,
@@ -867,11 +879,11 @@ locales["de"] = {
   },
   "gridSize": {
     "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Grid Size"
   },
   "observer_size": {
     "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Observer Size"
   },
   "language": {
     "incomplete": true,

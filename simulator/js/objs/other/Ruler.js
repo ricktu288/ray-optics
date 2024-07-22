@@ -16,7 +16,7 @@ objTypes['Ruler'] = class extends LineObjMixin(BaseSceneObj) {
   populateObjBar(objBar) {
     objBar.createNumber(getMsg('scaleInterval'), 0, 10, 1, this.scaleInterval, function (obj, value) {
       obj.scaleInterval = value;
-    }, null, true);
+    }, getMsg('length_unit_popover'), true);
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {

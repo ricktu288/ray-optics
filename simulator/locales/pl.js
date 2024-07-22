@@ -360,6 +360,18 @@ locales["pl"] = {
   "snaptogrid": {
     "message": "Przyciągaj do siatki"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "message": "Jasność"
   },
@@ -451,17 +463,17 @@ locales["pl"] = {
     "message": "Lambertowskie"
   },
   "diameter": {
-    "message": "Średnica (px)"
+    "message": "Średnica"
   },
   "irradMap": {
     "message": "Mapa irradiancji"
   },
   "binSize": {
-    "message": "Rozmiar pojemnika (px)"
+    "message": "Rozmiar pojemnika"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "message": "Eksportuj dane"
@@ -471,7 +483,7 @@ locales["pl"] = {
     "message": "Demodulize"
   },
   "fontSize": {
-    "message": "Rozmiar czcionki (px)"
+    "message": "Rozmiar czcionki"
   },
   "font": {
     "message": "Czcionka"
@@ -684,7 +696,7 @@ locales["pl"] = {
     "message": "Zwierciadło odbijające pewien procent padającego światła. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_IdealMirror_popover": {
-    "message": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
+    "message": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_PlaneGlass_popover": {
     "message": "Symuluje załamanie i odbicie światła na granicy ośrodków. (Przeciągnij lub kliknij, aby utworzyć.)"
@@ -702,7 +714,7 @@ locales["pl"] = {
     "message": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią. OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne. (Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.)"
   },
   "tool_IdealLens_popover": {
-    "message": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową (w pikselach) można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
+    "message": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio. (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_SphericalLens_popover": {
     "message": "Soczewka sferyczna. (Przeciągnij lub kliknij, aby utworzyć.)"
@@ -724,7 +736,7 @@ locales["pl"] = {
     "message": "A diffraction grating that splits light at an angle depending on wavelength. Warning: The intensities of diffracted rays may not be accurate. (Drag or click to create.)"
   },
   "tool_Ruler_popover": {
-    "message": "Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie). Wyskalowana w pikselach. (Przeciągnij lub kliknij, aby utworzyć.)"
+    "message": "Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie). (Przeciągnij lub kliknij, aby utworzyć.)"
   },
   "tool_Protractor_popover": {
     "message": "Kątomierz określony przez środek (wierzchołek kąta - pierwsze kliknięcie) i inny punkt dla kierunku zerowego (drugie kliknięcie). Skala jest w stopniach. (Przeciągnij lub kliknij, aby utworzyć.)"
@@ -814,11 +826,11 @@ locales["pl"] = {
   },
   "gridSize": {
     "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Grid Size"
   },
   "observer_size": {
     "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Observer Size"
   },
   "language": {
     "message": "Język"

@@ -26,7 +26,7 @@ objTypes['IdealMirror'] = class extends LineObjMixin(BaseFilter) {
     }
     objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength * (cartesianSign ? -1 : 1), function (obj, value) {
       obj.focalLength = value * (cartesianSign ? -1 : 1);
-    });
+    }, getMsg('length_unit_popover'));
     if (objBar.showAdvanced(cartesianSign)) {
       objBar.createBoolean(getMsg('cartesianSign'), cartesianSign, function (obj, value) {
         localStorage.rayOpticsCartesianSign = value ? "true" : "false";

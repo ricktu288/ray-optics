@@ -467,6 +467,18 @@ locales["ko"] = {
     "incomplete": false,
     "message": "격자선에 물리기"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "incomplete": false,
     "message": "밝기"
@@ -577,7 +589,7 @@ locales["ko"] = {
   },
   "diameter": {
     "incomplete": true,
-    "message": "Diameter (px)"
+    "message": "Diameter"
   },
   "irradMap": {
     "incomplete": true,
@@ -585,11 +597,11 @@ locales["ko"] = {
   },
   "binSize": {
     "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Bin Size"
   },
   "scaleInterval": {
     "incomplete": true,
-    "message": "Scale interval (px)"
+    "message": "Scale interval"
   },
   "exportData": {
     "incomplete": true,
@@ -601,7 +613,7 @@ locales["ko"] = {
   },
   "fontSize": {
     "incomplete": false,
-    "message": "폰트 크기 (px)"
+    "message": "폰트 크기"
   },
   "font": {
     "incomplete": false,
@@ -860,7 +872,7 @@ locales["ko"] = {
   },
   "tool_IdealMirror_popover": {
     "incomplete": false,
-    "message": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
+    "message": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_PlaneGlass_popover": {
     "incomplete": false,
@@ -884,7 +896,7 @@ locales["ko"] = {
   },
   "tool_IdealLens_popover": {
     "incomplete": false,
-    "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 픽셀단위로 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
+    "message": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 설정할 수 있습니다. (드래그 또는 클릭하여 생성.)"
   },
   "tool_SphericalLens_popover": {
     "incomplete": false,
@@ -912,7 +924,7 @@ locales["ko"] = {
   },
   "tool_Ruler_popover": {
     "incomplete": false,
-    "message": "픽셀 단위의 눈금자입니다. (시작점이 0) (드래그 또는 클릭하여 생성.)"
+    "message": "눈금자입니다. (시작점이 0) (드래그 또는 클릭하여 생성.)"
   },
   "tool_Protractor_popover": {
     "incomplete": false,
@@ -980,7 +992,7 @@ locales["ko"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>제한된 드래그</b><p>객체를 드래그할 때 수평/수직으로 제한하려면 Shift 키를 누르십시오. 복제하려면 Ctrl을 누르십시오. 선 모양의 객체를 만들거나 끝점을 드래그할 때 Shift 키를 누르면 각도가 고정되거나 0°, 45°, 90° 로 고정됩니다. 중앙을 기준으로 회전/크기 조정 시 Ctrl 키를 누르십시오. </p><b>객체 그룹화, 회전, 크기 조절</b><p> 여러 제어점을 그룹화하고 핸들을 만들려면, Ctrl 키를 누른 채 여러 제어점 (e.g. 끝점)을 클릭한 뒤 빈 공간을 클릭하십시오. 그룹을 이동하려면 핸들을 드래그하거나 방향키를 누르십시오. 수평/수직 방향으로 제한하려면 Shift 키를 누른 채 드래그하십시오. 회전하려면 Ctrl+드래그를, 크기를 조정하려면 Ctrl+Shift+드래그 하십시오. 회전/크기 조절의 중심을 설정하려면 \"+\" 표시를 드래그하십시오. 핸들을 클릭하고 Ctrl+D를 눌러 그룹을 복제할 수 있습니다. 그룹을 해제하려면 Delete 키를 누르십시오.</p><b>직접 좌표 수정</b><p>객체의 제어점 (e.g. 끝점)을 더블 클릭하거나 마우스 오른쪽 버튼을 클릭하여 (x, y) 좌표를 픽셀 단위로 편집한 후 Enter 키를 누르십시오.</p><b>단축키</b><p>객체가 클릭되어 선택되었을 때, 방향키를 눌러 이동, Ctrl+D를 눌러 복제, Delete키를 눌러 삭제할 수 있습니다.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>제한된 드래그</b><p>객체를 드래그할 때 수평/수직으로 제한하려면 Shift 키를 누르십시오. 복제하려면 Ctrl을 누르십시오. 선 모양의 객체를 만들거나 끝점을 드래그할 때 Shift 키를 누르면 각도가 고정되거나 0°, 45°, 90° 로 고정됩니다. 중앙을 기준으로 회전/크기 조정 시 Ctrl 키를 누르십시오. </p><b>객체 그룹화, 회전, 크기 조절</b><p> 여러 제어점을 그룹화하고 핸들을 만들려면, Ctrl 키를 누른 채 여러 제어점 (e.g. 끝점)을 클릭한 뒤 빈 공간을 클릭하십시오. 그룹을 이동하려면 핸들을 드래그하거나 방향키를 누르십시오. 수평/수직 방향으로 제한하려면 Shift 키를 누른 채 드래그하십시오. 회전하려면 Ctrl+드래그를, 크기를 조정하려면 Ctrl+Shift+드래그 하십시오. 회전/크기 조절의 중심을 설정하려면 \"+\" 표시를 드래그하십시오. 핸들을 클릭하고 Ctrl+D를 눌러 그룹을 복제할 수 있습니다. 그룹을 해제하려면 Delete 키를 누르십시오.</p><b>직접 좌표 수정</b><p>객체의 제어점 (예: 끝점)을 더블 클릭하거나 마우스 오른쪽 버튼을 클릭하여 (x, y) 좌표를 편집한 후 Enter 키를 누르십시오.</p><b>단축키</b><p>객체가 클릭되어 선택되었을 때, 방향키를 눌러 이동, Ctrl+D를 눌러 복제, Delete키를 눌러 삭제할 수 있습니다.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "incomplete": false,
@@ -1020,11 +1032,11 @@ locales["ko"] = {
   },
   "gridSize": {
     "incomplete": true,
-    "message": "Grid Size (px)"
+    "message": "Grid Size"
   },
   "observer_size": {
     "incomplete": true,
-    "message": "Observer Size (px)"
+    "message": "Observer Size"
   },
   "language": {
     "incomplete": false,

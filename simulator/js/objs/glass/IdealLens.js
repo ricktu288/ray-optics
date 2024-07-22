@@ -17,7 +17,7 @@ objTypes['IdealLens'] = class extends LineObjMixin(BaseSceneObj) {
   populateObjBar(objBar) {
     objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength, function (obj, value) {
       obj.focalLength = value;
-    });
+    }, getMsg('length_unit_popover'));
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {

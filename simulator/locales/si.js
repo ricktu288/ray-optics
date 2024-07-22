@@ -363,6 +363,18 @@ locales["si"] = {
     "incomplete": true,
     "message": "Snap to Grid"
   },
+  "length_unit_popover": {
+    "incomplete": true,
+    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+  },
+  "lengthScale": {
+    "incomplete": true,
+    "message": "Length Scale<sup>Beta</sup>"
+  },
+  "lengthScale_popover": {
+    "incomplete": true,
+    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+  },
   "brightness": {
     "incomplete": true,
     "message": "Brightness"
@@ -459,7 +471,7 @@ locales["si"] = {
     "message": "Lambertian"
   },
   "diameter": {
-    "message": "විෂ්කම්භය (px)"
+    "message": "විෂ්කම්භය"
   },
   "irradMap": {
     "incomplete": true,
@@ -467,10 +479,10 @@ locales["si"] = {
   },
   "binSize": {
     "incomplete": true,
-    "message": "Bin Size (px)"
+    "message": "Bin Size"
   },
   "scaleInterval": {
-    "message": "පරිමාණ පරතරය (px)"
+    "message": "පරිමාණ පරතරය"
   },
   "exportData": {
     "incomplete": true,
@@ -481,7 +493,7 @@ locales["si"] = {
     "message": "Demodulize"
   },
   "fontSize": {
-    "message": "අකුරු ප්‍රමාණය (px)"
+    "message": "අකුරු ප්‍රමාණය"
   },
   "font": {
     "message": "අකුරු"
@@ -684,7 +696,7 @@ locales["si"] = {
     "message": "එන ආලෝකයේ ප්‍රතිශතයක් සම්ප්‍රේෂණය කරන කැඩපතක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_IdealMirror_popover": {
-    "message": "(1/p + 1/q = 1/f) දර්පණ සමීකරණයට ඒකග වන දර්ශීය 'වක්‍ර' දර්පණය. නාභීය දුර (පික්සල වලින්) සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
+    "message": "(1/p + 1/q = 1/f) දර්පණ සමීකරණයට ඒකග වන දර්ශීය 'වක්‍ර' දර්පණය. නාභීය දුර සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_PlaneGlass_popover": {
     "message": "පෘෂ්ඨයක් මත ආලෝකයේ වර්තනය සහ පරාවර්තනය අනුකරණය කරන්න. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
@@ -702,7 +714,7 @@ locales["si"] = {
     "message": "අභිරුචි වර්තන දර්ශක ශ්‍රිතයක් n(x,y) සහ බහුඅස්‍ර මායිමක් සහිත වීදුරු. අවවාදයයි: සරල බහුඅස්ර පමණක් සහාය දක්වයි, එසේ නොමැති නම් හැසිරීම අනපේක්ෂිත වේ. (කොටසක් සෑදීමට ක්ලික් කරන්න, ඇඳීම අවසන් වන විට ආරම්භක ස්ථානය මත ක්ලික් කරන්න.)"
   },
   "tool_IdealLens_popover": {
-    "message": "සිහින් කාච සමීකරණයට (1/p + 1/q = 1/f) අවනත වන දර්ශීය කාචයකි. නාභීය දුර (පික්සල වලින්) සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
+    "message": "සිහින් කාච සමීකරණයට (1/p + 1/q = 1/f) අවනත වන දර්ශීය කාචයකි. නාභීය දුර සෘජුවම සැකසිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_SphericalLens_popover": {
     "message": "ගෝලාකාර කාචයක්. (නිර්මාණය කිරීමට ක්ලික් කරන්න.)"
@@ -723,7 +735,7 @@ locales["si"] = {
     "message": "තරංග ආයාමය මත විවිධ කෝණවලින් ආලෝකය වර්තන කරන විවර්තන තලයක්. අවවාදයයි: විවර්තන කිරණවල තීව්‍රතාවය නිවැරදි නොවිය හැක. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Ruler_popover": {
-    "message": "පරිමාණය පික්සල වලින් ඇති රූලක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
+    "message": "පරිමාණය ඇති රූලක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
   },
   "tool_Protractor_popover": {
     "message": "පරිමාණය අංශක වලින් ඇති කෝණමානයක්. (නිර්මාණය කිරීමට අදින්න හෝ ක්ලික් කරන්න.)"
@@ -777,7 +789,7 @@ locales["si"] = {
   },
   "help_popover": {
     "incomplete": true,
-    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates in pixels, then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates , then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
   },
   "show_help_popups": {
     "message": "උදවු popup පෙන්වන්න"
@@ -812,10 +824,10 @@ locales["si"] = {
     "message": "The scene is too large to sync with URL. Please save it manually."
   },
   "gridSize": {
-    "message": "ජාලක ප්‍රමාණය (px)"
+    "message": "ජාලක ප්‍රමාණය"
   },
   "observer_size": {
-    "message": "නිරීක්ෂකයාගේ ප්‍රමාණය (px)"
+    "message": "නිරීක්ෂකයාගේ ප්‍රමාණය"
   },
   "language": {
     "message": "භාෂාව"
