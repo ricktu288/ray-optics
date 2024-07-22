@@ -41,12 +41,15 @@ objTypes['Handle'] = class extends BaseSceneObj {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
+    ctx.lineWidth = 1 * ls;
     for (var i in this.controlPoints) {
       ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.strokeStyle = this.notDone ? 'cyan' : isHovered ? 'cyan' : ('gray');
-      ctx.setLineDash([2, 2]);
-      ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5, 0, Math.PI * 2, false);
+      ctx.setLineDash([2 * ls, 2 * ls]);
+      ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.setLineDash([]);
     }
@@ -54,18 +57,18 @@ objTypes['Handle'] = class extends BaseSceneObj {
       ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
-      ctx.arc(this.p1.x, this.p1.y, 2, 0, Math.PI * 2, false);
+      ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
-      ctx.arc(this.p1.x, this.p1.y, 5, 0, Math.PI * 2, false);
+      ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(this.p2.x - 5, this.p2.y);
-      ctx.lineTo(this.p2.x + 5, this.p2.y);
+      ctx.moveTo(this.p2.x - 5 * ls, this.p2.y);
+      ctx.lineTo(this.p2.x + 5 * ls, this.p2.y);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(this.p2.x, this.p2.y - 5);
-      ctx.lineTo(this.p2.x, this.p2.y + 5);
+      ctx.moveTo(this.p2.x, this.p2.y - 5 * ls);
+      ctx.lineTo(this.p2.x, this.p2.y + 5 * ls);
       ctx.stroke();
     }
   }

@@ -27,7 +27,7 @@ objTypes['Aperture'] = class extends BaseFilter {
   populateObjBar(objBar) {
     var originalDiameter = geometry.distance(this.p3, this.p4);
 
-    objBar.createNumber(getMsg('diameter'), 0, 100, 1, originalDiameter, function (obj, value) {
+    objBar.createNumber(getMsg('diameter'), 0, 100 * this.scene.lengthScale, 1 * this.scene.lengthScale, originalDiameter, function (obj, value) {
       var t = 0.5 * (1 - value / geometry.distance(obj.p1, obj.p2));
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
@@ -38,15 +38,16 @@ objTypes['Aperture'] = class extends BaseFilter {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
     
     ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -56,11 +57,11 @@ objTypes['Aperture'] = class extends BaseFilter {
     ctx.moveTo(this.p2.x, this.p2.y);
     ctx.lineTo(this.p4.x, this.p4.y);
     ctx.stroke();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * ls;
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      ctx.fillRect(this.p3.x - 1.5, this.p3.y - 1.5, 3, 3);
-      ctx.fillRect(this.p4.x - 1.5, this.p4.y - 1.5, 3, 3);
+      ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p4.x - 1.5 * ls, this.p4.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 

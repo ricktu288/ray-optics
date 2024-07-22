@@ -103,8 +103,10 @@ objTypes['CropBox'] = class extends BaseSceneObj {
     if (!cropMode) return;
 
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     ctx.strokeStyle = isHovered ? 'cyan' : 'white';
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
@@ -114,16 +116,16 @@ objTypes['CropBox'] = class extends BaseSceneObj {
     ctx.stroke();
     ctx.fillStyle = isHovered ? 'cyan' : 'white';
     ctx.beginPath();
-    ctx.arc(this.p1.x, this.p1.y, 5, 0, 2 * Math.PI);
+    ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(this.p2.x, this.p2.y, 5, 0, 2 * Math.PI);
+    ctx.arc(this.p2.x, this.p2.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(this.p3.x, this.p3.y, 5, 0, 2 * Math.PI);
+    ctx.arc(this.p3.x, this.p3.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(this.p4.x, this.p4.y, 5, 0, 2 * Math.PI);
+    ctx.arc(this.p4.x, this.p4.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();
   }
 

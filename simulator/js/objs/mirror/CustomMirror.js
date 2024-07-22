@@ -34,10 +34,11 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
 
@@ -47,8 +48,8 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
     } catch (e) {
       delete this.tmp_points;
       ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       this.error = e.toString();
       return;
     }
@@ -62,12 +63,13 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
     var x0 = p12d / 2;
     var i;
     ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     this.tmp_points = [];
     var lastError = "";
-    for (i = -0.1; i < p12d + 0.09; i += 0.1) {
+    for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
       // avoid using exact integers to avoid problems with detecting intersections
-      var ix = i + 0.05;
+      var ix = i + 0.05 * this.scene.lengthScale;
       if (ix < 0) ix = 0;
       if (ix > p12d) ix = p12d;
       var x = ix - x0;
@@ -90,16 +92,16 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
     if (this.tmp_points.length == 0) {
       delete this.tmp_points;
       ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       this.error = lastError.toString();
       return;
     }
     ctx.stroke();
     if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
 
     this.error = null;
@@ -147,7 +149,7 @@ objTypes['CustomMirror'] = class extends LineObjMixin(BaseFilter) {
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
       var seg = geometry.line(pts[i], pts[i + 1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (geometry.distance(ray.p1, rp_temp) < minShotLength)
+      if (geometry.distance(ray.p1, rp_temp) < minShotLength * this.scene.lengthScale)
         continue;
       if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
         if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {

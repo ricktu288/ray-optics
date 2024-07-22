@@ -27,6 +27,8 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     ctx.fillStyle = 'rgb(255,0,255)';
     if (this.p3 && this.p2) {
       var p12d = geometry.distance(this.p1, this.p2);
@@ -43,12 +45,13 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
       var a = height / (x0 * x0); // y=ax^2
       var i;
       ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.lineWidth = 1 * ls;
       ctx.beginPath();
       this.tmp_points = [geometry.point(this.p1.x, this.p1.y)];
       ctx.moveTo(this.p1.x, this.p1.y);
-      for (i = 0.1; i < p12d; i += 0.1) {
+      for (i = 0.1 * this.scene.lengthScale; i < p12d; i += 0.1 * this.scene.lengthScale) {
         // avoid using exact integers to avoid problems with detecting intersections
-        var ix = i + .001;
+        var ix = i + .001 * this.scene.lengthScale;
         var x = ix - x0;
         var y = height - a * x * x;
         var pt = geometry.point(this.p1.x + dir1[0] * ix + dir2[0] * y, this.p1.y + dir1[1] * ix + dir2[1] * y);
@@ -57,21 +60,21 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
       }
       ctx.stroke();
       if (isHovered) {
-        ctx.fillRect(this.p3.x - 1.5, this.p3.y - 1.5, 3, 3);
+        ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
         var focusx = (this.p1.x + this.p2.x) * .5 + dir2[0] * (height - 1 / (4 * a));
         var focusy = (this.p1.y + this.p2.y) * .5 + dir2[1] * (height - 1 / (4 * a));
-        ctx.fillRect(focusx - 1.5, focusy - 1.5, 3, 3);
+        ctx.fillRect(focusx - 1.5 * ls, focusy - 1.5 * ls, 3 * ls, 3 * ls);
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-        ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       }
     } else if (this.p2) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     } else {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 
@@ -233,7 +236,7 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
       var seg = geometry.line(pts[i], pts[i + 1]);
       // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (geometry.distance(ray.p1, rp_temp) < minShotLength)
+      if (geometry.distance(ray.p1, rp_temp) < minShotLength * this.scene.lengthScale)
         continue;
       if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
         if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {

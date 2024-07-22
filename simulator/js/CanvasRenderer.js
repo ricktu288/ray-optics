@@ -2,7 +2,7 @@
  * A class to render geometric figures from geometry.js on a canvas, and to handle the transformation and background image of the canvas.
  */
 class CanvasRenderer {
-  constructor(ctx, origin, scale, backgroundImage) {
+  constructor(ctx, origin, scale, lengthScale, backgroundImage) {
 
     /** @property {Object} ctx - The context of the canvas. */
     this.ctx = ctx;
@@ -13,6 +13,9 @@ class CanvasRenderer {
     /** @property {number} scale - The scale factor (the viewport physical pixel per internal length unit) of the scene. */
     this.scale = scale;
 
+    /** @property {number} lengthScale - The scale factor of the length units of the scene. */
+    this.lengthScale = lengthScale;
+
     /** @property {Object} canvas - The canvas of the scene. */
     this.canvas = ctx.canvas;
 
@@ -22,7 +25,7 @@ class CanvasRenderer {
     /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
     this.isSVG = ctx.constructor === C2S;
   }
-  
+
   /**
    * Draw a point.
    * @param {Point} p
@@ -30,7 +33,7 @@ class CanvasRenderer {
    */
   drawPoint(p, color = 'black') {
     this.ctx.fillStyle = color;
-    this.ctx.fillRect(p.x - 2.5, p.y - 2.5, 5, 5);
+    this.ctx.fillRect(p.x - 2.5 * this.lengthScale, p.y - 2.5 * this.lengthScale, 5 * this.lengthScale, 5 * this.lengthScale);
   }
 
   /**
@@ -40,6 +43,7 @@ class CanvasRenderer {
    */
   drawLine(l, color = 'black') {
     this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.beginPath();
     let ang1 = Math.atan2((l.p2.x - l.p1.x), (l.p2.y - l.p1.y));
     let cvsLimit = (Math.abs(l.p1.x + this.origin.x) + Math.abs(l.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
@@ -55,8 +59,9 @@ class CanvasRenderer {
    */
   drawRay(r, color = 'black') {
     this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 1 * this.lengthScale;
     let ang1, cvsLimit;
-    if (Math.abs(r.p2.x - r.p1.x) > 1e-5 || Math.abs(r.p2.y - r.p1.y) > 1e-5) {
+    if (Math.abs(r.p2.x - r.p1.x) > 1e-5 * this.lengthScale || Math.abs(r.p2.y - r.p1.y) > 1e-5 * this.lengthScale) {
       this.ctx.beginPath();
       ang1 = Math.atan2((r.p2.x - r.p1.x), (r.p2.y - r.p1.y));
       cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
@@ -73,6 +78,7 @@ class CanvasRenderer {
    */
   drawSegment(s, color = 'black') {
     this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.beginPath();
     this.ctx.moveTo(s.p1.x, s.p1.y);
     this.ctx.lineTo(s.p2.x, s.p2.y);
@@ -86,6 +92,7 @@ class CanvasRenderer {
    */
   drawCircle(c, color = 'black') {
     this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.beginPath();
     if (typeof c.r === 'object') {
       let dx = c.r.p1.x - c.r.p2.x;

@@ -29,11 +29,13 @@ objTypes['PointSource'] = class extends BaseSceneObj {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     ctx.fillStyle = this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
-    ctx.fillRect(this.x - 2.5, this.y - 2.5, 5, 5);
+    ctx.fillRect(this.x - 2.5 * ls, this.y - 2.5 * ls, 5 * ls, 5 * ls);
     if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
-      ctx.fillRect(this.x - 1.5, this.y - 1.5, 3, 3);
+      ctx.fillRect(this.x - 1.5 * ls, this.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 

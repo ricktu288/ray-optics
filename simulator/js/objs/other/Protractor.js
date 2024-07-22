@@ -13,20 +13,22 @@ objTypes['Protractor'] = class extends CircleObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
       var r = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
-      var scale_width_limit = 5;
+      var scale_width_limit = 5 * ls;
 
       var scale_step = 1;
       var scale_step_mid = 5;
       var scale_step_long = 10;
-      var scale_len = 10;
-      var scale_len_mid = 15;
-      var scale_len_long = 20;
+      var scale_len = 10 * ls;
+      var scale_len_mid = 15 * ls;
+      var scale_len_long = 20 * ls;
 
       ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-      ctx.font = 'bold 14px Arial';
+      ctx.font = 'bold ' + (14 * ls) + 'px Arial';
       ctx.fillStyle = 'rgb(128,128,128)';
 
       if (r * scale_step * Math.PI / 180 < scale_width_limit) {
@@ -40,10 +42,10 @@ objTypes['Protractor'] = class extends CircleObjMixin(BaseSceneObj) {
         scale_step = 5;
         scale_step_mid = 10;
         scale_step_long = 30;
-        scale_len = 5;
-        scale_len_mid = 8;
-        scale_len_long = 10;
-        ctx.font = 'bold 10px Arial';
+        scale_len = 5 * ls;
+        scale_len_mid = 8 * ls;
+        scale_len_long = 10 * ls;
+        ctx.font = 'bold ' + (10 * ls) + 'px Arial';
       }
       if (r * scale_step * Math.PI / 180 < scale_width_limit) {
         // The scale is too small
@@ -54,6 +56,8 @@ objTypes['Protractor'] = class extends CircleObjMixin(BaseSceneObj) {
 
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
+
+      ctx.lineWidth = 1 * ls;
 
       ctx.beginPath();
       ctx.arc(this.p1.x, this.p1.y, r, 0, Math.PI * 2, false);
@@ -83,10 +87,10 @@ objTypes['Protractor'] = class extends CircleObjMixin(BaseSceneObj) {
       ctx.globalCompositeOperation = 'source-over';
     }
     ctx.fillStyle = 'red';
-    ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+    ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      ctx.fillRect(this.p2.x - 2.5, this.p2.y - 2.5, 5, 5);
+      ctx.fillRect(this.p2.x - 2.5 * ls, this.p2.y - 2.5 * ls, 5 * ls, 5 * ls);
     }
   }
 };

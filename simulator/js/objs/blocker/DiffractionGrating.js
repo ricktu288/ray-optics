@@ -51,10 +51,11 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
     
@@ -66,19 +67,19 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
       ctx.stroke();
     }
     ctx.strokeStyle = getMouseStyle(this, 'rgb(124,62,18)');
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
     if (this.customBrightness) {
-      ctx.setLineDash([2, 2]);
+      ctx.setLineDash([2 * ls, 2 * ls]);
     } else {
-      ctx.setLineDash([4 * (1 - this.slitRatio), 4 * this.slitRatio]);
+      ctx.setLineDash([4 * (1 - this.slitRatio) * ls, 4 * this.slitRatio * ls]);
     }
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * ls;
   }
 
   onSimulationStart() {

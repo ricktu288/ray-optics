@@ -24,6 +24,8 @@ objTypes['ArcMirror'] = class extends BaseFilter {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     ctx.fillStyle = 'rgb(255,0,255)';
     if (this.p3 && this.p2) {
       var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
@@ -33,35 +35,37 @@ objTypes['ArcMirror'] = class extends BaseFilter {
         var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
         var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
         ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.lineWidth = 1 * ls;
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
         if (isHovered) {
-          ctx.fillRect(this.p3.x - 1.5, this.p3.y - 1.5, 3, 3);
+          ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
           ctx.fillStyle = 'rgb(255,0,0)';
-          ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-          ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+          ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+          ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
         }
       } else {
         // The three points on the arc is colinear. Treat as a line segment.
         ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+        ctx.lineWidth = 1 * ls;
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);
         ctx.stroke();
 
-        ctx.fillRect(this.p3.x - 1.5, this.p3.y - 1.5, 3, 3);
+        ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-        ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       }
     } else if (this.p2) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     } else {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 
@@ -232,7 +236,7 @@ objTypes['ArcMirror'] = class extends BaseFilter {
         var rp_exist = [];
         var rp_lensq = [];
         for (var i = 1; i <= 2; i++) {
-          rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared;
+          rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
           rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
         }
         if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
@@ -266,7 +270,7 @@ objTypes['ArcMirror'] = class extends BaseFilter {
       ray.p2 = geometry.point(incidentPoint.x - c_sq * rx + 2 * r_dot_c * cx, incidentPoint.y - c_sq * ry + 2 * r_dot_c * cy);
     } else {
       // The three points on the arc is colinear. Treat as a line segment.
-      
+
       var rx = ray.p1.x - incidentPoint.x;
       var ry = ray.p1.y - incidentPoint.y;
       var mx = this.p2.x - this.p1.x;

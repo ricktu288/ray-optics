@@ -48,29 +48,30 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
 
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
     ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 4 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
-    ctx.moveTo(this.p1.x + Math.sin(a_l) * 2, this.p1.y + Math.cos(a_l) * 2);
-    ctx.lineTo(this.p2.x + Math.sin(a_l) * 2, this.p2.y + Math.cos(a_l) * 2);
+    ctx.moveTo(this.p1.x + Math.sin(a_l) * 2 * ls, this.p1.y + Math.cos(a_l) * 2 * ls);
+    ctx.lineTo(this.p2.x + Math.sin(a_l) * 2 * ls, this.p2.y + Math.cos(a_l) * 2 * ls);
     ctx.stroke();
 
     ctx.strokeStyle = 'rgba(128,128,128,255)';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * ls;
     ctx.lineCap = 'butt';
   }
 
@@ -81,7 +82,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
       this.warning = null;
     }
 
-    var n = geometry.segmentLength(this) * this.scene.rayDensity;
+    var n = geometry.segmentLength(this) * this.scene.rayDensity / this.scene.lengthScale;
     var stepX = (this.p2.x - this.p1.x) / n;
     var stepY = (this.p2.y - this.p1.y) / n;
     var s = Math.PI * 2 / parseInt(this.scene.rayDensity * 500);

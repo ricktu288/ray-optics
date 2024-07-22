@@ -36,7 +36,7 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
     }, null, true);
 
     if (this.irradMap) {
-      objBar.createNumber(getMsg('binSize'), 0.01, 10, 0.01, this.binSize, function (obj, value) {
+      objBar.createNumber(getMsg('binSize'), 0.01 * this.scene.lengthScale, 10 * this.scene.lengthScale, 0.01 * this.scene.lengthScale, this.binSize, function (obj, value) {
         obj.binSize = value;
       });
 
@@ -70,11 +70,14 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(192,192,192)')
-      ctx.setLineDash([5, 5]);
+      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
+      ctx.lineWidth = 1 * ls;
+      ctx.setLineDash([5 * ls, 5 * ls]);
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
@@ -97,13 +100,13 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
         var str3 = "F∥=" + this.shear.toFixed(2);
       }
 
-      ctx.font = '16px Arial';
+      ctx.font = (16 * ls) + 'px Arial';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
       ctx.fillText(str1, this.p2.x, this.p2.y);
-      ctx.fillText(str2, this.p2.x, this.p2.y + 20);
-      ctx.fillText(str3, this.p2.x, this.p2.y + 40);
+      ctx.fillText(str2, this.p2.x, this.p2.y + 20 * ls);
+      ctx.fillText(str3, this.p2.x, this.p2.y + 40 * ls);
       ctx.globalCompositeOperation = 'source-over';
 
       if (this.irradMap && this.binData) {
@@ -115,14 +118,14 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
         var vy = -ux;
 
         // Draw the irradiance map
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1 * ls;
         ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
         ctx.fillStyle = 'blue';
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         for (var i = 0; i < this.binData.length; i++) {
-          ctx.lineTo(this.p1.x + ux * i * this.binSize + vx * this.binData[i] / this.binSize * 20, this.p1.y + uy * i * this.binSize + vy * this.binData[i] / this.binSize * 20);
-          ctx.lineTo(this.p1.x + ux * (i + 1) * this.binSize + vx * this.binData[i] / this.binSize * 20, this.p1.y + uy * (i + 1) * this.binSize + vy * this.binData[i] / this.binSize * 20);
+          ctx.lineTo(this.p1.x + ux * i * this.binSize + vx * this.binData[i] / this.binSize * 20 * ls * ls, this.p1.y + uy * i * this.binSize + vy * this.binData[i] / this.binSize * 20 * ls * ls);
+          ctx.lineTo(this.p1.x + ux * (i + 1) * this.binSize + vx * this.binData[i] / this.binSize * 20 * ls * ls, this.p1.y + uy * (i + 1) * this.binSize + vy * this.binData[i] / this.binSize * 20 * ls * ls);
         }
         ctx.lineTo(this.p2.x, this.p2.y);
         ctx.fill();

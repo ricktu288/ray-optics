@@ -99,6 +99,8 @@ objTypes['TextLabel'] = class extends BaseSceneObj {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     ctx.fillStyle = isHovered ? 'cyan' : ('white');
     ctx.textAlign = this.alignment;
     ctx.textBaseline = 'bottom';

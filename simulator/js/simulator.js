@@ -61,8 +61,8 @@ function draw_(skipLight, skipGrid) {
   //JSONOutput();
 
   if (ctx0.constructor != C2S) {
-    var canvasRenderer0 = new CanvasRenderer(ctx0, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.backgroundImage);
-    var canvasRenderer1 = new CanvasRenderer(ctx, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr));
+    var canvasRenderer0 = new CanvasRenderer(ctx0, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.lengthScale, scene.backgroundImage);
+    var canvasRenderer1 = new CanvasRenderer(ctx, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.lengthScale);
     
     canvasRenderer0.clear();
     canvasRenderer1.clear();
@@ -70,7 +70,7 @@ function draw_(skipLight, skipGrid) {
 
   if (!skipLight) {
     delete canvasRenderer;
-    canvasRenderer = new CanvasRenderer(ctxLight, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr));
+    canvasRenderer = new CanvasRenderer(ctxLight, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.lengthScale);
     canvasRenderer.clear();
 
     if (ctx0.constructor == C2S) {
@@ -86,7 +86,7 @@ function draw_(skipLight, skipGrid) {
   if (!skipGrid && ctx0.constructor != C2S)
   {
 
-    var canvasRendererGrid = new CanvasRenderer(ctxGrid, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr));
+    var canvasRendererGrid = new CanvasRenderer(ctxGrid, {x: scene.origin.x*dpr, y: scene.origin.y*dpr}, (scene.scale*dpr), scene.lengthScale);
     canvasRendererGrid.clear();
 
     if (scene.showGrid) {
@@ -94,9 +94,10 @@ function draw_(skipLight, skipGrid) {
 
       ctxGrid.save();
       ctxGrid.setTransform((scene.scale*dpr), 0, 0, (scene.scale*dpr), 0, 0);
-      var dashstep = 4;
+      var dashstep = 4*scene.lengthScale;
 
       ctxGrid.strokeStyle = 'rgb(255,255,255,0.25)';
+      ctxGrid.lineWidth = 1*scene.lengthScale;
 
       var dashPattern;
       if (dashstep * scene.scale <= 2) {
@@ -293,7 +294,7 @@ function shootWaitingRays() {
         {
           // Here opticalObjs[i] intersects with the ray at s_point_temp
           s_lensq_temp = geometry.distanceSquared(waitingRays[j].p1, s_point_temp);
-          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging))
+          if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared*scene.lengthScale*scene.lengthScale && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging))
           {
             // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
@@ -317,7 +318,7 @@ function shootWaitingRays() {
               }
             }
           }
-          else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared)
+          else if (s_lensq_temp < s_lensq && s_lensq_temp > minShotLength_squared*scene.lengthScale*scene.lengthScale)
           {
             s_obj = opticalObjs[i]; // Update the object to be shot
             s_obj_index = i;
@@ -347,7 +348,7 @@ function shootWaitingRays() {
         if (scene.mode == 'extended' && !waitingRays[j].isNew)
         {
           if (scene.simulateColors) {
-            ctxLight.setLineDash([2, 2]);
+            ctxLight.setLineDash([2*scene.lengthScale, 2*scene.lengthScale]);
             canvasRenderer.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the extension of the ray
             ctxLight.setLineDash([]);
           } else {
@@ -381,9 +382,9 @@ function shootWaitingRays() {
         if (scene.mode == 'extended' && !waitingRays[j].isNew)
         {
           if (scene.simulateColors) {
-            ctxLight.setLineDash([2, 2]);
+            ctxLight.setLineDash([2*scene.lengthScale, 2*scene.lengthScale]);
             canvasRenderer.drawRay(geometry.line(waitingRays[j].p1, geometry.point(waitingRays[j].p1.x * 2 - waitingRays[j].p2.x, waitingRays[j].p1.y * 2 - waitingRays[j].p2.y)), color); // Draw the backward extension of the ray
-            ctxLight.setLineDash([1, 5]);
+            ctxLight.setLineDash([1*scene.lengthScale, 5*scene.lengthScale]);
             canvasRenderer.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - waitingRays[j].p1.x, s_point.y * 2 - waitingRays[j].p1.y)), color); // Draw the forward extension of the ray
             ctxLight.setLineDash([]);
           } else {
@@ -415,10 +416,10 @@ function shootWaitingRays() {
 
           if (observed)
           {
-            if (last_intersection && geometry.distanceSquared(last_intersection, observed_intersection) < 25)
+            if (last_intersection && geometry.distanceSquared(last_intersection, observed_intersection) < 25*scene.lengthScale*scene.lengthScale)
             {
               // If the intersections are near each others
-              if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, waitingRays[j].p1)) && geometry.distanceSquared(observed_point, waitingRays[j].p1) > 1e-5)
+              if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, waitingRays[j].p1)) && geometry.distanceSquared(observed_point, waitingRays[j].p1) > 1e-5*scene.lengthScale*scene.lengthScale)
               {
 
 
@@ -440,7 +441,7 @@ function shootWaitingRays() {
                   // Virtual image
                   if (scene.simulateColors) {
                     ctxLight.fillStyle = color;
-                    ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                    ctxLight.fillRect(observed_intersection.x - 1.5*scene.lengthScale, observed_intersection.y - 1.5*scene.lengthScale, 3*scene.lengthScale, 3*scene.lengthScale);
                   } else {
                     canvasRenderer.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                   }
@@ -455,7 +456,7 @@ function shootWaitingRays() {
                   }
                 }
                   if (scene.simulateColors) {
-                    ctxLight.setLineDash([1, 2]);
+                    ctxLight.setLineDash([1*scene.lengthScale, 2*scene.lengthScale]);
                     canvasRenderer.drawSegment(geometry.line(observed_point, observed_intersection), color); // Draw the observed ray
                     ctxLight.setLineDash([]);
                   } else {
@@ -465,7 +466,7 @@ function shootWaitingRays() {
               else
               {
                 if (scene.simulateColors) {
-                  ctxLight.setLineDash([1, 2]);
+                  ctxLight.setLineDash([1*scene.lengthScale, 2*scene.lengthScale]);
                   canvasRenderer.drawRay(geometry.line(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
@@ -478,7 +479,7 @@ function shootWaitingRays() {
               if (last_intersection)
               {
                 if (scene.simulateColors) {
-                  ctxLight.setLineDash([1, 2]);
+                  ctxLight.setLineDash([1*scene.lengthScale, 2*scene.lengthScale]);
                   canvasRenderer.drawRay(geometry.line(observed_point, waitingRays[j].p1), color); // Draw the observed ray
                   ctxLight.setLineDash([]);
                 } else {
@@ -501,7 +502,7 @@ function shootWaitingRays() {
         {
 
           observed_intersection = geometry.linesIntersection(waitingRays[j], last_ray);
-          if (last_intersection && geometry.distanceSquared(last_intersection, observed_intersection) < 25)
+          if (last_intersection && geometry.distanceSquared(last_intersection, observed_intersection) < 25*scene.lengthScale*scene.lengthScale)
           {
             if (scene.simulateColors) {
               var color = wavelengthToColor(waitingRays[j].wavelength, (waitingRays[j].brightness_s + waitingRays[j].brightness_p) * 0.5, true);
@@ -523,7 +524,7 @@ function shootWaitingRays() {
               // Virtual image
               if (scene.simulateColors) {
                 ctxLight.fillStyle = color;
-                ctxLight.fillRect(observed_intersection.x - 1.5, observed_intersection.y - 1.5, 3, 3);
+                ctxLight.fillRect(observed_intersection.x - 1.5*scene.lengthScale, observed_intersection.y - 1.5*scene.lengthScale, 3*scene.lengthScale, 3*scene.lengthScale);
               } else {
                 canvasRenderer.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
               }
@@ -542,7 +543,7 @@ function shootWaitingRays() {
               // Virtual object
               if (scene.simulateColors) {
                 ctxLight.fillStyle = color;
-                ctxLight.fillRect(observed_intersection.x - 0.5, observed_intersection.y - 0.5, 1, 1);
+                ctxLight.fillRect(observed_intersection.x - 0.5*scene.lengthScale, observed_intersection.y - 0.5*scene.lengthScale, 1*scene.lengthScale, 1*scene.lengthScale);
               } else {
                 canvasRenderer.drawPoint(observed_intersection, 'rgb(80,80,80)');
               }

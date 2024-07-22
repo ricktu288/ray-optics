@@ -177,7 +177,7 @@ window.onload = function (e) {
       // Update scale based on previous scale and scaling factor
       let newScale = lastScale * scaleFactor;
       
-      newScale = Math.max(0.25, Math.min(5.00, newScale));
+      newScale = Math.max(0.25/scene.lengthScale, Math.min(5.00/scene.lengthScale, newScale));
 
       // Calculate the mid point between the two touches
       const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
@@ -801,8 +801,8 @@ function initParameters() {
   document.getElementById("rayDensity").value = scene.rayModeDensity;
   document.getElementById("rayDensity_more").value = scene.rayModeDensity;
   document.getElementById("rayDensity_mobile").value = scene.rayModeDensity;
-  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
+  document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('rays');
   scene.backgroundImage = null;
@@ -1140,8 +1140,8 @@ function JSONInput() {
       document.getElementById('gridSize').value = scene.gridSize;
       document.getElementById('gridSize_mobile').value = scene.gridSize;
 
-      document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
-      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
+      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       document.getElementById('simulateColors').checked = scene.simulateColors;
       document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
       modebtn_clicked(scene.mode);
@@ -1205,8 +1205,8 @@ function setScaleWithCenter(value, centerX, centerY) {
   scene.origin.x -= centerX * scaleChange;
   scene.origin.y -= centerY * scaleChange;
   scene.scale = value;
-  document.getElementById("zoom").innerText = Math.round(scene.scale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * 100) + '%';
+  document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   draw();
 }
 

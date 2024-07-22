@@ -15,17 +15,18 @@ objTypes['IdealLens'] = class extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('focalLength'), -1000, 1000, 1, this.focalLength, function (obj, value) {
+    objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength, function (obj, value) {
       obj.focalLength = value;
     });
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
     
@@ -35,19 +36,19 @@ objTypes['IdealLens'] = class extends LineObjMixin(BaseSceneObj) {
     var per_x = par_y;
     var per_y = -par_x;
 
-    var arrow_size_per = 5;
-    var arrow_size_par = 5;
-    var center_size = 2;
+    var arrow_size_per = 5 * ls;
+    var arrow_size_par = 5 * ls;
+    var center_size = 2 * ls;
 
     // Draw the line segment
     ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-    ctx.globalAlpha = 1 / ((Math.abs(this.focalLength) / 100) + 1);
-    ctx.lineWidth = 4;
+    ctx.globalAlpha = 1 / ((Math.abs(this.focalLength / this.scene.lengthScale) / 100) + 1);
+    ctx.lineWidth = 4 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1 * ls;
 
     ctx.globalAlpha = 1;
     ctx.fillStyle = 'rgb(255,0,0)';
@@ -96,8 +97,8 @@ objTypes['IdealLens'] = class extends LineObjMixin(BaseSceneObj) {
       // show focal length
       var mp = geometry.segmentMidpoint(this);
       ctx.fillStyle = 'rgb(255,0,255)';
-      ctx.fillRect(mp.x + this.focalLength * per_x - 1.5, mp.y + this.focalLength * per_y - 1.5, 3, 3);
-      ctx.fillRect(mp.x - this.focalLength * per_x - 1.5, mp.y - this.focalLength * per_y - 1.5, 3, 3);
+      ctx.fillRect(mp.x + this.focalLength * per_x - 1.5 * ls, mp.y + this.focalLength * per_y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(mp.x - this.focalLength * per_x - 1.5 * ls, mp.y - this.focalLength * per_y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 

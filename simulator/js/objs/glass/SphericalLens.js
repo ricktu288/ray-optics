@@ -130,18 +130,19 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1 && this.p2 && this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
 
     if (!this.path) {
       if (this.p1 && this.p2) {
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-        ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       }
       return;
     }
@@ -163,8 +164,8 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
       var bfd = params.bfd;
 
       ctx.fillStyle = 'rgb(255,0,255)';
-      ctx.fillRect(this.path[2].x + bfd * dpx - 1.5, this.path[2].y + bfd * dpy - 1.5, 3, 3);
-      ctx.fillRect(this.path[5].x - ffd * dpx - 1.5, this.path[5].y - ffd * dpy - 1.5, 3, 3);
+      ctx.fillRect(this.path[2].x + bfd * dpx - 1.5 * ls, this.path[2].y + bfd * dpy - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.path[5].x - ffd * dpx - 1.5 * ls, this.path[5].y - ffd * dpy - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 
@@ -345,7 +346,7 @@ objTypes['SphericalLens'] = class extends objTypes['Glass'] {
     var dpy = -dx;
     var cx = (p1.x + p2.x) * .5;
     var cy = (p1.y + p2.y) * .5;
-    const thick = 10;
+    const thick = 10 * this.scene.lengthScale;
     // create lens
     if (!this.path) this.path = [];
     this.path[0] = { x: p1.x - dpx * thick, y: p1.y - dpy * thick, arc: false };

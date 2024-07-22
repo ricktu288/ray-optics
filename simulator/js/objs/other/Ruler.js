@@ -23,10 +23,11 @@ objTypes['Ruler'] = class extends LineObjMixin(BaseSceneObj) {
     if (isAboveLight) return;
 
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
     
@@ -41,41 +42,43 @@ objTypes['Ruler'] = class extends LineObjMixin(BaseSceneObj) {
     var scale_step = this.scaleInterval;
     var scale_step_mid = scale_step * 5;
     var scale_step_long = scale_step * 10;
-    var scale_len = 10;
-    var scale_len_mid = 15;
+    var scale_len = 10 * ls;
+    var scale_len_mid = 15 * ls;
 
     ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-    ctx.font = '14px Arial';
+    ctx.font = (14 * ls) + 'px Arial';
     ctx.fillStyle = 'rgb(128,128,128)';
     if (ang > Math.PI * (-0.25) && ang <= Math.PI * 0.25) {
       //↘~↗
       var scale_direction = -1;
-      var scale_len_long = 20;
+      var scale_len_long = 20 * ls;
       var text_ang = ang;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
     } else if (ang > Math.PI * (-0.75) && ang <= Math.PI * (-0.25)) {
       //↗~↖
       var scale_direction = 1;
-      var scale_len_long = 15;
+      var scale_len_long = 15 * ls;
       var text_ang = ang - Math.PI * (-0.5);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
     } else if (ang > Math.PI * 0.75 || ang <= Math.PI * (-0.75)) {
       //↖~↙
       var scale_direction = 1;
-      var scale_len_long = 20;
+      var scale_len_long = 20 * ls;
       var text_ang = ang - Math.PI;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
     } else {
       //↙~↘
       var scale_direction = -1;
-      var scale_len_long = 15;
+      var scale_len_long = 15 * ls;
       var text_ang = ang - Math.PI * 0.5;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
     }
+
+    ctx.lineWidth = 1 * ls;
 
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);

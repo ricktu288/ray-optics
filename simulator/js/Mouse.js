@@ -116,7 +116,7 @@ class Mouse {
         }
       }
 
-      if (snapContext && x * x + y * y > Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT * Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT) {
+      if (snapContext && x * x + y * y > Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT * Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT / this.scene.scale / this.scene.scale) {
         // lock the snap
         snapContext.locked = true;
         snapContext.i0 = i0;

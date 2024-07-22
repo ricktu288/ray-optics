@@ -34,6 +34,7 @@ class BaseGlass extends BaseSceneObj {
    */
   fillGlass(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     const n = this.refIndex;
 
@@ -98,7 +99,7 @@ class BaseGlass extends BaseSceneObj {
         // canvas2svg does not support globalCompositeOperation. Use the old appearance.
         ctx.globalAlpha = 1;
         ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(70,70,70)');
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1 * ls;
         ctx.stroke();
       }
     }

@@ -18,6 +18,7 @@ const DATA_VERSION = 5;
  * @property {boolean} lockObjs - The "Lock Objects" option indicating if the objects are locked.
  * @property {number} gridSize - The size of the grid.
  * @property {Circle|null} observer - The observer of the scene, null if not set.
+ * @property {number} lengthScale - The length scale used in line width, default font size, etc in the scene.
  * @property {Point} origin - The origin of the scene in the viewport.
  * @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene.
  * @property {number} width - The width (in CSS pixels) of the viewport.
@@ -39,6 +40,7 @@ class Scene {
     lockObjs: false,
     gridSize: 20,
     observer: null,
+    lengthScale: 1,
     origin: { x: 0, y: 0 },
     scale: 1,
     width: 1500,
@@ -46,12 +48,12 @@ class Scene {
     simulateColors: false,
     symbolicBodyMerging: false
   };
-  
+
   constructor() {
     this.backgroundImage = null;
     this.error = null;
     this.warning = null;
-    this.fromJSON(JSON.stringify({version: DATA_VERSION}), () => {});
+    this.fromJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
   }
 
   /**
@@ -135,7 +137,7 @@ class Scene {
         }
         this[key] = jsonData[key];
       }
-      
+
       // Rescale the scene to fit the current viewport.
       let rescaleFactor = 1;
 
@@ -179,13 +181,13 @@ class Scene {
    * @returns {string} The JSON string representing the scene.
    */
   toJSON() {
-    let jsonData = {version: DATA_VERSION};
+    let jsonData = { version: DATA_VERSION };
 
     // Put the name of the scene first.
     if (this.name) {
       jsonData.name = this.name;
     }
-    
+
     // And then the module definitions.
     if (Object.keys(this.modules).length > 0) {
       jsonData.modules = this.modules;

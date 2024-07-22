@@ -19,10 +19,11 @@ objTypes['PlaneGlass'] = class extends LineObjMixin(BaseGlass) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
 
@@ -44,8 +45,8 @@ objTypes['PlaneGlass'] = class extends LineObjMixin(BaseGlass) {
 
     if (isHovered) {
       ctx.fillStyle = 'magenta';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
   }
 

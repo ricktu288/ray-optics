@@ -36,10 +36,11 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
 
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       ctx.fillStyle = 'rgb(128,128,128)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
     
@@ -56,8 +57,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
     } catch (e) {
       delete this.path;
       ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
       this.error = e.toString();
       return;
     }
@@ -73,8 +74,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       var i;
       var lastError = "";
       var hasPoints = false;
-      for (i = -0.1; i < p12d + 0.09; i += 0.1) {
-        var ix = i + 0.05;
+      for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+        var ix = i + 0.05 * this.scene.lengthScale;
         if (ix < 0) ix = 0;
         if (ix > p12d) ix = p12d;
         var x = ix - x0;
@@ -96,8 +97,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       if (!hasPoints || lastError.startsWith("Curve generation error:")) {
         delete this.path;
         ctx.fillStyle = "red"
-        ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-        ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
         this.error = lastError.toString();
         return;
       }
@@ -105,8 +106,8 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
 
     if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
-      ctx.fillRect(this.p1.x - 1.5, this.p1.y - 1.5, 3, 3);
-      ctx.fillRect(this.p2.x - 1.5, this.p2.y - 1.5, 3, 3);
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
 
     this.drawGlass(canvasRenderer, isAboveLight, isHovered);
@@ -164,13 +165,13 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       //Line segment i->i+1
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
-      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
         s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
 
       if (s_point_temp) {
-        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared && s_point_index != i - 1) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale && s_point_index != i - 1) {
           // The ray shots on a point where the upper and the lower surfaces overlap.
           return;
         } else if (s_lensq_temp < s_lensq) {

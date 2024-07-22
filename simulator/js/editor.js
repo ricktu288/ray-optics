@@ -256,7 +256,8 @@ function canvas_onmousemove(e) {
   mousePos = mousePos2;
 
 
-  document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + Math.round(mousePos.x) + "," + Math.round(mousePos.y) + ")";
+  const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
+  document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + mousePos.x.toFixed(mousePosDigits) + ", " + mousePos.y.toFixed(mousePosDigits) + ")";
 
   if (isConstructing) {
     // highlight object being constructed
@@ -473,14 +474,14 @@ function canvas_onmousewheel(e) {
   // cross-browser wheel delta
   var e = window.event || e; // old IE support
   var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-  var d = scene.scale;
+  var d = scene.scale * scene.lengthScale;
   if (delta < 0) {
-    d = scene.scale - 0.25;
+    d = scene.scale * scene.lengthScale - 0.25;
   } else if (delta > 0) {
-    d = scene.scale + 0.25;
+    d = scene.scale * scene.lengthScale + 0.25;
   }
   d = Math.max(0.25, Math.min(5.00, d)) * 100;
-  setScaleWithCenter(d / 100, (e.pageX - e.target.offsetLeft) / scene.scale, (e.pageY - e.target.offsetTop) / scene.scale);
+  setScaleWithCenter(d / scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / scene.scale, (e.pageY - e.target.offsetTop) / scene.scale);
   JSONOutput();
   //window.toolBarViewModel.zoom.value(d);
   canvas_onmousemove(e);

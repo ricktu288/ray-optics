@@ -40,7 +40,7 @@ class BaseGrinGlass extends BaseGlass {
     });
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
-      objBar.createNumber(getMsg('stepSize'), 0.1, 1, 0.1, this.stepSize, function (obj, value) {
+      objBar.createNumber(getMsg('stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {
         obj.stepSize = parseFloat(value);
       }, getMsg('stepSize_note_popover'));
     }

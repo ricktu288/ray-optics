@@ -82,6 +82,9 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     // Sort the expanded objects with z-index.
     let mapped = this.objs.map(function(obj, i) {
       return {index: i, value: obj.getZIndex()};
@@ -96,13 +99,14 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     }
 
     // Draw the control points
+    ctx.lineWidth = 1 * ls;
     for (let point of this.points) {
       ctx.beginPath();
       ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
-      ctx.arc(point.x, point.y, 2, 0, Math.PI * 2, false);
+      ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 5, 0, Math.PI * 2, false);
+      ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
     }
   }

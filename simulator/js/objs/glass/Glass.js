@@ -19,6 +19,8 @@ objTypes['Glass'] = class extends BaseGlass {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
     var p1;
     var p2;
     var p3;
@@ -34,7 +36,7 @@ objTypes['Glass'] = class extends BaseGlass {
 
       if (this.path.length === 2 && this.path[0].x === this.path[1].x && this.path[0].y === this.path[1].y) {
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.fillRect(this.path[0].x - 1.5, this.path[0].y - 1.5, 3, 3);
+        ctx.fillRect(this.path[0].x - 1.5 * ls, this.path[0].y - 1.5 * ls, 3 * ls, 3 * ls);
         return;
       }
       ctx.beginPath();
@@ -64,7 +66,7 @@ objTypes['Glass'] = class extends BaseGlass {
       }
       ctx.globalAlpha = 1;
       ctx.strokeStyle = 'rgb(128,128,128)';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1 * ls;
       ctx.stroke();
     } else {
       // The user has completed drawing the object
@@ -102,10 +104,10 @@ objTypes['Glass'] = class extends BaseGlass {
         if (typeof this.path[i].arc != 'undefined') {
           if (this.path[i].arc) {
             ctx.fillStyle = 'rgb(255,0,255)';
-            ctx.fillRect(this.path[i].x - 1.5, this.path[i].y - 1.5, 3, 3);
+            ctx.fillRect(this.path[i].x - 1.5 * ls, this.path[i].y - 1.5 * ls, 3 * ls, 3 * ls);
           } else {
             ctx.fillStyle = 'rgb(255,0,0)';
-            ctx.fillRect(this.path[i].x - 1.5, this.path[i].y - 1.5, 3, 3);
+            ctx.fillRect(this.path[i].x - 1.5 * ls, this.path[i].y - 1.5 * ls, 3 * ls, 3 * ls);
           }
         }
       }
@@ -143,7 +145,7 @@ objTypes['Glass'] = class extends BaseGlass {
     if (!this.notDone) { return; }
     const mousePos = mouse.getPosSnappedToGrid();
     if (typeof this.path[this.path.length - 1].arc != 'undefined') {
-      if (this.path[this.path.length - 1].arc && Math.sqrt(Math.pow(this.path[this.path.length - 1].x - mousePos.x, 2) + Math.pow(this.path[this.path.length - 1].y - mousePos.y, 2)) >= 5) {
+      if (this.path[this.path.length - 1].arc && Math.sqrt(Math.pow(this.path[this.path.length - 1].x - mousePos.x, 2) + Math.pow(this.path[this.path.length - 1].y - mousePos.y, 2)) >= 5 * this.scene.lengthScale) {
         this.path[this.path.length] = mousePos;
       }
     } else {
@@ -317,14 +319,14 @@ objTypes['Glass'] = class extends BaseGlass {
           r = geometry.distance(center, p3);
           rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, p2));
           for (var ii = 1; ii <= 2; ii++) {
-            rp_exist[ii] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.intersectionIsOnRay(rp_temp[ii], ray) && geometry.distanceSquared(rp_temp[ii], ray.p1) > minShotLength_squared;
+            rp_exist[ii] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.intersectionIsOnRay(rp_temp[ii], ray) && geometry.distanceSquared(rp_temp[ii], ray.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
             rp_lensq[ii] = geometry.distanceSquared(ray.p1, rp_temp[ii]);
           }
-          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared) {
+          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_point_temp = rp_temp[1];
             s_lensq_temp = rp_lensq[1];
           }
-          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared) {
+          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_point_temp = rp_temp[2];
             s_lensq_temp = rp_lensq[2];
           }
@@ -332,7 +334,7 @@ objTypes['Glass'] = class extends BaseGlass {
           // The three points on the arc is colinear. Treat as a line segment.
           var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length]));
 
-          if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+          if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
           }
@@ -341,7 +343,7 @@ objTypes['Glass'] = class extends BaseGlass {
         //Line segment i->i+1
         var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
-        if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+        if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
           s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
         }
@@ -387,7 +389,7 @@ objTypes['Glass'] = class extends BaseGlass {
     return this.getIncidentData(ray).incidentType;
   }
 
-  
+
   /* Utility function */
 
   getIncidentData(ray) {
@@ -441,14 +443,14 @@ objTypes['Glass'] = class extends BaseGlass {
           rp2_temp = geometry.lineCircleIntersections(geometry.line(ray2.p1, ray2.p2), geometry.circle(center, p2));
           for (var ii = 1; ii <= 2; ii++) {
             rp_on_ray[ii] = geometry.intersectionIsOnRay(rp_temp[ii], ray);
-            rp_exist[ii] = rp_on_ray[ii] && !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.distanceSquared(rp_temp[ii], ray.p1) > minShotLength_squared;
+            rp_exist[ii] = rp_on_ray[ii] && !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp_temp[ii])), geometry.line(p3, rp_temp[ii])) && geometry.distanceSquared(rp_temp[ii], ray.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
             rp_lensq[ii] = geometry.distanceSquared(ray.p1, rp_temp[ii]);
 
-            rp2_exist[ii] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp2_temp[ii])), geometry.line(p3, rp2_temp[ii])) && geometry.intersectionIsOnRay(rp2_temp[ii], ray2) && geometry.distanceSquared(rp2_temp[ii], ray2.p1) > minShotLength_squared;
+            rp2_exist[ii] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(p1, p2), geometry.line(p3, rp2_temp[ii])), geometry.line(p3, rp2_temp[ii])) && geometry.intersectionIsOnRay(rp2_temp[ii], ray2) && geometry.distanceSquared(rp2_temp[ii], ray2.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
             rp2_lensq[ii] = geometry.distanceSquared(ray2.p1, rp2_temp[ii]);
           }
 
-          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared) {
+          if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2]) && rp_lensq[1] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_point_temp = rp_temp[1];
             s_lensq_temp = rp_lensq[1];
             if (rp_on_ray[2] && rp_lensq[1] < rp_lensq[2]) {
@@ -460,7 +462,7 @@ objTypes['Glass'] = class extends BaseGlass {
               normal_y_temp = center.y - s_point_temp.y;
             }
           }
-          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared) {
+          if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1]) && rp_lensq[2] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_point_temp = rp_temp[2];
             s_lensq_temp = rp_lensq[2];
             if (rp_on_ray[1] && rp_lensq[2] < rp_lensq[1]) {
@@ -472,15 +474,15 @@ objTypes['Glass'] = class extends BaseGlass {
               normal_y_temp = center.y - s_point_temp.y;
             }
           }
-          if (rp2_exist[1] && rp2_lensq[1] > minShotLength_squared) {
+          if (rp2_exist[1] && rp2_lensq[1] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             ray_intersect_count++;
           }
-          if (rp2_exist[2] && rp2_lensq[2] > minShotLength_squared) {
+          if (rp2_exist[2] && rp2_lensq[2] > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             ray_intersect_count++;
           }
 
           // Test if too close to an edge
-          if (s_point_temp && (geometry.distanceSquared(s_point_temp, p1) < minShotLength_squared || geometry.distanceSquared(s_point_temp, p2) < minShotLength_squared)) {
+          if (s_point_temp && (geometry.distanceSquared(s_point_temp, p1) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale || geometry.distanceSquared(s_point_temp, p2) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale)) {
             nearEdge_temp = true;
           }
 
@@ -489,7 +491,7 @@ objTypes['Glass'] = class extends BaseGlass {
           rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length]));
 
           rp2_temp = geometry.linesIntersection(geometry.line(ray2.p1, ray2.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length]));
-          if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+          if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
             s_point_temp = rp_temp;
 
@@ -502,12 +504,12 @@ objTypes['Glass'] = class extends BaseGlass {
 
           }
 
-          if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared) {
+          if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 2) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
             ray_intersect_count++;
           }
 
           // Test if too close to an edge
-          if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared || geometry.distanceSquared(s_point_temp, this.path[(i + 2) % this.path.length]) < minShotLength_squared)) {
+          if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale || geometry.distanceSquared(s_point_temp, this.path[(i + 2) % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale)) {
             nearEdge_temp = true;
           }
         }
@@ -516,7 +518,7 @@ objTypes['Glass'] = class extends BaseGlass {
         rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
         rp2_temp = geometry.linesIntersection(geometry.line(ray2.p1, ray2.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
-        if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared) {
+        if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
           s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
           s_point_temp = rp_temp;
 
@@ -529,17 +531,17 @@ objTypes['Glass'] = class extends BaseGlass {
 
         }
 
-        if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared) {
+        if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
           ray_intersect_count++;
         }
 
         // Test if too close to an edge
-        if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared || geometry.distanceSquared(s_point_temp, this.path[(i + 1) % this.path.length]) < minShotLength_squared)) {
+        if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale || geometry.distanceSquared(s_point_temp, this.path[(i + 1) % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale)) {
           nearEdge_temp = true;
         }
       }
       if (s_point_temp) {
-        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
           // Self surface merging
           surfaceMultiplicity++;
         } else if (s_lensq_temp < s_lensq) {
