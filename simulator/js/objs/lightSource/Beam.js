@@ -24,7 +24,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
+    objBar.createNumber(getMsg('brightness'), 0.01 / this.scene.lengthScale, 1 / this.scene.lengthScale, 0.01 / this.scene.lengthScale, this.brightness, function (obj, value) {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
@@ -122,7 +122,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
 
     return {
       newRays: newRays,
-      brightnessScale: Math.min(this.brightness / this.scene.rayDensity * rayBrightness, 1) / (this.brightness / this.scene.rayDensity * rayBrightness)
+      brightnessScale: Math.min(this.brightness * this.scene.lengthScale / this.scene.rayDensity * rayBrightness, 1) / (this.brightness * this.scene.lengthScale / this.scene.rayDensity * rayBrightness)
     };
   }
 
@@ -148,8 +148,8 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
 
   newRay(x, y, normal, angle, gap, brightness_factor = 1.0) {
     var ray1 = geometry.line(geometry.point(x, y), geometry.point(x + Math.sin(normal + angle), y + Math.cos(normal + angle)));
-    ray1.brightness_s = Math.min(this.brightness / this.scene.rayDensity * brightness_factor, 1) * 0.5;
-    ray1.brightness_p = Math.min(this.brightness / this.scene.rayDensity * brightness_factor, 1) * 0.5;
+    ray1.brightness_s = Math.min(this.brightness * this.scene.lengthScale / this.scene.rayDensity * brightness_factor, 1) * 0.5;
+    ray1.brightness_p = Math.min(this.brightness * this.scene.lengthScale / this.scene.rayDensity * brightness_factor, 1) * 0.5;
     if (this.lambert) {
       const lambert = Math.cos(angle)
       ray1.brightness_s *= lambert;
