@@ -702,6 +702,9 @@ locales["zh-TW"] = {
   "tool_Detector_popover": {
     "message": "測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。（拖曳或點擊以創建該線段。）單位為任意。"
   },
+  "tool_Detector_info_popover": {
+    "message": "<ul><li>P: 能量流率（通量），單位為 B/s（見下文）。</li><li>F⊥: 垂直動量流率，單位為 (B/s)/c。</li><li>F∥: 平行動量流率，單位為 (B/s)/c。</li><li>匯出的 CSV 中的輻照度單位為 (B/s)/L。</li><li>L 是本模擬器中使用的任意長度單位。</li><li>B 是輻射通量或光通量的任意單位，對應到「亮度」選項的單位：非朗伯光束為 B/L，點光源為 500B/360°。</li><li>無因次因子 s 是「設定」->「顯示狀態欄」中顯示的「亮度尺度」，當「光線密度」高於某個閾值時為 1，否則與「光線密度」成正比。</li><li>如果某些光線在內反射的無窮級數中被截斷，則總截斷量將顯示為誤差估計。</li></ul>"
+  },
   "tool_TextLabel_popover": {
     "message": "文字標籤。"
   },
@@ -794,6 +797,9 @@ locales["zh-TW"] = {
   },
   "total_truncation": {
     "message": "被截斷的亮度："
+  },
+  "brightness_scale": {
+    "message": "亮度尺度："
   },
   "time_elapsed": {
     "message": "花費時間(ms)："

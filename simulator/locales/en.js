@@ -702,6 +702,9 @@ locales["en"] = {
   "tool_Detector_popover": {
     "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
   },
+  "tool_Detector_info_popover": {
+    "message": "<ul><li>P: The rate of energy flow (flux) in B/s (see below).</li><li>F⊥: The rate of perpendicular momentum flow in (B/s)/c.</li><li>F∥: The rate of parallel momentum flow in (B/s)/c.</li><li>The irradiance in the exported CSV is in (B/s)/L.</li><li>L is the arbitrary unit of length used in this simulator.</li><li>B is an arbitrary unit of radiant flux or luminous flux, corresponding to the unit of the \"Brightness\" option being B/L for non-Lambertian beams and 500B/360° for point sources.</li><li>The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.</li><li>If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates.</li></ul>"
+  },
   "tool_TextLabel_popover": {
     "message": "A text label."
   },
@@ -794,6 +797,9 @@ locales["en"] = {
   },
   "total_truncation": {
     "message": "Truncated brightness: "
+  },
+  "brightness_scale": {
+    "message": "Brightness Scale: "
   },
   "time_elapsed": {
     "message": "Time elapsed (ms): "

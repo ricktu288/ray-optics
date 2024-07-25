@@ -31,6 +31,8 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
   }
 
   populateObjBar(objBar) {
+    objBar.createInfoBox(getMsg('tool_Detector_info_popover'));
+
     objBar.createBoolean(getMsg('irradMap'), this.irradMap, function (obj, value) {
       obj.irradMap = value;
     }, null, true);

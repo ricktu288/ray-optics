@@ -243,7 +243,7 @@ function shootWaitingRays() {
       timerID = setTimeout(shootWaitingRays, firstBreak ? 100:1);
       firstBreak = false;
       document.getElementById('forceStop').style.display = '';
-      document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
+      document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((brightnessScale <= 0) ? "-" : brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
       draw(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
 
@@ -633,7 +633,7 @@ function shootWaitingRays() {
   
   if (forceStop)
   {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((brightnessScale <= 0) ? "-" : brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>' + getMsg("force_stopped");
     forceStop = false;
   }
   else if (hasExceededTime)
@@ -642,7 +642,7 @@ function shootWaitingRays() {
   }
   else
   {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime);
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((brightnessScale <= 0) ? "-" : brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime);
   }
   document.getElementById('forceStop').style.display = 'none';
   //ctx.stroke();

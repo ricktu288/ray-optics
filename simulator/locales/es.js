@@ -726,6 +726,10 @@ locales["es"] = {
   "tool_Detector_popover": {
     "message": "Una herramienta para medir el flujo de energía (P), el momento perpendicular de flujo (F⊥), y el momento paralelo de flujo (F∥) a través de un segmento de recta. (Arrastre o clique para crear el segmento de recta.) Las unidades son arbitrarias."
   },
+  "tool_Detector_info_popover": {
+    "incomplete": true,
+    "message": "<ul><li>P: The rate of energy flow (flux) in B/s (see below).</li><li>F⊥: The rate of perpendicular momentum flow in (B/s)/c.</li><li>F∥: The rate of parallel momentum flow in (B/s)/c.</li><li>The irradiance in the exported CSV is in (B/s)/L.</li><li>L is the arbitrary unit of length used in this simulator.</li><li>B is an arbitrary unit of radiant flux or luminous flux, corresponding to the unit of the \"Brightness\" option being B/L for non-Lambertian beams and 500B/360° for point sources.</li><li>The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.</li><li>If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates.</li></ul>"
+  },
   "tool_TextLabel_popover": {
     "message": "Un cuadro de texto."
   },
@@ -825,6 +829,10 @@ locales["es"] = {
   },
   "total_truncation": {
     "message": "Brillo truncado: "
+  },
+  "brightness_scale": {
+    "incomplete": true,
+    "message": "Brightness Scale: "
   },
   "time_elapsed": {
     "message": "Tiempo transcurrido (ms): "
