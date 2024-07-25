@@ -409,6 +409,15 @@ window.onload = function (e) {
 
   document.getElementById('lengthScale').onchange = function () {
     scene.lengthScale = parseFloat(this.value);
+    if (isNaN(scene.lengthScale)) {
+      scene.lengthScale = 1;
+    }
+    if (scene.lengthScale < 0.1) {
+      scene.lengthScale = 0.1;
+    }
+    if (scene.lengthScale > 10) {
+      scene.lengthScale = 10;
+    }
     document.getElementById('lengthScale').value = scene.lengthScale;
     document.getElementById('lengthScale_mobile').value = scene.lengthScale;
     setScale(scene.scale);
