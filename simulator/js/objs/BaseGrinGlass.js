@@ -79,7 +79,7 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   getRefIndexAt(point, ray) {
-    return this.fn_p({ x: point.x, y: point.y });
+    return this.fn_p({ x: point.x, y: point.y, z: ray.wavelength || GREEN_WAVELENGTH });
   }
 
   onRayEnter(ray) {
@@ -105,12 +105,12 @@ class BaseGrinGlass extends BaseGlass {
   initFns() {
     this.error = null;
     try {
-      this.p = parseTex(this.refIndexFn).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
+      this.p = parseTex(this.refIndexFn.replaceAll("\\lambda", "z")).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
       this.p_der_x = math.derivative(this.p, 'x').toString();
       this.p_der_x_tex = math.parse(this.p_der_x).toTex().replaceAll("{+", "{"); // 'evaluateLatex' function can't and can handle expressions of the form '...num^{+exp}...' and '...num^{exp}...', respectively, where num and exp are numbers
       this.p_der_y = math.derivative(this.p, 'y').toString();
       this.p_der_y_tex = math.parse(this.p_der_y).toTex().replaceAll("{+", "{");
-      this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn));
+      this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn.replaceAll("\\lambda", "z")));
       this.fn_p_der_x = evaluateLatex(this.shiftOrigin(this.p_der_x_tex));
       this.fn_p_der_y = evaluateLatex(this.shiftOrigin(this.p_der_y_tex));
     } catch (e) {
@@ -262,8 +262,8 @@ class BaseGrinGlass extends BaseGlass {
     const x_der_s_prev = (p2.x - p1.x) / len;
     const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
 
-    const x_der_s = x_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
-    const y_der_s = y_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y });
+    const x_der_s = x_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH });
+    const y_der_s = y_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH });
 
     const x_new = x + this.stepSize * x_der_s;
     const y_new = y + this.stepSize * y_der_s;

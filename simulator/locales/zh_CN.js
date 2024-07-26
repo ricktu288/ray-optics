@@ -406,7 +406,7 @@ locales["zh-CN"] = {
     "message": "符号式物体融合"
   },
   "grin_refractive_index": {
-    "message": "<ul><li>支持的常数：<br><code>pi e</code></li><li>支持的运算符：<br><code>+ - * / ^</code></li><li>支持的函数：<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>仅支持可微函数。 </li><li>n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。 </li><li>如需较精确的模拟，请见「更多选项...」</li></ul>"
+    "message": "<ul><li>支持的常数：<br><code>pi e</code></li><li>支持的运算符：<br><code>+ - * / ^</code></li><li>支持的函数：<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>如需模拟色散，请用参数 <code>lambda</code> 代表真空中波长，单位为纳米。<sup>Beta</sup></li><li>仅支持可微函数。 </li><li>n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。 </li><li>如需较精确的模拟，请见「更多选项...」</li></ul>"
   },
   "symbolic_grin_note_popover": {
     "message": "<p>本选项会套用至所有渐变折射率透光物。 </p><p>本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'CircleGrinGlass.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。 </p><p>数值的实作较快，但使用多个渐变折射率介质，<b>且至少有一个介质的折射率没有在<u>整个</u>平面上有定义</b>时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。 </p>"
