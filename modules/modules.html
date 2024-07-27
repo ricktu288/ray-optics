@@ -207,6 +207,29 @@ ul {
   <ul>
     <li><code>f</code>: The focal length of the lenses</li><li><code>d</code>: The distance between the lenses</li><li><code>N</code>: The number of lenses</li>
   </ul>
+</div>﻿<div class="row right-caption">
+  <img src="OpticalFiber.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">Optical Fiber (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='Imported';this.classList.remove('btn-primary');this.classList.add('btn-success');">Import</button></p>
+    <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>Line-shaped optical fiber with given core and cladding thickness and refractive indices.</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+      Specification
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-OpticalFiber" class="collapse">
+  Control point sequence
+  <ol>
+    <li>The first endpoint of the optical fiber</li><li>The second endpoint of the optical fiber (should have the same \(y\) as the first point)</li>
+  </ol>
+  Parameters
+  <ul>
+    <li><code>X</code>: The thickness of the core</li><li><code>Y</code>: The thickness of the cladding</li><li><code>n_1</code>: The refractive index of the core</li><li><code>n_2</code>: The refractive index of the cladding</li>
+  </ul>
 </div>
 
   <h2>Customization</h2>

@@ -101,6 +101,25 @@
           "d": "The distance between the lenses",
           "N": "The number of lenses"
         }
+      },
+      {
+        "id": "OpticalFiber",
+        "contributors": [
+          "josephernest",
+          "Yi-Ting Tu"
+        ],
+        "title": "Optical Fiber",
+        "description": "<p>Line-shaped optical fiber with given core and cladding thickness and refractive indices.</p>",
+        "points": [
+          "The first endpoint of the optical fiber",
+          "The second endpoint of the optical fiber (should have the same \\(y\\) as the first point)"
+        ],
+        "params": {
+          "X": "The thickness of the core",
+          "Y": "The thickness of the cladding",
+          "n_1": "The refractive index of the core",
+          "n_2": "The refractive index of the cladding"
+        }
       }
     ]
   }

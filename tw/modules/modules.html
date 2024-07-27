@@ -207,6 +207,29 @@ ul {
   <ul>
     <li><code>f</code>: 透鏡的焦距</li><li><code>d</code>: 透鏡之間的距離</li><li><code>N</code>: 透鏡的數量</li>
   </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/OpticalFiber.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">光纖 (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>指定核心和包層折射率的線狀光纖。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-OpticalFiber" class="collapse">
+  控制點順序
+  <ol>
+    <li>光纖的第一個端點</li><li>光纖的第二個端點（應與第一個點有相同的 \(y\)）</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>X</code>: 核心的厚度</li><li><code>Y</code>: 包層的厚度</li><li><code>n_1</code>: 核心的折射率</li><li><code>n_2</code>: 包層的折射率</li>
+  </ul>
 </div>
 
   <h2>客製化</h2>
