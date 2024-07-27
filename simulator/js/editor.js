@@ -68,7 +68,7 @@ function canvas_onmousedown(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
-      draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+      simulator.draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
     }
   }
   else {
@@ -145,7 +145,7 @@ function canvas_onmousedown(e) {
           isConstructing = false;
         }
         selectObj(scene.objs.length - 1);
-        draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+        simulator.draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
       }
     }
   }
@@ -229,7 +229,7 @@ function canvas_onmousemove(e) {
     var newMouseObj = (ret.targetObjIndex == -1) ? null : scene.objs[ret.targetObjIndex];
     if (mouseObj != newMouseObj) {
       mouseObj = newMouseObj;
-      draw(true, true);
+      simulator.draw(true, true);
     }
     if (ret.dragContext) {
       if (ret.dragContext.cursor) {
@@ -271,7 +271,7 @@ function canvas_onmousemove(e) {
     if (ret && ret.requiresObjBarUpdate) {
       selectObj(selectedObj);
     }
-    draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+    simulator.draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
   }
   else {
     if (draggingObj == -4) {
@@ -291,7 +291,7 @@ function canvas_onmousemove(e) {
 
       // Update the mouse position
       dragContext.mousePos1 = mousePos_snapped;
-      draw(false, true);
+      simulator.draw(false, true);
     }
 
     var returndata;
@@ -312,7 +312,7 @@ function canvas_onmousemove(e) {
         }
       }
 
-      draw(!scene.objs[draggingObj].constructor.isOptical, true);
+      simulator.draw(!scene.objs[draggingObj].constructor.isOptical, true);
 
       if (dragContext.requiresObjBarUpdate) {
         selectObj(selectedObj);
@@ -327,7 +327,7 @@ function canvas_onmousemove(e) {
       var mouseDiffY = (mousePos.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
       scene.origin.x = mouseDiffX * scene.scale + dragContext.mousePos2.x;
       scene.origin.y = mouseDiffY * scene.scale + dragContext.mousePos2.y;
-      draw();
+      simulator.draw();
     }
 
     
@@ -345,13 +345,13 @@ function canvas_onmouseup(e) {
       if (ret && ret.requiresObjBarUpdate) {
         selectObj(selectedObj);
       }
-      draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+      simulator.draw(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
       if (!isConstructing) {
         // The object says the contruction is done
         createUndoPoint();
         if (document.getElementById('lockObjs').checked) {
           mouseObj = -1;
-          draw(true, true);
+          simulator.draw(true, true);
         }
       }
     }
@@ -399,13 +399,13 @@ function addControlPointsForHandle(controlPoints) {
   for (var i in controlPoints) {
     scene.objs[0].addControlPoint(controlPoints[i]);
   }
-  draw(true, true);
+  simulator.draw(true, true);
 }
 
 
 function finishHandleCreation(point) {
   scene.objs[0].finishHandle(point);
-  draw(true, true);
+  simulator.draw(true, true);
 }
 
 
@@ -548,12 +548,12 @@ function confirmPositioning(ctrl, shift) {
       // Observer
       scene.observer.c.x = xyData[0];
       scene.observer.c.y = xyData[1];
-      draw(false, true);
+      simulator.draw(false, true);
     }
     else {
       // Object
       scene.objs[positioningObj].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), dragContext, ctrl, shift);
-      draw(!scene.objs[positioningObj].constructor.isOptical, true);
+      simulator.draw(!scene.objs[positioningObj].constructor.isOptical, true);
     }
     
     createUndoPoint();
@@ -639,7 +639,7 @@ function undo() {
       scene.objs.length--;
       selectObj(-1);
     }
-    draw(!objTypes[constructingObjType].isOptical, true);
+    simulator.draw(!objTypes[constructingObjType].isOptical, true);
     return;
   }
   if (positioningObj != -1) {

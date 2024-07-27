@@ -495,7 +495,7 @@ class ObjBar {
         }
       }
     }
-    draw(!scene.objs[selectedObj].constructor.isOptical, true);
+    simulator.draw(!scene.objs[selectedObj].constructor.isOptical, true);
   }
 
   /**

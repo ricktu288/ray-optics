@@ -113,7 +113,7 @@ window.onload = function (e) {
     }
     mouseObj = -1;
     document.getElementById('mouseCoordinates').innerHTML = "";
-    draw(true, true)
+    simulator.draw(true, true)
   });
 
   // IE9, Chrome, Safari, Opera
@@ -283,7 +283,7 @@ window.onload = function (e) {
     document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
     selectObj(selectedObj);
     this.blur();
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
   };
   document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
@@ -367,7 +367,7 @@ window.onload = function (e) {
     scene.gridSize = parseFloat(this.value);
     document.getElementById('gridSize').value = scene.gridSize;
     document.getElementById('gridSize_mobile').value = scene.gridSize;
-    draw(true, false);
+    simulator.draw(true, false);
     JSONOutput();
   }
   document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
@@ -390,7 +390,7 @@ window.onload = function (e) {
     if (scene.observer) {
       scene.observer.r = parseFloat(this.value) * 0.5;
     }
-    draw(false, true);
+    simulator.draw(false, true);
     JSONOutput();
   }
   document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
@@ -421,7 +421,7 @@ window.onload = function (e) {
     document.getElementById('lengthScale').value = scene.lengthScale;
     document.getElementById('lengthScale_mobile').value = scene.lengthScale;
     setScale(scene.scale);
-    draw();
+    simulator.draw();
     JSONOutput();
   }
   document.getElementById('lengthScale_mobile').onchange = document.getElementById('lengthScale').onchange;
@@ -458,7 +458,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
-    draw(false, true);
+    simulator.draw(false, true);
   };
   document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
   document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
@@ -469,7 +469,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
@@ -481,7 +481,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
@@ -494,7 +494,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensityMinus').onclick = function () {
@@ -504,7 +504,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
@@ -520,7 +520,7 @@ window.onload = function (e) {
     scene.snapToGrid = e.target.checked;
     this.blur();
     JSONOutput();
-    //draw();
+    //simulator.draw();
   };
   document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
   document.getElementById('snapToGrid_mobile').onclick = document.getElementById('snapToGrid').onclick;
@@ -531,7 +531,7 @@ window.onload = function (e) {
     document.getElementById('showGrid_mobile').checked = e.target.checked;
     scene.showGrid = e.target.checked;
     this.blur();
-    draw(true, false);
+    simulator.draw(true, false);
     JSONOutput();
   };
   document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
@@ -567,7 +567,7 @@ window.onload = function (e) {
     scene.objs[scene.objs.length] = new objTypes[scene.objs[selectedObj].constructor.type](scene, scene.objs[selectedObj]);
     scene.objs[scene.objs.length - 1].move(scene.gridSize, scene.gridSize);
     selectObj(scene.objs.length - 1);
-    draw(!scene.objs[selectedObj].constructor.isOptical, true);
+    simulator.draw(!scene.objs[selectedObj].constructor.isOptical, true);
     createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
@@ -576,14 +576,14 @@ window.onload = function (e) {
     var selectedObjType = scene.objs[selectedObj].constructor.type;
     this.blur();
     removeObj(selectedObj);
-    draw(!objTypes[selectedObjType].isOptical, true);
+    simulator.draw(!objTypes[selectedObjType].isOptical, true);
     createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
   document.getElementById('unselect').onclick = function () {
     selectObj(-1);
-    draw(true, true);
+    simulator.draw(true, true);
     createUndoPoint();
   };
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
@@ -774,7 +774,7 @@ function importModule(name) {
       updateErrorAndWarning();
       return;
     }
-    draw(false, true);
+    simulator.draw(false, true);
     createUndoPoint();
     updateModuleObjsMenu();
   }
@@ -811,7 +811,7 @@ window.onresize = function (e) {
     canvasLight.height = window.innerHeight * dpr;
     canvasGrid.width = window.innerWidth * dpr;
     canvasGrid.height = window.innerHeight * dpr;
-    draw();
+    simulator.draw();
   }
 };
 
@@ -875,7 +875,7 @@ function initParameters() {
   document.getElementById('lengthScale').value = scene.lengthScale;
   document.getElementById('lengthScale_mobile').value = scene.lengthScale;
   
-  draw();
+  simulator.draw();
 }
 
 window.onkeydown = function (e) {
@@ -889,7 +889,7 @@ window.onkeydown = function (e) {
   //Ctrl+D
   if (e.ctrlKey && e.keyCode == 68) {
     cloneObj(selectedObj);
-    draw(!scene.objs[selectedObj].constructor.isOptical, true);
+    simulator.draw(!scene.objs[selectedObj].constructor.isOptical, true);
     createUndoPoint();
     return false;
   }
@@ -938,7 +938,7 @@ window.onkeydown = function (e) {
     if (selectedObj != -1) {
       var selectedObjType = scene.objs[selectedObj].constructor.type;
       removeObj(selectedObj);
-      draw(!objTypes[selectedObjType].isOptical, true);
+      simulator.draw(!objTypes[selectedObjType].isOptical, true);
       createUndoPoint();
     }
     return false;
@@ -971,7 +971,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         scene.objs[selectedObj].move(0, step);
       }
-      draw(!scene.objs[selectedObj].constructor.isOptical, true);
+      simulator.draw(!scene.objs[selectedObj].constructor.isOptical, true);
     }
     else if (scene.mode == 'observer') {
       if (e.keyCode == 37) {
@@ -986,7 +986,7 @@ window.onkeydown = function (e) {
       if (e.keyCode == 40) {
         scene.observer.c.y += step;
       }
-      draw(false, true);
+      simulator.draw(false, true);
     }
     else {
       // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
@@ -1004,7 +1004,7 @@ window.onkeydown = function (e) {
           scene.objs[i].move(0, step);
         }
       }
-      draw();
+      simulator.draw();
     }
   }
 
@@ -1185,11 +1185,11 @@ function JSONInput() {
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
       selectObj(selectedObj);
-      draw();
+      simulator.draw();
     } else {
       // Partial update (e.g. when the background image is loaded)
       setTimeout(function() {
-        draw(true, true);
+        simulator.draw(true, true);
       }, 1);
     }
   });
@@ -1223,7 +1223,7 @@ function modebtn_clicked(mode1) {
 
 
   try {
-    draw(false, true);
+    simulator.draw(false, true);
   } catch (error) {
     console.error(error);
     isDrawing = false;
@@ -1244,7 +1244,7 @@ function setScaleWithCenter(value, centerX, centerY) {
   scene.scale = value;
   document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  draw();
+  simulator.draw();
 }
 
 function rename() {
@@ -1302,7 +1302,7 @@ function openFile(readFile) {
         scene.backgroundImage = new Image();
         scene.backgroundImage.src = e.target.result;
         scene.backgroundImage.onload = function (e1) {
-          draw(true, true);
+          simulator.draw(true, true);
         }
         scene.backgroundImage.onerror = function (e1) {
           scene.backgroundImage = null;
@@ -1355,7 +1355,7 @@ function enterCropMode() {
 
   selectObj(cropBoxIndex);
 
-  draw(true, true);
+  simulator.draw(true, true);
 }
 
 function confirmCrop(cropBox) {
@@ -1369,7 +1369,7 @@ function confirmCrop(cropBox) {
 function cancelCrop() {
   cropMode = false;
   selectObj(-1);
-  draw(true, true);
+  simulator.draw(true, true);
 }
 
 function exportSVG(cropBox) {
@@ -1400,7 +1400,7 @@ function exportSVG(cropBox) {
   exportRayCountLimit = cropBox.rayCountLimit || 1e4;
   isExporting = true;
   cropMode = false;
-  draw();
+  simulator.draw();
   isExporting = false;
   var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
   saveAs(blob, (scene.name || "export") + ".svg");
@@ -1412,7 +1412,7 @@ function exportSVG(cropBox) {
   scene.scale = scale_backup;
   scene.origin = origin_backup;
   dpr = dpr_backup;
-  draw(true, true);
+  simulator.draw(true, true);
 }
 
 function exportImage(cropBox) {
@@ -1441,7 +1441,7 @@ function exportImage(cropBox) {
   exportRayCountLimit = cropBox.rayCountLimit || 1e7;
   isExporting = true;
   cropMode = false;
-  draw();
+  simulator.draw();
   isExporting = false;
 
   var finalCanvas = document.createElement('canvas');

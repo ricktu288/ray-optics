@@ -435,7 +435,7 @@ function updateModuleObjsMenu() {
         if (AddingObjType == 'ModuleObj' && addingModuleName == moduleName) {
           toolbtn_clicked('');  // Deselect the module object tool
         }
-        draw(false, true);
+        simulator.draw(false, true);
         hideAllPopovers();
         updateModuleObjsMenu();
         createUndoPoint();

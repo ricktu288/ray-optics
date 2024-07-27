@@ -24,30 +24,43 @@ const YELLOW_WAVELENGTH = 580;
 const RED_WAVELENGTH = 620;
 const INFRARED_WAVELENGTH = 700;
 
-// Draw the scene
-function draw(skipLight, skipGrid)
-{
-  stateOutdated = true;
-  
-  if (!skipLight) {
-    totalTruncation = 0;
-    brightnessScale = 0;
-    //clearError();
-    //clearWarning();
-    drawBeginTime = new Date();
-    document.getElementById('forceStop').style.display = 'none';
+class Simulator {
+  constructor() {
+    
   }
 
-  if (!skipLight && timerID != -1)
+  /**
+   * Draw the scene.
+   * @param {boolean} skipLight - Whether to skip the light layer.
+   * @param {boolean} skipGrid - Whether to skip the grid layer.
+   * @returns {void}
+   */
+  draw(skipLight, skipGrid)
   {
-    // If still handling the last draw, then stop
-    clearTimeout(timerID);
-    timerID = -1;
-  }
-
-  draw_(skipLight, skipGrid);
+    stateOutdated = true;
+    
+    if (!skipLight) {
+      totalTruncation = 0;
+      brightnessScale = 0;
+      //clearError();
+      //clearWarning();
+      drawBeginTime = new Date();
+      document.getElementById('forceStop').style.display = 'none';
+    }
   
+    if (!skipLight && timerID != -1)
+    {
+      // If still handling the last draw, then stop
+      clearTimeout(timerID);
+      timerID = -1;
+    }
+  
+    draw_(skipLight, skipGrid);
+    
+  }
 }
+
+const simulator = new Simulator();
 
 
 function draw_(skipLight, skipGrid) {
@@ -245,7 +258,7 @@ function shootWaitingRays() {
       document.getElementById('forceStop').style.display = '';
       document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + shotRayCount + '<br>' + getMsg("total_truncation") + totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((brightnessScale <= 0) ? "-" : brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - drawBeginTime) + '<br>';
 
-      draw(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
+      simulator.draw(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
 
       simulatorCheck();
       return;
@@ -650,7 +663,7 @@ function shootWaitingRays() {
 
 
   
-  draw(true, true);
+  simulator.draw(true, true);
 
   simulatorCheck();
 }
