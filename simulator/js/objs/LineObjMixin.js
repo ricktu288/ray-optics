@@ -135,7 +135,11 @@ const LineObjMixin = Base => class extends Base {
       // If the lens is a point, don't show any other options
       return;
     }
+
     // Store the initial positions of p1 and p2
+    // FIXME: there's a bug here: if the object is moved while the
+    // object bar is open, the initial positions will be wrong.
+    // many possible solutions...
     var initialP1 = Object.assign({}, this.p1);
     var initialP2 = Object.assign({}, this.p2);
     // Calculate the normal vector
