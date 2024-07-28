@@ -124,4 +124,61 @@ const LineObjMixin = Base => class extends Base {
       return null;
     }
   }
+
+  /**
+   * Add normal-translation and angle options to the object bar.
+   * These are both things that affect both points of the line segment.
+   * @param {ObjectBar} objBar - The object bar.
+   */
+  populateObjBar(objBar) {
+    if (this.p1.y == this.p2.y && this.p1.x == this.p2.x) {
+      // If the lens is a point, don't show any other options
+      return;
+    }
+    // Store the initial positions of p1 and p2
+    var initialP1 = Object.assign({}, this.p1);
+    var initialP2 = Object.assign({}, this.p2);
+    // Calculate the normal vector
+    var normal = geometry.normalVector(this.p1, this.p2);
+
+    var normal_slider = objBar.createNumber(
+      getMsg("normal translation"),
+      -300 * this.scene.lengthScale,
+      300 * this.scene.lengthScale,
+      1 * this.scene.lengthScale,
+      0,
+      function (obj, value) {
+        // Calculate the new positions based on the initial positions and the absolute value
+        var deltaX = normal.x * value;
+        var deltaY = normal.y * value;
+
+        obj.p1.x = initialP1.x + deltaX;
+        obj.p1.y = initialP1.y + deltaY;
+        obj.p2.x = initialP2.x + deltaX;
+        obj.p2.y = initialP2.y + deltaY;
+      }
+    );
+
+    objBar.createNumber(
+      getMsg("angle"),
+      0,
+      360,
+      1,
+      (geometry.angleBetweenPoints(this.p1, this.p2) * 180) / Math.PI,
+      function (obj, value) {
+        // Rotate the lens around the midpoint
+        var new_points = geometry.rotatePointsToAngle(obj.p1, obj.p2, (value * Math.PI) / 180);
+        obj.p1 = new_points[0];
+        obj.p2 = new_points[1];
+
+        // reset the normal vector translation
+        initialP1 = Object.assign({}, obj.p1);
+        initialP2 = Object.assign({}, obj.p2);
+        normal = geometry.normalVector(obj.p1, obj.p2);
+        normal_slider.value = 0;
+        normal_slider.onchange();
+      }
+    );
+  }
+  
 };

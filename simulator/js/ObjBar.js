@@ -116,6 +116,7 @@ class ObjBar {
     objOption_text.onclick = function (e) {
       this.select();
     };
+    return objOption_text;
   }
 
 

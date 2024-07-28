@@ -208,6 +208,20 @@ var geometry = {
   },
 
   /**
+   * Calculate the normal vector of a segment.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @return {Point}
+   */
+  normalVector: function (p1, p2) {
+    var dx = p2.x - p1.x;
+    var dy = p2.y - p1.y;
+    var length = Math.sqrt(dx * dx + dy * dy);
+
+    return geometry.point(dy / length, -dx / length);
+  },
+
+  /**
    * Calculate the perpendicular bisector of a segment.
    * @param {Line} l1
    * @return {Line}
@@ -235,5 +249,49 @@ var geometry = {
     var dx = l1.p2.x - l1.p1.x;
     var dy = l1.p2.y - l1.p1.y;
     return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));
-  }
+  },
+
+  /**
+   * Rotate two points around a center point to a specific angle. If a center point is not provided,
+   * it is assumed to be the midpoint of the segment defined by the two points.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @param {Number} angle - The target angle of the line segment relative to the horizontal axis in radians.
+   * @param {Point} [center] - The center of rotation.
+   * @return {Point[]}
+   */
+  rotatePointsToAngle: function (p1, p2, angle, center) {
+    // If no center is provided, use the midpoint of p1 and p2
+    if (!center) {
+      center = geometry.midpoint(p1, p2);
+    }
+
+    // Calculate the distance between the points and the center
+    var distance = geometry.distance(p1, center);
+
+    // Calculate the new positions of the points at the specified angle
+    var p1_new = geometry.point(center.x - distance * Math.cos(angle), center.y - distance * Math.sin(angle));
+    var p2_new = geometry.point(center.x + distance * Math.cos(angle), center.y + distance * Math.sin(angle));
+
+    return [p1_new, p2_new];
+  },
+
+  /**
+   * Calculate the current angle between two points relative to the horizontal axis.
+   * @param {Point} p1 - The first point.
+   * @param {Point} p2 - The second point.
+   * @return {Number} - The angle in radians.
+   */
+  angleBetweenPoints: function (p1, p2) {
+    var dx = p2.x - p1.x;
+    var dy = p2.y - p1.y;
+    var angle = Math.atan2(dy, dx);
+
+    // Ensure the angle is in the range [0, 2 * Math.PI)
+    if (angle < 0) {
+      angle += 2 * Math.PI;
+    }
+
+    return angle;
+  },
 };
