@@ -476,6 +476,6 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     for (let obj of this.objs) {
       this.scene.objs.push(obj);
     }
-    simulator.draw(false, true);
+    simulator.updateSimulation(false, true);
   }
 }

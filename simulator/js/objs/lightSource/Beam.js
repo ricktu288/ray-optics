@@ -57,7 +57,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
     }
 
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
+    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
     ctx.lineWidth = 4 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

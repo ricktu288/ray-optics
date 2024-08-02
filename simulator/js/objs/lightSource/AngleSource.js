@@ -43,7 +43,7 @@ objTypes['AngleSource'] = class extends LineObjMixin(BaseSceneObj) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
+    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
     ctx.fillRect(this.p1.x - 2.5 * ls, this.p1.y - 2.5 * ls, 5 * ls, 5 * ls);
     if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');

@@ -30,7 +30,7 @@ objTypes['Blocker'] = class extends LineObjMixin(BaseFilter) {
       return;
     }
 
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     ctx.lineWidth = 3 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
