@@ -24,6 +24,18 @@ class CanvasRenderer {
 
     /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
     this.isSVG = ctx.constructor === C2S;
+
+    // Initialize the canvas
+    if (!this.isSVG) {
+      // only do this when not being exported to SVG to avoid bug
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.setTransform(this.scale, 0, 0, this.scale, this.origin.x, this.origin.y);
+      if (this.ctx.constructor !== C2S && this.backgroundImage) {
+        this.ctx.globalAlpha = 1;
+        this.ctx.drawImage(this.backgroundImage, 0, 0);
+      }
+    }
   }
 
   /**
@@ -102,22 +114,5 @@ class CanvasRenderer {
       this.ctx.arc(c.c.x, c.c.y, c.r, 0, Math.PI * 2, false);
     }
     this.ctx.stroke();
-  }
-
-  /**
-  * Clear the canvas, and draw the background image if there is one.
-  **/
-  clear() {
-    //console.log([this.scale, 0, 0, this.scale, this.origin.x, this.origin.y])
-    if (this.ctx.constructor !== C2S) {
-      // only do this when not being exported to SVG to avoid bug
-      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.setTransform(this.scale, 0, 0, this.scale, this.origin.x, this.origin.y);
-      if (this.ctx.constructor !== C2S && this.backgroundImage) {
-        this.ctx.globalAlpha = 1;
-        this.ctx.drawImage(this.backgroundImage, 0, 0);
-      }
-    }
   }
 }

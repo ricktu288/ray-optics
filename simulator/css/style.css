@@ -1,4 +1,4 @@
-#canvas0 {
+#canvasBelowLight {
   background-color: #000;
   position: absolute;
   width: 100%;
@@ -25,7 +25,7 @@
   z-index: -5;
 }
 
-#canvas1 {
+#canvasAboveLight {
   background-color: transparent;
   position: absolute;
   width: 100%;

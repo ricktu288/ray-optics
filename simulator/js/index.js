@@ -1,14 +1,11 @@
 ﻿var objTypes = {};
 var canvas;
-var canvas0;
+var canvasBelowLight;
 var canvasLight;
 var canvasGrid;
-var ctx;
-var ctx0;
-var ctxLight;
-var ctxGrid;
 var dpr = 1;
-var scene = new Scene();
+var scene;
+var simulator;
 var xyBox_cancelContextMenu = false;
 var isFromGallery = false;
 var hasUnsavedChange = false;
@@ -26,26 +23,22 @@ window.onload = function (e) {
     dpr = window.devicePixelRatio;
   }
 
-  canvas = document.getElementById('canvas1');
-  canvas0 = document.getElementById('canvas0');
+  canvas = document.getElementById('canvasAboveLight');
+  canvasBelowLight = document.getElementById('canvasBelowLight');
   canvasLight = document.getElementById('canvasLight');
   canvasGrid = document.getElementById('canvasGrid');
 
   canvas.width = window.innerWidth * dpr;
   canvas.height = window.innerHeight * dpr;
-  ctx = canvas.getContext('2d');
 
-  canvas0.width = window.innerWidth * dpr;
-  canvas0.height = window.innerHeight * dpr;
-  ctx0 = canvas0.getContext('2d');
+  canvasBelowLight.width = window.innerWidth * dpr;
+  canvasBelowLight.height = window.innerHeight * dpr;
 
   canvasLight.width = window.innerWidth * dpr;
   canvasLight.height = window.innerHeight * dpr;
-  ctxLight = canvasLight.getContext('2d');
 
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
-  ctxGrid = canvasGrid.getContext('2d');
 
 
 
@@ -800,11 +793,11 @@ window.onresize = function (e) {
     dpr = window.devicePixelRatio;
   }
 
-  if (ctx) {
+  if (simulator.ctxAboveLight) {
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    canvas0.width = window.innerWidth * dpr;
-    canvas0.height = window.innerHeight * dpr;
+    canvasBelowLight.width = window.innerWidth * dpr;
+    canvasBelowLight.height = window.innerHeight * dpr;
     canvasLight.width = window.innerWidth * dpr;
     canvasLight.height = window.innerHeight * dpr;
     canvasGrid.width = window.innerWidth * dpr;
@@ -823,6 +816,12 @@ function initParameters() {
   isConstructing = false;
   endPositioning();
   scene = new Scene();
+  simulator = new Simulator(scene,
+    canvasLight.getContext('2d'),
+    canvasBelowLight.getContext('2d'),
+    canvasAboveLight.getContext('2d'),
+    canvasGrid.getContext('2d')
+  );
   scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
 
   selectObj(-1);
@@ -1366,10 +1365,10 @@ function cancelCrop() {
 }
 
 function exportSVG(cropBox) {
-  var ctx_backup = ctx;
-  var ctx0_backup = ctx0;
-  var ctxLight_backup = ctxLight;
-  var ctxGrid_backup = ctxGrid;
+  var ctx_backup = simulator.ctxAboveLight;
+  var ctx0_backup = simulator.ctxBelowLight;
+  var ctxLight_backup = simulator.ctxMain;
+  var ctxGrid_backup = simulator.ctxGrid;
   var scale_backup = scene.scale;
   var origin_backup = scene.origin;
   var dpr_backup = dpr;
@@ -1383,25 +1382,25 @@ function exportSVG(cropBox) {
   selectObj(-1);
   mouseObj = -1;
 
-  ctx = new C2S(imageWidth, imageHeight);
-  ctx0 = ctx;
-  ctxLight = ctx;
-  ctxGrid = ctx;
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, imageWidth, imageHeight);
+  simulator.ctxAboveLight = new C2S(imageWidth, imageHeight);
+  simulator.ctxBelowLight = simulator.ctxAboveLight;
+  simulator.ctxMain = simulator.ctxAboveLight;
+  simulator.ctxGrid = simulator.ctxAboveLight;
+  simulator.ctxAboveLight.fillStyle = "black";
+  simulator.ctxAboveLight.fillRect(0, 0, imageWidth, imageHeight);
 
   exportRayCountLimit = cropBox.rayCountLimit || 1e4;
   isExporting = true;
   cropMode = false;
   simulator.updateSimulation();
   isExporting = false;
-  var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
+  var blob = new Blob([simulator.ctxAboveLight.getSerializedSvg()], { type: 'image/svg+xml' });
   saveAs(blob, (scene.name || "export") + ".svg");
 
-  ctx = ctx_backup;
-  ctx0 = ctx0_backup;
-  ctxLight = ctxLight_backup;
-  ctxGrid = ctxGrid_backup;
+  simulator.ctxAboveLight = ctx_backup;
+  simulator.ctxBelowLight = ctx0_backup;
+  simulator.ctxMain = ctxLight_backup;
+  simulator.ctxGrid = ctxGrid_backup;
   scene.scale = scale_backup;
   scene.origin = origin_backup;
   dpr = dpr_backup;
@@ -1425,8 +1424,8 @@ function exportImage(cropBox) {
 
   canvas.width = imageWidth;
   canvas.height = imageHeight;
-  canvas0.width = imageWidth;
-  canvas0.height = imageHeight;
+  canvasBelowLight.width = imageWidth;
+  canvasBelowLight.height = imageHeight;
   canvasLight.width = imageWidth;
   canvasLight.height = imageHeight;
   canvasGrid.width = imageWidth;
@@ -1443,7 +1442,7 @@ function exportImage(cropBox) {
   var finalCtx = finalCanvas.getContext('2d');
   finalCtx.fillStyle = "black";
   finalCtx.fillRect(0, 0, imageWidth, imageHeight);
-  finalCtx.drawImage(canvas0, 0, 0);
+  finalCtx.drawImage(canvasBelowLight, 0, 0);
   finalCtx.drawImage(canvasGrid, 0, 0);
   finalCtx.drawImage(canvasLight, 0, 0);
   finalCtx.drawImage(canvas, 0, 0);

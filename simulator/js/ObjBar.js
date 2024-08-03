@@ -427,11 +427,13 @@ class ObjBar {
       button.innerHTML = label;
     }
     button.onclick = function () {
+      const isOptical = scene.objs[selectedObj].constructor.isOptical;
       this.blur();
       func(scene.objs[selectedObj]);
       if (updateOnChange) {
         selectObj(selectedObj);
       }
+      simulator.updateSimulation(!isOptical, true);
       createUndoPoint();
     };
     this.elem.appendChild(button);
