@@ -21,10 +21,10 @@ class BaseFilter extends BaseSceneObj {
             obj.invert = value;
           }
         });
-        objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+        objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
           obj.wavelength = value;
         });
-        objBar.createNumber("± " + getMsg('bandwidth'), 0, (INFRARED_WAVELENGTH - UV_WAVELENGTH), 1, this.bandwidth, function (obj, value) {
+        objBar.createNumber("± " + getMsg('bandwidth'), 0, (Simulator.INFRARED_WAVELENGTH - Simulator.UV_WAVELENGTH), 1, this.bandwidth, function (obj, value) {
           obj.bandwidth = value;
         });
       }

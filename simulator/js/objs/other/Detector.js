@@ -91,11 +91,11 @@ objTypes['Detector'] = class extends LineObjMixin(BaseSceneObj) {
       ctx.globalCompositeOperation = 'lighter';
       var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
 
-      var accuracy = Math.max(-Math.floor(Math.log10(totalTruncation)), 0);
-      if (totalTruncation > 0 && accuracy <= 2) {
-        var str1 = "P=" + this.power.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str2 = "F⊥=" + this.normal.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
-        var str3 = "F∥=" + this.shear.toFixed(accuracy) + "±" + totalTruncation.toFixed(accuracy);
+      var accuracy = Math.max(-Math.floor(Math.log10(simulator.totalTruncation)), 0);
+      if (simulator.totalTruncation > 0 && accuracy <= 2) {
+        var str1 = "P=" + this.power.toFixed(accuracy) + "±" + simulator.totalTruncation.toFixed(accuracy);
+        var str2 = "F⊥=" + this.normal.toFixed(accuracy) + "±" + simulator.totalTruncation.toFixed(accuracy);
+        var str3 = "F∥=" + this.shear.toFixed(accuracy) + "±" + simulator.totalTruncation.toFixed(accuracy);
       } else {
         var str1 = "P=" + this.power.toFixed(2);
         var str2 = "F⊥=" + this.normal.toFixed(2);

@@ -104,7 +104,7 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
     var mx = this.p2.x - this.p1.x;
     var my = this.p2.y - this.p1.y;
 
-    var wavelength = (ray.wavelength || GREEN_WAVELENGTH) * mm_in_nm;
+    var wavelength = (ray.wavelength || Simulator.GREEN_WAVELENGTH) * mm_in_nm;
     var interval = 1 / this.lineDensity;
     var slit_width = interval * this.slitRatio;
 

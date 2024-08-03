@@ -549,9 +549,7 @@ window.onload = function (e) {
   document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
 
   document.getElementById('forceStop').onclick = function () {
-    if (timerID != -1) {
-      forceStop = true;
-    }
+    simulator.stopSimulation();
   };
 
   document.getElementById('apply_to_all').onclick = function () {
@@ -1222,12 +1220,7 @@ function modebtn_clicked(mode1) {
   }
 
 
-  try {
-    simulator.updateSimulation(false, true);
-  } catch (error) {
-    console.error(error);
-    isDrawing = false;
-  }
+  simulator.updateSimulation(false, true);
 }
 
 

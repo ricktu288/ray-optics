@@ -20,7 +20,7 @@ objTypes['Aperture'] = class extends BaseFilter {
     p4: null,
     filter: false,
     invert: false,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
@@ -46,7 +46,7 @@ objTypes['Aperture'] = class extends BaseFilter {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     ctx.lineWidth = 3 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

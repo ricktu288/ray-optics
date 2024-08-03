@@ -119,7 +119,7 @@ const CircleObjMixin = Base => class extends Base {
     const rp_exist = [];
     const rp_lensq = [];
     for (let i = 1; i <= 2; i++) {
-      rp_exist[i] = geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
+      rp_exist[i] = geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
       rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
     }
 

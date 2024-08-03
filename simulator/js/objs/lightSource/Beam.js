@@ -17,7 +17,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
     p1: null,
     p2: null,
     brightness: 0.5,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     emisAngle: 0.0,
     lambert: false,
     random: false
@@ -28,7 +28,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }

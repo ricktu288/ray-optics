@@ -479,12 +479,12 @@ function updateErrorAndWarning() {
     warnings.push("Scene: " + scene.warning);
   }
 
-  if (simulatorError) {
-    errors.push("Simulator: " + simulatorError);
+  if (simulator.error) {
+    errors.push("Simulator: " + simulator.error);
   }
 
-  if (simulatorWarning) {
-    warnings.push("Simulator: " + simulatorWarning);
+  if (simulator.warning) {
+    warnings.push("Simulator: " + simulator.warning);
   }
 
   for (let i in scene.objs) {

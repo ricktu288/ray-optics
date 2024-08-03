@@ -188,7 +188,7 @@ objTypes['GrinGlass'] = class extends BaseGrinGlass {
       //Line segment i->i+1
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
-      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
         s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       
@@ -320,7 +320,7 @@ objTypes['GrinGlass'] = class extends BaseGrinGlass {
       rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
       rp2_temp = geometry.linesIntersection(geometry.line(ray2.p1, ray2.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
-      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
         s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
 
@@ -332,17 +332,17 @@ objTypes['GrinGlass'] = class extends BaseGrinGlass {
 
       }
 
-      if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
+      if (geometry.intersectionIsOnSegment(rp2_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp2_temp, ray2) && geometry.distanceSquared(ray2.p1, rp2_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
         ray_intersect_count++;
       }
 
       // Test if too close to an edge
-      if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale || geometry.distanceSquared(s_point_temp, this.path[(i + 1) % this.path.length]) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale)) {
+      if (s_point_temp && (geometry.distanceSquared(s_point_temp, this.path[i % this.path.length]) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale || geometry.distanceSquared(s_point_temp, this.path[(i + 1) % this.path.length]) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale)) {
         nearEdge_temp = true;
       }
       
       if (s_point_temp) {
-        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
           // Self surface merging
           surfaceMultiplicity++;
         } else if (s_lensq_temp < s_lensq) {

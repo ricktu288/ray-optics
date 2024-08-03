@@ -13,7 +13,7 @@ objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
     p1: null,
     p2: null,
     brightness: 1,
-    wavelength: GREEN_WAVELENGTH
+    wavelength: Simulator.GREEN_WAVELENGTH
   };
 
   populateObjBar(objBar) {
@@ -21,7 +21,7 @@ objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
       obj.brightness = value;
     });
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }

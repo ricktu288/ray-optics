@@ -21,7 +21,7 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
     p3: null,
     filter: false,
     invert: false,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
@@ -44,7 +44,7 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
       var x0 = p12d / 2;
       var a = height / (x0 * x0); // y=ax^2
       var i;
-      ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+      ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
       ctx.lineWidth = 1 * ls;
       ctx.beginPath();
       this.tmp_points = [geometry.point(this.p1.x, this.p1.y)];
@@ -235,8 +235,8 @@ objTypes['ParabolicMirror'] = class extends BaseFilter {
       i = dir ? j : (pts.length - 2 - j);
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
       var seg = geometry.line(pts[i], pts[i + 1]);
-      // need minShotLength check to handle a ray that reflects off mirror multiple times
-      if (geometry.distance(ray.p1, rp_temp) < minShotLength * this.scene.lengthScale)
+      // need Simulator.MIN_RAY_SEGMENT_LENGTH check to handle a ray that reflects off mirror multiple times
+      if (geometry.distance(ray.p1, rp_temp) < Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale)
         continue;
       if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
         if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {

@@ -165,13 +165,13 @@ objTypes['CustomGlass'] = class extends LineObjMixin(BaseGlass) {
       //Line segment i->i+1
       var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
 
-      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale) {
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
         s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
         s_point_temp = rp_temp;
       }
 
       if (s_point_temp) {
-        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale && s_point_index != i - 1) {
+        if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && s_point_index != i - 1) {
           // The ray shots on a point where the upper and the lower surfaces overlap.
           return;
         } else if (s_lensq_temp < s_lensq) {
