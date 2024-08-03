@@ -3,7 +3,6 @@ var canvas;
 var canvasBelowLight;
 var canvasLight;
 var canvasGrid;
-var dpr = 1;
 var scene;
 var simulator;
 var xyBox_cancelContextMenu = false;
@@ -19,9 +18,7 @@ var warning = null;
 var error = null;
 
 window.onload = function (e) {
-  if (window.devicePixelRatio) {
-    dpr = window.devicePixelRatio;
-  }
+  let dpr = window.devicePixelRatio || 1;
 
   canvas = document.getElementById('canvasAboveLight');
   canvasBelowLight = document.getElementById('canvasBelowLight');
@@ -55,21 +52,21 @@ window.onload = function (e) {
   document.getElementById('redo_mobile').disabled = true;
 
   window.onresize = function (e) {
-    scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
 
     if (window.devicePixelRatio) {
-      dpr = window.devicePixelRatio;
+      simulator.dpr = window.devicePixelRatio;
     }
 
     if (simulator.ctxAboveLight) {
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvasBelowLight.width = window.innerWidth * dpr;
-      canvasBelowLight.height = window.innerHeight * dpr;
-      canvasLight.width = window.innerWidth * dpr;
-      canvasLight.height = window.innerHeight * dpr;
-      canvasGrid.width = window.innerWidth * dpr;
-      canvasGrid.height = window.innerHeight * dpr;
+      canvas.width = window.innerWidth * simulator.dpr;
+      canvas.height = window.innerHeight * simulator.dpr;
+      canvasBelowLight.width = window.innerWidth * simulator.dpr;
+      canvasBelowLight.height = window.innerHeight * simulator.dpr;
+      canvasLight.width = window.innerWidth * simulator.dpr;
+      canvasLight.height = window.innerHeight * simulator.dpr;
+      canvasGrid.width = window.innerWidth * simulator.dpr;
+      canvasGrid.height = window.innerHeight * simulator.dpr;
       simulator.updateSimulation();
     }
   };
@@ -956,6 +953,9 @@ function init() {
   isConstructing = false;
   endPositioning();
   scene = new Scene();
+
+  let dpr = window.devicePixelRatio || 1;
+
   scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
 
   simulator = new Simulator(scene,
@@ -963,8 +963,11 @@ function init() {
     canvasBelowLight.getContext('2d'),
     canvasAboveLight.getContext('2d'),
     canvasGrid.getContext('2d'),
-    document.createElement('canvas').getContext('2d')
+    document.createElement('canvas').getContext('2d'),
+    true
   );
+
+  simulator.dpr = dpr;
 
   simulator.on('simulationStart', function () {
     document.getElementById('forceStop').style.display = 'none';
@@ -1042,7 +1045,7 @@ function JSONOutput() {
     return;
   }
 
-  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+  scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
 
   newJsonCode = scene.toJSON();
   if (aceEditor && newJsonCode != latestJsonCode && !aceEditor.isFocused()) {
@@ -1152,7 +1155,7 @@ function syncUrl() {
 function JSONInput() {
   document.getElementById('welcome').style.display = 'none';
 
-  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+  scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
   scene.fromJSON(latestJsonCode, function (needFullUpdate, completed) {
     if (needFullUpdate) {
       // Update the UI for the loaded scene.
@@ -1235,7 +1238,7 @@ function modebtn_clicked(mode1) {
   }
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
-    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 
@@ -1358,8 +1361,8 @@ function enterCropMode() {
   if (cropBoxIndex == -1) {
     // Create a new cropBox
     let cropBox = new objTypes['CropBox'](scene, {
-      p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.8) / dpr - scene.origin.y) / scene.scale),
+      p1: geometry.point((canvas.width * 0.2 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.2) / simulator.dpr - scene.origin.y) / scene.scale),
+      p4: geometry.point((canvas.width * 0.8 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.8) / simulator.dpr - scene.origin.y) / scene.scale),
     });
     scene.objs.push(cropBox);
     cropBoxIndex = scene.objs.length - 1;
@@ -1385,17 +1388,50 @@ function cancelCrop() {
 }
 
 function exportSVG(cropBox) {
+  const exportingScene = new Scene();
+  exportingScene.backgroundImage = scene.backgroundImage;
+  exportingScene.fromJSON(scene.toJSON(), function (needFullUpdate, completed) {
+    if (!completed) {
+      return;
+    }
+
+    exportingScene.scale = 1;
+    exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
+
+    const imageWidth = cropBox.p4.x - cropBox.p1.x;
+    const imageHeight = cropBox.p4.y - cropBox.p1.y;
+
+    const ctxSVG = new C2S(imageWidth, imageHeight);
+    ctxSVG.fillStyle = "black";
+    ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
+
+    const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7);
+
+    function onSimulationEnd() {
+      const blob = new Blob([ctxSVG.getSerializedSvg()], { type: 'image/svg+xml' });
+      saveAs(blob, (scene.name || "export") + ".svg");
+    }
+
+    exportSimulator.on('simulationComplete', onSimulationEnd);
+    exportSimulator.on('simulationStop', onSimulationEnd);
+
+    cropMode = false;
+    exportSimulator.updateSimulation();
+    selectObj(-1);
+  });
+
+  /*
   var ctx_backup = simulator.ctxAboveLight;
   var ctx0_backup = simulator.ctxBelowLight;
   var ctxLight_backup = simulator.ctxMain;
   var ctxGrid_backup = simulator.ctxGrid;
   var scale_backup = scene.scale;
   var origin_backup = scene.origin;
-  var dpr_backup = dpr;
+  var simulator.dpr_backup = simulator.dpr;
 
   scene.scale = 1;
   scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-  dpr = 1;
+  simulator.dpr = 1;
   imageWidth = cropBox.p4.x - cropBox.p1.x;
   imageHeight = cropBox.p4.y - cropBox.p1.y;
 
@@ -1423,58 +1459,60 @@ function exportSVG(cropBox) {
   simulator.ctxGrid = ctxGrid_backup;
   scene.scale = scale_backup;
   scene.origin = origin_backup;
-  dpr = dpr_backup;
+  simulator.dpr = simulator.dpr_backup;
   simulator.updateSimulation(true, true);
+  */
 }
 
 function exportImage(cropBox) {
+  const exportingScene = new Scene();
+  exportingScene.backgroundImage = scene.backgroundImage;
+  exportingScene.fromJSON(scene.toJSON(), function (needFullUpdate, completed) {
+    if (!completed) {
+      return;
+    }
 
-  var scale_backup = scene.scale;
-  var origin_backup = scene.origin;
-  var dpr_backup = dpr;
+    exportingScene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
+    exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
 
-  scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-  dpr = 1;
-  imageWidth = cropBox.width;
-  imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
+    const imageWidth = cropBox.width;
+    const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
 
-  selectObj(-1);
-  mouseObj = -1;
+    const canvases = [];
+    const ctxs = [];
+    for (let i = 0; i < 4; i++) {
+      canvases.push(document.createElement('canvas'));
+      ctxs.push(canvases[i].getContext('2d'));
+      canvases[i].width = imageWidth;
+      canvases[i].height = imageHeight;
+    }
 
-  canvas.width = imageWidth;
-  canvas.height = imageHeight;
-  canvasBelowLight.width = imageWidth;
-  canvasBelowLight.height = imageHeight;
-  canvasLight.width = imageWidth;
-  canvasLight.height = imageHeight;
-  canvasGrid.width = imageWidth;
-  canvasGrid.height = imageHeight;
-  exportRayCountLimit = cropBox.rayCountLimit || 1e7;
-  isExporting = true;
-  cropMode = false;
-  simulator.updateSimulation();
-  isExporting = false;
+    const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7);
+    
+    function onSimulationEnd() {
+      const finalCanvas = document.createElement('canvas');
+      finalCanvas.width = imageWidth;
+      finalCanvas.height = imageHeight;
+      const finalCtx = finalCanvas.getContext('2d');
+      finalCtx.fillStyle = "black";
+      finalCtx.fillRect(0, 0, cropBox.width, cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x));
+      finalCtx.drawImage(canvases[1], 0, 0);
+      finalCtx.drawImage(canvases[3], 0, 0);
+      finalCtx.drawImage(canvases[0], 0, 0);
+      finalCtx.drawImage(canvases[2], 0, 0);
 
-  var finalCanvas = document.createElement('canvas');
-  finalCanvas.width = imageWidth;
-  finalCanvas.height = imageHeight;
-  var finalCtx = finalCanvas.getContext('2d');
-  finalCtx.fillStyle = "black";
-  finalCtx.fillRect(0, 0, imageWidth, imageHeight);
-  finalCtx.drawImage(canvasBelowLight, 0, 0);
-  finalCtx.drawImage(canvasGrid, 0, 0);
-  finalCtx.drawImage(canvasLight, 0, 0);
-  finalCtx.drawImage(canvas, 0, 0);
+      finalCanvas.toBlob(function (blob) {
+        saveAs(blob, (scene.name || "export") + ".png");
+      });
+    }
 
-  finalCanvas.toBlob(function (blob) {
-    saveAs(blob, (scene.name || "export") + ".png");
+    exportSimulator.on('simulationComplete', onSimulationEnd);
+    exportSimulator.on('simulationStop', onSimulationEnd);
+
+    cropMode = false;
+    exportSimulator.updateSimulation();
+    selectObj(-1);
   });
-
-  scene.scale = scale_backup;
-  scene.origin = origin_backup;
-  dpr = dpr_backup;
-  window.onresize();
 }
 
 window.onbeforeunload = function (e) {

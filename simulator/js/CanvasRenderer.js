@@ -22,8 +22,10 @@ class CanvasRenderer {
     /** @property {Object|null} backgroundImage - The background image of the scene, null if not set. */
     this.backgroundImage = backgroundImage;
 
-    /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
-    this.isSVG = ctx.constructor === C2S;
+    if (typeof C2S !== 'undefined' && ctx.constructor === C2S) {
+      /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
+      this.isSVG = true;
+    }
 
     // Initialize the canvas
     if (!this.isSVG) {

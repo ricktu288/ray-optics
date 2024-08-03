@@ -79,7 +79,7 @@ class BaseGlass extends BaseSceneObj {
         ctx.fillStyle = "white";
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(this.scene.scale * dpr, 0, 0, this.scene.scale * dpr, this.scene.origin.x * dpr, this.scene.origin.y * dpr);
+        ctx.setTransform(canvasRenderer.scale, 0, 0, canvasRenderer.scale, canvasRenderer.origin.x, canvasRenderer.origin.y);
 
         ctx.globalCompositeOperation = 'lighter';
 
@@ -91,7 +91,7 @@ class BaseGlass extends BaseSceneObj {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.setTransform(this.scene.scale * dpr, 0, 0, this.scene.scale * dpr, this.scene.origin.x * dpr, this.scene.origin.y * dpr);
+        ctx.setTransform(canvasRenderer.scale, 0, 0, canvasRenderer.scale, canvasRenderer.origin.x, canvasRenderer.origin.y);
 
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;

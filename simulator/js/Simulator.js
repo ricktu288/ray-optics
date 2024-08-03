@@ -1,7 +1,7 @@
-var isExporting = false;
-var exportRayCountLimit = 100000;
-
-
+/**
+ * The simulator class, which simulates the optical system described by the `Scene` class and renders the this.scene (optical elements, decorations, rays, etc) on the canvases.
+ * @class Simulator
+ */
 class Simulator {
   
   /**
@@ -30,19 +30,19 @@ class Simulator {
    * @property {boolean} isNew - Whether the ray is just emitted by a source. This is to avoid drawing trivial initial extensions in the "Extended rays" mode.
    */
 
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual) {
-    /** @property {Scene} scene - The scene to be simulated. */
+  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity) {
+    /** @property {Scene} this.scene - The this.scene to be simulated. */
     this.scene = scene;
 
     this.scene.simulator = this; // This circular reference is currently only used by Detector to access `totalTruncation` and CropBox to access `processedRayCount`.
 
-    /** @property {CanvasRenderingContext2D|C2S} ctxMain - The default context for drawing the scene. If other layers are present, this is the context for drawing the light layer. */
+    /** @property {CanvasRenderingContext2D|C2S} ctxMain - The default context for drawing the this.scene. If other layers are present, this is the context for drawing the light layer only. */
     this.ctxMain = ctxMain;
 
-    /** @property {CanvasRenderingContext2D|C2S} ctxBelowLight - The context for drawing the scene below the light layer. */
+    /** @property {CanvasRenderingContext2D|C2S} ctxBelowLight - The context for drawing the this.scene below the light layer. */
     this.ctxBelowLight = ctxBelowLight;
 
-    /** @property {CanvasRenderingContext2D|C2S} ctxAboveLight - The context for drawing the scene above the light layer. */
+    /** @property {CanvasRenderingContext2D|C2S} ctxAboveLight - The context for drawing the this.scene above the light layer. */
     this.ctxAboveLight = ctxAboveLight;
 
     /** @property {CanvasRenderingContext2D|C2S} ctxGrid - The context for drawing the grid layer. */
@@ -51,7 +51,20 @@ class Simulator {
     /** @property {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment. */
     this.ctxVirtual = ctxVirtual;
 
-    
+    if (typeof C2S !== 'undefined' && ctxMain.constructor === C2S) {
+      /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
+      this.isSVG = true;
+    }
+
+    /** @property {number} dpr - The device pixel ratio of the canvases. */
+    this.dpr = 1;
+
+    /** @property {boolean} enableTimer - Whether to enable the timer for the simulation so that it automatically pauses and resumes when the simulation is too long. */
+    this.enableTimer = enableTimer;
+
+    /** @property {number} rayCountLimit - The maximum number of processed rays in the simulation. When this limit is reached, the simulation will stop. */
+    this.rayCountLimit = rayCountLimit;
+
     /** @property {Ray[]} pendingRays - The rays to be processed. */
     this.pendingRays = [];
 
@@ -107,7 +120,7 @@ class Simulator {
   }
 
   /**
-   * Run the simulation and draw the scene on the canvases.
+   * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.
    * @returns {void}
@@ -128,39 +141,40 @@ class Simulator {
       this.simulationTimerId = -1;
     }
 
-    if (this.ctxBelowLight.constructor != C2S) {
-      this.canvasRendererBelowLight = new CanvasRenderer(this.ctxBelowLight, { x: scene.origin.x * dpr, y: scene.origin.y * dpr }, (scene.scale * dpr), scene.lengthScale, scene.backgroundImage);
-      this.canvasRendererAboveLight = new CanvasRenderer(this.ctxAboveLight, { x: scene.origin.x * dpr, y: scene.origin.y * dpr }, (scene.scale * dpr), scene.lengthScale);
+    if (this.ctxBelowLight && this.ctxAboveLight) {
+      this.canvasRendererBelowLight = new CanvasRenderer(this.ctxBelowLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, this.scene.backgroundImage);
+      this.canvasRendererAboveLight = new CanvasRenderer(this.ctxAboveLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
     }
 
     if (!skipLight) {
-      this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: scene.origin.x * dpr, y: scene.origin.y * dpr }, (scene.scale * dpr), scene.lengthScale);
+      this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
 
-      if (this.ctxBelowLight.constructor == C2S) {
-        this.ctxAboveLight.translate(scene.origin.x / (scene.scale * dpr), scene.origin.y / (scene.scale * dpr));
+      if (this.isSVG) {
+        this.ctxMain.translate(this.scene.origin.x / (this.scene.scale * this.dpr), this.scene.origin.y / (this.scene.scale * this.dpr));
+        this.ctxMain.globalAlpha = 1;
+      } else {
+        this.ctxAboveLight.globalAlpha = 1;
       }
-
-      this.ctxAboveLight.globalAlpha = 1;
       this.pendingRays = [];
       this.processedRayCount = 0;
     }
 
-    if (!skipGrid && this.ctxBelowLight.constructor != C2S) {
+    if (!skipGrid && this.ctxGrid) {
 
-      this.canvasRendererGrid = new CanvasRenderer(this.ctxGrid, { x: scene.origin.x * dpr, y: scene.origin.y * dpr }, (scene.scale * dpr), scene.lengthScale);
+      this.canvasRendererGrid = new CanvasRenderer(this.ctxGrid, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
 
-      if (scene.showGrid) {
+      if (this.scene.showGrid) {
         // Draw the grid
 
         this.ctxGrid.save();
-        this.ctxGrid.setTransform((scene.scale * dpr), 0, 0, (scene.scale * dpr), 0, 0);
-        var dashstep = 4 * scene.lengthScale;
+        this.ctxGrid.setTransform((this.scene.scale * this.dpr), 0, 0, (this.scene.scale * this.dpr), 0, 0);
+        var dashstep = 4 * this.scene.lengthScale;
 
         this.ctxGrid.strokeStyle = 'rgb(255,255,255,0.25)';
-        this.ctxGrid.lineWidth = 1 * scene.lengthScale;
+        this.ctxGrid.lineWidth = 1 * this.scene.lengthScale;
 
         var dashPattern;
-        if (dashstep * scene.scale <= 2) {
+        if (dashstep * this.scene.scale <= 2) {
           // The dash pattern is too dense, so we just draw a solid line
           dashPattern = [];
         } else {
@@ -173,17 +187,17 @@ class Simulator {
 
         // Draw vertical dashed lines
         this.ctxGrid.beginPath();
-        for (var x = scene.origin.x / scene.scale % scene.gridSize; x <= this.ctxGrid.canvas.width / (scene.scale * dpr); x += scene.gridSize) {
-          this.ctxGrid.moveTo(x, scene.origin.y / scene.scale % scene.gridSize - scene.gridSize);
-          this.ctxGrid.lineTo(x, this.ctxGrid.canvas.height / (scene.scale * dpr));
+        for (var x = this.scene.origin.x / this.scene.scale % this.scene.gridSize; x <= this.ctxGrid.canvas.width / (this.scene.scale * this.dpr); x += this.scene.gridSize) {
+          this.ctxGrid.moveTo(x, this.scene.origin.y / this.scene.scale % this.scene.gridSize - this.scene.gridSize);
+          this.ctxGrid.lineTo(x, this.ctxGrid.canvas.height / (this.scene.scale * this.dpr));
         }
         this.ctxGrid.stroke();
 
         // Draw horizontal dashed lines
         this.ctxGrid.beginPath();
-        for (var y = scene.origin.y / scene.scale % scene.gridSize; y <= this.ctxGrid.canvas.height / (scene.scale * dpr); y += scene.gridSize) {
-          this.ctxGrid.moveTo(scene.origin.x / scene.scale % scene.gridSize - scene.gridSize, y);
-          this.ctxGrid.lineTo(this.ctxGrid.canvas.width / (scene.scale * dpr), y);
+        for (var y = this.scene.origin.y / this.scene.scale % this.scene.gridSize; y <= this.ctxGrid.canvas.height / (this.scene.scale * this.dpr); y += this.scene.gridSize) {
+          this.ctxGrid.moveTo(this.scene.origin.x / this.scene.scale % this.scene.gridSize - this.scene.gridSize, y);
+          this.ctxGrid.lineTo(this.ctxGrid.canvas.width / (this.scene.scale * this.dpr), y);
         }
         this.ctxGrid.stroke();
         this.ctxGrid.setLineDash([]);
@@ -192,24 +206,24 @@ class Simulator {
     }
 
 
-    if (!(this.ctxBelowLight.constructor == C2S && skipLight)) {
+    if (!(!this.ctxBelowLight && skipLight)) {
       // Sort the objects with z-index.
-      var mapped = scene.objs.map(function (obj, i) {
+      var mapped = this.scene.objs.map(function (obj, i) {
         return { index: i, value: obj.getZIndex() };
       });
       mapped.sort(function (a, b) {
         return a.value - b.value;
       });
       // Draw the objects
-      for (var j = 0; j < scene.objs.length; j++) {
+      for (var j = 0; j < this.scene.objs.length; j++) {
         var i = mapped[j].index;
-        scene.objs[i].draw(this.ctxBelowLight.constructor == C2S ? this.canvasRendererMain : this.canvasRendererBelowLight, false, scene.objs[i] === mouseObj);
+        this.scene.objs[i].draw((!this.ctxBelowLight) ? this.canvasRendererMain : this.canvasRendererBelowLight, false, this.scene.objs[i] === mouseObj);
 
       }
 
       if (!skipLight) {
         // Initialize the simulation (e.g. add the rays and reset the detector readings)
-        for (let obj of scene.opticalObjs) {
+        for (let obj of this.scene.opticalObjs) {
           const ret = obj.onSimulationStart();
           if (ret) {
             if (ret.newRays) {
@@ -242,17 +256,17 @@ class Simulator {
     }
 
     if (skipLight) {
-      // Draw the "above light" layer of scene.objs. Note that we only draw this when skipLight is true because otherwise processRays() will be called and the "above light" layer will still be drawn, since draw() is called again in processRays() with skipLight set to true.
+      // Draw the "above light" layer of this.scene.objs. Note that we only draw this when skipLight is true because otherwise processRays() will be called and the "above light" layer will still be drawn, since draw() is called again in processRays() with skipLight set to true.
 
-      for (var i = 0; i < scene.objs.length; i++) {
-        scene.objs[i].draw(this.ctxBelowLight.constructor == C2S ? this.canvasRendererMain : this.canvasRendererAboveLight, true, scene.objs[i] === mouseObj); // Draw scene.objs[i]
+      for (var i = 0; i < this.scene.objs.length; i++) {
+        this.scene.objs[i].draw((!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight, true, this.scene.objs[i] === mouseObj); // Draw this.scene.objs[i]
       }
-      if (scene.mode == 'observer') {
+      if (this.scene.mode == 'observer') {
         // Draw the observer
         this.ctxAboveLight.globalAlpha = 1;
         this.ctxAboveLight.beginPath();
         this.ctxAboveLight.fillStyle = 'blue';
-        this.ctxAboveLight.arc(scene.observer.c.x, scene.observer.c.y, scene.observer.r, 0, Math.PI * 2, false);
+        this.ctxAboveLight.arc(this.scene.observer.c.x, this.scene.observer.c.y, this.scene.observer.r, 0, Math.PI * 2, false);
         this.ctxAboveLight.fill();
       }
     }
@@ -283,14 +297,14 @@ class Simulator {
     var rpd;
     var surfaceMergingObjs = [];
 
-    const opticalObjs = scene.opticalObjs;
+    const opticalObjs = this.scene.opticalObjs;
 
-    if (scene.simulateColors) {
+    if (this.scene.simulateColors) {
       this.ctxMain.globalCompositeOperation = 'screen';
     }
 
     while (true) {
-      if (new Date() - st_time > 50 && !isExporting) {
+      if (new Date() - st_time > 50 && this.enableTimer) {
         // If already run for 200ms
         // Pause for 10ms and continue (prevent not responding)
         this.simulationTimerId = setTimeout(() => this.processRays(), this.firstBreak ? 100 : 1);
@@ -298,12 +312,13 @@ class Simulator {
 
         this.emit('simulationPause', null);
 
-        simulator.updateSimulation(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
+        this.updateSimulation(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
 
         this.check();
         return;
       }
-      if (isExporting && this.processedRayCount > exportRayCountLimit) {
+      if (this.processedRayCount > this.rayCountLimit) {
+        this.shouldSimulatorStop = true;
         break;
       }
       if (this.shouldSimulatorStop) break;
@@ -342,7 +357,7 @@ class Simulator {
           if (s_point_temp) {
             // Here opticalObjs[i] intersects with the ray at s_point_temp
             s_lensq_temp = geometry.distanceSquared(this.pendingRays[j].p1, s_point_temp);
-            if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * scene.lengthScale * scene.lengthScale && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging)) {
+            if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging)) {
               // The ray is shot on two objects at the same time, and at least one of them supports surface merging
 
               if (s_obj.constructor.supportsSurfaceMerging) {
@@ -362,7 +377,7 @@ class Simulator {
                 }
               }
             }
-            else if (s_lensq_temp < s_lensq && s_lensq_temp > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * scene.lengthScale * scene.lengthScale) {
+            else if (s_lensq_temp < s_lensq && s_lensq_temp > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
               s_obj = opticalObjs[i]; // Update the object to be shot
               s_obj_index = i;
               s_point = s_point_temp;
@@ -372,23 +387,23 @@ class Simulator {
             }
           }
         }
-        if (scene.simulateColors) {
-          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), this.ctxAboveLight.constructor != C2S);
+        if (this.scene.simulateColors) {
+          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG);
         } else {
           this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
         // If not shot on any object
         if (s_lensq == Infinity) {
-          if (scene.mode == 'rays' || scene.mode == 'extended') {
-            if (scene.simulateColors) {
+          if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
+            if (this.scene.simulateColors) {
               this.canvasRendererMain.drawRay(this.pendingRays[j], color); // Draw the ray
             } else {
               this.canvasRendererMain.drawRay(this.pendingRays[j], 'rgb(255,255,128)'); // Draw the ray
             }
           }
-          if (scene.mode == 'extended' && !this.pendingRays[j].isNew) {
-            if (scene.simulateColors) {
-              this.ctxMain.setLineDash([2 * scene.lengthScale, 2 * scene.lengthScale]);
+          if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
+            if (this.scene.simulateColors) {
+              this.ctxMain.setLineDash([2 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color); // Draw the extension of the ray
               this.ctxMain.setLineDash([]);
             } else {
@@ -396,8 +411,8 @@ class Simulator {
             }
           }
 
-          if (scene.mode == 'observer') {
-            observed_point = geometry.lineCircleIntersections(this.pendingRays[j], scene.observer)[2];
+          if (this.scene.mode == 'observer') {
+            observed_point = geometry.lineCircleIntersections(this.pendingRays[j], this.scene.observer)[2];
             if (observed_point) {
               if (geometry.intersectionIsOnRay(observed_point, this.pendingRays[j])) {
                 observed = true;
@@ -407,18 +422,18 @@ class Simulator {
         }
         else {
           // Here the ray will be shot on s_obj at s_point after traveling for s_len
-          if (scene.mode == 'rays' || scene.mode == 'extended') {
-            if (scene.simulateColors) {
+          if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
+            if (this.scene.simulateColors) {
               this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color); // Draw the ray
             } else {
               this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
             }
           }
-          if (scene.mode == 'extended' && !this.pendingRays[j].isNew) {
-            if (scene.simulateColors) {
-              this.ctxMain.setLineDash([2 * scene.lengthScale, 2 * scene.lengthScale]);
+          if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
+            if (this.scene.simulateColors) {
+              this.ctxMain.setLineDash([2 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color); // Draw the backward extension of the ray
-              this.ctxMain.setLineDash([1 * scene.lengthScale, 5 * scene.lengthScale]);
+              this.ctxMain.setLineDash([1 * this.scene.lengthScale, 5 * this.scene.lengthScale]);
               this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color); // Draw the forward extension of the ray
               this.ctxMain.setLineDash([]);
             } else {
@@ -428,8 +443,8 @@ class Simulator {
 
           }
 
-          if (scene.mode == 'observer') {
-            observed_point = geometry.lineCircleIntersections(this.pendingRays[j], scene.observer)[2];
+          if (this.scene.mode == 'observer') {
+            observed_point = geometry.lineCircleIntersections(this.pendingRays[j], this.scene.observer)[2];
 
             if (observed_point) {
 
@@ -439,18 +454,18 @@ class Simulator {
             }
           }
         }
-        if (scene.mode == 'observer' && this.last_ray) {
+        if (this.scene.mode == 'observer' && this.last_ray) {
           if (!this.pendingRays[j].gap) {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray); // The intersection of the observed rays
 
             if (observed) {
-              if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * scene.lengthScale * scene.lengthScale) {
+              if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
                 // If the intersections are near each others
-                if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, this.pendingRays[j].p1)) && geometry.distanceSquared(observed_point, this.pendingRays[j].p1) > 1e-5 * scene.lengthScale * scene.lengthScale) {
+                if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, this.pendingRays[j].p1)) && geometry.distanceSquared(observed_point, this.pendingRays[j].p1) > 1e-5 * this.scene.lengthScale * this.scene.lengthScale) {
 
 
-                  if (scene.simulateColors) {
-                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, this.ctxAboveLight.constructor != C2S);
+                  if (this.scene.simulateColors) {
+                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG);
                   } else {
                     this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                   }
@@ -462,23 +477,23 @@ class Simulator {
                   }
                   if (rpd < 0) {
                     // Virtual image
-                    if (scene.simulateColors) {
+                    if (this.scene.simulateColors) {
                       this.ctxMain.fillStyle = color;
-                      this.ctxMain.fillRect(observed_intersection.x - 1.5 * scene.lengthScale, observed_intersection.y - 1.5 * scene.lengthScale, 3 * scene.lengthScale, 3 * scene.lengthScale);
+                      this.ctxMain.fillRect(observed_intersection.x - 1.5 * this.scene.lengthScale, observed_intersection.y - 1.5 * this.scene.lengthScale, 3 * this.scene.lengthScale, 3 * this.scene.lengthScale);
                     } else {
                       this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                     }
                   }
                   else if (rpd < s_lensq) {
                     // Real image
-                    if (scene.simulateColors) {
+                    if (this.scene.simulateColors) {
                       this.canvasRendererMain.drawPoint(observed_intersection, color); // Draw the image
                     } else {
                       this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
                     }
                   }
-                  if (scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * scene.lengthScale, 2 * scene.lengthScale]);
+                  if (this.scene.simulateColors) {
+                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
                     this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), color); // Draw the observed ray
                     this.ctxMain.setLineDash([]);
                   } else {
@@ -486,8 +501,8 @@ class Simulator {
                   }
                 }
                 else {
-                  if (scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * scene.lengthScale, 2 * scene.lengthScale]);
+                  if (this.scene.simulateColors) {
+                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
                     this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color); // Draw the observed ray
                     this.ctxMain.setLineDash([]);
                   } else {
@@ -497,8 +512,8 @@ class Simulator {
               }
               else {
                 if (this.last_intersection) {
-                  if (scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * scene.lengthScale, 2 * scene.lengthScale]);
+                  if (this.scene.simulateColors) {
+                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
                     this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color); // Draw the observed ray
                     this.ctxMain.setLineDash([]);
                   } else {
@@ -514,13 +529,13 @@ class Simulator {
           }
         }
 
-        if (scene.mode == 'images' && this.last_ray) {
+        if (this.scene.mode == 'images' && this.last_ray) {
           if (!this.pendingRays[j].gap) {
 
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
-            if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * scene.lengthScale * scene.lengthScale) {
-              if (scene.simulateColors) {
-                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, this.ctxAboveLight.constructor != C2S);
+            if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
+              if (this.scene.simulateColors) {
+                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG);
               } else {
                 this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
               }
@@ -534,16 +549,16 @@ class Simulator {
 
               if (rpd < 0) {
                 // Virtual image
-                if (scene.simulateColors) {
+                if (this.scene.simulateColors) {
                   this.ctxMain.fillStyle = color;
-                  this.ctxMain.fillRect(observed_intersection.x - 1.5 * scene.lengthScale, observed_intersection.y - 1.5 * scene.lengthScale, 3 * scene.lengthScale, 3 * scene.lengthScale);
+                  this.ctxMain.fillRect(observed_intersection.x - 1.5 * this.scene.lengthScale, observed_intersection.y - 1.5 * this.scene.lengthScale, 3 * this.scene.lengthScale, 3 * this.scene.lengthScale);
                 } else {
                   this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                 }
               }
               else if (rpd < s_lensq) {
                 // Real image
-                if (scene.simulateColors) {
+                if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color); // Draw the image
                 } else {
                   this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
@@ -551,9 +566,9 @@ class Simulator {
               }
               else {
                 // Virtual object
-                if (scene.simulateColors) {
+                if (this.scene.simulateColors) {
                   this.ctxMain.fillStyle = color;
-                  this.ctxMain.fillRect(observed_intersection.x - 0.5 * scene.lengthScale, observed_intersection.y - 0.5 * scene.lengthScale, 1 * scene.lengthScale, 1 * scene.lengthScale);
+                  this.ctxMain.fillRect(observed_intersection.x - 0.5 * this.scene.lengthScale, observed_intersection.y - 0.5 * this.scene.lengthScale, 1 * this.scene.lengthScale, 1 * this.scene.lengthScale);
                 } else {
                   this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(80,80,80)');
                 }
@@ -597,7 +612,7 @@ class Simulator {
     }
 
     //}
-    if (scene.simulateColors && this.ctxMain.constructor != C2S) {
+    if (this.scene.simulateColors && !this.isSVG) {
       // Inverse transformation of the color adjustment made in Simulator.wavelengthToColor.
       // This is to avoid the color satiation problem when using the 'lighter' composition.
       // Currently not supported when exporting to SVG.
@@ -631,11 +646,14 @@ class Simulator {
       this.ctxMain.setTransform(1, 0, 0, 1, 0, 0);
       this.ctxMain.clearRect(0, 0, this.ctxMain.canvas.width, this.ctxMain.canvas.height);
       this.ctxMain.drawImage(this.ctxVirtual.canvas, 0, 0);
-      this.ctxAboveLight.setTransform(scene.scale * dpr, 0, 0, scene.scale * dpr, scene.origin.x * dpr, scene.origin.y * dpr);
+      this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
     }
     this.ctxMain.globalAlpha = 1.0;
+    
+    this.updateSimulation(true, true);
 
     this.check();
+
     if (this.shouldSimulatorStop) {
       this.emit('simulationStop', null);
       
@@ -643,8 +661,6 @@ class Simulator {
     } else {
       this.emit('simulationComplete', null);
     }
-
-    simulator.updateSimulation(true, true);
   }
 
   /**
@@ -664,13 +680,13 @@ class Simulator {
   check() {
     if (this.brightnessScale == -1) {
       let hasDetector = false;
-      for (let obj of scene.opticalObjs) {
+      for (let obj of this.scene.opticalObjs) {
         if (obj instanceof objTypes["Detector"]) {
           hasDetector = true;
           break;
         }
       }
-      if (hasDetector || scene.simulateColors) {
+      if (hasDetector || this.scene.simulateColors) {
         this.warning = getMsg("brightness_inconsistent_warning");
       } else {
         this.warning = null;
