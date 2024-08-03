@@ -30,7 +30,7 @@ class Simulator {
    * @property {boolean} isNew - Whether the ray is just emitted by a source. This is to avoid drawing trivial initial extensions in the "Extended rays" mode.
    */
 
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid) {
+  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -47,6 +47,9 @@ class Simulator {
 
     /** @property {CanvasRenderingContext2D|C2S} ctxGrid - The context for drawing the grid layer. */
     this.ctxGrid = ctxGrid;
+
+    /** @property {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment. */
+    this.ctxVirtual = ctxVirtual;
 
     
     /** @property {Ray[]} pendingRays - The rays to be processed. */
@@ -75,6 +78,32 @@ class Simulator {
 
     /** @property {string} warning - The warning message of the simulation. */
     this.warning = null;
+
+    /** @property {object} eventListeners - The event listeners of the simulator. */
+    this.eventListeners = {};
+  }
+
+  /**
+   * Add an event listener to the simulator.
+   * @param {string} eventName - The name of the event.
+   * @param {function} callback - The callback function.
+   */
+  on(eventName, callback) {
+    if (!this.eventListeners[eventName]) {
+      this.eventListeners[eventName] = [];
+    }
+    this.eventListeners[eventName].push(callback);
+  }
+
+  /**
+   * Emit an event.
+   * @param {string} eventName - The name of the event.
+   * @param {any} data - The data to be passed to the callback functions.
+   */
+  emit(eventName, data) {
+    if (this.eventListeners[eventName]) {
+      this.eventListeners[eventName].forEach(callback => callback(data));
+    }
   }
 
   /**
@@ -90,7 +119,7 @@ class Simulator {
       //clearError();
       //clearWarning();
       this.simulationStartTime = new Date();
-      document.getElementById('forceStop').style.display = 'none';
+      this.emit('simulationStart', null);
     }
 
     if (!skipLight && this.simulationTimerId != -1) {
@@ -266,8 +295,8 @@ class Simulator {
         // Pause for 10ms and continue (prevent not responding)
         this.simulationTimerId = setTimeout(() => this.processRays(), this.firstBreak ? 100 : 1);
         this.firstBreak = false;
-        document.getElementById('forceStop').style.display = '';
-        document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + this.processedRayCount + '<br>' + getMsg("total_truncation") + this.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((this.brightnessScale <= 0) ? "-" : this.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - this.simulationStartTime) + '<br>';
+
+        this.emit('simulationPause', null);
 
         simulator.updateSimulation(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
 
@@ -344,7 +373,7 @@ class Simulator {
           }
         }
         if (scene.simulateColors) {
-          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), true);
+          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), this.ctxAboveLight.constructor != C2S);
         } else {
           this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
@@ -421,7 +450,7 @@ class Simulator {
 
 
                   if (scene.simulateColors) {
-                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, true);
+                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, this.ctxAboveLight.constructor != C2S);
                   } else {
                     this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                   }
@@ -491,7 +520,7 @@ class Simulator {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
             if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * scene.lengthScale * scene.lengthScale) {
               if (scene.simulateColors) {
-                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, true);
+                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, this.ctxAboveLight.constructor != C2S);
               } else {
                 this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
               }
@@ -573,15 +602,13 @@ class Simulator {
       // This is to avoid the color satiation problem when using the 'lighter' composition.
       // Currently not supported when exporting to SVG.
 
-      var virtualCanvas = document.createElement('canvas');
-      var virtualCtx = virtualCanvas.getContext('2d');
 
-      virtualCanvas.width = this.ctxMain.canvas.width;
-      virtualCanvas.height = this.ctxMain.canvas.height;
+      this.ctxVirtual.canvas.width = this.ctxMain.canvas.width;
+      this.ctxVirtual.canvas.height = this.ctxMain.canvas.height;
 
-      virtualCtx.drawImage(this.ctxMain.canvas, 0, 0);
+      this.ctxVirtual.drawImage(this.ctxMain.canvas, 0, 0);
 
-      var imageData = virtualCtx.getImageData(0.0, 0.0, virtualCanvas.width, virtualCanvas.height);
+      var imageData = this.ctxVirtual.getImageData(0.0, 0.0, this.ctxVirtual.canvas.width, this.ctxVirtual.canvas.height);
       var data = imageData.data;
       for (var i = 0; i < data.length; i += 4) {
         if (data[i + 3] == 0) continue; // Skip transparent pixels
@@ -598,27 +625,26 @@ class Simulator {
         data[i + 2] = b;
         data[i + 3] = 255 * Math.min(factor, 1);
       }
-      virtualCtx.putImageData(imageData, 0, 0);
+      this.ctxVirtual.putImageData(imageData, 0, 0);
       this.ctxMain.globalCompositeOperation = 'source-over';
 
       this.ctxMain.setTransform(1, 0, 0, 1, 0, 0);
       this.ctxMain.clearRect(0, 0, this.ctxMain.canvas.width, this.ctxMain.canvas.height);
-      this.ctxMain.drawImage(virtualCanvas, 0, 0);
+      this.ctxMain.drawImage(this.ctxVirtual.canvas, 0, 0);
       this.ctxAboveLight.setTransform(scene.scale * dpr, 0, 0, scene.scale * dpr, scene.origin.x * dpr, scene.origin.y * dpr);
     }
     this.ctxMain.globalAlpha = 1.0;
 
+    this.check();
     if (this.shouldSimulatorStop) {
-      document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + this.processedRayCount + '<br>' + getMsg("total_truncation") + this.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((this.brightnessScale <= 0) ? "-" : this.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - this.simulationStartTime) + '<br>' + getMsg("force_stopped");
+      this.emit('simulationStop', null);
+      
       this.shouldSimulatorStop = false;
     } else {
-      document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + this.processedRayCount + '<br>' + getMsg("total_truncation") + this.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((this.brightnessScale <= 0) ? "-" : this.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - this.simulationStartTime);
+      this.emit('simulationComplete', null);
     }
-    document.getElementById('forceStop').style.display = 'none';
 
     simulator.updateSimulation(true, true);
-
-    this.check();
   }
 
   /**
@@ -711,7 +737,7 @@ class Simulator {
     G *= alpha * brightness;
     B *= alpha * brightness;
 
-    if (this.ctxAboveLight.constructor != C2S && transform) {
+    if (transform) {
       // Adjust color to make (R,G,B) linear when using the 'screen' composition.
       // This is to avoid the color satiation problem when using the 'lighter' composition.
       // Currently not supported when exporting to SVG as it is currently under draft in CSS Color 4 

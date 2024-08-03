@@ -44,7 +44,7 @@ window.onload = function (e) {
 
   mousePos = geometry.point(0, 0);
 
-  initParameters();
+  init();
 
   JSONOutput();
   undoArr[0] = latestJsonCode;
@@ -54,6 +54,167 @@ window.onload = function (e) {
   document.getElementById('undo_mobile').disabled = true;
   document.getElementById('redo_mobile').disabled = true;
 
+  window.onresize = function (e) {
+    scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+
+    if (window.devicePixelRatio) {
+      dpr = window.devicePixelRatio;
+    }
+
+    if (simulator.ctxAboveLight) {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvasBelowLight.width = window.innerWidth * dpr;
+      canvasBelowLight.height = window.innerHeight * dpr;
+      canvasLight.width = window.innerWidth * dpr;
+      canvasLight.height = window.innerHeight * dpr;
+      canvasGrid.width = window.innerWidth * dpr;
+      canvasGrid.height = window.innerHeight * dpr;
+      simulator.updateSimulation();
+    }
+  };
+
+  window.onkeydown = function (e) {
+    //Ctrl+Z
+    if (e.ctrlKey && e.keyCode == 90) {
+      if (document.getElementById('undo').disabled == false) {
+        undo();
+      }
+      return false;
+    }
+    //Ctrl+D
+    if (e.ctrlKey && e.keyCode == 68) {
+      cloneObj(selectedObj);
+      simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+      createUndoPoint();
+      return false;
+    }
+    //Ctrl+Y
+    if (e.ctrlKey && e.keyCode == 89) {
+      document.getElementById('redo').onclick();
+    }
+
+    //Ctrl+S
+    if (e.ctrlKey && e.keyCode == 83) {
+      save();
+      return false;
+    }
+
+    //Ctrl+O
+    if (e.ctrlKey && e.keyCode == 79) {
+      document.getElementById('open').onclick();
+      return false;
+    }
+
+    //esc
+    if (e.keyCode == 27) {
+      if (isConstructing) {
+        undo();
+      }
+    }
+
+    /*
+    if(e.altKey && e.keyCode==78)
+    {
+    //Alt+N
+    cleanAll();
+    return false;
+    }
+    */
+    /*
+    if(e.altKey && e.keyCode==65)
+    {
+    //Alt+A
+    document.getElementById("objAttr").focus()
+    return false;
+    }
+    */
+    //Delete
+    if (e.keyCode == 46 || e.keyCode == 8) {
+      if (selectedObj != -1) {
+        var selectedObjType = scene.objs[selectedObj].constructor.type;
+        removeObj(selectedObj);
+        simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
+        createUndoPoint();
+      }
+      return false;
+    }
+
+    //Ctrl
+    /*
+    if(e.keyCode==17)
+    {
+      if(draggingObj!=-1)
+      {
+        canvas_onmousemove(e,true);
+      }
+    }
+    */
+
+    //Arrow Keys
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      var step = scene.snapToGrid ? scene.gridSize : 1;
+      if (selectedObj >= 0) {
+        if (e.keyCode == 37) {
+          scene.objs[selectedObj].move(-step, 0);
+        }
+        if (e.keyCode == 38) {
+          scene.objs[selectedObj].move(0, -step);
+        }
+        if (e.keyCode == 39) {
+          scene.objs[selectedObj].move(step, 0);
+        }
+        if (e.keyCode == 40) {
+          scene.objs[selectedObj].move(0, step);
+        }
+        simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+      }
+      else if (scene.mode == 'observer') {
+        if (e.keyCode == 37) {
+          scene.observer.c.x -= step;
+        }
+        if (e.keyCode == 38) {
+          scene.observer.c.y -= step;
+        }
+        if (e.keyCode == 39) {
+          scene.observer.c.x += step;
+        }
+        if (e.keyCode == 40) {
+          scene.observer.c.y += step;
+        }
+        simulator.updateSimulation(false, true);
+      }
+      else {
+        // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
+        for (var i = 0; i < scene.objs.length; i++) {
+          if (e.keyCode == 37) {
+            scene.objs[i].move(-step, 0);
+          }
+          if (e.keyCode == 38) {
+            scene.objs[i].move(0, -step);
+          }
+          if (e.keyCode == 39) {
+            scene.objs[i].move(step, 0);
+          }
+          if (e.keyCode == 40) {
+            scene.objs[i].move(0, step);
+          }
+        }
+        simulator.updateSimulation();
+      }
+    }
+
+
+
+  };
+
+  window.onkeyup = function (e) {
+    //Arrow Keys
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      createUndoPoint();
+    }
+
+  };
 
   canvas.addEventListener('mousedown', function (e) {
     error = null;
@@ -85,7 +246,7 @@ window.onload = function (e) {
     canvas_onmousemove(e);
   });
 
-  canvas.addEventListener('mouseup',  function (e) {
+  canvas.addEventListener('mouseup', function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
 
@@ -98,7 +259,7 @@ window.onload = function (e) {
     canvas_onmouseup(e);
   });
 
-  canvas.addEventListener('mouseout',  function (e) {
+  canvas.addEventListener('mouseout', function (e) {
     if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
     lastDeviceIsTouch = false;
     if (draggingObj != -1) {
@@ -120,7 +281,7 @@ window.onload = function (e) {
   let lastX = 0;
   let lastY = 0;
 
-  canvas.addEventListener('touchstart',  function (e) {
+  canvas.addEventListener('touchstart', function (e) {
     if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
@@ -143,7 +304,7 @@ window.onload = function (e) {
     }
   });
 
-  canvas.addEventListener('touchmove',  function (e) {
+  canvas.addEventListener('touchmove', function (e) {
     if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
@@ -156,21 +317,21 @@ window.onload = function (e) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-  
+
       // If initialPinchDistance is null, this is the first move event of the pinch
       // Set initial distance
       if (initialPinchDistance === null) {
         initialPinchDistance = distance;
         lastScale = scene.scale;
       }
-  
+
       // Calculate the scaling factor
       const scaleFactor = distance / initialPinchDistance;
-  
+
       // Update scale based on previous scale and scaling factor
       let newScale = lastScale * scaleFactor;
-      
-      newScale = Math.max(0.25/scene.lengthScale, Math.min(5.00/scene.lengthScale, newScale));
+
+      newScale = Math.max(0.25 / scene.lengthScale, Math.min(5.00 / scene.lengthScale, newScale));
 
       // Calculate the mid point between the two touches
       const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
@@ -183,10 +344,10 @@ window.onload = function (e) {
       // Apply the translation
       scene.origin.x += dx2;
       scene.origin.y += dy2;
-  
+
       // Apply the scale transformation
       setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
-      
+
       // Update last values
       lastX = x;
       lastY = y;
@@ -196,7 +357,7 @@ window.onload = function (e) {
     }
   });
 
-  canvas.addEventListener('touchend',  function (e) {
+  canvas.addEventListener('touchend', function (e) {
     if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
@@ -208,7 +369,7 @@ window.onload = function (e) {
     }
   });
 
-  canvas.addEventListener('touchcancel',  function (e) {
+  canvas.addEventListener('touchcancel', function (e) {
     if (scene.error) return;
     lastDeviceIsTouch = true;
     lastTouchTime = Date.now();
@@ -222,25 +383,25 @@ window.onload = function (e) {
     }
   });
 
-  canvas.addEventListener('dblclick',  function (e) {
+  canvas.addEventListener('dblclick', function (e) {
     if (scene.error) return;
     canvas_ondblclick(e);
   });
 
 
-  document.getElementById('undo').onclick = function() {
+  document.getElementById('undo').onclick = function () {
     this.blur();
     undo();
   }
   document.getElementById('undo_mobile').onclick = document.getElementById('undo').onclick;
-  document.getElementById('redo').onclick = function() {
+  document.getElementById('redo').onclick = function () {
     this.blur();
     redo();
   }
   document.getElementById('redo_mobile').onclick = document.getElementById('redo').onclick;
   document.getElementById('reset').onclick = function () {
-    history.replaceState('', document.title, window.location.pathname+window.location.search);
-    initParameters();
+    history.replaceState('', document.title, window.location.pathname + window.location.search);
+    init();
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
     createUndoPoint();
@@ -251,7 +412,7 @@ window.onload = function (e) {
     }
   };
   document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
-  
+
   document.getElementById('get_link').onclick = getLink;
   document.getElementById('get_link_mobile').onclick = getLink;
   document.getElementById('export_svg').onclick = enterCropMode;
@@ -260,7 +421,7 @@ window.onload = function (e) {
     document.getElementById('openfile').click();
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
-  document.getElementById('view_gallery').onclick = function() {
+  document.getElementById('view_gallery').onclick = function () {
     window.open(getMsg("gallery_url"));
   };
   document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
@@ -369,9 +530,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('gridSize_mobile').onclick = document.getElementById('gridSize').onclick;
-  
-  document.getElementById('gridSize').onkeydown = function(e)
-  {
+
+  document.getElementById('gridSize').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -392,9 +552,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('observer_size_mobile').onclick = document.getElementById('observer_size').onclick;
-  
-  document.getElementById('observer_size').onkeydown = function(e)
-  {
+
+  document.getElementById('observer_size').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -423,9 +582,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('lengthScale_mobile').onclick = document.getElementById('lengthScale').onclick;
-  
-  document.getElementById('lengthScale').onkeydown = function(e)
-  {
+
+  document.getElementById('lengthScale').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -688,14 +846,14 @@ window.onload = function (e) {
     } else if (window.location.hash.length > 1) {
       // The URL contains a link to a gallery item.
       openSample(window.location.hash.substr(1) + ".json");
-      history.replaceState('', document.title, window.location.pathname+window.location.search);
+      history.replaceState('', document.title, window.location.pathname + window.location.search);
       isFromGallery = true;
     }
   };
 
   window.onpopstate();
 
-  window.addEventListener('message', function(event) {
+  window.addEventListener('message', function (event) {
     if (event.data && event.data.rayOpticsModuleName) {
       importModule(event.data.rayOpticsModuleName + '.json');
     }
@@ -751,7 +909,7 @@ function importModule(name) {
       for (let moduleName in moduleJSON.modules) {
         if (moduleJSON.modules.hasOwnProperty(moduleName)) {
           let newModuleName = moduleName;
-          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])){
+          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])) {
             newModuleName = prompt(getMsg('module_conflict'), moduleName);
             if (!newModuleName) {
               continue;
@@ -786,43 +944,46 @@ function importModule(name) {
 
 
 
-window.onresize = function (e) {
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-
-  if (window.devicePixelRatio) {
-    dpr = window.devicePixelRatio;
-  }
-
-  if (simulator.ctxAboveLight) {
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvasBelowLight.width = window.innerWidth * dpr;
-    canvasBelowLight.height = window.innerHeight * dpr;
-    canvasLight.width = window.innerWidth * dpr;
-    canvasLight.height = window.innerHeight * dpr;
-    canvasGrid.width = window.innerWidth * dpr;
-    canvasGrid.height = window.innerHeight * dpr;
-    simulator.updateSimulation();
-  }
-};
 
 
 
 
-function initParameters() {
+
+function init() {
   document.title = getMsg('appName');
   document.getElementById('save_name').value = "";
 
   isConstructing = false;
   endPositioning();
   scene = new Scene();
+  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+
   simulator = new Simulator(scene,
     canvasLight.getContext('2d'),
     canvasBelowLight.getContext('2d'),
     canvasAboveLight.getContext('2d'),
-    canvasGrid.getContext('2d')
+    canvasGrid.getContext('2d'),
+    document.createElement('canvas').getContext('2d')
   );
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+
+  simulator.on('simulationStart', function () {
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationPause', function () {
+    document.getElementById('forceStop').style.display = '';
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
+  });
+
+  simulator.on('simulationStop', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationComplete', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
+    document.getElementById('forceStop').style.display = 'none';
+  });
 
   selectObj(-1);
 
@@ -836,10 +997,10 @@ function initParameters() {
   scene.backgroundImage = null;
 
   //Reset new UI.
-  
+
   resetDropdownButtons();
   updateModuleObjsMenu();
-  
+
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
   document.getElementById('mode_rays').checked = true;
@@ -871,159 +1032,18 @@ function initParameters() {
 
   document.getElementById('lengthScale').value = scene.lengthScale;
   document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-  
+
   simulator.updateSimulation();
 }
 
-window.onkeydown = function (e) {
-  //Ctrl+Z
-  if (e.ctrlKey && e.keyCode == 90) {
-    if (document.getElementById('undo').disabled == false) {
-      undo();
-    }
-    return false;
-  }
-  //Ctrl+D
-  if (e.ctrlKey && e.keyCode == 68) {
-    cloneObj(selectedObj);
-    simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
-    createUndoPoint();
-    return false;
-  }
-  //Ctrl+Y
-  if (e.ctrlKey && e.keyCode == 89) {
-    document.getElementById('redo').onclick();
-  }
-
-  //Ctrl+S
-  if (e.ctrlKey && e.keyCode == 83) {
-    save();
-    return false;
-  }
-
-  //Ctrl+O
-  if (e.ctrlKey && e.keyCode == 79) {
-    document.getElementById('open').onclick();
-    return false;
-  }
-
-  //esc
-  if (e.keyCode == 27) {
-    if (isConstructing) {
-      undo();
-    }
-  }
-
-  /*
-  if(e.altKey && e.keyCode==78)
-  {
-  //Alt+N
-  cleanAll();
-  return false;
-  }
-  */
-  /*
-  if(e.altKey && e.keyCode==65)
-  {
-  //Alt+A
-  document.getElementById("objAttr").focus()
-  return false;
-  }
-  */
-  //Delete
-  if (e.keyCode == 46 || e.keyCode == 8) {
-    if (selectedObj != -1) {
-      var selectedObjType = scene.objs[selectedObj].constructor.type;
-      removeObj(selectedObj);
-      simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
-      createUndoPoint();
-    }
-    return false;
-  }
-
-  //Ctrl
-  /*
-  if(e.keyCode==17)
-  {
-    if(draggingObj!=-1)
-    {
-      canvas_onmousemove(e,true);
-    }
-  }
-  */
-
-  //Arrow Keys
-  if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = scene.snapToGrid ? scene.gridSize : 1;
-    if (selectedObj >= 0) {
-      if (e.keyCode == 37) {
-        scene.objs[selectedObj].move(-step, 0);
-      }
-      if (e.keyCode == 38) {
-        scene.objs[selectedObj].move(0, -step);
-      }
-      if (e.keyCode == 39) {
-        scene.objs[selectedObj].move(step, 0);
-      }
-      if (e.keyCode == 40) {
-        scene.objs[selectedObj].move(0, step);
-      }
-      simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
-    }
-    else if (scene.mode == 'observer') {
-      if (e.keyCode == 37) {
-        scene.observer.c.x -= step;
-      }
-      if (e.keyCode == 38) {
-        scene.observer.c.y -= step;
-      }
-      if (e.keyCode == 39) {
-        scene.observer.c.x += step;
-      }
-      if (e.keyCode == 40) {
-        scene.observer.c.y += step;
-      }
-      simulator.updateSimulation(false, true);
-    }
-    else {
-      // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
-      for (var i = 0; i < scene.objs.length; i++) {
-        if (e.keyCode == 37) {
-          scene.objs[i].move(-step, 0);
-        }
-        if (e.keyCode == 38) {
-          scene.objs[i].move(0, -step);
-        }
-        if (e.keyCode == 39) {
-          scene.objs[i].move(step, 0);
-        }
-        if (e.keyCode == 40) {
-          scene.objs[i].move(0, step);
-        }
-      }
-      simulator.updateSimulation();
-    }
-  }
-
-
-
-};
-
-window.onkeyup = function (e) {
-  //Arrow Keys
-  if (e.keyCode >= 37 && e.keyCode <= 40) {
-    createUndoPoint();
-  }
-
-};
 
 function JSONOutput() {
   if (scene.error) {
     return;
   }
 
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-  
+  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+
   newJsonCode = scene.toJSON();
   if (aceEditor && newJsonCode != latestJsonCode && !aceEditor.isFocused()) {
 
@@ -1044,7 +1064,7 @@ function JSONOutput() {
 
     // Set selection range to highlight changes using the Range object
     var Range = require("ace/range").Range;
-    var selectionRange = new Range(startLineNum, 0, endLineNum+1, 0);
+    var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
 
     lastCodeChangeIsFromScene = true;
     aceEditor.setValue(newJsonCode);
@@ -1054,7 +1074,7 @@ function JSONOutput() {
     aceEditor.scrollToLine(startLineNum, true, true, function () { });
   }
   latestJsonCode = newJsonCode;
-  
+
   syncUrl();
   warning = "";
   updateErrorAndWarning();
@@ -1103,7 +1123,7 @@ var lastFullURL = "";
 function syncUrl() {
   if (!autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
-  
+
   var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
     if (fullURL.length > 2041) {
@@ -1132,7 +1152,7 @@ function syncUrl() {
 function JSONInput() {
   document.getElementById('welcome').style.display = 'none';
 
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
   scene.fromJSON(latestJsonCode, function (needFullUpdate, completed) {
     if (needFullUpdate) {
       // Update the UI for the loaded scene.
@@ -1185,7 +1205,7 @@ function JSONInput() {
       simulator.updateSimulation();
     } else {
       // Partial update (e.g. when the background image is loaded)
-      setTimeout(function() {
+      setTimeout(function () {
         simulator.updateSimulation(true, true);
       }, 1);
     }
@@ -1338,8 +1358,8 @@ function enterCropMode() {
   if (cropBoxIndex == -1) {
     // Create a new cropBox
     let cropBox = new objTypes['CropBox'](scene, {
-      p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
+      p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.2) / dpr - scene.origin.y) / scene.scale),
+      p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.8) / dpr - scene.origin.y) / scene.scale),
     });
     scene.objs.push(cropBox);
     cropBoxIndex = scene.objs.length - 1;
@@ -1457,7 +1477,7 @@ function exportImage(cropBox) {
   window.onresize();
 }
 
-window.onbeforeunload = function(e) {
+window.onbeforeunload = function (e) {
   if (hasUnsavedChange) {
     return "You have unsaved change.";
   }
