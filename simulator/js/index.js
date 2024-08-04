@@ -5,6 +5,7 @@ var canvasLight;
 var canvasGrid;
 var scene;
 var simulator;
+var objBar;
 var xyBox_cancelContextMenu = false;
 var isFromGallery = false;
 var hasUnsavedChange = false;
@@ -41,6 +42,34 @@ window.onload = function (e) {
 
   mousePos = geometry.point(0, 0);
 
+  objBar = new ObjBar(document.getElementById('obj_bar_main'));
+
+  objBar.on('showAdvancedEnabled', function (enabled) {
+    if (enabled) {
+      document.getElementById('showAdvanced').style.display = '';
+      document.getElementById('showAdvanced_mobile_container').style.display = '';
+    } else {
+      document.getElementById('showAdvanced').style.display = 'none';
+      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+    }
+  });
+
+  objBar.on('edit', function () {
+    simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+  });
+
+  objBar.on('editEnd', function () {
+    createUndoPoint();
+  });
+
+  objBar.on('requireUpdate', function () {
+    selectObj(selectedObj);
+  });
+
+  document.getElementById('apply_to_all').addEventListener('change', function () {
+    objBar.shouldApplyToAll = this.checked;
+  });
+
   init();
 
   JSONOutput();
@@ -50,6 +79,7 @@ window.onload = function (e) {
 
   document.getElementById('undo_mobile').disabled = true;
   document.getElementById('redo_mobile').disabled = true;
+
 
   window.onresize = function (e) {
     scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
@@ -86,7 +116,7 @@ window.onload = function (e) {
       } else {
         scene.cloneObj(selectedObj);
       }
-      
+
       simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
       createUndoPoint();
       return false;
@@ -1468,7 +1498,7 @@ function exportImage(cropBox) {
     }
 
     const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7);
-    
+
     function onSimulationEnd() {
       const finalCanvas = document.createElement('canvas');
       finalCanvas.width = imageWidth;

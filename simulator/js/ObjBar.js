@@ -1,12 +1,44 @@
-
+/**
+ * The object bar class, which is used to create the options/controls for the selected scene object.
+ * @class ObjBar
+ */
 class ObjBar {
   constructor(elem) {
 
     /** @property {HTMLElement} elem - The element the inputs will be populated to */
     this.elem = elem;
 
+    /** @property {boolean} shouldApplyToAll - Whether the "Apply to all" checkbox is checked */
+    this.shouldApplyToAll = false;
+
     /** @property {function|null} pendingEvent - The pending event to be called in case the scene object loses focus before the input is finished */
     this.pendingEvent = null;
+
+    /** @property {object} eventListeners - The event listeners of the obj bar. */
+    this.eventListeners = {};
+  }
+
+  /**
+   * Add an event listener to the obj bar.
+   * @param {string} eventName - The name of the event.
+   * @param {function} callback - The callback function.
+   */
+  on(eventName, callback) {
+    if (!this.eventListeners[eventName]) {
+      this.eventListeners[eventName] = [];
+    }
+    this.eventListeners[eventName].push(callback);
+  }
+
+  /**
+   * Emit an event.
+   * @param {string} eventName - The name of the event.
+   * @param {any} data - The data to be passed to the callback functions.
+   */
+  emit(eventName, data) {
+    if (this.eventListeners[eventName]) {
+      this.eventListeners[eventName].forEach(callback => callback(data));
+    }
   }
 
   /**
@@ -74,26 +106,26 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     objOption_range.oninput = function () {
       objOption_text.value = objOption_range.value;
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, objOption_range.value * 1);
       });
     };
 
     objOption_range.onmouseup = function () {
       this.blur();
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
 
     objOption_range.ontouchend = function () {
       this.blur();
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, objOption_range.value * 1);
       });
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
     objOption_text.onchange = function () {
       if (objOption_text.value.toLowerCase().startsWith('inf')) {
@@ -104,10 +136,10 @@ class ObjBar {
         var value = objOption_text.value * 1;
       }
       objOption_range.value = value;
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, value);
       });
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
     objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;
@@ -156,10 +188,10 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     objOption_text.onchange = function () {
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, objOption_text.value);
       });
     };
@@ -168,7 +200,7 @@ class ObjBar {
       if (e.stopPropagation) e.stopPropagation();
     };
     objOption_text.onblur = function () {
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
   }
 
@@ -191,14 +223,14 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     objOption_text.oninput = function () {
       // if user starts adding more than one line, auto expand the text area
       if (objOption_text.value.split('\n').length > 1 && objOption_text.rows == 1) {
         objOption_text.rows = 3;
       }
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, objOption_text.value);
       });
       JSONOutput();
@@ -208,7 +240,7 @@ class ObjBar {
       if (e.stopPropagation) e.stopPropagation();
     };
     objOption_text.onblur = function () {
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
   }
 
@@ -249,17 +281,17 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     objOption_checkbox.onchange = function () {
       this.blur();
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, objOption_checkbox.checked);
       });
-      createUndoPoint();
+      self.emit('editEnd', null);
       if (updateOnChange) {
         setTimeout(function () {
-          selectObj(selectedObj);
+          self.emit('requireUpdate', null);
         }, 250);
       }
     };
@@ -302,7 +334,7 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     var mathField = MQ.MathField(eqnSpan, {
       spaceBehavesLikeTab: true,
@@ -317,15 +349,13 @@ class ObjBar {
       maxDepth: 10,
       handlers: {
         enter: function () {
-          setOption(function (obj) {
+          self.setOption(function (obj) {
             func(obj, mathField.latex());
           });
-          createUndoPoint();
+          self.emit('editEnd', null);
         }
       }
     });
-
-    const self = this;
 
     mathField.el().querySelector('textarea').addEventListener('focusout', function () {
       if (self.pendingEvent) {
@@ -336,10 +366,10 @@ class ObjBar {
 
     mathField.el().querySelector('textarea').addEventListener('focusin', function () {
       self.pendingEvent = function () {
-        setOption(function (obj) {
+        self.setOption(function (obj) {
           func(obj, mathField.latex());
         });
-        createUndoPoint();
+        self.emit('editEnd', null);
       };
     });
 
@@ -390,16 +420,16 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
 
-    const setOption = this.setOption;
+    const self = this;
 
     dropdown.onchange = function () {
-      setOption(function (obj) {
+      self.setOption(function (obj) {
         func(obj, dropdown.value);
       });
       if (updateOnChange) {
-        selectObj(selectedObj);
+        self.emit('requireUpdate', null);
       }
-      createUndoPoint();
+      self.emit('editEnd', null);
     };
     dropdown.onclick = function (e) {
       //this.select();
@@ -426,15 +456,18 @@ class ObjBar {
       button.className = 'btn btn-secondary';
       button.innerHTML = label;
     }
+
+    const self = this;
+
     button.onclick = function () {
       const isOptical = scene.objs[selectedObj].constructor.isOptical;
       this.blur();
       func(scene.objs[selectedObj]);
       if (updateOnChange) {
-        selectObj(selectedObj);
+        self.emit('requireUpdate', null);
       }
-      simulator.updateSimulation(!isOptical, true);
-      createUndoPoint();
+      self.emit('edit', null);
+      self.emit('editEnd', null);
     };
     this.elem.appendChild(button);
     var space = document.createTextNode(' ');
@@ -487,7 +520,7 @@ class ObjBar {
    * @param {objBarValueChangeCallback} func - The function to call.
    */
   setOption(func) {
-    if (!document.getElementById('apply_to_all').checked) {
+    if (!this.shouldApplyToAll) {
       func(scene.objs[selectedObj]);
     }
     else {
@@ -497,7 +530,7 @@ class ObjBar {
         }
       }
     }
-    simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+    this.emit('edit', null);
   }
 
   /**
@@ -510,15 +543,9 @@ class ObjBar {
     if (showAdvancedOn || condition) {
       return true
     } else {
-      document.getElementById('showAdvanced').style.display = '';
-      document.getElementById('showAdvanced_mobile_container').style.display = '';
+      this.emit('showAdvancedEnabled', true);
       return false
     }
   }
 
 }
-
-var objBar = new ObjBar(document.getElementById('obj_bar_main'));
-
-
-
