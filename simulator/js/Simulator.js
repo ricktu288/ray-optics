@@ -120,6 +120,26 @@ class Simulator {
   }
 
   /**
+   * The event emitted when the simulation starts.
+   * @event Simulator#simulationStart
+   */
+
+  /**
+   * The event emitted when the simulation pauses (when the timer is enabled and the maximum continue running time is exceeded).
+   * @event Simulator#simulationPause
+   */
+
+  /**
+   * The event emitted when the simulation completes (all the rays are processed completely).
+   * @event Simulator#simulationComplete
+   */
+
+  /**
+   * The event emitted when the simulation stops (when the maximum number of processed rays is reached or if the user force stop the simulation).
+   * @event Simulator#simulationStop
+   */
+
+  /**
    * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.

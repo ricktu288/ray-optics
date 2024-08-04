@@ -42,6 +42,27 @@ class ObjBar {
   }
 
   /**
+   * The event when some value is changed but the editing may not be finished yet.
+   * @event ObjBar#edit
+   */
+
+  /**
+   * The event when the editing is finished.
+   * @event ObjBar#editEnd
+   */
+
+  /**
+   * The event when the entire obj bar should be updated.
+   * @event ObjBar#requireUpdate
+   */
+
+  /**
+   * The event when the advanced options should be enabled.
+   * @event ObjBar#showAdvancedEnabled
+   * @param {boolean} enabled - Whether the advanced options should be enabled.
+   */
+
+  /**
    * The callback function for when a value changes.
    * If "Apply to all" is checked, this function will be called for each scene object of the same type.
    * @callback objBarValueChangeCallback
