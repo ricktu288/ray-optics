@@ -218,6 +218,94 @@ class Scene {
   }
 
   /**
+   * Add an object to the scene.
+   * @param {BaseSceneObj} obj
+   */
+  pushObj(obj) {
+    this.objs.push(obj);
+    obj.scene = this;
+  }
+
+  /**
+   * Add an object to the scene at the beginning of the list.
+   * @param {BaseSceneObj} obj
+   */
+  unshiftObj(obj) {
+    this.objs.unshift(obj);
+    obj.scene = this;
+    
+    // Update `targetObjIndex` of all handle objects.
+    for (var i in this.objs) {
+      if (this.objs[i].constructor.type == "Handle") {
+        for (var j in this.objs[i].controlPoints) {
+          this.objs[i].controlPoints[j].targetObjIndex++;
+        }
+      }
+    }
+  }
+
+  /**
+   * Remove the object at an index.
+   * @param {number} index
+   */
+  removeObj(index) {
+    for (var i = index; i < this.objs.length - 1; i++) {
+      let oldObj = this.objs[i+1].serialize();
+      this.objs[i] = new objTypes[oldObj.type](this, oldObj);
+    }
+  
+    for (var i in this.objs) {
+      if (this.objs[i].constructor.type == "Handle") {
+        for (var j in this.objs[i].controlPoints) {
+          if (this.objs[i].controlPoints[j].targetObjIndex > index) {
+            this.objs[i].controlPoints[j].targetObjIndex--;
+          } else if (this.objs[i].controlPoints[j].targetObjIndex == index) {
+            this.objs[i].controlPoints = [];
+            break;
+          }
+        }
+      }
+    }
+
+    this.objs.length = this.objs.length - 1;
+  }
+
+  /**
+   * Clone the object at an index.
+   * @param {number} index
+   * @returns {BaseSceneObj} The cloned object
+   */
+  cloneObj(index) {
+    let oldObj = this.objs[index].serialize();
+    this.objs[this.objs.length] = new objTypes[oldObj.type](this, oldObj);
+    return this.objs[this.objs.length - 1];
+  }
+
+  /**
+   * Clone the objects bound to the handle at an index.
+   * @param {number} index
+   */
+  cloneObjsByHandle(index) {
+    let handle = this.objs[index];
+    if (handle.constructor.type !== "Handle") {
+      return;
+    }
+
+    var indices = [];
+    for (var j in handle.controlPoints) {
+      if (indices.indexOf(handle.controlPoints[j].targetObjIndex) == -1) {
+        indices.push(handle.controlPoints[j].targetObjIndex);
+      }
+    }
+    //console.log(indices);
+    for (var j in indices) {
+      if (this.objs[indices[j]].constructor.type != "Handle") {
+        this.cloneObj(indices[j]);
+      }
+    }
+  }
+
+  /**
    * Add a module definition.
    * @param {string} moduleName
    * @param {ModuleDef} moduleDef
@@ -252,5 +340,45 @@ class Scene {
     }
 
     delete this.modules[moduleName];
+  }
+
+  /**
+   * Set the scale of the scene while keeping a given center point fixed.
+   * @param {number} value - The new scale factor.
+   * @param {number} centerX - The x-coordinate of the center point.
+   * @param {number} centerY - The y-coordinate of the center point.
+   */
+  setScaleWithCenter(value, centerX, centerY) {
+    scaleChange = value - this.scale;
+    this.origin.x *= value / this.scale;
+    this.origin.y *= value / this.scale;
+    this.origin.x -= centerX * scaleChange;
+    this.origin.y -= centerY * scaleChange;
+    this.scale = value;
+  }
+
+  /**
+   * Perform an occasional check on the scene and generate warnings if necessary. This method should not be called when the editing is in progress.
+   */
+  occasionalCheck() {
+    if (this.error) {
+      return;
+    }
+    this.warning = null;
+  
+    // Check if there are identical optical objects
+    const opticalObjs = this.opticalObjs;
+  
+    if (opticalObjs.length < 100) {
+      const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj));
+      for (var i = 0; i < opticalObjs.length; i++) {
+        for (var j = i + 1; j < opticalObjs.length; j++) {
+          if (stringifiedObjs[i] == stringifiedObjs[j]) {
+            this.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + getMsg('identical_optical_objects_warning');
+            break;
+          }
+        }
+      }
+    }
   }
 };

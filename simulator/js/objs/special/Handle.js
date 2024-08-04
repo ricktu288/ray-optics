@@ -18,7 +18,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
   serialize() {
     let jsonObj = super.serialize();
 
-    if (!this.notDone && jsonObj.controlPoints) {
+    if (jsonObj.controlPoints) {
       // Remove some redundent properties in the control points to reduce the size of the JSON.
       jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
         let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));

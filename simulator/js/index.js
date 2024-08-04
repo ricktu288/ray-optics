@@ -81,7 +81,12 @@ window.onload = function (e) {
     }
     //Ctrl+D
     if (e.ctrlKey && e.keyCode == 68) {
-      cloneObj(selectedObj);
+      if (scene.objs[selectedObj].constructor.type == 'Handle') {
+        scene.cloneObjsByHandle(selectedObj);
+      } else {
+        scene.cloneObj(selectedObj);
+      }
+      
       simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
       createUndoPoint();
       return false;
@@ -710,8 +715,7 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.objs[scene.objs.length] = new objTypes[scene.objs[selectedObj].constructor.type](scene, scene.objs[selectedObj]);
-    scene.objs[scene.objs.length - 1].move(scene.gridSize, scene.gridSize);
+    scene.cloneObj(selectedObj).move(scene.gridSize, scene.gridSize);
     selectObj(scene.objs.length - 1);
     simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
     createUndoPoint();
@@ -1099,25 +1103,7 @@ function requireOccasionalCheck() {
 }
 
 function occasionalCheck() {
-  if (scene.error) {
-    return;
-  }
-  scene.warning = null;
-
-  // Check if there are identical optical objects
-  const opticalObjs = scene.opticalObjs;
-
-  if (opticalObjs.length < 100) {
-    const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj));
-    for (var i = 0; i < opticalObjs.length; i++) {
-      for (var j = i + 1; j < opticalObjs.length; j++) {
-        if (stringifiedObjs[i] == stringifiedObjs[j]) {
-          scene.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + getMsg('identical_optical_objects_warning');
-          break;
-        }
-      }
-    }
-  }
+  scene.occasionalCheck();
   updateErrorAndWarning();
 }
 
@@ -1251,12 +1237,7 @@ function setScale(value) {
 }
 
 function setScaleWithCenter(value, centerX, centerY) {
-  scaleChange = value - scene.scale;
-  scene.origin.x *= value / scene.scale;
-  scene.origin.y *= value / scene.scale;
-  scene.origin.x -= centerX * scaleChange;
-  scene.origin.y -= centerY * scaleChange;
-  scene.scale = value;
+  scene.setScaleWithCenter(value, centerX, centerY);
   document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   simulator.updateSimulation();
@@ -1360,11 +1341,10 @@ function enterCropMode() {
   }
   if (cropBoxIndex == -1) {
     // Create a new cropBox
-    let cropBox = new objTypes['CropBox'](scene, {
+    scene.pushObj(new objTypes['CropBox'](scene, {
       p1: geometry.point((canvas.width * 0.2 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.2) / simulator.dpr - scene.origin.y) / scene.scale),
       p4: geometry.point((canvas.width * 0.8 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.8) / simulator.dpr - scene.origin.y) / scene.scale),
-    });
-    scene.objs.push(cropBox);
+    }));
     cropBoxIndex = scene.objs.length - 1;
   }
 

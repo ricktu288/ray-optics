@@ -1,7 +1,6 @@
 var mousePos; // Position of the mouse
 var mousePos_lastmousedown; // Position of the mouse the last time when the user clicked
 var isConstructing = false; // The user is constructing a new object
-var constructionPoint; // The point where the user starts the construction
 var draggingObj = -1; // Object index in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
 var positioningObj = -1; // Object index in entering the coordinates (-1 for none, -4 for observer)
 var dragContext = {}; // The part in drag and some mouse position data
@@ -18,12 +17,6 @@ var undoLBound = 0; // Current lower bound of undo data
 
 var pendingControlPointSelection = false;
 var pendingControlPoints;
-
-function getMouseStyle(obj, style, screen) {
-  if (obj == mouseObj && mouseObj)
-    return (screen && scene.simulateColors) ? 'rgb(0,100,100)' : 'rgb(0,255,255)'
-  return style;
-}
 
 function canvas_onmousedown(e) {
   if (e.changedTouches) {
@@ -130,7 +123,6 @@ function canvas_onmousedown(e) {
       }
       else {
         // Create a new object
-        constructionPoint = mousePos;
         isConstructing = true;
         let referenceObj = {};
         if (scene.objs[selectedObj]) {
@@ -138,7 +130,7 @@ function canvas_onmousedown(e) {
             referenceObj = scene.objs[selectedObj].serialize();
           }
         }
-        scene.objs[scene.objs.length] = new objTypes[AddingObjType](scene, referenceObj);
+        scene.pushObj(new objTypes[AddingObjType](scene, referenceObj));
 
         const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
         if (ret && ret.isDone) {
@@ -303,7 +295,7 @@ function canvas_onmousemove(e) {
       if (dragContext.part == 0) {
         if (e.ctrlKey && !dragContext.hasDuplicated) {
 
-          scene.objs[scene.objs.length] = new objTypes[dragContext.originalObj.type](scene, dragContext.originalObj);
+          scene.pushObj(new objTypes[scene.objs[draggingObj].constructor.type](scene, dragContext.originalObj));
           dragContext.hasDuplicated = true;
         }
         if (!e.ctrlKey && dragContext.hasDuplicated) {
@@ -382,14 +374,7 @@ function canvas_onmouseup(e) {
 
 function addControlPointsForHandle(controlPoints) {
   if (!(scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone)) {
-    scene.objs.unshift(new objTypes["Handle"](scene, {notDone: true}));
-    for (var i in scene.objs) {
-      if (scene.objs[i].constructor.type == "Handle") {
-        for (var j in scene.objs[i].controlPoints) {
-          scene.objs[i].controlPoints[j].targetObjIndex++;
-        }
-      }
-    }
+    scene.unshiftObj(new objTypes["Handle"](scene, {notDone: true}));
     if (selectedObj >= 0) selectedObj++;
     for (var i in controlPoints) {
       controlPoints[i].targetObjIndex++;
@@ -569,48 +554,11 @@ function endPositioning() {
 }
 
 function removeObj(index) {
-  for (var i = index; i < scene.objs.length - 1; i++) {
-    let oldObj = scene.objs[i+1].serialize();
-    scene.objs[i] = new objTypes[oldObj.type](scene, oldObj);
-  }
-
-  for (var i in scene.objs) {
-    if (scene.objs[i].constructor.type == "Handle") {
-      for (var j in scene.objs[i].controlPoints) {
-        if (scene.objs[i].controlPoints[j].targetObjIndex > index) {
-          scene.objs[i].controlPoints[j].targetObjIndex--;
-        } else if (scene.objs[i].controlPoints[j].targetObjIndex == index) {
-          scene.objs[i].controlPoints = [];
-          break;
-        }
-      }
-    }
-  }
-
   isConstructing = false;
-  scene.objs.length = scene.objs.length - 1;
+  scene.removeObj(index);
+  
   selectedObj--;
   selectObj(selectedObj);
-}
-
-function cloneObj(index) {
-  if (scene.objs[index].constructor.type == "Handle") {
-    var indices = [];
-    for (var j in scene.objs[index].controlPoints) {
-      if (indices.indexOf(scene.objs[index].controlPoints[j].targetObjIndex) == -1) {
-        indices.push(scene.objs[index].controlPoints[j].targetObjIndex);
-      }
-    }
-    //console.log(indices);
-    for (var j in indices) {
-      if (scene.objs[indices[j]].constructor.type != "Handle") {
-        cloneObj(indices[j]);
-      }
-    }
-  } else {
-    let oldObj = scene.objs[index].serialize();
-    scene.objs[scene.objs.length] = new objTypes[oldObj.type](scene, oldObj);
-  }
 }
 
 

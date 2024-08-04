@@ -60,13 +60,13 @@ objTypes['DiffractionGrating'] = class extends LineObjMixin(BaseSceneObj) {
     }
     
     if (this.mirrored) {
-      ctx.strokeStyle = getMouseStyle(this, 'rgb(168,168,168)');
+      ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(168,168,168)';
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
       ctx.stroke();
     }
-    ctx.strokeStyle = getMouseStyle(this, 'rgb(124,62,18)');
+    ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(124,62,18)';
     ctx.lineWidth = 2 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
