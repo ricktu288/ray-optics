@@ -31,8 +31,7 @@ locales["pt-BR"] = {
     "message": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.<br>Para carregar um exemplo, por favor <a href=\"https://phydemo.app/ray-optics/gallery/\">visite a página da Galeria</a>."
   },
   "loading_msg": {
-    "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait."
+    "message": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Carregando cena a partir de URL... Por favor aguarde."
   },
   "toolbar_title": {
     "message": "Ferramenta:&nbsp;"
@@ -137,8 +136,7 @@ locales["pt-BR"] = {
     "message": "Exportar"
   },
   "toolname_ModuleObj": {
-    "incomplete": true,
-    "message": "Module<sup>Beta</sup>"
+    "message": "Módulo<sup>Beta</sup>"
   },
   "tool_more_": {
     "message": "Outros"
@@ -315,8 +313,7 @@ locales["pt-BR"] = {
     "message": "Salvar"
   },
   "rename": {
-    "incomplete": true,
-    "message": "Rename"
+    "message": "Renomear"
   },
   "get_link": {
     "message": "Copiar Link Compartilhável"
@@ -334,8 +331,7 @@ locales["pt-BR"] = {
     "message": "Cancelar"
   },
   "save_description": {
-    "incomplete": true,
-    "message": "<ul><li>You may use Settings -> Auto sync URL instead of saving to a file.</li><li>Click \"Rename\" to change the title without saving to a file.</li><li>You may consider <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribute a new item</a> to the <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Gallery</a>.</li></ul>"
+    "message": "<ul><li>Você pode usar Configurações -> Sincronizar URL automaticamente ao invés de salvar para um arquivo.</li><li>Clique \"Renomear\" para mudar o título sem salvar um arquivo.</li><li>Você pode considerar <a href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery\" target=\"_blank\">contribuir um novo item</a> para a <a href=\"https://phydemo.app/ray-optics/gallery/\" target=\"_blank\">Galeria</a>.</li></ul>"
   },
   "open": {
     "message": "Abrir"
@@ -356,16 +352,13 @@ locales["pt-BR"] = {
     "message": "Ajustar na grade"
   },
   "length_unit_popover": {
-    "incomplete": true,
-    "message": "The unit of length used in this simulator (except for wavelengths) is arbitrary and can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale."
+    "message": "A unidade de comprimento utilizada nesse simulador (exceto comprimentos de onda) é arbitrária e pode ser interpretada como qualquer unidade física (ex.: milímetros) contanto que seja dentro da simulação. Se aunidade parecer pequena ou grande demais, por favor, ajuste Configurações -> Escala de Comprimento."
   },
   "lengthScale": {
-    "incomplete": true,
-    "message": "Length Scale<sup>Beta</sup>"
+    "message": "Escala de Comprimento<sup>Beta</sup>"
   },
   "lengthScale_popover": {
-    "incomplete": true,
-    "message": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+    "message": "Se a unidade padrão de comprimento estiver pequena demais ou grande demais para modelar um sistema físico quando interpretado como uma unidade física comum unit (ex.: milímetros), esse fator pode ser usado para alterar a escala da aparência (ex.: larguras de linha) na cena."
   },
   "brightness": {
     "message": "Brilho"
@@ -398,12 +391,10 @@ locales["pt-BR"] = {
     "message": "Largura de vão / Espaçamento de linha"
   },
   "customBrightness": {
-    "incomplete": true,
-    "message": "Custom Brightness"
+    "message": "Brilho Personalizado"
   },
   "customBrightness_note_popover": {
-    "incomplete": true,
-    "message": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, .... The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored."
+    "message": "Quando ligado, os brilhos dos raios difratados são personalizados por uma lista de números correspndendo a  m = 0, 1, -1, 2, -2, .... O número será normalizado ao brilho do raio incidente. Os valores não na lista são definidos como 0. Por exemplo, \"1, 0.5, 0.5\" significa que o raio m=0 tem o mesmo brilho que o raio incidente, os raios m=1 e m=-1 têm metade do brilho, e todos os outros raios são ignorados."
   },
   "symmetric": {
     "message": "Simétrico"
@@ -466,8 +457,7 @@ locales["pt-BR"] = {
     "message": "Exportar dados"
   },
   "demodulize": {
-    "incomplete": true,
-    "message": "Demodulize"
+    "message": "Demodulizar"
   },
   "fontSize": {
     "message": "Tamanho da Fonte"
@@ -536,8 +526,7 @@ locales["pt-BR"] = {
     "message": "Largura"
   },
   "rayCountLimit": {
-    "incomplete": true,
-    "message": "Ray count limit"
+    "message": "Limite de quantidade de raios"
   },
   "beam_warning": {
     "message": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
@@ -558,12 +547,10 @@ locales["pt-BR"] = {
     "message": "<p>Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'CircleGrinGlass.js', para mais informações.</p>"
   },
   "eps_CircleGrinGlass_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length]^2.</p><p>This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file.</p>"
+    "message": "<p>Units - [length]^2.</p><p>Essa tolerância numérica é usada nas funções 'isOutsideGlass', 'isInsideGlass' e 'isOnBoundary', dentro do arquivo 'CircleGrinGlass.js'.</p>"
   },
   "eps_GrinGlass_note_popover": {
-    "incomplete": true,
-    "message": "<p>Units - [length].</p><p>This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file.</p>"
+    "message": "<p>Units - [length].</p><p>Essa tolerância numérica é usada nas funções 'isOnBoundary' e 'countIntersections', dentro do arquivo'GrinGlass.js'.</p>"
   },
   "cauchyCoeff": {
     "message": "Coeficiente de Cauchy"
@@ -626,168 +613,127 @@ locales["pt-BR"] = {
     "message": "Abrir um arquivo existente ou imagem de fundo. A imagem de fundo será exibida a partir origem das coordenadas. (Ou solte o arquivo)"
   },
   "get_link_popover": {
-    "incomplete": true,
-    "message": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener). Also see Settings -> Auto sync URL."
+    "message": "Copiar e ir para a URL direta da cena atual, que pode ser utilizada para compartilhamento(possivelmente via encurtador de URL). Também veja Configurações -> Sincronização automática de URL."
   },
   "get_link_warning": {
-    "incomplete": true,
-    "message": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
+    "message": "Talvez a URL seja comprida demais para funcionar em algumas plataformas. Você pode precisar de usar \"Salvar\" e compartilhar o arquivo ao invés disso."
   },
   "export_svg_warning": {
-    "incomplete": true,
-    "message": "Export to SVG: Color mixtures and relative refractive indices below 1 are not supported."
+    "message": "Exportar como SVG: Misturas de cores e índices refrativos relativos abaixo de 1 não são suportados."
   },
   "export_ray_count_warning": {
-    "incomplete": true,
-    "message": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
+    "message": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
   },
   "view_gallery_popover": {
-    "incomplete": true,
-    "message": "Go to the Gallery webpage to load an example."
+    "message": "Ir para a página web da Galeria para carregar um exemplo."
   },
   "tool_SingleRay_popover": {
-    "incomplete": true,
-    "message": "A single ray of light defined by two points. (Drag or Click to create. The first point is the source, shooting toward the second point.)"
+    "message": "Um único raio de luz definido por dois pontos. (Arraste ou clique para criar. O primeiro ponto é a fonte, disparando rumo ao segundo ponto.)"
   },
   "tool_Beam_popover": {
-    "incomplete": true,
-    "message": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider. (Drag or click to create.)"
+    "message": "Um feixe paralelo ou divergente de luz emerge de um segmento de linha, com densidade controlada pelo controle deslizante 'Densidade de raios'. (Arraste ou clique para criar.)"
   },
   "tool_PointSource_popover": {
-    "incomplete": true,
-    "message": "Rays emerge from a single point, with number controlled by the 'Ray density' slider. (Click to create.)"
+    "message": "Raios emergem de um ponto único, com quantidade controlada pelo controle deslizante 'Densidade de raios'. (Clique para criar.)"
   },
   "tool_AngleSource_popover": {
-    "incomplete": true,
-    "message": "Point source with a given emission angle."
+    "message": "Fonte pontual com um ângulo de emissão definido."
   },
   "tool_Mirror_popover": {
-    "incomplete": true,
-    "message": "Simulate the reflection of light on a mirror. (Drag or click to create.)"
+    "message": "Simule a reflexão da luz em um espelho. (Arraste ou clique para criar.)"
   },
   "tool_ArcMirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is part of a circle, which is defined by three points. (Drag or click to create. The first 2 points define the gap between arc's edges, the last point defines the arc's size.)"
+    "message": "Um espelho cujo formato é parte de um círculo, que é definido por três pontos. (Arraste ou clique para criar. Os primeiros dois pontos definem o vão entre as bordas do arco, e o último ponto define o tamanho do arco.)"
   },
   "tool_ParabolicMirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is a parabola, which is defined by three points. (Drag or click to create.)"
+    "message": "Um espelho cujo formato é uma parábola, que é definida por três pontos. (Arraste ou clique para criar.)"
   },
   "tool_CustomMirror_popover": {
-    "incomplete": true,
-    "message": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0). (Arraste ou clique para criar.)"
   },
   "tool_BeamSplitter_popover": {
-    "incomplete": true,
-    "message": "A mirror that transmits a percentage of incoming light. (Drag or click to create.)"
+    "message": "Um espelho que transmite uma porcentagem da luz que chega (Arraste ou clique para criar.)"
   },
   "tool_IdealMirror_popover": {
-    "incomplete": true,
-    "message": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length can be set directly. (Drag or click to create.)"
+    "message": "O espelho 'curvo' idealizado que obedece exatamente a equação  (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente. (Arraste ou clique para criar.)"
   },
   "tool_PlaneGlass_popover": {
-    "incomplete": true,
-    "message": "Simulate the refraction and reflection of light on a surface. (Drag or click to create.)"
+    "message": "Simule a refração e a reflexão da luz em uma superfície. (Arraste ou clique para criar.)"
   },
   "tool_CircleGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a circle shape, defined by its center and a point on the surface. (Drag or click to create.)"
+    "message": "Vidro com um formato circular, definido por seu centro e um ponto na superfície. (Arraste ou clique para criar.)"
   },
   "tool_CircleGrinGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a circular boundary. (Drag or click to create.)"
+    "message": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular. (Arraste ou clique para criar.)"
   },
   "tool_Glass_popover": {
-    "incomplete": true,
-    "message": "Glass with any shapes constructed from line segments and circular arcs. (Click to create a segment, drag to create an arc, click on the starting point when finish drawing.)"
+    "message": "Vidro com qualquer formato construído com segmentos de linha e arcos circulares. (Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.)"
   },
   "tool_GrinGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with a custom refractive index function n(x,y) and a polygonal boundary. WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable. (Click to create a segment, click on the starting point when finish drawing.)"
+    "message": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal. AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível. (Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.)"
   },
   "tool_IdealLens_popover": {
-    "incomplete": true,
-    "message": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length can be set directly. (Drag or click to create.)"
+    "message": "Uma lente ideal que obedece exatamente à equação de lente fina (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente. (Arraste ou clique para criar.)"
   },
   "tool_SphericalLens_popover": {
-    "incomplete": true,
-    "message": "A spherical lens. (Click to create.)"
+    "message": "Uma lente esférica. (Clique para criar.)"
   },
   "tool_CustomGlass_popover": {
-    "incomplete": true,
-    "message": "Glass with the shape defined by a custom inequality f(x) &lt; y &lt; g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0). (Drag or click to create.)"
+    "message": "Vidro com o formato definido por uma inequalidade personalizada f(x) &lt; y &lt; g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0). (Arraste ou clique para criar.)"
   },
   "tool_Blocker_popover": {
-    "incomplete": true,
-    "message": "A line-segment light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "Um segmento de linha bloqueador de luz que absorve os raios incidentes. (Arraste ou clique para criar.)"
   },
   "tool_Aperture_popover": {
-    "incomplete": true,
-    "message": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically. (Drag or click the two endpoints to create.)"
+    "message": "Um par de bloqueadores de luz que absorvem os raios incidentes. O tamanho do furo pode ser ajustado simetricamente. (Arraste ou clique nas duas pontas para criar.)"
   },
   "tool_CircleBlocker_popover": {
-    "incomplete": true,
-    "message": "A circle light blocker which absorbs the incident rays. (Drag or click to create.)"
+    "message": "Um bloqueador circular de luz que absorve os raios incidentes. (Arraste ou clique para criar.)"
   },
   "tool_DiffractionGrating_popover": {
-    "incomplete": true,
-    "message": "A diffraction grating that splits light at an angle depending on wavelength (Drag or click to create.)"
+    "message": "Uma grade de difração que divide luz em um ângulo dependente do comprimento de onda (Arraste ou clique para criar.)"
   },
   "tool_Ruler_popover": {
-    "incomplete": true,
-    "message": "A ruler from a point for zero and another point. (Drag or click to create.)"
+    "message": "Uma régua com um ponto zero e outro ponto. (Arraste ou clique para criar.)"
   },
   "tool_Protractor_popover": {
-    "incomplete": true,
-    "message": "A protractor defined from the center and another point for the zero direction. The scale is in degrees. (Drag or click to create.)"
+    "message": "Um transferidor definido a partir do centro e outro ponto para a direção do zero. A escala está em graus (Arraste ou clique para criar.)"
   },
   "tool_Detector_popover": {
-    "incomplete": true,
-    "message": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment. (Drag or click to create the line segment.) The units are arbitrary."
+    "message": "Uma ferramenta para medir a taxa de fluxo de energia (P), a taxa de fluxo de momento perpendicular (F⊥), e a taxa de fluxo de momento paralelo (F∥) através de um segmento de linha. (Arraste ou clique para criar o segmento de linha.) As unidades são arbitrárias."
   },
   "tool_Detector_info_popover": {
-    "incomplete": true,
-    "message": "<ul><li>P: The rate of energy flow (flux) in B/s (see below).</li><li>F⊥: The rate of perpendicular momentum flow in (B/s)/c.</li><li>F∥: The rate of parallel momentum flow in (B/s)/c.</li><li>The irradiance in the exported CSV is in (B/s)/L.</li><li>L is the arbitrary unit of length used in this simulator.</li><li>B is an arbitrary unit of radiant flux or luminous flux, corresponding to the unit of the \"Brightness\" option being B/L for non-Lambertian beams and 500B/360° for point sources.</li><li>The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.</li><li>If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates.</li></ul>"
+    "message": "<ul><li>P: A taxa de fluxo de energia em B/s (ver abaixo).</li><li>F⊥: A taxa de fluxo de momento perpendicular em (B/s)/c.</li><li>F∥: A taxa de fluxo de momento paralelo em (B/s)/c.</li><li>A irradiância no CSV exportado está em (B/s)/L.</li><li>L é a unidade arbitrária de comprimento utilizada nesse simulador.</li><li>B é uma unidade arbitrária de fluxo radiante ou fluxo luminoso, correspondente à unidade da opção \"Brilho\" sendo B/L para raios não Lambertianos e 500B/360° para fontes pontuais.</li><li>O fator adimensional s é a  \"Escala de Brilho\" exibida em Configurações -> Mostrar caixa de status, que é igual a 1 quando \"Densidade de Raios\" está acima de certo ponto e proporcional a \"Densidade de Raios\" caso contrário.</li><li>Se alguns raios forem truncados na série infinita de reflexão interna, a truncação total é exibida como estimativas de erro.</li></ul>"
   },
   "tool_TextLabel_popover": {
-    "incomplete": true,
-    "message": "A text label."
+    "message": "Um rótulo de texto."
   },
   "tool_LineArrow_popover": {
-    "incomplete": true,
-    "message": "A line segment or arrow. (Drag or click to create.)"
+    "message": "Uma seta ou segmento de linha. (Arraste ou clique para criar.)"
   },
   "tool_Drawing_popover": {
-    "incomplete": true,
-    "message": "A freehand drawing tool. (Drag to draw.)"
+    "message": "Uma ferramenta de desenho à mão livre. (Arraste para desenhar)"
   },
   "tool__popover": {
-    "incomplete": true,
-    "message": "Drag to move the view. (Mouse right button drag has the same function.)"
+    "message": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)"
   },
   "mode_rays_popover": {
-    "incomplete": true,
-    "message": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
+    "message": "Exibir os raios. Quando a 'Densidade de Raios' está alta, eles parecem ser contínuos."
   },
   "mode_extended_popover": {
-    "incomplete": true,
-    "message": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    "message": "Exibir tanto os raios quanto suas extensões. Laranja indica extensões para trás, e cinza indica para frente.<br>Quando 'Simular Cores' está ligado, eles são exibidos na cor fonte e distinguidos por traços."
   },
   "mode_images_popover": {
-    "incomplete": true,
-    "message": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.<br>When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    "message": "Mostra a posição de todas imagens. Pontos amarelos indicam imagens reais, laranja indica imagens virtuais, e cinza (nenhuma nesta imagem) indica objetos virtuais. Note que algumas imagens não podem ser detectadas se 'Densidade de Raios' não estiver alta o suficiente.<br>Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte e distinguidos por tamanhos de ponto."
   },
   "mode_observer_popover": {
-    "incomplete": true,
-    "message": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual). (Drag the big blue dot to move the observer.)<br>When 'Simulate Colors' is on, they are shown in source colors instead."
+    "message": "Simule os raios e imagens vistos de uma posição. O círculo azul é o observador. Quaisquer raios atravessando ele são considerados 'Observados'. O observador não sabe onde os raios realmente começam, mas pode pensar que eles começam em algum ponto se eles intersecionam lá. Os raios são exibidos em azul, e os pontos em amarelo (real) ou laranja (virtual). (Arraste o ponto grande azul para mover o observador.)<br>Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte."
   },
   "simulateColors_popover": {
-    "incomplete": true,
-    "message": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses. You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths. The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "message": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros. Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes. As cores exibidas na tela são apenas aproximações, e podem ser muito imprecisas quando 'Densidade de Raios' está muito alta ou muito baixa."
   },
   "rayDensity_popover": {
-    "incomplete": true,
-    "message": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
+    "message": "Determina o número de raios a serem emitidos por feixes e fontes pontuais. Isso também afeta a precião da detecção de imagens e da reprodução de cores."
   },
   "showGrid_popover": {
     "message": "Define a visibilidade da grade de fundo."
@@ -802,8 +748,7 @@ locales["pt-BR"] = {
     "message": "Configurar zoom com porcentagem."
   },
   "help_popover": {
-    "incomplete": true,
-    "message": "<b>Constrained dragging</b><p>When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center.</p><b>Group, rotate, and scale objects</b><p> Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate, Ctrl+Shift+drag to scale. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup. </p><b>Edit coordinates directly</b><p>Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates , then press Enter.</p><b>Keyboard shortcuts</b><p>When an object is selected (by clicking it), press arrow keys to move; Ctrl+D to duplicate; Delete key to delete.</p><b>Contact Us</b><p>The suggested way is to go to <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussions</a> or <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Issues</a> on GitHub. If you do not use GitHub, you can also email us at <a href=\"mailto:ray-optics@phydemo.app\" style=\"white-space: nowrap\">ray-optics@phydemo.app</a> (please use English). </p><p>Direct contributions are also welcome (see <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">the contribution guide</a>).</p>"
+    "message": "<b>Arraste restrito</b><p>Quando arrastando um objeto, segure Shift para limitar ao sentido horizontal/vertical; segure Ctrl para clonar. Quando criando um objeto em formato de linha ou arrastando seus pontos finais, segure Shift para travar o ângulo ou ajustar para  0°, 45°, 90°; segure Ctrl para rotacionar/ajustar escala com relação a seu centro.</p><b>Agrupar, rotacionar e ajustar escala de objetos</b><p> Segure Ctrl, clique em vários pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar. </p><b>Editar coordenadas diretamente</b><p>Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter.</p><b>Atalhos de teclado</b><p>Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar.</p><b>Contate-nos</b><p>O jeito sugerido é ir até <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussões</a> ou <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Problemas</a> no GitHub. Se você não usar o GitHub, pode nos mandar um email em <a href=\"mailto:ray-optics@phydemo.app\" style=\"white-space: nowrap\">ray-optics@phydemo.app</a> (por favor use Inglês). </p><p>Contribuições diretas também são bem-vindas (ver <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">o guia de contribuições</a>).</p>"
   },
   "show_help_popups": {
     "message": "Exibir popups de ajuda"
@@ -812,31 +757,25 @@ locales["pt-BR"] = {
     "message": "Define se vai exibir popups de ajuda quando pairando sobre botões. (Recarregue a página para fazer efeito.)"
   },
   "show_json_editor": {
-    "incomplete": true,
-    "message": "Show JSON editor<sup>Beta</sup>"
+    "message": "Exibir editor JSON<sup>Beta</sup>"
   },
   "show_json_editor_popover": {
-    "incomplete": true,
-    "message": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
+    "message": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
   },
   "show_status": {
     "message": "Exibir caixa de status"
   },
   "show_status_popover": {
-    "incomplete": true,
-    "message": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
+    "message": "Exibir a caixa de status, que inclui as coordenadas do mouse, informação de performance e o brilho truncado (o brilho total dos raios truncados na série infinita de reflexão interna)."
   },
   "auto_sync_url": {
-    "incomplete": true,
-    "message": "Auto sync URL"
+    "message": "Sincronizar URL automaticamente"
   },
   "auto_sync_url_popover": {
-    "incomplete": true,
-    "message": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
+    "message": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear"
   },
   "auto_sync_url_warning": {
-    "incomplete": true,
-    "message": "The scene is too large to sync with URL. Please save it manually."
+    "message": "A cena é grande demais para sincronizar com URL. Por favor, salve manualmente"
   },
   "gridSize": {
     "message": "Tamanho da Grade"
@@ -860,8 +799,7 @@ locales["pt-BR"] = {
     "message": "Brilho truncado: "
   },
   "brightness_scale": {
-    "incomplete": true,
-    "message": "Brightness Scale: "
+    "message": "Escala de Brilho: "
   },
   "time_elapsed": {
     "message": "Tempo decorrido (ms): "
@@ -873,39 +811,30 @@ locales["pt-BR"] = {
     "message": "Coordenadas do Mouse: "
   },
   "modules_tutorial": {
-    "incomplete": true,
-    "message": "Make custom modules"
+    "message": "Criar módulos personalizados"
   },
   "modules_tutorial_url": {
-    "incomplete": true,
     "message": "https://phydemo.app/ray-optics/modules/tutorial"
   },
   "identical_optical_objects_warning": {
-    "incomplete": true,
-    "message": "There are two identical optical elements in the scene that overlap completely."
+    "message": "Há dois elementos ópticos idênticos na cena que se sobrepõem completamente."
   },
   "import_modules": {
-    "incomplete": true,
-    "message": "<i>Import Modules...</i>"
+    "message": "<i>Importar Módulos...</i>"
   },
   "import_modules_title": {
-    "incomplete": true,
-    "message": "Import Modules"
+    "message": "Importar Módulos"
   },
   "modules_url": {
-    "incomplete": true,
     "message": "../modules/modules.html"
   },
   "remove_module": {
-    "incomplete": true,
-    "message": "Remove module"
+    "message": "Remover módulo"
   },
   "module_conflict": {
-    "incomplete": true,
-    "message": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+    "message": "Outro módulo com o mesmo nome já existe na cena atual. Você pode colocar outro nome, ou deixá-lo igual para sobrepor o módulo existente."
   },
   "brightness_inconsistent_warning": {
-    "incomplete": true,
-    "message": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources."
+    "message": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas."
   }
 }
