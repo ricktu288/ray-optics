@@ -4,6 +4,7 @@ var canvasBelowLight;
 var canvasLight;
 var canvasGrid;
 var scene;
+var editor;
 var simulator;
 var objBar;
 var xyBox_cancelContextMenu = false;
@@ -12,8 +13,6 @@ var hasUnsavedChange = false;
 var showAdvancedOn = false;
 var MQ;
 var cropMode = false;
-var lastDeviceIsTouch = false;
-var lastTouchTime = -1;
 var autoSyncUrl = false;
 var warning = null;
 var error = null;
@@ -69,6 +68,40 @@ window.onload = function (e) {
   document.getElementById('apply_to_all').addEventListener('change', function () {
     objBar.shouldApplyToAll = this.checked;
   });
+
+  scene = new Scene();
+
+  simulator = new Simulator(scene,
+    canvasLight.getContext('2d'),
+    canvasBelowLight.getContext('2d'),
+    canvasAboveLight.getContext('2d'),
+    canvasGrid.getContext('2d'),
+    document.createElement('canvas').getContext('2d'),
+    true
+  );
+
+  simulator.dpr = dpr;
+
+  simulator.on('simulationStart', function () {
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationPause', function () {
+    document.getElementById('forceStop').style.display = '';
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
+  });
+
+  simulator.on('simulationStop', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationComplete', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  editor = new Editor(scene, canvas, document.getElementById('xybox'), objBar);
 
   init();
 
@@ -248,177 +281,25 @@ window.onload = function (e) {
 
   };
 
-  canvas.addEventListener('mousedown', function (e) {
-    error = null;
-    //console.log("mousedown");
-    //document.getElementById('objAttr_text').blur();
-    // TODO: check that commenting out the above line does not cause problem.
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
-    }
-
-    document.body.focus();
-    canvas_onmousedown(e);
-  });
-
-  canvas.addEventListener('mousemove', function (e) {
-    //console.log("mousemove");
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
-    }
-
-    canvas_onmousemove(e);
-  });
-
-  canvas.addEventListener('mouseup', function (e) {
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
-    }
-
-    //console.log("mouseup");
-    canvas_onmouseup(e);
-  });
-
-  canvas.addEventListener('mouseout', function (e) {
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-    if (draggingObj != -1) {
-      canvas_onmouseup(e);
-    }
-    mouseObj = -1;
-    document.getElementById('mouseCoordinates').innerHTML = "";
-    simulator.updateSimulation(true, true)
-  });
-
-  // IE9, Chrome, Safari, Opera
-  canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
-  // Firefox
-  canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
 
 
-  let initialPinchDistance = null;
-  let lastScale = 1;
-  let lastX = 0;
-  let lastY = 0;
+  
 
-  canvas.addEventListener('touchstart', function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    if (e.touches.length === 2) {
-      // Pinch to zoom
-      e.preventDefault();
-      lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
-      lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
-      if (isConstructing || draggingObj >= 0) {
-        canvas_onmouseup(e);
-        undo();
-      } else {
-        canvas_onmouseup(e);
-      }
-    } else {
-      //console.log("touchstart");
-      document.body.focus();
-      canvas_onmousemove(e);
-      canvas_onmousedown(e);
-    }
-  });
+  
 
-  canvas.addEventListener('touchmove', function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    e.preventDefault();
-    //console.log("touchmove");
-    if (e.touches.length === 2) {
-      // Pinch to zoom
+  
 
-      // Calculate current distance between two touches
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
 
-      // If initialPinchDistance is null, this is the first move event of the pinch
-      // Set initial distance
-      if (initialPinchDistance === null) {
-        initialPinchDistance = distance;
-        lastScale = scene.scale;
-      }
 
-      // Calculate the scaling factor
-      const scaleFactor = distance / initialPinchDistance;
 
-      // Update scale based on previous scale and scaling factor
-      let newScale = lastScale * scaleFactor;
 
-      newScale = Math.max(0.25 / scene.lengthScale, Math.min(5.00 / scene.lengthScale, newScale));
 
-      // Calculate the mid point between the two touches
-      const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
-      const y = (e.touches[0].pageY + e.touches[1].pageY) / 2;
 
-      // Calculate the change in scale relative to the center point
-      const dx2 = x - lastX;
-      const dy2 = y - lastY;
+  
 
-      // Apply the translation
-      scene.origin.x += dx2;
-      scene.origin.y += dy2;
+  
 
-      // Apply the scale transformation
-      setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
-
-      // Update last values
-      lastX = x;
-      lastY = y;
-
-    } else {
-      canvas_onmousemove(e);
-    }
-  });
-
-  canvas.addEventListener('touchend', function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    //console.log("touchend");
-    if (e.touches.length < 2) {
-      initialPinchDistance = null;
-      canvas_onmouseup(e);
-      JSONOutput();
-    }
-  });
-
-  canvas.addEventListener('touchcancel', function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    //console.log("touchcancel");
-    initialPinchDistance = null;
-    if (isConstructing || draggingObj >= 0) {
-      canvas_onmouseup(e);
-      undo();
-    } else {
-      canvas_onmouseup(e);
-    }
-  });
-
-  canvas.addEventListener('dblclick', function (e) {
-    if (scene.error) return;
-    canvas_ondblclick(e);
-  });
+  
 
 
   document.getElementById('undo').onclick = function () {
@@ -986,41 +867,13 @@ function init() {
 
   isConstructing = false;
   endPositioning();
-  scene = new Scene();
+
+  scene.backgroundImage = null;
+  scene.fromJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
 
   let dpr = window.devicePixelRatio || 1;
 
   scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
-
-  simulator = new Simulator(scene,
-    canvasLight.getContext('2d'),
-    canvasBelowLight.getContext('2d'),
-    canvasAboveLight.getContext('2d'),
-    canvasGrid.getContext('2d'),
-    document.createElement('canvas').getContext('2d'),
-    true
-  );
-
-  simulator.dpr = dpr;
-
-  simulator.on('simulationStart', function () {
-    document.getElementById('forceStop').style.display = 'none';
-  });
-
-  simulator.on('simulationPause', function () {
-    document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
-  });
-
-  simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
-    document.getElementById('forceStop').style.display = 'none';
-  });
-
-  simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
-    document.getElementById('forceStop').style.display = 'none';
-  });
 
   selectObj(-1);
 

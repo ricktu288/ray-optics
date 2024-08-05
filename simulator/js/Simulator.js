@@ -31,7 +31,7 @@ class Simulator {
    */
 
   constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity) {
-    /** @property {Scene} this.scene - The this.scene to be simulated. */
+    /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
     this.scene.simulator = this; // This circular reference is currently only used by Detector to access `totalTruncation` and CropBox to access `processedRayCount`.

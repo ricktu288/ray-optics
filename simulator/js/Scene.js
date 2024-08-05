@@ -349,7 +349,7 @@ class Scene {
    * @param {number} centerY - The y-coordinate of the center point.
    */
   setScaleWithCenter(value, centerX, centerY) {
-    scaleChange = value - this.scale;
+    const scaleChange = value - this.scale;
     this.origin.x *= value / this.scale;
     this.origin.y *= value / this.scale;
     this.origin.x -= centerX * scaleChange;

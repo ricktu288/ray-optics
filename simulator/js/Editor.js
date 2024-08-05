@@ -1,3 +1,226 @@
+class Editor {
+  constructor(scene, canvas, objBar, xyBox, aceEditor) {
+    /** @property {Scene} scene - The scene to be edited and simulated. */
+    this.scene = scene;
+
+    this.scene.editor = this; // This circular reference is currently only used by CropBox.
+
+    /** @property {HTMLCanvasElement} canvas - The top-layered canvas for user interaction. */
+    this.canvas = canvas;
+
+    /** @property {ObjBar} objBar - The object bar for editing object properties. */
+    this.objBar = objBar;
+
+    /** @property {HTMLInputElement} xyBox - The input box for entering coordinates. */
+    this.xyBox = xyBox;
+
+    /** @property {AceEditor} aceEditor - The Ace editor for editing JSON code. */
+    this.aceEditor = aceEditor;
+
+    /** @property {boolean} lastDeviceIsTouch - Whether the last interaction with `canvas` is done by a touch device. */
+    this.lastDeviceIsTouch = false;
+
+
+    let lastTouchTime = -1;
+
+    const self = this;
+
+    this.canvas.addEventListener('mousedown', function (e) {
+      error = null;
+      if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
+      self.lastDeviceIsTouch = false;
+
+      if (self.scene.error) {
+        self.canvas.style.cursor = 'not-allowed';
+        return;
+      }
+
+      self.canvas.focus();
+      canvas_onmousedown(e);
+    });
+
+    this.canvas.addEventListener('mousemove', function (e) {
+      //console.log("mousemove");
+      if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
+      self.lastDeviceIsTouch = false;
+
+      if (self.scene.error) {
+        self.canvas.style.cursor = 'not-allowed';
+        return;
+      }
+
+      canvas_onmousemove(e);
+    });
+
+    this.canvas.addEventListener('mouseup', function (e) {
+      if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
+      self.lastDeviceIsTouch = false;
+
+      if (self.scene.error) {
+        self.canvas.style.cursor = 'not-allowed';
+        return;
+      }
+
+      //console.log("mouseup");
+      canvas_onmouseup(e);
+    });
+
+    this.canvas.addEventListener('mouseout', function (e) {
+      if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
+      self.lastDeviceIsTouch = false;
+      if (draggingObj != -1) {
+        canvas_onmouseup(e);
+      }
+      mouseObj = -1;
+      document.getElementById('mouseCoordinates').innerHTML = "";
+      simulator.updateSimulation(true, true)
+    });
+
+
+    // IE9, Chrome, Safari, Opera
+    this.canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
+    // Firefox
+    this.canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
+
+    let initialPinchDistance = null;
+    let lastScale = 1;
+    let lastX = 0;
+    let lastY = 0;
+
+    this.canvas.addEventListener('touchstart', function (e) {
+      if (self.scene.error) return;
+      self.lastDeviceIsTouch = true;
+      lastTouchTime = Date.now();
+      if (e.touches.length === 2) {
+        // Pinch to zoom
+        e.preventDefault();
+        lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+        lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
+        if (isConstructing || draggingObj >= 0) {
+          canvas_onmouseup(e);
+          undo();
+        } else {
+          canvas_onmouseup(e);
+        }
+      } else {
+        //console.log("touchstart");
+        self.canvas.focus();
+        canvas_onmousemove(e);
+        canvas_onmousedown(e);
+      }
+    });
+
+
+    this.canvas.addEventListener('touchmove', function (e) {
+      if (self.scene.error) return;
+      self.lastDeviceIsTouch = true;
+      lastTouchTime = Date.now();
+      e.preventDefault();
+      //console.log("touchmove");
+      if (e.touches.length === 2) {
+        // Pinch to zoom
+
+        // Calculate current distance between two touches
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If initialPinchDistance is null, this is the first move event of the pinch
+        // Set initial distance
+        if (initialPinchDistance === null) {
+          initialPinchDistance = distance;
+          lastScale = scene.scale;
+        }
+
+        // Calculate the scaling factor
+        const scaleFactor = distance / initialPinchDistance;
+
+        // Update scale based on previous scale and scaling factor
+        let newScale = lastScale * scaleFactor;
+
+        newScale = Math.max(0.25 / scene.lengthScale, Math.min(5.00 / scene.lengthScale, newScale));
+
+        // Calculate the mid point between the two touches
+        const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+        const y = (e.touches[0].pageY + e.touches[1].pageY) / 2;
+
+        // Calculate the change in scale relative to the center point
+        const dx2 = x - lastX;
+        const dy2 = y - lastY;
+
+        // Apply the translation
+        scene.origin.x += dx2;
+        scene.origin.y += dy2;
+
+        // Apply the scale transformation
+        setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
+
+        // Update last values
+        lastX = x;
+        lastY = y;
+
+      } else {
+        canvas_onmousemove(e);
+      }
+    });
+
+    this.canvas.addEventListener('touchend', function (e) {
+      if (self.scene.error) return;
+      self.lastDeviceIsTouch = true;
+      lastTouchTime = Date.now();
+      //console.log("touchend");
+      if (e.touches.length < 2) {
+        initialPinchDistance = null;
+        canvas_onmouseup(e);
+        JSONOutput();
+      }
+    });
+
+    this.canvas.addEventListener('touchcancel', function (e) {
+      if (self.scene.error) return;
+      self.lastDeviceIsTouch = true;
+      lastTouchTime = Date.now();
+      //console.log("touchcancel");
+      initialPinchDistance = null;
+      if (isConstructing || draggingObj >= 0) {
+        canvas_onmouseup(e);
+        undo();
+      } else {
+        canvas_onmouseup(e);
+      }
+    });
+
+    this.canvas.addEventListener('dblclick', function (e) {
+      if (self.scene.error) return;
+      canvas_ondblclick(e);
+    });
+  }
+
+  /**
+   * Add an event listener to the editor.
+   * @param {string} eventName - The name of the event.
+   * @param {function} callback - The callback function.
+   */
+  on(eventName, callback) {
+    if (!this.eventListeners[eventName]) {
+      this.eventListeners[eventName] = [];
+    }
+    this.eventListeners[eventName].push(callback);
+  }
+
+  /**
+   * Emit an event.
+   * @param {string} eventName - The name of the event.
+   * @param {any} data - The data to be passed to the callback functions.
+   */
+  emit(eventName, data) {
+    if (this.eventListeners[eventName]) {
+      this.eventListeners[eventName].forEach(callback => callback(data));
+    }
+  }
+}
+
+
 var mousePos; // Position of the mouse
 var mousePos_lastmousedown; // Position of the mouse the last time when the user clicked
 var isConstructing = false; // The user is constructing a new object
@@ -54,7 +277,7 @@ function canvas_onmousedown(e) {
       if (selectedObj != scene.objs.length - 1) {
         selectObj(scene.objs.length - 1); // Keep the constructing obj selected
       }
-      const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -132,7 +355,7 @@ function canvas_onmousedown(e) {
         }
         scene.pushObj(new objTypes[AddingObjType](scene, referenceObj));
 
-        const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
+        const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch));
         if (ret && ret.isDone) {
           isConstructing = false;
         }
@@ -157,7 +380,7 @@ function selectionSearch(mousePos_nogrid) {
 
   for (var i = 0; i < scene.objs.length; i++) {
     if (typeof scene.objs[i] != 'undefined') {
-      let dragContext_ = scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch));
+      let dragContext_ = scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch));
       if (dragContext_) {
         // the mouse is over the object
 
@@ -175,9 +398,9 @@ function selectionSearch(mousePos_nogrid) {
             click_lensq = click_lensq_temp;
             dragContext = dragContext_;
             if (!targetIsSelected) {
-              results.unshift({dragContext: dragContext, targetObjIndex: targetObjIndex});
+              results.unshift({ dragContext: dragContext, targetObjIndex: targetObjIndex });
             } else {
-              results.push({dragContext: dragContext, targetObjIndex: targetObjIndex});
+              results.push({ dragContext: dragContext, targetObjIndex: targetObjIndex });
             }
             if (targetObjIndex == selectedObj) targetIsSelected = true;
           }
@@ -185,13 +408,13 @@ function selectionSearch(mousePos_nogrid) {
           // If not clicking a point, and until now not clicking any point
           targetObjIndex = i; // If clicking non-point, choose the most newly created one
           dragContext = dragContext_;
-          results.unshift({dragContext: dragContext, targetObjIndex: targetObjIndex});
+          results.unshift({ dragContext: dragContext, targetObjIndex: targetObjIndex });
         }
       }
     }
   }
   if (results.length == 0) {
-    results.push({targetObjIndex: -1});
+    results.push({ targetObjIndex: -1 });
   }
   return results;
 }
@@ -256,7 +479,7 @@ function canvas_onmousemove(e) {
     mouseObj = scene.objs[scene.objs.length - 1];
 
     // If some object is being created, pass the action to it
-    const ret = scene.objs[scene.objs.length - 1].onConstructMouseMove(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+    const ret = scene.objs[scene.objs.length - 1].onConstructMouseMove(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
     if (ret && ret.isDone) {
       isConstructing = false;
     }
@@ -290,7 +513,7 @@ function canvas_onmousemove(e) {
     if (draggingObj >= 0) {
       // Here the mouse is dragging an object
 
-      scene.objs[draggingObj].onDrag(new Mouse(mousePos_nogrid, scene, lastDeviceIsTouch, e.altKey*1), dragContext, e.ctrlKey, e.shiftKey);
+      scene.objs[draggingObj].onDrag(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch, e.altKey * 1), dragContext, e.ctrlKey, e.shiftKey);
       // If dragging an entire object, then when Ctrl is hold, clone the object
       if (dragContext.part == 0) {
         if (e.ctrlKey && !dragContext.hasDuplicated) {
@@ -322,7 +545,7 @@ function canvas_onmousemove(e) {
       simulator.updateSimulation();
     }
 
-    
+
   }
 }
 
@@ -330,7 +553,7 @@ function canvas_onmouseup(e) {
   if (isConstructing) {
     if ((e.which && e.which == 1) || (e.changedTouches)) {
       // If an object is being created, pass the action to it
-      const ret = scene.objs[scene.objs.length - 1].onConstructMouseUp(new Mouse(mousePos, scene, lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = scene.objs[scene.objs.length - 1].onConstructMouseUp(new Mouse(mousePos, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         isConstructing = false;
       }
@@ -374,7 +597,7 @@ function canvas_onmouseup(e) {
 
 function addControlPointsForHandle(controlPoints) {
   if (!(scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone)) {
-    scene.unshiftObj(new objTypes["Handle"](scene, {notDone: true}));
+    scene.unshiftObj(new objTypes["Handle"](scene, { notDone: true }));
     if (selectedObj >= 0) selectedObj++;
     for (var i in controlPoints) {
       controlPoints[i].targetObjIndex++;
@@ -400,7 +623,7 @@ function canvas_ondblclick(e) {
   var mousePos = geometry.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
   if (isConstructing) {
   }
-  else if (new Mouse(mousePos, scene, lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
+  else if (new Mouse(mousePos, scene, editor.lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
     dragContext = {};
     if (scene.mode == 'observer') {
       if (geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
@@ -497,7 +720,7 @@ function selectObj(index) {
   document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[index].constructor.type);
   document.getElementById('showAdvanced').style.display = 'none';
   document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-  
+
   document.getElementById('obj_bar_main').style.display = '';
   document.getElementById('obj_bar_main').innerHTML = '';
   scene.objs[index].populateObjBar(objBar);
@@ -537,10 +760,10 @@ function confirmPositioning(ctrl, shift) {
     }
     else {
       // Object
-      scene.objs[positioningObj].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), scene, lastDeviceIsTouch, 2), dragContext, ctrl, shift);
+      scene.objs[positioningObj].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), scene, editor.lastDeviceIsTouch, 2), dragContext, ctrl, shift);
       simulator.updateSimulation(!scene.objs[positioningObj].constructor.isOptical, true);
     }
-    
+
     createUndoPoint();
   }
 
@@ -556,7 +779,7 @@ function endPositioning() {
 function removeObj(index) {
   isConstructing = false;
   scene.removeObj(index);
-  
+
   selectedObj--;
   selectObj(selectedObj);
 }
