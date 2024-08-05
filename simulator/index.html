@@ -69,7 +69,7 @@
           "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>URL වෙතින් දර්ශනය load වේ... කරුණාකර රැඳී සිටින්න.',
           "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>Loading scene from URL... Please wait.',
           "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Loading scene from URL... Please wait.',
-          "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Loading scene from URL... Please wait."
+          "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Carregando cena a partir de URL... Por favor aguarde."
         }
 
         var lang = 'en';
@@ -457,7 +457,7 @@
                           </div>
 
                           <div class="row d-flex d-xxl-none justify-content-between align-items-center">
-                            <div class="col-auto" data-text="layoutaids"></div>
+                            <div class="col-auto settings-label" data-text="layoutaids"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="btn-group" role="group">
                                 <input type="checkbox" class="btn-check" id="showGrid_more" autocomplete="off">
@@ -485,7 +485,7 @@
 
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="simulateColors_popover" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto" data-text="simulateColors"></div>
+                            <div class="col-auto settings-label" data-text="simulateColors"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -496,7 +496,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="length_unit_popover" data-bs-placement="left" data-bs-offset="20,0">
-                            <div class="col-auto" data-text="gridSize"></div>
+                            <div class="col-auto settings-label" data-text="gridSize"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="gridSize" value="20">
@@ -505,7 +505,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="length_unit_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="observer_size"></div>
+                            <div class="col-auto settings-label" data-text="observer_size"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="observer_size" value="40">
@@ -514,7 +514,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="lengthScale_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="lengthScale"></div>
+                            <div class="col-auto settings-label" data-text="lengthScale"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="lengthScale" value="1">
@@ -523,7 +523,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="zoom"></div>
+                            <div class="col-auto settings-label" data-text="zoom"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn shadow-none range-minus-btn" id="zoomMinus">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -540,7 +540,7 @@
                           </div>
                           <hr class="dropdown-divider">
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="language"></div>
+                            <div class="col-auto settings-label" data-text="language"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language">
                                 English
@@ -549,7 +549,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="auto_sync_url_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="auto_sync_url"></div>
+                            <div class="col-auto settings-label" data-text="auto_sync_url"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -560,7 +560,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="show_json_editor_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="show_json_editor"></div>
+                            <div class="col-auto settings-label" data-text="show_json_editor"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -571,7 +571,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-popover="show_status_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="show_status"></div>
+                            <div class="col-auto settings-label" data-text="show_status"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -582,7 +582,7 @@
                           </div>
                           
                           <div class="row d-flex justify-content-between align-items-center" data-popover="show_help_popups_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="show_help_popups"></div>
+                            <div class="col-auto settings-label" data-text="show_help_popups"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -890,7 +890,7 @@
                       <div id="mobile-dropdown-options" class="mobile-dropdown">
                         <div class="container">
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="rayDensity"></div>
+                            <div class="col-auto settings-label" data-text="rayDensity"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn range-minus-btn" id="rayDensityMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -909,7 +909,7 @@
                           <hr class="dropdown-divider">
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="showGrid"></div>
+                            <div class="col-auto settings-label" data-text="showGrid"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -919,7 +919,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="snapToGrid"></div>
+                            <div class="col-auto settings-label" data-text="snapToGrid"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -929,7 +929,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="lockObjs"></div>
+                            <div class="col-auto settings-label" data-text="lockObjs"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -943,7 +943,7 @@
 
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="simulateColors"></div>
+                            <div class="col-auto settings-label" data-text="simulateColors"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -953,7 +953,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto" data-text="gridSize"></div>
+                            <div class="col-auto settings-label" data-text="gridSize"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="gridSize_mobile" value="20">
@@ -962,7 +962,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto" data-text="observer_size"></div>
+                            <div class="col-auto settings-label" data-text="observer_size"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="observer_size_mobile" value="40">
@@ -971,7 +971,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto" data-text="lengthScale"></div>
+                            <div class="col-auto settings-label" data-text="lengthScale"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="lengthScale_mobile" value="1">
@@ -979,7 +979,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="zoom"></div>
+                            <div class="col-auto settings-label" data-text="zoom"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn range-minus-btn" id="zoomMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -998,7 +998,7 @@
                           <hr class="dropdown-divider">
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto" data-text="auto_sync_url"></div>
+                            <div class="col-auto settings-label" data-text="auto_sync_url"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1009,7 +1009,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto" data-text="show_json_editor"></div>
+                            <div class="col-auto settings-label" data-text="show_json_editor"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1020,7 +1020,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto" data-text="show_status"></div>
+                            <div class="col-auto settings-label" data-text="show_status"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1031,7 +1031,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto" data-text="language"></div>
+                            <div class="col-auto settings-label" data-text="language"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language_mobile">
                                 English

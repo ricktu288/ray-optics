@@ -214,6 +214,10 @@
   text-align: center;
 }
 
+.settings-label {
+  padding-right: 0px;
+}
+
 #more-options-dropdown {
   width:350px;
   max-height: 80vh;
