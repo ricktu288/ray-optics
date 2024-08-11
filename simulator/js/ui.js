@@ -306,7 +306,7 @@ function initModes() {
       element.addEventListener('click', (event) => {
         //console.log('mode_' + modeId);
         modebtn_clicked(modeId);
-        createUndoPoint();
+        editor.createUndoPoint();
       });
     }
   });
@@ -438,7 +438,7 @@ function updateModuleObjsMenu() {
         simulator.updateSimulation(false, true);
         hideAllPopovers();
         updateModuleObjsMenu();
-        createUndoPoint();
+        editor.createUndoPoint();
       });
       removeButtonDiv.appendChild(removeButton);
 

@@ -173,20 +173,6 @@ class BaseSceneObj {
     }
   }
 
-  /* This typedef will eventually be moved elsewhere. */
-  /**
-   * @typedef {Object} DragContext
-   * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
-   * @property {Point} [targetPoint] - The target point where the user is dragging. This is recognized by the editor so that it can be used for popping up the coordinate box (when the user double-clicks or right-clicks such a point), or binding to a handle (when the user holds Ctrl and clicks such a point).
-   * @property {Point} [targetPoint_] - If this property is set instead of setting `targetPoint`, then the point will not be used for the coordinate box or handle, but is still recognized by the editor when deciding which part of which object the user want to interact with.
-   * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated during the dragging.
-   * @property {string} [cursor] - The cursor to be used during hovering and dragging.
-   * @property {SnapContext} [snapContext] - The snap context.
-   * @property {boolean} [hasDuplicated] - Whether the object is duplicated during the dragging. This is true when the user holds the Ctrl key and drags the whole object. Only set by the editor.
-   * @property {BaseSceneObj} [originalObj] - The original object when the dragging starts. Only set by the editor.
-   * @property {boolean} [isByHandle] - Whether the dragging is initiated by dragging a handle. Only set by the editor.
-   */
-
   /**
    * Check whether the mouse is over the object, which is called when the user moves the mouse over the scene. This is used for deciding the highlighting of the object, and also for deciding that if the user starts dragging at this position, which part of the object should be dragged.
    * @param {Mouse} mouse - The mouse object.

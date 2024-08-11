@@ -170,13 +170,6 @@ objTypes['Handle'] = class extends BaseSceneObj {
     }
   }
 
-  /* This typedef will eventually be moved elsewhere. */
-  /**
-   * @typedef {Object} ControlPoint
-   * @property {DragContext} dragContext - The drag context of the virtual mouse that is dragging the control point.
-   * @property {Point} newPoint - The new position of the control point.
-   */
-
   /**
    * Add (bind) a control point to the handle.
    * @param {ControlPoint} controlPoint - The control point to be bound.

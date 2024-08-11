@@ -58,11 +58,11 @@ window.onload = function (e) {
   });
 
   objBar.on('editEnd', function () {
-    createUndoPoint();
+    editor.createUndoPoint();
   });
 
   objBar.on('requireUpdate', function () {
-    selectObj(selectedObj);
+    editor.selectObj(selectedObj);
   });
 
   document.getElementById('apply_to_all').addEventListener('change', function () {
@@ -138,7 +138,7 @@ window.onload = function (e) {
     //Ctrl+Z
     if (e.ctrlKey && e.keyCode == 90) {
       if (document.getElementById('undo').disabled == false) {
-        undo();
+        editor.undo();
       }
       return false;
     }
@@ -151,7 +151,7 @@ window.onload = function (e) {
       }
 
       simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
-      createUndoPoint();
+      editor.createUndoPoint();
       return false;
     }
     //Ctrl+Y
@@ -174,7 +174,7 @@ window.onload = function (e) {
     //esc
     if (e.keyCode == 27) {
       if (isConstructing) {
-        undo();
+        editor.undo();
       }
     }
 
@@ -200,7 +200,7 @@ window.onload = function (e) {
         var selectedObjType = scene.objs[selectedObj].constructor.type;
         removeObj(selectedObj);
         simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
-        createUndoPoint();
+        editor.createUndoPoint();
       }
       return false;
     }
@@ -276,7 +276,7 @@ window.onload = function (e) {
   window.onkeyup = function (e) {
     //Arrow Keys
     if (e.keyCode >= 37 && e.keyCode <= 40) {
-      createUndoPoint();
+      editor.createUndoPoint();
     }
 
   };
@@ -304,12 +304,12 @@ window.onload = function (e) {
 
   document.getElementById('undo').onclick = function () {
     this.blur();
-    undo();
+    editor.undo();
   }
   document.getElementById('undo_mobile').onclick = document.getElementById('undo').onclick;
   document.getElementById('redo').onclick = function () {
     this.blur();
-    redo();
+    editor.redo();
   }
   document.getElementById('redo_mobile').onclick = document.getElementById('redo').onclick;
   document.getElementById('reset').onclick = function () {
@@ -317,7 +317,7 @@ window.onload = function (e) {
     init();
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
-    createUndoPoint();
+    editor.createUndoPoint();
     isFromGallery = false;
     hasUnsavedChange = false;
     if (aceEditor) {
@@ -348,10 +348,10 @@ window.onload = function (e) {
     scene.simulateColors = this.checked;
     document.getElementById('simulateColors').checked = scene.simulateColors;
     document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-    selectObj(selectedObj);
+    editor.selectObj(selectedObj);
     this.blur();
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
 
@@ -534,7 +534,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
   document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
@@ -546,7 +546,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
   document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
@@ -559,7 +559,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('rayDensityMinus').onclick = function () {
     rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
@@ -569,7 +569,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
   document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
@@ -627,9 +627,9 @@ window.onload = function (e) {
   document.getElementById('copy').onclick = function () {
     this.blur();
     scene.cloneObj(selectedObj).move(scene.gridSize, scene.gridSize);
-    selectObj(scene.objs.length - 1);
+    editor.selectObj(scene.objs.length - 1);
     simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
@@ -638,20 +638,20 @@ window.onload = function (e) {
     this.blur();
     removeObj(selectedObj);
     simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
   document.getElementById('unselect').onclick = function () {
-    selectObj(-1);
+    editor.selectObj(-1);
     simulator.updateSimulation(true, true);
-    createUndoPoint();
+    editor.createUndoPoint();
   };
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
   document.getElementById('showAdvanced').onclick = function () {
     showAdvancedOn = true;
-    selectObj(selectedObj);
+    editor.selectObj(selectedObj);
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
@@ -673,11 +673,11 @@ window.onload = function (e) {
     //console.log(e.keyCode)
     if (e.keyCode == 13) {
       //enter
-      confirmPositioning(e.ctrlKey, e.shiftKey);
+      editor.confirmPositioning(e.ctrlKey, e.shiftKey);
     }
     if (e.keyCode == 27) {
       //esc
-      endPositioning();
+      editor.endPositioning();
     }
 
     e.cancelBubble = true;
@@ -720,7 +720,7 @@ window.onload = function (e) {
       latestJsonCode = fileString;
       selectedObj = -1;
       JSONInput();
-      createUndoPoint();
+      editor.createUndoPoint();
     }
   };
 
@@ -744,7 +744,7 @@ window.onload = function (e) {
         latestJsonCode = JSON.stringify(json);
         scene.backgroundImage = null;
         JSONInput();
-        createUndoPoint();
+        editor.createUndoPoint();
         isFromGallery = true;
         hasUnsavedChange = false;
         if (aceEditor) {
@@ -785,7 +785,7 @@ function openSample(name) {
     latestJsonCode = client.responseText;
     scene.backgroundImage = null;
     JSONInput();
-    createUndoPoint();
+    editor.createUndoPoint();
     isFromGallery = true;
     hasUnsavedChange = false;
     if (aceEditor) {
@@ -836,7 +836,7 @@ function importModule(name) {
       return;
     }
     simulator.updateSimulation(false, true);
-    createUndoPoint();
+    editor.createUndoPoint();
     updateModuleObjsMenu();
   }
   client.onerror = function () {
@@ -866,7 +866,7 @@ function init() {
   document.getElementById('save_name').value = "";
 
   isConstructing = false;
-  endPositioning();
+  editor.endPositioning();
 
   scene.backgroundImage = null;
   scene.fromJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
@@ -875,7 +875,7 @@ function init() {
 
   scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
 
-  selectObj(-1);
+  editor.selectObj(-1);
 
   document.getElementById("rayDensity").value = scene.rayModeDensity;
   document.getElementById("rayDensity_more").value = scene.rayModeDensity;
@@ -1073,7 +1073,7 @@ function JSONInput() {
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-      selectObj(selectedObj);
+      editor.selectObj(selectedObj);
       simulator.updateSimulation();
     } else {
       // Partial update (e.g. when the background image is loaded)
@@ -1167,11 +1167,11 @@ function openFile(readFile) {
     if (isJSON) {
       // Load the scene file
       latestJsonCode = fileString;
-      endPositioning();
+      editor.endPositioning();
       selectedObj = -1;
       JSONInput();
       hasUnsavedChange = false;
-      createUndoPoint();
+      editor.createUndoPoint();
       if (aceEditor) {
         aceEditor.session.setValue(latestJsonCode);
       }
@@ -1231,7 +1231,7 @@ function enterCropMode() {
     cropBoxIndex = scene.objs.length - 1;
   }
 
-  selectObj(cropBoxIndex);
+  editor.selectObj(cropBoxIndex);
 
   simulator.updateSimulation(true, true);
 }
@@ -1246,7 +1246,7 @@ function confirmCrop(cropBox) {
 
 function cancelCrop() {
   cropMode = false;
-  selectObj(-1);
+  editor.selectObj(-1);
   simulator.updateSimulation(true, true);
 }
 
@@ -1280,7 +1280,7 @@ function exportSVG(cropBox) {
 
     cropMode = false;
     exportSimulator.updateSimulation();
-    selectObj(-1);
+    editor.selectObj(-1);
   });
 
   /*
@@ -1298,7 +1298,7 @@ function exportSVG(cropBox) {
   imageWidth = cropBox.p4.x - cropBox.p1.x;
   imageHeight = cropBox.p4.y - cropBox.p1.y;
 
-  selectObj(-1);
+  editor.selectObj(-1);
   mouseObj = -1;
 
   simulator.ctxAboveLight = new C2S(imageWidth, imageHeight);
@@ -1374,7 +1374,7 @@ function exportImage(cropBox) {
 
     cropMode = false;
     exportSimulator.updateSimulation();
-    selectObj(-1);
+    editor.selectObj(-1);
   });
 }
 
