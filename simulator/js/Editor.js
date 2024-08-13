@@ -1,9 +1,28 @@
 class Editor {
+
+  /**
+   * The limit of the undo data.
+   */
+  static UNDO_LIMIT = 20;
+  
+  /**
+   * @typedef {Object} DragContext
+   * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
+   * @property {Point} [targetPoint] - The target point where the user is dragging. This is recognized by the editor so that it can be used for popping up the coordinate box (when the user double-clicks or right-clicks such a point), or binding to a handle (when the user holds Ctrl and clicks such a point).
+   * @property {Point} [targetPoint_] - If this property is set instead of setting `targetPoint`, then the point will not be used for the coordinate box or handle, but is still recognized by the editor when deciding which part of which object the user want to interact with.
+   * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated during the dragging.
+   * @property {string} [cursor] - The cursor to be used during hovering and dragging.
+   * @property {SnapContext} [snapContext] - The snap context.
+   * @property {boolean} [hasDuplicated] - Whether the object is duplicated during the dragging. This is true when the user holds the Ctrl key and drags the whole object. Only set by the editor.
+   * @property {BaseSceneObj} [originalObj] - The original object when the dragging starts. Only set by the editor.
+   * @property {boolean} [isByHandle] - Whether the dragging is initiated by dragging a handle. Only set by the editor.
+   */
+
   constructor(scene, canvas, objBar, xyBox) {
     /** @property {Scene} scene - The scene to be edited and simulated. */
     this.scene = scene;
 
-    this.scene.editor = this; // This circular reference is currently only used by CropBox.
+    this.scene.editor = this;
 
     /** @property {HTMLCanvasElement} canvas - The top-layered canvas for user interaction. */
     this.canvas = canvas;
@@ -16,6 +35,57 @@ class Editor {
 
     /** @property {boolean} lastDeviceIsTouch - Whether the last interaction with `canvas` is done by a touch device. */
     this.lastDeviceIsTouch = false;
+
+    /** @property {Point} mousePos - The position of the mouse in the scene. */
+    this.mousePos = geometry.point(0, 0);
+
+    /** @property {Point} lastMousePos - The position of the mouse in the scene when the last mousedown event is triggered. */
+    this.lastMousePos = geometry.point(0, 0);
+
+    /** @property {boolean} isConstructing - Whether an object is being constructed. */
+    this.isConstructing = false;
+
+    /** @property {number} draggingObjIndex - The index of the object being dragged. -1 if no object is being dragged; -3 if the scene is being dragged; -4 if the observer is being dragged. */
+    this.draggingObjIndex = -1;
+
+    /** @property {number} positioningObjIndex - The index of the object being positioned. -1 if no object is being positioned; -4 if the observer is being positioned. */
+    this.positioningObjIndex = -1;
+
+    /** @property {DragContext} dragContext - The context of the dragging or positioning action. */
+    this.dragContext = {};
+
+    /** @property {number} selectedObjIndex - The index of the selected object. -1 if no object is selected. */
+    this.selectedObjIndex = -1;
+
+    /** @property {number} hoveredObjIndex - The index of the hovered object. -1 if no object is hovered. */
+    this.hoveredObjIndex = -1;
+
+    /** @property {string} addingObjType - The type of the object that will be added when the user clicks on the canvas. Empty if 'Move view' tool is selected so that no object will be added. */
+    this.addingObjType = '';
+
+    /** @property {string[]} undoData - The data for undoing, where each element is a JSON string representing the scene. */
+    this.undoData = [];
+
+    /** @property {number} undoIndex - The index of the undo data currently displayed. */
+    this.undoIndex = 0;
+
+    /** @property {number} undoLBound - The upper bound of the undo data index. */
+    this.undoLBound = 0;
+
+    /** @property {number} undoUBound - The lower bound of the undo data index. */
+    this.undoUBound = 0;
+
+    /** @property {boolean} pendingControlPointSelection - Whether a user has clicked on a control point with the Ctrl key held down, and the editor is waiting to see if the user is going to select the control point for a handle. */
+    this.pendingControlPointSelection = false;
+
+    /** @property {ControlPoint[]} pendingControlPoints - The control points to be selected for a handle when the user clicks on a control point with the Ctrl key held down. */
+    this.pendingControlPoints = [];
+
+    /** @property {string} addingModuleName - The name of the module that will be added when the user clicks on the canvas if `addingObjType` is 'ModuleObj'. */
+    this.addingModuleName = '';
+
+    /** @property {object} eventListeners - The event listeners of the editor. */
+    this.eventListeners = {};
 
     this.initCanvas();
   }
@@ -72,22 +142,38 @@ class Editor {
     this.canvas.addEventListener('mouseout', function (e) {
       if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
       self.lastDeviceIsTouch = false;
-      if (draggingObj != -1) {
+      if (self.draggingObjIndex != -1) {
         self.handleCanvasMouseUp(e);
       }
-      mouseObj = -1;
+      self.hoveredObjIndex = -1;
       document.getElementById('mouseCoordinates').innerHTML = "";
       simulator.updateSimulation(true, true)
     });
 
 
-    // IE9, Chrome, Safari, Opera
-    this.canvas.addEventListener("mousewheel", function(e) {
-      self.handleCanvasMouseWheel()
-    }, false);
-    // Firefox
-    this.canvas.addEventListener("DOMMouseScroll", function(e) {
-      self.handleCanvasMouseWheel()
+    let lastZoomTime = 0;
+    let zoomThrottle = 100; // 100 ms between zooms
+    
+    this.canvas.addEventListener('wheel', function(e) {
+      var now = Date.now();
+      if (now - lastZoomTime < zoomThrottle) return; // Too soon since the last zoom
+      lastZoomTime = now;
+    
+      // cross-browser wheel delta
+      var e = window.event || e; // old IE support
+      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+      var d = self.scene.scale * self.scene.lengthScale;
+      if (delta < 0) {
+        d = self.scene.scale * self.scene.lengthScale - 0.25;
+      } else if (delta > 0) {
+        d = self.scene.scale * self.scene.lengthScale + 0.25;
+      }
+      d = Math.max(0.25, Math.min(5.00, d)) * 100;
+      setScaleWithCenter(d / self.scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / self.scene.scale, (e.pageY - e.target.offsetTop) / self.scene.scale);
+      JSONOutput();
+      //window.toolBarViewModel.zoom.value(d);
+      self.handleCanvasMouseMove(e);
+      return false;
     }, false);
 
     let initialPinchDistance = null;
@@ -104,7 +190,7 @@ class Editor {
         e.preventDefault();
         lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
         lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
-        if (isConstructing || draggingObj >= 0) {
+        if (self.isConstructing || self.draggingObjIndex >= 0) {
           self.handleCanvasMouseUp(e);
           self.undo();
         } else {
@@ -137,7 +223,7 @@ class Editor {
         // Set initial distance
         if (initialPinchDistance === null) {
           initialPinchDistance = distance;
-          lastScale = scene.scale;
+          lastScale = self.scene.scale;
         }
 
         // Calculate the scaling factor
@@ -146,7 +232,7 @@ class Editor {
         // Update scale based on previous scale and scaling factor
         let newScale = lastScale * scaleFactor;
 
-        newScale = Math.max(0.25 / scene.lengthScale, Math.min(5.00 / scene.lengthScale, newScale));
+        newScale = Math.max(0.25 / self.scene.lengthScale, Math.min(5.00 / self.scene.lengthScale, newScale));
 
         // Calculate the mid point between the two touches
         const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
@@ -157,11 +243,11 @@ class Editor {
         const dy2 = y - lastY;
 
         // Apply the translation
-        scene.origin.x += dx2;
-        scene.origin.y += dy2;
+        self.scene.origin.x += dx2;
+        self.scene.origin.y += dy2;
 
         // Apply the scale transformation
-        setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
+        setScaleWithCenter(newScale, (x - e.target.offsetLeft) / self.scene.scale, (y - e.target.offsetTop) / self.scene.scale);
 
         // Update last values
         lastX = x;
@@ -190,7 +276,7 @@ class Editor {
       lastTouchTime = Date.now();
       //console.log("touchcancel");
       initialPinchDistance = null;
-      if (isConstructing || draggingObj >= 0) {
+      if (self.isConstructing || self.draggingObjIndex >= 0) {
         self.handleCanvasMouseUp(e);
         self.undo();
       } else {
@@ -237,9 +323,9 @@ class Editor {
     } else {
       var et = e;
     }
-    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
-    mousePos_lastmousedown = mousePos_nogrid;
-    if (positioningObj != -1) {
+    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse
+    this.lastMousePos = mousePos_nogrid;
+    if (this.positioningObjIndex != -1) {
       this.confirmPositioning(e.ctrlKey, e.shiftKey);
       if (!(e.which && e.which == 3)) {
         return;
@@ -251,47 +337,46 @@ class Editor {
       return;
     }
   
-    if (scene.snapToGrid) {
-      mousePos = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
+    if (this.scene.snapToGrid) {
+      this.mousePos = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize);
   
     }
     else {
-      mousePos = mousePos_nogrid;
+      this.mousePos = mousePos_nogrid;
     }
   
   
-    if (isConstructing) {
+    if (this.isConstructing) {
       if ((e.which && e.which == 1) || (e.changedTouches)) {
         // Only react for left click
         // If an obj is being created, pass the action to it
-        if (selectedObj != scene.objs.length - 1) {
-          this.selectObj(scene.objs.length - 1); // Keep the constructing obj selected
+        if (this.selectedObjIndex != this.scene.objs.length - 1) {
+          this.selectObj(this.scene.objs.length - 1); // Keep the constructing obj selected
         }
-        const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+        const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
         if (ret && ret.isDone) {
-          isConstructing = false;
+          this.isConstructing = false;
         }
         if (ret && ret.requiresObjBarUpdate) {
-          this.selectObj(selectedObj);
+          this.selectObj(this.selectedObjIndex);
         }
-        simulator.updateSimulation(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+        simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
       }
     }
     else {
       // lockObjs prevents selection, but alt overrides it
-      if ((!(scene.lockObjs) != (e.altKey && AddingObjType != '')) && !(e.which == 3)) {
+      if ((!(this.scene.lockObjs) != (e.altKey && this.addingObjType != '')) && !(e.which == 3)) {
   
-        dragContext = {};
+        this.dragContext = {};
   
-        if (scene.mode == 'observer') {
-          if (geometry.distanceSquared(mousePos_nogrid, scene.observer.c) < scene.observer.r * scene.observer.r) {
+        if (this.scene.mode == 'observer') {
+          if (geometry.distanceSquared(mousePos_nogrid, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
             // The mousePos clicked the observer
-            draggingObj = -4;
-            dragContext = {};
-            //dragContext.part=0;
-            dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-            dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-            dragContext.snapContext = {};
+            this.draggingObjIndex = -4;
+            this.dragContext = {};
+            this.dragContext.mousePos0 = this.mousePos; // Mouse position when the user starts dragging
+            this.dragContext.mousePos1 = this.mousePos; // Mouse position at the last moment during dragging
+            this.dragContext.snapContext = {};
             return;
           }
         }
@@ -299,58 +384,58 @@ class Editor {
         var rets = this.selectionSearch(mousePos_nogrid);
         var ret = rets[0];
         if (ret.targetObjIndex != -1) {
-          if (!e.ctrlKey && scene.objs.length > 0 && scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone) {
+          if (!e.ctrlKey && this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
             // User is creating a handle
             this.removeObj(0);
             ret.targetObjIndex--;
           }
           this.selectObj(ret.targetObjIndex);
-          dragContext = ret.dragContext;
-          dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
-          dragContext.hasDuplicated = false;
-          draggingObj = ret.targetObjIndex;
-          if (e.ctrlKey && dragContext.targetPoint) {
-            pendingControlPointSelection = true;
-            pendingControlPoints = rets;
+          this.dragContext = ret.dragContext;
+          this.dragContext.originalObj = this.scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
+          this.dragContext.hasDuplicated = false;
+          this.draggingObjIndex = ret.targetObjIndex;
+          if (e.ctrlKey && this.dragContext.targetPoint) {
+            this.pendingControlPointSelection = true;
+            this.pendingControlPoints = rets;
           }
           return;
         }
       }
   
-      if (draggingObj == -1) {
+      if (this.draggingObjIndex == -1) {
         // The mousePos clicked the blank area
-        if (scene.objs.length > 0 && scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone) {
+        if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
           // User is creating a handle
-          this.finishHandleCreation(mousePos);
+          this.finishHandleCreation(this.mousePos);
           return;
         }
-        if ((AddingObjType == '') || (e.which == 3)) {
+        if ((this.addingObjType == '') || (e.which == 3)) {
           // To drag the entire scene
-          draggingObj = -3;
-          dragContext = {};
-          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-          dragContext.mousePos2 = scene.origin; //Original origin.
-          dragContext.snapContext = {};
+          this.draggingObjIndex = -3;
+          this.dragContext = {};
+          this.dragContext.mousePos0 = this.mousePos; // Mouse position when the user starts dragging
+          this.dragContext.mousePos1 = this.mousePos; // Mouse position at the last moment during dragging
+          this.dragContext.mousePos2 = this.scene.origin; //Original origin.
+          this.dragContext.snapContext = {};
           this.selectObj(-1);
         }
         else {
           // Create a new object
-          isConstructing = true;
+          this.isConstructing = true;
           let referenceObj = {};
-          if (scene.objs[selectedObj]) {
-            if (scene.objs[selectedObj].constructor.type == AddingObjType) {
-              referenceObj = scene.objs[selectedObj].serialize();
+          if (this.scene.objs[this.selectedObjIndex]) {
+            if (this.scene.objs[this.selectedObjIndex].constructor.type == this.addingObjType) {
+              referenceObj = this.scene.objs[this.selectedObjIndex].serialize();
             }
           }
-          scene.pushObj(new objTypes[AddingObjType](scene, referenceObj));
+          this.scene.pushObj(new objTypes[this.addingObjType](this.scene, referenceObj));
   
-          const ret = scene.objs[scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch));
+          const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
           if (ret && ret.isDone) {
-            isConstructing = false;
+            this.isConstructing = false;
           }
-          this.selectObj(scene.objs.length - 1);
-          simulator.updateSimulation(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+          this.selectObj(this.scene.objs.length - 1);
+          simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
         }
       }
     }
@@ -362,28 +447,27 @@ class Editor {
    */
   handleCanvasMouseMove(e) {
 
-    pendingControlPointSelection = false;
+    this.pendingControlPointSelection = false;
     if (e.changedTouches) {
       var et = e.changedTouches[0];
     } else {
       var et = e;
     }
-    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse
+    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse
     var mousePos2;
-    if (scene.snapToGrid && !(e.altKey && !isConstructing)) {
-      mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale) / scene.gridSize) * scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - scene.origin.y) / scene.scale) / scene.gridSize) * scene.gridSize);
+    if (this.scene.snapToGrid && !(e.altKey && !this.isConstructing)) {
+      mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize);
     }
     else {
       mousePos2 = mousePos_nogrid;
     }
   
-    if (!isConstructing && draggingObj == -1 && !scene.lockObjs) {
+    if (!this.isConstructing && this.draggingObjIndex == -1 && !this.scene.lockObjs) {
       // highlight object under mousePos cursor
       var ret = this.selectionSearch(mousePos_nogrid)[0];
       //console.log(mousePos_nogrid);
-      var newMouseObj = (ret.targetObjIndex == -1) ? null : scene.objs[ret.targetObjIndex];
-      if (mouseObj != newMouseObj) {
-        mouseObj = newMouseObj;
+      if (this.hoveredObjIndex != ret.targetObjIndex) {
+        this.hoveredObjIndex = ret.targetObjIndex;
         simulator.updateSimulation(true, true);
       }
       if (ret.dragContext) {
@@ -397,7 +481,7 @@ class Editor {
           canvas.style.cursor = '';
         }
       } else {
-        if (scene.mode == 'observer' && geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
+        if (this.scene.mode == 'observer' && geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
           canvas.style.cursor = 'pointer';
         } else {
           canvas.style.cursor = '';
@@ -405,83 +489,82 @@ class Editor {
       }
     }
   
-    if (mousePos2.x == mousePos.x && mousePos2.y == mousePos.y) {
+    if (mousePos2.x == this.mousePos.x && mousePos2.y == this.mousePos.y) {
       return;
     }
-    mousePos = mousePos2;
+    this.mousePos = mousePos2;
   
   
-    const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
-    document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + mousePos.x.toFixed(mousePosDigits) + ", " + mousePos.y.toFixed(mousePosDigits) + ")";
-  
-    if (isConstructing) {
+    const mousePosDigits = Math.max(Math.round(Math.log10(this.scene.scale)), 0);
+    document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + this.mousePos.x.toFixed(mousePosDigits) + ", " + this.mousePos.y.toFixed(mousePosDigits) + ")";
+
+    if (this.isConstructing) {
       // highlight object being constructed
-      mouseObj = scene.objs[scene.objs.length - 1];
+      this.hoveredObjIndex = this.scene.objs.length - 1;
   
       // If some object is being created, pass the action to it
-      const ret = scene.objs[scene.objs.length - 1].onConstructMouseMove(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+      const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseMove(new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
-        isConstructing = false;
+        this.isConstructing = false;
       }
       if (ret && ret.requiresObjBarUpdate) {
-        this.selectObj(selectedObj);
+        this.selectObj(this.selectedObjIndex);
       }
-      simulator.updateSimulation(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
+      simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
     }
     else {
-      if (draggingObj == -4) {
+      if (this.draggingObjIndex == -4) {
         if (e.shiftKey) {
-          var mousePos_snapped = snapToDirection(mousePos, dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+          var mousePos_snapped = (new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch)).getPosSnappedToDirection(this.dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], this.dragContext.snapContext);
         }
         else {
-          var mousePos_snapped = mousePos;
-          dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
+          var mousePos_snapped = this.mousePos;
+          this.dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
         }
   
-        var mouseDiffX = (mousePos_snapped.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-        var mouseDiffY = (mousePos_snapped.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+        var mouseDiffX = (mousePos_snapped.x - this.dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+        var mouseDiffY = (mousePos_snapped.y - this.dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
   
-        scene.observer.c.x += mouseDiffX;
-        scene.observer.c.y += mouseDiffY;
+        this.scene.observer.c.x += mouseDiffX;
+        this.scene.observer.c.y += mouseDiffY;
   
         // Update the mouse position
-        dragContext.mousePos1 = mousePos_snapped;
+        this.dragContext.mousePos1 = mousePos_snapped;
         simulator.updateSimulation(false, true);
       }
   
-      var returndata;
-      if (draggingObj >= 0) {
+      if (this.draggingObjIndex >= 0) {
         // Here the mouse is dragging an object
   
-        scene.objs[draggingObj].onDrag(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch, e.altKey * 1), dragContext, e.ctrlKey, e.shiftKey);
+        this.scene.objs[this.draggingObjIndex].onDrag(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch, e.altKey * 1), this.dragContext, e.ctrlKey, e.shiftKey);
         // If dragging an entire object, then when Ctrl is hold, clone the object
-        if (dragContext.part == 0) {
-          if (e.ctrlKey && !dragContext.hasDuplicated) {
+        if (this.dragContext.part == 0) {
+          if (e.ctrlKey && !this.dragContext.hasDuplicated) {
   
-            scene.pushObj(new objTypes[scene.objs[draggingObj].constructor.type](scene, dragContext.originalObj));
-            dragContext.hasDuplicated = true;
+            this.scene.pushObj(new objTypes[this.scene.objs[this.draggingObjIndex].constructor.type](this.scene, this.dragContext.originalObj));
+            this.dragContext.hasDuplicated = true;
           }
-          if (!e.ctrlKey && dragContext.hasDuplicated) {
-            scene.objs.length--;
-            dragContext.hasDuplicated = false;
+          if (!e.ctrlKey && this.dragContext.hasDuplicated) {
+            this.scene.objs.length--;
+            this.dragContext.hasDuplicated = false;
           }
         }
   
-        simulator.updateSimulation(!scene.objs[draggingObj].constructor.isOptical, true);
+        simulator.updateSimulation(!this.scene.objs[this.draggingObjIndex].constructor.isOptical, true);
   
-        if (dragContext.requiresObjBarUpdate) {
-          this.selectObj(selectedObj);
+        if (this.dragContext.requiresObjBarUpdate) {
+          this.selectObj(this.selectedObjIndex);
         }
       }
   
-      if (draggingObj == -3 && dragContext.mousePos1) {
+      if (this.draggingObjIndex == -3 && this.dragContext.mousePos1) {
         // Move the entire scene
         // Here mousePos is the currect mouse position, dragContext.mousePos1 is the mouse position at the previous moment
   
-        var mouseDiffX = (mousePos.x - dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
-        var mouseDiffY = (mousePos.y - dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
-        scene.origin.x = mouseDiffX * scene.scale + dragContext.mousePos2.x;
-        scene.origin.y = mouseDiffY * scene.scale + dragContext.mousePos2.y;
+        var mouseDiffX = (this.mousePos.x - this.dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
+        var mouseDiffY = (this.mousePos.y - this.dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
+        this.scene.origin.x = mouseDiffX * this.scene.scale + this.dragContext.mousePos2.x;
+        this.scene.origin.y = mouseDiffY * this.scene.scale + this.dragContext.mousePos2.y;
         simulator.updateSimulation();
       }
   
@@ -494,47 +577,47 @@ class Editor {
    * @param {MouseEvent} e - The event.
    */
   handleCanvasMouseUp(e) {
-    if (isConstructing) {
+    if (this.isConstructing) {
       if ((e.which && e.which == 1) || (e.changedTouches)) {
         // If an object is being created, pass the action to it
-        const ret = scene.objs[scene.objs.length - 1].onConstructMouseUp(new Mouse(mousePos, scene, editor.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+        const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseUp(new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
         if (ret && ret.isDone) {
-          isConstructing = false;
+          this.isConstructing = false;
         }
         if (ret && ret.requiresObjBarUpdate) {
-          this.selectObj(selectedObj);
+          this.selectObj(this.selectedObjIndex);
         }
-        simulator.updateSimulation(!scene.objs[scene.objs.length - 1].constructor.isOptical, true);
-        if (!isConstructing) {
+        simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
+        if (!this.isConstructing) {
           // The object says the contruction is done
           this.createUndoPoint();
           if (document.getElementById('lockObjs').checked) {
-            mouseObj = -1;
+            this.hoveredObjIndex = -1;
             simulator.updateSimulation(true, true);
           }
         }
       }
     }
     else {
-      if (pendingControlPointSelection) {
-        pendingControlPointSelection = false
-        this.addControlPointsForHandle(pendingControlPoints);
+      if (this.pendingControlPointSelection) {
+        this.pendingControlPointSelection = false
+        this.addControlPointsForHandle(this.pendingControlPoints);
       }
-      if (e.which && e.which == 3 && draggingObj == -3 && mousePos.x == dragContext.mousePos0.x && mousePos.y == dragContext.mousePos0.y) {
-        draggingObj = -1;
-        dragContext = {};
+      if (e.which && e.which == 3 && this.draggingObjIndex == -3 && this.mousePos.x == this.dragContext.mousePos0.x && this.mousePos.y == this.dragContext.mousePos0.y) {
+        this.draggingObjIndex = -1;
+        this.dragContext = {};
         JSONOutput();
         this.handleCanvasDblClick(e);
         return;
       }
-      if (draggingObj != -3) {
+      if (this.draggingObjIndex != -3) {
         this.createUndoPoint();
       } else {
         // If user is moving the view, do not create undo point, but still updating the JSON code.
         JSONOutput();
       }
-      draggingObj = -1;
-      dragContext = {};
+      this.draggingObjIndex = -1;
+      this.dragContext = {};
     }
   
   }
@@ -546,23 +629,23 @@ class Editor {
    */
   handleCanvasDblClick(e) {
     //console.log("dblclick");
-    var mousePos = geometry.point((e.pageX - e.target.offsetLeft - scene.origin.x) / scene.scale, (e.pageY - e.target.offsetTop - scene.origin.y) / scene.scale); // The real position of the mouse (never use grid here)
-    if (isConstructing) {
+    this.mousePos = geometry.point((e.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (e.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse (never use grid here)
+    if (this.isConstructing) {
     }
-    else if (new Mouse(mousePos, scene, editor.lastDeviceIsTouch).isOnPoint(mousePos_lastmousedown)) {
-      dragContext = {};
-      if (scene.mode == 'observer') {
-        if (geometry.distanceSquared(mousePos, scene.observer.c) < scene.observer.r * scene.observer.r) {
+    else if (new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch).isOnPoint(this.lastMousePos)) {
+      this.dragContext = {};
+      if (this.scene.mode == 'observer') {
+        if (geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
   
           // The mousePos clicked the observer
-          positioningObj = -4;
-          dragContext = {};
-          dragContext.targetPoint = geometry.point(scene.observer.c.x, scene.observer.c.y);
-          dragContext.snapContext = {};
+          this.positioningObjIndex = -4;
+          this.dragContext = {};
+          this.dragContext.targetPoint = geometry.point(this.scene.observer.c.x, this.scene.observer.c.y);
+          this.dragContext.snapContext = {};
   
-          document.getElementById('xybox').style.left = (dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
-          document.getElementById('xybox').style.top = (dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
-          document.getElementById('xybox').value = '(' + (dragContext.targetPoint.x) + ',' + (dragContext.targetPoint.y) + ')';
+          document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
+          document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
+          document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
           document.getElementById('xybox').size = document.getElementById('xybox').value.length;
           document.getElementById('xybox').style.display = '';
           document.getElementById('xybox').select();
@@ -574,18 +657,18 @@ class Editor {
         }
       }
   
-      var ret = this.selectionSearch(mousePos)[0];
+      var ret = this.selectionSearch(this.mousePos)[0];
       if (ret.targetObjIndex != -1 && ret.dragContext.targetPoint) {
         this.selectObj(ret.targetObjIndex);
-        dragContext = ret.dragContext;
-        dragContext.originalObj = scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
+        this.dragContext = ret.dragContext;
+        this.dragContext.originalObj = this.scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
   
-        dragContext.hasDuplicated = false;
-        positioningObj = ret.targetObjIndex;
+        this.dragContext.hasDuplicated = false;
+        this.positioningObjIndex = ret.targetObjIndex;
   
-        document.getElementById('xybox').style.left = (dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
-        document.getElementById('xybox').style.top = (dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
-        document.getElementById('xybox').value = '(' + (dragContext.targetPoint.x) + ',' + (dragContext.targetPoint.y) + ')';
+        document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
+        document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
+        document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
         document.getElementById('xybox').size = document.getElementById('xybox').value.length;
         document.getElementById('xybox').style.display = '';
         document.getElementById('xybox').select();
@@ -596,45 +679,6 @@ class Editor {
     }
   
   }
-
-  /**
-   * Handle the mousewheel event on the canvas.
-   * @param {WheelEvent} e - The event.
-   */
-  handleCanvasMouseWheel(e) {
-    var now = Date.now();
-    if (now - lastZoomTime < zoomThrottle) return; // Too soon since the last zoom
-    lastZoomTime = now;
-  
-    // cross-browser wheel delta
-    var e = window.event || e; // old IE support
-    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-    var d = scene.scale * scene.lengthScale;
-    if (delta < 0) {
-      d = scene.scale * scene.lengthScale - 0.25;
-    } else if (delta > 0) {
-      d = scene.scale * scene.lengthScale + 0.25;
-    }
-    d = Math.max(0.25, Math.min(5.00, d)) * 100;
-    setScaleWithCenter(d / scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / scene.scale, (e.pageY - e.target.offsetTop) / scene.scale);
-    JSONOutput();
-    //window.toolBarViewModel.zoom.value(d);
-    this.handleCanvasMouseMove(e);
-    return false;
-  }
-
-  /**
-   * @typedef {Object} DragContext
-   * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
-   * @property {Point} [targetPoint] - The target point where the user is dragging. This is recognized by the editor so that it can be used for popping up the coordinate box (when the user double-clicks or right-clicks such a point), or binding to a handle (when the user holds Ctrl and clicks such a point).
-   * @property {Point} [targetPoint_] - If this property is set instead of setting `targetPoint`, then the point will not be used for the coordinate box or handle, but is still recognized by the editor when deciding which part of which object the user want to interact with.
-   * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated during the dragging.
-   * @property {string} [cursor] - The cursor to be used during hovering and dragging.
-   * @property {SnapContext} [snapContext] - The snap context.
-   * @property {boolean} [hasDuplicated] - Whether the object is duplicated during the dragging. This is true when the user holds the Ctrl key and drags the whole object. Only set by the editor.
-   * @property {BaseSceneObj} [originalObj] - The original object when the dragging starts. Only set by the editor.
-   * @property {boolean} [isByHandle] - Whether the dragging is initiated by dragging a handle. Only set by the editor.
-   */
 
   /**
    * @typedef {Object} SelectionSearchResult
@@ -657,9 +701,9 @@ class Editor {
     var targetIsSelected = false;
     var results = [];
   
-    for (var i = 0; i < scene.objs.length; i++) {
-      if (typeof scene.objs[i] != 'undefined') {
-        let dragContext_ = scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, scene, editor.lastDeviceIsTouch));
+    for (var i = 0; i < this.scene.objs.length; i++) {
+      if (typeof this.scene.objs[i] != 'undefined') {
+        let dragContext_ = this.scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
         if (dragContext_) {
           // the mouse is over the object
   
@@ -670,7 +714,7 @@ class Editor {
               results = [];
             }
             var click_lensq_temp = geometry.distanceSquared(mousePos_nogrid, (dragContext_.targetPoint || dragContext_.targetPoint_));
-            if (click_lensq_temp <= click_lensq || targetObjIndex == selectedObj) {
+            if (click_lensq_temp <= click_lensq || targetObjIndex == this.selectedObjIndex) {
               // In case of clicking a point, choose the one nearest to the mouse
               // But if the object is the selected object, the points from this object have the highest priority.
               targetObjIndex = i;
@@ -681,7 +725,7 @@ class Editor {
               } else {
                 results.push({ dragContext: dragContext, targetObjIndex: targetObjIndex });
               }
-              if (targetObjIndex == selectedObj) targetIsSelected = true;
+              if (targetObjIndex == this.selectedObjIndex) targetIsSelected = true;
             }
           } else if (!targetIsPoint) {
             // If not clicking a point, and until now not clicking any point
@@ -709,15 +753,15 @@ class Editor {
    * @param {ControlPoint[]} controlPoints - The control points to add.
    */
   addControlPointsForHandle(controlPoints) {
-    if (!(scene.objs[0].constructor.type == "Handle" && scene.objs[0].notDone)) {
-      scene.unshiftObj(new objTypes["Handle"](scene, { notDone: true }));
-      if (selectedObj >= 0) selectedObj++;
+    if (!(this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone)) {
+      this.scene.unshiftObj(new objTypes["Handle"](this.scene, { notDone: true }));
+      if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
       for (var i in controlPoints) {
         controlPoints[i].targetObjIndex++;
       }
     }
     for (var i in controlPoints) {
-      scene.objs[0].addControlPoint(controlPoints[i]);
+      this.scene.objs[0].addControlPoint(controlPoints[i]);
     }
     simulator.updateSimulation(true, true);
   }
@@ -727,7 +771,7 @@ class Editor {
    * @param {Point} point - The point for the position of the handle.
    */
   finishHandleCreation(point) {
-    scene.objs[0].finishHandle(point);
+    this.scene.objs[0].finishHandle(point);
     simulator.updateSimulation(true, true);
   }
 
@@ -743,35 +787,35 @@ class Editor {
       objBar.pendingEvent = null;
     }
   
-    if (index < 0 || index >= scene.objs.length) {
+    if (index < 0 || index >= this.scene.objs.length) {
       // If this object does not exist
-      selectedObj = -1;
+      this.selectedObjIndex = -1;
       document.getElementById('obj_bar').style.display = 'none';
       showAdvancedOn = false;
       return;
     }
-    selectedObj = index;
-    if (scene.objs[index].constructor.type == 'Handle') {
+    this.selectedObjIndex = index;
+    if (this.scene.objs[index].constructor.type == 'Handle') {
       document.getElementById('obj_bar').style.display = 'none';
       return;
     }
-    document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[index].constructor.type);
+    document.getElementById('obj_name').innerHTML = getMsg('toolname_' + this.scene.objs[index].constructor.type);
     document.getElementById('showAdvanced').style.display = 'none';
     document.getElementById('showAdvanced_mobile_container').style.display = 'none';
   
     document.getElementById('obj_bar_main').style.display = '';
     document.getElementById('obj_bar_main').innerHTML = '';
-    scene.objs[index].populateObjBar(objBar);
+    this.scene.objs[index].populateObjBar(objBar);
   
     if (document.getElementById('obj_bar_main').innerHTML != '') {
-      for (var i = 0; i < scene.objs.length; i++) {
-        if (i != selectedObj && scene.objs[i].constructor.type == scene.objs[selectedObj].constructor.type) {
+      for (var i = 0; i < this.scene.objs.length; i++) {
+        if (i != this.selectedObjIndex && this.scene.objs[i].constructor.type == this.scene.objs[this.selectedObjIndex].constructor.type) {
           // If there is an object with the same type, then show "Apply to All"
           document.getElementById('apply_to_all_box').style.display = '';
           document.getElementById('apply_to_all_mobile_container').style.display = '';
           break;
         }
-        if (i == scene.objs.length - 1) {
+        if (i == this.scene.objs.length - 1) {
           document.getElementById('apply_to_all_box').style.display = 'none';
           document.getElementById('apply_to_all_mobile_container').style.display = 'none';
         }
@@ -794,16 +838,16 @@ class Editor {
     var xyData = JSON.parse('[' + document.getElementById('xybox').value.replace(/\(|\)/g, '') + ']');
     // Only do the action when the user enter two numbers (coordinates)
     if (xyData.length == 2) {
-      if (positioningObj == -4) {
+      if (this.positioningObjIndex == -4) {
         // Observer
-        scene.observer.c.x = xyData[0];
-        scene.observer.c.y = xyData[1];
+        this.scene.observer.c.x = xyData[0];
+        this.scene.observer.c.y = xyData[1];
         simulator.updateSimulation(false, true);
       }
       else {
         // Object
-        scene.objs[positioningObj].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), scene, editor.lastDeviceIsTouch, 2), dragContext, ctrl, shift);
-        simulator.updateSimulation(!scene.objs[positioningObj].constructor.isOptical, true);
+        this.scene.objs[this.positioningObjIndex].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), this.scene, this.lastDeviceIsTouch, 2), this.dragContext, ctrl, shift);
+        simulator.updateSimulation(!this.scene.objs[this.positioningObjIndex].constructor.isOptical, true);
       }
   
       this.createUndoPoint();
@@ -817,8 +861,8 @@ class Editor {
    */
   endPositioning() {
     document.getElementById('xybox').style.display = 'none';
-    positioningObj = -1;
-    dragContext = {};
+    this.positioningObjIndex = -1;
+    this.dragContext = {};
   }
   
   /**
@@ -826,11 +870,11 @@ class Editor {
    * @param {number} index - The index of the object to remove.
    */
   removeObj(index) {
-    isConstructing = false;
-    scene.removeObj(index);
+    this.isConstructing = false;
+    this.scene.removeObj(index);
   
-    selectedObj--;
-    this.selectObj(selectedObj);
+    this.selectedObjIndex--;
+    this.selectObj(this.selectedObjIndex);
   }
 
   /**
@@ -838,16 +882,16 @@ class Editor {
    */
   createUndoPoint() {
     JSONOutput();
-    undoIndex = (undoIndex + 1) % undoLimit;
-    undoUBound = undoIndex;
+    this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
+    this.undoUBound = this.undoIndex;
     document.getElementById('undo').disabled = false;
     document.getElementById('redo').disabled = true;
     document.getElementById('undo_mobile').disabled = false;
     document.getElementById('redo_mobile').disabled = true;
-    undoArr[undoIndex] = latestJsonCode;
-    if (undoUBound == undoLBound) {
+    this.undoData[this.undoIndex] = latestJsonCode;
+    if (this.undoUBound == this.undoLBound) {
       // The limit of undo is reached
-      undoLBound = (undoLBound + 1) % undoLimit;
+      this.undoLBound = (this.undoLBound + 1) % Editor.UNDO_LIMIT;
     }
     hasUnsavedChange = true;
   }
@@ -856,31 +900,31 @@ class Editor {
    * Undo the last edit.
    */
   undo() {
-    if (isConstructing) {
-      const constructingObjType = scene.objs[scene.objs.length - 1].constructor.type;
-      const ret = scene.objs[scene.objs.length - 1].onConstructUndo();
+    if (this.isConstructing) {
+      const constructingObjType = this.scene.objs[this.scene.objs.length - 1].constructor.type;
+      const ret = this.scene.objs[this.scene.objs.length - 1].onConstructUndo();
       if (ret && ret.isCancelled) {
-        isConstructing = false;
-        scene.objs.length--;
+        this.isConstructing = false;
+        this.scene.objs.length--;
         this.selectObj(-1);
       }
       simulator.updateSimulation(!objTypes[constructingObjType].isOptical, true);
       return;
     }
-    if (positioningObj != -1) {
+    if (this.positioningObjIndex != -1) {
       // If the user is entering coordinates when clicked the undo, then only stop the coordinates entering rather than do the real undo
       this.endPositioning();
       return;
     }
-    if (undoIndex == undoLBound)
+    if (this.undoIndex == this.undoLBound)
       // The lower bound of undo data is reached
       return;
-    undoIndex = (undoIndex + (undoLimit - 1)) % undoLimit;
-    latestJsonCode = undoArr[undoIndex];
+    this.undoIndex = (this.undoIndex + (Editor.UNDO_LIMIT - 1)) % Editor.UNDO_LIMIT;
+    latestJsonCode = this.undoData[this.undoIndex];
     JSONInput();
     document.getElementById('redo').disabled = false;
     document.getElementById('redo_mobile').disabled = false;
-    if (undoIndex == undoLBound) {
+    if (this.undoIndex == this.undoLBound) {
       // The lower bound of undo data is reached
       document.getElementById('undo').disabled = true;
       document.getElementById('undo_mobile').disabled = true;
@@ -896,17 +940,17 @@ class Editor {
    * Redo the last edit.
    */
   redo() {
-    isConstructing = false;
+    this.isConstructing = false;
     this.endPositioning();
-    if (undoIndex == undoUBound)
+    if (this.undoIndex == this.undoUBound)
       // The lower bound of undo data is reached
       return;
-    undoIndex = (undoIndex + 1) % undoLimit;
-    latestJsonCode = undoArr[undoIndex];
+    this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
+    latestJsonCode = this.undoData[this.undoIndex];
     JSONInput();
     document.getElementById('undo').disabled = false;
     document.getElementById('undo_mobile').disabled = false;
-    if (undoIndex == undoUBound) {
+    if (this.undoIndex == this.undoUBound) {
       // The lower bound of undo data is reached
       document.getElementById('redo').disabled = true;
       document.getElementById('redo_mobile').disabled = true;
@@ -920,34 +964,11 @@ class Editor {
   
 }
 
-
-var mousePos; // Position of the mouse
-var mousePos_lastmousedown; // Position of the mouse the last time when the user clicked
-var isConstructing = false; // The user is constructing a new object
-var draggingObj = -1; // Object index in drag (-1 for no drag, -3 for the entire picture, -4 for observer)
-var positioningObj = -1; // Object index in entering the coordinates (-1 for none, -4 for observer)
-var dragContext = {}; // The part in drag and some mouse position data
-var selectedObj = -1; // The index of the selected object (-1 for none)
-var mouseObj = -1;
-var AddingObjType = ''; // The type of the object to add when user click the canvas
-var addingModuleName = '';
 var latestJsonCode = ''; // The latest JSON code
-var undoArr = []; // Undo data
-var undoIndex = 0; // Current undo position
-var undoLimit = 20; // Limit of undo
-var undoUBound = 0; // Current upper bound of undo data
-var undoLBound = 0; // Current lower bound of undo data
-
-var pendingControlPointSelection = false;
-var pendingControlPoints;
 
 
 
 
 
-
-
-var lastZoomTime = 0;
-var zoomThrottle = 100; // 100 ms between zooms
 
 

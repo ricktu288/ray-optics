@@ -397,7 +397,7 @@ function updateModuleObjsMenu() {
           document.getElementById('moreToolsDropdown').classList.add('selected');
           document.getElementById('mobile-dropdown-trigger-more').classList.add('selected');
           toolbtn_clicked('ModuleObj');
-          addingModuleName = moduleName;
+          editor.addingModuleName = moduleName;
         }
       });
 
@@ -432,7 +432,7 @@ function updateModuleObjsMenu() {
       removeButton.addEventListener('click', function() {
         console.log(moduleName);
         scene.removeModule(moduleName);
-        if (AddingObjType == 'ModuleObj' && addingModuleName == moduleName) {
+        if (editor.addingObjType == 'ModuleObj' && editor.addingModuleName == moduleName) {
           toolbtn_clicked('');  // Deselect the module object tool
         }
         simulator.updateSimulation(false, true);

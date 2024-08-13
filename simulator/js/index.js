@@ -37,10 +37,6 @@ window.onload = function (e) {
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
 
-
-
-  mousePos = geometry.point(0, 0);
-
   objBar = new ObjBar(document.getElementById('obj_bar_main'));
 
   objBar.on('showAdvancedEnabled', function (enabled) {
@@ -54,7 +50,7 @@ window.onload = function (e) {
   });
 
   objBar.on('edit', function () {
-    simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+    simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
   });
 
   objBar.on('editEnd', function () {
@@ -62,7 +58,7 @@ window.onload = function (e) {
   });
 
   objBar.on('requireUpdate', function () {
-    editor.selectObj(selectedObj);
+    editor.selectObj(editor.selectedObjIndex);
   });
 
   document.getElementById('apply_to_all').addEventListener('change', function () {
@@ -106,7 +102,7 @@ window.onload = function (e) {
   init();
 
   JSONOutput();
-  undoArr[0] = latestJsonCode;
+  editor.undoData[0] = latestJsonCode;
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
 
@@ -144,13 +140,13 @@ window.onload = function (e) {
     }
     //Ctrl+D
     if (e.ctrlKey && e.keyCode == 68) {
-      if (scene.objs[selectedObj].constructor.type == 'Handle') {
-        scene.cloneObjsByHandle(selectedObj);
+      if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
+        scene.cloneObjsByHandle(editor.selectedObjIndex);
       } else {
-        scene.cloneObj(selectedObj);
+        scene.cloneObj(editor.selectedObjIndex);
       }
 
-      simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+      simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
       editor.createUndoPoint();
       return false;
     }
@@ -173,7 +169,7 @@ window.onload = function (e) {
 
     //esc
     if (e.keyCode == 27) {
-      if (isConstructing) {
+      if (editor.isConstructing) {
         editor.undo();
       }
     }
@@ -196,43 +192,32 @@ window.onload = function (e) {
     */
     //Delete
     if (e.keyCode == 46 || e.keyCode == 8) {
-      if (selectedObj != -1) {
-        var selectedObjType = scene.objs[selectedObj].constructor.type;
-        removeObj(selectedObj);
+      if (editor.selectedObjIndex != -1) {
+        var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
+        editor.removeObj(editor.selectedObjIndex);
         simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
         editor.createUndoPoint();
       }
       return false;
     }
 
-    //Ctrl
-    /*
-    if(e.keyCode==17)
-    {
-      if(draggingObj!=-1)
-      {
-        canvas_onmousemove(e,true);
-      }
-    }
-    */
-
     //Arrow Keys
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       var step = scene.snapToGrid ? scene.gridSize : 1;
-      if (selectedObj >= 0) {
+      if (editor.selectedObjIndex >= 0) {
         if (e.keyCode == 37) {
-          scene.objs[selectedObj].move(-step, 0);
+          scene.objs[editor.selectedObjIndex].move(-step, 0);
         }
         if (e.keyCode == 38) {
-          scene.objs[selectedObj].move(0, -step);
+          scene.objs[editor.selectedObjIndex].move(0, -step);
         }
         if (e.keyCode == 39) {
-          scene.objs[selectedObj].move(step, 0);
+          scene.objs[editor.selectedObjIndex].move(step, 0);
         }
         if (e.keyCode == 40) {
-          scene.objs[selectedObj].move(0, step);
+          scene.objs[editor.selectedObjIndex].move(0, step);
         }
-        simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
       }
       else if (scene.mode == 'observer') {
         if (e.keyCode == 37) {
@@ -348,7 +333,7 @@ window.onload = function (e) {
     scene.simulateColors = this.checked;
     document.getElementById('simulateColors').checked = scene.simulateColors;
     document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-    editor.selectObj(selectedObj);
+    editor.selectObj(editor.selectedObjIndex);
     this.blur();
     simulator.updateSimulation(false, true);
     editor.createUndoPoint();
@@ -626,17 +611,17 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.cloneObj(selectedObj).move(scene.gridSize, scene.gridSize);
+    scene.cloneObj(editor.selectedObjIndex).move(scene.gridSize, scene.gridSize);
     editor.selectObj(scene.objs.length - 1);
-    simulator.updateSimulation(!scene.objs[selectedObj].constructor.isOptical, true);
+    simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
     editor.createUndoPoint();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
-    var selectedObjType = scene.objs[selectedObj].constructor.type;
+    var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
     this.blur();
-    removeObj(selectedObj);
+    editor.removeObj(editor.selectedObjIndex);
     simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
     editor.createUndoPoint();
   };
@@ -651,7 +636,7 @@ window.onload = function (e) {
 
   document.getElementById('showAdvanced').onclick = function () {
     showAdvancedOn = true;
-    editor.selectObj(selectedObj);
+    editor.selectObj(editor.selectedObjIndex);
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
@@ -718,7 +703,7 @@ window.onload = function (e) {
     else {
       var fileString = dt.getData('text');
       latestJsonCode = fileString;
-      selectedObj = -1;
+      editor.selectedObjIndex = -1;
       JSONInput();
       editor.createUndoPoint();
     }
@@ -865,7 +850,7 @@ function init() {
   document.title = getMsg('appName');
   document.getElementById('save_name').value = "";
 
-  isConstructing = false;
+  editor.isConstructing = false;
   editor.endPositioning();
 
   scene.backgroundImage = null;
@@ -1073,7 +1058,7 @@ function JSONInput() {
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-      editor.selectObj(selectedObj);
+      editor.selectObj(editor.selectedObjIndex);
       simulator.updateSimulation();
     } else {
       // Partial update (e.g. when the background image is loaded)
@@ -1089,7 +1074,7 @@ function toolbtn_clicked(tool, e) {
   if (tool != "") {
     document.getElementById('welcome').style.display = 'none';
   }
-  AddingObjType = tool;
+  editor.addingObjType = tool;
 }
 
 
@@ -1168,7 +1153,7 @@ function openFile(readFile) {
       // Load the scene file
       latestJsonCode = fileString;
       editor.endPositioning();
-      selectedObj = -1;
+      editor.selectedObjIndex = -1;
       JSONInput();
       hasUnsavedChange = false;
       editor.createUndoPoint();

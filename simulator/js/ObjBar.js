@@ -481,9 +481,9 @@ class ObjBar {
     const self = this;
 
     button.onclick = function () {
-      const isOptical = scene.objs[selectedObj].constructor.isOptical;
+      const isOptical = scene.objs[editor.selectedObjIndex].constructor.isOptical;
       this.blur();
-      func(scene.objs[selectedObj]);
+      func(scene.objs[editor.selectedObjIndex]);
       if (updateOnChange) {
         self.emit('requireUpdate', null);
       }
@@ -542,11 +542,11 @@ class ObjBar {
    */
   setOption(func) {
     if (!this.shouldApplyToAll) {
-      func(scene.objs[selectedObj]);
+      func(scene.objs[editor.selectedObjIndex]);
     }
     else {
       for (var i = 0; i < scene.objs.length; i++) {
-        if (scene.objs[i].constructor.type == scene.objs[selectedObj].constructor.type) {
+        if (scene.objs[i].constructor.type == scene.objs[editor.selectedObjIndex].constructor.type) {
           func(scene.objs[i]);
         }
       }

@@ -237,7 +237,13 @@ class Simulator {
       // Draw the objects
       for (var j = 0; j < this.scene.objs.length; j++) {
         var i = mapped[j].index;
-        this.scene.objs[i].draw((!this.ctxBelowLight) ? this.canvasRendererMain : this.canvasRendererBelowLight, false, this.scene.objs[i] === mouseObj);
+        
+        if (this.scene.editor) {
+          var isHovered = this.scene.editor.hoveredObjIndex === i;
+        } else {
+          var isHovered = false;
+        }
+        this.scene.objs[i].draw((!this.ctxBelowLight) ? this.canvasRendererMain : this.canvasRendererBelowLight, false, isHovered);
 
       }
 
@@ -279,7 +285,12 @@ class Simulator {
       // Draw the "above light" layer of this.scene.objs. Note that we only draw this when skipLight is true because otherwise processRays() will be called and the "above light" layer will still be drawn, since draw() is called again in processRays() with skipLight set to true.
 
       for (var i = 0; i < this.scene.objs.length; i++) {
-        this.scene.objs[i].draw((!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight, true, this.scene.objs[i] === mouseObj); // Draw this.scene.objs[i]
+        if (this.scene.editor) {
+          var isHovered = this.scene.editor.hoveredObjIndex === i;
+        } else {
+          var isHovered = false;
+        }
+        this.scene.objs[i].draw((!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight, true, isHovered); // Draw this.scene.objs[i]
       }
       if (this.scene.mode == 'observer') {
         // Draw the observer
