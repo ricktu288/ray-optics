@@ -3,8 +3,13 @@ class Editor {
   /**
    * The limit of the undo data.
    */
-  static UNDO_LIMIT = 20;
-  
+  static UNDO_LIMIT = 50;
+
+  /**
+   * The minimal interval between two undo points.
+   */
+  static UNDO_INTERVAL = 250;
+
   /**
    * @typedef {Object} DragContext
    * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
@@ -64,7 +69,13 @@ class Editor {
     this.addingObjType = '';
 
     /** @property {string[]} undoData - The data for undoing, where each element is a JSON string representing the scene. */
-    this.undoData = [];
+    this.undoData = [scene.toJSON()];
+
+    /** @property {Date} lastActionTime - The time when the last undo data is pushed. */
+    this.lastActionTime = new Date();
+
+    /** @property {string} lastActionJson - The JSON string representing the scene when the last undo data is pushed. */
+    this.lastActionJson = scene.toJSON();
 
     /** @property {number} undoIndex - The index of the undo data currently displayed. */
     this.undoIndex = 0;
@@ -86,6 +97,9 @@ class Editor {
 
     /** @property {object} eventListeners - The event listeners of the editor. */
     this.eventListeners = {};
+
+    /** @property {number} delayedValidationTimerId - The ID of the timer for performing a delayed validation. */
+    this.delayedValidationTimerId = -1;
 
     this.initCanvas();
   }
@@ -110,7 +124,7 @@ class Editor {
       }
 
       self.canvas.focus();
-      self.handleCanvasMouseDown(e);
+      self.onCanvasMouseDown(e);
     });
 
     this.canvas.addEventListener('mousemove', function (e) {
@@ -123,7 +137,7 @@ class Editor {
         return;
       }
 
-      self.handleCanvasMouseMove(e);
+      self.onCanvasMouseMove(e);
     });
 
     this.canvas.addEventListener('mouseup', function (e) {
@@ -136,14 +150,14 @@ class Editor {
       }
 
       //console.log("mouseup");
-      self.handleCanvasMouseUp(e);
+      self.onCanvasMouseUp(e);
     });
 
     this.canvas.addEventListener('mouseout', function (e) {
       if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
       self.lastDeviceIsTouch = false;
       if (self.draggingObjIndex != -1) {
-        self.handleCanvasMouseUp(e);
+        self.onCanvasMouseUp(e);
       }
       self.hoveredObjIndex = -1;
       document.getElementById('mouseCoordinates').innerHTML = "";
@@ -153,12 +167,12 @@ class Editor {
 
     let lastZoomTime = 0;
     let zoomThrottle = 100; // 100 ms between zooms
-    
-    this.canvas.addEventListener('wheel', function(e) {
+
+    this.canvas.addEventListener('wheel', function (e) {
       var now = Date.now();
       if (now - lastZoomTime < zoomThrottle) return; // Too soon since the last zoom
       lastZoomTime = now;
-    
+
       // cross-browser wheel delta
       var e = window.event || e; // old IE support
       var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
@@ -170,9 +184,9 @@ class Editor {
       }
       d = Math.max(0.25, Math.min(5.00, d)) * 100;
       setScaleWithCenter(d / self.scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / self.scene.scale, (e.pageY - e.target.offsetTop) / self.scene.scale);
-      JSONOutput();
+      self.onActionComplete();
       //window.toolBarViewModel.zoom.value(d);
-      self.handleCanvasMouseMove(e);
+      self.onCanvasMouseMove(e);
       return false;
     }, false);
 
@@ -191,16 +205,16 @@ class Editor {
         lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
         lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
         if (self.isConstructing || self.draggingObjIndex >= 0) {
-          self.handleCanvasMouseUp(e);
+          self.onCanvasMouseUp(e);
           self.undo();
         } else {
-          self.handleCanvasMouseUp(e);
+          self.onCanvasMouseUp(e);
         }
       } else {
         //console.log("touchstart");
         self.canvas.focus();
-        self.handleCanvasMouseMove(e);
-        self.handleCanvasMouseDown(e);
+        self.onCanvasMouseMove(e);
+        self.onCanvasMouseDown(e);
       }
     });
 
@@ -254,7 +268,7 @@ class Editor {
         lastY = y;
 
       } else {
-        self.handleCanvasMouseMove(e);
+        self.onCanvasMouseMove(e);
       }
     });
 
@@ -265,8 +279,8 @@ class Editor {
       //console.log("touchend");
       if (e.touches.length < 2) {
         initialPinchDistance = null;
-        self.handleCanvasMouseUp(e);
-        JSONOutput();
+        self.onCanvasMouseUp(e);
+        self.onActionComplete();
       }
     });
 
@@ -277,16 +291,16 @@ class Editor {
       //console.log("touchcancel");
       initialPinchDistance = null;
       if (self.isConstructing || self.draggingObjIndex >= 0) {
-        self.handleCanvasMouseUp(e);
+        self.onCanvasMouseUp(e);
         self.undo();
       } else {
-        self.handleCanvasMouseUp(e);
+        self.onCanvasMouseUp(e);
       }
     });
 
     this.canvas.addEventListener('dblclick', function (e) {
       if (self.scene.error) return;
-      self.handleCanvasDblClick(e);
+      self.onCanvasDblClick(e);
     });
   }
 
@@ -317,7 +331,7 @@ class Editor {
    * Handle the equivalent of the mousedown event on the canvas, which can be triggered by both mouse and single touch.
    * @param {MouseEvent} e - The event.
    */
-  handleCanvasMouseDown(e) {
+  onCanvasMouseDown(e) {
     if (e.changedTouches) {
       var et = e.changedTouches[0];
     } else {
@@ -331,21 +345,21 @@ class Editor {
         return;
       }
     }
-  
-  
+
+
     if (!((e.which && (e.which == 1 || e.which == 3)) || (e.changedTouches))) {
       return;
     }
-  
+
     if (this.scene.snapToGrid) {
       this.mousePos = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize);
-  
+
     }
     else {
       this.mousePos = mousePos_nogrid;
     }
-  
-  
+
+
     if (this.isConstructing) {
       if ((e.which && e.which == 1) || (e.changedTouches)) {
         // Only react for left click
@@ -366,9 +380,9 @@ class Editor {
     else {
       // lockObjs prevents selection, but alt overrides it
       if ((!(this.scene.lockObjs) != (e.altKey && this.addingObjType != '')) && !(e.which == 3)) {
-  
+
         this.dragContext = {};
-  
+
         if (this.scene.mode == 'observer') {
           if (geometry.distanceSquared(mousePos_nogrid, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
             // The mousePos clicked the observer
@@ -380,7 +394,7 @@ class Editor {
             return;
           }
         }
-  
+
         var rets = this.selectionSearch(mousePos_nogrid);
         var ret = rets[0];
         if (ret.targetObjIndex != -1) {
@@ -401,7 +415,7 @@ class Editor {
           return;
         }
       }
-  
+
       if (this.draggingObjIndex == -1) {
         // The mousePos clicked the blank area
         if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
@@ -429,7 +443,7 @@ class Editor {
             }
           }
           this.scene.pushObj(new objTypes[this.addingObjType](this.scene, referenceObj));
-  
+
           const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
           if (ret && ret.isDone) {
             this.isConstructing = false;
@@ -445,7 +459,7 @@ class Editor {
    * Handle the equivalent of the mousemove event on the canvas, which can be triggered by both mouse and single touch.
    * @param {MouseEvent} e - The event.
    */
-  handleCanvasMouseMove(e) {
+  onCanvasMouseMove(e) {
 
     this.pendingControlPointSelection = false;
     if (e.changedTouches) {
@@ -461,7 +475,7 @@ class Editor {
     else {
       mousePos2 = mousePos_nogrid;
     }
-  
+
     if (!this.isConstructing && this.draggingObjIndex == -1 && !this.scene.lockObjs) {
       // highlight object under mousePos cursor
       var ret = this.selectionSearch(mousePos_nogrid)[0];
@@ -488,20 +502,20 @@ class Editor {
         }
       }
     }
-  
+
     if (mousePos2.x == this.mousePos.x && mousePos2.y == this.mousePos.y) {
       return;
     }
     this.mousePos = mousePos2;
-  
-  
+
+
     const mousePosDigits = Math.max(Math.round(Math.log10(this.scene.scale)), 0);
     document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + this.mousePos.x.toFixed(mousePosDigits) + ", " + this.mousePos.y.toFixed(mousePosDigits) + ")";
 
     if (this.isConstructing) {
       // highlight object being constructed
       this.hoveredObjIndex = this.scene.objs.length - 1;
-  
+
       // If some object is being created, pass the action to it
       const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseMove(new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
@@ -521,26 +535,26 @@ class Editor {
           var mousePos_snapped = this.mousePos;
           this.dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
         }
-  
+
         var mouseDiffX = (mousePos_snapped.x - this.dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
         var mouseDiffY = (mousePos_snapped.y - this.dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
-  
+
         this.scene.observer.c.x += mouseDiffX;
         this.scene.observer.c.y += mouseDiffY;
-  
+
         // Update the mouse position
         this.dragContext.mousePos1 = mousePos_snapped;
         simulator.updateSimulation(false, true);
       }
-  
+
       if (this.draggingObjIndex >= 0) {
         // Here the mouse is dragging an object
-  
+
         this.scene.objs[this.draggingObjIndex].onDrag(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch, e.altKey * 1), this.dragContext, e.ctrlKey, e.shiftKey);
         // If dragging an entire object, then when Ctrl is hold, clone the object
         if (this.dragContext.part == 0) {
           if (e.ctrlKey && !this.dragContext.hasDuplicated) {
-  
+
             this.scene.pushObj(new objTypes[this.scene.objs[this.draggingObjIndex].constructor.type](this.scene, this.dragContext.originalObj));
             this.dragContext.hasDuplicated = true;
           }
@@ -549,26 +563,26 @@ class Editor {
             this.dragContext.hasDuplicated = false;
           }
         }
-  
+
         simulator.updateSimulation(!this.scene.objs[this.draggingObjIndex].constructor.isOptical, true);
-  
+
         if (this.dragContext.requiresObjBarUpdate) {
           this.selectObj(this.selectedObjIndex);
         }
       }
-  
+
       if (this.draggingObjIndex == -3 && this.dragContext.mousePos1) {
         // Move the entire scene
         // Here mousePos is the currect mouse position, dragContext.mousePos1 is the mouse position at the previous moment
-  
+
         var mouseDiffX = (this.mousePos.x - this.dragContext.mousePos1.x); // The X difference between the mouse position now and at the previous moment
         var mouseDiffY = (this.mousePos.y - this.dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
         this.scene.origin.x = mouseDiffX * this.scene.scale + this.dragContext.mousePos2.x;
         this.scene.origin.y = mouseDiffY * this.scene.scale + this.dragContext.mousePos2.y;
         simulator.updateSimulation();
       }
-  
-  
+
+
     }
   }
 
@@ -576,7 +590,7 @@ class Editor {
    * Handle the equivalent of the mouseup event on the canvas, which can be triggered by both mouse and single touch.
    * @param {MouseEvent} e - The event.
    */
-  handleCanvasMouseUp(e) {
+  onCanvasMouseUp(e) {
     if (this.isConstructing) {
       if ((e.which && e.which == 1) || (e.changedTouches)) {
         // If an object is being created, pass the action to it
@@ -590,7 +604,7 @@ class Editor {
         simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
         if (!this.isConstructing) {
           // The object says the contruction is done
-          this.createUndoPoint();
+          this.onActionComplete();
           if (document.getElementById('lockObjs').checked) {
             this.hoveredObjIndex = -1;
             simulator.updateSimulation(true, true);
@@ -606,20 +620,14 @@ class Editor {
       if (e.which && e.which == 3 && this.draggingObjIndex == -3 && this.mousePos.x == this.dragContext.mousePos0.x && this.mousePos.y == this.dragContext.mousePos0.y) {
         this.draggingObjIndex = -1;
         this.dragContext = {};
-        JSONOutput();
-        this.handleCanvasDblClick(e);
+        this.onCanvasDblClick(e);
         return;
       }
-      if (this.draggingObjIndex != -3) {
-        this.createUndoPoint();
-      } else {
-        // If user is moving the view, do not create undo point, but still updating the JSON code.
-        JSONOutput();
-      }
+      this.onActionComplete();
       this.draggingObjIndex = -1;
       this.dragContext = {};
     }
-  
+
   }
 
 
@@ -627,7 +635,7 @@ class Editor {
    * Handle the equivalent of the dblclick event on the canvas.
    * @param {MouseEvent} e - The event.
    */
-  handleCanvasDblClick(e) {
+  onCanvasDblClick(e) {
     //console.log("dblclick");
     this.mousePos = geometry.point((e.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (e.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse (never use grid here)
     if (this.isConstructing) {
@@ -636,13 +644,13 @@ class Editor {
       this.dragContext = {};
       if (this.scene.mode == 'observer') {
         if (geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
-  
+
           // The mousePos clicked the observer
           this.positioningObjIndex = -4;
           this.dragContext = {};
           this.dragContext.targetPoint = geometry.point(this.scene.observer.c.x, this.scene.observer.c.y);
           this.dragContext.snapContext = {};
-  
+
           document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
           document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
           document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
@@ -652,20 +660,20 @@ class Editor {
           document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
           //console.log("show xybox");
           xyBox_cancelContextMenu = true;
-  
+
           return;
         }
       }
-  
+
       var ret = this.selectionSearch(this.mousePos)[0];
       if (ret.targetObjIndex != -1 && ret.dragContext.targetPoint) {
         this.selectObj(ret.targetObjIndex);
         this.dragContext = ret.dragContext;
         this.dragContext.originalObj = this.scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
-  
+
         this.dragContext.hasDuplicated = false;
         this.positioningObjIndex = ret.targetObjIndex;
-  
+
         document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
         document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
         document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
@@ -677,7 +685,7 @@ class Editor {
         xyBox_cancelContextMenu = true;
       }
     }
-  
+
   }
 
   /**
@@ -700,13 +708,13 @@ class Editor {
     var dragContext;
     var targetIsSelected = false;
     var results = [];
-  
+
     for (var i = 0; i < this.scene.objs.length; i++) {
       if (typeof this.scene.objs[i] != 'undefined') {
         let dragContext_ = this.scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
         if (dragContext_) {
           // the mouse is over the object
-  
+
           if (dragContext_.targetPoint || dragContext_.targetPoint_) {
             // The mousePos clicked a point
             if (!targetIsPoint) {
@@ -786,7 +794,7 @@ class Editor {
       objBar.pendingEvent();
       objBar.pendingEvent = null;
     }
-  
+
     if (index < 0 || index >= this.scene.objs.length) {
       // If this object does not exist
       this.selectedObjIndex = -1;
@@ -802,11 +810,11 @@ class Editor {
     document.getElementById('obj_name').innerHTML = getMsg('toolname_' + this.scene.objs[index].constructor.type);
     document.getElementById('showAdvanced').style.display = 'none';
     document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-  
+
     document.getElementById('obj_bar_main').style.display = '';
     document.getElementById('obj_bar_main').innerHTML = '';
     this.scene.objs[index].populateObjBar(objBar);
-  
+
     if (document.getElementById('obj_bar_main').innerHTML != '') {
       for (var i = 0; i < this.scene.objs.length; i++) {
         if (i != this.selectedObjIndex && this.scene.objs[i].constructor.type == this.scene.objs[this.selectedObjIndex].constructor.type) {
@@ -824,8 +832,8 @@ class Editor {
       document.getElementById('apply_to_all_box').style.display = 'none';
       document.getElementById('apply_to_all_mobile_container').style.display = 'none';
     }
-  
-  
+
+
     document.getElementById('obj_bar').style.display = '';
   }
 
@@ -849,10 +857,10 @@ class Editor {
         this.scene.objs[this.positioningObjIndex].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), this.scene, this.lastDeviceIsTouch, 2), this.dragContext, ctrl, shift);
         simulator.updateSimulation(!this.scene.objs[this.positioningObjIndex].constructor.isOptical, true);
       }
-  
-      this.createUndoPoint();
+
+      this.onActionComplete();
     }
-  
+
     this.endPositioning();
   }
 
@@ -864,7 +872,7 @@ class Editor {
     this.positioningObjIndex = -1;
     this.dragContext = {};
   }
-  
+
   /**
    * Remove an object.
    * @param {number} index - The index of the object to remove.
@@ -872,28 +880,142 @@ class Editor {
   removeObj(index) {
     this.isConstructing = false;
     this.scene.removeObj(index);
-  
+
     this.selectedObjIndex--;
     this.selectObj(this.selectedObjIndex);
   }
 
   /**
-   * Create an undo point.
+   * Load a JSON string of the scene to the editor.
+   * @param {string} json - The JSON string of the scene.
    */
-  createUndoPoint() {
-    JSONOutput();
-    this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
-    this.undoUBound = this.undoIndex;
-    document.getElementById('undo').disabled = false;
-    document.getElementById('redo').disabled = true;
-    document.getElementById('undo_mobile').disabled = false;
-    document.getElementById('redo_mobile').disabled = true;
-    this.undoData[this.undoIndex] = latestJsonCode;
-    if (this.undoUBound == this.undoLBound) {
-      // The limit of undo is reached
-      this.undoLBound = (this.undoLBound + 1) % Editor.UNDO_LIMIT;
+  loadJSON(json) {
+    document.getElementById('welcome').style.display = 'none';
+
+    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
+    scene.loadJSON(json, function (needFullUpdate, completed) {
+      if (needFullUpdate) {
+        // Update the UI for the loaded scene.
+  
+        if (scene.name) {
+          document.title = scene.name + " - " + getMsg("appName");
+          document.getElementById('save_name').value = scene.name;
+        } else {
+          document.title = getMsg("appName");
+        }
+  
+        if (Object.keys(scene.modules).length > 0) {
+          updateModuleObjsMenu();
+        }
+  
+        document.getElementById('showGrid').checked = scene.showGrid;
+        document.getElementById('showGrid_more').checked = scene.showGrid;
+        document.getElementById('showGrid_mobile').checked = scene.showGrid;
+  
+        document.getElementById('snapToGrid').checked = scene.snapToGrid;
+        document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
+        document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
+  
+        document.getElementById('lockObjs').checked = scene.lockObjs;
+        document.getElementById('lockObjs_more').checked = scene.lockObjs;
+        document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
+  
+        if (scene.observer) {
+          document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+          document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+        } else {
+          document.getElementById('observer_size').value = 40;
+          document.getElementById('observer_size_mobile').value = 40;
+        }
+  
+        document.getElementById('gridSize').value = scene.gridSize;
+        document.getElementById('gridSize_mobile').value = scene.gridSize;
+  
+        document.getElementById('lengthScale').value = scene.lengthScale;
+        document.getElementById('lengthScale_mobile').value = scene.lengthScale;
+  
+        document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+        document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+        document.getElementById('simulateColors').checked = scene.simulateColors;
+        document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
+        modebtn_clicked(scene.mode);
+        document.getElementById('mode_' + scene.mode).checked = true;
+        document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+        editor.selectObj(editor.selectedObjIndex);
+        simulator.updateSimulation();
+      } else {
+        // Partial update (e.g. when the background image is loaded)
+        setTimeout(function () {
+          simulator.updateSimulation(true, true);
+        }, 1);
+      }
+    });
+    this.selectObj(-1);
+    this.lastActionJson = json;
+    simulator.updateSimulation();
+  }
+
+  /**
+   * Called when a change (action) is completed. This function will update the undo data, sync the JSON editor, etc.
+   */
+  onActionComplete() {
+    if (this.scene.error) {
+      return;
     }
+
+    const newJSON = this.scene.toJSON();
+    if (aceEditor && newJSON != this.lastActionJson && !aceEditor.isFocused()) {
+
+      // Calculate the position of the first and last character that has changed
+      var minLen = Math.min(newJSON.length, this.lastActionJson.length);
+      var startChar = 0;
+      while (startChar < minLen && newJSON[startChar] == this.lastActionJson[startChar]) {
+        startChar++;
+      }
+      var endChar = 0;
+      while (endChar < minLen && newJSON[newJSON.length - 1 - endChar] == this.lastActionJson[this.lastActionJson.length - 1 - endChar]) {
+        endChar++;
+      }
+
+      // Convert the character positions to line numbers
+      var startLineNum = newJSON.substr(0, startChar).split("\n").length - 1;
+      var endLineNum = newJSON.substr(0, newJSON.length - endChar).split("\n").length - 1;
+
+      // Set selection range to highlight changes using the Range object
+      var Range = require("ace/range").Range;
+      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
+
+      lastCodeChangeIsFromScene = true;
+      aceEditor.setValue(newJSON);
+      aceEditor.selection.setSelectionRange(selectionRange);
+
+      // Scroll to the first line that has changed
+      aceEditor.scrollToLine(startLineNum, true, true, function () { });
+    }
+    this.lastActionJson = newJSON;
+
+    syncUrl();
+    warning = "";
+    updateErrorAndWarning();
+    this.requireDelayedValidation();
+
+    if (new Date() - this.lastActionTime > Editor.UNDO_INTERVAL) {
+      this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
+      document.getElementById('undo').disabled = false;
+      document.getElementById('redo').disabled = true;
+      document.getElementById('undo_mobile').disabled = false;
+      document.getElementById('redo_mobile').disabled = true;
+      this.undoUBound = this.undoIndex;
+      if (this.undoUBound == this.undoLBound) {
+        // The limit of undo is reached
+        this.undoLBound = (this.undoLBound + 1) % Editor.UNDO_LIMIT;
+      }
+    }
+    
+    this.undoData[this.undoIndex] = this.lastActionJson;
+    
     hasUnsavedChange = true;
+    this.lastActionTime = new Date();
   }
 
   /**
@@ -920,8 +1042,7 @@ class Editor {
       // The lower bound of undo data is reached
       return;
     this.undoIndex = (this.undoIndex + (Editor.UNDO_LIMIT - 1)) % Editor.UNDO_LIMIT;
-    latestJsonCode = this.undoData[this.undoIndex];
-    JSONInput();
+    this.loadJSON(this.undoData[this.undoIndex]);
     document.getElementById('redo').disabled = false;
     document.getElementById('redo_mobile').disabled = false;
     if (this.undoIndex == this.undoLBound) {
@@ -930,10 +1051,10 @@ class Editor {
       document.getElementById('undo_mobile').disabled = true;
     }
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(this.lastActionJson);
     }
     syncUrl();
-    requireOccasionalCheck();
+    this.requireDelayedValidation();
   }
 
   /**
@@ -946,8 +1067,7 @@ class Editor {
       // The lower bound of undo data is reached
       return;
     this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
-    latestJsonCode = this.undoData[this.undoIndex];
-    JSONInput();
+    this.loadJSON(this.undoData[this.undoIndex]);
     document.getElementById('undo').disabled = false;
     document.getElementById('undo_mobile').disabled = false;
     if (this.undoIndex == this.undoUBound) {
@@ -956,16 +1076,37 @@ class Editor {
       document.getElementById('redo_mobile').disabled = true;
     }
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(this.lastActionJson);
     }
     syncUrl();
-    requireOccasionalCheck();
+    this.requireDelayedValidation();
   }
-  
+
+
+  /**
+   * Require a delayed validation of the scene. The actual validation will be performed if the user is inactive for a while.
+   */
+  requireDelayedValidation() {
+    if (this.scene.error) {
+      return;
+    }
+
+    if (this.delayedValidationTimerId) {
+      clearTimeout(this.delayedValidationTimerId);
+    }
+
+    this.delayedValidationTimerId = setTimeout(this.validateDelayed, this.scene.warning ? 500 : 5000);
+  }
+
+  /**
+   * Perform the delayed validation of the scene. Called after the user has been inactive for a while.
+   */
+  validateDelayed() {
+    this.scene.validateDelayed();
+    updateErrorAndWarning();
+  }
+
 }
-
-var latestJsonCode = ''; // The latest JSON code
-
 
 
 

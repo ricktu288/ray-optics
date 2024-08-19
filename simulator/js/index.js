@@ -54,7 +54,7 @@ window.onload = function (e) {
   });
 
   objBar.on('editEnd', function () {
-    editor.createUndoPoint();
+    editor.onActionComplete();
   });
 
   objBar.on('requireUpdate', function () {
@@ -101,8 +101,6 @@ window.onload = function (e) {
 
   init();
 
-  JSONOutput();
-  editor.undoData[0] = latestJsonCode;
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
 
@@ -111,11 +109,10 @@ window.onload = function (e) {
 
 
   window.onresize = function (e) {
-    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
-
     if (window.devicePixelRatio) {
       simulator.dpr = window.devicePixelRatio;
     }
+    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
 
     if (simulator.ctxAboveLight) {
       canvas.width = window.innerWidth * simulator.dpr;
@@ -147,7 +144,7 @@ window.onload = function (e) {
       }
 
       simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
-      editor.createUndoPoint();
+      editor.onActionComplete();
       return false;
     }
     //Ctrl+Y
@@ -196,7 +193,7 @@ window.onload = function (e) {
         var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
         editor.removeObj(editor.selectedObjIndex);
         simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
-        editor.createUndoPoint();
+        editor.onActionComplete();
       }
       return false;
     }
@@ -261,7 +258,7 @@ window.onload = function (e) {
   window.onkeyup = function (e) {
     //Arrow Keys
     if (e.keyCode >= 37 && e.keyCode <= 40) {
-      editor.createUndoPoint();
+      editor.onActionComplete();
     }
 
   };
@@ -302,11 +299,11 @@ window.onload = function (e) {
     init();
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
-    editor.createUndoPoint();
+    editor.onActionComplete();
     isFromGallery = false;
     hasUnsavedChange = false;
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(editor.lastActionJson);
     }
   };
   document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
@@ -336,7 +333,7 @@ window.onload = function (e) {
     editor.selectObj(editor.selectedObjIndex);
     this.blur();
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
 
@@ -401,7 +398,7 @@ window.onload = function (e) {
     localStorage.rayOpticsAutoSyncUrl = this.checked ? "on" : "off";
     autoSyncUrl = this.checked;
 
-    JSONOutput();
+    editor.onActionComplete();
   };
   document.getElementById('auto_sync_url_mobile').onclick = document.getElementById('auto_sync_url').onclick;
 
@@ -420,7 +417,7 @@ window.onload = function (e) {
     document.getElementById('gridSize').value = scene.gridSize;
     document.getElementById('gridSize_mobile').value = scene.gridSize;
     simulator.updateSimulation(true, false);
-    JSONOutput();
+    editor.onActionComplete();
   }
   document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
 
@@ -442,7 +439,7 @@ window.onload = function (e) {
       scene.observer.r = parseFloat(this.value) * 0.5;
     }
     simulator.updateSimulation(false, true);
-    JSONOutput();
+    editor.onActionComplete();
   }
   document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
 
@@ -472,7 +469,7 @@ window.onload = function (e) {
     document.getElementById('lengthScale_mobile').value = scene.lengthScale;
     setScale(scene.scale);
     simulator.updateSimulation();
-    JSONOutput();
+    editor.onActionComplete();
   }
   document.getElementById('lengthScale_mobile').onchange = document.getElementById('lengthScale').onchange;
 
@@ -490,12 +487,12 @@ window.onload = function (e) {
 
   document.getElementById('zoomPlus').onclick = function () {
     setScale(scene.scale * 1.1);
-    JSONOutput();
+    editor.onActionComplete();
     this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
     setScale(scene.scale / 1.1);
-    JSONOutput();
+    editor.onActionComplete();
     this.blur();
   }
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
@@ -519,7 +516,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
   document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
@@ -531,7 +528,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
   document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
@@ -544,7 +541,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('rayDensityMinus').onclick = function () {
     rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
@@ -554,7 +551,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
   document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
@@ -568,7 +565,7 @@ window.onload = function (e) {
     document.getElementById('snapToGrid_mobile').checked = e.target.checked;
     scene.snapToGrid = e.target.checked;
     this.blur();
-    JSONOutput();
+    editor.onActionComplete();
     //simulator.updateSimulation();
   };
   document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
@@ -581,7 +578,7 @@ window.onload = function (e) {
     scene.showGrid = e.target.checked;
     this.blur();
     simulator.updateSimulation(true, false);
-    JSONOutput();
+    editor.onActionComplete();
   };
   document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
   document.getElementById('showGrid_mobile').onclick = document.getElementById('showGrid').onclick;
@@ -592,7 +589,7 @@ window.onload = function (e) {
     document.getElementById('lockObjs_mobile').checked = e.target.checked;
     scene.lockObjs = e.target.checked;
     this.blur();
-    JSONOutput();
+    editor.onActionComplete();
   };
   document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
   document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
@@ -614,7 +611,7 @@ window.onload = function (e) {
     scene.cloneObj(editor.selectedObjIndex).move(scene.gridSize, scene.gridSize);
     editor.selectObj(scene.objs.length - 1);
     simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
@@ -623,14 +620,14 @@ window.onload = function (e) {
     this.blur();
     editor.removeObj(editor.selectedObjIndex);
     simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
   document.getElementById('unselect').onclick = function () {
     editor.selectObj(-1);
     simulator.updateSimulation(true, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
   };
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
@@ -702,10 +699,8 @@ window.onload = function (e) {
     }
     else {
       var fileString = dt.getData('text');
-      latestJsonCode = fileString;
-      editor.selectedObjIndex = -1;
-      JSONInput();
-      editor.createUndoPoint();
+      editor.loadJSON(fileString);
+      editor.onActionComplete();
     }
   };
 
@@ -726,14 +721,13 @@ window.onload = function (e) {
     if (window.location.hash.length > 70) {
       // The URL contains a compressed JSON scene.
       JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
-        latestJsonCode = JSON.stringify(json);
         scene.backgroundImage = null;
-        JSONInput();
-        editor.createUndoPoint();
+        editor.loadJSON(JSON.stringify(json));
+        editor.onActionComplete();
         isFromGallery = true;
         hasUnsavedChange = false;
         if (aceEditor) {
-          aceEditor.session.setValue(latestJsonCode);
+          aceEditor.session.setValue(editor.lastActionJson);
         }
       }).catch(e => {
         error = "JsonUrl: " + e;
@@ -767,14 +761,14 @@ function openSample(name) {
       updateErrorAndWarning();
       return;
     }
-    latestJsonCode = client.responseText;
     scene.backgroundImage = null;
-    JSONInput();
-    editor.createUndoPoint();
+    editor.loadJSON(client.responseText);
+    
+    editor.onActionComplete();
     isFromGallery = true;
     hasUnsavedChange = false;
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(editor.lastActionJson);
     }
   }
   client.onerror = function () {
@@ -821,7 +815,7 @@ function importModule(name) {
       return;
     }
     simulator.updateSimulation(false, true);
-    editor.createUndoPoint();
+    editor.onActionComplete();
     updateModuleObjsMenu();
   }
   client.onerror = function () {
@@ -854,7 +848,7 @@ function init() {
   editor.endPositioning();
 
   scene.backgroundImage = null;
-  scene.fromJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
+  scene.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
 
   let dpr = window.devicePixelRatio || 1;
 
@@ -912,68 +906,8 @@ function init() {
 }
 
 
-function JSONOutput() {
-  if (scene.error) {
-    return;
-  }
 
-  scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
 
-  newJsonCode = scene.toJSON();
-  if (aceEditor && newJsonCode != latestJsonCode && !aceEditor.isFocused()) {
-
-    // Calculate the position of the first and last character that has changed
-    var minLen = Math.min(newJsonCode.length, latestJsonCode.length);
-    var startChar = 0;
-    while (startChar < minLen && newJsonCode[startChar] == latestJsonCode[startChar]) {
-      startChar++;
-    }
-    var endChar = 0;
-    while (endChar < minLen && newJsonCode[newJsonCode.length - 1 - endChar] == latestJsonCode[latestJsonCode.length - 1 - endChar]) {
-      endChar++;
-    }
-
-    // Convert the character positions to line numbers
-    var startLineNum = newJsonCode.substr(0, startChar).split("\n").length - 1;
-    var endLineNum = newJsonCode.substr(0, newJsonCode.length - endChar).split("\n").length - 1;
-
-    // Set selection range to highlight changes using the Range object
-    var Range = require("ace/range").Range;
-    var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
-
-    lastCodeChangeIsFromScene = true;
-    aceEditor.setValue(newJsonCode);
-    aceEditor.selection.setSelectionRange(selectionRange);
-
-    // Scroll to the first line that has changed
-    aceEditor.scrollToLine(startLineNum, true, true, function () { });
-  }
-  latestJsonCode = newJsonCode;
-
-  syncUrl();
-  warning = "";
-  updateErrorAndWarning();
-  requireOccasionalCheck();
-}
-
-var requireOccasionalCheckTimeout = null;
-
-function requireOccasionalCheck() {
-  if (scene.error) {
-    return;
-  }
-
-  if (requireOccasionalCheckTimeout) {
-    clearTimeout(requireOccasionalCheckTimeout);
-  }
-
-  requireOccasionalCheckTimeout = setTimeout(occasionalCheck, scene.warning ? 500 : 5000);
-}
-
-function occasionalCheck() {
-  scene.occasionalCheck();
-  updateErrorAndWarning();
-}
 
 var lastFullURL = "";
 
@@ -981,7 +915,7 @@ function syncUrl() {
   if (!autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
 
-  var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
+  var compressed = JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
     if (fullURL.length > 2041) {
       warning = getMsg('auto_sync_url_warning');
@@ -998,73 +932,6 @@ function syncUrl() {
       hasUnsavedChange = false;
       warning = "";
       updateErrorAndWarning();
-    }
-  });
-}
-
-
-
-
-
-function JSONInput() {
-  document.getElementById('welcome').style.display = 'none';
-
-  scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
-  scene.fromJSON(latestJsonCode, function (needFullUpdate, completed) {
-    if (needFullUpdate) {
-      // Update the UI for the loaded scene.
-
-      if (scene.name) {
-        document.title = scene.name + " - " + getMsg("appName");
-        document.getElementById('save_name').value = scene.name;
-      } else {
-        document.title = getMsg("appName");
-      }
-
-      if (Object.keys(scene.modules).length > 0) {
-        updateModuleObjsMenu();
-      }
-
-      document.getElementById('showGrid').checked = scene.showGrid;
-      document.getElementById('showGrid_more').checked = scene.showGrid;
-      document.getElementById('showGrid_mobile').checked = scene.showGrid;
-
-      document.getElementById('snapToGrid').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
-
-      document.getElementById('lockObjs').checked = scene.lockObjs;
-      document.getElementById('lockObjs_more').checked = scene.lockObjs;
-      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
-
-      if (scene.observer) {
-        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-      } else {
-        document.getElementById('observer_size').value = 40;
-        document.getElementById('observer_size_mobile').value = 40;
-      }
-
-      document.getElementById('gridSize').value = scene.gridSize;
-      document.getElementById('gridSize_mobile').value = scene.gridSize;
-
-      document.getElementById('lengthScale').value = scene.lengthScale;
-      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-
-      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById('simulateColors').checked = scene.simulateColors;
-      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-      modebtn_clicked(scene.mode);
-      document.getElementById('mode_' + scene.mode).checked = true;
-      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-      editor.selectObj(editor.selectedObjIndex);
-      simulator.updateSimulation();
-    } else {
-      // Partial update (e.g. when the background image is loaded)
-      setTimeout(function () {
-        simulator.updateSimulation(true, true);
-      }, 1);
     }
   });
 }
@@ -1118,13 +985,13 @@ function rename() {
   } else {
     document.title = getMsg("appName");
   }
-  JSONOutput();
+  editor.onActionComplete();
 }
 
 function save() {
   rename();
 
-  var blob = new Blob([latestJsonCode], { type: 'application/json' });
+  var blob = new Blob([editor.lastActionJson], { type: 'application/json' });
   saveAs(blob, (scene.name || "scene") + ".json");
   var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
   if (saveModal) {
@@ -1151,14 +1018,11 @@ function openFile(readFile) {
 
     if (isJSON) {
       // Load the scene file
-      latestJsonCode = fileString;
-      editor.endPositioning();
-      editor.selectedObjIndex = -1;
-      JSONInput();
+      editor.loadJSON(fileString);
       hasUnsavedChange = false;
-      editor.createUndoPoint();
+      editor.onActionComplete();
       if (aceEditor) {
-        aceEditor.session.setValue(latestJsonCode);
+        aceEditor.session.setValue(editor.lastActionJson);
       }
     } else {
       // Load the background image file
@@ -1181,8 +1045,7 @@ function openFile(readFile) {
 }
 
 function getLink() {
-  JSONOutput();
-  JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
+  JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
     lastFullURL = fullURL;
     window.history.pushState(undefined, undefined, '#' + output);
@@ -1238,7 +1101,7 @@ function cancelCrop() {
 function exportSVG(cropBox) {
   const exportingScene = new Scene();
   exportingScene.backgroundImage = scene.backgroundImage;
-  exportingScene.fromJSON(scene.toJSON(), function (needFullUpdate, completed) {
+  exportingScene.loadJSON(scene.toJSON(), function (needFullUpdate, completed) {
     if (!completed) {
       return;
     }
@@ -1315,7 +1178,7 @@ function exportSVG(cropBox) {
 function exportImage(cropBox) {
   const exportingScene = new Scene();
   exportingScene.backgroundImage = scene.backgroundImage;
-  exportingScene.fromJSON(scene.toJSON(), function (needFullUpdate, completed) {
+  exportingScene.loadJSON(scene.toJSON(), function (needFullUpdate, completed) {
     if (!completed) {
       return;
     }

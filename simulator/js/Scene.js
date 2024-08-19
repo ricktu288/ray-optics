@@ -53,7 +53,7 @@ class Scene {
     this.backgroundImage = null;
     this.error = null;
     this.warning = null;
-    this.fromJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
+    this.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
   }
 
   /**
@@ -100,7 +100,7 @@ class Scene {
 
   /**
    * The callback function when the entire scene or a resource (e.g. image) is loaded.
-   * @callback fromJSONCallback
+   * @callback loadJSONCallback
    * @param {boolean} needFullUpdate - Whether the scene needs a full update.
    * @param {boolean} completed - Whether the scene is completely loaded.
    */
@@ -108,9 +108,9 @@ class Scene {
   /**
   * Load the scene from JSON.
   * @param {string} json
-  * @param {fromJSONCallback} callback - The callback function when the entire scene or a resource (e.g. image) is loaded.
+  * @param {loadJSONCallback} callback - The callback function when the entire scene or a resource (e.g. image) is loaded.
   */
-  fromJSON(json, callback) {
+  loadJSON(json, callback) {
     this.error = null;
     this.warning = null;
     try {
@@ -358,9 +358,9 @@ class Scene {
   }
 
   /**
-   * Perform an occasional check on the scene and generate warnings if necessary. This method should not be called when the editing is in progress.
+   * Perform an delayed validation on the scene and generate warnings if necessary. This method should not be called when the editing is in progress.
    */
-  occasionalCheck() {
+  validateDelayed() {
     if (this.error) {
       return;
     }

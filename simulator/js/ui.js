@@ -306,7 +306,7 @@ function initModes() {
       element.addEventListener('click', (event) => {
         //console.log('mode_' + modeId);
         modebtn_clicked(modeId);
-        editor.createUndoPoint();
+        editor.onActionComplete();
       });
     }
   });
@@ -344,7 +344,7 @@ function enableJsonEditor() {
   aceEditor.setHighlightActiveLine(false)
   aceEditor.container.style.background="transparent"
   aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background="transparent"
-  aceEditor.session.setValue(latestJsonCode);
+  aceEditor.session.setValue(editor.lastActionJson);
   
   var debounceTimer;
 
@@ -357,13 +357,12 @@ function enableJsonEditor() {
     }
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(function() {
-      latestJsonCode = aceEditor.session.getValue();
+      editor.loadJSON(aceEditor.session.getValue());
       error = null;
-      newJsonCode = latestJsonCode;
-      JSONInput();
+      newJsonCode = editor.lastActionJson;
       if (!scene.error) {
         syncUrl();
-        requireOccasionalCheck();
+        editor.requireDelayedValidation();
       }
     }, 500);
   });
@@ -438,7 +437,7 @@ function updateModuleObjsMenu() {
         simulator.updateSimulation(false, true);
         hideAllPopovers();
         updateModuleObjsMenu();
-        editor.createUndoPoint();
+        editor.onActionComplete();
       });
       removeButtonDiv.appendChild(removeButton);
 

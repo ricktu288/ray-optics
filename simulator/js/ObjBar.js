@@ -254,7 +254,6 @@ class ObjBar {
       self.setOption(function (obj) {
         func(obj, objOption_text.value);
       });
-      JSONOutput();
     };
     objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;

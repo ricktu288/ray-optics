@@ -345,7 +345,7 @@ class Simulator {
 
         this.updateSimulation(true, true); // Redraw the opticalObjs to avoid outdated information (e.g. detector readings).
 
-        this.check();
+        this.validate();
         return;
       }
       if (this.processedRayCount > this.rayCountLimit) {
@@ -683,7 +683,7 @@ class Simulator {
     
     this.updateSimulation(true, true);
 
-    this.check();
+    this.validate();
 
     if (this.shouldSimulatorStop) {
       this.emit('simulationStop', null);
@@ -708,7 +708,7 @@ class Simulator {
    * Check the simulation and display warnings or errors if necessary.
    * @returns {void}
    */
-  check() {
+  validate() {
     if (this.brightnessScale == -1) {
       let hasDetector = false;
       for (let obj of this.scene.opticalObjs) {
