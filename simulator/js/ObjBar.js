@@ -11,6 +11,9 @@ class ObjBar {
     /** @property {boolean} shouldApplyToAll - Whether the "Apply to all" checkbox is checked */
     this.shouldApplyToAll = false;
 
+    /** @property {boolean} shouldShowAdvanced - Whether the advanced options should be shown */
+    this.shouldShowAdvanced = false;
+
     /** @property {function|null} pendingEvent - The pending event to be called in case the scene object loses focus before the input is finished */
     this.pendingEvent = null;
 
@@ -53,7 +56,7 @@ class ObjBar {
 
   /**
    * The event when the entire obj bar should be updated.
-   * @event ObjBar#requireUpdate
+   * @event ObjBar#requestUpdate
    */
 
   /**
@@ -311,7 +314,7 @@ class ObjBar {
       self.emit('editEnd', null);
       if (updateOnChange) {
         setTimeout(function () {
-          self.emit('requireUpdate', null);
+          self.emit('requestUpdate', null);
         }, 250);
       }
     };
@@ -447,7 +450,7 @@ class ObjBar {
         func(obj, dropdown.value);
       });
       if (updateOnChange) {
-        self.emit('requireUpdate', null);
+        self.emit('requestUpdate', null);
       }
       self.emit('editEnd', null);
     };
@@ -484,7 +487,7 @@ class ObjBar {
       this.blur();
       func(scene.objs[editor.selectedObjIndex]);
       if (updateOnChange) {
-        self.emit('requireUpdate', null);
+        self.emit('requestUpdate', null);
       }
       self.emit('edit', null);
       self.emit('editEnd', null);
@@ -560,7 +563,7 @@ class ObjBar {
    * @returns {boolean} Whether the advanced options should be populated.
    */
   showAdvanced(condition) {
-    if (showAdvancedOn || condition) {
+    if (this.shouldShowAdvanced || condition) {
       return true
     } else {
       this.emit('showAdvancedEnabled', true);

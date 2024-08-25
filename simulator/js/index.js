@@ -10,7 +10,6 @@ var objBar;
 var xyBox_cancelContextMenu = false;
 var isFromGallery = false;
 var hasUnsavedChange = false;
-var showAdvancedOn = false;
 var MQ;
 var cropMode = false;
 var autoSyncUrl = false;
@@ -57,7 +56,7 @@ window.onload = function (e) {
     editor.onActionComplete();
   });
 
-  objBar.on('requireUpdate', function () {
+  objBar.on('requestUpdate', function () {
     editor.selectObj(editor.selectedObjIndex);
   });
 
@@ -97,7 +96,208 @@ window.onload = function (e) {
     document.getElementById('forceStop').style.display = 'none';
   });
 
-  editor = new Editor(scene, canvas, document.getElementById('xybox'), objBar);
+  editor = new Editor(scene, canvas, simulator);
+
+  editor.on('positioningStart', function (e) {
+    document.getElementById('xybox').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
+    document.getElementById('xybox').style.top = (e.dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
+    document.getElementById('xybox').value = '(' + (e.dragContext.targetPoint.x) + ',' + (e.dragContext.targetPoint.y) + ')';
+    document.getElementById('xybox').size = document.getElementById('xybox').value.length;
+    document.getElementById('xybox').style.display = '';
+    document.getElementById('xybox').select();
+    document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
+    //console.log("show xybox");
+    xyBox_cancelContextMenu = true;
+  });
+
+  editor.on('requestPositioningComfirm', function (e) {
+    confirmPositioning(e.ctrl, e.shift);
+  });
+
+  editor.on('positioningEnd', function (e) {
+    document.getElementById('xybox').style.display = 'none';
+  });
+
+  editor.on('mouseCoordinateChange', function (e) {
+    if (e.mousePos) {
+      const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
+      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
+    } else {
+      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "-";
+    }
+  });
+
+  editor.emit('mouseCoordinateChange', { mousePos: null });
+
+  editor.on('selectionChange', function (e) {
+    hideAllPopovers();
+    if (objBar.pendingEvent) {
+      // If the user is in the middle of editing a value, then clearing the innerHTML of obj_bar_main will cause the change event not to fire, so we need to manually fire it.
+      objBar.pendingEvent();
+      objBar.pendingEvent = null;
+    }
+
+    if (editor.selectedObjIndex >= 0) {
+      if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
+      document.getElementById('obj_bar').style.display = 'none';
+      return;
+    }
+    document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[editor.selectedObjIndex].constructor.type);
+    document.getElementById('showAdvanced').style.display = 'none';
+    document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+
+    document.getElementById('obj_bar_main').style.display = '';
+    document.getElementById('obj_bar_main').innerHTML = '';
+    scene.objs[editor.selectedObjIndex].populateObjBar(objBar);
+
+    if (document.getElementById('obj_bar_main').innerHTML != '') {
+      for (var i = 0; i < scene.objs.length; i++) {
+        if (i != editor.selectedObjIndex && scene.objs[i].constructor.type == scene.objs[editor.selectedObjIndex].constructor.type) {
+          // If there is an object with the same type, then show "Apply to All"
+          document.getElementById('apply_to_all_box').style.display = '';
+          document.getElementById('apply_to_all_mobile_container').style.display = '';
+          break;
+        }
+        if (i == this.scene.objs.length - 1) {
+          document.getElementById('apply_to_all_box').style.display = 'none';
+          document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+        }
+      }
+    } else {
+      document.getElementById('apply_to_all_box').style.display = 'none';
+      document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+    }
+
+
+    document.getElementById('obj_bar').style.display = '';
+    } else {
+      document.getElementById('obj_bar').style.display = 'none';
+      objBar.shouldShowAdvanced = false;
+    }
+  });
+
+  editor.on('sceneLoaded', function (e) {
+    document.getElementById('welcome').style.display = 'none';
+    if (e.needFullUpdate) {
+      // Update the UI for the loaded scene.
+
+      if (scene.name) {
+        document.title = scene.name + " - " + getMsg("appName");
+        document.getElementById('save_name').value = scene.name;
+      } else {
+        document.title = getMsg("appName");
+      }
+
+      if (Object.keys(scene.modules).length > 0) {
+        updateModuleObjsMenu();
+      }
+
+      document.getElementById('showGrid').checked = scene.showGrid;
+      document.getElementById('showGrid_more').checked = scene.showGrid;
+      document.getElementById('showGrid_mobile').checked = scene.showGrid;
+
+      document.getElementById('snapToGrid').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
+
+      document.getElementById('lockObjs').checked = scene.lockObjs;
+      document.getElementById('lockObjs_more').checked = scene.lockObjs;
+      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
+
+      if (scene.observer) {
+        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+      } else {
+        document.getElementById('observer_size').value = 40;
+        document.getElementById('observer_size_mobile').value = 40;
+      }
+
+      document.getElementById('gridSize').value = scene.gridSize;
+      document.getElementById('gridSize_mobile').value = scene.gridSize;
+
+      document.getElementById('lengthScale').value = scene.lengthScale;
+      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
+
+      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+      document.getElementById('simulateColors').checked = scene.simulateColors;
+      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
+      modebtn_clicked(scene.mode);
+      document.getElementById('mode_' + scene.mode).checked = true;
+      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+      editor.selectObj(editor.selectedObjIndex);
+    }
+  });
+
+  editor.on('newAction', function (e) {
+    if (aceEditor && e.newJSON != e.oldJSON && !aceEditor.isFocused()) {
+
+      // Calculate the position of the first and last character that has changed
+      var minLen = Math.min(e.newJSON.length, e.oldJSON.length);
+      var startChar = 0;
+      while (startChar < minLen && e.newJSON[startChar] == e.oldJSON[startChar]) {
+        startChar++;
+      }
+      var endChar = 0;
+      while (endChar < minLen && e.newJSON[e.newJSON.length - 1 - endChar] == e.oldJSON[e.oldJSON.length - 1 - endChar]) {
+        endChar++;
+      }
+
+      // Convert the character positions to line numbers
+      var startLineNum = e.newJSON.substr(0, startChar).split("\n").length - 1;
+      var endLineNum = e.newJSON.substr(0, e.newJSON.length - endChar).split("\n").length - 1;
+
+      // Set selection range to highlight changes using the Range object
+      var Range = require("ace/range").Range;
+      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
+
+      lastCodeChangeIsFromScene = true;
+      aceEditor.setValue(e.newJSON);
+      aceEditor.selection.setSelectionRange(selectionRange);
+
+      // Scroll to the first line that has changed
+      aceEditor.scrollToLine(startLineNum, true, true, function () { });
+    }
+    
+
+    syncUrl();
+    warning = "";
+  });
+
+  editor.on('newUndoPoint', function (e) {
+    document.getElementById('undo').disabled = false;
+    document.getElementById('redo').disabled = true;
+    document.getElementById('undo_mobile').disabled = false;
+    document.getElementById('redo_mobile').disabled = true;
+  });
+
+  editor.on('undo', function (e) {
+    document.getElementById('redo').disabled = false;
+    document.getElementById('redo_mobile').disabled = false;
+    if (editor.undoIndex == editor.undoLBound) {
+      // The lower bound of undo data is reached
+      document.getElementById('undo').disabled = true;
+      document.getElementById('undo_mobile').disabled = true;
+    }
+    if (aceEditor) {
+      aceEditor.session.setValue(editor.lastActionJson);
+    }
+    syncUrl();
+  });
+
+  editor.on('redo', function (e) {
+    document.getElementById('undo').disabled = false;
+    document.getElementById('undo_mobile').disabled = false;
+    if (editor.undoIndex == editor.undoUBound) {
+      // The lower bound of undo data is reached
+      document.getElementById('redo').disabled = true;
+      document.getElementById('redo_mobile').disabled = true;
+    }
+    if (aceEditor) {
+      aceEditor.session.setValue(editor.lastActionJson);
+    }
+    syncUrl();
+  });
 
   init();
 
@@ -265,11 +465,6 @@ window.onload = function (e) {
 
 
 
-  
-
-  
-
-  
 
 
 
@@ -277,11 +472,16 @@ window.onload = function (e) {
 
 
 
-  
 
-  
 
-  
+
+
+
+
+
+
+
+
 
 
   document.getElementById('undo').onclick = function () {
@@ -632,7 +832,7 @@ window.onload = function (e) {
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
   document.getElementById('showAdvanced').onclick = function () {
-    showAdvancedOn = true;
+    objBar.shouldShowAdvanced = true;
     editor.selectObj(editor.selectedObjIndex);
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
@@ -655,7 +855,7 @@ window.onload = function (e) {
     //console.log(e.keyCode)
     if (e.keyCode == 13) {
       //enter
-      editor.confirmPositioning(e.ctrlKey, e.shiftKey);
+      confirmPositioning(e.ctrlKey, e.shiftKey);
     }
     if (e.keyCode == 27) {
       //esc
@@ -763,7 +963,7 @@ function openSample(name) {
     }
     scene.backgroundImage = null;
     editor.loadJSON(client.responseText);
-    
+
     editor.onActionComplete();
     isFromGallery = true;
     hasUnsavedChange = false;
@@ -910,30 +1110,36 @@ function init() {
 
 
 var lastFullURL = "";
+var syncUrlTimerId = -1;
 
 function syncUrl() {
   if (!autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
 
-  var compressed = JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
-    var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
-    if (fullURL.length > 2041) {
-      warning = getMsg('auto_sync_url_warning');
-      updateErrorAndWarning();
-    } else {
-      if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
-        // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
-        lastFullURL = fullURL;
-        window.history.pushState(undefined, undefined, '#' + output);
+  if (syncUrlTimerId != -1) {
+    clearTimeout(syncUrlTimerId);
+  }
+  syncUrlTimerId = setTimeout(function () {
+    var compressed = JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
+      var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+      if (fullURL.length > 2041) {
+        warning = getMsg('auto_sync_url_warning');
+        updateErrorAndWarning();
       } else {
-        lastFullURL = fullURL;
-        window.history.replaceState(undefined, undefined, '#' + output);
+        if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
+          // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
+          lastFullURL = fullURL;
+          window.history.pushState(undefined, undefined, '#' + output);
+        } else {
+          lastFullURL = fullURL;
+          window.history.replaceState(undefined, undefined, '#' + output);
+        }
+        hasUnsavedChange = false;
+        warning = "";
+        updateErrorAndWarning();
       }
-      hasUnsavedChange = false;
-      warning = "";
-      updateErrorAndWarning();
-    }
-  });
+    });
+  }, 1000);
 }
 
 
@@ -1232,3 +1438,9 @@ window.onbeforeunload = function (e) {
   }
 }
 
+function confirmPositioning(ctrl, shift) {
+  var xyData = JSON.parse('[' + document.getElementById('xybox').value.replace(/\(|\)/g, '') + ']');
+  if (xyData.length == 2) {
+    editor.confirmPositioning(xyData[0], xyData[1], ctrl, shift);
+  }
+}

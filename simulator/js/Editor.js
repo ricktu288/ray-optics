@@ -23,7 +23,7 @@ class Editor {
    * @property {boolean} [isByHandle] - Whether the dragging is initiated by dragging a handle. Only set by the editor.
    */
 
-  constructor(scene, canvas, objBar, xyBox) {
+  constructor(scene, canvas, simulator) {
     /** @property {Scene} scene - The scene to be edited and simulated. */
     this.scene = scene;
 
@@ -32,11 +32,8 @@ class Editor {
     /** @property {HTMLCanvasElement} canvas - The top-layered canvas for user interaction. */
     this.canvas = canvas;
 
-    /** @property {ObjBar} objBar - The object bar for editing object properties. */
-    this.objBar = objBar;
-
-    /** @property {HTMLInputElement} xyBox - The input box for entering coordinates. */
-    this.xyBox = xyBox;
+    /** @property {Simulator} simulator - The simulator. */
+    this.simulator = simulator;
 
     /** @property {boolean} lastDeviceIsTouch - Whether the last interaction with `canvas` is done by a touch device. */
     this.lastDeviceIsTouch = false;
@@ -105,6 +102,93 @@ class Editor {
   }
 
   /**
+   * Add an event listener to the editor.
+   * @param {string} eventName - The name of the event.
+   * @param {function} callback - The callback function.
+   */
+  on(eventName, callback) {
+    if (!this.eventListeners[eventName]) {
+      this.eventListeners[eventName] = [];
+    }
+    this.eventListeners[eventName].push(callback);
+  }
+
+  /**
+   * Emit an event.
+   * @param {string} eventName - The name of the event.
+   * @param {any} data - The data to be passed to the callback functions.
+   */
+  emit(eventName, data) {
+    if (this.eventListeners[eventName]) {
+      this.eventListeners[eventName].forEach(callback => callback(data));
+    }
+  }
+
+  /**
+   * The event when the mouse coordinate changes. This is different from the actual mousemove, since the grid snapping is considered, and the coordnates can also be updated by other events such as zooming.
+   * @event Editor#mouseCoordinateChange
+   * @type {object}
+   * @property {Point} mousePos - The position of the mouse in the scene. Null if the mouse is out of the canvas.
+   */
+
+  /**
+   * The event when the selection changes.
+   * @event Editor#selectionChange
+   */
+
+  /**
+   * The event when the user interacts with the canvas during the positioning of an object, so that the new coordinates are assumed to be confirmed.
+   * @event Editor#requestPositioningComfirm
+   * @type {object}
+   * @property {boolean} ctrl - Whether the Ctrl key is held down.
+   * @property {boolean} shift - Whether the Shift key is held down.
+   */
+
+  /**
+   * The event when the positioning of an object starts.
+   * @event Editor#positioningStart
+   * @type {object}
+   * @property {DragContext} dragContext - The context of the positioning action, which is the same as the drag context if the user instead drags the control point to be positioned.
+   */
+
+  /**
+   * The event when the positioning of an object ends (either confirmed or canceled).
+   * @event Editor#positioningEnd
+   */
+
+  /**
+   * The event when the scene is loaded. If the scene contains resources that takes time to load, this event is emitted every time a resource is loaded, where the last event has the `completed` property set to `true`.
+   * @event Editor#sceneLoaded
+   * @type {object}
+   * @property {boolean} needFullUpdate - Whether the UI needs a full update.
+   * @property {boolean} completed - Whether the loading is completed.
+   */
+
+  /**
+   * The event when a new action is done and the UI (e.g. code editor) should be updated.
+   * @event Editor#newAction
+   * @type {object}
+   * @property {string} oldJSON - The JSON string representing the scene before the action.
+   * @property {string} newJSON - The JSON string representing the scene after the action.
+   */
+
+  /**
+   * The event when a new undo data is pushed.
+   * @event Editor#newUndoPoint
+   */
+
+  /**
+   * The event when the user undo an action.
+   * @event Editor#undo
+   */
+
+  /**
+   * The event when the user redo an action.
+   * @event Editor#redo
+   */
+
+
+  /**
    * Initialize the canvas event listeners.
    */
   initCanvas() {
@@ -160,8 +244,9 @@ class Editor {
         self.onCanvasMouseUp(e);
       }
       self.hoveredObjIndex = -1;
-      document.getElementById('mouseCoordinates').innerHTML = "";
-      simulator.updateSimulation(true, true)
+
+      self.emit('mouseCoordinateChange', { mousePos: null });
+      self.simulator.updateSimulation(true, true)
     });
 
 
@@ -304,28 +389,6 @@ class Editor {
     });
   }
 
-  /**
-   * Add an event listener to the editor.
-   * @param {string} eventName - The name of the event.
-   * @param {function} callback - The callback function.
-   */
-  on(eventName, callback) {
-    if (!this.eventListeners[eventName]) {
-      this.eventListeners[eventName] = [];
-    }
-    this.eventListeners[eventName].push(callback);
-  }
-
-  /**
-   * Emit an event.
-   * @param {string} eventName - The name of the event.
-   * @param {any} data - The data to be passed to the callback functions.
-   */
-  emit(eventName, data) {
-    if (this.eventListeners[eventName]) {
-      this.eventListeners[eventName].forEach(callback => callback(data));
-    }
-  }
 
   /**
    * Handle the equivalent of the mousedown event on the canvas, which can be triggered by both mouse and single touch.
@@ -340,7 +403,7 @@ class Editor {
     var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse
     this.lastMousePos = mousePos_nogrid;
     if (this.positioningObjIndex != -1) {
-      this.confirmPositioning(e.ctrlKey, e.shiftKey);
+      this.emit('requestPositioningComfirm', { ctrl: e.ctrlKey, shift: e.shiftKey });
       if (!(e.which && e.which == 3)) {
         return;
       }
@@ -374,7 +437,7 @@ class Editor {
         if (ret && ret.requiresObjBarUpdate) {
           this.selectObj(this.selectedObjIndex);
         }
-        simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
+        this.simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
       }
     }
     else {
@@ -449,7 +512,7 @@ class Editor {
             this.isConstructing = false;
           }
           this.selectObj(this.scene.objs.length - 1);
-          simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
+          this.simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
         }
       }
     }
@@ -482,7 +545,7 @@ class Editor {
       //console.log(mousePos_nogrid);
       if (this.hoveredObjIndex != ret.targetObjIndex) {
         this.hoveredObjIndex = ret.targetObjIndex;
-        simulator.updateSimulation(true, true);
+        this.simulator.updateSimulation(true, true);
       }
       if (ret.dragContext) {
         if (ret.dragContext.cursor) {
@@ -508,9 +571,8 @@ class Editor {
     }
     this.mousePos = mousePos2;
 
+    this.emit('mouseCoordinateChange', { mousePos: this.mousePos });
 
-    const mousePosDigits = Math.max(Math.round(Math.log10(this.scene.scale)), 0);
-    document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + this.mousePos.x.toFixed(mousePosDigits) + ", " + this.mousePos.y.toFixed(mousePosDigits) + ")";
 
     if (this.isConstructing) {
       // highlight object being constructed
@@ -524,7 +586,7 @@ class Editor {
       if (ret && ret.requiresObjBarUpdate) {
         this.selectObj(this.selectedObjIndex);
       }
-      simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
+      this.simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
     }
     else {
       if (this.draggingObjIndex == -4) {
@@ -544,7 +606,7 @@ class Editor {
 
         // Update the mouse position
         this.dragContext.mousePos1 = mousePos_snapped;
-        simulator.updateSimulation(false, true);
+        this.simulator.updateSimulation(false, true);
       }
 
       if (this.draggingObjIndex >= 0) {
@@ -564,7 +626,7 @@ class Editor {
           }
         }
 
-        simulator.updateSimulation(!this.scene.objs[this.draggingObjIndex].constructor.isOptical, true);
+        this.simulator.updateSimulation(!this.scene.objs[this.draggingObjIndex].constructor.isOptical, true);
 
         if (this.dragContext.requiresObjBarUpdate) {
           this.selectObj(this.selectedObjIndex);
@@ -579,7 +641,7 @@ class Editor {
         var mouseDiffY = (this.mousePos.y - this.dragContext.mousePos1.y); // The Y difference between the mouse position now and at the previous moment
         this.scene.origin.x = mouseDiffX * this.scene.scale + this.dragContext.mousePos2.x;
         this.scene.origin.y = mouseDiffY * this.scene.scale + this.dragContext.mousePos2.y;
-        simulator.updateSimulation();
+        this.simulator.updateSimulation();
       }
 
 
@@ -601,13 +663,13 @@ class Editor {
         if (ret && ret.requiresObjBarUpdate) {
           this.selectObj(this.selectedObjIndex);
         }
-        simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
+        this.simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
         if (!this.isConstructing) {
           // The object says the contruction is done
           this.onActionComplete();
-          if (document.getElementById('lockObjs').checked) {
+          if (this.scene.lockObjs) {
             this.hoveredObjIndex = -1;
-            simulator.updateSimulation(true, true);
+            this.simulator.updateSimulation(true, true);
           }
         }
       }
@@ -651,15 +713,7 @@ class Editor {
           this.dragContext.targetPoint = geometry.point(this.scene.observer.c.x, this.scene.observer.c.y);
           this.dragContext.snapContext = {};
 
-          document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
-          document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
-          document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
-          document.getElementById('xybox').size = document.getElementById('xybox').value.length;
-          document.getElementById('xybox').style.display = '';
-          document.getElementById('xybox').select();
-          document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-          //console.log("show xybox");
-          xyBox_cancelContextMenu = true;
+          this.emit('positioningStart', { dragContext: this.dragContext });
 
           return;
         }
@@ -674,15 +728,8 @@ class Editor {
         this.dragContext.hasDuplicated = false;
         this.positioningObjIndex = ret.targetObjIndex;
 
-        document.getElementById('xybox').style.left = (this.dragContext.targetPoint.x * this.scene.scale + this.scene.origin.x) + 'px';
-        document.getElementById('xybox').style.top = (this.dragContext.targetPoint.y * this.scene.scale + this.scene.origin.y) + 'px';
-        document.getElementById('xybox').value = '(' + (this.dragContext.targetPoint.x) + ',' + (this.dragContext.targetPoint.y) + ')';
-        document.getElementById('xybox').size = document.getElementById('xybox').value.length;
-        document.getElementById('xybox').style.display = '';
-        document.getElementById('xybox').select();
-        document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-        //console.log("show xybox");
-        xyBox_cancelContextMenu = true;
+        this.emit('positioningStart', { dragContext: this.dragContext });
+
       }
     }
 
@@ -771,7 +818,7 @@ class Editor {
     for (var i in controlPoints) {
       this.scene.objs[0].addControlPoint(controlPoints[i]);
     }
-    simulator.updateSimulation(true, true);
+    this.simulator.updateSimulation(true, true);
   }
 
   /**
@@ -780,7 +827,7 @@ class Editor {
    */
   finishHandleCreation(point) {
     this.scene.objs[0].finishHandle(point);
-    simulator.updateSimulation(true, true);
+    this.simulator.updateSimulation(true, true);
   }
 
   /**
@@ -788,78 +835,39 @@ class Editor {
    * @param {number} index - The index of the object to select.
    */
   selectObj(index) {
-    hideAllPopovers();
-    if (objBar.pendingEvent) {
-      // If the user is in the middle of editing a value, then clearing the innerHTML of obj_bar_main will cause the change event not to fire, so we need to manually fire it.
-      objBar.pendingEvent();
-      objBar.pendingEvent = null;
-    }
-
     if (index < 0 || index >= this.scene.objs.length) {
       // If this object does not exist
       this.selectedObjIndex = -1;
-      document.getElementById('obj_bar').style.display = 'none';
-      showAdvancedOn = false;
+      this.emit('selectionChange');
       return;
     }
     this.selectedObjIndex = index;
-    if (this.scene.objs[index].constructor.type == 'Handle') {
-      document.getElementById('obj_bar').style.display = 'none';
-      return;
-    }
-    document.getElementById('obj_name').innerHTML = getMsg('toolname_' + this.scene.objs[index].constructor.type);
-    document.getElementById('showAdvanced').style.display = 'none';
-    document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-
-    document.getElementById('obj_bar_main').style.display = '';
-    document.getElementById('obj_bar_main').innerHTML = '';
-    this.scene.objs[index].populateObjBar(objBar);
-
-    if (document.getElementById('obj_bar_main').innerHTML != '') {
-      for (var i = 0; i < this.scene.objs.length; i++) {
-        if (i != this.selectedObjIndex && this.scene.objs[i].constructor.type == this.scene.objs[this.selectedObjIndex].constructor.type) {
-          // If there is an object with the same type, then show "Apply to All"
-          document.getElementById('apply_to_all_box').style.display = '';
-          document.getElementById('apply_to_all_mobile_container').style.display = '';
-          break;
-        }
-        if (i == this.scene.objs.length - 1) {
-          document.getElementById('apply_to_all_box').style.display = 'none';
-          document.getElementById('apply_to_all_mobile_container').style.display = 'none';
-        }
-      }
-    } else {
-      document.getElementById('apply_to_all_box').style.display = 'none';
-      document.getElementById('apply_to_all_mobile_container').style.display = 'none';
-    }
-
-
-    document.getElementById('obj_bar').style.display = '';
+    this.emit('selectionChange');
   }
 
   /**
    * Confirm the positioning in the coordinate box.
+   * @param {number} x - The x-coordinate.
+   * @param {number} y - The y-coordinate.
    * @param {boolean} ctrl - Whether the Ctrl key is pressed.
    * @param {boolean} shift - Whether the Shift key is pressed.
    */
-  confirmPositioning(ctrl, shift) {
-    var xyData = JSON.parse('[' + document.getElementById('xybox').value.replace(/\(|\)/g, '') + ']');
-    // Only do the action when the user enter two numbers (coordinates)
-    if (xyData.length == 2) {
-      if (this.positioningObjIndex == -4) {
-        // Observer
-        this.scene.observer.c.x = xyData[0];
-        this.scene.observer.c.y = xyData[1];
-        simulator.updateSimulation(false, true);
-      }
-      else {
-        // Object
-        this.scene.objs[this.positioningObjIndex].onDrag(new Mouse(geometry.point(xyData[0], xyData[1]), this.scene, this.lastDeviceIsTouch, 2), this.dragContext, ctrl, shift);
-        simulator.updateSimulation(!this.scene.objs[this.positioningObjIndex].constructor.isOptical, true);
-      }
+  confirmPositioning(x, y, ctrl, shift) {
 
-      this.onActionComplete();
+
+    if (this.positioningObjIndex == -4) {
+      // Observer
+      this.scene.observer.c.x = x;
+      this.scene.observer.c.y = y;
+      this.simulator.updateSimulation(false, true);
     }
+    else {
+      // Object
+      this.scene.objs[this.positioningObjIndex].onDrag(new Mouse(geometry.point(x, y), this.scene, this.lastDeviceIsTouch, 2), this.dragContext, ctrl, shift);
+      this.simulator.updateSimulation(!this.scene.objs[this.positioningObjIndex].constructor.isOptical, true);
+    }
+
+    this.onActionComplete();
 
     this.endPositioning();
   }
@@ -868,7 +876,7 @@ class Editor {
    * End the positioning in the coordinate box.
    */
   endPositioning() {
-    document.getElementById('xybox').style.display = 'none';
+    this.emit('positioningEnd');
     this.positioningObjIndex = -1;
     this.dragContext = {};
   }
@@ -890,69 +898,22 @@ class Editor {
    * @param {string} json - The JSON string of the scene.
    */
   loadJSON(json) {
-    document.getElementById('welcome').style.display = 'none';
-
-    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
+    const self = this;
+    scene.setViewportSize(canvas.width / this.simulator.dpr, canvas.height / this.simulator.dpr);
     scene.loadJSON(json, function (needFullUpdate, completed) {
+      self.emit('sceneLoaded', { needFullUpdate: needFullUpdate, completed: completed });
       if (needFullUpdate) {
-        // Update the UI for the loaded scene.
-  
-        if (scene.name) {
-          document.title = scene.name + " - " + getMsg("appName");
-          document.getElementById('save_name').value = scene.name;
-        } else {
-          document.title = getMsg("appName");
-        }
-  
-        if (Object.keys(scene.modules).length > 0) {
-          updateModuleObjsMenu();
-        }
-  
-        document.getElementById('showGrid').checked = scene.showGrid;
-        document.getElementById('showGrid_more').checked = scene.showGrid;
-        document.getElementById('showGrid_mobile').checked = scene.showGrid;
-  
-        document.getElementById('snapToGrid').checked = scene.snapToGrid;
-        document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
-        document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
-  
-        document.getElementById('lockObjs').checked = scene.lockObjs;
-        document.getElementById('lockObjs_more').checked = scene.lockObjs;
-        document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
-  
-        if (scene.observer) {
-          document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-          document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-        } else {
-          document.getElementById('observer_size').value = 40;
-          document.getElementById('observer_size_mobile').value = 40;
-        }
-  
-        document.getElementById('gridSize').value = scene.gridSize;
-        document.getElementById('gridSize_mobile').value = scene.gridSize;
-  
-        document.getElementById('lengthScale').value = scene.lengthScale;
-        document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-  
-        document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-        document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-        document.getElementById('simulateColors').checked = scene.simulateColors;
-        document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-        modebtn_clicked(scene.mode);
-        document.getElementById('mode_' + scene.mode).checked = true;
-        document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-        editor.selectObj(editor.selectedObjIndex);
-        simulator.updateSimulation();
+        self.simulator.updateSimulation();
       } else {
         // Partial update (e.g. when the background image is loaded)
         setTimeout(function () {
-          simulator.updateSimulation(true, true);
+          self.simulator.updateSimulation(true, true);
         }, 1);
       }
     });
     this.selectObj(-1);
     this.lastActionJson = json;
-    simulator.updateSimulation();
+    this.simulator.updateSimulation();
   }
 
   /**
@@ -964,56 +925,26 @@ class Editor {
     }
 
     const newJSON = this.scene.toJSON();
-    if (aceEditor && newJSON != this.lastActionJson && !aceEditor.isFocused()) {
-
-      // Calculate the position of the first and last character that has changed
-      var minLen = Math.min(newJSON.length, this.lastActionJson.length);
-      var startChar = 0;
-      while (startChar < minLen && newJSON[startChar] == this.lastActionJson[startChar]) {
-        startChar++;
-      }
-      var endChar = 0;
-      while (endChar < minLen && newJSON[newJSON.length - 1 - endChar] == this.lastActionJson[this.lastActionJson.length - 1 - endChar]) {
-        endChar++;
-      }
-
-      // Convert the character positions to line numbers
-      var startLineNum = newJSON.substr(0, startChar).split("\n").length - 1;
-      var endLineNum = newJSON.substr(0, newJSON.length - endChar).split("\n").length - 1;
-
-      // Set selection range to highlight changes using the Range object
-      var Range = require("ace/range").Range;
-      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
-
-      lastCodeChangeIsFromScene = true;
-      aceEditor.setValue(newJSON);
-      aceEditor.selection.setSelectionRange(selectionRange);
-
-      // Scroll to the first line that has changed
-      aceEditor.scrollToLine(startLineNum, true, true, function () { });
-    }
+    const oldJSON = this.lastActionJson;
     this.lastActionJson = newJSON;
+    this.emit('newAction', { newJSON: newJSON, oldJSON: oldJSON });
 
-    syncUrl();
-    warning = "";
     updateErrorAndWarning();
     this.requireDelayedValidation();
 
     if (new Date() - this.lastActionTime > Editor.UNDO_INTERVAL) {
       this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
-      document.getElementById('undo').disabled = false;
-      document.getElementById('redo').disabled = true;
-      document.getElementById('undo_mobile').disabled = false;
-      document.getElementById('redo_mobile').disabled = true;
+      this.emit('newUndoPoint');
+      
       this.undoUBound = this.undoIndex;
       if (this.undoUBound == this.undoLBound) {
         // The limit of undo is reached
         this.undoLBound = (this.undoLBound + 1) % Editor.UNDO_LIMIT;
       }
     }
-    
+
     this.undoData[this.undoIndex] = this.lastActionJson;
-    
+
     hasUnsavedChange = true;
     this.lastActionTime = new Date();
   }
@@ -1030,7 +961,7 @@ class Editor {
         this.scene.objs.length--;
         this.selectObj(-1);
       }
-      simulator.updateSimulation(!objTypes[constructingObjType].isOptical, true);
+      this.simulator.updateSimulation(!objTypes[constructingObjType].isOptical, true);
       return;
     }
     if (this.positioningObjIndex != -1) {
@@ -1043,17 +974,8 @@ class Editor {
       return;
     this.undoIndex = (this.undoIndex + (Editor.UNDO_LIMIT - 1)) % Editor.UNDO_LIMIT;
     this.loadJSON(this.undoData[this.undoIndex]);
-    document.getElementById('redo').disabled = false;
-    document.getElementById('redo_mobile').disabled = false;
-    if (this.undoIndex == this.undoLBound) {
-      // The lower bound of undo data is reached
-      document.getElementById('undo').disabled = true;
-      document.getElementById('undo_mobile').disabled = true;
-    }
-    if (aceEditor) {
-      aceEditor.session.setValue(this.lastActionJson);
-    }
-    syncUrl();
+    this.emit('undo');
+
     this.requireDelayedValidation();
   }
 
@@ -1068,17 +990,8 @@ class Editor {
       return;
     this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
     this.loadJSON(this.undoData[this.undoIndex]);
-    document.getElementById('undo').disabled = false;
-    document.getElementById('undo_mobile').disabled = false;
-    if (this.undoIndex == this.undoUBound) {
-      // The lower bound of undo data is reached
-      document.getElementById('redo').disabled = true;
-      document.getElementById('redo_mobile').disabled = true;
-    }
-    if (aceEditor) {
-      aceEditor.session.setValue(this.lastActionJson);
-    }
-    syncUrl();
+    this.emit('redo');
+
     this.requireDelayedValidation();
   }
 
