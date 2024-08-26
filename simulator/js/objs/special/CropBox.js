@@ -71,11 +71,11 @@ objTypes['CropBox'] = class extends BaseSceneObj {
     const self = this;
     objBar.createButton(getMsg('save'), function (obj) {
       self.warning = null;
-      confirmCrop(obj);
+      self.scene.editor.confirmCrop(obj);
     });
     objBar.createButton(getMsg('save_cancel'), function (obj) {
       self.warning = null;
-      cancelCrop();
+      self.scene.editor.cancelCrop();
     });
 
     this.warning = null;
@@ -100,7 +100,7 @@ objTypes['CropBox'] = class extends BaseSceneObj {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
-    if (!cropMode) return;
+    if (!(this.scene.editor && this.scene.editor.isInCropMode)) return;
 
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
@@ -141,7 +141,7 @@ objTypes['CropBox'] = class extends BaseSceneObj {
   }
 
   checkMouseOver(mouse) {
-    if (!cropMode) return false;
+    if (!(this.scene.editor && this.scene.editor.isInCropMode)) return false;
     if (mouse.isOnPoint(this.p1)) {
       return { part: 1, targetPoint: geometry.point(this.p1.x, this.p1.y), cursor: 'nwse-resize', requiresObjBarUpdate: true };
     }

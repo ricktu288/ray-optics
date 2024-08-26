@@ -11,7 +11,6 @@ var xyBox_cancelContextMenu = false;
 var isFromGallery = false;
 var hasUnsavedChange = false;
 var MQ;
-var cropMode = false;
 var autoSyncUrl = false;
 var warning = null;
 var error = null;
@@ -299,6 +298,11 @@ window.onload = function (e) {
     syncUrl();
   });
 
+  editor.on('scaleChange', function (e) {
+    document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+    document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+  });
+
   init();
 
   document.getElementById('undo').disabled = true;
@@ -371,22 +375,6 @@ window.onload = function (e) {
       }
     }
 
-    /*
-    if(e.altKey && e.keyCode==78)
-    {
-    //Alt+N
-    cleanAll();
-    return false;
-    }
-    */
-    /*
-    if(e.altKey && e.keyCode==65)
-    {
-    //Alt+A
-    document.getElementById("objAttr").focus()
-    return false;
-    }
-    */
     //Delete
     if (e.keyCode == 46 || e.keyCode == 8) {
       if (editor.selectedObjIndex != -1) {
@@ -450,9 +438,6 @@ window.onload = function (e) {
         simulator.updateSimulation();
       }
     }
-
-
-
   };
 
   window.onkeyup = function (e) {
@@ -460,29 +445,7 @@ window.onload = function (e) {
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       editor.onActionComplete();
     }
-
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   document.getElementById('undo').onclick = function () {
     this.blur();
@@ -510,8 +473,12 @@ window.onload = function (e) {
 
   document.getElementById('get_link').onclick = getLink;
   document.getElementById('get_link_mobile').onclick = getLink;
-  document.getElementById('export_svg').onclick = enterCropMode;
-  document.getElementById('export_svg_mobile').onclick = enterCropMode;
+  document.getElementById('export_svg').onclick = function() {
+    editor.enterCropMode();
+  };
+  document.getElementById('export_svg_mobile').onclick = function() {
+    editor.enterCropMode();
+  };
   document.getElementById('open').onclick = function () {
     document.getElementById('openfile').click();
   };
@@ -667,7 +634,7 @@ window.onload = function (e) {
     }
     document.getElementById('lengthScale').value = scene.lengthScale;
     document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-    setScale(scene.scale);
+    editor.setScale(scene.scale);
     simulator.updateSimulation();
     editor.onActionComplete();
   }
@@ -686,12 +653,12 @@ window.onload = function (e) {
 
 
   document.getElementById('zoomPlus').onclick = function () {
-    setScale(scene.scale * 1.1);
+    editor.setScale(scene.scale * 1.1);
     editor.onActionComplete();
     this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
-    setScale(scene.scale / 1.1);
+    editor.setScale(scene.scale / 1.1);
     editor.onActionComplete();
     this.blur();
   }
@@ -1173,16 +1140,7 @@ function modebtn_clicked(mode1) {
 }
 
 
-function setScale(value) {
-  setScaleWithCenter(value, canvas.width / scene.scale / 2, canvas.height / scene.scale / 2);
-}
 
-function setScaleWithCenter(value, centerX, centerY) {
-  scene.setScaleWithCenter(value, centerX, centerY);
-  document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  simulator.updateSimulation();
-}
 
 function rename() {
   scene.name = document.getElementById('save_name').value;
@@ -1265,172 +1223,6 @@ function getLink() {
   });
 }
 
-function enterCropMode() {
-  cropMode = true;
-
-  // Search objs for existing cropBox
-  var cropBoxIndex = -1;
-  for (var i = 0; i < scene.objs.length; i++) {
-    if (scene.objs[i].constructor.type == 'CropBox') {
-      cropBoxIndex = i;
-      break;
-    }
-  }
-  if (cropBoxIndex == -1) {
-    // Create a new cropBox
-    scene.pushObj(new objTypes['CropBox'](scene, {
-      p1: geometry.point((canvas.width * 0.2 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.2) / simulator.dpr - scene.origin.y) / scene.scale),
-      p4: geometry.point((canvas.width * 0.8 / simulator.dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height - 120) * 0.8) / simulator.dpr - scene.origin.y) / scene.scale),
-    }));
-    cropBoxIndex = scene.objs.length - 1;
-  }
-
-  editor.selectObj(cropBoxIndex);
-
-  simulator.updateSimulation(true, true);
-}
-
-function confirmCrop(cropBox) {
-  if (cropBox.format == 'svg') {
-    exportSVG(cropBox);
-  } else {
-    exportImage(cropBox);
-  }
-}
-
-function cancelCrop() {
-  cropMode = false;
-  editor.selectObj(-1);
-  simulator.updateSimulation(true, true);
-}
-
-function exportSVG(cropBox) {
-  const exportingScene = new Scene();
-  exportingScene.backgroundImage = scene.backgroundImage;
-  exportingScene.loadJSON(scene.toJSON(), function (needFullUpdate, completed) {
-    if (!completed) {
-      return;
-    }
-
-    exportingScene.scale = 1;
-    exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
-
-    const imageWidth = cropBox.p4.x - cropBox.p1.x;
-    const imageHeight = cropBox.p4.y - cropBox.p1.y;
-
-    const ctxSVG = new C2S(imageWidth, imageHeight);
-    ctxSVG.fillStyle = "black";
-    ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
-
-    const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7);
-
-    function onSimulationEnd() {
-      const blob = new Blob([ctxSVG.getSerializedSvg()], { type: 'image/svg+xml' });
-      saveAs(blob, (scene.name || "export") + ".svg");
-    }
-
-    exportSimulator.on('simulationComplete', onSimulationEnd);
-    exportSimulator.on('simulationStop', onSimulationEnd);
-
-    cropMode = false;
-    exportSimulator.updateSimulation();
-    editor.selectObj(-1);
-  });
-
-  /*
-  var ctx_backup = simulator.ctxAboveLight;
-  var ctx0_backup = simulator.ctxBelowLight;
-  var ctxLight_backup = simulator.ctxMain;
-  var ctxGrid_backup = simulator.ctxGrid;
-  var scale_backup = scene.scale;
-  var origin_backup = scene.origin;
-  var simulator.dpr_backup = simulator.dpr;
-
-  scene.scale = 1;
-  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-  simulator.dpr = 1;
-  imageWidth = cropBox.p4.x - cropBox.p1.x;
-  imageHeight = cropBox.p4.y - cropBox.p1.y;
-
-  editor.selectObj(-1);
-  mouseObj = -1;
-
-  simulator.ctxAboveLight = new C2S(imageWidth, imageHeight);
-  simulator.ctxBelowLight = simulator.ctxAboveLight;
-  simulator.ctxMain = simulator.ctxAboveLight;
-  simulator.ctxGrid = simulator.ctxAboveLight;
-  simulator.ctxAboveLight.fillStyle = "black";
-  simulator.ctxAboveLight.fillRect(0, 0, imageWidth, imageHeight);
-
-  exportRayCountLimit = cropBox.rayCountLimit || 1e4;
-  isExporting = true;
-  cropMode = false;
-  simulator.updateSimulation();
-  isExporting = false;
-  var blob = new Blob([simulator.ctxAboveLight.getSerializedSvg()], { type: 'image/svg+xml' });
-  saveAs(blob, (scene.name || "export") + ".svg");
-
-  simulator.ctxAboveLight = ctx_backup;
-  simulator.ctxBelowLight = ctx0_backup;
-  simulator.ctxMain = ctxLight_backup;
-  simulator.ctxGrid = ctxGrid_backup;
-  scene.scale = scale_backup;
-  scene.origin = origin_backup;
-  simulator.dpr = simulator.dpr_backup;
-  simulator.updateSimulation(true, true);
-  */
-}
-
-function exportImage(cropBox) {
-  const exportingScene = new Scene();
-  exportingScene.backgroundImage = scene.backgroundImage;
-  exportingScene.loadJSON(scene.toJSON(), function (needFullUpdate, completed) {
-    if (!completed) {
-      return;
-    }
-
-    exportingScene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-    exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
-
-    const imageWidth = cropBox.width;
-    const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
-
-    const canvases = [];
-    const ctxs = [];
-    for (let i = 0; i < 4; i++) {
-      canvases.push(document.createElement('canvas'));
-      ctxs.push(canvases[i].getContext('2d'));
-      canvases[i].width = imageWidth;
-      canvases[i].height = imageHeight;
-    }
-
-    const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7);
-
-    function onSimulationEnd() {
-      const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = imageWidth;
-      finalCanvas.height = imageHeight;
-      const finalCtx = finalCanvas.getContext('2d');
-      finalCtx.fillStyle = "black";
-      finalCtx.fillRect(0, 0, cropBox.width, cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x));
-      finalCtx.drawImage(canvases[1], 0, 0);
-      finalCtx.drawImage(canvases[3], 0, 0);
-      finalCtx.drawImage(canvases[0], 0, 0);
-      finalCtx.drawImage(canvases[2], 0, 0);
-
-      finalCanvas.toBlob(function (blob) {
-        saveAs(blob, (scene.name || "export") + ".png");
-      });
-    }
-
-    exportSimulator.on('simulationComplete', onSimulationEnd);
-    exportSimulator.on('simulationStop', onSimulationEnd);
-
-    cropMode = false;
-    exportSimulator.updateSimulation();
-    editor.selectObj(-1);
-  });
-}
 
 window.onbeforeunload = function (e) {
   if (hasUnsavedChange) {

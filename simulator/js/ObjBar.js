@@ -489,8 +489,8 @@ class ObjBar {
       if (updateOnChange) {
         self.emit('requestUpdate', null);
       }
-      self.emit('edit', null);
-      self.emit('editEnd', null);
+      //self.emit('edit', null);
+      //self.emit('editEnd', null);
     };
     this.elem.appendChild(button);
     var space = document.createTextNode(' ');

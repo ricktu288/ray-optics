@@ -1,3 +1,7 @@
+/**
+ * The visual scene editor.
+ * @class Editor
+ */
 class Editor {
 
   /**
@@ -82,6 +86,9 @@ class Editor {
 
     /** @property {number} undoUBound - The lower bound of the undo data index. */
     this.undoUBound = 0;
+
+    /** @property {boolean} isInCropMode - Whether the editor is in the crop mode. */
+    this.isInCropMode = false;
 
     /** @property {boolean} pendingControlPointSelection - Whether a user has clicked on a control point with the Ctrl key held down, and the editor is waiting to see if the user is going to select the control point for a handle. */
     this.pendingControlPointSelection = false;
@@ -170,6 +177,11 @@ class Editor {
    * @type {object}
    * @property {string} oldJSON - The JSON string representing the scene before the action.
    * @property {string} newJSON - The JSON string representing the scene after the action.
+   */
+
+  /**
+   * The event when the scale of the scene is changed.
+   * @event Editor#scaleChange
    */
 
   /**
@@ -268,7 +280,7 @@ class Editor {
         d = self.scene.scale * self.scene.lengthScale + 0.25;
       }
       d = Math.max(0.25, Math.min(5.00, d)) * 100;
-      setScaleWithCenter(d / self.scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / self.scene.scale, (e.pageY - e.target.offsetTop) / self.scene.scale);
+      self.setScaleWithCenter(d / self.scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / self.scene.scale, (e.pageY - e.target.offsetTop) / self.scene.scale);
       self.onActionComplete();
       //window.toolBarViewModel.zoom.value(d);
       self.onCanvasMouseMove(e);
@@ -346,7 +358,7 @@ class Editor {
         self.scene.origin.y += dy2;
 
         // Apply the scale transformation
-        setScaleWithCenter(newScale, (x - e.target.offsetLeft) / self.scene.scale, (y - e.target.offsetTop) / self.scene.scale);
+        self.setScaleWithCenter(newScale, (x - e.target.offsetLeft) / self.scene.scale, (y - e.target.offsetTop) / self.scene.scale);
 
         // Update last values
         lastX = x;
@@ -894,6 +906,27 @@ class Editor {
   }
 
   /**
+   * Set the scale of the scene with respect to the center point of the canvas.
+   * @param {number} value - The new scale.
+   */
+  setScale(value) {
+    this.setScaleWithCenter(value, this.canvas.width / this.scene.scale / 2, this.canvas.height / this.scene.scale / 2);
+  }
+  
+  /**
+   * Set the scale of the scene while keeping a given center point fixed.
+   * @param {number} value - The new scale factor.
+   * @param {number} centerX - The x-coordinate of the center point.
+   * @param {number} centerY - The y-coordinate of the center point.
+   */
+  setScaleWithCenter(value, centerX, centerY) {
+    this.scene.setScaleWithCenter(value, centerX, centerY);
+    this.emit('scaleChange');
+    
+    this.simulator.updateSimulation();
+  }
+
+  /**
    * Load a JSON string of the scene to the editor.
    * @param {string} json - The JSON string of the scene.
    */
@@ -995,6 +1028,149 @@ class Editor {
     this.requireDelayedValidation();
   }
 
+  /**
+   * Enter the crop mode that allows the user to crop the scene for exporting.
+   */
+  enterCropMode() {
+    this.isInCropMode = true;
+
+    // Search objs for existing cropBox
+    var cropBoxIndex = -1;
+    for (var i = 0; i < scene.objs.length; i++) {
+      if (scene.objs[i].constructor.type == 'CropBox') {
+        cropBoxIndex = i;
+        break;
+      }
+    }
+    if (cropBoxIndex == -1) {
+      // Create a new cropBox
+      this.scene.pushObj(new objTypes['CropBox'](this.scene, {
+        p1: geometry.point((this.canvas.width * 0.2 / this.simulator.dpr - this.scene.origin.x) / this.scene.scale, ((120 + (this.canvas.height - 120) * 0.2) / this.simulator.dpr - this.scene.origin.y) / this.scene.scale),
+        p4: geometry.point((this.canvas.width * 0.8 / this.simulator.dpr - this.scene.origin.x) / this.scene.scale, ((120 + (this.canvas.height - 120) * 0.8) / this.simulator.dpr - this.scene.origin.y) / this.scene.scale),
+      }));
+      cropBoxIndex = this.scene.objs.length - 1;
+    }
+
+    this.selectObj(cropBoxIndex);
+
+    this.simulator.updateSimulation(true, true);
+  }
+
+  /**
+   * Confirm the crop box and export the cropped scene.
+   * @param {CropBox} cropBox - The crop box.
+   */
+  confirmCrop(cropBox) {
+    if (cropBox.format == 'svg') {
+      this.exportSVG(cropBox);
+    } else {
+      this.exportImage(cropBox);
+    }
+  }
+
+  /**
+   * Exit the crop mode without exporting the cropped scene.
+   */
+  cancelCrop() {
+    this.isInCropMode = false;
+    this.selectObj(-1);
+    this.simulator.updateSimulation(true, true);
+  }
+
+  /**
+   * Export the cropped scene as an SVG file.
+   * @param {CropBox} cropBox - The crop box.
+   */
+  exportSVG(cropBox) {
+    const self = this;
+    const exportingScene = new Scene();
+    exportingScene.backgroundImage = this.scene.backgroundImage;
+    exportingScene.loadJSON(this.scene.toJSON(), function (needFullUpdate, completed) {
+      if (!completed) {
+        return;
+      }
+
+      exportingScene.scale = 1;
+      exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
+
+      const imageWidth = cropBox.p4.x - cropBox.p1.x;
+      const imageHeight = cropBox.p4.y - cropBox.p1.y;
+
+      const ctxSVG = new C2S(imageWidth, imageHeight);
+      ctxSVG.fillStyle = "black";
+      ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
+
+      const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7);
+
+      function onSimulationEnd() {
+        const blob = new Blob([ctxSVG.getSerializedSvg()], { type: 'image/svg+xml' });
+        saveAs(blob, (self.scene.name || "export") + ".svg");
+      }
+
+      exportSimulator.on('simulationComplete', onSimulationEnd);
+      exportSimulator.on('simulationStop', onSimulationEnd);
+
+      self.isInCropMode = false;
+      exportSimulator.updateSimulation();
+      self.selectObj(-1);
+    });
+  }
+
+  /**
+   * Export the cropped scene as a PNG image.
+   * @param {CropBox} cropBox - The crop box.
+   */
+  exportImage(cropBox) {
+    const self = this;
+    const exportingScene = new Scene();
+    exportingScene.backgroundImage = this.scene.backgroundImage;
+    exportingScene.loadJSON(this.scene.toJSON(), function (needFullUpdate, completed) {
+      if (!completed) {
+        return;
+      }
+
+      exportingScene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
+      exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
+
+      const imageWidth = cropBox.width;
+      const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
+
+      const canvases = [];
+      const ctxs = [];
+      for (let i = 0; i < 4; i++) {
+        canvases.push(document.createElement('canvas'));
+        ctxs.push(canvases[i].getContext('2d'));
+        canvases[i].width = imageWidth;
+        canvases[i].height = imageHeight;
+      }
+
+      const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7);
+
+      function onSimulationEnd() {
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = imageWidth;
+        finalCanvas.height = imageHeight;
+        const finalCtx = finalCanvas.getContext('2d');
+        finalCtx.fillStyle = "black";
+        finalCtx.fillRect(0, 0, cropBox.width, cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x));
+        finalCtx.drawImage(canvases[1], 0, 0);
+        finalCtx.drawImage(canvases[3], 0, 0);
+        finalCtx.drawImage(canvases[0], 0, 0);
+        finalCtx.drawImage(canvases[2], 0, 0);
+
+        finalCanvas.toBlob(function (blob) {
+          saveAs(blob, (self.scene.name || "export") + ".png");
+        });
+      }
+
+      exportSimulator.on('simulationComplete', onSimulationEnd);
+      exportSimulator.on('simulationStop', onSimulationEnd);
+
+      self.isInCropMode = false;
+      exportSimulator.updateSimulation();
+      self.selectObj(-1);
+    });
+  }
 
   /**
    * Require a delayed validation of the scene. The actual validation will be performed if the user is inactive for a while.
@@ -1020,9 +1196,3 @@ class Editor {
   }
 
 }
-
-
-
-
-
-
