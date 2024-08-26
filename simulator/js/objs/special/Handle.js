@@ -152,7 +152,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
       trans(this.p1);
       trans(this.p2);
       for (var i in this.controlPoints) {
-        this.controlPoints[i].dragContext.originalObj = scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+        this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
         this.controlPoints[i].dragContext.isByHandle = true;
         this.controlPoints[i].dragContext.hasDuplicated = false;
         this.controlPoints[i].dragContext.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};

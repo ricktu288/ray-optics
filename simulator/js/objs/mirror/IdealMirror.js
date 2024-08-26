@@ -57,7 +57,7 @@ objTypes['IdealMirror'] = class extends LineObjMixin(BaseFilter) {
     var center_size = 1 * ls;
 
     // Draw the line segment
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.globalAlpha = 1;
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();

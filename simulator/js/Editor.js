@@ -70,13 +70,13 @@ class Editor {
     this.addingObjType = '';
 
     /** @property {string[]} undoData - The data for undoing, where each element is a JSON string representing the scene. */
-    this.undoData = [scene.toJSON()];
+    this.undoData = [this.scene.toJSON()];
 
     /** @property {Date} lastActionTime - The time when the last undo data is pushed. */
     this.lastActionTime = new Date();
 
     /** @property {string} lastActionJson - The JSON string representing the scene when the last undo data is pushed. */
-    this.lastActionJson = scene.toJSON();
+    this.lastActionJson = this.scene.toJSON();
 
     /** @property {number} undoIndex - The index of the undo data currently displayed. */
     this.undoIndex = 0;
@@ -210,7 +210,6 @@ class Editor {
     const self = this;
 
     this.canvas.addEventListener('mousedown', function (e) {
-      error = null;
       if (self.lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
       self.lastDeviceIsTouch = false;
 
@@ -561,19 +560,19 @@ class Editor {
       }
       if (ret.dragContext) {
         if (ret.dragContext.cursor) {
-          canvas.style.cursor = ret.dragContext.cursor;
+          this.canvas.style.cursor = ret.dragContext.cursor;
         } else if (ret.dragContext.targetPoint || ret.dragContext.targetPoint_) {
-          canvas.style.cursor = 'pointer';
+          this.canvas.style.cursor = 'pointer';
         } else if (ret.dragContext.part == 0) {
-          canvas.style.cursor = 'move';
+          this.canvas.style.cursor = 'move';
         } else {
-          canvas.style.cursor = '';
+          this.canvas.style.cursor = '';
         }
       } else {
         if (this.scene.mode == 'observer' && geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
-          canvas.style.cursor = 'pointer';
+          this.canvas.style.cursor = 'pointer';
         } else {
-          canvas.style.cursor = '';
+          this.canvas.style.cursor = '';
         }
       }
     }
@@ -932,8 +931,8 @@ class Editor {
    */
   loadJSON(json) {
     const self = this;
-    scene.setViewportSize(canvas.width / this.simulator.dpr, canvas.height / this.simulator.dpr);
-    scene.loadJSON(json, function (needFullUpdate, completed) {
+    this.scene.setViewportSize(this.canvas.width / this.simulator.dpr, this.canvas.height / this.simulator.dpr);
+    this.scene.loadJSON(json, function (needFullUpdate, completed) {
       self.emit('sceneLoaded', { needFullUpdate: needFullUpdate, completed: completed });
       if (needFullUpdate) {
         self.simulator.updateSimulation();
@@ -978,7 +977,6 @@ class Editor {
 
     this.undoData[this.undoIndex] = this.lastActionJson;
 
-    hasUnsavedChange = true;
     this.lastActionTime = new Date();
   }
 
@@ -1036,8 +1034,8 @@ class Editor {
 
     // Search objs for existing cropBox
     var cropBoxIndex = -1;
-    for (var i = 0; i < scene.objs.length; i++) {
-      if (scene.objs[i].constructor.type == 'CropBox') {
+    for (var i = 0; i < this.scene.objs.length; i++) {
+      if (this.scene.objs[i].constructor.type == 'CropBox') {
         cropBoxIndex = i;
         break;
       }

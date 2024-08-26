@@ -14,6 +14,9 @@ class ObjBar {
     /** @property {boolean} shouldShowAdvanced - Whether the advanced options should be shown */
     this.shouldShowAdvanced = false;
 
+    /** @property {SceneObject|null} targetObj - The scene object whose options are being edited */
+    this.targetObj = null;
+
     /** @property {function|null} pendingEvent - The pending event to be called in case the scene object loses focus before the input is finished */
     this.pendingEvent = null;
 
@@ -483,9 +486,9 @@ class ObjBar {
     const self = this;
 
     button.onclick = function () {
-      const isOptical = scene.objs[editor.selectedObjIndex].constructor.isOptical;
+      const isOptical = self.targetObj.constructor.isOptical;
       this.blur();
-      func(scene.objs[editor.selectedObjIndex]);
+      func(self.targetObj);
       if (updateOnChange) {
         self.emit('requestUpdate', null);
       }
@@ -544,12 +547,12 @@ class ObjBar {
    */
   setOption(func) {
     if (!this.shouldApplyToAll) {
-      func(scene.objs[editor.selectedObjIndex]);
+      func(this.targetObj);
     }
     else {
-      for (var i = 0; i < scene.objs.length; i++) {
-        if (scene.objs[i].constructor.type == scene.objs[editor.selectedObjIndex].constructor.type) {
-          func(scene.objs[i]);
+      for (var i = 0; i < this.targetObj.scene.objs.length; i++) {
+        if (this.targetObj.scene.objs[i].constructor.type == this.targetObj.constructor.type) {
+          func(this.targetObj.scene.objs[i]);
         }
       }
     }

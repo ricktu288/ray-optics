@@ -8,7 +8,6 @@ var editor;
 var simulator;
 var objBar;
 var xyBox_cancelContextMenu = false;
-var isFromGallery = false;
 var hasUnsavedChange = false;
 var MQ;
 var autoSyncUrl = false;
@@ -656,6 +655,9 @@ window.onload = function (e) {
       document.getElementById('obj_bar').style.display = 'none';
       return;
     }
+
+    objBar.targetObj = scene.objs[editor.selectedObjIndex];
+
     document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[editor.selectedObjIndex].constructor.type);
     document.getElementById('showAdvanced').style.display = 'none';
     document.getElementById('showAdvanced_mobile_container').style.display = 'none';
@@ -776,6 +778,7 @@ window.onload = function (e) {
 
     syncUrl();
     warning = "";
+    hasUnsavedChange = true;
   });
 
   editor.on('newUndoPoint', function (e) {
@@ -978,7 +981,6 @@ window.onload = function (e) {
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
     editor.onActionComplete();
-    isFromGallery = false;
     hasUnsavedChange = false;
     if (aceEditor) {
       aceEditor.session.setValue(editor.lastActionJson);
@@ -1390,6 +1392,10 @@ window.onload = function (e) {
     e.preventDefault();
   }, false);
 
+  this.canvas.addEventListener('mousedown', function (e) {
+    error = null;
+  }, false);
+
   MQ = MathQuill.getInterface(2);
 
   window.onerror = function (msg, url) {
@@ -1406,7 +1412,6 @@ window.onload = function (e) {
         scene.backgroundImage = null;
         editor.loadJSON(JSON.stringify(json));
         editor.onActionComplete();
-        isFromGallery = true;
         hasUnsavedChange = false;
         if (aceEditor) {
           aceEditor.session.setValue(editor.lastActionJson);
@@ -1420,7 +1425,6 @@ window.onload = function (e) {
       // The URL contains a link to a gallery item.
       openSample(window.location.hash.substr(1) + ".json");
       history.replaceState('', document.title, window.location.pathname + window.location.search);
-      isFromGallery = true;
     }
   };
 
@@ -1447,7 +1451,6 @@ function openSample(name) {
     editor.loadJSON(client.responseText);
 
     editor.onActionComplete();
-    isFromGallery = true;
     hasUnsavedChange = false;
     if (aceEditor) {
       aceEditor.session.setValue(editor.lastActionJson);

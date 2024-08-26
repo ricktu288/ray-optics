@@ -53,7 +53,7 @@ class BaseGrinGlass extends BaseGlass {
     const scene = this.scene;
     if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
       objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicBodyMerging, function (obj, value) {
-        scene.symbolicBodyMerging = value;
+        obj.scene.symbolicBodyMerging = value;
       }, getMsg('symbolic_grin_note_popover'));
     }
   }
