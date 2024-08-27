@@ -278,6 +278,9 @@ class ObjBar {
       self.emit('editEnd', null);
     };
     this.pendingEvent = function () {
+      if (textEditEndTimerId) {
+        clearTimeout(textEditEndTimerId);
+      }
       self.emit('editEnd', null);
     };
   }
