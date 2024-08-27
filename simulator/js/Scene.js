@@ -126,9 +126,12 @@ class Scene {
 
       const serializableDefaults = Scene.serializableDefaults;
 
+      const originalWidth = this.width || serializableDefaults.width;
+      const originalHeight = this.height || serializableDefaults.height;
+
       // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
-      const approximatedWidth = Math.ceil((this.width || serializableDefaults.width) / 100) * 100;
-      const approximatedHeight = Math.ceil((this.height || serializableDefaults.height) / 100) * 100;
+      const approximatedWidth = Math.ceil(originalWidth / 100) * 100;
+      const approximatedHeight = Math.ceil(originalHeight / 100) * 100;
 
       // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
       for (let key in serializableDefaults) {
@@ -150,6 +153,8 @@ class Scene {
       this.scale = jsonData.scale / rescaleFactor;
       this.origin.x = jsonData.origin.x / rescaleFactor;
       this.origin.y = jsonData.origin.y / rescaleFactor;
+      this.width = originalWidth;
+      this.height = originalHeight;
 
       // Load the objects in the scene.
       this.objs = jsonData.objs.map(objData =>

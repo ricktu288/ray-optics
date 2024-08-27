@@ -268,6 +268,9 @@ class ObjBar {
     objOption_text.onblur = function () {
       self.emit('editEnd', null);
     };
+    this.pendingEvent = function () {
+      self.emit('editEnd', null);
+    };
   }
 
   /**
