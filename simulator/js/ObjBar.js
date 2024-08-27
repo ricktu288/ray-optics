@@ -252,6 +252,8 @@ class ObjBar {
 
     const self = this;
 
+    var textEditEndTimerId = null;
+
     objOption_text.oninput = function () {
       // if user starts adding more than one line, auto expand the text area
       if (objOption_text.value.split('\n').length > 1 && objOption_text.rows == 1) {
@@ -260,6 +262,13 @@ class ObjBar {
       self.setOption(function (obj) {
         func(obj, objOption_text.value);
       });
+
+      if (textEditEndTimerId) {
+        clearTimeout(textEditEndTimerId);
+      }
+      textEditEndTimerId = setTimeout(function () {
+        self.emit('editEnd', null);
+      }, 1000);
     };
     objOption_text.onkeydown = function (e) {
       e.cancelBubble = true;
