@@ -1,60 +1,828 @@
 ﻿var objTypes = {};
 var canvas;
-var canvas0;
+var canvasBelowLight;
 var canvasLight;
 var canvasGrid;
-var ctx;
-var ctx0;
-var ctxLight;
-var ctxGrid;
-var dpr = 1;
-var scene = new Scene();
+var scene;
+var editor;
+var simulator;
+var objBar;
 var xyBox_cancelContextMenu = false;
-var isFromGallery = false;
 var hasUnsavedChange = false;
-var showAdvancedOn = false;
 var MQ;
-var cropMode = false;
-var lastDeviceIsTouch = false;
-var lastTouchTime = -1;
 var autoSyncUrl = false;
 var warning = null;
 var error = null;
 
-window.onload = function (e) {
-  if (window.devicePixelRatio) {
-    dpr = window.devicePixelRatio;
+
+f = function (e) {
+  list = document.getElementsByClassName('mobile-dropdown-menu');
+  let maxScrollHeight = 0;
+  for (ele of list) {
+    inner = ele.children[0];
+    if (inner.scrollHeight > maxScrollHeight) {
+      maxScrollHeight = inner.scrollHeight;
+    }
+  }
+  for (ele of list) {
+    ele.style.height = maxScrollHeight + 'px';
+  }
+}
+document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
+document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
+
+function resetDropdownButtons() {
+  // Remove the 'selected' class from all dropdown buttons
+  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function (button) {
+    button.classList.remove('selected');
+  });
+  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function (button) {
+    button.classList.remove('selected');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.getElementById('more-options-dropdown').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  document.getElementById('mobile-dropdown-options').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // Listen for changes to any radio input within a dropdown
+  document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function (input) {
+    input.addEventListener('change', function () {
+      if (input.checked) {
+        // Reset other dropdown buttons
+        if (!input.id.includes('mobile')) {
+          resetDropdownButtons();
+
+          // Get the associated dropdown button using the aria-labelledby attribute
+          let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
+
+          // Style the button to indicate selection.
+          dropdownButton.classList.add('selected');
+        } else if (input.name == 'toolsradio_mobile') {
+          resetDropdownButtons();
+
+          // Get the associated mobile trigger button
+          let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
+          let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
+          if (toggle != null) {
+            // Style the button to indicate selection.
+            toggle.classList.add('selected');
+          }
+        }
+      }
+    });
+  });
+
+  // Listen for changes to standalone radio inputs (outside dropdowns)
+  document.querySelectorAll('input[type="radio"].btn-check').forEach(function (input) {
+    if (input.name == 'toolsradio' && !input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
+      input.addEventListener('change', function () {
+        if (input.checked) {
+          // Reset dropdown buttons
+          resetDropdownButtons();
+        }
+      });
+    }
+  });
+
+});
+
+window.addEventListener('load', function () {
+  document.getElementById('toolbar-loading').style.display = 'none';
+  document.getElementById('toolbar-wrapper').style.display = '';
+  document.getElementById('saveModal').style.display = '';
+  document.getElementById('languageModal').style.display = '';
+  document.getElementById('footer-left').style.display = '';
+  document.getElementById('footer-right').style.display = '';
+  document.getElementById('canvas-container').style.display = '';
+});
+
+function getMsg(msg) {
+  var m = locales[lang][msg];
+  if (m == null) {
+    //console.log("undefined message: " + msg);
+    return msg;
+  }
+  return m.message;
+}
+
+function updateUIText(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-text]');
+
+  elements.forEach(el => {
+    const key = el.getAttribute('data-text');
+    const text = getMsg(key);
+    el.innerHTML = text;
+  });
+
+  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
+  document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
+  for (let lang1 in locales) {
+    var translated = 0;
+    var total = 0;
+    for (var item in locales[lang1]) {
+      total++;
+      if (!locales[lang1][item].incomplete) {
+        translated++;
+      }
+    }
+    //console.log([lang1, total, translated]);
+
+    document.getElementById('lang-' + lang1).innerText = Math.round(translated / total * 100) + '%';
+    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function (e) {
+      if (autoSyncUrl && !hasUnsavedChange) {
+        // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
+        e.preventDefault();
+        e.stopPropagation();
+        navigateToNewQuery(lang1)
+      }
+    }, true);
   }
 
-  canvas = document.getElementById('canvas1');
-  canvas0 = document.getElementById('canvas0');
+  document.title = getMsg('appName');
+  document.getElementById('home').href = getMsg('home_url');
+  document.getElementById('about').href = getMsg('about_url');
+  document.getElementById('moduleIframe').src = getMsg('modules_url');
+  document.getElementById('modules_tutorial').href = getMsg('modules_tutorial_url');
+}
+
+function navigateToNewQuery(newQuery) {
+  let currentUrl = window.location.href;
+  let baseUrl = currentUrl.split('?')[0];  // Remove current query if exists
+  baseUrl = baseUrl.split('#')[0];         // Further remove the hash to get the base URL
+
+  let hash = window.location.hash;         // Capture the existing hash
+  let newUrl = baseUrl + "?" + newQuery + hash;  // Construct the new URL with the query and hash
+
+  window.location.href = newUrl;  // Set the new URL
+}
+
+
+function updateUIWithPopovers(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-title], [data-popover]');
+
+  elements.forEach(el => {
+    const titleKey = el.getAttribute('data-title');
+    const title = getMsg(titleKey);
+    if (title != null) {
+      el.setAttribute('title', title);
+    }
+
+    const contentKey = el.getAttribute('data-popover');
+    if (contentKey == null) {
+      // Tooltip
+      el.setAttribute('data-bs-toggle', 'tooltip');
+      el.setAttribute('data-bs-trigger', 'hover');
+      el.setAttribute('data-bs-placement', 'bottom');
+    } else {
+      const image = el.getAttribute('data-image');
+      if (image != null) {
+        // Popover with image
+        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + getMsg(contentKey);
+        el.setAttribute('data-bs-toggle', 'popover');
+        el.setAttribute('data-bs-trigger', 'hover');
+        el.setAttribute('data-bs-html', 'true');
+        el.setAttribute('data-bs-content', content);
+
+        // Update popover size after image is loaded
+        el.addEventListener('inserted.bs.popover', function () {
+          const imgElement = document.querySelectorAll('#dynamic-popover-image');
+          imgElement[imgElement.length - 1].addEventListener('load', function () {
+            bootstrap.Popover.getInstance(el).update();
+          });
+        });
+      } else {
+        // Popover without image
+        const content = getMsg(contentKey);
+        el.setAttribute('data-bs-toggle', 'popover');
+        el.setAttribute('data-bs-trigger', 'hover');
+        el.setAttribute('data-bs-html', 'true');
+        el.setAttribute('data-bs-content', content);
+      }
+    }
+  });
+
+  // Initialize Tooltips
+  var tooltipTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+
+  // Initialize Popovers
+  var popoverTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl);
+  });
+}
+
+
+function updateUIWithoutPopovers(elememt = document) {
+  const elements = elememt.querySelectorAll('[data-title]');
+
+  elements.forEach(el => {
+    const textKey = el.getAttribute('data-text');
+
+    if (textKey == null) {
+      const titleKey = el.getAttribute('data-title');
+      const title = getMsg(titleKey);
+      el.setAttribute('title', title);
+      el.setAttribute('data-bs-toggle', 'tooltip');
+      el.setAttribute('data-bs-trigger', 'hover');
+      el.setAttribute('data-bs-placement', 'bottom');
+    }
+  });
+
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+}
+
+updateUIText();
+
+var popoversEnabled = true;
+try {
+  if (localStorage.rayOpticsHelp == "off") {
+    popoversEnabled = false;
+  }
+} catch { }
+
+document.getElementById('show_help_popups').checked = popoversEnabled;
+if (popoversEnabled) {
+  updateUIWithPopovers();
+} else {
+  updateUIWithoutPopovers();
+}
+
+var currentMobileToolGroupId = null;
+
+function initTools() {
+
+  const allElements = document.querySelectorAll('*');
+
+  allElements.forEach(element => {
+    if (element.id && element.id.startsWith('mobile-dropdown-trigger-')) {
+      const toolGroupId = element.id.replace('mobile-dropdown-trigger-', '');
+      const toolGroup = document.getElementById(`mobile-dropdown-${toolGroupId}`);
+
+      element.addEventListener('click', (event) => {
+        // Show the corresponding tool group in the mobile tool dropdown.
+        event.stopPropagation();
+        originalWidth = $("#mobile-dropdown-tools-root").width();
+        originalMarginLeft = parseInt($("#mobile-dropdown-tools-root").css("margin-left"), 10);
+        originalMarginRight = parseInt($("#mobile-dropdown-tools-root").css("margin-right"), 10);
+        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function () {
+          $(this).hide();
+          toolGroup.style.display = '';
+          $(this).css({
+            "margin-left": originalMarginLeft + "px",
+            "margin-right": originalMarginRight + "px"
+          });
+          f();
+        });
+
+        currentMobileToolGroupId = toolGroupId;
+      });
+    }
+
+    if (element.id && element.id.startsWith('tool_')) {
+      const toolId = element.id.replace('tool_', '').replace('_mobile', '');
+      element.addEventListener('click', (event) => {
+        //console.log('tool_' + toolId);
+        toolbtn_clicked(toolId);
+      });
+    }
+  });
+
+  document.getElementById('mobile-tools').addEventListener('click', (event) => {
+    // Hide the mobile tool dropdown.
+    if (currentMobileToolGroupId != null) {
+      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display = 'none';
+      document.getElementById('mobile-dropdown-tools-root').style.display = '';
+      f();
+    }
+  });
+
+}
+
+initTools();
+
+function initModes() {
+  const allElements = document.querySelectorAll('*');
+
+  allElements.forEach(element => {
+    if (element.id && element.id.startsWith('mode_')) {
+      const modeId = element.id.replace('mode_', '').replace('_mobile', '');
+      element.addEventListener('click', (event) => {
+        //console.log('mode_' + modeId);
+        modebtn_clicked(modeId);
+        editor.onActionComplete();
+      });
+    }
+  });
+}
+
+initModes();
+
+function hideAllPopovers() {
+  document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
+    var popoverInstance = bootstrap.Popover.getInstance(element);
+    if (popoverInstance) {
+      popoverInstance.hide();
+    }
+    var tooltipInstance = bootstrap.Tooltip.getInstance(element);
+    if (tooltipInstance) {
+      tooltipInstance.hide();
+    }
+  });
+}
+
+document.getElementById('help-dropdown').addEventListener('click', function (e) {
+  e.stopPropagation();
+});
+
+var aceEditor;
+var lastCodeChangeIsFromScene = false;
+
+function enableJsonEditor() {
+  aceEditor = ace.edit("jsonEditor");
+  aceEditor.setTheme("ace/theme/github_dark");
+  aceEditor.session.setMode("ace/mode/json");
+  aceEditor.session.setUseWrapMode(true);
+  aceEditor.session.setUseSoftTabs(true);
+  aceEditor.session.setTabSize(2);
+  aceEditor.setHighlightActiveLine(false)
+  aceEditor.container.style.background = "transparent"
+  aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background = "transparent"
+  aceEditor.session.setValue(editor.lastActionJson);
+
+  var debounceTimer;
+
+  aceEditor.session.on('change', function (delta) {
+    if (lastCodeChangeIsFromScene) {
+      setTimeout(function () {
+        lastCodeChangeIsFromScene = false;
+      }, 100);
+      return;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      editor.loadJSON(aceEditor.session.getValue());
+      error = null;
+      newJsonCode = editor.lastActionJson;
+      if (!scene.error) {
+        syncUrl();
+        editor.requireDelayedValidation();
+      }
+    }, 500);
+  });
+
+  document.getElementById('footer-left').style.left = '400px';
+  document.getElementById('sideBar').style.display = '';
+}
+
+function updateModuleObjsMenu() {
+  for (let suffix of ['', '_mobile']) {
+    const moduleStartLi = document.getElementById('module_start' + suffix);
+
+    // Remove all children after moduleStartLi
+    while (moduleStartLi.nextElementSibling) {
+      moduleStartLi.nextElementSibling.remove();
+    }
+
+    // Add all module objects to the menu after moduleStartLi
+    for (let moduleName of Object.keys(scene.modules)) {
+      const moduleLi = document.createElement('li');
+
+      const moduleRadio = document.createElement('input');
+      moduleRadio.type = 'radio';
+      moduleRadio.name = 'toolsradio' + suffix;
+      moduleRadio.id = 'moduleTool_' + moduleName + suffix;
+      moduleRadio.classList.add('btn-check');
+      moduleRadio.autocomplete = 'off';
+      moduleRadio.addEventListener('change', function () {
+        if (moduleRadio.checked) {
+          resetDropdownButtons();
+          document.getElementById('moreToolsDropdown').classList.add('selected');
+          document.getElementById('mobile-dropdown-trigger-more').classList.add('selected');
+          toolbtn_clicked('ModuleObj');
+          editor.addingModuleName = moduleName;
+        }
+      });
+
+      const moduleLabel = document.createElement('label');
+      moduleLabel.classList.add('btn', 'shadow-none', 'btn-primary', 'dropdown-item', 'd-flex', 'w-100');
+      moduleLabel.htmlFor = 'moduleTool_' + moduleName + suffix;
+
+      const moduleNameDiv = document.createElement('div');
+      moduleNameDiv.classList.add('col');
+      moduleNameDiv.style.fontFamily = 'monospace';
+      moduleNameDiv.innerText = moduleName;
+      moduleLabel.appendChild(moduleNameDiv);
+
+
+      const removeButtonDiv = document.createElement('div');
+      removeButtonDiv.classList.add('col', 'text-end');
+      const removeButton = document.createElement('button');
+      removeButton.classList.add('btn');
+      removeButton.style.color = 'gray';
+      removeButton.style.padding = '0px';
+      //removeButton.style.margin = '0px';
+      removeButton.style.fontSize = '10px';
+      removeButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="-4 0 16 20">
+        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+      </svg>
+      `;
+      removeButton.setAttribute('data-bs-toggle', 'tooltip');
+      removeButton.setAttribute('title', getMsg('remove_module'));
+      removeButton.setAttribute('data-bs-placement', 'right');
+      new bootstrap.Tooltip(removeButton);
+      removeButton.addEventListener('click', function () {
+        console.log(moduleName);
+        scene.removeModule(moduleName);
+        if (editor.addingObjType == 'ModuleObj' && editor.addingModuleName == moduleName) {
+          toolbtn_clicked('');  // Deselect the module object tool
+        }
+        simulator.updateSimulation(false, true);
+        hideAllPopovers();
+        updateModuleObjsMenu();
+        editor.onActionComplete();
+      });
+      removeButtonDiv.appendChild(removeButton);
+
+      moduleLabel.appendChild(removeButtonDiv);
+      moduleLi.appendChild(moduleRadio);
+      moduleLi.appendChild(moduleLabel);
+      moduleStartLi.after(moduleLi);
+
+    }
+  }
+
+}
+
+function disableJsonEditor() {
+  aceEditor.destroy();
+  aceEditor = null;
+  document.getElementById('footer-left').style.left = '0px';
+  document.getElementById('sideBar').style.display = 'none';
+}
+
+function updateErrorAndWarning() {
+  let errors = [];
+  let warnings = [];
+
+  if (error) {
+    errors.push("App: " + error);
+  }
+
+  if (warning) {
+    warnings.push("App: " + warning);
+  }
+
+  if (scene.error) {
+    errors.push("Scene: " + scene.error);
+  }
+
+  if (scene.warning) {
+    warnings.push("Scene: " + scene.warning);
+  }
+
+  if (simulator.error) {
+    errors.push("Simulator: " + simulator.error);
+  }
+
+  if (simulator.warning) {
+    warnings.push("Simulator: " + simulator.warning);
+  }
+
+  for (let i in scene.objs) {
+    let error = scene.objs[i].getError();
+    if (error) {
+      errors.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${error}`);
+    }
+
+    let warning = scene.objs[i].getWarning();
+    if (warning) {
+      warnings.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${warning}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    document.getElementById('errorText').innerText = errors.join('\n');
+    document.getElementById('error').style.display = '';
+  } else {
+    document.getElementById('error').style.display = 'none';
+  }
+
+  if (warnings.length > 0) {
+    document.getElementById('warningText').innerText = warnings.join('\n');
+    document.getElementById('warning').style.display = '';
+  } else {
+    document.getElementById('warning').style.display = 'none';
+  }
+}
+
+window.onload = function (e) {
+  let dpr = window.devicePixelRatio || 1;
+
+  canvas = document.getElementById('canvasAboveLight');
+  canvasBelowLight = document.getElementById('canvasBelowLight');
   canvasLight = document.getElementById('canvasLight');
   canvasGrid = document.getElementById('canvasGrid');
 
   canvas.width = window.innerWidth * dpr;
   canvas.height = window.innerHeight * dpr;
-  ctx = canvas.getContext('2d');
 
-  canvas0.width = window.innerWidth * dpr;
-  canvas0.height = window.innerHeight * dpr;
-  ctx0 = canvas0.getContext('2d');
+  canvasBelowLight.width = window.innerWidth * dpr;
+  canvasBelowLight.height = window.innerHeight * dpr;
 
   canvasLight.width = window.innerWidth * dpr;
   canvasLight.height = window.innerHeight * dpr;
-  ctxLight = canvasLight.getContext('2d');
 
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
-  ctxGrid = canvasGrid.getContext('2d');
+
+  objBar = new ObjBar(document.getElementById('obj_bar_main'));
+
+  objBar.on('showAdvancedEnabled', function (enabled) {
+    if (enabled) {
+      document.getElementById('showAdvanced').style.display = '';
+      document.getElementById('showAdvanced_mobile_container').style.display = '';
+    } else {
+      document.getElementById('showAdvanced').style.display = 'none';
+      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+    }
+  });
+
+  objBar.on('edit', function () {
+    simulator.updateSimulation(!objBar.targetObj.constructor.isOptical, true);
+  });
+
+  objBar.on('editEnd', function () {
+    editor.onActionComplete();
+  });
+
+  objBar.on('requestUpdate', function () {
+    editor.selectObj(editor.selectedObjIndex);
+  });
+
+  document.getElementById('apply_to_all').addEventListener('change', function () {
+    objBar.shouldApplyToAll = this.checked;
+  });
+
+  scene = new Scene();
+
+  simulator = new Simulator(scene,
+    canvasLight.getContext('2d'),
+    canvasBelowLight.getContext('2d'),
+    canvasAboveLight.getContext('2d'),
+    canvasGrid.getContext('2d'),
+    document.createElement('canvas').getContext('2d'),
+    true
+  );
+
+  simulator.dpr = dpr;
+
+  simulator.on('simulationStart', function () {
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationPause', function () {
+    document.getElementById('forceStop').style.display = '';
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
+  });
+
+  simulator.on('simulationStop', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  simulator.on('simulationComplete', function () {
+    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
+    document.getElementById('forceStop').style.display = 'none';
+  });
+
+  editor = new Editor(scene, canvas, simulator);
+
+  editor.on('positioningStart', function (e) {
+    document.getElementById('xybox').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
+    document.getElementById('xybox').style.top = (e.dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
+    document.getElementById('xybox').value = '(' + (e.dragContext.targetPoint.x) + ',' + (e.dragContext.targetPoint.y) + ')';
+    document.getElementById('xybox').size = document.getElementById('xybox').value.length;
+    document.getElementById('xybox').style.display = '';
+    document.getElementById('xybox').select();
+    document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
+    //console.log("show xybox");
+    xyBox_cancelContextMenu = true;
+  });
+
+  editor.on('requestPositioningComfirm', function (e) {
+    confirmPositioning(e.ctrl, e.shift);
+  });
+
+  editor.on('positioningEnd', function (e) {
+    document.getElementById('xybox').style.display = 'none';
+  });
+
+  editor.on('mouseCoordinateChange', function (e) {
+    if (e.mousePos) {
+      const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
+      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
+    } else {
+      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "-";
+    }
+  });
+
+  editor.emit('mouseCoordinateChange', { mousePos: null });
+
+  editor.on('selectionChange', function (e) {
+    hideAllPopovers();
+    if (objBar.pendingEvent) {
+      // If the user is in the middle of editing a value, then clearing the innerHTML of obj_bar_main will cause the change event not to fire, so we need to manually fire it.
+      objBar.pendingEvent();
+      objBar.pendingEvent = null;
+    }
+
+    if (e.newIndex >= 0) {
+      if (scene.objs[e.newIndex].constructor.type == 'Handle') {
+        document.getElementById('obj_bar').style.display = 'none';
+        return;
+      }
+
+      objBar.targetObj = scene.objs[e.newIndex];
+
+      document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[e.newIndex].constructor.type);
+      document.getElementById('showAdvanced').style.display = 'none';
+      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+
+      document.getElementById('obj_bar_main').style.display = '';
+      document.getElementById('obj_bar_main').innerHTML = '';
+      scene.objs[e.newIndex].populateObjBar(objBar);
+
+      if (document.getElementById('obj_bar_main').innerHTML != '') {
+        for (var i = 0; i < scene.objs.length; i++) {
+          if (i != e.newIndex && scene.objs[i].constructor.type == scene.objs[e.newIndex].constructor.type) {
+            // If there is an object with the same type, then show "Apply to All"
+            document.getElementById('apply_to_all_box').style.display = '';
+            document.getElementById('apply_to_all_mobile_container').style.display = '';
+            break;
+          }
+          if (i == this.scene.objs.length - 1) {
+            document.getElementById('apply_to_all_box').style.display = 'none';
+            document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+          }
+        }
+      } else {
+        document.getElementById('apply_to_all_box').style.display = 'none';
+        document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+      }
 
 
+      document.getElementById('obj_bar').style.display = '';
+    } else {
+      document.getElementById('obj_bar').style.display = 'none';
+      objBar.shouldShowAdvanced = false;
+    }
+  });
 
-  mousePos = geometry.point(0, 0);
+  editor.on('sceneLoaded', function (e) {
+    document.getElementById('welcome').style.display = 'none';
+    if (e.needFullUpdate) {
+      // Update the UI for the loaded scene.
 
-  initParameters();
+      if (scene.name) {
+        document.title = scene.name + " - " + getMsg("appName");
+        document.getElementById('save_name').value = scene.name;
+      } else {
+        document.title = getMsg("appName");
+      }
 
-  JSONOutput();
-  undoArr[0] = latestJsonCode;
+      if (Object.keys(scene.modules).length > 0) {
+        updateModuleObjsMenu();
+      }
+
+      document.getElementById('showGrid').checked = scene.showGrid;
+      document.getElementById('showGrid_more').checked = scene.showGrid;
+      document.getElementById('showGrid_mobile').checked = scene.showGrid;
+
+      document.getElementById('snapToGrid').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
+      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
+
+      document.getElementById('lockObjs').checked = scene.lockObjs;
+      document.getElementById('lockObjs_more').checked = scene.lockObjs;
+      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
+
+      if (scene.observer) {
+        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
+      } else {
+        document.getElementById('observer_size').value = 40;
+        document.getElementById('observer_size_mobile').value = 40;
+      }
+
+      document.getElementById('gridSize').value = scene.gridSize;
+      document.getElementById('gridSize_mobile').value = scene.gridSize;
+
+      document.getElementById('lengthScale').value = scene.lengthScale;
+      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
+
+      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+      document.getElementById('simulateColors').checked = scene.simulateColors;
+      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
+      modebtn_clicked(scene.mode);
+      document.getElementById('mode_' + scene.mode).checked = true;
+      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+      editor.selectObj(editor.selectedObjIndex);
+    }
+  });
+
+  editor.on('newAction', function (e) {
+    if (aceEditor && e.newJSON != e.oldJSON && !aceEditor.isFocused()) {
+
+      // Calculate the position of the first and last character that has changed
+      var minLen = Math.min(e.newJSON.length, e.oldJSON.length);
+      var startChar = 0;
+      while (startChar < minLen && e.newJSON[startChar] == e.oldJSON[startChar]) {
+        startChar++;
+      }
+      var endChar = 0;
+      while (endChar < minLen && e.newJSON[e.newJSON.length - 1 - endChar] == e.oldJSON[e.oldJSON.length - 1 - endChar]) {
+        endChar++;
+      }
+
+      // Convert the character positions to line numbers
+      var startLineNum = e.newJSON.substr(0, startChar).split("\n").length - 1;
+      var endLineNum = e.newJSON.substr(0, e.newJSON.length - endChar).split("\n").length - 1;
+
+      // Set selection range to highlight changes using the Range object
+      var Range = require("ace/range").Range;
+      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
+
+      lastCodeChangeIsFromScene = true;
+      aceEditor.setValue(e.newJSON);
+      aceEditor.selection.setSelectionRange(selectionRange);
+
+      // Scroll to the first line that has changed
+      aceEditor.scrollToLine(startLineNum, true, true, function () { });
+    }
+
+
+    syncUrl();
+    warning = "";
+    hasUnsavedChange = true;
+  });
+
+  editor.on('newUndoPoint', function (e) {
+    document.getElementById('undo').disabled = false;
+    document.getElementById('redo').disabled = true;
+    document.getElementById('undo_mobile').disabled = false;
+    document.getElementById('redo_mobile').disabled = true;
+  });
+
+  editor.on('undo', function (e) {
+    document.getElementById('redo').disabled = false;
+    document.getElementById('redo_mobile').disabled = false;
+    if (editor.undoIndex == editor.undoLBound) {
+      // The lower bound of undo data is reached
+      document.getElementById('undo').disabled = true;
+      document.getElementById('undo_mobile').disabled = true;
+    }
+    if (aceEditor) {
+      aceEditor.session.setValue(editor.lastActionJson);
+    }
+    syncUrl();
+  });
+
+  editor.on('redo', function (e) {
+    document.getElementById('undo').disabled = false;
+    document.getElementById('undo_mobile').disabled = false;
+    if (editor.undoIndex == editor.undoUBound) {
+      // The lower bound of undo data is reached
+      document.getElementById('redo').disabled = true;
+      document.getElementById('redo_mobile').disabled = true;
+    }
+    if (aceEditor) {
+      aceEditor.session.setValue(editor.lastActionJson);
+    }
+    syncUrl();
+  });
+
+  editor.on('scaleChange', function (e) {
+    document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+    document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+  });
+
+  init();
+
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
 
@@ -62,212 +830,181 @@ window.onload = function (e) {
   document.getElementById('redo_mobile').disabled = true;
 
 
-  canvas.addEventListener('mousedown', function (e) {
-    error = null;
-    //console.log("mousedown");
-    //document.getElementById('objAttr_text').blur();
-    // TODO: check that commenting out the above line does not cause problem.
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
+  window.onresize = function (e) {
+    if (simulator && window.devicePixelRatio) {
+      simulator.dpr = window.devicePixelRatio;
     }
-
-    document.body.focus();
-    canvas_onmousedown(e);
-  });
-
-  canvas.addEventListener('mousemove', function (e) {
-    //console.log("mousemove");
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
+    if (scene) {
+      scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
+      if (editor) {
+        editor.onActionComplete();
+      }
     }
-
-    canvas_onmousemove(e);
-  });
-
-  canvas.addEventListener('mouseup',  function (e) {
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-
-    if (scene.error) {
-      canvas.style.cursor = 'not-allowed';
-      return;
+    if (simulator.ctxAboveLight) {
+      canvas.width = window.innerWidth * simulator.dpr;
+      canvas.height = window.innerHeight * simulator.dpr;
+      canvasBelowLight.width = window.innerWidth * simulator.dpr;
+      canvasBelowLight.height = window.innerHeight * simulator.dpr;
+      canvasLight.width = window.innerWidth * simulator.dpr;
+      canvasLight.height = window.innerHeight * simulator.dpr;
+      canvasGrid.width = window.innerWidth * simulator.dpr;
+      canvasGrid.height = window.innerHeight * simulator.dpr;
+      simulator.updateSimulation();
     }
+  };
 
-    //console.log("mouseup");
-    canvas_onmouseup(e);
-  });
-
-  canvas.addEventListener('mouseout',  function (e) {
-    if (lastDeviceIsTouch && Date.now() - lastTouchTime < 500) return;
-    lastDeviceIsTouch = false;
-    if (draggingObj != -1) {
-      canvas_onmouseup(e);
+  window.onkeydown = function (e) {
+    //Ctrl+Z
+    if (e.ctrlKey && e.keyCode == 90) {
+      if (document.getElementById('undo').disabled == false) {
+        editor.undo();
+      }
+      return false;
     }
-    mouseObj = -1;
-    document.getElementById('mouseCoordinates').innerHTML = "";
-    draw(true, true)
-  });
-
-  // IE9, Chrome, Safari, Opera
-  canvas.addEventListener("mousewheel", canvas_onmousewheel, false);
-  // Firefox
-  canvas.addEventListener("DOMMouseScroll", canvas_onmousewheel, false);
-
-
-  let initialPinchDistance = null;
-  let lastScale = 1;
-  let lastX = 0;
-  let lastY = 0;
-
-  canvas.addEventListener('touchstart',  function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    if (e.touches.length === 2) {
-      // Pinch to zoom
-      e.preventDefault();
-      lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
-      lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
-      if (isConstructing || draggingObj >= 0) {
-        canvas_onmouseup(e);
-        undo();
+    //Ctrl+D
+    if (e.ctrlKey && e.keyCode == 68) {
+      if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
+        scene.cloneObjsByHandle(editor.selectedObjIndex);
       } else {
-        canvas_onmouseup(e);
+        scene.cloneObj(editor.selectedObjIndex);
       }
-    } else {
-      //console.log("touchstart");
-      document.body.focus();
-      canvas_onmousemove(e);
-      canvas_onmousedown(e);
+
+      simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      editor.onActionComplete();
+      return false;
     }
-  });
+    //Ctrl+Y
+    if (e.ctrlKey && e.keyCode == 89) {
+      document.getElementById('redo').onclick();
+    }
 
-  canvas.addEventListener('touchmove',  function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    e.preventDefault();
-    //console.log("touchmove");
-    if (e.touches.length === 2) {
-      // Pinch to zoom
+    //Ctrl+S
+    if (e.ctrlKey && e.keyCode == 83) {
+      save();
+      return false;
+    }
 
-      // Calculate current distance between two touches
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-  
-      // If initialPinchDistance is null, this is the first move event of the pinch
-      // Set initial distance
-      if (initialPinchDistance === null) {
-        initialPinchDistance = distance;
-        lastScale = scene.scale;
+    //Ctrl+O
+    if (e.ctrlKey && e.keyCode == 79) {
+      document.getElementById('open').onclick();
+      return false;
+    }
+
+    //esc
+    if (e.keyCode == 27) {
+      if (editor.isConstructing) {
+        editor.undo();
       }
-  
-      // Calculate the scaling factor
-      const scaleFactor = distance / initialPinchDistance;
-  
-      // Update scale based on previous scale and scaling factor
-      let newScale = lastScale * scaleFactor;
-      
-      newScale = Math.max(0.25/scene.lengthScale, Math.min(5.00/scene.lengthScale, newScale));
-
-      // Calculate the mid point between the two touches
-      const x = (e.touches[0].pageX + e.touches[1].pageX) / 2;
-      const y = (e.touches[0].pageY + e.touches[1].pageY) / 2;
-
-      // Calculate the change in scale relative to the center point
-      const dx2 = x - lastX;
-      const dy2 = y - lastY;
-
-      // Apply the translation
-      scene.origin.x += dx2;
-      scene.origin.y += dy2;
-  
-      // Apply the scale transformation
-      setScaleWithCenter(newScale, (x - e.target.offsetLeft) / scene.scale, (y - e.target.offsetTop) / scene.scale);
-      
-      // Update last values
-      lastX = x;
-      lastY = y;
-
-    } else {
-      canvas_onmousemove(e);
     }
-  });
 
-  canvas.addEventListener('touchend',  function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    //console.log("touchend");
-    if (e.touches.length < 2) {
-      initialPinchDistance = null;
-      canvas_onmouseup(e);
-      JSONOutput();
+    //Delete
+    if (e.keyCode == 46 || e.keyCode == 8) {
+      if (editor.selectedObjIndex != -1) {
+        var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
+        editor.removeObj(editor.selectedObjIndex);
+        simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
+        editor.onActionComplete();
+      }
+      return false;
     }
-  });
 
-  canvas.addEventListener('touchcancel',  function (e) {
-    if (scene.error) return;
-    lastDeviceIsTouch = true;
-    lastTouchTime = Date.now();
-    //console.log("touchcancel");
-    initialPinchDistance = null;
-    if (isConstructing || draggingObj >= 0) {
-      canvas_onmouseup(e);
-      undo();
-    } else {
-      canvas_onmouseup(e);
+    //Arrow Keys
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      var step = scene.snapToGrid ? scene.gridSize : 1;
+      if (editor.selectedObjIndex >= 0) {
+        if (e.keyCode == 37) {
+          scene.objs[editor.selectedObjIndex].move(-step, 0);
+        }
+        if (e.keyCode == 38) {
+          scene.objs[editor.selectedObjIndex].move(0, -step);
+        }
+        if (e.keyCode == 39) {
+          scene.objs[editor.selectedObjIndex].move(step, 0);
+        }
+        if (e.keyCode == 40) {
+          scene.objs[editor.selectedObjIndex].move(0, step);
+        }
+        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      }
+      else if (scene.mode == 'observer') {
+        if (e.keyCode == 37) {
+          scene.observer.c.x -= step;
+        }
+        if (e.keyCode == 38) {
+          scene.observer.c.y -= step;
+        }
+        if (e.keyCode == 39) {
+          scene.observer.c.x += step;
+        }
+        if (e.keyCode == 40) {
+          scene.observer.c.y += step;
+        }
+        simulator.updateSimulation(false, true);
+      }
+      else {
+        // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
+        for (var i = 0; i < scene.objs.length; i++) {
+          if (e.keyCode == 37) {
+            scene.objs[i].move(-step, 0);
+          }
+          if (e.keyCode == 38) {
+            scene.objs[i].move(0, -step);
+          }
+          if (e.keyCode == 39) {
+            scene.objs[i].move(step, 0);
+          }
+          if (e.keyCode == 40) {
+            scene.objs[i].move(0, step);
+          }
+        }
+        simulator.updateSimulation();
+      }
     }
-  });
+  };
 
-  canvas.addEventListener('dblclick',  function (e) {
-    if (scene.error) return;
-    canvas_ondblclick(e);
-  });
+  window.onkeyup = function (e) {
+    //Arrow Keys
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      editor.onActionComplete();
+    }
+  };
 
-
-  document.getElementById('undo').onclick = function() {
+  document.getElementById('undo').onclick = function () {
     this.blur();
-    undo();
+    editor.undo();
   }
   document.getElementById('undo_mobile').onclick = document.getElementById('undo').onclick;
-  document.getElementById('redo').onclick = function() {
+  document.getElementById('redo').onclick = function () {
     this.blur();
-    redo();
+    editor.redo();
   }
   document.getElementById('redo_mobile').onclick = document.getElementById('redo').onclick;
   document.getElementById('reset').onclick = function () {
-    history.replaceState('', document.title, window.location.pathname+window.location.search);
-    initParameters();
+    history.replaceState('', document.title, window.location.pathname + window.location.search);
+    init();
     document.getElementById("welcome").innerHTML = welcome_msgs[lang];
     document.getElementById('welcome').style.display = '';
-    createUndoPoint();
-    isFromGallery = false;
+    editor.onActionComplete();
     hasUnsavedChange = false;
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(editor.lastActionJson);
     }
   };
   document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
-  
+
   document.getElementById('get_link').onclick = getLink;
   document.getElementById('get_link_mobile').onclick = getLink;
-  document.getElementById('export_svg').onclick = enterCropMode;
-  document.getElementById('export_svg_mobile').onclick = enterCropMode;
+  document.getElementById('export_svg').onclick = function () {
+    editor.enterCropMode();
+  };
+  document.getElementById('export_svg_mobile').onclick = function () {
+    editor.enterCropMode();
+  };
   document.getElementById('open').onclick = function () {
     document.getElementById('openfile').click();
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
-  document.getElementById('view_gallery').onclick = function() {
+  document.getElementById('view_gallery').onclick = function () {
     window.open(getMsg("gallery_url"));
   };
   document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
@@ -281,10 +1018,10 @@ window.onload = function (e) {
     scene.simulateColors = this.checked;
     document.getElementById('simulateColors').checked = scene.simulateColors;
     document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-    selectObj(selectedObj);
+    editor.selectObj(editor.selectedObjIndex);
     this.blur();
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   };
   document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
 
@@ -349,7 +1086,7 @@ window.onload = function (e) {
     localStorage.rayOpticsAutoSyncUrl = this.checked ? "on" : "off";
     autoSyncUrl = this.checked;
 
-    JSONOutput();
+    editor.onActionComplete();
   };
   document.getElementById('auto_sync_url_mobile').onclick = document.getElementById('auto_sync_url').onclick;
 
@@ -367,8 +1104,8 @@ window.onload = function (e) {
     scene.gridSize = parseFloat(this.value);
     document.getElementById('gridSize').value = scene.gridSize;
     document.getElementById('gridSize_mobile').value = scene.gridSize;
-    draw(true, false);
-    JSONOutput();
+    simulator.updateSimulation(true, false);
+    editor.onActionComplete();
   }
   document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
 
@@ -376,9 +1113,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('gridSize_mobile').onclick = document.getElementById('gridSize').onclick;
-  
-  document.getElementById('gridSize').onkeydown = function(e)
-  {
+
+  document.getElementById('gridSize').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -390,8 +1126,8 @@ window.onload = function (e) {
     if (scene.observer) {
       scene.observer.r = parseFloat(this.value) * 0.5;
     }
-    draw(false, true);
-    JSONOutput();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   }
   document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
 
@@ -399,9 +1135,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('observer_size_mobile').onclick = document.getElementById('observer_size').onclick;
-  
-  document.getElementById('observer_size').onkeydown = function(e)
-  {
+
+  document.getElementById('observer_size').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -420,9 +1155,9 @@ window.onload = function (e) {
     }
     document.getElementById('lengthScale').value = scene.lengthScale;
     document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-    setScale(scene.scale);
-    draw();
-    JSONOutput();
+    editor.setScale(scene.scale);
+    simulator.updateSimulation();
+    editor.onActionComplete();
   }
   document.getElementById('lengthScale_mobile').onchange = document.getElementById('lengthScale').onchange;
 
@@ -430,9 +1165,8 @@ window.onload = function (e) {
     this.select();
   }
   document.getElementById('lengthScale_mobile').onclick = document.getElementById('lengthScale').onclick;
-  
-  document.getElementById('lengthScale').onkeydown = function(e)
-  {
+
+  document.getElementById('lengthScale').onkeydown = function (e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
   };
@@ -440,13 +1174,13 @@ window.onload = function (e) {
 
 
   document.getElementById('zoomPlus').onclick = function () {
-    setScale(scene.scale * 1.1);
-    JSONOutput();
+    editor.setScale(scene.scale * 1.1);
+    editor.onActionComplete();
     this.blur();
   }
   document.getElementById('zoomMinus').onclick = function () {
-    setScale(scene.scale / 1.1);
-    JSONOutput();
+    editor.setScale(scene.scale / 1.1);
+    editor.onActionComplete();
     this.blur();
   }
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
@@ -458,7 +1192,7 @@ window.onload = function (e) {
     document.getElementById('rayDensity').value = this.value;
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
-    draw(false, true);
+    simulator.updateSimulation(false, true);
   };
   document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
   document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
@@ -469,8 +1203,8 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   };
   document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
   document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
@@ -481,8 +1215,8 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = this.value;
     document.getElementById('rayDensity_mobile').value = this.value;
     this.blur();
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   };
   document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
   document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
@@ -494,8 +1228,8 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   };
   document.getElementById('rayDensityMinus').onclick = function () {
     rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
@@ -504,8 +1238,8 @@ window.onload = function (e) {
     document.getElementById('rayDensity_more').value = rayDensityValue;
     document.getElementById('rayDensity_mobile').value = rayDensityValue;
     this.blur();
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
   };
   document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
   document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
@@ -519,8 +1253,8 @@ window.onload = function (e) {
     document.getElementById('snapToGrid_mobile').checked = e.target.checked;
     scene.snapToGrid = e.target.checked;
     this.blur();
-    JSONOutput();
-    //draw();
+    editor.onActionComplete();
+    //simulator.updateSimulation();
   };
   document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
   document.getElementById('snapToGrid_mobile').onclick = document.getElementById('snapToGrid').onclick;
@@ -531,8 +1265,8 @@ window.onload = function (e) {
     document.getElementById('showGrid_mobile').checked = e.target.checked;
     scene.showGrid = e.target.checked;
     this.blur();
-    draw(true, false);
-    JSONOutput();
+    simulator.updateSimulation(true, false);
+    editor.onActionComplete();
   };
   document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
   document.getElementById('showGrid_mobile').onclick = document.getElementById('showGrid').onclick;
@@ -543,15 +1277,13 @@ window.onload = function (e) {
     document.getElementById('lockObjs_mobile').checked = e.target.checked;
     scene.lockObjs = e.target.checked;
     this.blur();
-    JSONOutput();
+    editor.onActionComplete();
   };
   document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
   document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
 
   document.getElementById('forceStop').onclick = function () {
-    if (timerID != -1) {
-      forceStop = true;
-    }
+    simulator.stopSimulation();
   };
 
   document.getElementById('apply_to_all').onclick = function () {
@@ -564,33 +1296,32 @@ window.onload = function (e) {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.objs[scene.objs.length] = new objTypes[scene.objs[selectedObj].constructor.type](scene, scene.objs[selectedObj]);
-    scene.objs[scene.objs.length - 1].move(scene.gridSize, scene.gridSize);
-    selectObj(scene.objs.length - 1);
-    draw(!scene.objs[selectedObj].constructor.isOptical, true);
-    createUndoPoint();
+    scene.cloneObj(editor.selectedObjIndex).move(scene.gridSize, scene.gridSize);
+    editor.selectObj(scene.objs.length - 1);
+    simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+    editor.onActionComplete();
   };
   document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
   document.getElementById('delete').onclick = function () {
-    var selectedObjType = scene.objs[selectedObj].constructor.type;
+    var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
     this.blur();
-    removeObj(selectedObj);
-    draw(!objTypes[selectedObjType].isOptical, true);
-    createUndoPoint();
+    editor.removeObj(editor.selectedObjIndex);
+    simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
+    editor.onActionComplete();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
   document.getElementById('unselect').onclick = function () {
-    selectObj(-1);
-    draw(true, true);
-    createUndoPoint();
+    editor.selectObj(-1);
+    simulator.updateSimulation(true, true);
+    editor.onActionComplete();
   };
   document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
   document.getElementById('showAdvanced').onclick = function () {
-    showAdvancedOn = true;
-    selectObj(selectedObj);
+    objBar.shouldShowAdvanced = true;
+    editor.selectObj(editor.selectedObjIndex);
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
@@ -616,7 +1347,7 @@ window.onload = function (e) {
     }
     if (e.keyCode == 27) {
       //esc
-      endPositioning();
+      editor.endPositioning();
     }
 
     e.cancelBubble = true;
@@ -656,15 +1387,17 @@ window.onload = function (e) {
     }
     else {
       var fileString = dt.getData('text');
-      latestJsonCode = fileString;
-      selectedObj = -1;
-      JSONInput();
-      createUndoPoint();
+      editor.loadJSON(fileString);
+      editor.onActionComplete();
     }
   };
 
   canvas.addEventListener('contextmenu', function (e) {
     e.preventDefault();
+  }, false);
+
+  this.canvas.addEventListener('mousedown', function (e) {
+    error = null;
   }, false);
 
   MQ = MathQuill.getInterface(2);
@@ -680,14 +1413,12 @@ window.onload = function (e) {
     if (window.location.hash.length > 70) {
       // The URL contains a compressed JSON scene.
       JsonUrl('lzma').decompress(window.location.hash.substr(1)).then(json => {
-        latestJsonCode = JSON.stringify(json);
         scene.backgroundImage = null;
-        JSONInput();
-        createUndoPoint();
-        isFromGallery = true;
+        editor.loadJSON(JSON.stringify(json));
+        editor.onActionComplete();
         hasUnsavedChange = false;
         if (aceEditor) {
-          aceEditor.session.setValue(latestJsonCode);
+          aceEditor.session.setValue(editor.lastActionJson);
         }
       }).catch(e => {
         error = "JsonUrl: " + e;
@@ -697,14 +1428,13 @@ window.onload = function (e) {
     } else if (window.location.hash.length > 1) {
       // The URL contains a link to a gallery item.
       openSample(window.location.hash.substr(1) + ".json");
-      history.replaceState('', document.title, window.location.pathname+window.location.search);
-      isFromGallery = true;
+      history.replaceState('', document.title, window.location.pathname + window.location.search);
     }
   };
 
   window.onpopstate();
 
-  window.addEventListener('message', function(event) {
+  window.addEventListener('message', function (event) {
     if (event.data && event.data.rayOpticsModuleName) {
       importModule(event.data.rayOpticsModuleName + '.json');
     }
@@ -721,14 +1451,13 @@ function openSample(name) {
       updateErrorAndWarning();
       return;
     }
-    latestJsonCode = client.responseText;
     scene.backgroundImage = null;
-    JSONInput();
-    createUndoPoint();
-    isFromGallery = true;
+    editor.loadJSON(client.responseText);
+
+    editor.onActionComplete();
     hasUnsavedChange = false;
     if (aceEditor) {
-      aceEditor.session.setValue(latestJsonCode);
+      aceEditor.session.setValue(editor.lastActionJson);
     }
   }
   client.onerror = function () {
@@ -760,7 +1489,7 @@ function importModule(name) {
       for (let moduleName in moduleJSON.modules) {
         if (moduleJSON.modules.hasOwnProperty(moduleName)) {
           let newModuleName = moduleName;
-          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])){
+          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])) {
             newModuleName = prompt(getMsg('module_conflict'), moduleName);
             if (!newModuleName) {
               continue;
@@ -774,8 +1503,8 @@ function importModule(name) {
       updateErrorAndWarning();
       return;
     }
-    draw(false, true);
-    createUndoPoint();
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
     updateModuleObjsMenu();
   }
   client.onerror = function () {
@@ -795,39 +1524,28 @@ function importModule(name) {
 
 
 
-window.onresize = function (e) {
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-
-  if (window.devicePixelRatio) {
-    dpr = window.devicePixelRatio;
-  }
-
-  if (ctx) {
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas0.width = window.innerWidth * dpr;
-    canvas0.height = window.innerHeight * dpr;
-    canvasLight.width = window.innerWidth * dpr;
-    canvasLight.height = window.innerHeight * dpr;
-    canvasGrid.width = window.innerWidth * dpr;
-    canvasGrid.height = window.innerHeight * dpr;
-    draw();
-  }
-};
 
 
 
 
-function initParameters() {
+
+function init() {
   document.title = getMsg('appName');
   document.getElementById('save_name').value = "";
 
-  isConstructing = false;
-  endPositioning();
-  scene = new Scene();
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
+  editor.isConstructing = false;
+  editor.endPositioning();
 
-  selectObj(-1);
+  scene.backgroundImage = null;
+  scene.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
+  scene.origin = geometry.point(0, 0);
+  scene.scale = 1;
+
+  let dpr = window.devicePixelRatio || 1;
+
+  scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
+
+  editor.selectObj(-1);
 
   document.getElementById("rayDensity").value = scene.rayModeDensity;
   document.getElementById("rayDensity_more").value = scene.rayModeDensity;
@@ -839,10 +1557,10 @@ function initParameters() {
   scene.backgroundImage = null;
 
   //Reset new UI.
-  
+
   resetDropdownButtons();
   updateModuleObjsMenu();
-  
+
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
   document.getElementById('mode_rays').checked = true;
@@ -874,325 +1592,45 @@ function initParameters() {
 
   document.getElementById('lengthScale').value = scene.lengthScale;
   document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-  
-  draw();
+
+  simulator.updateSimulation();
 }
 
-window.onkeydown = function (e) {
-  //Ctrl+Z
-  if (e.ctrlKey && e.keyCode == 90) {
-    if (document.getElementById('undo').disabled == false) {
-      undo();
-    }
-    return false;
-  }
-  //Ctrl+D
-  if (e.ctrlKey && e.keyCode == 68) {
-    cloneObj(selectedObj);
-    draw(!scene.objs[selectedObj].constructor.isOptical, true);
-    createUndoPoint();
-    return false;
-  }
-  //Ctrl+Y
-  if (e.ctrlKey && e.keyCode == 89) {
-    document.getElementById('redo').onclick();
-  }
-
-  //Ctrl+S
-  if (e.ctrlKey && e.keyCode == 83) {
-    save();
-    return false;
-  }
-
-  //Ctrl+O
-  if (e.ctrlKey && e.keyCode == 79) {
-    document.getElementById('open').onclick();
-    return false;
-  }
-
-  //esc
-  if (e.keyCode == 27) {
-    if (isConstructing) {
-      undo();
-    }
-  }
-
-  /*
-  if(e.altKey && e.keyCode==78)
-  {
-  //Alt+N
-  cleanAll();
-  return false;
-  }
-  */
-  /*
-  if(e.altKey && e.keyCode==65)
-  {
-  //Alt+A
-  document.getElementById("objAttr").focus()
-  return false;
-  }
-  */
-  //Delete
-  if (e.keyCode == 46 || e.keyCode == 8) {
-    if (selectedObj != -1) {
-      var selectedObjType = scene.objs[selectedObj].constructor.type;
-      removeObj(selectedObj);
-      draw(!objTypes[selectedObjType].isOptical, true);
-      createUndoPoint();
-    }
-    return false;
-  }
-
-  //Ctrl
-  /*
-  if(e.keyCode==17)
-  {
-    if(draggingObj!=-1)
-    {
-      canvas_onmousemove(e,true);
-    }
-  }
-  */
-
-  //Arrow Keys
-  if (e.keyCode >= 37 && e.keyCode <= 40) {
-    var step = scene.snapToGrid ? scene.gridSize : 1;
-    if (selectedObj >= 0) {
-      if (e.keyCode == 37) {
-        scene.objs[selectedObj].move(-step, 0);
-      }
-      if (e.keyCode == 38) {
-        scene.objs[selectedObj].move(0, -step);
-      }
-      if (e.keyCode == 39) {
-        scene.objs[selectedObj].move(step, 0);
-      }
-      if (e.keyCode == 40) {
-        scene.objs[selectedObj].move(0, step);
-      }
-      draw(!scene.objs[selectedObj].constructor.isOptical, true);
-    }
-    else if (scene.mode == 'observer') {
-      if (e.keyCode == 37) {
-        scene.observer.c.x -= step;
-      }
-      if (e.keyCode == 38) {
-        scene.observer.c.y -= step;
-      }
-      if (e.keyCode == 39) {
-        scene.observer.c.x += step;
-      }
-      if (e.keyCode == 40) {
-        scene.observer.c.y += step;
-      }
-      draw(false, true);
-    }
-    else {
-      // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
-      for (var i = 0; i < scene.objs.length; i++) {
-        if (e.keyCode == 37) {
-          scene.objs[i].move(-step, 0);
-        }
-        if (e.keyCode == 38) {
-          scene.objs[i].move(0, -step);
-        }
-        if (e.keyCode == 39) {
-          scene.objs[i].move(step, 0);
-        }
-        if (e.keyCode == 40) {
-          scene.objs[i].move(0, step);
-        }
-      }
-      draw();
-    }
-  }
 
 
 
-};
-
-window.onkeyup = function (e) {
-  //Arrow Keys
-  if (e.keyCode >= 37 && e.keyCode <= 40) {
-    createUndoPoint();
-  }
-
-};
-
-function JSONOutput() {
-  if (scene.error) {
-    return;
-  }
-
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-  
-  newJsonCode = scene.toJSON();
-  if (aceEditor && newJsonCode != latestJsonCode && !aceEditor.isFocused()) {
-
-    // Calculate the position of the first and last character that has changed
-    var minLen = Math.min(newJsonCode.length, latestJsonCode.length);
-    var startChar = 0;
-    while (startChar < minLen && newJsonCode[startChar] == latestJsonCode[startChar]) {
-      startChar++;
-    }
-    var endChar = 0;
-    while (endChar < minLen && newJsonCode[newJsonCode.length - 1 - endChar] == latestJsonCode[latestJsonCode.length - 1 - endChar]) {
-      endChar++;
-    }
-
-    // Convert the character positions to line numbers
-    var startLineNum = newJsonCode.substr(0, startChar).split("\n").length - 1;
-    var endLineNum = newJsonCode.substr(0, newJsonCode.length - endChar).split("\n").length - 1;
-
-    // Set selection range to highlight changes using the Range object
-    var Range = require("ace/range").Range;
-    var selectionRange = new Range(startLineNum, 0, endLineNum+1, 0);
-
-    lastCodeChangeIsFromScene = true;
-    aceEditor.setValue(newJsonCode);
-    aceEditor.selection.setSelectionRange(selectionRange);
-
-    // Scroll to the first line that has changed
-    aceEditor.scrollToLine(startLineNum, true, true, function () { });
-  }
-  latestJsonCode = newJsonCode;
-  
-  syncUrl();
-  warning = "";
-  updateErrorAndWarning();
-  requireOccasionalCheck();
-}
-
-var requireOccasionalCheckTimeout = null;
-
-function requireOccasionalCheck() {
-  if (scene.error) {
-    return;
-  }
-
-  if (requireOccasionalCheckTimeout) {
-    clearTimeout(requireOccasionalCheckTimeout);
-  }
-
-  requireOccasionalCheckTimeout = setTimeout(occasionalCheck, scene.warning ? 500 : 5000);
-}
-
-function occasionalCheck() {
-  if (scene.error) {
-    return;
-  }
-  scene.warning = null;
-
-  // Check if there are identical optical objects
-  const opticalObjs = scene.opticalObjs;
-
-  if (opticalObjs.length < 100) {
-    const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj));
-    for (var i = 0; i < opticalObjs.length; i++) {
-      for (var j = i + 1; j < opticalObjs.length; j++) {
-        if (stringifiedObjs[i] == stringifiedObjs[j]) {
-          scene.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + getMsg('identical_optical_objects_warning');
-          break;
-        }
-      }
-    }
-  }
-  updateErrorAndWarning();
-}
 
 var lastFullURL = "";
+var syncUrlTimerId = -1;
 
 function syncUrl() {
   if (!autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
-  
-  var compressed = JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
-    var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
-    if (fullURL.length > 2041) {
-      warning = getMsg('auto_sync_url_warning');
-      updateErrorAndWarning();
-    } else {
-      if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
-        // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
-        lastFullURL = fullURL;
-        window.history.pushState(undefined, undefined, '#' + output);
+
+  if (syncUrlTimerId != -1) {
+    clearTimeout(syncUrlTimerId);
+  }
+  syncUrlTimerId = setTimeout(function () {
+    var compressed = JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
+      var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
+      if (fullURL.length > 2041) {
+        warning = getMsg('auto_sync_url_warning');
+        updateErrorAndWarning();
       } else {
-        lastFullURL = fullURL;
-        window.history.replaceState(undefined, undefined, '#' + output);
+        if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
+          // If the length of the scene change significantly, push a new history state to prevent accidental data loss.
+          lastFullURL = fullURL;
+          window.history.pushState(undefined, undefined, '#' + output);
+        } else {
+          lastFullURL = fullURL;
+          window.history.replaceState(undefined, undefined, '#' + output);
+        }
+        hasUnsavedChange = false;
+        warning = "";
+        updateErrorAndWarning();
       }
-      hasUnsavedChange = false;
-      warning = "";
-      updateErrorAndWarning();
-    }
-  });
-}
-
-
-
-
-
-function JSONInput() {
-  document.getElementById('welcome').style.display = 'none';
-
-  scene.setViewportSize(canvas.width/dpr, canvas.height/dpr);
-  scene.fromJSON(latestJsonCode, function (needFullUpdate, completed) {
-    if (needFullUpdate) {
-      // Update the UI for the loaded scene.
-
-      if (scene.name) {
-        document.title = scene.name + " - " + getMsg("appName");
-        document.getElementById('save_name').value = scene.name;
-      } else {
-        document.title = getMsg("appName");
-      }
-
-      if (Object.keys(scene.modules).length > 0) {
-        updateModuleObjsMenu();
-      }
-
-      document.getElementById('showGrid').checked = scene.showGrid;
-      document.getElementById('showGrid_more').checked = scene.showGrid;
-      document.getElementById('showGrid_mobile').checked = scene.showGrid;
-
-      document.getElementById('snapToGrid').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
-
-      document.getElementById('lockObjs').checked = scene.lockObjs;
-      document.getElementById('lockObjs_more').checked = scene.lockObjs;
-      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
-
-      if (scene.observer) {
-        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-      } else {
-        document.getElementById('observer_size').value = 40;
-        document.getElementById('observer_size_mobile').value = 40;
-      }
-
-      document.getElementById('gridSize').value = scene.gridSize;
-      document.getElementById('gridSize_mobile').value = scene.gridSize;
-
-      document.getElementById('lengthScale').value = scene.lengthScale;
-      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-
-      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById('simulateColors').checked = scene.simulateColors;
-      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-      modebtn_clicked(scene.mode);
-      document.getElementById('mode_' + scene.mode).checked = true;
-      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-      selectObj(selectedObj);
-      draw();
-    } else {
-      // Partial update (e.g. when the background image is loaded)
-      setTimeout(function() {
-        draw(true, true);
-      }, 1);
-    }
-  });
+    });
+  }, 1000);
 }
 
 
@@ -1200,7 +1638,7 @@ function toolbtn_clicked(tool, e) {
   if (tool != "") {
     document.getElementById('welcome').style.display = 'none';
   }
-  AddingObjType = tool;
+  editor.addingObjType = tool;
 }
 
 
@@ -1218,34 +1656,15 @@ function modebtn_clicked(mode1) {
   }
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
-    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
 
 
-  try {
-    draw(false, true);
-  } catch (error) {
-    console.error(error);
-    isDrawing = false;
-  }
+  simulator.updateSimulation(false, true);
 }
 
 
-function setScale(value) {
-  setScaleWithCenter(value, canvas.width / scene.scale / 2, canvas.height / scene.scale / 2);
-}
 
-function setScaleWithCenter(value, centerX, centerY) {
-  scaleChange = value - scene.scale;
-  scene.origin.x *= value / scene.scale;
-  scene.origin.y *= value / scene.scale;
-  scene.origin.x -= centerX * scaleChange;
-  scene.origin.y -= centerY * scaleChange;
-  scene.scale = value;
-  document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  draw();
-}
 
 function rename() {
   scene.name = document.getElementById('save_name').value;
@@ -1254,13 +1673,13 @@ function rename() {
   } else {
     document.title = getMsg("appName");
   }
-  JSONOutput();
+  editor.onActionComplete();
 }
 
 function save() {
   rename();
 
-  var blob = new Blob([latestJsonCode], { type: 'application/json' });
+  var blob = new Blob([editor.lastActionJson], { type: 'application/json' });
   saveAs(blob, (scene.name || "scene") + ".json");
   var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
   if (saveModal) {
@@ -1287,14 +1706,11 @@ function openFile(readFile) {
 
     if (isJSON) {
       // Load the scene file
-      latestJsonCode = fileString;
-      endPositioning();
-      selectedObj = -1;
-      JSONInput();
+      editor.loadJSON(fileString);
       hasUnsavedChange = false;
-      createUndoPoint();
+      editor.onActionComplete();
       if (aceEditor) {
-        aceEditor.session.setValue(latestJsonCode);
+        aceEditor.session.setValue(editor.lastActionJson);
       }
     } else {
       // Load the background image file
@@ -1302,7 +1718,7 @@ function openFile(readFile) {
         scene.backgroundImage = new Image();
         scene.backgroundImage.src = e.target.result;
         scene.backgroundImage.onload = function (e1) {
-          draw(true, true);
+          simulator.updateSimulation(true, true);
         }
         scene.backgroundImage.onerror = function (e1) {
           scene.backgroundImage = null;
@@ -1317,8 +1733,7 @@ function openFile(readFile) {
 }
 
 function getLink() {
-  JSONOutput();
-  JsonUrl('lzma').compress(JSON.parse(latestJsonCode)).then(output => {
+  JsonUrl('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
     var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
     lastFullURL = fullURL;
     window.history.pushState(undefined, undefined, '#' + output);
@@ -1332,142 +1747,16 @@ function getLink() {
   });
 }
 
-function enterCropMode() {
-  cropMode = true;
 
-  // Search objs for existing cropBox
-  var cropBoxIndex = -1;
-  for (var i = 0; i < scene.objs.length; i++) {
-    if (scene.objs[i].constructor.type == 'CropBox') {
-      cropBoxIndex = i;
-      break;
-    }
-  }
-  if (cropBoxIndex == -1) {
-    // Create a new cropBox
-    let cropBox = new objTypes['CropBox'](scene, {
-      p1: geometry.point((canvas.width * 0.2 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.2) / dpr - scene.origin.y) / scene.scale),
-      p4: geometry.point((canvas.width * 0.8 / dpr - scene.origin.x) / scene.scale, ((120 + (canvas.height-120) * 0.8) / dpr - scene.origin.y) / scene.scale),
-    });
-    scene.objs.push(cropBox);
-    cropBoxIndex = scene.objs.length - 1;
-  }
-
-  selectObj(cropBoxIndex);
-
-  draw(true, true);
-}
-
-function confirmCrop(cropBox) {
-  if (cropBox.format == 'svg') {
-    exportSVG(cropBox);
-  } else {
-    exportImage(cropBox);
-  }
-}
-
-function cancelCrop() {
-  cropMode = false;
-  selectObj(-1);
-  draw(true, true);
-}
-
-function exportSVG(cropBox) {
-  var ctx_backup = ctx;
-  var ctx0_backup = ctx0;
-  var ctxLight_backup = ctxLight;
-  var ctxGrid_backup = ctxGrid;
-  var scale_backup = scene.scale;
-  var origin_backup = scene.origin;
-  var dpr_backup = dpr;
-
-  scene.scale = 1;
-  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-  dpr = 1;
-  imageWidth = cropBox.p4.x - cropBox.p1.x;
-  imageHeight = cropBox.p4.y - cropBox.p1.y;
-
-  selectObj(-1);
-  mouseObj = -1;
-
-  ctx = new C2S(imageWidth, imageHeight);
-  ctx0 = ctx;
-  ctxLight = ctx;
-  ctxGrid = ctx;
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, imageWidth, imageHeight);
-
-  exportRayCountLimit = cropBox.rayCountLimit || 1e4;
-  isExporting = true;
-  cropMode = false;
-  draw();
-  isExporting = false;
-  var blob = new Blob([ctx.getSerializedSvg()], { type: 'image/svg+xml' });
-  saveAs(blob, (scene.name || "export") + ".svg");
-
-  ctx = ctx_backup;
-  ctx0 = ctx0_backup;
-  ctxLight = ctxLight_backup;
-  ctxGrid = ctxGrid_backup;
-  scene.scale = scale_backup;
-  scene.origin = origin_backup;
-  dpr = dpr_backup;
-  draw(true, true);
-}
-
-function exportImage(cropBox) {
-
-  var scale_backup = scene.scale;
-  var origin_backup = scene.origin;
-  var dpr_backup = dpr;
-
-  scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-  scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-  dpr = 1;
-  imageWidth = cropBox.width;
-  imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
-
-  selectObj(-1);
-  mouseObj = -1;
-
-  canvas.width = imageWidth;
-  canvas.height = imageHeight;
-  canvas0.width = imageWidth;
-  canvas0.height = imageHeight;
-  canvasLight.width = imageWidth;
-  canvasLight.height = imageHeight;
-  canvasGrid.width = imageWidth;
-  canvasGrid.height = imageHeight;
-  exportRayCountLimit = cropBox.rayCountLimit || 1e7;
-  isExporting = true;
-  cropMode = false;
-  draw();
-  isExporting = false;
-
-  var finalCanvas = document.createElement('canvas');
-  finalCanvas.width = imageWidth;
-  finalCanvas.height = imageHeight;
-  var finalCtx = finalCanvas.getContext('2d');
-  finalCtx.fillStyle = "black";
-  finalCtx.fillRect(0, 0, imageWidth, imageHeight);
-  finalCtx.drawImage(canvas0, 0, 0);
-  finalCtx.drawImage(canvasGrid, 0, 0);
-  finalCtx.drawImage(canvasLight, 0, 0);
-  finalCtx.drawImage(canvas, 0, 0);
-
-  finalCanvas.toBlob(function (blob) {
-    saveAs(blob, (scene.name || "export") + ".png");
-  });
-
-  scene.scale = scale_backup;
-  scene.origin = origin_backup;
-  dpr = dpr_backup;
-  window.onresize();
-}
-
-window.onbeforeunload = function(e) {
+window.onbeforeunload = function (e) {
   if (hasUnsavedChange) {
     return "You have unsaved change.";
   }
 }
 
+function confirmPositioning(ctrl, shift) {
+  var xyData = JSON.parse('[' + document.getElementById('xybox').value.replace(/\(|\)/g, '') + ']');
+  if (xyData.length == 2) {
+    editor.confirmPositioning(xyData[0], xyData[1], ctrl, shift);
+  }
+}

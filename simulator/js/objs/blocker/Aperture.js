@@ -20,7 +20,7 @@ objTypes['Aperture'] = class extends BaseFilter {
     p4: null,
     filter: false,
     invert: false,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
@@ -46,7 +46,7 @@ objTypes['Aperture'] = class extends BaseFilter {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
     ctx.lineWidth = 3 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
@@ -96,12 +96,12 @@ objTypes['Aperture'] = class extends BaseFilter {
 
   onConstructMouseMove(mouse, ctrl, shift) {
     if (shift) {
-      this.p2 = mouse.getPosSnappedToDirection(constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
+      this.p2 = mouse.getPosSnappedToDirection(this.constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
     } else {
       this.p2 = mouse.getPosSnappedToGrid();
     }
 
-    this.p1 = ctrl ? geometry.point(2 * constructionPoint.x - this.p2.x, 2 * constructionPoint.y - this.p2.y) : constructionPoint;
+    this.p1 = ctrl ? geometry.point(2 * this.constructionPoint.x - this.p2.x, 2 * this.constructionPoint.y - this.p2.y) : this.constructionPoint;
 
     this.p3 = geometry.point(this.p1.x * 0.6 + this.p2.x * 0.4, this.p1.y * 0.6 + this.p2.y * 0.4);
     this.p4 = geometry.point(this.p1.x * 0.4 + this.p2.x * 0.6, this.p1.y * 0.4 + this.p2.y * 0.6);

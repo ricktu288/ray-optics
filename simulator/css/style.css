@@ -1,4 +1,4 @@
-#canvas0 {
+#canvasBelowLight {
   background-color: #000;
   position: absolute;
   width: 100%;
@@ -25,7 +25,7 @@
   z-index: -5;
 }
 
-#canvas1 {
+#canvasAboveLight {
   background-color: transparent;
   position: absolute;
   width: 100%;
@@ -385,11 +385,13 @@
   bottom: 0;
   z-index: -2;
   padding-right: 80px;
+  pointer-events: none;
 }
 
 #forceStop {
   color: gray;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 #forceStop .spinner-border {
@@ -406,6 +408,10 @@
 .footer-right .btn {
   color: gray;
   padding: 3px;
+}
+
+.footer-right .btn:focus {
+  box-shadow: none;
 }
 
 #about {
@@ -435,6 +441,7 @@
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;
   width: fit-content;
+  pointer-events: auto;
 }
 
 #sideBar {
@@ -474,6 +481,7 @@
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;
+  pointer-events: auto;
 }
 
 #error {
@@ -484,6 +492,7 @@
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;
+  pointer-events: auto;
 }
 
 ::-webkit-scrollbar {

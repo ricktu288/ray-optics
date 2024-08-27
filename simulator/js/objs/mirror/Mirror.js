@@ -16,7 +16,7 @@ objTypes['Mirror'] = class extends LineObjMixin(BaseFilter) {
     p2: null,
     filter: false,
     invert: false,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
@@ -30,7 +30,7 @@ objTypes['Mirror'] = class extends LineObjMixin(BaseFilter) {
       return;
     }
 
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);

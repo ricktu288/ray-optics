@@ -131,8 +131,8 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     if (!this.notDone) {
       // Initialize the construction stage
       this.notDone = true;
-      if (this.module !== addingModuleName) {
-        this.module = addingModuleName;
+      if (this.module !== this.scene.editor.addingModuleName) {
+        this.module = this.scene.editor.addingModuleName;
         this.moduleDef = this.scene.modules[this.module];
         // Initialize the parameters
         this.params = {};
@@ -476,6 +476,5 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
     for (let obj of this.objs) {
       this.scene.objs.push(obj);
     }
-    draw(false, true);
   }
 }

@@ -53,7 +53,7 @@ class BaseGrinGlass extends BaseGlass {
     const scene = this.scene;
     if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
       objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicBodyMerging, function (obj, value) {
-        scene.symbolicBodyMerging = value;
+        obj.scene.symbolicBodyMerging = value;
       }, getMsg('symbolic_grin_note_popover'));
     }
   }
@@ -79,7 +79,7 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   getRefIndexAt(point, ray) {
-    return this.fn_p({ x: point.x, y: point.y, z: ray.wavelength || GREEN_WAVELENGTH });
+    return this.fn_p({ x: point.x, y: point.y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH });
   }
 
   onRayEnter(ray) {
@@ -262,8 +262,8 @@ class BaseGrinGlass extends BaseGlass {
     const x_der_s_prev = (p2.x - p1.x) / len;
     const y_der_s_prev = Math.sign(p2.y - p1.y) * Math.sqrt(1 - x_der_s_prev ** 2);
 
-    const x_der_s = x_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH });
-    const y_der_s = y_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || GREEN_WAVELENGTH });
+    const x_der_s = x_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH }) * (1 - x_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH });
+    const y_der_s = y_der_s_prev + this.stepSize * (ray.bodyMergingObj.fn_p_der_y({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH }) * (1 - y_der_s_prev ** 2) - ray.bodyMergingObj.fn_p_der_x({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH }) * x_der_s_prev * y_der_s_prev) / ray.bodyMergingObj.fn_p({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH });
 
     const x_new = x + this.stepSize * x_der_s;
     const y_new = y + this.stepSize * y_der_s;

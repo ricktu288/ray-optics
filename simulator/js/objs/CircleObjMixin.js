@@ -89,9 +89,9 @@ const CircleObjMixin = Base => class extends Base {
       // Dragging the entire circle
 
       if (shift) {
-        const mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }, { x: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y), y: -(dragContext.originalObj.p2.x - dragContext.originalObj.p1.x) }], dragContext.snapContext);
+        var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: (dragContext.originalObj.p2.x - dragContext.originalObj.p1.x), y: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y) }, { x: (dragContext.originalObj.p2.y - dragContext.originalObj.p1.y), y: -(dragContext.originalObj.p2.x - dragContext.originalObj.p1.x) }], dragContext.snapContext);
       } else {
-        const mousePos = mouse.getPosSnappedToGrid();
+        var mousePos = mouse.getPosSnappedToGrid();
         dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
       }
 
@@ -119,7 +119,7 @@ const CircleObjMixin = Base => class extends Base {
     const rp_exist = [];
     const rp_lensq = [];
     for (let i = 1; i <= 2; i++) {
-      rp_exist[i] = geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > minShotLength_squared * this.scene.lengthScale * this.scene.lengthScale;
+      rp_exist[i] = geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
       rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
     }
 

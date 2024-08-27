@@ -18,7 +18,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
   serialize() {
     let jsonObj = super.serialize();
 
-    if (!this.notDone && jsonObj.controlPoints) {
+    if (jsonObj.controlPoints) {
       // Remove some redundent properties in the control points to reduce the size of the JSON.
       jsonObj.controlPoints = jsonObj.controlPoints.map(controlPoint => {
         let controlPointCopy = JSON.parse(JSON.stringify(controlPoint));
@@ -152,7 +152,7 @@ objTypes['Handle'] = class extends BaseSceneObj {
       trans(this.p1);
       trans(this.p2);
       for (var i in this.controlPoints) {
-        this.controlPoints[i].dragContext.originalObj = scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+        this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
         this.controlPoints[i].dragContext.isByHandle = true;
         this.controlPoints[i].dragContext.hasDuplicated = false;
         this.controlPoints[i].dragContext.targetPoint = {x:this.controlPoints[i].newPoint.x, y:this.controlPoints[i].newPoint.y};
@@ -169,13 +169,6 @@ objTypes['Handle'] = class extends BaseSceneObj {
       this.p2.y = mousePos.y;
     }
   }
-
-  /* This typedef will eventually be moved elsewhere. */
-  /**
-   * @typedef {Object} ControlPoint
-   * @property {DragContext} dragContext - The drag context of the virtual mouse that is dragging the control point.
-   * @property {Point} newPoint - The new position of the control point.
-   */
 
   /**
    * Add (bind) a control point to the handle.

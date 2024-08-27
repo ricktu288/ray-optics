@@ -17,7 +17,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
     p1: null,
     p2: null,
     brightness: 0.5,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     emisAngle: 0.0,
     lambert: false,
     random: false
@@ -28,7 +28,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }
@@ -57,7 +57,7 @@ objTypes['Beam'] = class extends LineObjMixin(BaseSceneObj) {
     }
 
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
+    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : 'rgb(0,255,0)');
     ctx.lineWidth = 4 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

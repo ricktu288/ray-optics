@@ -13,7 +13,7 @@ objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
     p1: null,
     p2: null,
     brightness: 1,
-    wavelength: GREEN_WAVELENGTH
+    wavelength: Simulator.GREEN_WAVELENGTH
   };
 
   populateObjBar(objBar) {
@@ -21,7 +21,7 @@ objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
       obj.brightness = value;
     });
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }
@@ -31,7 +31,7 @@ objTypes['SingleRay'] = class extends LineObjMixin(BaseSceneObj) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : 'rgb(255,0,0)');
+    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : 'rgb(255,0,0)');
     ctx.fillRect(this.p1.x - 2.5 * ls, this.p1.y - 2.5 * ls, 5 * ls, 5 * ls);
     ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,0,0)');
     ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);

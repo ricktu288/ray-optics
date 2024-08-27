@@ -18,7 +18,7 @@ objTypes['BeamSplitter'] = class extends LineObjMixin(BaseFilter) {
     transRatio: 0.5,
     filter: false,
     invert: false,
-    wavelength: GREEN_WAVELENGTH,
+    wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
 
@@ -46,8 +46,9 @@ objTypes['BeamSplitter'] = class extends LineObjMixin(BaseFilter) {
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    ctx.strokeStyle = isHovered ? 'cyan' : ((scene.simulateColors && this.wavelength && this.filter) ? wavelengthToColor(this.wavelength || GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(100,100,168)');
     ctx.setLineDash([15 * ls, 15 * ls]);
+    ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();

@@ -13,7 +13,7 @@ objTypes['PointSource'] = class extends BaseSceneObj {
     x: null,
     y: null,
     brightness: 0.5,
-    wavelength: GREEN_WAVELENGTH
+    wavelength: Simulator.GREEN_WAVELENGTH
   };
 
   populateObjBar(objBar) {
@@ -21,7 +21,7 @@ objTypes['PointSource'] = class extends BaseSceneObj {
       obj.brightness = value;
     }, getMsg('brightness_note_popover'));
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), UV_WAVELENGTH, INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }
@@ -31,7 +31,7 @@ objTypes['PointSource'] = class extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = this.scene.simulateColors ? wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
+    ctx.fillStyle = this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
     ctx.fillRect(this.x - 2.5 * ls, this.y - 2.5 * ls, 5 * ls, 5 * ls);
     if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');

@@ -16,7 +16,9 @@ objTypes['Drawing'] = class extends BaseSceneObj {
     if (this.isDrawing) {
       objBar.createButton(getMsg('stop_drawing'), function (obj) {
         obj.isDrawing = false;
-        isConstructing = false;
+        if (obj.scene.editor.isConstructing) {
+          obj.scene.editor.isConstructing = false;
+        }
       }, true);
     }
   }
