@@ -472,7 +472,7 @@ objTypes['ModuleObj'] = class extends BaseSceneObj {
    */
   demodulize() {
     // Remove the module object and add the expanded objects to the scene
-    removeObj(this.scene.objs.indexOf(this));
+    this.scene.removeObj(this.scene.objs.indexOf(this));
     for (let obj of this.objs) {
       this.scene.objs.push(obj);
     }
