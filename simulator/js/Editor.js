@@ -139,8 +139,11 @@ class Editor {
    */
 
   /**
-   * The event when the selection changes.
+   * The event when the selection changes. This may also be triggered if the same object is selected again.
    * @event Editor#selectionChange
+   * @type {object}
+   * @property {number} oldIndex - The index of the previously selected object.
+   * @property {number} newIndex - The index of the newly selected object.
    */
 
   /**
@@ -848,12 +851,13 @@ class Editor {
   selectObj(index) {
     if (index < 0 || index >= this.scene.objs.length) {
       // If this object does not exist
+      this.emit('selectionChange', { oldIndex: this.selectedObjIndex, newIndex: -1 });
       this.selectedObjIndex = -1;
-      this.emit('selectionChange');
+      
       return;
     }
+    this.emit('selectionChange', { oldIndex: this.selectedObjIndex, newIndex: index });
     this.selectedObjIndex = index;
-    this.emit('selectionChange');
   }
 
   /**
@@ -1064,6 +1068,9 @@ class Editor {
     } else {
       this.exportImage(cropBox);
     }
+    this.isInCropMode = false;
+    this.selectObj(-1);
+    this.simulator.updateSimulation(true, true);
   }
 
   /**
@@ -1108,9 +1115,7 @@ class Editor {
       exportSimulator.on('simulationComplete', onSimulationEnd);
       exportSimulator.on('simulationStop', onSimulationEnd);
 
-      self.isInCropMode = false;
       exportSimulator.updateSimulation();
-      self.selectObj(-1);
     });
   }
 
@@ -1164,9 +1169,7 @@ class Editor {
       exportSimulator.on('simulationComplete', onSimulationEnd);
       exportSimulator.on('simulationStop', onSimulationEnd);
 
-      self.isInCropMode = false;
       exportSimulator.updateSimulation();
-      self.selectObj(-1);
     });
   }
 

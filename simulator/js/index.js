@@ -15,12 +15,12 @@ var warning = null;
 var error = null;
 
 
-f = function(e) {
+f = function (e) {
   list = document.getElementsByClassName('mobile-dropdown-menu');
   let maxScrollHeight = 0;
   for (ele of list) {
     inner = ele.children[0];
-    if(inner.scrollHeight > maxScrollHeight){
+    if (inner.scrollHeight > maxScrollHeight) {
       maxScrollHeight = inner.scrollHeight;
     }
   }
@@ -33,27 +33,27 @@ document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown',
 
 function resetDropdownButtons() {
   // Remove the 'selected' class from all dropdown buttons
-  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function(button) {
+  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function (button) {
     button.classList.remove('selected');
   });
-  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function(button) {
+  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function (button) {
     button.classList.remove('selected');
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  
-  document.getElementById('more-options-dropdown').addEventListener('click', function(e) {
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.getElementById('more-options-dropdown').addEventListener('click', function (e) {
     e.stopPropagation();
   });
 
-  document.getElementById('mobile-dropdown-options').addEventListener('click', function(e) {
+  document.getElementById('mobile-dropdown-options').addEventListener('click', function (e) {
     e.stopPropagation();
   });
 
   // Listen for changes to any radio input within a dropdown
-  document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function(input) {
-    input.addEventListener('change', function() {
+  document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function (input) {
+    input.addEventListener('change', function () {
       if (input.checked) {
         // Reset other dropdown buttons
         if (!input.id.includes('mobile')) {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
           // Style the button to indicate selection.
           dropdownButton.classList.add('selected');
-        } else if (input.name == 'toolsradio_mobile'){
+        } else if (input.name == 'toolsradio_mobile') {
           resetDropdownButtons();
 
           // Get the associated mobile trigger button
@@ -80,20 +80,20 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Listen for changes to standalone radio inputs (outside dropdowns)
-  document.querySelectorAll('input[type="radio"].btn-check').forEach(function(input) {
+  document.querySelectorAll('input[type="radio"].btn-check').forEach(function (input) {
     if (input.name == 'toolsradio' && !input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
-        input.addEventListener('change', function() {
-            if (input.checked) {
-                // Reset dropdown buttons
-                resetDropdownButtons();
-            }
-        });
+      input.addEventListener('change', function () {
+        if (input.checked) {
+          // Reset dropdown buttons
+          resetDropdownButtons();
+        }
+      });
     }
   });
 
 });
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
   document.getElementById('toolbar-loading').style.display = 'none';
   document.getElementById('toolbar-wrapper').style.display = '';
   document.getElementById('saveModal').style.display = '';
@@ -114,7 +114,7 @@ function getMsg(msg) {
 
 function updateUIText(elememt = document) {
   const elements = elememt.querySelectorAll('[data-text]');
-  
+
   elements.forEach(el => {
     const key = el.getAttribute('data-text');
     const text = getMsg(key);
@@ -134,8 +134,8 @@ function updateUIText(elememt = document) {
     }
     //console.log([lang1, total, translated]);
 
-    document.getElementById('lang-' + lang1).innerText = Math.round(translated/total*100) + '%';
-    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function(e) {
+    document.getElementById('lang-' + lang1).innerText = Math.round(translated / total * 100) + '%';
+    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function (e) {
       if (autoSyncUrl && !hasUnsavedChange) {
         // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
         e.preventDefault();
@@ -166,7 +166,7 @@ function navigateToNewQuery(newQuery) {
 
 function updateUIWithPopovers(elememt = document) {
   const elements = elememt.querySelectorAll('[data-title], [data-popover]');
-  
+
   elements.forEach(el => {
     const titleKey = el.getAttribute('data-title');
     const title = getMsg(titleKey);
@@ -191,9 +191,9 @@ function updateUIWithPopovers(elememt = document) {
         el.setAttribute('data-bs-content', content);
 
         // Update popover size after image is loaded
-        el.addEventListener('inserted.bs.popover', function() {
+        el.addEventListener('inserted.bs.popover', function () {
           const imgElement = document.querySelectorAll('#dynamic-popover-image');
-          imgElement[imgElement.length - 1].addEventListener('load', function() {
+          imgElement[imgElement.length - 1].addEventListener('load', function () {
             bootstrap.Popover.getInstance(el).update();
           });
         });
@@ -224,7 +224,7 @@ function updateUIWithPopovers(elememt = document) {
 
 function updateUIWithoutPopovers(elememt = document) {
   const elements = elememt.querySelectorAll('[data-title]');
-  
+
   elements.forEach(el => {
     const textKey = el.getAttribute('data-text');
 
@@ -240,7 +240,7 @@ function updateUIWithoutPopovers(elememt = document) {
 
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
+    return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 }
 
@@ -277,16 +277,16 @@ function initTools() {
         originalWidth = $("#mobile-dropdown-tools-root").width();
         originalMarginLeft = parseInt($("#mobile-dropdown-tools-root").css("margin-left"), 10);
         originalMarginRight = parseInt($("#mobile-dropdown-tools-root").css("margin-right"), 10);
-        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function() {
+        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function () {
           $(this).hide();
-          toolGroup.style.display='';
+          toolGroup.style.display = '';
           $(this).css({
             "margin-left": originalMarginLeft + "px",
             "margin-right": originalMarginRight + "px"
           });
           f();
         });
-        
+
         currentMobileToolGroupId = toolGroupId;
       });
     }
@@ -303,8 +303,8 @@ function initTools() {
   document.getElementById('mobile-tools').addEventListener('click', (event) => {
     // Hide the mobile tool dropdown.
     if (currentMobileToolGroupId != null) {
-      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display='none';
-      document.getElementById('mobile-dropdown-tools-root').style.display='';
+      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display = 'none';
+      document.getElementById('mobile-dropdown-tools-root').style.display = '';
       f();
     }
   });
@@ -331,7 +331,7 @@ function initModes() {
 initModes();
 
 function hideAllPopovers() {
-  document.querySelectorAll('[data-bs-original-title]').forEach(function(element) {
+  document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
     var popoverInstance = bootstrap.Popover.getInstance(element);
     if (popoverInstance) {
       popoverInstance.hide();
@@ -343,7 +343,7 @@ function hideAllPopovers() {
   });
 }
 
-document.getElementById('help-dropdown').addEventListener('click', function(e) {
+document.getElementById('help-dropdown').addEventListener('click', function (e) {
   e.stopPropagation();
 });
 
@@ -358,21 +358,21 @@ function enableJsonEditor() {
   aceEditor.session.setUseSoftTabs(true);
   aceEditor.session.setTabSize(2);
   aceEditor.setHighlightActiveLine(false)
-  aceEditor.container.style.background="transparent"
-  aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background="transparent"
+  aceEditor.container.style.background = "transparent"
+  aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background = "transparent"
   aceEditor.session.setValue(editor.lastActionJson);
-  
+
   var debounceTimer;
 
-  aceEditor.session.on('change', function(delta) {
+  aceEditor.session.on('change', function (delta) {
     if (lastCodeChangeIsFromScene) {
-      setTimeout(function() {
+      setTimeout(function () {
         lastCodeChangeIsFromScene = false;
       }, 100);
       return;
     }
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(function() {
+    debounceTimer = setTimeout(function () {
       editor.loadJSON(aceEditor.session.getValue());
       error = null;
       newJsonCode = editor.lastActionJson;
@@ -406,7 +406,7 @@ function updateModuleObjsMenu() {
       moduleRadio.id = 'moduleTool_' + moduleName + suffix;
       moduleRadio.classList.add('btn-check');
       moduleRadio.autocomplete = 'off';
-      moduleRadio.addEventListener('change', function() {
+      moduleRadio.addEventListener('change', function () {
         if (moduleRadio.checked) {
           resetDropdownButtons();
           document.getElementById('moreToolsDropdown').classList.add('selected');
@@ -444,7 +444,7 @@ function updateModuleObjsMenu() {
       removeButton.setAttribute('title', getMsg('remove_module'));
       removeButton.setAttribute('data-bs-placement', 'right');
       new bootstrap.Tooltip(removeButton);
-      removeButton.addEventListener('click', function() {
+      removeButton.addEventListener('click', function () {
         console.log(moduleName);
         scene.removeModule(moduleName);
         if (editor.addingObjType == 'ModuleObj' && editor.addingModuleName == moduleName) {
@@ -562,7 +562,7 @@ window.onload = function (e) {
   });
 
   objBar.on('edit', function () {
-    simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+    simulator.updateSimulation(!objBar.targetObj.constructor.isOptical, true);
   });
 
   objBar.on('editEnd', function () {
@@ -650,42 +650,42 @@ window.onload = function (e) {
       objBar.pendingEvent = null;
     }
 
-    if (editor.selectedObjIndex >= 0) {
-      if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
-      document.getElementById('obj_bar').style.display = 'none';
-      return;
-    }
-
-    objBar.targetObj = scene.objs[editor.selectedObjIndex];
-
-    document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[editor.selectedObjIndex].constructor.type);
-    document.getElementById('showAdvanced').style.display = 'none';
-    document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-
-    document.getElementById('obj_bar_main').style.display = '';
-    document.getElementById('obj_bar_main').innerHTML = '';
-    scene.objs[editor.selectedObjIndex].populateObjBar(objBar);
-
-    if (document.getElementById('obj_bar_main').innerHTML != '') {
-      for (var i = 0; i < scene.objs.length; i++) {
-        if (i != editor.selectedObjIndex && scene.objs[i].constructor.type == scene.objs[editor.selectedObjIndex].constructor.type) {
-          // If there is an object with the same type, then show "Apply to All"
-          document.getElementById('apply_to_all_box').style.display = '';
-          document.getElementById('apply_to_all_mobile_container').style.display = '';
-          break;
-        }
-        if (i == this.scene.objs.length - 1) {
-          document.getElementById('apply_to_all_box').style.display = 'none';
-          document.getElementById('apply_to_all_mobile_container').style.display = 'none';
-        }
+    if (e.newIndex >= 0) {
+      if (scene.objs[e.newIndex].constructor.type == 'Handle') {
+        document.getElementById('obj_bar').style.display = 'none';
+        return;
       }
-    } else {
-      document.getElementById('apply_to_all_box').style.display = 'none';
-      document.getElementById('apply_to_all_mobile_container').style.display = 'none';
-    }
+
+      objBar.targetObj = scene.objs[e.newIndex];
+
+      document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[e.newIndex].constructor.type);
+      document.getElementById('showAdvanced').style.display = 'none';
+      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+
+      document.getElementById('obj_bar_main').style.display = '';
+      document.getElementById('obj_bar_main').innerHTML = '';
+      scene.objs[e.newIndex].populateObjBar(objBar);
+
+      if (document.getElementById('obj_bar_main').innerHTML != '') {
+        for (var i = 0; i < scene.objs.length; i++) {
+          if (i != e.newIndex && scene.objs[i].constructor.type == scene.objs[e.newIndex].constructor.type) {
+            // If there is an object with the same type, then show "Apply to All"
+            document.getElementById('apply_to_all_box').style.display = '';
+            document.getElementById('apply_to_all_mobile_container').style.display = '';
+            break;
+          }
+          if (i == this.scene.objs.length - 1) {
+            document.getElementById('apply_to_all_box').style.display = 'none';
+            document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+          }
+        }
+      } else {
+        document.getElementById('apply_to_all_box').style.display = 'none';
+        document.getElementById('apply_to_all_mobile_container').style.display = 'none';
+      }
 
 
-    document.getElementById('obj_bar').style.display = '';
+      document.getElementById('obj_bar').style.display = '';
     } else {
       document.getElementById('obj_bar').style.display = 'none';
       objBar.shouldShowAdvanced = false;
@@ -774,7 +774,7 @@ window.onload = function (e) {
       // Scroll to the first line that has changed
       aceEditor.scrollToLine(startLineNum, true, true, function () { });
     }
-    
+
 
     syncUrl();
     warning = "";
@@ -831,11 +831,15 @@ window.onload = function (e) {
 
 
   window.onresize = function (e) {
-    if (window.devicePixelRatio) {
+    if (simulator && window.devicePixelRatio) {
       simulator.dpr = window.devicePixelRatio;
     }
-    scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
-
+    if (scene) {
+      scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
+      if (editor) {
+        editor.onActionComplete();
+      }
+    }
     if (simulator.ctxAboveLight) {
       canvas.width = window.innerWidth * simulator.dpr;
       canvas.height = window.innerHeight * simulator.dpr;
@@ -990,10 +994,10 @@ window.onload = function (e) {
 
   document.getElementById('get_link').onclick = getLink;
   document.getElementById('get_link_mobile').onclick = getLink;
-  document.getElementById('export_svg').onclick = function() {
+  document.getElementById('export_svg').onclick = function () {
     editor.enterCropMode();
   };
-  document.getElementById('export_svg_mobile').onclick = function() {
+  document.getElementById('export_svg_mobile').onclick = function () {
     editor.enterCropMode();
   };
   document.getElementById('open').onclick = function () {
@@ -1534,6 +1538,8 @@ function init() {
 
   scene.backgroundImage = null;
   scene.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
+  scene.origin = geometry.point(0, 0);
+  scene.scale = 1;
 
   let dpr = window.devicePixelRatio || 1;
 

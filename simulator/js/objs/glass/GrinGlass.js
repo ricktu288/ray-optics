@@ -92,6 +92,7 @@ objTypes['GrinGlass'] = class extends BaseGrinGlass {
   }
 
   onConstructMouseMove(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
     this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
   }
 
