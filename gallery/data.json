@@ -345,6 +345,14 @@
         ],
         "title": "Rochester cloak",
         "description": "<p>Rochester cloak is a type of cloaking device, which uses only 4 lenses. In the version presented in this simulation, the focal length of the two external lenses is \\(f_1\\), and of the two mid lenses is \\(f_2\\), such that the distance between consecutive lenses of focal lengths \\(f_1\\) and \\(f_2\\) equals \\(t_1=f_1+f_2\\), and the distance between the mid lenses is \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).</p>"
+      },
+      {
+        "id": "simple-double-gauss-lens",
+        "contributors": [
+          "Alex"
+        ],
+        "title": "Simple Double-Gauss Lens",
+        "description": "<p>This is a demonstration of a simple double-Gauss lens.</p>"
       }
     ]
   },

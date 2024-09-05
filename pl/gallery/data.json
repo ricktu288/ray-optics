@@ -345,6 +345,14 @@
         ],
         "title": "Rochesterski płaszcz",
         "description": "<p>Rochesterski płaszcz (Rochester cloak) to rodzaj urządzenia maskującego, które wykorzystuje tylko 4 soczewki. W wersji przedstawionej w tej symulacji ogniskowa dwóch soczewek zewnętrznych wynosi \\(f_1\\), a dwóch soczewek środkowych \\(f_2\\). Odległość między kolejnymi soczewkami o ogniskowych \\(f_1\\) i \\(f_2\\) równa się \\(t_1=f_1+f_2\\), a odległość między środkowymi soczewkami wynosi \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).</p>"
+      },
+      {
+        "id": "simple-double-gauss-lens",
+        "contributors": [
+          "Alex"
+        ],
+        "title": "Simple Double-Gauss Lens",
+        "description": "<p>This is a demonstration of a simple double-Gauss lens.</p>"
       }
     ]
   },
