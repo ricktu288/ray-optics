@@ -1,0 +1,112 @@
+
+.example-container {
+  border-width:2px;
+  margin-bottom: 5px;
+  display: inline-block;
+  width:270px;
+  text-decoration: none;
+}
+
+.example-container:hover {
+  text-decoration: none;
+}
+
+.example-image {
+  width:250px;
+  height:250px;
+}
+
+.example-title {
+  font-size: 12pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.example-contributor {
+  font-size: 9pt;
+  color: gray;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+
+.brand:hover{
+    text-decoration: none;
+}
+
+.github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    padding: 0px;
+    height:40px;
+    width: 92px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    float:right;
+}
+
+.github-button-container a {
+    color: transparent;
+}
+.navul {
+    font-size: 11pt;
+}
+.navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 2px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+.clearfix {
+    clear: both;
+}
+.navul a:hover{
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+}
+.navul a.active{
+    color: #000;
+    border-bottom: 3px solid gray;
+}
+body { 
+    padding-top: 72px; 
+    padding-bottom: 65px; 
+}
+.anchor {
+    padding-top: 65px; 
+}
+.description {
+  display: inline-block;
+  text-align: left;
+  max-width: 80%;
+}
+
+ol, ul {
+  padding-left: 1.8em;
+}
