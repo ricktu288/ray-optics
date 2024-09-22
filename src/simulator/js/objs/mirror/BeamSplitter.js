@@ -6,9 +6,10 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Beam splitter.
+ * 
  * Tools -> Mirror -> Beam splitter
- * @property {import('../../geometry.js').Point} p1 - The first endpoint.
- * @property {import('../../geometry.js').Point} p2 - The second endpoint.
+ * @property {Point} p1 - The first endpoint.
+ * @property {Point} p2 - The second endpoint.
  * @property {number} transRatio - The transmission ratio.
  * @property {boolean} filter - Whether it is a dichroic beam splitter.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth interacts with the beam splitter. If false, the ray with wavelength inside the bandwidth interacts with the beam splitter.

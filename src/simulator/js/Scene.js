@@ -12,8 +12,8 @@ export const DATA_VERSION = 5;
  * Represents the scene in this simulator.
  * @class Scene
  * @property {string} name - The name of the scene.
- * @property {Object<string,import('./objs/special/ModuleObj.js').ModuleDef>} modules - The definitions of modules used in the scene.
- * @property {Array<import('./objs/BaseSceneObj.js').BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
+ * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
+ * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
  * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
  * @property {number} rayModeDensity - The density of rays in 'rays' and 'extended' modes.
  * @property {number} imageModeDensity - The density of rays in 'images' and 'observer' modes.
@@ -23,7 +23,7 @@ export const DATA_VERSION = 5;
  * @property {number} gridSize - The size of the grid.
  * @property {Circle|null} observer - The observer of the scene, null if not set.
  * @property {number} lengthScale - The length scale used in line width, default font size, etc in the scene.
- * @property {import('./geometry.js').Point} origin - The origin of the scene in the viewport.
+ * @property {Point} origin - The origin of the scene in the viewport.
  * @property {number} scale - The scale factor (the viewport CSS pixel per internal length unit) of the scene.
  * @property {number} width - The width (in CSS pixels) of the viewport.
  * @property {number} height - The height (in CSS pixels) of the viewport.
@@ -85,7 +85,7 @@ export class Scene {
     }
   }
 
-  /** @property {Array<import('./objs/BaseSceneObj.js').BaseSceneObj>} opticalObjs - The objects in the scene which are optical. Module objects are expanded recursively. If the user edits only the non-optical part of the scene, then the content of this array will not change. */
+  /** @property {Array<BaseSceneObj>} opticalObjs - The objects in the scene which are optical. Module objects are expanded recursively. If the user edits only the non-optical part of the scene, then the content of this array will not change. */
   get opticalObjs() {
     function expandObjs(objs) {
       let expandedObjs = [];
@@ -317,7 +317,7 @@ export class Scene {
   /**
    * Add a module definition.
    * @param {string} moduleName
-   * @param {import('./objs/special/ModuleObj.js').ModuleDef} moduleDef
+   * @param {ModuleDef} moduleDef
    * @returns {boolean} Whether the module is successfully added.
    */
   addModule(moduleName, moduleDef) {

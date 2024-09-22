@@ -4,11 +4,12 @@ import { getMsg } from '../../translations.js';
 
 /**
  * The crop box
+ * 
  * File -> Export as PNG/SVG
- * @property {import('../../geometry.js').Point} p1 - The top left corner of the crop box.
- * @property {import('../../geometry.js').Point} p2 - The top right corner of the crop box.
- * @property {import('../../geometry.js').Point} p3 - The bottom left corner of the crop box.
- * @property {import('../../geometry.js').Point} p4 - The bottom right corner of the crop box.
+ * @property {Point} p1 - The top left corner of the crop box.
+ * @property {Point} p2 - The top right corner of the crop box.
+ * @property {Point} p3 - The bottom left corner of the crop box.
+ * @property {Point} p4 - The bottom right corner of the crop box.
  * @property {string} format - The format of the image to be exported.
  * @property {number} width - The width of the image to be exported. Not effective when the format is 'svg'.
  * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`.

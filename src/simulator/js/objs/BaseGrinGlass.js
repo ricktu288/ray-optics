@@ -22,7 +22,7 @@ import * as math from 'mathjs';
  * @property {string} p_der_x_tex - The x derivative of `p` in LaTeX.
  * @property {string} p_der_y - The y derivative of `p` in math.js string.
  * @property {string} p_der_y_tex - The y derivative of `p` in LaTeX.
- * @property {import('../geometry.js').Point} origin - The origin of (x,y) used in the above equationns.
+ * @property {Point} origin - The origin of (x,y) used in the above equationns.
  * @property {function} fn_p - The evaluatex function for `p`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_x - The evaluatex function for `p_der_x`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_y - The evaluatex function for `p_der_y`, where (x,y) has been shifted to the absolute coordinates.
@@ -230,7 +230,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Receives a ray, and returns a bodyMerging object for the point ray.p1
-   * @param {import('../Simulator.js').Ray} ray 
+   * @param {Ray} ray 
    * @returns {BodyMergingObj}
    */
   initRefIndex(ray) {
@@ -258,10 +258,9 @@ export class BaseGrinGlass extends BaseGlass {
    * Receives two points inside this lens, and returns the next point to where the ray, connecting these two points, will travel, based on the ray trajectory equation (equation 11.1 in the cited text below)
    * Using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://doi.org/10.1007/BFb0012092)
   x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
-   * @param {import('../geometry.js').Point} p1
-   * @param {import('../geometry.js').Point} p2
-   * @param {import('../Simulator.js').Ray} ray
-   * @returns 
+   * @param {Point} p1
+   * @param {Point} p2
+   * @param {Ray} ray
    */
   step(p1, p2, ray) {
     const len = geometry.distance(p1, p2);
@@ -286,7 +285,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is outside the glass, otherwise returns `false`
-   * @param {import('../geometry.js').Point} point 
+   * @param {Point} point 
    */
   isOutsideGlass(point) {
     // To be implemented in subclasses.
@@ -294,7 +293,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is inside the glass, otherwise returns `false`
-   * @param {import('../geometry.js').Point} point 
+   * @param {Point} point 
    */
   isInsideGlass(point) {
     // To be implemented in subclasses.
@@ -302,7 +301,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is on the boundary of the glass, otherwise returns `false`
-   * @param {import('../geometry.js').Point} point 
+   * @param {Point} point 
    */
   isOnBoundary(point) {
     // To be implemented in subclasses.

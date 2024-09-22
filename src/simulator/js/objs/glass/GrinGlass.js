@@ -4,11 +4,12 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Gradient-index glass of the shape of a polygon
+ * 
  * Tools -> Glass -> Gradient-index polygon
- * @property {Array<import('../../geometry.js').Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
+ * @property {Array<Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
- * @property {import('../../geometry.js').Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
+ * @property {Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */

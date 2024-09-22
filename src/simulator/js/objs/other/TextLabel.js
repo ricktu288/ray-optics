@@ -4,6 +4,7 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Text label
+ * 
  * Tools -> Other -> Text
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.

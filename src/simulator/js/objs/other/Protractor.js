@@ -3,9 +3,10 @@ import { CircleObjMixin } from '../CircleObjMixin.js';
 
 /**
  * The protractor tool
+ * 
  * Tools -> Other -> Protractor
- * @property {import('../../geometry.js').Point} p1 - The center of the protractor.
- * @property {import('../../geometry.js').Point} p2 - The zero point on the protractor.
+ * @property {Point} p1 - The center of the protractor.
+ * @property {Point} p2 - The zero point on the protractor.
  */
 export class Protractor extends CircleObjMixin(BaseSceneObj) {
   static type = 'Protractor';

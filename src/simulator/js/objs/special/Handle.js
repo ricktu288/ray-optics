@@ -4,9 +4,9 @@ import { Mouse } from '../../Mouse.js';
 
 /**
  * The handle created when holding ctrl and click several points.
- * @property {import('../../geometry.js').Point} p1 - The position of the handle.
- * @property {import('../../geometry.js').Point} p2 - The position of the rotation/scale center.
- * @property {Array<import('../../Editor.js').ControlPoint>} controlPoints - The control points bound to the handle.
+ * @property {Point} p1 - The position of the handle.
+ * @property {Point} p2 - The position of the rotation/scale center.
+ * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
 export class Handle extends BaseSceneObj {
@@ -176,7 +176,7 @@ export class Handle extends BaseSceneObj {
 
   /**
    * Add (bind) a control point to the handle.
-   * @param {import('../../Editor.js').ControlPoint} controlPoint - The control point to be bound.
+   * @param {ControlPoint} controlPoint - The control point to be bound.
    */
   addControlPoint(controlPoint) {
     controlPoint.dragContext.originalObj = this.scene.objs[controlPoint.targetObjIndex];
@@ -189,7 +189,7 @@ export class Handle extends BaseSceneObj {
 
   /**
    * Finish creating the handle.
-   * @param {import('../../geometry.js').Point} point - The position of the handle.
+   * @param {Point} point - The position of the handle.
    */
   finishHandle(point) {
     this.p1 = point;

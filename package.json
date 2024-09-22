@@ -23,6 +23,7 @@
     "file-loader": "^6.2.0",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.0",
+    "jsdoc": "^4.0.3",
     "sass": "^1.77.8",
     "sass-loader": "^16.0.1",
     "style-loader": "^4.0.0",
@@ -37,7 +38,8 @@
     "build-webpages": "node ./scripts/buildWebpages.js",
     "build-simulator": "webpack --mode=production",
     "start": "webpack serve --open --mode=development",
-    "build": "npm run build-translations && npm run build-webpages && npm run build-simulator"
+    "build": "npm run build-translations && npm run build-webpages && npm run build-simulator",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "keywords": [],
   "author": "",

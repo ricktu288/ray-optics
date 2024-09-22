@@ -4,6 +4,7 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Glass of the shape consists of line segments or circular arcs.
+ * 
  * Tools -> Glass -> Polygon / Circular Arcs
  * @property {Array<object>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates, and a boolean `arc`. If `path[i].arc === false`, it means that `path[i-1]`--`path[i]` and `path[i]`--`path[i+1]` are line segments, if `path[i].arc === true`, it means that `path[i-1]`--`path[i]`--`path[i+1]` is a circular arc.
  * @property {boolean} notDone - Whether the user is still drawing the glass.

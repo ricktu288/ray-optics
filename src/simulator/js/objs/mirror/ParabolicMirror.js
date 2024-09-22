@@ -4,16 +4,18 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Parabolic mirror.
+ * 
  * Tools -> Mirror -> Parabolic
+ * 
  * The current implementation is based on `CustomMirror.js`, but this should be changed to an analytical solution in the future.
- * @property {import('../../geometry.js').Point} p1 - The first endpoint.
- * @property {import('../../geometry.js').Point} p2 - The second endpoint.
- * @property {import('../../geometry.js').Point} p3 - The vertex.
+ * @property {Point} p1 - The first endpoint.
+ * @property {Point} p2 - The second endpoint.
+ * @property {Point} p3 - The vertex.
  * @property {boolean} filter - Whether it is a dichroic mirror.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
- * @property {Array<import('../../geometry.js').Point>} tmp_points - The points on the parabola.
+ * @property {Array<Point>} tmp_points - The points on the parabola.
  * @property {number} tmp_i - The index of the point on the parabola where the ray is incident.
  */
 export class ParabolicMirror extends BaseFilter {

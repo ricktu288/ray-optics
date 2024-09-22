@@ -5,11 +5,12 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Aperture / filter with a hole.
+ * 
  * Tools -> Blocker -> Aperture
- * @property {import('../../geometry.js').Point} p1 - The first endpoint of the aperture.
- * @property {import('../../geometry.js').Point} p2 - The second endpoint of the aperture.
- * @property {import('../../geometry.js').Point} p3 - The first endpoint of the hole.
- * @property {import('../../geometry.js').Point} p4 - The second endpoint of the hole.
+ * @property {Point} p1 - The first endpoint of the aperture.
+ * @property {Point} p2 - The second endpoint of the aperture.
+ * @property {Point} p3 - The first endpoint of the hole.
+ * @property {Point} p4 - The second endpoint of the hole.
  * @property {boolean} filter - Whether it is a filter.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is blocked. If false, the ray with wavelength inside the bandwidth is blocked.
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.

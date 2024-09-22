@@ -6,8 +6,8 @@ import * as objTypes from './objTypes.js';
 
 /**
  * @typedef {Object} Ray
- * @property {import('./geometry.js').Point} p1 - The starting point of the ray.
- * @property {import('./geometry.js').Point} p2 - Another point on the ray.
+ * @property {Point} p1 - The starting point of the ray.
+ * @property {Point} p2 - Another point on the ray.
  * @property {number} brightness_s - he intensity of the s-polarization component of the ray.
  * @property {number} brightness_p - The intensity of the p-polarization component of the ray. In this simulator the two polarization components are assumed to be of no phase coherence.
  * @property {number} [wavelength] - The wavelength of the ray in nanometers. Only has effect when "Simulate Colors" is on.

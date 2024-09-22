@@ -5,9 +5,10 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Circle blocker / filter.
+ * 
  * Tools -> Blocker -> Circle Blocker
- * @property {import('../../geometry.js').Point} p1 - The center of the circle.
- * @property {import('../../geometry.js').Point} p2 - A point on the circle.
+ * @property {Point} p1 - The center of the circle.
+ * @property {Point} p2 - A point on the circle.
  * @property {boolean} filter - Whether it is a filter.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is blocked. If false, the ray with wavelength inside the bandwidth is blocked.
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.

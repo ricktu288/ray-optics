@@ -7,14 +7,15 @@ import { evaluateLatex } from '../../equation.js';
 
 /**
  * Glass defined by a custom inequality.
+ * 
  * Tools -> Glass -> Custom equation
- * @property {import('../../geometry.js').Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
- * @property {import('../../geometry.js').Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
+ * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
+ * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
  * @property {string} eqn2 - The equation of the surface with larger y. The variable is x.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
- * @property {Array<import('../../geometry.js').Point>} path - The points on the calculated curve.
+ * @property {Array<Point>} path - The points on the calculated curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
 export class CustomGlass extends LineObjMixin(BaseGlass) {

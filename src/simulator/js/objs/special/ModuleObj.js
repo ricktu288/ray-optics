@@ -18,9 +18,9 @@ import * as math from 'mathjs';
  * Currently, there is no UI for creating a module object. You can create a module object by directly editing the JSON data of the scene.
  * @property {string} module - The name of the module.
  * @property {ModuleDef} moduleDef - The definition of the module.
- * @property {Array<import('../../geometry.js').Point>} points - The control points of the module.
+ * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
- * @property {Array<import('../BaseSceneObj.js').BaseSceneObj>} objs - The expanded objects in the module.
+ * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
  */
 export class ModuleObj extends BaseSceneObj {
   static type = 'ModuleObj';

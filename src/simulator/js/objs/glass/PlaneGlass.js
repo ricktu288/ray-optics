@@ -4,9 +4,10 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Glass of the shape of a half-plane.
+ * 
  * Tools -> Glass -> Half-plane
- * @property {import('../../geometry.js').Point} p1 - A point on the boundary of the half-plane.
- * @property {import('../../geometry.js').Point} p2 - Another point on the boundary of the half-plane.
+ * @property {Point} p1 - A point on the boundary of the half-plane.
+ * @property {Point} p2 - Another point on the boundary of the half-plane.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */

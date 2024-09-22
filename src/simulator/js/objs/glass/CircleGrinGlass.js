@@ -4,11 +4,12 @@ import { geometry } from '../../geometry.js';
 
 /**
  * Gradient-index glass of the shape of a circle.
+ * 
  * Tools -> Glass -> Gradient-index Circle
- * @property {import('../../geometry.js').Point} p1 - The center of the circle.
- * @property {import('../../geometry.js').Point} p2 - A point on the boundary of the circle.
+ * @property {Point} p1 - The center of the circle.
+ * @property {Point} p2 - A point on the boundary of the circle.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
- * @property {import('../../geometry.js').Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
+ * @property {Point} origin - The origin of the (x,y) coordinates used in the refractive index function.
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */

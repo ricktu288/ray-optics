@@ -10,8 +10,8 @@ import { Simulator } from './Simulator.js';
 /**
  * @typedef {Object} DragContext
  * @property {number} part - The index of the part within the object being dragged. 0 for the whole object.
- * @property {import('./geometry.js').Point} [targetPoint] - The target point where the user is dragging. This is recognized by the editor so that it can be used for popping up the coordinate box (when the user double-clicks or right-clicks such a point), or binding to a handle (when the user holds Ctrl and clicks such a point).
- * @property {import('./geometry.js').Point} [targetPoint_] - If this property is set instead of setting `targetPoint`, then the point will not be used for the coordinate box or handle, but is still recognized by the editor when deciding which part of which object the user want to interact with.
+ * @property {Point} [targetPoint] - The target point where the user is dragging. This is recognized by the editor so that it can be used for popping up the coordinate box (when the user double-clicks or right-clicks such a point), or binding to a handle (when the user holds Ctrl and clicks such a point).
+ * @property {Point} [targetPoint_] - If this property is set instead of setting `targetPoint`, then the point will not be used for the coordinate box or handle, but is still recognized by the editor when deciding which part of which object the user want to interact with.
  * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated during the dragging.
  * @property {string} [cursor] - The cursor to be used during hovering and dragging.
  * @property {SnapContext} [snapContext] - The snap context.
@@ -29,7 +29,7 @@ import { Simulator } from './Simulator.js';
 /**
  * @typedef {Object} ControlPoint
  * @property {DragContext} dragContext - The drag context of the virtual mouse that is dragging the control point.
- * @property {import('./geometry.js').Point} newPoint - The new position of the control point.
+ * @property {Point} newPoint - The new position of the control point.
  */
 
 /**
@@ -69,10 +69,10 @@ export class Editor {
     /** @property {boolean} lastDeviceIsTouch - Whether the last interaction with `canvas` is done by a touch device. */
     this.lastDeviceIsTouch = false;
 
-    /** @property {import('./geometry.js').Point} mousePos - The position of the mouse in the scene. */
+    /** @property {Point} mousePos - The position of the mouse in the scene. */
     this.mousePos = geometry.point(0, 0);
 
-    /** @property {import('./geometry.js').Point} lastMousePos - The position of the mouse in the scene when the last mousedown event is triggered. */
+    /** @property {Point} lastMousePos - The position of the mouse in the scene when the last mousedown event is triggered. */
     this.lastMousePos = geometry.point(0, 0);
 
     /** @property {boolean} isConstructing - Whether an object is being constructed. */
@@ -162,7 +162,7 @@ export class Editor {
    * The event when the mouse coordinate changes. This is different from the actual mousemove, since the grid snapping is considered, and the coordnates can also be updated by other events such as zooming.
    * @event Editor#mouseCoordinateChange
    * @type {object}
-   * @property {import('./geometry.js').Point} mousePos - The position of the mouse in the scene. Null if the mouse is out of the canvas.
+   * @property {Point} mousePos - The position of the mouse in the scene. Null if the mouse is out of the canvas.
    */
 
   /**
@@ -778,7 +778,7 @@ export class Editor {
 
   /**
    * search for best object to select at mouse position
-   * @param {import('./geometry.js').Point} mousePos_nogrid - The mouse position in the scene (without snapping to grid).
+   * @param {Point} mousePos_nogrid - The mouse position in the scene (without snapping to grid).
    * @returns {SelectionSearchResult[]} - The search results.
    */
   selectionSearch(mousePos_nogrid) {
@@ -852,7 +852,7 @@ export class Editor {
 
   /**
    * Finish the creation of a handle.
-   * @param {import('./geometry.js').Point} point - The point for the position of the handle.
+   * @param {Point} point - The point for the position of the handle.
    */
   finishHandleCreation(point) {
     this.scene.objs[0].finishHandle(point);

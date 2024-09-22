@@ -1,0 +1,24 @@
+{
+  "source": {
+    "include": [
+      "src/simulator/js/"
+    ],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "destination": "./dist/docs/",
+    "recurse": true
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "outputSourceFiles": false,
+      "includeDate": false
+    }
+  }
+}

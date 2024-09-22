@@ -8,7 +8,7 @@
 /**
  * @typedef {Object} SimulationReturn
  * @property {boolean} [isAbsorbed] - Whether the object absorbs the ray.
- * @property {Array<import('../Simulator.js').Ray>} [newRays] - The new rays to be added.
+ * @property {Array<Ray>} [newRays] - The new rays to be added.
  * @property {number} [truncation] - The brightness of truncated rays due to numerical cutoff (e.g. after a large number of partial internal reflections within a glass). This is used to estimate the error of the simulation.
  * @property {number} [brightnessScale] - The actual brightness of the ray divided by the brightness inferred from the properties of the object. This should be 1 when "ray density" is high enough. When "ray density" is low, the calculated brightness of the individual rays will be too high (alpha value for rendering will be larger than 1). In this case, the object should rescale all the brightness of the rays by a factor to keep the maximum alpha value to be 1. This factor should be returned here and is used to generate warnings.
  */
@@ -193,7 +193,7 @@ export class BaseSceneObj {
   /**
    * The event when the user drags the object, which is fired on every step during the dragging. The object should be updated according to `DragContext` which is returned by `checkMouseOver`. `dragContext` can be modified during the dragging.
    * @param {Mouse} mouse - The mouse object.
-   * @param {import('../Editor.js').DragContext} dragContext - The drag context.
+   * @param {DragContext} dragContext - The drag context.
    * @param {boolean} ctrl - Whether the control key is pressed.
    * @param {boolean} shift - Whether the shift key is pressed.
    */
@@ -215,7 +215,7 @@ export class BaseSceneObj {
   /**
    * Check whether the object intersects with the given ray.
    * Called during the ray tracing when `ray` is to be tested whether it intersects with the object. Find whether they intersect and find the nearset intersection if so. Implemented only by optical elements that affects or detect rays.
-   * @param {import('../Simulator.js').Ray} ray - The ray.
+   * @param {Ray} ray - The ray.
    * @returns {Point|null} - The intersection (closest to the beginning of the ray) if they intersect.
    */
   checkRayIntersects(ray) {
@@ -230,9 +230,9 @@ export class BaseSceneObj {
    * If there is a primary outgoing ray, directly modify `ray` to be the outgoing ray. This includes the case when the object is a detector that does not modify the direction of the ray.
    * If there are secondary rays to be emitted, return `{ newRays: [ray1, ray2, ...] }`. Note that if there are more than one secondary rays, image detection does not work in the current version, and `rayN.gap` should be set to `true`. But for future support, the secondary ray which is to be of the same continuous bunch or rays should have consistent index in the `newRays` array.
    * Sometimes keeping tracks of all the rays may result in infinite loop (such as in a glass). Depending on the situation, some rays with brightness below a certain threshold (such as 0.01) may be truncated. In this case, the brightness of the truncated rays should be returned as `truncation`.
-   * @param {import('../Simulator.js').Ray} ray - The ray.
+   * @param {Ray} ray - The ray.
    * @param {number} rayIndex - The index of the ray in the array of all rays currently in the scene in the simulator. In particular, in a bunch of continuous rays, the rays are ordered by the time they are emitted, and the index is the order of emission. This can be used to downsample the rays and increase the individual brightness if it is too low.
-   * @param {import('../geometry.js').Point} incidentPoint - The point where the ray is incident on the object, which is the intersection point found by `checkRayIntersects`.
+   * @param {Point} incidentPoint - The point where the ray is incident on the object, which is the intersection point found by `checkRayIntersects`.
    * @param {Array<BaseSceneObj>} surfaceMergingObjs - The objects that are merged with the current object. If two or more objects with `supportsSurfaceMerging === true` has overlapping surfaces (often acheived by using the grid), and if a ray is incident on those surfaces together, only one of the object will be have `onRayIncident` being called, and the other objects will be in `surfaceMergingObjs`. In this case, this function must also deal with the combination of the surface before doing the actual interaction. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
    * @returns {SimulationReturn|null} The return value.
    */

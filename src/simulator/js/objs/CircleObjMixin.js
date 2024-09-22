@@ -5,7 +5,7 @@ import { Simulator } from '../Simulator.js';
  * The mixin for the scene objects that are defined by a circle.
  * @template {typeof BaseSceneObj} T
  * @param {T} Base 
- * @returns {T & CircleObjMixin}
+ * @returns {T}
  */
 export const CircleObjMixin = Base => class extends Base {
 
@@ -114,8 +114,8 @@ export const CircleObjMixin = Base => class extends Base {
   /**
    * Check if a ray intersects the circle.
    * In the child class, this can be called from the `checkRayIntersects` method.
-   * @param {import('../Simulator.js').Ray} ray - The ray.
-   * @returns {import('../geometry.js').Point} The intersection point, or null if there is no intersection.
+   * @param {Ray} ray - The ray.
+   * @returns {Point} The intersection point, or null if there is no intersection.
    */
   checkRayIntersectsShape(ray) {
     const rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(this.p1, this.p2));
