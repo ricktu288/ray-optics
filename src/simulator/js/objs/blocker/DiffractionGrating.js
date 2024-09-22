@@ -8,8 +8,8 @@ import { geometry } from '../../geometry.js';
  * Diffraction Grating
  * Tools -> Blocker -> Diffraction Grating
  * It is in the blocker category since the model we use is a blocker with slits.
- * @property {Point} p1 - The first endpoint of the line segment.
- * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint of the line segment.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint of the line segment.
  * @property {number} lineDensity - The number of lines per millimeter.
  * @property {boolean} customBrightness - Whether the output brightness are customized.
  * @property {number[]} brightnesses - The brightnesses of the diffracted rays for m = 0, 1, -1, 2, -2, ... when `customBrightness` is true. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0.

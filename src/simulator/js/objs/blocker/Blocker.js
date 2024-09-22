@@ -5,8 +5,8 @@ import { Simulator } from '../../Simulator.js';
 /**
  * Line blocker / filter.
  * Tools -> Blocker -> Line Blocker
- * @property {Point} p1 - The first endpoint.
- * @property {Point} p2 - The second endpoint.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a filter.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is blocked. If false, the ray with wavelength inside the bandwidth is blocked.
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.

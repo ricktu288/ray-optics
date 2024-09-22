@@ -1,13 +1,25 @@
 /**
+ * @typedef {Object} Point
+ * @property {number} x
+ * @property {number} y
+ */
+
+/**
+ * @typedef {Object} Line
+ * @property {Point} p1
+ * @property {Point} p2
+ */
+
+/**
+ * @typedef {Object} Circle
+ * @property {Point} c
+ * @property {number|Line} r
+ */
+
+/**
  * The geometry module, which provides basic geometric figures and operations.
  */
 export const geometry = {
-
-  /**
-   * @typedef {Object} Point
-   * @property {number} x
-   * @property {number} y
-   */
 
   /**
    * Create a point
@@ -16,12 +28,6 @@ export const geometry = {
    * @returns {Point}
    */
   point: function (x, y) { return { x: x, y: y } },
-
-  /**
-   * @typedef {Object} Line
-   * @property {Point} p1
-   * @property {Point} p2
-   */
 
   /**
    * Create a line, which also represents a ray or a segment.
@@ -33,12 +39,6 @@ export const geometry = {
    * @returns {Line}
    */
   line: function (p1, p2) { return { p1: p1, p2: p2 } },
-
-  /**
-   * @typedef {Object} Circle
-   * @property {Point} c
-   * @property {number|Line} r
-   */
 
   /**
    * Create a circle

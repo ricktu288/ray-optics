@@ -5,6 +5,17 @@ import * as C2S from 'canvas2svg';
 import * as objTypes from './objTypes.js';
 
 /**
+ * @typedef {Object} Ray
+ * @property {import('./geometry.js').Point} p1 - The starting point of the ray.
+ * @property {import('./geometry.js').Point} p2 - Another point on the ray.
+ * @property {number} brightness_s - he intensity of the s-polarization component of the ray.
+ * @property {number} brightness_p - The intensity of the p-polarization component of the ray. In this simulator the two polarization components are assumed to be of no phase coherence.
+ * @property {number} [wavelength] - The wavelength of the ray in nanometers. Only has effect when "Simulate Colors" is on.
+ * @property {boolean} gap - Whether the ray is the first ray in a bunch of "continuous" rays. This is for the detection of images to work correctly. The intersection of two rays is considered as a candidate of an image only if the second ray has `gap === false`.
+ * @property {boolean} isNew - Whether the ray is just emitted by a source. This is to avoid drawing trivial initial extensions in the "Extended rays" mode.
+ */
+
+/**
  * The simulator class, which simulates the optical system described by the `Scene` class and renders the this.scene (optical elements, decorations, rays, etc) on the canvases.
  * @class Simulator
  */
@@ -24,17 +35,6 @@ export class Simulator {
   static YELLOW_WAVELENGTH = 580;
   static RED_WAVELENGTH = 620;
   static INFRARED_WAVELENGTH = 700;
-
-  /**
-   * @typedef {Object} Ray
-   * @property {Point} p1 - The starting point of the ray.
-   * @property {Point} p2 - Another point on the ray.
-   * @property {number} brightness_s - he intensity of the s-polarization component of the ray.
-   * @property {number} brightness_p - The intensity of the p-polarization component of the ray. In this simulator the two polarization components are assumed to be of no phase coherence.
-   * @property {number} [wavelength] - The wavelength of the ray in nanometers. Only has effect when "Simulate Colors" is on.
-   * @property {boolean} gap - Whether the ray is the first ray in a bunch of "continuous" rays. This is for the detection of images to work correctly. The intersection of two rays is considered as a candidate of an image only if the second ray has `gap === false`.
-   * @property {boolean} isNew - Whether the ray is just emitted by a source. This is to avoid drawing trivial initial extensions in the "Extended rays" mode.
-   */
 
   constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity) {
     /** @property {Scene} scene - The scene to be simulated. */

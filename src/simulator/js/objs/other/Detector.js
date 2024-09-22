@@ -6,8 +6,8 @@ import { geometry } from '../../geometry.js';
 /**
  * The detector tool
  * Tools -> Other -> Detector
- * @property {Point} p1 - The first endpoint of the line segment.
- * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint of the line segment.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint of the line segment.
  * @property {boolean} irradMap - Whether to display the irradiance map.
  * @property {number} binSize - The size of the bin for the irradiance map.
  * @property {number} power - The measured power through the detector.

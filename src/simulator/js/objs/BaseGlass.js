@@ -111,13 +111,13 @@ export class BaseGlass extends BaseSceneObj {
 
   /**
    * Do the refraction calculation at the surface of the glass.
-   * @param {Ray} ray - The ray to be refracted.
+   * @param {import('../Simulator.js').Ray} ray - The ray to be refracted.
    * @param {number} rayIndex - The index of the ray in the ray array.
-   * @param {Point} incidentPoint - The incident point.
-   * @param {Point} normal - The normal vector at the incident point.
+   * @param {import('../geometry.js').Point} incidentPoint - The incident point.
+   * @param {import('../geometry.js').Point} normal - The normal vector at the incident point.
    * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
-   * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
-   * @param {BodyMergingObj|null} bodyMergingObj - The equivalent GRIN glass (body-merging object) that the ray was in before incident on the current surface.
+   * @param {Array<import('./objs/BaseSceneObj.js').BaseSceneObj>} surfaceMergingObjs - The objects that are to be merged with the current object.
+   * @param {import('./BaseGrinGlass.js').BaseGrinGlass} bodyMergingObj - The object that is to be merged with the current object.
    * @returns {SimulationReturn} The return value for `onRayIncident`.
    */
   refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, bodyMergingObj) {
@@ -218,8 +218,8 @@ export class BaseGlass extends BaseSceneObj {
 
   /**
    * Get the refractive index at a point for a ray
-   * @param {Point} point - The point to get the refractive index. For normal glasses, this parameter is not used. But it will be used in GRIN glasses.
-   * @param {Ray} ray - The ray to be refracted.
+   * @param {import('../geometry.js').Point} point - The point to get the refractive index. For normal glasses, this parameter is not used. But it will be used in GRIN glasses.
+   * @param {import('../Simulator.js').Ray} ray - The ray to be refracted.
    * @returns {number} - The refractive index at the point.
    */
   getRefIndexAt(point, ray) {
@@ -235,7 +235,7 @@ export class BaseGlass extends BaseSceneObj {
 
   /**
    * Get whether the ray is incident from inside to outside or from outside to inside.
-   * @param {Ray} ray - The ray to be checked.
+   * @param {import('../Simulator.js').Ray} ray - The ray to be checked.
    * @returns {number} - 1 if the ray is incident from inside to outside, -1 if the ray is incident from outside to inside, 0 if the ray is equivalent to not intersecting the glass (e.g. intersecting with two overlapping surfaces of the glass), and NaN for other situations (e.g. parallel to a surface).
    */
   getIncidentType(ray) {
@@ -244,7 +244,7 @@ export class BaseGlass extends BaseSceneObj {
 
   /**
    * Handle the event when a ray enters the glass. This is called during the surface merging process, and is called by the glass object who is handling the surface merging, rather than by the simulator. Unlike `onRayIncident` which is only called for one representative object who is responsible for handling the surface merging, this function is called for every object that consistute the merged surface.  For notmal glasses nothing needs to be done in this function, but for GRIN glasses, the body-merging object in the ray should be updated here, so that the ray knows that it now feels a different refractive index gradient.
-   * @param {Ray} ray - The ray that enters the glass.
+   * @param {import('../Simulator.js').Ray} ray - The ray that enters the glass.
    */
   onRayEnter(ray) {
     // Nothing to do for normal glasses.
@@ -252,7 +252,7 @@ export class BaseGlass extends BaseSceneObj {
 
   /**
    * Handle the event when a ray exits the glass. This is called during the surface merging process, and is called by the glass object who is handling the surface merging, rather than by the simulator. Unlike `onRayIncident` which is only called for one representative object who is responsible for handling the surface merging, this function is called for every object that consistute the merged surface.  For notmal glasses nothing needs to be done in this function, but for GRIN glasses, the body-merging object in the ray should be updated here, so that the ray knows that it now feels a different refractive index gradient.
-   * @param {Ray} ray - The ray that exits the glass.
+   * @param {import('../Simulator.js').Ray} ray - The ray that exits the glass.
    */
   onRayExit(ray) {
     // Nothing to do for normal glasses.

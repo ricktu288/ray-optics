@@ -8,14 +8,14 @@ import { evaluateLatex } from '../../equation.js';
 /**
  * Mirror with shape defined by a custom equation.
  * Tools -> Mirror -> Custom equation
- * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
- * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
+ * @property {import('../../geometry.js').Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
+ * @property {import('../../geometry.js').Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn - The equation of the mirror. The variable is x.
  * @property {boolean} filter - Whether it is a dichroic mirror.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
- * @property {Array<Point>} tmp_points - The points on the curve.
+ * @property {Array<import('../../geometry.js').Point>} tmp_points - The points on the curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
 export class CustomMirror extends LineObjMixin(BaseFilter) {

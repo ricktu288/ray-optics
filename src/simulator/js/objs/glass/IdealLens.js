@@ -6,8 +6,8 @@ import { geometry } from '../../geometry.js';
 /**
  * Ideal lens
  * Tools -> Glass -> Ideal Lens
- * @property {Point} p1 - The first endpoint.
- * @property {Point} p2 - The second endpoint.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length.
  */
 export class IdealLens extends LineObjMixin(BaseSceneObj) {

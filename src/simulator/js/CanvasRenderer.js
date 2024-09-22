@@ -44,7 +44,7 @@ export class CanvasRenderer {
 
   /**
    * Draw a point.
-   * @param {Point} p
+   * @param {import('./geometry.js').Point} p
    * @param {String} [color='black']
    */
   drawPoint(p, color = 'black') {
@@ -54,7 +54,7 @@ export class CanvasRenderer {
 
   /**
    * Draw a line.
-   * @param {Line} l
+   * @param {import('./geometry.js').Line} l
    * @param {String} [color='black']
    */
   drawLine(l, color = 'black') {
@@ -70,7 +70,7 @@ export class CanvasRenderer {
 
   /**
    * Draw a ray.
-   * @param {Line} r
+   * @param {import('./geometry.js').Line} r
    * @param {String} [color='black']
    */
   drawRay(r, color = 'black') {
@@ -89,7 +89,7 @@ export class CanvasRenderer {
 
   /**
    * Draw a segment.
-   * @param {Line} s
+   * @param {import('./geometry.js').Line} s
    * @param {String} [color='black']
    */
   drawSegment(s, color = 'black') {
@@ -103,7 +103,7 @@ export class CanvasRenderer {
 
   /**
    * Draw a circle.
-   * @param {Circle} c
+   * @param {import('./geometry.js').Circle} c
    * @param {String} [color='black']
    */
   drawCircle(c, color = 'black') {

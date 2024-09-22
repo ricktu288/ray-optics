@@ -7,8 +7,8 @@ import { geometry } from '../../geometry.js';
 /**
  * Ideal curved mirror that follows the mirror equation exactly.
  * Tools -> Mirror -> Ideal curved mirror
- * @property {Point} p1 - The first endpoint.
- * @property {Point} p2 - The second endpoint.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
  * 
  */

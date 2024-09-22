@@ -9,8 +9,8 @@ import { getMsg } from '../../translations.js';
  * In the state where the lens is built, it behaves exactly like `objTypes['Glass']`, and `p1`, `p2`, and `parames` are null. But when the lens is not built (which happens when the user enters a set of invalid parameters, or if the JSON data is defined using parameters directly), it is defined using `p1`, `p2`, and `params`, and `path` is null.
  * @property {Array<object>} path - The path of the lens if it is built.
  * @property {string} defBy - The way the lens is defined. Either 'DR1R2' or 'DFfdBfd'.
- * @property {Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.
- * @property {Point} p2 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the bottom edge of the lens, if it is not built.
+ * @property {import('../../geometry.js').Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.
+ * @property {import('../../geometry.js').Point} p2 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the bottom edge of the lens, if it is not built.
  * @property {object} params - The parameters of the lens if it is not built. It has the following properties: `d`, `r1`, and `r2` if `defBy` is 'DR1R2', and `d`, `ffd`, and `bfd` if `defBy` is 'DFfdBfd'.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.

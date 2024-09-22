@@ -37,7 +37,7 @@ export class BaseFilter extends BaseSceneObj {
 
   /**
    * Checks if the ray interacts with the filter at the level of the wavelength.
-   * @param {Ray} ray - The ray to be checked.
+   * @param {import('../Simulator.js').Ray} ray - The ray to be checked.
    * @returns {boolean} - If true, the ray interacts with the filter at the level of the wavelength.
    */
   checkRayIntersectFilter(ray) {

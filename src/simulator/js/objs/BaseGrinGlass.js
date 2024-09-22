@@ -7,6 +7,14 @@ import { parseTex } from 'tex-math-parser'
 import * as math from 'mathjs';
 
 /**
+ * @typedef {Object} BodyMergingObj
+ * Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. CircleGrinGlass and GrinGlass), which gets updated as the ray enters/exits into/from grin objects, using the "multRefIndex"/"devRefIndex" function, respectively.
+ * @property {function} fn_p - The refractive index function for the equivalent region of the simulation.
+ * @property {function} fn_p_der_x - The x derivative of `fn_p` for the equivalent region of the simulation.
+ * @property {function} fn_p_der_y - The y derivative of `fn_p` for the equivalent region of the simulation.
+ */
+
+/**
  * The base class for glasses.
  * @property {string} p - The refractive index function (a function of x and y, related to `origin`) of the glass in math.js string.
  * @property {string} refIndexFn - The refractive index function of the glass in LaTeX.
@@ -14,7 +22,7 @@ import * as math from 'mathjs';
  * @property {string} p_der_x_tex - The x derivative of `p` in LaTeX.
  * @property {string} p_der_y - The y derivative of `p` in math.js string.
  * @property {string} p_der_y_tex - The y derivative of `p` in LaTeX.
- * @property {Point} origin - The origin of (x,y) used in the above equationns.
+ * @property {import('../geometry.js').Point} origin - The origin of (x,y) used in the above equationns.
  * @property {function} fn_p - The evaluatex function for `p`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_x - The evaluatex function for `p_der_x`, where (x,y) has been shifted to the absolute coordinates.
  * @property {function} fn_p_der_y - The evaluatex function for `p_der_y`, where (x,y) has been shifted to the absolute coordinates.
@@ -137,14 +145,6 @@ export class BaseGrinGlass extends BaseGlass {
   shiftOrigin(equation) {
     return equation.replaceAll("x", "(x-" + this.origin.x + ")").replaceAll("y", "(y-" + this.origin.y + ")");
   }
-
-  /**
-   * @typedef {Object} BodyMergingObj
-   * Every ray has a temporary bodyMerging object ("bodyMergingObj") as a property (this property exists only while the ray is inside a region of one or several overlapping grin objects - e.g. CircleGrinGlass and GrinGlass), which gets updated as the ray enters/exits into/from grin objects, using the "multRefIndex"/"devRefIndex" function, respectively.
-   * @property {function} fn_p - The refractive index function for the equivalent region of the simulation.
-   * @property {function} fn_p_der_x - The x derivative of `fn_p` for the equivalent region of the simulation.
-   * @property {function} fn_p_der_y - The y derivative of `fn_p` for the equivalent region of the simulation.
-   */
   
   /**
    * Receives a bodyMerging object and returns a new bodyMerging object for the overlapping region of `bodyMergingObj` and the current GRIN glass.
@@ -230,7 +230,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Receives a ray, and returns a bodyMerging object for the point ray.p1
-   * @param {Ray} ray 
+   * @param {import('../Simulator.js').Ray} ray 
    * @returns {BodyMergingObj}
    */
   initRefIndex(ray) {
@@ -258,9 +258,9 @@ export class BaseGrinGlass extends BaseGlass {
    * Receives two points inside this lens, and returns the next point to where the ray, connecting these two points, will travel, based on the ray trajectory equation (equation 11.1 in the cited text below)
    * Using Euler's method to solve the ray trajectory equation (based on sections 11.1 and 11.2, in the following text: https://doi.org/10.1007/BFb0012092)
   x_der_s and x_der_s_prev are the x-coordinate derivatives with respect to the arc-length parameterization, at two different points (similarly for y_der_s and y_der_s_prev)
-   * @param {Point} p1
-   * @param {Point} p2
-   * @param {Ray} ray
+   * @param {import('../geometry.js').Point} p1
+   * @param {import('../geometry.js').Point} p2
+   * @param {import('../Simulator.js').Ray} ray
    * @returns 
    */
   step(p1, p2, ray) {
@@ -286,7 +286,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is outside the glass, otherwise returns `false`
-   * @param {Point} point 
+   * @param {import('../geometry.js').Point} point 
    */
   isOutsideGlass(point) {
     // To be implemented in subclasses.
@@ -294,7 +294,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is inside the glass, otherwise returns `false`
-   * @param {Point} point 
+   * @param {import('../geometry.js').Point} point 
    */
   isInsideGlass(point) {
     // To be implemented in subclasses.
@@ -302,7 +302,7 @@ export class BaseGrinGlass extends BaseGlass {
 
   /**
    * Returns `true` if `point` is on the boundary of the glass, otherwise returns `false`
-   * @param {Point} point 
+   * @param {import('../geometry.js').Point} point 
    */
   isOnBoundary(point) {
     // To be implemented in subclasses.

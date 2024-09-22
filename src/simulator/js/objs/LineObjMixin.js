@@ -1,10 +1,11 @@
 import { geometry } from '../geometry.js';
+import { BaseSceneObj } from './BaseSceneObj.js';
 
 /**
  * The mixin for the scene objects that are defined by a line segment.
- * @mixin
- * @property {Point} p1 - The first endpoint of the line segment.
- * @property {Point} p2 - The second endpoint of the line segment.
+ * @template {typeof BaseSceneObj} T
+ * @param {T} Base 
+ * @returns {T & LineObjMixin}
  */
 export const LineObjMixin = Base => class extends Base {
 
@@ -114,8 +115,8 @@ export const LineObjMixin = Base => class extends Base {
   /**
    * Check if a ray intersects the line segment.
    * In the child class, this can be called from the `checkRayIntersects` method.
-   * @param {Ray} ray - The ray.
-   * @returns {Point} The intersection point, or null if there is no intersection.
+   * @param {import('../Simulator.js').Ray} ray - The ray.
+   * @returns {import('../geometry.js').Point} The intersection point, or null if there is no intersection.
    */
   checkRayIntersectsShape(ray) {
     var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));

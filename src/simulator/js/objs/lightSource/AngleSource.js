@@ -7,8 +7,8 @@ import { getMsg } from '../../translations.js';
 /**
  * Finite angle point source
  * Tools -> Light source -> Point source (<360deg)
- * @property {Point} p1 - The position of the point source.
- * @property {Point} p2 - Another point on the reference line.
+ * @property {import('../../geometry.js').Point} p1 - The position of the point source.
+ * @property {import('../../geometry.js').Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.
  * @property {number} wavelength - The wavelength of the point source in nm. Only effective when "Simulate Colors" is on.
  * @property {number} emisAngle - The angle of emission in degrees.

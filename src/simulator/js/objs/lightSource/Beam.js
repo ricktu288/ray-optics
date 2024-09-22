@@ -7,8 +7,8 @@ import { getMsg } from '../../translations.js';
 /**
  * A parallel or divergent beam of light.
  * Tools -> Light source -> beam
- * @property {Point} p1 - The first endpoint of the segment perpendicular to the beam.
- * @property {Point} p2 - The second endpoint of the segment perpendicular to the beam.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint of the segment perpendicular to the beam.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint of the segment perpendicular to the beam.
  * @property {number} brightness - The brightness of the beam.
  * @property {number} wavelength - The wavelength of the beam in nm. Only effective when "Simulate Colors" is on.
  * @property {number} emisAngle - The angle of divergence in degrees.

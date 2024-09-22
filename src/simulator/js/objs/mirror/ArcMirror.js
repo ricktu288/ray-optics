@@ -5,9 +5,9 @@ import { geometry } from '../../geometry.js';
 /**
  * Mirror with shape of a circular arc.
  * Tools -> Mirror -> Circular Arc
- * @property {Point} p1 - The first endpoint.
- * @property {Point} p2 - The second endpoint.
- * @property {Point} p3 - The control point on the arc.
+ * @property {import('../../geometry.js').Point} p1 - The first endpoint.
+ * @property {import('../../geometry.js').Point} p2 - The second endpoint.
+ * @property {import('../../geometry.js').Point} p3 - The control point on the arc.
  * @property {boolean} filter - Whether it is a dichroic mirror.
  * @property {boolean} invert - If true, the ray with wavelength outside the bandwidth is reflected. If false, the ray with wavelength inside the bandwidth is reflected.
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
