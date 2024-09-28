@@ -14,7 +14,7 @@ import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/mode-json';
 import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
-import * as objTypes from './objTypes.js';
+import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
 
 async function startApp() {
@@ -412,7 +412,7 @@ async function startApp() {
       if (editor.selectedObjIndex != -1) {
         var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
         editor.removeObj(editor.selectedObjIndex);
-        simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
+        simulator.updateSimulation(!sceneObjs[selectedObjType].isOptical, true);
         editor.onActionComplete();
       }
       return false;
@@ -817,7 +817,7 @@ async function startApp() {
     var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
     this.blur();
     editor.removeObj(editor.selectedObjIndex);
-    simulator.updateSimulation(!objTypes[selectedObjType].isOptical, true);
+    simulator.updateSimulation(!sceneObjs[selectedObjType].isOptical, true);
     editor.onActionComplete();
   };
   document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;

@@ -1,4 +1,4 @@
-import * as objTypes from './objTypes.js';
+import * as sceneObjs from './sceneObjs.js';
 import { versionUpdate } from './versionUpdate.js';
 import { getMsg } from './translations.js';
 
@@ -91,7 +91,7 @@ export class Scene {
     function expandObjs(objs) {
       let expandedObjs = [];
       for (let obj of objs) {
-        if (obj.constructor === objTypes['ModuleObj']) {
+        if (obj.constructor === sceneObjs['ModuleObj']) {
           expandedObjs = expandedObjs.concat(expandObjs(obj.objs));
         } else {
           expandedObjs.push(obj);
@@ -163,7 +163,7 @@ export class Scene {
 
       // Load the objects in the scene.
       this.objs = jsonData.objs.map(objData =>
-        new objTypes[objData.type](this, objData)
+        new sceneObjs[objData.type](this, objData)
       );
 
       // Load the background image.
@@ -261,7 +261,7 @@ export class Scene {
   removeObj(index) {
     for (var i = index; i < this.objs.length - 1; i++) {
       let oldObj = this.objs[i+1].serialize();
-      this.objs[i] = new objTypes[oldObj.type](this, oldObj);
+      this.objs[i] = new sceneObjs[oldObj.type](this, oldObj);
     }
   
     for (var i in this.objs) {
@@ -287,7 +287,7 @@ export class Scene {
    */
   cloneObj(index) {
     let oldObj = this.objs[index].serialize();
-    this.objs[this.objs.length] = new objTypes[oldObj.type](this, oldObj);
+    this.objs[this.objs.length] = new sceneObjs[oldObj.type](this, oldObj);
     return this.objs[this.objs.length - 1];
   }
 
@@ -327,7 +327,7 @@ export class Scene {
     // Update all module objects.
     for (let i in this.objs) {
       if (this.objs[i].constructor.type === "ModuleObj") {
-        this.objs[i] = new objTypes.ModuleObj(this, this.objs[i].serialize());
+        this.objs[i] = new sceneObjs.ModuleObj(this, this.objs[i].serialize());
       }
     }
 

@@ -1,5 +1,5 @@
 import { geometry } from './geometry.js';
-import * as objTypes from './objTypes.js';
+import * as sceneObjs from './sceneObjs.js';
 import { Mouse } from './Mouse.js';
 import * as C2S from 'canvas2svg';
 import { saveAs } from 'file-saver';
@@ -550,7 +550,7 @@ export class Editor {
               referenceObj = this.scene.objs[this.selectedObjIndex].serialize();
             }
           }
-          this.scene.pushObj(new objTypes[this.addingObjType](this.scene, referenceObj));
+          this.scene.pushObj(new sceneObjs[this.addingObjType](this.scene, referenceObj));
 
           const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
           if (ret && ret.isDone) {
@@ -662,7 +662,7 @@ export class Editor {
         if (this.dragContext.part == 0) {
           if (e.ctrlKey && !this.dragContext.hasDuplicated) {
 
-            this.scene.pushObj(new objTypes[this.scene.objs[this.draggingObjIndex].constructor.type](this.scene, this.dragContext.originalObj));
+            this.scene.pushObj(new sceneObjs[this.scene.objs[this.draggingObjIndex].constructor.type](this.scene, this.dragContext.originalObj));
             this.dragContext.hasDuplicated = true;
           }
           if (!e.ctrlKey && this.dragContext.hasDuplicated) {
@@ -842,7 +842,7 @@ export class Editor {
    */
   addControlPointsForHandle(controlPoints) {
     if (!(this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone)) {
-      this.scene.unshiftObj(new objTypes["Handle"](this.scene, { notDone: true }));
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
       if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
       for (var i in controlPoints) {
         controlPoints[i].targetObjIndex++;
@@ -1015,7 +1015,7 @@ export class Editor {
         this.scene.objs.length--;
         this.selectObj(-1);
       }
-      this.simulator.updateSimulation(!objTypes[constructingObjType].isOptical, true);
+      this.simulator.updateSimulation(!sceneObjs[constructingObjType].isOptical, true);
       return;
     }
     if (this.positioningObjIndex != -1) {
@@ -1065,7 +1065,7 @@ export class Editor {
     }
     if (cropBoxIndex == -1) {
       // Create a new cropBox
-      this.scene.pushObj(new objTypes['CropBox'](this.scene, {
+      this.scene.pushObj(new sceneObjs['CropBox'](this.scene, {
         p1: geometry.point((this.canvas.width * 0.2 / this.simulator.dpr - this.scene.origin.x) / this.scene.scale, ((120 + (this.canvas.height - 120) * 0.2) / this.simulator.dpr - this.scene.origin.y) / this.scene.scale),
         p4: geometry.point((this.canvas.width * 0.8 / this.simulator.dpr - this.scene.origin.x) / this.scene.scale, ((120 + (this.canvas.height - 120) * 0.8) / this.simulator.dpr - this.scene.origin.y) / this.scene.scale),
       }));

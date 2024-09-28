@@ -2,7 +2,7 @@ import { CanvasRenderer } from './CanvasRenderer.js';
 import { geometry } from './geometry.js';
 import { updateErrorAndWarning } from './app.js';
 import * as C2S from 'canvas2svg';
-import * as objTypes from './objTypes.js';
+import * as sceneObjs from './sceneObjs.js';
 
 /**
  * @typedef {Object} Ray
@@ -724,7 +724,7 @@ export class Simulator {
     if (this.brightnessScale == -1) {
       let hasDetector = false;
       for (let obj of this.scene.opticalObjs) {
-        if (obj instanceof objTypes["Detector"]) {
+        if (obj instanceof sceneObjs["Detector"]) {
           hasDetector = true;
           break;
         }
