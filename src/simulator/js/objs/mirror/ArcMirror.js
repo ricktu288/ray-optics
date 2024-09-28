@@ -6,6 +6,9 @@ import { geometry } from '../../geometry.js';
  * Mirror with shape of a circular arc.
  * 
  * Tools -> Mirror -> Circular Arc
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.ArcMirror
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {Point} p3 - The control point on the arc.

@@ -16,6 +16,8 @@ import * as math from 'mathjs';
 
 /**
  * The base class for glasses.
+ * @class
+ * @extends BaseGlass
  * @property {string} p - The refractive index function (a function of x and y, related to `origin`) of the glass in math.js string.
  * @property {string} refIndexFn - The refractive index function of the glass in LaTeX.
  * @property {string} p_der_x - The x derivative of `p` in math.js string.

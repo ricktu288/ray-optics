@@ -7,6 +7,9 @@ import { geometry } from '../../geometry.js';
  * The detector tool
  * 
  * Tools -> Other -> Detector
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.Detector
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {boolean} irradMap - Whether to display the irradiance map.

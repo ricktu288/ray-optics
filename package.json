@@ -37,9 +37,9 @@
     "build-translations": "node ./scripts/buildTranslations.js",
     "build-webpages": "node ./scripts/buildWebpages.js",
     "build-simulator": "webpack --mode=production",
+    "build-docs": "jsdoc -c jsdoc.json",
     "start": "webpack serve --open --mode=development",
-    "build": "npm run build-translations && npm run build-webpages && npm run build-simulator",
-    "docs": "jsdoc -c jsdoc.json"
+    "build": "npm run build-translations && npm run build-webpages && npm run build-simulator && npm run build-docs"
   },
   "keywords": [],
   "author": "",

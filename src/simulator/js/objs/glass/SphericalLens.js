@@ -9,6 +9,9 @@ import { getMsg } from '../../translations.js';
  * 
  * It is essentially a special case of `objTypes['Glass']` that has the shape of a lens, but it provides a more user-friendly interface to create a lens using more familliar parameters.
  * In the state where the lens is built, it behaves exactly like `objTypes['Glass']`, and `p1`, `p2`, and `parames` are null. But when the lens is not built (which happens when the user enters a set of invalid parameters, or if the JSON data is defined using parameters directly), it is defined using `p1`, `p2`, and `params`, and `path` is null.
+ * @class
+ * @extends rayOptics.objTypes.Glass
+ * @alias rayOptics.objTypes.SphericalLens
  * @property {Array<object>} path - The path of the lens if it is built.
  * @property {string} defBy - The way the lens is defined. Either 'DR1R2' or 'DFfdBfd'.
  * @property {Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.

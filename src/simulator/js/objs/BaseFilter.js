@@ -4,6 +4,8 @@ import { getMsg } from '../translations.js';
 
 /**
  * The base class for optical elements with wavelength filter functionality, including mirrors (which have the dichroic feature) and blockers.
+ * @class
+ * @extends BaseSceneObj
  * @property {boolean} filter - Whether the filter feature is enabled.
  * @property {boolean} invert - If true, the element interacts with the ray only if its wavelength is outside the bandwidth of the filter. If false, the element interacts with the ray only if its wavelength is within the bandwidth of the filter.
  * @property {number} wavelength - The target wavelength of the filter. The unit is nm.

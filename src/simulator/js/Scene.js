@@ -10,7 +10,8 @@ export const DATA_VERSION = 5;
 
 /**
  * Represents the scene in this simulator.
- * @class Scene
+ * @class
+ * @alias rayOptics.Scene
  * @property {string} name - The name of the scene.
  * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
  * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.

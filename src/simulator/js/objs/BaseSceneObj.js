@@ -15,6 +15,7 @@
 
 /**
  * Base class for objects (optical elements, decorations, etc.) in the scene.
+ * @class
  */
 export class BaseSceneObj {
 

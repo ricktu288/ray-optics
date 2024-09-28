@@ -6,6 +6,9 @@ import { geometry } from '../../geometry.js';
  * Glass of the shape of a half-plane.
  * 
  * Tools -> Glass -> Half-plane
+ * @class
+ * @extends BaseGlass
+ * @alias rayOptics.objTypes.PlaneGlass
  * @property {Point} p1 - A point on the boundary of the half-plane.
  * @property {Point} p2 - Another point on the boundary of the half-plane.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.

@@ -6,6 +6,9 @@ import { geometry } from '../../geometry.js';
  * Text label
  * 
  * Tools -> Other -> Text
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.TextLabel
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} text - The text content.

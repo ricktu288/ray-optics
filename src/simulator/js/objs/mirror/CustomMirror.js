@@ -9,6 +9,9 @@ import { evaluateLatex } from '../../equation.js';
  * Mirror with shape defined by a custom equation.
  * 
  * Tools -> Mirror -> Custom equation
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.CustomMirror
  * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn - The equation of the mirror. The variable is x.

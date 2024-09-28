@@ -7,6 +7,9 @@ import { geometry } from '../../geometry.js';
  * Ideal lens
  * 
  * Tools -> Glass -> Ideal Lens
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.IdealLens
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length.

@@ -7,6 +7,9 @@ import { geometry } from '../../geometry.js';
  * Circle blocker / filter.
  * 
  * Tools -> Blocker -> Circle Blocker
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.CircleBlocker
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the circle.
  * @property {boolean} filter - Whether it is a filter.

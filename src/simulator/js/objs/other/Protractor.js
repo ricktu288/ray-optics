@@ -5,6 +5,9 @@ import { CircleObjMixin } from '../CircleObjMixin.js';
  * The protractor tool
  * 
  * Tools -> Other -> Protractor
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.Protractor
  * @property {Point} p1 - The center of the protractor.
  * @property {Point} p2 - The zero point on the protractor.
  */

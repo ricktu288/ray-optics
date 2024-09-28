@@ -6,6 +6,9 @@ import { getMsg } from '../../translations.js';
  * Line or arrow decoration
  * 
  * Tools -> Other -> Line / Arrow
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.LineArrow
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} arrow - Whether an arrow is pointing from the first endpoint.

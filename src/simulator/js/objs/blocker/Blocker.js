@@ -6,6 +6,9 @@ import { Simulator } from '../../Simulator.js';
  * Line blocker / filter.
  * 
  * Tools -> Blocker -> Line Blocker
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.Blocker
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a filter.

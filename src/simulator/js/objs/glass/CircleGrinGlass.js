@@ -6,6 +6,9 @@ import { geometry } from '../../geometry.js';
  * Gradient-index glass of the shape of a circle.
  * 
  * Tools -> Glass -> Gradient-index Circle
+ * @class
+ * @extends BaseGrinGlass
+ * @alias rayOptics.objTypes.CircleGrinGlass
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.

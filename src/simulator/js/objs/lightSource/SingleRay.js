@@ -8,6 +8,9 @@ import { getMsg } from '../../translations.js';
  * A single ray of light.
  * 
  * Tools -> Light source -> Single ray
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.SingleRay
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
  * @property {number} brightness - The brightness of the ray.

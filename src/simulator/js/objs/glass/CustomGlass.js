@@ -9,6 +9,9 @@ import { evaluateLatex } from '../../equation.js';
  * Glass defined by a custom inequality.
  * 
  * Tools -> Glass -> Custom equation
+ * @class
+ * @extends BaseGlass
+ * @alias rayOptics.objTypes.CustomGlass
  * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.

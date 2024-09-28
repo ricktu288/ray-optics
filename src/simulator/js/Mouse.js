@@ -1,5 +1,9 @@
 import { geometry } from './geometry.js';
 
+/**
+ * The Mouse class encapsulates the state of the mouse within the scene.
+ * @class
+ */
 export class Mouse {
   static CLICK_EXTENT_LINE = 10;
   static CLICK_EXTENT_POINT = 10;

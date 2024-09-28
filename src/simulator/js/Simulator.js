@@ -17,7 +17,8 @@ import * as objTypes from './objTypes.js';
 
 /**
  * The simulator class, which simulates the optical system described by the `Scene` class and renders the this.scene (optical elements, decorations, rays, etc) on the canvases.
- * @class Simulator
+ * @class
+ * @alias rayOptics.Simulator
  */
 export class Simulator {
   

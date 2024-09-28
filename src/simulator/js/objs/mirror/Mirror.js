@@ -7,6 +7,9 @@ import { geometry } from '../../geometry.js';
  * Mirror with shape of a line segment.
  * 
  * Tools -> Mirror -> Segment
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.Mirror
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a dichroic mirror.

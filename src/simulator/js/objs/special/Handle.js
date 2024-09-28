@@ -4,6 +4,9 @@ import { Mouse } from '../../Mouse.js';
 
 /**
  * The handle created when holding ctrl and click several points.
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.Handle
  * @property {Point} p1 - The position of the handle.
  * @property {Point} p2 - The position of the rotation/scale center.
  * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.

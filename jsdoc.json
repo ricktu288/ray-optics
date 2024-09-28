@@ -17,7 +17,7 @@
     "cleverLinks": true,
     "monospaceLinks": true,
     "default": {
-      "outputSourceFiles": false,
+      "outputSourceFiles": true,
       "includeDate": false
     }
   }

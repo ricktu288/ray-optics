@@ -8,6 +8,9 @@ import { geometry } from '../../geometry.js';
  * Beam splitter.
  * 
  * Tools -> Mirror -> Beam splitter
+ * @class
+ * @extends BaseFilter
+ * @alias rayOptics.objTypes.BeamSplitter
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} transRatio - The transmission ratio.

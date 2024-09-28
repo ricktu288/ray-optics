@@ -40,7 +40,8 @@ import { Simulator } from './Simulator.js';
 
 /**
  * The visual scene editor.
- * @class Editor
+ * @class
+ * @alias rayOptics.Editor
  */
 export class Editor {
 

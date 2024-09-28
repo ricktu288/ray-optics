@@ -1,3 +1,7 @@
+/**
+ * The types of objects (optical elements, decorations, etc) that can be added to the scene.
+ * @namespace rayOptics.objTypes
+ */
 export const SingleRay = require('./objs/lightSource/SingleRay.js').SingleRay;
 export const Beam = require('./objs/lightSource/Beam.js').Beam;
 export const PointSource = require('./objs/lightSource/PointSource.js').PointSource;

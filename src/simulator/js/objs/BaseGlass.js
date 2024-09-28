@@ -4,6 +4,8 @@ import { geometry } from '../geometry.js';
 
 /**
  * The base class for glasses.
+ * @class
+ * @extends BaseSceneObj
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */

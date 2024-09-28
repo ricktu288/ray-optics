@@ -6,6 +6,9 @@ import { geometry } from '../../geometry.js';
  * Glass of the shape of a circle.
  * 
  * Tools -> Glass -> Circle
+ * @class
+ * @extends BaseGlass
+ * @alias rayOptics.objTypes.CircleGlass
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.

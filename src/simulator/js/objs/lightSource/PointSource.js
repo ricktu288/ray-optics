@@ -7,6 +7,9 @@ import { getMsg } from '../../translations.js';
  * 360 degree point source
  * 
  * Tools -> Light Source -> Point source (360deg)
+ * @class
+ * @extends BaseSceneObj
+ * @alias rayOptics.objTypes.PointSource
  * @property {number} x - The x coordinate of the point source.
  * @property {number} y - The y coordinate of the point source.
  * @property {number} brightness - The brightness of the point source.
