@@ -112,6 +112,10 @@ async function startApp() {
     document.getElementById('forceStop').style.display = 'none';
   });
 
+  simulator.on('requestUpdateErrorAndWarning', function () {
+    updateErrorAndWarning();
+  });
+
   editor = new Editor(scene, canvas, simulator);
 
   editor.on('positioningStart', function (e) {
@@ -321,6 +325,10 @@ async function startApp() {
   editor.on('scaleChange', function (e) {
     document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
     document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+  });
+
+  editor.on('requestUpdateErrorAndWarning', function () {
+    updateErrorAndWarning();
   });
 
   init();
@@ -1393,7 +1401,7 @@ function disableJsonEditor() {
   document.getElementById('sideBar').style.display = 'none';
 }
 
-export function updateErrorAndWarning() {
+function updateErrorAndWarning() {
   let errors = [];
   let warnings = [];
 

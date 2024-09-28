@@ -1,7 +1,6 @@
 import { geometry } from './geometry.js';
 import * as objTypes from './objTypes.js';
 import { Mouse } from './Mouse.js';
-import { updateErrorAndWarning } from './app.js';
 import * as C2S from 'canvas2svg';
 import { saveAs } from 'file-saver';
 import { Scene } from './Scene.js';
@@ -230,6 +229,10 @@ export class Editor {
    * @event Editor#redo
    */
 
+  /**
+   * The event when the error and warning messages in the UI should be updated.
+   * @event requestUpdateErrorAndWarning
+   */
 
   /**
    * Initialize the canvas event listeners.
@@ -981,7 +984,7 @@ export class Editor {
     this.lastActionJson = newJSON;
     this.emit('newAction', { newJSON: newJSON, oldJSON: oldJSON });
 
-    updateErrorAndWarning();
+    this.emit('requestUpdateErrorAndWarning');
     this.requireDelayedValidation();
 
     if (new Date() - this.lastActionTime > Editor.UNDO_INTERVAL) {
@@ -1212,7 +1215,7 @@ export class Editor {
    */
   validateDelayed() {
     this.scene.validateDelayed();
-    updateErrorAndWarning();
+    this.emit('requestUpdateErrorAndWarning');
   }
 
 }

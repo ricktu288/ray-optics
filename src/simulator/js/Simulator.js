@@ -147,6 +147,11 @@ export class Simulator {
    */
 
   /**
+   * The event when the error and warning messages in the UI should be updated.
+   * @event requestUpdateErrorAndWarning
+   */
+
+  /**
    * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.
@@ -309,7 +314,7 @@ export class Simulator {
       }
     }
 
-    updateErrorAndWarning();
+    this.emit('requestUpdateErrorAndWarning');
 
   }
 
