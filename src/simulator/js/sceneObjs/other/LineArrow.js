@@ -8,7 +8,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Other -> Line / Arrow
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} arrow - Whether an arrow is pointing from the first endpoint.

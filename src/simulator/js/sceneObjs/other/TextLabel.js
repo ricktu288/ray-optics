@@ -8,7 +8,7 @@ import geometry from '../../geometry.js';
  * Tools -> Other -> Text
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} text - The text content.

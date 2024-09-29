@@ -9,7 +9,7 @@ import geometry from '../../geometry.js';
  * Tools -> Mirror -> Segment
  * @class
  * @extends BaseFilter
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a dichroic mirror.

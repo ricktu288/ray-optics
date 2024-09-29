@@ -1,3 +1,7 @@
+/**
+ * @file `app.js` is the main entry point for the Ray Optics Simulator web app. It handles the initialzation of the UI and the main instances of {@link Scene}, {@link Simulator} and {@link Editor}, and binds events to them. It also handles some app-level operation such as loading files.
+ */
+
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import '../css/style.scss';

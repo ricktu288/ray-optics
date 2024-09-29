@@ -10,7 +10,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> Point source (<360deg)
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The position of the point source.
  * @property {Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.

@@ -1,3 +1,7 @@
+/**
+ * @file {@link Simulator} is the class for simulating the optical system described by the {@link Scene} class and rendering the scene (optical elements, decorations, rays, etc) on the canvas layers. It can also be used in a standalone environment (e.g. Node.js).
+ */
+
 import CanvasRenderer from './CanvasRenderer.js';
 import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
@@ -15,9 +19,14 @@ import * as sceneObjs from './sceneObjs.js';
  */
 
 /**
- * The simulator class, which simulates the optical system described by the `Scene` class and renders the this.scene (optical elements, decorations, rays, etc) on the canvases.
+ * The simulator class, which simulates the optical system described by the {@link Scene} class and renders the scene (optical elements, decorations, rays, etc) on the canvas layers.
+ * 
+ * When a ray interacts with an object (optical element) in the scene, the object itself is responsible for handling the interaction, and the simulator only call the related methods of the object. See `onSimulationStart`, `checkRayIntersects` and `onRayIncident` in the {@link BaseSceneObj} class for more information. The rendering of the object is also a method `draw` of the object itself called by the simulator.
+ * 
+ * In the Ray Optics Simulator web app, a single instance of this class is used in the entire session to simulate the scene interactively. `updateSimulation` is called whenever the scene is updated. If the simulation is too long, the simulator will automatically pause and resume to prevent the browser from not responding, and emit the `simulationPause` event to notify the UI to update the simulation status. When exporting the scene to PNG or SVG, a new instance of this class is created and `updateSimulation` is called once to render the scene without pausing.
+ * 
+ * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js) to simulate and render the scene without the UI. Note however that even if one is only interested in the numerical results (e.g. detector readings), the canvas layers are still required for the simulator to work properly. In the future, a headless mode may be implemented to allow the simulator to run without the canvas layers.
  * @class
- * @memberof rayOptics
  */
 class Simulator {
   

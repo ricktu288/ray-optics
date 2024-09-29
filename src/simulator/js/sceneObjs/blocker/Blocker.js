@@ -8,7 +8,7 @@ import Simulator from '../../Simulator.js';
  * Tools -> Blocker -> Line Blocker
  * @class
  * @extends BaseFilter
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a filter.

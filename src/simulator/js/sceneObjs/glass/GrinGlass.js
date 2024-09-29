@@ -8,7 +8,7 @@ import geometry from '../../geometry.js';
  * Tools -> Glass -> Gradient-index polygon
  * @class
  * @extends BaseGrinGlass
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Array<Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.

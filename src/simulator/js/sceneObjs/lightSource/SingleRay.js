@@ -10,7 +10,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> Single ray
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
  * @property {number} brightness - The brightness of the ray.

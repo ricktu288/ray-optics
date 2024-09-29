@@ -1,3 +1,7 @@
+/**
+ * @file {@link Editor} is the main class for visually editing the {@link Scene} data. It manages the user interactions with the canvas, such as dragging objects, selecting objects, and adding objects. It also manages the undo and redo operations and the crop mode.
+ */
+
 import geometry from './geometry.js';
 import * as sceneObjs from './sceneObjs.js';
 import Mouse from './Mouse.js';
@@ -38,9 +42,16 @@ import Simulator from './Simulator.js';
  */
 
 /**
- * The visual scene editor.
+ * The visual scene editor that edits the scene represented by the {@link Scene} class. This class is responsible for handling user interactions with the canvas, such as dragging objects, selecting objects, and adding objects. It also manages the undo and redo operations (by serializing/deserializing the scene to/from JSON) and the crop mode. Rendering is not done by this class, but by the {@link Simulator} class. Also, the UI update (e.g. object bar) is not done by this class. When UI update is needed, this class emits events to notify the UI to update.
+ * 
+ * When constructing or editing an object in the scene, the object itself is responsible for handling the mouse events, and the editor only passes the events to the object (including checking whether the mouse is interacting with the object). See the mouse-related methods in the {@link BaseSceneObj} class for more information. The options in the object bar when the object is selected is also managed by the `populateObjBar` method of the object itself (and not the editor).
+ * 
+ * In the Ray Optics Simulator web app, a single instance of this class is used to manage the scene and the canvas. Although several canvas layers are used, this class only manages the top-layered canvas where mouse or touch events are captured. 
+ * The `newAction` event is emitted when a new action is done by the user, and is used to create a new undo point.
+ * When the Ace editor is enabled, it has its own undo and redo operations, and is not always in sync with the undo and redo operations of this class.
+ * 
+ * This class is not intended to be used in a Node.js environment, but can be used by other web apps to create standalone interactive optical simulations without the main UI of the Ray Optics Simulator web app.
  * @class
- * @memberof rayOptics
  */
 class Editor {
 

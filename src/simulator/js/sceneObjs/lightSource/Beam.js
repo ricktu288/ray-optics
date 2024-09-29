@@ -10,7 +10,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> beam
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint of the segment perpendicular to the beam.
  * @property {Point} p2 - The second endpoint of the segment perpendicular to the beam.
  * @property {number} brightness - The brightness of the beam.

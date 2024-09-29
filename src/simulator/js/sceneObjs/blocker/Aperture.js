@@ -9,7 +9,7 @@ import geometry from '../../geometry.js';
  * Tools -> Blocker -> Aperture
  * @class
  * @extends BaseFilter
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint of the aperture.
  * @property {Point} p2 - The second endpoint of the aperture.
  * @property {Point} p3 - The first endpoint of the hole.

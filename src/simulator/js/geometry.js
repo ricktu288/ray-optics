@@ -18,13 +18,12 @@
 
 /**
  * The geometry module, which provides basic geometric figures and operations.
- * @namespace rayOptics.geometry
+ * @namespace geometry
  */
 const geometry = {
 
   /**
    * Create a point
-   * @alias rayOptics.geometry.point
    * @param {number} x - The x-coordinate of the point.
    * @param {number} y - The y-coordinate of the point.
    * @returns {Point}
@@ -36,7 +35,6 @@ const geometry = {
    * When used as a line, p1 and p2 are two distinct points on the line.
    * When used as a ray, p1 is the starting point and p2 is another point on the ray.
    * When used as a segment, p1 and p2 are the two endpoints of the segment.
-   * @alias rayOptics.geometry.line
    * @param {Point} p1
    * @param {Point} p2
    * @returns {Line}
@@ -45,7 +43,6 @@ const geometry = {
 
   /**
    * Create a circle
-   * @alias rayOptics.geometry.circle
    * @param {Point} c - The center point of the circle.
    * @param {number|Point} r - The radius of the circle or a point on the circle.
    */
@@ -59,7 +56,6 @@ const geometry = {
 
   /**
   * Calculate the dot product, where the two points are treated as vectors.
-  * @alias rayOptics.geometry.dot
   * @param {Point} p1
   * @param {Point} p2
   * @return {Number}
@@ -70,7 +66,6 @@ const geometry = {
 
   /**
   * Calculate the cross product, where the two points are treated as vectors.
-  * @alias rayOptics.geometry.cross
   * @param {Point} p1
   * @param {Point} p2
   * @return {Number}
@@ -81,7 +76,6 @@ const geometry = {
 
   /**
   * Calculate the intersection of two lines.
-  * @alias rayOptics.geometry.linesIntersection
   * @param {Line} l1
   * @param {Line} l2
   * @return {Point}
@@ -98,7 +92,6 @@ const geometry = {
 
   /**
    * Calculate the intersections of a line and a circle.
-   * @alias rayOptics.geometry.lineCircleIntersections
    * @param {Line} l1
    * @param {Circle} c1
    * @return {Point[]}
@@ -131,7 +124,6 @@ const geometry = {
 
   /**
    * Test if a point on the extension of a ray is actually on the ray.
-   * @alias rayOptics.geometry.intersectionIsOnRay
    * @param {Point} p1
    * @param {Line} r1
    * @return {Boolean}
@@ -143,7 +135,6 @@ const geometry = {
 
   /**
    * Test if a point on the extension of a segment is actually on the segment.
-   * @alias rayOptics.geometry.intersectionIsOnSegment
    * @param {Point} p1
    * @param {Line} s1
    * @return {Boolean}
@@ -154,7 +145,6 @@ const geometry = {
 
   /**
    * Calculate the length of a line segment.
-   * @alias rayOptics.geometry.segmentLength
    * @param {Line} seg
    * @return {Number}
    */
@@ -164,7 +154,6 @@ const geometry = {
 
   /**
    * Calculate the squared length of a line segment.
-   * @alias rayOptics.geometry.segmentLengthSquared
    * @param {Line} seg
    * @return {Number}
    */
@@ -174,7 +163,6 @@ const geometry = {
 
   /**
    * Calculate the distance between two points.
-   * @alias rayOptics.geometry.distance
    * @param {Point} p1
    * @param {Point} p2
    * @return {Number}
@@ -185,7 +173,6 @@ const geometry = {
 
   /**
    * Calculate the squared distance between two points.
-   * @alias rayOptics.geometry.distanceSquared
    * @param {Point} p1
    * @param {Point} p2
    * @return {Number}
@@ -199,7 +186,6 @@ const geometry = {
 
   /**
    * Calculate the midpoint of a segment.
-   * @alias rayOptics.geometry.segmentMidpoint
    * @param {Line} l1
    * @return {Point}
    */
@@ -212,7 +198,6 @@ const geometry = {
 
   /**
    * Calculate the midpoint between two points.
-   * @alias rayOptics.geometry.midpoint
    * @param {Point} p1
    * @param {Point} p2
    * @return {Point}
@@ -225,7 +210,6 @@ const geometry = {
 
   /**
    * Calculate the perpendicular bisector of a segment.
-   * @alias rayOptics.geometry.perpendicularBisector
    * @param {Line} l1
    * @return {Line}
    */
@@ -244,7 +228,6 @@ const geometry = {
 
   /**
   * Calculate the line though p1 and parallel to l1.
-  * @alias rayOptics.geometry.parallelLineThroughPoint
   * @param {Line} l1
   * @param {Point} p1
   * @return {Line}

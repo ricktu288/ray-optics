@@ -8,7 +8,7 @@ import { getMsg } from '../../translations.js';
  * File -> Export as PNG/SVG
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The top left corner of the crop box.
  * @property {Point} p2 - The top right corner of the crop box.
  * @property {Point} p3 - The bottom left corner of the crop box.

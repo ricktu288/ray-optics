@@ -8,7 +8,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Other -> Ruler
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} scaleInterval - The scale interval of the ruler.

@@ -17,7 +17,7 @@ import * as math from 'mathjs';
  * This feature is experimental and may be changed in the future without backward compatibility.
  * Currently, there is no UI for creating a module object. You can create a module object by directly editing the JSON data of the scene.
  * @class
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @extends BaseSceneObj
  * @property {string} module - The name of the module.
  * @property {ModuleDef} moduleDef - The definition of the module.

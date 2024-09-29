@@ -12,7 +12,7 @@ import geometry from '../../geometry.js';
  * It is in the blocker category since the model we use is a blocker with slits.
  * @class
  * @extends BaseSceneObj
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} lineDensity - The number of lines per millimeter.

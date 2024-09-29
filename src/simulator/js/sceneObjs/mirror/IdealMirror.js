@@ -10,7 +10,7 @@ import geometry from '../../geometry.js';
  * Tools -> Mirror -> Ideal curved mirror
  * @class
  * @extends BaseFilter
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.

@@ -1,3 +1,7 @@
+/**
+ * @file {@link Scene} is the class representing the optical scene for simulation, containing the instances from {@link sceneObjs} (optical elements, decorations, etc) and the settings of the scene. It is the main data structure of the app and can be serialized to (and deserialized from) JSON.
+ */
+
 import * as sceneObjs from './sceneObjs.js';
 import { versionUpdate } from './versionUpdate.js';
 import { getMsg } from './translations.js';
@@ -9,9 +13,15 @@ import { getMsg } from './translations.js';
 export const DATA_VERSION = 5;
 
 /**
- * Represents the scene in this simulator.
+ * Represents the optical scene for simulation. The scene contains the instances of scene objects (from {@link sceneObjs}) and the settings of the simulation. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes). It also contains the module definitions used in the scene. Since the settings of the scene may affect the behavior of the scene objects, a reference to the scene is also stored in each scene object.
+ * 
+ * The data represented by the scene can be serialized to JSON and deserialized from JSON. The JSON data format of the scene is versioned, and the version number is stored in the JSON data. The scene is backward-compatible with older versions of the JSON data format, and the scene is converted to the current version when loaded. Note that the background image of the scene is not serialized, and the viewport size is adapted to the current viewport when deserialized.
+ * 
+ * In the Ray Optics Simulator web app, a single instance is used, representing the current scene being edited and simulated, and is the main data structure of the app. The scene is serialized or deserialized to/from JSON when saving, loading, sync with URL, or undo/redo.
+ * Some scene-unrelated settings for the app (e.g. whether to show the status box) are not stored in the scene but in the browser's local storage.
+ * 
+ * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js).
  * @class
- * @memberof rayOptics
  * @property {string} name - The name of the scene.
  * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
  * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.

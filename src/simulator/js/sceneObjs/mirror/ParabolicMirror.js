@@ -10,7 +10,7 @@ import geometry from '../../geometry.js';
  * The current implementation is based on `CustomMirror.js`, but this should be changed to an analytical solution in the future.
  * @class
  * @extends BaseFilter
- * @memberof rayOptics.sceneObjs
+ * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {Point} p3 - The vertex.
