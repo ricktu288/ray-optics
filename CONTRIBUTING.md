@@ -6,32 +6,6 @@ To report bugs, request new features, or share your ideas, feel free to open [is
 
 For direct contributions, see the following guidelines.
 
-## Contributing a tool
-
-1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
-
-2. Add a script <code><var>TOOL_ID</var>.js</code> in a subfolder of `simulator/js/objs`, where <code><var>TOOL_ID</var></code> is the id of the new tool, and write the code there. 
-
-3. Add a script tag in `simulator/index.html` for the new tool.
-
-4. Add the locale strings for the tool to `simulator/locales/en.js`:
-   - <code>toolname_<var>TOOL_ID</var></code>: the label on the object bar when the object is selected
-   - If the tool has some new parameters, add the strings for them.
-
-After the steps above, The new tool can be tested by opening `simulator/index.html` locally in your browser and executing <code>AddingObjType = '<var>TOOL_ID</var>'</code> with the developer tool to choose the tool, without being on the toolbar.
-
-5. _(optional)_ Add the corresponding lines in `simulator/index.html`.
-
-6. _(optional)_ Add the locale strings for the tool to `simulator/locales/en.js`:
-   - <code>tool_<var>TOOL_ID</var></code>: the title on the toolbar (or dropdown item)
-   - <code>tool_<var>TOOL_ID</var>_popover</code>: the text in the popover when the user hover the item on the toolbar
-
-7. _(optional)_ Run `node sync.js` in `simulator/locales/` to sync to other locales. Translate the added strings to other locales if you speak that language (follow the translation guidelines).
-
-8. _(optional)_ Add an exported SVG image (use File -> Export PNG/SVG) of your tools in <code>img/<var>TOOL_ID</var>.svg</code>.
-
-9. Commit your changes (several times maybe), push to your fork, and create a pull request.
-
 ## Contributing items to the Gallery
 
 **Method 1: By e-mail**
@@ -43,37 +17,35 @@ After the steps above, The new tool can be tested by opening `simulator/index.ht
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the JSON file in `gallery/` (follow the naming convention there).
+2. Add the JSON file in `src/webpages/gallery/` (follow the naming convention there).
 
 3. If the work contains a background image, put it also in `gallery/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
 
-4. _(optional)_ Take a PNG screenshot with width 1140 (with the built-in File -> Export where you can set the width). It should contain all the tools, texts, and the relavent part of the simulation. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `.png`.
+4. _(optional)_ Take a PNG screenshot with width 1140 (with the built-in File -> Export where you can set the width). It should contain all the tools, texts, and the relavent part of the simulation. Save it in `src/webpages/gallery/`, with the file name being the JSON file name with `.json` replaced by `.png`.
 
-5. _(optional)_ Take a 250x250 PNG screenshot for the thumbnail. It does not need to contains everything in the simulation, but should contain at least some essential part. Save it in `gallery/`, with the file name being the JSON file name with `.json` replaced by `-thumbnail.png`.
+5. _(optional)_ Take a 250x250 PNG screenshot for the thumbnail. It does not need to contains everything in the simulation, but should contain at least some essential part. Save it in `src/webpages/gallery/`, with the file name being the JSON file name with `.json` replaced by `-thumbnail.png`.
 
-5. _(optional)_ Edit `gallery/data.json` with a text editor. This file contains the structure of the gallery and the metadata for the items. The ID of an item is the JSON file name without the `.json`. If you replace an existing items, you can change the title but not the ID, and you should append you name in the list of contributors.
+5. _(optional)_ Edit `src/webpages/gallery/data.json` with a text editor. This file contains the structure of the gallery and the metadata for the items. The ID of an item is the JSON file name without the `.json`. If you replace an existing items, you can change the title but not the ID, and you should append you name in the list of contributors.
 
-6. _(optional)_ Run `node generate-gallery.js` in `gallery/`.
-
-7. Commit your changes, push to your fork, and create a pull request.
+6. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing translations
 
 You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Currently, the translation of the Gallery can only be done manually.
 1. Download the target locale file:
-   - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/de.js
-   - Spanish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/es.js
-   - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/fr.js
-   - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ja.js
-   - Korean: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ko.js
-   - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/nl.js
-   - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/pl.js
-   - Brazilian Portuguese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/pt_BR.js
-   - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/ru.js
-   - Sinhala: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/si.js
-   - Traditional Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_TW.js
-   - Simplified Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/zh_CN.js
-   - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/simulator/locales/template.js
+   - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/de.json
+   - Spanish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/es.json
+   - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/fr.json
+   - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ja.json
+   - Korean: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ko.json
+   - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/nl.json
+   - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/pl.json
+   - Brazilian Portuguese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/pt_BR.json
+   - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ru.json
+   - Sinhala: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/si.json
+   - Traditional Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/zh_TW.json
+   - Simplified Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/zh_CN.json
+   - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/template.json
    
    _NOTE: If it is indicated above (or in some PR) that some update for a language has been submitted but not yet merged, please wait until it is merged to avoid repeated translation._
 2. Translate the phrase/sentence in the quotation after `"message":` to the target language. If you encounter `<` and `>`, leave the text between them untouched; `&amp;` means the "&" symbol; `\"` means a quote, and `&nbsp;` means an extra space.  If the translation of an item is completed, remove the line `"incomplete": true,`. For example,
@@ -94,24 +66,45 @@ After that, you can submit the translated file with either method below:
 
 **Method 1: By e-mail**
 
-3. Send the resulting file to ray-optics@phydemo.app (you may need to replace the `.js` with `.txt` in the filename to make it attachable). Include the name of the language and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+3. Send the resulting file to ray-optics@phydemo.app. Include the name of the language and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
 3. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-4. Save/replace the file as <code><var>LOCALE_ID</var>.js</code> in `simulator/locales/`.
-5. _(optional)_ If it is a new language, modify the locale list in `simulator/locales/sync.js`.
-6. _(optional)_ Add/modify the translation of the welcome message in `simulator/index.html`.
-7. _(optional)_ Add/modify <code><var>LOCALE_ID</var>/index.html</code> in the repo root (if not exist, copy from `index.html` and replace all `img/` with `../img/`).
-8. _(optional)_ Add the corresponding lines and the `<ul class="dropdown-menu"` in `simulator/index.html`
-9. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales for the new locale.
+4. Save/replace the file as <code><var>LOCALE_ID</var>.json</code> in `locales/`.
+5. _(optional)_ If it is a new language, modify the locale list in `locales/sync.js`.
+6. _(optional)_ Add/modify the translation of the welcome messages in `src/simulator/index.html`.
+7. _(optional)_ Add/modify <code>src/webpages/<var>LOCALE_ID</var>/index.html</code>.
+8. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales and the simulator for the new locale.
+9. Commit your changes, push to your fork, and create a pull request.
 
-10. Commit your changes, push to your fork, and create a pull request.
+## Contributing modules
+
+See Tools -> Others -> Import Modules for more information about modules. See [this tutorial](https://phydemo.app/ray-optics/modules/tutorial) for how to create a new module.
+
+**Method 1: By e-mail**
+
+1. Save you scene with the new module as a `.json` file using the "Save" button.
+2. Send the files to ray-optics@phydemo.app. Include the title of your module, a description of your module, and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+
+**Method 2: Via GitHub** (preferred if you use GitHub)
+
+1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
+
+2. Add the JSON file in `src/webpages/modules/` (follow the naming convention there).
+
+3. _(optional)_ Take a PNG screenshot for the thumbnail.
+
+4. _(optional)_ Edit `src/webpages/modules/data.json` with a text editor. This file contains the metadata for all the modules. The ID of an item is the JSON file name without the `.json`. If you replace an existing items, you can change the title but not the ID, and you should append you name in the list of contributors.
+
+5. Commit your changes, push to your fork, and create a pull request.
 
 ## More contributions
 
-Such as adding a new parameter to a tool, adding a new mode of viewing light, etc. For significant changes such as a new framework or a new toolbar design, please open a new discussion first.
+Such as creating a new tool, adding a new parameter to a tool, adding a new mode of viewing light, etc. For significant changes such as a new framework or a new toolbar design, please open a new discussion first.
+
+See the [installation instructions](https://github.com/ricktu288/ray-optics/blob/master/README.md#installation) for how to set up the project locally.
 
 ### Requirements on compatibility
 
