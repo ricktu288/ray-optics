@@ -1,7 +1,7 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Mirror with shape of a line segment.
@@ -9,7 +9,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Mirror -> Segment
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.Mirror
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a dichroic mirror.
@@ -17,7 +17,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-export class Mirror extends LineObjMixin(BaseFilter) {
+class Mirror extends LineObjMixin(BaseFilter) {
   static type = 'Mirror';
   static isOptical = true;
   static serializableDefaults = {
@@ -65,3 +65,5 @@ export class Mirror extends LineObjMixin(BaseFilter) {
     ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
   }
 };
+
+export default Mirror;

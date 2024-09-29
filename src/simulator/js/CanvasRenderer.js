@@ -2,8 +2,9 @@ import * as C2S from 'canvas2svg';
 
 /**
  * A class to render geometric figures from geometry.js on a canvas, and to handle the transformation and background image of the canvas.
+ * @class
  */
-export class CanvasRenderer {
+class CanvasRenderer {
   constructor(ctx, origin, scale, lengthScale, backgroundImage) {
 
     /** @property {Object} ctx - The context of the canvas. */
@@ -120,3 +121,5 @@ export class CanvasRenderer {
     this.ctx.stroke();
   }
 }
+
+export default CanvasRenderer;

@@ -20,7 +20,7 @@
  * The geometry module, which provides basic geometric figures and operations.
  * @namespace rayOptics.geometry
  */
-export const geometry = {
+const geometry = {
 
   /**
    * Create a point
@@ -255,3 +255,5 @@ export const geometry = {
     return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));
   }
 };
+
+export default geometry;

@@ -1,6 +1,6 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseFilter from '../BaseFilter.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Parabolic mirror.
@@ -10,7 +10,7 @@ import { geometry } from '../../geometry.js';
  * The current implementation is based on `CustomMirror.js`, but this should be changed to an analytical solution in the future.
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.ParabolicMirror
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {Point} p3 - The vertex.
@@ -21,7 +21,7 @@ import { geometry } from '../../geometry.js';
  * @property {Array<Point>} tmp_points - The points on the parabola.
  * @property {number} tmp_i - The index of the point on the parabola where the ray is incident.
  */
-export class ParabolicMirror extends BaseFilter {
+class ParabolicMirror extends BaseFilter {
   static type = 'ParabolicMirror';
   static isOptical = true;
   static serializableDefaults = {
@@ -313,3 +313,5 @@ export class ParabolicMirror extends BaseFilter {
     }
   }
 };
+
+export default ParabolicMirror;

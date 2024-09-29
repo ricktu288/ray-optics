@@ -1,5 +1,5 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 import * as sceneObjs from '../../sceneObjs.js';
 import * as math from 'mathjs';
@@ -17,15 +17,15 @@ import * as math from 'mathjs';
  * This feature is experimental and may be changed in the future without backward compatibility.
  * Currently, there is no UI for creating a module object. You can create a module object by directly editing the JSON data of the scene.
  * @class
+ * @memberof rayOptics.sceneObjs
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.ModuleObj
  * @property {string} module - The name of the module.
  * @property {ModuleDef} moduleDef - The definition of the module.
  * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
  */
-export class ModuleObj extends BaseSceneObj {
+class ModuleObj extends BaseSceneObj {
   static type = 'ModuleObj';
   static isOptical = true;
   static serializableDefaults = {
@@ -487,3 +487,5 @@ export class ModuleObj extends BaseSceneObj {
     }
   }
 }
+
+export default ModuleObj;

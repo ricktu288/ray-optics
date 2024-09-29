@@ -1,6 +1,6 @@
-import { BaseGrinGlass } from '../BaseGrinGlass.js';
-import { CircleObjMixin } from '../CircleObjMixin.js';
-import { geometry } from '../../geometry.js';
+import BaseGrinGlass from '../BaseGrinGlass.js';
+import CircleObjMixin from '../CircleObjMixin.js';
+import geometry from '../../geometry.js';
 
 /**
  * Gradient-index glass of the shape of a circle.
@@ -8,7 +8,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Gradient-index Circle
  * @class
  * @extends BaseGrinGlass
- * @alias rayOptics.sceneObjs.CircleGrinGlass
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
@@ -16,7 +16,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
-export class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
+class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
   static type = 'CircleGrinGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -144,3 +144,5 @@ export class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     return (geometry.distanceSquared(this.p1, point) - R_squared - this.intersectTol < 0 && geometry.distanceSquared(this.p1, point) - R_squared + this.intersectTol > 0);
   }
 };
+
+export default CircleGrinGlass;

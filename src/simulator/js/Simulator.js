@@ -1,6 +1,5 @@
-import { CanvasRenderer } from './CanvasRenderer.js';
-import { geometry } from './geometry.js';
-import { updateErrorAndWarning } from './app.js';
+import CanvasRenderer from './CanvasRenderer.js';
+import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
 import * as sceneObjs from './sceneObjs.js';
 
@@ -18,9 +17,9 @@ import * as sceneObjs from './sceneObjs.js';
 /**
  * The simulator class, which simulates the optical system described by the `Scene` class and renders the this.scene (optical elements, decorations, rays, etc) on the canvases.
  * @class
- * @alias rayOptics.Simulator
+ * @memberof rayOptics
  */
-export class Simulator {
+class Simulator {
   
   /**
    * The minimal length between two interactions with rays (when smaller than this, the interaction will be ignored). Also the threshold for surface merging.
@@ -37,6 +36,17 @@ export class Simulator {
   static RED_WAVELENGTH = 620;
   static INFRARED_WAVELENGTH = 700;
 
+  /**
+   * Creates a new Simulator instance.
+   * @param {Scene} scene - The scene to be simulated.
+   * @param {CanvasRenderingContext2D|C2S} ctxMain - The default context for drawing the scene.
+   * @param {CanvasRenderingContext2D|C2S} ctxBelowLight - The context for drawing the scene below the light layer.
+   * @param {CanvasRenderingContext2D|C2S} ctxAboveLight - The context for drawing the scene above the light layer.
+   * @param {CanvasRenderingContext2D|C2S} ctxGrid - The context for drawing the grid layer.
+   * @param {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment.
+   * @param {boolean} enableTimer - Whether to enable the timer for the simulation.
+   * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
+   */
   constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
@@ -809,3 +819,5 @@ export class Simulator {
 
   }
 }
+
+export default Simulator;

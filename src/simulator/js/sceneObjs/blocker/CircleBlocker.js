@@ -1,7 +1,7 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { CircleObjMixin } from '../CircleObjMixin.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseFilter from '../BaseFilter.js';
+import CircleObjMixin from '../CircleObjMixin.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Circle blocker / filter.
@@ -9,7 +9,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Blocker -> Circle Blocker
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.CircleBlocker
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the circle.
  * @property {boolean} filter - Whether it is a filter.
@@ -17,7 +17,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-export class CircleBlocker extends CircleObjMixin(BaseFilter) {
+class CircleBlocker extends CircleObjMixin(BaseFilter) {
   static type = 'CircleBlocker';
   static isOptical = true;
   static serializableDefaults = {
@@ -64,3 +64,5 @@ export class CircleBlocker extends CircleObjMixin(BaseFilter) {
     };
   }
 };
+
+export default CircleBlocker;

@@ -1,6 +1,6 @@
-import { BaseGlass } from '../BaseGlass.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseGlass from '../BaseGlass.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Glass of the shape consists of line segments or circular arcs.
@@ -8,13 +8,13 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Polygon / Circular Arcs
  * @class
  * @extends BaseGlass
- * @alias rayOptics.sceneObjs.Glass
+ * @memberof rayOptics.sceneObjs
  * @property {Array<object>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates, and a boolean `arc`. If `path[i].arc === false`, it means that `path[i-1]`--`path[i]` and `path[i]`--`path[i+1]` are line segments, if `path[i].arc === true`, it means that `path[i-1]`--`path[i]`--`path[i+1]` is a circular arc.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-export class Glass extends BaseGlass {
+class Glass extends BaseGlass {
   static type = 'Glass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -578,3 +578,5 @@ export class Glass extends BaseGlass {
     return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };
   }
 };
+
+export default Glass;

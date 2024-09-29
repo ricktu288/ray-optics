@@ -1,6 +1,6 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
+import BaseSceneObj from '../BaseSceneObj.js';
 import { getMsg } from '../../translations.js';
-import { geometry } from '../../geometry.js';
+import geometry from '../../geometry.js';
 
 /**
  * Drawing tool
@@ -8,12 +8,12 @@ import { geometry } from '../../geometry.js';
  * Tools -> Other -> Drawing
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Drawing
+ * @memberof rayOptics.sceneObjs
  * @property {Array<Array<number>>} strokes - The strokes of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`. The coordinates are rounded to reduce the size of the JSON data.
  * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
  * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
  */
-export class Drawing extends BaseSceneObj {
+class Drawing extends BaseSceneObj {
   static type = 'Drawing';
   static serializableDefaults = {
     strokes: [],
@@ -147,3 +147,5 @@ export class Drawing extends BaseSceneObj {
     return Math.round(num / this.scene.lengthScale) * this.scene.lengthScale;
   }
 };
+
+export default Drawing;

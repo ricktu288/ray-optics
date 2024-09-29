@@ -1,8 +1,8 @@
-import { BaseGlass } from '../BaseGlass.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseGlass from '../BaseGlass.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
 
 /**
@@ -11,7 +11,7 @@ import { evaluateLatex } from '../../equation.js';
  * Tools -> Glass -> Custom equation
  * @class
  * @extends BaseGlass
- * @alias rayOptics.sceneObjs.CustomGlass
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
@@ -21,7 +21,7 @@ import { evaluateLatex } from '../../equation.js';
  * @property {Array<Point>} path - The points on the calculated curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
-export class CustomGlass extends LineObjMixin(BaseGlass) {
+class CustomGlass extends LineObjMixin(BaseGlass) {
   static type = 'CustomGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -299,3 +299,5 @@ export class CustomGlass extends LineObjMixin(BaseGlass) {
     this.fillGlass(canvasRenderer, isAboveLight, isHovered);
   }
 };
+
+export default CustomGlass;

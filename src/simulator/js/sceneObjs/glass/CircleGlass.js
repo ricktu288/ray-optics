@@ -1,6 +1,6 @@
-import { BaseGlass } from '../BaseGlass.js';
-import { CircleObjMixin } from '../CircleObjMixin.js';
-import { geometry } from '../../geometry.js';
+import BaseGlass from '../BaseGlass.js';
+import CircleObjMixin from '../CircleObjMixin.js';
+import geometry from '../../geometry.js';
 
 /**
  * Glass of the shape of a circle.
@@ -8,13 +8,13 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Circle
  * @class
  * @extends BaseGlass
- * @alias rayOptics.sceneObjs.CircleGlass
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The center of the circle.
  * @property {Point} p2 - A point on the boundary of the circle.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-export class CircleGlass extends CircleObjMixin(BaseGlass) {
+class CircleGlass extends CircleObjMixin(BaseGlass) {
   static type = 'CircleGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -80,3 +80,5 @@ export class CircleGlass extends CircleObjMixin(BaseGlass) {
     return NaN;
   }
 };
+
+export default CircleGlass;

@@ -1,8 +1,8 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
 
 /**
@@ -11,7 +11,7 @@ import { evaluateLatex } from '../../equation.js';
  * Tools -> Mirror -> Custom equation
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.CustomMirror
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
  * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
  * @property {string} eqn - The equation of the mirror. The variable is x.
@@ -22,7 +22,7 @@ import { evaluateLatex } from '../../equation.js';
  * @property {Array<Point>} tmp_points - The points on the curve.
  * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
  */
-export class CustomMirror extends LineObjMixin(BaseFilter) {
+class CustomMirror extends LineObjMixin(BaseFilter) {
   static type = 'CustomMirror';
   static isOptical = true;
   static serializableDefaults = {
@@ -228,3 +228,5 @@ export class CustomMirror extends LineObjMixin(BaseFilter) {
     }
   }
 };
+
+export default CustomMirror;

@@ -3,11 +3,12 @@ import 'bootstrap/scss/bootstrap.scss';
 import '../css/style.scss';
 import * as $ from 'jquery';
 import { initializeTranslations, getMsg, getLanguageCompleteness } from './translations.js'
-import { Editor } from './Editor.js';
-import { Simulator } from './Simulator.js';
-import { geometry } from './geometry.js';
-import { Scene, DATA_VERSION } from './Scene.js';
-import { ObjBar } from './ObjBar.js';
+import Editor from './Editor.js';
+import Simulator from './Simulator.js';
+import geometry from './geometry.js';
+import Scene from './Scene.js';
+import { DATA_VERSION } from './Scene.js';
+import ObjBar from './ObjBar.js';
 import * as ace from 'ace-builds';
 import "ace-builds/webpack-resolver";
 import 'ace-builds/src-noconflict/theme-github_dark';

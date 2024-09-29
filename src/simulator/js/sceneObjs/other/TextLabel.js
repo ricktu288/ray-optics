@@ -1,6 +1,6 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
+import BaseSceneObj from '../BaseSceneObj.js';
 import { getMsg } from '../../translations.js';
-import { geometry } from '../../geometry.js';
+import geometry from '../../geometry.js';
 
 /**
  * Text label
@@ -8,7 +8,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Other -> Text
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.TextLabel
+ * @memberof rayOptics.sceneObjs
  * @property {number} x - The x coordinate.
  * @property {number} y - The y coordinate.
  * @property {string} text - The text content.
@@ -19,7 +19,7 @@ import { geometry } from '../../geometry.js';
  * @property {boolean} smallCaps - Whether the text is in small caps.
  * @property {number} angle - The angle of the text in degrees.
  */
-export class TextLabel extends BaseSceneObj {
+class TextLabel extends BaseSceneObj {
   static type = 'TextLabel';
   static serializableDefaults = {
     x: null,
@@ -199,3 +199,5 @@ export class TextLabel extends BaseSceneObj {
     this.y = mousePos.y + dragContext.targetPoint_.y - dragContext.mousePos0Snapped.y;
   }
 };
+
+export default TextLabel;

@@ -1,16 +1,17 @@
-import { geometry } from './geometry.js';
+import geometry from './geometry.js';
 
 /**
  * The Mouse class encapsulates the state of the mouse within the scene.
  * @class
  */
-export class Mouse {
+class Mouse {
   static CLICK_EXTENT_LINE = 10;
   static CLICK_EXTENT_POINT = 10;
   static TOUCHSCREEN_EXTENT_RATIO = 2;
   static SNAP_TO_DIRECTION_LOCK_LIMIT = 30;
 
   /**
+   * Create a Mouse object.
    * @param {geometry.point} pos - The position of the mouse within the scene.
    * @param {Scene} scene - The scene in which the mouse operates.
    * @param {boolean} isTouch - Indicates whether the mouse input comes from a touch screen.
@@ -127,3 +128,5 @@ export class Mouse {
     }
   }
 }
+
+export default Mouse;

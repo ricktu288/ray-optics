@@ -1,5 +1,5 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -8,13 +8,13 @@ import { getMsg } from '../../translations.js';
  * Tools -> Other -> Line / Arrow
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.LineArrow
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} arrow - Whether an arrow is pointing from the first endpoint.
  * @property {boolean} backArrow - Whether an arrow is pointing from the second endpoint.
  */
-export class LineArrow extends LineObjMixin(BaseSceneObj) {
+class LineArrow extends LineObjMixin(BaseSceneObj) {
   static type = 'LineArrow';
   static serializableDefaults = {
     p1: null,
@@ -74,3 +74,5 @@ export class LineArrow extends LineObjMixin(BaseSceneObj) {
     ctx.stroke();
   }
 };
+
+export default LineArrow;

@@ -1,7 +1,7 @@
-import { BaseFilter } from '../BaseFilter.js';
+import BaseFilter from '../BaseFilter.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Aperture / filter with a hole.
@@ -9,7 +9,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Blocker -> Aperture
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.Aperture
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint of the aperture.
  * @property {Point} p2 - The second endpoint of the aperture.
  * @property {Point} p3 - The first endpoint of the hole.
@@ -19,7 +19,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-export class Aperture extends BaseFilter {
+class Aperture extends BaseFilter {
   static type = 'Aperture';
   static isOptical = true;
   static serializableDefaults = {
@@ -260,3 +260,5 @@ export class Aperture extends BaseFilter {
     };
   }
 };
+
+export default Aperture;

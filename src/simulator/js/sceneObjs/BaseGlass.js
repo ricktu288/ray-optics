@@ -1,6 +1,6 @@
-import { BaseSceneObj } from './BaseSceneObj.js';
+import BaseSceneObj from './BaseSceneObj.js';
 import { getMsg } from '../translations.js';
-import { geometry } from '../geometry.js';
+import geometry from '../geometry.js';
 
 /**
  * The base class for glasses.
@@ -9,7 +9,7 @@ import { geometry } from '../geometry.js';
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-export class BaseGlass extends BaseSceneObj {
+class BaseGlass extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
@@ -261,3 +261,5 @@ export class BaseGlass extends BaseSceneObj {
   }
 
 };
+
+export default BaseGlass;

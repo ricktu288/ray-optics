@@ -1,8 +1,8 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Beam splitter.
@@ -10,7 +10,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Mirror -> Beam splitter
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.BeamSplitter
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} transRatio - The transmission ratio.
@@ -19,7 +19,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-export class BeamSplitter extends LineObjMixin(BaseFilter) {
+class BeamSplitter extends LineObjMixin(BaseFilter) {
   static type = 'BeamSplitter';
   static isOptical = true;
   static serializableDefaults = {
@@ -99,3 +99,5 @@ export class BeamSplitter extends LineObjMixin(BaseFilter) {
     }
   }
 };
+
+export default BeamSplitter;

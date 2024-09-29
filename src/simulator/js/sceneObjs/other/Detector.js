@@ -1,7 +1,7 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { geometry } from '../../geometry.js';
+import geometry from '../../geometry.js';
 
 /**
  * The detector tool
@@ -9,7 +9,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Other -> Detector
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Detector
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {boolean} irradMap - Whether to display the irradiance map.
@@ -19,7 +19,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} shear - The measured shear force through the detector.
  * @property {Array<number>} binData - The measured data for the irradiance map.
  */
-export class Detector extends LineObjMixin(BaseSceneObj) {
+class Detector extends LineObjMixin(BaseSceneObj) {
   static type = 'Detector';
   static isOptical = true;
   static serializableDefaults = {
@@ -184,3 +184,5 @@ export class Detector extends LineObjMixin(BaseSceneObj) {
     }
   }
 };
+
+export default Detector;

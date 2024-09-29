@@ -1,5 +1,5 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -8,12 +8,12 @@ import { getMsg } from '../../translations.js';
  * Tools -> Other -> Ruler
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Ruler
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} scaleInterval - The scale interval of the ruler.
  */
-export class Ruler extends LineObjMixin(BaseSceneObj) {
+class Ruler extends LineObjMixin(BaseSceneObj) {
   static type = 'Ruler';
   static serializableDefaults = {
     p1: null,
@@ -115,3 +115,5 @@ export class Ruler extends LineObjMixin(BaseSceneObj) {
     ctx.globalCompositeOperation = 'source-over';
   }
 };
+
+export default Ruler;

@@ -1,8 +1,8 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Ideal curved mirror that follows the mirror equation exactly.
@@ -10,13 +10,12 @@ import { geometry } from '../../geometry.js';
  * Tools -> Mirror -> Ideal curved mirror
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.IdealMirror
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
- * 
  */
-export class IdealMirror extends LineObjMixin(BaseFilter) {
+class IdealMirror extends LineObjMixin(BaseFilter) {
   static type = 'IdealMirror';
   static isOptical = true;
   static serializableDefaults = {
@@ -172,3 +171,5 @@ export class IdealMirror extends LineObjMixin(BaseFilter) {
     ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
   }
 };
+
+export default IdealMirror;

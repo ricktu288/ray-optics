@@ -1,8 +1,8 @@
-import { LineObjMixin } from '../LineObjMixin.js';
-import { BaseSceneObj } from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
 import { getMsg } from '../../translations.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Diffraction Grating
@@ -12,7 +12,7 @@ import { geometry } from '../../geometry.js';
  * It is in the blocker category since the model we use is a blocker with slits.
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.DiffractionGrating
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
  * @property {number} lineDensity - The number of lines per millimeter.
@@ -21,7 +21,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} slitRatio - The ratio of the slit width to the line interval.
  * @property {boolean} mirrored - Whether the diffraction grating is reflective.
  */
-export class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
+class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
   static type = 'DiffractionGrating';
   static isOptical = true;
   static serializableDefaults = {
@@ -175,3 +175,5 @@ export class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     };
   }
 };
+
+export default DiffractionGrating;

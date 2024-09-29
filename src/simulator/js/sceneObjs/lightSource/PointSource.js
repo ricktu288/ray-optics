@@ -1,6 +1,6 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -9,13 +9,13 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light Source -> Point source (360deg)
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.PointSource
+ * @memberof rayOptics.sceneObjs
  * @property {number} x - The x coordinate of the point source.
  * @property {number} y - The y coordinate of the point source.
  * @property {number} brightness - The brightness of the point source.
  * @property {number} wavelength - The wavelength of the light emitted by the point source in nm. Only effective when "Simulate Colors" is on.
  */
-export class PointSource extends BaseSceneObj {
+class PointSource extends BaseSceneObj {
   static type = 'PointSource';
   static isOptical = true;
   static serializableDefaults = {
@@ -112,3 +112,5 @@ export class PointSource extends BaseSceneObj {
     };
   }
 };
+
+export default PointSource;

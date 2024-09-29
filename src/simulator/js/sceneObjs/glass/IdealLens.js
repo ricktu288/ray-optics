@@ -1,7 +1,7 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
 import { getMsg } from '../../translations.js';
-import { geometry } from '../../geometry.js';
+import geometry from '../../geometry.js';
 
 /**
  * Ideal lens
@@ -9,12 +9,12 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Ideal Lens
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.IdealLens
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {number} focalLength - The focal length.
  */
-export class IdealLens extends LineObjMixin(BaseSceneObj) {
+class IdealLens extends LineObjMixin(BaseSceneObj) {
   static type = 'IdealLens';
   static isOptical = true;
   static serializableDefaults = {
@@ -146,3 +146,5 @@ export class IdealLens extends LineObjMixin(BaseSceneObj) {
     }
   }
 };
+
+export default IdealLens;

@@ -1,6 +1,6 @@
-import { BaseGlass } from './BaseGlass.js';
-import { geometry } from '../geometry.js';
-import { Simulator } from '../Simulator.js';
+import BaseGlass from './BaseGlass.js';
+import geometry from '../geometry.js';
+import Simulator from '../Simulator.js';
 import { getMsg } from '../translations.js';
 import { evaluateLatex } from '../equation.js';
 import { parseTex } from 'tex-math-parser'
@@ -31,7 +31,7 @@ import * as math from 'mathjs';
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
-export class BaseGrinGlass extends BaseGlass {
+class BaseGrinGlass extends BaseGlass {
 
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
@@ -310,3 +310,5 @@ export class BaseGrinGlass extends BaseGlass {
   }
 
 };
+
+export default BaseGrinGlass;

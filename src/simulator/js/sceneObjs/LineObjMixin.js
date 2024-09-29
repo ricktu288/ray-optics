@@ -1,5 +1,5 @@
-import { geometry } from '../geometry.js';
-import { BaseSceneObj } from './BaseSceneObj.js';
+import geometry from '../geometry.js';
+import BaseSceneObj from './BaseSceneObj.js';
 
 /**
  * The mixin for the scene objects that are defined by a line segment.
@@ -7,7 +7,7 @@ import { BaseSceneObj } from './BaseSceneObj.js';
  * @param {T} Base 
  * @returns {T}
  */
-export const LineObjMixin = Base => class extends Base {
+const LineObjMixin = Base => class extends Base {
 
   move(diffX, diffY) {
     // Move the first point
@@ -128,3 +128,5 @@ export const LineObjMixin = Base => class extends Base {
     }
   }
 };
+
+export default LineObjMixin;

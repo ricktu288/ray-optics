@@ -1,5 +1,5 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -8,7 +8,7 @@ import { getMsg } from '../../translations.js';
  * File -> Export as PNG/SVG
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.CropBox
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The top left corner of the crop box.
  * @property {Point} p2 - The top right corner of the crop box.
  * @property {Point} p3 - The bottom left corner of the crop box.
@@ -17,7 +17,7 @@ import { getMsg } from '../../translations.js';
  * @property {number} width - The width of the image to be exported. Not effective when the format is 'svg'.
  * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`.
  */
-export class CropBox extends BaseSceneObj {
+class CropBox extends BaseSceneObj {
   static type = 'CropBox';
   static serializableDefaults = {
     p1: null,
@@ -230,3 +230,5 @@ export class CropBox extends BaseSceneObj {
     }
   }
 };
+
+export default CropBox;

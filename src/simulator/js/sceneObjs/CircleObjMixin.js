@@ -1,5 +1,5 @@
-import { geometry } from '../geometry.js';
-import { Simulator } from '../Simulator.js';
+import geometry from '../geometry.js';
+import Simulator from '../Simulator.js';
 
 /**
  * The mixin for the scene objects that are defined by a circle.
@@ -7,7 +7,7 @@ import { Simulator } from '../Simulator.js';
  * @param {T} Base 
  * @returns {T}
  */
-export const CircleObjMixin = Base => class extends Base {
+const CircleObjMixin = Base => class extends Base {
 
   move(diffX, diffY) {
     // Move the first point
@@ -134,3 +134,5 @@ export const CircleObjMixin = Base => class extends Base {
     }
   }
 };
+
+export default CircleObjMixin;

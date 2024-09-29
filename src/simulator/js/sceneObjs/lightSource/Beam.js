@@ -1,7 +1,7 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -10,7 +10,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> beam
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Beam
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint of the segment perpendicular to the beam.
  * @property {Point} p2 - The second endpoint of the segment perpendicular to the beam.
  * @property {number} brightness - The brightness of the beam.
@@ -20,7 +20,7 @@ import { getMsg } from '../../translations.js';
  * @property {boolean} random - Whether the beam is random.
  * @property {Array<number>} randomNumbers - Random numbers used for random beam.
  */
-export class Beam extends LineObjMixin(BaseSceneObj) {
+class Beam extends LineObjMixin(BaseSceneObj) {
   static type = 'Beam';
   static isOptical = true;
   static serializableDefaults = {
@@ -174,3 +174,5 @@ export class Beam extends LineObjMixin(BaseSceneObj) {
     return ray1;
   }
 };
+
+export default Beam;

@@ -1,6 +1,6 @@
-import { BaseGrinGlass } from '../BaseGrinGlass.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseGrinGlass from '../BaseGrinGlass.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Gradient-index glass of the shape of a polygon
@@ -8,7 +8,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Gradient-index polygon
  * @class
  * @extends BaseGrinGlass
- * @alias rayOptics.sceneObjs.GrinGlass
+ * @memberof rayOptics.sceneObjs
  * @property {Array<Point>} path - The path of the glass. Each element is an object with `x` and `y` properties for coordinates.
  * @property {boolean} notDone - Whether the user is still drawing the glass.
  * @property {string} refIndexFn - The refractive index function in x and y in LaTeX format.
@@ -16,7 +16,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} stepSize - The step size for the ray trajectory equation.
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
-export class GrinGlass extends BaseGrinGlass {
+class GrinGlass extends BaseGrinGlass {
   static type = 'GrinGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -398,3 +398,5 @@ export class GrinGlass extends BaseGrinGlass {
     return cnt; // Returns the number of intersections between a horizontal ray (that originates from the point - p3) and the Free-shape glass object - this.
   }
 };
+
+export default GrinGlass;

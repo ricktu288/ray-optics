@@ -11,7 +11,7 @@ export const DATA_VERSION = 5;
 /**
  * Represents the scene in this simulator.
  * @class
- * @alias rayOptics.Scene
+ * @memberof rayOptics
  * @property {string} name - The name of the scene.
  * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
  * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
@@ -32,7 +32,7 @@ export const DATA_VERSION = 5;
  * @property {boolean} symbolicBodyMerging - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
  * @property {Object|null} backgroundImage - The background image of the scene, null if not set.
  */
-export class Scene {
+class Scene {
   static serializableDefaults = {
     name: '',
     modules: {},
@@ -392,3 +392,5 @@ export class Scene {
     }
   }
 };
+
+export default Scene;

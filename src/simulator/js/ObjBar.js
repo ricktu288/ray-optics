@@ -5,9 +5,9 @@ const MQ = MathQuill.getInterface(2);
 
 /**
  * The object bar class, which is used to create the options/controls for the selected scene object.
- * @class ObjBar
+ * @class
  */
-export class ObjBar {
+class ObjBar {
   constructor(elem) {
 
     /** @property {HTMLElement} elem - The element the inputs will be populated to */
@@ -595,3 +595,5 @@ export class ObjBar {
   }
 
 }
+
+export default ObjBar;

@@ -17,7 +17,7 @@
  * Base class for objects (optical elements, decorations, etc.) in the scene.
  * @class
  */
-export class BaseSceneObj {
+class BaseSceneObj {
 
   /**
    * @param {Scene} scene - The scene the object belongs to.
@@ -257,5 +257,6 @@ export class BaseSceneObj {
     return this.warning;
   }
 
-
 }
+
+export default BaseSceneObj;

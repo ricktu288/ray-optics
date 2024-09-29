@@ -1,5 +1,5 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { CircleObjMixin } from '../CircleObjMixin.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import CircleObjMixin from '../CircleObjMixin.js';
 
 /**
  * The protractor tool
@@ -7,11 +7,11 @@ import { CircleObjMixin } from '../CircleObjMixin.js';
  * Tools -> Other -> Protractor
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Protractor
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The center of the protractor.
  * @property {Point} p2 - The zero point on the protractor.
  */
-export class Protractor extends CircleObjMixin(BaseSceneObj) {
+class Protractor extends CircleObjMixin(BaseSceneObj) {
   static type = 'Protractor';
   static serializableDefaults = {
     p1: null,
@@ -101,3 +101,5 @@ export class Protractor extends CircleObjMixin(BaseSceneObj) {
     }
   }
 };
+
+export default Protractor;

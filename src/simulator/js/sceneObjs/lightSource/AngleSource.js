@@ -1,7 +1,7 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -10,7 +10,7 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> Point source (<360deg)
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.AngleSource
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The position of the point source.
  * @property {Point} p2 - Another point on the reference line.
  * @property {number} brightness - The brightness of the point source.
@@ -18,7 +18,7 @@ import { getMsg } from '../../translations.js';
  * @property {number} emisAngle - The angle of emission in degrees.
  * @property {boolean} symmetric - Whether the emission is symmetric about the reference line. If not, the emission is only on one side of the reference line.
  */
-export class AngleSource extends LineObjMixin(BaseSceneObj) {
+class AngleSource extends LineObjMixin(BaseSceneObj) {
   static type = 'AngleSource';
   static isOptical = true;
   static serializableDefaults = {
@@ -106,3 +106,5 @@ export class AngleSource extends LineObjMixin(BaseSceneObj) {
     };
   }
 };
+
+export default AngleSource;

@@ -1,18 +1,18 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { geometry } from '../../geometry.js';
-import { Mouse } from '../../Mouse.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import geometry from '../../geometry.js';
+import Mouse from '../../Mouse.js';
 
 /**
  * The handle created when holding ctrl and click several points.
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.Handle
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The position of the handle.
  * @property {Point} p2 - The position of the rotation/scale center.
  * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
-export class Handle extends BaseSceneObj {
+class Handle extends BaseSceneObj {
   static type = 'Handle';
   static isOptical = true; // As the handle may bind to objects which are optical, this should be regarded as true.
   static serializableDefaults = {
@@ -206,3 +206,5 @@ export class Handle extends BaseSceneObj {
     this.notDone = false;
   }
 };
+
+export default Handle;

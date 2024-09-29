@@ -1,6 +1,6 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseFilter from '../BaseFilter.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 
 /**
  * Mirror with shape of a circular arc.
@@ -8,7 +8,7 @@ import { geometry } from '../../geometry.js';
  * Tools -> Mirror -> Circular Arc
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.ArcMirror
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {Point} p3 - The control point on the arc.
@@ -17,7 +17,7 @@ import { geometry } from '../../geometry.js';
  * @property {number} wavelength - The target wavelength if dichroic is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if dichroic is enabled. The unit is nm.
  */
-export class ArcMirror extends BaseFilter {
+class ArcMirror extends BaseFilter {
   static type = 'ArcMirror';
   static isOptical = true;
   static serializableDefaults = {
@@ -289,3 +289,5 @@ export class ArcMirror extends BaseFilter {
     }
   }
 };
+
+export default ArcMirror;

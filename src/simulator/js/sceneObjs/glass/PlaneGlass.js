@@ -1,6 +1,6 @@
-import { BaseGlass } from '../BaseGlass.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { geometry } from '../../geometry.js';
+import BaseGlass from '../BaseGlass.js';
+import LineObjMixin from '../LineObjMixin.js';
+import geometry from '../../geometry.js';
 
 /**
  * Glass of the shape of a half-plane.
@@ -8,13 +8,13 @@ import { geometry } from '../../geometry.js';
  * Tools -> Glass -> Half-plane
  * @class
  * @extends BaseGlass
- * @alias rayOptics.sceneObjs.PlaneGlass
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - A point on the boundary of the half-plane.
  * @property {Point} p2 - Another point on the boundary of the half-plane.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-export class PlaneGlass extends LineObjMixin(BaseGlass) {
+class PlaneGlass extends LineObjMixin(BaseGlass) {
   static type = 'PlaneGlass';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -125,3 +125,5 @@ export class PlaneGlass extends LineObjMixin(BaseGlass) {
     return NaN;
   }
 };
+
+export default PlaneGlass;

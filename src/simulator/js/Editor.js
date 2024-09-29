@@ -1,10 +1,10 @@
-import { geometry } from './geometry.js';
+import geometry from './geometry.js';
 import * as sceneObjs from './sceneObjs.js';
-import { Mouse } from './Mouse.js';
+import Mouse from './Mouse.js';
 import * as C2S from 'canvas2svg';
 import { saveAs } from 'file-saver';
-import { Scene } from './Scene.js';
-import { Simulator } from './Simulator.js';
+import Scene from './Scene.js';
+import Simulator from './Simulator.js';
 
 /**
  * @typedef {Object} DragContext
@@ -40,9 +40,9 @@ import { Simulator } from './Simulator.js';
 /**
  * The visual scene editor.
  * @class
- * @alias rayOptics.Editor
+ * @memberof rayOptics
  */
-export class Editor {
+class Editor {
 
   /**
    * The limit of the undo data.
@@ -54,6 +54,12 @@ export class Editor {
    */
   static UNDO_INTERVAL = 250;
 
+  /**
+   * Create a new Editor instance.
+   * @param {Scene} scene - The scene to be edited and simulated.
+   * @param {HTMLCanvasElement} canvas - The top-layered canvas for user interaction.
+   * @param {Simulator} simulator - The simulator.
+   */
   constructor(scene, canvas, simulator) {
     /** @property {Scene} scene - The scene to be edited and simulated. */
     this.scene = scene;
@@ -1219,3 +1225,5 @@ export class Editor {
   }
 
 }
+
+export default Editor;

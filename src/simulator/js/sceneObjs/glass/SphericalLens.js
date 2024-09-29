@@ -1,5 +1,5 @@
-import { Glass } from './Glass.js';
-import { geometry } from '../../geometry.js';
+import Glass from './Glass.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -11,7 +11,7 @@ import { getMsg } from '../../translations.js';
  * In the state where the lens is built, it behaves exactly like `sceneObjs['Glass']`, and `p1`, `p2`, and `parames` are null. But when the lens is not built (which happens when the user enters a set of invalid parameters, or if the JSON data is defined using parameters directly), it is defined using `p1`, `p2`, and `params`, and `path` is null.
  * @class
  * @extends rayOptics.sceneObjs.Glass
- * @alias rayOptics.sceneObjs.SphericalLens
+ * @memberof rayOptics.sceneObjs
  * @property {Array<object>} path - The path of the lens if it is built.
  * @property {string} defBy - The way the lens is defined. Either 'DR1R2' or 'DFfdBfd'.
  * @property {Point} p1 - The intersection of the perpendicular bisector of the segment for the `d` parameter with the top edge of the lens, if it is not built.
@@ -20,7 +20,7 @@ import { getMsg } from '../../translations.js';
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
  */
-export class SphericalLens extends Glass {
+class SphericalLens extends Glass {
   static type = 'SphericalLens';
   static isOptical = true;
   static supportsSurfaceMerging = true;
@@ -650,3 +650,5 @@ export class SphericalLens extends Glass {
     return { d: d, ffd: ffd, bfd: bfd };
   }
 };
+
+export default SphericalLens;

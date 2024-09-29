@@ -1,5 +1,5 @@
-import { BaseSceneObj } from './BaseSceneObj.js';
-import { Simulator } from '../Simulator.js';
+import BaseSceneObj from './BaseSceneObj.js';
+import Simulator from '../Simulator.js';
 import { getMsg } from '../translations.js';
 
 /**
@@ -11,7 +11,7 @@ import { getMsg } from '../translations.js';
  * @property {number} wavelength - The target wavelength of the filter. The unit is nm.
  * @property {number} bandwidth - The bandwidth of the filter. The unit is nm.
  */
-export class BaseFilter extends BaseSceneObj {
+class BaseFilter extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
@@ -48,3 +48,5 @@ export class BaseFilter extends BaseSceneObj {
     return !dichroicEnabled || (rayHueMatchesMirror != this.invert);
   }
 };
+
+export default BaseFilter;

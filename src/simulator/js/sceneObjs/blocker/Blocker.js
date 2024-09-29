@@ -1,6 +1,6 @@
-import { BaseFilter } from '../BaseFilter.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { Simulator } from '../../Simulator.js';
+import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
+import Simulator from '../../Simulator.js';
 
 /**
  * Line blocker / filter.
@@ -8,7 +8,7 @@ import { Simulator } from '../../Simulator.js';
  * Tools -> Blocker -> Line Blocker
  * @class
  * @extends BaseFilter
- * @alias rayOptics.sceneObjs.Blocker
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
  * @property {boolean} filter - Whether it is a filter.
@@ -16,7 +16,7 @@ import { Simulator } from '../../Simulator.js';
  * @property {number} wavelength - The target wavelength if filter is enabled. The unit is nm.
  * @property {number} bandwidth - The bandwidth if filter is enabled. The unit is nm.
  */
-export class Blocker extends LineObjMixin(BaseFilter) {
+class Blocker extends LineObjMixin(BaseFilter) {
   static type = 'Blocker';
   static isOptical = true;
   static serializableDefaults = {
@@ -62,3 +62,5 @@ export class Blocker extends LineObjMixin(BaseFilter) {
     };
   }
 };
+
+export default Blocker;

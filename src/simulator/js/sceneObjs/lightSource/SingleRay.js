@@ -1,7 +1,7 @@
-import { BaseSceneObj } from '../BaseSceneObj.js';
-import { LineObjMixin } from '../LineObjMixin.js';
-import { Simulator } from '../../Simulator.js';
-import { geometry } from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
+import LineObjMixin from '../LineObjMixin.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
 import { getMsg } from '../../translations.js';
 
 /**
@@ -10,13 +10,13 @@ import { getMsg } from '../../translations.js';
  * Tools -> Light source -> Single ray
  * @class
  * @extends BaseSceneObj
- * @alias rayOptics.sceneObjs.SingleRay
+ * @memberof rayOptics.sceneObjs
  * @property {Point} p1 - The start point of the ray.
  * @property {Point} p2 - Another point on the ray.
  * @property {number} brightness - The brightness of the ray.
  * @property {number} wavelength - The wavelength of the ray in nm. Only effective when "Simulate Colors" is on.
  */
-export class SingleRay extends LineObjMixin(BaseSceneObj) {
+class SingleRay extends LineObjMixin(BaseSceneObj) {
   static type = 'SingleRay';
   static isOptical = true;
   static serializableDefaults = {
@@ -61,3 +61,5 @@ export class SingleRay extends LineObjMixin(BaseSceneObj) {
     };
   }
 };
+
+export default SingleRay;
