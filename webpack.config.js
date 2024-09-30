@@ -85,9 +85,6 @@ module.exports = (env, argv) => {
           warnings: false,
         },
       },
-      historyApiFallback: {
-        index: 'simulator/'
-      },
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
   };
