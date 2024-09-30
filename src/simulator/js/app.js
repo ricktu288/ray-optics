@@ -28,6 +28,7 @@ async function startApp() {
   try {
     if (localStorage.rayOpticsHelp == "off") {
       popoversEnabled = false;
+      document.getElementById('show_help_popups').checked = false;
     }
   } catch { }
   if (popoversEnabled) {
