@@ -1,4 +1,11 @@
 {
+  "name": "ray-optics",
+  "displayName": "Ray Optics Simulation",
+  "description": "A web app for creating and simulating 2D geometric optical scenes.",
+  "version": "5.0.0-dev",
+  "author": "Yi-Ting Tu",
+  "license": "Apache-2.0",
+  "private": true,
   "dependencies": {
     "@popperjs/core": "2.11.2",
     "ace-builds": "^1.36.0",
@@ -13,10 +20,6 @@
     "mathquill": "github:Jutanium/mathquill-webpack",
     "tex-math-parser": "^2.0.4"
   },
-  "name": "ray-optics",
-  "version": "5.0.0-dev",
-  "main": "index.js",
-  "private": true,
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
@@ -40,9 +43,5 @@
     "build-docs": "jsdoc -c jsdoc.json",
     "start": "webpack serve --open --mode=development",
     "build": "npm run build-translations && npm run build-webpages && npm run build-simulator && npm run build-docs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "Apache-2.0",
-  "description": ""
+  }
 }
