@@ -48,21 +48,6 @@ class TextLabel extends BaseSceneObj {
     'Lucida Sans'
   ];
 
-  static fontStyles = {
-    'Normal': getMsg('normal'),
-    'Bold': getMsg('bold'),
-    'Italic': getMsg('italic'),
-    'Bold Italic': getMsg('bolditalic'),
-    'Oblique': getMsg('oblique'),
-    'Bold Oblique': getMsg('boldoblique')
-  };
-
-  static alignments = {
-    'left': getMsg('left'),
-    'center': getMsg('center'),
-    'right': getMsg('right')
-  };
-
   populateObjBar(objBar) {
     objBar.createText('', this.text, function (obj, value) {
       obj.text = value;
@@ -81,13 +66,24 @@ class TextLabel extends BaseSceneObj {
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontStyle']))) {
-      objBar.createDropdown(getMsg('fontStyle'), this.fontStyle, this.constructor.fontStyles, function (obj, value) {
+      objBar.createDropdown(getMsg('fontStyle'), this.fontStyle, {
+        'Normal': getMsg('normal'),
+        'Bold': getMsg('bold'),
+        'Italic': getMsg('italic'),
+        'Bold Italic': getMsg('bolditalic'),
+        'Oblique': getMsg('oblique'),
+        'Bold Oblique': getMsg('boldoblique')
+      }, function (obj, value) {
         obj.fontStyle = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['alignment']))) {
-      objBar.createDropdown(getMsg('alignment'), this.alignment, this.constructor.alignments, function (obj, value) {
+      objBar.createDropdown(getMsg('alignment'), this.alignment, {
+        'left': getMsg('left'),
+        'center': getMsg('center'),
+        'right': getMsg('right')
+      }, function (obj, value) {
         obj.alignment = value;
       });
     }
