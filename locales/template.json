@@ -175,6 +175,10 @@
     "incomplete": true,
     "message": "Drawing"
   },
+  "toolname_Handle": {
+    "incomplete": true,
+    "message": "Handle"
+  },
   "toolname_CropBox": {
     "incomplete": true,
     "message": "Export"
@@ -701,6 +705,34 @@
   "rayCountLimit": {
     "incomplete": true,
     "message": "Ray count limit"
+  },
+  "transformation": {
+    "incomplete": true,
+    "message": "Transformation<sup>Beta</sup>"
+  },
+  "default": {
+    "incomplete": true,
+    "message": "Default"
+  },
+  "translation": {
+    "incomplete": true,
+    "message": "Translation"
+  },
+  "xTranslation": {
+    "incomplete": true,
+    "message": "X Translation"
+  },
+  "yTranslation": {
+    "incomplete": true,
+    "message": "Y Translation"
+  },
+  "rotation": {
+    "incomplete": true,
+    "message": "Rotation"
+  },
+  "scaling": {
+    "incomplete": true,
+    "message": "Scaling"
   },
   "beam_warning": {
     "incomplete": true,

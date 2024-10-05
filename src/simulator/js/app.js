@@ -164,11 +164,6 @@ async function startApp() {
     }
 
     if (e.newIndex >= 0) {
-      if (scene.objs[e.newIndex].constructor.type == 'Handle') {
-        document.getElementById('obj_bar').style.display = 'none';
-        return;
-      }
-
       objBar.targetObj = scene.objs[e.newIndex];
 
       document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[e.newIndex].constructor.type);
@@ -812,7 +807,12 @@ async function startApp() {
 
   document.getElementById('copy').onclick = function () {
     this.blur();
-    scene.cloneObj(editor.selectedObjIndex).move(scene.gridSize, scene.gridSize);
+    if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
+      scene.cloneObjsByHandle(editor.selectedObjIndex);
+      scene.objs[editor.selectedObjIndex].move(scene.gridSize, scene.gridSize);
+    } else {
+      scene.cloneObj(editor.selectedObjIndex).move(scene.gridSize, scene.gridSize);
+    }
     editor.selectObj(scene.objs.length - 1);
     simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
     editor.onActionComplete();

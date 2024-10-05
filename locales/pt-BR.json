@@ -131,6 +131,10 @@
   "toolname_Drawing": {
     "message": "Desenho"
   },
+  "toolname_Handle": {
+    "incomplete": true,
+    "message": "Handle"
+  },
   "toolname_CropBox": {
     "message": "Exportar"
   },
@@ -526,6 +530,34 @@
   },
   "rayCountLimit": {
     "message": "Limite de quantidade de raios"
+  },
+  "transformation": {
+    "incomplete": true,
+    "message": "Transformation<sup>Beta</sup>"
+  },
+  "default": {
+    "incomplete": true,
+    "message": "Default"
+  },
+  "translation": {
+    "incomplete": true,
+    "message": "Translation"
+  },
+  "xTranslation": {
+    "incomplete": true,
+    "message": "X Translation"
+  },
+  "yTranslation": {
+    "incomplete": true,
+    "message": "Y Translation"
+  },
+  "rotation": {
+    "incomplete": true,
+    "message": "Rotation"
+  },
+  "scaling": {
+    "incomplete": true,
+    "message": "Scaling"
   },
   "beam_warning": {
     "message": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."

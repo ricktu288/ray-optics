@@ -131,6 +131,9 @@
   "toolname_Drawing": {
     "message": "绘图"
   },
+  "toolname_Handle": {
+    "message": "控制杆"
+  },
   "toolname_CropBox": {
     "message": "导出"
   },
@@ -526,6 +529,27 @@
   },
   "rayCountLimit": {
     "message": "光线数量上限"
+  },
+  "transformation": {
+    "message": "变换<sup>Beta</sup>"
+  },
+  "default": {
+    "message": "默认"
+  },
+  "translation": {
+    "message": "平移"
+  },
+  "xTranslation": {
+    "message": "X 平移"
+  },
+  "yTranslation": {
+    "message": "Y 平移"
+  },
+  "rotation": {
+    "message": "旋转"
+  },
+  "scaling": {
+    "message": "缩放"
   },
   "beam_warning": {
     "message": "使用发散或随机光束时，像的侦测可能无法正常运作。"

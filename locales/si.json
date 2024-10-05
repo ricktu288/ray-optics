@@ -135,6 +135,10 @@
   "toolname_Drawing": {
     "message": "Drawing"
   },
+  "toolname_Handle": {
+    "incomplete": true,
+    "message": "Handle"
+  },
   "toolname_CropBox": {
     "message": "Export"
   },
@@ -559,6 +563,34 @@
   },
   "rayCountLimit": {
     "message": "කිරණ ගණන සීමාව"
+  },
+  "transformation": {
+    "incomplete": true,
+    "message": "Transformation<sup>Beta</sup>"
+  },
+  "default": {
+    "incomplete": true,
+    "message": "Default"
+  },
+  "translation": {
+    "incomplete": true,
+    "message": "Translation"
+  },
+  "xTranslation": {
+    "incomplete": true,
+    "message": "X Translation"
+  },
+  "yTranslation": {
+    "incomplete": true,
+    "message": "Y Translation"
+  },
+  "rotation": {
+    "incomplete": true,
+    "message": "Rotation"
+  },
+  "scaling": {
+    "incomplete": true,
+    "message": "Scaling"
   },
   "beam_warning": {
     "message": "අපසාරී/අහඹු කදම්භ සමඟ ප්‍රතිබිම්භ හඳුනාගැනීම ක්‍රියා නොකරයි."

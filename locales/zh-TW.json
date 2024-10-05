@@ -131,6 +131,9 @@
   "toolname_Drawing": {
     "message": "繪圖"
   },
+  "toolname_Handle": {
+    "message": "控制桿"
+  },
   "toolname_CropBox": {
     "message": "匯出"
   },
@@ -526,6 +529,27 @@
   },
   "rayCountLimit": {
     "message": "光線數量上限"
+  },
+  "transformation": {
+    "message": "變換<sup>Beta</sup>"
+  },
+  "default": {
+    "message": "預設"
+  },
+  "translation": {
+    "message": "平移"
+  },
+  "xTranslation": {
+    "message": "X 平移"
+  },
+  "yTranslation": {
+    "message": "Y 平移"
+  },
+  "rotation": {
+    "message": "旋轉"
+  },
+  "scaling": {
+    "message": "縮放"
   },
   "beam_warning": {
     "message": "使用發散或隨機光束時，像的偵測可能無法正常運作。"

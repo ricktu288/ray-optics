@@ -131,6 +131,9 @@
   "toolname_Drawing": {
     "message": "Drawing"
   },
+  "toolname_Handle": {
+    "message": "Handle"
+  },
   "toolname_CropBox": {
     "message": "Export"
   },
@@ -526,6 +529,27 @@
   },
   "rayCountLimit": {
     "message": "Ray count limit"
+  },
+  "transformation": {
+    "message": "Transformation<sup>Beta</sup>"
+  },
+  "default": {
+    "message": "Default"
+  },
+  "translation": {
+    "message": "Translation"
+  },
+  "xTranslation": {
+    "message": "X Translation"
+  },
+  "yTranslation": {
+    "message": "Y Translation"
+  },
+  "rotation": {
+    "message": "Rotation"
+  },
+  "scaling": {
+    "message": "Scaling"
   },
   "beam_warning": {
     "message": "Image detection may not work with divergent/random beams."

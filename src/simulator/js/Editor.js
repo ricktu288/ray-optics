@@ -878,6 +878,7 @@ class Editor {
   finishHandleCreation(point) {
     this.scene.objs[0].finishHandle(point);
     this.simulator.updateSimulation(true, true);
+    this.selectObj(0);
   }
 
   /**
