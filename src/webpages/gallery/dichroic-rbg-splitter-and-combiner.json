@@ -202,6 +202,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{dichroic-rbg-splitter-and-combiner}}",
-  "title": "Dichroic RGB Splitter & Combiner"
+  "name": "Dichroic RGB Splitter & Combiner"
 }

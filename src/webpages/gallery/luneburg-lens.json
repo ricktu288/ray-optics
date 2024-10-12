@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{luneburg-lens}}",
+  "name": "Luneburg lens",
   "modules": {
     "ApproxLuneburg": {
       "numPoints": 1,
@@ -153,6 +153,5 @@
     "x": -82.55258077626519,
     "y": 32.16567432093774
   },
-  "scale": 1,
-  "title": "Luneburg lens"
+  "scale": 1
 }

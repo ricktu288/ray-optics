@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{reflecting-monochromator}}",
+  "name": "反射式单色仪",
   "objs": [
     {
       "type": "DiffractionGrating",
@@ -312,6 +312,5 @@
     "y": -145.1908218150953
   },
   "scale": 1,
-  "simulateColors": true,
-  "title": "反射式单色仪"
+  "simulateColors": true
 }

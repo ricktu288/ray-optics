@@ -284,6 +284,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{gan-based-lcd-pixel}}",
-  "title": "液晶显示器像素"
+  "name": "液晶显示器像素"
 }

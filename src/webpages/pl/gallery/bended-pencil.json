@@ -149,7 +149,6 @@
     "y": 405.97089028460323
   },
   "scale": 1,
-  "name": "{{bended-pencil}}",
-  "backgroundImage": "bended-pencil-background.png",
-  "title": "Zgięty ołówek"
+  "name": "Zgięty ołówek",
+  "backgroundImage": "bended-pencil-background.png"
 }

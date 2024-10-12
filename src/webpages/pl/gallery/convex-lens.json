@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{convex-lens}}",
+  "name": "Soczewka wypukła",
   "objs": [
     {
       "type": "SphericalLens",
@@ -79,6 +79,5 @@
     "x": 1234.3602113369022,
     "y": 587.2073615756722
   },
-  "scale": 1,
-  "title": "Soczewka wypukła"
+  "scale": 1
 }

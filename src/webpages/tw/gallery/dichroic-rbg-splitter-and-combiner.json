@@ -202,6 +202,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{dichroic-rbg-splitter-and-combiner}}",
-  "title": "二色性RGB分光器與合光器"
+  "name": "二色性RGB分光器與合光器"
 }

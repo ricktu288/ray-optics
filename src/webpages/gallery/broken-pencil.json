@@ -165,7 +165,6 @@
     "y": 387.6012114382306
   },
   "scale": 1,
-  "name": "{{broken-pencil}}",
-  "backgroundImage": "broken-pencil-background.png",
-  "title": "Broken Pencil"
+  "name": "Broken Pencil",
+  "backgroundImage": "broken-pencil-background.png"
 }

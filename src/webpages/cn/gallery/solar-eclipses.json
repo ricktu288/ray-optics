@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{solar-eclipses}}",
+  "name": "日食",
   "modules": {
     "CircleSource": {
       "numPoints": 1,
@@ -260,6 +260,5 @@
     "x": 244.00000000000006,
     "y": 322.8095238095238
   },
-  "scale": 1,
-  "title": "日食"
+  "scale": 1
 }

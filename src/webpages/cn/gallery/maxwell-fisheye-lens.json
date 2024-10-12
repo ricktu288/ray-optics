@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{maxwell-fisheye-lens}}",
+  "name": "麦克斯韦鱼眼透镜",
   "modules": {
     "ApproxFisheye": {
       "numPoints": 1,
@@ -164,6 +164,5 @@
     "x": -82.55258077626519,
     "y": 32.16567432093774
   },
-  "scale": 1,
-  "title": "麦克斯韦鱼眼透镜"
+  "scale": 1
 }

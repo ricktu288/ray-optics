@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{rochester-cloak}}",
+  "name": "羅徹斯特斗篷",
   "objs": [
     {
       "type": "PointSource",
@@ -218,6 +218,5 @@
     "y": -92.02914231725958
   },
   "scale": 1,
-  "simulateColors": true,
-  "title": "羅徹斯特斗篷"
+  "simulateColors": true
 }

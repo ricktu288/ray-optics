@@ -94,6 +94,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{caustics-from-a-reflective-sphere}}",
-  "title": "Caustics from a Reflective Sphere"
+  "name": "Caustics from a Reflective Sphere"
 }

@@ -149,7 +149,6 @@
     "y": 405.97089028460323
   },
   "scale": 1,
-  "name": "{{bended-pencil}}",
-  "backgroundImage": "bended-pencil-background.png",
-  "title": "弯曲的铅笔"
+  "name": "弯曲的铅笔",
+  "backgroundImage": "bended-pencil-background.png"
 }

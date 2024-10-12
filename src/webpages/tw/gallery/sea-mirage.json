@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{sea-mirage}}",
+  "name": "海市蜃樓",
   "objs": [
     {
       "type": "CircleGrinGlass",
@@ -395,6 +395,5 @@
     "x": 1274.1660762697595,
     "y": 548.7153064461936
   },
-  "scale": 1,
-  "title": "海市蜃樓"
+  "scale": 1
 }

@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{maxwell-fisheye-lens}}",
+  "name": "Maxwell fisheye lens",
   "modules": {
     "ApproxFisheye": {
       "numPoints": 1,
@@ -164,6 +164,5 @@
     "x": -82.55258077626519,
     "y": 32.16567432093774
   },
-  "scale": 1,
-  "title": "Maxwell fisheye lens"
+  "scale": 1
 }

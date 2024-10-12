@@ -284,6 +284,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{gan-based-lcd-pixel}}",
-  "title": "Piksel LCD"
+  "name": "Piksel LCD"
 }

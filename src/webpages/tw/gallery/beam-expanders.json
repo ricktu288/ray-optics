@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{beam-expanders}}",
+  "name": "擴束鏡",
   "objs": [
     {
       "type": "IdealLens",
@@ -144,6 +144,5 @@
     "x": -94.58646616541341,
     "y": -99.65563909774437
   },
-  "scale": 1,
-  "title": "擴束鏡"
+  "scale": 1
 }

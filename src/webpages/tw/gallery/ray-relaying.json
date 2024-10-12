@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{ray-relaying}}",
+  "name": "光線中繼",
   "modules": {
     "RayRelay": {
       "numPoints": 2,
@@ -135,6 +135,5 @@
     "x": 657.0081447963801,
     "y": -98.16149536737817
   },
-  "scale": 1,
-  "title": "光線中繼"
+  "scale": 1
 }

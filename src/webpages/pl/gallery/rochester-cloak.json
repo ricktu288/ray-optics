@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{rochester-cloak}}",
+  "name": "Rochesterski płaszcz",
   "objs": [
     {
       "type": "PointSource",
@@ -218,6 +218,5 @@
     "y": -92.02914231725958
   },
   "scale": 1,
-  "simulateColors": true,
-  "title": "Rochesterski płaszcz"
+  "simulateColors": true
 }

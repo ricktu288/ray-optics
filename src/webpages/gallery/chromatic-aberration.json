@@ -554,6 +554,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{chromatic-aberration}}",
-  "title": "Chromatic aberration"
+  "name": "Chromatic aberration"
 }

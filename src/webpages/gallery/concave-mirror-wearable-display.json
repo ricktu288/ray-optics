@@ -270,6 +270,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{concave-mirror-wearable-display}}",
-  "title": "Concave Mirror Wearable Display"
+  "name": "Concave Mirror Wearable Display"
 }

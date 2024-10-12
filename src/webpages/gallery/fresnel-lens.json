@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{fresnel-lens}}",
+  "name": "Fresnel lens",
   "modules": {
     "FresnelLens": {
       "numPoints": 2,
@@ -136,6 +136,5 @@
     "x": -592.6404282550802,
     "y": -201.1562930131771
   },
-  "scale": 1,
-  "title": "Fresnel lens"
+  "scale": 1
 }

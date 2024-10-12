@@ -94,6 +94,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{caustics-from-a-reflective-sphere}}",
-  "title": "反射性球体的焦散"
+  "name": "反射性球体的焦散"
 }

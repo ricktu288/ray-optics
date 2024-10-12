@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{beam-expanders}}",
+  "name": "Beam expanders",
   "objs": [
     {
       "type": "IdealLens",
@@ -144,6 +144,5 @@
     "x": -94.58646616541341,
     "y": -99.65563909774437
   },
-  "scale": 1,
-  "title": "Beam expanders"
+  "scale": 1
 }

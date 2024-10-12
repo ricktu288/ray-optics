@@ -36,7 +36,7 @@
           "dragContext": {
             "part": 1
           },
-          "targetObjIndex": 31,
+          "targetObjIndex": 30,
           "newPoint": {
             "x": 1720.7904404729272,
             "y": 400.66217779106074
@@ -46,7 +46,7 @@
           "dragContext": {
             "part": 2
           },
-          "targetObjIndex": 31,
+          "targetObjIndex": 30,
           "newPoint": {
             "x": 1557.1819092415824,
             "y": 137.28785288262856
@@ -70,7 +70,7 @@
           "dragContext": {
             "part": 1
           },
-          "targetObjIndex": 27,
+          "targetObjIndex": 26,
           "newPoint": {
             "x": 780.1829303320025,
             "y": 399.8138490018858
@@ -80,7 +80,7 @@
           "dragContext": {
             "part": 2
           },
-          "targetObjIndex": 27,
+          "targetObjIndex": 26,
           "newPoint": {
             "x": 609.68684045716,
             "y": 79.1068061353044
@@ -944,6 +944,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{minimum-deviation-angle}}",
-  "title": "Minimum deviation angle"
+  "name": "Minimum deviation angle"
 }

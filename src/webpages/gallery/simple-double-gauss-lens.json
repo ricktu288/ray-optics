@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{simple-double-gauss-lens}}",
+  "name": "Simple Double-Gauss Lens",
   "objs": [
     {
       "type": "SphericalLens",
@@ -522,6 +522,5 @@
     "y": 1536.8128732915711
   },
   "scale": 1,
-  "simulateColors": true,
-  "title": "Simple Double-Gauss Lens"
+  "simulateColors": true
 }

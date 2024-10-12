@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{simple-double-gauss-lens}}",
+  "name": "簡易雙高斯透鏡",
   "objs": [
     {
       "type": "SphericalLens",
@@ -522,6 +522,5 @@
     "y": 1536.8128732915711
   },
   "scale": 1,
-  "simulateColors": true,
-  "title": "簡易雙高斯透鏡"
+  "simulateColors": true
 }

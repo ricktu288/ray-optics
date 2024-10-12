@@ -705,7 +705,6 @@
     "y": 1210.1784161490682
   },
   "scale": 1,
-  "name": "{{black-cat-becomes-white}}",
-  "backgroundImage": "black-cat-becomes-white-background.png",
-  "title": "\"Black cat becomes white\" demo"
+  "name": "\"Black cat becomes white\" demo",
+  "backgroundImage": "black-cat-becomes-white-background.png"
 }

@@ -318,7 +318,6 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{vanishing-point}}",
-  "backgroundImage": "vanishing-point-background.png",
-  "title": "Vanishing point"
+  "name": "Vanishing point",
+  "backgroundImage": "vanishing-point-background.png"
 }

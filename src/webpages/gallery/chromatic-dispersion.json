@@ -360,6 +360,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{chromatic-dispersion}}",
-  "title": "Chromatic dispersion"
+  "name": "Chromatic dispersion"
 }

@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "{{inferior-mirage}}",
+  "name": "Inferior mirage",
   "objs": [
     {
       "type": "Ruler",
@@ -295,6 +295,5 @@
     "x": 336.04494830125213,
     "y": 138.31747905060888
   },
-  "scale": 1,
-  "title": "Inferior mirage"
+  "scale": 1
 }

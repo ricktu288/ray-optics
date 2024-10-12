@@ -360,6 +360,5 @@
   },
   "scale": 1,
   "simulateColors": true,
-  "name": "{{chromatic-dispersion}}",
-  "title": "色散"
+  "name": "色散"
 }
