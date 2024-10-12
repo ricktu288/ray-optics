@@ -1,124 +1,126 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "grin_circlelens",
+      "type": "Handle",
       "p1": {
-        "type": 1,
-        "x": 0,
-        "y": 0,
-        "exist": true
+        "x": 261.40404469518285,
+        "y": 161.14412992729143
       },
       "p2": {
-        "type": 1,
-        "x": 200,
-        "y": 0,
-        "exist": true
+        "x": -20,
+        "y": 140
       },
-      "origin": {
-        "type": 1,
-        "x": 0,
-        "y": 0,
-        "exist": true
-      },
-      "p": "1 / sqrt(x ^ 2 + y ^ 2)",
-      "p_tex": "\\frac{1}{\\sqrt{x^2+y^2}}",
-      "p_der_x": "-(x / sqrt(x ^ 2 + y ^ 2) ^ 3)",
-      "p_der_x_tex": "-\\left(\\frac{ x}{{\\sqrt{{ x}^{2}+{ y}^{2}}}^{3}}\\right)",
-      "p_der_y": "-(y / sqrt(x ^ 2 + y ^ 2) ^ 3)",
-      "p_der_y_tex": "-\\left(\\frac{ y}{{\\sqrt{{ x}^{2}+{ y}^{2}}}^{3}}\\right)",
-      "step_size": 1,
-      "eps": 0.001
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 3,
+          "newPoint": {
+            "x": -20,
+            "y": 140
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 3,
+          "newPoint": {
+            "x": -6.382663283384224,
+            "y": 140.8699339902433
+          }
+        }
+      ],
+      "transformation": "rotation"
     },
     {
-      "type": "blackcircle",
+      "type": "CircleGrinGlass",
       "p1": {
-        "type": 1,
         "x": 0,
-        "y": 0,
-        "exist": true
+        "y": 0
       },
       "p2": {
-        "type": 1,
+        "x": 200,
+        "y": 0
+      },
+      "refIndexFn": "\\frac{1}{\\sqrt{x^2+y^2}}",
+      "stepSize": 0.5
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 0,
+        "y": 0
+      },
+      "p2": {
         "x": 10,
-        "y": 0,
-        "exist": true
+        "y": 0
       }
     },
     {
-      "type": "laser",
+      "type": "SingleRay",
       "p1": {
-        "type": 1,
         "x": -20,
-        "y": 140,
-        "exist": true
+        "y": 140
       },
       "p2": {
-        "type": 1,
-        "x": 276,
-        "y": 165,
-        "exist": true
+        "x": -6.382663283384224,
+        "y": 140.8699339902433
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": -168,
+      "y": -237.375,
+      "text": "中央的圆形遮光物是为了\n避开折射率的奇异点",
+      "fontSize": 18
+    },
+    {
+      "type": "TextLabel",
+      "x": 283.71121951219516,
+      "y": 161.58048780487803,
+      "text": "拖动此处可改变\n光线的初始方向",
+      "fontSize": 18
+    },
+    {
+      "type": "TextLabel",
+      "x": 211.54878048780483,
+      "y": -111.3109756097561,
+      "text": "您可以选择渐变折射率透光物\n并更改数值求解器的步长",
+      "fontSize": 18
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -430.20754067067077,
+        "y": -284.4151383653915
       },
-      "p": 1
+      "p4": {
+        "x": 703.7924593293293,
+        "y": 262.33486163460856
+      }
     },
     {
-      "type": "text",
-      "x": -121,
-      "y": -243,
-      "p": "中央的圆形遮光物是为了\n避开折射率的奇异点",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "text",
-      "x": 184,
-      "y": 232,
-      "p": "按住并拖曳以改变光线起始方向",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "text",
-      "x": 271,
-      "y": 200,
-      "p": "↑",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "text",
-      "x": 256,
-      "y": -78,
-      "p": "可观察数值求解器步长如何影响光线路径",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "CropBox",
+      "p1": {
+        "x": -206.33254067067077,
+        "y": -204.99013836539143
+      },
+      "p4": {
+        "x": 205.41745932932923,
+        "y": 206.75986163460857
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1701,
+  "height": 1113.75,
   "origin": {
-    "x": 323.5846865808938,
-    "y": 349.7148814060002
+    "x": 713.7075406706708,
+    "y": 567.9151383653915
   },
-  "scale": 0.9340855708792298,
-  "colorMode": false,
-  "symbolicGrin": false
+  "scale": 1,
+  "name": "{{logarithmic-spiral-lens}}",
+  "title": "等角螺线形的光线路径"
 }

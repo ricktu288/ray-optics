@@ -1,195 +1,172 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
-        "x": 760,
-        "y": 540,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 760,
-        "y": 400,
-        "exist": true
-      }
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
         "x": 1060,
-        "y": 680,
-        "exist": true
+        "y": 680
       },
       "p2": {
-        "type": 1,
         "x": 760,
-        "y": 680,
-        "exist": true
+        "y": 680
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 1060,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 760,
-        "y": 400,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
-        "x": 760,
-        "y": 541,
-        "exist": true
+        "x": 1060,
+        "y": 680
       },
       "p2": {
-        "type": 1,
-        "x": 760,
-        "y": 680,
-        "exist": true
+        "x": 1060,
+        "y": 400
       }
     },
     {
-      "type": "blackline",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
-        "x": 1060,
-        "y": 680,
-        "exist": true
+        "x": 60,
+        "y": 620
       },
       "p2": {
-        "type": 1,
+        "x": 720,
+        "y": 540
+      },
+      "brightness": "5",
+      "emisAngle": "4"
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 60,
+        "y": 480
+      },
+      "p2": {
+        "x": 720,
+        "y": 540
+      },
+      "brightness": "5",
+      "emisAngle": "4"
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 60,
+        "y": 640
+      },
+      "p2": {
+        "x": 720,
+        "y": 540
+      },
+      "brightness": "5",
+      "emisAngle": 4
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 60,
+        "y": 400
+      },
+      "p2": {
+        "x": 720,
+        "y": 540
+      },
+      "brightness": "5",
+      "emisAngle": "4"
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 60,
+        "y": 700
+      },
+      "p2": {
         "x": 1060,
-        "y": 400,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "text",
+      "type": "Aperture",
+      "p1": {
+        "x": 760,
+        "y": 400
+      },
+      "p2": {
+        "x": 760,
+        "y": 680
+      },
+      "p3": {
+        "x": 760,
+        "y": 539.5
+      },
+      "p4": {
+        "x": 760,
+        "y": 540.5
+      }
+    },
+    {
+      "type": "TextLabel",
       "x": 763,
       "y": 676.3333333333335,
-      "p": "Obserwator"
+      "text": "Obserwator"
     },
     {
-      "type": "text",
-      "x": -84.10894544052428,
+      "type": "TextLabel",
+      "x": 93.31962598804716,
       "y": 535.5267977636405,
-      "p": "Obiekty na zewnątrz"
+      "text": "Obiekty na zewnątrz",
+      "alignment": "right"
     },
     {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 60,
-        "y": 620,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 540,
-        "exist": true
-      },
-      "p": "4",
-      "symmetric": true,
-      "brightness": "5"
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 60,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 540,
-        "exist": true
-      },
-      "p": "4",
-      "symmetric": true,
-      "brightness": "5"
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 60,
-        "y": 640,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 540,
-        "exist": true
-      },
-      "p": 4,
-      "symmetric": true,
-      "brightness": "5"
-    },
-    {
-      "type": "text",
-      "x": 860.7901098901095,
+      "type": "TextLabel",
+      "x": 913.5043956043952,
       "y": 392.9062845651083,
-      "p": "Ciemny pokój"
+      "text": "Ciemny pokój",
+      "alignment": "center"
     },
     {
-      "type": "led",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
-        "x": 60,
-        "y": 400,
-        "exist": true
+        "x": -139.83866396761127,
+        "y": 326.32154443423786
       },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 540,
-        "exist": true
-      },
-      "p": "4",
-      "symmetric": true,
-      "brightness": "5"
+      "p4": {
+        "x": 1133.424493927126,
+        "y": 779.921544434238
+      }
     },
     {
-      "type": "ruler",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
-        "x": 60,
-        "y": 700,
-        "exist": true
+        "x": 704.0034412955467,
+        "y": 362.3215444342379
       },
-      "p2": {
-        "type": 1,
-        "x": 1060,
-        "y": 700,
-        "exist": true
+      "p4": {
+        "x": 1086.74028340081,
+        "y": 745.058386434238
       }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 20.08352846991968,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1909.8947368421057,
+  "height": 1090.2315789473687,
+  "rayModeDensity": 20.08352846991968,
   "origin": {
-    "x": 222.39505494505482,
-    "y": 3.6198089492208965
+    "x": 458.1544534412956,
+    "y": -8.005754960553588
   },
   "scale": 1,
-  "colorMode": false
+  "name": "{{camera-obscura}}",
+  "title": "Camera obscura"
 }

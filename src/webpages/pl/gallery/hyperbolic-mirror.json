@@ -1,76 +1,104 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "curvedmirror",
+      "type": "CustomMirror",
       "p1": {
-        "type": 1,
         "x": 880.0000000000002,
-        "y": 640,
-        "exist": true
+        "y": 640
       },
       "p2": {
-        "type": 1,
         "x": 879.9999999999998,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
-      "p": "\\sqrt{1+x^2}"
+      "eqn": "\\sqrt{1+x^2}"
     },
     {
-      "type": "radiant",
+      "type": "PointSource",
       "x": 738.5786437626906,
       "y": 739.9999999999999,
-      "p": 0.43
+      "brightness": 0.43
     },
     {
-      "type": "blackcircle",
+      "type": "CircleBlocker",
       "p1": {
-        "type": 1,
         "x": 880,
-        "y": 740,
-        "exist": true
+        "y": 740
       },
       "p2": {
-        "type": 1,
         "x": 1140,
-        "y": 740,
-        "exist": true
+        "y": 740
       }
     },
     {
-      "type": "text",
-      "x": 574,
-      "y": 811,
-      "p": "Umieść źródło światła w ognisku"
+      "type": "LineArrow",
+      "p1": {
+        "x": 1051.762340634194,
+        "y": 739.3010787839165
+      },
+      "p2": {
+        "x": 1029.066688460281,
+        "y": 739.3010787839165
+      },
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 1036,
-      "y": 751,
-      "p": "←Te pozorne promienie skupiają się w drugim ognisku."
+      "type": "LineArrow",
+      "p1": {
+        "x": 737.6008499509643,
+        "y": 790.4501471068977
+      },
+      "p2": {
+        "x": 737.6008499509643,
+        "y": 759.928407976463
+      },
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 1060,
-      "y": 719,
-      "p": "Promienie pomarańczowe są pozornymi promieniami (przedłużenia odbitych promieni żółtych)."
+      "type": "TextLabel",
+      "x": 1058.7142857142853,
+      "y": 722.4099378881986,
+      "text": "Promienie pomarańczowe są pozornymi promieniami (przedłużenia odbitych promieni żółtych).\nTe pozorne promienie skupiają się w drugim ognisku."
     },
     {
-      "type": "text",
-      "x": 733,
-      "y": 782,
-      "p": "↑"
+      "type": "TextLabel",
+      "x": 737.3478260869565,
+      "y": 815.9565217391303,
+      "text": "Umieść źródło światła w ognisku",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 379.6338018960446,
+        "y": 407.4213141549526
+      },
+      "p4": {
+        "x": 2282.4338018960443,
+        "y": 1113.0213141549527
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 578.4338018960445,
+        "y": 442.22131415495255
+      },
+      "p4": {
+        "x": 1194.4338018960445,
+        "y": 1058.2213141549526
+      }
     }
   ],
-  "mode": "extended_light",
-  "rayDensity_light": 0.5077327766614864,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2854.2,
+  "height": 1657,
+  "mode": "extended",
+  "rayModeDensity": 0.5077327766614864,
   "origin": {
-    "x": 21,
-    "y": -214.00000000000006
+    "x": 96.06619810395534,
+    "y": 68.27868584504733
   },
   "scale": 1,
-  "colorMode": false
+  "name": "{{hyperbolic-mirror}}",
+  "title": "Zwierciadło hiperboliczne"
 }

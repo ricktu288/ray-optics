@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "name": "日食",
+  "name": "{{solar-eclipses}}",
   "modules": {
     "CircleSource": {
       "numPoints": 1,
@@ -67,34 +67,6 @@
       }
     },
     {
-      "type": "TextLabel",
-      "x": 1376.6666666666667,
-      "y": 415.6666666666667,
-      "text": "（非按比例）",
-      "alignment": "right"
-    },
-    {
-      "type": "TextLabel",
-      "x": 385,
-      "y": 439,
-      "text": "太阳",
-      "alignment": "center"
-    },
-    {
-      "type": "TextLabel",
-      "x": 1043,
-      "y": 631,
-      "text": "月亮",
-      "alignment": "center"
-    },
-    {
-      "type": "TextLabel",
-      "x": 1226,
-      "y": 591,
-      "text": "日偏食",
-      "fontSize": 16
-    },
-    {
       "type": "LineArrow",
       "p1": {
         "x": 1221,
@@ -131,20 +103,6 @@
       "arrow": true
     },
     {
-      "type": "TextLabel",
-      "x": 1196,
-      "y": 704,
-      "text": "日环食",
-      "fontSize": 16
-    },
-    {
-      "type": "TextLabel",
-      "x": 1283,
-      "y": 666,
-      "text": "地球",
-      "alignment": "center"
-    },
-    {
       "type": "CircleBlocker",
       "p1": {
         "x": 1280,
@@ -156,13 +114,6 @@
       }
     },
     {
-      "type": "TextLabel",
-      "x": 1294,
-      "y": 215,
-      "text": "地球",
-      "alignment": "center"
-    },
-    {
       "type": "CircleBlocker",
       "p1": {
         "x": 1044,
@@ -172,13 +123,6 @@
         "x": 1059,
         "y": 598
       }
-    },
-    {
-      "type": "TextLabel",
-      "x": 1092,
-      "y": 280,
-      "text": "月亮",
-      "alignment": "center"
     },
     {
       "type": "LineArrow",
@@ -205,13 +149,6 @@
       "arrow": true
     },
     {
-      "type": "TextLabel",
-      "x": 1221,
-      "y": 154,
-      "text": "日偏食",
-      "fontSize": 16
-    },
-    {
       "type": "LineArrow",
       "p1": {
         "x": 1198,
@@ -222,6 +159,69 @@
         "y": 616
       },
       "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1376.6666666666667,
+      "y": 415.6666666666667,
+      "text": "（非按比例）",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 385,
+      "y": 439,
+      "text": "太阳",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1043,
+      "y": 631,
+      "text": "月亮",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1226,
+      "y": 591,
+      "text": "日偏食",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1196,
+      "y": 704,
+      "text": "日环食",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1283,
+      "y": 666,
+      "text": "地球",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1294,
+      "y": 215,
+      "text": "地球",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1092,
+      "y": 280,
+      "text": "月亮",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1221,
+      "y": 154,
+      "text": "日偏食",
+      "fontSize": 16
     },
     {
       "type": "TextLabel",
@@ -239,8 +239,7 @@
       "p4": {
         "x": 1456,
         "y": 815.5238095238095
-      },
-      "width": 1140
+      }
     },
     {
       "type": "CropBox",
@@ -251,16 +250,16 @@
       "p4": {
         "x": 1427.6666666666667,
         "y": 388.8571428571429
-      },
-      "width": 500
+      }
     }
   ],
-  "width": 1200,
-  "height": 700,
+  "width": 2040,
+  "height": 1478.3333333333335,
   "rayModeDensity": 0.4263477291781528,
   "origin": {
-    "x": 218.1428571428571,
-    "y": 135.54761904761904
+    "x": 244.00000000000006,
+    "y": 322.8095238095238
   },
-  "scale": 0.5
+  "scale": 1,
+  "title": "日食"
 }

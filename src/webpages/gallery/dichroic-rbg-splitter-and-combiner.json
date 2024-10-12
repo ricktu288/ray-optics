@@ -1,246 +1,207 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 600,
-        "y": 440,
-        "exist": true
+        "y": 440
       },
       "p2": {
-        "type": 1,
         "x": 600,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
-      "p": 0.5,
       "wavelength": 620
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 920,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 960,
-        "y": 360,
-        "exist": true
+        "y": 360
       },
-      "wavelength": "620",
-      "dichroic": true,
-      "isDichroic": true,
-      "isDichroicFilter": false
+      "filter": true,
+      "wavelength": "620"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 920,
-        "y": 560,
-        "exist": true
+        "y": 560
       },
       "p2": {
-        "type": 1,
         "x": 960,
-        "y": 520,
-        "exist": true
+        "y": 520
       },
-      "wavelength": "540",
-      "dichroic": true
+      "wavelength": "540"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 920,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
       "p2": {
-        "type": 1,
         "x": 960,
-        "y": 440,
-        "exist": true
+        "y": 440
       },
-      "wavelength": "460",
-      "dichroic": true,
-      "isDichroic": true,
-      "isDichroicFilter": false
+      "filter": true,
+      "wavelength": "460"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 660,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 440,
-        "exist": true
+        "y": 440
       },
-      "wavelength": 620,
-      "dichroic": true,
-      "isDichroic": true,
-      "isDichroicFilter": false
+      "filter": true,
+      "wavelength": 620
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 660,
-        "y": 440,
-        "exist": true
+        "y": 440
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
-      "wavelength": "540",
-      "dichroic": true,
-      "isDichroic": true,
-      "isDichroicFilter": false
+      "filter": true,
+      "wavelength": "540"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 600,
-        "y": 440,
-        "exist": true
+        "y": 440
       },
       "p2": {
-        "type": 1,
         "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "parallel",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 440,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p": 0.5,
-      "wavelength": 460
-    },
-    {
-      "type": "text",
-      "x": 436.57142857142844,
-      "y": 352.00000000000006,
-      "p": "RGB Component Splitter & Combiner"
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 660,
-        "y": 400,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 360,
-        "exist": true
-      },
-      "dichroic": false,
-      "isDichroic": false
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 660,
-        "y": 520,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 560,
-        "exist": true
-      },
-      "dichroic": false
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 920,
-        "y": 280,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 960,
-        "y": 320,
-        "exist": true
-      },
-      "dichroic": false
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 440,
-        "y": 280,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 440,
-        "y": 320,
-        "exist": true
+        "y": 480
       }
     },
     {
-      "type": "text",
-      "x": 438.857142857143,
+      "type": "Beam",
+      "p1": {
+        "x": 600,
+        "y": 440
+      },
+      "p2": {
+        "x": 600,
+        "y": 480
+      },
+      "wavelength": 460
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 660,
+        "y": 400
+      },
+      "p2": {
+        "x": 700,
+        "y": 360
+      }
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 660,
+        "y": 520
+      },
+      "p2": {
+        "x": 700,
+        "y": 560
+      }
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 920,
+        "y": 280
+      },
+      "p2": {
+        "x": 960,
+        "y": 320
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 440,
+        "y": 280
+      },
+      "p2": {
+        "x": 440,
+        "y": 320
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 436.57142857142844,
+      "y": 352.00000000000006,
+      "text": "RGB Component Splitter & Combiner"
+    },
+    {
+      "type": "TextLabel",
+      "x": 588.0000000000002,
       "y": 469.7142857142858,
-      "p": "Light Source"
+      "text": "Light Source",
+      "alignment": "right"
     },
     {
-      "type": "text",
-      "x": 612.5714285714287,
+      "type": "TextLabel",
+      "x": 679.4285714285716,
       "y": 436,
-      "p": "Dichroic Cube"
+      "text": "Dichroic Cube",
+      "alignment": "center"
     },
     {
-      "type": "text",
+      "type": "TextLabel",
       "x": 969.142857142857,
       "y": 433.14285714285717,
-      "p": "Beam Combiner"
+      "text": "Beam Combiner"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 303.4742857142859,
+        "y": 219.93142857142854
+      },
+      "p4": {
+        "x": 1274.8571428571431,
+        "y": 628.6857142857143
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 591.8857142857144,
+        "y": 238.85714285714275
+      },
+      "p4": {
+        "x": 967.3142857142858,
+        "y": 614.2857138571428
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.4134990756293879,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1457.074285714286,
+  "height": 894.4457142857143,
+  "rayModeDensity": 0.4134990756293879,
   "origin": {
-    "x": -408.14285714285734,
-    "y": 2.2857142857144197
+    "x": -60.628571428571576,
+    "y": 22.914285714285768
   },
-  "scale": 1.25,
-  "colorMode": true
+  "scale": 1,
+  "simulateColors": true,
+  "name": "{{dichroic-rbg-splitter-and-combiner}}",
+  "title": "Dichroic RGB Splitter & Combiner"
 }

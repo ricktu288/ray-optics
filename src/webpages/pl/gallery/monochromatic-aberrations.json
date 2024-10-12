@@ -1,8 +1,8 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": -290,
@@ -35,183 +35,121 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 2
+      "refIndex": 2
     },
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": -280,
-        "y": 320,
-        "exist": true
+        "y": 320
       },
       "p2": {
-        "type": 1,
         "x": -80,
-        "y": 320,
-        "exist": true
+        "y": 320
       }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 240,
-        "y": 940,
-        "exist": true
+        "y": 940
       },
       "p2": {
-        "type": 1,
         "x": 240,
-        "y": 980,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 980
+      }
     },
     {
-      "type": "text",
-      "x": 1030.381818181818,
-      "y": 113.25454545454568,
-      "p": "Rozogniskowanie"
-    },
-    {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 320,
-        "y": 980,
-        "exist": true
+        "y": 980
       },
       "p2": {
-        "type": 1,
         "x": 360,
-        "y": 1040,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 1040
+      }
     },
     {
-      "type": "blackcircle",
+      "type": "CircleBlocker",
       "p1": {
-        "type": 1,
         "x": 1120,
-        "y": 320,
-        "exist": true
+        "y": 320
       },
       "p2": {
-        "type": 1,
         "x": 1420,
-        "y": 400,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "blackcircle",
+      "type": "CircleBlocker",
       "p1": {
-        "type": 1,
         "x": -280,
-        "y": 320,
-        "exist": true
+        "y": 320
       },
       "p2": {
-        "type": 1,
         "x": 20,
-        "y": 400,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "text",
-      "x": -369.61818181818194,
-      "y": 113.25454545454568,
-      "p": "Aberracja sferyczna"
-    },
-    {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 1120,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 1120,
-        "y": 240,
-        "exist": true
+        "y": 240
       },
-      "p": "155.15"
+      "focalLength": "155.15"
     },
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 1120,
-        "y": 320,
-        "exist": true
+        "y": 320
       },
       "p2": {
-        "type": 1,
         "x": 1320,
-        "y": 320,
-        "exist": true
+        "y": 320
       }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 940,
-        "y": 280,
-        "exist": true
+        "y": 280
       },
       "p2": {
-        "type": 1,
         "x": 940,
-        "y": 360,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 1360,
-        "y": 520,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1360,
-        "y": 120,
-        "exist": true
+        "y": 360
       }
     },
     {
-      "type": "text",
-      "x": 590.2194751485075,
-      "y": 1072.237634408602,
-      "p": "Ekran"
+      "type": "Blocker",
+      "p1": {
+        "x": 1360,
+        "y": 520
+      },
+      "p2": {
+        "x": 1360,
+        "y": 120
+      }
     },
     {
-      "type": "blackcircle",
+      "type": "CircleBlocker",
       "p1": {
-        "type": 1,
         "x": 420,
-        "y": 960,
-        "exist": true
+        "y": 960
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 1040,
-        "exist": true
+        "y": 1040
       }
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 410,
@@ -244,90 +182,54 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 2
+      "refIndex": 2
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": -520,
-        "y": 240,
-        "exist": true
+        "y": 240
       },
       "p2": {
-        "type": 1,
         "x": -520,
-        "y": 400,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "text",
-      "x": 1295.2,
-      "y": 479.2,
-      "p": "Ekran"
-    },
-    {
-      "type": "text",
-      "x": 290.38181818181806,
-      "y": 753.2545454545457,
-      "p": "Krzywizna pola"
-    },
-    {
-      "type": "ruler",
-      "p1": {
-        "type": 1,
-        "x": 420,
-        "y": 960,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 620,
-        "y": 960,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "blackcircle",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 420,
-        "y": 320,
-        "exist": true
+        "y": 960
       },
       "p2": {
-        "type": 1,
+        "x": 620,
+        "y": 960
+      }
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 420,
+        "y": 320
+      },
+      "p2": {
         "x": 720,
-        "y": 400,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "text",
-      "x": 330.38181818181806,
-      "y": 113.25454545454568,
-      "p": "Koma"
-    },
-    {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 420,
-        "y": 320,
-        "exist": true
+        "y": 320
       },
       "p2": {
-        "type": 1,
         "x": 620,
-        "y": 320,
-        "exist": true
+        "y": 320
       }
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 410,
@@ -360,95 +262,136 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 2
+      "refIndex": 2
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 240,
-        "y": 300,
-        "exist": true
+        "y": 300
       },
       "p2": {
-        "type": 1,
         "x": 240,
-        "y": 340,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 340
+      }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 320,
-        "y": 340,
-        "exist": true
+        "y": 340
       },
       "p2": {
-        "type": 1,
         "x": 360,
-        "y": 400,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 380,
-        "y": 880,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 380,
-        "y": 950,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 380,
-        "y": 970,
-        "exist": true
+        "y": 880
       },
       "p2": {
-        "type": 1,
         "x": 380,
-        "y": 1040,
-        "exist": true
+        "y": 950
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
+        "x": 380,
+        "y": 970
+      },
+      "p2": {
+        "x": 380,
+        "y": 1040
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
         "x": 504.8392784176408,
-        "y": 816.7845014620493,
-        "exist": true
+        "y": 816.7845014620493
       },
       "p2": {
-        "type": 1,
         "x": 695.1607215823592,
-        "y": 1103.2154985379507,
-        "exist": true
+        "y": 1103.2154985379507
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1120.381818181818,
+      "y": 113.25454545454568,
+      "text": "Rozogniskowanie",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": -281.61818181818194,
+      "y": 113.25454545454568,
+      "text": "Aberracja sferyczna",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 660.2194751485076,
+      "y": 1072.237634408602,
+      "text": "Ekran",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1347.2,
+      "y": 479.20000000000005,
+      "text": "Ekran",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 420.38181818181806,
+      "y": 753.2545454545457,
+      "text": "Krzywizna pola",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 426.38181818181806,
+      "y": 113.25454545454568,
+      "text": "Koma",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -918.6443349753695,
+        "y": -10.368472906403895
+      },
+      "p4": {
+        "x": 1788.5556650246308,
+        "y": 1303.231527093596
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 94.95566502463043,
+        "y": -6.768472906403986
+      },
+      "p4": {
+        "x": 746.9556650246304,
+        "y": 645.231527093596
       }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 2.9284128885307004,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 4060.8,
+  "height": 2667.2,
+  "rayModeDensity": 2.9284128885307004,
   "origin": {
-    "x": 743,
-    "y": 178.40000000000003
+    "x": 1595.4443349753697,
+    "y": 687.168472906404
   },
-  "scale": 0.58,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{monochromatic-aberrations}}",
+  "title": "Aberracje monochromatyczne"
 }

@@ -1,91 +1,98 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 404,
-        "y": 334,
-        "exist": true
+        "y": 334
       },
       "p2": {
-        "type": 1,
         "x": 1084,
-        "y": 334,
-        "exist": true
+        "y": 334
       }
     },
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 849,
-        "y": 190,
-        "exist": true
+        "y": 190
       },
       "p2": {
-        "type": 1,
         "x": 849,
-        "y": 478,
-        "exist": true
-      },
-      "p": 100
+        "y": 478
+      }
     },
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 464,
-        "y": 274,
-        "exist": true
+        "y": 274
       },
       "p2": {
-        "type": 1,
         "x": 464,
-        "y": 394,
-        "exist": true
+        "y": 394
       },
-      "p": 50
+      "focalLength": 50
     },
     {
-      "type": "led",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
         "x": 404.6412698412697,
-        "y": 321.8297258297258,
-        "exist": true
+        "y": 321.8297258297258
       },
       "p2": {
-        "type": 1,
         "x": 463.94039644565953,
-        "y": 333.94335080124546,
-        "exist": true
+        "y": 333.94335080124546
       },
-      "p": 82,
-      "symmetric": true
+      "emisAngle": 82
     },
     {
-      "type": "text",
-      "x": 420.20737472022296,
-      "y": 433.3254857285816,
-      "p": "obiektyw"
+      "type": "TextLabel",
+      "x": 464.3216604345087,
+      "y": 433.32548572858167,
+      "text": "obiektyw",
+      "alignment": "center"
     },
     {
-      "type": "text",
-      "x": 806.0740413868898,
-      "y": 516.2588190619148,
-      "p": "okular"
+      "type": "TextLabel",
+      "x": 847.2168985297469,
+      "y": 516.2588190619147,
+      "text": "okular",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 262.42202673487486,
+        "y": 145.9518593549552
+      },
+      "p4": {
+        "x": 1165.745103657952,
+        "y": 555.7980132011091
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 371.4220267348749,
+        "y": 62.87493627803207
+      },
+      "p4": {
+        "x": 934.9604882733365,
+        "y": 626.413398278033
+      }
     }
   ],
-  "mode": "extended_light",
-  "rayDensity_light": 0.049787068367863944,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1354.9846153846158,
+  "height": 861.5076923076925,
+  "mode": "extended",
+  "rayModeDensity": 0.049787068367863944,
   "origin": {
-    "x": -98.6758850669454,
-    "y": 147.59314283927307
+    "x": -36.591257504105556,
+    "y": 79.87890987581412
   },
-  "scale": 1.25,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{compound-microscope}}",
+  "title": "Mikroskop złożony"
 }

@@ -1,26 +1,33 @@
 {
-  "version": 2,
+  "version": 5,
+  "modules": {
+    "FresnelBiprism": {
+      "numPoints": 2,
+      "params": [
+        "N_slice=1:1:100:20",
+        "refIndex=0.5:0.01:2.5:1.5"
+      ],
+      "objs": [
+        {
+          "type": "CustomGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "eqn1": "-0.05",
+          "eqn2": "\\max(1-\\operatorname{abs}(x/3),0)-\\operatorname{floor}(`N_slice`*\\max(1-\\operatorname{abs}(x/3),0))/`N_slice`",
+          "refIndex": "`refIndex`"
+        }
+      ]
+    }
+  },
   "objs": [
     {
-      "type": "curvedglass",
-      "p1": {
-        "type": 1,
-        "x": 780,
-        "y": 560,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 780,
-        "y": 680,
-        "exist": true
-      },
-      "eqn1": "-0.05",
-      "eqn2": "\\max(1-\\operatorname{abs}(x/3),0)-\\operatorname{floor}(50*\\max(1-\\operatorname{abs}(x/3),0))/50",
-      "p": 1.5
-    },
-    {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 780,
@@ -37,96 +44,122 @@
           "y": 300,
           "arc": false
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 500,
-        "y": 460,
-        "exist": true
+        "y": 460
       },
       "p2": {
-        "type": 1,
         "x": 2000,
-        "y": 460,
-        "exist": true
+        "y": 460
       }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 740,
-        "y": 260,
-        "exist": true
+        "y": 260
       },
       "p2": {
-        "type": 1,
         "x": 740,
-        "y": 340,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 340
+      }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 740,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p2": {
-        "type": 1,
         "x": 740,
-        "y": 660,
-        "exist": true
+        "y": 660
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 778.8678627532039,
+        "y": 535.2465977676727
       },
-      "p": 0.5
+      "p2": {
+        "x": 778.8678627532039,
+        "y": 556.3197684993801
+      },
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 560,
-      "y": 620,
-      "p": "Bipryzmat Fresnela"
+      "type": "ModuleObj",
+      "module": "FresnelBiprism",
+      "points": [
+        {
+          "x": 780,
+          "y": 560
+        },
+        {
+          "x": 780,
+          "y": 680
+        }
+      ],
+      "params": {
+        "N_slice": 50,
+        "refIndex": 1.5
+      }
     },
     {
-      "type": "text",
-      "x": 560,
-      "y": 300,
-      "p": "Bipryzmat"
-    },
-    {
-      "type": "text",
-      "x": 550.4105263157899,
-      "y": 532.0210526315793,
-      "p": "Możesz kliknąć i zamienić \"50\" we wzorze na inną liczbę wycinków"
-    },
-    {
-      "type": "text",
-      "x": 772.5385964912283,
-      "y": 554.343859649123,
-      "p": "↓"
-    },
-    {
-      "type": "text",
+      "type": "TextLabel",
       "x": 550,
       "y": 496,
-      "p": "Ten bipryzmat Fresnela powstał z powyższego bipryzmatu"
+      "text": "This fresnel biprism was made from the above biprism.\nYou can select the biprism and adjust the N_silce parameter."
+    },
+    {
+      "type": "TextLabel",
+      "x": 714.5365853658536,
+      "y": 630.5365853658537,
+      "text": "Bipryzmat Fresnela",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 711.9024390243901,
+      "y": 314.04878048780495,
+      "text": "Bipryzmat",
+      "alignment": "right"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 397.4396298326651,
+        "y": 173.9628550245341
+      },
+      "p4": {
+        "x": 1955.098166418031,
+        "y": 753.4750501464854
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 437.82987373510423,
+        "y": 127.2311477074609
+      },
+      "p4": {
+        "x": 1123.5859712960787,
+        "y": 812.9872457074608
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 2.497024941914371,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2336.487804878049,
+  "height": 1358.3414634146343,
+  "rayModeDensity": 2.497024941914371,
   "origin": {
-    "x": -528,
-    "y": -5.000000000000014
+    "x": -8.02499568632362,
+    "y": 215.4517791218074
   },
-  "scale": 1.25,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{beam-directors}}",
+  "title": "Kierowanie wiązką światła"
 }

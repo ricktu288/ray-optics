@@ -1,139 +1,79 @@
 {
-  "version": 2,
+  "version": 5,
+  "name": "{{inferior-mirage}}",
   "objs": [
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 240,
-        "y": 1660,
-        "exist": true
+        "y": 1660
       },
       "p2": {
-        "type": 1,
         "x": 240,
-        "y": 1060,
-        "exist": true
+        "y": 1060
       }
     },
     {
-      "type": "text",
-      "x": 1157.489153683247,
-      "y": 1152.9975274295023,
-      "p": "Air (without inferior mirage effect)"
-    },
-    {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 1760,
-        "y": 1360,
-        "exist": true
+        "y": 1360
       },
       "p2": {
-        "type": 1,
         "x": 1760,
-        "y": 1640,
-        "exist": true
+        "y": 1640
       },
-      "p": 180
+      "focalLength": 180
     },
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 240,
-        "y": 1000,
-        "exist": true
+        "y": 1000
       },
       "p2": {
-        "type": 1,
         "x": 240,
-        "y": 400,
-        "exist": true
+        "y": 400
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 1000,
-        "exist": true
+        "y": 1000
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 1000,
-        "exist": true
+        "y": 1000
       }
     },
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 1760,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
       "p2": {
-        "type": 1,
         "x": 1760,
-        "y": 980,
-        "exist": true
+        "y": 980
       },
-      "p": "180"
+      "focalLength": "180"
     },
     {
-      "type": "led",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
         "x": 320,
-        "y": 1060,
-        "exist": true
+        "y": 1060
       },
       "p2": {
-        "type": 1,
         "x": 791.9008264462811,
-        "y": 1206.1157024793388,
-        "exist": true
+        "y": 1206.1157024793388
       },
-      "p": "15",
-      "symmetric": true,
-      "brightness": 1
+      "brightness": 1,
+      "emisAngle": "15"
     },
     {
-      "type": "text",
-      "x": 1157.489153683247,
-      "y": 552.9975274295023,
-      "p": "Air (with inferior mirage effect)"
-    },
-    {
-      "type": "text",
-      "x": 1142.1637886361382,
-      "y": 989.0955793479338,
-      "p": "Ground"
-    },
-    {
-      "type": "text",
-      "x": 372.29176768061257,
-      "y": 415.70184882729745,
-      "p": "Rays emitted/reflected\nfrom an object"
-    },
-    {
-      "type": "text",
-      "x": 1630.390890452898,
-      "y": 659.330960553045,
-      "p": "Observer's eye (not to scale)"
-    },
-    {
-      "type": "text",
-      "x": 1754.58686505484,
-      "y": 690.9495449479587,
-      "p": "↓"
-    },
-    {
-      "type": "grin_refractor",
+      "type": "GrinGlass",
       "path": [
         {
           "x": 260,
@@ -156,197 +96,205 @@
           "arc": false
         }
       ],
-      "notDone": false,
+      "refIndexFn": "\\sqrt{1+\\left(\\frac{y}{600}\\right)^2}",
       "origin": {
-        "type": 1,
         "x": 260,
-        "y": 1000,
-        "exist": true
-      },
-      "p": "sqrt(1 + (y / 600) ^ 2)",
-      "p_tex": "\\sqrt{1+\\left(\\frac{y}{600}\\right)^2}",
-      "p_der_x": "0",
-      "p_der_x_tex": "0",
-      "p_der_y": "y / 3.6e+5 / sqrt(y ^ 2 / 3.6e+5 + 1)",
-      "p_der_y_tex": "\\frac{\\frac{ y}{3.6\\cdot10^{5}}}{\\sqrt{\\frac{{ y}^{2}}{3.6\\cdot10^{5}}+1}}",
-      "step_size": 1,
-      "eps": 0.001
+        "y": 1000
+      }
     },
     {
-      "type": "led",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
         "x": 320,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 440,
-        "y": 520,
-        "exist": true
+        "y": 520
       },
-      "p": 15,
-      "symmetric": true,
-      "brightness": 1
+      "brightness": 1,
+      "emisAngle": 15
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 380,
-        "exist": true
+        "y": 380
       },
       "p2": {
-        "type": 1,
         "x": 260,
-        "y": 1000,
-        "exist": true
+        "y": 1000
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 380,
-        "exist": true
+        "y": 380
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 380,
-        "exist": true
+        "y": 380
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 2180,
-        "y": 380,
-        "exist": true
+        "y": 380
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 1000,
-        "exist": true
+        "y": 1000
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 1660,
-        "exist": true
+        "y": 1660
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 1660,
-        "exist": true
+        "y": 1660
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 1040,
-        "exist": true
+        "y": 1040
       },
       "p2": {
-        "type": 1,
         "x": 260,
-        "y": 1660,
-        "exist": true
+        "y": 1660
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 260,
-        "y": 1040,
-        "exist": true
+        "y": 1040
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 1040,
-        "exist": true
+        "y": 1040
       }
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 2180,
-        "y": 1040,
-        "exist": true
+        "y": 1040
       },
       "p2": {
-        "type": 1,
         "x": 2180,
-        "y": 1660,
-        "exist": true
+        "y": 1660
       }
     },
     {
-      "type": "text",
+      "type": "Ruler",
+      "p1": {
+        "x": 2017,
+        "y": 840
+      },
+      "p2": {
+        "x": 2017,
+        "y": 740
+      }
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 1965,
+        "y": 1500
+      },
+      "p2": {
+        "x": 1965,
+        "y": 1600
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1760,
+        "y": 666
+      },
+      "p2": {
+        "x": 1760,
+        "y": 686
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1095.22469087333,
+      "y": 1152.997527429502,
+      "text": "Air (without inferior mirage effect)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1096.6461784766357,
+      "y": 552.997527429502,
+      "text": "Air (with inferior mirage effect)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1274.4282514460556,
+      "y": 989.0955793479338,
+      "text": "Ground",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 372.29176768061257,
+      "y": 415.70184882729745,
+      "text": "Rays emitted/reflected\nfrom an object"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1766.390890452898,
+      "y": 659.3309605530451,
+      "text": "Observer's eye (not to scale)",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
       "x": 260,
       "y": 360,
-      "p": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful.",
-      "fontSize": "37",
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "text": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": "37"
     },
     {
-      "type": "ruler",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
-        "x": 2017,
-        "y": 840,
-        "exist": true
+        "x": 173.95505169874787,
+        "y": 371.6825209493911
       },
-      "p2": {
-        "type": 1,
-        "x": 2017,
-        "y": 740,
-        "exist": true
+      "p4": {
+        "x": 2213.955051698748,
+        "y": 1682.482520949391
       }
     },
     {
-      "type": "ruler",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
-        "x": 1965,
-        "y": 1500,
-        "exist": true
+        "x": 285.95505169874787,
+        "y": 383.6825209493911
       },
-      "p2": {
-        "type": 1,
-        "x": 1965,
-        "y": 1600,
-        "exist": true
+      "p4": {
+        "x": 827.9550516987479,
+        "y": 925.6825209493911
       }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 1.4861665211342676,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 3060,
+  "height": 2330.8,
+  "rayModeDensity": 1.4861665211342676,
   "origin": {
-    "x": 195.8999999999998,
-    "y": -97.70000000000007
+    "x": 336.04494830125213,
+    "y": 138.31747905060888
   },
-  "scale": 0.6050000000000001,
-  "colorMode": false,
-  "symbolicGrin": false
+  "scale": 1,
+  "title": "Inferior mirage"
 }

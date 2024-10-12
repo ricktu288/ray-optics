@@ -1,24 +1,19 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 505,
-        "y": 313,
-        "exist": true
+        "y": 313
       },
       "p2": {
-        "type": 1,
         "x": 405,
-        "y": 313,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 313
+      }
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 360,
@@ -36,11 +31,10 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 2.03
+      "refIndex": 2.03
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 100,
@@ -58,27 +52,21 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 1.99
+      "refIndex": 1.99
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 220,
-        "y": 300,
-        "exist": true
+        "y": 300
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 300,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 300
+      }
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 140,
@@ -101,27 +89,21 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 1.99
+      "refIndex": 1.99
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": -20,
-        "y": 800,
-        "exist": true
+        "y": 800
       },
       "p2": {
-        "type": 1,
         "x": -20,
-        "y": 860,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 860
+      }
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 820,
@@ -144,51 +126,21 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 1.9
+      "refIndex": 1.9
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 760,
-        "y": 600,
-        "exist": true
+        "y": 600
       },
       "p2": {
-        "type": 1,
         "x": 760,
-        "y": 680,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 680
+      }
     },
     {
-      "type": "text",
-      "x": 766.5999999999998,
-      "y": 455.37777777777796,
-      "p": "rhomboid"
-    },
-    {
-      "type": "text",
-      "x": 125.93333333333354,
-      "y": 683.7111111111112,
-      "p": "right-angle"
-    },
-    {
-      "type": "text",
-      "x": 515.0716387039214,
-      "y": 465.99589160387313,
-      "p": "Porro"
-    },
-    {
-      "type": "text",
-      "x": 152.9333333333335,
-      "y": 914.7111111111111,
-      "p": "Dove"
-    },
-    {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 440.0493827160492,
@@ -215,54 +167,93 @@
           "y": 761.5664484327909,
           "arc": false
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 560,
-        "y": 880,
-        "exist": true
+        "y": 880
       },
       "p2": {
-        "type": 1,
         "x": 602.839702562603,
-        "y": 782.5683516656995,
-        "exist": true
+        "y": 782.5683516656995
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 439.01234567901224,
-        "y": 760.9876543209878,
-        "exist": true
+        "y": 760.9876543209878
       },
       "p2": {
-        "type": 1,
         "x": 535.776754841219,
-        "y": 723.6342460923621,
-        "exist": true
+        "y": 723.6342460923621
       }
     },
     {
-      "type": "text",
+      "type": "TextLabel",
+      "x": 881.2010657279563,
+      "y": 455.37777777777796,
+      "text": "rhomboid",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 125.93333333333354,
+      "y": 683.7111111111112,
+      "text": "right-angle"
+    },
+    {
+      "type": "TextLabel",
+      "x": 540.4155199286618,
+      "y": 465.99589160387313,
+      "text": "Porro",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 182.3182219815275,
+      "y": 914.7111111111111,
+      "text": "Dove",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
       "x": 534.9816224388505,
       "y": 911.7172702972307,
-      "p": "pentaprism"
+      "text": "pentaprism"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -106.94741301627386,
+        "y": 294.72011024224327
+      },
+      "p4": {
+        "x": 1041.0222368398374,
+        "y": 928.4542087549601
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 25.284585900599023,
+        "y": 320.18701373734467
+      },
+      "p4": {
+        "x": 728.5629208807081,
+        "y": 1023.4653487373444
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1721.954474784167,
+  "height": 1207.7189234407724,
   "origin": {
-    "x": 47.733489479072496,
-    "y": -126.17932616398706
+    "x": 393.9398254803017,
+    "y": -7.727697778215429
   },
-  "scale": 1.1438396227480496
+  "scale": 1,
+  "name": "{{prisms}}",
+  "title": "Prisms"
 }

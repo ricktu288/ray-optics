@@ -1,465 +1,158 @@
 {
-  "version": 2,
+  "version": 5,
+  "name": "{{luneburg-lens}}",
+  "modules": {
+    "ApproxLuneburg": {
+      "numPoints": 1,
+      "params": [
+        "N=1:1:50:20",
+        "R=1:1:200:100",
+        "n_0=1:0.01:3:2"
+      ],
+      "objs": [
+        {
+          "for": "i=2:1:N",
+          "type": "CircleGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_1+R/N*(N+1-i)`",
+            "y": "`y_1`"
+          },
+          "refIndex": "`(n_0-((1/N*(1+N-i)))^2)^0.5/(n_0-((1/N*(1+N-(i-1))))^2)^0.5`"
+        }
+      ]
+    }
+  },
   "objs": [
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 500,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 480,
-        "exist": true
+        "y": 480
       }
     },
     {
-      "type": "circlelens",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 685.2,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0361
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 664.953086419753,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0221
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 695.0765432098766,
-        "y": 480.0098765432099,
-        "exist": true
-      },
-      "p": 1.0476
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 690.1382716049383,
-        "y": 480.0098765432099,
-        "exist": true
-      },
-      "p": 1.0413
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 645.1999999999999,
-        "y": 480.39999999999986,
-        "exist": true
-      },
-      "p": 1.0135
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 675.0765432098766,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0281
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 670.1382716049383,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0249
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 680,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0318
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 625.1999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0072
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 655,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0174
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 649.9999999999999,
-        "y": 480.39999999999986,
-        "exist": true
-      },
-      "p": 1.0153
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 660,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0196
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 620,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0058
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 635.1999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0101
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 629.9999999999999,
-        "y": 479.9999999999999,
-        "exist": true
-      },
-      "p": 1.0086
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 640,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0118
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 604.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0019
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 614.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0045
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 609.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0032
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
         "x": 500,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
       "p2": {
-        "type": 1,
         "x": 780,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
-      "p": 30,
-      "symmetric": true
+      "emisAngle": 30
     },
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 500,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 840,
-        "exist": true
+        "y": 840
       }
     },
     {
-      "type": "led",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
         "x": 500,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
       "p2": {
-        "type": 1,
         "x": 780,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
-      "p": 30,
-      "symmetric": true
+      "emisAngle": 30
     },
     {
-      "type": "text",
-      "x": 162.19555848924676,
-      "y": 489.1654958865022,
-      "p": "Approximated multilayer\nluneburg lens"
-    },
-    {
-      "type": "text",
-      "x": 162.05791104625422,
-      "y": 846.441503719748,
-      "p": "Classical luneburg lens"
-    },
-    {
-      "type": "grin_circlelens",
+      "type": "CircleGrinGlass",
       "p1": {
-        "type": 1,
         "x": 600,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
+      "refIndexFn": "\\sqrt{2-\\frac{\\left(x^2+y^2\\right)}{100^2}}",
       "origin": {
-        "type": 1,
         "x": 600,
-        "y": 840,
-        "exist": true
+        "y": 840
       },
-      "p": "sqrt(2 - (x ^ 2 + y ^ 2) / 100 ^ 2)",
-      "p_tex": "\\sqrt{2-\\frac{\\left(x^2+y^2\\right)}{100^2}}",
-      "p_der_x": "x * -1 / 10000 / sqrt((x ^ 2 + y ^ 2) * -1 / 10000 + 2)",
-      "p_der_x_tex": "\\frac{\\frac{ x\\cdot-1}{10000}}{\\sqrt{\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{10000}+2}}",
-      "p_der_y": "y * -1 / 10000 / sqrt((x ^ 2 + y ^ 2) * -1 / 10000 + 2)",
-      "p_der_y_tex": "\\frac{\\frac{ y\\cdot-1}{10000}}{\\sqrt{\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{10000}+2}}",
-      "step_size": 0.1,
-      "eps": 0.001
+      "stepSize": 0.1
     },
     {
-      "type": "text",
-      "x": 784,
-      "y": 647.6666666666666,
-      "p": "See how the numerical solver step size of this lens\neffects the rays path",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "ModuleObj",
+      "module": "ApproxLuneburg",
+      "points": [
+        {
+          "x": 600,
+          "y": 480
+        }
+      ],
+      "params": {
+        "N": 20,
+        "R": 100,
+        "n_0": 2
+      }
     },
     {
-      "type": "text",
-      "x": -55,
-      "y": 363.66666666666663,
-      "p": "Warning: The sequence of appearing light does not represent the actual speed of light - only the final image is meaningful.",
-      "fontSize": 37,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "TextLabel",
+      "x": 493.7745058576679,
+      "y": 595.2707590443969,
+      "text": "Approximated multilayer Luneburg lens (You can select and change N, the number of layers.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 487.95264788835954,
+      "y": 977.1783458250111,
+      "text": "Classical Luneburg lens (You can select and change the numerical solver step size.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 414.3263157894738,
+      "y": 300.95087719298243,
+      "text": "Warning: The sequence of appearing light does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": 37
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 461.07665108717765,
+        "y": 346.3583959899747
+      },
+      "p4": {
+        "x": 1975.1729323308275,
+        "y": 1014.8215538847111
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 492.16240601503773,
+        "y": 732.6952380952379
+      },
+      "p4": {
+        "x": 708.1624060150378,
+        "y": 948.6952380952379
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2271.1444218654747,
+  "height": 1425.5112985165613,
   "origin": {
-    "x": 92.99999999999994,
-    "y": -173.66666666666663
+    "x": -82.55258077626519,
+    "y": 32.16567432093774
   },
   "scale": 1,
-  "colorMode": false,
-  "symbolicGrin": false
+  "title": "Luneburg lens"
 }

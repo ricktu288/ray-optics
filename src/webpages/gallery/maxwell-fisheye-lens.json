@@ -1,482 +1,169 @@
 {
-  "version": 2,
+  "version": 5,
+  "name": "{{maxwell-fisheye-lens}}",
+  "modules": {
+    "ApproxFisheye": {
+      "numPoints": 1,
+      "params": [
+        "N=1:1:50:20",
+        "R=1:1:200:100",
+        "n_0=1:0.01:3:2"
+      ],
+      "objs": [
+        {
+          "for": "i=2:1:N",
+          "type": "CircleGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_1+R/N*(N+1-i)`",
+            "y": "`y_1`"
+          },
+          "refIndex": "`(n_0/(1+((1/N*(1+N-i)))^2))/(n_0/(1+((1/N*(1+N-(i-1))))^2))`"
+        }
+      ]
+    }
+  },
   "objs": [
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 500,
-        "y": 480,
-        "exist": true
+        "y": 480
       },
       "p2": {
-        "type": 1,
         "x": 700,
-        "y": 480,
-        "exist": true
+        "y": 480
       }
     },
     {
-      "type": "circlelens",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
+        "x": 500,
+        "y": 840
       },
       "p2": {
-        "type": 1,
-        "x": 685.2,
-        "y": 480.2567901234568,
-        "exist": true
+        "x": 780,
+        "y": 840
       },
-      "p": 1.0508
+      "emisAngle": 30
     },
     {
-      "type": "circlelens",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
+        "x": 500,
+        "y": 840
       },
       "p2": {
-        "type": 1,
-        "x": 664.953086419753,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0475
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 695.0765432098766,
-        "y": 480.0098765432099,
-        "exist": true
-      },
-      "p": 1.0512
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 690.1382716049383,
-        "y": 480.0098765432099,
-        "exist": true
-      },
-      "p": 1.0511
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
         "x": 700,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 645.1999999999999,
-        "y": 480.39999999999986,
-        "exist": true
-      },
-      "p": 1.0395
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 675.0765432098766,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0496
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 670.1382716049383,
-        "y": 480.2567901234568,
-        "exist": true
-      },
-      "p": 1.0487
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 680,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0503
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 625.1999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0259
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 655,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0441
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 649.9999999999999,
-        "y": 480.39999999999986,
-        "exist": true
-      },
-      "p": 1.042
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 660,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.046
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 620,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0216
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 635.1999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0334
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 629.9999999999999,
-        "y": 479.9999999999999,
-        "exist": true
-      },
-      "p": 1.0298
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 640,
-        "y": 480,
-        "exist": true
-      },
-      "p": 1.0366
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 604.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0075
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 614.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0171
-    },
-    {
-      "type": "circlelens",
-      "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 609.9999999999999,
-        "y": 480.1999999999999,
-        "exist": true
-      },
-      "p": 1.0124
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 500,
-        "y": 780,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 780,
-        "exist": true
-      },
-      "p": 30,
-      "symmetric": true,
-      "brightness": 1
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 500,
-        "y": 480,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 720,
-        "y": 480,
-        "exist": true
-      },
-      "p": 30,
-      "symmetric": true,
-      "brightness": 1
-    },
-    {
-      "type": "ruler",
-      "p1": {
-        "type": 1,
-        "x": 500,
-        "y": 780,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 780,
-        "exist": true
+        "y": 840
       }
     },
     {
-      "type": "text",
-      "x": 161.2860309773148,
-      "y": 471.2749618914204,
-      "p": "Approximated multilayer\nmaxwell fisheye lens"
-    },
-    {
-      "type": "text",
-      "x": 162.59767248968467,
-      "y": 793.4494049417917,
-      "p": "Classical maxwell fisheye lens"
-    },
-    {
-      "type": "grin_circlelens",
+      "type": "AngleSource",
       "p1": {
-        "type": 1,
-        "x": 600,
-        "y": 780,
-        "exist": true
+        "x": 500,
+        "y": 480
       },
       "p2": {
-        "type": 1,
-        "x": 700,
-        "y": 780,
-        "exist": true
+        "x": 780,
+        "y": 480
       },
+      "emisAngle": 30
+    },
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 600,
+        "y": 840
+      },
+      "p2": {
+        "x": 700,
+        "y": 840
+      },
+      "refIndexFn": "\\frac{2}{1+\\frac{x^2+y^2}{100^2}}",
       "origin": {
-        "type": 1,
         "x": 600,
-        "y": 780,
-        "exist": true
+        "y": 840
       },
-      "p": "2 / (1 + (x ^ 2 + y ^ 2) / 100 ^ 2)",
-      "p_tex": "\\frac{2}{1+\\frac{x^2+y^2}{100^2}}",
-      "p_der_x": "x * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
-      "p_der_x_tex": "\\frac{\\frac{ x\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
-      "p_der_y": "y * -1 / 2500 / ((x ^ 2 + y ^ 2) / 10000 + 1) ^ 2",
-      "p_der_y_tex": "\\frac{\\frac{ y\\cdot-1}{2500}}{{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)}{10000}+1\\right)}^{2}}",
-      "step_size": 0.1,
-      "eps": 0.001
+      "stepSize": 0.1
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
-        "x": 149.57170081859684,
-        "y": 630,
-        "exist": true
+        "x": 483.813493192441,
+        "y": 671.6842105263157
       },
       "p2": {
-        "type": 1,
         "x": 1959.0436846097498,
-        "y": 630,
-        "exist": true
+        "y": 671.6842105263157
       }
     },
     {
-      "type": "text",
-      "x": 692.4799789109935,
-      "y": 666.1197390445199,
-      "p": "See how the numerical solver step size of this lens\neffects the rays path",
-      "fontSize": 24,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "ModuleObj",
+      "module": "ApproxFisheye",
+      "points": [
+        {
+          "x": 600,
+          "y": 480
+        }
+      ],
+      "params": {
+        "N": 20,
+        "R": 100,
+        "n_0": 2
+      }
     },
     {
-      "type": "text",
-      "x": 110.69400953239574,
-      "y": 352.0816798542129,
-      "p": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful.",
-      "fontSize": "37",
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "TextLabel",
+      "x": 493.7745058576679,
+      "y": 595.2707590443969,
+      "text": "Approximated multilayer Maxwell fisheye lens (You can select and change N, the number of layers.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 487.95264788835954,
+      "y": 977.1783458250111,
+      "text": "Classical Maxwell fisheye lens (You can select and change the numerical solver step size.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 414.3263157894738,
+      "y": 300.95087719298243,
+      "text": "Warning: The sequence of appearing light does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": 37
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 461.07665108717765,
+        "y": 346.3583959899747
+      },
+      "p4": {
+        "x": 1975.1729323308275,
+        "y": 1014.8215538847111
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 492.16240601503773,
+        "y": 732.6952380952379
+      },
+      "p4": {
+        "x": 708.1624060150378,
+        "y": 948.6952380952379
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2271.1444218654747,
+  "height": 1425.5112985165613,
   "origin": {
-    "x": -57.177954798380796,
-    "y": -173.09891325178066
+    "x": -82.55258077626519,
+    "y": 32.16567432093774
   },
-  "scale": 0.9832235850228547,
-  "colorMode": false,
-  "symbolicGrin": false
+  "scale": 1,
+  "title": "Maxwell fisheye lens"
 }

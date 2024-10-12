@@ -1,438 +1,280 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "handle",
-      "controlPoints": [
-        {
-          "mousePart": {
-            "part": 1,
-            "targetPoint": {
-              "type": 1,
-              "x": 1580,
-              "y": 365,
-              "exist": true
-            },
-            "originalObj": {
-              "type": "parallel",
-              "p1": {
-                "type": 1,
-                "x": 1589.8370290514372,
-                "y": 340.9312279475333,
-                "exist": true
-              },
-              "p2": {
-                "type": 1,
-                "x": 1579.690302034749,
-                "y": 359.2556410260939,
-                "exist": true
-              },
-              "p": 0.5
-            },
-            "hasDuplicated": false,
-            "byHandle": true
-          },
-          "targetObj_index": 6,
-          "newPoint": {
-            "type": 1,
-            "x": 1589.8370290514372,
-            "y": 340.9312279475333,
-            "exist": true
-          }
-        },
-        {
-          "mousePart": {
-            "part": 2,
-            "targetPoint": {
-              "type": 1,
-              "x": 1573.8638023096755,
-              "y": 385.02716309740833,
-              "exist": true
-            },
-            "originalObj": {
-              "type": "parallel",
-              "p1": {
-                "type": 1,
-                "x": 1589.8370290514372,
-                "y": 340.9312279475333,
-                "exist": true
-              },
-              "p2": {
-                "type": 1,
-                "x": 1579.690302034749,
-                "y": 359.2556410260939,
-                "exist": true
-              },
-              "p": 0.5
-            },
-            "hasDuplicated": false,
-            "byHandle": true
-          },
-          "targetObj_index": 6,
-          "newPoint": {
-            "type": 1,
-            "x": 1579.690302034749,
-            "y": 359.2556410260939,
-            "exist": true
-          }
-        }
-      ],
-      "notDone": false,
+      "type": "Handle",
       "p1": {
-        "type": 1,
         "x": 1561.8419961934637,
-        "y": 393.1216146908936,
-        "exist": true
+        "y": 430
       },
       "p2": {
-        "type": 1,
         "x": 1700,
-        "y": 400,
-        "exist": true
-      }
-    },
-    {
-      "type": "handle",
+        "y": 400
+      },
       "controlPoints": [
         {
-          "mousePart": {
-            "part": 1,
-            "targetPoint": {
-              "type": 1,
-              "x": 1580,
-              "y": 553,
-              "exist": true
-            },
-            "originalObj": {
-              "type": "parallel",
-              "p1": {
-                "type": 1,
-                "x": 1578.6178318367304,
-                "y": 625.2021567235963,
-                "exist": true
-              },
-              "p2": {
-                "type": 1,
-                "x": 1572.2412181624272,
-                "y": 645.1540734704547,
-                "exist": true
-              },
-              "p": 0.5
-            },
-            "hasDuplicated": false,
-            "byHandle": true
-          },
-          "targetObj_index": 13,
           "newPoint": {
-            "type": 1,
-            "x": 1578.6178318367304,
-            "y": 625.2021567235963,
-            "exist": true
+            "x": 1589.8370290514372,
+            "y": 340.9312279475333
+          },
+          "targetObjIndex": 6,
+          "dragContext": {
+            "part": 1
           }
         },
         {
-          "mousePart": {
-            "part": 2,
-            "targetPoint": {
-              "type": 1,
-              "x": 1573.8638023096755,
-              "y": 573.0271630974083,
-              "exist": true
-            },
-            "originalObj": {
-              "type": "parallel",
-              "p1": {
-                "type": 1,
-                "x": 1578.6178318367304,
-                "y": 625.2021567235963,
-                "exist": true
-              },
-              "p2": {
-                "type": 1,
-                "x": 1572.2412181624272,
-                "y": 645.1540734704547,
-                "exist": true
-              },
-              "p": 0.5
-            },
-            "hasDuplicated": false,
-            "byHandle": true
-          },
-          "targetObj_index": 13,
           "newPoint": {
-            "type": 1,
-            "x": 1572.2412181624272,
-            "y": 645.1540734704547,
-            "exist": true
+            "x": 1579.690302034749,
+            "y": 359.2556410260939
+          },
+          "targetObjIndex": 6,
+          "dragContext": {
+            "part": 2
           }
         }
       ],
-      "notDone": false,
+      "transformation": "rotation"
+    },
+    {
+      "type": "Handle",
       "p1": {
-        "type": 1,
         "x": 1564.2100462571639,
-        "y": 687.8266556092497,
-        "exist": true
+        "y": 720
       },
       "p2": {
-        "type": 1,
         "x": 1738.0410074234537,
-        "y": 674.1230222703612,
-        "exist": true
-      }
+        "y": 674.1230222703612
+      },
+      "controlPoints": [
+        {
+          "newPoint": {
+            "x": 1578.6178318367304,
+            "y": 625.2021567235963
+          },
+          "targetObjIndex": 13,
+          "dragContext": {
+            "part": 1
+          }
+        },
+        {
+          "newPoint": {
+            "x": 1572.2412181624272,
+            "y": 645.1540734704547
+          },
+          "targetObjIndex": 13,
+          "dragContext": {
+            "part": 2
+          }
+        }
+      ],
+      "transformation": "rotation"
     },
     {
-      "type": "circlelens",
+      "type": "CircleGlass",
       "p1": {
-        "type": 1,
         "x": 1700,
-        "y": 399,
-        "exist": true
+        "y": 399
       },
       "p2": {
-        "type": 1,
         "x": 1740,
-        "y": 399,
-        "exist": true
+        "y": 399
       },
-      "p": 2
+      "refIndex": 2
     },
     {
-      "type": "arcmirror",
+      "type": "ArcMirror",
       "p1": {
-        "type": 1,
         "x": 1700,
-        "y": 359,
-        "exist": true
+        "y": 359
       },
       "p2": {
-        "type": 1,
         "x": 1700,
-        "y": 439,
-        "exist": true
+        "y": 439
       },
       "p3": {
-        "type": 1,
         "x": 1740,
-        "y": 399,
-        "exist": true
+        "y": 399
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1740,
-        "y": 679,
-        "exist": true
+        "y": 679
       },
       "p2": {
-        "type": 1,
         "x": 1680,
-        "y": 619,
-        "exist": true
+        "y": 619
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1680,
-        "y": 739,
-        "exist": true
+        "y": 739
       },
       "p2": {
-        "type": 1,
         "x": 1740,
-        "y": 679,
-        "exist": true
+        "y": 679
       }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 1589.8370290514372,
-        "y": 340.9312279475333,
-        "exist": true
+        "y": 340.9312279475333
       },
       "p2": {
-        "type": 1,
         "x": 1579.690302034749,
-        "y": 359.2556410260939,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 120,
-        "y": 539,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1860,
-        "y": 539,
-        "exist": true
+        "y": 359.2556410260939
       }
     },
     {
-      "type": "circlelens",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
-        "x": 980,
-        "y": 399,
-        "exist": true
+        "x": 120,
+        "y": 539
       },
       "p2": {
-        "type": 1,
-        "x": 1020,
-        "y": 399,
-        "exist": true
-      },
-      "p": 2
+        "x": 1860,
+        "y": 539
+      }
     },
     {
-      "type": "arcmirror",
+      "type": "CircleGlass",
       "p1": {
-        "type": 1,
         "x": 980,
-        "y": 359,
-        "exist": true
+        "y": 399
       },
       "p2": {
-        "type": 1,
+        "x": 1020,
+        "y": 399
+      },
+      "refIndex": 2
+    },
+    {
+      "type": "ArcMirror",
+      "p1": {
         "x": 980,
-        "y": 439,
-        "exist": true
+        "y": 359
+      },
+      "p2": {
+        "x": 980,
+        "y": 439
       },
       "p3": {
-        "type": 1,
         "x": 1020,
-        "y": 399,
-        "exist": true
+        "y": 399
       }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 600,
-        "y": 655,
-        "exist": true
+        "y": 655
       },
       "p2": {
-        "type": 1,
         "x": 600,
-        "y": 705,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "mirror",
-      "p1": {
-        "type": 1,
-        "x": 960,
-        "y": 739,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1020,
-        "y": 679,
-        "exist": true
+        "y": 705
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
-        "x": 1020,
-        "y": 679,
-        "exist": true
+        "x": 960,
+        "y": 739
       },
       "p2": {
-        "type": 1,
-        "x": 960,
-        "y": 619,
-        "exist": true
+        "x": 1020,
+        "y": 679
       }
     },
     {
-      "type": "parallel",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
+        "x": 1020,
+        "y": 679
+      },
+      "p2": {
+        "x": 960,
+        "y": 619
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
         "x": 1578.6178318367304,
-        "y": 625.2021567235963,
-        "exist": true
+        "y": 625.2021567235963
       },
       "p2": {
-        "type": 1,
         "x": 1572.2412181624272,
-        "y": 645.1540734704547,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 645.1540734704547
+      }
     },
     {
-      "type": "text",
-      "x": 910.2775143314573,
-      "y": 269.79378187562054,
-      "p": "Cat's eye retroreflector"
-    },
-    {
-      "type": "text",
-      "x": 910.2775143314573,
-      "y": 829.7937818756205,
-      "p": "Corner retroreflector"
-    },
-    {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 600,
-        "y": 375,
-        "exist": true
+        "y": 375
       },
       "p2": {
-        "type": 1,
         "x": 600,
-        "y": 425,
-        "exist": true
+        "y": 425
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1529.732420828533,
+      "y": 718.1146426079544,
+      "text": "Drag to\nrotate the beam",
+      "fontSize": 18,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 984.2775143314573,
+      "y": 273.79378187562054,
+      "text": "Cat's eye retroreflector",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 976.2775143314573,
+      "y": 827.7937818756205,
+      "text": "Corner retroreflector",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 499.5762324102069,
+        "y": 183.10971113826525
       },
-      "p": 0.5
+      "p4": {
+        "x": 1914.3762324102067,
+        "y": 888.7097111382654
+      }
     },
     {
-      "type": "text",
-      "x": 1434.1510876155473,
-      "y": 798.9362521876403,
-      "p": "to rotate the beam"
-    },
-    {
-      "type": "text",
-      "x": 1555.6086273614158,
-      "y": 736.2484897381598,
-      "p": "↑"
-    },
-    {
-      "type": "text",
-      "x": 1448.843531939644,
-      "y": 762.6948895215344,
-      "p": "Ctrl+drag here"
+      "type": "CropBox",
+      "p1": {
+        "x": 1253.576232410207,
+        "y": 279.10971113826525
+      },
+      "p4": {
+        "x": 1818.3762324102067,
+        "y": 843.9097111382653
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2122.2,
+  "height": 1413,
+  "rayModeDensity": 1,
   "origin": {
-    "x": -319.13461479759104,
-    "y": 69.31640564978733
+    "x": -145.87623241020697,
+    "y": 170.59028886173468
   },
-  "scale": 1.0209329141644996,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{retroreflectors}}",
+  "title": "Retroreflectors"
 }

@@ -1,414 +1,289 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 20,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 20,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 1,
+      "brightness": 1,
       "wavelength": "460"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0.5,
       "wavelength": "620"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0.5,
       "wavelength": "540"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0,
+      "brightness": 0,
       "wavelength": 580
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 20,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 20,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "text",
-      "x": -134.13462383907384,
-      "y": 574.0567941176186,
-      "p": "蓝色LED背光"
-    },
-    {
-      "type": "text",
-      "x": 81.33333333333326,
-      "y": 391.6666666666665,
-      "p": "黄色磷光体"
-    },
-    {
-      "type": "text",
-      "x": 433.26825396825393,
-      "y": 387.59682539682524,
-      "p": "液晶"
-    },
-    {
-      "type": "text",
-      "x": 223.4666666666667,
-      "y": 746.5333333333335,
-      "p": "滤光器"
-    },
-    {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 500,
-        "exist": true
+        "y": 500
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": 620
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 500,
-        "exist": true
+        "y": 500
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 600,
-        "exist": true
+        "y": 600
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": "540"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 600,
-        "exist": true
+        "y": 600
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": 460
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 340,
-        "exist": true
+        "y": 340
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 240,
-        "exist": true
-      },
-      "isDichroic": false,
-      "isDichroicFilter": false
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 20,
-        "y": 340,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 20,
-        "y": 240,
-        "exist": true
+        "y": 240
       }
     },
     {
-      "type": "text",
-      "x": 384,
-      "y": 748,
-      "p": "改变透光率"
+      "type": "Blocker",
+      "p1": {
+        "x": 20,
+        "y": 340
+      },
+      "p2": {
+        "x": 20,
+        "y": 240
+      }
     },
     {
-      "type": "text",
-      "x": 385.4285714285714,
-      "y": 776.2857142857144,
-      "p": "来产生任何RGB值"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 400
+      },
+      "p2": {
+        "x": 260,
+        "y": 500
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": 620
     },
     {
-      "type": "text",
-      "x": 20,
-      "y": 230.00000000000006,
-      "p": "观察者看到的像素"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 500
+      },
+      "p2": {
+        "x": 260,
+        "y": 600
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": "540"
     },
     {
-      "type": "text",
-      "x": 846,
-      "y": 432.00000000000006,
-      "p": "不是液晶显示器的一部分"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 600
+      },
+      "p2": {
+        "x": 260,
+        "y": 700
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": 460
     },
     {
-      "type": "text",
-      "x": 846,
-      "y": 522,
-      "p": "在我们的眼中看起来是混合的"
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 400
+      },
+      "p2": {
+        "x": 460,
+        "y": 500
+      },
+      "transRatio": 1
     },
     {
-      "type": "text",
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 600
+      },
+      "p2": {
+        "x": 460,
+        "y": 500
+      },
+      "transRatio": 0.33
+    },
+    {
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 700
+      },
+      "p2": {
+        "x": 460,
+        "y": 600
+      }
+    },
+    {
+      "type": "TextLabel",
       "x": 844,
       "y": 486.00000000000006,
-      "p": "由于像素非常小，光"
+      "text": "由于像素非常小，光\n在我们的眼中看起来是混合的"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 400,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 500,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": 620,
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 384,
+      "y": 748,
+      "text": "改变透光率\n来产生任何RGB值"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 500,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 600,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": "540",
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 7.684234851661699,
+      "y": 562.0760260946291,
+      "text": "蓝色LED背光",
+      "alignment": "right"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 600,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 700,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": 460,
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 136.09942466453506,
+      "y": 391.6666666666665,
+      "text": "黄色磷光体",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 400,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 500,
-        "exist": true
-      },
-      "p": 1,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 455.46592181428963,
+      "y": 387.5968253968253,
+      "text": "液晶",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 600,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 500,
-        "exist": true
-      },
-      "p": 0.33,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 256.18714234109103,
+      "y": 746.5333333333335,
+      "text": "滤光器",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 700,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 600,
-        "exist": true
-      },
-      "p": 0.5,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 20,
+      "y": 230.00000000000006,
+      "text": "观察者看到的像素"
     },
     {
-      "type": "cropbox",
+      "type": "TextLabel",
+      "x": 846,
+      "y": 432.00000000000006,
+      "text": "不是液晶显示器的一部分"
+    },
+    {
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": -319.5999999999999,
-        "y": 157.59999999999997,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1263.300343994497,
-        "y": 157.59999999999997,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": -319.5999999999999,
-        "y": 821.1764534775474,
-        "exist": true
+        "y": 157.59999999999997
       },
       "p4": {
-        "type": 1,
         "x": 1263.300343994497,
-        "y": 821.1764534775474,
-        "exist": true
-      },
-      "width": 1140,
-      "format": "png"
+        "y": 821.1764534775474
+      }
     },
     {
-      "type": "cropbox",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": 13.200000000000045,
-        "y": 96.39999999999998,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 831.2,
-        "y": 96.39999999999998,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": 13.200000000000045,
-        "y": 914.4,
-        "exist": true
+        "y": 96.39999999999998
       },
       "p4": {
-        "type": 1,
         "x": 831.2,
-        "y": 914.4,
-        "exist": true
-      },
-      "width": 250,
-      "format": "png"
+        "y": 914.4
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 2.718281828459045,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 2374.3505159917454,
+  "height": 1455.0266254747958,
+  "rayModeDensity": 2.718281828459045,
   "origin": {
-    "x": 372.48652754252976,
-    "y": 71.96107886312505
+    "x": 715.3250859986242,
+    "y": 238.1250859986243
   },
-  "scale": 0.5127264905780533,
-  "colorMode": true,
-  "symbolicGrin": false
+  "scale": 1,
+  "simulateColors": true,
+  "name": "{{gan-based-lcd-pixel}}",
+  "title": "液晶显示器像素"
 }

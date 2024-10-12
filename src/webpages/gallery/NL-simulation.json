@@ -1,8 +1,8 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 850,
@@ -34,12 +34,10 @@
           "y": 709.5,
           "arc": true
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 888,
@@ -71,12 +69,10 @@
           "y": 710,
           "arc": true
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 1150,
@@ -108,27 +104,21 @@
           "y": 710,
           "arc": true
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1480,
-        "y": 640,
-        "exist": true
+        "y": 640
       },
       "p2": {
-        "type": 1,
         "x": 1699.0259690163161,
-        "y": 542.3986105701293,
-        "exist": true
+        "y": 542.3986105701293
       }
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 1538.1183235768412,
@@ -146,27 +136,21 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 1.75
+      "refIndex": 1.75
     },
     {
-      "type": "laser",
+      "type": "SingleRay",
       "p1": {
-        "type": 1,
         "x": -514.141325189438,
-        "y": 1248.7510749076566,
-        "exist": true
+        "y": 1248.7510749076566
       },
       "p2": {
-        "type": 1,
         "x": -94.1413251894378,
-        "y": 1248.7510749076566,
-        "exist": true
-      },
-      "p": 1
+        "y": 1248.7510749076566
+      }
     },
     {
-      "type": "refractor",
+      "type": "Glass",
       "path": [
         {
           "x": 1480,
@@ -194,26 +178,21 @@
           "arc": false
         }
       ],
-      "notDone": false,
-      "p": 1.78
+      "refIndex": 1.78
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1738.0526380162619,
-        "y": 883.4758364522121,
-        "exist": true
+        "y": 883.4758364522121
       },
       "p2": {
-        "type": 1,
         "x": 1543.763352846318,
-        "y": 794.3549707305232,
-        "exist": true
+        "y": 794.3549707305232
       }
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 1760,
@@ -245,12 +224,10 @@
           "y": 720,
           "arc": true
         }
-      ],
-      "notDone": false,
-      "p": 1.5
+      ]
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 1810,
@@ -283,11 +260,10 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.64
+      "refIndex": 1.64
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 2008.118323576841,
@@ -320,11 +296,10 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.82
+      "refIndex": 1.82
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 2080,
@@ -357,11 +332,10 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.66
+      "refIndex": 1.66
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 2170,
@@ -394,60 +368,68 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.87
+      "refIndex": 1.87
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": -556.7214422673449,
-        "y": 594.8397658441859,
-        "exist": true
+        "y": 594.8397658441859
       },
       "p2": {
-        "type": 1,
         "x": -556.7214422673449,
-        "y": 774.8397658441854,
-        "exist": true
-      },
-      "p": 0.5
+        "y": 774.8397658441854
+      }
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": -555.2223859280703,
-        "y": 83.2695633193527,
-        "exist": true
+        "y": 83.2695633193527
       },
       "p2": {
-        "type": 1,
         "x": -569.4787191804917,
-        "y": 294.0173227131519,
-        "exist": true
+        "y": 294.0173227131519
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -654.387294490692,
+        "y": -41.45499909007458
       },
-      "p": 0.5
+      "p4": {
+        "x": 2691.212705509308,
+        "y": 1369.7450009099257
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 795.2127055093079,
+        "y": 10.54500090992542
+      },
+      "p4": {
+        "x": 2239.212705509308,
+        "y": 1454.5450009099254
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.06070677333952344,
-  "rayDensity_images": 1,
+  "width": 5018.4,
+  "height": 3084,
+  "rayModeDensity": 0.06070677333952344,
   "observer": {
-    "type": 5,
     "c": {
-      "type": 1,
       "x": 2359.494393545097,
-      "y": 727.7437382512829,
-      "exist": true
+      "y": 727.7437382512829
     },
-    "r": 20,
-    "exist": true
+    "r": 20
   },
   "origin": {
-    "x": 610.0679399999997,
-    "y": 405.74713999999983
+    "x": 1490.7872944906921,
+    "y": 877.8549990900746
   },
-  "scale": 0.5314410000000002,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{NL-simulation}}",
+  "title": "NL Binoculars"
 }

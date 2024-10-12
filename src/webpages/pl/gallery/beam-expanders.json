@@ -1,159 +1,149 @@
 {
-  "version": 2,
+  "version": 5,
+  "name": "{{beam-expanders}}",
   "objs": [
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 1080,
-        "y": 620,
-        "exist": true
+        "y": 620
       },
       "p2": {
-        "type": 1,
         "x": 1080,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
-      "p": "-100"
+      "focalLength": "-100"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 780,
-        "y": 660,
-        "exist": true
+        "y": 660
       },
       "p2": {
-        "type": 1,
         "x": 780,
-        "y": 740,
-        "exist": true
-      },
-      "p": 0.5
-    },
-    {
-      "type": "lens",
-      "p1": {
-        "type": 1,
-        "x": 880,
-        "y": 620,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 880,
-        "y": 780,
-        "exist": true
-      },
-      "p": "300"
-    },
-    {
-      "type": "ruler",
-      "p1": {
-        "type": 1,
-        "x": 880,
-        "y": 700,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1380,
-        "y": 700,
-        "exist": true
+        "y": 740
       }
     },
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
         "x": 880,
-        "y": 420,
-        "exist": true
+        "y": 620
       },
       "p2": {
-        "type": 1,
         "x": 880,
-        "y": 580,
-        "exist": true
+        "y": 780
       },
-      "p": "300"
+      "focalLength": "300"
     },
     {
-      "type": "ruler",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
         "x": 880,
-        "y": 500,
-        "exist": true
+        "y": 700
       },
       "p2": {
-        "type": 1,
         "x": 1380,
-        "y": 500,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "lens",
+      "type": "IdealLens",
       "p1": {
-        "type": 1,
-        "x": 1280,
-        "y": 420,
-        "exist": true
+        "x": 880,
+        "y": 420
       },
       "p2": {
-        "type": 1,
-        "x": 1280,
-        "y": 580,
-        "exist": true
+        "x": 880,
+        "y": 580
       },
-      "p": "100"
+      "focalLength": "300"
     },
     {
-      "type": "parallel",
+      "type": "Ruler",
       "p1": {
-        "type": 1,
-        "x": 780,
-        "y": 460,
-        "exist": true
+        "x": 880,
+        "y": 500
       },
       "p2": {
-        "type": 1,
-        "x": 780,
-        "y": 540,
-        "exist": true
+        "x": 1380,
+        "y": 500
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1280,
+        "y": 420
       },
-      "p": 0.5
+      "p2": {
+        "x": 1280,
+        "y": 580
+      },
+      "focalLength": "100"
     },
     {
-      "type": "text",
-      "x": 494,
-      "y": 512,
-      "p": "Ekspander wiązki Keplera"
+      "type": "Beam",
+      "p1": {
+        "x": 780,
+        "y": 460
+      },
+      "p2": {
+        "x": 780,
+        "y": 540
+      }
     },
     {
-      "type": "text",
-      "x": 494,
-      "y": 712,
-      "p": "Ekspander wiązki Galileusza"
+      "type": "TextLabel",
+      "x": 766.5714285714287,
+      "y": 511.9999999999999,
+      "text": "Ekspander wiązki Keplera",
+      "alignment": "right"
     },
     {
-      "type": "text",
-      "x": 671,
+      "type": "TextLabel",
+      "x": 764,
+      "y": 711.9999999999998,
+      "text": "Ekspander wiązki Galileusza",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 621.7368421052631,
       "y": 364,
-      "p": "W obu przypadkach odległość między soczewkami jest równa sumie ich ogniskowych"
+      "text": "W obu przypadkach odległość między soczewkami jest równa sumie ich ogniskowych"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 384.48120300751873,
+        "y": 389.5503759398497
+      },
+      "p4": {
+        "x": 1544.0601503759399,
+        "y": 812.8345864661654
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 843.0075187969925,
+        "y": 372.49774436090223
+      },
+      "p4": {
+        "x": 1299.639097744361,
+        "y": 829.1293233609022
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 3.4339115327994474,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1739.368421052632,
+  "height": 1003.0736842105264,
+  "rayModeDensity": 3.4339115327994474,
   "origin": {
-    "x": -82,
-    "y": -86
+    "x": -94.58646616541341,
+    "y": -99.65563909774437
   },
   "scale": 1,
-  "colorMode": false
+  "title": "Ekspandery wiązki"
 }

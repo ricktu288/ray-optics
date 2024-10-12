@@ -1,420 +1,289 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 20,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 20,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 1,
+      "brightness": 1,
       "wavelength": "460"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0.5,
       "wavelength": "620"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0.5,
       "wavelength": "540"
     },
     {
-      "type": "parallel",
+      "type": "Beam",
       "p1": {
-        "type": 1,
         "x": 140,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 140,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "p": 0,
+      "brightness": 0,
       "wavelength": 580
     },
     {
-      "type": "blackline",
+      "type": "Blocker",
       "p1": {
-        "type": 1,
         "x": 20,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 20,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "text",
-      "x": -218,
-      "y": 537,
-      "p": "\nBlue LED Backlight"
-    },
-    {
-      "type": "text",
-      "x": 48.33333333333326,
-      "y": 391.6666666666665,
-      "p": "Yellow Phosphor"
-    },
-    {
-      "type": "text",
-      "x": 390.26825396825393,
-      "y": 387.59682539682524,
-      "p": "Liquid Crystal"
-    },
-    {
-      "type": "text",
-      "x": 183.4666666666667,
-      "y": 746.5333333333335,
-      "p": "Light Filters"
-    },
-    {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 400,
-        "exist": true
+        "y": 400
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 500,
-        "exist": true
+        "y": 500
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": 620
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 500,
-        "exist": true
+        "y": 500
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 600,
-        "exist": true
+        "y": 600
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": "540"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 600,
-        "exist": true
+        "y": 600
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
-      "isDichroic": true,
-      "isDichroicFilter": false,
+      "filter": true,
       "wavelength": 460
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 820,
-        "y": 340,
-        "exist": true
+        "y": 340
       },
       "p2": {
-        "type": 1,
         "x": 720,
-        "y": 240,
-        "exist": true
-      },
-      "isDichroic": false,
-      "isDichroicFilter": false
-    },
-    {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 20,
-        "y": 340,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 20,
-        "y": 240,
-        "exist": true
+        "y": 240
       }
     },
     {
-      "type": "text",
-      "x": 384,
-      "y": 748,
-      "p": "Change the Rate of Transmission"
+      "type": "Blocker",
+      "p1": {
+        "x": 20,
+        "y": 340
+      },
+      "p2": {
+        "x": 20,
+        "y": 240
+      }
     },
     {
-      "type": "text",
-      "x": 385.4285714285714,
-      "y": 776.2857142857144,
-      "p": "To Create Any RGB Value"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 400
+      },
+      "p2": {
+        "x": 260,
+        "y": 500
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": 620
     },
     {
-      "type": "text",
-      "x": 20,
-      "y": 230.00000000000006,
-      "p": "Pixel as Visible to Viewer"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 500
+      },
+      "p2": {
+        "x": 260,
+        "y": 600
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": "540"
     },
     {
-      "type": "text",
-      "x": 846,
-      "y": 432.00000000000006,
-      "p": "Not part of LCD display"
+      "type": "Blocker",
+      "p1": {
+        "x": 260,
+        "y": 600
+      },
+      "p2": {
+        "x": 260,
+        "y": 700
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": 460
     },
     {
-      "type": "text",
-      "x": 846,
-      "y": 522,
-      "p": "appears to be mixed to our eyes"
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 400
+      },
+      "p2": {
+        "x": 460,
+        "y": 500
+      },
+      "transRatio": 1
     },
     {
-      "type": "text",
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 600
+      },
+      "p2": {
+        "x": 460,
+        "y": 500
+      },
+      "transRatio": 0.33
+    },
+    {
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 460,
+        "y": 700
+      },
+      "p2": {
+        "x": 460,
+        "y": 600
+      }
+    },
+    {
+      "type": "TextLabel",
       "x": 844,
       "y": 486.00000000000006,
-      "p": "Pixels are so small the light"
+      "text": "Pixels are so small the light\nappears to be mixed to our eyes"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 400,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 500,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": 620,
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 384,
+      "y": 748,
+      "text": "Change the Rate of Transmission\nTo Create Any RGB Value"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 500,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 600,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": "540",
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 7.684234851661699,
+      "y": 562.0760260946291,
+      "text": "Blue LED Backlight",
+      "alignment": "right"
     },
     {
-      "type": "blackline",
-      "p1": {
-        "type": 1,
-        "x": 260,
-        "y": 600,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 260,
-        "y": 700,
-        "exist": true
-      },
-      "isDichroic": true,
-      "wavelength": 460,
-      "isDichroicFilter": true,
-      "bandwidth": 10
+      "type": "TextLabel",
+      "x": 136.09942466453506,
+      "y": 391.6666666666665,
+      "text": "Yellow Phosphor",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 400,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 500,
-        "exist": true
-      },
-      "p": 1,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 455.46592181428963,
+      "y": 387.5968253968253,
+      "text": "Liquid Crystal",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 600,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 500,
-        "exist": true
-      },
-      "p": 0.33,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 256.18714234109103,
+      "y": 746.5333333333335,
+      "text": "Light Filters",
+      "alignment": "center"
     },
     {
-      "type": "beamsplitter",
-      "p1": {
-        "type": 1,
-        "x": 460,
-        "y": 700,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 460,
-        "y": 600,
-        "exist": true
-      },
-      "p": 0.5,
-      "isDichroic": false,
-      "isDichroicFilter": false
+      "type": "TextLabel",
+      "x": 20,
+      "y": 230.00000000000006,
+      "text": "Pixel as Visible to Viewer"
     },
     {
-      "type": "cropbox",
+      "type": "TextLabel",
+      "x": 846,
+      "y": 432.00000000000006,
+      "text": "Not part of LCD display"
+    },
+    {
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": -319.5999999999999,
-        "y": 157.59999999999997,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1263.300343994497,
-        "y": 157.59999999999997,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": -319.5999999999999,
-        "y": 821.1764534775474,
-        "exist": true
+        "y": 157.59999999999997
       },
       "p4": {
-        "type": 1,
         "x": 1263.300343994497,
-        "y": 821.1764534775474,
-        "exist": true
-      },
-      "width": 1140,
-      "format": "png"
+        "y": 821.1764534775474
+      }
     },
     {
-      "type": "cropbox",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": 13.200000000000045,
-        "y": 96.39999999999998,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 831.2,
-        "y": 96.39999999999998,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": 13.200000000000045,
-        "y": 914.4,
-        "exist": true
+        "y": 96.39999999999998
       },
       "p4": {
-        "type": 1,
         "x": 831.2,
-        "y": 914.4,
-        "exist": true
-      },
-      "width": 250,
-      "format": "png"
+        "y": 914.4
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 2.718281828459045,
-  "rayDensity_images": 1,
-  "showGrid": false,
-  "grid": false,
-  "lockobjs": false,
-  "gridSize": 20,
-  "observer": null,
+  "width": 2374.3505159917454,
+  "height": 1455.0266254747958,
+  "rayModeDensity": 2.718281828459045,
   "origin": {
-    "x": 289.71174364418977,
-    "y": 55.969728004652815
+    "x": 715.3250859986242,
+    "y": 238.1250859986243
   },
-  "scale": 0.398787270449597,
-  "width": 1200,
-  "height": 700,
-  "colorMode": true,
-  "symbolicGrin": false
+  "scale": 1,
+  "simulateColors": true,
+  "name": "{{gan-based-lcd-pixel}}",
+  "title": "LCD Pixel"
 }

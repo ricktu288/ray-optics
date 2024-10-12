@@ -1,24 +1,105 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "parallel",
+      "type": "Handle",
       "p1": {
-        "type": 1,
-        "x": 140,
-        "y": 420,
-        "exist": true
+        "x": 619.5752895752897,
+        "y": 598.6563706563707
       },
       "p2": {
-        "type": 1,
-        "x": 140,
-        "y": 500,
-        "exist": true
+        "x": 620.1666666666666,
+        "y": 460.5
       },
-      "p": 0.5
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 0,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 603,
+            "y": 361
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 1,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 637,
+            "y": 361
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 5,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 613,
+            "y": 460.5
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 2,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 628,
+            "y": 460.5
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 4,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 603,
+            "y": 560
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 3,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 637,
+            "y": 560
+          }
+        }
+      ],
+      "transformation": "xTranslation"
     },
     {
-      "type": "sphericallens",
+      "type": "Beam",
+      "p1": {
+        "x": 140,
+        "y": 420
+      },
+      "p2": {
+        "x": 140,
+        "y": 500
+      }
+    },
+    {
+      "type": "SphericalLens",
       "path": [
         {
           "x": 373,
@@ -51,11 +132,10 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.7
+      "refIndex": 1.7
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 854,
@@ -88,11 +168,10 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 1.82
+      "refIndex": 1.82
     },
     {
-      "type": "sphericallens",
+      "type": "SphericalLens",
       "path": [
         {
           "x": 603,
@@ -125,30 +204,53 @@
           "arc": true
         }
       ],
-      "notDone": false,
-      "p": 2.01
+      "refIndex": 2.01
     },
     {
-      "type": "text",
-      "x": 519,
-      "y": 614,
-      "p": "(Shift+drag the lens)"
+      "type": "TextLabel",
+      "x": 617.9729729729733,
+      "y": 639.2972972972968,
+      "text": "Drag to move the lens",
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
-      "type": "text",
-      "x": 567,
+      "type": "TextLabel",
+      "x": 622.4594594594595,
       "y": 326,
-      "p": "← zoom →"
+      "text": "← zoom →",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 97.25559845559837,
+        "y": 282.81544401544403
+      },
+      "p4": {
+        "x": 1056.2316602316603,
+        "y": 653.4555984555985
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 351.6602316602316,
+        "y": 198.29664702296276
+      },
+      "p4": {
+        "x": 892.9459459459459,
+        "y": 739.5823610229628
+      }
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 1438.4640926640927,
+  "height": 850.1281853281855,
   "origin": {
-    "x": 0,
-    "y": 0
+    "x": 142.4884169884171,
+    "y": -43.071428571428555
   },
   "scale": 1,
-  "colorMode": false
+  "name": "{{zoom-lens}}",
+  "title": "Zoom Lens"
 }

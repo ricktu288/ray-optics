@@ -1,170 +1,86 @@
 {
-  "version": 2,
+  "version": 5,
+  "name": "{{sea-mirage}}",
   "objs": [
     {
-      "type": "grin_circlelens",
+      "type": "CircleGrinGlass",
       "p1": {
-        "type": 1,
         "x": 720.607843137255,
-        "y": 813.5434173669469,
-        "exist": true
+        "y": 813.5434173669469
       },
       "p2": {
-        "type": 1,
         "x": 1263.0000000000002,
-        "y": 486.6666666666667,
-        "exist": true
+        "y": 486.6666666666667
       },
+      "refIndexFn": "1+e^{-\\frac{x^2+y^2}{200^2}}",
       "origin": {
-        "type": 1,
         "x": 727.0000000000001,
-        "y": 806.6666666666666,
-        "exist": true
-      },
-      "p": "1 + e ^ (-((x ^ 2 + y ^ 2) / 200 ^ 2))",
-      "p_tex": "1+e^{-\\frac{x^2+y^2}{200^2}}",
-      "p_der_x": "e ^ ((x ^ 2 + y ^ 2) * -1 / 40000) * x * -1 / 20000",
-      "p_der_x_tex": "\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{40000}\\right)}\\cdot x\\cdot-1}{20000}",
-      "p_der_y": "e ^ ((x ^ 2 + y ^ 2) * -1 / 40000) * y * -1 / 20000",
-      "p_der_y_tex": "\\frac{{ e}^{\\left(\\frac{\\left({ x}^{2}+{ y}^{2}\\right)\\cdot-1}{40000}\\right)}\\cdot y\\cdot-1}{20000}",
-      "step_size": 1,
-      "eps": 0.001
-    },
-    {
-      "type": "led",
-      "p1": {
-        "type": 1,
-        "x": 1113.226890756302,
-        "y": 798.067226890756,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1104.984149953943,
-        "y": 783.5590178012463,
-        "exist": true
-      },
-      "p": 20,
-      "symmetric": true,
-      "brightness": 3
-    },
-    {
-      "type": "blackcircle",
-      "p1": {
-        "type": 1,
-        "x": 723.464985994398,
-        "y": 813.5434173669469,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 935.0616246498602,
-        "y": 963.7955182072831,
-        "exist": true
+        "y": 806.6666666666666
       }
     },
     {
-      "type": "text",
-      "x": 583.9411764705883,
-      "y": 886.4005602240895,
-      "p": "Earth's surface",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "type": "AngleSource",
+      "p1": {
+        "x": 1113.226890756302,
+        "y": 798.067226890756
+      },
+      "p2": {
+        "x": 1104.984149953943,
+        "y": 783.5590178012463
+      },
+      "brightness": 3,
+      "emisAngle": 20
     },
     {
-      "type": "line",
+      "type": "CircleBlocker",
       "p1": {
-        "type": 1,
+        "x": 723.464985994398,
+        "y": 813.5434173669469
+      },
+      "p2": {
+        "x": 935.0616246498602,
+        "y": 963.7955182072831
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
         "x": 743.9666412019354,
-        "y": 837.4649859943974,
-        "exist": true
+        "y": 837.4649859943974
       },
       "p2": {
-        "type": 1,
         "x": 953.9411764705883,
-        "y": 709.7338935574228,
-        "exist": true
+        "y": 709.7338935574228
       },
-      "arrow1": true,
-      "arrow2": false
+      "arrow": true
     },
     {
-      "type": "line",
+      "type": "LineArrow",
       "p1": {
-        "type": 1,
         "x": 680.6078431372549,
-        "y": 836.4005602240894,
-        "exist": true
+        "y": 836.4005602240894
       },
       "p2": {
-        "type": 1,
         "x": 510.6078431372549,
-        "y": 668.0672268907562,
-        "exist": true
+        "y": 668.0672268907562
       },
-      "arrow1": true,
-      "arrow2": false
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 95.84593837535033,
-      "y": 926.4005602240891,
-      "p": "Atmosphere",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "text",
-      "x": 1308.9411764705883,
-      "y": 1041.4005602240893,
-      "p": "Architecture / Alpine",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "line",
+      "type": "LineArrow",
       "p1": {
-        "type": 1,
         "x": 1363.7030812324929,
-        "y": 982.1148459383752,
-        "exist": true
+        "y": 982.1148459383752
       },
       "p2": {
-        "type": 1,
         "x": 1136.5602240896355,
-        "y": 816.4005602240893,
-        "exist": true
+        "y": 816.4005602240893
       },
-      "arrow1": true,
-      "arrow2": false
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 489.85836185018997,
-      "y": 433.0375236878843,
-      "p": "Observer",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "drawing",
-      "points": [
+      "type": "Drawing",
+      "strokes": [
         [
           1006.5602240896355,
           768.067226890756,
@@ -367,158 +283,118 @@
           981.5602240896355,
           768.067226890756
         ]
-      ],
-      "notDone": false
+      ]
     },
     {
-      "type": "text",
-      "x": 183.22689075630274,
-      "y": 187.11484593837534,
-      "p": "Vacuum",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "text",
-      "x": 1217.2745098039218,
-      "y": 413.06722689075605,
-      "p": "Virtual image",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
-    },
-    {
-      "type": "line",
+      "type": "LineArrow",
       "p1": {
-        "type": 1,
         "x": 1211.571683218742,
-        "y": 427.74509803921524,
-        "exist": true
+        "y": 427.74509803921524
       },
       "p2": {
-        "type": 1,
         "x": 906.5716832187421,
-        "y": 509.41176470588186,
-        "exist": true
+        "y": 509.41176470588186
       },
-      "arrow1": true,
-      "arrow2": false
+      "arrow": true
     },
     {
-      "type": "text",
-      "x": 183.22689075630274,
+      "type": "TextLabel",
+      "x": 719.1758859926426,
+      "y": 886.4005602240895,
+      "text": "Earth's surface",
+      "fontSize": 45,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 106.57885182948164,
+      "y": 926.4005602240891,
+      "text": "Atmosphere",
+      "fontSize": 45
+    },
+    {
+      "type": "TextLabel",
+      "x": 1323.9672553063717,
+      "y": 1041.4005602240893,
+      "text": "Architecture / Alpine",
+      "fontSize": 45
+    },
+    {
+      "type": "TextLabel",
+      "x": 498.444692613495,
+      "y": 433.0375236878842,
+      "text": "Observer",
+      "fontSize": 45
+    },
+    {
+      "type": "TextLabel",
+      "x": 421.49756943801776,
+      "y": 187.11484593837534,
+      "text": "Vacuum",
+      "fontSize": 45,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1225.8608405672267,
+      "y": 423.8001403448874,
+      "text": "Virtual image",
+      "fontSize": 45
+    },
+    {
+      "type": "TextLabel",
+      "x": 361.3932540948824,
       "y": 1421.4005602240893,
-      "p": "Vacuum",
+      "text": "Vacuum",
       "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "alignment": "right"
     },
     {
-      "type": "text",
-      "x": 1206.0840336134452,
+      "type": "TextLabel",
+      "x": 1150.2728836519623,
       "y": 1404.2577030812322,
-      "p": "Vacuum",
-      "fontSize": 45,
-      "fontName": "Serif",
-      "fontStyle": "Normal",
-      "fontAlignment": "left",
-      "fontSmallCaps": false,
-      "fontAngle": 0
+      "text": "Vacuum",
+      "fontSize": 45
     },
     {
-      "type": "cropbox",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": -590.1349129092536,
-        "y": 135.31585691431232,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 2145.98974053277,
-        "y": 135.31585691431232,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": -590.1349129092536,
-        "y": 1491.0809941816522,
-        "exist": true
+        "y": 135.31585691431232
       },
       "p4": {
-        "type": 1,
         "x": 2145.98974053277,
-        "y": 1491.0809941816522,
-        "exist": true
-      },
-      "width": 1140,
-      "format": "png"
+        "y": 1491.0809941816522
+      }
     },
     {
-      "type": "cropbox",
+      "type": "CropBox",
       "p1": {
-        "type": 1,
         "x": 478.9190402567574,
-        "y": 369.04100901711183,
-        "exist": true
-      },
-      "p2": {
-        "type": 1,
-        "x": 1134.9190402567574,
-        "y": 369.04100901711183,
-        "exist": true
-      },
-      "p3": {
-        "type": 1,
-        "x": 478.9190402567574,
-        "y": 1025.0410090171117,
-        "exist": true
+        "y": 369.04100901711183
       },
       "p4": {
-        "type": 1,
         "x": 1134.9190402567574,
-        "y": 1025.0410090171117,
-        "exist": true
-      },
-      "width": 500,
-      "format": "png"
+        "y": 1025.0410090171117
+      }
     }
   ],
+  "width": 4104.1869801630355,
+  "height": 2723.827463988352,
   "mode": "observer",
-  "rayDensity_light": 0.33147595696352583,
-  "rayDensity_images": 5.405948925141168,
-  "showGrid": false,
-  "grid": false,
-  "lockobjs": false,
-  "gridSize": 20,
+  "rayModeDensity": 0.33147595696352583,
+  "imageModeDensity": 5.405948925141168,
   "observer": {
-    "type": 5,
     "c": {
-      "type": 1,
       "x": 554.512605042017,
-      "y": 475.77871148459394,
-      "exist": true
+      "y": 475.77871148459394
     },
-    "r": 20,
-    "exist": true
+    "r": 20
   },
   "origin": {
-    "x": 315.3973582750779,
-    "y": 116.19277957580684
+    "x": 1274.1660762697595,
+    "y": 548.7153064461936
   },
-  "scale": 0.32609971327522275,
-  "width": 1200,
-  "height": 700,
-  "colorMode": false,
-  "symbolicGrin": false
+  "scale": 1,
+  "title": "Sea mirage"
 }

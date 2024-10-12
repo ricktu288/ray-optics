@@ -1,287 +1,237 @@
 {
-  "version": 2,
+  "version": 5,
   "objs": [
     {
-      "type": "curvedmirror",
+      "type": "CustomMirror",
       "p1": {
-        "type": 1,
         "x": 655,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p2": {
-        "type": 1,
         "x": 1655,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
-      "p": "\\frac{4}{5}\\cdot\\sqrt{1-x^2}"
+      "eqn": "\\frac{4}{5}\\cdot\\sqrt{1-x^2}"
     },
     {
-      "type": "curvedmirror",
+      "type": "CustomMirror",
       "p1": {
-        "type": 1,
         "x": 1655,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 655,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
-      "p": "\\frac{4}{5}\\cdot\\sqrt{1-x^2}"
+      "eqn": "\\frac{4}{5}\\cdot\\sqrt{1-x^2}"
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1655,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p2": {
-        "type": 1,
         "x": 1655,
-        "y": 660,
-        "exist": true
+        "y": 660
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1455,
-        "y": 660,
-        "exist": true
+        "y": 660
       },
       "p2": {
-        "type": 1,
         "x": 1655,
-        "y": 660,
-        "exist": true
+        "y": 660
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1455,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p2": {
-        "type": 1,
         "x": 1455,
-        "y": 660,
-        "exist": true
+        "y": 660
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1655,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 1655,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1455,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
       "p2": {
-        "type": 1,
         "x": 1655,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 1455,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 1455,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 855,
-        "y": 660,
-        "exist": true
+        "y": 660
       },
       "p2": {
-        "type": 1,
         "x": 855,
-        "y": 580,
-        "exist": true
+        "y": 580
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 655,
-        "y": 660,
-        "exist": true
+        "y": 660
       },
       "p2": {
-        "type": 1,
         "x": 855,
-        "y": 660,
-        "exist": true
+        "y": 660
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 655,
-        "y": 660,
-        "exist": true
+        "y": 660
       },
       "p2": {
-        "type": 1,
         "x": 655,
-        "y": 580,
-        "exist": true
+        "y": 580
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 655,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
       "p2": {
-        "type": 1,
         "x": 655,
-        "y": 780,
-        "exist": true
+        "y": 780
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 855,
-        "y": 700,
-        "exist": true
+        "y": 700
       },
       "p2": {
-        "type": 1,
         "x": 655,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "mirror",
+      "type": "Mirror",
       "p1": {
-        "type": 1,
         "x": 855,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 855,
-        "y": 700,
-        "exist": true
+        "y": 700
       }
     },
     {
-      "type": "arcmirror",
+      "type": "ArcMirror",
       "p1": {
-        "type": 1,
         "x": 855,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 855,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p3": {
-        "type": 1,
         "x": 955,
-        "y": 680,
-        "exist": true
+        "y": 680
       }
     },
     {
-      "type": "arcmirror",
+      "type": "ArcMirror",
       "p1": {
-        "type": 1,
         "x": 1455,
-        "y": 780,
-        "exist": true
+        "y": 780
       },
       "p2": {
-        "type": 1,
         "x": 1455,
-        "y": 580,
-        "exist": true
+        "y": 580
       },
       "p3": {
-        "type": 1,
         "x": 1355,
-        "y": 680,
-        "exist": true
+        "y": 680
       }
     },
     {
-      "type": "radiant",
+      "type": "PointSource",
       "x": 733,
       "y": 620,
-      "p": "0.02"
+      "brightness": "0.02"
     },
     {
-      "type": "text",
-      "x": 831.0000000000005,
-      "y": 147.99999999999994,
-      "p": "Ostrzeżenie: z powodu błędu numerycznego po pewnym czasie może nadal świecić."
+      "type": "TextLabel",
+      "x": 1127.022222222223,
+      "y": 105.84444444444438,
+      "text": "Bez względu na to, gdzie umieścisz źródło punktowe, nie oświetli ono całego pomieszczenia.\nOstrzeżenie: z powodu błędu numerycznego po pewnym czasie może nadal świecić.",
+      "alignment": "center"
     },
     {
-      "type": "text",
-      "x": 801.2222222222226,
-      "y": 101.44444444444434,
-      "p": "Bez względu na to, gdzie umieścisz źródło punktowe, nie oświetli ono całego pomieszczenia."
+      "type": "CropBox",
+      "p1": {
+        "x": 109.16464646464664,
+        "y": 35.972929292929166
+      },
+      "p4": {
+        "x": 2182.764646464645,
+        "y": 1212.092929292929
+      },
+      "rayCountLimit": 2500
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 582.5646464646468,
+        "y": 40.292929292929244
+      },
+      "p4": {
+        "x": 1727.3646464646467,
+        "y": 1185.0929292929293
+      },
+      "rayCountLimit": 2500
     }
   ],
-  "mode": "light",
-  "rayDensity_light": 0.1,
-  "rayDensity_images": 1,
-  "observer": null,
+  "width": 3110.399999999998,
+  "height": 2212.919999999999,
   "origin": {
-    "x": 12.017676767676448,
-    "y": 171.55353535353544
+    "x": 409.235353535353,
+    "y": 482.42707070707047
   },
-  "scale": 0.5,
-  "colorMode": false
+  "scale": 1,
+  "name": "{{penrose-unilluminable-room}}",
+  "title": "Nieoświetlony pokój Penrose'a"
 }

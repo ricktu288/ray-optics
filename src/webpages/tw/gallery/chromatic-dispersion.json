@@ -1,875 +1,365 @@
 {
-    "version": 2,
-    "objs": [
+  "version": 5,
+  "objs": [
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 398.882349951634,
+        "y": 350
+      },
+      "p2": {
+        "x": 398.32123046391723,
+        "y": 420.7118902106877
+      },
+      "controlPoints": [
         {
-            "type": "handle",
-            "controlPoints": [
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 336.2257681861569,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 369.2729584346481,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 369.2729584346481,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.34",
-                            "wavelength": "660"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 3,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 369.2729584346481,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 336.2257681861569,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 369.2729584346481,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 369.2729584346481,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.34",
-                            "wavelength": "660"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 3,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 369.2729584346481,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 357.924255612077,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 378.9557157777377,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 378.9557157777377,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.3,
-                            "wavelength": "618"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 4,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 378.9557157777377,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 357.924255612077,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 378.9557157777377,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 378.9557157777377,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.3,
-                            "wavelength": "618"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 4,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 378.9557157777377,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 379.6227430379971,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 388.6384731208275,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 388.6384731208275,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.27,
-                            "wavelength": "576"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 5,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 388.6384731208275,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 379.6227430379971,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 388.6384731208275,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 388.6384731208275,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.27,
-                            "wavelength": "576"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 5,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 388.6384731208275,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 401.3212304639173,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 398.3212304639173,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 398.3212304639173,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.34,
-                            "wavelength": "534"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 6,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 398.3212304639173,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 401.3212304639173,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 398.3212304639173,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 398.3212304639173,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.34,
-                            "wavelength": "534"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 6,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 398.3212304639173,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 423.01971788983747,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 408.00398780700704,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 408.00398780700704,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.36,
-                            "wavelength": "492"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 7,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 408.00398780700704,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 423.01971788983747,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 408.00398780700704,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 408.00398780700704,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": 0.36,
-                            "wavelength": "492"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 7,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 408.00398780700704,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 444.7182053157576,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 417.6867451500969,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 417.6867451500969,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.5",
-                            "wavelength": "450"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 8,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 417.6867451500969,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 444.7182053157576,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 417.6867451500969,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 417.6867451500969,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.5",
-                            "wavelength": "450"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 8,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 417.6867451500969,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 466.41669274167765,
-                            "y": 409.8626464977272,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 427.36950249318636,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 427.36950249318636,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.5",
-                            "wavelength": "408"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 2,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 427.36950249318636,
-                        "y": 415.87051153914274,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 466.41669274167765,
-                            "y": 431.56113392364824,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "parallel",
-                            "p1": {
-                                "type": 1,
-                                "x": 427.36950249318636,
-                                "y": 415.87051153914274,
-                                "exist": true
-                            },
-                            "p2": {
-                                "type": 1,
-                                "x": 427.36950249318636,
-                                "y": 425.5532688822327,
-                                "exist": true
-                            },
-                            "p": "0.5",
-                            "wavelength": "408"
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 2,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 427.36950249318636,
-                        "y": 425.5532688822327,
-                        "exist": true
-                    }
-                }
-            ],
-            "notDone": false,
-            "p1": {
-                "type": 1,
-                "x": 398.882349951634,
-                "y": 362.6760243257262,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 398.32123046391723,
-                "y": 420.7118902106877,
-                "exist": true
-            }
+          "newPoint": {
+            "x": 369.2729584346481,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 3,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "handle",
-            "controlPoints": [
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "index": 2,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 595.1093957388109,
-                            "y": 469.5477030005976,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "refractor",
-                            "path": [
-                                {
-                                    "x": 622.4892395392826,
-                                    "y": 377.81460660753737,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 686.9401661077047,
-                                    "y": 498.12164619279156,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 550.2995322873085,
-                                    "y": 493.93205013002427,
-                                    "arc": false
-                                }
-                            ],
-                            "notDone": false,
-                            "p": 1.5
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 9,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 550.2995322873085,
-                        "y": 493.93205013002427,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "index": 0,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 663.1259417574252,
-                            "y": 350.93756856419634,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "refractor",
-                            "path": [
-                                {
-                                    "x": 622.4892395392826,
-                                    "y": 377.81460660753737,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 686.9401661077047,
-                                    "y": 498.12164619279156,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 550.2995322873085,
-                                    "y": 493.93205013002427,
-                                    "arc": false
-                                }
-                            ],
-                            "notDone": false,
-                            "p": 1.5
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 9,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 622.4892395392826,
-                        "y": 377.81460660753737,
-                        "exist": true
-                    }
-                },
-                {
-                    "mousePart": {
-                        "part": 1,
-                        "index": 1,
-                        "targetPoint": {
-                            "type": 1,
-                            "x": 731.8126015299174,
-                            "y": 468.8775892467196,
-                            "exist": true
-                        },
-                        "originalObj": {
-                            "type": "refractor",
-                            "path": [
-                                {
-                                    "x": 622.4892395392826,
-                                    "y": 377.81460660753737,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 686.9401661077047,
-                                    "y": 498.12164619279156,
-                                    "arc": false
-                                },
-                                {
-                                    "x": 550.2995322873085,
-                                    "y": 493.93205013002427,
-                                    "arc": false
-                                }
-                            ],
-                            "notDone": false,
-                            "p": 1.5
-                        },
-                        "hasDuplicated": false,
-                        "byHandle": true
-                    },
-                    "targetObj_index": 9,
-                    "newPoint": {
-                        "type": 1,
-                        "x": 686.9401661077047,
-                        "y": 498.12164619279156,
-                        "exist": true
-                    }
-                }
-            ],
-            "notDone": false,
-            "p1": {
-                "type": 1,
-                "x": 472.63960830860117,
-                "y": 536.0082318045681,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 619.9096459780985,
-                "y": 456.622767643451,
-                "exist": true
-            }
+          "newPoint": {
+            "x": 369.2729584346481,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 3,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 427.36950249318636,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 427.36950249318636,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.4",
-            "wavelength": "420"
+          "newPoint": {
+            "x": 378.9557157777377,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 4,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 369.2729584346481,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 369.2729584346481,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.45",
-            "wavelength": "620"
+          "newPoint": {
+            "x": 378.9557157777377,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 4,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 378.9557157777377,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 378.9557157777377,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.2",
-            "wavelength": "600"
+          "newPoint": {
+            "x": 388.6384731208275,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 5,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 388.6384731208275,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 388.6384731208275,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.3",
-            "wavelength": "580"
+          "newPoint": {
+            "x": 388.6384731208275,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 5,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 398.3212304639173,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 398.3212304639173,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.45",
-            "wavelength": "540"
+          "newPoint": {
+            "x": 398.3212304639173,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 6,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 408.00398780700704,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 408.00398780700704,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.3",
-            "wavelength": "500"
+          "newPoint": {
+            "x": 398.3212304639173,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 6,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "parallel",
-            "p1": {
-                "type": 1,
-                "x": 417.6867451500969,
-                "y": 415.87051153914274,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 417.6867451500969,
-                "y": 425.5532688822327,
-                "exist": true
-            },
-            "p": "0.45",
-            "wavelength": "460"
+          "newPoint": {
+            "x": 408.00398780700704,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 7,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "refractor",
-            "path": [
-                {
-                    "x": 622.4892395392826,
-                    "y": 377.81460660753737,
-                    "arc": false
-                },
-                {
-                    "x": 686.9401661077047,
-                    "y": 498.12164619279156,
-                    "arc": false
-                },
-                {
-                    "x": 550.2995322873085,
-                    "y": 493.93205013002427,
-                    "arc": false
-                }
-            ],
-            "notDone": false,
-            "p": 1.5
+          "newPoint": {
+            "x": 408.00398780700704,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 7,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "text",
-            "x": 392.76306588189124,
-            "y": 519.0931600966793,
-            "p": "以旋轉棱鏡"
+          "newPoint": {
+            "x": 417.6867451500969,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 8,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "text",
-            "x": 379.21841996429373,
-            "y": 490.2770019305709,
-            "p": "Ctrl+拖曳此處"
+          "newPoint": {
+            "x": 417.6867451500969,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 8,
+          "dragContext": {
+            "part": 2
+          }
         },
         {
-            "type": "text",
-            "x": 316.6184753565177,
-            "y": 308.7811766103193,
-            "p": "Ctrl+Shift+拖曳此處"
+          "newPoint": {
+            "x": 427.36950249318636,
+            "y": 415.87051153914274
+          },
+          "targetObjIndex": 2,
+          "dragContext": {
+            "part": 1
+          }
         },
         {
-            "type": "text",
-            "x": 335.25049198853475,
-            "y": 341.7874136165564,
-            "p": "以調整光束寬度"
-        },
-        {
-            "type": "text",
-            "x": 449.3603452235656,
-            "y": 546.2134665740972,
-            "p": "↳"
-        },
-        {
-            "type": "text",
-            "x": 403.6216928016392,
-            "y": 373.45150121426707,
-            "p": "↲"
+          "newPoint": {
+            "x": 427.36950249318636,
+            "y": 425.5532688822327
+          },
+          "targetObjIndex": 2,
+          "dragContext": {
+            "part": 2
+          }
         }
-    ],
-    "mode": "light",
-    "rayDensity_light": 1,
-    "rayDensity_images": 1,
-    "observer": null,
-    "origin": {
-        "x": -130.59923747258114,
-        "y": -209.5114687187716
+      ],
+      "transformation": "scaling"
     },
-    "scale": 1.5,
-    "colorMode": true
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 530,
+        "y": 505
+      },
+      "p2": {
+        "x": 619.9096459780985,
+        "y": 456.622767643451
+      },
+      "controlPoints": [
+        {
+          "newPoint": {
+            "x": 550.2995322873085,
+            "y": 493.93205013002427
+          },
+          "targetObjIndex": 9,
+          "dragContext": {
+            "part": 1,
+            "index": 2
+          }
+        },
+        {
+          "newPoint": {
+            "x": 622.4892395392826,
+            "y": 377.81460660753737
+          },
+          "targetObjIndex": 9,
+          "dragContext": {
+            "part": 1,
+            "index": 0
+          }
+        },
+        {
+          "newPoint": {
+            "x": 686.9401661077047,
+            "y": 498.12164619279156
+          },
+          "targetObjIndex": 9,
+          "dragContext": {
+            "part": 1,
+            "index": 1
+          }
+        }
+      ],
+      "transformation": "rotation"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 427.36950249318636,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 427.36950249318636,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.4",
+      "wavelength": "420"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 369.2729584346481,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 369.2729584346481,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.45",
+      "wavelength": "620"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 378.9557157777377,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 378.9557157777377,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.2",
+      "wavelength": "600"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 388.6384731208275,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 388.6384731208275,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.3",
+      "wavelength": "580"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 398.3212304639173,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 398.3212304639173,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.45",
+      "wavelength": "540"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 408.00398780700704,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 408.00398780700704,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.3",
+      "wavelength": "500"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 417.6867451500969,
+        "y": 415.87051153914274
+      },
+      "p2": {
+        "x": 417.6867451500969,
+        "y": 425.5532688822327
+      },
+      "brightness": "0.45",
+      "wavelength": "460"
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 622.4892395392826,
+          "y": 377.81460660753737,
+          "arc": false
+        },
+        {
+          "x": 686.9401661077047,
+          "y": 498.12164619279156,
+          "arc": false
+        },
+        {
+          "x": 550.2995322873085,
+          "y": 493.93205013002427,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "TextLabel",
+      "x": 419.47561821366054,
+      "y": 337.8461116752542,
+      "text": "拖曳此處\n可調整光束寬度",
+      "fontSize": 18
+    },
+    {
+      "type": "TextLabel",
+      "x": 502.9456926915665,
+      "y": 502.1990798526488,
+      "text": "拖曳此處\n可旋轉棱鏡",
+      "fontSize": 18,
+      "alignment": "right"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 264.89949164838754,
+        "y": 289.88859819346663
+      },
+      "p4": {
+        "x": 817.9904007392967,
+        "y": 585.5249618298303
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 546.354037102933,
+        "y": 368.43405273892125
+      },
+      "p4": {
+        "x": 746.354037102933,
+        "y": 568.4340527389213
+      }
+    }
+  ],
+  "width": 829.6363636363637,
+  "height": 572.1818181818182,
+  "rayModeDensity": 1,
+  "origin": {
+    "x": -126.62676437566026,
+    "y": -151.61587092073935
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "name": "{{chromatic-dispersion}}",
+  "title": "色散"
 }

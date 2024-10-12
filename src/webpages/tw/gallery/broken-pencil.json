@@ -1,159 +1,171 @@
 {
-    "version": 2,
-    "objs": [
+  "version": 5,
+  "objs": [
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 760,
+        "y": 500
+      },
+      "p2": {
+        "x": 760,
+        "y": 660
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
         {
-            "type": "lens",
-            "p1": {
-                "type": 1,
-                "x": 760,
-                "y": 500,
-                "exist": true
-            },
-            "p2": {
-                "type": 1,
-                "x": 760,
-                "y": 660,
-                "exist": true
-            },
-            "p": 100
+          "x": 640,
+          "y": 580,
+          "arc": false
         },
         {
-            "type": "refractor",
-            "path": [
-                {
-                    "x": 640,
-                    "y": 580,
-                    "arc": false
-                },
-                {
-                    "x": 640,
-                    "y": 860,
-                    "arc": false
-                },
-                {
-                    "x": 160,
-                    "y": 860,
-                    "arc": false
-                },
-                {
-                    "x": 160,
-                    "y": 580,
-                    "arc": false
-                }
-            ],
-            "notDone": false,
-            "p": 1.44
+          "x": 640,
+          "y": 860,
+          "arc": false
         },
         {
-            "type": "radiant",
-            "x": 480,
-            "y": 540,
-            "p": "0.5"
+          "x": 160,
+          "y": 860,
+          "arc": false
         },
         {
-            "type": "radiant",
-            "x": 360,
-            "y": 600,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 320,
-            "y": 620,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 200,
-            "y": 680,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 440,
-            "y": 560,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 520,
-            "y": 520,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 280,
-            "y": 640,
-            "p": "0.5"
-        },
-        {
-            "type": "text",
-            "x": 311.34000000000003,
-            "y": 832.3499999999999,
-            "p": "電介質材料"
-        },
-        {
-            "type": "text",
-            "x": 830.0100000000001,
-            "y": 493.2399999999999,
-            "p": "視網膜上的影像"
-        },
-        {
-            "type": "text",
-            "x": 380,
-            "y": 460,
-            "p": "原始鉛筆（綠色）"
-        },
-        {
-            "type": "radiant",
-            "x": 560,
-            "y": 500,
-            "p": "0.5"
-        },
-        {
-            "type": "radiant",
-            "x": 240,
-            "y": 660,
-            "p": "0.5"
-        },
-        {
-            "type": "text",
-            "x": 830.0100000000001,
-            "y": 469.2399999999999,
-            "p": "斷裂的鉛筆（黃色）"
-        },
-        {
-            "type": "text",
-            "x": 696.3,
-            "y": 695.9,
-            "p": "觀察者的眼睛"
-        },
-        {
-            "type": "text",
-            "x": 8.654838709677364,
-            "y": 563.4709677419356,
-            "p": "忽略橙色的正方形！"
+          "x": 160,
+          "y": 580,
+          "arc": false
         }
-    ],
-    "mode": "images",
-    "rayDensity_light": 0.1,
-    "rayDensity_images": 0.21709939257630184,
-    "observer": {
-        "type": 5,
-        "c": {
-            "type": 1,
-            "x": 1427.1100000000001,
-            "y": 659.45,
-            "exist": true
-        },
-        "r": 20,
-        "exist": true
+      ],
+      "refIndex": 1.44
     },
-    "origin": {
-        "x": 323.4722222222222,
-        "y": 180.13888888888883
+    {
+      "type": "PointSource",
+      "x": 480,
+      "y": 540,
+      "brightness": "0.5"
     },
-    "scale": 0.8611111111111112,
-    "colorMode": false,
-    "backgroundImage": "broken-pencil-background.png"
+    {
+      "type": "PointSource",
+      "x": 360,
+      "y": 600,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 320,
+      "y": 620,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 200,
+      "y": 680,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 440,
+      "y": 560,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 520,
+      "y": 520,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 280,
+      "y": 640,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 560,
+      "y": 500,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 240,
+      "y": 660,
+      "brightness": "0.5"
+    },
+    {
+      "type": "TextLabel",
+      "x": 830.0100000000001,
+      "y": 469.2399999999999,
+      "text": "斷裂的鉛筆（黃色）\n視網膜上的影像"
+    },
+    {
+      "type": "TextLabel",
+      "x": 397.6456768558952,
+      "y": 830.9351528384279,
+      "text": "電介質材料",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 544.1222707423581,
+      "y": 460,
+      "text": "原始鉛筆（綠色）",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 764.2126637554585,
+      "y": 695.9000000000001,
+      "text": "觀察者的眼睛",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 172.77710945203543,
+      "y": 560.6412734187915,
+      "text": "忽略橙色的正方形！",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -205.4527398225102,
+        "y": -26.81518523735727
+      },
+      "p4": {
+        "x": 1237.6913649809833,
+        "y": 886.3271728412453
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 514.5897480802392,
+        "y": 262.32221591925776
+      },
+      "p4": {
+        "x": 1178.2677841949574,
+        "y": 926.0002519192578
+      }
+    }
+  ],
+  "width": 2164.71615720524,
+  "height": 1634.7144104803492,
+  "mode": "images",
+  "imageModeDensity": 0.21709939257630184,
+  "observer": {
+    "c": {
+      "x": 1427.1100000000001,
+      "y": 659.45
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": 566.2387660233836,
+    "y": 387.6012114382306
+  },
+  "scale": 1,
+  "name": "{{broken-pencil}}",
+  "backgroundImage": "broken-pencil-background.png",
+  "title": "斷裂的鉛筆"
 }
