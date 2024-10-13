@@ -825,7 +825,7 @@ class Simulator {
       B = 1 - Math.exp(-B);
     }
 
-    return "rgb(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%)";
+    return "rgb(" + Math.round(R * 255) + "," + Math.round(G * 255) + "," + Math.round(B * 255) + ")";
 
   }
 }

@@ -13,6 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcairo2-dev \
+            libjpeg-dev \
+            libpango1.0-dev \
+            libgif-dev \
+            build-essential \
+            g++ \
+            fonts-noto-cjk \
+            fonts-dejavu
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

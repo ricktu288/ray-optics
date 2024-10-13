@@ -56,7 +56,7 @@ class BaseGlass extends BaseSceneObj {
       ctx.globalCompositeOperation = 'lighter';
       var alpha = Math.log(n) / Math.log(1.5) * 0.2;
       if (!canvasRenderer.isSVG) {
-        ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
+        ctx.fillStyle = "rgb(" + Math.round(alpha * 255) + "," + Math.round(alpha * 255) + "," + Math.round(alpha * 255) + ")";
       } else {
         ctx.globalAlpha = alpha;
         ctx.fillStyle = "white";
