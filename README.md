@@ -59,17 +59,25 @@ npm run build
 ```
 After that, the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website will be in the `dist` folder. For example, you can open the `dist/simulator/index.html` file in your browser to run the simulator.
 
+If an error occurs during the installation, some common reasons are:
+- The version of Node.js is too old. You can update Node.js to version 18 or later.
+- Some system dependencies for node-canvas are missing. You can find the instructions for installing the dependencies in the [node-canvas repository](https://github.com/Automattic/node-canvas).
+
+The full build may takes about half an hour to complete due to the generation of the large numbers of images for the gallery. See the following section if you only want to build the simulator.
+
 ## Development
 
 For development, you don't need to build the entire website every time some code is changed. Instead, you can run the following command to start a local server:
 ```bash
 npm run start
 ```
-which serves the simulator app at `http://localhost:8080`, and is automatically reloaded when some code for the simulator is modified. However, this does not include other part of this project such as the home pages, gallery and documentation. The separate build commands are available for these pages:
+which serves the simulator web app at `http://localhost:8080`, and is automatically reloaded when some code for the simulator is modified. However, this does not include other part of this project such as the home pages, gallery and documentation. The separate build commands are available for these pages:
 ```bash
 npm run build-translations # build translations
-npm run build-webpages # build home pages, about pages, gallery, and modules pages.
-npm run build-simulator # build simulator (unlike npm run start, this command builds the simulator in production mode)
+npm run build-webpages # build home pages, about pages, gallery (not including image generation), and modules pages.
+npm run build-node # build the node module version of the simulator, which is required for the image generation.
+npm run build-images # generate images for the gallery, which may take a long time.
+npm run build-simulator # build the web app version of simulator (unlike npm run start, this command builds the simulator in production mode)
 npm run build-docs # build documentation
 ```
 Note that `npm run build` is equivalent to running all the above commands.
@@ -83,10 +91,25 @@ npm run sync-translations
 
 - `src` contains the source code for the project.
 - `src/simulator` contains the source code for the simulator app. To understand the structure of the code, see the [documentation](https://phydemo.app/ray-optics/docs/) for more information. The documentation is generated from the jsdoc comments in the code.
+- `src/simulator-node` contains the source code for the node module version of the simulator.
 - `src/webpages` contains the code for the home pages, about pages, templates for gallery and module pages, and the JSON files for the gallery and modules.
 - `locales` contains the translations for the project. Currently it is only automatically built for the simulator app. The translations for the webpages, gallery, and modules pages are manually built.
 - `scripts` contains the scripts for custom build steps.
 - `dist` contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
+- `dist-node` contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+
+## Use this project as a Node Module
+
+The simulator can be used as a node module in your own project. The node module version of the simulator is built with the following command:
+```bash
+npm run build-node
+```
+After that, you can use the simulator in your own project by importing the module:
+```javascript
+const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/dist-node/main.js');
+```
+
+See the [documentation](https://phydemo.app/ray-optics/docs/) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.js).
 
 
 # License
