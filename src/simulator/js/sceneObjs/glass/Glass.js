@@ -434,7 +434,7 @@ class Glass extends BaseGlass {
     var p2;
     var p3;
     var center;
-    var ray2 = geometry.line(ray.p1, geometry.point(ray.p2.x + Math.random() * 1e-5, ray.p2.y + Math.random() * 1e-5)); // The ray to test the inside/outside (the test ray)
+    var ray2 = geometry.line(ray.p1, geometry.point(ray.p2.x + this.scene.rng() * 1e-5, ray.p2.y + this.scene.rng() * 1e-5)); // The ray to test the inside/outside (the test ray)
     var ray_intersect_count = 0; // The intersection count (odd means from outside)
 
     for (var i = 0; i < this.path.length; i++) {

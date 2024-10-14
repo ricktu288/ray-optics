@@ -151,7 +151,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
 
   getRandom(i) {
     for (let j = this.randomNumbers.length; j <= i; j++) {
-      this.randomNumbers.push(Math.random());
+      this.randomNumbers.push(this.scene.rng());
     }
     return this.randomNumbers[i];
   }

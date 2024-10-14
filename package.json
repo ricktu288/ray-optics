@@ -19,6 +19,7 @@
     "json-url": "^3.1.0",
     "mathjs": "^13.1.1",
     "mathquill": "github:Jutanium/mathquill-webpack",
+    "seedrandom": "^3.0.5",
     "tex-math-parser": "^2.0.4"
   },
   "devDependencies": {

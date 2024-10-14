@@ -462,6 +462,8 @@ class ModuleObj extends BaseSceneObj {
       fullParams['x_' + (i+1)] = this.points[i].x;
       fullParams['y_' + (i+1)] = this.points[i].y;
     }
+
+    fullParams['random'] = this.scene.rng;
     
     this.error = null;
 

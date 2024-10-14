@@ -5,6 +5,7 @@
 import * as sceneObjs from './sceneObjs.js';
 import { versionUpdate } from './versionUpdate.js';
 import { getMsg } from './translations.js';
+import seedrandom from 'seedrandom';
 
 /**
  * The version of the JSON data format of the scene, which matches the major version number of the app starting from version 5.0.
@@ -40,6 +41,8 @@ export const DATA_VERSION = 5;
  * @property {number} height - The height (in CSS pixels) of the viewport.
  * @property {boolean} simulateColors - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.)
  * @property {boolean} symbolicBodyMerging - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
+ * @property {string|null} randomSeed - The seed for the random number generator used in the simulation, null if using randomly generated seed. Using a seed allows the simulation to be deterministic for the same version of this app when randomness is used. However, reproducibility is only guaranteed if the scene is just loaded (that is, no other editing has been done on the scene). Also, reproducibility is not guaranteed across different versions of the app.
+ * @property {function} rng - The random number generator.
  * @property {Object|null} backgroundImage - The background image of the scene, null if not set.
  */
 class Scene {
@@ -61,13 +64,15 @@ class Scene {
     width: 1500,
     height: 900,
     simulateColors: false,
-    symbolicBodyMerging: false
+    symbolicBodyMerging: false,
+    randomSeed: null
   };
 
   constructor() {
     this.backgroundImage = null;
     this.error = null;
     this.warning = null;
+    this.rng = new seedrandom(new Date().getTime().toString());
     this.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
   }
 
@@ -170,6 +175,13 @@ class Scene {
       this.origin.y = jsonData.origin.y / rescaleFactor;
       this.width = originalWidth;
       this.height = originalHeight;
+
+      // Load the random number generator.
+      if (this.randomSeed) {
+        this.rng = new seedrandom(this.randomSeed);
+      } else {
+        this.rng = new seedrandom(new Date().getTime().toString());
+      }
 
       // Load the objects in the scene.
       this.objs = jsonData.objs.map(objData =>
