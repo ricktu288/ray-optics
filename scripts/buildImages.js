@@ -3,9 +3,10 @@ const path = require('path');
 const { Scene, Simulator, sceneObjs, geometry } = require(path.join(__dirname, '../dist-node/main.js'));
 
 const { createCanvas, loadImage } = require('canvas');
-const { config } = require('process');
+const sharp = require('sharp');
+const { info } = require('console');
 
-const inputDir = path.join(__dirname, '../src/webpages/tw/gallery/');
+const inputDir = path.join(__dirname, '../src/webpages/gallery/');
 const outputDir = path.join(__dirname, '../dist/img_test/');
 
 // If the output directory does not exist, create it
@@ -97,10 +98,32 @@ function exportImageFromCropBox(cropBox, filename, callback) {
     ctxFinal.drawImage(canvasAboveLight, 0, 0);
 
     // Save the final image as jpg
-    const out = fs.createWriteStream(outputDir + filename);
-    const stream = canvasFinal.createJPEGStream({ quality: 0.75 });
-    stream.pipe(out);
-    out.on('finish', callback);
+    //const out = fs.createWriteStream(outputDir + filename);
+    //const stream = canvasFinal.createJPEGStream({ quality: 0.85 });
+    //stream.pipe(out);
+    //out.on('finish', callback);
+
+    // Save the final image as webp
+    /*
+    sharp(canvasFinal.toBuffer())
+      .webp()
+      .toFile(outputDir + filename, (err, info) => {
+        if (err) {
+          console.error(err);
+        }
+        callback();
+      });
+    */
+
+    // Save the final image as avif
+    sharp(canvasFinal.toBuffer())
+      .avif()
+      .toFile(outputDir + filename, (err, info) => {
+        if (err) {
+          console.error(err);
+        }
+        callback();
+      });
   });
 }
 
@@ -130,13 +153,13 @@ function exportImages(itemId, callback) {
       return;
     }
 
-    cropBoxPreview.width = 1140;
+    cropBoxPreview.width = 2280;
     cropBoxThumbnail.width = 500;
 
     // Export preview image
-    exportImageFromCropBox(cropBoxPreview, itemId + '.jpg', function () {
+    exportImageFromCropBox(cropBoxPreview, itemId + '.avif', function () {
       // Export thumbnail image
-      exportImageFromCropBox(cropBoxThumbnail, itemId + '-thumbnail.jpg', function () {
+      exportImageFromCropBox(cropBoxThumbnail, itemId + '-thumbnail.avif', function () {
         callback();
       });
     });
