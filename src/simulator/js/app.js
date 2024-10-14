@@ -374,14 +374,16 @@ async function startApp() {
     }
     //Ctrl+D
     if (e.ctrlKey && e.keyCode == 68) {
-      if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
-        scene.cloneObjsByHandle(editor.selectedObjIndex);
-      } else {
-        scene.cloneObj(editor.selectedObjIndex);
-      }
+      if (editor.selectedObjIndex != -1) {
+        if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
+          scene.cloneObjsByHandle(editor.selectedObjIndex);
+        } else {
+          scene.cloneObj(editor.selectedObjIndex);
+        }
 
-      simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
-      editor.onActionComplete();
+        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.onActionComplete();
+      }
       return false;
     }
     //Ctrl+Y
