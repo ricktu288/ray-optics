@@ -6,12 +6,12 @@ const { createCanvas, loadImage } = require('canvas');
 const sharp = require('sharp');
 const { info } = require('console');
 
-const inputDir = path.join(__dirname, '../src/webpages/gallery/');
-const outputDir = path.join(__dirname, '../dist/img_test/');
-
-// If the output directory does not exist, create it
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
+const langs = ['en', 'pl', 'zh-CN', 'zh-TW'];
+const dirs = {
+  'en': path.join(__dirname, '../dist/gallery/'),
+  'pl': path.join(__dirname, '../dist/pl/gallery/'),
+  'zh-CN': path.join(__dirname, '../dist/cn/gallery/'),
+  'zh-TW': path.join(__dirname, '../dist/tw/gallery/')
 }
 
 const canvasLight = createCanvas();
@@ -33,7 +33,7 @@ const simulator = new Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, c
 
 function loadScene(sceneJson, callback, backgroundImage) {
   if (sceneJson.backgroundImage) {
-    loadImage(inputDir + sceneJson.backgroundImage).then((image) => {
+    loadImage(dirs.en + sceneJson.backgroundImage).then((image) => {
       sceneJson.backgroundImage = null;
       loadScene(sceneJson, callback, image);
     });
@@ -54,27 +54,28 @@ function loadScene(sceneJson, callback, backgroundImage) {
   });
 }
 
-function initSimulatorForCropBox(cropBox) {
+function initSimulatorForCropBox(cropBox, skipLight) {
   scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
   scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
 
-  const imageWidth = cropBox.width;
-  const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
+  if (!skipLight) {
+    const imageWidth = cropBox.width;
+    const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
 
-  canvasLight.width = imageWidth;
-  canvasLight.height = imageHeight;
-  canvasBelowLight.width = imageWidth;
-  canvasBelowLight.height = imageHeight;
-  canvasAboveLight.width = imageWidth;
-  canvasAboveLight.height = imageHeight;
-  canvasGrid.width = imageWidth;
-  canvasGrid.height = imageHeight;
-  canvasVirtual.width = imageWidth;
-  canvasVirtual.height = imageHeight;
-  canvasFinal.width = imageWidth;
-  canvasFinal.height = imageHeight;
-
-  simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
+    canvasLight.width = imageWidth;
+    canvasLight.height = imageHeight;
+    canvasBelowLight.width = imageWidth;
+    canvasBelowLight.height = imageHeight;
+    canvasAboveLight.width = imageWidth;
+    canvasAboveLight.height = imageHeight;
+    canvasGrid.width = imageWidth;
+    canvasGrid.height = imageHeight;
+    canvasVirtual.width = imageWidth;
+    canvasVirtual.height = imageHeight;
+    canvasFinal.width = imageWidth;
+    canvasFinal.height = imageHeight;
+    simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
+  }
 }
 
 function simulate(skipLight, callback) {
@@ -82,11 +83,14 @@ function simulate(skipLight, callback) {
   simulator.on('simulationComplete', callback);
   simulator.on('simulationStop', callback);
   simulator.updateSimulation(skipLight, skipLight);
+  if (skipLight) {
+    callback();
+  }
 }
 
-function exportImageFromCropBox(cropBox, filename, callback) {
-  initSimulatorForCropBox(cropBox);
-  simulate(false, function () {
+function exportImageFromCropBox(cropBox, filename, skipLight, callback) {
+  initSimulatorForCropBox(cropBox, skipLight);
+  simulate(skipLight, function () {
     // Clear final canvas
     ctxFinal.fillStyle = 'black';
     ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
@@ -97,38 +101,20 @@ function exportImageFromCropBox(cropBox, filename, callback) {
     ctxFinal.drawImage(canvasLight, 0, 0);
     ctxFinal.drawImage(canvasAboveLight, 0, 0);
 
-    // Save the final image as jpg
-    //const out = fs.createWriteStream(outputDir + filename);
-    //const stream = canvasFinal.createJPEGStream({ quality: 0.85 });
-    //stream.pipe(out);
-    //out.on('finish', callback);
-
-    // Save the final image as webp
-    /*
-    sharp(canvasFinal.toBuffer())
-      .webp()
-      .toFile(outputDir + filename, (err, info) => {
-        if (err) {
-          console.error(err);
-        }
-        callback();
-      });
-    */
-
     // Save the final image as avif
     sharp(canvasFinal.toBuffer())
       .avif()
-      .toFile(outputDir + filename, (err, info) => {
+      .toFile(filename, (err, info) => {
         if (err) {
-          console.error(err);
+          throw new Error(`Error processing image: ${err.message}`);
         }
         callback();
       });
   });
 }
 
-function exportImages(itemId, callback) {
-  const sceneJson = JSON.parse(fs.readFileSync(inputDir + itemId + '.json', 'utf8'));
+function exportImages(itemId, lang, isThumbnail, callback) {
+  const sceneJson = JSON.parse(fs.readFileSync(dirs[lang] + itemId + '.json', 'utf8'));
   loadScene(sceneJson, function () {
     // Find crop boxes, where the preview one is rectangular and the thumbnail one is square
     let cropBoxPreview = null;
@@ -144,46 +130,48 @@ function exportImages(itemId, callback) {
     }
 
     if (!cropBoxPreview) {
-      console.error('No preview crop box found');
-      return;
+      throw new Error('No preview crop box found');
     }
 
     if (!cropBoxThumbnail) {
-      console.error('No thumbnail crop box found');
-      return;
+      throw new Error('No thumbnail crop box found');
     }
 
     cropBoxPreview.width = 2280;
     cropBoxThumbnail.width = 500;
 
+    const skipLight = lang !== 'en'; // Different languages only differs in text, so we only need to re-render the light layer for the first language in the list.
+
     // Export preview image
-    exportImageFromCropBox(cropBoxPreview, itemId + '.avif', function () {
-      // Export thumbnail image
-      exportImageFromCropBox(cropBoxThumbnail, itemId + '-thumbnail.avif', function () {
-        callback();
-      });
+    exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dirs[lang] + itemId + (isThumbnail ? '-thumbnail.avif' : '.avif'), skipLight, function () {
+      callback();
     });
   });
 }
 
-function exportImagesPromise(itemId) {
+function exportImagesPromise(itemId, lang, isThumbnail) {
   return new Promise((resolve) => {
-    exportImages(itemId, resolve);
+    exportImages(itemId, lang, isThumbnail, resolve);
   });
 }
 
 // Get all JSON files in the input directory
-//const items = fs.readdirSync(inputDir).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
-
-const items = ['apparent-depth', 'chaff-countermeasure', 'rainbows', 'branched-flow'];
+const items = fs.readdirSync(dirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
 
 async function exportAllImages() {
+  const beginTime = Date.now();
   for (let item of items) {
-    console.log('Exporting images for ' + item + '...');
-    const time = Date.now();
-    await exportImagesPromise(item);
-    console.log('Images exported in ' + (Date.now() - time) + ' ms' + '\n');
+    for (isThumbnail of [false, true]) {
+      for (let lang of langs) {
+        if (fs.existsSync(dirs[lang] + item + '.json')) {
+          const time = Date.now();
+          await exportImagesPromise(item, lang, isThumbnail);
+          console.log('Exported ' + (isThumbnail ? 'thumbnail' : 'preview') + ' for ' + item + ' in ' + lang + ' in ' + (Date.now() - time) + 'ms');
+        }
+      }
+    }
   }
+  console.log('Exported all images in ' + (Date.now() - beginTime) + 'ms');
 }
 
 exportAllImages();
