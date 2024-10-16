@@ -97,7 +97,8 @@
       {
         "id": "chaff-countermeasure",
         "contributors": [
-          "Stas Fainer", "Yi-Ting Tu"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "干扰箔",
         "description": "<p>这是一个箔片反射对雷达效应的定性模拟（忽略衍射效应）。</p>"
@@ -363,7 +364,8 @@
       {
         "id": "GRIN-slab",
         "contributors": [
-          "Stas Fainer", "Yi-Ting Tu"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "渐变折射率平板",
         "description": "<p>模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。上方的介电材料为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。下方的介电材料是折射率为\\(n(\\rho)\\)的渐变折射率材料。 </p>"
@@ -395,7 +397,8 @@
       {
         "id": "luneburg-lens",
         "contributors": [
-          "Stas Fainer", "Yi-Ting Tu"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "龙勃透镜",
         "description": "<p>龙勃透镜（Luneburg lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>上方的介电材料为由 \\(N=20\\) 个同心球组成的龙勃透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。 </p><p>下方的介电材料是折射率为\\(n(r)\\)的渐变折射率材料。 </p>"
@@ -403,7 +406,8 @@
       {
         "id": "maxwell-fisheye-lens",
         "contributors": [
-          "Stas Fainer", "Yi-Ting Tu"
+          "Stas Fainer",
+          "Yi-Ting Tu"
         ],
         "title": "麦克斯韦鱼眼透镜",
         "description": "<p>麦克斯韦鱼眼透镜（Maxwell fisheye lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。 </p><p>上方的介电材料为由 \\(N=20\\) 个同心球组成的麦克斯韦鱼眼透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。 </p><p>下方的介电材料是折射率为\\(n(r)\\)的渐变折射率材料。 </p>"
