@@ -1,0 +1,246 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+
+.module-image {
+  width:150px;
+  height:150px !important;
+}
+
+.right-caption>img {
+    float: left;
+    margin-right: 9px;
+}
+
+.caption{
+  padding: 0px !important;
+}
+
+.module-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.import-btn {
+  float: right;
+  margin-right: 8px;
+}
+
+.module-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapse {
+  padding-top: 8px;
+}
+
+body { 
+  padding-top: 1rem; 
+  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 12pt;
+}
+
+ul {
+  padding-left: 1rem;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <ul>
+    <li>「模組」是一個目前處於實驗階段的功能，其透過將本模擬器中現有的工具所建立的物件進行組合、特化或重新參數化，來製作新的工具。</li>
+    <li>匯入的模組將顯示為「其他」類別中的工具。請選擇並依照控制點順序點擊空白處（參見「規格」）。</li>
+    <li>匯入的模組將嵌入於場景的資料中，所以當原作者更新時並不會自動更新。</li>
+  </ul>
+  ﻿﻿<div class="row right-caption">
+  <img src="../../modules/FresnelLens.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">菲涅耳透鏡 (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>從半圓形透光物製成的菲涅耳透鏡。<a href="https://phydemo.app/ray-optics/tw/gallery/fresnel-lens" target="_blank">此作品集範例</a>的模組化版本。
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-FresnelLens" class="collapse">
+  控制點順序
+  <ol>
+    <li>透鏡的第一個端點</li><li>透鏡的第二個端點</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>N_slice</code>: 切片數量</li><li><code>refIndex</code>: 透鏡的折射率</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/ContSpectrum.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">連續光譜光源 (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>具有均勻連續光譜的光源，以指定的步長離散化。只在「模擬色彩」模式中運作。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-ContSpectrum" class="collapse">
+  控制點順序
+  <ol>
+    <li>光線的起點</li><li>決定光線的方向</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>min</code>: 波長最小值</li><li><code>step</code>: 波長的步長</li><li><code>max</code>: 波長最大值</li><li><code>brightness</code>: 總亮度</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/CircleSource.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">圓形光源 (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>將一系列均勻的180度點光源置於圓周上所形成的光源。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-CircleSource" class="collapse">
+  控制點順序
+  <ol>
+    <li>該圓形的圓心</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>r</code>: 該圓形的半徑</li><li><code>N</code>: 點光源的數量</li><li><code>brightness</code>: 總亮度</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/Chaff.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">干擾箔 (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>矩形的干擾箔，由許多隨機的鏡子組成。<a href="https://phydemo.app/ray-optics/tw/gallery/chaff-countermeasure" target="_blank">此作品集範例</a>的模組化版本。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-Chaff" class="collapse">
+  控制點順序
+  <ol>
+    <li>干擾箔的左上角</li><li>干擾箔的右下角</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>N</code>: 干擾箔中鏡子的數量</li><li><code>L</code>: 鏡子的長度</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/BeamExpander.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">擴束鏡 (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>兩個理想透鏡的組合，使得兩者焦距之和等於兩者間的距離。此組合可以擴大或縮小準直光束的直徑<a href="https://phydemo.app/ray-optics/tw/gallery/beam-expanders" target="_blank">此作品集範例</a>的模組化版本。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-BeamExpander" class="collapse">
+  控制點順序
+  <ol>
+    <li>第一個透鏡的中心點</li><li>第二個透鏡的第二個點</li><li>決定共同焦點的位置</li>
+  </ol>
+  參數
+  <ul>
+    -
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/RayRelay.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">光線中繼 (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>一系列相同的理想透鏡，焦距為 \(f\)，間距為 \(d\)。若且唯若 \(d\leq 4f\) 時，可以保證光線軌跡不會發散。<a href="https://phydemo.app/ray-optics/tw/gallery/ray-relaying" target="_blank">此作品集範例</a>的模組化版本。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-RayRelay" class="collapse">
+  控制點順序
+  <ol>
+    <li>第一個透鏡的第一個端點</li><li>第一個透鏡的第二個端點（應與第一點有相同的 \(x\)）</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>f</code>: 透鏡的焦距</li><li><code>d</code>: 透鏡之間的距離</li><li><code>N</code>: 透鏡的數量</li>
+  </ul>
+</div>﻿<div class="row right-caption">
+  <img src="../../modules/OpticalFiber.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+  <div class="caption">
+    <p class="module-title">光纖 (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='已匯入';this.classList.remove('btn-primary');this.classList.add('btn-success');">匯入</button></p>
+    <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+    <span id="module-desc">
+      <p>指定核心和包層折射率的線狀光纖。</p>
+    </span>
+    <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+      規格
+      <span class="caret"></span>
+    </button>
+  </div>
+</div>
+<div id="details-collapse-OpticalFiber" class="collapse">
+  控制點順序
+  <ol>
+    <li>光纖的第一個端點</li><li>光纖的第二個端點（應與第一個點有相同的 \(y\)）</li>
+  </ol>
+  參數
+  <ul>
+    <li><code>X</code>: 核心的厚度</li><li><code>Y</code>: 包層的厚度</li><li><code>n_1</code>: 核心的折射率</li><li><code>n_2</code>: 包層的折射率</li>
+  </ul>
+</div>
+
+  <h2>客製化</h2>
+  您可直接在本網頁程式中使用內建的 JSON 編輯器製作或客製化模組。請參見<a href="https://phydemo.app/ray-optics/tw/modules/tutorial" target="_blank">教學</a>。將匯入的模組客製化僅會影響目前的場景。
+  <h2>貢獻</h2>
+  <p>歡迎您貢獻項目至以上的清單。欲貢獻您的模組，請參見<a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules" target="_blank">貢獻模組</a>。</p>
+</div>
+
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

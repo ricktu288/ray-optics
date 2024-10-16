@@ -1,0 +1,255 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 619.5752895752897,
+        "y": 598.6563706563707
+      },
+      "p2": {
+        "x": 620.1666666666666,
+        "y": 460.5
+      },
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 0,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 603,
+            "y": 361
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 1,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 637,
+            "y": 361
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 5,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 613,
+            "y": 460.5
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 2,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 628,
+            "y": 460.5
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 4,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 603,
+            "y": 560
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 3,
+            "requiresObjBarUpdate": true
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 637,
+            "y": 560
+          }
+        }
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 140,
+        "y": 420
+      },
+      "p2": {
+        "x": 140,
+        "y": 500
+      }
+    },
+    {
+      "type": "SphericalLens",
+      "path": [
+        {
+          "x": 373,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 387,
+          "y": 358,
+          "arc": false
+        },
+        {
+          "x": 392,
+          "y": 459,
+          "arc": true
+        },
+        {
+          "x": 387,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 373,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 369,
+          "y": 459,
+          "arc": true
+        }
+      ],
+      "refIndex": 1.7
+    },
+    {
+      "type": "SphericalLens",
+      "path": [
+        {
+          "x": 854,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 866,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 872.0143851941782,
+          "y": 460,
+          "arc": true
+        },
+        {
+          "x": 866,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 854,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 852,
+          "y": 460,
+          "arc": true
+        }
+      ],
+      "refIndex": 1.82
+    },
+    {
+      "type": "SphericalLens",
+      "path": [
+        {
+          "x": 603,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 637,
+          "y": 361,
+          "arc": false
+        },
+        {
+          "x": 628,
+          "y": 460.5,
+          "arc": true
+        },
+        {
+          "x": 637,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 603,
+          "y": 560,
+          "arc": false
+        },
+        {
+          "x": 613,
+          "y": 460.5,
+          "arc": true
+        }
+      ],
+      "refIndex": 2.01
+    },
+    {
+      "type": "TextLabel",
+      "x": 617.9729729729733,
+      "y": 639.2972972972968,
+      "text": "拖拽此处可移动透镜",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 622.4594594594595,
+      "y": 326,
+      "text": "← 变焦 →",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 97.25559845559837,
+        "y": 282.81544401544403
+      },
+      "p4": {
+        "x": 1056.2316602316603,
+        "y": 653.4555984555985
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 351.6602316602316,
+        "y": 198.29664702296276
+      },
+      "p4": {
+        "x": 892.9459459459459,
+        "y": 739.5823610229628
+      }
+    }
+  ],
+  "width": 1438.4640926640927,
+  "height": 850.1281853281855,
+  "origin": {
+    "x": 142.4884169884171,
+    "y": -43.071428571428555
+  },
+  "scale": 1,
+  "name": "变焦镜头"
+}

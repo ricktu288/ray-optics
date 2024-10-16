@@ -1,0 +1,126 @@
+[
+  {
+    "id": "default",
+    "title": "",
+    "content": [
+      {
+        "id": "FresnelLens",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "菲涅耳透镜",
+        "description": "<p>从半圆形透光物制成的菲涅耳透镜。<a href=\"https://phydemo.app/ray-optics/tw/gallery/fresnel-lens\" target=\"_blank\">此作品集范例</a>的模块化版本。",
+        "points": [
+          "透镜的第一个端点",
+          "透镜的第二个端点"
+        ],
+        "params": {
+          "N_slice": "切片数量",
+          "refIndex": "透镜的折射率"
+        }
+      },
+      {
+        "id": "ContSpectrum",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "连续光谱光源",
+        "description": "<p>具有均匀连续光谱的光源，以指定的步长离散化。只在「模拟色彩」模式中运作。</p>",
+        "points": [
+          "光线的起点",
+          "决定光线的方向"
+        ],
+        "params": {
+          "min": "波长最小值",
+          "step": "波长的步长",
+          "max": "波长最大值",
+          "brightness": "总亮度"
+        }
+      },
+      {
+        "id": "CircleSource",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "圆形光源",
+        "description": "<p>将一系列均匀的180度点光源置于圆周上所形成的光源。</p>",
+        "points": [
+          "该圆形的圆心"
+        ],
+        "params": {
+          "r": "该圆形的半径",
+          "N": "点光源的数量",
+          "brightness": "总亮度"
+        }
+      },
+      {
+        "id": "Chaff",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "干扰箔",
+        "description": "<p>矩形的干扰箔，由许多随机的镜子组成。<a href=\"https://phydemo.app/ray-optics/tw/gallery/chaff-countermeasure\" target=\"_blank\">此作品集范例</a>的模块化版本。</p>",
+        "points": [
+          "干扰箔的左上角",
+          "干扰箔的右下角"
+        ],
+        "params": {
+          "N": "干扰箔中镜子的数量",
+          "L": "镜子的长度"
+        }
+      },
+      {
+        "id": "BeamExpander",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "扩束镜",
+        "description": "<p>两个理想透镜的组合，使得两者焦距之和等于两者间的距离。此组合可以扩大或缩小准直光束的直径<a href=\"https://phydemo.app/ray-optics/tw/gallery/beam-expanders\" target=\"_blank\">此作品集范例</a>的模块化版本。</p>",
+        "points": [
+          "第一个透镜的中心点",
+          "第二个透镜的第二个点",
+          "决定共同焦点的位置"
+        ],
+        "params": {}
+      },
+      {
+        "id": "RayRelay",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "光线中继",
+        "description": "<p>一系列相同的理想透镜，焦距为 \\(f\\)，间距为 \\(d\\)。若且唯若\\(d\\leq 4f\\)时，可以保证光线轨迹不会发散。<a href=\"https://phydemo.app/ray-optics/tw/gallery/ray-relaying\" target=\"_blank\">此作品集范例</a>的模块化版本。</p>",
+        "points": [
+          "第一个透镜的第一个端点",
+          "第一个透镜的第二个端点（应与第一点有相同的 \\(x\\)）"
+        ],
+        "params": {
+          "f": "透镜的焦距",
+          "d": "透镜之间的距离",
+          "N": "透镜的数量"
+        }
+      },
+      {
+        "id": "OpticalFiber",
+        "contributors": [
+          "josephernest",
+          "Yi-Ting Tu"
+        ],
+        "title": "光纤",
+        "description": "<p>指定核心和包层折射率的线状光纤。</p>",
+        "points": [
+          "光纤的第一个端点",
+          "光纤的第二个端点（应与第一个点有相同的 \\(y\\)）"
+        ],
+        "params": {
+          "X": "核心的厚度",
+          "Y": "包层的厚度",
+          "n_1": "核心的折射率",
+          "n_2": "包层的折射率"
+        }
+      }
+    ]
+  }
+]

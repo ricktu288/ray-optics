@@ -1,0 +1,264 @@
+{
+  "version": 5,
+  "name": "日食",
+  "modules": {
+    "CircleSource": {
+      "numPoints": 1,
+      "params": [
+        "r=0:1:500:100",
+        "N=1:1:4999:10",
+        "brightness=0.01:0.01:10:1"
+      ],
+      "objs": [
+        {
+          "for": "theta=0:2pi/N:2pi-0.0001",
+          "type": "AngleSource",
+          "p1": {
+            "x": "`x_1+r*cos(theta)`",
+            "y": "`y_1+r*sin(theta)`"
+          },
+          "p2": {
+            "x": "`x_1+(r+1)*cos(theta)`",
+            "y": "`y_1+(r+1)*sin(theta)`"
+          },
+          "brightness": "`brightness/N`",
+          "emisAngle": 180
+        }
+      ],
+      "maxLoopLength": 5000
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "CircleSource",
+      "points": [
+        {
+          "x": 383,
+          "y": 405
+        }
+      ],
+      "params": {
+        "r": 236,
+        "N": 1000,
+        "brightness": 10
+      }
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 1095,
+        "y": 234
+      },
+      "p2": {
+        "x": 1110,
+        "y": 251
+      }
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 1291,
+        "y": 190
+      },
+      "p2": {
+        "x": 1406,
+        "y": 248
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1221,
+        "y": 236
+      },
+      "p2": {
+        "x": 1170,
+        "y": 216
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1214,
+        "y": 152
+      },
+      "p2": {
+        "x": 1165,
+        "y": 193
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1226,
+        "y": 163
+      },
+      "p2": {
+        "x": 1180,
+        "y": 242
+      },
+      "arrow": true
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 1280,
+        "y": 639
+      },
+      "p2": {
+        "x": 1395,
+        "y": 697
+      }
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 1044,
+        "y": 581
+      },
+      "p2": {
+        "x": 1059,
+        "y": 598
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1221,
+        "y": 587
+      },
+      "p2": {
+        "x": 1161,
+        "y": 653
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1217,
+        "y": 577
+      },
+      "p2": {
+        "x": 1175,
+        "y": 578
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1198,
+        "y": 676
+      },
+      "p2": {
+        "x": 1159,
+        "y": 616
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1376.6666666666667,
+      "y": 415.6666666666667,
+      "text": "（非按比例）",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 385,
+      "y": 439,
+      "text": "太阳",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1043,
+      "y": 631,
+      "text": "月亮",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1226,
+      "y": 591,
+      "text": "日偏食",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1196,
+      "y": 704,
+      "text": "日环食",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1283,
+      "y": 666,
+      "text": "地球",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1294,
+      "y": 215,
+      "text": "地球",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1092,
+      "y": 280,
+      "text": "月亮",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1221,
+      "y": 154,
+      "text": "日偏食",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1226,
+      "y": 253,
+      "text": "日全食",
+      "fontSize": 16
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 95.99999999999994,
+        "y": 17.190476190476197
+      },
+      "p4": {
+        "x": 1456,
+        "y": 815.5238095238095
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 1027.6666666666667,
+        "y": -11.142857142857139
+      },
+      "p4": {
+        "x": 1427.6666666666667,
+        "y": 388.8571428571429
+      }
+    }
+  ],
+  "width": 2040,
+  "height": 1478.3333333333335,
+  "rayModeDensity": 0.4263477291781528,
+  "origin": {
+    "x": 244.00000000000006,
+    "y": 322.8095238095238
+  },
+  "scale": 1
+}

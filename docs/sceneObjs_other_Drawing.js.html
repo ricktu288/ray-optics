@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: sceneObjs/other/Drawing.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: sceneObjs/other/Drawing.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import BaseSceneObj from '../BaseSceneObj.js';
+import { getMsg } from '../../translations.js';
+import geometry from '../../geometry.js';
+
+/**
+ * Drawing tool
+ * 
+ * Tools -> Other -> Drawing
+ * @class
+ * @extends BaseSceneObj
+ * @memberof sceneObjs
+ * @property {Array&lt;Array&lt;number>>} strokes - The strokes of the drawing. Each element represents a stroke, which is an array of coordinates ordered as `[x1, y1, x2, y2, ...]`. The coordinates are rounded to reduce the size of the JSON data.
+ * @property {boolean} isDrawing - Whether the user is drawing (before "stop drawing" is clicked).
+ * @property {boolean} isMouseDown - Temperary indication of whether the mouse is down (during the drawing stage).
+ */
+class Drawing extends BaseSceneObj {
+  static type = 'Drawing';
+  static serializableDefaults = {
+    strokes: [],
+    isDrawing: false
+  };
+
+  populateObjBar(objBar) {
+    if (this.isDrawing) {
+      objBar.createButton(getMsg('stop_drawing'), function (obj) {
+        obj.isDrawing = false;
+        if (obj.scene.editor.isConstructing) {
+          obj.scene.editor.isConstructing = false;
+        }
+      }, true);
+    }
+  }
+
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
+    ctx.strokeStyle = isHovered ? 'cyan' : 'white';
+    ctx.lineWidth = 1 * ls;
+    ctx.beginPath();
+    for (const stroke of this.strokes) {
+      ctx.moveTo(stroke[0], stroke[1]);
+      for (let i = 2; i &lt; stroke.length; i += 2) {
+        ctx.lineTo(stroke[i], stroke[i + 1]);
+      }
+    }
+    ctx.stroke();
+  }
+
+  move(diffX, diffY) {
+    let roundedDiffX = this.round(diffX);
+    let roundedDiffY = this.round(diffY);
+    for (const stroke of this.strokes) {
+      for (let i = 0; i &lt; stroke.length; i += 2) {
+        stroke[i] += roundedDiffX;
+        stroke[i + 1] += roundedDiffY;
+      }
+    }
+  }
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    if (!this.isDrawing) {
+      // Initialize the drawing
+      this.isDrawing = true;
+      this.strokes = [];
+    }
+    const mousePos = mouse.getPosSnappedToGrid();
+    this.strokes.push([this.round(mousePos.x), this.round(mousePos.y)]);
+    this.isMouseDown = true;
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+    if (!this.isMouseDown) return;
+    if (this.strokes.length === 0 || this.strokes[this.strokes.length - 1].length &lt; 2) return;
+
+    const distanceSq = (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 2] - mousePos.x) ** 2 + (this.strokes[this.strokes.length - 1][this.strokes[this.strokes.length - 1].length - 1] - mousePos.y) ** 2;
+    
+    if (distanceSq &lt; 4 * this.scene.lengthScale * this.scene.lengthScale) return;
+
+    this.strokes[this.strokes.length - 1].push(this.round(mousePos.x), this.round(mousePos.y));
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    this.isMouseDown = false;
+  }
+
+  onConstructUndo() {
+    if (this.strokes.length &lt; 2) {
+      return {
+        isCancelled: true
+      }
+    } else {
+      this.strokes.pop();
+    }
+  }
+
+  checkMouseOver(mouse) {
+    let dragContext = {};
+    for (const stroke of this.strokes) {
+      for (let i = 0; i &lt; stroke.length - 2; i += 2) {
+        if (mouse.isOnSegment(geometry.line(geometry.point(stroke[i], stroke[i + 1]), geometry.point(stroke[i + 2], stroke[i + 3])))) {
+          const mousePos = mouse.getPosSnappedToGrid();
+          const roundedMousePos = geometry.point(this.round(mousePos.x), this.round(mousePos.y));
+          dragContext.part = 0;
+          dragContext.mousePos0 = roundedMousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = roundedMousePos; // Mouse position at the last moment during dragging
+          dragContext.snapContext = {};
+          return dragContext;
+        }
+      }
+    }
+  }
+
+  onDrag(mouse, dragContext, ctrl, shift) {
+    if (shift) {
+      var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+    } else {
+      var mousePos = mouse.getPosSnappedToGrid();
+      dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
+    }
+
+    const roundedMousePos = geometry.point(this.round(mousePos.x), this.round(mousePos.y));
+
+    var mouseDiffX = dragContext.mousePos1.x - roundedMousePos.x; // The X difference between the mouse position now and at the previous moment
+    var mouseDiffY = dragContext.mousePos1.y - roundedMousePos.y; // The Y difference between the mouse position now and at the previous moment
+
+    if (dragContext.part == 0) {
+      for (const stroke of this.strokes) {
+        for (let i = 0; i &lt; stroke.length; i += 2) {
+          stroke[i] -= mouseDiffX;
+          stroke[i + 1] -= mouseDiffY;
+        }
+      }
+    }
+
+    // Update the mouse position
+    dragContext.mousePos1 = roundedMousePos;
+  }
+
+  /* Utility functions */
+
+  /**
+   * Round the coordinates of the strokes to integers times the length scale (to reduce the size of the JSON data).
+   */
+  round(num) {
+    return Math.round(num / this.scene.lengthScale) * this.scene.lengthScale;
+  }
+};
+
+export default Drawing;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

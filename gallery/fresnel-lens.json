@@ -1,0 +1,140 @@
+{
+  "version": 5,
+  "name": "Fresnel lens",
+  "modules": {
+    "FresnelLens": {
+      "numPoints": 2,
+      "params": [
+        "N_slice=1:1:100:20",
+        "refIndex=0.5:0.01:2.5:1.5"
+      ],
+      "objs": [
+        {
+          "type": "CustomGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "eqn1": "-0.05",
+          "eqn2": "\\sqrt{1-x^2}-\\frac{\\operatorname{floor}\\left(`N_slice`\\cdot\\sqrt{1-x^2}\\right)}{`N_slice`}",
+          "refIndex": "`refIndex`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 1040,
+        "y": 820
+      },
+      "p2": {
+        "x": 1040,
+        "y": 900
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 1260,
+          "y": 780,
+          "arc": false
+        },
+        {
+          "x": 1340,
+          "y": 860,
+          "arc": true
+        },
+        {
+          "x": 1260,
+          "y": 940,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "ModuleObj",
+      "module": "FresnelLens",
+      "points": [
+        {
+          "x": 1340,
+          "y": 600
+        },
+        {
+          "x": 1340,
+          "y": 760
+        }
+      ],
+      "params": {
+        "N_slice": 50,
+        "refIndex": 1.5
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 1040,
+        "y": 640
+      },
+      "p2": {
+        "x": 1040,
+        "y": 720
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1338.8549982860036,
+        "y": 551.6119816791208
+      },
+      "p2": {
+        "x": 1338.8549982860036,
+        "y": 579.3663107824154
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1354.6447437999493,
+      "y": 497.8676902426197,
+      "text": "This Fresnel lens is made from the half circle glass below.\nYou can select the lens and adjust the N_silce parameter.",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 846.8317284877828,
+        "y": 455.34759324587964
+      },
+      "p4": {
+        "x": 1863.596929418593,
+        "y": 981.0288917442568
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 1322.2347967320538,
+        "y": 581.7767008307075
+      },
+      "p4": {
+        "x": 1520.500941732054,
+        "y": 780.0428458299864
+      }
+    }
+  ],
+  "width": 1525.147801396215,
+  "height": 1034.0638989637823,
+  "rayModeDensity": 1,
+  "origin": {
+    "x": -592.6404282550802,
+    "y": -201.1562930131771
+  },
+  "scale": 1
+}

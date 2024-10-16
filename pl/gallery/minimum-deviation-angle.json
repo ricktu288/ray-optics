@@ -1,0 +1,948 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 1814.398444996955,
+        "y": 553.3782429379147
+      },
+      "p2": {
+        "x": 1721.0344186772975,
+        "y": 399.9520292916584
+      },
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 21,
+          "newPoint": {
+            "x": 1751.7473931629236,
+            "y": 450.81557088403065
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 21,
+          "newPoint": {
+            "x": 1783.3588603725555,
+            "y": 501.51041648670116
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 30,
+          "newPoint": {
+            "x": 1720.7904404729272,
+            "y": 400.66217779106074
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 30,
+          "newPoint": {
+            "x": 1557.1819092415824,
+            "y": 137.28785288262856
+          }
+        }
+      ],
+      "transformation": "rotation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 839.3704194886167,
+        "y": 415.9625522948089
+      },
+      "p2": {
+        "x": 779.734304738948,
+        "y": 399.9256990859164
+      },
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 26,
+          "newPoint": {
+            "x": 780.1829303320025,
+            "y": 399.8138490018858
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 26,
+          "newPoint": {
+            "x": 609.68684045716,
+            "y": 79.1068061353044
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 0
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 738.9476835979258,
+            "y": 421.64699964155176
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 1
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 806.7667118772957,
+            "y": 464.0802342960355
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1,
+            "index": 2
+          },
+          "targetObjIndex": 4,
+          "newPoint": {
+            "x": 809.6054397792627,
+            "y": 384.13064300315534
+          }
+        }
+      ],
+      "transformation": "rotation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 2560,
+        "y": 422.6093794147466
+      },
+      "p2": {
+        "x": 2560,
+        "y": 401.6093794147466
+      },
+      "controlPoints": [
+        {
+          "newPoint": {
+            "x": 2540,
+            "y": 401.6093794147466
+          },
+          "targetObjIndex": 24,
+          "dragContext": {
+            "part": 2
+          }
+        },
+        {
+          "newPoint": {
+            "x": 2580,
+            "y": 401.6093794147466
+          },
+          "targetObjIndex": 23,
+          "dragContext": {
+            "part": 2
+          }
+        }
+      ],
+      "transformation": "yTranslation"
+    },
+    {
+      "type": "Protractor",
+      "p1": {
+        "x": 2686,
+        "y": 488.66666666666663
+      },
+      "p2": {
+        "x": 3086,
+        "y": 488.66666666666663
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 738.9476835979258,
+          "y": 421.64699964155176,
+          "arc": false
+        },
+        {
+          "x": 806.7667118772957,
+          "y": 464.0802342960355,
+          "arc": false
+        },
+        {
+          "x": 809.6054397792627,
+          "y": 384.13064300315534,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 2695.014553318879,
+        "y": 429.06052298722733
+      },
+      "p2": {
+        "x": 2747.5072766594403,
+        "y": 458.12104597445074
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 1560,
+        "y": 400
+      },
+      "p2": {
+        "x": 1720.367752010631,
+        "y": 400
+      },
+      "brightness": 10,
+      "wavelength": "575"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 340,
+        "y": -40
+      },
+      "p2": {
+        "x": 340,
+        "y": 900
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1220,
+        "y": -40
+      },
+      "p2": {
+        "x": 340,
+        "y": -40
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 3100,
+        "y": -40
+      },
+      "p2": {
+        "x": 2260,
+        "y": -40
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 2180,
+        "y": 900
+      },
+      "p2": {
+        "x": 2180,
+        "y": -40
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1220,
+        "y": 900
+      },
+      "p2": {
+        "x": 1220,
+        "y": -40
+      }
+    },
+    {
+      "type": "Protractor",
+      "p1": {
+        "x": 779.984304738948,
+        "y": 400
+      },
+      "p2": {
+        "x": 1180,
+        "y": 400
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1220,
+        "y": 900
+      },
+      "p2": {
+        "x": 340,
+        "y": 900
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 3100,
+        "y": 900
+      },
+      "p2": {
+        "x": 2260,
+        "y": 900
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 3100,
+        "y": 900
+      },
+      "p2": {
+        "x": 3100,
+        "y": -40
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 620,
+        "y": 400
+      },
+      "p2": {
+        "x": 780.0057333103766,
+        "y": 400
+      },
+      "wavelength": "575"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1300,
+        "y": 900
+      },
+      "p2": {
+        "x": 1300,
+        "y": -40
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 2180,
+        "y": 900
+      },
+      "p2": {
+        "x": 1300,
+        "y": 900
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 2180,
+        "y": -40
+      },
+      "p2": {
+        "x": 1300,
+        "y": -40
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 2260,
+        "y": 900
+      },
+      "p2": {
+        "x": 2260,
+        "y": -40
+      }
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 1751.7473931629236,
+        "y": 450.81557088403065
+      },
+      "p2": {
+        "x": 1783.3588603725555,
+        "y": 501.51041648670116
+      }
+    },
+    {
+      "type": "Protractor",
+      "p1": {
+        "x": 1740,
+        "y": 440
+      },
+      "p2": {
+        "x": 2140,
+        "y": 440
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 2580,
+        "y": 280
+      },
+      "p2": {
+        "x": 2580,
+        "y": 401.6093794147466
+      },
+      "brightness": "10",
+      "wavelength": "650"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 2540,
+        "y": 300
+      },
+      "p2": {
+        "x": 2540,
+        "y": 401.6093794147466
+      },
+      "brightness": "10",
+      "wavelength": "408"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 780.5771618818052,
+        "y": 400.16825396825465
+      },
+      "p2": {
+        "x": 1136.4661062707496,
+        "y": 400.16825396825465
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 780.1829303320025,
+        "y": 399.8138490018858
+      },
+      "p2": {
+        "x": 609.68684045716,
+        "y": 79.1068061353044
+      }
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          712,
+          311,
+          710,
+          311,
+          708,
+          312,
+          706,
+          314,
+          704,
+          316,
+          701,
+          318,
+          699,
+          320,
+          697,
+          322,
+          694,
+          326,
+          692,
+          328,
+          691,
+          330,
+          689,
+          332,
+          686,
+          336,
+          684,
+          339,
+          682,
+          342,
+          681,
+          346,
+          680,
+          348,
+          678,
+          351,
+          676,
+          354,
+          674,
+          358,
+          673,
+          361,
+          672,
+          366,
+          671,
+          369,
+          670,
+          372,
+          670,
+          374,
+          669,
+          378,
+          668,
+          381
+        ],
+        [
+          662,
+          369,
+          664,
+          374,
+          665,
+          376,
+          667,
+          380,
+          669,
+          382,
+          672,
+          380,
+          676,
+          378,
+          680,
+          378
+        ]
+      ]
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          1120,
+          278
+        ]
+      ],
+      "isDrawing": true
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          944,
+          425,
+          944,
+          427,
+          943,
+          430,
+          943,
+          435,
+          942,
+          439,
+          941,
+          441,
+          940,
+          444,
+          940,
+          448,
+          938,
+          452,
+          937,
+          455,
+          936,
+          457,
+          934,
+          460,
+          933,
+          462,
+          932,
+          465,
+          931,
+          467,
+          930,
+          469,
+          930,
+          471,
+          929,
+          473,
+          927,
+          477,
+          924,
+          479,
+          923,
+          481,
+          922,
+          483
+        ],
+        [
+          920,
+          471,
+          920,
+          475,
+          921,
+          479,
+          921,
+          481,
+          922,
+          483,
+          923,
+          485,
+          926,
+          485,
+          929,
+          484,
+          931,
+          483,
+          934,
+          481
+        ]
+      ]
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1720.7904404729272,
+        "y": 400.66217779106074
+      },
+      "p2": {
+        "x": 1557.1819092415824,
+        "y": 137.28785288262856
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1740.888386931266,
+        "y": 509.7107594503886
+      },
+      "p2": {
+        "x": 1740.888386931266,
+        "y": 793.7107594503885
+      }
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          1622,
+          357
+        ]
+      ],
+      "isDrawing": true
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          1647,
+          315,
+          1645,
+          315,
+          1643,
+          316,
+          1641,
+          318,
+          1639,
+          320,
+          1636,
+          322,
+          1634,
+          324,
+          1632,
+          326,
+          1629,
+          330,
+          1627,
+          332,
+          1626,
+          334,
+          1624,
+          336,
+          1621,
+          340,
+          1619,
+          343,
+          1617,
+          346,
+          1616,
+          350,
+          1615,
+          352,
+          1613,
+          355,
+          1611,
+          358,
+          1609,
+          362,
+          1608,
+          365,
+          1607,
+          370,
+          1606,
+          373,
+          1605,
+          376,
+          1605,
+          378,
+          1604,
+          382,
+          1603,
+          385
+        ],
+        [
+          1597,
+          373,
+          1599,
+          378,
+          1600,
+          380,
+          1602,
+          384,
+          1604,
+          386,
+          1607,
+          384,
+          1611,
+          382,
+          1615,
+          382
+        ]
+      ]
+    },
+    {
+      "type": "Drawing",
+      "strokes": [
+        [
+          1716,
+          620,
+          1714,
+          620,
+          1711,
+          619,
+          1708,
+          618,
+          1704,
+          617,
+          1702,
+          615,
+          1699,
+          614,
+          1695,
+          612,
+          1690,
+          609,
+          1687,
+          607,
+          1683,
+          604,
+          1679,
+          601,
+          1673,
+          596,
+          1670,
+          593,
+          1668,
+          590,
+          1664,
+          584,
+          1659,
+          580,
+          1657,
+          576,
+          1654,
+          572,
+          1653,
+          569,
+          1652,
+          565,
+          1650,
+          564
+        ],
+        [
+          1646,
+          578,
+          1647,
+          573,
+          1648,
+          569,
+          1650,
+          565,
+          1652,
+          563,
+          1655,
+          563,
+          1658,
+          564,
+          1664,
+          565,
+          1667,
+          565
+        ]
+      ]
+    },
+    {
+      "type": "TextLabel",
+      "x": 3124.4,
+      "y": 1.6000000000001364,
+      "text": "W przykładach A i B, obracając pryzmaty między punktami A1 do A2 i B1 do B2 i zmieniając w ten sposób\nkąt padania promienia wpadającego do elementu optycznego, można łatwo zauważyć, że minimalny\nkąt odchylenia uzyskuje się gdzieś pomiędzy parą punktów.\n(w przykładzie A kąt odchylenia mierzony jest względem osi poziomej, natomiast w przykładzie B\njest mierzony względem osi pionowej).\n\nTeraz powiększ przykład C (używając powiększenia symulacyjnego) i rozszerz dwie wiązki (czerwoną i fioletową, a\nich przecięcie wygląda na różowe. Jest to faktycznie to samo, co obracanie pryzmatu sferycznego w\nprzykładzie B, zmieniające w ten sposób kąt padania promienia wchodzącego) i zobacz, że od punktu\nC1 do C2 promienie wychodzące wstecz kumulują się w dół w dwa odrębne promienie - czerwony i fioletowy\n(\"kaustyka optyczna\")– minimalny kąt odchylenia występuje koło punktu C2 i zależy od\ntdługości fali światła (kolor). Następnie, podczas rozszerzania dwóch wiązek od punktu C2 do C3,\npromienie wychodzące wstecz odwracają swój kierunek w górę."
+    },
+    {
+      "type": "TextLabel",
+      "x": 722,
+      "y": -56,
+      "text": "Przykład - A"
+    },
+    {
+      "type": "TextLabel",
+      "x": 2642,
+      "y": -56,
+      "text": "Przykład - C"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1682,
+      "y": -56,
+      "text": "Przykład - B"
+    },
+    {
+      "type": "TextLabel",
+      "x": 814.6666666666666,
+      "y": 447,
+      "text": "A2",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 823.9047619047618,
+      "y": 387.57142857142867,
+      "text": "A1",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 1880.7619047619041,
+      "y": 458.7619047619048,
+      "text": "B1",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 1732.5714285714284,
+      "y": 590.5714285714287,
+      "text": "B2",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 2544.266666666666,
+      "y": 400.9333333333336,
+      "text": "C1",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 2543.933333333333,
+      "y": 447.93333333333356,
+      "text": "C3",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 2544.933333333333,
+      "y": 414.6000000000002,
+      "text": "C2",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 1817.7333333333336,
+      "y": 587.6000000000003,
+      "text": "Drag to rotate",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 851.7333333333335,
+      "y": 423.26666666666694,
+      "text": "Drag to rotate",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 2539.7333333333327,
+      "y": 428.60000000000014,
+      "text": "Drag to adjust beam widths",
+      "fontSize": 12,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1439.819047619047,
+      "y": -203.57460317460277,
+      "text": "Użyj wbudowanego zoomu, aby lepiej operować symulacją"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1689.0277271761097,
+      "y": 636.560817192037,
+      "text": "Kąt odchylenia",
+      "fontSize": 18,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1606.0632034632033,
+      "y": 339.3976911976918,
+      "text": "Kąt padania",
+      "fontSize": 18,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 660.7298701298695,
+      "y": 326.0643578643584,
+      "text": "Kąt padania",
+      "fontSize": 18,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 961.3965367965367,
+      "y": 473.39769119769176,
+      "text": "Kąt odchylenia",
+      "fontSize": 18
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 314.6403129057385,
+        "y": -118.39062058525337
+      },
+      "p4": {
+        "x": 3119.973646239072,
+        "y": 930.94271274808
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 2594.640312905738,
+        "y": 341.60937941474685
+      },
+      "p4": {
+        "x": 2814.6403129057385,
+        "y": 561.6093794147469
+      }
+    }
+  ],
+  "width": 4208,
+  "height": 2452,
+  "rayModeDensity": 3.8186616201103805,
+  "origin": {
+    "x": 386.6930204275949,
+    "y": 819.7239539185867
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "name": "Minimalny kąt odchylenia"
+}
