@@ -285,7 +285,9 @@ class Simulator {
           const ret = obj.onSimulationStart();
           if (ret) {
             if (ret.newRays) {
-              this.pendingRays.push(...ret.newRays);
+              for (let newRay of ret.newRays) {
+                this.pendingRays.push(newRay);
+              }
             }
             if (ret.truncation) {
               this.totalTruncation += ret.truncation;
@@ -656,7 +658,9 @@ class Simulator {
               this.pendingRays[j] = null;
             }
             if (ret.newRays) {
-              this.pendingRays.push(...ret.newRays);
+              for (let newRay of ret.newRays) {
+                this.pendingRays.push(newRay);
+              }
             }
             if (ret.truncation) {
               this.totalTruncation += ret.truncation;
