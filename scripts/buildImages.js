@@ -104,11 +104,22 @@ function exportImageFromCropBox(cropBox, filename, skipLight, callback) {
     // Save the final image as avif
     sharp(canvasFinal.toBuffer())
       .avif()
-      .toFile(filename, (err, info) => {
+      .toFile(filename + '.avif', (err, info) => {
         if (err) {
           throw new Error(`Error processing image: ${err.message}`);
         }
-        callback();
+
+        // Also save the final image as jpg for compatibility, but reduce the size of the image to 50%
+        sharp(canvasFinal.toBuffer())
+          .resize(Math.round(canvasFinal.width / 2), Math.round(canvasFinal.height / 2))
+          .jpeg({ quality: 50 })
+          .toFile(filename + '.jpg', (err, info) => {
+            if (err) {
+              throw new Error(`Error processing image: ${err.message}`);
+            }
+
+            callback();
+          });
       });
   });
 }
@@ -143,7 +154,7 @@ function exportImages(itemId, lang, isThumbnail, callback) {
     const skipLight = lang !== 'en'; // Different languages only differs in text, so we only need to re-render the light layer for the first language in the list.
 
     // Export preview image
-    exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dirs[lang] + itemId + (isThumbnail ? '-thumbnail.avif' : '.avif'), skipLight, function () {
+    exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dirs[lang] + itemId + (isThumbnail ? '-thumbnail' : ''), skipLight, function () {
       callback();
     });
   });
