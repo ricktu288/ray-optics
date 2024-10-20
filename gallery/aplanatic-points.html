@@ -1,0 +1,77 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aplanatic points - Ray Optics Simulation</title>
+<meta property="og:title" content="Aplanatic points - Ray Optics Simulation">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phydemo.app/ray-optics/gallery/aplanatic-points">
+<meta property="og:image" content="https://phydemo.app/ray-optics/gallery/aplanatic-points.jpg">
+<meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
+<meta property="og:locale" content="en">
+<link rel="canonical" href="https://phydemo.app/ray-optics/gallery/aplanatic-points">
+<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/aplanatic-points" hreflang="en">
+<link rel="alternate" href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points" hreflang="pl">
+<link rel="alternate" href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points" hreflang="zh-CN">
+<link rel="alternate" href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points" hreflang="zh-TW">
+
+<link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="icon" href="../img/icon.png" type="image/png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+<a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
+<img src="../img/icon.png" alt="" style="width:18pt;height:18pt">
+Ray Optics Simulation
+</a>
+<div class="navbar-right">
+<span class="navul">
+<a href="https://phydemo.app/ray-optics/">Home</a>
+<a href="https://phydemo.app/ray-optics/gallery/" class="active">Gallery</a>
+<a href="https://phydemo.app/ray-optics/about">About</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+</div>
+</div>
+<div class="container">
+<center>
+<h1><b><span>Aplanatic points</span></b></h1>
+<p>
+Contributor: Stas Fainer
+</p>
+<div class="description">
+<p>Aplanatic points of an optical system are special points on its optical axis, such that "rays proceeding from one of them will all converge to, or seen to diverge from the other point".</p><ul><li>Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other.</li><li>Sphere: a spherical lens has two aplanatic points, inside and outside the sphere - for more details see the simulation.</li><li>Hyperbola: the two foci of the <a href="https://phydemo.app/ray-optics/gallery/hyperbolic-mirror" target="_blank">Hyperbolic mirror</a> simulation are also aplanatic points.</li></ul><p>Given two points with horizontal coordinates \(x_1\) and \(x_2\), identical vertical coordinates, and given the refractive index outside and inside our optical element as \(n_1\) and \(n_2\) (respectively), for this two points to be aplanatic points, the boundary of our optical element must fulfill\begin{equation}k_1 n_1 \sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \sqrt{  (x - x_2)^2 + y^2} = E\end{equation}such that \(k_i=1\) or \(-1\) if the ray connecting \(x_i\) and the boundary of our optical element is real or imaginary, respectively, and \(E\) is a constant for which this equation has a non-trivial solution. This equation (which can be derived using Fermat's principle) is an equation of a Cartesian oval, of which the conic sections are special cases.</p>
+</div>
+<p>
+<a href="https://phydemo.app/ray-optics/simulator/#aplanatic-points" target="_blank" class="btn btn-success btn-lg">Open in Simulator</a>
+</p>
+<picture>
+  <source srcset="aplanatic-points.avif" type="image/avif">
+  <img src="aplanatic-points.jpg" alt="Aplanatic points" style="width:100%">
+</picture>
+</center>
+
+  <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">Language: English</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/gallery/aplanatic-points">English</a></li><li><a href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">polski</a></li><li><a href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<script src="../thirdparty/jquery.min.js"></script>
+<script src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

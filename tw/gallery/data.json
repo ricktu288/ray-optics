@@ -1,0 +1,528 @@
+[
+  {
+    "id": "reflection",
+    "title": "光的反射",
+    "content": [
+      {
+        "id": "images-formed-by-two-mirrors",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "兩面鏡子成像",
+        "description": "<p>本模擬項目顯示了兩面鏡子所成的像，其中綠色的 L 為物。若兩面鏡子的夾腳為 \\(\\frac{360^\\circ}{n}\\) 那麼將成\\(n-1\\) 個虛像(橘色的 L)。可拖曳鏡子端點來改變夾角。</p>"
+      },
+      {
+        "id": "parabolic-mirror",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "拋物面鏡",
+        "description": "<p>此模擬示範了拋物面鏡的聚焦特性。</p>"
+      },
+      {
+        "id": "hyperbolic-mirror",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "雙曲面鏡",
+        "description": "<p>本模擬示範了雙曲面鏡的反射特性：從一個焦點向雙曲面鏡傳播的光線將如同從另一個焦點射出。</p> <p> 雙曲面的兩個焦點是等光程點（請參閱<a href=\"https://phydemo.app/ray-optics/tw/gallery/aplanatic-points\" target=\"_blank\"> 等光程點</a>）。</p>"
+      },
+      {
+        "id": "retroreflectors",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "回復反射器",
+        "description": "<p>這是兩種回復反射器的模擬：<ol> <li>角隅反射器。</li> <li>貓眼回復反射器。</li> </li> </ol> </ol> </p>"
+      },
+      {
+        "id": "periscope",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "潛望鏡",
+        "description": "<p>這是一個由兩面平鏡和一些光線阻擋器製成的潛望鏡模擬。</p>"
+      },
+      {
+        "id": "newtonian-telescope",
+        "contributors": [
+          "Matteo Ricci Cipolloni"
+        ],
+        "title": "牛頓望遠鏡",
+        "description": "<p>這是一個配有Plössl目鏡的牛頓望遠鏡模型。</p>"
+      },
+      {
+        "id": "penrose-unilluminable-room",
+        "contributors": [
+          "Vincent Fan",
+          "Yi-Ting Tu"
+        ],
+        "title": "無法照亮的潘洛斯房間",
+        "description": "<p>無法照亮的潘洛斯房間由橢圓形、圓形和線性鏡子構成。它有一個有趣的特性，即房間內的一個點源（綠色）無論放在哪裡，都不會照亮整個房間。您可以拖動綠色點以移動源。</p>"
+      },
+      {
+        "id": "optical-cavity",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "雙鏡共振腔",
+        "description": "<p>模擬由兩面鏡子組成的共振腔。假設腔體的長度為\\(d\\)，其鏡子的曲率半徑分別為\\(R_1\\)和\\(R_2\\)（根據慣例，\\(R>0\\)為凹面鏡），那麼只有當\\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\)時，共振腔才會穩定（這意味著從一面鏡子向另一面鏡子發出的每一道光線都保證有非發散的軌跡，前提是鏡子的反射率足夠高）。在此模擬中，我們假設鏡子是理想曲面鏡，這意味著\\(f=\\frac{R}{2}\\)，將先前的穩定條件變為\\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\)。<a href=\"https://phydemo.app/ray-optics/tw/gallery/resonator\" target=\"_blank\">這裡</a>有一個使用球面鏡的類似模擬，在抛物面近似下，第一種穩定條件成立。</p>"
+      },
+      {
+        "id": "resonator",
+        "contributors": [
+          "Mikhail Kochiev"
+        ],
+        "title": "平凹共振腔",
+        "description": "<p>這是一個平凹共振腔的演示。如果鏡子間的距離大於曲率半徑，共振腔將會不穩定。如果鏡子間的距離小於或等於曲率半徑，就會形成穩定的共振腔模式。</p>"
+      },
+      {
+        "id": "maze-solution",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "用一條光線解迷宮",
+        "description": "<p>此模擬中，一條光線在迷宮內部產生，並被牆壁多次反射。迷宮內的大紅色和小紅色正方形（如下面的截圖所示）分別代表光線的起源和初始方向。取決於光線初始方向，光線可能最終會離開迷宮，因此原則上可以通過追蹤光線的路徑計算出迷宮的解法。</p>"
+      },
+      {
+        "id": "specular-and-diffuse-reflection",
+        "contributors": [
+          "Steve Stonebraker"
+        ],
+        "title": "鏡面反射與漫反射",
+        "description": "<p>相同的光束照射在光滑表面和粗糙表面上，展示了鏡面反射與漫反射之間的區別。</p>"
+      },
+      {
+        "id": "chaff-countermeasure",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "干擾箔",
+        "description": "<p>這是一個箔片反射對雷達效應的定性模擬（忽略繞射效應）。</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "反射性球體的焦散",
+        "description": "<p>一個反射性的積分球。也可以是液滴（如雨滴）中的反射。移動點光源的位置可以看到許多漂亮的圖樣。</p>"
+      }
+    ]
+  },
+  {
+    "id": "refraction",
+    "title": "光的折射",
+    "content": [
+      {
+        "id": "reflect",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "反射與折射",
+        "description": "<p>此模擬顯示了光經過界面的反射和折射。</p>"
+      },
+      {
+        "id": "internal-reflection",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "全反射",
+        "description": "<p>此模擬顯示了光經過界面的折射和內部反射，包括全反射。</p>"
+      },
+      {
+        "id": "prisms",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "稜鏡",
+        "description": "<p>此模擬演示了直角稜鏡（right-angle prism）、波羅稜鏡（Porro prism）、菱形稜鏡（rhomboid prism）、杜福稜鏡（Dove prism），和五面稜鏡（pentaprism）。</p>"
+      },
+      {
+        "id": "beam-directors",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "光束導向器",
+        "description": "<p>這是一個普通雙棱鏡 (biprism) 和菲涅耳雙稜鏡（Fresnel biprism）的模擬。雙棱鏡可以將入射的平行光束導向兩個方向，其取決於頂角的大小。</p>"
+      },
+      {
+        "id": "apparent-depth",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "視深度",
+        "description": "<p>當您從空氣中觀察水下的物體時，物體的深度會看似小於其實際深度。本模擬示範了這種由光的折射造成的現象。視深度與觀察者的位置有關，這點我們可以通過拖動藍色圓圈來演示。</p>"
+      },
+      {
+        "id": "bended-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "彎曲的鉛筆",
+        "description": "<p>從上方觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，彎曲的現象更為明顯。您可以查看<a href=\"\"https://phydemo.app/ray-optics/tw/gallery/broken-pencil\"\" target=\"\"_blank\"\">斷裂的鉛筆</a>模擬，那裡的斷裂現象更為明顯。</p>"
+      },
+      {
+        "id": "broken-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "斷裂的鉛筆",
+        "description": "<p>從側面觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，斷裂的現象更為明顯。您可以查看<a href=\"\"https://phydemo.app/ray-optics/tw/gallery/bended-pencil\"\" target=\"\"_blank\"\">彎曲的鉛筆</a>模擬，那裡的彎曲現象更為明顯。</p>"
+      },
+      {
+        "id": "chromatic-dispersion",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "色散",
+        "description": "<p>這個模擬使用一個白色光束和一個三角稜鏡展示色散現象。此處白色是由紅、橙、黃、綠、青、藍、紫的混色形成的。</p>"
+      },
+      {
+        "id": "rainbows",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "彩虹",
+        "description": "<p>本模擬演示了虹、霓以及亞歷山大暗帶是如何形成的。這裡，我們以紅、橙、黃、綠、青、藍、紫的混色來近似陽光的光譜。對於虹/霓，離開雨滴的光線是由雨滴內部的一次/兩次內部反射產生的（你可以通過將光線密調低並拖動雨滴來觀察這一點）。請注意，這些並不是全內反射，因此出射光線的強度遠低於入射光線。由於<a href=\"https://phydemo.app/ray-optics/tw/gallery/minimum-deviation-angle\" target=\"_blank\">最小偏向角</a>與波長有關，不同顏色的光線會在不同的角度堆積，於是彩虹中的顏色就產生了。遠離最小偏向角時，光線不會堆積，所以所有顏色都很弱並混合在一起，使得在兩彩虹之外的角度產生昏暗的白色（或「灰色」）。相較之下，虹與霓之間則沒有這樣的光線，於是形成亞歷山大暗帶。</p>"
+      },
+      {
+        "id": "minimum-deviation-angle",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "最小偏向角",
+        "description": "<p>光線射到光學元件上的偏向角有多種定義。下方的截圖中可以看到對於三棱鏡和球形透鏡的定義。在本模擬中，光線進入光學元件的入射角與偏向角之間的關係在某個角度有局部極小值，這個偏向角被稱為「最小偏向角」。這個局部極小值可以解釋如<a href=\"https://phydemo.app/ray-optics/tw/gallery/rainbows\" target=\"_blank\">彩虹</a>和光暈這樣的光學現象。由於這個局部極小值，偏轉的光線在特定的方向上堆積，產生「光學焦散」（如在模擬中的例子C中看到的）我們會將其視為彩虹/光暈。</p>"
+      },
+      {
+        "id": "aplanatic-points",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "等光程點",
+        "description": "<p>光學系統的等光程點是其光學軸上的特殊點，即「從其中一點發出的光線會匯聚到另一點，或看似從從該點發散」。</p><ul><li>橢圓：橢圓鏡片/鏡子的兩個焦點是等光程點，因為從一個焦點發出的光將匯聚向另一點。</li><li>球體：球形透鏡有兩個等光程點，分別在球內和球外 - 更多細節請見模擬。</li><li>雙曲線：在<a href=\"https://phydemo.app/ray-optics/tw/gallery/hyperbolic-mirror\" target=\"_blank\">雙曲面鏡</a>模擬中的兩個焦點也是等光程點。</li></ul><p>給定兩個擁有水平座標 \\(x_1\\) 和 \\(x_2\\) 、具有相同垂直座標的點，並且設光學元件外部和內部的折射率分別為 \\(n_1\\) 和 \\(n_2\\)，則若這兩點要成為等光程點，我們的光學元件的邊界必須滿足\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation}使得 \\(k_i=1\\) 或 \\(-1\\)（取決於連接 \\(x_i\\) 和我們的光學元件邊界的光線是實的或虛的），而 \\(E\\) 是一個使這個方程有非平凡解的常數。這個方程（可以用費馬原理推導出來）是笛卡爾卵形線的方程（圓錐曲線是其特例）。</p>"
+      }
+    ]
+  },
+  {
+    "id": "lens",
+    "title": "透鏡",
+    "content": [
+      {
+        "id": "concave-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "凹透鏡",
+        "description": "<p>模擬凹透鏡使光束分散的現象。</p>"
+      },
+      {
+        "id": "convex-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "凸透鏡",
+        "description": "<p>模擬凸透鏡使光束聚焦的現象。</p>"
+      },
+      {
+        "id": "lens-images",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "透鏡成像",
+        "description": "<p>模擬理想透鏡成像，包括平行光與點光源成的像。</p>"
+      },
+      {
+        "id": "transverse-and-longitudinal-magnification",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "橫向和縱向放大率",
+        "description": "<p>模擬焦距為 \\(f\\) 的理想透鏡的橫向和縱向放大率。橫向（也稱為線性）和縱向的放大率分別是 \\(M_T=1-\\frac{u}{f}\\) 和 \\(M_L=\\frac{dv}{du}\\)，其中 \\(u\\) 和 \\(v\\) 分別是物體和圖像距離我們的理想透鏡的距離。另外，對於理想透鏡，\\(M_L=-(M_T)^2\\)</p>"
+      },
+      {
+        "id": "vanishing-point",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "消失點",
+        "description": "<p>有些光學系統將無限的平行線映射到影像平面上的一些線，使得這些線在一個點上相交，於是產生一種平行線在「無窮遠處」相交的幻覺。這個交點被稱為消失點。</p><p>考慮一個由焦距為 \\(f\\) 的理想透鏡組成，位於 \\(XY\\) 平面上，光學軸與 \\(X\\)（水平）軸重合，透鏡與 \\(Y\\) 軸重合的光學系統。對於斜率為 \\(m\\) ，位於 \\(x<0\\) 的線，其消失點之 \\((x,y)\\) 座標為 \\((f,m f)\\) 。</p>"
+      },
+      {
+        "id": "monochromatic-aberrations",
+        "contributors": [
+          "Paul Falstad",
+          "Stas Fainer"
+        ],
+        "title": "單色像差",
+        "description": "<p>這是不同單色像差的模擬：<ol><li>球面像差（Spherical aberration）。</li><li>彗形像差（Coma aberration）。</li><li>散焦像差（Defocus aberration）。</li><li>場曲像差（Field curvature aberration）。</li></ol></p>"
+      },
+      {
+        "id": "chromatic-aberration",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "色像差",
+        "description": "<p>此模擬顯示了球面透鏡的色像差（Chromatic aberration）。這裡的白色是由紅、橙、黃、綠、青、藍、紫混色形成的。紅光的焦距最大，而紫光的焦距最小。</p>"
+      },
+      {
+        "id": "hyperbolic-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "雙曲透鏡",
+        "description": "<p>這是雙曲透鏡與球面透鏡的對比。這兩個透鏡有相同的焦距，但雙曲透鏡可以將單色光的平行光束集中到一點（忽略光的波動性 - 也就是在幾何光學的近似下）而不像球面透鏡會有有球面像差（Spherical aberrations）。</p>"
+      },
+      {
+        "id": "fresnel-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "菲涅耳透鏡",
+        "description": "<p>這是球面鏡與菲涅耳透鏡（Fresnel lens）的對比。菲涅耳透鏡的優點：它的功能與常規的球面鏡相似，但占用的空間少很多 - 因此重量更輕。</p>"
+      }
+    ]
+  },
+  {
+    "id": "combination-of-lenses",
+    "title": "透鏡組合",
+    "content": [
+      {
+        "id": "zoom-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "變焦鏡頭",
+        "description": "<p>這個模擬展示了一個變焦鏡頭（Zoom Lens），您可以通過拖動中間的凹透鏡來變焦。</p>"
+      },
+      {
+        "id": "compound-microscope",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "複式顯微鏡",
+        "description": "<p>複式顯微鏡（Compound Microscope）由兩個鏡頭組成，即物鏡和目鏡。物（綠色）非常接近軸，代表一個小物體。然後，兩個鏡頭將物體放大，使產生一個大的倒置虛像（最終的橙色延長線的交點）。</p>"
+      },
+      {
+        "id": "telescope",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "望遠鏡",
+        "description": "<p>模擬一個簡單的望遠鏡，其由一個凸透鏡和一個伽利略<a href=\"https://phydemo.app/ray-optics/tw/gallery/beam-expanders\" target=\"_blank\">擴束鏡</a>組成，其作用為增加望遠鏡的角分辨率，從而更好地分離兩顆遙遠星體的入射光。</p><p>在下面的截圖中，您可以比較有與沒有擴束鏡時望遠鏡的效果差異。</p>"
+      },
+      {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "克卜勒望遠鏡",
+        "description": "<p>本模擬案例中描述了克卜勒望遠鏡的光路圖。</p>"
+      },
+      {
+        "id": "beam-expanders",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "擴束鏡",
+        "description": "<p>模擬兩種類型的擴束鏡（Beam expanders）- 克卜勒擴束鏡和伽利略擴束鏡。擴束鏡可以擴大或縮小平行光束的直徑。伽利略擴束鏡由一個凸鏡和一個凹鏡組成，而克卜勒擴束鏡由兩個凸鏡組成。在這兩種類型中，鏡頭的焦距之和都等於它們之間的距離。</p>"
+      },
+      {
+        "id": "ray-relaying",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "光線中繼",
+        "description": "<p>由一系列理想相同透鏡組成的光線中繼模擬，其中每個透鏡的焦距皆為 \\(f\\)，且之間的距離為 \\(d\\)。若且唯若 \\(d\\leq 4f\\) 時，可以保證光線軌跡不會發散。</p>"
+      },
+      {
+        "id": "rochester-cloak",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "羅徹斯特斗篷",
+        "description": "<p>羅徹斯特斗篷（Rochester cloak）是一種使用4個透鏡構成的隱形裝置。在這個模擬中，兩個外部透鏡的焦距為 \\(f_1\\)，兩個中間的透鏡的焦距為 \\(f_2\\)，使得焦距為 \\(f_1\\) 和 \\(f_2\\) 的相鄰透鏡之間的距離 \\(t_1=f_1+f_2\\)，中間兩個透鏡之間的距離為 \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\)。</p>"
+      },
+      {
+        "id": "simple-double-gauss-lens",
+        "contributors": [
+          "Alex"
+        ],
+        "title": "簡易雙高斯透鏡",
+        "description": "<p>本模擬為一個簡易雙高斯透鏡的演示。</p>"
+      }
+    ]
+  },
+  {
+    "id": "GRIN-optics",
+    "title": "漸變折射率光學",
+    "content": [
+      {
+        "id": "GRIN-slab",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "漸變折射率平板",
+        "description": "<p>模擬折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介電材料，其中 \\(n_0\\) 是其中央軸的折射率，\\(\\rho \\) 是從其中央軸的徑向距離，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半徑。上方的介電材料為一系列的薄矩形，每個矩形具有恆定的折射率（根據前述 \\(n(\\rho)\\) 的式子）。下方的介電材料是折射率為\\(n(\\rho)\\)的漸變折射率材料。</p>"
+      },
+      {
+        "id": "inferior-mirage",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "下蜃景",
+        "description": "<p>此為下蜃景效果的定性模擬。將天空的折射率模擬為 \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\)，其中 \\(h=600\\) 代表太陽在地面以上的高度。</p>"
+      },
+      {
+        "id": "sea-mirage",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "海市蜃樓",
+        "description": "<p>當一個物體在地平線以下時，有時我們仍然能看見其形成的上蜃景。此為這個效果的定性模擬。</p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "等角螺線形的光線路徑",
+        "description": "<p>能使光線路徑呈現等角螺線形（ \\(r(θ) = r_0\\,e^{-k\\theta}\\)，其中 \\(r_0,k > 0\\) 且 \\(\\alpha = \\arctan k\\) 為等角螺線與同心圓形的交點上兩切線的固定夾角，見<a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">這個</a>動畫）的折射率函數為 \\(n(r) &prop; \\frac{1}{r} \\) (這可用將光線路徑以極座標表示並使用費馬原理來證明）。 </p>"
+      },
+      {
+        "id": "luneburg-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "龍伯透鏡",
+        "description": "<p>龍伯透鏡（Luneburg lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>上方的介電材料為由 \\(N=20\\) 個同心球組成的龍伯透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。</p><p>下方的介電材料是折射率為\\(n(r)\\)的漸變折射率材料。</p>"
+      },
+      {
+        "id": "maxwell-fisheye-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "馬克士威魚眼透鏡",
+        "description": "<p>馬克士威魚眼透鏡（Maxwell fisheye lens）是一個球形介電材料，折射率為 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半徑，\\(\\rho\\) 是與球心的距離。</p><p>上方的介電材料為由 \\(N=20\\) 個同心球組成的馬克士威魚眼透鏡，半徑 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,...,N\\)。然而，由於此模擬器會將互相重疊的光學元件的折射率相乘，所以第 \\(i\\) 個同心球形鏡的數值折射率為 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。</p><p>下方的介電材料是折射率為\\(n(r)\\)的漸變折射率材料。</p>"
+      },
+      {
+        "id": "branched-flow",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "分支流",
+        "description": "<p>當光線經過折射率在空間上有隨機擾動（相關長度遠大於光的波長）的介質時，會形成一種類似樹狀的圖案，稱為分支流。本模擬使用一些餘弦函數的和作為折射率函數來演示這個現象，其中餘弦函數的振幅、波數與相位都是類似隨機的數。</p>"
+      }
+    ]
+  },
+  {
+    "id": "miscellaneous",
+    "title": "其他",
+    "content": [
+      {
+        "id": "single-ray-demo",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "單一光線演示",
+        "description": "<p>本模擬示範了一條光線的反射和折射。</p>"
+      },
+      {
+        "id": "spherical-lens-and-mirror",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "球面透鏡與面鏡",
+        "description": "<p>這個模擬演示了一束連續的光線穿過一個球面透鏡和一個球面面鏡。</p>"
+      },
+      {
+        "id": "interrogation-room",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "審訊室",
+        "description": "<p>這是一個審訊室雙向鏡的模擬。在黑暗的房間裡的觀察者（理想情況下，黑暗的房間內部不會發出/反射光，同時會吸收來自審訊室的所有入射光）能夠通過雙向鏡看到審訊室內部，因為審訊室裡的燈產生的光被散射並由觀察者接收，而嫌疑人只能看到審訊室內部以及他/她和燈的反射（因為嫌疑人未從黑暗的房間接收到光）。</p>"
+      },
+      {
+        "id": "camera-obscura",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "暗箱",
+        "description": "<p>這是一個暗箱的模擬。在黑暗的房間裡的觀察者看到的是外面物體的倒置影像，並且這個影像是直接投影在他/她前面的牆壁上的（無需使用額外的透鏡）。</p>"
+      },
+      {
+        "id": "NL-simulation",
+        "contributors": [
+          "Wen Zhou"
+        ],
+        "title": "NL 雙筒望遠鏡",
+        "description": "<p>這個模擬展示了 Swarovski NL 雙筒望遠鏡的粗略草圖。</p>"
+      },
+      {
+        "id": "einstein-ring-refocused-to-single-image-via-eyepiece",
+        "contributors": [
+          "Jordan Anderson"
+        ],
+        "title": "經由目鏡將愛因斯坦環重新聚焦為單一影像",
+        "description": "<p>這是一個目鏡/透鏡的模型，可以用在任何科學望遠鏡上，透過逆轉「光暈」，將愛因斯坦環聚焦回原始形態，同時散射用來創建環的星體或大質量物體的光。</p>"
+      },
+      {
+        "id": "black-cat-becomes-white",
+        "contributors": [
+          "Victory Science",
+          "Yi-Ting Tu"
+        ],
+        "title": "「黑貓變白貓」演示",
+        "description": "<p>「黑貓變白貓」是一個科普演示。當圖畫浸入水中時有部分會消失。製作步驟如下：<ol><li>在紙上繪製圖案（如黑貓）。</li><li>將紙放入塑膠套中。</li><li>在塑膠套上描出該圖案的一部分（如貓的邊框）或其他圖案。當放入水中時，繪製在紙上的圖案將消失，但繪製在塑膠套上的圖案不會消失。</li></ol>本模擬解釋它的原理。</p>"
+      },
+      {
+        "id": "dichroic-rbg-splitter-and-combiner",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "二色性RGB分光器與合光器",
+        "description": "<p>這個模擬使用二色鏡來分割和組合RGB光束。</p>"
+      },
+      {
+        "id": "gan-based-lcd-pixel",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "液晶螢幕像素",
+        "description": "<p>這是一個液晶螢幕像素的模型。它模擬了新型的微型發光二極體顯示層的功能，以及我們的眼睛是如何感知它的。</p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "凹面鏡可穿戴顯示器",
+        "description": "<p>簡易的可穿戴顯示器。許多設計都使用兩個鏡子及一個正透鏡，但本模擬為只用一個光學元件的版本。比例約為 5:1mm。</p><p>CC0：此作品已被標記為釋出至公有領域</p>"
+      },
+      {
+        "id": "reflecting-monochromator",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "反射式單色儀",
+        "description": "<p>這是一個反射式單色儀的模擬，其透過反射式繞射光柵與聚焦處的出射口，從多波長混合的光之中取得窄頻寬的光。</p>"
+      },
+      {
+        "id": "solar-eclipses",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "日食",
+        "description": "<p>本模擬演示了不同類型的日食。右上方的圖中，月球的影子遮蔽了太陽，在中心產生了日全食，周圍地區則是日偏食。右下方的圖為日環食，其中由於月球距離地球較遠，無法完全遮蔽太陽，在中心留下一個明亮的環（本二維模擬器中，這個「環」為陽光只來自太陽的最上方與最下方的部分），而周圍地區也是日偏食。</p>"
+      }
+    ]
+  }
+]

@@ -1,0 +1,528 @@
+[
+  {
+    "id": "reflection",
+    "title": "Odbicie",
+    "content": [
+      {
+        "id": "images-formed-by-two-mirrors",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Obrazy w układzie dwóch zwierciadeł",
+        "description": "<p>Symulacja pokazuje obrazy utworzone przez dwa zwierciadła płaskie. Zielone \"L\" to przedmiot. Jeśli kąt między dwoma zwierciadłami wynosi \\(\\frac{360^\\circ}{n}\\), wtedy powstanie \\(n-1\\) pozornych obrazów (pomarańczowe L). Można przeciągnąć punkt końcowy każdego ze zwierciadeł, aby zmienić kąt między nimi.</p>"
+      },
+      {
+        "id": "parabolic-mirror",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Zwierciadło paraboliczne",
+        "description": "<p>Symulacja pokazuje właściwości ogniskowania zwierciadła parabolicznego.</p>"
+      },
+      {
+        "id": "hyperbolic-mirror",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Zwierciadło hiperboliczne",
+        "description": "<p>Demonstracja właściwości odbicia od zwierciadła hiperbolicznego: Promienie świetlne biegnące od jednego ogniska w kierunku zwierciadła hiperbolicznego będą odbijać się biegnąc tak, że ich przedłużenia wypadają w drugim ognisku.</p><p>Dwa ogniska hiperboli to punkty aplanatyczne (patrz <a href=\"https://phydemo.app/ray-optics/pl/gallery/aplanatic-points\" target=\"_blank\">Punkty aplanatyczne</a>).</p>"
+      },
+      {
+        "id": "retroreflectors",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Retroreflektory",
+        "description": "<p>symulacja dwóch rodzajów retroreflektorów:<ol><li>Retroreflektor narożny.</li><li>Retroreflektor kocie oko.</li></ol></p>"
+      },
+      {
+        "id": "periscope",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Peryskop",
+        "description": "<p>Symulacja peryskopu wykonanego z dwóch płaskich zwierciadeł i kilku elementów blokujących światło.</p>"
+      },
+      {
+        "id": "newtonian-telescope",
+        "contributors": [
+          "Matteo Ricci Cipolloni"
+        ],
+        "title": "Teleskop Newtona",
+        "description": "<p>Model teleskopu Newtona z okularem Plössla.</p>"
+      },
+      {
+        "id": "penrose-unilluminable-room",
+        "contributors": [
+          "Vincent Fan",
+          "Yi-Ting Tu"
+        ],
+        "title": "Nieoświetlony pokój Penrose'a",
+        "description": "<p>Niemożliwy do oświetlenia pokój Penrose'a jest zbudowany z luster eliptycznych, kołowych i liniowych. Ma tą interesującą właściwość, że źródło punktowe (zielone) w pomieszczeniu nie oświetli całego pomieszczenia, bez względu na to, gdzie je umieścisz. Możesz przeciągnąć zielony punkt, aby przesunąć źródło.</p>"
+      },
+      {
+        "id": "optical-cavity",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Wnęka optyczna z dwoma zwierciadłami",
+        "description": "<p>Jest to symulacja promieni wewnątrz wnęki optycznej z dwoma zwierciadłami. Biorąc pod uwagę, że długość wnęki wynosi \\(d\\), a promienie krzywizny jej zwierciadeł wynoszą odpowiednio \\(R_1\\) i \\(R_2\\) (z konwencją, że \\(R>0\\) dla zwierciadła wklęsłego), to wnęka optyczna jest stabilna (co oznacza, że dla każdego promienia wychodzącego z jednego zwierciadeł w kierunku drugiego zwierciadła trajektoria nierozbieżna jest gwarantowana dla dostatecznie wysokich zwierciadeł), wtedy i tylko wtedy, gdy \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). W tej symulacji zakładamy, że zwierciadła są idealnie zakrzywionymi zwierciadłami, co oznacza, że \\(f=\\frac{R}{2}\\) i sprowadza poprzedni warunek stabilności do postaci \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). <a href=\"https://phydemo.app/ray-optics/pl/gallery/resonator\" target=\"_blank\">Tutaj</a> podobna symulacja ze zwierciadłami sferycznymi, gdzie pierwszy warunek stabilności jest spełniony w przybliżeniu przyosiowym.</p>"
+      },
+      {
+        "id": "resonator",
+        "contributors": [
+          "Mikhail Kochiev"
+        ],
+        "title": "Rezonator płasko-wklęsły",
+        "description": "<p>To jest demonstracja rezonatora płasko-wklęsłego. Jeśli odległość między zwierciadłami jest większa niż promień krzywizny, rezonator jest niestabilny. Jeśli odległość między zwierciadłami jest mniejsza lub równa promieniowi krzywizny, otrzymujemy stabilny tryb rezonatora.</p>"
+      },
+      {
+        "id": "maze-solution",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Rozwiązanie labiryntu",
+        "description": "<p>Symulacja biegu promienia światła wysłanego w labiryncie, wielokrotnie odbijanego przez ściany. Większy i mniejszy czerwony kwadrat wewnątrz labiryntu (widoczne na zrzucie ekranu poniżej) reprezentują odpowiednio punkt wysłania i początkowy kierunek promienia światła. W przypadku niektórych początkowych orientacji, promień światła wychodzi z labiryntu, a tym samym, cofając się po torze promienia, można zasadniczo znaleźć rozwiązanie labiryntu.</p>"
+      },
+      {
+        "id": "specular-and-diffuse-reflection",
+        "contributors": [
+          "Steve Stonebraker"
+        ],
+        "title": "Odbicie zwierciadlane i rozproszone",
+        "description": "<p>Identyczne wiązki promieni padają na powierzchnię gładką i chropowatą, ilustrując różnicę między odbiciem zwierciadlanym i rozproszonym.</p>"
+      },
+      {
+        "id": "chaff-countermeasure",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Dipole odbijające (chaff)",
+        "description": "<p>Jest to jakościowa symulacja systemu przeciwdziałania namiarom radarowym (pomijając efekty dyfrakcyjne).</p>"
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ],
+        "title": "Caustics from a Reflective Sphere",
+        "description": "<p>A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.</p>"
+      }
+    ]
+  },
+  {
+    "id": "refraction",
+    "title": "Załamanie",
+    "content": [
+      {
+        "id": "reflect",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Odbicie i załamanie",
+        "description": "<p>Symulacja pokazuje odbicie i załamanie na powierzchni.</p>"
+      },
+      {
+        "id": "internal-reflection",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Odbicie wewnętrzne",
+        "description": "<p>Symulacja pokazuje refrakcję i wewnętrzne odbicie na powierzchni.</p>"
+      },
+      {
+        "id": "prisms",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Pryzmaty",
+        "description": "<p>Symulacja pokazuje pryzmat prostokątny, pryzmat Porro (dachowy), pryzmat romboidalny, pryzmat Gołębicy i pryzmat pentagonalny.</p>"
+      },
+      {
+        "id": "beam-directors",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Kierowanie wiązką światła",
+        "description": "<p>Symulacja bipryzmatu regularnego i Fresnela. Bipryzmat może skierować padającą skolimowaną wiązkę w dwóch kierunkach, w zależności od kąta wierzchołkowego.</p>"
+      },
+      {
+        "id": "apparent-depth",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Pozorna głębokość",
+        "description": "<p>Kiedy patrzysz z powietrza na obiekt pod wodą, głębokość na jakiej się znajduje wydaje się być mniejsza niż w rzeczywistości. Złudzenie to jest spowodowane załamaniem światła i zostało zademonstrowane w tej symulacji. Pozorna głębokość zależy od położenia obserwatora, co można zademonstrować, przeciągając niebieskie kółko.</p>"
+      },
+      {
+        "id": "bended-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Zgięty ołówek",
+        "description": "<p>Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z góry na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji zginanie jest bardziej wyraźne. Możesz sprawdzić symulację <a href=\"https://phydemo.app/ray-optics/pl/gallery/broken-pencil\" target=\"_blank\">Złamany ołówek</a>, gdzie to drugie złudzenie jest bardziej wyraźne.</p>"
+      },
+      {
+        "id": "broken-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Złamany ołówek",
+        "description": "<p>Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z boku na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji złamanie jest bardziej wyraźne. Możesz sprawdzić symulację <a href=\"https://phydemo.app/ray-optics/pl/gallery/bended-pencil\" target=\"_blank\">Zgięty ołówek</a>, gdzie to drugie złudzenie jest bardziej wyraźne.</p>"
+      },
+      {
+        "id": "chromatic-dispersion",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Dyspersja chromatyczna",
+        "description": "<p>Symulacja pokazuje dyspersję chromatyczną za pomocą wiązki światła białego i trójkątnego pryzmatu. Biały kolor tutaj powstaje przez mieszanie kolorów czerwonego, pomarańczowego, żółtego, zielonego, cyjanowego, niebieskiego i fioletowego.</p>"
+      },
+      {
+        "id": "rainbows",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Tęcze",
+        "description": "<p>Symulacja pokazuje formowanie się tęczy pierwotnej, tęczy wtórnej i ciemnego pasa Aleksandra. Tutaj widmo światła słonecznego jest przybliżone przez zmieszanie kolorów czerwonego, pomarańczowego, żółtego, zielonego, cyjanowego, niebieskiego i fioletowego. Promienie wychodzące dla pierwotnej/wtórnej tęczy wynikają z jednego/dwóch wewnętrznych odbić w kropli deszczu (można to zobaczyć, ustawiając niską gęstość promieni i przeciągając kroplę deszczu). Należy zauważyć, że nie są to całkowite wewnętrzne odbicia, więc intensywność promieni wychodzących jest znacznie niższa niż promieni padających. Ponieważ <a href=\"https://phydemo.app/ray-optics/pl/gallery/minimum-deviation-angle\" target=\"_blank\">minimalne kąty odchylenia</a> zależą od długości fali, różne kolory kumulują się pod różnymi kątami. Stąd powstają kolory tęczy. Z dala od minimalnych kątów promienie nie kumulują się, więc wszystkie kolory są słabe i mieszają się ze sobą, tworząc przyćmiony biały (lub „szary”) kolor pod kątami tuż na zewnątrz obu tęcz. Z drugiej strony żadne promienie nie docierają w obszar kąta między tęczami, tworząc ciemny pas Aleksandra.</p>"
+      },
+      {
+        "id": "minimum-deviation-angle",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Minimalny kąt odchylenia",
+        "description": "<p>Definicja kąta odchylenia promienia padającego na element optyczny zależy od kontekstu - na poniższym zrzucie ekranu możesz zobaczyć jego definicję dla pryzmatu trójkątnego i sferycznego. W przykładach zawartych w tej symulacji kąt odchylenia jako funkcja kąta padania promienia wchodzącego do elementu optycznego ma lokalne minimum, które nazywa się \"minimalnym kątem odchylenia\". To lokalne minimum może wyjaśniać zjawiska optyczne, takie jak <a href=\"https://phydemo.app/ray-optics/pl/gallery/rainbows\" target=\"_blank\">tęcze</a> i halo - z powodu tego lokalnego minimum, odchylone promienie gromadzą się w określonych kierunkach, tworząc \"optyczną kaustykę\" (jak widać w przykładzie C w symulacji), którą postrzegamy jako tęcze/halo.</p>"
+      },
+      {
+        "id": "aplanatic-points",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Punkty aplanatyczne",
+        "description": "<p>Punkty aplanatyczne układu optycznego to szczególne punkty na jego osi optycznej, takie, że \"promienie wychodzące z jednego z nich zbiegają się lub rozchodzą się z drugiego punktu\".</p><ul><li>Elipsa: dwa ogniska eliptycznej soczewki/zwierciadła są punktami aplanatycznymi, ponieważ światło emitowane z jednego ogniska zbiega się w kierunku drugiego.</li><li>Sfera: soczewka sferyczna ma dwa punkty aplanatyczne, wewnątrz i na zewnątrz kuli - więcej szczegółów w symulacji.</li><li>Hiperbola: dwa ogniska <a href=\"https://phydemo.app/ray-optics/pl/gallery/hyperbolic-mirror\" target=\"_blank\">modelu zwierciadła hiperbolicznego</a> są również punktami aplanatycznymi.</li></ul><p>Jeśli dane są dwa punkty o odciętych \\(x_1\\) i \\(x_2\\) oraz identycznych rzędnych, i współczynniki załamania światła na zewnątrz i wewnątrz naszego elementu optycznego wynoszą odpowiednio \\(n_1\\) i \\(n_2\\), to aby te dwa punkty były punktami aplanatycznymi, granica naszego elementu optycznego musi spełniać równanie\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation}, gdzie \\(k_i=1\\) or \\(-1\\), jeśli promień łączący \\(x_i\\) i granicę naszego elementu optycznego jest odpowiednio rzeczywisty lub pozorny, a \\(E\\) jest stałą, dla której to równanie ma nietrywialne rozwiązanie. To równanie (które można wyprowadzić za pomocą zasady Fermata) jest równaniem owalu Kartezjusza, którego krzywe stożkowe są przypadkami szczególnymi.</p>"
+      }
+    ]
+  },
+  {
+    "id": "lens",
+    "title": "Soczewka",
+    "content": [
+      {
+        "id": "concave-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Soczewka wklęsła",
+        "description": "<p>Symulacja pokazuje soczewkę wklęsłą rozpraszającą wiązkę.</p>"
+      },
+      {
+        "id": "convex-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Soczewka wypukła",
+        "description": "<p>Symulacja pokazuje soczewkę wypukłą skupiającą wiązkę.</p>"
+      },
+      {
+        "id": "lens-images",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Obrazy w soczewce",
+        "description": "<p>Symulacja pokazuje obrazy wiązki i źródeł punktowych wytwarzanych przez idealne soczewki.</p>"
+      },
+      {
+        "id": "transverse-and-longitudinal-magnification",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Powiększenie poprzeczne i wzdłużne",
+        "description": "<p>Symulacja powiększenia poprzecznego i wzdłużnego dla idealnej soczewki o ogniskowej \\(f\\). Powiększenie poprzeczne (zwane także liniowym) i wzdłużne to odpowiednio \\(M_T=1-\\frac{u}{f}\\) i \\(M_L=\\frac{dv}{du}\\), gdzie \\(u\\) and \\(v\\) to odpowiednio odległość przedmiotu i obrazu od naszej idealnej soczewki. Dla idealnej soczewki zachodzi również \\(M_L=-(M_T)^2\\)</p>"
+      },
+      {
+        "id": "vanishing-point",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Punkt zbiegu",
+        "description": "<p>Niektóre układy optyczne odwzorowują nieskończone równoległe proste na linie na płaszczyźnie obrazu, które spotykają się w jednym punkcie, tworząc złudzenie, że spotykają się \"w nieskończoności\". Ten pojedynczy punkt nazywany jest punktem zbiegu.</p><p> Dla układu optycznego składającego się z idealnej soczewki o ogniskowej \\(f\\), położonej na płaszczyźnie \\(XY\\), tak że jej oś optyczna pokrywa się z osią \\(X\\)(poziomą) i soczewka pokrywa się z osią \\(Y\\), punkt zbiegu linii o współczynniku kierunkowym \\(m\\), umieszczonaj w obszarze \\(x<0\\), ma współrzędne \\((f,m f)\\).</p>"
+      },
+      {
+        "id": "monochromatic-aberrations",
+        "contributors": [
+          "Paul Falstad",
+          "Stas Fainer"
+        ],
+        "title": "Aberracje monochromatyczne",
+        "description": "<p>To jest symulacja różnych aberracji monochromatycznych:<ol><li>Aberracja sferyczna.</li><li>Aberracja komatyczna.</li><li>Aberracja rozogniskowania.</li><li>Aberracja krzywizny pola.</li></ol></p>"
+      },
+      {
+        "id": "chromatic-aberration",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Aberracja chromatyczna",
+        "description": "<p>Ta symulacja pokazuje aberrację chromatyczną w soczewce sferycznej. Tutaj biały kolor powstaje przez mieszanie kolorów czerwonego, pomarańczowego, żółtego, zielonego, cyjanowego, niebieskiego i fioletowego. Ogniskowa dla światła czerwonego jest największa, a dla fioletowego najmniejsza.</p>"
+      },
+      {
+        "id": "hyperbolic-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Soczewka hiperboliczna",
+        "description": "<p>Jest to symulacja i porównanie soczewek hiperbolicznych i sferycznych. Obie soczewki mają identyczne ogniskowe, ale w przeciwieństwie do soczewki sferycznej, soczewka hiperboliczna może skupić równoległą wiązkę światła monochromatycznego do jednego punktu (pomijając falową naturę światła - czyli w przybliżeniu optyki geometrycznej) bez aberracji sferycznych.</p>"
+      },
+      {
+        "id": "fresnel-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Soczewka Fresnela",
+        "description": "<p>Jest to symulacja i porównanie soczewki sferycznej i soczewki Fresnela. Łatwo zauważyć jedną z zalet soczewki Fresnela: działa ona podobnie jak zwykła soczewka sferyczna, a jednocześnie zajmuje znacznie mniej miejsca - a co za tym idzie - mniej waży.</p>"
+      }
+    ]
+  },
+  {
+    "id": "combination-of-lenses",
+    "title": "Układy soczewek",
+    "content": [
+      {
+        "id": "zoom-lens",
+        "contributors": [
+          "Paul Falstad"
+        ],
+        "title": "Obiektyw zmiennoogniskowy",
+        "description": "<p>Ta symulacja przedstawia obiektyw zmiennoogniskowy, w którym można zmieniać powiększenie, przeciągając pośrodku soczewkę wklęsłą.</p>"
+      },
+      {
+        "id": "compound-microscope",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Mikroskop złożony",
+        "description": "<p>Mikroskop złożony składa się z dwóch soczewek, obiektywu i okularu. Punkt (zielony) jest bardzo blisko osi optycznej i reprezentuje czubek małego obiektu. Obiekt jest następnie powiększany przez dwie soczewki, tak że powstaje duży odwrócony obraz pozorny (przecięcie pomarańczowych przedłużeń końcowych promieni to obraz zielonego punktu).</p>"
+      },
+      {
+        "id": "telescope",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Teleskop",
+        "description": "<p>Jest to symulacja prostego teleskopu, złożonego z soczewki wypukłej i <a href=\"https://phydemo.app/ray-optics/gallery/beam-expanders\" target=\"_blank\">ekspandera wiązki</a> Galileusza, który zwiększa rozdzielczość kątową teleskopu, a tym samym lepiej oddziela wpadające światło od dwóch odległych gwiazd.</p><p>Na poniższym zrzucie ekranu można porównać osiągi teleskopu z jego wersją bez ekspandera wiązki (zawierającą jedynie soczewkę wypukłą).</p>"
+      },
+      {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "Keplerian telescope",
+        "description": "<p>This simulation describes the ray diagram of the Keplerian telescope</p>"
+      },
+      {
+        "id": "beam-expanders",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Ekspandery wiązki",
+        "description": "<p>Jest to symulacja dwóch typów ekspanderów wiązki - ekspandera wiązki Keplera i ekspandera wiązki Galileusza. Ekspander wiązki rozszerza lub zmniejsza średnicę wiązki skolimowanego światła. Ekspander wiązki Galileusza składa się z soczewki wypukłej i wklęsłej, podczas gdy ekspander wiązki Keplera składa się z dwóch soczewek wypukłych. W obu typach suma ogniskowych soczewek jest równa odległości między nimi.</p>"
+      },
+      {
+        "id": "ray-relaying",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Przekazywanie promieni",
+        "description": "<p>Jest to symulacja przekazywania promieni przez szereg identycznych soczewek o ogniskowej \\(f\\) i odległości \\(d\\) między kolejnymi soczewkami. Nierozbieżna trajektoria promieni wiązki zachodzi wtedy i tylko wtedy, gdy \\(d\\leq 4f\\) (w przybliżeniu przyosiowym).</p>"
+      },
+      {
+        "id": "rochester-cloak",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Rochesterski płaszcz",
+        "description": "<p>Rochesterski płaszcz (Rochester cloak) to rodzaj urządzenia maskującego, które wykorzystuje tylko 4 soczewki. W wersji przedstawionej w tej symulacji ogniskowa dwóch soczewek zewnętrznych wynosi \\(f_1\\), a dwóch soczewek środkowych \\(f_2\\). Odległość między kolejnymi soczewkami o ogniskowych \\(f_1\\) i \\(f_2\\) równa się \\(t_1=f_1+f_2\\), a odległość między środkowymi soczewkami wynosi \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).</p>"
+      },
+      {
+        "id": "simple-double-gauss-lens",
+        "contributors": [
+          "Alex"
+        ],
+        "title": "Simple Double-Gauss Lens",
+        "description": "<p>This is a demonstration of a simple double-Gauss lens.</p>"
+      }
+    ]
+  },
+  {
+    "id": "GRIN-optics",
+    "title": "Optyka gradientowa (GRIN)",
+    "content": [
+      {
+        "id": "GRIN-slab",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Płyta GRIN (gradientowa)",
+        "description": "<p>Jest to symulacja prostokątnego materiału dielektrycznego o współczynniku załamania \\(n(\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0=2\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\)  jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem.<br>Górny dielektryk w tej symulacji składa się z cienkich prostokątów dielektrycznych o stałym współczynniku załamania światła, zgodnie z \\(n(\\rho)\\), podczas gdy dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(\rho)\\).</p>"
+      },
+      {
+        "id": "inferior-mirage",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Miraż dolny",
+        "description": "<p>Jest to jakościowa symulacja efektu mirażu dolnego.<br>W tym przykładzie współczynnik załamania światła powietrza jest aproksymowany funkcją \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), gdzie \\(h=600\\)  reprezentuje wysokość nad ziemią obiektu emitującego/odbijającego światło.</p>"
+      },
+      {
+        "id": "sea-mirage",
+        "contributors": [
+          "chuangyu J"
+        ],
+        "title": "Sea mirage",
+        "description": "<p>This is a qualitative simulation of the effect that an object beyond the horizon can be visible as a superior mirage.</p>"
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Promień o torze spirali logarytmicznej",
+        "description": "Funkcja współczynnika załamania światła, która wspiera promienie o torach spirali logarytmicznych o postaci \\(r(θ) = r_0\\,e^{-k\\theta}\\), gdzie \\(r_0,k > 0\\) i \\(\\alpha = \\arctan k\\) to stały kąt między dwiema stycznymi w punkcie przecięcia koncentrycznej spirali logarytmicznej z okręgiem (jak pokazuje <a href=\"https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif\" target=\"_blank\">ta</a> animacja), to \\(n(r) &prop; \\frac{1}{r}\\) (można to wykazać zapisując ścieżkę optyczną we współrzędnych biegunowych i wykorzystując zasadę Fermata). "
+      },
+      {
+        "id": "luneburg-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Soczewka Luneburga",
+        "description": "<p>Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\rho\\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).</p>"
+      },
+      {
+        "id": "maxwell-fisheye-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ],
+        "title": "Soczewka rybie oko Maxwella",
+        "description": "<p>To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.</p><p>Górny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).</p><p>Dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).</p>"
+      },
+      {
+        "id": "branched-flow",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Branched flow",
+        "description": "<p>When light travels through a medium whose refractive index has random spatial fluctuations (with correlation length much larger than the wavelength of the light), a tree-like pattern called branched flow will appear. This simulation shows this phenomenon using a refractive index function which is a sum of several cosine functions with random-like amplitudes, wave vectors, and phases.</p>"
+      }
+    ]
+  },
+  {
+    "id": "miscellaneous",
+    "title": "Różne",
+    "content": [
+      {
+        "id": "single-ray-demo",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Pojedynczy promień",
+        "description": "<p>Symulacja pokazująca odbicie i załamanie pojedynczego promienia.</p>"
+      },
+      {
+        "id": "spherical-lens-and-mirror",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Soczewka sferyczna i zwierciadło sferyczne",
+        "description": "<p>Symulacja pokazuje ciągłą wiązkę przechodzącą przez soczewkę sferyczną i zwierciadło sferyczne.</p>"
+      },
+      {
+        "id": "interrogation-room",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Pokój przesłuchań",
+        "description": "<p>Jest to symulacja lustra weneckiego (właściwym określeniem jest lustro fenickie) w pokoju przesłuchań. Obserwator w ciemnym pokoju (najlepiej, gdy wnętrze ciemnego pokoju nie emituje/odbija światła, a także pochłania całe światło wpadające z pokoju przesłuchań) jest w stanie zajrzeć do wnętrza pokoju przesłuchań, ponieważ światło wytwarzane przez lampę w pokoju przesłuchań jest rozpraszane i odbierane przez obserwatora przez lustro weneckie, podczas gdy podejrzany widzi tylko wnętrze pokoju przesłuchań oraz odbicie swoje i lampy (ponieważ nie dociera do niego światło z ciemnego pokoju).</p>"
+      },
+      {
+        "id": "camera-obscura",
+        "contributors": [
+          "Stas Fainer"
+        ],
+        "title": "Camera obscura",
+        "description": "<p>To jest symulacja Camera obscura (łac. ciemna komnata). W ciemnym pokoju można zobaczyć odwrócony obraz obiektów na zewnątrz, rzutowany na ścianie (bez użycia dodatkowego obiektywu).</p>"
+      },
+      {
+        "id": "NL-simulation",
+        "contributors": [
+          "Wen Zhou"
+        ],
+        "title": "Lornetki NL",
+        "description": "<p>Symulacja przedstawia zgrubny szkic zasady działania lornetki Swarovski NL.</p>"
+      },
+      {
+        "id": "einstein-ring-refocused-to-single-image-via-eyepiece",
+        "contributors": [
+          "Jordan Anderson"
+        ],
+        "title": "Pierścień Einsteina ponownie zogniskowany przez okular na pojedynczy obraz",
+        "description": "<p>Model okularu/soczewki, który mógłby być użyty w dowolnym teleskopie naukowym, który odwróci \"halo\" i skupi pierścień Einsteina z powrotem do pierwotnej postaci, jednocześnie rozpraszając światło gwiazdy lub masywnego obiektu, który spowodował utworzenie pierścienia.</p>"
+      },
+      {
+        "id": "black-cat-becomes-white",
+        "contributors": [
+          "Victory Science",
+          "Yi-Ting Tu"
+        ],
+        "title": "\"Czarny kot staje się biały\" demo",
+        "description": "<p>\"Czarny kot staje się biały\" to demonstracja popularnonaukowa, w której część figurki znika po włożeniu do wody. Składa się z następujących kroków:<ol><li>Narysuj postać (np. czarnego kota) na kartce papieru.</li><li>Włóż kartkę do przezroczystej, szczelnie zamykanej plastikowej torby.</li><li>Narysuj część figury (np. obwódkę kota) lub inną figurę na plastikowej powierzchni. Po włożeniu do wody postać narysowana na papierze znika, ale nie część narysowana na plastikowej powierzchni.</li></ol>Ta symulacja wyjaśnia, jak to działa.</p>"
+      },
+      {
+        "id": "dichroic-rbg-splitter-and-combiner",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "Dichroiczny rozdzielacz i sumator RGB",
+        "description": "<p>Ta symulacja demonstruje rozdzielanie i łączenie wiązek RGB przy użyciu zwierciadeł dichroicznych.</p>"
+      },
+      {
+        "id": "gan-based-lcd-pixel",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "Piksel LCD",
+        "description": "<p>Model piksela LCD. Symuluje działanie warstw wyświetlacza mikroledowego i sposób, w jaki nasze oczy postrzegają piksel.</p>"
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ],
+        "title": "Concave Mirror Wearable Display",
+        "description": "<p>A simple wearable display. A lot of designs use two mirrors and a positive lens, but this is a one-optical-element version. The scale is approximately 5:1mm.</p><p>CC0: This work has been marked as dedicated to the public domain.</p>"
+      },
+      {
+        "id": "reflecting-monochromator",
+        "contributors": [
+          "James Garrard"
+        ],
+        "title": "Reflecting Monochromator",
+        "description": "<p>This is a simulation of a reflecting monochromator, which uses a reflective diffraction grating and a slit at the focus to get narrow band wavelengths from composite light.</p>"
+      },
+      {
+        "id": "solar-eclipses",
+        "contributors": [
+          "Yi-Ting Tu"
+        ],
+        "title": "Solar Eclipses",
+        "description": "<p>This simulation demonstrates the different types of solar eclipses. The top-right diagram depicts a solar eclipse where the Moon's shadow covers the Sun, resulting in a total eclipse at the center and a partial eclipse in surrounding areas. The bottom-right diagram illustrates an annular eclipse where the Moon is too far from Earth to completely cover the Sun, leaving a bright ring at the center (in this 2D simulator, the \"ring\" is demonstrated by sunlight coming only from the upper and the lower part of the sun) and also a partial eclipse in surrounding areas.</p>"
+      }
+    ]
+  }
+]

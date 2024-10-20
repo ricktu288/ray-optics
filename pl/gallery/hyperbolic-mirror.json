@@ -1,0 +1,103 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "CustomMirror",
+      "p1": {
+        "x": 880.0000000000002,
+        "y": 640
+      },
+      "p2": {
+        "x": 879.9999999999998,
+        "y": 840
+      },
+      "eqn": "\\sqrt{1+x^2}"
+    },
+    {
+      "type": "PointSource",
+      "x": 738.5786437626906,
+      "y": 739.9999999999999,
+      "brightness": 0.43
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 880,
+        "y": 740
+      },
+      "p2": {
+        "x": 1140,
+        "y": 740
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1051.762340634194,
+        "y": 739.3010787839165
+      },
+      "p2": {
+        "x": 1029.066688460281,
+        "y": 739.3010787839165
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 737.6008499509643,
+        "y": 790.4501471068977
+      },
+      "p2": {
+        "x": 737.6008499509643,
+        "y": 759.928407976463
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1058.7142857142853,
+      "y": 722.4099378881986,
+      "text": "Promienie pomarańczowe są pozornymi promieniami (przedłużenia odbitych promieni żółtych).\nTe pozorne promienie skupiają się w drugim ognisku."
+    },
+    {
+      "type": "TextLabel",
+      "x": 737.3478260869565,
+      "y": 815.9565217391303,
+      "text": "Umieść źródło światła w ognisku",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 379.6338018960446,
+        "y": 407.4213141549526
+      },
+      "p4": {
+        "x": 2282.4338018960443,
+        "y": 1113.0213141549527
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 578.4338018960445,
+        "y": 442.22131415495255
+      },
+      "p4": {
+        "x": 1194.4338018960445,
+        "y": 1058.2213141549526
+      }
+    }
+  ],
+  "width": 2854.2,
+  "height": 1657,
+  "mode": "extended",
+  "rayModeDensity": 0.5077327766614864,
+  "origin": {
+    "x": 96.06619810395534,
+    "y": 68.27868584504733
+  },
+  "scale": 1,
+  "name": "Zwierciadło hiperboliczne"
+}

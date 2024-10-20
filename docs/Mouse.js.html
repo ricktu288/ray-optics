@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Mouse.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Mouse.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import geometry from './geometry.js';
+
+/**
+ * The Mouse class encapsulates the state of the mouse within the scene.
+ * @class
+ */
+class Mouse {
+  static CLICK_EXTENT_LINE = 10;
+  static CLICK_EXTENT_POINT = 10;
+  static TOUCHSCREEN_EXTENT_RATIO = 2;
+  static SNAP_TO_DIRECTION_LOCK_LIMIT = 30;
+
+  /**
+   * Create a Mouse object.
+   * @param {geometry.point} pos - The position of the mouse within the scene.
+   * @param {Scene} scene - The scene in which the mouse operates.
+   * @param {boolean} isTouch - Indicates whether the mouse input comes from a touch screen.
+   * @param {number} overrideGrid - Indicates how the grid is overridden (0: not overridden, 1: invert the on/off of the grid, 2: always off).
+   */
+  constructor(pos, scene, isTouch = false, overrideGrid = 0) {
+    this.pos = pos;
+    this.scene = scene;
+    this.isTouch = isTouch;
+    this.overrideGrid = overrideGrid;
+  }
+
+  /**
+   * Calculates the effective click extent based on whether the target is a point or a line,
+   * and adjusts for touchscreen input if applicable.
+   * @param {boolean} isPoint - Specifies whether the target is a point (true) or a line (false).
+   * @returns {number} The calculated click extent.
+   */
+  getClickExtent(isPoint) {
+    let clickExtent;
+    if (isPoint) {
+      clickExtent = Mouse.CLICK_EXTENT_POINT / this.scene.scale;
+    } else {
+      clickExtent = Mouse.CLICK_EXTENT_LINE / this.scene.scale;
+    }
+    if (this.isTouch) {
+      clickExtent *= Mouse.TOUCHSCREEN_EXTENT_RATIO;
+    }
+    return clickExtent;
+  }
+
+  /**
+   * Determines if the mouse is currently over a given point.
+   * @param {geometry.point} point - The point to check against the mouse position.
+   * @returns {boolean} True if the mouse is on the given point, false otherwise.
+   */
+  isOnPoint(point) {
+    return geometry.distanceSquared(this.pos, point) &lt; this.getClickExtent(true) * this.getClickExtent(true);
+  }
+
+  /**
+   * Determines if the mouse is currently over a given line segment.
+   * @param {geometry.line} segment - The line segment to check against the mouse position.
+   * @returns {boolean} True if the mouse is on the given line segment, false otherwise.
+   */
+  isOnSegment(segment) {
+    var d_per = Math.pow((this.pos.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (this.pos.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); // Similar to the distance between the mouse and the line
+    var d_par = (segment.p2.x - segment.p1.x) * (this.pos.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (this.pos.y - segment.p1.y); // Similar to the projected point of the mouse on the line
+    return d_per &lt; this.getClickExtent() * this.getClickExtent() &amp;&amp; d_par >= 0 &amp;&amp; d_par &lt;= geometry.segmentLengthSquared(segment);
+  }
+
+  /**
+   * Determines if the mouse is currently over a given line.
+   * @param {geometry.line} line - The line to check against the mouse position.
+   * @returns {boolean} True if the mouse is on the given line, false otherwise.
+   */
+  isOnLine(line) {
+    var d_per = Math.pow((this.pos.x - line.p1.x) * (line.p1.y - line.p2.y) + (this.pos.y - line.p1.y) * (line.p2.x - line.p1.x), 2) / ((line.p1.y - line.p2.y) * (line.p1.y - line.p2.y) + (line.p2.x - line.p1.x) * (line.p2.x - line.p1.x)); // Similar to the distance between the mouse and the line
+    return d_per &lt; this.getClickExtent() * this.getClickExtent();
+  }
+
+  /**
+   * Get the mouse position snapped to the grid if the grid is enabled.
+   * @returns {geometry.point} The mouse position snapped to the grid.
+   */
+  getPosSnappedToGrid() {
+    //console.log(this.overrideGrid)
+    if ((this.overrideGrid === 0 &amp;&amp; this.scene.snapToGrid) || (this.overrideGrid === 1 &amp;&amp; !this.scene.snapToGrid)) {
+      return geometry.point(
+        Math.round(this.pos.x / this.scene.gridSize) * this.scene.gridSize,
+        Math.round(this.pos.y / this.scene.gridSize) * this.scene.gridSize
+      );
+    } else {
+      return this.pos;
+    }
+  }
+
+  /**
+   * Get the mouse position snapped to a set of suggested directions.
+   * @param {geometry.point} basePoint - The base point for the snapping.
+   * @param {Array} directions - The directions to snap to, each a vector with x and y components.
+   * @param {Object} snapContext - The object storing the internal state of the snapping process.
+   * @returns {geometry.point} The mouse position snapped to some direction.
+   */
+  getPosSnappedToDirection(basePoint, directions, snapContext) {
+    const pos = this.getPosSnappedToGrid();
+    var x = pos.x - basePoint.x;
+    var y = pos.y - basePoint.y;
+
+    if (snapContext &amp;&amp; snapContext.locked) {
+      // The snap has been locked
+      var k = (directions[snapContext.i0].x * x + directions[snapContext.i0].y * y) / (directions[snapContext.i0].x * directions[snapContext.i0].x + directions[snapContext.i0].y * directions[snapContext.i0].y);
+      return geometry.point(basePoint.x + k * directions[snapContext.i0].x, basePoint.y + k * directions[snapContext.i0].y);
+    } else {
+      var i0;
+      var d_sq;
+      var d0_sq = Infinity;
+      for (var i = 0; i &lt; directions.length; i++) {
+        d_sq = (directions[i].y * x - directions[i].x * y) * (directions[i].y * x - directions[i].x * y) / (directions[i].x * directions[i].x + directions[i].y * directions[i].y);
+        if (d_sq &lt; d0_sq) {
+          d0_sq = d_sq;
+          i0 = i;
+        }
+      }
+
+      if (snapContext &amp;&amp; x * x + y * y > Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT * Mouse.SNAP_TO_DIRECTION_LOCK_LIMIT / this.scene.scale / this.scene.scale) {
+        // lock the snap
+        snapContext.locked = true;
+        snapContext.i0 = i0;
+      }
+
+      var k = (directions[i0].x * x + directions[i0].y * y) / (directions[i0].x * directions[i0].x + directions[i0].y * directions[i0].y);
+      return geometry.point(basePoint.x + k * directions[i0].x, basePoint.y + k * directions[i0].y);
+    }
+  }
+}
+
+export default Mouse;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

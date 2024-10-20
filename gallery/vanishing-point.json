@@ -1,0 +1,323 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1000,
+        "y": 460
+      },
+      "p2": {
+        "x": 1000,
+        "y": 1340
+      },
+      "focalLength": "100"
+    },
+    {
+      "type": "PointSource",
+      "x": -1520,
+      "y": 500
+    },
+    {
+      "type": "PointSource",
+      "x": -560,
+      "y": 500
+    },
+    {
+      "type": "PointSource",
+      "x": 420,
+      "y": 500,
+      "wavelength": "532"
+    },
+    {
+      "type": "PointSource",
+      "x": 800,
+      "y": 500,
+      "wavelength": "532"
+    },
+    {
+      "type": "PointSource",
+      "x": 800,
+      "y": 940,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": 660,
+      "y": 1080,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": 500,
+      "y": 1240,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": 380,
+      "y": 1360,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": 220,
+      "y": 1520,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": -500,
+      "y": 2240,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": -2180,
+      "y": 500
+    },
+    {
+      "type": "PointSource",
+      "x": -3620,
+      "y": 500
+    },
+    {
+      "type": "PointSource",
+      "x": 480,
+      "y": 940,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": 340,
+      "y": 1080,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": 200,
+      "y": 1220,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": 60,
+      "y": 1360,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": -140,
+      "y": 1560,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": -2840,
+      "y": 4260,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": 620,
+      "y": 500,
+      "wavelength": "532"
+    },
+    {
+      "type": "PointSource",
+      "x": -40,
+      "y": 500
+    },
+    {
+      "type": "PointSource",
+      "x": 800,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": 620,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": 420,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": -40,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": -560,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": -1520,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": -2180,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "PointSource",
+      "x": -3620,
+      "y": 640,
+      "wavelength": "660"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1480,
+        "y": 1480
+      },
+      "p2": {
+        "x": 1480,
+        "y": 420
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": -1820,
+        "y": 420
+      },
+      "p2": {
+        "x": 1480,
+        "y": 420
+      }
+    },
+    {
+      "type": "PointSource",
+      "x": -280,
+      "y": 1700,
+      "wavelength": "580"
+    },
+    {
+      "type": "PointSource",
+      "x": 80,
+      "y": 1660,
+      "wavelength": "450"
+    },
+    {
+      "type": "PointSource",
+      "x": -840,
+      "y": 2260,
+      "wavelength": "580"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1080,
+        "y": 800
+      },
+      "p2": {
+        "x": 1100,
+        "y": 800
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1080,
+        "y": 900
+      },
+      "p2": {
+        "x": 1100,
+        "y": 900
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 1560,
+      "y": 580,
+      "text": "You can verify that a pair of parallel lines with slope - m, converge by the ideal lens to the coordinates (f,m∙f),\nby clicking the \"Grid\" button and noticing that each grid cell has dimensions of 20 by 20.\nYou can also verify how changing the ideal lens's focal length - f, effects the converging points (vanishing points)."
+    },
+    {
+      "type": "TextLabel",
+      "x": 570.5714285714287,
+      "y": 1024,
+      "text": "These pair of parallel lines converge to point B",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 871.7142857142858,
+      "y": 588,
+      "text": "These pair of parallel lines converge to point A",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1054,
+      "y": 913.3333333333333,
+      "text": "A"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1054,
+      "y": 813.3333333333333,
+      "text": "B"
+    },
+    {
+      "type": "TextLabel",
+      "x": -860,
+      "y": 1100,
+      "text": "Note that these pairs of parallel lines are not actually infinite."
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -919.9350666565667,
+        "y": -23.413929707619786
+      },
+      "p4": {
+        "x": 1336.0649333434333,
+        "y": 1387.7860702923804
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 176.06493334343327,
+        "y": 427.18607029238
+      },
+      "p4": {
+        "x": 1156.0649333434333,
+        "y": 1407.18607029238
+      }
+    }
+  ],
+  "width": 3384,
+  "height": 2539.2000000000003,
+  "mode": "images",
+  "rayModeDensity": 0.049787068367863944,
+  "observer": {
+    "c": {
+      "x": 314,
+      "y": 901
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": 1483.9350666565667,
+    "y": 587.4139297076198
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "name": "Vanishing point",
+  "backgroundImage": "vanishing-point-background.png"
+}

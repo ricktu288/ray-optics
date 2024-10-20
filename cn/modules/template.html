@@ -1,0 +1,85 @@
+﻿ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+
+.module-image {
+  width:150px;
+  height:150px !important;
+}
+
+.right-caption>img {
+    float: left;
+    margin-right: 9px;
+}
+
+.caption{
+  padding: 0px !important;
+}
+
+.module-title {
+  font-size: 16pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.import-btn {
+  float: right;
+  margin-right: 8px;
+}
+
+.module-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapse {
+  padding-top: 8px;
+}
+
+body { 
+  padding-top: 1rem; 
+  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 12pt;
+}
+
+ul {
+  padding-left: 1rem;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <ul>
+      <li>「模块」是一个目前处于实验阶段的功能，其透过将本模拟器中现有的工具所建立的物件进行组合、特化或重新参数化，来制作新的工具。</li>
+      <li>导入的模块将显示为「其他」类别中的工具。请选择并依照控制点顺序点击空白处（参见「规格」）。</li>
+      <li>导入的模块将嵌入于场景的数据中，所以当原作者更新时并不会自动更新。</li>
+    </ul>
+    {CATEGORIES}
+   
+    <h2>客制化</h2>
+    <p>您可直接在本网页程序中使用内置的JSON编辑器制作或客制化模块。请参见<a href="https://phydemo.app/ray-optics/cn/modules/tutorial" target="_blank">教程</a>。将导入的模块客制化仅会影响目前的场景。</p>
+    <h2>贡献</h2>
+    <p>欢迎您贡献项目至以上的清单。欲贡献您的模块，请参见<a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules" target="_blank">貢獻模块</a>。</p>
+   </div>
+
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

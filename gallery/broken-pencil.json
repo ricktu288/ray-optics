@@ -1,0 +1,170 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 760,
+        "y": 500
+      },
+      "p2": {
+        "x": 760,
+        "y": 660
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 640,
+          "y": 580,
+          "arc": false
+        },
+        {
+          "x": 640,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 860,
+          "arc": false
+        },
+        {
+          "x": 160,
+          "y": 580,
+          "arc": false
+        }
+      ],
+      "refIndex": 1.44
+    },
+    {
+      "type": "PointSource",
+      "x": 480,
+      "y": 540,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 360,
+      "y": 600,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 320,
+      "y": 620,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 200,
+      "y": 680,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 440,
+      "y": 560,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 520,
+      "y": 520,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 280,
+      "y": 640,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 560,
+      "y": 500,
+      "brightness": "0.5"
+    },
+    {
+      "type": "PointSource",
+      "x": 240,
+      "y": 660,
+      "brightness": "0.5"
+    },
+    {
+      "type": "TextLabel",
+      "x": 830.0100000000001,
+      "y": 469.2399999999999,
+      "text": "broken pencil (yellow)\nimage on retina"
+    },
+    {
+      "type": "TextLabel",
+      "x": 397.6456768558952,
+      "y": 830.9351528384279,
+      "text": "dielectric material",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 544.1222707423581,
+      "y": 460,
+      "text": "original pencil (green)",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 764.2126637554585,
+      "y": 695.9000000000001,
+      "text": "observer's eye",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 172.77710945203543,
+      "y": 560.6412734187915,
+      "text": "Ignore the orange squares!",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -205.4527398225102,
+        "y": -26.81518523735727
+      },
+      "p4": {
+        "x": 1237.6913649809833,
+        "y": 886.3271728412453
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 514.5897480802392,
+        "y": 262.32221591925776
+      },
+      "p4": {
+        "x": 1178.2677841949574,
+        "y": 926.0002519192578
+      }
+    }
+  ],
+  "width": 2164.71615720524,
+  "height": 1634.7144104803492,
+  "mode": "images",
+  "imageModeDensity": 0.21709939257630184,
+  "observer": {
+    "c": {
+      "x": 1427.1100000000001,
+      "y": 659.45
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": 566.2387660233836,
+    "y": 387.6012114382306
+  },
+  "scale": 1,
+  "name": "Broken Pencil",
+  "backgroundImage": "broken-pencil-background.png"
+}

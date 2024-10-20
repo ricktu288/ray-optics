@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模組製作教學 - 線光學模擬</title>
+  <meta property="og:title" content="模組製作教學 - 線光學模擬">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/tw/modules/tutorial">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
+  <meta property="og:description" content="自由、開源的網頁程式，用於建立及模擬平面幾何光學場景。">
+  <meta property="og:locale" content="zh-TW">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/tw/modules/tutorial">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/modules/tutorial" hreflang="en">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/cn/modules/tutorial" hreflang="zh-CN">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/tw/modules/tutorial" hreflang="zh-TW">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+.example-container {
+  border-width:2px;
+  margin-bottom: 5px;
+  display: inline-block;
+  width:270px;
+  text-decoration: none;
+}
+
+.example-container:hover {
+  text-decoration: none;
+}
+
+.example-container:active {
+  text-decoration: none;
+}
+
+.example-image {
+  width:250px;
+  height:250px !important;
+}
+
+.example-title {
+  font-size: 12pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.example-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+
+.brand:hover{
+    text-decoration: none;
+}
+
+.github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    padding: 0px;
+    height:40px;
+    width: 92px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    float:right;
+}
+
+.github-button-container a {
+    color: transparent;
+}
+.navul {
+    font-size: 11pt;
+}
+.navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 2px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+.clearfix {
+    clear: both;
+}
+.navul a:hover{
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+}
+.navul a.active{
+    color: #000;
+    border-bottom: 3px solid gray;
+}
+body { 
+    padding-top: 72px; 
+    padding-bottom: 20px; 
+}
+.anchor {
+    padding-top: 65px; 
+}
+iframe {
+    border: none;
+}
+  </style>
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+
+  <a href="https://phydemo.app/ray-optics/tw/" class="navbar-left brand">
+    <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt">
+    線光學模擬
+  </a>
+  <div class="navbar-right">
+
+<span class="navul">
+   <a href="https://phydemo.app/ray-optics/tw/">首頁</a>
+   <a href="https://phydemo.app/ray-optics/tw/gallery/">作品集</a>
+   <a href="https://phydemo.app/ray-optics/tw/about">關於</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+  </div>
+
+</div>
+<div class="container">
+
+<h1 id="tutorial">「線光學模擬」模組製作教學</h1>
+<p>本教學將引導您完成建立自訂模組的基本步驟。這個功能可完全在本模擬器網頁程式中實現，而不需要其他的開發環境。</p>
+<p>「模組」是「線光學模擬」的一個目前處於實驗階段的功能，它允許將物件以模組化的方式組合在一起，其中可包含自訂參數、自訂控制點與物件陣列。本功能透過將本模擬器中現有的工具所建立的物件進行組合、特化或重新參數化，來製作新的工具，以擴充本模擬器的功能。例如，<code>CircleSource</code> 模組（請參見工具-&gt;其他-&gt;匯入模組）將現有的「點光源（&lt;360°）」工具所建立的一系列點光源沿著一個圓形組合在一起，成為一個「圓形光源」工具，這在模擬器中原本並不存在。 <code>FresnelLens</code> 模組則是將「透光物-&gt;自訂函數」工具特化，使函數表示菲涅耳透鏡的特定曲線，由切片數參數化，以製作一個特化的「菲涅耳透鏡」工具，這在模擬器中原本也不存在。除了製作新工具外，這個功能還可以使一些光學演示更具互動性。例如，通過拖曳 <code>BeamExpander</code> 模組的第三個控制點，可以直接觀察兩個透鏡的共同焦點位置如何影響光束寬度，而無需分別調整兩個透鏡的焦距。</p>
+<p>注意並非所有的自訂控制點都需要模組。一些簡單的情況可能可以通過「控制桿」功能實現（請參見模擬器右下角的幫助彈出窗口中的「群組、旋轉和縮放物件」部分）。由於製作模組比建立控制桿複雜得多，您應該在考慮製作模組之前檢查您的情況是否可以通過「控制桿」功能實現。比如<a href="https://phydemo.app/ray-optics/tw/gallery/black-cat-becomes-white">這個例子</a>展示了一個相對複雜但不必使用模組的自訂控制點（將兩個塑料袋從水中移開）。</p>
+<h2 id="the-built-in-json-editor">內建的 JSON 編輯器</h2>
+<p>本程式目前沒有用於建立模組的視覺界面，因此您需要直接編輯場景的 JSON 原始碼。</p>
+<p>您可以通過點選網頁介面右上角的「設定」下拉選單，然後勾選「顯示 JSON 編輯器」來啟用內建的 JSON 編輯器。原始碼編輯器會出現在介面的左側，並顯示目前場景的 JSON 原始碼。請確保您有足夠大的螢幕，因為這個功能在行動裝置上效果不佳。</p>
+<p>當您使用視覺化場景編輯器修改場景時，JSON 編輯器中的原始碼將自動更新，且更改的部分會突出顯示。反之，直接在 JSON 編輯器中編輯原始碼將相應更新場景。如果您不熟悉 JSON 或任何基於文字的資料格式，您可能會希望花一些時間來熟悉它。</p>
+<p>特別是，當您將一個物件新增到場景中時，它將被新增到 <code>objs</code> 陣列中。如果您將某些屬性修改為非預設值，它們將作為該物件的鍵值對出現。</p>
+<p><b>注意：如果您在本教學頁面中看不到下面的 iframe 中的 JSON 編輯器，請啟用它並重新載入本頁，因為您需要查看原始碼以了解它的運作方式。</b></p>
+<h2 id="basics-of-a-module">模組的基本概念</h2>
+<p>讓我們看第一個例子。</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAALSAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNCQwRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMnjhQuuYbgGBgsxu_slLzINF6xmDJ8mbzNwRnRUh5GYwDACulYd-oBjPoMtCKXtGEeGC0trFx2RLidfMJU_F90B68bSGoNafJAnROQa-CBymw6-RpNFt-IMUAzOKsq7pgNy9sYVUR1F0MYrp1dcTCYSDefj2nK01b5XM4toilXrkIM2LIIBXWf97mo-P8gWxIh15rzcZ84yifbuV06WWJiTDNLAdJUvqe7iwCQYIXUXjowZZYogLfNwwF5-ffQcnrHQhteGAC7TYlgY2f_wx-LoA" width="100%" height="400"></iframe></p>
+<p>您會看到四段文字。通過查看 JSON 編輯器，您將看到前兩段直接位於頂層的 <code>objs</code> 陣列中，但後兩段位於 <code>modules.ExampleModule.objs</code> 中。</p>
+<p><code>module</code> 是一個字典，其中鍵是模組的名稱（在本例中是 <code>ExampleModule</code>），值是該模組的定義。特別是，<code>modules.ExampleModule.objs</code> 陣列描述了該模組中的物件（模板），這與描述場景中的物件的頂層 <code>objs</code> 陣列不同。</p>
+<p>要將模組中的物件放到場景中，我們需要一個「模組物件」，它位於頂層 <code>objs</code> 陣列中，本例中是 <code>objs[2]</code>，其類型是 <code>ModuleObj</code>，其 <code>module</code> 屬性是模組的名稱。</p>
+<p><code>modules</code> 字典中的模組定義無法由視覺化場景編輯器編輯。因此，當您點選本例中的後兩段文字時，您只選擇了模組物件，而不是模組中的物件。由於本例中模組定義中的文字座標是絕對座標，因此後兩段文字無法被拖曳。我們將在後面學習到如何使用控制點來使它們可被拖曳。</p>
+<p>當您選取模組物件時，物件欄上會有一個「取消模組化」按鈕。點選後會將模組物件「展開」為構成此模組的物件，此時 <code>objs</code> 將包含所有四段文字。這個操作是不可逆的（除非按「復原」）。</p>
+<p>目前建議製作模組的方式為，首先使用 JSON 編輯器建立一個空的模組，然後使用視覺化場景編輯器新增一些物件，最後使用 JSON 編輯器將這些物件從 <code>objs</code> 剪下並貼上到 <code>modules.ModuleName.objs</code> 中。</p>
+<h2 id="adding-parameters">新增參數</h2>
+<p>模組中的物件可以由一組參數來定義。讓我們看一個簡單的例子：</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAALmAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNDSJRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMpUeDraVKtJPRrqUDpwm04g0AMDNLFqDuFz-Zv7rT59ZvfcfKcEVFT_07LZ5e_dTZN7hFKeAxYWBohMvZv3d0gGOgqRGjVqDll8yBow_qgCten0ARoIUza37rrhfdbdWKWzEQ8bOpAbE4wfoHGhx_acXBUJBr30y2aOfLOYjNom2g_7cYNt8QdB_QrTEL4awPHC9NKXDz4ihqAIfbo37OLWlH7sDMGvFVO1A-ejKbLFsdFnp2mPO61B1U_28glXrdCI0H4TcT72ZOnLapk6UCCl2k_EHmQYIX9N4uaH_C6NtaPIl7l2-xSA_vyKPOZAs2A0lYD6J2zQyQSkm73aRBWMm-XT-oKWCOrsfHdmrY4qD-wriHG06V5wnlGgwvcI7gDThrag5i4TzM4tzQilqPJljQ8ChS4BWArXwEEumml9oUiJIzkOfrROl3_7_8qfg" width="100%" height="400"></iframe></p>
+<p>這裡 <code>modules.ModuleName.params</code> 是一個由形如 <code>&quot;名稱=起始值:增量:終止值:預設值&quot;</code>的字串構成的陣列，定義了變數的名稱和數值滑桿的範圍。當選取模組物件時，滑桿將出現在物件欄上。</p>
+<p>在 <code>modules.ExampleModule.objs</code> 陣列中，任何值都可以使用這些參數來表示。在字串中（例如 <code>TextLabel</code> 的 <code>text</code> 屬性）中，帶有參數的數學式被反引號包圍。對於數值參數（例如 <code>TextLabel</code> 的 <code>fontSize</code> 屬性），您需要將其改為字串，以便您可以在其中使用反引號格式。因此每條數學式都被一對反引號和一對引號包圍。這些數學式將使用 math.js 來計算（<a href="https://mathjs.org/docs/reference/functions/evaluate.html">https://mathjs.org/docs/reference/functions/evaluate.html</a>）。請參見該網頁以了解您可以在數學式中使用的語法和函數。</p>
+<p>參數的實際值位於模組物件的 <code>params</code> 屬性中。這部分與模組定義不同，其可以通過滑桿直接由視覺化場景編輯器編輯。</p>
+<h2 id="adding-control-points">新增控制點</h2>
+<p>為了使模組物件可被拖曳，我們需要使用一組控制點來對模組中的物件位置進行參數化。讓我們看一個例子：</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAALpAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNETiRaddFCZLwYsr_x975ihI6J5x23w7otJuIODVK-4jklMnjhQuuYbj8KAsxu_slLzINF6xmDJ8mbzF5b2pG646ya9uBnARPzsT-OTOuapzqmhNdeWP9frWNxPv4CjzUVGUN5IkgEesnI29-Yf6D33B4uHrkaFMbOUSCCmoIjsFi9XP5gCBtCyuF-3-nciGV69soLWG9Pn1PpRmIh5LO5e3qcNsTn-QGTxeVBaKw_2_S5IxuBIUt1yXKIKPiUd3Zp8oPvNisqrkBjUc_EmBwpZeAg7SdidJukGbycgkL1xGtyz2jXxhOzeVpY57bAs0IkmrcGCpABmWsLhEFuPAwaP7VtzU6x3J1vGw0KBa4B89nK8rGPWLrsn0__9RFXQA" width="100%" height="400"></iframe></p>
+<p>這裡 <code>modules.ModuleName.numPoints</code> 描述了控制點的數量。控制點座標之符號為 (<code>x_1</code>, <code>y_1</code>)、(<code>x_2</code>, <code>y_2</code>) 等等。其用在 <code>modules.ExampleModule.objs</code> 中的方式與前一節所述之參數相同。請注意索引從 1 開始。</p>
+<p>控制點的實際值位於模組物件的 <code>controlPoints</code> 屬性中，其可以直接由視覺化場景編輯器編輯，而非如第一個例子中寫死在模組定義中的座標。每個控制點在場景中顯示為兩個同心的灰色圓形，並且可以被拖曳。若您拖曳模組物件的其他地方（如文字標籤），則所有的控制點會一起移動。</p>
+<p>由於我們的模組物件已經可以移動，我們可以很容易地建立多個實例，就像在本模擬器中其他的工具中一樣。模組的名稱顯示在工具-&gt;其他選單中，您可以選擇它，然後按兩個點來指定兩個控制點的位置，就可建立此模組的另一個實例。您也可以使用物件欄上的「複製」按鈕。</p>
+<h2 id="arrays-and-conditionals">陣列與條件</h2>
+<p>使用陣列和條件語法，可以建立更複雜的模組。讓我們看一個例子：</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAALsAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNFU7RaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMocmzraU-uionNR68scp3EjMbxo075DzkS5bn92aCj7fMpqtcEQGyOIa3Ytn5fUKD0CpLWznIyPPOiLWhiwPk_4yg835qPYUD7MkK99T9d5Cn4-O18Kset4z-GLHq97U4KEZnyOtGXLd1VOxKY4pKu9w8UPUXHuMest7CuEOu5AOTbc9rW7pGDWr_nK-bVdc6J9OcJ6K29MizV501HcidB2gfcT18iPRkS5_-8mgDy-UHDC5SN32oYbZ9mwJbfNoZP-D-qUjSFrnd10DGntdPLJObAIzAbYBW45K-Z8HeV3PBPskuhpFC4A05OY5s-R5iGMnyfAZZxg8pcj23sjToeTs-2ztQl5sjStyuHS-LIAu_tW3FIWUMYUt_NRaQlTeaT1NJ72aTR-jp_5O_nwuWwQ0Zamp-M5JXyJ1yXO_8uX3UA" width="100%" height="400"></iframe></p>
+<p>在 <code>modules.ExampleModule.objs</code> 中，任何陣列中的物件都可以有兩個特殊的鍵： <code>&quot;for&quot;</code> 和 <code>&quot;if&quot;</code>。 <code>&quot;for&quot;</code> 鍵的值是一個描述迴圈變數的字串，格式為 <code>&quot;名稱=起始值:增量:終止值&quot;</code>，或者是一個包含多個這種格式的字串的陣列，描述多維迴圈。這樣的物件在陣列中根據迴圈變數被複製多次。<code>&quot;if&quot;</code> 鍵的值是則是一個表示布林值的字串，使得該物件只在布林值為真時才會包含在陣列中。</p>
+<p>為了防止意外的無窮迴圈，每個 <code>&quot;for&quot;</code> 迴圈的總迭代次數由模組定義中的 <code>maxLoopLength</code> 屬性限制，其預設值為 1000。如果需要，您可以將此屬性設定為更大的值。</p>
+<h2 id="objects-with-built-in-custom-equations">內建自訂數學式功能的物件</h2>
+<p>對於已經具有自訂數學式輸入的物件（例如鏡子 -&gt; 自訂函數），JSON 中的數學式屬性是一個表示 LaTeX 數學式的字串，而不是 math.js 表達式。要在數學式中包含自訂參數，您必須將 LaTeX 數學式視為普通字串，並使用普通字串的模板語法。因此，反引號括起來的部分是 math.js 表達式，而反引號外部的則是 LaTeX 數學式。模組參數只能在 math.js 的部分中使用，而物件內建的自訂函數的自變量（例如 \(x\)）只能在 LaTeX 的部分中使用。以下例子產生一個形狀為 \(y=\cos(2\pi x+\phi)\) 的鏡子，其中 \(\phi\) 為模組參數：</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAAKJAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNGWURaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMod0cmCJaNLvHXaJqidQycgLCxvo_MUR4pKSF02EThSWEmzI1Nvg8p3rGzbgOCoW20RA6HEvR3WRy-n0CVOj501Zey96roKU99sYBaUujCSyd7TtjFHs3fNirSp2LQXatYku6FED09dIQtBDAnuRFsGJksyx0i8vvdFy3aSnmVieSS5eIaD8RfBDzyY5UPibCOW1cYyOrGAIRFg5HD4b0F0jE0u94218W92Q6kta1ubUvxxirIOj7g7OoXI3Or2-1G2niLASSMBS2Y__KgXxIxp5nCRvpMgCNfl_CSJIjmDwo0H79yxV1yPkx3rIerB8DODuyJ2rronCQs__NO1pk" width="100%" height="400"></iframe></p>
+  <p>未來可能會有一種統一的方式來輸入數學式。</p>
+<h2 id="objects-with-built-in-shape-parametrization">內建形狀參數化功能的物件</h2>
+<p>對於已經支援使用不同方式定義其形狀的物件（目前僅有透光物 -&gt; 球面透鏡），有特殊的 JSON 語法可用於在模組定義中用這些方式來定義該物件，即使在頂層 <code>objs</code> 陣列中這類的物件總是以形狀來定義。以下是一個例子：</p>
+<p><iframe loading="lazy"
+  src="https://phydemo.app/ray-optics/simulator/#XQAAAAIIAgAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNHXtRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMnjhQuuYbgHTx4xu_svNmoEFyZi2EAGHhnylj8kZWffIJDQr5n_mkzRL8qYAyDV2doAoIpGCABFw4k4ofmmnIwAWmlAgPZSMvmxNhjgk_S8gXQf3VE6ScOowAVIe31VTcW1pGd6WByGgtLfSY4fiv0lNdI-HjIDZ68rY_xdq4-X68TXz3o1dfMgaJSfniRIpqkDJXkfWiDVxtWxp7WQcahm_i-JoqGNfeP7xDlSq-qD52neSCeYXcQZ02LfdNXM6g5SYttOkpCg6ASsfAad_kVhlxB-bCVQtnTQjdC9E1jOAsN6EJoN-pfSITjznPAAjrzpccDmzQtAn6tQJCN7ZSX_SYkXQkDmj7KiqHx0i-iQ_7uP_4" width="100%" height="400"></iframe></p>
+  <h2>貢獻</h2>
+  <p>欲貢獻您的模組，請參見<a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">貢獻模組</a>。</p>
+  <h2>討論</h2>
+  <p>見 GitHub 上的 <a href="https://github.com/ricktu288/ray-optics/discussions/145">Discussion #145</a>（請使用英文）。
+  <!--
+  <h2>Discussion</h2>
+  See <a href="https://github.com/ricktu288/ray-optics/discussions/145" target="_blank">Discussion #145</a> on GitHub.
+  -->
+    <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">語言：正體中文</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/modules/tutorial">English</a></li><li><a href="https://phydemo.app/ray-optics/cn/modules/tutorial">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/modules/tutorial">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

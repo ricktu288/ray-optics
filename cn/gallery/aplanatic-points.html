@@ -1,0 +1,78 @@
+﻿ <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>等光程点 - 射线光学模拟</title>
+<meta property="og:title" content="等光程点 - 射线光学模拟">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">
+<meta property="og:image" content="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points.jpg">
+  <meta property="og:description" content="自由、开源的网页程序，用于建立及模拟二维几何光学场景。">
+<meta property="og:locale" content="zh-CN">
+<link rel="canonical" href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">
+<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/aplanatic-points" hreflang="en">
+<link rel="alternate" href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points" hreflang="pl">
+<link rel="alternate" href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points" hreflang="zh-CN">
+<link rel="alternate" href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points" hreflang="zh-TW">
+
+<link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="icon" href="../../img/icon.png" type="image/png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+    <a href="https://phydemo.app/ray-optics/cn/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt">
+      射线光学模拟
+    </a>
+    <div class="navbar-right">
+
+<span class="navul">
+     <a href="https://phydemo.app/ray-optics/cn/">首页</a>
+     <a href="https://phydemo.app/ray-optics/cn/gallery/" class="active">作品集</a>
+     <a href="https://phydemo.app/ray-optics/cn/about">关于</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+</div>
+</div>
+<div class="container">
+<center>
+<h1><b><span>等光程点</span></b></h1>
+<p>
+贡献者：Stas Fainer
+</p>
+<div class="description">
+<p>光学系统的等光程点是其光学轴上的特殊点，即“从其中一点发出的光线会汇聚到另一点，或看似从从该点发散”。 </p><ul><li>椭圆：椭圆镜片/镜子的两个焦点是等光程点，因为从一个焦点发出的光将汇聚向另一点。 </li><li>球体：球形透镜有两个等光程点，分别在球内和球外 - 更多细节请见模拟。 </li><li>双曲线：在<a href="https://phydemo.app/ray-optics/cn/gallery/hyperbolic-mirror" target="_blank">双曲面镜</a>模拟中的两个焦点也是等光程点。 </li></ul><p>给定两个拥有水平座标 \(x_1\) 和 \(x_2\) 、具有相同垂直座标的点，并且设光学元件外部和内部的折射率分别为 \(n_1\) 和 \(n_2\)，则若这两点要成为等光程点，我们的光学元件的边界必须满足\begin{equation}k_1 n_1 \sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \sqrt{  (x - x_2)^2 + y^2} = E\end{equation}使得 \(k_i=1\) 或 \(-1\)（取决于连接 \(x_i\) 和我们的光学元件边界的光线是实的或虚的），而 \(E\) 是一个使这个方程有非平凡解的常数。这个方程（可以用费马原理推导出来）是笛卡尔卵形线的方程（圆锥曲线是其特例）。 </p>
+</div>
+<p>
+<a href="https://phydemo.app/ray-optics/simulator/?zh-CN#../cn/gallery/aplanatic-points" target="_blank" class="btn btn-success btn-lg">在模拟器中打开</a>
+</p>
+<picture>
+  <source srcset="aplanatic-points.avif" type="image/avif">
+  <img src="aplanatic-points.jpg" alt="等光程点" style="width:100%">
+</picture>
+</center>
+
+  <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">语言：简体中文</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/gallery/aplanatic-points">English</a></li><li><a href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">polski</a></li><li><a href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

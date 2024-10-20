@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>光線光学系シミュレーション - PhyDemo</title>
+    <meta property="og:title" content="光線光学系シミュレーション - PhyDemo">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://phydemo.app/ray-optics/jp/">
+    <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
+    <meta property="og:description" content="2Dの幾何学的な光学場面を作成し、シミュレーションするための無料のオープンソースのウェブアプリケーションです。">
+    <meta property="og:locale" content="ja">
+    <link rel="canonical" href="https://phydemo.app/ray-optics/jp/">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/" hreflang="en">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/de/" hreflang="de">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/es/" hreflang="es">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/fr/" hreflang="fr">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/jp/" hreflang="ja">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/ko/" hreflang="ko">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/nl/" hreflang="nl">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/pl/" hreflang="pl">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/pt-BR/" hreflang="pt-BR">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/ru/" hreflang="ru">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/si/" hreflang="si">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/cn/" hreflang="zh-CN">
+    <link rel="alternate" href="https://phydemo.app/ray-optics/tw/" hreflang="zh-TW">
+    <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+    <link rel="icon" href="../img/icon.png" type="image/png">
+    <style>
+        .carousel-inner>.item>a>img {
+            width: 1920px;
+        }
+        
+        .thumbnail.right-caption>img {
+            float: left;
+            margin-right: 9px;
+        }
+        
+        .thumbnail {
+            margin-bottom: 5px;
+        }
+        
+        .tool-title {
+            font-size: 16pt;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .mode-title {
+            font-size: 16pt;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        
+        .brand {
+            font-size: 12pt;
+            color: #888;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 0px;
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .brand:hover {
+            text-decoration: none;
+        }
+        
+        .github-button-container {
+            color: #888;
+            margin-top: 7px;
+            margin-bottom: 0px;
+            margin-left: 0px;
+            margin-right: 0px;
+            padding: 0px;
+            height: 40px;
+            width: 92px;
+            line-height: 40px;
+            position: relative;
+            text-align: center;
+            float: right;
+        }
+        
+        .github-button-container a {
+            color: transparent;
+        }
+        
+        .navul {
+            font-size: 11pt;
+        }
+        
+        .navul a {
+            color: #555;
+            float: left;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 2px;
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .clearfix {
+            clear: both;
+        }
+        
+        .navul a:hover {
+            border-bottom: 3px solid #CCC;
+            text-decoration: none;
+        }
+        
+        .navul a.active {
+            color: #000;
+            border-bottom: 3px solid gray;
+        }
+        
+        body {
+            padding-top: 72px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+
+        <a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
+            <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> 光線光学系シミュレーション
+        </a>
+        <div class="navbar-right">
+
+            <span class="navul">
+     <a href="https://phydemo.app/ray-optics/" class="active">ホーム</a>
+     <a href="https://phydemo.app/ray-optics/gallery/">ギャラリー</a>
+     <a href="https://phydemo.app/ray-optics/about">このソフトウェアについて</a>
+</span>
+            <span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+        </div>
+
+    </div>
+    <div class="container">
+        <center>
+            <h1><b><span id="title">光線光学系シミュレーション</span></b></h1>
+            <p id="description">2次元の幾何学的な光学シーンを双方向的にシミュレートすることができます。<br>完全無料、ウェブベース。ソースコードは <a href="https://github.com/ricktu288/ray-optics">GitHubで利用可能です。</a>.</p>
+            <p>
+                <a href="https://phydemo.app/ray-optics/simulator/?ja" target="_blank" class="btn btn-success btn-lg" id="start">シミュレーターを起動</a>
+            </p>
+        </center>
+        <br>
+        <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+                <li data-target="#screenshots" data-slide-to="1" class=""></li>
+                <li data-target="#screenshots" data-slide-to="2" class=""></li>
+                <li data-target="#screenshots" data-slide-to="3" class=""></li>
+                <li data-target="#screenshots" data-slide-to="4" class=""></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a href="https://phydemo.app/ray-optics/simulator/#spherical-lens-and-mirror" target="_blank"><img src="../img/1.jpg" alt="1.jpg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#images-formed-by-two-mirrors" target="_blank"><img src="../img/4.svg" alt="4.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#compound-microscope" target="_blank"><img src="../img/3.svg" alt="3.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#apparent-depth" target="_blank"><img src="../img/5.svg" alt="../img/5.svg"></a>
+                </div>
+                <div class="item">
+                    <a href="https://phydemo.app/ray-optics/simulator/#chromatic-dispersion" target="_blank"><img src="../img/6.png" alt="../img/6.png"></a>
+                </div>
+            </div>
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <div class="row" style="font-size: 10pt">
+            <div class="col-sm-6">
+                <div class="col-sm-12">
+                    <h2 id="tools">ツール</h2>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/SingleRay.svg" alt="ray" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="ray">単一光線</p>
+                            <span id="ray_desc">2 つの点によって定義される単一光線。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Beam.svg" alt="Beam" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="beam">光束</p>
+                            <span id="beam_desc">平行な光線が線分から現れ、密度は「光線密度」スライダーで調整できます。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/PointSource.svg" alt="Point Source" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="point_source">点源</p>
+                            <span id="point_source_desc">光線は 1 つの点から出現し、その数は「光線密度」スライダーで調整できます。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Mirror.svg" alt="Mirror" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="mirror">鏡</p>
+                            <span id="mirror_desc">鏡での光の反射をシミュレートします。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/ArcMirror.svg" alt="Mirror (Curved)" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="mirror_arc">鏡 (カスタム式)</p>
+                            <span id="mirror_arc_desc">カスタム方程式 y = f(x) によって形状が定義されるミラー。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/IdealMirror.svg" alt="Ideal curved mirror" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="ideal_curved_mirror">鏡 (理想的なカーブ)</p>
+                            <span id="ideal_curved_mirror_desc">ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離を直接設定できます。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/BeamSplitter.svg" alt="Beam Splitter" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="BeamSplitter">ビームスプリッター</p>
+                            <span id="BeamSplitter_desc">入ってくる光の一定の割合を透過するミラー。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/PlaneGlass.svg" alt="Glass" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="PlaneGlass">ガラス</p>
+                            <span id="PlaneGlass_desc">表面上の光の屈折と反射をシミュレートします。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Glass.svg" alt="Glass (Other shapes)" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="glass">ガラス (カスタム式)</p>
+                            <span id="glass_desc">カスタム不等式f(x) &lt; y &lt; g(x)で定義される形状を持つガラス。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/IdealLens.svg" alt="Glass (Ideal lens)" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="IdealLens">ガラス (理想的なレンズ)</p>
+                            <span id="IdealLens_desc">薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離を直接設定できます。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Blocker.svg" alt="Blocker" class="img-rounded" style="width:100px;height:100px;">
+                        <div class="caption">
+                            <p class="tool-title" id="blocker">遮断物</p>
+                            <span id="blocker_desc">入射光線を吸収する線分型の遮光板です。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Ruler.svg" alt="Ruler" style="width:100px;height:100px;" class="img-rounded">
+                        <div class="caption">
+                            <p class="tool-title" id="Ruler">定規</p>
+                            <span id="Ruler_desc">ゼロと別の点の点からの定規。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Protractor.svg" alt="Protractor" style="width:100px;height:100px;" class="img-rounded">
+                        <div class="caption">
+                            <p class="tool-title" id="Protractor">分度器</p>
+                            <span id="Protractor_desc">中心とゼロ方向の別の点から定義された分度器。 スケールは度単位です。</span>
+                        </div>
+                    </div>
+                    <div class="row thumbnail right-caption">
+                        <img src="../img/Detector.svg" alt="Detector" style="width:100px;height:100px;" class="img-rounded">
+                        <div class="caption">
+                            <p class="tool-title" id="Detector">検出器</p>
+                            <span id="Detector_desc">線分を通るエネルギー流の速度 (P)、垂直運動量流の速度 (F⊥)、および平行運動量流の速度 (F∥) を測定するためのツールです。単位は任意です。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="col-sm-12">
+                    <h2 id="views">表示</h2>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="rays">光線表示</p>
+                            <span id="rays_desc">光線を表示します。光線密度が高いと、連続しているように見えます。</span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 519/163; max-width: 510px">
+                                <img src="../img/high_density.png" alt="High density" class="img-rounded" style="width:100%">
+                            </div>
+                            <div style="aspect-ratio: 519/163; max-width: 510px">
+                                <img src="../img/low_density.svg" alt="Low density" style="margin-top:5px;width:100%" class="img-rounded">
+                            </div>
+                        </center>
+                    </div>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="extended_rays">拡張光線</p>
+                            <span id="extended_rays_desc">光線とその延長線の両方を表示します。 オレンジは後方拡張を示し、グレーは前方拡張を示します。</span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 445/216; max-width: 510px">
+                                <img src="../img/extended_rays.svg" alt="Extended rays" class="img-rounded" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="all_images">すべての画像</p>
+                            <span id="all_images_desc">すべての画像の位置を表示します。 黄色の点は実像を示し、オレンジ色は虚像を示し、灰色 (この図には何もありません) は仮想オブジェクトを示します。 「レイ密度」が十分に高くない場合、一部のイメージは検出できないことに注意してください。</span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 445/216; max-width: 510px">
+                                <img src="../img/all_images.svg" alt="All images" class="img-rounded" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="seen_by_observer">観察者が見た</p>
+                            <span id="seen_by_observer_desc">ある位置から見た光線と画像をシミュレートします。 青い丸が観察者です。 それを横切る光線はすべて「観測された」とみなされます。 観察者は、光線が実際にどこから始まるのかを知りませんが、光線が交差する場合、ある点で光線が始まると考えるかもしれません。 光線は青、点は黄色 (現実) またはオレンジ (仮想) で表示されます。</span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 445/216; max-width: 510px">
+                                <img src="../img/seen_by_observer.svg" alt="Seen by obeserver" class="img-rounded" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                    <div class="row thumbnail">
+                        <div class="caption">
+                            <p class="mode-title" id="simulate_colors">色のシミュレーション</p>
+                            <span id="simulate_colors_desc">
+光源の色（波長）、色の混色、ガラスの波長分散をシミュレーションします。
+            </span>
+                        </div>
+                        <center>
+                            <div style="aspect-ratio: 445/216; max-width: 510px">
+                                <img src="../img/simulate_colors.png" alt="Simulate Colors" class="img-rounded" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="float: right;">
+            <div class="dropup">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">言語: 日本語</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/">English</a></li>
+        <li><a href="https://phydemo.app/ray-optics/de/">Deutsch</a></li>
+        <li><a href="https://phydemo.app/ray-optics/es/">Español</a></li>
+        <li><a href="https://phydemo.app/ray-optics/fr/">Français</a></li>
+        <li><a href="https://phydemo.app/ray-optics/jp/">日本語</a></li>
+        <li><a href="https://phydemo.app/ray-optics/ko/">한국어</a></li>
+        <li><a href="https://phydemo.app/ray-optics/nl/">Nederlands</a></li>
+        <li><a href="https://phydemo.app/ray-optics/pl/">polski</a></li>
+        <li><a href="https://phydemo.app/ray-optics/pt-BR/">Português (Brasil)</a></li>
+        <li><a href="https://phydemo.app/ray-optics/ru/">Русский</a></li>
+        <li><a href="https://phydemo.app/ray-optics/si/">සිංහල</a></li>
+        <li><a href="https://phydemo.app/ray-optics/cn/">简体中文</a></li>
+        <li><a href="https://phydemo.app/ray-optics/tw/">正體中文</a></li>
+    </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../thirdparty/jquery.min.js"></script>
+    <script src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+
+</html>

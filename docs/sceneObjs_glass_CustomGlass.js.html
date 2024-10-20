@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: sceneObjs/glass/CustomGlass.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: sceneObjs/glass/CustomGlass.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import BaseGlass from '../BaseGlass.js';
+import LineObjMixin from '../LineObjMixin.js';
+import { getMsg } from '../../translations.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
+import { evaluateLatex } from '../../equation.js';
+
+/**
+ * Glass defined by a custom inequality.
+ * 
+ * Tools -> Glass -> Custom equation
+ * @class
+ * @extends BaseGlass
+ * @memberof sceneObjs
+ * @property {Point} p1 - The point corresponding to (-1,0) in the coordinate system of the equation.
+ * @property {Point} p2 - The point corresponding to (1,0) in the coordinate system of the equation.
+ * @property {string} eqn1 - The equation of the surface with smaller y. The variable is x.
+ * @property {string} eqn2 - The equation of the surface with larger y. The variable is x.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
+ * @property {Array&lt;Point>} path - The points on the calculated curve.
+ * @property {number} tmp_i - The index of the point on the curve where the ray is incident.
+ */
+class CustomGlass extends LineObjMixin(BaseGlass) {
+  static type = 'CustomGlass';
+  static isOptical = true;
+  static supportsSurfaceMerging = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    eqn1: "0",
+    eqn2: "0.5\\cdot\\sqrt{1-x^2}",
+    refIndex: 1.5,
+    cauchyB: 0.004
+  };
+
+  populateObjBar(objBar) {
+    objBar.createEquation('', this.eqn1, function (obj, value) {
+      obj.eqn1 = value;
+    }, getMsg('eqn_note'));
+    objBar.createEquation(' &lt; y &lt; ', this.eqn2, function (obj, value) {
+      obj.eqn2 = value;
+    });
+
+    super.populateObjBar(objBar);
+  }
+
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
+    if (this.p1.x == this.p2.x &amp;&amp; this.p1.y == this.p2.y) {
+      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      return;
+    }
+    
+    if (isAboveLight) {
+      if (this.path) {
+        this.drawGlass(canvasRenderer, isAboveLight, isHovered);
+      }
+      return;
+    }
+
+    var fns;
+    try {
+      fns = [evaluateLatex(this.eqn1), evaluateLatex(this.eqn2)];
+    } catch (e) {
+      delete this.path;
+      ctx.fillStyle = "red"
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
+      this.error = e.toString();
+      return;
+    }
+
+    this.path = [{ x: this.p1.x, y: this.p1.y }];
+    for (var side = 0; side &lt;= 1; side++) {
+      var p1 = (side == 0) ? this.p1 : this.p2;
+      var p2 = (side == 0) ? this.p2 : this.p1;
+      var p12d = geometry.distance(p1, p2);
+      var dir1 = [(p2.x - p1.x) / p12d, (p2.y - p1.y) / p12d];
+      var dir2 = [dir1[1], -dir1[0]];
+      var x0 = p12d / 2;
+      var i;
+      var lastError = "";
+      var hasPoints = false;
+      for (i = -0.1 * this.scene.lengthScale; i &lt; p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+        var ix = i + 0.05 * this.scene.lengthScale;
+        if (ix &lt; 0) ix = 0;
+        if (ix > p12d) ix = p12d;
+        var x = ix - x0;
+        var scaled_x = 2 * x / p12d;
+        var scaled_y;
+        try {
+          scaled_y = ((side == 0) ? 1 : (-1)) * fns[side]({ x: ((side == 0) ? scaled_x : (-scaled_x)) });
+          if (side == 1 &amp;&amp; -scaled_y &lt; fns[0]({ x: -scaled_x })) {
+            lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
+          }
+          var y = scaled_y * p12d * 0.5;
+          var pt = geometry.point(p1.x + dir1[0] * ix + dir2[0] * y, p1.y + dir1[1] * ix + dir2[1] * y);
+          this.path.push(pt);
+          hasPoints = true;
+        } catch (e) {
+          lastError = e;
+        }
+      }
+      if (!hasPoints || lastError.startsWith("Curve generation error:")) {
+        delete this.path;
+        ctx.fillStyle = "red"
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
+        this.error = lastError.toString();
+        return;
+      }
+    }
+
+    if (isHovered) {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
+    }
+
+    this.drawGlass(canvasRenderer, isAboveLight, isHovered);
+
+    this.error = null;
+  }
+
+  checkMouseOver(mouse) {
+    let dragContext = {};
+    if (mouse.isOnPoint(this.p1) &amp;&amp; geometry.distanceSquared(mouse.pos, this.p1) &lt;= geometry.distanceSquared(mouse.pos, this.p2)) {
+      dragContext.part = 1;
+      dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
+      return dragContext;
+    }
+    if (mouse.isOnPoint(this.p2)) {
+      dragContext.part = 2;
+      dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
+      return dragContext;
+    }
+
+    if (!this.path) return false;
+    for (let i = 0; i &lt; this.path.length - 1; i++) {
+      if (mouse.isOnSegment(geometry.line(this.path[i], this.path[(i+1)%this.path.length]))) {
+        const mousePos = mouse.getPosSnappedToGrid();
+        dragContext.part = 0;
+        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+        dragContext.snapContext = {};
+        return dragContext;
+      }
+    }
+  }
+
+  checkRayIntersects(ray) {
+    if (!this.path) return;
+    if (this.refIndex &lt;= 0) return;
+
+    var s_lensq = Infinity;
+    var s_lensq_temp;
+    var s_point = null;
+    var s_point_temp = null;
+    var s_point_index = -1;
+    var rp_exist = [];
+    var rp_lensq = [];
+    var rp_temp;
+
+    var p1;
+    var p2;
+    var p3;
+    var center;
+    var r;
+
+    for (var i = 0; i &lt; this.path.length; i++) {
+      s_point_temp = null;
+      //Line segment i->i+1
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
+
+      if (geometry.intersectionIsOnSegment(rp_temp, geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length])) &amp;&amp; geometry.intersectionIsOnRay(rp_temp, ray) &amp;&amp; geometry.distanceSquared(ray.p1, rp_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+        s_lensq_temp = geometry.distanceSquared(ray.p1, rp_temp);
+        s_point_temp = rp_temp;
+      }
+
+      if (s_point_temp) {
+        if (s_point &amp;&amp; geometry.distanceSquared(s_point_temp, s_point) &lt; Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale &amp;&amp; s_point_index != i - 1) {
+          // The ray shots on a point where the upper and the lower surfaces overlap.
+          return;
+        } else if (s_lensq_temp &lt; s_lensq) {
+          s_lensq = s_lensq_temp;
+          s_point = s_point_temp;
+          s_point_index = i;
+        }
+      }
+    }
+    if (s_point) {
+      this.tmp_i = s_point_index;
+      return s_point;
+    }
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    var incidentData = this.getIncidentData(ray);
+    var incidentType = incidentData.incidentType;
+    if (incidentType == 1) {
+      // From inside to outside
+      var n1 = this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType == -1) {
+      // From outside to inside
+      var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType == 0) {
+      // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
+      var n1 = 1;
+    } else {
+      // The situation that may cause bugs (e.g. incident on an edge point)
+      // To prevent shooting the ray to a wrong direction, absorb the ray
+      return {
+        isAbsorbed: true
+      };
+    }
+
+    return this.refract(ray, rayIndex, incidentPoint, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingthis);
+  }
+
+  getIncidentData(ray) {
+    var i = this.tmp_i;
+    var pts = this.path;
+
+    var s_point = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
+    var incidentPoint = s_point;
+
+    var s_lensq = geometry.distanceSquared(ray.p1, s_point);
+
+    var rdots = (ray.p2.x - ray.p1.x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (ray.p2.y - ray.p1.y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
+    var rcrosss = (ray.p2.x - ray.p1.x) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - (ray.p2.y - ray.p1.y) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x);
+    var ssq = (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) + (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y);
+
+    var normal_x = rdots * (this.path[(i + 1) % this.path.length].x - this.path[i % this.path.length].x) - ssq * (ray.p2.x - ray.p1.x);
+    var normal_y = rdots * (this.path[(i + 1) % this.path.length].y - this.path[i % this.path.length].y) - ssq * (ray.p2.y - ray.p1.y);
+
+    if (rcrosss &lt; 0) {
+      var incidentType = 1; // From inside to outside
+    } else {
+      var incidentType = -1; // From outside to inside
+    }
+
+    // Use a simple trick to smooth out the normal vector so that image detection works.
+    // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
+
+    var seg = geometry.line(pts[i % pts.length], pts[(i + 1) % pts.length]);
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
+    var mx = seg.p2.x - seg.p1.x;
+    var my = seg.p2.y - seg.p1.y;
+
+    var frac;
+    if (Math.abs(mx) > Math.abs(my)) {
+      frac = (incidentPoint.x - seg.p1.x) / mx;
+    } else {
+      frac = (incidentPoint.y - seg.p1.y) / my;
+    }
+
+    var segA;
+    if (frac &lt; 0.5) {
+      segA = geometry.line(pts[(i - 1 + pts.length) % pts.length], pts[i % pts.length]);
+    } else {
+      segA = geometry.line(pts[(i + 1) % pts.length], pts[(i + 2) % pts.length]);
+    }
+
+    var rdotsA = (ray.p2.x - ray.p1.x) * (segA.p2.x - segA.p1.x) + (ray.p2.y - ray.p1.y) * (segA.p2.y - segA.p1.y);
+    var ssqA = (segA.p2.x - segA.p1.x) * (segA.p2.x - segA.p1.x) + (segA.p2.y - segA.p1.y) * (segA.p2.y - segA.p1.y);
+
+    var normal_xA = rdotsA * (segA.p2.x - segA.p1.x) - ssqA * (ray.p2.x - ray.p1.x);
+    var normal_yA = rdotsA * (segA.p2.y - segA.p1.y) - ssqA * (ray.p2.y - ray.p1.y);
+
+    var normal_xFinal;
+    var normal_yFinal;
+
+    if (frac &lt; 0.5) {
+      normal_xFinal = normal_x * (0.5 + frac) + normal_xA * (0.5 - frac);
+      normal_yFinal = normal_y * (0.5 + frac) + normal_yA * (0.5 - frac);
+    } else {
+      normal_xFinal = normal_xA * (frac - 0.5) + normal_x * (1.5 - frac);
+      normal_yFinal = normal_yA * (frac - 0.5) + normal_y * (1.5 - frac);
+    }
+
+    return { s_point: s_point, normal: { x: normal_xFinal, y: normal_yFinal }, incidentType: incidentType };
+  }
+  
+
+  /* Utility methods */
+
+  drawGlass(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    ctx.beginPath();
+    ctx.moveTo(this.path[0].x, this.path[0].y);
+    for (var i = 1; i &lt; this.path.length; i++) {
+      ctx.lineTo(this.path[i].x, this.path[i].y);
+    }
+    this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+  }
+};
+
+export default CustomGlass;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

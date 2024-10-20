@@ -1,0 +1,78 @@
+﻿ <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>彩虹 - 射线光学模拟</title>
+<meta property="og:title" content="彩虹 - 射线光学模拟">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phydemo.app/ray-optics/cn/gallery/rainbows">
+<meta property="og:image" content="https://phydemo.app/ray-optics/cn/gallery/rainbows.jpg">
+  <meta property="og:description" content="自由、开源的网页程序，用于建立及模拟二维几何光学场景。">
+<meta property="og:locale" content="zh-CN">
+<link rel="canonical" href="https://phydemo.app/ray-optics/cn/gallery/rainbows">
+<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/rainbows" hreflang="en">
+<link rel="alternate" href="https://phydemo.app/ray-optics/pl/gallery/rainbows" hreflang="pl">
+<link rel="alternate" href="https://phydemo.app/ray-optics/cn/gallery/rainbows" hreflang="zh-CN">
+<link rel="alternate" href="https://phydemo.app/ray-optics/tw/gallery/rainbows" hreflang="zh-TW">
+
+<link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="icon" href="../../img/icon.png" type="image/png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+    <a href="https://phydemo.app/ray-optics/cn/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt">
+      射线光学模拟
+    </a>
+    <div class="navbar-right">
+
+<span class="navul">
+     <a href="https://phydemo.app/ray-optics/cn/">首页</a>
+     <a href="https://phydemo.app/ray-optics/cn/gallery/" class="active">作品集</a>
+     <a href="https://phydemo.app/ray-optics/cn/about">关于</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+</div>
+</div>
+<div class="container">
+<center>
+<h1><b><span>彩虹</span></b></h1>
+<p>
+贡献者：Yi-Ting Tu
+</p>
+<div class="description">
+<p>本模拟演示了虹、霓以及亚历山大暗带是如何形成的。这里，我们以红、橙、黄、绿、青、蓝、紫的混色来近似阳光的光谱。对于虹/霓，离开雨滴的光线是由雨滴内部的一次/两次内部反射产生的（你可以通过将光线密调低并拖动雨滴来观察这一点）。请注意，这些并不是全内反射，因此出射光线的强度远低于入射光线。由于<a href="https://phydemo.app/ray-optics/cn/gallery/minimum-deviation-angle" target="_blank">最小偏向角</a>与波长有关，不同颜色的光线会在不同的角度堆积，于是彩虹中的颜色就产生了。远离最小偏向角时，光线不会堆积，所以所有颜色都很弱并混合在一起，使得在两彩虹之外的角度产生昏暗的白色（或“灰色”）。相较之下，虹与霓之间则没有这样的光线，于是形成亚历山大暗带。 </p>
+</div>
+<p>
+<a href="https://phydemo.app/ray-optics/simulator/?zh-CN#../cn/gallery/rainbows" target="_blank" class="btn btn-success btn-lg">在模拟器中打开</a>
+</p>
+<picture>
+  <source srcset="rainbows.avif" type="image/avif">
+  <img src="rainbows.jpg" alt="彩虹" style="width:100%">
+</picture>
+</center>
+
+  <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">语言：简体中文</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/gallery/rainbows">English</a></li><li><a href="https://phydemo.app/ray-optics/pl/gallery/rainbows">polski</a></li><li><a href="https://phydemo.app/ray-optics/cn/gallery/rainbows">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/gallery/rainbows">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

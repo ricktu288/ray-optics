@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: sceneObjs/mirror/IdealMirror.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: sceneObjs/mirror/IdealMirror.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import BaseFilter from '../BaseFilter.js';
+import LineObjMixin from '../LineObjMixin.js';
+import { getMsg } from '../../translations.js';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
+
+/**
+ * Ideal curved mirror that follows the mirror equation exactly.
+ * 
+ * Tools -> Mirror -> Ideal curved mirror
+ * @class
+ * @extends BaseFilter
+ * @memberof sceneObjs
+ * @property {Point} p1 - The first endpoint.
+ * @property {Point} p2 - The second endpoint.
+ * @property {number} focalLength - The focal length. The Cartesian sign convention is not used. But if the Cartesian sign convention is enabled (as a preference setting), the focal length changes sign in the UI.
+ */
+class IdealMirror extends LineObjMixin(BaseFilter) {
+  static type = 'IdealMirror';
+  static isOptical = true;
+  static serializableDefaults = {
+    p1: null,
+    p2: null,
+    focalLength: 100,
+    filter: false,
+    invert: false,
+    wavelength: Simulator.GREEN_WAVELENGTH,
+    bandwidth: 10
+  };
+
+  populateObjBar(objBar) {
+    var cartesianSign = false;
+    if (localStorage &amp;&amp; localStorage.rayOpticsCartesianSign) {
+      cartesianSign = localStorage.rayOpticsCartesianSign == "true";
+    }
+    objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength * (cartesianSign ? -1 : 1), function (obj, value) {
+      obj.focalLength = value * (cartesianSign ? -1 : 1);
+    }, getMsg('length_unit_popover'));
+    if (objBar.showAdvanced(cartesianSign)) {
+      objBar.createBoolean(getMsg('cartesianSign'), cartesianSign, function (obj, value) {
+        localStorage.rayOpticsCartesianSign = value ? "true" : "false";
+      }, null, true);
+    }
+
+    super.populateObjBar(objBar);
+  }
+
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
+    if (this.p1.x == this.p2.x &amp;&amp; this.p1.y == this.p2.y) {
+      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+      return;
+    }
+
+    var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
+    var par_x = (this.p2.x - this.p1.x) / len;
+    var par_y = (this.p2.y - this.p1.y) / len;
+    var per_x = par_y;
+    var per_y = -par_x;
+
+    var arrow_size_per = 5 * ls;
+    var arrow_size_par = 5 * ls;
+    var center_size = 1 * ls;
+
+    // Draw the line segment
+    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors &amp;&amp; this.wavelength &amp;&amp; this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1 * ls;
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.stroke();
+    ctx.lineWidth = 1 * ls;
+
+
+    // Draw the center point of the mirror
+    var center = geometry.segmentMidpoint(this);
+    ctx.strokeStyle = 'rgb(255,255,255)';
+    ctx.beginPath();
+    ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);
+    ctx.lineTo(center.x + per_x * center_size, center.y + per_y * center_size);
+    ctx.stroke();
+
+
+    ctx.fillStyle = 'rgb(255,0,0)';
+
+
+    // Draw the arrow for the two-sided version
+    if (this.focalLength &lt; 0) {
+      // Draw the arrow (p1)
+      ctx.beginPath();
+      ctx.moveTo(this.p1.x - par_x * arrow_size_par, this.p1.y - par_y * arrow_size_par);
+      ctx.lineTo(this.p1.x + par_x * arrow_size_par + per_x * arrow_size_per, this.p1.y + par_y * arrow_size_par + per_y * arrow_size_per);
+      ctx.lineTo(this.p1.x + par_x * arrow_size_par - per_x * arrow_size_per, this.p1.y + par_y * arrow_size_par - per_y * arrow_size_per);
+      ctx.fill();
+
+      // Draw the arrow (p2)
+      ctx.beginPath();
+      ctx.moveTo(this.p2.x + par_x * arrow_size_par, this.p2.y + par_y * arrow_size_par);
+      ctx.lineTo(this.p2.x - par_x * arrow_size_par + per_x * arrow_size_per, this.p2.y - par_y * arrow_size_par + per_y * arrow_size_per);
+      ctx.lineTo(this.p2.x - par_x * arrow_size_par - per_x * arrow_size_per, this.p2.y - par_y * arrow_size_par - per_y * arrow_size_per);
+      ctx.fill();
+    }
+    if (this.focalLength > 0) {
+      // Draw the arrow (p1)
+      ctx.beginPath();
+      ctx.moveTo(this.p1.x + par_x * arrow_size_par, this.p1.y + par_y * arrow_size_par);
+      ctx.lineTo(this.p1.x - par_x * arrow_size_par + per_x * arrow_size_per, this.p1.y - par_y * arrow_size_par + per_y * arrow_size_per);
+      ctx.lineTo(this.p1.x - par_x * arrow_size_par - per_x * arrow_size_per, this.p1.y - par_y * arrow_size_par - per_y * arrow_size_per);
+      ctx.fill();
+
+      // Draw the arrow (p2)
+      ctx.beginPath();
+      ctx.moveTo(this.p2.x - par_x * arrow_size_par, this.p2.y - par_y * arrow_size_par);
+      ctx.lineTo(this.p2.x + par_x * arrow_size_par + per_x * arrow_size_per, this.p2.y + par_y * arrow_size_par + per_y * arrow_size_per);
+      ctx.lineTo(this.p2.x + par_x * arrow_size_par - per_x * arrow_size_per, this.p2.y + par_y * arrow_size_par - per_y * arrow_size_per);
+      ctx.fill();
+    }
+  }
+
+  checkRayIntersects(ray) {
+    if (this.checkRayIntersectFilter(ray)) {
+      return this.checkRayIntersectsShape(ray);
+    } else {
+      return null;
+    }
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint) {
+    var mirror_length = geometry.segmentLength(this);
+    var main_line_unitvector_x = (-this.p1.y + this.p2.y) / mirror_length;
+    var main_line_unitvector_y = (this.p1.x - this.p2.x) / mirror_length;
+    var mid_point = geometry.segmentMidpoint(this);
+
+    var twoF_point_1 = geometry.point(mid_point.x + main_line_unitvector_x * 2 * this.focalLength, mid_point.y + main_line_unitvector_y * 2 * this.focalLength);  // The first point at two focal lengths
+    var twoF_point_2 = geometry.point(mid_point.x - main_line_unitvector_x * 2 * this.focalLength, mid_point.y - main_line_unitvector_y * 2 * this.focalLength);  // The second point at two focal lengths
+
+    var twoF_line_near, twoF_line_far;
+    if (geometry.distanceSquared(ray.p1, twoF_point_1) &lt; geometry.distanceSquared(ray.p1, twoF_point_2)) {
+      // The first point at two focal lengths is on the same side as the ray
+      twoF_line_near = geometry.parallelLineThroughPoint(this, twoF_point_1);
+      twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_2);
+    } else {
+      // The second point at two focal lengths is on the same side as the ray
+      twoF_line_near = geometry.parallelLineThroughPoint(this, twoF_point_2);
+      twoF_line_far = geometry.parallelLineThroughPoint(this, twoF_point_1);
+    }
+
+    if (this.focalLength > 0) {
+      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(mid_point, geometry.linesIntersection(twoF_line_near, ray)));
+      ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
+    } else {
+      ray.p2 = geometry.linesIntersection(twoF_line_far, geometry.line(incidentPoint, geometry.linesIntersection(twoF_line_near, geometry.line(mid_point, geometry.linesIntersection(twoF_line_far, ray)))));
+      ray.p1 = geometry.point(incidentPoint.x, incidentPoint.y);
+    }
+
+    // The above calculation is for an ideal lens, now mirror it.
+    
+    ray.p1.x = 2 * ray.p1.x - ray.p2.x;
+    ray.p1.y = 2 * ray.p1.y - ray.p2.y;
+
+    var rx = ray.p1.x - incidentPoint.x;
+    var ry = ray.p1.y - incidentPoint.y;
+    var mx = this.p2.x - this.p1.x;
+    var my = this.p2.y - this.p1.y;
+
+    ray.p1 = incidentPoint;
+    ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
+  }
+};
+
+export default IdealMirror;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
