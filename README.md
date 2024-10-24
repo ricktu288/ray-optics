@@ -35,6 +35,8 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 
 If you use this project in your research, please cite it using the metadata in the [CITATION.bib](https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib) file.
 
+You can also include the URL https://phydemo.app/ray-optics in the citation. The URL will not change in the foreseeable future (at least until 2032).
+
 # Contributing
 
 Contributions are welcome. For the following types of contributions, no (or little) programming knowledge is required:
@@ -49,7 +51,8 @@ To contribute code, you need to have some knowledge of JavaScript and module bun
 
 # Installation
 
-**Note: The following instructions are for developers. If you just want to use the simulator, you can launch the web app directly from [here](https://phydemo.app/ray-optics/simulator/).**
+> [!NOTE]
+> The following instructions are for developers. If you just want to use the simulator, you can launch the web app directly from [here](https://phydemo.app/ray-optics/simulator/).
 
 To install the project locally, you need to have Node.js installed. Then, run the following commands in the terminal:
 ```bash
@@ -74,12 +77,23 @@ npm run start
 ```
 which serves the simulator web app at `http://localhost:8080`, and is automatically reloaded when some code for the simulator is modified. However, this does not include other part of this project such as the home pages, gallery and documentation. The separate build commands are available for these pages:
 ```bash
-npm run build-translations # build translations
-npm run build-webpages # build home pages, about pages, gallery (not including image generation), and modules pages.
-npm run build-node # build the node module version of the simulator, which is required for the image generation.
-npm run build-images # generate images for the gallery, which may take a long time.
-npm run build-simulator # build the web app version of simulator (unlike npm run start, this command builds the simulator in production mode)
-npm run build-docs # build documentation
+# build translations
+npm run build-translations
+
+# build home pages, about pages, gallery (not including image generation), and modules pages.
+npm run build-webpages
+
+# build the node module version of the simulator, which is required for the image generation.
+npm run build-node
+
+# generate images for the gallery, which may take a long time.
+npm run build-images
+
+# build the web app version of simulator (unlike npm run start, this command builds the simulator in production mode)
+npm run build-simulator
+
+# build documentation
+npm run build-docs
 ```
 Note that `npm run build` is equivalent to running all the above commands.
 
