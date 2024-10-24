@@ -72,7 +72,7 @@
     "message": "Bloqueador"
   },
   "toolname_BeamSplitter": {
-    "message": "Divisor de luz"
+    "message": "Divisor de Feixe"
   },
   "toolname_PlaneGlass": {
     "message": "Vidro"
@@ -132,8 +132,7 @@
     "message": "Desenho"
   },
   "toolname_Handle": {
-    "incomplete": true,
-    "message": "Handle"
+    "message": "Ponto de manuseio"
   },
   "toolname_CropBox": {
     "message": "Exportar"
@@ -205,7 +204,7 @@
     "message": "Equação Personalizada"
   },
   "tool_BeamSplitter": {
-    "message": "Divisor de Luz"
+    "message": "Divisor de Feixe"
   },
   "tool_IdealMirror": {
     "message": "Curvo Ideal"
@@ -532,32 +531,25 @@
     "message": "Limite de quantidade de raios"
   },
   "transformation": {
-    "incomplete": true,
-    "message": "Transformation<sup>Beta</sup>"
+    "message": "Transformação<sup>Beta</sup>"
   },
   "default": {
-    "incomplete": true,
-    "message": "Default"
+    "message": "Padrão"
   },
   "translation": {
-    "incomplete": true,
-    "message": "Translation"
+    "message": "Translação"
   },
   "xTranslation": {
-    "incomplete": true,
-    "message": "X Translation"
+    "message": "Translação X"
   },
   "yTranslation": {
-    "incomplete": true,
-    "message": "Y Translation"
+    "message": "Translação Y"
   },
   "rotation": {
-    "incomplete": true,
-    "message": "Rotation"
+    "message": "Rotação"
   },
   "scaling": {
-    "incomplete": true,
-    "message": "Scaling"
+    "message": "Escala"
   },
   "beam_warning": {
     "message": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
@@ -725,7 +717,7 @@
     "message": "Uma grade de difração que divide luz em um ângulo dependente do comprimento de onda (Arraste ou clique para criar.)"
   },
   "tool_Ruler_popover": {
-    "message": "Uma régua com um ponto zero e outro ponto. (Arraste ou clique para criar.)"
+    "message": "Uma régua a partir de um ponto zero até um outro ponto. (Arraste ou clique para criar.)"
   },
   "tool_Protractor_popover": {
     "message": "Um transferidor definido a partir do centro e outro ponto para a direção do zero. A escala está em graus (Arraste ou clique para criar.)"
@@ -764,7 +756,7 @@
     "message": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros. Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes. As cores exibidas na tela são apenas aproximações, e podem ser muito imprecisas quando 'Densidade de Raios' está muito alta ou muito baixa."
   },
   "rayDensity_popover": {
-    "message": "Determina o número de raios a serem emitidos por feixes e fontes pontuais. Isso também afeta a precião da detecção de imagens e da reprodução de cores."
+    "message": "Determina o número de raios a serem emitidos por feixes e fontes pontuais. Isso também afeta a precisão da detecção de imagens e da reprodução de cores."
   },
   "showGrid_popover": {
     "message": "Define a visibilidade da grade de fundo."
@@ -779,7 +771,7 @@
     "message": "Configurar zoom com porcentagem."
   },
   "help_popover": {
-    "message": "<b>Arraste restrito</b><p>Quando arrastando um objeto, segure Shift para limitar ao sentido horizontal/vertical; segure Ctrl para clonar. Quando criando um objeto em formato de linha ou arrastando seus pontos finais, segure Shift para travar o ângulo ou ajustar para  0°, 45°, 90°; segure Ctrl para rotacionar/ajustar escala com relação a seu centro.</p><b>Agrupar, rotacionar e ajustar escala de objetos</b><p> Segure Ctrl, clique em vários pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar. </p><b>Editar coordenadas diretamente</b><p>Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter.</p><b>Atalhos de teclado</b><p>Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar.</p><b>Contate-nos</b><p>O jeito sugerido é ir até <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussões</a> ou <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Problemas</a> no GitHub. Se você não usar o GitHub, pode nos mandar um email em <a href=\"mailto:ray-optics@phydemo.app\" style=\"white-space: nowrap\">ray-optics@phydemo.app</a> (por favor use Inglês). </p><p>Contribuições diretas também são bem-vindas (ver <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">o guia de contribuições</a>).</p>"
+    "message": "<b>Arraste restrito</b><p>Enquanto arrasta um objeto, segure Shift para limitar ao sentido horizontal/vertical; segure Ctrl para clonar. Quando criando um objeto em formato de linha ou arrastando seus pontos finais, segure Shift para travar o ângulo ou ajustar para  0°, 45°, 90°; segure Ctrl para rotacionar/ajustar escala com relação a seu centro.</p><b>Agrupar, rotacionar e ajustar escala de objetos</b><p> Segure Ctrl, clique em vários pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar. </p><b>Editar coordenadas diretamente</b><p>Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter.</p><b>Atalhos de teclado</b><p>Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar.</p><b>Contate-nos</b><p>O jeito sugerido é ir até <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/discussions\">Discussões</a> ou <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/issues\">Problemas</a> no GitHub. Se você não usar o GitHub, pode nos mandar um email em <a href=\"mailto:ray-optics@phydemo.app\" style=\"white-space: nowrap\">ray-optics@phydemo.app</a> (por favor use Inglês). </p><p>Contribuições diretas também são bem-vindas (ver <a target=\"_blank\" href=\"https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md\">o guia de contribuições</a>).</p>"
   },
   "show_help_popups": {
     "message": "Exibir popups de ajuda"
