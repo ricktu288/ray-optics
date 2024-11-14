@@ -1,0 +1,77 @@
+{
+  "common": {
+    "saveButton": "Sauvegarder",
+    "cancelButton": "Annuler"
+  },
+  "file": {
+    "title": "Fichier",
+    "undo": {
+      "title": "Annuler"
+    },
+    "redo": {
+      "title": "Rétablir"
+    },
+    "reset": {
+      "title": "Recommencer"
+    },
+    "save": {
+      "title": "Sauvegarder"
+    },
+    "open": {
+      "title": "Ouvrir"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "rayDensity": {
+      "title": "Densité de rayon"
+    },
+    "layoutAids": {
+      "showGrid": "Grille",
+      "snapToGrid": "Attacher à la grille",
+      "lockObjs": "Verrouiller les objets"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "language": {
+      "title": "Langue"
+    }
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Appliquer à tous"
+    },
+    "duplicate": {
+      "title": "Dupliquer"
+    },
+    "delete": {
+      "title": "Supprimer"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Luminosité",
+      "wavelength": "Longueur d'onde",
+      "focalLength": "Distance focale"
+    },
+    "BaseFilter": {
+      "filter": "Filtre",
+      "bandwidth": "Bande Passante",
+      "invert": "Renverser"
+    },
+    "BaseGlass": {
+      "refIndex": "Indice de réfraction"
+    }
+  },
+  "saveModal": {
+    "title": "Sauvegarder",
+    "fileName": "Nom"
+  },
+  "languageModal": {
+    "title": "Langue"
+  },
+  "footer": {
+    "processing": "En cours de traitement... Cliquez ici pour arrêter"
+  }
+}

@@ -21,9 +21,26 @@ import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
+import i18next from 'i18next';
+import HttpBackend from 'i18next-http-backend';
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 async function startApp() {
   await initializeTranslations();
+  await i18next.use(HttpBackend).init({
+    lng: window.lang,
+    debug: isDevelopment,
+    fallbackLng: 'en',
+    load: 'currentOnly',
+    ns: ['main', 'simulator'],
+    backend: {
+      loadPath: '../locales/{{lng}}/{{ns}}.json',
+    }
+  });
+  console.log(i18next.t('main:project.name'));
+  console.log(i18next.t('simulator:welcome.title'));
+
   updateUIText();
   try {
     if (localStorage.rayOpticsHelp == "off") {

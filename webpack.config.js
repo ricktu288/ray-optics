@@ -64,7 +64,15 @@ module.exports = (env, argv) => {
             globOptions: {
               ignore: ['**/.DS_Store']
             }
-          }
+          },
+          {
+            from: 'locales',
+            to: 'locales',
+            noErrorOnMissing: true,
+            globOptions: {
+              ignore: ['**/.DS_Store'],
+            },
+          },
         ]
       }),
     ],
