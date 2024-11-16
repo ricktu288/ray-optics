@@ -45,6 +45,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "sync-translations": "node ./scripts/syncTranslations.js",
     "build-translations": "node ./scripts/buildTranslations.js",
+    "build-scenes": "node ./scripts/buildScenes.mjs",
     "build-webpages": "node ./scripts/buildWebpages.js",
     "build-simulator": "webpack --mode=production",
     "build-docs": "jsdoc -c jsdoc.json",
