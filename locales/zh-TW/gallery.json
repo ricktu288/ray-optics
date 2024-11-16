@@ -429,6 +429,12 @@
       "annulareclipse": "日環食",
       "earth": "地球",
       "totaleclipse": "日全食"
+    },
+    "thePrincipleOfCameraImaging": {
+      "camera": "相機",
+      "title": "相機成像原理",
+      "cmos": "CMOS",
+      "description": "此範本提供了一種互動式方法來學習相機成像原理，涵蓋焦距、光圈、感測器靈敏度和背景模糊等基本主題，對學生和愛好者都有幫助。"
     }
   }
 }
