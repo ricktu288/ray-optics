@@ -459,6 +459,14 @@
         "description": "<p>这是一个暗箱的模拟。在黑暗的房间里的观察者看到的是外面物体的倒置影像，并且这个影像是直接投影在他/她前面的墙壁上的（无需使用额外的透镜）。 </p>"
       },
       {
+        "id": "the-principle-of-camera-imaging",
+        "title": "相机成像原理",
+        "contributors": [
+          "Liu Quanhong"
+        ],
+        "description": "<p>本模板提供了一种交互式方法来学习相机成像原理，涵盖焦距、光圈、传感器灵敏度和背景模糊等基本主题，对学生和爱好者都有帮助。</p>"
+      },
+      {
         "id": "NL-simulation",
         "contributors": [
           "Wen Zhou"

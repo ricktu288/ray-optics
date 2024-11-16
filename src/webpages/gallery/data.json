@@ -459,6 +459,14 @@
         "description": "<p>This is a simulation of a Camera obscura. The observer in the dark room sees an inverted image of the objects outside, projected on the wall in front of him/her (without the use of an extra lens).</p>"
       },
       {
+        "id": "the-principle-of-camera-imaging",
+        "title": "The principle of camera imaging",
+        "contributors": [
+          "Liu Quanhong"
+        ],
+        "description": "<p>This template provides an interactive approach to learning the principles of camera imaging, covering essential topics such as focal length, aperture, sensor sensitivity, and background blur, making it useful for both students and enthusiasts.</p>"
+      },
+      {
         "id": "NL-simulation",
         "contributors": [
           "Wen Zhou"
