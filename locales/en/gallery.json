@@ -366,6 +366,12 @@
       "objectsoutside": "Objects outside",
       "darkroom1": "Dark room"
     },
+    "thePrincipleOfCameraImaging": {
+      "title": "The principle of camera imaging",
+      "description": "This template provides an interactive approach to learning the principles of camera imaging, covering essential topics such as focal length, aperture, sensor sensitivity, and background blur, making it useful for both students and enthusiasts.\n",
+      "camera": "Camera",
+      "cmos": "CMOS"
+    },
     "nlSimulation": {
       "title": "NL Binoculars",
       "description": "This simulation shows a rough sketch of Swarovski NL binoculars."
