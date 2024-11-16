@@ -181,7 +181,7 @@ const descriptionPrompt = await inquirer.prompt({
   message: "The description of the scene:",
 });
 
-const description = descriptionPrompt.description;
+const description = descriptionPrompt.description.trim();
 newSceneStrings.description = description;
 console.log('');
 console.log(description);
@@ -370,7 +370,7 @@ const contributors = contributorsPrompt.contributors;
 const contributorList = contributors.split(';').map((name) => name.trim());
 
 // Insert the new scene into the category.
-categoryScenes.splice(position + 1, 0, { id: id, title: title, contributors: contributorList });
+categoryScenes.splice(position + 1, 0, { id: id, contributors: contributorList });
 
 // Update the gallery strings, inserting the new item next to the selected item.
 const newGalleryStrings = {};

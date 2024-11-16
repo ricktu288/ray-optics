@@ -106,7 +106,7 @@ sceneIDs.forEach((id) => {
       replaceText(outputData);
 
       // Save the outputData to /dist/{locale}/gallery/{id}.json.
-      const outputFolder = path.join(__dirname, `../dist${localeRoutes[lang] || ('/' + lang)}/gallery`);
+      const outputFolder = path.join(__dirname, `../dist${localeRoutes[lang] !== undefined ? localeRoutes[lang] : ('/' + lang)}/gallery`);
       if (!fs.existsSync(outputFolder)) {
         fs.mkdirSync(outputFolder, { recursive: true });
       }
