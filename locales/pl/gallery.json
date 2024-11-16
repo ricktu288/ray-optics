@@ -259,13 +259,12 @@
       "observerdoesntseethe": "Obserwator (nie widzi obiektów\n z obszaru częściowej niewidzialności,\nale widzi obiekt z obszaru widoczności)",
       "partialinvisibilitya": "Obszar częściowej niewidzialności",
       "object": "Obiekt",
-      "8objects": "8 obiektów",
+      "t8objects": "8 obiektów",
       "visibilityarea": "Obszar widoczności"
     },
     "grinSlab": {
       "title": "Płyta GRIN (gradientowa)",
-      "description": "Jest to symulacja prostokątnego materiału dielektrycznego o współczynniku załamania \\(n(\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0=2\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\)  jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem.\nGórny dielektryk w tej symulacji składa się z cienkich prostokątów dielektrycznych o stałym współczynniku załamania światła, zgodnie z \\(n(\\rho)\\), podczas gdy dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(\rho)\\).",
-      "warningthesequenceof": "Ostrzeżenie: sekwencja pojawiania się światła nie reprezentuje rzeczywistej prędkości światła - znaczenie ma tylko obraz końcowy."
+      "description": "Jest to symulacja prostokątnego materiału dielektrycznego o współczynniku załamania \\(n(\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0=2\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\)  jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem.\nGórny dielektryk w tej symulacji składa się z cienkich prostokątów dielektrycznych o stałym współczynniku załamania światła, zgodnie z \\(n(\\rho)\\), podczas gdy dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(\rho)\\)."
     },
     "inferiorMirage": {
       "title": "Miraż dolny",

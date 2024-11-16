@@ -176,7 +176,7 @@
       "type": "TextLabel",
       "x": 744.0550188738907,
       "y": 640,
-      "text": "{{8objects}}",
+      "text": "{{t8objects}}",
       "alignment": "center"
     },
     {

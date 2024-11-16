@@ -227,7 +227,7 @@
       "type": "TextLabel",
       "x": 612.2657106739144,
       "y": 296.0621808016546,
-      "text": "{{15readingglasses}}",
+      "text": "{{t15readingglasses}}",
       "fontSize": 12,
       "font": "Arial"
     },

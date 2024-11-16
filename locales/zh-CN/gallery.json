@@ -280,7 +280,7 @@
       "observerdoesntseethe": "观察者（看不到部分隐形区域中的物体，\n但是可以看到可视区域中的物体）",
       "partialinvisibilitya": "部分隐形区域",
       "object": "物体",
-      "8objects": "8个物体",
+      "t8objects": "8个物体",
       "visibilityarea": "可视区域"
     },
     "simpleDoubleGaussLens": {
@@ -290,7 +290,6 @@
     "grinSlab": {
       "title": "渐变折射率平板",
       "description": "模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。上方的介电材料为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。下方的介电材料是折射率为\\(n(\\rho)\\)的渐变折射率材料。",
-      "warningthesequenceof": "警告：光线出现的顺序并不代表实际的光速。只有最终的图像有意义。",
       "approximatedmultilay": "用多层近似的渐变折射率平板（您可以选择并更改层数 N）",
       "classicalgrinslabyou": "正统的渐变折射率平板（您可以选择并更改数值求解器的步长）"
     },
@@ -411,7 +410,7 @@
       "eye1": "眼睛",
       "nose": "鼻子",
       "pointsourcetomeasure": "用来测量半径的点光源",
-      "15readingglasses": "+1.5度阅读眼镜"
+      "t15readingglasses": "+1.5度阅读眼镜"
     },
     "reflectingMonochromator": {
       "title": "反射式单色仪",

@@ -281,7 +281,7 @@
       "observerdoesntseethe": "Observer (doesn't see the objects\nfrom the partial invisibility area,\nbut sees the object from the visibility area)",
       "partialinvisibilitya": "Partial invisibility area",
       "object": "Object",
-      "8objects": "8 objects",
+      "t8objects": "8 objects",
       "visibilityarea": "Visibility area"
     },
     "simpleDoubleGaussLens": {
@@ -291,7 +291,6 @@
     "grinSlab": {
       "title": "GRIN slab",
       "description": "This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.\nThe top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).",
-      "warningthesequenceof": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful.",
       "approximatedmultilay": "Approximated multilayer GRIN slab (You can select and change N, the number of layers.)",
       "classicalgrinslabyou": "Classical GRIN slab (You can select and change the numerical solver step size.)"
     },
@@ -412,7 +411,7 @@
       "eye1": "eye",
       "nose": "nose",
       "pointsourcetomeasure": "point source to measure radius",
-      "15readingglasses": "+1.5 reading glasses"
+      "t15readingglasses": "+1.5 reading glasses"
     },
     "reflectingMonochromator": {
       "title": "Reflecting Monochromator",
