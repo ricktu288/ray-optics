@@ -69,6 +69,38 @@ sceneIDs.forEach((id) => {
   // Load the scene data from /data/galleryScenes/{id}.json.
   const sceneData = JSON.parse(fs.readFileSync(path.join(__dirname, `../data/galleryScenes/${id}.json`)).toString());
 
+  // Find the CropBox objects.
+  let cropBoxPreview = null;
+  let cropBoxThumbnail = null;
+  for (const obj of sceneData.objs) {
+    if (obj.type === 'CropBox') {
+      if (Math.abs((obj.p4.x - obj.p1.x) - (obj.p4.y - obj.p1.y)) < 1e-6) {
+        cropBoxThumbnail = obj;
+      } else {
+        cropBoxPreview = obj;
+      }
+    }
+  }
+
+  if (cropBoxPreview) {
+    // Adjust the width, height, origin, and scale of the scene based on he rectangular crop box
+    let effectiveWidth = cropBoxPreview.p4.x - cropBoxPreview.p1.x;
+    let effectiveHeight = cropBoxPreview.p4.y - cropBoxPreview.p1.y;
+    let effectiveOriginX = cropBoxPreview.p1.x;
+    let effectiveOriginY = cropBoxPreview.p1.y;
+
+    let padding = effectiveWidth * 0.25;
+    effectiveWidth += padding * 2;
+    effectiveHeight += padding * 2;
+    effectiveOriginX -= padding;
+    effectiveOriginY -= padding;
+
+    sceneData.width = effectiveWidth;
+    sceneData.height = effectiveHeight;
+    sceneData.origin = {x: -effectiveOriginX, y: -effectiveOriginY};
+    sceneData.scale = 1;
+  }
+
   langs.forEach((lang) => {
     // The scene should be built in the language iff the title is translated.
     if (stringKeys[lang][`${id}.title`]) {

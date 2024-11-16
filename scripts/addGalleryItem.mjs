@@ -71,8 +71,9 @@ console.log('Welcome to the gallery item creation tool.');
 console.log('');
 console.log('Please read the requirements for the new gallery item:');
 console.log('1. All translatable text must be in English. If you want to provide a version in some other language, you can do this with the translation tool after the scene is added.');
-console.log('3. The scene must have a title. You can set the title in the simulator using FIle -> Save -> Rename.');
-console.log('4. The scene must have two CropBox objects, one is square (for the thumbnail in the Gallery list) and the other is rectangular (for the preview in the item page). To create a CropBox object, click File -> Export PNG/SVG (but no need to actually export the image). To create the second CropBox, click Duplicate in the object bar while the first CropBox is selected. To make it square, set the two coordinates of the crop box to the same value in the object bar. If your scene involves infinite numbers of rays (e.g. repeated reflection in a cavity), you should click "More options..." and set a suitable "Ray count limit" for both CropBox objects to avoid infinite loops. Do not adjust other properties.');
+console.log('2. The scene for the Gallery webpage should contain two CropBox objects, one is rectangular (for the preview in the item page), and the other is square (for the thumbnail in the Gallery list). To create a CropBox object, click File -> Export PNG/SVG (but no need to actually export the image). To create the second CropBox, click Duplicate in the object bar while the first CropBox is selected. To make it square, set the two coordinates of the crop box to the same value in the object bar. Do not adjust image format and resolution.');
+console.log('3. If your scene involves infinite numbers of rays (e.g. repeated reflection in a cavity), you should click "More options..." and set a suitable "Ray count limit" for both CropBox objects to avoid infinite loops.')
+console.log('4. If the scene is not for the Gallery webpage (e.g. an example scene to be embedded in the documentation), you can skip the CropBox objects.');
 console.log('5. All translatable text in the scene must have an appropriate aligment, as the length of the text may vary in different languages but the coordinates of the TextLabel will not change with the language. To set the alignment, select the text label, click "More options..." in the object bar. You should avoid placing the text labels at some length-sensitive positions, so if the text becomes too long in some languages, it will not overlap with other objects or go out of some CropBox.');
 console.log('6. When the scene is ready, click File -> Copy Sharable Link. The shared URL will be used to provide the scene data. Ignore the warning if the URL is too long.');
 console.log('');
@@ -91,8 +92,15 @@ const sceneData = await jsonUrl('lzma').decompress(sceneURLInput.sceneURL.split(
 // Ensure that the scene data has a title.
 let title = sceneData.name;
 if (!title) {
-  console.log('Error: The scene does not have a title.');
-  process.exit(1);
+  const titlePrompt = await inquirer.prompt({
+    type: 'input',
+    name: 'title',
+    message: "The scene does not have a title. Please enter the title of the scene:",
+    validate: (input) => input.trim() !== '' || 'The title cannot be empty.',
+  });
+  title = titlePrompt.title.trim();
+} else {
+  console.log(`Title: ${title}`);
 }
 
 // The title is not stored in the extracted scene data.
@@ -111,35 +119,24 @@ for (const obj of sceneData.objs) {
   }
 }
 
-if (!cropBoxPreview) {
-  console.log('Error: No preview crop box found.');
-  process.exit(1);
+let forGalleryPage = true;
+if (!cropBoxPreview || !cropBoxThumbnail) {
+  const confirmPrompt = await inquirer.prompt({
+    type: 'confirm',
+    name: 'notForGallery',
+    message: 'Some CropBox objects are missing. Do you want to proceed without the CropBox objects? (The scene will not be added to the Gallery webpage.)',
+    default: false,
+  });
+
+  if (!confirmPrompt.notForGallery) {
+    console.log('Please add the CropBox objects to the scene and try again.');
+    process.exit(1);
+  }
+  forGalleryPage = false
 }
 
-if (!cropBoxThumbnail) {
-  console.log('Error: No thumbnail crop box found.');
-  process.exit(1);
-}
-
-// Adjust the width, height, origin, and scale of the scene based on he rectangular crop box
-let effectiveWidth = cropBoxPreview.p4.x - cropBoxPreview.p1.x;
-let effectiveHeight = cropBoxPreview.p4.y - cropBoxPreview.p1.y;
-let effectiveOriginX = cropBoxPreview.p1.x;
-let effectiveOriginY = cropBoxPreview.p1.y;
-
-let padding = effectiveWidth * 0.25;
-effectiveWidth += padding * 2;
-effectiveHeight += padding * 2;
-effectiveOriginX -= padding;
-effectiveOriginY -= padding;
-
-sceneData.width = effectiveWidth;
-sceneData.height = effectiveHeight;
-sceneData.origin = {x: -effectiveOriginX, y: -effectiveOriginY};
-sceneData.scale = 1;
-
-// Convert the title into an kebab-case ID.
-let id = title.toLowerCase().replace(/ /g, '-');
+// Convert the title into a kebab-case ID.
+let id = title.toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, '-');
 const MAX_ID_LENGTH = 55;
 if (id.length > MAX_ID_LENGTH) {
   id = id.substring(0, MAX_ID_LENGTH);
@@ -173,19 +170,21 @@ sceneIDToTitle[id] = title;
 const newSceneStrings = {};
 newSceneStrings.title = title;
 
-// Prompt the user for the description of the scene, which can be multi-line.
-console.log('Please provide the description of the scene in markdown format. To include inline LaTeX equations, use the \\( and \\) delimiters. To include displayed LaTeX equation, use \\begin{equation} and \\end{equaion}. The equation will be rendered using MathJax. To include a link to another scene in the gallery, use the format [title](/gallery/SCENE_ID).');
-const descriptionPrompt = await inquirer.prompt({
-  type: 'editor',
-  name: 'description',
-  message: "The description of the scene:",
-});
+if (forGalleryPage) {
+  // Prompt the user for the description of the scene, which can be multi-line.
+  console.log('Please provide the description of the scene in markdown format. To include inline LaTeX equations, use the \\( and \\) delimiters. To include displayed LaTeX equation, use \\begin{equation} and \\end{equaion}. The equation will be rendered using MathJax. To include a link to another scene in the gallery, use the format [title](/gallery/SCENE_ID).');
+  const descriptionPrompt = await inquirer.prompt({
+    type: 'editor',
+    name: 'description',
+    message: "The description of the scene:",
+  });
 
-const description = descriptionPrompt.description.trim();
-newSceneStrings.description = description;
-console.log('');
-console.log(description);
-console.log('');
+  const description = descriptionPrompt.description.trim();
+  newSceneStrings.description = description;
+  console.log('');
+  console.log(description);
+  console.log('');
+}
 
 // Extract the TextLabel objects from the scene data recursively. Store the references to an array.
 const textLabels = [];
@@ -327,64 +326,65 @@ if (backgroundImagePrompt.backgroundImage) {
   sceneData.backgroundImage = `${id}-background.png`;
 }
 
-// Ask the user for the category of the scene.
-console.log('Please select the category of the scene. By the current convention, if the simulation is about a general principle or commonly used optical instrument, it is placed in the category corresponding in the most important optical principle. If there is no specific optical principle, the most important principle is not listed, or if the simulation is about an application of optics, then it should be placed in the "Miscellaneous" category.');
-const categoryPrompt = await inquirer.prompt({
-  type: 'list',
-  name: 'category',
-  message: "The category of the scene:",
-  choices: categoryIDs.map((id) => ({ name: categoryIDToTitle[id], value: id })),
-});
-console.log('');
+if (forGalleryPage) {
+  // Ask the user for the category of the scene.
+  console.log('Please select the category of the scene. By the current convention, if the simulation is about a general principle or commonly used optical instrument, it is placed in the category corresponding in the most important optical principle. If there is no specific optical principle, the most important principle is not listed, or if the simulation is about an application of optics, then it should be placed in the "Miscellaneous" category.');
+  const categoryPrompt = await inquirer.prompt({
+    type: 'list',
+    name: 'category',
+    message: "The category of the scene:",
+    choices: categoryIDs.map((id) => ({ name: categoryIDToTitle[id], value: id })),
+  });
+  console.log('');
 
-const category = categoryPrompt.category;
-const categoryCamelCase = categoryIDToCamelCase[category];
+  const category = categoryPrompt.category;
 
-// Ask the user for the position of the scene in the category. The position is stored as the id of the scene before the new scene. One should not put the new scene in the first position.
-console.log('Please select the position of the scene in the category. The new scene will be placed after the selected scene. If there are existing scenes in the category related to the new scene, you can place the new scene after them. Otherwise, it is recommended to place the new scene at the end of the category.');
-const categoryScenes = galleryList.find((category1) => category1.id === category).content;
-const categorySceneTitles = categoryScenes.map((scene) => sceneIDToTitle[scene.id]);
-const categoryScenePrompt = await inquirer.prompt({
-  type: 'list',
-  name: 'position',
-  message: "The position of the scene in the category:",
-  choices: categorySceneTitles.map((title, index) => ({ name: title, value: index })),
-  loop: false,
-});
-console.log('');
+  // Ask the user for the position of the scene in the category. The position is stored as the id of the scene before the new scene. One should not put the new scene in the first position.
+  console.log('Please select the position of the scene in the category. The new scene will be placed after the selected scene. If there are existing scenes in the category related to the new scene, you can place the new scene after them. Otherwise, it is recommended to place the new scene at the end of the category.');
+  const categoryScenes = galleryList.find((category1) => category1.id === category).content;
+  const categorySceneTitles = categoryScenes.map((scene) => sceneIDToTitle[scene.id]);
+  const categoryScenePrompt = await inquirer.prompt({
+    type: 'list',
+    name: 'position',
+    message: "The position of the scene in the category:",
+    choices: categorySceneTitles.map((title, index) => ({ name: title, value: index })),
+    loop: false,
+  });
+  console.log('');
 
-const position = categoryScenePrompt.position;
-const positionID = categoryScenes[position].id;
-const positionCamelCase = sceneIDToCamelCase[positionID];
+  const position = categoryScenePrompt.position;
+  const positionID = categoryScenes[position].id;
+  const positionCamelCase = sceneIDToCamelCase[positionID];
 
-// Ask the name of the contributors.
-console.log('Please provide the name of the contributor(s) of the scene. The name will be displayed in the scene page as well as the About page. The name can be a pseudonym or a real name, but must be in Latin characters. If the contributor has contributed before, please use the same name. If the author has a GitHub account, it is recommended to use the GitHub username or the "name" field in the GitHub profile if it is in Latin characters. If the scene has multiple contributors, separate the names by semicolons, and should sort by the chronological order of the contributions.')
-const contributorsPrompt = await inquirer.prompt({
-  type: 'text',
-  name: 'contributors',
-  message: "The name of the contributor(s):",
-});
-console.log('');
+  // Ask the name of the contributors.
+  console.log('Please provide the name of the contributor(s) of the scene. The name will be displayed in the scene page as well as the About page. The name can be a pseudonym or a real name, but must be in Latin characters. If the contributor has contributed before, please use the same name. If the author has a GitHub account, it is recommended to use the GitHub username or the "name" field in the GitHub profile if it is in Latin characters. If the scene has multiple contributors, separate the names by semicolons, and should sort by the chronological order of the contributions.')
+  const contributorsPrompt = await inquirer.prompt({
+    type: 'text',
+    name: 'contributors',
+    message: "The name of the contributor(s):",
+  });
+  console.log('');
 
-const contributors = contributorsPrompt.contributors;
-const contributorList = contributors.split(';').map((name) => name.trim());
+  const contributors = contributorsPrompt.contributors;
+  const contributorList = contributors.split(';').map((name) => name.trim());
 
-// Insert the new scene into the category.
-categoryScenes.splice(position + 1, 0, { id: id, contributors: contributorList });
+  // Insert the new scene into the category.
+  categoryScenes.splice(position + 1, 0, { id: id, contributors: contributorList });
 
-// Update the gallery strings, inserting the new item next to the selected item.
-const newGalleryStrings = {};
-for (const key in galleryStrings) {
-  newGalleryStrings[key] = galleryStrings[key];
-  if (key === positionCamelCase) {
-    newGalleryStrings[newSceneIdCamelCase] = newSceneStrings;
+  // Update the gallery strings, inserting the new item next to the selected item.
+  const newGalleryStrings = {};
+  for (const key in galleryStrings) {
+    newGalleryStrings[key] = galleryStrings[key];
+    if (key === positionCamelCase) {
+      newGalleryStrings[newSceneIdCamelCase] = newSceneStrings;
+    }
   }
-}
 
-const newGalleryLocaleData = {
-  galleryPage: galleryLocaleData.galleryPage,
-  galleryData: newGalleryStrings,
-};
+  galleryLocaleData.galleryData = newGalleryStrings;
+} else {
+  // The scene is not for the Gallery webpage. The new scene is added at the end of the gallery strings.
+  galleryStrings[newSceneIdCamelCase] = newSceneStrings;
+}
 
 // Output the gallery scene.
 const scenePath = path.join(__dirname, `../data/galleryScenes/${id}.json`);
@@ -396,7 +396,7 @@ fs.writeFileSync(galleryListPath, JSON.stringify(galleryList, null, 2));
 
 // Output the gallery locale data.
 const galleryLocalePath = path.join(__dirname, '../locales/en/gallery.json');
-fs.writeFileSync(galleryLocalePath, JSON.stringify(newGalleryLocaleData, null, 2));
+fs.writeFileSync(galleryLocalePath, JSON.stringify(galleryLocaleData, null, 2));
 
 console.log('The scene has been successfully added to the gallery.');
 console.log('If some of the contributors are new, please add their names manually to the /data/contributors.json file.');
