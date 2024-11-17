@@ -435,6 +435,38 @@
       "title": "相機成像原理",
       "cmos": "CMOS",
       "description": "此範本提供了一種互動式方法來學習相機成像原理，涵蓋焦距、光圈、感測器靈敏度和背景模糊等基本主題，對學生和愛好者都有幫助。"
+    },
+    "moduleExampleBasics": {
+      "title": "模組範例 - 基本概念",
+      "thistextisalsoinexam": "這段文字也在 ExampleModule 中",
+      "thistextisalsonotina": "這段文字也不在模組中。",
+      "thistextisinexamplem": "這段文字在 ExampleModule 中",
+      "thistextisnotinamodu": "這段文字不在模組中。"
+    },
+    "moduleExampleParameters": {
+      "title": "模組範例 - 參數",
+      "thesizeofthistextosc": "這段文字的大小會隨 theta 震盪。",
+      "thismodulehastwopara": "本模組有兩個參數：n=`n` 與 theta=`theta`。\n您可以選取並拖曳數值滑桿來調整它們。"
+    },
+    "moduleExampleControlPoints": {
+      "title": "模組範例 - 控制點",
+      "hereisthefirstdragga": "↙這是本模組的第一個（可被拖曳的）控制點",
+      "hereisthemidpoint": "↙這是中間點",
+      "hereistheseconddragg": "↙這是本模組的第二個（可被拖曳的）控制點"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "模組範例 - 陣列與條件",
+      "a1darrayii": "一維陣列：i=`i`",
+      "thistextisshownonlyw": "這段文字只在 n>5 時顯示"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "模組範例 - 自訂數學式",
+      "amirrorofshapeycos2p": "形狀為 y=cos(2 pi x + `phi`) 的鏡子"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "模組範例 - 形狀參數化",
+      "alensdefinedbydffdbf": "以 d, FFD, BFD 定義的透鏡",
+      "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡"
     }
   }
 }

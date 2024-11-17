@@ -436,6 +436,38 @@
       "annulareclipse": "Annular eclipse",
       "earth": "Earth",
       "totaleclipse": "Total eclipse"
+    },
+    "moduleExampleBasics": {
+      "title": "Module Example - Basics",
+      "thistextisinexamplem": "This text is in ExampleModule.",
+      "thistextisalsoinexam": "This text is also in ExampleModule.",
+      "thistextisnotinamodu": "This text is not in a module.",
+      "thistextisalsonotina": "This text is also not in a module."
+    },
+    "moduleExampleParameters": {
+      "title": "Module Example - Parameters",
+      "thismodulehastwopara": "This module has two parameters: n=`n` and theta=`theta`.\nYou can select and drag the sliders to adjust them.",
+      "thesizeofthistextosc": "The size of this text oscillates as a function of theta."
+    },
+    "moduleExampleControlPoints": {
+      "title": "Module Example - Control points",
+      "hereisthefirstdragga": "↙Here is the first (draggable) control point of the module",
+      "hereistheseconddragg": "↙Here is the second (draggable) control point of the module",
+      "hereisthemidpoint": "↙Here is the midpoint"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "Module Example - Arrays and conditionals",
+      "a1darrayii": "A 1D array: i=`i`",
+      "thistextisshownonlyw": "This text is shown only when n>5"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Module Example - Custom equation",
+      "amirrorofshapeycos2p": "A mirror of shape y=cos(2 pi x + `phi`)"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "Module Example - Shape parametrization",
+      "alensdefinedbydr1r2": "A lens defined by d, R_1, R_2",
+      "alensdefinedbydffdbf": "A lens defined by d, FFD, BFD"
     }
   }
 }

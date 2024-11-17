@@ -435,6 +435,38 @@
       "camera": "相机",
       "title": "相机成像原理",
       "cmos": "CMOS"
+    },
+    "moduleExampleBasics": {
+      "title": "模块示例 - 基本概念",
+      "thistextisalsoinexam": "这段文字也在 ExampleModule 中",
+      "thistextisalsonotina": "这段文字也不在模块中。",
+      "thistextisinexamplem": "这段文字在 ExampleModule 中",
+      "thistextisnotinamodu": "这段文字不在模块中。"
+    },
+    "moduleExampleParameters": {
+      "title": "模块示例 - 参数",
+      "thesizeofthistextosc": "这段文字的大小会随theta震荡。",
+      "thismodulehastwopara": "本模块有两个参数：n=`n`与theta=`theta`。\n您可以选取并拖曳数值滑杆来调整它们。"
+    },
+    "moduleExampleControlPoints": {
+      "title": "模块示例 - 控制点",
+      "hereisthefirstdragga": "↙这是本模块的第一个（可被拖曳的）控制点",
+      "hereisthemidpoint": "↙这是中间点",
+      "hereistheseconddragg": "↙这是本模块的第二个（可被拖曳的）控制点"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "模块示例 - 数组与条件",
+      "a1darrayii": "一维数组：i=`i`",
+      "thistextisshownonlyw": "这段文字只在n>5时显示"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "模块示例 - 自定义数学式",
+      "amirrorofshapeycos2p": "形状为 y=cos(2 pi x + `phi`) 的镜子"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "模块示例 - 形状参数化",
+      "alensdefinedbydffdbf": "以 d, FFD, BFD 定义的透镜",
+      "alensdefinedbydr1r2": "以 d, R_1, R_2 定义的透镜"
     }
   }
 }
