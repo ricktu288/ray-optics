@@ -25,6 +25,7 @@
     "mathquill": "github:Jutanium/mathquill-webpack",
     "seedrandom": "^3.0.5",
     "sharp": "^0.33.5",
+    "simple-git": "^3.27.0",
     "tex-math-parser": "^2.0.4"
   },
   "devDependencies": {
