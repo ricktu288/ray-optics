@@ -354,6 +354,14 @@
         ],
         "title": "Simple Double-Gauss Lens",
         "description": "<p>This is a demonstration of a simple double-Gauss lens.</p>"
+      },
+      {
+        "id": "pair-of-axicons-making-a-rainbow-ring",
+        "contributors": [
+          "Peter Becher"
+        ],
+        "title": "Pair of Axicons making a Rainbow Ring",
+        "description": "<p>This simulation uses two plano-convex axicons, a white light source and an aperture to create a circular rainbow. Axicons are conical lenses. The incoming white light needs to be a ring which was created by a narrow ring aperture.</p><p>Moving the right axicon left and right will change the size of the output rainbow ring.</p>"
       }
     ]
   },

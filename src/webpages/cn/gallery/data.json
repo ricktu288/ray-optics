@@ -354,6 +354,14 @@
         ],
         "title": "简易双高斯透镜",
         "description": "<p>本模拟为一个简易双高斯透镜的演示。</p>"
+      },
+      {
+        "id": "pair-of-axicons-making-a-rainbow-ring",
+        "contributors": [
+          "Peter Becher"
+        ],
+        "title": "一对锥透镜产生彩虹环",
+        "description": "<p>此模拟使用两个平凸锥透镜、一个白色光源和一个光圈来产生圆形彩虹。入射的白光必须为环状，此处透过窄的环状光圈来实现。</p><p>将右侧的锥透镜左右移动可改变彩虹环的大小。</p>"
       }
     ]
   },
