@@ -288,6 +288,14 @@
       "title": "Simple Double-Gauss Lens",
       "description": "This is a demonstration of a simple double-Gauss lens."
     },
+    "pairOfAxiconsMakingARainbowRing": {
+      "title": "Pair of Axicons making a Rainbow Ring",
+      "description": "This simulation uses two plano-convex axicons, a white light source and an aperture to create a circular rainbow. Axicons are conical lenses. The incoming white light needs to be a ring which was created by a narrow ring aperture.\n\nMoving the right axicon left and right will change the size of the output rainbow ring.",
+      "leftaxicon": "Left Axicon",
+      "whitelightsource": "White\nLight\nSource",
+      "rightaxicon": "Right Axicon",
+      "ringaperture": "Ring Aperture"
+    },
     "grinSlab": {
       "title": "GRIN slab",
       "description": "This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius.\nThe top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).",

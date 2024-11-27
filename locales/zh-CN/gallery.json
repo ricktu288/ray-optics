@@ -467,6 +467,14 @@
       "title": "模块示例 - 形状参数化",
       "alensdefinedbydffdbf": "以 d, FFD, BFD 定义的透镜",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定义的透镜"
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "description": "此模拟使用两个平凸锥透镜、一个白色光源和一个光圈来产生圆形彩虹。入射的白光必须为环状，此处透过窄的环状光圈来实现。\n\n将右侧的锥透镜左右移动可改变彩虹环的大小。",
+      "leftaxicon": "左侧锥透镜",
+      "rightaxicon": "右侧锥透镜",
+      "ringaperture": "环状光圈",
+      "title": "一对锥透镜产生彩虹环",
+      "whitelightsource": "白光\n光源"
     }
   }
 }
