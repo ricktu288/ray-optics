@@ -54,6 +54,7 @@
     "build-images": "node ./scripts/buildImages.js",
     "start": "webpack serve --open simulator/ --mode=development",
     "build": "npm run build-translations && npm run build-webpages && npm run build-node && npm run build-images && npm run build-simulator && npm run build-docs",
-    "add-gallery-item": "node ./scripts/addGalleryItem.mjs"
+    "add-to-gallery": "node ./scripts/addToGallery.mjs",
+    "add-to-modules": "node ./scripts/addToModules.mjs"
   }
 }

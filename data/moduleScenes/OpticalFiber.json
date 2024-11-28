@@ -1,0 +1,167 @@
+{
+  "version": 5,
+  "name": "OpticalFiber",
+  "modules": {
+    "OpticalFiber": {
+      "numPoints": 2,
+      "params": [
+        "X=1:1:100:80",
+        "Y=1:1:100:20",
+        "n_1=1:0.01:2:1.456",
+        "n_2=1:0.01:2:1.44"
+      ],
+      "objs": [
+        {
+          "type": "Glass",
+          "path": [
+            {
+              "x": "`x_1`",
+              "y": "`y_1-X/2`",
+              "arc": false
+            },
+            {
+              "x": "`x_1`",
+              "y": "`y_1+X/2`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2+X/2`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2-X/2`",
+              "arc": false
+            }
+          ],
+          "refIndex": "`n_1`"
+        },
+        {
+          "type": "Blocker",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1-X/2-Y`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2-X/2-Y`"
+          }
+        },
+        {
+          "type": "Blocker",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1+X/2+Y`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2+X/2+Y`"
+          }
+        },
+        {
+          "type": "Glass",
+          "path": [
+            {
+              "x": "`x_1`",
+              "y": "`y_1-X/2`",
+              "arc": false
+            },
+            {
+              "x": "`x_1`",
+              "y": "`y_1-X/2-Y`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2-X/2-Y`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2-X/2`",
+              "arc": false
+            }
+          ],
+          "refIndex": "`n_2`"
+        },
+        {
+          "type": "Glass",
+          "path": [
+            {
+              "x": "`x_1`",
+              "y": "`y_1+X/2`",
+              "arc": false
+            },
+            {
+              "x": "`x_1`",
+              "y": "`y_1+X/2+Y`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2+X/2+Y`",
+              "arc": false
+            },
+            {
+              "x": "`x_2`",
+              "y": "`y_2+X/2`",
+              "arc": false
+            }
+          ],
+          "refIndex": "`n_2`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "OpticalFiber",
+      "points": [
+        {
+          "x": -2430,
+          "y": 440
+        },
+        {
+          "x": 460,
+          "y": 440
+        }
+      ],
+      "params": {
+        "X": 80,
+        "Y": 20,
+        "n_1": 1.456,
+        "n_2": 1.44
+      }
+    },
+    {
+      "type": "PointSource",
+      "x": 910,
+      "y": 430,
+      "brightness": 3
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -2490,
+        "y": 360
+      },
+      "p4": {
+        "x": -2330,
+        "y": 520
+      },
+      "width": 300
+    }
+  ],
+  "width": 1200,
+  "height": 700,
+  "rayModeDensity": 20.085536923187668,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "origin": {
+    "x": 4920.548652877485,
+    "y": -448.74224272518126
+  },
+  "scale": 1.75
+}
