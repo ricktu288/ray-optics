@@ -287,6 +287,14 @@
       "title": "簡易雙高斯透鏡",
       "description": "本模擬為一個簡易雙高斯透鏡的演示。"
     },
+    "pairOfAxiconsMakingARainbowRing": {
+      "title": "一對錐透鏡產生彩虹環",
+      "description": "此模擬使用兩個平凸錐透鏡、一個白色光源和一個光圈來產生圓形彩虹。入射的白光必須為環狀，此處透過窄的環狀光圈來實現。\n\n將右側的錐透鏡左右移動可改變彩虹環的大小。",
+      "leftaxicon": "左側錐透鏡",
+      "whitelightsource": "白光\n光源",
+      "rightaxicon": "右側錐透鏡",
+      "ringaperture": "環狀光圈"
+    },
     "grinSlab": {
       "title": "漸變折射率平板",
       "description": "模擬折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介電材料，其中 \\(n_0\\) 是其中央軸的折射率，\\(\\rho \\) 是從其中央軸的徑向距離，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半徑。上方的介電材料為一系列的薄矩形，每個矩形具有恆定的折射率（根據前述 \\(n(\\rho)\\) 的式子）。下方的介電材料是折射率為\\(n(\\rho)\\)的漸變折射率材料。",
@@ -365,6 +373,12 @@
       "objectsoutside": "外面的物體",
       "darkroom1": "黑暗的房間"
     },
+    "thePrincipleOfCameraImaging": {
+      "title": "相機成像原理",
+      "description": "此範本提供了一種互動式方法來學習相機成像原理，涵蓋焦距、光圈、感測器靈敏度和背景模糊等基本主題，對學生和愛好者都有幫助。",
+      "camera": "相機",
+      "cmos": "CMOS"
+    },
     "nlSimulation": {
       "title": "NL 雙筒望遠鏡",
       "description": "這個模擬展示了 Swarovski NL 雙筒望遠鏡的粗略草圖。"
@@ -430,29 +444,23 @@
       "earth": "地球",
       "totaleclipse": "日全食"
     },
-    "thePrincipleOfCameraImaging": {
-      "camera": "相機",
-      "title": "相機成像原理",
-      "cmos": "CMOS",
-      "description": "此範本提供了一種互動式方法來學習相機成像原理，涵蓋焦距、光圈、感測器靈敏度和背景模糊等基本主題，對學生和愛好者都有幫助。"
-    },
     "moduleExampleBasics": {
       "title": "模組範例 - 基本概念",
-      "thistextisalsoinexam": "這段文字也在 ExampleModule 中",
-      "thistextisalsonotina": "這段文字也不在模組中。",
       "thistextisinexamplem": "這段文字在 ExampleModule 中",
-      "thistextisnotinamodu": "這段文字不在模組中。"
+      "thistextisalsoinexam": "這段文字也在 ExampleModule 中",
+      "thistextisnotinamodu": "這段文字不在模組中。",
+      "thistextisalsonotina": "這段文字也不在模組中。"
     },
     "moduleExampleParameters": {
       "title": "模組範例 - 參數",
-      "thesizeofthistextosc": "這段文字的大小會隨 theta 震盪。",
-      "thismodulehastwopara": "本模組有兩個參數：n=`n` 與 theta=`theta`。\n您可以選取並拖曳數值滑桿來調整它們。"
+      "thismodulehastwopara": "本模組有兩個參數：n=`n` 與 theta=`theta`。\n您可以選取並拖曳數值滑桿來調整它們。",
+      "thesizeofthistextosc": "這段文字的大小會隨 theta 震盪。"
     },
     "moduleExampleControlPoints": {
       "title": "模組範例 - 控制點",
       "hereisthefirstdragga": "↙這是本模組的第一個（可被拖曳的）控制點",
-      "hereisthemidpoint": "↙這是中間點",
-      "hereistheseconddragg": "↙這是本模組的第二個（可被拖曳的）控制點"
+      "hereistheseconddragg": "↙這是本模組的第二個（可被拖曳的）控制點",
+      "hereisthemidpoint": "↙這是中間點"
     },
     "moduleExampleArraysAndConditionals": {
       "title": "模組範例 - 陣列與條件",
@@ -465,16 +473,8 @@
     },
     "moduleExampleShapeParametrization": {
       "title": "模組範例 - 形狀參數化",
-      "alensdefinedbydffdbf": "以 d, FFD, BFD 定義的透鏡",
-      "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡"
-    },
-    "pairOfAxiconsMakingARainbowRing": {
-      "description": "此模擬使用兩個平凸錐透鏡、一個白色光源和一個光圈來產生圓形彩虹。入射的白光必須為環狀，此處透過窄的環狀光圈來實現。\n\n將右側的錐透鏡左右移動可改變彩虹環的大小。",
-      "leftaxicon": "左側錐透鏡",
-      "rightaxicon": "右側錐透鏡",
-      "ringaperture": "環狀光圈",
-      "title": "一對錐透鏡產生彩虹環",
-      "whitelightsource": "白光\n光源"
+      "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡",
+      "alensdefinedbydffdbf": "以 d, FFD, BFD 定義的透鏡"
     }
   }
 }
