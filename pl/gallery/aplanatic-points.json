@@ -1,0 +1,303 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 640,
+        "y": -500
+      },
+      "p2": {
+        "x": 1000,
+        "y": -500
+      },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": 240
+      },
+      "p2": {
+        "x": 1000,
+        "y": 240
+      }
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 820,
+        "y": 60
+      },
+      "p2": {
+        "x": 1000,
+        "y": 60
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 700,
+        "y": 60
+      },
+      "p2": {
+        "x": 960,
+        "y": 60
+      },
+      "emisAngle": 162
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1000,
+        "y": -600
+      },
+      "p2": {
+        "x": 640,
+        "y": -600
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1000,
+        "y": -400
+      },
+      "p2": {
+        "x": 1000,
+        "y": -600
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": -400
+      },
+      "p2": {
+        "x": 1000,
+        "y": -400
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1000,
+        "y": -120
+      },
+      "p2": {
+        "x": 1000,
+        "y": 240
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": -120
+      },
+      "p2": {
+        "x": 1000,
+        "y": -120
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 664.115427318801,
+        "y": -500
+      },
+      "p2": {
+        "x": 720,
+        "y": -500
+      },
+      "emisAngle": 162
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": -400
+      },
+      "p2": {
+        "x": 640,
+        "y": -600
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": 240
+      },
+      "p2": {
+        "x": 640,
+        "y": -120
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 640,
+        "y": -840
+      },
+      "p2": {
+        "x": 640,
+        "y": 440
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 550,
+        "y": 90
+      },
+      "p2": {
+        "x": 550,
+        "y": 70
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 700.048951048951,
+        "y": 90
+      },
+      "p2": {
+        "x": 700.048951048951,
+        "y": 70
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 664.0364698291962,
+        "y": -472.4595062650682
+      },
+      "p2": {
+        "x": 664.0364698291962,
+        "y": -492.4595062650683
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 976.7252915814619,
+        "y": -472.4595062650682
+      },
+      "p2": {
+        "x": 976.7252915814619,
+        "y": -492.4595062650683
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 664.0364698291962,
+        "y": -472.4595062650682
+      },
+      "p2": {
+        "x": 664.0364698291962,
+        "y": -492.4595062650683
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 640,
+        "y": -870
+      },
+      "p2": {
+        "x": 640,
+        "y": -850
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": -960,
+      "y": -480,
+      "text": "Kliknij przycisk \"Promienie rozszerzone\", aby sprawdzić, czy światło emitowane ze źródła światła w soczewce sferycznej (punkt A)\nbędzie odchylać się od innego punktu na osi optycznej poza soczewką sferyczną (punkt B) bez aberracji sferycznej.\nPunkty A i B są przykładem punktów aplanatycznych sfery, dla której (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relative to the marked Y axis,\ngdzie x1,x2 to odpowiednio poziome współrzędne punktów A, B (każda komórka siatki ma wymiary 20 na 20).\nW podobny sposób ogniska elipsy (punkty C i D) są przykładem punktów aplanatycznych elipsy, dla których (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1020,
+      "y": -60,
+      "text": "Soczewka sferyczna"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1009.3333333333333,
+      "y": -544,
+      "text": "Soczewka eliptyczna"
+    },
+    {
+      "type": "TextLabel",
+      "x": 693.3333333333333,
+      "y": 119.33333333333334,
+      "text": "A"
+    },
+    {
+      "type": "TextLabel",
+      "x": 544,
+      "y": 119.33333333333331,
+      "text": "B"
+    },
+    {
+      "type": "TextLabel",
+      "x": 967,
+      "y": -446,
+      "text": "C"
+    },
+    {
+      "type": "TextLabel",
+      "x": 656.2666666666667,
+      "y": -445.6000000000001,
+      "text": "D"
+    },
+    {
+      "type": "TextLabel",
+      "x": 638.1814223512337,
+      "y": -877.7406869859694,
+      "text": "oś Y",
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -1011.6168389230002,
+        "y": -951.9758897459494
+      },
+      "p4": {
+        "x": 1275.0498277436664,
+        "y": 300.82411025405054
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 643.0498277436664,
+        "y": -681.1758897459495
+      },
+      "p4": {
+        "x": 1006.0498277436664,
+        "y": -318.17588974594946
+      }
+    }
+  ],
+  "width": 3430,
+  "height": 2396.133333333333,
+  "rayModeDensity": 0.1210577348092538,
+  "origin": {
+    "x": 1583.2835055896667,
+    "y": 1523.6425564126162
+  },
+  "scale": 1,
+  "name": "Punkty aplanatyczne"
+}

@@ -1,0 +1,234 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 72,
+        "y": 260
+      },
+      "p2": {
+        "x": 72,
+        "y": 300
+      },
+      "brightness": "40",
+      "wavelength": "420"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 42,
+        "y": 260
+      },
+      "p2": {
+        "x": 42,
+        "y": 300
+      },
+      "brightness": "40",
+      "wavelength": "620"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 47,
+        "y": 260
+      },
+      "p2": {
+        "x": 47,
+        "y": 300
+      },
+      "brightness": "20",
+      "wavelength": "600"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 52,
+        "y": 260
+      },
+      "p2": {
+        "x": 52,
+        "y": 300
+      },
+      "brightness": "30",
+      "wavelength": "580"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 57,
+        "y": 260
+      },
+      "p2": {
+        "x": 57,
+        "y": 300
+      },
+      "brightness": "45",
+      "wavelength": "540"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 62,
+        "y": 260
+      },
+      "p2": {
+        "x": 62,
+        "y": 300
+      },
+      "brightness": "30",
+      "wavelength": "500"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 67,
+        "y": 260
+      },
+      "p2": {
+        "x": 67,
+        "y": 300
+      },
+      "brightness": "45",
+      "wavelength": "460"
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 642,
+        "y": 280
+      },
+      "p2": {
+        "x": 662,
+        "y": 280
+      },
+      "refIndex": 1.324,
+      "cauchyB": "0.00312"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 640,
+        "y": 340
+      },
+      "p2": {
+        "x": 640,
+        "y": 320
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 280,
+        "y": 760
+      },
+      "p2": {
+        "x": 260,
+        "y": 740
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 180,
+        "y": 660
+      },
+      "p2": {
+        "x": 200,
+        "y": 680
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 162.2857142857143,
+        "y": 782.2857142857142
+      },
+      "p2": {
+        "x": 182.2857142857143,
+        "y": 762.2857142857142
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 220.53333333333342,
+      "y": 870.1523809523809,
+      "text": "Są to kolory powstałe z pojedynczej kropli deszczu.\nKońcowe tęcze, które widzimy, są spowodowane ogromną liczbą kropel deszczu na niebie,\nz których każda daje obserwatorowi jeden kolor (pod odpowiednim kątem)."
+    },
+    {
+      "type": "TextLabel",
+      "x": 290.8188289789092,
+      "y": 776.7034138036452,
+      "text": "Tęcza wtórna"
+    },
+    {
+      "type": "TextLabel",
+      "x": 115.7714285714286,
+      "y": 817.1428571428569,
+      "text": "Ciemny pas Aleksandra"
+    },
+    {
+      "type": "TextLabel",
+      "x": 639.8285714285715,
+      "y": 379.2571428571425,
+      "text": "Kropla deszczu",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 164.97100000000012,
+      "y": 644.3428571428567,
+      "text": "Tęcza pierwotna",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 87.82857142857156,
+      "y": 342.0571428571426,
+      "text": "Światło słoneczne"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -103.4097424496623,
+        "y": 221.10341380364525
+      },
+      "p4": {
+        "x": 1279.390257550338,
+        "y": 1005.1034138036453
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 20.590257550337697,
+        "y": 153.10341380364525
+      },
+      "p4": {
+        "x": 704.5902575503377,
+        "y": 837.1034138036453
+      }
+    }
+  ],
+  "width": 2074.2000000000003,
+  "height": 1475.4,
+  "rayModeDensity": 148.4131591025766,
+  "observer": {
+    "c": {
+      "x": 270.4,
+      "y": 519.5999999999999
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": 449.10974244966235,
+    "y": 124.59658619635479
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "name": "Tęcze"
+}

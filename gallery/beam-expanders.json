@@ -1,0 +1,148 @@
+{
+  "version": 5,
+  "name": "Beam expanders",
+  "objs": [
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1080,
+        "y": 620
+      },
+      "p2": {
+        "x": 1080,
+        "y": 780
+      },
+      "focalLength": "-100"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 780,
+        "y": 660
+      },
+      "p2": {
+        "x": 780,
+        "y": 740
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 880,
+        "y": 620
+      },
+      "p2": {
+        "x": 880,
+        "y": 780
+      },
+      "focalLength": "300"
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 880,
+        "y": 700
+      },
+      "p2": {
+        "x": 1380,
+        "y": 700
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 880,
+        "y": 420
+      },
+      "p2": {
+        "x": 880,
+        "y": 580
+      },
+      "focalLength": "300"
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 880,
+        "y": 500
+      },
+      "p2": {
+        "x": 1380,
+        "y": 500
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1280,
+        "y": 420
+      },
+      "p2": {
+        "x": 1280,
+        "y": 580
+      },
+      "focalLength": "100"
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 780,
+        "y": 460
+      },
+      "p2": {
+        "x": 780,
+        "y": 540
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 766.5714285714287,
+      "y": 511.9999999999999,
+      "text": "Keplerian beam expander",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 764,
+      "y": 711.9999999999998,
+      "text": "Gallilean beam expander",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 621.7368421052631,
+      "y": 364,
+      "text": "In both cases the distance between the lenses is equal to the sum of their focal distance"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 384.48120300751873,
+        "y": 389.5503759398497
+      },
+      "p4": {
+        "x": 1544.0601503759399,
+        "y": 812.8345864661654
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 843.0075187969925,
+        "y": 372.49774436090223
+      },
+      "p4": {
+        "x": 1299.639097744361,
+        "y": 829.1293233609022
+      }
+    }
+  ],
+  "width": 1739.368421052632,
+  "height": 1003.0736842105264,
+  "rayModeDensity": 3.4339115327994474,
+  "origin": {
+    "x": -94.58646616541341,
+    "y": -99.65563909774437
+  },
+  "scale": 1
+}

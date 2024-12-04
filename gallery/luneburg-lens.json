@@ -1,0 +1,157 @@
+{
+  "version": 5,
+  "name": "Luneburg lens",
+  "modules": {
+    "ApproxLuneburg": {
+      "numPoints": 1,
+      "params": [
+        "N=1:1:50:20",
+        "R=1:1:200:100",
+        "n_0=1:0.01:3:2"
+      ],
+      "objs": [
+        {
+          "for": "i=2:1:N",
+          "type": "CircleGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_1+R/N*(N+1-i)`",
+            "y": "`y_1`"
+          },
+          "refIndex": "`(n_0-((1/N*(1+N-i)))^2)^0.5/(n_0-((1/N*(1+N-(i-1))))^2)^0.5`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 500,
+        "y": 480
+      },
+      "p2": {
+        "x": 700,
+        "y": 480
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 500,
+        "y": 840
+      },
+      "p2": {
+        "x": 780,
+        "y": 840
+      },
+      "emisAngle": 30
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 500,
+        "y": 840
+      },
+      "p2": {
+        "x": 700,
+        "y": 840
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 500,
+        "y": 480
+      },
+      "p2": {
+        "x": 780,
+        "y": 480
+      },
+      "emisAngle": 30
+    },
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 600,
+        "y": 840
+      },
+      "p2": {
+        "x": 700,
+        "y": 840
+      },
+      "refIndexFn": "\\sqrt{2-\\frac{\\left(x^2+y^2\\right)}{100^2}}",
+      "origin": {
+        "x": 600,
+        "y": 840
+      },
+      "stepSize": 0.1
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ApproxLuneburg",
+      "points": [
+        {
+          "x": 600,
+          "y": 480
+        }
+      ],
+      "params": {
+        "N": 20,
+        "R": 100,
+        "n_0": 2
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 493.7745058576679,
+      "y": 595.2707590443969,
+      "text": "Approximated multilayer Luneburg lens (You can select and change N, the number of layers.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 487.95264788835954,
+      "y": 977.1783458250111,
+      "text": "Classical Luneburg lens (You can select and change the numerical solver step size.)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 414.3263157894738,
+      "y": 300.95087719298243,
+      "text": "Warning: The sequence of appearing light does not represent the actual speed of light - only the final image is meaningful.",
+      "fontSize": 37
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 461.07665108717765,
+        "y": 346.3583959899747
+      },
+      "p4": {
+        "x": 1975.1729323308275,
+        "y": 1014.8215538847111
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 492.16240601503773,
+        "y": 732.6952380952379
+      },
+      "p4": {
+        "x": 708.1624060150378,
+        "y": 948.6952380952379
+      }
+    }
+  ],
+  "width": 2271.1444218654747,
+  "height": 1425.5112985165613,
+  "origin": {
+    "x": -82.55258077626519,
+    "y": 32.16567432093774
+  },
+  "scale": 1
+}

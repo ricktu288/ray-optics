@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorial for making Modules - Ray Optics Simulation</title>
+  <meta property="og:title" content="Tutorial for making Modules - Ray Optics Simulation">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/modules/tutorial">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/image.png">
+  <meta property="og:description" content="A free, open-source web app for creating and simulating 2D geometric optical scenes.">
+  <meta property="og:locale" content="en">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/modules/tutorial">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/modules/tutorial" hreflang="en">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/cn/modules/tutorial" hreflang="zh-CN">
+  <link rel="alternate" href="https://phydemo.app/ray-optics/tw/modules/tutorial" hreflang="zh-TW">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+.example-container {
+  border-width:2px;
+  margin-bottom: 5px;
+  display: inline-block;
+  width:270px;
+  text-decoration: none;
+}
+
+.example-container:hover {
+  text-decoration: none;
+}
+
+.example-container:active {
+  text-decoration: none;
+}
+
+.example-image {
+  width:250px;
+  height:250px !important;
+}
+
+.example-title {
+  font-size: 12pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.example-contributor {
+  font-size: 8pt;
+  color: #888;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 0px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+
+.brand:hover{
+    text-decoration: none;
+}
+
+.github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    padding: 0px;
+    height:40px;
+    width: 92px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    float:right;
+}
+
+.github-button-container a {
+    color: transparent;
+}
+.navul {
+    font-size: 11pt;
+}
+.navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom:0px;
+    margin-left:5px;
+    margin-right:5px;
+    padding: 2px;
+    height:40px;
+    line-height:40px;
+    position: relative;
+    text-align:center;
+    text-decoration: none;
+}
+.clearfix {
+    clear: both;
+}
+.navul a:hover{
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+}
+.navul a.active{
+    color: #000;
+    border-bottom: 3px solid gray;
+}
+body { 
+    padding-top: 72px; 
+    padding-bottom: 20px; 
+}
+.anchor {
+    padding-top: 65px; 
+}
+iframe {
+    border: none;
+}
+  </style>
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+
+    <a href="https://phydemo.app/ray-optics/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt">
+      Ray Optics Simulation
+    </a>
+    <div class="navbar-right">
+
+<span class="navul">
+     <a href="https://phydemo.app/ray-optics/">Home</a>
+     <a href="https://phydemo.app/ray-optics/gallery/">Gallery</a>
+     <a href="https://phydemo.app/ray-optics/about">About</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+    </div>
+
+</div>
+<div class="container">
+
+    <h1 id="tutorial">Tutorial for making Ray Optics Modules</h1>
+    <p>This tutorial will guide you through the basics of making a custom module, which can be done entirely within the web app, without the need of any external development environment.</p>
+    <p>"Module" is a currently experimental feature of Ray Optics Simulation. It allows the creation of modular combinations of objects with custom parameters, custom control points, and arrays of objects. This feature extends the capability of this simulator by combining, specializing, or reparametrizing objects created by existing tools to make new tools. For example, the <code>CircleSource</code> module (see Tools -> Other -> Import module) combines an array of point sources created by the existing "Point Source (&lt;360°)" tool along a circle, to make a "circular source" tool which didn't exist in the simulator. The <code>FresnelLens</code> module specializes the "Glass->Custom equation" tool, so that the equation represents a specific curve of the Fresnel lens parametrized by the number of slices, thus making a specialized "Fresnel lens" tool, which also didn't exist before. In addition to making new tools, this feature can also make some optics demonstrations more interactive. For example, by dragging the third control point of the <code>BeamExpander</code> module, one can directly see how the position of the common focal point of the two lenses affects the beam width, without needing to adjust the focal lengths of the two lenses individually.</p>
+<p>Note that not all custom control points require a module. Some simple cases can be achieved by the &quot;handle&quot; feature (see the &quot;Group, rotate, and scale objects&quot; section in the help popup at the bottom right corner of the simulator). Since making a module is much more complicated than creating a handle, you should first check if your case can be achieved by the &quot;handle&quot; feature before considering making a module. See <a href="https://phydemo.app/ray-optics/gallery/black-cat-becomes-white">here</a> for a non-trivial example of a custom control point (moving two plastic bags out of water) without using a module.</p>
+<h2 id="the-built-in-json-editor">The built-in JSON editor</h2>
+<p>This app currently does not have a visual interface for creating modules, so you need to directly edit the JSON of the scene.</p>
+<p>You can enable the built-in JSON editor by clicking the &quot;settings&quot; dropdown at the top-right corner of the app, and then check &quot;Show JSON editor&quot;. The code editor should appear at the left-hand side of the app, with the JSON code of the current scene. Make sure you have a large enough screen, as this feature does not work well on mobile devices.</p>
+<p>As you edit the scene using the usual visual scene editor, the code in the JSON editor will update accordingly, with the changed part highlighted. Conversely, directly editing the code in the JSON editor will update the scene accordingly. If you are not familiar with JSON or any kind of text-based data format, you may wish to play around with it for a while.</p>
+<p>In particular, when you add an object to the scene, it is added to the <code>objs</code> array. And if you modify some of its properties to a non-default value, they appear as key-value pairs in that object.</p>
+<p><b>IMPORTANT: In this tutorial page, if you do not see the JSON code editor in the iframes below, please turn it on and reload this page, as you will need to see the code to understand how it works.</b></p>
+<h2 id="basics-of-a-module">Basics of a module</h2>
+<p>Let&#39;s look at our first example of a module.</p>
+<p><iframe loading="lazy"
+     src="https://phydemo.app/ray-optics/simulator/#XQAAAALHAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNCQwRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMnjhQuuYbgGBgsxu_slLzINF6xmDJ8mbzNwRnRUh5GYwDACulYETTDsYnn-ZDRZ3xiTQsJRvDc0cr1soSQo_kMYOHGa0oUsc64nlfcrvPV0saazctBeq5e2eZwdYYhowFUN3xFIiA8hRJq8APGFONI3RxTCgJH5SDMCJcw1qdYLK0Xk0_DNTNY1uT6JBBuBAdb-zeT6LdjzGluLAn5jID2DdgdHEZeoQnhA1bitgIxQHG1N__qbySl" width="100%" height="400"></iframe></p>
+<p>You should see four lines of texts. By looking at the JSON editor, you will see that the first two are directly in the top-level <code>objs</code> array as usual, but the last two are in <code>modules.ExampleModule.objs</code> instead. </p>
+<p>The <code>module</code> is a dictionary where the key is the name of the module (in this case <code>ExampleModule</code>), and the value is the definition of that module. In particular, the <code>modules.ExampleModule.objs</code> array describes the (template of) objects within that module, which is different from the top-level <code>objs</code> which describes the objects in the scene.</p>
+<p>To put the objects within the module to the scene, we need a &quot;module object&quot; in the top-level <code>objs</code> array, which is <code>objs[2]</code> in this example, whose type is <code>ModuleObj</code> and whose <code>module</code> property is the name of the module.</p>
+<p>The module definition in the <code>modules</code> dictionary is not editable by the visual scene editor. So when you click any of the last two texts in this example, you are just selecting the module object, and not the objects in the module. Since the coordinates of the texts in the module definition in this example are absolute coordinates, the last two texts are not draggable. We will learn how to make them draggable by using control points later.</p>
+<p>If you select a module object, there is a &quot;Demodulize&quot; button on the object bar. Clicking it will &quot;expand&quot; the module object into its constituent, and <code>objs</code> will now contain all the four texts. This operation is not reversible (but of course you can click &quot;undo&quot;).</p>
+<p>The suggested way of creating a module currently is to first create an empty module using the JSON editor, create some objects using the visual scene editor, and then cut and paste the objects from <code>objs</code> to <code>modules.ModuleName.objs</code> using the JSON editor.</p>
+<h2 id="adding-parameters">Adding parameters</h2>
+<p>The objects within the module can be defined by a set of parameters. Let’s look at a simple example:</p>
+<p><iframe loading="lazy"
+     src="https://phydemo.app/ray-optics/simulator/#XQAAAALzAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNDSJRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMpUeDraVKtJPRrqUDpwm04g0AMDNLFqDuFz-Zv7rT59ZvfcfKcEVFT_07LZ5e_dTZN7hFKeAxYWBohMvZv3d0gGOgqJFXszpCr85ety_ui3xWraqmLTt_qoUyL6GWFQLUrA8q2flAkMhxIOw1D6obib4ifzn_AcKb_26sf5phgyrzWPNWLriSyt7KbW8KcXvKMaRm-W1HXD8uVN3pc5wml8XJoQMRFmlGvYJzLzAlbkW2veqCagQ3CxoR-uQ7PsPFEn9bXS6G0dvYz7ahVL5p_PE6G7p5K1b-ad8n0A_ZQeVeG003rpj73X87VWZzgdjrGSNyyXTfqKrnkhYNi2Akxh2gbHUdrFQD0A1WA4LSxUkv-MyP1p9oGON7LE1v1TYSsU-tEjlehV6bjuq9MrdA4y8GnMP_0Dymm" width="100%" height="400"></iframe></p>
+<p>Here <code>modules.ModuleName.params</code> is an array of strings <code>&quot;name=start:step:end:default&quot;</code> defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.</p>
+<p>Within the <code>modules.ExampleModule.objs</code> array, any values can be expressed using those parameters. Within a string (such as the <code>text</code> property of a <code>TextLabel</code>), the equations of the variables are enclosed by a pair of backticks. For number parameters (such as the <code>fontSize</code> property of a <code>TextLabel</code>), you need to make it a string so that you can use the backtick format in it, so each equation is sandwiched by a pair of backticks and a pair of quotes. The equation are evaluated with math.js (<a href="https://mathjs.org/docs/reference/functions/evaluate.html">https://mathjs.org/docs/reference/functions/evaluate.html</a>). See there for the available syntax and functions you can use in the equations.</p>
+<p>The actual values of the parameters are stored in the <code>params</code> property of the module object, which, unlike the module definition, can be directly edited by the scene editor using the slider.</p>
+<h2 id="adding-control-points">Adding control points</h2>
+<p>To make the module object draggable, we need to parametrize the objects within the module using a set of control points. Let’s look at the example:</p>
+<p><iframe loading="lazy"
+    src="https://phydemo.app/ray-optics/simulator/#XQAAAALvAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNETiRaddFCZLwYsr_x975ihI6J5x23w7otJuIODVK-4jklMnjhQuuYbj8KAsxu_slLzINF6xmDJ8mbzF5b2pG646ya9uBnARPzsT-OTOuapzhLdnV8lt-x_VeyB6I_QliDleHgiquk2cl1loiDOYRaYBWW3evJsWkDgNp00dGYGpvOeGfYnufZXZrrQLNz9pBMthPalWj_4pVQdcLgPiLj076lhejKTd8G7n24yBA1BGHlkkblUivDd27ZoiPG5sDKSipUg87Z41jxvbROrD4ohW7x5A1nlmt-W5Ol4Ik21D72j0PWKVWSJykpgWFjUlSUmcxqWbmMlnpq4v30bDYM0ii5EdgyZpriRNTaTT-f_n8LyL" width="100%" height="400"></iframe></p>
+<p>Here <code>modules.ModuleName.numPoints</code> defines the number of control points. The coordinates of the control points are (<code>x_1</code>, <code>y_1</code>), (<code>x_2</code>, <code>y_2</code>), etc, and are used in the same ways as the parameters within <code>modules.ExampleModule.objs</code> as described by the previous section. Note that the index starts from 1.</p>
+<p>The actual values of the coordinates of the control points are stored in the <code>points</code> property of the module object, which, unlike the hard-coded coordinates in Example 1, can be edited by the visual scene editor by dragging the control points, each shown as two concentric gray circles in the scene. If you drag elsewhere in the module object (such as dragging the text labels), all the control points will move together.</p>
+<p>Since our module object can now move, it is now quite easy to create multiple instances as in usual tools. The name of the module is shown in the Tools -&gt; Other menu, and you can select that and then click two points in the blank space in sequence for the two control points to create another instance of the module.  You can also use the “duplicate” button on the object bar.</p>
+<h2 id="arrays-and-conditionals">Arrays and conditionals</h2>
+<p>More complicated module can be built using arrays and conditionals. Let’s look at the example:</p>
+<p><iframe loading="lazy"
+    src="https://phydemo.app/ray-optics/simulator/#XQAAAALpAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNFU7RaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMocmzraU-uionNR68scp3EjMbxo075DzkS5bn92aCj7fMpqtcEQGyOIa3Ytn5fUKD0CpLWznIyPPOiLWhiwOmcPQlwan-fs70FX-DM6SgNNF2EjuNZZo1y2waCYKGbdhxs-7am-OdsuyXPd17KrS7d-SQU0Dm_8VkAiWS4HDNUolMU9wdOoVQq29HyhfYjOTbeSV1VjosyVzdoh7amq0ti7gldkuzrSP9f1u3Fk4PLRopc41C8M6Q97E9uU5bLkzeclJQuATnfoii0luX17mXaxCRRq7Rxl1O5KhcbCPxqjYNug-AFcJJspo2h0XTCo2CwliXUympplSpkJKEQn4-jtSn_aQWlV0FYttyM-LbcmtbwiBkHqcdO0EKDKeRDeV8mdGVsAWDCnBaKAshpyP3eGP-TOMwA" width="100%" height="400"></iframe></p>
+<p>Within <code>modules.ExampleModule.objs</code>, any objects in an array can have two special keys: <code>&quot;for&quot;</code> and <code>&quot;if&quot;</code>. The value of the <code>&quot;for&quot;</code> key is either a string of the format <code>&quot;name=start:step:end&quot;</code> defining a loop variable, or an array of several strings of this format describing a multidimensional loop. Such an object in the array is duplicated several times according to the loop variables. The value of the <code>&quot;if&quot;</code> key is a string representing a math.js expression that evaluates to a boolean, and such an object is included in the array if and only if the boolean is true.</p>
+<p>To prevent accidental infinite loop, the total number of iteration of each <code>&quot;for&quot;</code> loop is limited by the <code>maxLoopLength</code> property of the module definition, whose default value is 1000. You can set this property to a larger value if needed.</p>
+<h2 id="objects-with-built-in-custom-equations">Objects with built-in custom equations</h2>
+<p>For objects that already have custom equation input (such as Mirror -&gt; Custom Equation), the equation property in the JSON is a string representing a LaTeX equation, rather than a math.js expression. To include custom parameters in the equation, you must use the same template syntax as if the LaTeX equation were a regular text. So the part enclosed by the backticks is in math.js expression, while the part outside is in LaTeX. The module parameters can only be accessed in the math.js part, and the independent variables of the custom equation (e.g. \(x\)) can only be accessed in the LaTeX part. Here is an example of generating a mirror with equation \(y=\cos(2\pi x+\phi)\), where \(\phi\) is a module parameter:</p>
+<p><iframe loading="lazy"
+    src="https://phydemo.app/ray-optics/simulator/#XQAAAAKHAQAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNGWURaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMod0cmCJaNLvHXaJqidQycgLCxvo_MUR4pKSF02EThSWEmzI1Nvg8p3rGzbgOCoW20RA6HEvR3WRy-n0CVOj501Zey96roKU99sYBaUujCSyd7TtjFHs3fNirSp2LQXatYku6FED09dIQtBC_1iZK5qeNZspB4hOEYzshoqgJsBQoEnqgqXFHlEw-xG-Za6LwZX8GhLtxdme2CCTyGGORHJOvho97WbO-RaBNfIp_hzkhGjgCLYELvRkUNSlgLyyzPtHLqQYnv1VBDrjtOxTgPvSueMJiflXp0aIt5j3Praq7eqmJhOFI-BmJIq-_GWhME0B7X_xKhTQA" width="100%" height="400"></iframe></p>
+<p>In the future, there may be a way to unified the equation input.</p>
+<h2 id="objects-with-built-in-shape-parametrization">Objects with built-in shape parametrization</h2>
+<p>For objects that already support different ways to define its shape (currently only Glass -&gt; Spherical lens). There are special JSON syntax for such objects that can be used within the module definition, even if they are always defined by shape in the top level <code>objs</code> array. Here is an example:</p>
+<p><iframe loading="lazy"
+    src="https://phydemo.app/ray-optics/simulator/#XQAAAAIEAgAAAAAAAABEKcrGU8hqLFnpmU9ERVKNOsQbH41v8BdZNHXtRaddFCZLwYsr_x975ihI6J5x23w7otJuIKxwS-4jklMnjhQuuYbgHTx4xu_svNmoEFyZi2EAGHhnylj8kZWffIJDQr5n_mkzRL8qYAyDV2doAoIpGCABFw4k4ofmmnIwAWmlAgPZSMvmxNhjgk_S8gXQf3VE6ScOowAVIe31VTcW1pGd6WByGgtLfSY4fiv0lNdI-HjIDZ68rY_xdq4-X68TXz3o1dfMgaJSfniRIpqkDJXkfWiDVxtWxp7WQcahm_i-JoqGNfeMzsDeeOIalXD7fAdQfQ1mrCZkoeiVyzddMDtUUFboTuHbr0CV7ZvfxAITRwUv6hvuA4gCJ05IfMVAAXA3pf3iuwPnga23xLuTAiIg910ySCIB6x7w-_An23jGvr9NsuH__8NVnKA" width="100%" height="400"></iframe></p>
+
+    <h2>Contribution</h2>
+    <p>To contribute your module, see <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">Contributing modules</a>.</p>
+    <h2>Discussion</h2>
+    See <a href="https://github.com/ricktu288/ray-optics/discussions/145">Discussion #145</a> on GitHub.
+  <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">Language: English</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/modules/tutorial">English</a></li><li><a href="https://phydemo.app/ray-optics/cn/modules/tutorial">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/modules/tutorial">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="../thirdparty/jquery.min.js"></script>
+<script src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

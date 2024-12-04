@@ -1,0 +1,91 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "PlaneGlass",
+      "p1": {
+        "x": 760,
+        "y": 400
+      },
+      "p2": {
+        "x": 820,
+        "y": 400
+      },
+      "refIndex": 1.33
+    },
+    {
+      "type": "PointSource",
+      "x": 680,
+      "y": 600,
+      "brightness": 1
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 680,
+        "y": 600
+      },
+      "p2": {
+        "x": 680,
+        "y": 400
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 714.7,
+      "y": 537.4,
+      "text": "obserwowany obraz (pomarańczowy)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 910.7,
+      "y": 256.4,
+      "text": "obserwator"
+    },
+    {
+      "type": "TextLabel",
+      "x": 697.7,
+      "y": 616.4,
+      "text": "obiekt pod wodą (zielony)"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 385.5999999999996,
+        "y": 187.29999999999998
+      },
+      "p4": {
+        "x": 1422.3999999999996,
+        "y": 660.1600000000001
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 596.1999999999996,
+        "y": 167.70000000000002
+      },
+      "p4": {
+        "x": 1112.7999999999997,
+        "y": 684.3
+      }
+    }
+  ],
+  "width": 1555.1999999999998,
+  "height": 991.2600000000001,
+  "mode": "observer",
+  "imageModeDensity": 3.2520969380833185,
+  "observer": {
+    "c": {
+      "x": 881.5,
+      "y": 241
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": -126.39999999999964,
+    "y": 71.9
+  },
+  "scale": 1,
+  "name": "Pozorna głębokość"
+}

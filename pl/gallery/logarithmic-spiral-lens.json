@@ -1,0 +1,125 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 261.40404469518285,
+        "y": 161.14412992729143
+      },
+      "p2": {
+        "x": -20,
+        "y": 140
+      },
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 3,
+          "newPoint": {
+            "x": -20,
+            "y": 140
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 3,
+          "newPoint": {
+            "x": -6.382663283384224,
+            "y": 140.8699339902433
+          }
+        }
+      ],
+      "transformation": "rotation"
+    },
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 0,
+        "y": 0
+      },
+      "p2": {
+        "x": 200,
+        "y": 0
+      },
+      "refIndexFn": "\\frac{1}{\\sqrt{x^2+y^2}}",
+      "stepSize": 0.5
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 0,
+        "y": 0
+      },
+      "p2": {
+        "x": 10,
+        "y": 0
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": -20,
+        "y": 140
+      },
+      "p2": {
+        "x": -6.382663283384224,
+        "y": 140.8699339902433
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": -168,
+      "y": -237.375,
+      "text": "Kołowy bloker znajduje się w środku,\naby uniknąć osobliwości współczynnika załamania",
+      "fontSize": 18
+    },
+    {
+      "type": "TextLabel",
+      "x": 283.71121951219516,
+      "y": 161.58048780487803,
+      "text": "Drag to change the\ninitial direction of the ray",
+      "fontSize": 18
+    },
+    {
+      "type": "TextLabel",
+      "x": 211.54878048780483,
+      "y": -111.3109756097561,
+      "text": "You can select the GRIN glass and\nchange the numerical solver step size",
+      "fontSize": 18
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -430.20754067067077,
+        "y": -284.4151383653915
+      },
+      "p4": {
+        "x": 703.7924593293293,
+        "y": 262.33486163460856
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -206.33254067067077,
+        "y": -204.99013836539143
+      },
+      "p4": {
+        "x": 205.41745932932923,
+        "y": 206.75986163460857
+      }
+    }
+  ],
+  "width": 1701,
+  "height": 1113.75,
+  "origin": {
+    "x": 713.7075406706708,
+    "y": 567.9151383653915
+  },
+  "scale": 1,
+  "name": "Promień o torze spirali logarytmicznej"
+}

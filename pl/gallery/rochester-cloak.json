@@ -1,0 +1,222 @@
+{
+  "version": 5,
+  "name": "Rochesterski płaszcz",
+  "objs": [
+    {
+      "type": "PointSource",
+      "x": 740,
+      "y": 680,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 760,
+      "y": 660,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 740,
+      "y": 720,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 780,
+      "y": 660,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": -180,
+        "y": 560
+      },
+      "p2": {
+        "x": 1480,
+        "y": 560
+      }
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 620,
+        "y": 700
+      },
+      "p2": {
+        "x": 1220,
+        "y": 700
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 620,
+        "y": 640
+      },
+      "p2": {
+        "x": 620,
+        "y": 760
+      },
+      "focalLength": "150"
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 820,
+        "y": 640
+      },
+      "p2": {
+        "x": 820,
+        "y": 760
+      },
+      "focalLength": "50"
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1020,
+        "y": 640
+      },
+      "p2": {
+        "x": 1020,
+        "y": 760
+      },
+      "focalLength": "50"
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1220,
+        "y": 640
+      },
+      "p2": {
+        "x": 1220,
+        "y": 760
+      },
+      "focalLength": "150"
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 526.4045982887067,
+        "y": 659.4411080855376
+      },
+      "p2": {
+        "x": 580.524691358025,
+        "y": 661.8358024691357
+      },
+      "brightness": 0.35,
+      "wavelength": 610,
+      "emisAngle": 7
+    },
+    {
+      "type": "PointSource",
+      "x": 720,
+      "y": 660,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 720,
+      "y": 740,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 760,
+      "y": 740,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "PointSource",
+      "x": 780,
+      "y": 740,
+      "brightness": 0.06,
+      "wavelength": 478
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": -180,
+        "y": 800
+      },
+      "p2": {
+        "x": 1480,
+        "y": 800
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1304.41728,
+      "y": 677.86802,
+      "text": "Obserwator (nie widzi obiektów\n z obszaru częściowej niewidzialności,\nale widzi obiekt z obszaru widoczności)"
+    },
+    {
+      "type": "TextLabel",
+      "x": 731.627983238983,
+      "y": 791.2114110116363,
+      "text": "Obszar częściowej niewidzialności",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 523.7611963945017,
+      "y": 689.1647798121937,
+      "text": "Obiekt",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 744.0550188738907,
+      "y": 640,
+      "text": "8 obiektów",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 458.08969363158343,
+      "y": 719.2695194863097,
+      "text": "Obszar widoczności",
+      "alignment": "right"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 244.4551279550168,
+        "y": 508.5603792369109
+      },
+      "p4": {
+        "x": 1910.580075633622,
+        "y": 861.9808226838877
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 471.6539844566448,
+        "y": 442.5367799116515
+      },
+      "p4": {
+        "x": 974.5984616696502,
+        "y": 945.4812569116516
+      }
+    }
+  ],
+  "width": 2499.1874215179078,
+  "height": 1186.4829172862794,
+  "rayModeDensity": 0.3501127617352208,
+  "origin": {
+    "x": 172.0761089646345,
+    "y": -92.02914231725958
+  },
+  "scale": 1,
+  "simulateColors": true
+}

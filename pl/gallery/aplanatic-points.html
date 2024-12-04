@@ -1,0 +1,77 @@
+﻿ <!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Punkty aplanatyczne - Symulacja promieni optycznych</title>
+<meta property="og:title" content="Punkty aplanatyczne - Symulacja promieni optycznych">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">
+<meta property="og:image" content="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points.jpg">
+<meta property="og:description" content="Aplikacja internetowa open source umożliwiająca symulację odbicia i załamania światła.">
+<meta property="og:locale" content="pl">
+<link rel="canonical" href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">
+<link rel="alternate" href="https://phydemo.app/ray-optics/gallery/aplanatic-points" hreflang="en">
+<link rel="alternate" href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points" hreflang="pl">
+<link rel="alternate" href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points" hreflang="zh-CN">
+<link rel="alternate" href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points" hreflang="zh-TW">
+
+<link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="gallery.css">
+<link rel="icon" href="../../img/icon.png" type="image/png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+<a href="https://phydemo.app/ray-optics/pl/" class="navbar-left brand">
+<img src="../../img/icon.png" alt="" style="width:18pt;height:18pt">
+Symulacja promieni optycznych
+</a>
+<div class="navbar-right">
+<span class="navul">
+<a href="https://phydemo.app/ray-optics/pl/">Strona główna</a>
+<a href="https://phydemo.app/ray-optics/pl/gallery/" class="active">Galeria</a>
+<a href="https://phydemo.app/ray-optics/about">O aplikacji</a>
+</span>
+<span class="github-button-container">
+<a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true" aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+</span>
+</div>
+</div>
+<div class="container">
+<center>
+<h1><b><span>Punkty aplanatyczne</span></b></h1>
+<p>
+Osoba wnosząca wkład: Stas Fainer
+</p>
+<div class="description">
+<p>Punkty aplanatyczne układu optycznego to szczególne punkty na jego osi optycznej, takie, że "promienie wychodzące z jednego z nich zbiegają się lub rozchodzą się z drugiego punktu".</p><ul><li>Elipsa: dwa ogniska eliptycznej soczewki/zwierciadła są punktami aplanatycznymi, ponieważ światło emitowane z jednego ogniska zbiega się w kierunku drugiego.</li><li>Sfera: soczewka sferyczna ma dwa punkty aplanatyczne, wewnątrz i na zewnątrz kuli - więcej szczegółów w symulacji.</li><li>Hiperbola: dwa ogniska <a href="https://phydemo.app/ray-optics/pl/gallery/hyperbolic-mirror" target="_blank">modelu zwierciadła hiperbolicznego</a> są również punktami aplanatycznymi.</li></ul><p>Jeśli dane są dwa punkty o odciętych \(x_1\) i \(x_2\) oraz identycznych rzędnych, i współczynniki załamania światła na zewnątrz i wewnątrz naszego elementu optycznego wynoszą odpowiednio \(n_1\) i \(n_2\), to aby te dwa punkty były punktami aplanatycznymi, granica naszego elementu optycznego musi spełniać równanie\begin{equation}k_1 n_1 \sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \sqrt{  (x - x_2)^2 + y^2} = E\end{equation}, gdzie \(k_i=1\) or \(-1\), jeśli promień łączący \(x_i\) i granicę naszego elementu optycznego jest odpowiednio rzeczywisty lub pozorny, a \(E\) jest stałą, dla której to równanie ma nietrywialne rozwiązanie. To równanie (które można wyprowadzić za pomocą zasady Fermata) jest równaniem owalu Kartezjusza, którego krzywe stożkowe są przypadkami szczególnymi.</p>
+</div>
+<p>
+<a href="https://phydemo.app/ray-optics/simulator/?pl#../pl/gallery/aplanatic-points" target="_blank" class="btn btn-success btn-lg">Otwórz w symulatorze</a>
+</p>
+<picture>
+  <source srcset="aplanatic-points.avif" type="image/avif">
+  <img src="aplanatic-points.jpg" alt="Punkty aplanatyczne" style="width:100%">
+</picture>
+</center>
+
+  <div style="float: right; padding-top: 10px;">
+    <div class="dropup">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">Język: polski</span>
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="https://phydemo.app/ray-optics/gallery/aplanatic-points">English</a></li><li><a href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">polski</a></li><li><a href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">简体中文</a></li><li><a href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">正體中文</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<script src="../../thirdparty/jquery.min.js"></script>
+<script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
