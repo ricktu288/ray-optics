@@ -99,6 +99,12 @@
       "description": "A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.",
       "movethepointsourcear": "Move the point source around\nto watch the caustics and nodes \nwithin the integrating sphere transform.\nChange size and position of the blockers, \nand the opening size of the sphere\nto see more effects."
     },
+    "theMirascope": {
+      "title": "The Mirascope",
+      "description": "A **mirascope** is a fascinating optical illusion device that uses two opposing parabolic mirrors to create the illusion of a three-dimensional floating image. The device consists of:\n1. **Two Parabolic Mirrors** of the exact same size, with one mirror facing upward and the other facing downward, forming a clam-like structure. The mirrors are designed to focus light at a specific point. The top mirror has a hole at its vertex to allow the light to enter the device.\n2. **A Small Object**: Placed inside the mirascope, typically near the focal point of the top mirror that is very close to the vertex of the bottom mirror.\n\nWhen light from the object reflects between the mirrors, it is redirected in such a way that it appears as a lifelike, three-dimensional image floating above the surface of the mirascope. The illusion is so convincing that people often try to touch the image, only to find thereâ€™s nothing there.\n\nMirascopes are popular in science demonstrations, toys, and novelty items to illustrate the principles of optics, reflection, and the behavior of light.",
+      "object1": "Object",
+      "realimage1": "Real image"
+    },
     "reflect": {
       "title": "Reflection and Refraction",
       "description": "This simulation shows the reflection and refraction at a surface."
