@@ -172,7 +172,7 @@
     },
     "moveView": {
       "title": "Move view",
-      "description": "Drag to move the main:view. (Mouse right button drag has the same function.)"
+      "description": "Drag to move the view. (Mouse right button drag has the same function.)"
     },
     "modules": {
       "import": "Import Modules...",
