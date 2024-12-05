@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -24,9 +24,9 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength, function (obj, value) {
+    objBar.createNumber(i18next.t('simulator:sceneObjs.common.focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength, function (obj, value) {
       obj.focalLength = value;
-    }, getMsg('length_unit_popover'));
+    }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {

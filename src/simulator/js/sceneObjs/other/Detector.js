@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -40,20 +40,20 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   }
 
   populateObjBar(objBar) {
-    objBar.createInfoBox(getMsg('tool_Detector_info_popover'));
+    objBar.createInfoBox('<ul><li>' + i18next.t('simulator:sceneObjs.Detector.info.P') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fperp') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fpar') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.irradiance') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.length') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.B') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.s') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.truncation') + '</li></ul>');
 
-    objBar.createBoolean(getMsg('irradMap'), this.irradMap, function (obj, value) {
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.Detector.irradMap'), this.irradMap, function (obj, value) {
       obj.irradMap = value;
     }, null, true);
 
     if (this.irradMap) {
-      objBar.createNumber(getMsg('binSize'), 0.01 * this.scene.lengthScale, 10 * this.scene.lengthScale, 0.01 * this.scene.lengthScale, this.binSize, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.Detector.binSize'), 0.01 * this.scene.lengthScale, 10 * this.scene.lengthScale, 0.01 * this.scene.lengthScale, this.binSize, function (obj, value) {
         obj.binSize = value;
-      }, getMsg('length_unit_popover'));
+      }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
 
       const self = this;
 
-      objBar.createButton(getMsg('exportData'), function (obj) {
+      objBar.createButton(i18next.t('simulator:sceneObjs.Detector.exportData'), function (obj) {
         // Export the irradiance map to a CSV file
         var binSize = obj.binSize;
         var binNum = Math.ceil(Math.sqrt((obj.p2.x - obj.p1.x) * (obj.p2.x - obj.p1.x) + (obj.p2.y - obj.p1.y) * (obj.p2.y - obj.p1.y)) / binSize);

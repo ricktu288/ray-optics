@@ -1,7 +1,7 @@
 import BaseGlass from './BaseGlass.js';
 import geometry from '../geometry.js';
 import Simulator from '../Simulator.js';
-import { getMsg } from '../translations.js';
+import i18next from 'i18next';
 import { evaluateLatex } from '../equation.js';
 import { parseTex } from 'tex-math-parser'
 import * as math from 'mathjs';
@@ -45,9 +45,9 @@ class BaseGrinGlass extends BaseGlass {
     objBar.createEquation('n(x,y) = ', this.refIndexFn, function (obj, value) {
       obj.refIndexFn = value;
       obj.initFns();
-    }, getMsg('grin_refractive_index'));
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '[[lambda]]'}).replace('[[lambda]]', '<code>lambda</code>') + '<sup>Beta</sup>' + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li></ul>');
 
-    objBar.createTuple(getMsg('refIndex_origin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
+    objBar.createTuple(i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
       const commaPosition = value.indexOf(',');
       if (commaPosition != -1) {
         const n_origin_x = parseFloat(value.slice(1, commaPosition));
@@ -58,21 +58,21 @@ class BaseGrinGlass extends BaseGlass {
     });
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
-      objBar.createNumber(getMsg('stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {
         obj.stepSize = parseFloat(value);
-      }, getMsg('stepSize_note_popover'));
+      }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>');
     }
     if (objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
-      objBar.createNumber(getMsg('intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
         obj.intersectTol = parseFloat(value);
-      }, getMsg('eps_' + this.constructor.type + '_note_popover'));
+      }, '<p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.functions`) + '</p>');
     }
 
     const scene = this.scene;
     if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
-      objBar.createBoolean(getMsg('symbolic_grin'), this.scene.symbolicBodyMerging, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMerging'), this.scene.symbolicBodyMerging, function (obj, value) {
         obj.scene.symbolicBodyMerging = value;
-      }, getMsg('symbolic_grin_note_popover'));
+      }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.all') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.impl') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.implNote') + '</p>');
     }
   }
 

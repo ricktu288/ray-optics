@@ -1,5 +1,5 @@
 import BaseFilter from '../BaseFilter.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -36,11 +36,11 @@ class Aperture extends BaseFilter {
   populateObjBar(objBar) {
     var originalDiameter = geometry.distance(this.p3, this.p4);
 
-    objBar.createNumber(getMsg('diameter'), 0, 100 * this.scene.lengthScale, 1 * this.scene.lengthScale, originalDiameter, function (obj, value) {
+    objBar.createNumber(i18next.t('simulator:sceneObjs.Aperature.diameter'), 0, 100 * this.scene.lengthScale, 1 * this.scene.lengthScale, originalDiameter, function (obj, value) {
       var t = 0.5 * (1 - value / geometry.distance(obj.p1, obj.p2));
       obj.p3 = geometry.point(obj.p1.x * (1 - t) + obj.p2.x * t, obj.p1.y * (1 - t) + obj.p2.y * t);
       obj.p4 = geometry.point(obj.p1.x * t + obj.p2.x * (1 - t), obj.p1.y * t + obj.p2.y * (1 - t));
-    }, getMsg('length_unit_popover'));
+    }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
 
     super.populateObjBar(objBar);
   }

@@ -1,6 +1,6 @@
 import BaseFilter from '../BaseFilter.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -33,11 +33,11 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
     if (localStorage && localStorage.rayOpticsCartesianSign) {
       cartesianSign = localStorage.rayOpticsCartesianSign == "true";
     }
-    objBar.createNumber(getMsg('focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength * (cartesianSign ? -1 : 1), function (obj, value) {
+    objBar.createNumber(i18next.t('simulator:sceneObjs.common.focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength * (cartesianSign ? -1 : 1), function (obj, value) {
       obj.focalLength = value * (cartesianSign ? -1 : 1);
-    }, getMsg('length_unit_popover'));
+    }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
     if (objBar.showAdvanced(cartesianSign)) {
-      objBar.createBoolean(getMsg('cartesianSign'), cartesianSign, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.IdealMirror.cartesianSign'), cartesianSign, function (obj, value) {
         localStorage.rayOpticsCartesianSign = value ? "true" : "false";
       }, null, true);
     }

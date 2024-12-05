@@ -754,7 +754,7 @@ class Simulator {
         }
       }
       if (hasDetector || this.scene.simulateColors) {
-        this.warning = getMsg("brightness_inconsistent_warning");
+        this.warning = i18next.t('simulator:generalWarnings.brightnessInconsistent');
       } else {
         this.warning = null;
       }

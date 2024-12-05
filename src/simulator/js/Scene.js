@@ -4,7 +4,7 @@
 
 import * as sceneObjs from './sceneObjs.js';
 import { versionUpdate } from './versionUpdate.js';
-import { getMsg } from './translations.js';
+import i18next from 'i18next';
 import seedrandom from 'seedrandom';
 
 /**
@@ -406,7 +406,7 @@ class Scene {
       for (var i = 0; i < opticalObjs.length; i++) {
         for (var j = i + 1; j < opticalObjs.length; j++) {
           if (stringifiedObjs[i] == stringifiedObjs[j]) {
-            this.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + getMsg('identical_optical_objects_warning');
+            this.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + i18next.t('simulator:generalWarnings.identicalObjects');
             break;
           }
         }

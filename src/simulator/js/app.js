@@ -122,16 +122,16 @@ async function startApp() {
 
   simulator.on('simulationPause', function () {
     document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime) + '<br>';
   });
 
   simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
     document.getElementById('forceStop').style.display = 'none';
   });
 
   simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime);
     document.getElementById('forceStop').style.display = 'none';
   });
 
@@ -164,9 +164,9 @@ async function startApp() {
   editor.on('mouseCoordinateChange', function (e) {
     if (e.mousePos) {
       const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
-      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: ''}) + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
     } else {
-      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "-";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: ''}) + "-";
     }
   });
 
@@ -223,10 +223,10 @@ async function startApp() {
       // Update the UI for the loaded scene.
 
       if (scene.name) {
-        document.title = scene.name + " - " + getMsg("appName");
+        document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
         document.getElementById('save_name').value = scene.name;
       } else {
-        document.title = getMsg("appName");
+        document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
       }
 
       if (Object.keys(scene.modules).length > 0) {
@@ -535,7 +535,7 @@ async function startApp() {
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
   document.getElementById('view_gallery').onclick = function () {
-    window.open(getMsg("gallery_url"));
+    window.open(parseURL('/gallery'));
   };
   document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
 
@@ -1107,11 +1107,11 @@ function updateUIText(elememt = document) {
   }
   
 
-  document.title = getMsg('appName');
-  document.getElementById('home').href = getMsg('home_url');
-  document.getElementById('about').href = getMsg('about_url');
-  document.getElementById('moduleIframe').src = getMsg('modules_url');
-  document.getElementById('modules_tutorial').href = getMsg('modules_tutorial_url');
+  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
+  document.getElementById('home').href = parseURL('/home');
+  document.getElementById('about').href = parseURL('/about');
+  document.getElementById('moduleIframe').src = parseURL('/modules/modules');
+  document.getElementById('modules_tutorial').href = parseURL('/modules/tutorial');
 }
 
 function navigateToNewQuery(newQuery) {
@@ -1393,7 +1393,7 @@ function updateModuleObjsMenu() {
       </svg>
       `;
       removeButton.setAttribute('data-bs-toggle', 'tooltip');
-      removeButton.setAttribute('title', getMsg('remove_module'));
+      removeButton.setAttribute('title', i18next.t('main:tools.modules.remove'));
       removeButton.setAttribute('data-bs-placement', 'right');
       new bootstrap.Tooltip(removeButton);
       removeButton.addEventListener('click', function () {
@@ -1530,7 +1530,7 @@ function importModule(name) {
         if (moduleJSON.modules.hasOwnProperty(moduleName)) {
           let newModuleName = moduleName;
           if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])) {
-            newModuleName = prompt(getMsg('module_conflict'), moduleName);
+            newModuleName = prompt(i18next.t('simulator:moduleModal.conflict'), moduleName);
             if (!newModuleName) {
               continue;
             }
@@ -1570,7 +1570,7 @@ function importModule(name) {
 
 
 function init() {
-  document.title = getMsg('appName');
+  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('save_name').value = "";
 
   editor.isConstructing = false;
@@ -1654,7 +1654,7 @@ function syncUrl() {
     var compressed = require('json-url')('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
       var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
       if (fullURL.length > 2041) {
-        warning = getMsg('auto_sync_url_warning');
+        warning = i18next.t('simulator:generalWarnings.autoSyncUrlTooLarge');
         updateErrorAndWarning();
       } else {
         if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
@@ -1709,9 +1709,9 @@ function modebtn_clicked(mode1) {
 function rename() {
   scene.name = document.getElementById('save_name').value;
   if (scene.name) {
-    document.title = scene.name + " - " + getMsg("appName");
+    document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   } else {
-    document.title = getMsg("appName");
+    document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   }
   editor.onActionComplete();
 }
@@ -1780,7 +1780,7 @@ function getLink() {
     //console.log(fullURL.length);
     navigator.clipboard.writeText(fullURL);
     if (fullURL.length > 2041) {
-      alert(getMsg("get_link_warning"));
+      alert(i18next.t('simulator:generalWarnings.shareLinkTooLong'));
     } else {
       hasUnsavedChange = false;
     }
@@ -1799,4 +1799,27 @@ function confirmPositioning(ctrl, shift) {
   if (xyData.length == 2) {
     editor.confirmPositioning(xyData[0], xyData[1], ctrl, shift);
   }
+}
+
+
+const urlMap = {
+  "/home": "https://phydemo.app/ray-optics/",
+  "/simulator": "https://phydemo.app/ray-optics/simulator/",
+  "/gallery": "https://phydemo.app/ray-optics/gallery/",
+  "/modules/tutorial": "https://phydemo.app/ray-optics/modules/tutorial",
+  "/about": "https://phydemo.app/ray-optics/about",
+  "/phydemo": "https://phydemo.app/",
+  "/email": "mailto:ray-optics@phydemo.app",
+  "/github": "https://github.com/ricktu288/ray-optics",
+  "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
+  "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
+  "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
+  "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
+  "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
+  "/license": "https://github.com/ricktu288/ray-optics/blob/master/LICENSE",
+  "/mathjs/syntax": "https://mathjs.org/docs/reference/functions/evaluate.html",
+};
+
+function parseURL(url) {
+  return urlMap[url] || url;
 }

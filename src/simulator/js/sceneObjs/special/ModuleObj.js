@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import geometry from '../../geometry.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import * as sceneObjs from '../../sceneObjs.js';
 import * as math from 'mathjs';
 
@@ -80,7 +80,7 @@ class ModuleObj extends BaseSceneObj {
       this.error = e;
     }
 
-    objBar.createButton(getMsg('demodulize'), function (obj) {
+    objBar.createButton(i18next.t('simulator:sceneObjs.ModuleObj.demodulize'), function (obj) {
       obj.demodulize();
     }, false, `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-down-left" viewBox="0 0 16 16">

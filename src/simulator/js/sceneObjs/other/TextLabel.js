@@ -1,5 +1,5 @@
 import BaseSceneObj from '../BaseSceneObj.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -54,48 +54,48 @@ class TextLabel extends BaseSceneObj {
     });
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontSize']))) {
-      objBar.createNumber(getMsg('fontSize'), 6, 96, 1, this.fontSize, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.TextLabel.fontSize'), 6, 96, 1, this.fontSize, function (obj, value) {
         obj.fontSize = value;
       }, null, true);
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['font']))) {
-      objBar.createDropdown(getMsg('font'), this.font, this.constructor.fonts, function (obj, value) {
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.font'), this.font, this.constructor.fonts, function (obj, value) {
         obj.font = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontStyle']))) {
-      objBar.createDropdown(getMsg('fontStyle'), this.fontStyle, {
-        'Normal': getMsg('normal'),
-        'Bold': getMsg('bold'),
-        'Italic': getMsg('italic'),
-        'Bold Italic': getMsg('bolditalic'),
-        'Oblique': getMsg('oblique'),
-        'Bold Oblique': getMsg('boldoblique')
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.fontStyle'), this.fontStyle, {
+        'Normal': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.normal'),
+        'Bold': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.bold'),
+        'Italic': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.italic'),
+        'Bold Italic': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.boldItalic'),
+        'Oblique': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.oblique'),
+        'Bold Oblique': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.boldOblique')
       }, function (obj, value) {
         obj.fontStyle = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['alignment']))) {
-      objBar.createDropdown(getMsg('alignment'), this.alignment, {
-        'left': getMsg('left'),
-        'center': getMsg('center'),
-        'right': getMsg('right')
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.alignment'), this.alignment, {
+        'left': i18next.t('simulator:sceneObjs.TextLabel.alignments.left'),
+        'center': i18next.t('simulator:sceneObjs.TextLabel.alignments.center'),
+        'right': i18next.t('simulator:sceneObjs.TextLabel.alignments.right')
       }, function (obj, value) {
         obj.alignment = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['smallCaps']))) {
-      objBar.createBoolean(getMsg('smallCaps'), this.smallCaps, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.TextLabel.smallCaps'), this.smallCaps, function (obj, value) {
         obj.smallCaps = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['angle']))) {
-      objBar.createNumber(getMsg('angle'), 0, 360, 1, this.angle, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.TextLabel.angle') + ' (°)', 0, 360, 1, this.angle, function (obj, value) {
         obj.angle = value;
       }, null, true);
     }
@@ -151,7 +151,7 @@ class TextLabel extends BaseSceneObj {
     const mousePos = mouse.getPosSnappedToGrid();
     this.x = mousePos.x;
     this.y = mousePos.y;
-    this.text = getMsg('text_here');
+    this.text = i18next.t('simulator:sceneObjs.TextLabel.textHere');
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {

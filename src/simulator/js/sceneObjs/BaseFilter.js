@@ -1,6 +1,6 @@
 import BaseSceneObj from './BaseSceneObj.js';
 import Simulator from '../Simulator.js';
-import { getMsg } from '../translations.js';
+import i18next from 'i18next';
 
 /**
  * The base class for optical elements with wavelength filter functionality, including mirrors (which have the dichroic feature) and blockers.
@@ -15,22 +15,22 @@ class BaseFilter extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
-      objBar.createBoolean(getMsg('filter'), this.filter, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseFilter.filter'), this.filter, function (obj, value) {
         obj.filter = value;
         obj.wavelength = obj.wavelength;
         obj.invert = obj.invert;
         obj.bandwidth = obj.bandwidth;
       }, null, true);
       if (this.filter) {
-        objBar.createBoolean(getMsg('invert'), this.invert, function (obj, value) {
+        objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseFilter.invert'), this.invert, function (obj, value) {
           if (obj.filter) {
             obj.invert = value;
           }
         });
-        objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+        objBar.createNumber(i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)', Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
           obj.wavelength = value;
         });
-        objBar.createNumber("± " + getMsg('bandwidth'), 0, (Simulator.INFRARED_WAVELENGTH - Simulator.UV_WAVELENGTH), 1, this.bandwidth, function (obj, value) {
+        objBar.createNumber("± " + i18next.t('simulator:sceneObjs.BaseFilter.bandwidth') + ' (nm)', 0, (Simulator.INFRARED_WAVELENGTH - Simulator.UV_WAVELENGTH), 1, this.bandwidth, function (obj, value) {
           obj.bandwidth = value;
         });
       }

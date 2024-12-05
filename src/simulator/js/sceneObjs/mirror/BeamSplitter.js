@@ -1,6 +1,6 @@
 import BaseFilter from '../BaseFilter.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -33,7 +33,7 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('transRatio'), 0, 1, 0.01, this.transRatio, function (obj, value) {
+    objBar.createNumber(i18next.t('simulator:sceneObjs.BeamSplitter.transRatio'), 0, 1, 0.01, this.transRatio, function (obj, value) {
       obj.transRatio = value;
     });
 
