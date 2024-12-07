@@ -31,6 +31,7 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)');
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
       obj.brightness = value;
     }, '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>');

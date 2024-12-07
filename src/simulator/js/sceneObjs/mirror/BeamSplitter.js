@@ -33,6 +33,7 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.BeamSplitter.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.BeamSplitter.transRatio'), 0, 1, 0.01, this.transRatio, function (obj, value) {
       obj.transRatio = value;
     });

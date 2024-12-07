@@ -46,6 +46,7 @@ class Handle extends BaseSceneObj {
   }
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('simulator:sceneObjs.Handle.handle'));
     objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation') + '<sup>Beta</sup>', this.transformation, {
       'default': i18next.t('simulator:common.defaultOption'),
       'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),

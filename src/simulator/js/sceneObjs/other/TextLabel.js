@@ -49,6 +49,7 @@ class TextLabel extends BaseSceneObj {
   ];
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.TextLabel.title'));
     objBar.createText('', this.text, function (obj, value) {
       obj.text = value;
     });

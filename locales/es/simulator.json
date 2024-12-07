@@ -198,7 +198,8 @@
       "cropBoxSize": "Tamaño de crop box",
       "format": "Formato",
       "width": "Ancho",
-      "svgWarning": "Exportar a SVG. Las mezclas de color y indices de refracción relativos por debajo de 1 no están soportados."
+      "svgWarning": "Exportar a SVG. Las mezclas de color y indices de refracción relativos por debajo de 1 no están soportados.",
+      "title": "Exportar"
     }
   },
   "saveModal": {

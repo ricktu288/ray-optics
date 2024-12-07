@@ -38,6 +38,8 @@ class CropBox extends BaseSceneObj {
   }
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('simulator:sceneObjs.CropBox.title'));
+
     var width = geometry.distance(this.p1, this.p2);
     var height = geometry.distance(this.p1, this.p3);
 
@@ -77,7 +79,7 @@ class CropBox extends BaseSceneObj {
     }
 
     const self = this;
-    objBar.createButton(i18next.t('simulator:file.save.title'), function (obj) {
+    objBar.createButton(i18next.t('simulator:common.saveButton'), function (obj) {
       self.warning = null;
       self.scene.editor.confirmCrop(obj);
     });

@@ -24,6 +24,7 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.LineArrow.title'));
     objBar.createBoolean(i18next.t('simulator:sceneObjs.LineArrow.arrow'), this.arrow, function (obj, value) {
       obj.arrow = value;
     });

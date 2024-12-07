@@ -1,5 +1,6 @@
 import BaseFilter from '../BaseFilter.js';
 import LineObjMixin from '../LineObjMixin.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -28,6 +29,11 @@ class Mirror extends LineObjMixin(BaseFilter) {
     wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:meta.parenthesesStyle', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.Mirror.title') }));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;

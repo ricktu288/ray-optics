@@ -75,7 +75,7 @@ async function startApp() {
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
 
-  objBar = new ObjBar(document.getElementById('obj_bar_main'));
+  objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
 
   objBar.on('showAdvancedEnabled', function (enabled) {
     if (enabled) {
@@ -183,7 +183,6 @@ async function startApp() {
     if (e.newIndex >= 0) {
       objBar.targetObj = scene.objs[e.newIndex];
 
-      document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[e.newIndex].constructor.type);
       document.getElementById('showAdvanced').style.display = 'none';
       document.getElementById('showAdvanced_mobile_container').style.display = 'none';
 

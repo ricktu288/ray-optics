@@ -24,6 +24,7 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.IdealLens.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.focalLength'), -1000 * this.scene.lengthScale, 1000 * this.scene.lengthScale, 1 * this.scene.lengthScale, this.focalLength, function (obj, value) {
       obj.focalLength = value;
     }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));

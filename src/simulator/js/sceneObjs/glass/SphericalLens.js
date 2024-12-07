@@ -48,7 +48,7 @@ class SphericalLens extends Glass {
   }
 
   populateObjBar(objBar) {
-
+    objBar.setTitle(i18next.t('main:tools.SphericalLens.title'));
     objBar.createDropdown('', this.defBy, {
       'DR1R2': i18next.t('simulator:sceneObjs.SphericalLens.defBy.radiiOfCurvature'),
       'DFfdBfd': i18next.t('simulator:sceneObjs.SphericalLens.defBy.focalDistances')

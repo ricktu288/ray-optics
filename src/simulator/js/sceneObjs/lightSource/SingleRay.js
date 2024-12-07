@@ -27,6 +27,7 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.SingleRay.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
       obj.brightness = value;
     });

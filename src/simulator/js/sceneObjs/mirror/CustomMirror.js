@@ -36,6 +36,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.categories.mirror'));
     objBar.createEquation('y = ', this.eqn, function (obj, value) {
       obj.eqn = value;
     }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');

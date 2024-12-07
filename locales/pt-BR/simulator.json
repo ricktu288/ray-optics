@@ -268,7 +268,8 @@
       "width": "Largura",
       "rayCountLimit": "Limite de quantidade de raios",
       "svgWarning": "Exportar como SVG: Misturas de cores e índices refrativos relativos abaixo de 1 não são suportados.",
-      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
+      "title": "Exportar"
     }
   },
   "saveModal": {

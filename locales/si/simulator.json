@@ -174,7 +174,8 @@
       "cropBoxSize": "කොටුව crop කරන්න",
       "format": "ආකෘතිය",
       "width": "පළල",
-      "rayCountLimit": "කිරණ ගණන සීමාව"
+      "rayCountLimit": "කිරණ ගණන සීමාව",
+      "title": "Export"
     }
   },
   "saveModal": {

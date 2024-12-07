@@ -1,4 +1,5 @@
 import BaseGrinGlass from '../BaseGrinGlass.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -29,6 +30,11 @@ class GrinGlass extends BaseGrinGlass {
     intersectTol: 1e-3
   };
   
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.GrinGlass.title'));
+    super.populateObjBar(objBar);
+  }
+
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;

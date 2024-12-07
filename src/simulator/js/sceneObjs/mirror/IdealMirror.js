@@ -29,6 +29,7 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.IdealMirror.title'));
     var cartesianSign = false;
     if (localStorage && localStorage.rayOpticsCartesianSign) {
       cartesianSign = localStorage.rayOpticsCartesianSign == "true";

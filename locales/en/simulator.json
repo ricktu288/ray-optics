@@ -263,6 +263,7 @@
       }
     },
     "CropBox": {
+      "title": "Export",
       "cropBoxSize": "Crop Box Size",
       "format": "Format",
       "width": "Width",

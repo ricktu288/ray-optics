@@ -34,6 +34,8 @@ class Aperture extends BaseFilter {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.Aperture.title'));
+
     var originalDiameter = geometry.distance(this.p3, this.p4);
 
     objBar.createNumber(i18next.t('simulator:sceneObjs.Aperature.diameter'), 0, 100 * this.scene.lengthScale, 1 * this.scene.lengthScale, originalDiameter, function (obj, value) {

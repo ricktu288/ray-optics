@@ -21,6 +21,7 @@ class Drawing extends BaseSceneObj {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.Drawing.title'));
     if (this.isDrawing) {
       objBar.createButton(i18next.t('simulator:sceneObjs.Drawing.finishDrawing'), function (obj) {
         obj.isDrawing = false;

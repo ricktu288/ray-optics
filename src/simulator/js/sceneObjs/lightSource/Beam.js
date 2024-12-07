@@ -34,6 +34,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.Beam.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01 / this.scene.lengthScale, 1 / this.scene.lengthScale, 0.01 / this.scene.lengthScale, this.brightness, function (obj, value) {
       obj.brightness = value;
     }, '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>');

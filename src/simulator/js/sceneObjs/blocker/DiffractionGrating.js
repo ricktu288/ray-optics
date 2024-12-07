@@ -35,6 +35,7 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.DiffractionGrating.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', {lengthUnit: 'mm'}), 1, 2500, 5, this.lineDensity, function (obj, value) {
       obj.lineDensity = value;
     });

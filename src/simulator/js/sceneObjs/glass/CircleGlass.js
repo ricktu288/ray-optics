@@ -1,5 +1,6 @@
 import BaseGlass from '../BaseGlass.js';
 import CircleObjMixin from '../CircleObjMixin.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -24,6 +25,11 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
     refIndex: 1.5,
     cauchyB: 0.004
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:meta.parenthesesStyle', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.CircleGlass.title') }));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
