@@ -1,9 +1,9 @@
 {
   "meta": {
     "languageName": "简体中文",
-    "parenthesesStyle": "{{main}}（{{sub}}）",
-    "colonStyle": "{{name}}：{{value}}",
-    "listStyle": "{{first}}、{{others}}"
+    "parentheses": "{{main}}（{{sub}}）",
+    "colon": "{{name}}：{{value}}",
+    "list": "{{first}}、{{others}}"
   },
   "project": {
     "name": "射线光学模拟",

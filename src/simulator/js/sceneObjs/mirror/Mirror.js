@@ -31,7 +31,7 @@ class Mirror extends LineObjMixin(BaseFilter) {
   };
 
   populateObjBar(objBar) {
-    objBar.setTitle(i18next.t('main:meta.parenthesesStyle', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.Mirror.title') }));
+    objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.Mirror.title') }));
     super.populateObjBar(objBar);
   }
 

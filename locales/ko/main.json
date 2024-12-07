@@ -1,9 +1,9 @@
 {
   "meta": {
     "languageName": "한국어",
-    "parenthesesStyle": "{{main}} ({{sub}})",
-    "colonStyle": "{{name}}: {{value}}",
-    "listStyle": "{{first}}, {{others}}"
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   },
   "project": {
     "name": "광선 광학 시뮬레이션",

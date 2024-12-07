@@ -36,6 +36,9 @@ async function startApp() {
     ns: ['main', 'simulator'],
     backend: {
       loadPath: '../locales/{{lng}}/{{ns}}.json',
+    },
+    interpolation: {
+      escapeValue: false
     }
   });
   console.log(i18next.t('main:project.name'));
@@ -122,16 +125,16 @@ async function startApp() {
 
   simulator.on('simulationPause', function () {
     document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime) + '<br>';
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>';
   });
 
   simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
     document.getElementById('forceStop').style.display = 'none';
   });
 
   simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.rayCount'), value: ''}) + simulator.processedRayCount + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.totalTruncation'), value: ''}) + simulator.totalTruncation.toFixed(3) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ''}) + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: ''}) + (new Date() - simulator.simulationStartTime);
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)});
     document.getElementById('forceStop').style.display = 'none';
   });
 
@@ -164,9 +167,9 @@ async function startApp() {
   editor.on('mouseCoordinateChange', function (e) {
     if (e.mousePos) {
       const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
-      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: ''}) + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")"});
     } else {
-      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colonStyle', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: ''}) + "-";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: '-'});
     }
   });
 
@@ -534,7 +537,7 @@ async function startApp() {
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
   document.getElementById('view_gallery').onclick = function () {
-    window.open(parseURL('/gallery'));
+    window.open(mapURL('/gallery'));
   };
   document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
 
@@ -1107,10 +1110,10 @@ function updateUIText(elememt = document) {
   
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
-  document.getElementById('home').href = parseURL('/home');
-  document.getElementById('about').href = parseURL('/about');
-  document.getElementById('moduleIframe').src = parseURL('/modules/modules');
-  document.getElementById('modules_tutorial').href = parseURL('/modules/tutorial');
+  document.getElementById('home').href = mapURL('/home');
+  document.getElementById('about').href = mapURL('/about');
+  document.getElementById('moduleIframe').src = mapURL('/modules/modules');
+  document.getElementById('modules_tutorial').href = mapURL('/modules/tutorial');
 }
 
 function navigateToNewQuery(newQuery) {
@@ -1819,6 +1822,6 @@ const urlMap = {
   "/mathjs/syntax": "https://mathjs.org/docs/reference/functions/evaluate.html",
 };
 
-function parseURL(url) {
+function mapURL(url) {
   return urlMap[url] || url;
 }

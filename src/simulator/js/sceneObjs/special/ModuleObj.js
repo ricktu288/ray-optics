@@ -64,7 +64,7 @@ class ModuleObj extends BaseSceneObj {
   }
 
   populateObjBar(objBar) {
-    objBar.setTitle(i18next.t('main:meta.colonStyle', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '' }) + '<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>');
+    objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>' }));
 
     if (this.notDone) return;
 
