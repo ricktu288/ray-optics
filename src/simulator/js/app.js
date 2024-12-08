@@ -6,7 +6,6 @@ import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import '../css/style.scss';
 import * as $ from 'jquery';
-import { initializeTranslations, getMsg, getLanguageCompleteness } from './translations.js'
 import Editor from './Editor.js';
 import Simulator from './Simulator.js';
 import geometry from './geometry.js';
@@ -21,13 +20,12 @@ import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
-import i18next from 'i18next';
+import i18next, { t } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 async function startApp() {
-  await initializeTranslations();
   await i18next.use(HttpBackend).init({
     lng: window.lang,
     debug: isDevelopment,
@@ -44,18 +42,13 @@ async function startApp() {
   console.log(i18next.t('main:project.name'));
   console.log(i18next.t('simulator:welcome.title'));
 
-  updateUIText();
   try {
     if (localStorage.rayOpticsHelp == "off") {
       popoversEnabled = false;
       document.getElementById('show_help_popups').checked = false;
     }
   } catch { }
-  if (popoversEnabled) {
-    updateUIWithPopovers();
-  } else {
-    updateUIWithoutPopovers();
-  }
+  initUIText();
   initTools();
   initModes();
 
@@ -974,6 +967,14 @@ async function startApp() {
       importModule(event.data.rayOpticsModuleName + '.json');
     }
   });
+
+  document.getElementById('toolbar-loading').style.display = 'none';
+  document.getElementById('toolbar-wrapper').style.display = '';
+  document.getElementById('saveModal').style.display = '';
+  document.getElementById('languageModal').style.display = '';
+  document.getElementById('footer-left').style.display = '';
+  document.getElementById('footer-right').style.display = '';
+  document.getElementById('canvas-container').style.display = '';
 }
 
 startApp();
@@ -1072,32 +1073,189 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-window.addEventListener('load', function () {
-  document.getElementById('toolbar-loading').style.display = 'none';
-  document.getElementById('toolbar-wrapper').style.display = '';
-  document.getElementById('saveModal').style.display = '';
-  document.getElementById('languageModal').style.display = '';
-  document.getElementById('footer-left').style.display = '';
-  document.getElementById('footer-right').style.display = '';
-  document.getElementById('canvas-container').style.display = '';
-});
+function initUIText() {
+  setText('processing_text', i18next.t('simulator:footer.processing'));
+  setText('reset', i18next.t('simulator:file.reset.title'));
+  setText('save', i18next.t('simulator:file.save.title'));
+  setText('open', i18next.t('simulator:file.open.title'), null, i18next.t('simulator:file.open.description'));
+  setText('export_svg', i18next.t('simulator:file.export.title'));
+  setText('get_link', i18next.t('simulator:file.copyLink.title'), null, i18next.t('simulator:file.copyLink.description'));
+  setText('view_gallery', i18next.t('simulator:file.viewGallery.title'), null, i18next.t('simulator:file.viewGallery.description'));
+  setText('undo', null, i18next.t('simulator:file.undo.title'));
+  setText('redo', null, i18next.t('simulator:file.redo.title'));
+  setText('file_text', i18next.t('simulator:file.title'));
+  setText('sourceToolsDropdown', i18next.t('main:tools.categories.lightSource'));
+  setText('tool_SingleRay_label', i18next.t('main:tools.SingleRay.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.SingleRay.description'), sub: i18next.t('main:tools.SingleRay.instruction')}), 'SingleRay.svg');
+  setText('tool_Beam_label', i18next.t('main:tools.Beam.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Beam.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Beam.svg');
+  setText('tool_PointSource_label', i18next.t('main:tools.PointSource.title') + ' (360\u00B0)', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.PointSource.description'), sub: i18next.t('main:tools.common.clickInstruction')}), 'PointSource.svg');
+  setText('tool_AngleSource_label', i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.AngleSource.description'), sub: i18next.t('main:tools.SingleRay.instruction')}), 'AngleSource.svg');
+  setText('mirrorToolsDropdown', i18next.t('main:tools.categories.mirror'));
+  setText('tool_Mirror_label', i18next.t('main:tools.Mirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Mirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Mirror.svg');
+  setText('tool_ArcMirror_label', i18next.t('main:tools.ArcMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ArcMirror.description'), sub: i18next.t('main:tools.ArcMirror.instruction')}), 'ArcMirror.svg');
+  setText('tool_ParabolicMirror_label', i18next.t('main:tools.ParabolicMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ParabolicMirror.description'), sub: i18next.t('main:tools.ParabolicMirror.instruction')}), 'ParabolicMirror.svg');
+  setText('tool_CustomMirror_label', i18next.t('main:tools.CustomMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CustomMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'CustomMirror.svg');
+  setText('tool_IdealMirror_label', i18next.t('main:tools.IdealMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.IdealMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'IdealMirror.svg');
+  setText('tool_BeamSplitter_label', i18next.t('main:tools.BeamSplitter.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.BeamSplitter.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'BeamSplitter.svg');
+  setText('glassToolsDropdown', i18next.t('main:tools.categories.glass'));
+  setText('tool_PlaneGlass_label', i18next.t('main:tools.PlaneGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.PlaneGlass.description'), sub: i18next.t('main:tools.PlaneGlass.instruction')}), 'PlaneGlass.svg');
+  setText('tool_CircleGlass_label', i18next.t('main:tools.CircleGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleGlass.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleGlass.svg');
+  setText('tool_Glass_label', i18next.t('main:tools.Glass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Glass.description'), sub: i18next.t('main:tools.Glass.instruction')}), 'Glass.svg');
+  setText('tool_CustomGlass_label', i18next.t('main:tools.CustomGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CustomGlass.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'CustomGlass.svg');
+  setText('tool_IdealLens_label', i18next.t('main:tools.IdealLens.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.IdealLens.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'IdealLens.svg');
+  setText('tool_SphericalLens_label', i18next.t('main:tools.SphericalLens.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.SphericalLens.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'SphericalLens.svg');
+  setText('tool_CircleGrinGlass_label', i18next.t('main:tools.CircleGrinGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleGrinGlass.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleGrinGlass.svg');
+  setText('tool_GrinGlass_label', i18next.t('main:tools.GrinGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.GrinGlass.description'), sub: i18next.t('main:tools.GrinGlass.instruction')}) + '<br>' + i18next.t('main:tools.GrinGlass.warning'), 'GrinGlass.svg');
+  setText('blockerToolsDropdown', i18next.t('main:tools.categories.blocker'));
+  setText('tool_Blocker_label', i18next.t('main:tools.Blocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Blocker.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Blocker.svg');
+  setText('tool_CircleBlocker_label', i18next.t('main:tools.CircleBlocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleBlocker.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleBlocker.svg');
+  setText('tool_Aperture_label', i18next.t('main:tools.Aperture.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Aperture.description'), sub: i18next.t('main:tools.Aperture.instruction')}), 'Aperture.svg');
+  setText('tool_DiffractionGrating_label', i18next.t('main:tools.DiffractionGrating.title') + '<sup>Beta</sup>', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.DiffractionGrating.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'DiffractionGrating.svg');
+  setText('moreToolsDropdown', i18next.t('main:tools.categories.other'));
+  setText('tool_Ruler_label', i18next.t('main:tools.Ruler.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Ruler.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Ruler.svg');
+  setText('tool_Protractor_label', i18next.t('main:tools.Protractor.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Protractor.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Protractor.svg');
+  setText('tool_Detector_label', i18next.t('main:tools.Detector.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Detector.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Detector.svg');
+  setText('tool_TextLabel_label', i18next.t('main:tools.TextLabel.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.TextLabel.description'), sub: i18next.t('main:tools.common.clickInstruction')}));
+  setText('tool_LineArrow_label', i18next.t('main:tools.LineArrow.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.LineArrow.description'), sub: i18next.t('main:tools.common.lineInstruction')}));
+  setText('tool_Drawing_label', i18next.t('main:tools.Drawing.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Drawing.description'), sub: i18next.t('main:tools.Drawing.instruction')}));
+  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
+  setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
+  setText('tools_text', i18next.t('main:tools.title'));
+  setText('mode_rays_label', null, i18next.t('main:view.rays.title'), i18next.t('main:view.rays.description'), 'normal.svg');
+  setText('mode_extended_label', null, i18next.t('main:view.extended.title'), i18next.t('main:view.extended.description') + '<br>' + i18next.t('main:view.extended.simulateColorsNote'), 'extended_rays.svg');
+  setText('mode_images_label', null, i18next.t('main:view.images.title'), i18next.t('main:view.images.description') + '<br>' + i18next.t('main:view.images.simulateColorsNote'), 'all_images.svg');
+  setText('mode_observer_label', null, i18next.t('main:view.observer.title'), i18next.t('main:view.observer.description') + '<br>' + i18next.t('main:view.observer.simulateColorsNote'), 'seen_by_observer.svg');
+  setText('view_text', i18next.t('main:view.title'));
+  setText('rayDensity_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
+  setText('rayDensity_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('showGrid_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('layoutAids_text', i18next.t('simulator:settings.layoutAids.title'));
+  setText('rayDensity_more_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
+  setText('rayDensity_more_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('layoutAids_more_text', i18next.t('simulator:settings.layoutAids.title'));
+  setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
+  setText('simulateColors_text', i18next.t('main:simulateColors.title'));
+  setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
+  setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
+  setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
+  setText('observer_size_text', i18next.t('simulator:settings.observerSize.title'));
+  setText('lengthScale_popover', null, null, i18next.t('simulator:settings.lengthScale.description'));
+  setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title') + '<sup>Beta</sup>');
+  setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
+  setText('language_text', i18next.t('simulator:settings.language.title'));
+  setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
+  setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
+  setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title') + '<sup>Beta</sup>');
+  setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
+  setText('show_status_text', i18next.t('simulator:settings.showStatusBox.title'));
+  setText('show_help_popups_popover', null, null, i18next.t('simulator:settings.showHelpPopups.description'));
+  setText('show_help_popups_text', i18next.t('simulator:settings.showHelpPopups.title'));
+  setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
+  setText('settings_text', i18next.t('simulator:settings.title'));
+  setText('moreSettings_text', i18next.t('simulator:settings.more'));
+  setText('reset_mobile', i18next.t('simulator:file.reset.title'));
+  setText('save_button', i18next.t('simulator:file.save.title'));
+  setText('open_mobile', i18next.t('simulator:file.open.title'));
+  setText('export_svg_mobile', i18next.t('simulator:file.export.title'));
+  setText('get_link_mobile', i18next.t('simulator:file.copyLink.title'));
+  setText('view_gallery_mobile', i18next.t('simulator:file.viewGallery.title'));
+  setText('tools_mobile_text', i18next.t('main:tools.title'));
+  setText('tool_lightSource__text', i18next.t('main:tools.categories.lightSource'));
+  setText('tool_mirror__text', i18next.t('main:tools.categories.mirror'));
+  setText('tool_glass__text', i18next.t('main:tools.categories.glass'));
+  setText('tool_blocker__text', i18next.t('main:tools.categories.blocker'));
+  setText('tool_more__text', i18next.t('main:tools.categories.other'));
+  setText('tool__mobile_label', i18next.t('main:tools.moveView.title'));
+  setText('tool_SingleRay_mobile_label', i18next.t('main:tools.SingleRay.title'));
+  setText('tool_Beam_mobile_label', i18next.t('main:tools.Beam.title'));
+  setText('tool_PointSource_mobile_label', i18next.t('main:tools.PointSource.title') + ' (360\u00B0)');
+  setText('tool_AngleSource_mobile_label', i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)');
+  setText('tool_Mirror_mobile_label', i18next.t('main:tools.Mirror.title'));
+  setText('tool_ArcMirror_mobile_label', i18next.t('main:tools.ArcMirror.title'));
+  setText('tool_ParabolicMirror_mobile_label', i18next.t('main:tools.ParabolicMirror.title'));
+  setText('tool_CustomMirror_mobile_label', i18next.t('main:tools.CustomMirror.title'));
+  setText('tool_IdealMirror_mobile_label', i18next.t('main:tools.IdealMirror.title'));
+  setText('tool_BeamSplitter_mobile_label', i18next.t('main:tools.BeamSplitter.title'));
+  setText('tool_PlaneGlass_mobile_label', i18next.t('main:tools.PlaneGlass.title'));
+  setText('tool_CircleGlass_mobile_label', i18next.t('main:tools.CircleGlass.title'));
+  setText('tool_Glass_mobile_label', i18next.t('main:tools.Glass.title'));
+  setText('tool_CustomGlass_mobile_label', i18next.t('main:tools.CustomGlass.title'));
+  setText('tool_IdealLens_mobile_label', i18next.t('main:tools.IdealLens.title'));
+  setText('tool_SphericalLens_mobile_label', i18next.t('main:tools.SphericalLens.title'));
+  setText('tool_CircleGrinGlass_mobile_label', i18next.t('main:tools.CircleGrinGlass.title'));
+  setText('tool_GrinGlass_mobile_label', i18next.t('main:tools.GrinGlass.title'));
+  setText('tool_Blocker_mobile_label', i18next.t('main:tools.Blocker.title'));
+  setText('tool_CircleBlocker_mobile_label', i18next.t('main:tools.CircleBlocker.title'));
+  setText('tool_Aperture_mobile_label', i18next.t('main:tools.Aperture.title'));
+  setText('tool_DiffractionGrating_mobile_label', i18next.t('main:tools.DiffractionGrating.title') + '<sup>Beta</sup>');
+  setText('tool_Ruler_mobile_label', i18next.t('main:tools.Ruler.title'));
+  setText('tool_Protractor_mobile_label', i18next.t('main:tools.Protractor.title'));
+  setText('tool_Detector_mobile_label', i18next.t('main:tools.Detector.title'));
+  setText('tool_TextLabel_mobile_label', i18next.t('main:tools.TextLabel.title'));
+  setText('tool_LineArrow_mobile_label', i18next.t('main:tools.LineArrow.title'));
+  setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
+  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
+  setText('view_mobile_text', i18next.t('main:view.title'));
+  setText('mode_rays_mobile_label', i18next.t('main:view.rays.title'));
+  setText('mode_extended_mobile_label', i18next.t('main:view.extended.title'));
+  setText('mode_images_mobile_label', i18next.t('main:view.images.title'));
+  setText('mode_observer_mobile_label', i18next.t('main:view.observer.title'));
+  setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
+  setText('rayDensity_mobile_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('showGrid_text', i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
+  setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
+  setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
+  setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title') + '<sup>Beta</sup>');
+  setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
+  setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title') + '<sup>Beta</sup>');
+  setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
+  setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
+  setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
+  setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
+  setText('copy', null, i18next.t('simulator:objBar.duplicate.title'));
+  setText('delete', null, i18next.t('simulator:objBar.delete.title'));
+  setText('unselect', null, null, i18next.t('simulator:objBar.unselect.description'));
+  setText('showAdvanced_mobile', i18next.t('simulator:objBar.showAdvanced.title'));
+  setText('apply_to_all_mobile_label', i18next.t('simulator:objBar.applyToAll.title'));
+  setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
+  setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
+  setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
+  setText('staticBackdropLabel_save', i18next.t('simulator:file.save.title'));
+  setText('save_name_label', i18next.t('simulator:saveModal.fileName'));
+  setText('save_description', '<ul><li>' + i18next.t('simulator:saveModal.description.autoSync') + '</li><li>' + i18next.t('simulator:saveModal.description.rename') + '</li><li>' + parseLinks(i18next.t('simulator:saveModal.description.contribute')) + '</li></ul>');
+  setText('save_confirm', i18next.t('simulator:file.save.title'));
+  setText('save_rename', i18next.t('simulator:saveModal.rename'));
+  setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
+  setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
+  setText('language_list_title', i18next.t('simulator:settings.language.title'));
+  setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
+  setText('translate', i18next.t('simulator:languageModal.helpTranslate'));
+  setText('close_language', i18next.t('simulator:common.closeButton'));
+  setText('staticBackdropLabel_module', i18next.t('simulator:moduleModal.title'));
+  setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
+  setText('close_module', i18next.t('simulator:common.closeButton'));
+  setText('home', null, i18next.t('main:pages.home'));
+  setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
+  setText('about', i18next.t('main:pages.about'));
+  setText('github', null, i18next.t('main:pages.github'));
 
-
-function updateUIText(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-text]');
-
-  elements.forEach(el => {
-    const key = el.getAttribute('data-text');
-    const text = getMsg(key);
-    el.innerHTML = text;
-  });
 
   document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
   document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
 
+  /*
   const completenessData = getLanguageCompleteness();
   for (let lang1 in completenessData) {
-    document.getElementById('lang-' + lang1).innerText = completenessData[lang1] + '%';
+    document.getElementById('lang-' + lang1).innerText = '' //completenessData[lang1] + '%';
     document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function (e) {
       if (autoSyncUrl && !hasUnsavedChange) {
         // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
@@ -1107,6 +1265,7 @@ function updateUIText(elememt = document) {
       }
     }, true);
   }
+  */
   
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
@@ -1127,85 +1286,64 @@ function navigateToNewQuery(newQuery) {
   window.location.href = newUrl;  // Set the new URL
 }
 
+function setText(id, text, title, popover, image) {
+  const elem = document.getElementById(id);
 
-function updateUIWithPopovers(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-title], [data-popover]');
-
-  elements.forEach(el => {
-    const titleKey = el.getAttribute('data-title');
-    const title = getMsg(titleKey);
+  if (text != null) {
+    elem.innerHTML = text;
+  }
+  
+  if (popoversEnabled) {
     if (title != null) {
-      el.setAttribute('title', title);
+      elem.setAttribute('title', title);
     }
 
-    const contentKey = el.getAttribute('data-popover');
-    if (contentKey == null) {
-      // Tooltip
-      el.setAttribute('data-bs-toggle', 'tooltip');
-      el.setAttribute('data-bs-trigger', 'hover');
-      el.setAttribute('data-bs-placement', 'bottom');
-    } else {
-      const image = el.getAttribute('data-image');
+    if (popover != null) {
+      // Popover
       if (image != null) {
-        // Popover with image
-        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + getMsg(contentKey);
-        el.setAttribute('data-bs-toggle', 'popover');
-        el.setAttribute('data-bs-trigger', 'hover');
-        el.setAttribute('data-bs-html', 'true');
-        el.setAttribute('data-bs-content', content);
+        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + popover;
+        elem.setAttribute('data-bs-toggle', 'popover');
+        elem.setAttribute('data-bs-trigger', 'hover');
+        elem.setAttribute('data-bs-html', 'true');
+        elem.setAttribute('data-bs-content', content);
 
         // Update popover size after image is loaded
-        el.addEventListener('inserted.bs.popover', function () {
+        elem.addEventListener('inserted.bs.popover', function () {
           const imgElement = document.querySelectorAll('#dynamic-popover-image');
           imgElement[imgElement.length - 1].addEventListener('load', function () {
-            bootstrap.Popover.getInstance(el).update();
+            bootstrap.Popover.getInstance(elem).update();
           });
         });
       } else {
-        // Popover without image
-        const content = getMsg(contentKey);
-        el.setAttribute('data-bs-toggle', 'popover');
-        el.setAttribute('data-bs-trigger', 'hover');
-        el.setAttribute('data-bs-html', 'true');
-        el.setAttribute('data-bs-content', content);
+        elem.setAttribute('data-bs-toggle', 'popover');
+        elem.setAttribute('data-bs-trigger', 'hover');
+        elem.setAttribute('data-bs-html', 'true');
+        elem.setAttribute('data-bs-content', popover);
       }
+
+      // Initialize the popover
+      new bootstrap.Popover(elem);
+    } else if (title != null) {
+      // Tooltip
+      elem.setAttribute('title', title);
+      elem.setAttribute('data-bs-toggle', 'tooltip');
+      elem.setAttribute('data-bs-trigger', 'hover');
+      elem.setAttribute('data-bs-placement', 'bottom');
+
+      // Initialize the tooltip
+      new bootstrap.Tooltip(elem);
     }
-  });
+  } else {
+    if (text == null && title != null) {
+      elem.setAttribute('title', title);
+      elem.setAttribute('data-bs-toggle', 'tooltip');
+      elem.setAttribute('data-bs-trigger', 'hover');
+      elem.setAttribute('data-bs-placement', 'bottom');
 
-  // Initialize Tooltips
-  var tooltipTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-  });
-
-  // Initialize Popovers
-  var popoverTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl);
-  });
-}
-
-
-function updateUIWithoutPopovers(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-title]');
-
-  elements.forEach(el => {
-    const textKey = el.getAttribute('data-text');
-
-    if (textKey == null) {
-      const titleKey = el.getAttribute('data-title');
-      const title = getMsg(titleKey);
-      el.setAttribute('title', title);
-      el.setAttribute('data-bs-toggle', 'tooltip');
-      el.setAttribute('data-bs-trigger', 'hover');
-      el.setAttribute('data-bs-placement', 'bottom');
+      // Initialize the tooltip
+      new bootstrap.Tooltip(elem);
     }
-  });
-
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
+  }
 }
 
 
@@ -1804,24 +1942,27 @@ function confirmPositioning(ctrl, shift) {
 }
 
 
-const urlMap = {
-  "/home": "https://phydemo.app/ray-optics/",
-  "/simulator": "https://phydemo.app/ray-optics/simulator/",
-  "/gallery": "https://phydemo.app/ray-optics/gallery/",
-  "/modules/tutorial": "https://phydemo.app/ray-optics/modules/tutorial",
-  "/about": "https://phydemo.app/ray-optics/about",
-  "/phydemo": "https://phydemo.app/",
-  "/email": "mailto:ray-optics@phydemo.app",
-  "/github": "https://github.com/ricktu288/ray-optics",
-  "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
-  "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
-  "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
-  "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
-  "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
-  "/license": "https://github.com/ricktu288/ray-optics/blob/master/LICENSE",
-  "/mathjs/syntax": "https://mathjs.org/docs/reference/functions/evaluate.html",
-};
-
 function mapURL(url) {
+  const urlMap = {
+    "/home": `https://phydemo.app/ray-optics/`,
+    "/simulator": `https://phydemo.app/ray-optics/simulator/`,
+    "/gallery": `https://phydemo.app/ray-optics/gallery/`,
+    "/modules/tutorial": "https://phydemo.app/ray-optics/modules/tutorial",
+    "/about": "https://phydemo.app/ray-optics/about",
+    "/email": "mailto:ray-optics@phydemo.app",
+    "/github": "https://github.com/ricktu288/ray-optics",
+    "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
+    "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
+    "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
+    "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
+    "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
+  };
   return urlMap[url] || url;
+}
+
+// Parse the markdown-like links in the text with mapURL and return the HTML.
+function parseLinks(text) {
+  return text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, function (match, text, url) {
+    return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
+  });
 }

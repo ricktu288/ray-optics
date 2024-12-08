@@ -137,7 +137,7 @@
       <div class="footer-left" id="footer-left" style="display: none">
         <div id="forceStop">
           <div class="spinner-border text-secondary" role="status"></div>
-          <span data-text="processing"></span>
+          <span id="processing_text"></span>
         </div>
         <div id="status" style="display: none;">
           <div id="mouseCoordinates"></div>
@@ -172,216 +172,216 @@
                         </svg>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="fileDropdown">
-                        <li><button class="dropdown-item" type="reset" id="reset" data-text="reset"></button></li>
+                        <li><button class="dropdown-item" type="reset" id="reset"></button></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" type="button" id="save" data-bs-toggle="modal" data-bs-target="#saveModal" data-text="save"></button></li>
-                        <li><button class="dropdown-item" type="button" id="open" data-text="open" data-popover="open_popover"></button></li>
-                        <li><button class="dropdown-item" type="button" id="export_svg" data-text="export_svg"></button></li>
-                        <li><button class="dropdown-item" type="button" id="get_link" data-text="get_link" data-popover="get_link_popover"></button></li>
+                        <li><button class="dropdown-item" type="button" id="save" data-bs-toggle="modal" data-bs-target="#saveModal"></button></li>
+                        <li><button class="dropdown-item" type="button" id="open"></button></li>
+                        <li><button class="dropdown-item" type="button" id="export_svg"></button></li>
+                        <li><button class="dropdown-item" type="button" id="get_link"></button></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" type="button" id="view_gallery" data-text="view_gallery" data-popover="view_gallery_popover"></button></li>
+                        <li><button class="dropdown-item" type="button" id="view_gallery"></button></li>
                       </ul>
                     </div>
-                    <button type="button" class="btn shadow-none btn-secondary" id="undo" data-title="undo">
+                    <button type="button" class="btn shadow-none btn-secondary" id="undo">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
                       </svg>
                     </button>
-                    <button type="button" class="btn shadow-none btn-secondary" id="redo" data-title="redo">
+                    <button type="button" class="btn shadow-none btn-secondary" id="redo">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                       </svg>
                     </button>
                   </div>
                 </div>
-                <div class="row justify-content-center title" data-text="File: "></div>
+                <div id="file_text" class="row justify-content-center title"></div>
               </div>
 
               <div class="col-auto">
                 <div class="row">
                   <div class="btn-group" role="group">
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_lightSource_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="dropdown-menu" aria-labelledby="sourceToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SingleRay">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_SingleRay" data-text="tool_SingleRay" data-popover="tool_SingleRay_popover" data-image="SingleRay.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_SingleRay_label" class="btn shadow-none btn-primary dropdown-item" for="tool_SingleRay" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Beam">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Beam" data-text="tool_Beam" data-popover="tool_Beam_popover" data-image="Beam.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_Beam_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Beam" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_PointSource">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_PointSource" data-text="tool_PointSource" data-popover="tool_PointSource_popover" data-image="PointSource.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_PointSource_label" class="btn shadow-none btn-primary dropdown-item" for="tool_PointSource" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_AngleSource">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_AngleSource" data-text="tool_AngleSource" data-popover="tool_AngleSource_popover" data-image="AngleSource.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_AngleSource_label" class="btn shadow-none btn-primary dropdown-item" for="tool_AngleSource" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                       </ul>
                     </div>
                     
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="mirrorToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_mirror_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="mirrorToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Mirror">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Mirror" data-text="tool_Mirror" data-popover="tool_Mirror_popover" data-image="Mirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_Mirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Mirror" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ArcMirror">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_ArcMirror" data-text="tool_ArcMirror" data-popover="tool_ArcMirror_popover" data-image="ArcMirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_ArcMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_ArcMirror" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ParabolicMirror">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_ParabolicMirror" data-text="tool_ParabolicMirror" data-popover="tool_ParabolicMirror_popover" data-image="ParabolicMirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_ParabolicMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_ParabolicMirror" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CustomMirror">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_CustomMirror" data-text="tool_CustomMirror" data-popover="tool_CustomMirror_popover" data-image="CustomMirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_CustomMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CustomMirror" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_IdealMirror">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_IdealMirror" data-text="tool_IdealMirror" data-popover="tool_IdealMirror_popover" data-image="IdealMirror.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_IdealMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_IdealMirror" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_BeamSplitter">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_BeamSplitter" data-text="tool_BeamSplitter" data-popover="tool_BeamSplitter_popover" data-image="BeamSplitter.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_BeamSplitter_label" class="btn shadow-none btn-primary dropdown-item" for="tool_BeamSplitter" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                       </ul>
                     </div>
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="glassToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_glass_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="glassToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="dropdown-menu" aria-labelledby="glassToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_PlaneGlass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_PlaneGlass" data-text="tool_PlaneGlass" data-popover="tool_PlaneGlass_popover" data-image="PlaneGlass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_PlaneGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_PlaneGlass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleGlass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGlass" data-text="tool_CircleGlass" data-popover="tool_CircleGlass_popover" data-image="CircleGlass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_CircleGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGlass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Glass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Glass" data-text="tool_Glass" data-popover="tool_Glass_popover" data-image="Glass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_Glass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Glass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CustomGlass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_CustomGlass" data-text="tool_CustomGlass" data-popover="tool_CustomGlass_popover" data-image="CustomGlass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_CustomGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CustomGlass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_IdealLens">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_IdealLens" data-text="tool_IdealLens" data-popover="tool_IdealLens_popover" data-image="IdealLens.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_IdealLens_label" class="btn shadow-none btn-primary dropdown-item" for="tool_IdealLens" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SphericalLens">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_SphericalLens" data-text="tool_SphericalLens" data-popover="tool_SphericalLens_popover" data-image="SphericalLens.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_SphericalLens_label" class="btn shadow-none btn-primary dropdown-item" for="tool_SphericalLens" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleGrinGlass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGrinGlass" data-text="tool_CircleGrinGlass" data-popover="tool_CircleGrinGlass_popover" data-image="CircleGrinGlass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_CircleGrinGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGrinGlass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_GrinGlass">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_GrinGlass" data-text="tool_GrinGlass" data-popover="tool_GrinGlass_popover" data-image="GrinGlass.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_GrinGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_GrinGlass" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                       </ul>
                     </div>
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="blockerToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_blocker_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="blockerToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="dropdown-menu" aria-labelledby="blockerToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Blocker">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Blocker" data-text="tool_Blocker" data-popover="tool_Blocker_popover" data-image="Blocker.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_Blocker_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Blocker" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleBlocker">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_CircleBlocker" data-text="tool_CircleBlocker" data-popover="tool_CircleBlocker_popover" data-image="CircleBlocker.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_CircleBlocker_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleBlocker" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Aperture">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Aperture" data-text="tool_Aperture" data-popover="tool_Aperture_popover" data-image="Aperture.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_Aperture_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Aperture" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_DiffractionGrating">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_DiffractionGrating" data-text="tool_DiffractionGrating" data-popover="tool_DiffractionGrating_popover" data-image="DiffractionGrating.svg" data-bs-placement="right" data-bs-offset="40,0"></label>
+                          <label id="tool_DiffractionGrating_label" class="btn shadow-none btn-primary dropdown-item" for="tool_DiffractionGrating" data-bs-placement="right" data-bs-offset="40,0"></label>
                         </li>
                       </ul>
                     </div>
                     <div class="dropdown">
-                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="moreToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-text="tool_more_"></button>
+                      <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="moreToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="dropdown-menu" aria-labelledby="moreToolsDropdown">
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Ruler">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Ruler" data-text="tool_Ruler" data-popover="tool_Ruler_popover" data-image="Ruler.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
+                          <label id="tool_Ruler_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Ruler" data-bs-placement="right" data-bs-offset="60,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Protractor">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Protractor" data-text="tool_Protractor" data-popover="tool_Protractor_popover" data-image="Protractor.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
+                          <label id="tool_Protractor_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Protractor" data-bs-placement="right" data-bs-offset="60,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Detector">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Detector" data-text="tool_Detector" data-popover="tool_Detector_popover" data-image="Detector.svg" data-bs-placement="right" data-bs-offset="60,0"></label>
+                          <label id="tool_Detector_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Detector" data-bs-placement="right" data-bs-offset="60,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_TextLabel">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_TextLabel" data-text="tool_TextLabel" data-popover="tool_TextLabel_popover" data-bs-placement="right" data-bs-offset="0,0"></label>
+                          <label id="tool_TextLabel_label" class="btn shadow-none btn-primary dropdown-item" for="tool_TextLabel" data-bs-placement="right" data-bs-offset="0,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_LineArrow">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_LineArrow" data-text="tool_LineArrow" data-popover="tool_LineArrow_popover" data-bs-placement="right" data-bs-offset="0,0"></label>
+                          <label id="tool_LineArrow_label" class="btn shadow-none btn-primary dropdown-item" for="tool_LineArrow" data-bs-placement="right" data-bs-offset="0,0"></label>
                         </li>
                         <li>
                           <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Drawing">
-                          <label class="btn shadow-none btn-primary dropdown-item" for="tool_Drawing" data-text="tool_Drawing" data-popover="tool_Drawing_popover" data-bs-placement="right" data-bs-offset="0,0"></label>
+                          <label id="tool_Drawing_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Drawing" data-bs-placement="right" data-bs-offset="0,0"></label>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li id="module_start"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal" data-text="import_modules"></button></li>
+                        <li id="module_start"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal"></button></li>
                       </ul>
                     </div>
                     <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
-                    <label class="btn shadow-none btn-primary" for="tool_" data-title="tool_"data-popover="tool__popover">
+                    <label id="tool__label" class="btn shadow-none btn-primary" for="tool_">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-move" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z"/>
                       </svg>
                     </label>
                   </div>
                 </div>
-                <div class="row justify-content-center title" data-text="Tools: "></div>
+                <div class="row justify-content-center title" id="tools_text"></div>
               </div>
               <div class="col-auto">
                 <div class="row">
                   <div class="btn-group" role="group">
                     <input type="radio" class="btn-check" name="viewradio" id="mode_rays" autocomplete="off" checked>
-                    <label class="btn shadow-none btn-primary" for="mode_rays" data-title="mode_rays" data-popover="mode_rays_popover" data-image="normal.svg" data-bs-placement="bottom">
+                    <label id="mode_rays_label" class="btn shadow-none btn-primary" for="mode_rays" data-bs-placement="bottom">
                       <img src="../img/rays_icon.svg" alt="Ray" width="16" height="20">                        
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_extended" autocomplete="off">
-                    <label class="btn shadow-none btn-primary" for="mode_extended" data-title="mode_extended" data-popover="mode_extended_popover" data-image="extended_rays.svg" data-bs-placement="bottom">
+                    <label id="mode_extended_label" class="btn shadow-none btn-primary" for="mode_extended" data-bs-placement="bottom">
                       <img src="../img/extended_icon.svg" alt="Extended" width="16" height="20">
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_images" autocomplete="off">
-                    <label class="btn shadow-none btn-primary" for="mode_images" data-title="mode_images" data-popover="mode_images_popover" data-image="all_images.svg" data-bs-placement="bottom">
+                    <label id="mode_images_label" class="btn shadow-none btn-primary" for="mode_images" data-bs-placement="bottom">
                       <img src="../img/images_icon.svg" alt="Images" width="16" height="20">
                     </label>
                     <input type="radio" class="btn-check" name="viewradio" id="mode_observer" autocomplete="off">
-                    <label class="btn shadow-none btn-primary" for="mode_observer" data-title="mode_observer" data-popover="mode_observer_popover" data-image="seen_by_observer.svg" data-bs-placement="bottom">
+                    <label id="mode_observer_label" class="btn shadow-none btn-primary" for="mode_observer" data-bs-placement="bottom">
                       <img src="../img/observer_icon.svg" alt="Observer" width="16" height="20">
                     </label>
                   </div>
                 </div>
-                <div class="row justify-content-center title" data-text="View: "></div>
+                <div class="row justify-content-center title" id="view_text"></div>
               </div>
 
               <div class="col-auto d-none d-xl-block">
                 <div class="row justify-content-center">
-                  <div class="btn-group d-flex align-items-center" role="group" data-popover="rayDensity_popover" data-bs-offset="0,25">
+                  <div class="btn-group d-flex align-items-center" id="rayDensity_popover" role="group" data-bs-offset="0,25">
                     <button class="btn shadow-none range-minus-btn" id="rayDensityMinus">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
@@ -395,32 +395,32 @@
                     </button>
                   </div>
                 </div>
-                <div class="row justify-content-center title" data-text="rayDensity"></div>
+                <div class="row justify-content-center title" id="rayDensity_text"></div>
               </div>
               <div class="col-auto d-none d-xxl-block">
                 <div class="row">
                   <div class="btn-group" role="group">
                     <input type="checkbox" class="btn-check" id="showGrid" autocomplete="off">
-                    <label class="btn shadow-none btn-secondary" for="showGrid" data-title="showGrid">
+                    <label id="showGrid_label" class="btn shadow-none btn-secondary" for="showGrid">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16">
                         <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13zM1.5 1a.5.5 0 0 0-.5.5V5h4V1H1.5zM5 6H1v4h4V6zm1 4h4V6H6v4zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5v-4zm1 0v4h4v-4H6zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11h-4zm0-1h4V6h-4v4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11v4zm-1 0V1H6v4h4z"/>
                       </svg>                    
                     </label>
                     <input type="checkbox" class="btn-check" id="snapToGrid" autocomplete="off">
-                    <label class="btn shadow-none btn-secondary" for="snapToGrid" data-title="snapToGrid">
+                    <label id="snapToGrid_label" class="btn shadow-none btn-secondary" for="snapToGrid">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magnet" viewBox="0 0 16 16">
                         <path d="M8 1a7 7 0 0 0-7 7v3h4V8a3 3 0 0 1 6 0v3h4V8a7 7 0 0 0-7-7Zm7 11h-4v3h4v-3ZM5 12H1v3h4v-3ZM0 8a8 8 0 1 1 16 0v8h-6V8a2 2 0 1 0-4 0v8H0V8Z"/>
                       </svg>                 
                     </label>
                     <input type="checkbox" class="btn-check" id="lockObjs" autocomplete="off">
-                    <label class="btn shadow-none btn-secondary" for="lockObjs" data-title="lockObjs">
+                    <label id="lockObjs_label" class="btn shadow-none btn-secondary" for="lockObjs">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
                         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                       </svg>
                     </label>
                   </div>
                 </div>
-                <div class="row justify-content-center title" data-text="layoutaids"></div>
+                <div class="row justify-content-center title" id="layoutAids_text"></div>
               </div>
               <div class="col-auto">
                 <div class="row">
@@ -434,8 +434,8 @@
                       </button>
                       <div class="dropdown-menu" id="more-options-dropdown" aria-labelledby="optionsDropdown">
                         <div class="container">
-                          <div class="row d-flex d-xl-none justify-content-between align-items-center" data-popover="rayDensity_popover" data-bs-placement="left">
-                            <div class="col-auto" data-text="rayDensity"></div>
+                          <div class="row d-flex d-xl-none justify-content-between align-items-center" id="rayDensity_more_popover" data-bs-placement="left">
+                            <div class="col-auto" id="rayDensity_more_text"></div>
                             <div class="btn-group col-auto d-flex align-items-center" role="group">
                               <button class="btn shadow-none range-minus-btn" id="rayDensityMinus_more">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -453,23 +453,23 @@
                           </div>
 
                           <div class="row d-flex d-xxl-none justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="layoutaids"></div>
+                            <div class="col-auto settings-label" id="layoutAids_more_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="btn-group" role="group">
                                 <input type="checkbox" class="btn-check" id="showGrid_more" autocomplete="off">
-                                <label class="btn shadow-none btn-outline-secondary" for="showGrid_more" data-title="showGrid">
+                                <label id="showGrid_more_label" class="btn shadow-none btn-outline-secondary" for="showGrid_more">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16">
                                     <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13zM1.5 1a.5.5 0 0 0-.5.5V5h4V1H1.5zM5 6H1v4h4V6zm1 4h4V6H6v4zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5v-4zm1 0v4h4v-4H6zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11h-4zm0-1h4V6h-4v4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11v4zm-1 0V1H6v4h4z"/>
                                   </svg>                    
                                 </label>
                                 <input type="checkbox" class="btn-check" id="snapToGrid_more" autocomplete="off">
-                                <label class="btn shadow-none btn-outline-secondary" for="snapToGrid_more" data-title="snapToGrid">
+                                <label id="snapToGrid_more_label" class="btn shadow-none btn-outline-secondary" for="snapToGrid_more">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magnet" viewBox="0 0 16 16">
                                     <path d="M8 1a7 7 0 0 0-7 7v3h4V8a3 3 0 0 1 6 0v3h4V8a7 7 0 0 0-7-7Zm7 11h-4v3h4v-3ZM5 12H1v3h4v-3ZM0 8a8 8 0 1 1 16 0v8h-6V8a2 2 0 1 0-4 0v8H0V8Z"/>
                                   </svg>                 
                                 </label>
                                 <input type="checkbox" class="btn-check" id="lockObjs_more" autocomplete="off">
-                                <label class="btn shadow-none btn-outline-secondary" for="lockObjs_more" data-title="lockObjs">
+                                <label id="lockObjs_more_label" class="btn shadow-none btn-outline-secondary" for="lockObjs_more">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
                                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                                   </svg>
@@ -480,8 +480,8 @@
                           </div>
 
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="simulateColors_popover" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto settings-label" data-text="simulateColors"></div>
+                          <div id="simulateColors_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
+                            <div class="col-auto settings-label" id="simulateColors_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -491,8 +491,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="length_unit_popover" data-bs-placement="left" data-bs-offset="20,0">
-                            <div class="col-auto settings-label" data-text="gridSize"></div>
+                          <div class="row d-flex justify-content-between align-items-center" id="gridSize_popover" data-bs-placement="left" data-bs-offset="20,0">
+                            <div id="gridSize_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="gridSize" value="20">
@@ -500,8 +500,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="length_unit_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="observer_size"></div>
+                          <div class="row d-flex justify-content-between align-items-center" id="observer_size_popover" data-bs-placement="left">
+                            <div id="observer_size_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="observer_size" value="40">
@@ -509,8 +509,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="lengthScale_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="lengthScale"></div>
+                          <div id="lengthScale_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div id="lengthScale_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="lengthScale" value="1">
@@ -519,7 +519,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="zoom"></div>
+                            <div id="zoom_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn shadow-none range-minus-btn" id="zoomMinus">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -536,7 +536,7 @@
                           </div>
                           <hr class="dropdown-divider">
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="language"></div>
+                            <div class="col-auto settings-label" id="language_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language">
                                 English
@@ -544,8 +544,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="auto_sync_url_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="auto_sync_url"></div>
+                          <div id="auto_sync_url_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div id="auto_sync_url_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -555,8 +555,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="show_json_editor_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="show_json_editor"></div>
+                          <div id="show_json_editor_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div id="show_json_editor_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -566,8 +566,8 @@
                             </div>
                           </div>
 
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="show_status_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="show_status"></div>
+                          <div id="show_status_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div id="show_status_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -577,8 +577,8 @@
                             </div>
                           </div>
                           
-                          <div class="row d-flex justify-content-between align-items-center" data-popover="show_help_popups_popover" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="show_help_popups"></div>
+                          <div id="show_help_popups_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
+                            <div id="show_help_popups_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -588,14 +588,14 @@
                             </div>
                           </div>
 
-                          <div id="advanced-help" data-text="advanced_help"></div>
+                          <div id="advanced-help"></div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row justify-content-center title d-none d-xxl-flex" data-text="Settings: "></div>
-                <div class="row justify-content-center title d-flex d-xxl-none" data-text="moresettings"></div>
+                <div id="settings_text" class="row justify-content-center title d-none d-xxl-flex"></div>
+                <div class="row justify-content-center title d-flex d-xxl-none" id="moreSettings_text"></div>
               </div>
               
             </div>
@@ -618,14 +618,14 @@
                       </button>
                       <div class="dropdown-menu mobile-dropdown-menu">
                         <div id="mobile-dropdown-file" class="mobile-dropdown">
-                          <li><button class="dropdown-item" type="button" id="reset_mobile" data-text="reset"></button></li>
+                          <li><button class="dropdown-item" type="button" id="reset_mobile"></button></li>
                           <li><hr class="dropdown-divider"></li>
-                          <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveModal" data-text="save"></button></li>
-                          <li><button class="dropdown-item" type="button" id="open_mobile" data-text="open"></button></li>
-                          <li><button class="dropdown-item" type="button" id="export_svg_mobile" data-text="export_svg"></button></li>
-                          <li><button class="dropdown-item" type="button" id="get_link_mobile" data-text="get_link"></button></li>
+                          <li><button id="save_button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveModal"></button></li>
+                          <li><button class="dropdown-item" type="button" id="open_mobile"></button></li>
+                          <li><button class="dropdown-item" type="button" id="export_svg_mobile"></button></li>
+                          <li><button class="dropdown-item" type="button" id="get_link_mobile"></button></li>
                           <li><hr class="dropdown-divider"></li>
-                          <li><button class="dropdown-item" type="button" id="view_gallery_mobile" data-text="view_gallery"></button></li>
+                          <li><button class="dropdown-item" type="button" id="view_gallery_mobile"></button></li>
                         </div>
                       </div>
                       <button type="button" class="btn shadow-none btn-secondary" id="undo_mobile">
@@ -645,14 +645,14 @@
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
                         <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0Zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708ZM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11Z"/>
                       </svg>
-                      <span class="d-none d-md-inline" data-text="Tools: "></span>
+                      <span class="d-none d-md-inline" id="tools_mobile_text"></span>
                     </button>
                     <div class="dropdown-menu mobile-dropdown-menu">
                       <div class="mobile-dropdown">
                         <ul id="mobile-dropdown-tools-root">
                           <li>
                             <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-source">
-                              <div class="col" data-text="tool_lightSource_"></div>
+                              <div id="tool_lightSource__text" class="col"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -662,7 +662,7 @@
                           </li>
                           <li>
                             <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-mirror">
-                              <div class="col" data-text="tool_mirror_"></div>
+                              <div id="tool_mirror__text" class="col"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -672,7 +672,7 @@
                           </li>
                           <li>
                             <button class="btn btn-primary dropdown-item  mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-glass">
-                              <div class="col" data-text="tool_glass_"></div>
+                              <div id="tool_glass__text" class="col"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -682,7 +682,7 @@
                           </li>
                           <li>
                             <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-blocker">
-                              <div class="col" data-text="tool_blocker_"></div>
+                              <div id="tool_blocker__text" class="col"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -692,7 +692,7 @@
                           </li>
                           <li>
                             <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-more">
-                              <div class="col" data-text="tool_more_"></div>
+                              <div id="tool_more__text" class="col"></div>
                               <div class="col text-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -702,142 +702,142 @@
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool__mobile" checked>
-                            <label class="btn btn-primary dropdown-item" for="tool__mobile" data-text="tool_"></label>
+                            <label id="tool__mobile_label" class="btn btn-primary dropdown-item" for="tool__mobile"></label>
                           </li>
                         </ul>
 
                         <ul id="mobile-dropdown-source" style="display:none">
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_SingleRay_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_SingleRay_mobile" data-text="tool_SingleRay"></label>
+                            <label id="tool_SingleRay_mobile_label" class="btn btn-primary dropdown-item" for="tool_SingleRay_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Beam_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Beam_mobile" data-text="tool_Beam"></label>
+                            <label id="tool_Beam_mobile_label" class="btn btn-primary dropdown-item" for="tool_Beam_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_PointSource_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_PointSource_mobile" data-text="tool_PointSource"></label>
+                            <label id="tool_PointSource_mobile_label" class="btn btn-primary dropdown-item" for="tool_PointSource_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_AngleSource_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_AngleSource_mobile" data-text="tool_AngleSource"></label>
+                            <label id="tool_AngleSource_mobile_label" class="btn btn-primary dropdown-item" for="tool_AngleSource_mobile"></label>
                           </li>
                         </ul>
                         
                         <ul id="mobile-dropdown-mirror" style="display:none">
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Mirror_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Mirror_mobile" data-text="tool_Mirror"></label>
+                            <label id="tool_Mirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_Mirror_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ArcMirror_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_ArcMirror_mobile" data-text="tool_ArcMirror"></label>
+                            <label id="tool_ArcMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_ArcMirror_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ParabolicMirror_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_ParabolicMirror_mobile" data-text="tool_ParabolicMirror"></label>
+                            <label id="tool_ParabolicMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_ParabolicMirror_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CustomMirror_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_CustomMirror_mobile" data-text="tool_CustomMirror"></label>
+                            <label id="tool_CustomMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_CustomMirror_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_IdealMirror_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_IdealMirror_mobile" data-text="tool_IdealMirror"></label>
+                            <label id="tool_IdealMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_IdealMirror_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_BeamSplitter_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_BeamSplitter_mobile" data-text="tool_BeamSplitter"></label>
+                            <label id="tool_BeamSplitter_mobile_label" class="btn btn-primary dropdown-item" for="tool_BeamSplitter_mobile"></label>
                           </li>
                         </ul>
                         
                         <ul id="mobile-dropdown-glass" style="display:none">
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_PlaneGlass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_PlaneGlass_mobile" data-text="tool_PlaneGlass"></label>
+                            <label id="tool_PlaneGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_PlaneGlass_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleGlass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_CircleGlass_mobile" data-text="tool_CircleGlass"></label>
+                            <label id="tool_CircleGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleGlass_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Glass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Glass_mobile" data-text="tool_Glass"></label>
+                            <label id="tool_Glass_mobile_label" class="btn btn-primary dropdown-item" for="tool_Glass_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CustomGlass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_CustomGlass_mobile" data-text="tool_CustomGlass"></label>
+                            <label id="tool_CustomGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CustomGlass_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_IdealLens_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_IdealLens_mobile" data-text="tool_IdealLens"></label>
+                            <label id="tool_IdealLens_mobile_label" class="btn btn-primary dropdown-item" for="tool_IdealLens_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_SphericalLens_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_SphericalLens_mobile" data-text="tool_SphericalLens"></label>
+                            <label id="tool_SphericalLens_mobile_label" class="btn btn-primary dropdown-item" for="tool_SphericalLens_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleGrinGlass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_CircleGrinGlass_mobile" data-text="tool_CircleGrinGlass"></label>
+                            <label id="tool_CircleGrinGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleGrinGlass_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_GrinGlass_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_GrinGlass_mobile" data-text="tool_GrinGlass"></label>
+                            <label id="tool_GrinGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_GrinGlass_mobile"></label>
                           </li>
                         </ul>
                         
                         <ul id="mobile-dropdown-blocker" style="display:none">
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Blocker_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Blocker_mobile" data-text="tool_Blocker"></label>
+                            <label id="tool_Blocker_mobile_label" class="btn btn-primary dropdown-item" for="tool_Blocker_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleBlocker_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_CircleBlocker_mobile" data-text="tool_CircleBlocker"></label>
+                            <label id="tool_CircleBlocker_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleBlocker_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Aperture_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Aperture_mobile" data-text="tool_Aperture"></label>
+                            <label id="tool_Aperture_mobile_label" class="btn btn-primary dropdown-item" for="tool_Aperture_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_DiffractionGrating_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_DiffractionGrating_mobile" data-text="tool_DiffractionGrating"></label>
+                            <label id="tool_DiffractionGrating_mobile_label" class="btn btn-primary dropdown-item" for="tool_DiffractionGrating_mobile"></label>
                           </li>
                         </ul>
                         
                         <ul id="mobile-dropdown-more" style="display:none">
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Ruler_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Ruler_mobile" data-text="tool_Ruler"></label>
+                            <label id="tool_Ruler_mobile_label" class="btn btn-primary dropdown-item" for="tool_Ruler_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Protractor_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Protractor_mobile" data-text="tool_Protractor"></label>
+                            <label id="tool_Protractor_mobile_label" class="btn btn-primary dropdown-item" for="tool_Protractor_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Detector_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Detector_mobile" data-text="tool_Detector"></label>
+                            <label id="tool_Detector_mobile_label" class="btn btn-primary dropdown-item" for="tool_Detector_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_TextLabel_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_TextLabel_mobile" data-text="tool_TextLabel"></label>
+                            <label id="tool_TextLabel_mobile_label" class="btn btn-primary dropdown-item" for="tool_TextLabel_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_LineArrow_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_LineArrow_mobile" data-text="tool_LineArrow"></label>
+                            <label id="tool_LineArrow_mobile_label" class="btn btn-primary dropdown-item" for="tool_LineArrow_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Drawing_mobile">
-                            <label class="btn btn-primary dropdown-item" for="tool_Drawing_mobile" data-text="tool_Drawing"></label>
+                            <label id="tool_Drawing_mobile_label" class="btn btn-primary dropdown-item" for="tool_Drawing_mobile"></label>
                           </li>
                           <li><hr class="dropdown-divider"></li>
-                          <li id="module_start_mobile"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal" data-text="import_modules"></button></li>
+                          <li id="module_start_mobile"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal"></button></li>
                         </ul>                      
                       </div>
                       
@@ -849,26 +849,26 @@
                         <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                         <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                       </svg>
-                      <span class="d-none d-md-inline" data-text="View: "></span>
+                      <span class="d-none d-md-inline" id="view_mobile_text"></span>
                     </button>
                     <div class="dropdown-menu mobile-dropdown-menu">
                       <div id="mobile-dropdown-view" class="mobile-dropdown">
                         <ul>
                           <li>
                             <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_rays_mobile" checked>
-                            <label class="btn btn-primary dropdown-item" for="mode_rays_mobile" data-text="mode_rays"></label>
+                            <label id="mode_rays_mobile_label" class="btn btn-primary dropdown-item" for="mode_rays_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_extended_mobile">
-                            <label class="btn btn-primary dropdown-item" for="mode_extended_mobile" data-text="mode_extended"></label>
+                            <label id="mode_extended_mobile_label" class="btn btn-primary dropdown-item" for="mode_extended_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_images_mobile">
-                            <label class="btn btn-primary dropdown-item" for="mode_images_mobile" data-text="mode_images"></label>
+                            <label id="mode_images_mobile_label" class="btn btn-primary dropdown-item" for="mode_images_mobile"></label>
                           </li>
                           <li>
                             <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" id="mode_observer_mobile">
-                            <label class="btn btn-primary dropdown-item" for="mode_observer_mobile" data-text="mode_observer"></label>
+                            <label id="mode_observer_mobile_label" class="btn btn-primary dropdown-item" for="mode_observer_mobile"></label>
                           </li>
                         </ul>
                       </div>
@@ -880,13 +880,13 @@
                         <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
                         <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
                       </svg>
-                      <span class="d-none d-md-inline" data-text="moresettings"></span>
+                      <span class="d-none d-md-inline" id="moreSettings_text_mobile"></span>
                     </button>
                     <div class="dropdown-menu mobile-dropdown-menu">
                       <div id="mobile-dropdown-options" class="mobile-dropdown">
                         <div class="container">
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="rayDensity"></div>
+                            <div class="col-auto settings-label" id="rayDensity_mobile_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn range-minus-btn" id="rayDensityMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -905,7 +905,7 @@
                           <hr class="dropdown-divider">
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="showGrid"></div>
+                            <div id="showGrid_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -915,7 +915,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="snapToGrid"></div>
+                            <div id="snapToGrid_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -925,7 +925,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="lockObjs"></div>
+                            <div id="lockObjs_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -939,7 +939,7 @@
 
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="simulateColors"></div>
+                            <div class="col-auto settings-label" id="simulateColors_mobile_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -949,7 +949,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto settings-label" data-text="gridSize"></div>
+                            <div id="gridSize_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="gridSize_mobile" value="20">
@@ -958,7 +958,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto settings-label" data-text="observer_size"></div>
+                            <div id="observer_size_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="observer_size_mobile" value="40">
@@ -967,7 +967,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-                            <div class="col-auto settings-label" data-text="lengthScale"></div>
+                            <div id="lengthScale_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <input type="text" class="settings-number" id="lengthScale_mobile" value="1">
@@ -975,7 +975,7 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="zoom"></div>
+                            <div id="zoom_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn range-minus-btn" id="zoomMinus_mobile">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
@@ -994,7 +994,7 @@
                           <hr class="dropdown-divider">
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="auto_sync_url"></div>
+                            <div id="auto_sync_url_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1005,7 +1005,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="show_json_editor"></div>
+                            <div id="show_json_editor_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1016,7 +1016,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div class="col-auto settings-label" data-text="show_status"></div>
+                            <div id="show_status_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
@@ -1027,7 +1027,7 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" data-text="language"></div>
+                            <div class="col-auto settings-label" id="language_mobile_text"></div>
                             <div class="col-auto d-flex align-items-center">
                               <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language_mobile">
                                 English
@@ -1057,10 +1057,10 @@
         <span>
           <nobr>
             <span class="d-none d-lg-inline">
-              <span id="showAdvanced" data-text="showadvanced"></span>
+              <span id="showAdvanced"></span>
               <span id="apply_to_all_box">
                 <input type="checkbox" class="btn-check" id="apply_to_all" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="apply_to_all" data-title="applytoall">
+                <label id="apply_to_all_label" class="btn btn-outline-secondary" for="apply_to_all">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="m11.5 11.932a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
                     <path d="m11.5 1.1864a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
@@ -1069,7 +1069,7 @@
                   </svg>
                 </label>
               </span>
-              <button class="btn" data-title="duplicate" id="copy">
+              <button class="btn" id="copy">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 9.766 9.766">
                   <g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
                     <path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
@@ -1077,12 +1077,12 @@
                   </g>
                 </svg>
               </button>
-              <button class="btn" data-title="delete" id="delete">
+              <button class="btn" id="delete">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                   <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                 </svg>
               </button>
-              <button class="btn" id="unselect" data-popover="unselect_popover" data-bs-placement="bottom">
+              <button class="btn" id="unselect" data-bs-placement="bottom">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
@@ -1097,15 +1097,15 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
                 <li id="showAdvanced_mobile_container" style="display: none">
-                  <button class="dropdown-item" data-text="showadvanced" id="showAdvanced_mobile"></button>
+                  <button class="dropdown-item" id="showAdvanced_mobile"></button>
                 </li>
                 <li id="apply_to_all_mobile_container" style="display: none">
                   <input type="checkbox" class="btn-check" autocomplete="off" id="apply_to_all_mobile" checked>
-                  <label class="dropdown-item" for="apply_to_all_mobile" data-text="applytoall"></label>
+                  <label id="apply_to_all_mobile_label" class="dropdown-item" for="apply_to_all_mobile"></label>
                 </li>
-                <li><button class="dropdown-item" data-text="duplicate" id="copy_mobile"></button></li>
-                <li><button class="dropdown-item" data-text="delete" id="delete_mobile"></button></li>
-                <li><button class="dropdown-item" data-text="unselect" id="unselect_mobile"></button></li>
+                <li><button class="dropdown-item" id="copy_mobile"></button></li>
+                <li><button class="dropdown-item" id="delete_mobile"></button></li>
+                <li><button class="dropdown-item" id="unselect_mobile"></button></li>
               </ul>
             </span>
           </nobr>
@@ -1114,43 +1114,43 @@
     </div>
 
     <!-- Save modal -->
-    <div class="modal fade" id="saveModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="saveModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_save" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel" data-text="save"></h5>
+            <h5 class="modal-title" id="staticBackdropLabel_save"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="save_name" class="form-label" data-text="save_name"></label>
+              <label id="save_name_label" for="save_name" class="form-label"></label>
               <input type="text" class="form-control" id="save_name">
-              <div id="save_description" class="form-text" data-text="save_description"></div>
+              <div id="save_description" class="form-text"></div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-text="save" id="save_confirm"></button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-text="rename" id="save_rename"></button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="save_cancel"></button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="save_confirm"></button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="save_rename"></button>
+            <button id="save_cancel_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Language modal -->
-    <div class="modal fade" id="languageModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="languageModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel" data-text="language"></h5>
+            <h5 class="modal-title" id="staticBackdropLabel_language"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
 
             <div class="d-flex align-items-center">
               <div class="d-flex w-100">
-                <div class="col" data-text="language"></div>
-                <div class="col text-end" data-text="translated"></div>
+                <div class="col" id="language_list_title"></div>
+                <div id="translated_text" class="col text-end"></div>
               </div>
             </div>
             <a href="?en" class="btn btn-primary dropdown-item d-flex align-items-center">
@@ -1284,29 +1284,29 @@
               </div>
             </a>
             
-            <small><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" id="translate" data-text="translate"></a></small>
+            <small><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" id="translate"></a></small>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="close"></button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_language"></button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Module modal -->
-    <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_module" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel" data-text="import_modules_title"></h5>
+            <h5 class="modal-title" id="staticBackdropLabel_module"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body module-modal-body">
             <iframe id="moduleIframe" loading="lazy" src=""></iframe>
           </div>
           <div class="modal-footer">
-            <a id="modules_tutorial" class="btn btn-success me-auto" href="https://phydemo.app/ray-optics/modules/tutorial" target="_blank" data-text="modules_tutorial"></a>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-text="close"></button>
+            <a id="modules_tutorial" class="btn btn-success me-auto" href="https://phydemo.app/ray-optics/modules/tutorial" target="_blank"></a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_module"></button>
           </div>
         </div>
       </div>
@@ -1322,7 +1322,7 @@
 
     <!-- Footer buttons -->
     <div class="footer-right" id="footer-right" style="display: none">
-      <a class="btn" data-title="home" href="https://phydemo.app/ray-optics/" target="_blank" id="home">
+      <a class="btn" href="https://phydemo.app/ray-optics/" target="_blank" id="home">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
           <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z"/>
         </svg>
@@ -1335,13 +1335,13 @@
       </button>
       <div class="dropdown-menu" id="help-dropdown" aria-labelledby="helpDropdown">
         <div class="container">
-          <div data-text="help_popover"></div>
+          <div id="help_popover_text"></div>
           <hr class="dropdown-divider">
-          <b><a href="https://phydemo.app/ray-optics/about" target="_blank" id="about" data-text="about"></a></b>
+          <b><a href="https://phydemo.app/ray-optics/about" target="_blank" id="about"></a></b>
         </div>
       </div>
 
-      <a class="btn" data-title="github"href="https://github.com/ricktu288/ray-optics" target="_blank">
+      <a id="github" class="btn" href="https://github.com/ricktu288/ray-optics" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
         </svg>

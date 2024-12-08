@@ -6,7 +6,6 @@ import CanvasRenderer from './CanvasRenderer.js';
 import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
 import * as sceneObjs from './sceneObjs.js';
-import { getMsg } from './translations.js'
 
 /**
  * @typedef {Object} Ray
