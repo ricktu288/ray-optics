@@ -29,84 +29,53 @@
         <canvas id="canvasAboveLight"></canvas>
       </div>
       <div id="welcome" style="position:absolute; top: calc(50% + 34px); left: 0; width: 100%; transform: translate(0%, -50%); z-index:-3; color:rgba(255,255,255,0.5); font-size:12pt; text-align:center; line-height:2; font-family: initial !important">
-        <span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.</span>
+        <div id="welcome_title" style="font-size:22pt">Welcome to Ray Optics Simulation</div>
+        <div id="welcome_instruction">You need to enable JavaScript to run this app.</div>
+        <div id="welcome_loading" style="display:none"></div>
       </div>
       <script>
-        // The strings for the welcome message is handled separately here, rather than in locales/.
-        // Otherwise, the Largest Contentful Paint (LCP) for this webpage would be 4.1 seconds, according to previous data
-        // from Google Search Console, and Google would consider this as a poor-quanlity webpage.
+        // The strings for the welcome message is handled separately here, rather than in the main bundle to reduce the initial load time.
     
-        var welcome_msgs = {
-          "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href="https://phydemo.app/ray-optics/tw/gallery/">請前往「作品集」頁面</a>。',
-          "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>若要加入光学元件，请选择工具并点击空白处。<br>若要载入示例，<a href="https://phydemo.app/ray-optics/cn/gallery/">请前往“作品集”页面</a>。',
-          "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href="https://phydemo.app/ray-optics/gallery/">go to the Gallery page</a>.',
-          "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.<br>Um ein Beispiel zu laden, <a href=\"https://phydemo.app/ray-optics/gallery/\">gehen Sie bitte auf die Galerie</a>.",
-          "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.<br>Aby załadować przykład, <a href="https://phydemo.app/ray-optics/pl/gallery/">przejdź do strony Galerii</a>.',
-          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>光学部品を追加するには、ツールを選択し、空白部分をクリックします。<br>例を読み込むには  <a href=\"https://phydemo.app/ray-optics/gallery/\">ギャラリーページに移動してください。</a>.',
-          "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.<br>උදාහරණ සඳහා <a href="https://phydemo.app/ray-optics/gallery/">Gallery page වෙත යන්න</a>.',
-          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.<br>예제를 불러오려면 <a href=\"https://phydemo.app/ray-optics/gallery/\"> 갤러리 페이지</a>로 이동하십시오.',
-          "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Para añadir un componente óptico, seleccione una herramienta y clique sobre un espacio en blanco.<br>Para cargar un ejemplo, por favor <a href="https://phydemo.app/ray-optics/gallery/">vaya a la página de la galería</a>.',
-          "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.<br>Para carregar um exemplo, por favor <a href=\"https://phydemo.app/ray-optics/gallery/\">visite a página da Galeria</a>."
-        }
-
-        var loading_msgs = {
-          "en": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
-          "zh-TW": '<span style="font-size:22pt">歡迎使用「線光學模擬」</span><br>正在從網址載入場景... 請稍候。',
-          "zh-CN": '<span style="font-size:22pt">欢迎使用“射线光学模拟”</span><br>正在从网址载入场景... 请稍候。',
-          "ru": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
-          "nl": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
-          "fr": '<span style="font-size:22pt">Welcome to Ray Optics Simulation</span><br>Loading scene from URL... Please wait.',
-          "de": "<span style=\"font-size:22pt\">Willkommen bei der Strahlenoptik-Simulation</span><br>Loading scene from URL...",
-          "pl": '<span style="font-size:22pt">Witamy w symulacji promieni optycznych</span><br>Loading scene from URL... Please wait.',
-          "ja": '<span style=\"font-size:22pt\">光学シミュレーションの世界へようこそ</span><br>Loading scene from URL... Please wait.',
-          "si": '<span style="font-size:22pt">Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු</span><br>URL වෙතින් දර්ශනය load වේ... කරුණාකර රැඳී සිටින්න.',
-          "ko": '<span style=\"font-size:22pt\">광선 광학 시뮬레이션에 오신 것을 환영합니다.</span><br>Loading scene from URL... Please wait.',
-          "es": '<span style="font-size:22pt">Bienvenido al simulador de rayos ópticos</span><br>Loading scene from URL... Please wait.',
-          "pt-BR": "<span style=\"font-size:22pt\">Bem-vindo à Simulação de Óptica de Raios</span><br>Carregando cena a partir de URL... Por favor aguarde."
-        }
+        var localeData = { /* LOCALE DATA */ };
 
         var lang = 'en';
-        if (navigator.language) {
-          var browser_lang = navigator.language.toLowerCase();
-          if (browser_lang == 'zh-tw' || browser_lang == 'zh-hk' || browser_lang.startsWith('zh-hant')) {
+        var url_lang = location.search.substr(1);
+        if (url_lang && localeData[url_lang]) {
+          lang = url_lang;
+        } else if (navigator.language) {
+          var browser_lang = navigator.language
+          if (browser_lang.includes('-')) {
+            browser_lang = browser_lang.split('-')[0].toLowerCase() + '-' + browser_lang.split('-')[1].toUpperCase();
+          } else {
+            browser_lang = browser_lang.toLowerCase();
+          }
+
+          if (browser_lang == 'zh-TW' || browser_lang == 'zh-HK' || browser_lang.startsWith('zh-HANT')) {
             lang = 'zh-TW';
-          } else if (browser_lang == 'zh' || browser_lang.startsWith('zh-')) {
-            lang = 'zh-CN';
-          } else if (browser_lang == 'ru' || browser_lang.startsWith('ru-')) {
-            lang = 'ru';
-          } else if (browser_lang == 'nl' || browser_lang.startsWith('nl-')) {
-            lang = 'nl';
-          } else if (browser_lang == 'fr' || browser_lang.startsWith('fr-')) {
-            lang = 'fr';
-          } else if (browser_lang == 'de' || browser_lang.startsWith('de-')) {
-            lang = 'de';
-          } else if (browser_lang == 'pl' || browser_lang.startsWith('pl-')) {
-            lang = 'pl';
-          } else if (browser_lang == 'ja' || browser_lang.startsWith('ja-')) {
-            lang = 'ja';
-          } else if (browser_lang == 'si' || browser_lang.startsWith('si-')) {
-            lang = 'si';
-          } else if (browser_lang == 'ko' || browser_lang.startsWith('ko-')) {
-            lang = 'ko';
-          } else if (browser_lang == 'es' || browser_lang.startsWith('es-')) {
-            lang = 'es';
-          } else if (browser_lang == 'pt' || browser_lang.startsWith('pt-')) {
-            lang = 'pt-BR';
+          } else {
+            if (localeData[browser_lang]) {
+              lang = browser_lang;
+            } else {
+              for (var key in localeData) {
+                if (browser_lang.startsWith(key.substring(0, 2))) {
+                  lang = key;
+                  break;
+                }
+              }
+            }
           }
         }
-    
-        var url_lang = location.search.substr(1)
-        if (url_lang && welcome_msgs[url_lang]) {
-          lang = url_lang;
-        }
+
+        var route = (localeData[lang].route !== undefined) ? localeData[lang].route : '/' + lang;
+        document.getElementById("welcome_title").innerHTML = (localeData[lang].welcome && localeData[lang].welcome.title) || localeData.en.welcome.title;
+        document.getElementById("welcome_instruction").innerHTML = ((localeData[lang].welcome && localeData[lang].welcome.instruction) || localeData.en.welcome.instruction).replace('\n', '<br>').replace(/\[([^\]]+)\]\(\/gallery\)/g, function (match, text) {
+          return `<a href="https://phydemo.app/ray-optics${localeData[lang].gallery ? route : ''}/gallery/">${text}</a>`;
+        });
+        document.getElementById("welcome_loading").innerHTML = (localeData[lang].welcome && localeData[lang].welcome.loading) || localeData.en.welcome.loading;
         
         if (location.hash) {
-          document.getElementById("welcome").innerHTML = loading_msgs[lang];
-        } else {
-          document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+          document.getElementById("welcome_loading").style.display = '';
+          document.getElementById("welcome_instruction").style.display = 'none';
         }
     
       </script>
@@ -1153,137 +1122,7 @@
                 <div id="translated_text" class="col text-end"></div>
               </div>
             </div>
-            <a href="?en" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  English
-                </div>
-                <div class="col text-end" id="lang-en">
-                  English
-                </div>
-              </div>
-            </a>
-            <a href="?de" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Deutsch
-                </div>
-                <div class="col text-end" id="lang-de">
-                  Deutsch
-                </div>
-              </div>
-            </a>
-            <a href="?es" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Español
-                </div>
-                <div class="col text-end" id="lang-es">
-                  Español
-                </div>
-              </div>
-            </a>
-            <a href="?fr" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Français
-                </div>
-                <div class="col text-end" id="lang-fr">
-                  Français
-                </div>
-              </div>
-            </a>
-            <a href="?ja" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  日本語
-                </div>
-                <div class="col text-end" id="lang-ja">
-                  日本語
-                </div>
-              </div>
-            </a>
-            <a href="?ko" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  한국어
-                </div>
-                <div class="col text-end" id="lang-ko">
-                  한국어
-                </div>
-              </div>
-            </a>
-            <a href="?nl" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Nederlands
-                </div>
-                <div class="col text-end" id="lang-nl">
-                  Nederlands
-                </div>
-              </div>
-            </a>
-            <a href="?pl" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  polski
-                </div>
-                <div class="col text-end" id="lang-pl">
-                  polski
-                </div>
-              </div>
-            </a>
-            <a href="?pt-BR" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Português (Brasil)
-                </div>
-                <div class="col text-end" id="lang-pt-BR">
-                  Português (Brasil)
-                </div>
-              </div>
-            </a>
-            <a href="?ru" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  Русский
-                </div>
-                <div class="col text-end" id="lang-ru">
-                  Русский
-                </div>
-              </div>
-            </a>
-            <a href="?si" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  සිංහල
-                </div>
-                <div class="col text-end" id="lang-si">
-                  සිංහල
-                </div>
-              </div>
-            </a>
-            <a href="?zh-CN" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  简体中文
-                </div>
-                <div class="col text-end" id="lang-zh-CN">
-                  简体中文
-                </div>
-              </div>
-            </a>
-            <a href="?zh-TW" class="btn btn-primary dropdown-item d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col">
-                  正體中文
-                </div>
-                <div class="col text-end" id="lang-zh-TW">
-                  正體中文
-                </div>
-              </div>
-            </a>
-            
+            <div id="language_list"></div>
             <small><a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-translations" target="_blank" id="translate"></a></small>
           </div>
           <div class="modal-footer">

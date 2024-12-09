@@ -39,8 +39,6 @@ async function startApp() {
       escapeValue: false
     }
   });
-  console.log(i18next.t('main:project.name'));
-  console.log(i18next.t('simulator:welcome.title'));
 
   try {
     if (localStorage.rayOpticsHelp == "off") {
@@ -507,7 +505,8 @@ async function startApp() {
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname + window.location.search);
     init();
-    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+    document.getElementById("welcome_loading").style.display = 'none';
+    document.getElementById("welcome_instruction").style.display = '';
     document.getElementById('welcome').style.display = '';
     editor.onActionComplete();
     hasUnsavedChange = false;
@@ -1249,24 +1248,56 @@ function initUIText() {
   setText('github', null, i18next.t('main:pages.github'));
 
 
-  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
-  document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
+  document.getElementById('language').innerHTML = window.localeData[lang].name;
+  document.getElementById('language_mobile').innerHTML = window.localeData[lang].name;
 
-  /*
-  const completenessData = getLanguageCompleteness();
-  for (let lang1 in completenessData) {
-    document.getElementById('lang-' + lang1).innerText = '' //completenessData[lang1] + '%';
-    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function (e) {
-      if (autoSyncUrl && !hasUnsavedChange) {
-        // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
-        e.preventDefault();
-        e.stopPropagation();
-        navigateToNewQuery(lang1)
-      }
-    }, true);
-  }
-  */
+  // Populate the language list
+  const languageList = document.getElementById('language_list');
   
+  for (const locale in window.localeData) {
+    const languageName = window.localeData[locale].name;
+    const completeness = Math.round(window.localeData[locale].numStrings / window.localeData.en.numStrings * 100);
+    /*
+    languageList.innerHTML += `
+      <a href="?${locale}" class="btn btn-primary dropdown-item d-flex align-items-center" onclick="if (autoSyncUrl && !hasUnsavedChange) {event.preventDefault(); event.stopPropagation(); navigateToNewQuery('${locale}')}">
+        <div class="d-flex w-100">
+          <div class="col">
+            ${languageName}
+          </div>
+          <div class="col text-end">
+            ${completeness}%
+          </div>
+        </div>
+      </a>
+    `;
+    */
+    const a = document.createElement('a');
+    a.href = '?' + locale;
+    a.classList.add('btn', 'btn-primary', 'dropdown-item', 'd-flex', 'align-items-center');
+    a.addEventListener('click', function (event) {
+      if (autoSyncUrl && !hasUnsavedChange) {
+        event.preventDefault();
+        event.stopPropagation();
+        navigateToNewQuery(locale);
+      }
+    });
+
+    const div = document.createElement('div');
+    div.classList.add('d-flex', 'w-100');
+
+    const div1 = document.createElement('div');
+    div1.classList.add('col');
+    div1.innerHTML = languageName;
+
+    const div2 = document.createElement('div');
+    div2.classList.add('col', 'text-end');
+    div2.innerHTML = completeness + '%';
+
+    div.appendChild(div1);
+    div.appendChild(div2);
+    a.appendChild(div);
+    languageList.appendChild(a);
+  }
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
@@ -1943,12 +1974,15 @@ function confirmPositioning(ctrl, shift) {
 
 
 function mapURL(url) {
+  const localeData = window.localeData[window.lang];
+  const route = (localeData.route !== undefined) ? localeData.route : '/' + window.lang;
+  const baseURL = 'https://phydemo.app/ray-optics';
   const urlMap = {
-    "/home": `https://phydemo.app/ray-optics/`,
-    "/simulator": `https://phydemo.app/ray-optics/simulator/`,
-    "/gallery": `https://phydemo.app/ray-optics/gallery/`,
-    "/modules/tutorial": "https://phydemo.app/ray-optics/modules/tutorial",
-    "/about": "https://phydemo.app/ray-optics/about",
+    "/home": baseURL + route + '/',
+    "/gallery": baseURL + (localeData.gallery ? route : '') + '/gallery/',
+    "/modules/modules": '..' + (localeData.modules ? route : '') + '/modules/modules.html',
+    "/modules/tutorial": baseURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
+    "/about": baseURL + (localeData.about ? route : '') + '/about',
     "/email": "mailto:ray-optics@phydemo.app",
     "/github": "https://github.com/ricktu288/ray-optics",
     "/github/issues": "https://github.com/ricktu288/ray-optics/issues",

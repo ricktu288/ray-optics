@@ -44,7 +44,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sync-translations": "node ./scripts/syncTranslations.js",
     "sort-translations": "node ./scripts/sortTranslations.mjs",
     "build-translations": "node ./scripts/buildTranslations.js",
     "build-scenes": "node ./scripts/buildScenes.mjs",

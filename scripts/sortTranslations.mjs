@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { type } from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
