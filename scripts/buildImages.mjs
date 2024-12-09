@@ -1,10 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const { Scene, Simulator, sceneObjs, geometry } = require(path.join(__dirname, '../dist-node/main.js'));
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import rayOptics from '../dist-node/main.js';
+import { createCanvas, loadImage } from 'canvas';
+import sharp from 'sharp';
 
-const { createCanvas, loadImage } = require('canvas');
-const sharp = require('sharp');
-const { info } = require('console');
+// Convert import.meta.url to a file path and determine the directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const langs = ['en', 'pl', 'zh-CN', 'zh-TW'];
 const dirs = {
@@ -28,8 +31,8 @@ const ctxGrid = canvasGrid.getContext('2d');
 const ctxVirtual = canvasVirtual.getContext('2d');
 const ctxFinal = canvasFinal.getContext('2d');
 
-const scene = new Scene();
-const simulator = new Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, false);
+const scene = new rayOptics.Scene();
+const simulator = new rayOptics.Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, false);
 
 function loadScene(sceneJson, callback, backgroundImage) {
   if (sceneJson.backgroundImage) {
@@ -172,7 +175,7 @@ const items = fs.readdirSync(dirs.en).filter(file => file.endsWith('.json') && f
 async function exportAllImages() {
   const beginTime = Date.now();
   for (let item of items) {
-    for (isThumbnail of [false, true]) {
+    for (let isThumbnail of [false, true]) {
       for (let lang of langs) {
         if (fs.existsSync(dirs[lang] + item + '.json')) {
           const time = Date.now();

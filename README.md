@@ -124,7 +124,7 @@ After that, you can use the simulator in your own project by importing the modul
 const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/dist-node/main.js');
 ```
 
-See the [documentation](https://phydemo.app/ray-optics/docs/) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.js).
+See the [documentation](https://phydemo.app/ray-optics/docs/) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
 
 
 # License

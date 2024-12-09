@@ -1,7 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = (env, argv) => {
-  const isProduction = argv.mode === 'production';
+export default (env, argv) => {
 
   return {
     entry: './src/simulator-node/main.js',
@@ -9,7 +8,7 @@ module.exports = (env, argv) => {
     output: {
       filename: 'main.js',
       libraryTarget: 'commonjs2',
-      path: path.resolve(__dirname, 'dist-node'),
+      path: path.resolve('dist-node'),
       assetModuleFilename: (pathData) => {
         const filepath = path.dirname(pathData.filename).split('/').slice(1).join('/');
         return `${filepath}/[name][ext]`;
@@ -50,7 +49,7 @@ module.exports = (env, argv) => {
     mode: 'development',
     resolve: {
       alias: {
-        'mathjs': path.resolve(__dirname, 'node_modules/mathjs'), // Avoid duplicated mathjs instances for tex-math-parser
+        mathjs: path.resolve('node_modules/mathjs'),
       },
     },
   };
