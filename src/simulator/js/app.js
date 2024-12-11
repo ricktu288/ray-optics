@@ -1108,7 +1108,7 @@ function initUIText() {
   setText('tool_Blocker_label', i18next.t('main:tools.Blocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Blocker.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Blocker.svg');
   setText('tool_CircleBlocker_label', i18next.t('main:tools.CircleBlocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleBlocker.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleBlocker.svg');
   setText('tool_Aperture_label', i18next.t('main:tools.Aperture.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Aperture.description'), sub: i18next.t('main:tools.Aperture.instruction')}), 'Aperture.svg');
-  setText('tool_DiffractionGrating_label', i18next.t('main:tools.DiffractionGrating.title') + '<sup>Beta</sup>', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.DiffractionGrating.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'DiffractionGrating.svg');
+  setText('tool_DiffractionGrating_label', i18next.t('main:tools.DiffractionGrating.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.DiffractionGrating.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'DiffractionGrating.svg');
   setText('moreToolsDropdown', i18next.t('main:tools.categories.other'));
   setText('tool_Ruler_label', i18next.t('main:tools.Ruler.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Ruler.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Ruler.svg');
   setText('tool_Protractor_label', i18next.t('main:tools.Protractor.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Protractor.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Protractor.svg');
@@ -1122,7 +1122,7 @@ function initUIText() {
   setText('mode_rays_label', null, i18next.t('main:view.rays.title'), i18next.t('main:view.rays.description'), 'normal.svg');
   setText('mode_extended_label', null, i18next.t('main:view.extended.title'), i18next.t('main:view.extended.description') + '<br>' + i18next.t('main:view.extended.simulateColorsNote'), 'extended_rays.svg');
   setText('mode_images_label', null, i18next.t('main:view.images.title'), i18next.t('main:view.images.description') + '<br>' + i18next.t('main:view.images.simulateColorsNote'), 'all_images.svg');
-  setText('mode_observer_label', null, i18next.t('main:view.observer.title'), i18next.t('main:view.observer.description') + '<br>' + i18next.t('main:view.observer.simulateColorsNote'), 'seen_by_observer.svg');
+  setText('mode_observer_label', null, i18next.t('main:view.observer.title'), i18next.t('main:meta.parentheses', {main: i18next.t('main:view.observer.description'), sub: i18next.t('main:view.observer.instruction')}) + '<br>' + i18next.t('main:view.observer.simulateColorsNote'), 'seen_by_observer.svg');
   setText('view_text', i18next.t('main:view.title'));
   setText('rayDensity_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
   setText('rayDensity_text', i18next.t('simulator:settings.rayDensity.title'));
@@ -1143,13 +1143,13 @@ function initUIText() {
   setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   setText('observer_size_text', i18next.t('simulator:settings.observerSize.title'));
   setText('lengthScale_popover', null, null, i18next.t('simulator:settings.lengthScale.description'));
-  setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title') + '<sup>Beta</sup>');
+  setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
   setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
   setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
-  setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title') + '<sup>Beta</sup>');
+  setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
   setText('show_status_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('show_help_popups_popover', null, null, i18next.t('simulator:settings.showHelpPopups.description'));
@@ -1191,7 +1191,7 @@ function initUIText() {
   setText('tool_Blocker_mobile_label', i18next.t('main:tools.Blocker.title'));
   setText('tool_CircleBlocker_mobile_label', i18next.t('main:tools.CircleBlocker.title'));
   setText('tool_Aperture_mobile_label', i18next.t('main:tools.Aperture.title'));
-  setText('tool_DiffractionGrating_mobile_label', i18next.t('main:tools.DiffractionGrating.title') + '<sup>Beta</sup>');
+  setText('tool_DiffractionGrating_mobile_label', i18next.t('main:tools.DiffractionGrating.title'));
   setText('tool_Ruler_mobile_label', i18next.t('main:tools.Ruler.title'));
   setText('tool_Protractor_mobile_label', i18next.t('main:tools.Protractor.title'));
   setText('tool_Detector_mobile_label', i18next.t('main:tools.Detector.title'));
@@ -1212,10 +1212,10 @@ function initUIText() {
   setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
   setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
-  setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title') + '<sup>Beta</sup>');
+  setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
   setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
-  setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title') + '<sup>Beta</sup>');
+  setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
