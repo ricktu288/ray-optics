@@ -263,13 +263,13 @@
       }
     },
     "CropBox": {
+      "title": "匯出",
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "寬度",
       "rayCountLimit": "光線數量上限",
       "svgWarning": "匯出為SVG：不支援混色與相對折射率低於1的情形。",
-      "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。",
-      "title": "匯出"
+      "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。"
     }
   },
   "saveModal": {
