@@ -3,6 +3,7 @@
 # Ray Optics Simulation
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6386611.svg)](https://doi.org/10.5281/zenodo.6386611)
 [![Deploy to GitHub Pages](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml)
+[![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/svg-badge.svg)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 
 A web app for creating and simulating 2D geometric optical scenes. Our goal is to make it easy for students to build physical intuition by "playing around", for teachers to do dynamical demonstrations, and at the same time also include tools for more advanced usage.
 
@@ -46,6 +47,8 @@ Contributions are welcome. For the following types of contributions, no (or litt
 - New modules (as in Tools -> Other -> Import Modules)
 
 See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md) for the tutorial.
+
+For translations, note that this project uses Weblate (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/projects/ray-optics-simulation/ to translate.
 
 To contribute code, you need to have some knowledge of JavaScript and module bundling. The code is written in ES6 and bundled with Webpack. The code structure is documented in the [documentation](https://phydemo.app/ray-optics/docs/). See the following section for installation instructions.
 
