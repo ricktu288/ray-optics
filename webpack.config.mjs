@@ -70,6 +70,11 @@ export default (env, argv) => {
       client: {
         overlay: { errors: true, warnings: false },
       },
+      historyApiFallback: {
+        rewrites: [
+          { from: /^\/(?!.*\.html$).*$/, to: context => `${context.parsedUrl.pathname}.html` }
+        ]
+      },
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
   };

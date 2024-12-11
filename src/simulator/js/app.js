@@ -1976,13 +1976,13 @@ function confirmPositioning(ctrl, shift) {
 function mapURL(url) {
   const localeData = window.localeData[window.lang];
   const route = (localeData.route !== undefined) ? localeData.route : '/' + window.lang;
-  const baseURL = 'https://phydemo.app/ray-optics';
+  const rootURL = '..'
   const urlMap = {
-    "/home": baseURL + route + '/',
-    "/gallery": baseURL + (localeData.gallery ? route : '') + '/gallery/',
-    "/modules/modules": '..' + (localeData.modules ? route : '') + '/modules/modules.html',
-    "/modules/tutorial": baseURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
-    "/about": baseURL + (localeData.about ? route : '') + '/about',
+    "/home": rootURL + route + '/',
+    "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
+    "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
+    "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
+    "/about": rootURL + (localeData.about ? route : '') + '/about',
     "/email": "mailto:ray-optics@phydemo.app",
     "/github": "https://github.com/ricktu288/ray-optics",
     "/github/issues": "https://github.com/ricktu288/ray-optics/issues",

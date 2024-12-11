@@ -88,11 +88,15 @@ const sortedMainAuthors = contributors
 // Load the gallery list
 const galleryList = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/galleryList.json'), 'utf8'));
 
-// List all gallery ids in the galleryList
-const galleryIDs = [];
+// List all existing galleryscenes IDs, which are the file name of the json files in the /data/galleryScenes directory.
+const galleryFiles = fs.readdirSync(path.join(__dirname, '../data/galleryScenes'));
+const galleryIDs = galleryFiles.filter((file) => file.endsWith('.json')).map((file) => file.replace('.json', ''));
+
+// List all IDs which are in the galleryList
+const galleryIDInList = {};
 for (const category of galleryList) {
   for (const item of category.content) {
-    galleryIDs.push(item.id);
+    galleryIDInList[item.id] = true;
   }
 }
 
@@ -155,6 +159,7 @@ for (const id of moduleIDs) {
   moduleItemsLangs[id] = [];
 }
 
+const rootAbsUrl = "https://phydemo.app/ray-optics";
 const urlMaps = {};
 const langNames = {};
 const i18nextResources = {};
@@ -186,10 +191,8 @@ for (const lang of langs) {
   // Add the language name
   langNames[lang] = mainData.meta.languageName || lang;
 
-  const baseURL = "https://phydemo.app/ray-optics";
-
   urlMaps[lang] = {
-    "/simulator": baseURL + "/simulator/" + (lang === 'en' ? '' : '?' + lang),
+    "/simulator": "/simulator/" + (lang === 'en' ? '' : '?' + lang),
     "/phydemo": "https://phydemo.app/",
     "/email": "mailto:ray-optics@phydemo.app",
     "/github": "https://github.com/ricktu288/ray-optics",
@@ -203,36 +206,36 @@ for (const lang of langs) {
   };
 
   homeLangs.push(lang);
-  urlMaps[lang]['/home'] = baseURL + routesData[lang] + '/';
+  urlMaps[lang]['/home'] = routesData[lang] + '/';
 
   if (mainData.aboutPage) {
     aboutLangs.push(lang);
-    urlMaps[lang]['/about'] = baseURL + routesData[lang] + '/about';
+    urlMaps[lang]['/about'] = routesData[lang] + '/about';
   } else {
-    urlMaps[lang]['/about'] = baseURL + '/about';
+    urlMaps[lang]['/about'] = '/about';
   }
 
   if (galleryData.galleryPage) {
     galleryLangs.push(lang);
-    urlMaps[lang]['/gallery'] = baseURL + routesData[lang] + '/gallery';
+    urlMaps[lang]['/gallery'] = routesData[lang] + '/gallery/';
   } else {
-    urlMaps[lang]['/gallery'] = baseURL + '/gallery';
+    urlMaps[lang]['/gallery'] = '/gallery/';
   }
 
   for (const id of galleryIDs) {
     if (galleryData.galleryData && galleryData.galleryData[galleryIDToCamelCase[id]]) {
       galleryItemsLangs[id].push(lang);
-      urlMaps[lang][`/gallery/${id}`] = baseURL + routesData[lang] + '/gallery/' + id;
+      urlMaps[lang][`/gallery/${id}`] = routesData[lang] + '/gallery/' + id;
     } else {
-      urlMaps[lang][`/gallery/${id}`] = baseURL + '/gallery/' + id;
+      urlMaps[lang][`/gallery/${id}`] = '/gallery/' + id;
     }
   }
 
   if (modulesData.modulesPage) {
     modulesLangs.push(lang);
-    urlMaps[lang]['/modules/modules'] = baseURL + routesData[lang] + '/modules/modules.html';
+    urlMaps[lang]['/modules/modules'] = routesData[lang] + '/modules/modules.html';
   } else {
-    urlMaps[lang]['/modules/modules'] = baseURL + '/modules/modules.html';
+    urlMaps[lang]['/modules/modules'] = '/modules/modules.html';
   }
 
   for (const id of moduleIDs) {
@@ -243,9 +246,9 @@ for (const lang of langs) {
 
   if (modulesData.moduleTutorial) {
     moduleTutorialLangs.push(lang);
-    urlMaps[lang]['/modules/tutorial'] = baseURL + routesData[lang] + '/modules/tutorial';
+    urlMaps[lang]['/modules/tutorial'] = routesData[lang] + '/modules/tutorial';
   } else {
-    urlMaps[lang]['/modules/tutorial'] = baseURL + '/modules/tutorial';
+    urlMaps[lang]['/modules/tutorial'] = '/modules/tutorial';
   }
 }
 
@@ -337,7 +340,7 @@ for (const lang of homeLangs) {
   Handlebars.registerPartial('navbar', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/navbar.hbs'), 'utf8'));
   Handlebars.registerPartial('footer', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/footer.hbs'), 'utf8'));
 
-  const rootRelUrl = lang == 'en' ? '' : '../';
+  const rootUrl = lang == 'en' ? '.' : '..';
   const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
 
   // Load the home template
@@ -345,23 +348,24 @@ for (const lang of homeLangs) {
 
   const homeData = {
     title: i18next.t('main:project.name') + ' - PhyDemo',
-    image: 'https://phydemo.app/ray-optics/img/image.png',
-    url: urlMaps[lang]['/home'],
+    ogImage: rootAbsUrl + '/img/image.png',
+    absUrl: rootAbsUrl + urlMaps[lang]['/home'],
     lang: lang,
     langName: langNames[lang],
     supportedLangs: homeLangs.map((lang) => {
       return {
         lang: lang,
         name: langNames[lang],
-        url: urlMaps[lang]['/home'],
+        url: rootUrl + urlMaps[lang]['/home'],
+        absUrl: rootAbsUrl + urlMaps[lang]['/home'],
       };
     }),
-    imgUrl: rootRelUrl + 'img',
-    thirdpartyUrl: rootRelUrl + 'thirdparty',
-    homeUrl: urlMaps[lang]['/home'],
-    aboutUrl: urlMaps[lang]['/about'],
-    galleryUrl: urlMaps[lang]['/gallery'],
-    simulatorUrl: urlMaps[lang]['/simulator'],
+    imgUrl: rootUrl + '/img',
+    thirdpartyUrl: rootUrl + '/thirdparty',
+    homeUrl: rootUrl + urlMaps[lang]['/home'],
+    aboutUrl: rootUrl + urlMaps[lang]['/about'],
+    galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+    simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
     isHome: true,
     isGallery: false,
     isAbout: false,
@@ -394,23 +398,24 @@ for (const lang of homeLangs) {
     const aboutTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/about.hbs'), 'utf8'));
     const aboutData = {
       title: i18next.t('main:pages.about') + ' - ' + i18next.t('main:project.name'),
-      image: 'https://phydemo.app/ray-optics/img/image.png',
-      url: urlMaps[lang]['/about'],
+      ogImage: rootAbsUrl + '/img/image.png',
+      absUrl: rootAbsUrl + urlMaps[lang]['/about'],
       lang: lang,
       langName: langNames[lang],
       supportedLangs: aboutLangs.map((lang) => {
         return {
           lang: lang,
           name: langNames[lang],
-          url: urlMaps[lang]['/about'],
+          url: rootUrl + urlMaps[lang]['/about'],
+          absUrl: rootAbsUrl + urlMaps[lang]['/about'],
         };
       }),
-      imgUrl: rootRelUrl + 'img',
-      thirdpartyUrl: rootRelUrl + 'thirdparty',
-      homeUrl: urlMaps[lang]['/home'],
-      aboutUrl: urlMaps[lang]['/about'],
-      galleryUrl: urlMaps[lang]['/gallery'],
-      simulatorUrl: urlMaps[lang]['/simulator'],
+      imgUrl: rootUrl + '/img',
+      thirdpartyUrl: rootUrl + '/thirdparty',
+      homeUrl: rootUrl + urlMaps[lang]['/home'],
+      aboutUrl: rootUrl + urlMaps[lang]['/about'],
+      galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+      simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
       isHome: false,
       isGallery: false,
       isAbout: true,
@@ -437,32 +442,35 @@ for (const lang of homeLangs) {
     // Create the gallery/ directory
     const galleryDir = path.join(langDir, 'gallery');
     fs.mkdirSync(galleryDir, { recursive: true });
-    const rootRelUrl = lang == 'en' ? '../' : '../../';
+    const rootUrl = lang == 'en' ? '..' : '../..';
 
     const galleryTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/gallery.hbs'), 'utf8'));
     const galleryData = {
       title: i18next.t('main:pages.gallery') + ' - ' + i18next.t('main:project.name'),
-      image: 'https://phydemo.app/ray-optics/img/image.png',
-      url: urlMaps[lang]['/gallery'],
+      ogImage: rootAbsUrl + '/img/image.png',
+      absUrl: rootAbsUrl + urlMaps[lang]['/gallery'],
       lang: lang,
       langName: langNames[lang],
       supportedLangs: galleryLangs.map((lang) => {
         return {
           lang: lang,
           name: langNames[lang],
-          url: urlMaps[lang]['/gallery'],
+          url: rootUrl + urlMaps[lang]['/gallery'],
+          absUrl: rootAbsUrl + urlMaps[lang]['/gallery'],
           translatedFraction: i18next.t('main:meta.parentheses', {
             main: '',
-            sub: Math.round(galleryItemsTranslated[lang] * 100) + '%'
+            sub: i18next.t('main:languageDropdown.translatedFraction', {
+              fraction: Math.round(galleryItemsTranslated[lang] * 100) + '%'
+            })
           }),
         };
       }),
-      imgUrl: rootRelUrl + 'img',
-      thirdpartyUrl: rootRelUrl + 'thirdparty',
-      homeUrl: urlMaps[lang]['/home'],
-      aboutUrl: urlMaps[lang]['/about'],
-      galleryUrl: urlMaps[lang]['/gallery'],
-      simulatorUrl: urlMaps[lang]['/simulator'],
+      imgUrl: rootUrl + '/img',
+      thirdpartyUrl: rootUrl + '/thirdparty',
+      homeUrl: rootUrl + urlMaps[lang]['/home'],
+      aboutUrl: rootUrl + urlMaps[lang]['/about'],
+      galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+      simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
       isHome: false,
       isGallery: true,
       isAbout: false,
@@ -474,8 +482,7 @@ for (const lang of homeLangs) {
             return {
               id: contentItem.id,
               title: i18next.t('gallery:galleryData.' + galleryIDToCamelCase[contentItem.id] + '.title'),
-              url: urlMaps[lang]['/gallery/' + contentItem.id],
-              relUrl: galleryItemsLangs[contentItem.id].includes(lang) ? contentItem.id : '../../gallery/' + contentItem.id,
+              url: rootUrl + urlMaps[lang]['/gallery/' + contentItem.id],
               contributors: contentItem.contributors.join(', '),
             };
           }),
@@ -490,26 +497,28 @@ for (const lang of homeLangs) {
     // Create the gallery item webpages
     for (const id of galleryIDs) {
       if (!galleryItemsLangs[id].includes(lang)) continue;
+      if (!galleryIDInList[id]) continue;
 
       const galleryItemData = {
         title: i18next.t('gallery:galleryData.' + galleryIDToCamelCase[id] + '.title') + ' - ' + i18next.t('main:project.name'),
-        image: urlMaps[lang]['/gallery/' + id] + '.jpg',
-        url: urlMaps[lang]['/gallery/' + id],
+        ogImage: rootAbsUrl + urlMaps[lang]['/gallery/' + id] + '.jpg',
+        absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
         lang: lang,
         langName: langNames[lang],
         supportedLangs: galleryItemsLangs[id].map((lang) => {
           return {
             lang: lang,
             name: langNames[lang],
-            url: urlMaps[lang]['/gallery/' + id],
+            url: rootUrl + urlMaps[lang]['/gallery/' + id],
+            absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
           };
         }),
-        imgUrl: rootRelUrl + 'img',
-        thirdpartyUrl: rootRelUrl + 'thirdparty',
-        homeUrl: urlMaps[lang]['/home'],
-        aboutUrl: urlMaps[lang]['/about'],
-        galleryUrl: urlMaps[lang]['/gallery'],
-        simulatorUrl: urlMaps[lang]['/simulator'],
+        imgUrl: rootUrl + '/img',
+        thirdpartyUrl: rootUrl + '/thirdparty',
+        homeUrl: rootUrl + urlMaps[lang]['/home'],
+        aboutUrl: rootUrl + urlMaps[lang]['/about'],
+        galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+        simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
         isHome: false,
         isGallery: true,
         isAbout: false,
@@ -529,15 +538,15 @@ for (const lang of homeLangs) {
     // create the modules/ directory
     const modulesDir = path.join(langDir, 'modules');
     fs.mkdirSync(modulesDir, { recursive: true });
-    const rootRelUrl = lang == 'en' ? '../' : '../../';
+    const rootUrl = lang == 'en' ? '..' : '../..';
 
     // Load the modules template
     const modulesTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/modules.hbs'), 'utf8'));
     const modulePageData = {
       lang: lang,
       langName: langNames[lang],
-      imgUrl: rootRelUrl + 'img',
-      thirdpartyUrl: rootRelUrl + 'thirdparty',
+      imgUrl: rootUrl + '/img',
+      thirdpartyUrl: rootUrl + '/thirdparty',
       content: moduleList[0].content.map(item => {
         return {
           id: item.id,
@@ -554,34 +563,37 @@ for (const lang of homeLangs) {
     // Create the module tutorial webpage
     if (moduleTutorialLangs.includes(lang)) {
       const moduleTutorialTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/moduleTutorial.hbs'), 'utf8'));
+
+      const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
       const moduleTutorialData = {
         title: i18next.t('modules:moduleTutorial.title') + ' - ' + i18next.t('main:project.name'),
-        image: 'https://phydemo.app/ray-optics/img/image.png',
-        url: urlMaps[lang]['/modules/tutorial'],
+        ogImage: rootAbsUrl + '/img/image.png',
+        absUrl: rootAbsUrl + urlMaps[lang]['/modules/tutorial'],
         lang: lang,
         langName: langNames[lang],
         supportedLangs: moduleTutorialLangs.map((lang) => {
           return {
             lang: lang,
             name: langNames[lang],
-            url: urlMaps[lang]['/modules/tutorial'],
+            url: rootUrl + urlMaps[lang]['/modules/tutorial'],
+            absUrl: rootAbsUrl + urlMaps[lang]['/modules/tutorial'],
           };
         }),
-        imgUrl: rootRelUrl + 'img',
-        thirdpartyUrl: rootRelUrl + 'thirdparty',
-        homeUrl: urlMaps[lang]['/home'],
-        aboutUrl: urlMaps[lang]['/about'],
-        galleryUrl: urlMaps[lang]['/gallery'],
-        simulatorUrl: urlMaps[lang]['/simulator'],
+        imgUrl: rootUrl + '/img',
+        thirdpartyUrl: rootUrl + '/thirdparty',
+        homeUrl: rootUrl + urlMaps[lang]['/home'],
+        aboutUrl: rootUrl + urlMaps[lang]['/about'],
+        galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+        simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
         isHome: false,
         isGallery: false,
         isAbout: false,
-        moduleExampleBasicsHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleBasics',
-        moduleExampleParametersHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleParameters',
-        moduleExampleControlPointsHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleControlPoints',
-        moduleExampleArraysAndConditionalsHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleArraysAndConditionals',
-        moduleExampleCustomEquationHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleCustomEquation',
-        moduleExampleShapeParametrizationHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + 'moduleExampleShapeParametrization',
+        moduleExampleBasicsHashUrl: (galleryItemsLangs['module-example-basics'].includes(lang) ? galleryHashUrl : '') + 'module-example-basics',
+        moduleExampleParametersHashUrl: (galleryItemsLangs['module-example-parameters'].includes(lang) ? galleryHashUrl : '') + 'module-example-parameters',
+        moduleExampleControlPointsHashUrl: (galleryItemsLangs['module-example-control-points'].includes(lang) ? galleryHashUrl : '') + 'module-example-control-points',
+        moduleExampleArraysAndConditionalsHashUrl: (galleryItemsLangs['module-example-arrays-and-conditionals'].includes(lang) ? galleryHashUrl : '') + 'module-example-arrays-and-conditionals',
+        moduleExampleCustomEquationHashUrl: (galleryItemsLangs['module-example-custom-equation'].includes(lang) ? galleryHashUrl : '') + 'module-example-custom-equation',
+        moduleExampleShapeParametrizationHashUrl: (galleryItemsLangs['module-example-shape-parametrization'].includes(lang) ? galleryHashUrl : '') + 'module-example-shape-parametrization',
       }
       fs.writeFileSync(path.join(modulesDir, 'tutorial.html'), moduleTutorialTemplate(moduleTutorialData));
     }
