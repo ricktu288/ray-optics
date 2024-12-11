@@ -1,6 +1,6 @@
 import BaseGlass from '../BaseGlass.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
@@ -35,9 +35,10 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.categories.glass'));
     objBar.createEquation('', this.eqn1, function (obj, value) {
       obj.eqn1 = value;
-    }, getMsg('eqn_note'));
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');
     objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
     });

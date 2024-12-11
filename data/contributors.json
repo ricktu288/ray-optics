@@ -1,0 +1,371 @@
+[
+  {
+    "name": "Yi-Ting Tu",
+    "isMainAuthor": true,
+    "githubEmails": [
+      "ricktu256@gmail.com",
+      "ricktu256@yahoo.com.tw"
+    ],
+    "contributions": {
+      "code": true,
+      "uiDesign": true,
+      "gallery": true,
+      "modules": true,
+      "translations": [
+        "zh-TW",
+        "zh-CN"
+      ]
+    },
+    "firstCommit": "2016-02-22"
+  },
+  {
+    "name": "Scott Cheng",
+    "githubEmails": [
+      "chengscott@live.com"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2016-05-17"
+  },
+  {
+    "name": "Wei-Fang Sun",
+    "githubEmails": [
+      "j3.soon@msa.hinet.net"
+    ],
+    "contributions": {
+      "code": true,
+      "uiDesign": true
+    },
+    "firstCommit": "2018-04-14"
+  },
+  {
+    "name": "cyamahat",
+    "githubEmails": [
+      "christophe.yamahata@gmail.com"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2021-02-27"
+  },
+  {
+    "name": "Paul Falstad",
+    "githubEmails": [
+      "paul@falstad.com"
+    ],
+    "contributions": {
+      "code": true,
+      "gallery": true
+    },
+    "firstCommit": "2021-03-15"
+  },
+  {
+    "name": "GLmontanari",
+    "githubEmails": [
+      "gianlucamontanari4@gmail.com"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2022-08-05"
+  },
+  {
+    "name": "Martin Poitras",
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2022-08-05"
+  },
+  {
+    "name": "BoopSnoot",
+    "contributions": {
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2022-10-18"
+  },
+  {
+    "name": "mahjsa",
+    "contributions": {
+      "translations": [
+        "nl"
+      ]
+    },
+    "firstCommit": "2022-10-18"
+  },
+  {
+    "name": "Wen Zhou",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2022-10-19"
+  },
+  {
+    "name": "Stas Fainer",
+    "githubEmails": [
+      "114682673+StasFainer@users.noreply.github.com",
+      "stasfainer@gmail.com"
+    ],
+    "contributions": {
+      "code": true,
+      "gallery": true,
+      "modules": true
+    },
+    "firstCommit": "2022-10-19"
+  },
+  {
+    "name": "kqakqakqa",
+    "githubEmails": [
+      "58761476+kqakqakqa@users.noreply.github.com"
+    ],
+    "contributions": {
+      "code": true,
+      "translations": [
+        "zh-CN"
+      ]
+    },
+    "firstCommit": "2022-10-26"
+  },
+  {
+    "name": "Cutivel Dimitri",
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2022-10-30"
+  },
+  {
+    "name": "Vincent Fan",
+    "contributions": {
+      "code": true,
+      "uiDesign": true,
+      "gallery": true
+    },
+    "firstCommit": "2022-11-06"
+  },
+  {
+    "name": "Lo-Chen Cheng",
+    "githubEmails": [
+      "luke.cheng.725443@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "de"
+      ]
+    },
+    "firstCommit": "2022-12-31"
+  },
+  {
+    "name": "Victory Science",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2023-01-09"
+  },
+  {
+    "name": "James Garrard",
+    "githubEmails": [
+      "gljames24@gmail.com"
+    ],
+    "contributions": {
+      "code": true,
+      "gallery": true
+    },
+    "firstCommit": "2023-01-13"
+  },
+  {
+    "name": "Matteo Ricci Cipolloni",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2023-02-11"
+  },
+  {
+    "name": "Mikhail Kochiev",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2023-03-04"
+  },
+  {
+    "name": "Fundacja Nauka i Wiedza",
+    "contributions": {
+      "translations": [
+        "pl"
+      ]
+    },
+    "firstCommit": "2023-03-04"
+  },
+  {
+    "name": "Michael Heise",
+    "githubEmails": [
+      "mh.mh@web.de"
+    ],
+    "contributions": {
+      "translations": [
+        "de"
+      ]
+    },
+    "firstCommit": "2023-05-15"
+  },
+  {
+    "name": "Adrian Dorrington",
+    "githubEmails": [
+      "adrian.dorrington@gmail.com"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2023-05-19"
+  },
+  {
+    "name": "Steve Stonebraker",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2023-06-02"
+  },
+  {
+    "name": "sadajun916",
+    "githubEmails": [
+      "24631614+sadajun916@users.noreply.github.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ja"
+      ]
+    },
+    "firstCommit": "2023-06-04"
+  },
+  {
+    "name": "Tharusha Theekshana",
+    "githubEmails": [
+      "tharushatheekshana4@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "si"
+      ]
+    },
+    "firstCommit": "2023-09-09"
+  },
+  {
+    "name": "krzysztofkrzeslak",
+    "contributions": {
+      "uiDesign": true
+    },
+    "firstCommit": "2023-09-16"
+  },
+  {
+    "name": "Young-Gi Kim",
+    "contributions": {
+      "translations": [
+        "ko"
+      ]
+    },
+    "firstCommit": "2023-09-17"
+  },
+  {
+    "name": "chuangyu J",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2023-12-16"
+  },
+  {
+    "name": "Miguel Sánchez Palomino",
+    "githubEmails": [
+      "miguelsanchez1703@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "es"
+      ]
+    },
+    "firstCommit": "2024-01-28"
+  },
+  {
+    "name": "Georg Nadorff",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-02-15"
+  },
+  {
+    "name": "Rene",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-02-28"
+  },
+  {
+    "name": "SukkaW",
+    "githubEmails": [
+      "isukkaw@gmail.com"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2024-03-01"
+  },
+  {
+    "name": "digitalgreenery",
+    "githubEmails": [
+      "digitalgreenery@proton.me"
+    ],
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2024-03-18"
+  },
+  {
+    "name": "Pedroobraga",
+    "githubEmails": [
+      "peterbragacbm@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "pt-BR"
+      ]
+    },
+    "firstCommit": "2024-04-25"
+  },
+  {
+    "name": "josephernest",
+    "contributions": {
+      "modules": true
+    },
+    "firstCommit": "2024-07-26"
+  },
+  {
+    "name": "Alex",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-09-05"
+  },
+  {
+    "name": "Liu Quanhong",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-11-16"
+  },
+  {
+    "name": "Peter Becher",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-11-26"
+  },
+  {
+    "name": "Mario Petitclerc",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2024-12-03"
+  }
+]

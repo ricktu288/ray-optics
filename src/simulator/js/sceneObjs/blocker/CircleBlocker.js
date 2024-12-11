@@ -1,5 +1,6 @@
 import BaseFilter from '../BaseFilter.js';
 import CircleObjMixin from '../CircleObjMixin.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -28,6 +29,11 @@ class CircleBlocker extends CircleObjMixin(BaseFilter) {
     wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.CircleBlocker.title'));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;

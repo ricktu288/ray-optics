@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  {{> head}}
+  <style>
+    iframe {
+      border: none;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container">
+    <h1 id="tutorial">{{t "modules:moduleTutorial.title"}}</h1>
+    
+    <p>{{t "modules:moduleTutorial.opening.description"}}</p>
+    <p>{{t "modules:moduleTutorial.opening.moduleIntroduction"}}</p>
+    <p>{{t "modules:moduleTutorial.opening.compareWithHandle"}}</p>
+
+    <h2 id="the-built-in-json-editor">{{t "modules:moduleTutorial.jsonEditor.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.jsonEditor.currentlyNoVisual"}}</p>
+    <p>{{t "modules:moduleTutorial.jsonEditor.enableJsonEditor"}}</p>
+    <p>{{t "modules:moduleTutorial.jsonEditor.updateAccordingly"}}</p>
+    <p>{{t "modules:moduleTutorial.jsonEditor.objsArray"}}</p>
+    <b><p>{{t "modules:moduleTutorial.jsonEditor.inIframesBelow"}}</p></b>
+
+    <h2 id="basics-of-a-module">{{t "modules:moduleTutorial.basics.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.basics.lookAtExample"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleBasicsHashUrl}}"></iframe>
+    <p>{{t "modules:moduleTutorial.basics.lookAtJson"}}</p>
+    <p>{{t "modules:moduleTutorial.basics.moduleDef"}}</p>
+    <p>{{t "modules:moduleTutorial.basics.putToScene"}}</p>
+    <p>{{t "modules:moduleTutorial.basics.moduleDefNotEditable"}}</p>
+    <p>{{t "modules:moduleTutorial.basics.demodulize"}}</p>
+    <p>{{t "modules:moduleTutorial.basics.createModule"}}</p>
+
+    <h2 id="adding-parameters">{{t "modules:moduleTutorial.parameters.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.parameters.lookAtExample"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleParametersHashUrl}}"></iframe>
+    <p>{{t "modules:moduleTutorial.parameters.paramsArray"}}</p>
+    <p>{{t "modules:moduleTutorial.parameters.equationSyntax"}}</p>
+    <p>{{t "modules:moduleTutorial.parameters.valueStorage"}}</p>
+
+    <h2 id="adding-control-points">{{t "modules:moduleTutorial.controlPoints.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.controlPoints.lookAtExample"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleControlPointsHashUrl}}"></iframe>
+    <p>{{t "modules:moduleTutorial.controlPoints.coordinatesOfControlPoints"}}</p>
+    <p>{{t "modules:moduleTutorial.controlPoints.valueStorage"}}</p>
+    <p>{{t "modules:moduleTutorial.controlPoints.createAsTool"}}</p>
+
+    <h2 id="arrays-and-conditionals">{{t "modules:moduleTutorial.arrayAndConditional.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.arrayAndConditional.lookAtExample"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleArraysAndConditionalsHashUrl}}"></iframe>
+    <p>{{t "modules:moduleTutorial.arrayAndConditional.specialKeys"}}</p>
+    <p>{{t "modules:moduleTutorial.arrayAndConditional.preventInfiniteLoop"}}</p>
+
+    <h2 id="objects-with-built-in-custom-equations">{{t "modules:moduleTutorial.objsWithEqn.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.objsWithEqn.description"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleCustomEquationHashUrl}}"></iframe>
+    <p>{{t "modules:moduleTutorial.objsWithEqn.future"}}</p>
+
+    <h2 id="objects-with-built-in-shape-parametrization">{{t "modules:moduleTutorial.objsWithShapeParam.title"}}</h2>
+    <p>{{t "modules:moduleTutorial.objsWithShapeParam.description"}}</p>
+    <iframe loading="lazy" src="{{simulatorUrl}}#{{moduleExampleShapeParametrizationHashUrl}}"></iframe>
+
+    {{> footer}}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>

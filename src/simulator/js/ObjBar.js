@@ -8,10 +8,13 @@ const MQ = MathQuill.getInterface(2);
  * @class
  */
 class ObjBar {
-  constructor(elem) {
+  constructor(elem, titleElem) {
 
     /** @property {HTMLElement} elem - The element the inputs will be populated to */
     this.elem = elem;
+
+    /** @property {HTMLElement} titleElem - The element that contains the title of the object bar */
+    this.titleElem = titleElem;
 
     /** @property {boolean} shouldApplyToAll - Whether the "Apply to all" checkbox is checked */
     this.shouldApplyToAll = false;
@@ -80,6 +83,26 @@ class ObjBar {
    * @param {Object} obj - The scene object whose value changed.
    * @param {any} value - The new value.
    */
+
+  /**
+   * Set the title of the object bar. If the title is empty, the title element is hidden.
+   * @param {string} title - The title of the object bar.
+   */
+  setTitle(title) {
+    if (title) {
+      this.titleElem.style.display = 'inline';
+      this.titleElem.innerHTML = title;
+    } else {
+      this.titleElem.style.display = 'none';
+    }
+
+    // If the title ends with the full-width parentheses, change the padding-right to avoid over-spacing.
+    if (title.endsWith('\uFF09')) {
+      this.titleElem.style.paddingRight = '0em';
+    } else {
+      this.titleElem.style.paddingRight = '0.4em';
+    }
+  }
 
   /**
    * Create a number input in the object bar.

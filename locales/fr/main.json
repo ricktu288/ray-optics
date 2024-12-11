@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "languageName": "Français",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  },
+  "project": {
+    "name": "Simulation de rayon optique",
+    "shortName": "Rayon optique"
+  },
+  "homePage": {
+    "description": "Une application web open-source pour simuler la reflexion et refraction de la lumière.\nEcrit en HTML, CSS et JavaScript. ([GitHub](/github))",
+    "launchSimulator": "Lancer l'application"
+  },
+  "tools": {
+    "title": "Outils",
+    "categories": {
+      "lightSource": "Source de lumière",
+      "mirror": "Miroirs",
+      "glass": "Verres",
+      "blocker": "Diaphragme",
+      "other": "Autre"
+    },
+    "common": {
+      "clickInstruction": "Cliquer pour le créer.",
+      "lineInstruction": "Glisser ou cliquer pour le créer.",
+      "circleInstruction": "Glisser ou cliquer pour le créer."
+    },
+    "SingleRay": {
+      "title": "Rayon",
+      "description": "Un rayon de lumière unique définit par deux points.",
+      "instruction": "Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point."
+    },
+    "Beam": {
+      "title": "Faisceau",
+      "description": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité controlée par le curseur 'Densité de rayons'. (Also supports divergent beams.)"
+    },
+    "PointSource": {
+      "title": "Source de lumière",
+      "description": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'."
+    },
+    "AngleSource": {
+      "instruction": "Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point."
+    },
+    "Mirror": {
+      "title": "Segment",
+      "description": "Simule la reflexion de la lumière sur un miroir."
+    },
+    "otherMirror": {
+      "title": "Arc circulaire",
+      "description": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points."
+    },
+    "ArcMirror": {
+      "title": "Arc circulaire",
+      "description": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points.",
+      "instruction": "Glisser ou cliquer pour le créer. Les deux premiers points définissent l'espace entre les bords de l'arc, le dernier point définit la taille de l'arc."
+    },
+    "IdealMirror": {
+      "title": "Courbure idéale",
+      "description": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement."
+    },
+    "PlaneGlass": {
+      "title": "Demi-plan",
+      "description": "Simule la réfraction et la reflexion de la lumière sur une surface.",
+      "instruction": "Glisser ou cliquer pour le créer."
+    },
+    "otherGlass": {
+      "title": "Autre",
+      "description": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires."
+    },
+    "CircleGlass": {
+      "title": "Cercle",
+      "description": "Verre avec une forme circulaire, définie par son centre et un point sur sa surface."
+    },
+    "Glass": {
+      "description": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires.",
+      "instruction": "Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner."
+    },
+    "IdealLens": {
+      "title": "Lentille idéale",
+      "description": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale peut être défini directement."
+    },
+    "Blocker": {
+      "description": "Un segment absorbant les rayons incidents."
+    },
+    "Ruler": {
+      "title": "Règle",
+      "description": "Une règle de zéro à un autre point."
+    },
+    "Protractor": {
+      "title": "Rapporteur",
+      "description": "Un rapporteur défini par le centre et un autre point pour la direction zero. L'echelle est en degrès."
+    },
+    "TextLabel": {
+      "title": "Texte",
+      "description": "Une légende, pour un objet quelconque."
+    },
+    "moveView": {
+      "title": "Bouger la vue",
+      "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
+    }
+  },
+  "view": {
+    "title": "Vue",
+    "rays": {
+      "title": "Rayons",
+      "description": "Montre les rayons. Quand la 'Densité de rayons' est élevée, elles paraissent continues."
+    },
+    "extended": {
+      "title": "Rayons étendus",
+      "description": "Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant."
+    },
+    "images": {
+      "title": "Toutes les images",
+      "description": "Montre la position de toutes les images. Les points jaunes indiquent les images réelles, l'orange indique les images virtuelles et le gris (absent sur l'image) indique les objets virtuels. Notons que certaines images ne peuvent pas être detectées si la 'Densité de rayon' n'est pas suffisament grande."
+    },
+    "observer": {
+      "title": "Vu par un observateur",
+      "description": "Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l'observateur. N'importe quel rayon traversant ce cercle est consideré comme 'observé'. L'observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu'il commence à un certain point s'ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange."
+    }
+  },
+  "languageDropdown": {
+    "title": "Langue: {{language}}"
+  }
+}

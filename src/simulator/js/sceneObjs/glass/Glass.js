@@ -1,4 +1,5 @@
 import BaseGlass from '../BaseGlass.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -24,6 +25,11 @@ class Glass extends BaseGlass {
     refIndex: 1.5,
     cauchyB: 0.004
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.categories.glass'));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;

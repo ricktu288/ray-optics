@@ -6,7 +6,6 @@ import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import '../css/style.scss';
 import * as $ from 'jquery';
-import { initializeTranslations, getMsg, getLanguageCompleteness } from './translations.js'
 import Editor from './Editor.js';
 import Simulator from './Simulator.js';
 import geometry from './geometry.js';
@@ -21,21 +20,33 @@ import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
+import i18next, { t } from 'i18next';
+import HttpBackend from 'i18next-http-backend';
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 async function startApp() {
-  await initializeTranslations();
-  updateUIText();
+  await i18next.use(HttpBackend).init({
+    lng: window.lang,
+    debug: isDevelopment,
+    fallbackLng: 'en',
+    load: 'currentOnly',
+    ns: ['main', 'simulator'],
+    backend: {
+      loadPath: '../locales/{{lng}}/{{ns}}.json',
+    },
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
   try {
     if (localStorage.rayOpticsHelp == "off") {
       popoversEnabled = false;
       document.getElementById('show_help_popups').checked = false;
     }
   } catch { }
-  if (popoversEnabled) {
-    updateUIWithPopovers();
-  } else {
-    updateUIWithoutPopovers();
-  }
+  initUIText();
   initTools();
   initModes();
 
@@ -58,7 +69,7 @@ async function startApp() {
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
 
-  objBar = new ObjBar(document.getElementById('obj_bar_main'));
+  objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
 
   objBar.on('showAdvancedEnabled', function (enabled) {
     if (enabled) {
@@ -105,16 +116,16 @@ async function startApp() {
 
   simulator.on('simulationPause', function () {
     document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>';
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>';
   });
 
   simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime) + '<br>' + getMsg("force_stopped");
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
     document.getElementById('forceStop').style.display = 'none';
   });
 
   simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = getMsg("ray_count") + simulator.processedRayCount + '<br>' + getMsg("total_truncation") + simulator.totalTruncation.toFixed(3) + '<br>' + getMsg("brightness_scale") + ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3)) + '<br>' + getMsg("time_elapsed") + (new Date() - simulator.simulationStartTime);
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)});
     document.getElementById('forceStop').style.display = 'none';
   });
 
@@ -147,9 +158,9 @@ async function startApp() {
   editor.on('mouseCoordinateChange', function (e) {
     if (e.mousePos) {
       const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
-      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")"});
     } else {
-      document.getElementById('mouseCoordinates').innerHTML = getMsg('mouse_coordinates') + "-";
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: '-'});
     }
   });
 
@@ -166,7 +177,6 @@ async function startApp() {
     if (e.newIndex >= 0) {
       objBar.targetObj = scene.objs[e.newIndex];
 
-      document.getElementById('obj_name').innerHTML = getMsg('toolname_' + scene.objs[e.newIndex].constructor.type);
       document.getElementById('showAdvanced').style.display = 'none';
       document.getElementById('showAdvanced_mobile_container').style.display = 'none';
 
@@ -206,10 +216,10 @@ async function startApp() {
       // Update the UI for the loaded scene.
 
       if (scene.name) {
-        document.title = scene.name + " - " + getMsg("appName");
+        document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
         document.getElementById('save_name').value = scene.name;
       } else {
-        document.title = getMsg("appName");
+        document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
       }
 
       if (Object.keys(scene.modules).length > 0) {
@@ -495,7 +505,8 @@ async function startApp() {
   document.getElementById('reset').onclick = function () {
     history.replaceState('', document.title, window.location.pathname + window.location.search);
     init();
-    document.getElementById("welcome").innerHTML = welcome_msgs[lang];
+    document.getElementById("welcome_loading").style.display = 'none';
+    document.getElementById("welcome_instruction").style.display = '';
     document.getElementById('welcome').style.display = '';
     editor.onActionComplete();
     hasUnsavedChange = false;
@@ -518,7 +529,7 @@ async function startApp() {
   };
   document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
   document.getElementById('view_gallery').onclick = function () {
-    window.open(getMsg("gallery_url"));
+    window.open(mapURL('/gallery'));
   };
   document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
 
@@ -955,6 +966,14 @@ async function startApp() {
       importModule(event.data.rayOpticsModuleName + '.json');
     }
   });
+
+  document.getElementById('toolbar-loading').style.display = 'none';
+  document.getElementById('toolbar-wrapper').style.display = '';
+  document.getElementById('saveModal').style.display = '';
+  document.getElementById('languageModal').style.display = '';
+  document.getElementById('footer-left').style.display = '';
+  document.getElementById('footer-right').style.display = '';
+  document.getElementById('canvas-container').style.display = '';
 }
 
 startApp();
@@ -1053,48 +1072,238 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-window.addEventListener('load', function () {
-  document.getElementById('toolbar-loading').style.display = 'none';
-  document.getElementById('toolbar-wrapper').style.display = '';
-  document.getElementById('saveModal').style.display = '';
-  document.getElementById('languageModal').style.display = '';
-  document.getElementById('footer-left').style.display = '';
-  document.getElementById('footer-right').style.display = '';
-  document.getElementById('canvas-container').style.display = '';
-});
+function initUIText() {
+  setText('processing_text', i18next.t('simulator:footer.processing'));
+  setText('reset', i18next.t('simulator:file.reset.title'));
+  setText('save', i18next.t('simulator:file.save.title'));
+  setText('open', i18next.t('simulator:file.open.title'), null, i18next.t('simulator:file.open.description'));
+  setText('export_svg', i18next.t('simulator:file.export.title'));
+  setText('get_link', i18next.t('simulator:file.copyLink.title'), null, i18next.t('simulator:file.copyLink.description'));
+  setText('view_gallery', i18next.t('simulator:file.viewGallery.title'), null, i18next.t('simulator:file.viewGallery.description'));
+  setText('undo', null, i18next.t('simulator:file.undo.title'));
+  setText('redo', null, i18next.t('simulator:file.redo.title'));
+  setText('file_text', i18next.t('simulator:file.title'));
+  setText('sourceToolsDropdown', i18next.t('main:tools.categories.lightSource'));
+  setText('tool_SingleRay_label', i18next.t('main:tools.SingleRay.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.SingleRay.description'), sub: i18next.t('main:tools.SingleRay.instruction')}), 'SingleRay.svg');
+  setText('tool_Beam_label', i18next.t('main:tools.Beam.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Beam.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Beam.svg');
+  setText('tool_PointSource_label', i18next.t('main:tools.PointSource.title') + ' (360\u00B0)', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.PointSource.description'), sub: i18next.t('main:tools.common.clickInstruction')}), 'PointSource.svg');
+  setText('tool_AngleSource_label', i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.AngleSource.description'), sub: i18next.t('main:tools.SingleRay.instruction')}), 'AngleSource.svg');
+  setText('mirrorToolsDropdown', i18next.t('main:tools.categories.mirror'));
+  setText('tool_Mirror_label', i18next.t('main:tools.Mirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Mirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Mirror.svg');
+  setText('tool_ArcMirror_label', i18next.t('main:tools.ArcMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ArcMirror.description'), sub: i18next.t('main:tools.ArcMirror.instruction')}), 'ArcMirror.svg');
+  setText('tool_ParabolicMirror_label', i18next.t('main:tools.ParabolicMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ParabolicMirror.description'), sub: i18next.t('main:tools.ParabolicMirror.instruction')}), 'ParabolicMirror.svg');
+  setText('tool_CustomMirror_label', i18next.t('main:tools.CustomMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CustomMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'CustomMirror.svg');
+  setText('tool_IdealMirror_label', i18next.t('main:tools.IdealMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.IdealMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'IdealMirror.svg');
+  setText('tool_BeamSplitter_label', i18next.t('main:tools.BeamSplitter.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.BeamSplitter.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'BeamSplitter.svg');
+  setText('glassToolsDropdown', i18next.t('main:tools.categories.glass'));
+  setText('tool_PlaneGlass_label', i18next.t('main:tools.PlaneGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.PlaneGlass.description'), sub: i18next.t('main:tools.PlaneGlass.instruction')}), 'PlaneGlass.svg');
+  setText('tool_CircleGlass_label', i18next.t('main:tools.CircleGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleGlass.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleGlass.svg');
+  setText('tool_Glass_label', i18next.t('main:tools.Glass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Glass.description'), sub: i18next.t('main:tools.Glass.instruction')}), 'Glass.svg');
+  setText('tool_CustomGlass_label', i18next.t('main:tools.CustomGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CustomGlass.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'CustomGlass.svg');
+  setText('tool_IdealLens_label', i18next.t('main:tools.IdealLens.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.IdealLens.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'IdealLens.svg');
+  setText('tool_SphericalLens_label', i18next.t('main:tools.SphericalLens.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.SphericalLens.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'SphericalLens.svg');
+  setText('tool_CircleGrinGlass_label', i18next.t('main:tools.CircleGrinGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleGrinGlass.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleGrinGlass.svg');
+  setText('tool_GrinGlass_label', i18next.t('main:tools.GrinGlass.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.GrinGlass.description'), sub: i18next.t('main:tools.GrinGlass.instruction')}) + '<br>' + i18next.t('main:tools.GrinGlass.warning'), 'GrinGlass.svg');
+  setText('blockerToolsDropdown', i18next.t('main:tools.categories.blocker'));
+  setText('tool_Blocker_label', i18next.t('main:tools.Blocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Blocker.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Blocker.svg');
+  setText('tool_CircleBlocker_label', i18next.t('main:tools.CircleBlocker.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CircleBlocker.description'), sub: i18next.t('main:tools.common.circleInstruction')}), 'CircleBlocker.svg');
+  setText('tool_Aperture_label', i18next.t('main:tools.Aperture.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Aperture.description'), sub: i18next.t('main:tools.Aperture.instruction')}), 'Aperture.svg');
+  setText('tool_DiffractionGrating_label', i18next.t('main:tools.DiffractionGrating.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.DiffractionGrating.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'DiffractionGrating.svg');
+  setText('moreToolsDropdown', i18next.t('main:tools.categories.other'));
+  setText('tool_Ruler_label', i18next.t('main:tools.Ruler.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Ruler.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Ruler.svg');
+  setText('tool_Protractor_label', i18next.t('main:tools.Protractor.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Protractor.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Protractor.svg');
+  setText('tool_Detector_label', i18next.t('main:tools.Detector.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Detector.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Detector.svg');
+  setText('tool_TextLabel_label', i18next.t('main:tools.TextLabel.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.TextLabel.description'), sub: i18next.t('main:tools.common.clickInstruction')}));
+  setText('tool_LineArrow_label', i18next.t('main:tools.LineArrow.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.LineArrow.description'), sub: i18next.t('main:tools.common.lineInstruction')}));
+  setText('tool_Drawing_label', i18next.t('main:tools.Drawing.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Drawing.description'), sub: i18next.t('main:tools.Drawing.instruction')}));
+  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
+  setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
+  setText('tools_text', i18next.t('main:tools.title'));
+  setText('mode_rays_label', null, i18next.t('main:view.rays.title'), i18next.t('main:view.rays.description'), 'normal.svg');
+  setText('mode_extended_label', null, i18next.t('main:view.extended.title'), i18next.t('main:view.extended.description') + '<br>' + i18next.t('main:view.extended.simulateColorsNote'), 'extended_rays.svg');
+  setText('mode_images_label', null, i18next.t('main:view.images.title'), i18next.t('main:view.images.description') + '<br>' + i18next.t('main:view.images.simulateColorsNote'), 'all_images.svg');
+  setText('mode_observer_label', null, i18next.t('main:view.observer.title'), i18next.t('main:meta.parentheses', {main: i18next.t('main:view.observer.description'), sub: i18next.t('main:view.observer.instruction')}) + '<br>' + i18next.t('main:view.observer.simulateColorsNote'), 'seen_by_observer.svg');
+  setText('view_text', i18next.t('main:view.title'));
+  setText('rayDensity_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
+  setText('rayDensity_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('showGrid_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('layoutAids_text', i18next.t('simulator:settings.layoutAids.title'));
+  setText('rayDensity_more_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
+  setText('rayDensity_more_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('layoutAids_more_text', i18next.t('simulator:settings.layoutAids.title'));
+  setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
+  setText('simulateColors_text', i18next.t('main:simulateColors.title'));
+  setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
+  setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
+  setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
+  setText('observer_size_text', i18next.t('simulator:settings.observerSize.title'));
+  setText('lengthScale_popover', null, null, i18next.t('simulator:settings.lengthScale.description'));
+  setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title'));
+  setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
+  setText('language_text', i18next.t('simulator:settings.language.title'));
+  setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
+  setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
+  setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title'));
+  setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
+  setText('show_status_text', i18next.t('simulator:settings.showStatusBox.title'));
+  setText('show_help_popups_popover', null, null, i18next.t('simulator:settings.showHelpPopups.description'));
+  setText('show_help_popups_text', i18next.t('simulator:settings.showHelpPopups.title'));
+  setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
+  setText('settings_text', i18next.t('simulator:settings.title'));
+  setText('moreSettings_text', i18next.t('simulator:settings.more'));
+  setText('reset_mobile', i18next.t('simulator:file.reset.title'));
+  setText('save_button', i18next.t('simulator:file.save.title'));
+  setText('open_mobile', i18next.t('simulator:file.open.title'));
+  setText('export_svg_mobile', i18next.t('simulator:file.export.title'));
+  setText('get_link_mobile', i18next.t('simulator:file.copyLink.title'));
+  setText('view_gallery_mobile', i18next.t('simulator:file.viewGallery.title'));
+  setText('tools_mobile_text', i18next.t('main:tools.title'));
+  setText('tool_lightSource__text', i18next.t('main:tools.categories.lightSource'));
+  setText('tool_mirror__text', i18next.t('main:tools.categories.mirror'));
+  setText('tool_glass__text', i18next.t('main:tools.categories.glass'));
+  setText('tool_blocker__text', i18next.t('main:tools.categories.blocker'));
+  setText('tool_more__text', i18next.t('main:tools.categories.other'));
+  setText('tool__mobile_label', i18next.t('main:tools.moveView.title'));
+  setText('tool_SingleRay_mobile_label', i18next.t('main:tools.SingleRay.title'));
+  setText('tool_Beam_mobile_label', i18next.t('main:tools.Beam.title'));
+  setText('tool_PointSource_mobile_label', i18next.t('main:tools.PointSource.title') + ' (360\u00B0)');
+  setText('tool_AngleSource_mobile_label', i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)');
+  setText('tool_Mirror_mobile_label', i18next.t('main:tools.Mirror.title'));
+  setText('tool_ArcMirror_mobile_label', i18next.t('main:tools.ArcMirror.title'));
+  setText('tool_ParabolicMirror_mobile_label', i18next.t('main:tools.ParabolicMirror.title'));
+  setText('tool_CustomMirror_mobile_label', i18next.t('main:tools.CustomMirror.title'));
+  setText('tool_IdealMirror_mobile_label', i18next.t('main:tools.IdealMirror.title'));
+  setText('tool_BeamSplitter_mobile_label', i18next.t('main:tools.BeamSplitter.title'));
+  setText('tool_PlaneGlass_mobile_label', i18next.t('main:tools.PlaneGlass.title'));
+  setText('tool_CircleGlass_mobile_label', i18next.t('main:tools.CircleGlass.title'));
+  setText('tool_Glass_mobile_label', i18next.t('main:tools.Glass.title'));
+  setText('tool_CustomGlass_mobile_label', i18next.t('main:tools.CustomGlass.title'));
+  setText('tool_IdealLens_mobile_label', i18next.t('main:tools.IdealLens.title'));
+  setText('tool_SphericalLens_mobile_label', i18next.t('main:tools.SphericalLens.title'));
+  setText('tool_CircleGrinGlass_mobile_label', i18next.t('main:tools.CircleGrinGlass.title'));
+  setText('tool_GrinGlass_mobile_label', i18next.t('main:tools.GrinGlass.title'));
+  setText('tool_Blocker_mobile_label', i18next.t('main:tools.Blocker.title'));
+  setText('tool_CircleBlocker_mobile_label', i18next.t('main:tools.CircleBlocker.title'));
+  setText('tool_Aperture_mobile_label', i18next.t('main:tools.Aperture.title'));
+  setText('tool_DiffractionGrating_mobile_label', i18next.t('main:tools.DiffractionGrating.title'));
+  setText('tool_Ruler_mobile_label', i18next.t('main:tools.Ruler.title'));
+  setText('tool_Protractor_mobile_label', i18next.t('main:tools.Protractor.title'));
+  setText('tool_Detector_mobile_label', i18next.t('main:tools.Detector.title'));
+  setText('tool_TextLabel_mobile_label', i18next.t('main:tools.TextLabel.title'));
+  setText('tool_LineArrow_mobile_label', i18next.t('main:tools.LineArrow.title'));
+  setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
+  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
+  setText('view_mobile_text', i18next.t('main:view.title'));
+  setText('mode_rays_mobile_label', i18next.t('main:view.rays.title'));
+  setText('mode_extended_mobile_label', i18next.t('main:view.extended.title'));
+  setText('mode_images_mobile_label', i18next.t('main:view.images.title'));
+  setText('mode_observer_mobile_label', i18next.t('main:view.observer.title'));
+  setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
+  setText('rayDensity_mobile_text', i18next.t('simulator:settings.rayDensity.title'));
+  setText('showGrid_text', i18next.t('simulator:settings.layoutAids.showGrid'));
+  setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
+  setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
+  setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
+  setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
+  setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
+  setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
+  setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title'));
+  setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
+  setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
+  setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
+  setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
+  setText('copy', null, i18next.t('simulator:objBar.duplicate.title'));
+  setText('delete', null, i18next.t('simulator:objBar.delete.title'));
+  setText('unselect', null, null, i18next.t('simulator:objBar.unselect.description'));
+  setText('showAdvanced_mobile', i18next.t('simulator:objBar.showAdvanced.title'));
+  setText('apply_to_all_mobile_label', i18next.t('simulator:objBar.applyToAll.title'));
+  setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
+  setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
+  setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
+  setText('staticBackdropLabel_save', i18next.t('simulator:file.save.title'));
+  setText('save_name_label', i18next.t('simulator:saveModal.fileName'));
+  setText('save_description', '<ul><li>' + i18next.t('simulator:saveModal.description.autoSync') + '</li><li>' + i18next.t('simulator:saveModal.description.rename') + '</li><li>' + parseLinks(i18next.t('simulator:saveModal.description.contribute')) + '</li></ul>');
+  setText('save_confirm', i18next.t('simulator:file.save.title'));
+  setText('save_rename', i18next.t('simulator:saveModal.rename'));
+  setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
+  setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
+  setText('language_list_title', i18next.t('simulator:settings.language.title'));
+  setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
+  setText('translate', i18next.t('simulator:languageModal.helpTranslate'));
+  setText('close_language', i18next.t('simulator:common.closeButton'));
+  setText('staticBackdropLabel_module', i18next.t('simulator:moduleModal.title'));
+  setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
+  setText('close_module', i18next.t('simulator:common.closeButton'));
+  setText('home', null, i18next.t('main:pages.home'));
+  setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
+  setText('about', i18next.t('main:pages.about'));
+  setText('github', null, i18next.t('main:pages.github'));
 
 
-function updateUIText(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-text]');
+  document.getElementById('language').innerHTML = window.localeData[lang].name;
+  document.getElementById('language_mobile').innerHTML = window.localeData[lang].name;
 
-  elements.forEach(el => {
-    const key = el.getAttribute('data-text');
-    const text = getMsg(key);
-    el.innerHTML = text;
-  });
-
-  document.getElementById('language').innerHTML = document.getElementById('lang-' + lang).innerHTML;
-  document.getElementById('language_mobile').innerHTML = document.getElementById('lang-' + lang).innerHTML;
-
-  const completenessData = getLanguageCompleteness();
-  for (let lang1 in completenessData) {
-    document.getElementById('lang-' + lang1).innerText = completenessData[lang1] + '%';
-    document.getElementById('lang-' + lang1).parentElement.parentElement.addEventListener('click', function (e) {
-      if (autoSyncUrl && !hasUnsavedChange) {
-        // If autoSyncUrl is enabled, we can change the language while keeping the current scene by going to the same URL with a new query.
-        e.preventDefault();
-        e.stopPropagation();
-        navigateToNewQuery(lang1)
-      }
-    }, true);
-  }
+  // Populate the language list
+  const languageList = document.getElementById('language_list');
   
+  for (const locale in window.localeData) {
+    const languageName = window.localeData[locale].name;
+    const completeness = Math.round(window.localeData[locale].numStrings / window.localeData.en.numStrings * 100);
+    /*
+    languageList.innerHTML += `
+      <a href="?${locale}" class="btn btn-primary dropdown-item d-flex align-items-center" onclick="if (autoSyncUrl && !hasUnsavedChange) {event.preventDefault(); event.stopPropagation(); navigateToNewQuery('${locale}')}">
+        <div class="d-flex w-100">
+          <div class="col">
+            ${languageName}
+          </div>
+          <div class="col text-end">
+            ${completeness}%
+          </div>
+        </div>
+      </a>
+    `;
+    */
+    const a = document.createElement('a');
+    a.href = '?' + locale;
+    a.classList.add('btn', 'btn-primary', 'dropdown-item', 'd-flex', 'align-items-center');
+    a.addEventListener('click', function (event) {
+      if (autoSyncUrl && !hasUnsavedChange) {
+        event.preventDefault();
+        event.stopPropagation();
+        navigateToNewQuery(locale);
+      }
+    });
 
-  document.title = getMsg('appName');
-  document.getElementById('home').href = getMsg('home_url');
-  document.getElementById('about').href = getMsg('about_url');
-  document.getElementById('moduleIframe').src = getMsg('modules_url');
-  document.getElementById('modules_tutorial').href = getMsg('modules_tutorial_url');
+    const div = document.createElement('div');
+    div.classList.add('d-flex', 'w-100');
+
+    const div1 = document.createElement('div');
+    div1.classList.add('col');
+    div1.innerHTML = languageName;
+
+    const div2 = document.createElement('div');
+    div2.classList.add('col', 'text-end');
+    div2.innerHTML = completeness + '%';
+
+    div.appendChild(div1);
+    div.appendChild(div2);
+    a.appendChild(div);
+    languageList.appendChild(a);
+  }
+
+  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
+  document.getElementById('home').href = mapURL('/home');
+  document.getElementById('about').href = mapURL('/about');
+  document.getElementById('moduleIframe').src = mapURL('/modules/modules');
+  document.getElementById('modules_tutorial').href = mapURL('/modules/tutorial');
 }
 
 function navigateToNewQuery(newQuery) {
@@ -1108,85 +1317,64 @@ function navigateToNewQuery(newQuery) {
   window.location.href = newUrl;  // Set the new URL
 }
 
+function setText(id, text, title, popover, image) {
+  const elem = document.getElementById(id);
 
-function updateUIWithPopovers(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-title], [data-popover]');
-
-  elements.forEach(el => {
-    const titleKey = el.getAttribute('data-title');
-    const title = getMsg(titleKey);
+  if (text != null) {
+    elem.innerHTML = text;
+  }
+  
+  if (popoversEnabled) {
     if (title != null) {
-      el.setAttribute('title', title);
+      elem.setAttribute('title', title);
     }
 
-    const contentKey = el.getAttribute('data-popover');
-    if (contentKey == null) {
-      // Tooltip
-      el.setAttribute('data-bs-toggle', 'tooltip');
-      el.setAttribute('data-bs-trigger', 'hover');
-      el.setAttribute('data-bs-placement', 'bottom');
-    } else {
-      const image = el.getAttribute('data-image');
+    if (popover != null) {
+      // Popover
       if (image != null) {
-        // Popover with image
-        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + getMsg(contentKey);
-        el.setAttribute('data-bs-toggle', 'popover');
-        el.setAttribute('data-bs-trigger', 'hover');
-        el.setAttribute('data-bs-html', 'true');
-        el.setAttribute('data-bs-content', content);
+        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + popover;
+        elem.setAttribute('data-bs-toggle', 'popover');
+        elem.setAttribute('data-bs-trigger', 'hover');
+        elem.setAttribute('data-bs-html', 'true');
+        elem.setAttribute('data-bs-content', content);
 
         // Update popover size after image is loaded
-        el.addEventListener('inserted.bs.popover', function () {
+        elem.addEventListener('inserted.bs.popover', function () {
           const imgElement = document.querySelectorAll('#dynamic-popover-image');
           imgElement[imgElement.length - 1].addEventListener('load', function () {
-            bootstrap.Popover.getInstance(el).update();
+            bootstrap.Popover.getInstance(elem).update();
           });
         });
       } else {
-        // Popover without image
-        const content = getMsg(contentKey);
-        el.setAttribute('data-bs-toggle', 'popover');
-        el.setAttribute('data-bs-trigger', 'hover');
-        el.setAttribute('data-bs-html', 'true');
-        el.setAttribute('data-bs-content', content);
+        elem.setAttribute('data-bs-toggle', 'popover');
+        elem.setAttribute('data-bs-trigger', 'hover');
+        elem.setAttribute('data-bs-html', 'true');
+        elem.setAttribute('data-bs-content', popover);
       }
+
+      // Initialize the popover
+      new bootstrap.Popover(elem);
+    } else if (title != null) {
+      // Tooltip
+      elem.setAttribute('title', title);
+      elem.setAttribute('data-bs-toggle', 'tooltip');
+      elem.setAttribute('data-bs-trigger', 'hover');
+      elem.setAttribute('data-bs-placement', 'bottom');
+
+      // Initialize the tooltip
+      new bootstrap.Tooltip(elem);
     }
-  });
+  } else {
+    if (text == null && title != null) {
+      elem.setAttribute('title', title);
+      elem.setAttribute('data-bs-toggle', 'tooltip');
+      elem.setAttribute('data-bs-trigger', 'hover');
+      elem.setAttribute('data-bs-placement', 'bottom');
 
-  // Initialize Tooltips
-  var tooltipTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-  });
-
-  // Initialize Popovers
-  var popoverTriggerList = [].slice.call(elememt.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl);
-  });
-}
-
-
-function updateUIWithoutPopovers(elememt = document) {
-  const elements = elememt.querySelectorAll('[data-title]');
-
-  elements.forEach(el => {
-    const textKey = el.getAttribute('data-text');
-
-    if (textKey == null) {
-      const titleKey = el.getAttribute('data-title');
-      const title = getMsg(titleKey);
-      el.setAttribute('title', title);
-      el.setAttribute('data-bs-toggle', 'tooltip');
-      el.setAttribute('data-bs-trigger', 'hover');
-      el.setAttribute('data-bs-placement', 'bottom');
+      // Initialize the tooltip
+      new bootstrap.Tooltip(elem);
     }
-  });
-
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
+  }
 }
 
 
@@ -1376,7 +1564,7 @@ function updateModuleObjsMenu() {
       </svg>
       `;
       removeButton.setAttribute('data-bs-toggle', 'tooltip');
-      removeButton.setAttribute('title', getMsg('remove_module'));
+      removeButton.setAttribute('title', i18next.t('main:tools.modules.remove'));
       removeButton.setAttribute('data-bs-placement', 'right');
       new bootstrap.Tooltip(removeButton);
       removeButton.addEventListener('click', function () {
@@ -1513,7 +1701,7 @@ function importModule(name) {
         if (moduleJSON.modules.hasOwnProperty(moduleName)) {
           let newModuleName = moduleName;
           if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])) {
-            newModuleName = prompt(getMsg('module_conflict'), moduleName);
+            newModuleName = prompt(i18next.t('simulator:moduleModal.conflict'), moduleName);
             if (!newModuleName) {
               continue;
             }
@@ -1553,7 +1741,7 @@ function importModule(name) {
 
 
 function init() {
-  document.title = getMsg('appName');
+  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('save_name').value = "";
 
   editor.isConstructing = false;
@@ -1637,7 +1825,7 @@ function syncUrl() {
     var compressed = require('json-url')('lzma').compress(JSON.parse(editor.lastActionJson)).then(output => {
       var fullURL = "https://phydemo.app/ray-optics/simulator/#" + output;
       if (fullURL.length > 2041) {
-        warning = getMsg('auto_sync_url_warning');
+        warning = i18next.t('simulator:generalWarnings.autoSyncUrlTooLarge');
         updateErrorAndWarning();
       } else {
         if (Math.abs(fullURL.length - lastFullURL.length) > 200) {
@@ -1692,9 +1880,9 @@ function modebtn_clicked(mode1) {
 function rename() {
   scene.name = document.getElementById('save_name').value;
   if (scene.name) {
-    document.title = scene.name + " - " + getMsg("appName");
+    document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   } else {
-    document.title = getMsg("appName");
+    document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   }
   editor.onActionComplete();
 }
@@ -1763,7 +1951,7 @@ function getLink() {
     //console.log(fullURL.length);
     navigator.clipboard.writeText(fullURL);
     if (fullURL.length > 2041) {
-      alert(getMsg("get_link_warning"));
+      alert(i18next.t('simulator:generalWarnings.shareLinkTooLong'));
     } else {
       hasUnsavedChange = false;
     }
@@ -1782,4 +1970,33 @@ function confirmPositioning(ctrl, shift) {
   if (xyData.length == 2) {
     editor.confirmPositioning(xyData[0], xyData[1], ctrl, shift);
   }
+}
+
+
+function mapURL(url) {
+  const localeData = window.localeData[window.lang];
+  const route = (localeData.route !== undefined) ? localeData.route : '/' + window.lang;
+  const rootURL = '..'
+  const urlMap = {
+    "/home": rootURL + route + '/',
+    "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
+    "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
+    "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
+    "/about": rootURL + (localeData.about ? route : '') + '/about',
+    "/email": "mailto:ray-optics@phydemo.app",
+    "/github": "https://github.com/ricktu288/ray-optics",
+    "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
+    "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
+    "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
+    "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
+    "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
+  };
+  return urlMap[url] || url;
+}
+
+// Parse the markdown-like links in the text with mapURL and return the HTML.
+function parseLinks(text) {
+  return text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, function (match, text, url) {
+    return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
+  });
 }

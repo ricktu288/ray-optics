@@ -1,0 +1,50 @@
+{
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 450,
+          "text": "{{thistextisinexamplem}}"
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 500,
+          "text": "{{thistextisalsoinexam}}"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 300,
+      "text": "{{thistextisnotinamodu}}"
+    },
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 350,
+      "text": "{{thistextisalsonotina}}"
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {}
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 50.64898989898987,
+    "y": -86.41666666666666
+  },
+  "scale": 0.7175925925925926
+}

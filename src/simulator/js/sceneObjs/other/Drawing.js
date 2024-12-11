@@ -1,5 +1,5 @@
 import BaseSceneObj from '../BaseSceneObj.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -21,8 +21,9 @@ class Drawing extends BaseSceneObj {
   };
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.Drawing.title'));
     if (this.isDrawing) {
-      objBar.createButton(getMsg('stop_drawing'), function (obj) {
+      objBar.createButton(i18next.t('simulator:sceneObjs.Drawing.finishDrawing'), function (obj) {
         obj.isDrawing = false;
         if (obj.scene.editor.isConstructing) {
           obj.scene.editor.isConstructing = false;

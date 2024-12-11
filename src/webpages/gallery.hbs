@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  {{> head}}
+  <style>
+    .example-container {
+      border-width: 2px;
+      margin-bottom: 5px;
+      display: inline-block;
+      width: 270px;
+      text-decoration: none;
+    }
+
+    .example-container:hover {
+      text-decoration: none;
+    }
+
+    .example-container:active {
+      text-decoration: none;
+    }
+
+    .example-container:focus {
+      text-decoration: none;
+    }
+
+    .example-image {
+      width: 250px;
+      height: 250px !important;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    .example-title {
+      font-size: 12pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .example-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .anchor {
+      padding-top: 65px; 
+    }
+  </style>
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container">
+    <h1>{{t "gallery:galleryPage.title"}}</h1>
+    {{t "gallery:galleryPage.description"}}
+    
+    <h3>{{t "gallery:galleryPage.categories.title"}}</h3>
+    {{#each categories}}
+      <a href="#{{id}}">{{title}}</a><br>
+    {{/each}}
+
+    {{#each categories}}
+
+      <a name="{{id}}" class="anchor">&nbsp;</a>
+      <h2>{{title}}</h2>
+      {{#each items}}
+        <a href="{{url}}" class="thumbnail example-container">
+          <picture>
+            <source srcset="{{url}}-thumbnail.avif" type="image/avif">
+            <img src="{{url}}-thumbnail.jpg" alt="{{t titleKey}}" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">{{title}}</p>
+            <p class="example-contributor">{{contributors}}</p>
+          </div>
+        </a>
+      {{/each}}
+      <br>
+    {{/each}}
+
+    {{> footer}}
+  </div>
+
+</body>
+
+</html>

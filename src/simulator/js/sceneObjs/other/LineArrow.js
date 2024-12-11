@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * Line or arrow decoration
@@ -24,11 +24,12 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createBoolean(getMsg('arrow'), this.arrow, function (obj, value) {
+    objBar.setTitle(i18next.t('main:tools.LineArrow.title'));
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.LineArrow.arrow'), this.arrow, function (obj, value) {
       obj.arrow = value;
     });
 
-    objBar.createBoolean(getMsg('backArrow'), this.backArrow, function (obj, value) {
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.LineArrow.backArrow'), this.backArrow, function (obj, value) {
       obj.backArrow = value;
     });
   }

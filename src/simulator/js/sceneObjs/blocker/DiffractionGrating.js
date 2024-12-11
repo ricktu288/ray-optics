@@ -1,6 +1,6 @@
 import LineObjMixin from '../LineObjMixin.js';
 import BaseSceneObj from '../BaseSceneObj.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -35,26 +35,27 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('lineDensity'), 1, 2500, 5, this.lineDensity, function (obj, value) {
+    objBar.setTitle(i18next.t('main:tools.DiffractionGrating.title'));
+    objBar.createNumber(i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', {lengthUnit: 'mm'}), 1, 2500, 5, this.lineDensity, function (obj, value) {
       obj.lineDensity = value;
     });
 
-    objBar.createBoolean(getMsg('customBrightness'), this.customBrightness, function (obj, value) {
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightness'), this.customBrightness, function (obj, value) {
       obj.customBrightness = value;
-    }, getMsg('customBrightness_note_popover'), true);
+    }, i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightnessInfo'), true);
 
     if (this.customBrightness) {
       objBar.createTuple('', this.brightnesses.join(', '), function (obj, value) {
         obj.brightnesses = value.split(',').map(parseFloat);
       });
     } else if (objBar.showAdvanced(!this.arePropertiesDefault(['slitRatio']))) {
-      objBar.createNumber(getMsg('slitRatio'), 0, 1, 0.001, this.slitRatio, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.DiffractionGrating.slitRatio'), 0, 1, 0.001, this.slitRatio, function (obj, value) {
         obj.slitRatio = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['mirrored']))) {
-      objBar.createBoolean(getMsg('mirrored'), this.mirrored, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.DiffractionGrating.mirrored'), this.mirrored, function (obj, value) {
         obj.mirrored = value;
       });
     }
@@ -96,11 +97,11 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
   onSimulationStart() {
     this.warning = null;
     if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
-      this.warning = (this.warning || "") + getMsg('image_detection_warning');
+      this.warning = (this.warning || "") + i18next.t('simulator:sceneObjs.common.imageDetectionWarning');
     }
 
     if (!this.scene.simulateColors) {
-      this.warning = (this.warning || "") + getMsg('non_simulateColors_warning');
+      this.warning = (this.warning || "") + i18next.t('simulator:sceneObjs.common.nonSimulateColorsWarning');
     }
   }
 

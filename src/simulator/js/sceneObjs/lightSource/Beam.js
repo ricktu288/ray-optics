@@ -2,7 +2,7 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * A parallel or divergent beam of light.
@@ -34,23 +34,24 @@ class Beam extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('brightness'), 0.01 / this.scene.lengthScale, 1 / this.scene.lengthScale, 0.01 / this.scene.lengthScale, this.brightness, function (obj, value) {
+    objBar.setTitle(i18next.t('main:tools.Beam.title'));
+    objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01 / this.scene.lengthScale, 1 / this.scene.lengthScale, 0.01 / this.scene.lengthScale, this.brightness, function (obj, value) {
       obj.brightness = value;
-    }, getMsg('brightness_note_popover'));
+    }, '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>');
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('wavelength'), Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)', Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
       });
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['emisAngle', 'lambert', 'random']))) {
-      objBar.createNumber(getMsg('emisAngle'), 0, 180, 1, this.emisAngle, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.common.emisAngle') + ' (°)', 0, 180, 1, this.emisAngle, function (obj, value) {
         obj.emisAngle = value;
       });
-      objBar.createBoolean(getMsg('lambert'), this.lambert, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.common.lambert'), this.lambert, function (obj, value) {
         obj.lambert = value;
       });
-      objBar.createBoolean(getMsg('random'), this.random, function (obj, value) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.common.random'), this.random, function (obj, value) {
         obj.random = value;
       });
     }
@@ -87,7 +88,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
 
   onSimulationStart() {
     if ((this.scene.mode == 'images' || this.scene.mode == 'observer') && (this.emisAngle > 0 || this.random)) {
-      this.warning = getMsg('beam_warning');
+      this.warning = i18next.t('simulator:sceneObjs.Beam.imageDetectionWarning');
     } else {
       this.warning = null;
     }

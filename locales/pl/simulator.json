@@ -1,0 +1,181 @@
+{
+  "welcome": {
+    "title": "Witamy w symulacji promieni optycznych",
+    "instruction": "Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.\nAby załadować przykład, [przejdź do strony Galerii](/gallery)."
+  },
+  "common": {
+    "saveButton": "Zapisz",
+    "cancelButton": "Anuluj",
+    "closeButton": "Zamknij"
+  },
+  "file": {
+    "title": "Plik",
+    "undo": {
+      "title": "Cofnij"
+    },
+    "redo": {
+      "title": "Ponów"
+    },
+    "reset": {
+      "title": "Resetuj"
+    },
+    "save": {
+      "title": "Zapisz"
+    },
+    "open": {
+      "title": "Otwórz",
+      "description": "Otwórz istniejący plik lub obraz tła. Obraz tła zostanie wyświetlony z punktu początkowego współrzędnych. (Lub upuść plik)"
+    },
+    "viewGallery": {
+      "title": "Zobacz Galerię",
+      "description": "Przejdź do strony Galerii, aby załadować przykład."
+    }
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "more": "Więcej",
+    "rayDensity": {
+      "title": "Gęstość promieni",
+      "description": "Określa liczbę promieni emitowanych przez belki i źródła punktowe. Ma to również wpływ na dokładność wykrywania obrazu i renderowania kolorów."
+    },
+    "layoutAids": {
+      "title": "Opcje układu",
+      "showGrid": "Siatka",
+      "snapToGrid": "Przyciągaj do siatki",
+      "lockObjs": "Zablokuj obiekty"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "language": {
+      "title": "Język"
+    },
+    "showHelpPopups": {
+      "title": "Pokaż okienka pomocy",
+      "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)"
+    },
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "Więcej opcji..."
+    },
+    "applyToAll": {
+      "title": "Zastosuj do wszystkich"
+    },
+    "duplicate": {
+      "title": "Powiel"
+    },
+    "delete": {
+      "title": "Usuń"
+    },
+    "unselect": {
+      "title": "Odznacz",
+      "description": "Usuń zaznaczenie tego obiektu (kliknięcie prawym przyciskiem myszy pustego miejsca ma tę samą funkcję)."
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Jasność",
+      "brightnessInfo": {
+        "rayDensity": "Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.",
+        "rayDensitySlider": "Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'."
+      },
+      "wavelength": "Długość fali",
+      "emisAngle": "Kąt emisji",
+      "random": "Losowo",
+      "lambert": "Lambertowskie",
+      "focalLength": "Ogniskowa"
+    },
+    "Beam": {
+      "imageDetectionWarning": "Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
+    },
+    "AngleSource": {
+      "symmetric": "Symetryczna"
+    },
+    "BaseFilter": {
+      "filter": "Filtr",
+      "bandwidth": "Szerokość pasma",
+      "invert": "Odwróć"
+    },
+    "IdealMirror": {
+      "cartesianSign": "Konwencja znaków"
+    },
+    "BeamSplitter": {
+      "transRatio": "Współczynnik transmisji"
+    },
+    "BaseGlass": {
+      "refIndex": "Współczynnik załamania",
+      "refIndexInfo": {
+        "relative": "względny, jeśli znajduje się w innym szkle",
+        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł."
+      },
+      "cauchyCoeff": "Współczynnik Cauchy'ego"
+    },
+    "BaseGrinGlass": {
+      "refIndexFnOrigin": "Początek układu n(x,y)",
+      "stepSize": "Rozmiar kroku rozwiązywania numerycznego",
+      "stepSizeInfo": "Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'BaseGrinGlass.js'.",
+      "intersectTol": "Tolerancja intersekcji",
+      "symbolicBodyMerging": "Symboliczne łączenie ciał",
+      "symbolicBodyMergingInfo": {
+        "all": "Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.",
+        "impl": "Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'BaseGrinGlass.js').",
+        "implNote": "Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w całej płaszczyźnie, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy."
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "Jednostki - [długość]^2.",
+        "functions": "Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'CircleGrinGlass.js'."
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "Jednostki - [długość].",
+        "functions": "Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'GrinGlass.js'."
+      }
+    },
+    "Aperature": {
+      "diameter": "Średnica"
+    },
+    "Detector": {
+      "irradMap": "Mapa irradiancji",
+      "binSize": "Rozmiar pojemnika",
+      "exportData": "Eksportuj dane"
+    },
+    "TextLabel": {
+      "fontSize": "Rozmiar czcionki",
+      "font": "Czcionka",
+      "fontStyle": "Styl",
+      "alignment": "Wyrównanie",
+      "smallCaps": "Małe litery",
+      "angle": "Kąt"
+    },
+    "LineArrow": {
+      "arrow": "Strzałka do przodu",
+      "backArrow": "Strzałka do tyłu"
+    },
+    "Drawing": {
+      "finishDrawing": "Zakończ rysowanie"
+    },
+    "CropBox": {
+      "svgWarning": "Eksportuj do SVG. Mieszanki kolorów i względne współczynniki załamania światła poniżej 1 nie są obsługiwane."
+    }
+  },
+  "saveModal": {
+    "title": "Zapisz",
+    "fileName": "Nazwa"
+  },
+  "languageModal": {
+    "title": "Język",
+    "translatedFraction": "przetłumaczone",
+    "helpTranslate": "Pomóż nam przetłumaczyć tę aplikację"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Może być konieczne użycie \"Zapisz\" i zamiast tego udostępnienie pliku."
+  },
+  "footer": {
+    "processing": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
+  }
+}

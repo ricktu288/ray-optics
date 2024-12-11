@@ -1,0 +1,13 @@
+<div style="float: right;">
+  <div class="dropup">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <span id="language">{{t "main:languageDropdown.title" language=langName}}</span>
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      {{#each supportedLangs}}
+      <li><a href="{{this.url}}">{{this.name}}<span style="color:gray">{{this.translatedFraction}}</span></a></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

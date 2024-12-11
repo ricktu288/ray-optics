@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import geometry from '../../geometry.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * The crop box
@@ -38,10 +38,12 @@ class CropBox extends BaseSceneObj {
   }
 
   populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('simulator:sceneObjs.CropBox.title'));
+
     var width = geometry.distance(this.p1, this.p2);
     var height = geometry.distance(this.p1, this.p3);
 
-    objBar.createNumber(getMsg('cropBoxSize'), 0, 1000, 1, width, function (obj, value) {
+    objBar.createNumber(i18next.t('simulator:sceneObjs.CropBox.cropBoxSize'), 0, 1000, 1, width, function (obj, value) {
       obj.p2 = geometry.point(obj.p1.x + 1 * value, obj.p2.y);
       obj.p4 = geometry.point(obj.p3.x + 1 * value, obj.p4.y);
     }, null, true);
@@ -50,7 +52,7 @@ class CropBox extends BaseSceneObj {
       obj.p4 = geometry.point(obj.p4.x, obj.p2.y + 1 * value);
     }, null, true);
 
-    objBar.createDropdown(getMsg('format'), this.format, {
+    objBar.createDropdown(i18next.t('simulator:sceneObjs.CropBox.format'), this.format, {
       'png': 'PNG',
       'svg': 'SVG'
     }, function (obj, value) {
@@ -58,7 +60,7 @@ class CropBox extends BaseSceneObj {
     }, null, true);
 
     if (this.format != 'svg') {
-      objBar.createNumber(getMsg('width'), 0, 1000, 1, this.width, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.CropBox.width'), 0, 1000, 1, this.width, function (obj, value) {
         obj.width = 1 * value;
       }, null, true);
     }
@@ -66,10 +68,10 @@ class CropBox extends BaseSceneObj {
     const rayCountLimit = this.rayCountLimit || (this.format === 'svg' ? 1e4 : 1e7);
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['rayCountLimit']))) {
-      objBar.createNumber(getMsg('rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.CropBox.rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
         obj.rayCountLimit = value;
         if (this.scene.simulator.processedRayCount > obj.rayCountLimit) {
-          obj.warning = getMsg('export_ray_count_warning');
+          obj.warning = i18next.t('simulator:sceneObjs.CropBox.rayCountWarning');
         } else {
           obj.warning = null;
         }
@@ -77,11 +79,11 @@ class CropBox extends BaseSceneObj {
     }
 
     const self = this;
-    objBar.createButton(getMsg('save'), function (obj) {
+    objBar.createButton(i18next.t('simulator:common.saveButton'), function (obj) {
       self.warning = null;
       self.scene.editor.confirmCrop(obj);
     });
-    objBar.createButton(getMsg('save_cancel'), function (obj) {
+    objBar.createButton(i18next.t('simulator:common.cancelButton'), function (obj) {
       self.warning = null;
       self.scene.editor.cancelCrop();
     });
@@ -90,20 +92,20 @@ class CropBox extends BaseSceneObj {
 
     if (this.format === 'svg') {
       if (this.scene.simulateColors) {
-        this.warning = getMsg('export_svg_warning');
+        this.warning = i18next.t('simulator:sceneObjs.CropBox.svgWarning');
       }
 
       // Check if there are any objects with `refIndex < 1`
       for (var obj of this.scene.opticalObjs) {
         if (obj.refIndex && obj.refIndex < 1) {
-          this.warning = getMsg('export_svg_warning');
+          this.warning = i18next.t('simulator:sceneObjs.CropBox.svgWarning');
           break;
         }
       }
     }
 
     if (this.scene.simulator.processedRayCount > rayCountLimit) {
-      this.warning = getMsg('export_ray_count_warning');
+      this.warning = i18next.t('simulator:sceneObjs.CropBox.rayCountWarning');
     }
   }
 

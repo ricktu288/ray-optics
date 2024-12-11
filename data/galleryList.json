@@ -1,0 +1,420 @@
+[
+  {
+    "id": "reflection",
+    "content": [
+      {
+        "id": "images-formed-by-two-mirrors",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "parabolic-mirror",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "hyperbolic-mirror",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "retroreflectors",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "periscope",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "newtonian-telescope",
+        "contributors": [
+          "Matteo Ricci Cipolloni"
+        ]
+      },
+      {
+        "id": "penrose-unilluminable-room",
+        "contributors": [
+          "Vincent Fan",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "optical-cavity",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "resonator",
+        "contributors": [
+          "Mikhail Kochiev"
+        ]
+      },
+      {
+        "id": "maze-solution",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "specular-and-diffuse-reflection",
+        "contributors": [
+          "Steve Stonebraker"
+        ]
+      },
+      {
+        "id": "chaff-countermeasure",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "caustics-from-a-reflective-sphere",
+        "contributors": [
+          "Georg Nadorff"
+        ]
+      },
+      {
+        "id": "the-mirascope",
+        "contributors": [
+          "Mario Petitclerc"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "refraction",
+    "content": [
+      {
+        "id": "reflect",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "internal-reflection",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "prisms",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "beam-directors",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "apparent-depth",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "bended-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "broken-pencil",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "chromatic-dispersion",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "rainbows",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "minimum-deviation-angle",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "aplanatic-points",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lens",
+    "content": [
+      {
+        "id": "concave-lens",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "convex-lens",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "lens-images",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "transverse-and-longitudinal-magnification",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "vanishing-point",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "monochromatic-aberrations",
+        "contributors": [
+          "Paul Falstad",
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "chromatic-aberration",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "hyperbolic-lens",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "fresnel-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "combination-of-lenses",
+    "content": [
+      {
+        "id": "zoom-lens",
+        "contributors": [
+          "Paul Falstad"
+        ]
+      },
+      {
+        "id": "compound-microscope",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "telescope",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "keplerian-telescope",
+        "contributors": [
+          "chuangyu J"
+        ]
+      },
+      {
+        "id": "beam-expanders",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "ray-relaying",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "rochester-cloak",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "simple-double-gauss-lens",
+        "contributors": [
+          "Alex"
+        ]
+      },
+      {
+        "id": "pair-of-axicons-making-a-rainbow-ring",
+        "contributors": [
+          "Peter Becher"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "GRIN-optics",
+    "content": [
+      {
+        "id": "GRIN-slab",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "inferior-mirage",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "sea-mirage",
+        "contributors": [
+          "chuangyu J"
+        ]
+      },
+      {
+        "id": "logarithmic-spiral-lens",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "luneburg-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "maxwell-fisheye-lens",
+        "contributors": [
+          "Stas Fainer",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "branched-flow",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "miscellaneous",
+    "content": [
+      {
+        "id": "single-ray-demo",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "spherical-lens-and-mirror",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "interrogation-room",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "camera-obscura",
+        "contributors": [
+          "Stas Fainer"
+        ]
+      },
+      {
+        "id": "the-principle-of-camera-imaging",
+        "contributors": [
+          "Liu Quanhong"
+        ]
+      },
+      {
+        "id": "NL-simulation",
+        "contributors": [
+          "Wen Zhou"
+        ]
+      },
+      {
+        "id": "einstein-ring-refocused-to-single-image-via-eyepiece",
+        "contributors": [
+          "Jordan Anderson"
+        ]
+      },
+      {
+        "id": "black-cat-becomes-white",
+        "contributors": [
+          "Victory Science",
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "dichroic-rbg-splitter-and-combiner",
+        "contributors": [
+          "James Garrard"
+        ]
+      },
+      {
+        "id": "gan-based-lcd-pixel",
+        "contributors": [
+          "James Garrard"
+        ]
+      },
+      {
+        "id": "concave-mirror-wearable-display",
+        "contributors": [
+          "Rene"
+        ]
+      },
+      {
+        "id": "reflecting-monochromator",
+        "contributors": [
+          "James Garrard"
+        ]
+      },
+      {
+        "id": "solar-eclipses",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  {{> head}}
+  <style>
+    .preview-image {
+      width: 100%;
+    }
+
+    .thumbnail.right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .thumbnail {
+      margin-bottom: 5px;
+    }
+
+    .tool-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .mode-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container">
+    <div align="center">
+      <h1><b><span>{{t "main:project.name"}}</span></b></h1>
+      <p>
+        {{t "main:homePage.description"}}
+      </p>
+      <p>
+        <a href="{{simulatorUrl}}" target="_blank" class="btn btn-success btn-lg">{{t "main:homePage.launchSimulator"}}</a>
+      </p>
+    </div>
+    <br>
+    <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+      <ol class="carousel-indicators">
+        <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+        <li data-target="#screenshots" data-slide-to="1"></li>
+        <li data-target="#screenshots" data-slide-to="2"></li>
+        <li data-target="#screenshots" data-slide-to="3"></li>
+        <li data-target="#screenshots" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="{{simulatorUrl}}#spherical-lens-and-mirror" target="_blank"><img src="{{imgUrl}}/spherical-lens-and-mirror.jpg"
+              alt="{{t "gallery:galleryData.sphericalLensAndMirror.title"}}" class="preview-image"></a>
+        </div>
+        <div class="item">
+          <a href="{{simulatorUrl}}#{{compoundMicroscopeHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{compoundMicroscopeUrl}}.avif" type="image/avif">
+              <img src="{{compoundMicroscopeUrl}}.jpg" alt="{{t "gallery:galleryData.compoundMicroscope.title"}}" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="{{simulatorUrl}}#{{apparentDepthHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{apparentDepthUrl}}.avif" type="image/avif">
+              <img src="{{apparentDepthUrl}}.jpg" alt="{{t "gallery:galleryData.apparentDepth.title"}}" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="{{simulatorUrl}}#{{chromaticDispersionHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{chromaticDispersionUrl}}.avif" type="image/avif">
+              <img src="{{chromaticDispersionUrl}}.jpg" alt="{{t "gallery:galleryData.chromaticDispersion.title"}}" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="{{simulatorUrl}}#images-formed-by-two-mirrors" target="_blank"><img src="{{imgUrl}}/images-formed-by-two-mirrors.svg"
+              alt="{{t "gallery:galleryData.imagesFormedByTwoMirrors.title"}}" class="preview-image"></a>
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="row" style="font-size: 10pt">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>{{t "main:tools.title"}}</h2>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/SingleRay.svg" alt="{{t "main:tools.SingleRay.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.SingleRay.title"}}</p>
+              <span>{{t "main:tools.SingleRay.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Beam.svg" alt="{{t "main:tools.Beam.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.Beam.title"}}</p>
+              <span>{{t "main:tools.Beam.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/PointSource.svg" alt="{{t "main:tools.PointSource.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.PointSource.title"}}</p>
+              <span>{{t "main:tools.PointSource.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Mirror.svg" alt="{{t "main:tools.categories.mirror"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.categories.mirror"}}</p>
+              <span>{{t "main:tools.Mirror.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/ArcMirror.svg" alt="{{t "main:meta.parentheses" main=(t "main:tools.categories.mirror") sub=(t "main:tools.otherMirror.title")}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:meta.parentheses" main=(t "main:tools.categories.mirror") sub=(t "main:tools.otherMirror.title")}}</p>
+              <span>{{t "main:tools.otherMirror.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/IdealMirror.svg" alt="{{t "main:tools.IdealMirror.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.IdealMirror.title"}}</p>
+              <span>{{t "main:tools.IdealMirror.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/BeamSplitter.svg" alt="{{t "main:tools.BeamSplitter.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.BeamSplitter.title"}}</p>
+              <span>{{t "main:tools.BeamSplitter.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/PlaneGlass.svg" alt="{{t "main:tools.categories.glass"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.categories.glass"}}</p>
+              <span>{{t "main:tools.PlaneGlass.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Glass.svg" alt="{{t "main:meta.parentheses" main=(t "main:tools.categories.glass") sub=(t "main:tools.otherGlass.title")}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:meta.parentheses" main=(t "main:tools.categories.glass") sub=(t "main:tools.otherGlass.title")}}</p>
+              <span>{{t "main:tools.otherGlass.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/CircleGrinGlass.svg" alt="{{t "main:tools.otherGrinGlass.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.otherGrinGlass.title"}}</p>
+              <span>{{t "main:tools.otherGrinGlass.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/IdealLens.svg" alt="{{t "main:tools.IdealLens.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.IdealLens.title"}}</p>
+              <span>{{t "main:tools.IdealLens.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Blocker.svg" alt="{{t "main:tools.categories.blocker"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.categories.blocker"}}</p>
+              <span>{{t "main:tools.Blocker.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/DiffractionGrating.svg" alt="{{t "main:tools.DiffractionGrating.title"}}" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">{{t "main:tools.DiffractionGrating.title"}}</p>
+              <span>{{t "main:tools.DiffractionGrating.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Ruler.svg" alt="{{t "main:tools.Ruler.title"}}" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">{{t "main:tools.Ruler.title"}}</p>
+              <span>{{t "main:tools.Ruler.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Protractor.svg" alt="{{t "main:tools.Protractor.title"}}" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">{{t "main:tools.Protractor.title"}}</p>
+              <span>{{t "main:tools.Protractor.description"}}</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="{{imgUrl}}/Detector.svg" alt="{{t "main:tools.Detector.title"}}" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">{{t "main:tools.Detector.title"}}</p>
+              <span>{{t "main:tools.Detector.description"}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>{{t "main:view.title"}}</h2>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">{{t "main:view.rays.title"}}</p>
+              <span>{{t "main:view.rays.description"}}</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="{{imgUrl}}/high_density.png" alt="{{t "main:view.rays.title"}}" style="width:100%" class="img-rounded">
+              </div>
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="{{imgUrl}}/low_density.svg" alt="{{t "main:view.rays.title"}}" class="img-rounded" style="margin-top:5px; width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">{{t "main:view.extended.title"}}</p>
+              <span>{{t "main:view.extended.description"}}</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="{{imgUrl}}/extended_rays.svg" alt="{{t "main:view.extended.title"}}" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">{{t "main:view.images.title"}}</p>
+              <span>{{t "main:view.images.description"}}</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="{{imgUrl}}/all_images.svg" alt="{{t "main:view.images.title"}}" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">{{t "main:view.observer.title"}}</p>
+              <span>{{t "main:view.observer.description"}}</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="{{imgUrl}}/seen_by_observer.svg" alt="{{t "main:view.observer.title"}}" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">{{t "main:simulateColors.title"}}</p>
+              <span>{{t "main:simulateColors.description"}}</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="{{imgUrl}}/simulate_colors.png" alt="{{t "main:simulateColors.title"}}" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{> footer}}
+  </div>
+</body>

@@ -1,6 +1,6 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * The ruler tool
@@ -22,9 +22,10 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
   };
 
   populateObjBar(objBar) {
-    objBar.createNumber(getMsg('scaleInterval'), 0, 10, 1, this.scaleInterval, function (obj, value) {
+    objBar.setTitle(i18next.t('main:tools.Ruler.title'));
+    objBar.createNumber(i18next.t('simulator:sceneObjs.Ruler.scaleInterval'), 0, 10, 1, this.scaleInterval, function (obj, value) {
       obj.scaleInterval = value;
-    }, getMsg('length_unit_popover'), true);
+    }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'), true);
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {

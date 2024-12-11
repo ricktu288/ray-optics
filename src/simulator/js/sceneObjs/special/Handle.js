@@ -1,7 +1,7 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import geometry from '../../geometry.js';
 import Mouse from '../../Mouse.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * The handle created when holding ctrl and click several points.
@@ -46,13 +46,14 @@ class Handle extends BaseSceneObj {
   }
 
   populateObjBar(objBar) {
-    objBar.createDropdown(getMsg('transformation'), this.transformation, {
-      'default': getMsg('default'),
-      'translation': getMsg('translation'),
-      'xTranslation': getMsg('xTranslation'),
-      'yTranslation': getMsg('yTranslation'),
-      'rotation': getMsg('rotation'),
-      'scaling': getMsg('scaling')
+    objBar.setTitle(i18next.t('simulator:sceneObjs.Handle.handle'));
+    objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation'), this.transformation, {
+      'default': i18next.t('simulator:common.defaultOption'),
+      'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
+      'xTranslation': i18next.t('simulator:sceneObjs.Handle.transformations.xTranslation'),
+      'yTranslation': i18next.t('simulator:sceneObjs.Handle.transformations.yTranslation'),
+      'rotation': i18next.t('simulator:sceneObjs.Handle.transformations.rotation'),
+      'scaling': i18next.t('simulator:sceneObjs.Handle.transformations.scaling')
     }, function (obj, value) {
       obj.transformation = value;
     }, null, true);

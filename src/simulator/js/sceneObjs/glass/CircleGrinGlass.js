@@ -1,5 +1,6 @@
 import BaseGrinGlass from '../BaseGrinGlass.js';
 import CircleObjMixin from '../CircleObjMixin.js';
+import i18next from 'i18next';
 import geometry from '../../geometry.js';
 
 /**
@@ -28,6 +29,11 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     stepSize: 1,
     intersectTol: 1e-3
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.CircleGrinGlass.title'));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;

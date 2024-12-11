@@ -1,6 +1,6 @@
 import Glass from './Glass.js';
 import geometry from '../../geometry.js';
-import { getMsg } from '../../translations.js';
+import i18next from 'i18next';
 
 /**
  * Spherical lens.
@@ -48,10 +48,10 @@ class SphericalLens extends Glass {
   }
 
   populateObjBar(objBar) {
-
+    objBar.setTitle(i18next.t('main:tools.SphericalLens.title'));
     objBar.createDropdown('', this.defBy, {
-      'DR1R2': getMsg('radii_of_curvature'),
-      'DFfdBfd': getMsg('focal_distances')
+      'DR1R2': i18next.t('simulator:sceneObjs.SphericalLens.defBy.radiiOfCurvature'),
+      'DFfdBfd': i18next.t('simulator:sceneObjs.SphericalLens.defBy.focalDistances')
     }, function (obj, value) {
       obj.defBy = value;
     }, null, true);
@@ -109,14 +109,14 @@ class SphericalLens extends Glass {
     }
 
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGlass.cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.refIndex = value * 1;
         if (obj.defBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, getMsg('refIndex_note_popover'));
+      }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
       objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyB, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.cauchyB = value;
@@ -126,14 +126,14 @@ class SphericalLens extends Glass {
         }
       });
     } else {
-      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGlass.refIndex') + '*', 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
         var old_params = obj.getDFfdBfd();
         obj.refIndex = value * 1;
         if (obj.defBy == 'DFfdBfd') {
           // If the lens is defined by d,ffd,bfd, we need to rebuild the lens with the new refractive index so that the focal distances are correct.
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
-      }, getMsg('refIndex_note_popover'));
+      }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
     }
   }
 

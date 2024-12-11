@@ -1,4 +1,5 @@
 import BaseSceneObj from '../BaseSceneObj.js';
+import i18next from 'i18next';
 import CircleObjMixin from '../CircleObjMixin.js';
 
 /**
@@ -17,6 +18,10 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
     p1: null,
     p2: null
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.Protractor.title'));
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;

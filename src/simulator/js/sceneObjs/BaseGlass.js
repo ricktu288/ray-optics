@@ -1,5 +1,5 @@
 import BaseSceneObj from './BaseSceneObj.js';
-import { getMsg } from '../translations.js';
+import i18next from 'i18next';
 import geometry from '../geometry.js';
 
 /**
@@ -13,16 +13,16 @@ class BaseGlass extends BaseSceneObj {
 
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
-      objBar.createNumber(getMsg('cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGlass.cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {
         obj.refIndex = value * 1;
-      }, getMsg('refIndex_note_popover'));
+      }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
       objBar.createNumber("B(μm²)", 0.0001, 0.02, 0.0001, this.cauchyB, function (obj, value) {
         obj.cauchyB = value;
       });
     } else {
-      objBar.createNumber(getMsg('refIndex'), 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGlass.refIndex') + '*', 0.5, 2.5, 0.01, this.refIndex, function (obj, value) {
         obj.refIndex = value * 1;
-      }, getMsg('refIndex_note_popover'));
+      }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
     }
   }
 

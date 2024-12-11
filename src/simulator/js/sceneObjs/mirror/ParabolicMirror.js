@@ -1,4 +1,5 @@
 import BaseFilter from '../BaseFilter.js';
+import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
@@ -33,6 +34,11 @@ class ParabolicMirror extends BaseFilter {
     wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.ParabolicMirror.title') }));
+    super.populateObjBar(objBar);
+  }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
