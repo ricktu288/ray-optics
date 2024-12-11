@@ -1198,7 +1198,7 @@ function initUIText() {
   setText('tool_TextLabel_mobile_label', i18next.t('main:tools.TextLabel.title'));
   setText('tool_LineArrow_mobile_label', i18next.t('main:tools.LineArrow.title'));
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
-  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
+  setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('view_mobile_text', i18next.t('main:view.title'));
   setText('mode_rays_mobile_label', i18next.t('main:view.rays.title'));
   setText('mode_extended_mobile_label', i18next.t('main:view.extended.title'));

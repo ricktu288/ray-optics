@@ -16,11 +16,8 @@ For direct contributions, see the following guidelines.
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
-
 2. Run `npm install` (you don't need to run build).
-
 3. Run `npm run add-to-gallery` and follow the instructions there.
-
 4. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing translations
@@ -65,12 +62,9 @@ See Tools -> Others -> Import Modules for more information about modules. See [t
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
-
 2. Run `npm install` (you don't need to run build).
-
 3. Run `npm run add-to-modules` and follow the instructions there.
-
-5. Commit your changes, push to your fork, and create a pull request.
+4. Commit your changes, push to your fork, and create a pull request.
 
 ## More contributions
 
