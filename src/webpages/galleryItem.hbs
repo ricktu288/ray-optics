@@ -24,7 +24,7 @@
 <body>
   {{> navbar}}
   <div class="container">
-    <div style="text-align: center;">
+    <div align="center">
       <h1><b><span>{{t titleKey}}</span></b></h1>
       <p>
         {{t "gallery:galleryPage.contributors" count=contributorCount contributors=contributors}}
@@ -37,7 +37,7 @@
       </p>
       <picture>
         <source srcset="{{id}}.avif" type="image/avif">
-        <img src="{{id}}.jpg" alt="{{alt}}" class="preview-image">
+        <img src="{{id}}.jpg" alt="{{t titleKey}}" class="preview-image">
       </picture>
     </div>
     {{> footer}}

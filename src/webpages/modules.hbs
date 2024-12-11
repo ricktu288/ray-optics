@@ -74,7 +74,7 @@
     <div class="row right-caption">
       <picture>
         <source srcset="{{this.thumbnailUrl}}.avif" type="image/avif">
-        <img src="{{this.thumbnailUrl}}.jpg" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+        <img src="{{this.thumbnailUrl}}.jpg" alt="{{t this.titleKey}}" class="img-rounded module-image" loading="lazy">
       </picture>
       <div class="caption">
         <p class="module-title">{{t this.titleKey}} (<code>{{this.id}}</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: '{{this.id}}'},'*');this.innerText='{{t "modules:modulesPage:imported"}}';this.classList.remove('btn-primary');this.classList.add('btn-success');">{{t "modules:modulesPage:import"}}</button></p>
