@@ -4,8 +4,8 @@
 <head>
   {{> head}}
   <style>
-    .carousel-inner>.item>a>img {
-      width: 1920px;
+    .preview-image {
+      width: 100%;
     }
 
     .thumbnail.right-caption>img {
@@ -55,24 +55,36 @@
 
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <a href="{{simulatorUrl}}#spherical-lens-and-mirror" target="_blank"><img src="{{imgUrl}}/1.jpg"
-              alt="1.jpg"></a>
+          <a href="{{simulatorUrl}}#spherical-lens-and-mirror" target="_blank"><img src="{{imgUrl}}/spherical-lens-and-mirror.jpg"
+              alt="1.jpg" class="preview-image"></a>
         </div>
         <div class="item">
-          <a href="{{simulatorUrl}}#{{compoundMicroscopeHashUrl}}" target="_blank"><img src="{{imgUrl}}/3.svg"
-              alt="3.svg"></a>
+          <a href="{{simulatorUrl}}#{{compoundMicroscopeHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{compoundMicroscopeUrl}}.avif" type="image/avif">
+              <img src="{{compoundMicroscopeUrl}}.jpg" alt="Compound microscope" class="preview-image">
+            </picture>
+          </a>
         </div>
         <div class="item">
-          <a href="{{simulatorUrl}}#{{apparentDepthHashUrl}}" target="_blank"><img src="{{imgUrl}}/5.svg"
-              alt="5.svg"></a>
+          <a href="{{simulatorUrl}}#{{apparentDepthHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{apparentDepthUrl}}.avif" type="image/avif">
+              <img src="{{apparentDepthUrl}}.jpg" alt="Apparent depth" class="preview-image">
+            </picture>
+          </a>
         </div>
         <div class="item">
-          <a href="{{simulatorUrl}}#{{chromaticDispersionHashUrl}}" target="_blank"><img src="{{imgUrl}}/6.png"
-              alt="6.png"></a>
+          <a href="{{simulatorUrl}}#{{chromaticDispersionHashUrl}}" target="_blank">
+            <picture>
+              <source srcset="{{chromaticDispersionUrl}}.avif" type="image/avif">
+              <img src="{{chromaticDispersionUrl}}.jpg" alt="Chromatic dispersion" class="preview-image">
+            </picture>
+          </a>
         </div>
         <div class="item">
-          <a href="{{simulatorUrl}}#images-formed-by-two-mirrors" target="_blank"><img src="{{imgUrl}}/4.svg"
-              alt="4.svg"></a>
+          <a href="{{simulatorUrl}}#images-formed-by-two-mirrors" target="_blank"><img src="{{imgUrl}}/images-formed-by-two-mirrors.svg"
+              alt="4.svg" class="preview-image"></a>
         </div>
       </div>
 

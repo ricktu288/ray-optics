@@ -370,8 +370,11 @@ for (const lang of homeLangs) {
     isGallery: false,
     isAbout: false,
     compoundMicroscopeHashUrl: (galleryItemsLangs['compound-microscope'].includes(lang) ? galleryHashUrl : '') + 'compound-microscope',
+    compoundMicroscopeUrl: rootUrl + urlMaps[lang]['/gallery/compound-microscope'],
     apparentDepthHashUrl: (galleryItemsLangs['apparent-depth'].includes(lang) ? galleryHashUrl : '') + 'apparent-depth',
+    apparentDepthUrl: rootUrl + urlMaps[lang]['/gallery/apparent-depth'],
     chromaticDispersionHashUrl: (galleryItemsLangs['chromatic-dispersion'].includes(lang) ? galleryHashUrl : '') + 'chromatic-dispersion',
+    chromaticDispersionUrl: rootUrl + urlMaps[lang]['/gallery/chromatic-dispersion'],
   }
 
   // Create the webpage
@@ -550,6 +553,7 @@ for (const lang of homeLangs) {
       content: moduleList[0].content.map(item => {
         return {
           id: item.id,
+          thumbnailUrl: rootUrl + '/modules/' + item.id + '-thumbnail',
           titleKey: 'modules:moduleData.' + item.id + '.title',
           contributors: item.contributors.join(', '),
           descriptionKey: 'modules:moduleData.' + item.id + '.description',

@@ -9,13 +9,30 @@ import sharp from 'sharp';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const langs = ['en', 'pl', 'zh-CN', 'zh-TW'];
-const dirs = {
-  'en': path.join(__dirname, '../dist/gallery/'),
-  'pl': path.join(__dirname, '../dist/pl/gallery/'),
-  'zh-CN': path.join(__dirname, '../dist/cn/gallery/'),
-  'zh-TW': path.join(__dirname, '../dist/tw/gallery/')
+// List all existing languages, which are the directories in the /locales directory. Put English first.
+const langs = ['en'].concat(fs.readdirSync(path.join(__dirname, '../locales')).filter((file) => !file.includes('.') && file !== 'en'));
+
+// Load the locale routes data
+const routesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/localeRoutes.json'), 'utf8'));
+
+// Fill the rest of the locale rountes
+for (const lang of langs) {
+  if (routesData[lang] === undefined) {
+    routesData[lang] = '/' + lang;
+  }
 }
+
+// Get all the languages where the corresponding gallery directory exists
+const galleryLangs = [];
+const galleryDirs = {};
+for (const lang of langs) {
+  if (fs.existsSync(path.join(__dirname, '../dist' + routesData[lang] + '/gallery/'))) {
+    galleryLangs.push(lang);
+    galleryDirs[lang] = path.join(__dirname, '../dist' + routesData[lang] + '/gallery/');
+  }
+}
+
+const modulesDir = path.join(__dirname, '../dist/modules/');
 
 const canvasLight = createCanvas();
 const canvasBelowLight = createCanvas();
@@ -36,7 +53,7 @@ const simulator = new rayOptics.Simulator(scene, ctxLight, ctxBelowLight, ctxAbo
 
 function loadScene(sceneJson, callback, backgroundImage) {
   if (sceneJson.backgroundImage) {
-    loadImage(dirs.en + sceneJson.backgroundImage).then((image) => {
+    loadImage(galleryDirs.en + sceneJson.backgroundImage).then((image) => {
       sceneJson.backgroundImage = null;
       loadScene(sceneJson, callback, image);
     });
@@ -127,8 +144,8 @@ function exportImageFromCropBox(cropBox, filename, skipLight, callback) {
   });
 }
 
-function exportImages(itemId, lang, isThumbnail, callback) {
-  const sceneJson = JSON.parse(fs.readFileSync(dirs[lang] + itemId + '.json', 'utf8'));
+function exportImages(dir, itemId, lang, isThumbnail, callback) {
+  const sceneJson = JSON.parse(fs.readFileSync(dir + itemId + '.json', 'utf8'));
   loadScene(sceneJson, function () {
     // Find crop boxes, where the preview one is rectangular and the thumbnail one is square
     let cropBoxPreview = null;
@@ -143,49 +160,66 @@ function exportImages(itemId, lang, isThumbnail, callback) {
       }
     }
 
-    if (!cropBoxPreview) {
-      throw new Error('No preview crop box found');
+    if (cropBoxPreview) {
+      cropBoxPreview.width = 2280;
+    } else if (!isThumbnail) {
+      console.error('No preview crop box found for ' + itemId + ' in ' + lang);
+      process.exit(1);
     }
 
-    if (!cropBoxThumbnail) {
-      throw new Error('No thumbnail crop box found');
+    if (cropBoxThumbnail) {
+      cropBoxThumbnail.width = 500;
+    } else if (isThumbnail) {
+      console.error('No thumbnail crop box found for ' + itemId + ' in ' + lang);
+      process.exit(1);
     }
-
-    cropBoxPreview.width = 2280;
-    cropBoxThumbnail.width = 500;
 
     const skipLight = lang !== 'en'; // Different languages only differs in text, so we only need to re-render the light layer for the first language in the list.
 
     // Export preview image
-    exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dirs[lang] + itemId + (isThumbnail ? '-thumbnail' : ''), skipLight, function () {
+    exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dir + itemId + (isThumbnail ? '-thumbnail' : ''), skipLight, function () {
       callback();
     });
   });
 }
 
-function exportImagesPromise(itemId, lang, isThumbnail) {
+function exportImagesPromise(dir, itemId, lang, isThumbnail) {
   return new Promise((resolve) => {
-    exportImages(itemId, lang, isThumbnail, resolve);
+    exportImages(dir, itemId, lang, isThumbnail, resolve);
   });
 }
 
-// Get all JSON files in the input directory
-const items = fs.readdirSync(dirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
+// Get all JSON files in the gallery directory
+const galleryItems = fs.readdirSync(galleryDirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5)).filter(file => !file.startsWith('module-example-'));
 
-async function exportAllImages() {
+async function exportAllGalleryImages() {
   const beginTime = Date.now();
-  for (let item of items) {
+  for (let item of galleryItems) {
     for (let isThumbnail of [false, true]) {
-      for (let lang of langs) {
-        if (fs.existsSync(dirs[lang] + item + '.json')) {
+      for (let lang of galleryLangs) {
+        if (fs.existsSync(galleryDirs[lang] + item + '.json')) {
           const time = Date.now();
-          await exportImagesPromise(item, lang, isThumbnail);
+          await exportImagesPromise(galleryDirs[lang], item, lang, isThumbnail);
           console.log('Exported ' + (isThumbnail ? 'thumbnail' : 'preview') + ' for ' + item + ' in ' + lang + ' in ' + (Date.now() - time) + 'ms');
         }
       }
     }
   }
-  console.log('Exported all images in ' + (Date.now() - beginTime) + 'ms');
+  console.log('Exported all gallery images in ' + (Date.now() - beginTime) + 'ms');
 }
 
-exportAllImages();
+// Get all JSON files in the modules directory, note that it is not multilingual
+const moduleItems = fs.readdirSync(modulesDir).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
+
+async function exportAllModuleImages() {
+  const beginTime = Date.now();
+  for (let item of moduleItems) {
+    await exportImagesPromise(modulesDir, item, 'en', true);
+  }
+  console.log('Exported all module images in ' + (Date.now() - beginTime) + 'ms');
+}
+
+await exportAllGalleryImages();
+await exportAllModuleImages();
+
+
