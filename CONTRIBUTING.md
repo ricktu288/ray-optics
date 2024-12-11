@@ -17,61 +17,41 @@ For direct contributions, see the following guidelines.
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the JSON file in `src/webpages/gallery/` (follow the naming convention there).
+2. Run `npm install` (you don't need to run build).
 
-3. If the work contains a background image, put it also in `src/webpages/gallery/`, and edit the `.json` file to include <code>backgroundImage": "<var>IMAGE_FILENAME</var>"</code>.
+3. Run `npm run add-to-gallery` and follow the instructions there.
 
 4. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing translations
 
-You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. You don't need to understand the code to do the translation. Currently, the translation of the Gallery can only be done manually.
-1. Download the target locale file:
-   - German: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/de.json
-   - Spanish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/es.json
-   - French: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/fr.json
-   - Japanese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ja.json
-   - Korean: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ko.json
-   - Dutch: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/nl.json
-   - Polish: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/pl.json
-   - Brazilian Portuguese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/pt_BR.json
-   - Russian: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/ru.json
-   - Sinhala: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/si.json
-   - Traditional Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/zh_TW.json
-   - Simplified Chinese: https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/zh_CN.json
-   - Template for a new language:  https://raw.githubusercontent.com/ricktu288/ray-optics/master/locales/template.json
-   
-   _NOTE: If it is indicated above (or in some PR) that some update for a language has been submitted but not yet merged, please wait until it is merged to avoid repeated translation._
-2. Translate the phrase/sentence in the quotation after `"message":` to the target language. If you encounter `<` and `>`, leave the text between them untouched; `&amp;` means the "&" symbol; `\"` means a quote, and `&nbsp;` means an extra space.  If the translation of an item is completed, remove the line `"incomplete": true,`. For example,
-```javascript
-  "welcome": {
-    "incomplete": true,
-    "message": "<span style=\"font-size:22pt\">Welcome to Ray Optics Simulation</span><br>To add an optical component, select a tool and click the blank space.<br>To load an example, please <a href=\"https://phydemo.app/ray-optics/gallery/\">go to the Gallery page</a>."
-  },
-```
-becomes (for Traditional Chinese)
-```javascript
-  "welcome": {
-    "message": "<span style=\"font-size:22pt\">歡迎使用「線光學模擬」</span><br>若要加入光學元件，請選擇工具並點擊空白處。<br>若要載入範例，<a href=\"https://phydemo.app/ray-optics/gallery/\">請前往「作品集」頁面</a>。"
-  },
+> [!NOTE]
+> There will likely be an online collaboration tool for translation in the near future.
 
-```
-After that, you can submit the translated file with either method below:
+You can submit a complete or partial translation for a new language, make progress to an incomplete language, or improve translation for an existing language. The locale strings are in the `locales/` folder and is in the json format of i18next. Currently the best way to do the translation is to use an offline translation editor such as the i18n Ally extension for VSCode.
+
+For each language, there are four json files:
+
+- `main.json`: The strings for the homepage and the "Tools" and "View" toolbar of the simulator.
+- `simulator.json`: The resto of the strings for the simulator.
+- `gallery.json`: The strings for the Gallery page and of all the items in the Gallery.
+- `modules.json`: The strings for the modules page, the module items, and the module tutorial page.
+
+The `main.json` and `simulator.json` are the most important ones, and should be translated first.
+
+If you already started the translation with the old json format before Dec 11, 2024, you can still submit that (which will be converted to the new format by some automatic script). But please do not start a new translation with the old format.
+
+You can submit the translated file with either method below:
 
 **Method 1: By e-mail**
 
-3. Send the resulting file to ray-optics@phydemo.app. Include the name of the language and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+Send the resulting files to ray-optics@phydemo.app. Include the name of the language and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
-3. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
-
-4. Save/replace the file as <code><var>LOCALE_ID</var>.json</code> in `locales/`.
-5. _(optional)_ If it is a new language, modify the locale list in `locales/sync.js`.
-6. _(optional)_ Add/modify the translation of the welcome messages in `src/simulator/index.html`.
-7. _(optional)_ Add/modify <code>src/webpages/<var>LOCALE_ID</var>/index.html</code>.
-8. _(optional)_ Add/modify the language-related metadata and the language dropdowns of the homepages in all locales and the simulator for the new locale.
-9. Commit your changes, push to your fork, and create a pull request.
+1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
+2. Save/replace the locale files. If it is a new language, just create the new folder in `locales/` with the locale ID as the name.
+3. Commit your changes, push to your fork, and create a pull request.
 
 ## Contributing modules
 
@@ -86,11 +66,9 @@ See Tools -> Others -> Import Modules for more information about modules. See [t
 
 1. Fork this repo and clone locally. If you have forked previously, sync to get the latest changes.
 
-2. Add the JSON file in `src/webpages/modules/` (follow the naming convention there).
+2. Run `npm install` (you don't need to run build).
 
-3. _(optional)_ Take a PNG screenshot for the thumbnail.
-
-4. _(optional)_ Edit `src/webpages/modules/data.json` with a text editor. This file contains the metadata for all the modules. The ID of an item is the JSON file name without the `.json`. If you replace an existing items, you can change the title but not the ID, and you should append you name in the list of contributors.
+3. Run `npm run add-to-modules` and follow the instructions there.
 
 5. Commit your changes, push to your fork, and create a pull request.
 

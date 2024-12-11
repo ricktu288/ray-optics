@@ -61,9 +61,9 @@ cd ray-optics
 npm install --no-optional
 npm run start
 ```
-After that, the simulator web app should be running at `http://localhost:8080/simulator/`.
+After that, the simulator web app should be running at `http://localhost:8080/simulator/`. Note however that some links and the "import module" window will not work because the other part of the project is not built.
 
-If you want to build the entire project, including the gallery, documentation, and the node module version of the simulator, you can run the following command:
+If you want to build the entire project, including the home pages, gallery, modules, documentation, and the node version of the simulator, you can run the following command:
 ```bash
 npm install
 npm run build
@@ -74,7 +74,7 @@ If an error occurs during the installation, some common reasons are:
 - The version of Node.js is too old. You can update Node.js to version 18 or later.
 - Some system dependencies for node-canvas are missing. You can find the instructions for installing the dependencies in the [node-canvas repository](https://github.com/Automattic/node-canvas).
 
-The full build may takes about half an hour to complete due to the generation of the large numbers of images for the gallery. See the following section if you only want to build the simulator.
+The full build may takes about half an hour to complete due to the generation of the large numbers of images for the gallery.
 
 ## Development
 
@@ -103,9 +103,10 @@ Note that `npm run build` is equivalent to running all the above commands.
 ## Project structure
 
 - `src` contains the source code for the project.
-- `src/simulator` contains the source code for the simulator app. To understand the structure of the code, see the [documentation](https://phydemo.app/ray-optics/docs/) for more information. The documentation is generated from the jsdoc comments in the code.
+- `src/simulator` contains the source code for the simulator app, which is to be built by webpack. To understand the structure of the code, see the [documentation](https://phydemo.app/ray-optics/docs/) for more information. The documentation is generated from the jsdoc comments in the code.
 - `src/simulator-node` contains the source code for the node module version of the simulator.
-- `src/webpages` contains the code for the home pages, about pages, templates for gallery and module pages, and the JSON files for the gallery and modules.
+- `src/webpages` contains the handlebars templates for the home, about, gallery and module pages, to be built by `scripts/buildWebpages.mjs`.
+- `data` contains the data for gallery, modules, and the list of contributors.
 - `locales` contains the translations for the project in i18next format.
 - `scripts` contains the scripts for custom build steps.
 - `dist` contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
