@@ -112,7 +112,7 @@
       "title": "新增參數",
       "lookAtExample": "模組中的物件可以由一組參數來定義。讓我們看一個簡單的例子",
       "paramsArray": "這裡 `modules.ModuleName.params` 是一個由形如 `\"名稱=起始值:增量:終止值:預設值\"`的字串構成的陣列，定義了變數的名稱和數值滑桿的範圍。當選取模組物件時，滑桿將出現在物件欄上。",
-      "equationSyntax": "在 `modules.ExampleModule.objs` 陣列中，任何值都可以使用這些參數來表示。在字串中（例如 `TextLabel` 的 `text` 屬性）中，帶有參數的數學式被反引號包圍。對於數值參數（例如 `TextLabel` 的 `fontSize` 屬性），您需要將其改為字串，以便您可以在其中使用反引號格式。因此每條數學式都被一對反引號和一對引號包圍。這些數學式將使用 math.js 來計算（[https://mathjs.org/docs/reference/functions/evaluate.html](/mathjs/syntax)）。請參見該網頁以了解您可以在數學式中使用的語法和函數。",
+      "equationSyntax": "在 `modules.ExampleModule.objs` 陣列中，任何值都可以使用這些參數來表示。在字串中（例如 `TextLabel` 的 `text` 屬性）中，帶有參數的數學式被反引號包圍。對於數值參數（例如 `TextLabel` 的 `fontSize` 屬性），您需要將其改為字串，以便您可以在其中使用反引號格式。因此每條數學式都被一對反引號和一對引號包圍。這些數學式將使用 math.js 來計算（[語法](/mathjs/syntax)）。請參見該網頁以了解您可以在數學式中使用的語法和函數。",
       "valueStorage": "參數的實際值位於模組物件的 `params` 屬性中。這部分與模組定義不同，其可以通過滑桿直接由視覺化場景編輯器編輯。"
     },
     "controlPoints": {

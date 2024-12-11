@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  {{> head}}
+  <style>
+    .description {
+      display: inline-block;
+      text-align: left;
+      max-width: 80%;
+    }
+
+    ol, ul {
+      padding-left: 1.8em;
+    }
+  </style>
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container">
+    <div style="text-align: center;">
+      <h1><b><span>{{t titleKey}}</span></b></h1>
+      <p>
+        {{t "gallery:galleryPage.contributors" count=contributorCount contributors=contributors}}
+      </p>
+      <div class="description">
+        <p>{{t descriptionKey}}</p>
+      </div>
+      <p>
+        <a href="{{simulatorUrl}}#{{idHashUrl}}" target="_blank" class="btn btn-success btn-lg">{{t "gallery:galleryPage.openInSimulator"}}</a>
+      </p>
+      <picture>
+        <source srcset="{{id}}.avif" type="image/avif">
+        <img src="{{id}}.jpg" alt="{{alt}}" style="width:100%">
+      </picture>
+    </div>
+    {{> footer}}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>

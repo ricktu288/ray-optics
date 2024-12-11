@@ -1,0 +1,94 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{title}}</title>
+<meta property="og:title" content="{{title}}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{url}}">
+<meta property="og:image" content="{{image}}">
+<meta property="og:description" content="{{t "main:project.name"}}">
+<meta property="og:locale" content="{{lang}}">
+<link rel="canonical" href="{{url}}">
+{{#each supportedLangs}}
+<link rel="alternate" hreflang="{{this.lang}}" href="{{this.url}}">
+{{/each}}
+<link rel="stylesheet" href="{{thirdpartyUrl}}/bootstrap/bootstrap.min.css">
+<link rel="icon" href="{{imgUrl}}/icon.png" type="image/png">
+<style>
+  .brand {
+    font-size: 12pt;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .github-button-container {
+    color: #888;
+    margin-top: 7px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
+    height: 40px;
+    width: 92px;
+    line-height: 40px;
+    position: relative;
+    text-align: center;
+    float: right;
+  }
+
+  .github-button-container a {
+    color: transparent;
+  }
+
+  .navul {
+    font-size: 11pt;
+  }
+
+  .navul a {
+    color: #555;
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 2px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .clearfix {
+    clear: both;
+  }
+
+  .navul a:hover {
+    border-bottom: 3px solid #CCC;
+    text-decoration: none;
+  }
+
+  .navul a.active {
+    color: #000;
+    border-bottom: 3px solid gray;
+  }
+
+  body {
+    padding-top: 72px;
+  }
+</style>
+<script defer src="{{thirdpartyUrl}}/jquery.min.js"></script>
+<script defer src="{{thirdpartyUrl}}/bootstrap/bootstrap.min.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>

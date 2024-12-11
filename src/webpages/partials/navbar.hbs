@@ -1,0 +1,19 @@
+<div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+
+  <a href="{{homeUrl}}" class="navbar-left brand">
+    <img src="{{imgUrl}}/icon.png" alt="" style="width:18pt; height:18pt"> {{t "main:project.name"}}
+  </a>
+  <div class="navbar-right">
+
+    <span class="navul">
+      <a href="{{homeUrl}}" class="{{#if isHome}}active{{/if}}">{{t "main:pages.home"}}</a>
+      <a href="{{galleryUrl}}" class="{{#if isGallery}}active{{/if}}">{{t "main:pages.gallery"}}</a>
+      <a href="{{aboutUrl}}" class="{{#if isAbout}}active{{/if}}">{{t "main:pages.about"}}</a>
+    </span>
+    <span class="github-button-container">
+      <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+        aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+    </span>
+  </div>
+
+</div>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  {{> head}}
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container">
+    <div align="center">
+      <h3><img src="{{imgUrl}}/icon.png" alt="Icon" width="64" height="64"><br>
+        {{t "main:project.name"}}</h3>
+      <b>{{t "main:project.description"}}</b><br>
+    </div>
+    <br>
+    <p>{{t "main:aboutPage.description"}}</p>
+
+    <p>
+      <b><a href="https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib">{{t "main:aboutPage.cite"}}</a></b>
+    </p>
+    <p><strong>{{t "main:aboutPage.mainAuthors" count=mainAuthors.length}}</strong></p>
+    <ul>
+      {{#each mainAuthors}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+    <p><strong>{{t "main:aboutPage.contributors"}}</strong></p>
+    <ul>
+      {{#each contributors}}
+      <li>{{{this}}}</li>
+      {{/each}}
+    </ul>
+    {{t "main:meta.parentheses" main="" sub=(t "aboutPage.contributorSorting")}}
+
+    {{> footer}}
+  </div>
+
+</body>
+</html>

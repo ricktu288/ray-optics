@@ -219,7 +219,7 @@
       "uiDesign": "介面設計",
       "gallery": "作品集",
       "module": "模組",
-      "translations": "{{language}}翻譯"
+      "translations": "{{languages}} 翻譯"
     }
   },
   "languageDropdown": {

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{thirdpartyUrl}}/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="{{imgUrl}}/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+    ul {
+      padding-left: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul>
+      <li>{{t "modules:modulesPage:description:makeNewTools"}}</li>
+      <li>{{t "modules:modulesPage:description:appearAsTools"}}</li>
+      <li>{{t "modules:modulesPage:description:embeddedInScene"}}</li>
+    </ul>
+    {{#each content}}
+    <div class="row right-caption">
+      <img src="{{this.id}}.png" alt="Thumbnail" class="img-rounded module-image" loading="lazy">
+      <div class="caption">
+        <p class="module-title">{{t this.titleKey}} (<code>{{this.id}}</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: '{{this.id}}'},'*');this.innerText='{{t "modules:modulesPage:imported"}}';this.classList.remove('btn-primary');this.classList.add('btn-success');">{{t "modules:modulesPage:import"}}</button></p>
+        <p class="module-contributor">{{this.contributors}}</p>
+        <span id="module-desc">
+          {{t this.descriptionKey blank=true}}
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-{{this.id}}">
+          {{t "modules:modulesPage:specification:title"}}
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-{{this.id}}" class="collapse">
+      {{t "modules:modulesPage:specification:controlPointSequence"}}
+      <ol>
+        {{#each this.controlPointSequenceKeys}}
+        <li>{{t this blank=true}}</li>
+        {{/each}}
+      </ol>
+      {{t "modules:modulesPage:specification:parameters"}}
+      <ul>
+        {{#each this.parametersKeys}}
+        <li>{{t this blank=true}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/each}}
+  </div>
+
+  <h2>{{t "modules:modulesPage:customization:title"}}</h2>
+  <p>{{t "modules:modulesPage:customization:description" blank=true}}</p>
+
+  <h2>{{t "modules:modulesPage:contribution:title"}}</h2>
+  <p>{{t "modules:modulesPage:contribution:description" blank=true}}</p>
+
+  <script src="{{thirdpartyUrl}}/jquery.min.js"></script>
+  <script src="{{thirdpartyUrl}}/bootstrap/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>

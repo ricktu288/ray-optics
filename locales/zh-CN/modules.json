@@ -112,7 +112,7 @@
       "title": "新增参数",
       "lookAtExample": "模块中的物件可以由一组参数来定义。让我们看一个简单的例子",
       "paramsArray": "这里`modules.ModuleName.params`是一个由形如`\"名称=起始值：增量：终止值：预设值\"`的字串构成的数组，定义了变数的名称和数值滑杆的范围。当提取模块物件时，滑杆将出现在物件栏上。",
-      "equationSyntax": "在`modules.ExampleModule.objs`数组中，任何值都可以使用这些参数来表示。在字串中（例如`TextLabel`的`text`属性）中，带有参数的数学式被反引号包围。对于数值参数（例如`TextLabel`的`fontSize`属性），您需要将其改为字串，以便您可以在其中使用反引号格式。因此每条数学式都被一对反引号和一对引号包围。这些数学式将使用math.js来计算（[https://mathjs.org/docs/reference/functions/evaluate.html](/mathjs/syntax)）。请参见该网页以了解您可以在数学式中使用的语法和函数。",
+      "equationSyntax": "在`modules.ExampleModule.objs`数组中，任何值都可以使用这些参数来表示。在字串中（例如`TextLabel`的`text`属性）中，带有参数的数学式被反引号包围。对于数值参数（例如`TextLabel`的`fontSize`属性），您需要将其改为字串，以便您可以在其中使用反引号格式。因此每条数学式都被一对反引号和一对引号包围。这些数学式将使用math.js来计算（[语法](/mathjs/syntax)）。请参见该网页以了解您可以在数学式中使用的语法和函数。",
       "valueStorage": "参数的实际值位于模块物件的`params`属性中。这部分与模块定义不同，其可以通过滑杆直接由可视化场景编辑器编辑。"
     },
     "controlPoints": {
