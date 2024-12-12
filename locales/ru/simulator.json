@@ -1,12 +1,11 @@
 {
   "common": {
-    "saveButton": "Сохранить",
-    "cancelButton": "Отмена"
+    "cancelButton": "Отмена",
+    "saveButton": "Сохранить"
   },
   "file": {
-    "title": "Файл",
-    "undo": {
-      "title": "Отмена"
+    "open": {
+      "title": "Открыть"
     },
     "redo": {
       "title": "Повтор"
@@ -17,60 +16,61 @@
     "save": {
       "title": "Сохранить"
     },
-    "open": {
-      "title": "Открыть"
+    "title": "Файл",
+    "undo": {
+      "title": "Отмена"
     }
   },
-  "settings": {
-    "title": "Настройки",
-    "rayDensity": {
-      "title": "Плотность лучей"
-    },
-    "layoutAids": {
-      "showGrid": "Сетка",
-      "snapToGrid": "Клеиться к сетке"
-    },
-    "zoom": {
-      "title": "Масштаб"
-    },
-    "language": {
-      "title": "Язык"
-    }
+  "footer": {
+    "processing": "Вычисление... Нажмите, чтобы остановить."
+  },
+  "languageModal": {
+    "title": "Язык"
   },
   "objBar": {
     "applyToAll": {
       "title": "Применить ко всем"
     },
-    "duplicate": {
-      "title": "Дублировать"
-    },
     "delete": {
       "title": "Удалить"
+    },
+    "duplicate": {
+      "title": "Дублировать"
     }
   },
+  "saveModal": {
+    "fileName": "Название",
+    "title": "Сохранить"
+  },
   "sceneObjs": {
-    "common": {
-      "brightness": "Яркость",
-      "wavelength": "Длина волны",
-      "focalLength": "Фокальное расстояние"
-    },
     "BaseFilter": {
-      "filter": "Фильтр",
       "bandwidth": "Пропускная способность",
+      "filter": "Фильтр",
       "invert": "Инвертировать"
     },
     "BaseGlass": {
       "refIndex": "Показатель преломления"
+    },
+    "common": {
+      "brightness": "Яркость",
+      "focalLength": "Фокальное расстояние",
+      "wavelength": "Длина волны"
     }
   },
-  "saveModal": {
-    "title": "Сохранить",
-    "fileName": "Название"
-  },
-  "languageModal": {
-    "title": "Язык"
-  },
-  "footer": {
-    "processing": "Вычисление... Нажмите, чтобы остановить."
+  "settings": {
+    "language": {
+      "title": "Язык"
+    },
+    "layoutAids": {
+      "showGrid": "Сетка",
+      "snapToGrid": "Клеиться к сетке"
+    },
+    "rayDensity": {
+      "title": "Плотность лучей"
+    },
+    "title": "Настройки",
+    "zoom": {
+      "title": "Масштаб"
+    }
   }
 }
