@@ -22,7 +22,9 @@ For direct contributions, see the following guidelines.
 
 ## Contributing translations
 
-This project uses Weblate for translation (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/projects/ray-optics-simulation/ to translate.
+This project uses Weblate for translation (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
+
+[![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/287x66-grey.png)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 
 If you already started the translation using the old json format before Dec 11, 2024, you can still submit that to ray-optics@phydemo.app (which will be converted to the new format by some automatic script). But please do not start a new translation with the old format.
 

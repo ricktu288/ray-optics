@@ -1,4 +1,4 @@
-![Example figure](https://raw.githubusercontent.com/ricktu288/ray-optics/master/src/img/1.svg)
+![Example figure](https://raw.githubusercontent.com/ricktu288/ray-optics/master/src/img/spherical-lens-and-mirror.jpg)
 
 # Ray Optics Simulation
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6386611.svg)](https://doi.org/10.5281/zenodo.6386611)
@@ -48,7 +48,9 @@ Contributions are welcome. For the following types of contributions, no (or litt
 
 See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md) for the tutorial.
 
-For translations, note that this project uses Weblate (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/projects/ray-optics-simulation/ to translate.
+For translations, note that this project uses Weblate (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
+
+[![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/287x66-grey.png)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 
 To contribute code, you need to have some knowledge of JavaScript and module bundling. The code is written in ES6 and bundled with Webpack. The code structure is documented in the [documentation](https://phydemo.app/ray-optics/docs/). See the following section for installation instructions.
 
