@@ -137,7 +137,7 @@
     },
     "bendedPencil": {
       "title": "彎曲的鉛筆",
-      "description": "從上方觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，彎曲的現象更為明顯。您可以查看<a href=\"\"https://phydemo.app/ray-optics/tw/gallery/broken-pencil\"\" target=\"\"_blank\"\">斷裂的鉛筆</a>模擬，那裡的斷裂現象更為明顯。",
+      "description": "從上方觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，彎曲的現象更為明顯。您可以查看[斷裂的鉛筆](/gallery/broken-pencil)模擬，那裡的斷裂現象更為明顯。",
       "bentpencilyellowimag": "彎曲的鉛筆（黃色）\n視網膜上的影像",
       "dielectricmaterial": "電介質材料",
       "originalpencilgreen": "原始鉛筆（綠色）",
@@ -146,7 +146,7 @@
     },
     "brokenPencil": {
       "title": "斷裂的鉛筆",
-      "description": "從側面觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，斷裂的現象更為明顯。您可以查看<a href=\"\"https://phydemo.app/ray-optics/tw/gallery/bended-pencil\"\" target=\"\"_blank\"\">彎曲的鉛筆</a>模擬，那裡的彎曲現象更為明顯。",
+      "description": "從側面觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，斷裂的現象更為明顯。您可以查看[彎曲的鉛筆](/gallery/bended-pencil)模擬，那裡的彎曲現象更為明顯。",
       "brokenpencilyellowim": "斷裂的鉛筆（黃色）\n視網膜上的影像"
     },
     "chromaticDispersion": {
