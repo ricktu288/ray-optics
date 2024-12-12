@@ -304,7 +304,11 @@ for (const lang of homeLangs) {
     // Map the URLs in the markdown text
     markdownText = markdownText.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (match, p1, p2) => {
       if (urlMaps[lang][p2]) {
-        return `[${p1}](${rootUrl}${urlMaps[lang][p2]})`;
+        if (urlMaps[lang][p2].startsWith('/')) {
+          return `[${p1}](${rootUrl}${urlMaps[lang][p2]})`;
+        } else {
+          return `[${p1}](${urlMaps[lang][p2]})`;
+        }
       } else {
         return match;
       }
