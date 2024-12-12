@@ -294,6 +294,9 @@ for (const lang of homeLangs) {
   const langDir = path.join(__dirname, '../dist', routesData[lang]);
   fs.mkdirSync(langDir, { recursive: true });
 
+  // Determine the root URL for the language, relative to the current page being built
+  let rootUrl = lang == 'en' ? '.' : '..';
+
   // Register the Handlebars helper
   Handlebars.registerHelper('t', function(key, options) {
     let markdownText = i18next.t(key, options.hash);
@@ -301,7 +304,7 @@ for (const lang of homeLangs) {
     // Map the URLs in the markdown text
     markdownText = markdownText.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, (match, p1, p2) => {
       if (urlMaps[lang][p2]) {
-        return `[${p1}](${urlMaps[lang][p2]})`;
+        return `[${p1}](${rootUrl}${urlMaps[lang][p2]})`;
       } else {
         return match;
       }
@@ -340,7 +343,6 @@ for (const lang of homeLangs) {
   Handlebars.registerPartial('navbar', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/navbar.hbs'), 'utf8'));
   Handlebars.registerPartial('footer', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/footer.hbs'), 'utf8'));
 
-  const rootUrl = lang == 'en' ? '.' : '..';
   const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
 
   // Load the home template
@@ -445,7 +447,7 @@ for (const lang of homeLangs) {
     // Create the gallery/ directory
     const galleryDir = path.join(langDir, 'gallery');
     fs.mkdirSync(galleryDir, { recursive: true });
-    const rootUrl = lang == 'en' ? '..' : '../..';
+    rootUrl = lang == 'en' ? '..' : '../..';
 
     const galleryTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/gallery.hbs'), 'utf8'));
     const galleryData = {
@@ -541,7 +543,7 @@ for (const lang of homeLangs) {
     // create the modules/ directory
     const modulesDir = path.join(langDir, 'modules');
     fs.mkdirSync(modulesDir, { recursive: true });
-    const rootUrl = lang == 'en' ? '..' : '../..';
+    rootUrl = lang == 'en' ? '..' : '../..';
 
     // Load the modules template
     const modulesTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/modules.hbs'), 'utf8'));
