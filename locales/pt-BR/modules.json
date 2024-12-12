@@ -1,0 +1,108 @@
+{
+    "modulesPage": {
+        "description": {
+            "makeNewTools": "O recurso \"Módulo\" permite que se faça novas ferramentas ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes neste simulador.",
+            "embeddedInScene": "Módulos importados são embutidos nos dados da cena, então não serão automaticamente atualizados quando os autores dos módulos os atualizarem.",
+            "appearAsTools": "Módulos importados aparecerão como ferramentas na categoria \"Outros\". Por favor selecione e clique no espaço em branco de acordo com a ordem da sequência de pontos de controle (ver \"Especificação\")."
+        },
+        "import": "Importar",
+        "imported": "Importado",
+        "specification": {
+            "title": "Especificação",
+            "controlPointSequence": "Sequência de pontos de controle",
+            "parameters": "Parâmetros"
+        },
+        "customization": {
+            "title": "Personalização",
+            "description": "Módulos podem ser feitos ou personalizados diretamente dentro do app web utilizando o editor JSON incluso. Ver [o tutorial](/modules/tutorial). Personalização de módulos importados vai afetar apenas a cena atual."
+        },
+        "contribution": {
+            "title": "Contribuição",
+            "description": "Contribuições à lista acima são bem-vindas. Para contribuir o seu módulo, veja [Contribuindo módulos](/contributing/modules)."
+        }
+    },
+    "moduleData": {
+        "FresnelLens": {
+            "title": "Lente Fresnel",
+            "point1": "O primeiro ponto delimitador da lente",
+            "Nslice": "O número de fatias",
+            "refIndex": "O índice refrativo da lente",
+            "description": "Uma lente Fresnel feita a partir de um semicírculo de vidro. Versão modularizada [deste exemplo da Galeria](/gallery/fresnel-lens).",
+            "point2": "O segundo ponto delimitador da lente"
+        },
+        "ContSpectrum": {
+            "point2": "Determina a direção dos raios",
+            "min": "O comprimento de onda mínimo",
+            "step": "O passo do comprimento de onda",
+            "brightness": "O brilho total",
+            "point1": "A origem dos raios",
+            "title": "Fonte de luz de espectro contínuo",
+            "description": "Uma fonte de luz com um espectro contínuo uniforme discretizada com determinado passo constante. Funciona somente quando \"Simular Cores\" está ligado.",
+            "max": "O comprimento de onda máximo"
+        },
+        "CircleSource": {
+            "title": "Fonte de luz circular",
+            "r": "O raio do círculo",
+            "brightness": "O brilho total",
+            "point1": "O centro do círculo",
+            "description": "Um círculo com fontes pontuais de 180 graus uniformes colocadas ao redor de sua circunferência.",
+            "N": "O número de fontes pontuais"
+        },
+        "Chaff": {
+            "title": "Chaff",
+            "point2": "O canto inferior direito do chaff",
+            "N": "O número de espelhos no chaff",
+            "point1": "O canto superior esquerdo do chaff",
+            "L": "O comprimento dos espelhos",
+            "description": "Chaff em um formato retangular consistindo de pedaços aleatórios de espelhos. Versão modularizada [deste exemplo da Galeria](/gallery/chaff-countermeasure)."
+        },
+        "BeamExpander": {
+            "title": "Expansor de Raio",
+            "description": "A combinação de duas lentes ideais com a soma de seus comprimentos focais igual a sua distância de saparação. Elas expandem ou reduzem o diâmetro de um raio de luz colimada. Versão modularizada [deste exemplo da Galeria](/gallery/beam-expanders).",
+            "point1": "O centro da primeira lente",
+            "point2": "O segundo ponto da segunda lente",
+            "point3": "Determina o ponto focal comum das lentes"
+        },
+        "RayRelay": {
+            "title": "Repassador de Raios",
+            "description": "Uma série de lentes idênticas com comprimento focal \\(f\\) e distância \\(d\\) entre as lentes. Uma trajetória de raios não divergente é garantida se e somente se \\(d\\leq 4f\\). Versão modularizada [deste exemplo da Galeria](/gallery/ray-relaying).",
+            "point1": "O primeiro ponto delimitador da primeira lente",
+            "f": "O comprimento focal das lentes",
+            "d": "A distância entre as lentes",
+            "N": "O número de lentes",
+            "point2": "O segundo ponto delimitador da primeira lente (deve ter o mesmo \\(x\\) que o primeiro ponto)"
+        },
+        "OpticalFiber": {
+            "title": "Fibra Óptica",
+            "description": "Fibra óptica em formato de linha com determinadas espessuras de centro e revestimento e índices refrativos.",
+            "point1": "O primeiro ponto delimitador da fibra óptica",
+            "point2": "O segundo ponto delimitador da fibra óptica (deve ter o mesmo \\(y\\) que o primeiro ponto)",
+            "X": "A espessura do centro",
+            "Y": "A espessura do revestimento",
+            "n1": "O índice refrativo do centro",
+            "n2": "O índice refrativo do revestimento"
+        }
+    },
+    "moduleTutorial": {
+        "title": "Tutorial para fazer Módulos da Óptica de Raios",
+        "jsonEditor": {
+            "title": "O editor JSON incluso",
+            "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se você não ver o editor de código JSON nos iframes abaixo, por favor habilite-o e recarregue esta página, pois vocÊ precisará de ver o código para entender como funciona.",
+            "currentlyNoVisual": "Este app atualmente não possui uma interface visual para criação de módulos, então é preciso diretamente editar o JSON da cena.",
+            "enableJsonEditor": "Você pode habilitar o editor JSON incluso ao clicar no menu \"configurações\" no canto superior direito do app, e então marcar \"Exibir editor JSON\". O editor de código deve aparecer no lado esquerdo do app, com o código JSON da cena atual. Certifique-se que a sua tela é grande o suficiente, já que este recurso não funciona bem em dispositivos móveis.",
+            "updateAccordingly": "Conforme você edita a cena utilizando o editor visual de cena, o código no editor JSON vai atualizar automaticamente, com a parte modificada destacada. Do mesmo modo, editar o código no editor JSON diretamente vai atualizar a cena automaticamente. Se você não for familiar com JSON ou qualquer tipo de formato de dados à base de texto, pode ser útil brincar com isso por um tempo.",
+            "objsArray": "Em particular, quando se adiciona um objeto à cena, ele é adicionado à lista `objs`. E se você modificar algumas de suas propriedades para um valor não padrão, elas aparecem como pares chave-valor nesse objeto."
+        },
+        "basics": {
+            "title": "O básico de um módulo",
+            "lookAtExample": "Vamos ver o nosso primeiro exemplo de módulo.",
+            "lookAtJson": "Você deve ver quatro linhas de texto. Olhando no editor JSON, você verá que as primeira duas estão diretamente na lista `objs` de nível superior como normal, mas as últimas duas estão em `modules.ExampleModule.objs` ao invés disso.",
+            "moduleDef": "O `module` é um dicionário onde a chave é o nome do módulo (neste caso `ExampleModule`), e o valor é a definição do módulo. Em específico, a lista `modules.ExampleModule.objs` descreve (o padrão de) objetos dentro desse módulo, que é diferente do `objs` do nível superior que descreve objetos na cena."
+        },
+        "opening": {
+            "description": "Este tutorial vai te guiar pelo processi básico de criação de um módulo personalizado, que pode ser completamente feito dentro do app web, sem necessidade de qualquer ambiente de desenvolvimento externo.",
+            "compareWithHandle": "Note que nem todos pontos de controle personalizados requerem um módulo. Alguns casos simples podem ser feitos com o recurso \"ponto de mauseio\" (ver a seção \"Agrupar, rotacionar e ajustar escala de objetos\" no popup de ajuda no canto inferior direito do simulador). Já que fazer um módulo é muito mais complicado que criar um ponto de manuseio, deve-se primeiro checar se o seu caso oise ser feito pelo recurso \"ponto de manuseio\" antes de considerar fazer um módulo. Veja [aqui](/gallery/black-cat-becomes-white) para um exemplo não trivial de um ponto de controle personalizado (mover dois sacos plásticos pra fora da água) sem utilizar um módulo.",
+            "moduleIntroduction": "O recurso \"Módulo\" da Simulação de Óptica de Raios permite a criação de combinações modulares de objetos com parâmetros personalizados, pontos de controle personalizados, e malhas de objetos. Esse recurso extende a capacidade deste simulador ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes para criar novas ferramentas. Por exemplo, o módulo `CircleSource` (ver Ferramentas -> Outros -> Importar módulo) combina uma série de fontes pontuais criadas pela ferramenta existente \"Fonte pontual (<360°)\" ao redor de um círculo, para fazer uma ferramenta \"fonte circular\" que não existia no simulador. O módulo `FresnelLens` especializa a ferramenta \"Glass->Custom equation\", para que a equação represente uma curva específica da lente Fresnel parametrizada pelo número de fatias, assim fazendo uma ferramenta especializada \"Lente Fresnel\", que tambem não existia anteriormente. Além de fazer novas ferramentas, esse recurso também pode fazer algumas demonstrações de óptica mais interativas. Por exemplo, ao arrastar o terceiro ponto de controle do módulo `BeamExpander`, pode-se ver diretamente como a posição do ponto focal em comum das duas lentes afeta a largura do raio, sem necessitar ajustar os comprimentos focais das duas lentes individualmente."
+        }
+    }
+}

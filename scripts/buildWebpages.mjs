@@ -171,7 +171,9 @@ for (const lang of langs) {
   const simulatorPath = path.join(__dirname, '../locales', lang, 'simulator.json');
   const galleryPath = path.join(__dirname, '../locales', lang, 'gallery.json');
   const modulesPath = path.join(__dirname, '../locales', lang, 'modules.json');
-  if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath)) {
+  if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath) || 
+      Object.keys(JSON.parse(fs.readFileSync(mainPath, 'utf8'))).length === 0 ||
+      Object.keys(JSON.parse(fs.readFileSync(simulatorPath, 'utf8'))).length === 0) {
     continue;
   }
 

@@ -37,7 +37,9 @@ export default function() {
     // See if main.json and simulator.json both exist in the language directory. Otherwise, skip this language.
     const mainPath = path.join(__dirname, '../locales', lang, 'main.json');
     const simulatorPath = path.join(__dirname, '../locales', lang, 'simulator.json');
-    if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath)) {
+    if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath) || 
+        Object.keys(JSON.parse(fs.readFileSync(mainPath, 'utf8'))).length === 0 ||
+        Object.keys(JSON.parse(fs.readFileSync(simulatorPath, 'utf8'))).length === 0) {
       continue;
     }
 
