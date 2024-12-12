@@ -31,7 +31,11 @@ langs.forEach((lang) => {
   // Load the strings from /locales/{lang}/gallery.json if it exists.
   const galleryStringsPath = path.join(__dirname, `../locales/${lang}/gallery.json`);
   if (fs.existsSync(galleryStringsPath)) {
-    const galleryStrings = JSON.parse(fs.readFileSync(galleryStringsPath).toString()).galleryData;
+    const galleryData = JSON.parse(fs.readFileSync(galleryStringsPath).toString());
+    if (!galleryData.galleryData) {
+      return;
+    }
+    const galleryStrings = galleryData.galleryData;
     // Extract the strings from the galleryStrings object.
     sceneIDs.forEach((id) => {
       if (galleryStrings[sceneIDToCamelCase[id]]) {
