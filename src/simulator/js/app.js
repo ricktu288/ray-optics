@@ -1418,10 +1418,11 @@ function initTools() {
 
     if (element.id && element.id.startsWith('tool_')) {
       const toolId = element.id.replace('tool_', '').replace('_mobile', '');
-      element.addEventListener('click', (event) => {
-        //console.log('tool_' + toolId);
-        toolbtn_clicked(toolId);
-      });
+      if (sceneObjs[toolId] || toolId == '') {
+        element.addEventListener('click', (event) => {
+          toolbtn_clicked(toolId);
+        });
+      }
     }
   });
 
@@ -1444,11 +1445,13 @@ function initModes() {
   allElements.forEach(element => {
     if (element.id && element.id.startsWith('mode_')) {
       const modeId = element.id.replace('mode_', '').replace('_mobile', '');
-      element.addEventListener('click', (event) => {
-        //console.log('mode_' + modeId);
-        modebtn_clicked(modeId);
-        editor.onActionComplete();
-      });
+      if (['rays', 'extended', 'images', 'observer'].includes(modeId)) {
+        element.addEventListener('click', (event) => {
+          //console.log('mode_' + modeId);
+          modebtn_clicked(modeId);
+          editor.onActionComplete();
+        });
+      }
     }
   });
 }
