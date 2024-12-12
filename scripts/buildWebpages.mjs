@@ -131,8 +131,19 @@ const moduleData = JSON.parse(fs.readFileSync(path.join(__dirname, '../locales/e
 const moduleControlPointSequenceKeys = {};
 const moduleParametersKeys = {};
 for (const id in moduleData) {
-  moduleControlPointSequenceKeys[id] = Object.keys(moduleData[id]).filter(key => key.startsWith('point'));
-  moduleParametersKeys[id] = Object.keys(moduleData[id]).filter(key => !key.startsWith('point') && key != 'title' && key != 'description');
+  // Load the module scene data
+  const moduleSceneData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/moduleScenes', id + '.json'), 'utf8'));
+  const moduleDef = moduleSceneData.modules[id];
+  const numPoints = moduleDef.numPoints;
+  moduleControlPointSequenceKeys[id] = [];
+  moduleParametersKeys[id] = {};
+  for (let i = 1; i <= numPoints; i++) {
+    moduleControlPointSequenceKeys[id].push(`modules:moduleData.${id}.point${i}`);
+  }
+  for (const param of moduleDef.params) {
+    const paramName = param.split('=')[0];
+    moduleParametersKeys[id][paramName] = `modules:moduleData.${id}.${paramName.replace(/_/g, '')}`;
+  }
 }
 
 // List all module ids in the moduleList
@@ -565,8 +576,10 @@ for (const lang of homeLangs) {
           titleKey: 'modules:moduleData.' + item.id + '.title',
           contributors: item.contributors.join(', '),
           descriptionKey: 'modules:moduleData.' + item.id + '.description',
-          controlPointSequenceKeys: moduleControlPointSequenceKeys[item.id].map(key => 'modules:moduleData.' + item.id + '.' + key),
-          parametersKeys: moduleParametersKeys[item.id].map(key => 'modules:moduleData.' + item.id + '.' + key),
+          hasControlPoints: moduleControlPointSequenceKeys[item.id].length > 0,
+          hasParameters: Object.keys(moduleParametersKeys[item.id]).length > 0,
+          controlPointSequenceKeys: moduleControlPointSequenceKeys[item.id],
+          parametersKeys: moduleParametersKeys[item.id],
         };
       }),
     }

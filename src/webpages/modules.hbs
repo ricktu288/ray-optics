@@ -57,9 +57,6 @@
       font-size: 12pt;
     }
 
-    ul {
-      padding-left: 1rem;
-    }
   </style>
 </head>
 
@@ -89,18 +86,22 @@
       </div>
     </div>
     <div id="details-collapse-{{this.id}}" class="collapse">
+      {{#if this.hasControlPoints}}
       {{t "modules:modulesPage:specification:controlPointSequence"}}
       <ol>
         {{#each this.controlPointSequenceKeys}}
         <li>{{t this blank=true}}</li>
         {{/each}}
       </ol>
+      {{/if}}
+      {{#if this.hasParameters}}
       {{t "modules:modulesPage:specification:parameters"}}
       <ul>
         {{#each this.parametersKeys}}
-        <li>{{t this blank=true}}</li>
+        <li><code>{{@key}}</code>: {{t this blank=true}}</li>
         {{/each}}
       </ul>
+      {{/if}}
     </div>
     {{/each}}
   </div>
