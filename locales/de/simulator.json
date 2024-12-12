@@ -1,104 +1,104 @@
 {
-    "welcome": {
-        "title": "Willkommen bei der Strahlenoptik-Simulation",
-        "instruction": "Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.\nUm ein Beispiel zu laden, [wechseln Sie bitte zur Galerie](/gallery)."
+  "common": {
+    "cancelButton": "Abbrechen",
+    "saveButton": "Speichern"
+  },
+  "file": {
+    "open": {
+      "description": "Öffnet eine existierende Datei oder ein Hintergrundbild. Das Hintergundbild wird relativ zum Koordinatenursprung angezeigt. (Oder Datei hierher ziehen.)",
+      "title": "Öffnen"
+    },
+    "redo": {
+      "title": "Wiederherstellen"
+    },
+    "reset": {
+      "title": "Zurücksetzen"
+    },
+    "save": {
+      "title": "Speichern"
+    },
+    "title": "Datei",
+    "undo": {
+      "title": "Rückgängig"
+    },
+    "viewGallery": {
+      "description": "Zur Galerie-Seite wechseln und ein Beispiel laden.",
+      "title": "Galerie ansehen"
+    }
+  },
+  "footer": {
+    "processing": "In Bearbeitung... hier klicken, um zu stoppen."
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "Die URL ist zu lang für einige Platformen. Es kann nötig sein die Datei zu \"Speichern\" und zu teilen."
+  },
+  "languageModal": {
+    "helpTranslate": "Helfen beim Übersetzen",
+    "translatedFraction": "übersetzt"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Alle anwenden"
+    },
+    "delete": {
+      "title": "Löschen"
+    },
+    "duplicate": {
+      "title": "Duplizieren"
+    }
+  },
+  "saveModal": {
+    "fileName": "Name",
+    "title": "Speichern"
+  },
+  "sceneObjs": {
+    "AngleSource": {
+      "symmetric": "symmetrisch"
+    },
+    "BaseFilter": {
+      "bandwidth": "Bandbreite",
+      "filter": "Filter"
+    },
+    "BaseGlass": {
+      "cauchyCoeff": "Cauchy Koeffizient",
+      "refIndex": "Brechungsindex",
+      "refIndexInfo": {
+        "effective": "Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes.",
+        "relative": "relativ, wenn Glaskörper überlappen"
+      }
+    },
+    "BeamSplitter": {
+      "transRatio": "Transmissionsgrad"
+    },
+    "CropBox": {
+      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
+    },
+    "IdealMirror": {
+      "cartesianSign": "Kartesische Zeichenkonvention"
     },
     "common": {
-        "saveButton": "Speichern",
-        "cancelButton": "Abbrechen"
-    },
-    "file": {
-        "title": "Datei",
-        "undo": {
-            "title": "Rückgängig"
-        },
-        "redo": {
-            "title": "Wiederherstellen"
-        },
-        "reset": {
-            "title": "Zurücksetzen"
-        },
-        "save": {
-            "title": "Speichern"
-        },
-        "open": {
-            "title": "Öffnen",
-            "description": "Öffnet eine existierende Datei oder ein Hintergrundbild. Das Hintergundbild wird relativ zum Koordinatenursprung angezeigt. (Oder Datei hierher ziehen.)"
-        },
-        "viewGallery": {
-            "title": "Galerie ansehen",
-            "description": "Zur Galerie-Seite wechseln und ein Beispiel laden."
-        }
-    },
-    "settings": {
-        "title": "Einstellungen",
-        "rayDensity": {
-            "title": "Strahl-Anzahldichte"
-        },
-        "layoutAids": {
-            "showGrid": "Raster",
-            "snapToGrid": "Anrasten",
-            "lockObjs": "Objekte sperren"
-        },
-        "zoom": {
-            "title": "Zoom"
-        }
-    },
-    "objBar": {
-        "applyToAll": {
-            "title": "Alle anwenden"
-        },
-        "duplicate": {
-            "title": "Duplizieren"
-        },
-        "delete": {
-            "title": "Löschen"
-        }
-    },
-    "sceneObjs": {
-        "common": {
-            "brightness": "Helligkeit",
-            "wavelength": "Wellenlänge",
-            "emisAngle": "Emissionswinkel",
-            "focalLength": "Brennweite"
-        },
-        "AngleSource": {
-            "symmetric": "symmetrisch"
-        },
-        "BaseFilter": {
-            "filter": "Filter",
-            "bandwidth": "Bandbreite"
-        },
-        "IdealMirror": {
-            "cartesianSign": "Kartesische Zeichenkonvention"
-        },
-        "BeamSplitter": {
-            "transRatio": "Transmissionsgrad"
-        },
-        "BaseGlass": {
-            "refIndex": "Brechungsindex",
-            "refIndexInfo": {
-                "relative": "relativ, wenn Glaskörper überlappen",
-                "effective": "Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes."
-            },
-            "cauchyCoeff": "Cauchy Koeffizient"
-        },
-        "CropBox": {
-            "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
-        }
-    },
-    "saveModal": {
-        "title": "Speichern",
-        "fileName": "Name"
-    },
-    "languageModal": {
-        "translatedFraction": "übersetzt",
-        "helpTranslate": "Helfen beim Übersetzen"
-    },
-    "generalWarnings": {
-        "shareLinkTooLong": "Die URL ist zu lang für einige Platformen. Es kann nötig sein die Datei zu \"Speichern\" und zu teilen."
-    },
-    "footer": {
-        "processing": "In Bearbeitung... hier klicken, um zu stoppen."
+      "brightness": "Helligkeit",
+      "emisAngle": "Emissionswinkel",
+      "focalLength": "Brennweite",
+      "wavelength": "Wellenlänge"
     }
+  },
+  "settings": {
+    "layoutAids": {
+      "lockObjs": "Objekte sperren",
+      "showGrid": "Raster",
+      "snapToGrid": "Anrasten"
+    },
+    "rayDensity": {
+      "title": "Strahl-Anzahldichte"
+    },
+    "title": "Einstellungen",
+    "zoom": {
+      "title": "Zoom"
+    }
+  },
+  "welcome": {
+    "instruction": "Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.\nUm ein Beispiel zu laden, [wechseln Sie bitte zur Galerie](/gallery).",
+    "title": "Willkommen bei der Strahlenoptik-Simulation"
+  }
 }
