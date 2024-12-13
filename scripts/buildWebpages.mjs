@@ -154,6 +154,25 @@ for (const category of moduleList) {
   }
 }
 
+
+// Given a json object, calculate the total number of strings in the object, but string keys of the form key_suffix are treated as the same string as key.
+function countStrings(json) {
+  const stringKeys = new Set();
+  let count = 0;
+  for (const key in json) {
+    if (typeof json[key] === 'string') {
+      if (key.includes('_')) {
+        stringKeys.add(key.split('_')[0]);
+      } else {
+        stringKeys.add(key);
+      }
+    } else if (typeof json[key] === 'object') {
+      count += countStrings(json[key]);
+    }
+  }
+  return count + stringKeys.size;
+}
+
 const homeLangs = [];
 const aboutLangs = [];
 const galleryLangs = [];
@@ -175,21 +194,29 @@ const urlMaps = {};
 const langNames = {};
 const i18nextResources = {};
 
+const enMainData = JSON.parse(fs.readFileSync(path.join(__dirname, '../locales/en/main.json'), 'utf8'));
+const enSimulatorData = JSON.parse(fs.readFileSync(path.join(__dirname, '../locales/en/simulator.json'), 'utf8'));
+const enGalleryData = JSON.parse(fs.readFileSync(path.join(__dirname, '../locales/en/gallery.json'), 'utf8'));
+const enModulesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../locales/en/modules.json'), 'utf8'));
+
 // Load the available languages for each webpage and create the URL maps
 for (const lang of langs) {
-  // See if main.json and simulator.json both exist in the language directory. Otherwise, skip this language.
+  // See if the number of strings is large enough, otherwise skip this language.
   const mainPath = path.join(__dirname, '../locales', lang, 'main.json');
   const simulatorPath = path.join(__dirname, '../locales', lang, 'simulator.json');
   const galleryPath = path.join(__dirname, '../locales', lang, 'gallery.json');
   const modulesPath = path.join(__dirname, '../locales', lang, 'modules.json');
-  if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath) || 
-      Object.keys(JSON.parse(fs.readFileSync(mainPath, 'utf8'))).length === 0 ||
-      Object.keys(JSON.parse(fs.readFileSync(simulatorPath, 'utf8'))).length === 0) {
+  const mainData = fs.existsSync(mainPath) ? JSON.parse(fs.readFileSync(mainPath, 'utf8')) : {};
+  const simulatorData = fs.existsSync(simulatorPath) ? JSON.parse(fs.readFileSync(simulatorPath, 'utf8')) : {};
+  //console.log(`The main part of ${lang} has ${countStrings(mainData.homePage) + countStrings(mainData.tools) + countStrings(mainData.view)} strings.`);
+  if (!(
+    mainData.meta && mainData.meta.languageName &&
+    mainData.project && mainData.project.name &&
+    (countStrings(mainData.homePage) + countStrings(mainData.tools) + countStrings(mainData.view)) > 50
+  )) {
     continue;
   }
 
-  const mainData = JSON.parse(fs.readFileSync(mainPath, 'utf8'));
-  const simulatorData = JSON.parse(fs.readFileSync(simulatorPath, 'utf8'));
   const galleryData = fs.existsSync(galleryPath) ? JSON.parse(fs.readFileSync(galleryPath, 'utf8')) : {};
   const modulesData = fs.existsSync(modulesPath) ? JSON.parse(fs.readFileSync(modulesPath, 'utf8')) : {};
 
@@ -221,14 +248,14 @@ for (const lang of langs) {
   homeLangs.push(lang);
   urlMaps[lang]['/home'] = routesData[lang] + '/';
 
-  if (mainData.aboutPage) {
+  if (mainData.aboutPage && mainData.pages && mainData.pages.about && mainData.aboutPage.description) {
     aboutLangs.push(lang);
     urlMaps[lang]['/about'] = routesData[lang] + '/about';
   } else {
     urlMaps[lang]['/about'] = '/about';
   }
 
-  if (galleryData.galleryPage) {
+  if (galleryData.galleryPage && mainData.pages && mainData.pages.gallery && galleryData.galleryPage.title && galleryData.galleryPage.description) {
     galleryLangs.push(lang);
     urlMaps[lang]['/gallery'] = routesData[lang] + '/gallery/';
   } else {
@@ -236,7 +263,7 @@ for (const lang of langs) {
   }
 
   for (const id of galleryIDs) {
-    if (galleryData.galleryData && galleryData.galleryData[galleryIDToCamelCase[id]]) {
+    if (galleryData.galleryData && galleryData.galleryData[galleryIDToCamelCase[id]] && galleryData.galleryData[galleryIDToCamelCase[id]].title) {
       galleryItemsLangs[id].push(lang);
       urlMaps[lang][`/gallery/${id}`] = routesData[lang] + '/gallery/' + id;
     } else {
@@ -257,7 +284,8 @@ for (const lang of langs) {
     }
   }
 
-  if (modulesData.moduleTutorial) {
+  //console.log(`The module tutorial of ${lang} has ${countStrings(modulesData.moduleTutorial)} strings.`);
+  if (countStrings(modulesData.moduleTutorial) > 12) {
     moduleTutorialLangs.push(lang);
     urlMaps[lang]['/modules/tutorial'] = routesData[lang] + '/modules/tutorial';
   } else {

@@ -1981,7 +1981,7 @@ function mapURL(url) {
   const route = (localeData.route !== undefined) ? localeData.route : '/' + window.lang;
   const rootURL = '..'
   const urlMap = {
-    "/home": rootURL + route + '/',
+    "/home": rootURL + (localeData.home ? route : '') + '/',
     "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
     "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
     "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',

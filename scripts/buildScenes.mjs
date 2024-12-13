@@ -38,7 +38,7 @@ langs.forEach((lang) => {
     const galleryStrings = galleryData.galleryData;
     // Extract the strings from the galleryStrings object.
     sceneIDs.forEach((id) => {
-      if (galleryStrings[sceneIDToCamelCase[id]]) {
+      if (galleryStrings[sceneIDToCamelCase[id]] && galleryStrings[sceneIDToCamelCase[id]].title) {
         const scene = galleryStrings[sceneIDToCamelCase[id]];
         for (const key in scene) {
           if (key === 'title') {

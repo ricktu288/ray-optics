@@ -34,20 +34,20 @@ export default function() {
   const routesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/localeRoutes.json'), 'utf8'));
 
   for (const lang of langs) {
-    // See if main.json and simulator.json both exist in the language directory. Otherwise, skip this language.
-    const mainPath = path.join(__dirname, '../locales', lang, 'main.json');
-    const simulatorPath = path.join(__dirname, '../locales', lang, 'simulator.json');
-    if (!fs.existsSync(mainPath) || !fs.existsSync(simulatorPath) || 
-        Object.keys(JSON.parse(fs.readFileSync(mainPath, 'utf8'))).length === 0 ||
-        Object.keys(JSON.parse(fs.readFileSync(simulatorPath, 'utf8'))).length === 0) {
-      continue;
+
+    // Set the routes for the language
+    let route = routesData[lang];
+    if (route === undefined) {
+      route = '/' + lang;
     }
 
     localeData[lang] = {};
 
     // Load the JSON data for the language.
-    const mainData = JSON.parse(fs.readFileSync(mainPath, 'utf8'));
-    const simulatorData = JSON.parse(fs.readFileSync(simulatorPath, 'utf8'));
+    const mainLocalePath = path.join(__dirname, '../locales', lang, 'main.json');
+    const simulatorLocalePath = path.join(__dirname, '../locales', lang, 'simulator.json');
+    const mainData = JSON.parse(fs.readFileSync(mainLocalePath, 'utf8'));
+    const simulatorData = JSON.parse(fs.readFileSync(simulatorLocalePath, 'utf8'));
 
     // Set the name of the language
     localeData[lang].name = mainData.meta.languageName || lang;
@@ -55,30 +55,38 @@ export default function() {
     // Set the total number of strings in the language
     localeData[lang].numStrings = countStrings(mainData) + countStrings(simulatorData);
 
-    // Set the routes for the language
+    // Set the routes for the language if it is not the default route.
     if (routesData[lang] !== undefined) {
       localeData[lang].route = routesData[lang];
     }
+    
+    // Set whether the home page is available.
+    const homePath = path.join(__dirname, `../dist${route}/index.html`);
+    if (fs.existsSync(homePath)) {
+      localeData[lang].home = true;
+    }
 
     // Set whether the gallery page is available.
-    const galleryPath = path.join(__dirname, '../locales', lang, 'gallery.json');
-    if (fs.existsSync(galleryPath) && JSON.parse(fs.readFileSync(galleryPath, 'utf8')).galleryPage) {
+    const galleryPath = path.join(__dirname, `../dist${route}/gallery/index.html`);
+    if (fs.existsSync(galleryPath)) {
       localeData[lang].gallery = true;
     }
 
     // Set whether the modules list is available.
-    const modulePath = path.join(__dirname, '../locales', lang, 'modules.json');
-    if (fs.existsSync(modulePath) && JSON.parse(fs.readFileSync(modulePath, 'utf8')).modulesPage) {
+    const modulePath = path.join(__dirname, `../dist${route}/modules/modules.html`);
+    if (fs.existsSync(modulePath)) {
       localeData[lang].modules = true;
     }
 
     // Set whether the module tutorial is available.
-    if (fs.existsSync(modulePath) && JSON.parse(fs.readFileSync(modulePath, 'utf8')).moduleTutorial) {
+    const moduleTutorialPath = path.join(__dirname, `../dist${route}/modules/tutorial.html`);
+    if (fs.existsSync(moduleTutorialPath)) {
       localeData[lang].moduleTutorial = true;
     }
 
     // Set whether the about page is available
-    if (mainData.aboutPage) {
+    const aboutPath = path.join(__dirname, `../dist${route}/about.html`);
+    if (fs.existsSync(aboutPath)) {
       localeData[lang].about = true;
     }
 
