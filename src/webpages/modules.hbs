@@ -62,7 +62,7 @@
 
 <body>
   <div class="container">
-    <ul>
+    <ul style="padding-left: 1.5rem;">
       <li>{{t "modules:modulesPage:description:makeNewTools"}}</li>
       <li>{{t "modules:modulesPage:description:appearAsTools"}}</li>
       <li>{{t "modules:modulesPage:description:embeddedInScene"}}</li>
@@ -104,13 +104,13 @@
       {{/if}}
     </div>
     {{/each}}
+
+    <h2>{{t "modules:modulesPage:customization:title"}}</h2>
+    <p>{{t "modules:modulesPage:customization:description" blank=true}}</p>
+
+    <h2>{{t "modules:modulesPage:contribution:title"}}</h2>
+    <p>{{t "modules:modulesPage:contribution:description" blank=true}}</p>
   </div>
-
-  <h2>{{t "modules:modulesPage:customization:title"}}</h2>
-  <p>{{t "modules:modulesPage:customization:description" blank=true}}</p>
-
-  <h2>{{t "modules:modulesPage:contribution:title"}}</h2>
-  <p>{{t "modules:modulesPage:contribution:description" blank=true}}</p>
 
   <script src="{{thirdpartyUrl}}/jquery.min.js"></script>
   <script src="{{thirdpartyUrl}}/bootstrap/bootstrap.min.js"></script>
