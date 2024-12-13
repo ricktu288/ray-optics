@@ -59,7 +59,7 @@
         "title": "键盘快速键"
       }
     },
-    "processing": "处理中…… 按此处以终止。"
+    "processing": "处理中……按此处以终止。"
   },
   "generalWarnings": {
     "autoSyncUrlTooLarge": "本场景过大，无法与网址同步。 请自行储存场景。",
@@ -128,7 +128,7 @@
     "BaseGrinGlass": {
       "intersectTol": "相交容忍度",
       "refIndexFnInfo": {
-        "accuracy": "如需较精确的模拟，请见「更多选项...」",
+        "accuracy": "如需较精确的模拟，请见「更多选项…」",
         "constants": "支持的常数",
         "diff": "仅支持可微函数。",
         "functions": "支持的函数",
@@ -184,7 +184,7 @@
     },
     "DiffractionGrating": {
       "customBrightness": "自定义亮度",
-      "customBrightnessInfo": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, ...。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。",
+      "customBrightnessInfo": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, …。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。",
       "lineDensity": "线数/{{lengthUnit}}",
       "mirrored": "反射",
       "slitRatio": "狭缝宽度 / 线间距"
@@ -329,7 +329,7 @@
   },
   "welcome": {
     "instruction": "若要加入光学元件，请选择工具并点击空白处。\n若要载入示例，[请前往“作品集”页面](/gallery)。",
-    "loading": "正在从网址载入场景... 请稍候。",
+    "loading": "正在从网址载入场景……请稍候。",
     "title": "欢迎使用“射线光学模拟”"
   }
 }
