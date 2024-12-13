@@ -1,12 +1,11 @@
 {
   "common": {
-    "saveButton": "Sauvegarder",
-    "cancelButton": "Annuler"
+    "cancelButton": "Annuler",
+    "saveButton": "Sauvegarder"
   },
   "file": {
-    "title": "Fichier",
-    "undo": {
-      "title": "Annuler"
+    "open": {
+      "title": "Ouvrir"
     },
     "redo": {
       "title": "Rétablir"
@@ -17,61 +16,62 @@
     "save": {
       "title": "Sauvegarder"
     },
-    "open": {
-      "title": "Ouvrir"
+    "title": "Fichier",
+    "undo": {
+      "title": "Annuler"
     }
   },
-  "settings": {
-    "title": "Paramètres",
-    "rayDensity": {
-      "title": "Densité de rayon"
-    },
-    "layoutAids": {
-      "showGrid": "Grille",
-      "snapToGrid": "Attacher à la grille",
-      "lockObjs": "Verrouiller les objets"
-    },
-    "zoom": {
-      "title": "Zoom"
-    },
-    "language": {
-      "title": "Langue"
-    }
+  "footer": {
+    "processing": "En cours de traitement… Cliquez ici pour arrêter."
+  },
+  "languageModal": {
+    "title": "Langue"
   },
   "objBar": {
     "applyToAll": {
       "title": "Appliquer à tous"
     },
-    "duplicate": {
-      "title": "Dupliquer"
-    },
     "delete": {
       "title": "Supprimer"
+    },
+    "duplicate": {
+      "title": "Dupliquer"
     }
   },
+  "saveModal": {
+    "fileName": "Nom",
+    "title": "Sauvegarder"
+  },
   "sceneObjs": {
-    "common": {
-      "brightness": "Luminosité",
-      "wavelength": "Longueur d'onde",
-      "focalLength": "Distance focale"
-    },
     "BaseFilter": {
-      "filter": "Filtre",
       "bandwidth": "Bande Passante",
+      "filter": "Filtre",
       "invert": "Renverser"
     },
     "BaseGlass": {
       "refIndex": "Indice de réfraction"
+    },
+    "common": {
+      "brightness": "Luminosité",
+      "focalLength": "Distance focale",
+      "wavelength": "Longueur d'onde"
     }
   },
-  "saveModal": {
-    "title": "Sauvegarder",
-    "fileName": "Nom"
-  },
-  "languageModal": {
-    "title": "Langue"
-  },
-  "footer": {
-    "processing": "En cours de traitement... Cliquez ici pour arrêter"
+  "settings": {
+    "language": {
+      "title": "Langue"
+    },
+    "layoutAids": {
+      "lockObjs": "Verrouiller les objets",
+      "showGrid": "Grille",
+      "snapToGrid": "Attacher à la grille"
+    },
+    "rayDensity": {
+      "title": "Densité de rayon"
+    },
+    "title": "Paramètres",
+    "zoom": {
+      "title": "Zoom"
+    }
   }
 }
