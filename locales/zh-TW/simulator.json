@@ -59,7 +59,7 @@
         "title": "鍵盤快速鍵"
       }
     },
-    "processing": "處理中…按此處以終止。"
+    "processing": "處理中……按此處以終止。"
   },
   "generalWarnings": {
     "autoSyncUrlTooLarge": "本場景過大，無法與網址同步。請自行儲存場景。",
@@ -329,7 +329,7 @@
   },
   "welcome": {
     "instruction": "若要加入光學元件，請選擇工具並點擊空白處。\n若要載入範例，[請前往「作品集」頁面](/gallery)。",
-    "loading": "正在從網址載入場景…請稍候。",
+    "loading": "正在從網址載入場景……請稍候。",
     "title": "歡迎使用「線光學模擬」"
   }
 }
