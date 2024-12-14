@@ -486,6 +486,9 @@ class ModuleObj extends BaseSceneObj {
     this.scene.removeObj(this.scene.objs.indexOf(this));
     for (let obj of this.objs) {
       this.scene.objs.push(obj);
+      if (this.scene.editor) {
+        this.scene.editor.selectObj(-1);
+      }
     }
   }
 }
