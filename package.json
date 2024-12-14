@@ -38,9 +38,10 @@
     "bootstrap3": "npm:bootstrap@^3.3.7",
     "canvas": "^2.11.2",
     "handlebars": "^4.7.8",
-    "marked": "^15.0.3",
     "inquirer": "^12.1.0",
     "jsdoc": "^4.0.4",
+    "marked": "^15.0.3",
+    "mathjax": "^3.2.2",
     "sharp": "^0.33.5",
     "simple-git": "^3.27.0"
   },

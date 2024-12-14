@@ -19,6 +19,16 @@ fs.copyFileSync(path.join(__dirname, '../node_modules/bootstrap3/dist/css/bootst
 fs.copyFileSync(path.join(__dirname, '../node_modules/bootstrap3/dist/js/bootstrap.min.js'), path.join(__dirname, '../dist/thirdparty/bootstrap/bootstrap.min.js'));
 fs.mkdirSync(path.join(__dirname, '../dist/thirdparty/fonts'), { recursive: true });
 fs.copyFileSync(path.join(__dirname, '../node_modules/bootstrap3/dist/fonts/glyphicons-halflings-regular.woff2'), path.join(__dirname, '../dist/thirdparty/fonts/glyphicons-halflings-regular.woff2'));
+fs.mkdirSync(path.join(__dirname, '../dist/thirdparty/mathjax'), { recursive: true });
+fs.copyFileSync(path.join(__dirname, '../node_modules/mathjax/es5/tex-mml-chtml.js'), path.join(__dirname, '../dist/thirdparty/mathjax/tex-mml-chtml.js'));
+fs.cpSync(
+  path.join(__dirname, '../node_modules/mathjax/es5/output/chtml/fonts'),
+  path.join(__dirname, '../dist/thirdparty/mathjax/output/chtml/fonts'),
+  { recursive: true }
+);
+
+
+
 
 // List all existing languages, which are the directories in the /locales directory. Put English first.
 const langs = ['en'].concat(fs.readdirSync(path.join(__dirname, '../locales')).filter((file) => !file.includes('.') && file !== 'en'));
