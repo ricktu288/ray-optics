@@ -479,6 +479,13 @@ for (const lang of homeLangs) {
       isHome: false,
       isGallery: false,
       isAbout: true,
+      version: (() => {
+        const packageVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version.replace('-dev', '');
+        const lastCommit = logEntries.split('\n').slice(-1)[0].split('|');
+        const commitDate = new Date(lastCommit[3]).toISOString().slice(0,10).replace(/-/g,'');
+        const commitHash = lastCommit[0].slice(0,7);
+        return `${packageVersion}+${commitDate}.${commitHash}`;
+      })(),
       mainAuthors: sortedMainAuthors.map(c => {
         const name = (c.name === 'Yi-Ting Tu' && lang.startsWith('zh') ? '凃懿庭 Yi-Ting Tu' : c.name);
         const url = (c.name === 'Yi-Ting Tu') ? 'https://yitingtu.com' : '';
