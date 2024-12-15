@@ -57,6 +57,10 @@
       "keyboardShortcuts": {
         "description": "当一物件在被选取的状态（被点击）时，按方向键可移动物件；按 Ctrl+D 可复制物件；按 Delete 可删除物件。",
         "title": "键盘快速键"
+      },
+      "runLocally": {
+        "title": "在本地运行",
+        "description": "要在您自己的计算机上运行本项目（与在线版本无关），请参阅[此指南](/run-locally)。"
       }
     },
     "processing": "处理中……按此处以终止。"

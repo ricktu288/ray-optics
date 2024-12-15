@@ -31,6 +31,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 - [Gallery](https://phydemo.app/ray-optics/gallery/)
 - [Documentation](https://phydemo.app/ray-optics/docs/)
 - [About](https://phydemo.app/ray-optics/about)
+- [Run Locally](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md)
 
 ## Cite this project
 
@@ -57,9 +58,10 @@ To contribute code, you need to have some knowledge of JavaScript and module bun
 # Installation
 
 > [!NOTE]
-> The following instructions are for those who want to install the project locally. If you just want to use the web app, you can launch it directly from [here](https://phydemo.app/ray-optics/simulator/).
+> The following instructions are for developers. If you just want to use the web app, you can launch it directly from [here](https://phydemo.app/ray-optics/simulator/).
+> If you just want to run the project locally, please see [Run Locally](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md).
 
-To run the web app locally, you need to have Node.js installed. Then, run the following commands in the terminal:
+To run the web app locally for development, you need to have Node.js installed. Then, run the following commands in the terminal:
 ```bash
 git clone https://github.com/ricktu288/ray-optics.git
 cd ray-optics

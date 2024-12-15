@@ -1244,7 +1244,7 @@ function initUIText() {
   setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
   setText('close_module', i18next.t('simulator:common.closeButton'));
   setText('home', null, i18next.t('main:pages.home'));
-  setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
+  setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.runLocally.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.runLocally.description')) + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
   setText('about', i18next.t('main:pages.about'));
   setText('github', null, i18next.t('main:pages.github'));
 
@@ -1991,6 +1991,7 @@ function mapURL(url) {
     "/github": "https://github.com/ricktu288/ray-optics",
     "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
     "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
+    "/run-locally": "https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md",
     "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
     "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",

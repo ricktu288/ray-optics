@@ -57,6 +57,10 @@
       "keyboardShortcuts": {
         "description": "When an object is selected (by clicking it), press arrow keys to move the object; Ctrl+D to duplicate the object; Delete key to delete the object.",
         "title": "Keyboard shortcuts"
+      },
+      "runLocally": {
+        "description": "To run this project on your own computer, independently of the online version, please see [this guide](/run-locally).",
+        "title": "Run Locally"
       }
     },
     "processing": "Processing… Click here to stop."
