@@ -37,7 +37,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 
 If you use this project in your research, please cite it using the metadata in the [CITATION.bib](https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib) file.
 
-You can also include the URL https://phydemo.app/ray-optics in the citation. The URL will not change in the foreseeable future (at least until 2032).
+You can also include the URL https://phydemo.app/ray-optics/ in the citation. The URL will not change in the foreseeable future (at least until 2032).
 
 # Contributing
 
@@ -75,7 +75,7 @@ If you want to build the entire project, including the home pages, gallery, modu
 npm install
 npm run build
 ```
-After that, the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website will be in the `dist` folder.
+After that, the entire content for the [https://phydemo.app/ray-optics/](https://phydemo.app/ray-optics/) website will be in the `dist` folder. You can again run `npm run start` to run the simulator locally, and now all the links and the "import module" window should work.
 
 If an error occurs during the installation, some common reasons are:
 - The version of Node.js is too old. You can update Node.js to version 18 or later.

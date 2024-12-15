@@ -19,7 +19,7 @@ If you are not familiar with the development environment but still want to run t
     ![Simple Web Server](https://raw.githubusercontent.com/ricktu288/ray-optics/refs/heads/master/run-locally/simple-web-server-config.png)
 
 6. Click "Create server" to run the project.
-7. Open the browser and go to http://localhost:8080/ to see the project. Note that the entire site of https://ricktu288.github.io/ray-optics/ is now served locally on your own computer, including the simulator, gallery, and modules.
+7. Open the browser and go to http://localhost:8080/ to see the project. Note that the entire site of https://phydemo.app/ray-optics/ is now served locally on your own computer, including the simulator, gallery, and modules.
 8. Now every time you want to run the project, just start Simple Web Server, make sure that "ray-optics-gh-pages" is running, and open the browser to http://localhost:8080/.
 
     ![Simple Web Server](https://raw.githubusercontent.com/ricktu288/ray-optics/refs/heads/master/run-locally/simple-web-server-running.png)
