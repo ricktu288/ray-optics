@@ -813,6 +813,7 @@ async function startApp() {
   document.getElementById('apply_to_all').onclick = function () {
     this.blur();
     const checked = this.checked;
+    objBar.shouldApplyToAll = checked;
     document.getElementById('apply_to_all').checked = checked;
     document.getElementById('apply_to_all_mobile').checked = checked;
   }
