@@ -2001,6 +2001,11 @@ function mapURL(url) {
 // Parse the markdown-like links in the text with mapURL and return the HTML.
 function parseLinks(text) {
   return text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, function (match, text, url) {
-    return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
+    if (text === 'ray-optics@phydemo.app') {
+      // Prevent link from wrapping.
+      return `<a href="${mapURL(url)}" target="_blank" style="white-space: nowrap;">${text}</a>`;
+    } else {
+      return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
+    }
   });
 }

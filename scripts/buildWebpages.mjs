@@ -390,6 +390,9 @@ for (const lang of homeLangs) {
       html = html.replace(/<a href="/g, '<a target="_blank" href="');
     }
 
+    // If the link is to ray-optics@phydemo.app, prevent it from wrapping.
+    html = html.replace(/href="mailto:ray-optics@phydemo.app"/g, 'href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;"');
+
     return new Handlebars.SafeString(html);
   });
 
