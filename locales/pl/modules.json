@@ -1,1 +1,32 @@
-{}
+{
+  "moduleData": {
+    "FresnelLens": {
+      "description": "Soczewka Fresnela wykonana z półokrągłego kawałka szkła. Modułowa wersja [tego przykładu z galerii](/gallery/fresnel-lens).",
+      "point1": "Pierwszy punkt końcowy soczewki",
+      "point2": "Drugi punkt końcowy soczewki",
+      "title": "Soczewka Fresnela"
+    }
+  },
+  "modulesPage": {
+    "contribution": {
+      "description": "Wnoszenie wkładu do powyższej listy jest mile widziane. Aby dodać swój moduł, zobacz [Wnoszenie wkładu do modułów](/contributing/modules).",
+      "title": "Wkład"
+    },
+    "customization": {
+      "description": "Moduły można tworzyć lub dostosowywać bezpośrednio w aplikacji internetowej, korzystając z wbudowanego edytora JSON. Zobacz [samouczek](/modules/tutorial). Dostosowywanie zaimportowanych modułów będzie miało wpływ tylko na bieżącą scenę.",
+      "title": "Dostosowywanie"
+    },
+    "description": {
+      "appearAsTools": "Zaimportowane moduły pojawią się jako narzędzia w kategorii \"Inne\". Wybierz i kliknij puste miejsce zgodnie z kolejnością sekwencji punktów kontrolnych (patrz \"Specyfikacja\").",
+      "embeddedInScene": "Zaimportowane moduły są osadzone w danych sceny, więc nie będą automatycznie aktualizowane, gdy autorzy modułów dokonają ich aktualizacji.",
+      "makeNewTools": "Funkcja \"Moduł\" umożliwia tworzenie nowych narzędzi poprzez łączenie, dostosowywanie lub reparametryzację obiektów utworzonych przez istniejące narzędzia w tym symulatorze."
+    },
+    "import": "Importuj",
+    "imported": "Zaimportowany",
+    "specification": {
+      "controlPointSequence": "Sekwencja punktów kontrolnych",
+      "parameters": "Parametry",
+      "title": "Specyfikacja"
+    }
+  }
+}
