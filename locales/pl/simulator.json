@@ -2,9 +2,17 @@
   "common": {
     "cancelButton": "Anuluj",
     "closeButton": "Zamknij",
+    "defaultOption": "Domyślnie",
     "saveButton": "Zapisz"
   },
   "file": {
+    "copyLink": {
+      "description": "Skopiuj i przejdź do bezpośredniego adresu URL dla bieżącej sceny, który może być używany do udostępniania (ewentualnie poprzez skracacz adresów URL). Zobacz także Ustawienia -> Auto sync URL.",
+      "title": "Kopiuj link do udostępniania"
+    },
+    "export": {
+      "title": "Eksportuj jako PNG/SVG"
+    },
     "open": {
       "description": "Otwórz istniejący plik lub obraz tła. Obraz tła zostanie wyświetlony z punktu początkowego współrzędnych. (Lub upuść plik)",
       "title": "Otwórz"
@@ -28,15 +36,50 @@
     }
   },
   "footer": {
-    "processing": "Przetwarzanie... Kliknij tutaj, aby zatrzymać."
+    "helpPopup": {
+      "constrainedDragging": {
+        "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka.",
+        "title": "Przeciąganie ograniczone"
+      },
+      "contactUs": {
+        "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing)).",
+        "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
+        "title": "Skontaktuj się z nami"
+      },
+      "editCoordinates": {
+        "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter.",
+        "title": "Bezpośrednio edytuj współrzędne"
+      },
+      "groupRotateScale": {
+        "description": "Przytrzymaj Ctrl, kliknij kilka punktów kontrolnych (np. punktów końcowych), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomu/pionu; Ctrl+przeciągnij, aby obrócić grupę, Ctrl+Shift+przeciągnij, aby przeskalować grupę. Przeciągnij „+”, aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby rozgrupować.",
+        "title": "Grupuj, obracaj i skaluj obiekty"
+      },
+      "keyboardShortcuts": {
+        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć; Ctrl+D, aby powielić; klawisz Delete, aby usunąć.",
+        "title": "Skróty klawiaturowe"
+      },
+      "runLocally": {
+        "description": "Aby uruchomić ten projekt na własnym komputerze, niezależnie od wersji online, zapoznaj się z [tym przewodnikiem](/run-locally).",
+        "title": "Uruchom lokalnie"
+      }
+    },
+    "processing": "Przetwarzanie… Kliknij tutaj, aby zatrzymać."
   },
   "generalWarnings": {
-    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Może być konieczne użycie \"Zapisz\" i zamiast tego udostępnienie pliku."
+    "autoSyncUrlTooLarge": "Scena jest zbyt duża, aby zsynchronizować ją z URL. Zapisz ją ręcznie.",
+    "brightnessInconsistent": "Jasności dwóch lub więcej źródeł światła nasycają się w niespójnych proporcjach. Może to prowadzić do błędnych odczytów detektora i nieprawidłowego odwzorowania kolorów. Zwiększ gęstość promieni lub zmniejsz jasność źródeł światła.",
+    "identicalObjects": "Na scenie znajdują się dwa identyczne elementy optyczne, które całkowicie na siebie zachodzą. Może to spowodować nieoczekiwane zachowanie.",
+    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Zamiast tego może być konieczne użycie \"Zapisz\" i udostępnienie pliku."
   },
   "languageModal": {
     "helpTranslate": "Pomóż nam przetłumaczyć tę aplikację",
     "title": "Język",
     "translatedFraction": "przetłumaczone"
+  },
+  "moduleModal": {
+    "conflict": "W bieżącej scenie istnieje już inny moduł o tej samej nazwie. Możesz wprowadzić nową nazwę lub pozostawić ją bez zmian, aby nadpisać istniejący moduł.",
+    "makeCustomModules": "Twórz własne moduły",
+    "title": "Importuj moduły"
   },
   "objBar": {
     "applyToAll": {
@@ -57,7 +100,13 @@
     }
   },
   "saveModal": {
+    "description": {
+      "autoSync": "Zamiast zapisywać jako plik, można użyć Ustawienia -> Auto Sync URL.",
+      "contribute": "Możesz rozważyć [dodanie nowego elementu](/contributing/gallery) do [Galerii](/gallery).",
+      "rename": "Kliknij \"Zmień nazwę\", aby zmienić tytuł bez zapisywania do pliku."
+    },
     "fileName": "Nazwa",
+    "rename": "Zmień nazwę",
     "title": "Zapisz"
   },
   "sceneObjs": {
@@ -76,12 +125,21 @@
       "cauchyCoeff": "Współczynnik Cauchy'ego",
       "refIndex": "Współczynnik załamania",
       "refIndexInfo": {
-        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, gdy kilka obiektów szklanych nakłada się na siebie, efektywny współczynnik odbicia tego obszaru jest równy iloczynowi współczynników odbicia poszczególnych szkieł.",
+        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, w których kilka szkieł nakłada się na siebie, efektywny współczynnik załamania światła w obszarze nakładania się jest równy iloczynowi współczynników załamania światła poszczególnych szkieł.",
         "relative": "względny, jeśli znajduje się w innym szkle"
       }
     },
     "BaseGrinGlass": {
       "intersectTol": "Tolerancja intersekcji",
+      "refIndexFnInfo": {
+        "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji…\"",
+        "constants": "Obsługiwane stałe",
+        "diff": "Obsługuje tylko funkcje różniczkowalne.",
+        "functions": "Obsługiwane funkcje",
+        "lambda": "Aby symulować dyspersję chromatyczną, użyj parametru {{lambda}} dla długości fali w próżni w nanometrach.",
+        "operators": "Obsługiwane operatory",
+        "origin": "Początek n(x,y) znajduje się we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne."
+      },
       "refIndexFnOrigin": "Początek układu n(x,y)",
       "stepSize": "Rozmiar kroku rozwiązywania numerycznego",
       "stepSizeInfo": "Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'BaseGrinGlass.js'.",
@@ -105,11 +163,20 @@
       }
     },
     "CropBox": {
-      "svgWarning": "Eksportuj do SVG. Mieszanki kolorów i względne współczynniki załamania światła poniżej 1 nie są obsługiwane."
+      "cropBoxSize": "Rozmiar pola przycięcia",
+      "format": "Format",
+      "rayCountLimit": "Limit liczby promieni",
+      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania.",
+      "svgWarning": "Eksportuj do SVG. Mieszanki kolorów i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
+      "title": "Eksportuj",
+      "width": "Szerokość"
     },
     "Detector": {
       "binSize": "Rozmiar pojemnika",
       "exportData": "Eksportuj dane",
+      "info": {
+        "B": "B jest arbitralną jednostką strumienia promieniowania lub strumienia świetlnego, odpowiadającą jednostce opcji \"Jasność\" B/L dla wiązek nielambertowskich i 500B/360° dla źródeł punktowych."
+      },
       "irradMap": "Mapa irradiancji"
     },
     "Drawing": {
