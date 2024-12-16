@@ -348,8 +348,8 @@
       "refraction": "Załamanie",
       "title": "Kategorie"
     },
-    "contributors_few": "",
-    "contributors_many": "",
+    "contributors_few": "Osoby wnoszące wkład: {{contributors}}",
+    "contributors_many": "Osoby wnoszące wkład: {{contributors}}",
     "contributors_one": "Osoba wnosząca wkład: {{contributors}}",
     "description": "Jest to zbiór symulacji wykonanych za pomocą [aplikacji internetowej](/simulator), którą można wykorzystać do tworzenia takich interaktywnych demonstracji z optyki. Zapraszamy do dodawania nowych elementów. Aby uzyskać więcej informacji, zobacz [przewodnik dotyczący wkładu](/contributing/gallery). Aby zgłosić błąd, [otwórz problem w GitHub](/github/issues) lub wyślij wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
     "openInSimulator": "Otwórz w symulatorze",
