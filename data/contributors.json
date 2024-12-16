@@ -192,6 +192,9 @@
   },
   {
     "name": "Fundacja Nauka i Wiedza",
+    "githubEmails": [
+      "bator54@gmail.com"
+    ],
     "contributions": {
       "translations": [
         "pl"
