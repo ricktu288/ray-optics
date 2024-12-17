@@ -22,7 +22,7 @@ For direct contributions, see the following guidelines.
 
 ## Contributing translations
 
-This project uses Weblate for translation (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
+This project uses Weblate for translation. Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
 
 [![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/287x66-grey.png)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 

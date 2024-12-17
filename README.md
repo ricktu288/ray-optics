@@ -49,7 +49,7 @@ Contributions are welcome. For the following types of contributions, no (or litt
 
 See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md) for the tutorial.
 
-For translations, note that this project uses Weblate (currently waiting for Libre hosting approval). Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
+For translations, note that this project uses Weblate. Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
 
 [![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/287x66-grey.png)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 
