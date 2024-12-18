@@ -286,7 +286,8 @@
       "title": "网格大小"
     },
     "language": {
-      "title": "语言"
+      "title": "语言",
+      "lowFraction": "此语言翻译完成率仅 {{fraction}}。您可以[在 Weblate 上](/weblate)帮助完成翻译。"
     },
     "layoutAids": {
       "lockObjs": "锁定物件",

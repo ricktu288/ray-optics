@@ -286,7 +286,8 @@
       "title": "Grid Size"
     },
     "language": {
-      "title": "Language"
+      "title": "Language",
+      "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
     },
     "layoutAids": {
       "lockObjs": "Lock Objects",

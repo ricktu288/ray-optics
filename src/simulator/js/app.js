@@ -1252,6 +1252,31 @@ function initUIText() {
   document.getElementById('language').innerHTML = window.localeData[lang].name;
   document.getElementById('language_mobile').innerHTML = window.localeData[lang].name;
 
+  // Show/hide translation warning if current language is less than 70% translated
+  const TRANSLATION_THRESHOLD = 70;
+  const currentLangCompleteness = Math.round(window.localeData[lang].numStrings / window.localeData.en.numStrings * 100);
+  const warningBanners = document.querySelectorAll('.language-warning');
+  warningBanners.forEach(banner => {
+    if (currentLangCompleteness < TRANSLATION_THRESHOLD) {
+      banner.style.display = 'flex';
+      banner.style.alignItems = 'center';
+      const warningText = document.createElement('span');
+      warningText.style.marginLeft = '6px';
+      warningText.style.flex = '1';
+      warningText.innerHTML = parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: currentLangCompleteness + '%' }));
+      // Keep the existing icon and append the text
+      const existingIcon = banner.querySelector('svg');
+      existingIcon.style.flexShrink = '0';
+      existingIcon.style.width = '14px';
+      existingIcon.style.height = '14px';
+      banner.innerHTML = '';
+      banner.appendChild(existingIcon);
+      banner.appendChild(warningText);
+    } else {
+      banner.style.display = 'none';
+    }
+  });
+
   // Populate the language list
   const languageList = document.getElementById('language_list');
   
@@ -1995,6 +2020,7 @@ function mapURL(url) {
     "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
     "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
+    "/weblate": "https://hosted.weblate.org/engage/ray-optics-simulation/",
   };
   return urlMap[url] || url;
 }

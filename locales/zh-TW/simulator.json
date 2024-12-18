@@ -286,7 +286,8 @@
       "title": "格線大小"
     },
     "language": {
-      "title": "語言"
+      "title": "語言",
+      "lowFraction": "此語言翻譯完成率僅 {{fraction}}。您可以[在 Weblate 上](/weblate)協助完成翻譯。"
     },
     "layoutAids": {
       "lockObjs": "鎖定物件",
