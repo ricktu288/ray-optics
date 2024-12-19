@@ -134,7 +134,7 @@ See the [documentation](https://phydemo.app/ray-optics/docs/) for more informati
 
 
 # License
-Copyright 2016–2024 Yi-Ting Tu
+Copyright 2016–2024 The Ray Optics Simulation authors and contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
