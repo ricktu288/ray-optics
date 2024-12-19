@@ -1,0 +1,231 @@
+{
+  "aboutPage": {
+    "cite": "Cite this project",
+    "contributionCategories": {
+      "code": "code",
+      "gallery": "gallery",
+      "module": "module",
+      "translations_one": "{{languages}} translation",
+      "translations_other": "{{languages}} translations",
+      "uiDesign": "UI design"
+    },
+    "contributorSorting": "GitHub contributors first; others sorted chronologically.",
+    "contributors": "Contributors",
+    "description": "This project, including the gallery contents, is licensed under the [Apache License 2.0](/license), and is officially hosted on the [PhyDemo (phydemo.app)](/phydemo) website (formerly on ricktu288.github.io). The source code is [available on GitHub](/github), and you are [welcome to contribute](/contributing). If you have questions or suggestions, you can open [issues](/github/issues) or [discussions](/github/discussions) on GitHub, or email us at [ray-optics@phydemo.app](/email) if you do not use GitHub.",
+    "mainAuthors_one": "Main Author",
+    "mainAuthors_other": "Main Authors"
+  },
+  "homePage": {
+    "description": "Create & simulate 2D geometric optical scenes interactively.\nTotally free and web-based. Source code is [available on GitHub](/github).",
+    "launchSimulator": "Launch Simulator"
+  },
+  "languageDropdown": {
+    "title": "Language: {{language}}",
+    "translatedFraction": "{{fraction}} translated"
+  },
+  "meta": {
+    "colon": "{{name}}: {{value}}",
+    "languageName": "English",
+    "list": "{{first}}, {{others}}",
+    "parentheses": "{{main}} ({{sub}})"
+  },
+  "pages": {
+    "about": "About",
+    "gallery": "Gallery",
+    "github": "GitHub",
+    "home": "Home",
+    "modules": "Modules",
+    "simulator": "Simulator"
+  },
+  "project": {
+    "description": "A free, open-source web app for creating and simulating 2D geometric optical scenes.",
+    "name": "Ray Optics Simulation",
+    "shortName": "Ray Optics"
+  },
+  "simulateColors": {
+    "description": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.",
+    "instruction": "You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths.",
+    "title": "Simulate Colors",
+    "warning": "The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+  },
+  "tools": {
+    "AngleSource": {
+      "description": "Point source with a given emission angle.",
+      "instruction": "Drag or Click to create, first the source, then the direction."
+    },
+    "Aperture": {
+      "description": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically.",
+      "instruction": "Drag or click the two endpoints to create.",
+      "title": "Aperture"
+    },
+    "ArcMirror": {
+      "description": "A mirror whose shape is part of a circle, which is defined by three points.",
+      "instruction": "Drag or click the two endpoints to create, then click a third point on the arc to define the curvature.",
+      "title": "Circular Arc"
+    },
+    "Beam": {
+      "description": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider.",
+      "title": "Beam"
+    },
+    "BeamSplitter": {
+      "description": "A mirror that transmits a percentage of incoming light.",
+      "title": "Beam Splitter"
+    },
+    "Blocker": {
+      "description": "A line-segment light blocker which absorbs the incident rays.",
+      "title": "Line Blocker"
+    },
+    "CircleBlocker": {
+      "description": "A circle light blocker which absorbs the incident rays.",
+      "title": "Circle Blocker"
+    },
+    "CircleGlass": {
+      "description": "Glass with a circle shape, defined by its center and a point on the surface.",
+      "title": "Circle"
+    },
+    "CircleGrinGlass": {
+      "description": "Glass with a custom refractive index function n(x,y) and a circular boundary.",
+      "title": "Gradient-index circle"
+    },
+    "CustomGlass": {
+      "description": "Glass with the shape defined by a custom inequality f(x) < y < g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0).",
+      "title": "Custom Equation"
+    },
+    "CustomMirror": {
+      "description": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0).",
+      "title": "Custom Equation"
+    },
+    "Detector": {
+      "description": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment.  The units are arbitrary.",
+      "title": "Detector"
+    },
+    "DiffractionGrating": {
+      "description": "A diffraction grating that splits light at an angle depending on wavelength.",
+      "title": "Diffraction Grating",
+      "warning": "Warning: The intensities of diffracted rays may not be accurate."
+    },
+    "Drawing": {
+      "description": "A freehand drawing tool.",
+      "instruction": "Drag to draw.",
+      "title": "Drawing"
+    },
+    "Glass": {
+      "description": "Glass with any shapes constructed from line segments and circular arcs.",
+      "instruction": "Click to create a segment, drag to create an arc, click on the starting point when finish drawing.",
+      "title": "Polygon / Circular Arcs"
+    },
+    "GrinGlass": {
+      "description": "Glass with a custom refractive index function n(x,y) and a polygonal boundary.",
+      "instruction": "Click to create a segment, click on the starting point when finish drawing.",
+      "title": "Gradient-index polygon",
+      "warning": "WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable."
+    },
+    "IdealLens": {
+      "description": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length can be set directly.",
+      "title": "Ideal Lens"
+    },
+    "IdealMirror": {
+      "description": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length can be set directly.",
+      "title": "Ideal curved mirror"
+    },
+    "LineArrow": {
+      "description": "A line segment or arrow.",
+      "title": "Line / Arrow"
+    },
+    "Mirror": {
+      "description": "Simulate the reflection of light on a mirror.",
+      "title": "Segment"
+    },
+    "ParabolicMirror": {
+      "description": "A mirror whose shape is a parabola, which is defined by three points.",
+      "instruction": "Drag or click the two endpoints to create, then click the vertex.",
+      "title": "Parabolic"
+    },
+    "PlaneGlass": {
+      "description": "Simulate the refraction and reflection of light on a surface.",
+      "instruction": "Drag or click two points on the surface to create.",
+      "title": "Half-plane"
+    },
+    "PointSource": {
+      "description": "Rays emerge from a single point, with number controlled by the 'Ray density' slider.",
+      "title": "Point source"
+    },
+    "Protractor": {
+      "description": "A protractor defined from the center and another point for the zero direction. The scale is in degrees.",
+      "title": "Protractor"
+    },
+    "Ruler": {
+      "description": "A ruler from a point for zero and another point.",
+      "title": "Ruler"
+    },
+    "SingleRay": {
+      "description": "A single ray of light defined by two points.",
+      "instruction": "Drag or Click to create, first the source, then the direction.",
+      "title": "Single ray"
+    },
+    "SphericalLens": {
+      "description": "A spherical lens, whose shape can be defined using various parameters.",
+      "title": "Spherical Lens"
+    },
+    "TextLabel": {
+      "description": "A text label.",
+      "title": "Text"
+    },
+    "categories": {
+      "blocker": "Blocker",
+      "glass": "Glass",
+      "lightSource": "Light Source",
+      "mirror": "Mirror",
+      "other": "Other"
+    },
+    "common": {
+      "circleInstruction": "Drag or click to create, first the center, then the circumference.",
+      "clickInstruction": "Click to create.",
+      "lineInstruction": "Drag or click to create."
+    },
+    "modules": {
+      "import": "Import Modules…",
+      "remove": "Remove module"
+    },
+    "moveView": {
+      "description": "Drag to move the view. (Mouse right button drag has the same function.)",
+      "title": "Move view"
+    },
+    "otherGlass": {
+      "description": "Glass with any shapes constructed from line segments and circular arcs, or shapes defined by a custom inequality f(x) < y < g(x).",
+      "title": "Other shapes"
+    },
+    "otherGrinGlass": {
+      "description": "Material with a custom refractive index function n(x,y).",
+      "title": "Gradient-index glass"
+    },
+    "otherMirror": {
+      "description": "A mirror whose shape is curved. Can be circular, parabolic, or defined by a custom equation y = f(x).",
+      "title": "Curved"
+    },
+    "title": "Tools"
+  },
+  "view": {
+    "extended": {
+      "description": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead.",
+      "title": "Extended rays"
+    },
+    "images": {
+      "description": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead.",
+      "title": "All Images"
+    },
+    "observer": {
+      "description": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual).",
+      "instruction": "Drag the big blue dot to move the observer.",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors instead.",
+      "title": "Seen by Observer"
+    },
+    "rays": {
+      "description": "Show the rays. When the 'Ray density' is high, they appear to be continuous.",
+      "title": "Rays"
+    },
+    "title": "View"
+  }
+}

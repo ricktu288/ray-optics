@@ -1,0 +1,229 @@
+{
+  "aboutPage": {
+    "cite": "引用本專案",
+    "contributionCategories": {
+      "code": "程式碼",
+      "gallery": "作品集",
+      "module": "模組",
+      "translations": "{{languages}} 翻譯",
+      "uiDesign": "介面設計"
+    },
+    "contributorSorting": "GitHub 貢獻者優先；其餘依時間排序。",
+    "contributors": "貢獻者",
+    "description": "本專案，包括作品集內容，皆採用 [Apache License 2.0](/license) 授權條款，且官方版本位於 [PhyDemo（phydemo.app）](/phydemo)網站（原先於 ricktu288.github.io）。本專案原始碼公開於[此 GitHub Repo](/github)，歡迎您[貢獻本專案](/contributing)。若有問題或建議，您可以在 GitHub 上建立 [Issue](/github/issues) 或 [Discussion](/github/discussions)（請使用英文），也可以傳送電子郵件至 [ray-optics@phydemo.app](/email)（可使用中文）。",
+    "mainAuthors": "主要作者"
+  },
+  "homePage": {
+    "description": "建立二維幾何光學場景，並即時模擬光線行為。\n完全免費，免下載，原始碼[公開於 GitHub](/github)。",
+    "launchSimulator": "啟動程式"
+  },
+  "languageDropdown": {
+    "title": "語言：{{language}}",
+    "translatedFraction": "已翻譯 {{fraction}}"
+  },
+  "meta": {
+    "colon": "{{name}}：{{value}}",
+    "languageName": "正體中文",
+    "list": "{{first}}、{{others}}",
+    "parentheses": "{{main}}（{{sub}}）"
+  },
+  "pages": {
+    "about": "關於",
+    "gallery": "作品集",
+    "github": "GitHub",
+    "home": "首頁",
+    "modules": "模組",
+    "simulator": "模擬器"
+  },
+  "project": {
+    "description": "自由、開源的網頁程式，用於建立及模擬二維幾何光學場景。",
+    "name": "線光學模擬",
+    "shortName": "線光學"
+  },
+  "simulateColors": {
+    "description": "模擬光源的顏色（波長）、混色、遮光物與鏡子的濾光，以及透光物的色散。",
+    "instruction": "選取物件後可調整這些參數。重疊多條不同波長的光線可用於模擬光譜。",
+    "title": "模擬色彩",
+    "warning": "螢幕顯示之顏色僅為粗略近似，且當「光線密度」太高或太低時可能非常不準確。"
+  },
+  "tools": {
+    "AngleSource": {
+      "description": "指定發射角之點光源。",
+      "instruction": "拖曳或點擊以創建，第一個點是光源，射向第二個點。"
+    },
+    "Aperture": {
+      "description": "一對線段形狀的吸光片，可用對稱方式調整其孔洞的大小。",
+      "instruction": "拖曳或點擊兩個端點以創建。",
+      "title": "光圈"
+    },
+    "ArcMirror": {
+      "description": "圓弧形的鏡子，由三點決定。",
+      "instruction": "拖曳或點擊兩個端點以創建，然後點擊弧上另一點以決定曲率。",
+      "title": "圓弧"
+    },
+    "Beam": {
+      "description": "由一線段產生平行或發散光束，密度由「光線密度」滑桿決定。",
+      "title": "光束"
+    },
+    "BeamSplitter": {
+      "description": "能穿透一個比例的光的鏡子。",
+      "title": "分光鏡"
+    },
+    "Blocker": {
+      "description": "線段形狀的吸光片，光線射到其上後就不會再射出。",
+      "title": "吸光片"
+    },
+    "CircleBlocker": {
+      "description": "圓形遮光物，光線射到其上後就不會再射出。",
+      "title": "圓形遮光物"
+    },
+    "CircleGlass": {
+      "description": "圓形透光物，由圓心與表面上一點決定。",
+      "title": "圓形"
+    },
+    "CircleGrinGlass": {
+      "description": "折射率為自訂函數 n(x,y)，邊界為圓形的透光物。",
+      "title": "漸變折射率圓形"
+    },
+    "CustomGlass": {
+      "description": "形狀為自訂不等式 f(x) < y < g(x) 的透光物，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。",
+      "title": "自訂函數"
+    },
+    "CustomMirror": {
+      "description": "形狀為自訂等式 y = f(x) 的鏡子，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。",
+      "title": "自訂函數"
+    },
+    "Detector": {
+      "description": "測量通過一線段的能量流率(P)、垂直動量流率(F⊥)與水平動量流率(F∥)。單位為任意。",
+      "title": "探測器"
+    },
+    "DiffractionGrating": {
+      "description": "將光線依波長分割成不同角度的繞射光柵。",
+      "title": "繞射光柵",
+      "warning": "注意：繞射光的強度可能不準確。"
+    },
+    "Drawing": {
+      "description": "手繪工具。",
+      "instruction": "拖曳以繪圖。",
+      "title": "繪圖"
+    },
+    "Glass": {
+      "description": "任何由線段與圓弧組成的透光物。",
+      "instruction": "點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。",
+      "title": "多邊形 / 圓弧"
+    },
+    "GrinGlass": {
+      "description": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。",
+      "instruction": "點擊以建立線段，點擊一開始的點以結束繪製。",
+      "title": "漸變折射率多邊形",
+      "warning": "警告：僅支援簡單多邊形，否則行為無法預測。"
+    },
+    "IdealLens": {
+      "description": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距。",
+      "title": "理想透鏡"
+    },
+    "IdealMirror": {
+      "description": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距。",
+      "title": "理想曲面鏡"
+    },
+    "LineArrow": {
+      "description": "線段或箭頭。",
+      "title": "線段 / 箭頭"
+    },
+    "Mirror": {
+      "description": "模擬光線射到鏡子時的反射。",
+      "title": "線段"
+    },
+    "ParabolicMirror": {
+      "description": "拋物線形的鏡子，由三點決定。",
+      "instruction": "拖曳或點擊兩個端點以創建，然後點擊頂點。",
+      "title": "拋物線"
+    },
+    "PlaneGlass": {
+      "description": "模擬光線經過透光物體界面時的反射與折射。",
+      "instruction": "拖曳或點擊界面上的兩點以創建。",
+      "title": "半平面"
+    },
+    "PointSource": {
+      "description": "由一點向四周發射光線，數量由「光線密度」滑桿決定。",
+      "title": "點光源"
+    },
+    "Protractor": {
+      "description": "指定圓心和圓周上一點作為零度位置。刻度單位為度。",
+      "title": "量角器"
+    },
+    "Ruler": {
+      "description": "指定原點與另一點。",
+      "title": "直尺"
+    },
+    "SingleRay": {
+      "description": "由兩點決定一條光線。",
+      "instruction": "拖曳或點擊以創建，第一個點是光源，射向第二個點。",
+      "title": "單一光線"
+    },
+    "SphericalLens": {
+      "description": "球面透鏡，其形狀可用多種方式定義。",
+      "title": "球面透鏡"
+    },
+    "TextLabel": {
+      "description": "文字標籤。",
+      "title": "文字"
+    },
+    "categories": {
+      "blocker": "遮光物",
+      "glass": "透光物",
+      "lightSource": "光源",
+      "mirror": "鏡子",
+      "other": "其他"
+    },
+    "common": {
+      "circleInstruction": "拖曳或點擊以創建，第一點為圓心，第二點於圓周上。",
+      "clickInstruction": "點擊以創建。",
+      "lineInstruction": "拖曳或點擊以創建。"
+    },
+    "modules": {
+      "import": "匯入模組…",
+      "remove": "移除模組"
+    },
+    "moveView": {
+      "description": "拖曳以移動視窗。（滑鼠右鍵拖曳也有相同的功能。）",
+      "title": "移動畫面"
+    },
+    "otherGlass": {
+      "description": "任何由線段與圓弧組成的透光物，或自訂不等式 f(x) < y < g(x)。",
+      "title": "其他形狀"
+    },
+    "otherGrinGlass": {
+      "description": "折射率為自訂函數 n(x,y) 的材料。",
+      "title": "漸變折射率透光物"
+    },
+    "otherMirror": {
+      "description": "曲線形的鏡子。可選圓弧、拋物線，或自訂函數 y = f(x)。",
+      "title": "曲線"
+    },
+    "title": "工具"
+  },
+  "view": {
+    "extended": {
+      "description": "除光線實際路徑外，亦畫出其延長線。橘色、灰色分別表示向後、向前的延長線。",
+      "simulateColorsNote": "若使用「模擬色彩」，則改以光源顏色顯示並以虛線區分。",
+      "title": "延長光線"
+    },
+    "images": {
+      "description": "點出像的位置。黃點表示實像，橘點表示虛像，灰點(圖中沒有)表示虛物。注意「光線密度」不夠高時有些像無法正常顯示。",
+      "simulateColorsNote": "若使用「模擬色彩」，則改以光源顏色顯示並以點的大小區分。",
+      "title": "所有像"
+    },
+    "observer": {
+      "description": "模擬從某位置見到的光線與像。藍色圓形為觀察者，與其相交的光線被其「觀察」到。觀察者無法知道光線真正的起始位置，但若其在某處相交，它會認為光線是從該處來的。光線以藍色表示，相交處以黃色（實像）或橘色（虛像）表示。",
+      "instruction": "拖曳大藍點以移動觀察者。",
+      "simulateColorsNote": "若使用「模擬色彩」，則改以光源顏色顯示。",
+      "title": "觀察者所見"
+    },
+    "rays": {
+      "description": "畫出光線。當「光線密度」高時，光線呈現連續。",
+      "title": "光線"
+    },
+    "title": "檢視"
+  }
+}

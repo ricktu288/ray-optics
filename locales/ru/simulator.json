@@ -1,0 +1,76 @@
+{
+  "common": {
+    "cancelButton": "Отмена",
+    "saveButton": "Сохранить"
+  },
+  "file": {
+    "open": {
+      "title": "Открыть"
+    },
+    "redo": {
+      "title": "Повтор"
+    },
+    "reset": {
+      "title": "Сброс"
+    },
+    "save": {
+      "title": "Сохранить"
+    },
+    "title": "Файл",
+    "undo": {
+      "title": "Отмена"
+    }
+  },
+  "footer": {
+    "processing": "Вычисление... Нажмите, чтобы остановить."
+  },
+  "languageModal": {
+    "title": "Язык"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Применить ко всем"
+    },
+    "delete": {
+      "title": "Удалить"
+    },
+    "duplicate": {
+      "title": "Дублировать"
+    }
+  },
+  "saveModal": {
+    "fileName": "Название",
+    "title": "Сохранить"
+  },
+  "sceneObjs": {
+    "BaseFilter": {
+      "bandwidth": "Пропускная способность",
+      "filter": "Фильтр",
+      "invert": "Инвертировать"
+    },
+    "BaseGlass": {
+      "refIndex": "Показатель преломления"
+    },
+    "common": {
+      "brightness": "Яркость",
+      "focalLength": "Фокальное расстояние",
+      "wavelength": "Длина волны"
+    }
+  },
+  "settings": {
+    "language": {
+      "title": "Язык"
+    },
+    "layoutAids": {
+      "showGrid": "Сетка",
+      "snapToGrid": "Клеиться к сетке"
+    },
+    "rayDensity": {
+      "title": "Плотность лучей"
+    },
+    "title": "Настройки",
+    "zoom": {
+      "title": "Масштаб"
+    }
+  }
+}
