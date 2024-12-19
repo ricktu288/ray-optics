@@ -110,14 +110,13 @@ Note that `npm run build` is equivalent to running all the above commands.
 ## Project structure
 
 - `src` contains the source code for the project.
-- `src/simulator` contains the source code for the simulator app, which is to be built by webpack. To understand the structure of the code, see the [documentation](https://phydemo.app/ray-optics/docs/) for more information. The documentation is generated from the jsdoc comments in the code.
-- `src/simulator-node` contains the source code for the node module version of the simulator.
-- `src/webpages` contains the handlebars templates for the home, about, gallery and module pages, to be built by `scripts/buildWebpages.mjs`.
 - `data` contains the data for gallery, modules, and the list of contributors.
-- `locales` contains the translations for the project in i18next format.
+- `locales` contains the translations for the project in i18next format, managed by Weblate.
 - `scripts` contains the scripts for custom build steps.
-- `dist` contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
-- `dist-node` contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+- `dist` (generated at build time) contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
+- `dist-node` (generated at build time) contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+
+See the README.md in each directory for more information.
 
 ## Use this project as a Node Module
 
