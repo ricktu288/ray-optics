@@ -175,9 +175,15 @@
       "binSize": "Rozmiar pojemnika",
       "exportData": "Eksportuj dane",
       "info": {
-        "B": "B jest arbitralną jednostką strumienia promieniowania lub strumienia świetlnego, odpowiadającą jednostce opcji \"Jasność\" B/L dla wiązek nielambertowskich i 500B/360° dla źródeł punktowych."
+        "B": "B jest arbitralną jednostką strumienia promieniowania lub strumienia świetlnego, odpowiadającą jednostce opcji \"Jasność\" B/L dla wiązek nielambertowskich i 500B/360° dla źródeł punktowych.",
+        "P": "P: Szybkość przepływu energii (strumień) w B/s (patrz poniżej).",
+        "irradiance": "Irradiancja w wyeksportowanym pliku CSV jest wyrażona w (B/s)/L.",
+        "length": "L jest arbitralną jednostką długości używaną w tym symulatorze."
       },
       "irradMap": "Mapa irradiancji"
+    },
+    "DiffractionGrating": {
+      "customBrightness": "Niestandardowa jasność"
     },
     "Drawing": {
       "finishDrawing": "Zakończ rysowanie"
@@ -188,12 +194,32 @@
         "units": "Jednostki - [długość]."
       }
     },
+    "Handle": {
+      "handle": "Uchwyt",
+      "transformation": "Transformacja",
+      "transformations": {
+        "rotation": "Obrót",
+        "scaling": "Skalowanie",
+        "translation": "Przesunięcie",
+        "xTranslation": "Przesunięcie X",
+        "yTranslation": "Przesunięcie Y"
+      }
+    },
     "IdealMirror": {
       "cartesianSign": "Konwencja znaków"
     },
     "LineArrow": {
       "arrow": "Strzałka do przodu",
       "backArrow": "Strzałka do tyłu"
+    },
+    "ModuleObj": {
+      "module": "Moduł"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "focalDistances": "Ogniskowe",
+        "radiiOfCurvature": "Promienie krzywizny"
+      }
     },
     "TextLabel": {
       "alignment": "Wyrównanie",
@@ -210,8 +236,15 @@
         "rayDensitySlider": "Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'."
       },
       "emisAngle": "Kąt emisji",
+      "eqnInfo": {
+        "constants": "Obsługiwane stałe",
+        "functions": "Obsługiwane funkcje",
+        "operators": "Obsługiwane operatory"
+      },
       "focalLength": "Ogniskowa",
+      "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
       "lambert": "Lambertowskie",
+      "lengthUnitInfo": "Jednostka długości używana w tym symulatorze ( oprócz długości fali) jest jednostką arbitralną, która może być interpretowana jako dowolna jednostka fizyczna (np. milimetry), o ile jest spójna w całej symulacji. Jeśli jednostka wydaje się zbyt mała lub zbyt duża, należy ją skorygować w Ustawienia -> Skala długości.",
       "random": "Losowo",
       "wavelength": "Długość fali"
     }
