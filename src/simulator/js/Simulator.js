@@ -22,6 +22,7 @@ import CanvasRenderer from './CanvasRenderer.js';
 import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
 import * as sceneObjs from './sceneObjs.js';
+import i18next from 'i18next';
 
 /**
  * @typedef {Object} Ray
