@@ -39,7 +39,7 @@ If you use this project in your research, please cite it using the metadata in t
 
 You can also include the URL https://phydemo.app/ray-optics/ in the citation. The URL will not change in the foreseeable future (at least until 2032).
 
-If you are strict about versioning, you may consider using the latest released version instead of the online version, and replace the project DOI in the citation file above with the versioned DOI. The DOI for the latest `v5.0` release is `10.5281/zenodo.14538565`. See [Run Locally]([https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md#run-the-released-version)) for how to run the released version locally.
+If you are strict about versioning, you may consider using the latest released version instead of the online version, and replace the project DOI in the citation file above with the versioned DOI. The DOI for the latest `v5.0` release is `10.5281/zenodo.14538565`. See [Run Locally](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md#run-the-released-version) for how to run the released version locally.
 
 ## Contributing
 
