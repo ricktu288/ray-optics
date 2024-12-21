@@ -1,0 +1,111 @@
+{
+  "version": 5,
+  "name": "filter_invert",
+  "modules": {
+    "ContSpectrum": {
+      "numPoints": 2,
+      "params": [
+        "min=380:1:700:380",
+        "step=1:1:100:10",
+        "max=380:1:700:700",
+        "brightness=0.01:0.01:100:50"
+      ],
+      "objs": [
+        {
+          "for": "lambda=min:step:max",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "wavelength": "`lambda`",
+          "brightness": "`brightness/((max-min)/step)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 685.0210526315789,
+        "y": 270.80809716599185
+      },
+      "p2": {
+        "x": 679.8210526315788,
+        "y": 211.2080971659919
+      },
+      "filter": true,
+      "invert": true,
+      "wavelength": 550,
+      "bandwidth": 15
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ContSpectrum",
+      "points": [
+        {
+          "x": 594.6210526315788,
+          "y": 304.0080971659919
+        },
+        {
+          "x": 619.4210526315788,
+          "y": 296.80809716599185
+        }
+      ],
+      "params": {
+        "min": 380,
+        "step": 1,
+        "max": 700,
+        "brightness": 50
+      }
+    },
+    {
+      "type": "DiffractionGrating",
+      "p1": {
+        "x": 636.6210526315788,
+        "y": 335.2080971659919
+      },
+      "p2": {
+        "x": 631.0210526315789,
+        "y": 273.60809716599186
+      },
+      "customBrightness": true
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 591.8210526315788,
+        "y": 204.00809716599187
+      },
+      "p2": {
+        "x": 731.0210526315789,
+        "y": 188.80809716599188
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 10,
+  "observer": {
+    "c": {
+      "x": 783.3012145748988,
+      "y": 208.43724696356273
+    },
+    "r": 10
+  },
+  "lengthScale": 2,
+  "origin": {
+    "x": -964.5526315789472,
+    "y": -265.0202429149797
+  },
+  "scale": 2.5,
+  "simulateColors": true,
+  "randomSeed": "0"
+}

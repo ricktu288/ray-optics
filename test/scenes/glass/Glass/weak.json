@@ -1,0 +1,62 @@
+{
+  "version": 5,
+  "name": "weak",
+  "objs": [
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 660,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 660,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 1020,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 1020,
+          "y": 300,
+          "arc": false
+        }
+      ],
+      "refIndex": 1.76
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 660,
+        "y": 380
+      },
+      "p2": {
+        "x": 680,
+        "y": 400
+      },
+      "brightness": 100
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 720,
+        "y": 240
+      },
+      "p2": {
+        "x": 900,
+        "y": 240
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 20.085536923187668,
+  "showGrid": true,
+  "snapToGrid": true
+}

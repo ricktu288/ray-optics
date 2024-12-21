@@ -48,7 +48,9 @@
     "simple-git": "^3.27.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "npm run test:sceneObjs && npm run test:scenes",
+    "test:sceneObjs": "jest test/sceneObjs",
+    "test:scenes": "npm run build-node && jest test/scenes",
     "build-webpages": "node ./scripts/buildWebpages.mjs",
     "build-scenes": "node ./scripts/buildScenes.mjs",
     "build-node": "webpack --config webpack.node.config.mjs",

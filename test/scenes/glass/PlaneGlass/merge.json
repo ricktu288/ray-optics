@@ -1,0 +1,71 @@
+{
+  "version": 5,
+  "name": "metge",
+  "objs": [
+    {
+      "type": "PlaneGlass",
+      "p1": {
+        "x": 680,
+        "y": 360
+      },
+      "p2": {
+        "x": 740,
+        "y": 360
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 800,
+          "y": 300,
+          "arc": false
+        },
+        {
+          "x": 800,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 880,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 880,
+          "y": 300,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 840,
+        "y": 400
+      },
+      "p2": {
+        "x": 840,
+        "y": 380
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 740,
+        "y": 240
+      },
+      "p2": {
+        "x": 960,
+        "y": 240
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 3.8431794277762243,
+  "showGrid": true,
+  "snapToGrid": true
+}

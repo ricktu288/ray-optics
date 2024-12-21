@@ -16,5 +16,9 @@
 
 module.exports = {
   moduleDirectories: ['node_modules', 'src'],
-  setupFilesAfterEnv: ['<rootDir>/test/sceneObjs/helpers/setupTests.js']
+  setupFilesAfterEnv: ['<rootDir>/test/sceneObjs/helpers/setupTests.js'],
+  testMatch: [
+    "**/test/sceneObjs/**/*.test.js",
+    "**/test/scenes/**/*.test.js"
+  ]
 };

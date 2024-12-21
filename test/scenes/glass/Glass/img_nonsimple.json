@@ -1,0 +1,51 @@
+{
+  "version": 5,
+  "name": "img_nonsimple",
+  "objs": [
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 760,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 740,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 780,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 380,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 734,
+        "y": 330.3333333333333
+      },
+      "p4": {
+        "x": 786,
+        "y": 387
+      },
+      "width": 200
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 9,
+  "origin": {
+    "x": -397,
+    "y": -167.5
+  },
+  "scale": 1.5
+}

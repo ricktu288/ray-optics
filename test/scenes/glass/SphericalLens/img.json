@@ -1,0 +1,63 @@
+{
+  "version": 5,
+  "name": "img",
+  "objs": [
+    {
+      "type": "SphericalLens",
+      "path": [
+        {
+          "x": 730,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 780,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 790,
+          "y": 440,
+          "arc": true
+        },
+        {
+          "x": 780,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 730,
+          "y": 480,
+          "arc": false
+        },
+        {
+          "x": 730,
+          "y": 440,
+          "arc": true
+        }
+      ]
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 720,
+        "y": 390
+      },
+      "p4": {
+        "x": 800,
+        "y": 490
+      },
+      "width": 200
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 9,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "origin": {
+    "x": -482.4166666666665,
+    "y": -251.66666666666663
+  },
+  "scale": 1.75
+}

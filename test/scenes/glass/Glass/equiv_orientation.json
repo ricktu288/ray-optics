@@ -1,0 +1,122 @@
+{
+  "version": 5,
+  "name": "equiv_orientation",
+  "objs": [
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 400
+      },
+      "p2": {
+        "x": 820,
+        "y": 400
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 820,
+        "y": 240
+      },
+      "p2": {
+        "x": 820,
+        "y": 560
+      },
+      "irradMap": true
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 700,
+        "y": 320
+      },
+      "p2": {
+        "x": 700,
+        "y": 480
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 480
+      },
+      "p2": {
+        "x": 820,
+        "y": 480
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 320
+      },
+      "p2": {
+        "x": 820,
+        "y": 320
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 760,
+          "y": 340,
+          "arc": false
+        },
+        {
+          "x": 740,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 380,
+          "arc": true
+        },
+        {
+          "x": 780,
+          "y": 360,
+          "arc": false
+        }
+      ]
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 760,
+          "y": 420,
+          "arc": false
+        },
+        {
+          "x": 780,
+          "y": 440,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 460,
+          "arc": true
+        },
+        {
+          "x": 740,
+          "y": 440,
+          "arc": false
+        }
+      ]
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 9,
+  "showGrid": true,
+  "snapToGrid": true,
+  "origin": {
+    "x": -397,
+    "y": -167.5
+  },
+  "scale": 1.5
+}

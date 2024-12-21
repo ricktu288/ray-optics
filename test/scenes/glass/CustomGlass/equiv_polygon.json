@@ -1,0 +1,120 @@
+{
+  "version": 5,
+  "name": "equiv_polygon",
+  "objs": [
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 400
+      },
+      "p2": {
+        "x": 820,
+        "y": 400
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 820,
+        "y": 240
+      },
+      "p2": {
+        "x": 820,
+        "y": 560
+      },
+      "irradMap": true
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 700,
+        "y": 320
+      },
+      "p2": {
+        "x": 700,
+        "y": 480
+      }
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 760,
+        "y": 400
+      },
+      "p2": {
+        "x": 760,
+        "y": 480
+      },
+      "eqn1": "-1+\\left|x\\right|",
+      "eqn2": "1+\\operatorname{floor}\\left(x\\right)"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 480
+      },
+      "p2": {
+        "x": 820,
+        "y": 480
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 320
+      },
+      "p2": {
+        "x": 820,
+        "y": 320
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 720,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 320,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 800,
+          "y": 360,
+          "arc": false
+        },
+        {
+          "x": 800,
+          "y": 400,
+          "arc": false
+        },
+        {
+          "x": 760,
+          "y": 400,
+          "arc": false
+        }
+      ]
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 9,
+  "showGrid": true,
+  "snapToGrid": true,
+  "origin": {
+    "x": -397,
+    "y": -167.5
+  },
+  "scale": 1.5
+}

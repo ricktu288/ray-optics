@@ -1,0 +1,81 @@
+{
+  "version": 5,
+  "name": "cauchy",
+  "modules": {
+    "ContSpectrum": {
+      "numPoints": 2,
+      "params": [
+        "min=380:1:700:380",
+        "step=1:1:100:10",
+        "max=380:1:700:700",
+        "brightness=0.01:0.01:100:50"
+      ],
+      "objs": [
+        {
+          "for": "lambda=min:step:max",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "wavelength": "`lambda`",
+          "brightness": "`brightness/((max-min)/step)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ContSpectrum",
+      "points": [
+        {
+          "x": 630,
+          "y": 452
+        },
+        {
+          "x": 667,
+          "y": 386
+        }
+      ],
+      "params": {
+        "min": 380,
+        "step": 1,
+        "max": 700,
+        "brightness": 50
+      }
+    },
+    {
+      "type": "PlaneGlass",
+      "p1": {
+        "x": 614,
+        "y": 443
+      },
+      "p2": {
+        "x": 763,
+        "y": 415
+      },
+      "cauchyB": 0.008
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 953,
+        "y": 255
+      },
+      "p2": {
+        "x": 1016,
+        "y": 359
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "simulateColors": true
+}

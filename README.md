@@ -39,7 +39,7 @@ If you use this project in your research, please cite it using the metadata in t
 
 You can also include the URL https://phydemo.app/ray-optics/ in the citation. The URL will not change in the foreseeable future (at least until 2032).
 
-# Contributing
+## Contributing
 
 Contributions are welcome. For the following types of contributions, no (or little) programming knowledge is required:
 
@@ -55,7 +55,7 @@ For translations, note that this project uses Weblate. Please visit https://host
 
 To contribute code, you need to have some knowledge of JavaScript and module bundling. The code is written in ES6 and bundled with Webpack. The code structure is documented in the [documentation](https://phydemo.app/ray-optics/docs/). See the following section for installation instructions.
 
-# Installation
+## Installation
 
 > [!NOTE]
 > The following instructions are for developers. If you just want to use the web app, you can launch it directly from [here](https://phydemo.app/ray-optics/simulator/).
@@ -83,6 +83,18 @@ If an error occurs during the installation, some common reasons are:
 
 The full build may takes about half an hour to complete due to the generation of the large numbers of images for the gallery.
 
+## Project structure
+
+- `src` contains the source code for the project.
+- `data` contains the data for gallery, modules, and the list of contributors.
+- `locales` contains the translations for the project in i18next format, managed by Weblate.
+- `scripts` contains the scripts for custom build steps.
+- `test` contains the automatic tests for the project.
+- `dist` (generated at build time) contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
+- `dist-node` (generated at build time) contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+
+See the README.md in each directory for more information.
+
 ## Development
 
 For development of the web app, you can just use `npm run start`, and the web app will be automatically reloaded when some code for the simulator is modified. However, to rebuild some other part of this project, you need to run the following commands:
@@ -107,18 +119,31 @@ npm run build-docs
 ```
 Note that `npm run build` is equivalent to running all the above commands.
 
-## Project structure
+## Testing
 
-- `src` contains the source code for the project.
-- `data` contains the data for gallery, modules, and the list of contributors.
-- `locales` contains the translations for the project in i18next format, managed by Weblate.
-- `scripts` contains the scripts for custom build steps.
-- `dist` (generated at build time) contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
-- `dist-node` (generated at build time) contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+To run the automatic tests,
+```bash
+npm run test
+```
+The tests are run automatically when you commit your changes.
 
-See the README.md in each directory for more information.
+The above command will run the following tests:
+```bash
+npm run test:sceneObjs
+npm run test:scenes
+```
+the first one tests the user creation, dragging, and changing properties for each scene object in the source code.
+the second one runs the scene JSONs in `test/scenes/` with the node module version of the simulator, and compares the output of `CropBox`/`Detector` with the corresponding PNG/CSV files.
 
-## Use this project as a Node Module
+If you modify the appearance of some objects or rays, the images in `test/scenes/` may need to be updated. Also if you add new scene tests, the corresponding PNG and CSV files nees to be initialized. In these cases, run the following command to regenerate all the PNG/CSV files after you make sure that all the failing tests are due to the changes you made:
+```bash
+env WRITE_OUTPUT=true npm run test:scenes
+```
+Please do not run this command if you are not sure that all the failing tests are due to the changes you made, since after running it, all scene tests will pass vacuously.
+
+Currently there is no automatic end-to-end test for the web app. So please manually check that the UI works as expected if you make any changes.
+
+## Use as a Node Module
 
 The simulator can be used as a node module in your own project. The node module version of the simulator is built with the following command:
 ```bash
@@ -132,7 +157,7 @@ const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/di
 See the [documentation](https://phydemo.app/ray-optics/docs/) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
 
 
-# License
+## License
 
 ```
 Copyright 2016–2024 The Ray Optics Simulation authors and contributors

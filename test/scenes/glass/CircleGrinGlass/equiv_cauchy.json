@@ -1,0 +1,159 @@
+{
+  "version": 5,
+  "name": "equiv_cauchy",
+  "modules": {
+    "ContSpectrum": {
+      "numPoints": 2,
+      "params": [
+        "min=380:1:700:380",
+        "step=1:1:100:10",
+        "max=380:1:700:700",
+        "brightness=0.01:0.01:100:50"
+      ],
+      "objs": [
+        {
+          "for": "lambda=min:step:max",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "wavelength": "`lambda`",
+          "brightness": "`brightness/((max-min)/step)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 320
+      },
+      "p2": {
+        "x": 820,
+        "y": 320
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 820,
+        "y": 320
+      },
+      "p2": {
+        "x": 820,
+        "y": 480
+      },
+      "irradMap": true,
+      "binSize": 5
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 480
+      },
+      "p2": {
+        "x": 820,
+        "y": 480
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 700,
+        "y": 400
+      },
+      "p2": {
+        "x": 820,
+        "y": 400
+      }
+    },
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 750,
+        "y": 360
+      },
+      "p2": {
+        "x": 750,
+        "y": 400
+      },
+      "refIndexFn": "1.5+\\frac{0.2}{\\left(0.001\\lambda\\right)^2}",
+      "origin": {
+        "x": 750,
+        "y": 360
+      }
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ContSpectrum",
+      "points": [
+        {
+          "x": 650,
+          "y": 380
+        },
+        {
+          "x": 690,
+          "y": 360
+        }
+      ],
+      "params": {
+        "min": 380,
+        "step": 10,
+        "max": 700,
+        "brightness": 50
+      }
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 750,
+        "y": 440
+      },
+      "p2": {
+        "x": 750,
+        "y": 480
+      },
+      "cauchyB": 0.2
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ContSpectrum",
+      "points": [
+        {
+          "x": 650,
+          "y": 460
+        },
+        {
+          "x": 690,
+          "y": 440
+        }
+      ],
+      "params": {
+        "min": 380,
+        "step": 10,
+        "max": 700,
+        "brightness": 50
+      }
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 9,
+  "showGrid": true,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "origin": {
+    "x": -482.4166666666665,
+    "y": -251.66666666666663
+  },
+  "scale": 1.75,
+  "simulateColors": true
+}

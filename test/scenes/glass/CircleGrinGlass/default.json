@@ -1,0 +1,50 @@
+{
+  "version": 5,
+  "name": "default",
+  "objs": [
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 780,
+        "y": 360
+      },
+      "p2": {
+        "x": 780,
+        "y": 440
+      },
+      "origin": {
+        "x": 780,
+        "y": 360
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 660,
+        "y": 280
+      },
+      "p2": {
+        "x": 660,
+        "y": 440
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 800,
+        "y": 460
+      },
+      "p2": {
+        "x": 940,
+        "y": 460
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 1.4496178935284207,
+  "showGrid": true,
+  "snapToGrid": true
+}
