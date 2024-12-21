@@ -1,0 +1,340 @@
+{
+  "common": {
+    "cancelButton": "取消",
+    "closeButton": "關閉",
+    "defaultOption": "預設",
+    "saveButton": "儲存"
+  },
+  "file": {
+    "copyLink": {
+      "description": "複製並前往本場景的專屬網址，以便分享連結（可考慮透過短網址工具）。另見設定->自動同步網址。",
+      "title": "複製分享連結"
+    },
+    "export": {
+      "title": "匯出為PNG/SVG"
+    },
+    "open": {
+      "description": "開啟檔案或背景圖片。背景圖片將從座標原點顯示。（或拖放檔案）",
+      "title": "開啟"
+    },
+    "redo": {
+      "title": "重做"
+    },
+    "reset": {
+      "title": "重設"
+    },
+    "save": {
+      "title": "儲存"
+    },
+    "title": "檔案",
+    "undo": {
+      "title": "復原"
+    },
+    "viewGallery": {
+      "description": "前往「作品集」頁面以載入範例。",
+      "title": "瀏覽作品集"
+    }
+  },
+  "footer": {
+    "helpPopup": {
+      "constrainedDragging": {
+        "description": "拖曳物件時，按住 Shift 可限制於水平或垂直移動；按住 Ctrl 可複製物件。建立線型物件或拖曳其端點時，按住 Shift 可鎖定角度或吸附至 0°、45°、90°；按住 Ctrl 可對於中心點旋轉或縮放。",
+        "title": "限制拖曳行為"
+      },
+      "contactUs": {
+        "contribute": "也歡迎直接進行貢獻（見[貢獻指南](/contributing)）。",
+        "description": "建議使用 GitHub 上的 [Discussions](/github/discussions) 或 [Issues](/github/issues) 功能（請使用英文）。若您對 GitHub 不熟，也可發送電子郵件至 [ray-optics@phydemo.app](/email)（可使用中文）。",
+        "title": "聯絡我們"
+      },
+      "editCoordinates": {
+        "description": "對控制點（如端點）點兩下或按右鍵，輸入 (x,y) 座標，然後按 Enter。",
+        "title": "直接編輯座標"
+      },
+      "groupRotateScale": {
+        "description": "按住 Ctrl，點擊多個控制點（如端點），並點擊空白處可將這些點群組並建立控制桿。拖曳控制桿（或按方向鍵）可平移群組；Shift+拖曳可限制於水平或垂直移動；Ctrl+拖曳可旋轉群組；Ctrl+Shift+拖曳可縮放群組。可移動「+」設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 可複製群組；按 Delete 可解散群組。",
+        "title": "群組、旋轉及縮放物件"
+      },
+      "keyboardShortcuts": {
+        "description": "當一物件在被選取的狀態（被點擊）時，按方向鍵可移動物件；按 Ctrl+D 可複製物件；按 Delete 可刪除物件。",
+        "title": "鍵盤快速鍵"
+      },
+      "runLocally": {
+        "title": "在本機執行",
+        "description": "若要在您自己的電腦上執行本專案（獨立於線上版本），請參閱[此指南](/run-locally)。"
+      }
+    },
+    "processing": "處理中……按此處以終止。"
+  },
+  "generalWarnings": {
+    "autoSyncUrlTooLarge": "本場景過大，無法與網址同步。請自行儲存場景。",
+    "brightnessInconsistent": "有至少兩個光源的亮度以不一致的比例達到飽和。這可能會導致探測器的讀數與色彩渲染錯誤。請提高光線密度或降低光源亮度。",
+    "identicalObjects": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。",
+    "shareLinkTooLong": "本網址過長，在部分平臺上可能無法正常運作。建議改用「儲存」並分享檔案。"
+  },
+  "languageModal": {
+    "helpTranslate": "協助我們翻譯本程式",
+    "title": "語言",
+    "translatedFraction": "已翻譯"
+  },
+  "moduleModal": {
+    "conflict": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。",
+    "makeCustomModules": "製作自訂模組",
+    "title": "匯入模組"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "套用全部"
+    },
+    "delete": {
+      "title": "刪除"
+    },
+    "duplicate": {
+      "title": "複製"
+    },
+    "showAdvanced": {
+      "title": "更多選項…"
+    },
+    "unselect": {
+      "description": "取消選取此物件（在空白處按滑鼠右鍵也有相同的功能）",
+      "title": "取消選取"
+    }
+  },
+  "saveModal": {
+    "description": {
+      "autoSync": "您可使用設定->自動同步網址而不必存成檔案。",
+      "contribute": "您可以考慮[貢獻新的項目](/contributing/gallery)到[「作品集」](/gallery)中。",
+      "rename": "按「重新命名」會改變標題但不會存成檔案。"
+    },
+    "fileName": "名稱",
+    "rename": "重新命名",
+    "title": "儲存"
+  },
+  "sceneObjs": {
+    "AngleSource": {
+      "symmetric": "對稱"
+    },
+    "Aperature": {
+      "diameter": "直徑"
+    },
+    "BaseFilter": {
+      "bandwidth": "帶寬",
+      "filter": "濾光",
+      "invert": "反向"
+    },
+    "BaseGlass": {
+      "cauchyCoeff": "柯西係數",
+      "refIndex": "折射率",
+      "refIndexInfo": {
+        "effective": "如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。",
+        "relative": "於另一透光物內部時為相對值"
+      }
+    },
+    "BaseGrinGlass": {
+      "intersectTol": "相交容忍度",
+      "refIndexFnInfo": {
+        "accuracy": "如需較精確的模擬，請見「更多選項…」",
+        "constants": "支援的常數",
+        "diff": "僅支援可微函數。",
+        "functions": "支援的函數",
+        "lambda": "如需模擬色散，請用參數 {{lambda}} 代表真空中波長，單位為奈米。",
+        "operators": "支援的運算子",
+        "origin": "n(x,y)的原點為絕對座標，不跟隨物件移動。在控制點上點兩下可顯示其絕對座標。"
+      },
+      "refIndexFnOrigin": "n(x,y)的原點",
+      "stepSize": "數值求解器步長",
+      "stepSizeInfo": "用歐拉法求解光線程函方程(eikonal ray equation)的步長 - 更多資訊詳見 'BaseGrinGlass.js' 中的 'step' 函數與原始碼文件。",
+      "symbolicBodyMerging": "符號式物體融合",
+      "symbolicBodyMergingInfo": {
+        "all": "本選項會套用至所有漸變折射率透光物。",
+        "impl": "本模擬器目前有兩種光線經過不同漸變折射率介質的實作 - 數值與符號(見 'BaseGrinGlass.js' 中的 'multRefIndex' 與 'devRefIndex' 函數)。",
+        "implNote": "數值的實作較快，但使用多個漸變折射率介質，且至少有一個介質的折射率沒有在整個平面上有定義時，無法在所有情況下正常運作(取決於具體情況)。相較之下，符號的實作較慢但在這種情況下仍可正常運作。"
+      }
+    },
+    "Beam": {
+      "imageDetectionWarning": "使用發散或隨機光束時，像的偵測可能無法正常運作。"
+    },
+    "BeamSplitter": {
+      "transRatio": "透光率"
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "functions": "本數值容忍度被用於 'CircleGrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。",
+        "units": "單位 - [長度]^2."
+      }
+    },
+    "CropBox": {
+      "cropBoxSize": "剪取框大小",
+      "format": "格式",
+      "rayCountLimit": "光線數量上限",
+      "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。",
+      "svgWarning": "匯出為SVG：不支援混色與相對折射率低於1的情形。",
+      "title": "匯出",
+      "width": "寬度"
+    },
+    "Detector": {
+      "binSize": "組距",
+      "exportData": "匯出數據",
+      "info": {
+        "B": "B 是輻射通量或光通量的任意單位，對應到「亮度」選項的單位：非朗伯光束為 B/L，點光源為 500B/360°。",
+        "Fpar": "F∥: 平行動量流率，單位為 (B/s)/c。",
+        "Fperp": "F⊥: 垂直動量流率，單位為 (B/s)/c。",
+        "P": "P: 能量流率（通量），單位為 B/s（見下文）。",
+        "irradiance": "匯出的 CSV 中的輻照度單位為 (B/s)/L。",
+        "length": "L 是本模擬器中使用的任意長度單位。",
+        "s": "無因次因子 s 是「設定」->「顯示狀態欄」中顯示的「亮度尺度」，當「光線密度」高於某個閾值時為 1，否則與「光線密度」成正比。",
+        "truncation": "如果某些光線在內反射的無窮級數中被截斷，則總截斷量將顯示為誤差估計。"
+      },
+      "irradMap": "輻照度圖"
+    },
+    "DiffractionGrating": {
+      "customBrightness": "自訂亮度",
+      "customBrightnessInfo": "啟用時，繞射光的亮度將由一數值陣列來決定，對應到 m = 0, 1, -1, 2, -2, …。這些數字為相對於入射光的亮度。陣列中沒有的數值將被設為 0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光線與入射光的亮度相同，m=1 與 m=-1 的光線為入射光的一半，其他光線則被忽略。",
+      "lineDensity": "線數/{{lengthUnit}}",
+      "mirrored": "反射",
+      "slitRatio": "狹縫寬度 / 線間距"
+    },
+    "Drawing": {
+      "finishDrawing": "停止繪圖"
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "functions": "本數值容忍度被用於 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。",
+        "units": "單位 - [長度]."
+      }
+    },
+    "Handle": {
+      "handle": "控制桿",
+      "transformation": "變換",
+      "transformations": {
+        "rotation": "旋轉",
+        "scaling": "縮放",
+        "translation": "平移",
+        "xTranslation": "X 平移",
+        "yTranslation": "Y 平移"
+      }
+    },
+    "IdealMirror": {
+      "cartesianSign": "卡氏符號約定"
+    },
+    "LineArrow": {
+      "arrow": "前向箭頭",
+      "backArrow": "後向箭頭"
+    },
+    "ModuleObj": {
+      "demodulize": "取消模組化",
+      "module": "模組"
+    },
+    "Ruler": {
+      "scaleInterval": "刻度間距"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "focalDistances": "前/後焦距",
+        "radiiOfCurvature": "曲率半徑"
+      }
+    },
+    "TextLabel": {
+      "alignment": "對齊",
+      "alignments": {
+        "center": "中",
+        "left": "左",
+        "right": "右"
+      },
+      "angle": "角度",
+      "font": "字型",
+      "fontSize": "字型大小",
+      "fontStyle": "樣式",
+      "fontStyles": {
+        "bold": "粗體",
+        "boldItalic": "粗斜體",
+        "boldOblique": "粗傾斜",
+        "italic": "斜體",
+        "normal": "正常",
+        "oblique": "傾斜"
+      },
+      "smallCaps": "小型大寫",
+      "textHere": "在此輸入文字"
+    },
+    "common": {
+      "brightness": "亮度",
+      "brightnessInfo": {
+        "rayDensity": "只在「光線密度」夠高時才有作用。",
+        "rayDensitySlider": "如需改變射出的光線數量，請調整全域性的「光線密度」滑桿。"
+      },
+      "emisAngle": "發射角",
+      "eqnInfo": {
+        "constants": "支援的常數",
+        "functions": "支援的函數",
+        "operators": "支援的運算子"
+      },
+      "focalLength": "焦距",
+      "imageDetectionWarning": "本工具不支援像的偵測。",
+      "lambert": "朗伯",
+      "lengthUnitInfo": "本模擬器中的長度單位（除波長外）為一個任意單位。您可將其視為任何物理單位（例如毫米），只要在整個模擬中保持一致。如果單位看起來太小或太大，請調整設定->長度尺度。",
+      "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。",
+      "random": "隨機",
+      "wavelength": "波長"
+    }
+  },
+  "settings": {
+    "advancedHelp": "進階說明詳見右下角的說明圖示。",
+    "autoSyncUrl": {
+      "description": "啟用時，網址會隨著場景自動更新，而不必持續手動儲存場景。如需設定標題，請用檔案->儲存->重新命名。",
+      "title": "自動同步網址"
+    },
+    "gridSize": {
+      "title": "格線大小"
+    },
+    "language": {
+      "title": "語言",
+      "lowFraction": "此語言翻譯完成率僅 {{fraction}}。您可以[在 Weblate 上](/weblate)協助完成翻譯。"
+    },
+    "layoutAids": {
+      "lockObjs": "鎖定物件",
+      "showGrid": "格線",
+      "snapToGrid": "對齊格線",
+      "title": "排版輔助"
+    },
+    "lengthScale": {
+      "description": "如果將預設的長度單位視為常見的物理單位（例如毫米）時，模擬的物理系統看起來太小或太大，則可以使用此比例來縮放場景中的外觀（例如線寬）。",
+      "title": "長度尺度"
+    },
+    "more": "更多選項",
+    "observerSize": {
+      "title": "觀察者大小"
+    },
+    "rayDensity": {
+      "description": "決定從光束與點光源射出的光線數量。這也會影響到像的偵測與顏色渲染的準確性。",
+      "title": "光線密度"
+    },
+    "showHelpPopups": {
+      "description": "決定滑鼠移到按鈕上方時是否顯示提示泡泡（須重新載入網頁以套用變更）",
+      "title": "顯示提示泡泡"
+    },
+    "showJsonEditor": {
+      "description": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->匯入模組->建立自訂模組）。",
+      "title": "顯示 JSON 編輯器"
+    },
+    "showStatusBox": {
+      "description": "顯示狀態方塊，其中包含滑鼠座標，效能資訊，以及被截斷的亮度（光線在內反射的無窮級數中被截斷的總亮度）。",
+      "title": "顯示狀態方塊"
+    },
+    "title": "設定",
+    "zoom": {
+      "title": "縮放"
+    }
+  },
+  "statusBox": {
+    "brightnessScale": "亮度尺度",
+    "forceStopped": "已強制終止。",
+    "mouseCoordinates": "滑鼠座標",
+    "rayCount": "光線片段數量",
+    "timeElapsed": "花費時間",
+    "totalTruncation": "被截斷的亮度"
+  },
+  "welcome": {
+    "instruction": "若要加入光學元件，請選擇工具並點擊空白處。\n若要載入範例，[請前往「作品集」頁面](/gallery)。",
+    "loading": "正在從網址載入場景……請稍候。",
+    "title": "歡迎使用「線光學模擬」"
+  }
+}

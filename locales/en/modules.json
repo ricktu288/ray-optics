@@ -1,0 +1,141 @@
+{
+    "modulesPage": {
+        "description": {
+            "makeNewTools": "The \"Module\" feature allows making new tools by combining, specializing, or reparametrizing objects created by existing tools in this simulator.",
+            "appearAsTools": "Imported modules will appear as tools in the \"Other\" category. Please select and click the blank space according to the order of the control point sequence (see \"Specification\").",
+            "embeddedInScene": "Imported modules are embedded in the data of the scene, so will not be automatically updated when the authors of the modules update them."
+        },
+        "import": "Import",
+        "imported": "Imported",
+        "specification": {
+            "title": "Specification",
+            "controlPointSequence": "Control point sequence",
+            "parameters": "Parameters"
+        },
+        "customization": {
+            "title": "Customization",
+            "description": "Modules can be made or customized directly within the web app using the built-in JSON editor. See [the tutorial](/modules/tutorial). Customization of imported modules will only affect the current scene."
+        },
+        "contribution": {
+            "title": "Contribution",
+            "description": "Contributing to the list above is welcome. To contribute your module, see [Contributing modules](/contributing/modules)."
+        }
+    },
+    "moduleData": {
+        "FresnelLens": {
+            "title": "Fresnel Lens",
+            "description": "A Fresnel lens made from a half circle piece of glass. Modularized version of [this Gallery example](/gallery/fresnel-lens).",
+            "point1": "The first endpoint of the lens",
+            "point2": "The second endpoint of the lens",
+            "Nslice": "The number of slices",
+            "refIndex": "The refractive index of the lens"
+        },
+        "ContSpectrum": {
+            "title": "Continuous spectrum light source",
+            "description": "A light source with a uniform continuous spectrum discretized with a given constant step. Only works when \"Simulate Colors\" is on.",
+            "point1": "The origin of the rays",
+            "point2": "Determines the direction of the rays",
+            "min": "The minimum wavelength",
+            "step": "The step of the wavelength",
+            "max": "The maximum wavelength",
+            "brightness": "The total brightness"
+        },
+        "CircleSource": {
+            "title": "Circular light source",
+            "description": "A circle with uniform 180-degree point sources places along its circumference.",
+            "point1": "The center of the circle",
+            "r": "The radius of the circle",
+            "N": "The number of point sources",
+            "brightness": "The total brightness"
+        },
+        "Chaff": {
+            "title": "Chaff",
+            "description": "A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of [this Gallery example](/gallery/chaff-countermeasure).",
+            "point1": "The top-left corner of the chaff",
+            "point2": "The bottom-right corner of the chaff",
+            "N": "The number of mirrors in the chaff",
+            "L": "The length of the mirrors"
+        },
+        "BeamExpander": {
+            "title": "Beam Expander",
+            "description": "The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expand or reduce the diameter of a beam of collimated light. Modularized version of [this Gallery example](/gallery/beam-expanders).",
+            "point1": "The center of the first lens",
+            "point2": "The second point of the second lens",
+            "point3": "Determines the common focal point of the lenses"
+        },
+        "RayRelay": {
+            "title": "Ray Relay",
+            "description": "A series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). Modularized version of [this Gallery example](/gallery/ray-relaying).",
+            "point1": "The first endpoint of the first lens",
+            "point2": "The second endpoint of the first lens (should have the same \\(x\\) as the first point)",
+            "f": "The focal length of the lenses",
+            "d": "The distance between the lenses",
+            "N": "The number of lenses"
+        },
+        "OpticalFiber": {
+            "title": "Optical Fiber",
+            "description": "Line-shaped optical fiber with given core and cladding thickness and refractive indices.",
+            "point1": "The first endpoint of the optical fiber",
+            "point2": "The second endpoint of the optical fiber (should have the same \\(y\\) as the first point)",
+            "X": "The thickness of the core",
+            "Y": "The thickness of the cladding",
+            "n1": "The refractive index of the core",
+            "n2": "The refractive index of the cladding"
+        }
+    },
+    "moduleTutorial": {
+        "title": "Tutorial for making Ray Optics Modules",
+        "opening": {
+            "description": "This tutorial will guide you through the basics of making a custom module, which can be done entirely within the web app, without the need of any external development environment.",
+            "moduleIntroduction": "The \"Module\" feature of Ray Optics Simulation allows the creation of modular combinations of objects with custom parameters, custom control points, and arrays of objects. This feature extends the capability of this simulator by combining, specializing, or reparametrizing objects created by existing tools to make new tools. For example, the `CircleSource` module (see Tools -> Other -> Import module) combines an array of point sources created by the existing \"Point Source (<360°)\" tool along a circle, to make a \"circular source\" tool which didn't exist in the simulator. The `FresnelLens` module specializes the \"Glass->Custom equation\" tool, so that the equation represents a specific curve of the Fresnel lens parametrized by the number of slices, thus making a specialized \"Fresnel lens\" tool, which also didn't exist before. In addition to making new tools, this feature can also make some optics demonstrations more interactive. For example, by dragging the third control point of the `BeamExpander` module, one can directly see how the position of the common focal point of the two lenses affects the beam width, without needing to adjust the focal lengths of the two lenses individually.",
+            "compareWithHandle": "Note that not all custom control points require a module. Some simple cases can be achieved by the \"handle\" feature (see the \"Group, rotate, and scale objects\" section in the help popup at the bottom right corner of the simulator). Since making a module is much more complicated than creating a handle, you should first check if your case can be achieved by the \"handle\" feature before considering making a module. See [here](/gallery/black-cat-becomes-white) for a non-trivial example of a custom control point (moving two plastic bags out of water) without using a module."
+        },
+        "jsonEditor": {
+            "title": "The built-in JSON editor",
+            "currentlyNoVisual": "This app currently does not have a visual interface for creating modules, so you need to directly edit the JSON of the scene.",
+            "enableJsonEditor": "You can enable the built-in JSON editor by clicking the \"settings\" dropdown at the top-right corner of the app, and then check \"Show JSON editor\". The code editor should appear at the left-hand side of the app, with the JSON code of the current scene. Make sure you have a large enough screen, as this feature does not work well on mobile devices.",
+            "updateAccordingly": "As you edit the scene using the usual visual scene editor, the code in the JSON editor will update accordingly, with the changed part highlighted. Conversely, directly editing the code in the JSON editor will update the scene accordingly. If you are not familiar with JSON or any kind of text-based data format, you may wish to play around with it for a while.",
+            "objsArray": "In particular, when you add an object to the scene, it is added to the `objs` array. And if you modify some of its properties to a non-default value, they appear as key-value pairs in that object.",
+            "inIframesBelow": "IMPORTANT: In this tutorial page, if you do not see the JSON code editor in the iframes below, please turn it on and reload this page, as you will need to see the code to understand how it works."
+        },
+        "basics": {
+            "title": "Basics of a module",
+            "lookAtExample": "Let&#39;s look at our first example of a module.",
+            "lookAtJson": "You should see four lines of texts. By looking at the JSON editor, you will see that the first two are directly in the top-level `objs` array as usual, but the last two are in `modules.ExampleModule.objs` instead.",
+            "moduleDef": "The `module` is a dictionary where the key is the name of the module (in this case `ExampleModule`), and the value is the definition of that module. In particular, the `modules.ExampleModule.objs` array describes the (template of) objects within that module, which is different from the top-level `objs` which describes the objects in the scene.",
+            "putToScene": "To put the objects within the module to the scene, we need a \"module object\" in the top-level `objs` array, which is `objs[2]` in this example, whose type is `ModuleObj` and whose `module` property is the name of the module.",
+            "moduleDefNotEditable": "The module definition in the `modules` dictionary is not editable by the visual scene editor. So when you click any of the last two texts in this example, you are just selecting the module object, and not the objects in the module. Since the coordinates of the texts in the module definition in this example are absolute coordinates, the last two texts are not draggable. We will learn how to make them draggable by using control points later.",
+            "demodulize": "If you select a module object, there is a \"Demodulize\" button on the object bar. Clicking it will \"expand\" the module object into its constituent, and `objs` will now contain all the four texts. This operation is not reversible (but of course you can click \"undo\").",
+            "createModule": "The suggested way of creating a module currently is to first create an empty module using the JSON editor, create some objects using the visual scene editor, and then cut and paste the objects from `objs` to `modules.ModuleName.objs` using the JSON editor."
+        },
+        "parameters": {
+            "title": "Adding parameters",
+            "lookAtExample": "The objects within the module can be defined by a set of parameters. Let’s look at a simple example",
+            "paramsArray": "Here `modules.ModuleName.params` is an array of strings `\"name=start:step:end:default\"` defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.",
+            "equationSyntax": "Within the `modules.ExampleModule.objs` array, any values can be expressed using those parameters. Within a string (such as the `text` property of a `TextLabel`), the equations of the variables are enclosed by a pair of backticks. For number parameters (such as the `fontSize` property of a `TextLabel`), you need to make it a string so that you can use the backtick format in it, so each equation is sandwiched by a pair of backticks and a pair of quotes. The equation are evaluated with math.js ([syntax](/mathjs/syntax)). See there for the available syntax and functions you can use in the equations.",
+            "valueStorage": "The actual values of the parameters are stored in the `params` property of the module object, which, unlike the module definition, can be directly edited by the scene editor using the slider."
+        },
+        "controlPoints": {
+            "title": "Adding control points",
+            "lookAtExample": "To make the module object draggable, we need to parametrize the objects within the module using a set of control points. Let’s look at the example",
+            "coordinatesOfControlPoints": "Here `modules.ModuleName.numPoints` defines the number of control points. The coordinates of the control points are (`x_1`, `y_1`), (`x_2`, `y_2`), etc, and are used in the same ways as the parameters within `modules.ExampleModule.objs` as described by the previous section. Note that the index starts from 1.",
+            "valueStorage": "The actual values of the coordinates of the control points are stored in the `points` property of the module object, which, unlike the hard-coded coordinates in Example 1, can be edited by the visual scene editor by dragging the control points, each shown as two concentric gray circles in the scene. If you drag elsewhere in the module object (such as dragging the text labels), all the control points will move together.",
+            "createAsTool": "Since our module object can now move, it is now quite easy to create multiple instances as in usual tools. The name of the module is shown in the Tools -> Other menu, and you can select that and then click two points in the blank space in sequence for the two control points to create another instance of the module.  You can also use the “duplicate” button on the object bar."
+        },
+        "arrayAndConditional": {
+            "title": "Arrays and conditionals",
+            "lookAtExample": "More complicated module can be built using arrays and conditionals. Let’s look at the example",
+            "specialKeys": "Within `modules.ExampleModule.objs`, any objects in an array can have two special keys: `\"for\"` and `\"if\"`. The value of the `\"for\"` key is either a string of the format `\"name=start:step:end\"` defining a loop variable, or an array of several strings of this format describing a multidimensional loop. Such an object in the array is duplicated several times according to the loop variables. The value of the `\"if\"` key is a string representing a math.js expression that evaluates to a boolean, and such an object is included in the array if and only if the boolean is true.",
+            "preventInfiniteLoop": "To prevent accidental infinite loop, the total number of iteration of each `\"for\"` loop is limited by the `maxLoopLength` property of the module definition, whose default value is 1000. You can set this property to a larger value if needed."
+        },
+        "objsWithEqn": {
+            "title": "Objects with built-in custom equations",
+            "description": "For objects that already have custom equation input (such as Mirror -> Custom Equation), the equation property in the JSON is a string representing a LaTeX equation, rather than a math.js expression. To include custom parameters in the equation, you must use the same template syntax as if the LaTeX equation were a regular text. So the part enclosed by the backticks is in math.js expression, while the part outside is in LaTeX. The module parameters can only be accessed in the math.js part, and the independent variables of the custom equation (e.g. \\(x\\)) can only be accessed in the LaTeX part. Here is an example of generating a mirror with equation \\(y=\\cos(2\\pi x+\\phi)\\), where \\(\\phi\\) is a module parameter",
+            "future": "In the future, there may be a way to unified the equation input."
+        },
+        "objsWithShapeParam": {
+            "title": "Objects with built-in shape parametrization",
+            "description": "For objects that already support different ways to define its shape (currently only Glass -> Spherical lens). There are special JSON syntax for such objects that can be used within the module definition, even if they are always defined by shape in the top level `objs` array. Here is an example"
+        }
+    }
+}

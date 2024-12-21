@@ -1,0 +1,49 @@
+{
+  "file": {
+    "title": "Bestand"
+  },
+  "footer": {
+    "processing": "Rekenen... Klik hier om te stoppen."
+  },
+  "languageModal": {
+    "title": "Taal"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Overal toepassen"
+    },
+    "delete": {
+      "title": "Verwijder"
+    },
+    "duplicate": {
+      "title": "Dupliceer"
+    }
+  },
+  "saveModal": {
+    "fileName": "Naam"
+  },
+  "sceneObjs": {
+    "BaseFilter": {
+      "bandwidth": "Bandbreedte",
+      "filter": "Filter",
+      "invert": "Omkeren"
+    },
+    "BaseGlass": {
+      "refIndex": "Brekingsindex"
+    },
+    "common": {
+      "brightness": "Helderheid",
+      "focalLength": "Brandpuntafstand",
+      "wavelength": "Golflengte"
+    }
+  },
+  "settings": {
+    "language": {
+      "title": "Taal"
+    },
+    "rayDensity": {
+      "title": "Straaldichtheid"
+    },
+    "title": "Instellingen"
+  }
+}

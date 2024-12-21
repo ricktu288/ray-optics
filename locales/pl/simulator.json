@@ -1,0 +1,281 @@
+{
+  "common": {
+    "cancelButton": "Anuluj",
+    "closeButton": "Zamknij",
+    "defaultOption": "Domyślnie",
+    "saveButton": "Zapisz"
+  },
+  "file": {
+    "copyLink": {
+      "description": "Skopiuj i przejdź do bezpośredniego adresu URL dla bieżącej sceny, który może być używany do udostępniania (ewentualnie poprzez skracacz adresów URL). Zobacz także Ustawienia -> Auto sync URL.",
+      "title": "Kopiuj link do udostępniania"
+    },
+    "export": {
+      "title": "Eksportuj jako PNG/SVG"
+    },
+    "open": {
+      "description": "Otwórz istniejący plik lub obraz tła. Obraz tła zostanie wyświetlony z punktu początkowego współrzędnych. (Lub upuść plik)",
+      "title": "Otwórz"
+    },
+    "redo": {
+      "title": "Ponów"
+    },
+    "reset": {
+      "title": "Resetuj"
+    },
+    "save": {
+      "title": "Zapisz"
+    },
+    "title": "Plik",
+    "undo": {
+      "title": "Cofnij"
+    },
+    "viewGallery": {
+      "description": "Przejdź do strony Galerii, aby załadować przykład.",
+      "title": "Zobacz Galerię"
+    }
+  },
+  "footer": {
+    "helpPopup": {
+      "constrainedDragging": {
+        "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka.",
+        "title": "Przeciąganie ograniczone"
+      },
+      "contactUs": {
+        "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing)).",
+        "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
+        "title": "Skontaktuj się z nami"
+      },
+      "editCoordinates": {
+        "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter.",
+        "title": "Bezpośrednio edytuj współrzędne"
+      },
+      "groupRotateScale": {
+        "description": "Przytrzymaj Ctrl, kliknij kilka punktów kontrolnych (np. punktów końcowych), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomu/pionu; Ctrl+przeciągnij, aby obrócić grupę, Ctrl+Shift+przeciągnij, aby przeskalować grupę. Przeciągnij „+”, aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby rozgrupować.",
+        "title": "Grupuj, obracaj i skaluj obiekty"
+      },
+      "keyboardShortcuts": {
+        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć; Ctrl+D, aby powielić; klawisz Delete, aby usunąć.",
+        "title": "Skróty klawiaturowe"
+      },
+      "runLocally": {
+        "description": "Aby uruchomić ten projekt na własnym komputerze, niezależnie od wersji online, zapoznaj się z [tym przewodnikiem](/run-locally).",
+        "title": "Uruchom lokalnie"
+      }
+    },
+    "processing": "Przetwarzanie… Kliknij tutaj, aby zatrzymać."
+  },
+  "generalWarnings": {
+    "autoSyncUrlTooLarge": "Scena jest zbyt duża, aby zsynchronizować ją z URL. Zapisz ją ręcznie.",
+    "brightnessInconsistent": "Jasności dwóch lub więcej źródeł światła nasycają się w niespójnych proporcjach. Może to prowadzić do błędnych odczytów detektora i nieprawidłowego odwzorowania kolorów. Zwiększ gęstość promieni lub zmniejsz jasność źródeł światła.",
+    "identicalObjects": "Na scenie znajdują się dwa identyczne elementy optyczne, które całkowicie na siebie zachodzą. Może to spowodować nieoczekiwane zachowanie.",
+    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Zamiast tego może być konieczne użycie \"Zapisz\" i udostępnienie pliku."
+  },
+  "languageModal": {
+    "helpTranslate": "Pomóż nam przetłumaczyć tę aplikację",
+    "title": "Język",
+    "translatedFraction": "przetłumaczone"
+  },
+  "moduleModal": {
+    "conflict": "W bieżącej scenie istnieje już inny moduł o tej samej nazwie. Możesz wprowadzić nową nazwę lub pozostawić ją bez zmian, aby nadpisać istniejący moduł.",
+    "makeCustomModules": "Twórz własne moduły",
+    "title": "Importuj moduły"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Zastosuj do wszystkich"
+    },
+    "delete": {
+      "title": "Usuń"
+    },
+    "duplicate": {
+      "title": "Powiel"
+    },
+    "showAdvanced": {
+      "title": "Więcej opcji…"
+    },
+    "unselect": {
+      "description": "Usuń zaznaczenie tego obiektu (kliknięcie prawym przyciskiem myszy pustego miejsca ma tę samą funkcję).",
+      "title": "Odznacz"
+    }
+  },
+  "saveModal": {
+    "description": {
+      "autoSync": "Zamiast zapisywać jako plik, można użyć Ustawienia -> Auto Sync URL.",
+      "contribute": "Możesz rozważyć [dodanie nowego elementu](/contributing/gallery) do [Galerii](/gallery).",
+      "rename": "Kliknij \"Zmień nazwę\", aby zmienić tytuł bez zapisywania do pliku."
+    },
+    "fileName": "Nazwa",
+    "rename": "Zmień nazwę",
+    "title": "Zapisz"
+  },
+  "sceneObjs": {
+    "AngleSource": {
+      "symmetric": "Symetryczna"
+    },
+    "Aperature": {
+      "diameter": "Średnica"
+    },
+    "BaseFilter": {
+      "bandwidth": "Szerokość pasma",
+      "filter": "Filtr",
+      "invert": "Odwróć"
+    },
+    "BaseGlass": {
+      "cauchyCoeff": "Współczynnik Cauchy'ego",
+      "refIndex": "Współczynnik załamania",
+      "refIndexInfo": {
+        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, w których kilka szkieł nakłada się na siebie, efektywny współczynnik załamania światła w obszarze nakładania się jest równy iloczynowi współczynników załamania światła poszczególnych szkieł.",
+        "relative": "względny, jeśli znajduje się w innym szkle"
+      }
+    },
+    "BaseGrinGlass": {
+      "intersectTol": "Tolerancja intersekcji",
+      "refIndexFnInfo": {
+        "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji…\"",
+        "constants": "Obsługiwane stałe",
+        "diff": "Obsługuje tylko funkcje różniczkowalne.",
+        "functions": "Obsługiwane funkcje",
+        "lambda": "Aby symulować dyspersję chromatyczną, użyj parametru {{lambda}} dla długości fali w próżni w nanometrach.",
+        "operators": "Obsługiwane operatory",
+        "origin": "Początek n(x,y) znajduje się we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne."
+      },
+      "refIndexFnOrigin": "Początek układu n(x,y)",
+      "stepSize": "Rozmiar kroku rozwiązywania numerycznego",
+      "stepSizeInfo": "Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'BaseGrinGlass.js'.",
+      "symbolicBodyMerging": "Symboliczne łączenie ciał",
+      "symbolicBodyMergingInfo": {
+        "all": "Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.",
+        "impl": "Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'BaseGrinGlass.js').",
+        "implNote": "Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w całej płaszczyźnie, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy."
+      }
+    },
+    "Beam": {
+      "imageDetectionWarning": "Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
+    },
+    "BeamSplitter": {
+      "transRatio": "Współczynnik transmisji"
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "functions": "Ta tolerancja numeryczna jest używana w funkcjach 'isOutsideGlass', 'isInsideGlass' i 'isOnBoundary' w pliku 'CircleGrinGlass.js'.",
+        "units": "Jednostki - [długość]^2."
+      }
+    },
+    "CropBox": {
+      "cropBoxSize": "Rozmiar pola przycięcia",
+      "format": "Format",
+      "rayCountLimit": "Limit liczby promieni",
+      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania.",
+      "svgWarning": "Eksportuj do SVG. Mieszanki kolorów i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
+      "title": "Eksportuj",
+      "width": "Szerokość"
+    },
+    "Detector": {
+      "binSize": "Rozmiar pojemnika",
+      "exportData": "Eksportuj dane",
+      "info": {
+        "B": "B jest arbitralną jednostką strumienia promieniowania lub strumienia świetlnego, odpowiadającą jednostce opcji \"Jasność\" B/L dla wiązek nielambertowskich i 500B/360° dla źródeł punktowych.",
+        "P": "P: Szybkość przepływu energii (strumień) w B/s (patrz poniżej).",
+        "irradiance": "Irradiancja w wyeksportowanym pliku CSV jest wyrażona w (B/s)/L.",
+        "length": "L jest arbitralną jednostką długości używaną w tym symulatorze."
+      },
+      "irradMap": "Mapa irradiancji"
+    },
+    "DiffractionGrating": {
+      "customBrightness": "Niestandardowa jasność"
+    },
+    "Drawing": {
+      "finishDrawing": "Zakończ rysowanie"
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "functions": "Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'GrinGlass.js'.",
+        "units": "Jednostki - [długość]."
+      }
+    },
+    "Handle": {
+      "handle": "Uchwyt",
+      "transformation": "Transformacja",
+      "transformations": {
+        "rotation": "Obrót",
+        "scaling": "Skalowanie",
+        "translation": "Przesunięcie",
+        "xTranslation": "Przesunięcie X",
+        "yTranslation": "Przesunięcie Y"
+      }
+    },
+    "IdealMirror": {
+      "cartesianSign": "Konwencja znaków"
+    },
+    "LineArrow": {
+      "arrow": "Strzałka do przodu",
+      "backArrow": "Strzałka do tyłu"
+    },
+    "ModuleObj": {
+      "module": "Moduł"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "focalDistances": "Ogniskowe",
+        "radiiOfCurvature": "Promienie krzywizny"
+      }
+    },
+    "TextLabel": {
+      "alignment": "Wyrównanie",
+      "angle": "Kąt",
+      "font": "Czcionka",
+      "fontSize": "Rozmiar czcionki",
+      "fontStyle": "Styl",
+      "smallCaps": "Małe litery"
+    },
+    "common": {
+      "brightness": "Jasność",
+      "brightnessInfo": {
+        "rayDensity": "Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.",
+        "rayDensitySlider": "Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'."
+      },
+      "emisAngle": "Kąt emisji",
+      "eqnInfo": {
+        "constants": "Obsługiwane stałe",
+        "functions": "Obsługiwane funkcje",
+        "operators": "Obsługiwane operatory"
+      },
+      "focalLength": "Ogniskowa",
+      "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
+      "lambert": "Lambertowskie",
+      "lengthUnitInfo": "Jednostka długości używana w tym symulatorze ( oprócz długości fali) jest jednostką arbitralną, która może być interpretowana jako dowolna jednostka fizyczna (np. milimetry), o ile jest spójna w całej symulacji. Jeśli jednostka wydaje się zbyt mała lub zbyt duża, należy ją skorygować w Ustawienia -> Skala długości.",
+      "random": "Losowo",
+      "wavelength": "Długość fali"
+    }
+  },
+  "settings": {
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
+    "language": {
+      "title": "Język"
+    },
+    "layoutAids": {
+      "lockObjs": "Zablokuj obiekty",
+      "showGrid": "Siatka",
+      "snapToGrid": "Przyciągaj do siatki",
+      "title": "Opcje układu"
+    },
+    "more": "Więcej",
+    "rayDensity": {
+      "description": "Określa liczbę promieni emitowanych przez belki i źródła punktowe. Ma to również wpływ na dokładność wykrywania obrazu i renderowania kolorów.",
+      "title": "Gęstość promieni"
+    },
+    "showHelpPopups": {
+      "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)",
+      "title": "Pokaż okienka pomocy"
+    },
+    "title": "Ustawienia",
+    "zoom": {
+      "title": "Zoom"
+    }
+  },
+  "welcome": {
+    "instruction": "Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.\nAby załadować przykład, [przejdź do strony Galerii](/gallery).",
+    "title": "Witamy w symulacji promieni optycznych"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "moduleData": {
+    "BeamExpander": {
+      "description": "Układ dwóch idealnych soczewek, których odległość jest równa sumie ogniskowych. Rozszerzają lub zmniejszają średnicę wiązki skolimowanego światła. Modułowa wersja [tego przykładu z galerii](/gallery/beam-expanders).",
+      "point1": "Środek pierwszej soczewki(",
+      "point2": "Drugi punkt drugiej soczewki",
+      "point3": "Określa wspólne ognisko soczewek",
+      "title": "Ekspander wiązki"
+    },
+    "Chaff": {
+      "L": "Długość zwierciadeł",
+      "N": "Liczba luster w chaff",
+      "description": "Chaff o prostokątnym kształcie składający się z losowych kawałków luster. Modułowa wersja [tego przykładu z galerii](/gallery/chaff-countermeasure).",
+      "point1": "Lewy górny róg chaff",
+      "point2": "Prawy dolny róg chaff",
+      "title": "Chaff"
+    },
+    "CircleSource": {
+      "N": "Liczba źródeł punktowych",
+      "brightness": "Całkowita jasność",
+      "description": "Koło z jednolitymi 180-stopniowymi źródłami punktowymi rozmieszczonymi wzdłuż jego obwodu.",
+      "point1": "Środek koła",
+      "r": "Promień koła",
+      "title": "Źródło światła kołowe"
+    },
+    "ContSpectrum": {
+      "brightness": "Całkowita jasność",
+      "description": "Źródło światła o jednolitym ciągłym widmie dyskretyzowanym z zadanym stałym krokiem. Działa tylko, gdy włączona jest opcja \"Symuluj kolory\".",
+      "max": "Maksymalna długość fali",
+      "min": "Minimalna długość fali",
+      "point1": "Początek promieni",
+      "point2": "Określa kierunek promieni",
+      "step": "Krok długości fali",
+      "title": "Źródło światła o widmie ciągłym"
+    },
+    "FresnelLens": {
+      "Nslice": "Liczba pierścieni",
+      "description": "Soczewka Fresnela wykonana z półokrągłego kawałka szkła. Modułowa wersja [tego przykładu z galerii](/gallery/fresnel-lens).",
+      "point1": "Pierwszy punkt końcowy soczewki",
+      "point2": "Drugi punkt końcowy soczewki",
+      "refIndex": "Współczynnik załamania soczewki",
+      "title": "Soczewka Fresnela"
+    },
+    "OpticalFiber": {
+      "X": "Grubość rdzenia",
+      "Y": "Grubość płaszcza",
+      "description": "Światłowód w kształcie linii o zadanej grubości rdzenia i płaszcza oraz współczynnikach załamania światła.",
+      "n1": "Współczynnik załamania rdzenia",
+      "n2": "Współczynnik załamania płaszcza",
+      "point1": "Pierwszy punkt końcowy światłowodu",
+      "point2": "Drugi punkt końcowy światłowodu (powinien mieć taki sam \\(y\\) jak pierwszy punkt)",
+      "title": "Światłowód"
+    },
+    "RayRelay": {
+      "N": "Liczba soczewek",
+      "d": "Odległość między soczewkami",
+      "description": "Szereg idealnych identycznych soczewek o ogniskowej \\(f\\) i odległości \\(d\\) między soczewkami. Nierozbieżna trajektoria promienia jest zapewniona wtedy i tylko wtedy, gdy \\(d\\leq 4f\\). Modułowa wersja [tego przykładu z galerii] (/gallery/ray-relaying).",
+      "f": "Ogniskowa soczewek",
+      "point1": "Pierwszy punkt końcowy pierwszej soczewki",
+      "point2": "Drugi punkt końcowy pierwszej soczewki (powinien mieć taki sam \\(x\\) jak pierwszy punkt)",
+      "title": "Przekaźnik promienia"
+    }
+  },
+  "moduleTutorial": {
+    "basics": {
+      "lookAtExample": "Spójrzmy na pierwszy przykład modułu.",
+      "lookAtJson": "Powinny być widoczne cztery linie tekstu. Patrząc na edytor JSON, zobaczysz, że pierwsze dwa znajdują się bezpośrednio w tablicy `objs` najwyższego poziomu, jak zwykle, ale dwa ostatnie znajdują się w `modules.ExampleModule.objs`.",
+      "moduleDef": "`Moduł` to słownik, w którym kluczem jest nazwa modułu (w tym przypadku `ExampleModule`), a wartością definicja tego modułu. W szczególności tablica `modules.ExampleModule.objs` opisuje (szablon) obiektów w tym module, co różni się od najwyższego poziomu `objs`, który opisuje obiekty w scenie.",
+      "moduleDefNotEditable": "Definicja modułu w słowniku `modules` nie jest edytowalna przez wizualny edytor scen. Tak więc, gdy klikniesz dowolny z dwóch ostatnich tekstów w tym przykładzie, wybierasz tylko obiekt modułu, a nie obiekty w module. Ponieważ współrzędne tekstów w definicji modułu w tym przykładzie są współrzędnymi bezwzględnymi, ostatnie dwa teksty nie są przeciągalne. Później dowiemy się, jak uczynić je przeciągalnymi za pomocą punktów kontrolnych.",
+      "putToScene": "Aby umieścić obiekty w ramach modułu na scenie, potrzebujemy \"obiektu modułu\" w tablicy najwyższego poziomu `objs`, którym w tym przykładzie jest `objs[2]`, którego typem jest `ModuleObj` i którego właściwością `module` jest nazwa modułu.",
+      "title": "Podstawy modułu"
+    },
+    "jsonEditor": {
+      "currentlyNoVisual": "Ta aplikacja nie posiada obecnie wizualnego interfejsu do tworzenia modułów, dlatego musisz bezpośrednio edytować plik JSON sceny.",
+      "enableJsonEditor": "Możesz włączyć wbudowany edytor JSON, klikając rozwijaną listę \"ustawienia\" w prawym górnym rogu aplikacji, a następnie zaznaczając \"Pokaż edytor JSON\". Edytor kodu powinien pojawić się po lewej stronie aplikacji, z kodem JSON bieżącej sceny. Upewnij się, że masz wystarczająco duży ekran, ponieważ ta funkcja nie działa dobrze na urządzeniach mobilnych.",
+      "inIframesBelow": "WAŻNE: Jeśli na tej stronie samouczka nie widzisz edytora kodu JSON w poniższych ramkach iframe, włącz go i odśwież tę stronę, ponieważ musisz widzieć kod, aby zrozumieć, jak to działa.",
+      "objsArray": "W szczególności, gdy dodajesz obiekt do sceny, jest on dodawany do tablicy `objs`. A jeśli zmienisz niektóre z jego właściwości na wartości inne niż domyślne, pojawią się one jako pary klucz-wartość w tym obiekcie.",
+      "title": "Wbudowany edytor JSON",
+      "updateAccordingly": "Podczas edycji sceny za pomocą zwykłego wizualnego edytora scen, kod w edytorze JSON będzie odpowiednio aktualizowany, z podświetloną zmienioną częścią. I odwrotnie, bezpośrednia edycja kodu w edytorze JSON spowoduje odpowiednią aktualizację sceny. Jeśli nie jesteś zaznajomiony z JSON lub jakimkolwiek innym formatem tekstowym danych, możesz chcieć pobawić się nim przez chwilę."
+    },
+    "opening": {
+      "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.",
+      "description": "Ten poradnik poprowadzi Cię przez podstawy tworzenia niestandardowego modułu, który można wykonać w całości w aplikacji internetowej, bez potrzeby korzystania z zewnętrznego środowiska programistycznego.",
+      "moduleIntroduction": "Funkcja \"Moduł\" w Symulacji Promieni optycznych umożliwia tworzenie modułowych kombinacji obiektów z niestandardowymi parametrami, niestandardowymi punktami kontrolnymi i tablicami obiektów. Funkcja ta rozszerza możliwości tego symulatora poprzez łączenie, specjalizację lub reparametryzację obiektów utworzonych przez istniejące narzędzia w celu stworzenia nowych narzędzi. Na przykład moduł `CircleSource` (patrz Narzędzia -> Inne -> Importuj moduły) łączy szereg źródeł punktowych utworzonych przez istniejące narzędzie \"Źródło punktowe (<360°)\" wzdłuż okręgu, aby utworzyć narzędzie \"Źródło kołowe\", które nie istniało w symulatorze. Moduł `FresnelLens` specjalizuje narzędzie \"Szkła-> Równanie niestandardowe\", dzięki czemu równanie reprezentuje określoną krzywą soczewki Fresnela sparametryzowaną przez liczbę pierścieni, tworząc w ten sposób wyspecjalizowane narzędzie \"Soczewka Fresnela\", które również nie istniało wcześniej. Oprócz tworzenia nowych narzędzi, funkcja ta może również sprawić, że niektóre demonstracje optyki będą bardziej interaktywne. Na przykład, przeciągając trzeci punkt kontrolny modułu `BeamExpander`, można bezpośrednio zobaczyć, jak położenie wspólnego ogniska dwóch soczewek wpływa na szerokość wiązki, bez konieczności indywidualnego dostosowywania ogniskowych każdej z nich."
+    },
+    "title": "Poradnik tworzenia modułów"
+  },
+  "modulesPage": {
+    "contribution": {
+      "description": "Wnoszenie wkładu do powyższej listy jest mile widziane. Aby dodać swój moduł, zobacz [Wnoszenie wkładu do modułów](/contributing/modules).",
+      "title": "Wkład"
+    },
+    "customization": {
+      "description": "Moduły można tworzyć lub dostosowywać bezpośrednio w aplikacji internetowej, korzystając z wbudowanego edytora JSON. Zobacz [samouczek](/modules/tutorial). Dostosowywanie zaimportowanych modułów będzie miało wpływ tylko na bieżącą scenę.",
+      "title": "Dostosowywanie"
+    },
+    "description": {
+      "appearAsTools": "Zaimportowane moduły pojawią się jako narzędzia w kategorii \"Inne\". Wybierz i kliknij puste miejsce zgodnie z kolejnością sekwencji punktów kontrolnych (patrz \"Specyfikacja\").",
+      "embeddedInScene": "Zaimportowane moduły są osadzone w danych sceny, więc nie będą automatycznie aktualizowane, gdy autorzy modułów dokonają ich aktualizacji.",
+      "makeNewTools": "Funkcja \"Moduł\" umożliwia tworzenie nowych narzędzi poprzez łączenie, dostosowywanie lub reparametryzację obiektów utworzonych przez istniejące narzędzia w tym symulatorze."
+    },
+    "import": "Importuj",
+    "imported": "Zaimportowany",
+    "specification": {
+      "controlPointSequence": "Sekwencja punktów kontrolnych",
+      "parameters": "Parametry",
+      "title": "Specyfikacja"
+    }
+  }
+}
