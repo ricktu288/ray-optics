@@ -1,23 +1,20 @@
-name: Deploy to GitHub Pages
+name: Run Tests
 
 on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   test:
-    uses: ./.github/workflows/test.yml
-
-  build:
-    needs: test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Install system dependencies
         run: |
@@ -40,14 +37,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Run tests
+        run: npm test
