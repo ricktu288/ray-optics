@@ -25,3 +25,5 @@ If you are not familiar with the development environment but still want to run t
     ![Simple Web Server](https://raw.githubusercontent.com/ricktu288/ray-optics/refs/heads/master/run-locally/simple-web-server-running.png)
 
 9. To update the project, simply download again the [latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip), unzip it, and replace the "ray-optics-gh-pages" folder with the new one.
+
+Note that if your local version is outdated, and you try to open a scene created with a newer version and uses new features, the scene in the outdated simulator may function incorrectly without warning.
