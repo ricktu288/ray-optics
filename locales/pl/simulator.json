@@ -180,12 +180,18 @@
         "Fperp": "F⊥: Szybkość przepływu pędu prostopadłego w (B/s)/c.",
         "P": "P: Szybkość przepływu energii (strumień) w B/s (patrz poniżej).",
         "irradiance": "Irradiancja w wyeksportowanym pliku CSV jest wyrażona w (B/s)/L.",
-        "length": "L jest arbitralną jednostką długości używaną w tym symulatorze."
+        "length": "L jest arbitralną jednostką długości używaną w tym symulatorze.",
+        "s": "Bezwymiarowy czynnik s to \"Skala jasności\" wyświetlana w Ustawienia -> Pokaż okno stanu, która jest równa 1, gdy \"Gęstość promieni\" przekracza pewien próg, a jeśli nie, to jest proporcjonalna do \"Gęstości promieni\".",
+        "truncation": "Jeżeli niektóre promienie ulegną obcięciu w nieskończonej serii wewnętrznych odbić, całkowite obcięcie jest przedstawiane jako oszacowanie błędu."
       },
       "irradMap": "Mapa irradiancji"
     },
     "DiffractionGrating": {
-      "customBrightness": "Niestandardowa jasność"
+      "customBrightness": "Niestandardowa jasność",
+      "customBrightnessInfo": "Gdy jest włączona, jasność promieni dyfrakcyjnych jest dostosowywana przez tablicę liczb odpowiadającą m = 0, 1, -1, 2, -2, …. Liczba ta ma być znormalizowana do jasności promienia padającego. Wartości nieznajdujące się w tablicy są ustawiane na 0. Na przykład „1, 0,5, 0,5” oznacza, że promień m=0 ma taką samą jasność jak promień padający, promienie m=1 i m=-1 mają połowę jasności, a wszystkie pozostałe promienie są ignorowane.",
+      "lineDensity": "Linie/{{lengthUnit}}",
+      "mirrored": "Odbiciowa",
+      "slitRatio": "Szerokość szczeliny / odstęp linii"
     },
     "Drawing": {
       "finishDrawing": "Zakończ rysowanie"
@@ -215,7 +221,11 @@
       "backArrow": "Strzałka do tyłu"
     },
     "ModuleObj": {
+      "demodulize": "Demodułuj",
       "module": "Moduł"
+    },
+    "Ruler": {
+      "scaleInterval": "Odstęp skali"
     },
     "SphericalLens": {
       "defBy": {
@@ -225,11 +235,25 @@
     },
     "TextLabel": {
       "alignment": "Wyrównanie",
+      "alignments": {
+        "center": "Środek",
+        "left": "Lewa",
+        "right": "Prawa"
+      },
       "angle": "Kąt",
       "font": "Czcionka",
       "fontSize": "Rozmiar czcionki",
       "fontStyle": "Styl",
-      "smallCaps": "Małe litery"
+      "fontStyles": {
+        "bold": "Pogrubiona",
+        "boldItalic": "Kursywa pogrubiona",
+        "boldOblique": "Pochyła pogrubiona",
+        "italic": "Kursywa",
+        "normal": "Normalna",
+        "oblique": "Pochyła"
+      },
+      "smallCaps": "Małe litery",
+      "textHere": "Tekst tutaj"
     },
     "common": {
       "brightness": "Jasność",
@@ -247,6 +271,7 @@
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
       "lambert": "Lambertowskie",
       "lengthUnitInfo": "Jednostka długości używana w tym symulatorze ( oprócz długości fali) jest jednostką arbitralną, która może być interpretowana jako dowolna jednostka fizyczna (np. milimetry), o ile jest spójna w całej symulacji. Jeśli jednostka wydaje się zbyt mała lub zbyt duża, należy ją skorygować w Ustawienia -> Skala długości.",
+      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
       "random": "Losowo",
       "wavelength": "Długość fali"
     }
@@ -254,6 +279,7 @@
   "settings": {
     "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
     "autoSyncUrl": {
+      "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę.",
       "title": "Automatyczna synchronizacja URL"
     },
     "gridSize": {
@@ -269,7 +295,14 @@
       "snapToGrid": "Przyciągaj do siatki",
       "title": "Opcje układu"
     },
+    "lengthScale": {
+      "description": "Jeśli domyślna jednostka długości jest zbyt mała lub zbyt duża, aby modelować system fizyczny, gdy jest interpretowana jako zwykła jednostka fizyczna (np. milimetry), współczynnik ten może być użyty do skalowania wyglądu (np. szerokości linii) w scenie.",
+      "title": "Skala długości"
+    },
     "more": "Więcej",
+    "observerSize": {
+      "title": "Rozmiar obserwatora"
+    },
     "rayDensity": {
       "description": "Określa liczbę promieni emitowanych przez belki i źródła punktowe. Ma to również wpływ na dokładność wykrywania obrazu i renderowania kolorów.",
       "title": "Gęstość promieni"
@@ -278,8 +311,13 @@
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)",
       "title": "Pokaż okienka pomocy"
     },
+    "showJsonEditor": {
+      "description": "Pokaż edytor kodu dla reprezentacji JSON sceny, który jest potrzebny podczas tworzenia niestandardowego modułu (patrz Narzędzia -> Inne -> Importuj moduły -> Twórz własne moduły).",
+      "title": "Pokaż edytor JSON"
+    },
     "showStatusBox": {
-      "title": "Pokaż okno stanu"
+      "description": "Wyświetla pole stanu, które zawiera współrzędne myszy, informacje o parametrach i obciętą jasność (całkowitą jasność promieni obciętych w nieskończonej serii wewnętrznych odbić).",
+      "title": "Pokaż pole stanu"
     },
     "title": "Ustawienia",
     "zoom": {
@@ -287,10 +325,16 @@
     }
   },
   "statusBox": {
-    "brightnessScale": "Skala jasności"
+    "brightnessScale": "Skala jasności",
+    "forceStopped": "Wymuszone zatrzymanie.",
+    "mouseCoordinates": "Współrzędne myszy",
+    "rayCount": "Liczba promieni",
+    "timeElapsed": "Czas, który upłynął",
+    "totalTruncation": "Obcięta jasność"
   },
   "welcome": {
     "instruction": "Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.\nAby załadować przykład, [przejdź do strony Galerii](/gallery).",
+    "loading": "Ładowanie sceny z adresu URL... Proszę czekać.",
     "title": "Witamy w symulacji promieni optycznych"
   }
 }
