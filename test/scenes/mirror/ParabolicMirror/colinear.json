@@ -1,0 +1,57 @@
+{
+  "version": 5,
+  "name": "colinear",
+  "objs": [
+    {
+      "type": "PointSource",
+      "x": 670,
+      "y": 339,
+      "brightness": 0.2
+    },
+    {
+      "type": "PointSource",
+      "x": 678.6923076923077,
+      "y": 291.61538461538464,
+      "brightness": 0.2
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 668.8461538461538,
+        "y": 243.00000000000003
+      },
+      "p2": {
+        "x": 655.9230769230769,
+        "y": 372.84615384615387
+      },
+      "irradMap": true,
+      "binSize": 5
+    },
+    {
+      "type": "ParabolicMirror",
+      "p1": {
+        "x": 660,
+        "y": 300
+      },
+      "p2": {
+        "x": 700,
+        "y": 340
+      },
+      "p3": {
+        "x": 680,
+        "y": 320
+      }
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 3.307855188319685,
+  "showGrid": true,
+  "snapToGrid": true,
+  "lengthScale": 2,
+  "origin": {
+    "x": -219.8749999999999,
+    "y": -202.87500000000006
+  },
+  "scale": 1.625
+}

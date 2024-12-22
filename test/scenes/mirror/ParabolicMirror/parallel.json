@@ -1,0 +1,55 @@
+{
+  "version": 5,
+  "name": "parallel",
+  "objs": [
+    {
+      "type": "ParabolicMirror",
+      "p1": {
+        "x": 880,
+        "y": 360
+      },
+      "p2": {
+        "x": 880,
+        "y": 240
+      },
+      "p3": {
+        "x": 884.4444444444443,
+        "y": 300
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 820,
+        "y": 240
+      },
+      "p2": {
+        "x": 820,
+        "y": 360
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 740,
+        "y": 240
+      },
+      "p2": {
+        "x": 740,
+        "y": 360
+      },
+      "irradMap": true
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 20.085536923187668,
+  "showGrid": true,
+  "snapToGrid": true,
+  "lengthScale": 2,
+  "origin": {
+    "x": -945.9999999999998,
+    "y": -285.00000000000006
+  },
+  "scale": 2.25
+}

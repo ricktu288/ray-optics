@@ -255,85 +255,224 @@ class ParabolicMirror extends BaseFilter {
     }
   }
 
+  /**
+   * Transform a point from global coordinates to local parabola coordinates
+   * where the origin is at p3 (vertex), x-axis along p1-p2,
+   * and y-axis perpendicular to p1-p2
+   * @param {Point} point - Point in global coordinates
+   * @returns {Object} Transformed point {x, y}
+   */
+  transformToLocal(point) {
+    const p12d = geometry.distance(this.p1, this.p2);
+    // unit vector from p1 to p2
+    const dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
+    // perpendicular direction
+    const dir2 = [dir1[1], -dir1[0]];
+    
+    // Use p3 as origin instead of midpoint
+    const dx = point.x - this.p3.x;
+    const dy = point.y - this.p3.y;
+    
+    return {
+      x: dx * dir1[0] + dy * dir1[1],
+      y: dx * dir2[0] + dy * dir2[1]
+    };
+  }
+
+  /**
+   * Transform a point from local parabola coordinates back to global coordinates
+   * @param {Object} point - Point in local coordinates {x, y}
+   * @returns {Point} Point in global coordinates
+   */
+  transformToGlobal(point) {
+    const p12d = geometry.distance(this.p1, this.p2);
+    // unit vector from p1 to p2
+    const dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
+    // perpendicular direction
+    const dir2 = [dir1[1], -dir1[0]];
+
+    return geometry.point(
+      this.p3.x + point.x * dir1[0] + point.y * dir2[0],
+      this.p3.y + point.x * dir1[1] + point.y * dir2[1]
+    );
+  }
+
+  /**
+   * Get the parabola coefficient 'a' in y = ax²
+   * @returns {number} Coefficient a
+   */
+  getParabolaCoefficient() {
+    const p12d = geometry.distance(this.p1, this.p2);
+    const p1Local = this.transformToLocal(this.p1);
+    // Calculate a from the fact that p1 lies on the parabola
+    return p1Local.y / (p1Local.x * p1Local.x);
+  }
+
+  /**
+   * Check if the parabola is degenerate (p1, p2, p3 are collinear)
+   * @returns {boolean} True if degenerate
+   */
+  isDegenerate() {
+    // Calculate area of triangle formed by p1, p2, p3
+    // If area is close to 0, points are collinear
+    const area = Math.abs(
+      (this.p2.x - this.p1.x) * (this.p3.y - this.p1.y) -
+      (this.p3.x - this.p1.x) * (this.p2.y - this.p1.y)
+    );
+    return area < 1e-10;
+  }
+
   checkRayIntersects(ray) {
-    if (!this.p3) { return; }
-    if (!this.tmp_points || !this.checkRayIntersectFilter(ray)) return;
-    var i, j;
-    var pts = this.tmp_points;
-    var dir = geometry.distance(this.p2, ray.p1) > geometry.distance(this.p1, ray.p1);
-    var incidentPoint;
-    for (j = 0; j < pts.length - 1; j++) {
-      i = dir ? j : (pts.length - 2 - j);
-      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(pts[i], pts[i + 1]));
-      var seg = geometry.line(pts[i], pts[i + 1]);
-      // need Simulator.MIN_RAY_SEGMENT_LENGTH check to handle a ray that reflects off mirror multiple times
-      if (geometry.distance(ray.p1, rp_temp) < Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale)
-        continue;
-      if (geometry.intersectionIsOnSegment(rp_temp, seg) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-        if (!incidentPoint || geometry.distance(ray.p1, rp_temp) < geometry.distance(ray.p1, incidentPoint)) {
-          incidentPoint = rp_temp;
-          this.tmp_i = i;
-        }
+    if (!this.p3 || !this.checkRayIntersectFilter(ray)) return;
+
+    // Handle degenerate case (linear mirror)
+    if (this.isDegenerate()) {
+      const intersection = geometry.linesIntersection(
+        geometry.line(ray.p1, ray.p2),
+        geometry.line(this.p1, this.p2)
+      );
+      if (intersection &&
+          geometry.intersectionIsOnSegment(intersection, geometry.line(this.p1, this.p2)) &&
+          geometry.intersectionIsOnRay(intersection, ray) &&
+          geometry.distance(ray.p1, intersection) >= Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale) {
+        return intersection;
+      }
+      return null;
+    }
+
+    // Normal parabolic case
+    // Transform ray to local coordinates
+    const p1Local = this.transformToLocal(ray.p1);
+    const p2Local = this.transformToLocal(ray.p2);
+    
+    // Get normalized direction vector
+    const dx = p2Local.x - p1Local.x;
+    const dy = p2Local.y - p1Local.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    const vx = dx / d;
+    const vy = dy / d;
+
+    // Get parabola coefficient
+    const a = this.getParabolaCoefficient();
+
+    // Handle the case where ray is parallel to axis of symmetry
+    // In this case, vx ≈ 0 and the quadratic equation becomes degenerate
+    if (Math.abs(vx) < 1e-10) {
+      // For vertical rays, x stays constant
+      const x = p1Local.x;
+      // Intersection occurs at y = ax²
+      const y = a * x * x;
+      // Calculate time to reach intersection
+      const t = (y - p1Local.y) / vy;
+      if (t > Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale &&
+          Math.abs(x) <= geometry.distance(this.p1, this.p2) / 2) {
+        return this.transformToGlobal({x, y});
+      }
+      return null;
+    }
+
+    // Solve quadratic equation: a·dx²·t² + (2a·x₁·dx - dy)·t + (a·x₁² - y₁) = 0
+    const A = a * vx * vx;
+    const B = 2 * a * p1Local.x * vx - vy;
+    const C = a * p1Local.x * p1Local.x - p1Local.y;
+
+    const discriminant = B * B - 4 * A * C;
+    if (discriminant < 0) return null;
+
+    // Get solutions
+    const t1 = (-B + Math.sqrt(discriminant)) / (2 * A);
+    const t2 = (-B - Math.sqrt(discriminant)) / (2 * A);
+
+    // Get intersection points
+    const intersections = [];
+    if (t1 > Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale) {
+      const x = p1Local.x + t1 * vx;
+      const y = p1Local.y + t1 * vy;
+      // Check if point is within the mirror bounds
+      if (Math.abs(x) <= geometry.distance(this.p1, this.p2) / 2) {
+        intersections.push({t: t1, point: this.transformToGlobal({x, y})});
       }
     }
-    if (incidentPoint) return incidentPoint;
+    if (t2 > Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale) {
+      const x = p1Local.x + t2 * vx;
+      const y = p1Local.y + t2 * vy;
+      // Check if point is within the mirror bounds
+      if (Math.abs(x) <= geometry.distance(this.p1, this.p2) / 2) {
+        intersections.push({t: t2, point: this.transformToGlobal({x, y})});
+      }
+    }
+
+    // Return closest intersection
+    if (intersections.length === 0) return null;
+    return intersections.reduce((closest, current) => 
+      current.t < closest.t ? current : closest
+    ).point;
   }
 
   onRayIncident(ray, rayIndex, incidentPoint) {
-    var rx = ray.p1.x - incidentPoint.x;
-    var ry = ray.p1.y - incidentPoint.y;
-    var i = this.tmp_i;
-    var pts = this.tmp_points;
-    var seg = geometry.line(pts[i], pts[i + 1]);
-    var mx = seg.p2.x - seg.p1.x;
-    var my = seg.p2.y - seg.p1.y;
+    // Handle degenerate case (linear mirror)
+    if (this.isDegenerate()) {
+      const dir = [(this.p2.x - this.p1.x), (this.p2.y - this.p1.y)];
+      const len = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
+      const nx = -dir[1] / len;  // Normal vector
+      const ny = dir[0] / len;
 
+      // Calculate incident vector
+      const dx = incidentPoint.x - ray.p1.x;
+      const dy = incidentPoint.y - ray.p1.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      const vx = dx / d;
+      const vy = dy / d;
 
+      // Calculate reflection using r = v - 2(v·n)n
+      const dot = vx * nx + vy * ny;
+      const rx = vx - 2 * dot * nx;
+      const ry = vy - 2 * dot * ny;
+
+      ray.p1 = incidentPoint;
+      ray.p2 = geometry.point(
+        incidentPoint.x + rx,
+        incidentPoint.y + ry
+      );
+      return;
+    }
+
+    // Normal parabolic case
+    // Transform to local coordinates
+    const incidentLocal = this.transformToLocal(incidentPoint);
+    const rayStartLocal = this.transformToLocal(ray.p1);
+
+    // Get incident direction
+    const dx = incidentLocal.x - rayStartLocal.x;
+    const dy = incidentLocal.y - rayStartLocal.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    const vx = dx / d;
+    const vy = dy / d;
+
+    // Get parabola coefficient
+    const a = this.getParabolaCoefficient();
+
+    // Calculate normal vector at intersection point (-2ax, 1)
+    const nx = -2 * a * incidentLocal.x;
+    const ny = 1;
+    const nlen = Math.sqrt(nx * nx + ny * ny);
+    const nnx = nx / nlen;
+    const nny = ny / nlen;
+
+    // Calculate reflection direction: r = v - 2(v·n)n
+    const dot = vx * nnx + vy * nny;
+    const rx = vx - 2 * dot * nnx;
+    const ry = vy - 2 * dot * nny;
+
+    // Set new ray endpoint in global coordinates
     ray.p1 = incidentPoint;
-    var frac;
-    if (Math.abs(mx) > Math.abs(my)) {
-      frac = (incidentPoint.x - seg.p1.x) / mx;
-    } else {
-      frac = (incidentPoint.y - seg.p1.y) / my;
-    }
-
-    if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
-      ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
-    } else {
-      // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
-      // However, a more proper numerical algorithm from the beginning (especially to handle singularities) is still desired.
-
-      var outx = incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my;
-      var outy = incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my;
-
-      var segA;
-      if (frac < 0.5) {
-        segA = geometry.line(pts[i - 1], pts[i]);
-      } else {
-        segA = geometry.line(pts[i + 1], pts[i + 2]);
-      }
-      var rxA = ray.p1.x - incidentPoint.x;
-      var ryA = ray.p1.y - incidentPoint.y;
-      var mxA = segA.p2.x - segA.p1.x;
-      var myA = segA.p2.y - segA.p1.y;
-
-      var outxA = incidentPoint.x + rxA * (myA * myA - mxA * mxA) - 2 * ryA * mxA * myA;
-      var outyA = incidentPoint.y + ryA * (mxA * mxA - myA * myA) - 2 * rxA * mxA * myA;
-
-      var outxFinal;
-      var outyFinal;
-
-      if (frac < 0.5) {
-        outxFinal = outx * (0.5 + frac) + outxA * (0.5 - frac);
-        outyFinal = outy * (0.5 + frac) + outyA * (0.5 - frac);
-      } else {
-        outxFinal = outxA * (frac - 0.5) + outx * (1.5 - frac);
-        outyFinal = outyA * (frac - 0.5) + outy * (1.5 - frac);
-      }
-      //console.log(frac);
-      ray.p2 = geometry.point(outxFinal, outyFinal);
-    }
+    const reflectedPoint = this.transformToGlobal({
+      x: incidentLocal.x + rx,
+      y: incidentLocal.y + ry
+    });
+    ray.p2 = reflectedPoint;
   }
+
 };
 
 export default ParabolicMirror;
