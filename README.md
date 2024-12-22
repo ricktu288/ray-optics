@@ -29,7 +29,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 ## Links
 - [**Launch the Web App**](https://phydemo.app/ray-optics/simulator/)
 - [Gallery](https://phydemo.app/ray-optics/gallery/)
-- [Documentation](https://phydemo.app/ray-optics/docs/)
+- [Documentation](https://phydemo.app/ray-optics/docs/index.html)
 - [About](https://phydemo.app/ray-optics/about)
 - [Run Locally](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md)
 
@@ -55,7 +55,7 @@ For translations, note that this project uses Weblate. Please visit https://host
 
 [![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/287x66-grey.png)](https://hosted.weblate.org/engage/ray-optics-simulation/)
 
-To contribute code, you need to have some knowledge of JavaScript and module bundling. The code is written in ES6 and bundled with Webpack. The code structure is documented in the [documentation](https://phydemo.app/ray-optics/docs/). See the following section for installation instructions.
+To contribute code, you need to have some knowledge of JavaScript and module bundling. The code is written in ES6 and bundled with Webpack. The code structure is documented in the [documentation](https://phydemo.app/ray-optics/docs/index.html). See the following section for installation instructions.
 
 ## Installation
 
@@ -156,7 +156,7 @@ After that, you can use the simulator in your own project by importing the modul
 const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/dist-node/main.js');
 ```
 
-See the [documentation](https://phydemo.app/ray-optics/docs/) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
+See the [documentation](https://phydemo.app/ray-optics/docs/index.html) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
 
 
 ## License
