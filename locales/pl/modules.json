@@ -63,12 +63,19 @@
   },
   "moduleTutorial": {
     "basics": {
+      "createModule": "Obecnie sugerowany sposób tworzenia modułu polega na tym, aby najpierw utworzyć pusty moduł za pomocą edytora JSON, utworzyć kilka obiektów za pomocą edytora scen wizualnych, a następnie wyciąć i wkleić obiekty z `objs` do `modules.ModuleName.objs` za pomocą edytora JSON.",
+      "demodulize": "Jeśli wybierzesz obiekt modułu, na pasku obiektów znajdziesz przycisk \"Demodułuj\". Kliknięcie go \"rozwinie\" obiekt modułu na jego części składowe, a `objs` będzie teraz zawierać wszystkie cztery teksty. Ta operacja nie jest odwracalna (ale oczywiście można kliknąć \"cofnij\").",
       "lookAtExample": "Spójrzmy na pierwszy przykład modułu.",
       "lookAtJson": "Powinny być widoczne cztery linie tekstu. Patrząc na edytor JSON, zobaczysz, że pierwsze dwa znajdują się bezpośrednio w tablicy `objs` najwyższego poziomu, jak zwykle, ale dwa ostatnie znajdują się w `modules.ExampleModule.objs`.",
       "moduleDef": "`Moduł` to słownik, w którym kluczem jest nazwa modułu (w tym przypadku `ExampleModule`), a wartością definicja tego modułu. W szczególności tablica `modules.ExampleModule.objs` opisuje (szablon) obiektów w tym module, co różni się od najwyższego poziomu `objs`, który opisuje obiekty w scenie.",
       "moduleDefNotEditable": "Definicja modułu w słowniku `modules` nie jest edytowalna przez wizualny edytor scen. Tak więc, gdy klikniesz dowolny z dwóch ostatnich tekstów w tym przykładzie, wybierasz tylko obiekt modułu, a nie obiekty w module. Ponieważ współrzędne tekstów w definicji modułu w tym przykładzie są współrzędnymi bezwzględnymi, ostatnie dwa teksty nie są przeciągalne. Później dowiemy się, jak uczynić je przeciągalnymi za pomocą punktów kontrolnych.",
       "putToScene": "Aby umieścić obiekty w ramach modułu na scenie, potrzebujemy \"obiektu modułu\" w tablicy najwyższego poziomu `objs`, którym w tym przykładzie jest `objs[2]`, którego typem jest `ModuleObj` i którego właściwością `module` jest nazwa modułu.",
       "title": "Podstawy modułu"
+    },
+    "controlPoints": {
+      "coordinatesOfControlPoints": "Tutaj `modules.ModuleName.numPoints` definiuje liczbę punktów kontrolnych. Współrzędne punktów kontrolnych to (`x_1`, `y_1`), (`x_2`, `y_2`), itd. i są używane w taki sam sposób jak parametry w `modules.ExampleModule.objs`, jak opisano w poprzedniej sekcji. Należy zauważyć, że indeks zaczyna się od 1.",
+      "lookAtExample": "Aby obiekt modułu był przeciągalny, musimy sparametryzować obiekty w module za pomocą zestawu punktów kontrolnych. Spójrzmy na przykład",
+      "title": "Dodawanie punktów kontrolnych"
     },
     "jsonEditor": {
       "currentlyNoVisual": "Ta aplikacja nie posiada obecnie wizualnego interfejsu do tworzenia modułów, dlatego musisz bezpośrednio edytować plik JSON sceny.",
@@ -82,6 +89,13 @@
       "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.",
       "description": "Ten poradnik poprowadzi Cię przez podstawy tworzenia niestandardowego modułu, który można wykonać w całości w aplikacji internetowej, bez potrzeby korzystania z zewnętrznego środowiska programistycznego.",
       "moduleIntroduction": "Funkcja \"Moduł\" w Symulacji Promieni optycznych umożliwia tworzenie modułowych kombinacji obiektów z niestandardowymi parametrami, niestandardowymi punktami kontrolnymi i tablicami obiektów. Funkcja ta rozszerza możliwości tego symulatora poprzez łączenie, specjalizację lub reparametryzację obiektów utworzonych przez istniejące narzędzia w celu stworzenia nowych narzędzi. Na przykład moduł `CircleSource` (patrz Narzędzia -> Inne -> Importuj moduły) łączy szereg źródeł punktowych utworzonych przez istniejące narzędzie \"Źródło punktowe (<360°)\" wzdłuż okręgu, aby utworzyć narzędzie \"Źródło kołowe\", które nie istniało w symulatorze. Moduł `FresnelLens` specjalizuje narzędzie \"Szkła-> Równanie niestandardowe\", dzięki czemu równanie reprezentuje określoną krzywą soczewki Fresnela sparametryzowaną przez liczbę pierścieni, tworząc w ten sposób wyspecjalizowane narzędzie \"Soczewka Fresnela\", które również nie istniało wcześniej. Oprócz tworzenia nowych narzędzi, funkcja ta może również sprawić, że niektóre demonstracje optyki będą bardziej interaktywne. Na przykład, przeciągając trzeci punkt kontrolny modułu `BeamExpander`, można bezpośrednio zobaczyć, jak położenie wspólnego ogniska dwóch soczewek wpływa na szerokość wiązki, bez konieczności indywidualnego dostosowywania ogniskowych każdej z nich."
+    },
+    "parameters": {
+      "equationSyntax": "W tablicy `modules.ExampleModule.objs`, dowolne wartości mogą być wyrażone za pomocą tych parametrów. W ciągu znaków (takim jak właściwość `text` etykiety `TextLabel`), równania zmiennych są otoczone parą znaków odwrotnego apostrofu. W przypadku parametrów liczbowych (takich jak właściwość `fontSize` etykiety `TextLabel`), należy utworzyć ciąg znaków, aby można było użyć w nim formatu odwrotnego apostrofu, więc każde równanie jest otoczone parą znaków odwrotnego apostrofu i parą cudzysłowów. Równanie jest obliczane za pomocą math.js ([syntax](/mathjs/syntax)). Zobacz tam dostępną składnię i funkcje, których można użyć w równaniach.",
+      "lookAtExample": "Obiekty w module można zdefiniować za pomocą zestawu parametrów. Przyjrzyjmy się prostemu przykładowi",
+      "paramsArray": "Tutaj `modules.ModuleName.params` jest tablicą ciągów `\"name=start:step:end:default\"` definiującą nazwę zmiennych i zakres suwaków. Suwaki pojawiają się na pasku obiektów, gdy obiekt modułu jest zaznaczony.",
+      "title": "Dodawanie parametrów",
+      "valueStorage": "Rzeczywiste wartości parametrów są przechowywane we właściwości `params` obiektu modułu, który, w przeciwieństwie do definicji modułu, może być bezpośrednio edytowany przez edytor scen za pomocą suwaka."
     },
     "title": "Poradnik tworzenia modułów"
   },

@@ -59,8 +59,8 @@
         "title": "键盘快速键"
       },
       "runLocally": {
-        "title": "在本地运行",
-        "description": "要在您自己的计算机上运行本项目（与在线版本无关），请参阅[此指南](/run-locally)。"
+        "description": "要在您自己的计算机上运行本项目（与在线版本无关），请参阅[此指南](/run-locally)。",
+        "title": "在本地运行"
       }
     },
     "processing": "处理中……按此处以终止。"
@@ -286,8 +286,8 @@
       "title": "网格大小"
     },
     "language": {
-      "title": "语言",
-      "lowFraction": "此语言翻译完成率仅 {{fraction}}。您可以[在 Weblate 上](/weblate)帮助完成翻译。"
+      "lowFraction": "此语言翻译完成率仅 {{fraction}}。您可以[在 Weblate 上](/weblate)帮助完成翻译。",
+      "title": "语言"
     },
     "layoutAids": {
       "lockObjs": "锁定物件",

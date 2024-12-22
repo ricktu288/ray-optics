@@ -271,7 +271,7 @@
       "imageDetectionWarning": "This tool does not support image detection.",
       "lambert": "Lambertian",
       "lengthUnitInfo": "The unit of length used in this simulator (except for wavelengths) is an arbitrary unit, which can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale.",
-      "nonSimulateColorsWarning": "This tool only works when \"Simulate Color\" is on.",
+      "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on.",
       "random": "Random",
       "wavelength": "Wavelength"
     }
@@ -286,8 +286,8 @@
       "title": "Grid Size"
     },
     "language": {
-      "title": "Language",
-      "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
+      "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate).",
+      "title": "Language"
     },
     "layoutAids": {
       "lockObjs": "Lock Objects",
