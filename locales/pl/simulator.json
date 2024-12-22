@@ -176,6 +176,8 @@
       "exportData": "Eksportuj dane",
       "info": {
         "B": "B jest arbitralną jednostką strumienia promieniowania lub strumienia świetlnego, odpowiadającą jednostce opcji \"Jasność\" B/L dla wiązek nielambertowskich i 500B/360° dla źródeł punktowych.",
+        "Fpar": "F∥: Szybkość przepływu pędu równoległego w (B/s)/c.",
+        "Fperp": "F⊥: Szybkość przepływu pędu prostopadłego w (B/s)/c.",
         "P": "P: Szybkość przepływu energii (strumień) w B/s (patrz poniżej).",
         "irradiance": "Irradiancja w wyeksportowanym pliku CSV jest wyrażona w (B/s)/L.",
         "length": "L jest arbitralną jednostką długości używaną w tym symulatorze."
@@ -251,7 +253,14 @@
   },
   "settings": {
     "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
+    "autoSyncUrl": {
+      "title": "Automatyczna synchronizacja URL"
+    },
+    "gridSize": {
+      "title": "Rozmiar siatki"
+    },
     "language": {
+      "lowFraction": "Ten język jest tylko w {{fraction}} przetłumaczony. Możesz pomóc w jego ukończeniu [na Weblate](/weblate).",
       "title": "Język"
     },
     "layoutAids": {
@@ -269,10 +278,16 @@
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)",
       "title": "Pokaż okienka pomocy"
     },
+    "showStatusBox": {
+      "title": "Pokaż okno stanu"
+    },
     "title": "Ustawienia",
     "zoom": {
       "title": "Zoom"
     }
+  },
+  "statusBox": {
+    "brightnessScale": "Skala jasności"
   },
   "welcome": {
     "instruction": "Aby dodać komponent optyczny, zaznacz narzędzie i kliknij puste miejsce.\nAby załadować przykład, [przejdź do strony Galerii](/gallery).",

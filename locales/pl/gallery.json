@@ -19,6 +19,7 @@
       "biprism": "Bipryzmat",
       "description": "Symulacja bipryzmatu regularnego i Fresnela. Bipryzmat może skierować padającą skolimowaną wiązkę w dwóch kierunkach, w zależności od kąta wierzchołkowego.",
       "fresnelbiprism": "Bipryzmat Fresnela",
+      "thisfresnelbiprismwa": "Ten bipryzmat Fresnela został wykonany z powyższego bipryzmatu.\nMożesz wybrać bipryzmat i dostosować parametr N_silce.",
       "title": "Kierowanie wiązką światła"
     },
     "beamExpanders": {
@@ -57,11 +58,17 @@
       "observer2": "Obserwator",
       "title": "Camera obscura"
     },
+    "causticsFromAReflectiveSphere": {
+      "description": "Odbijająca sfera skupiająca (nie rozpraszająca) z otworem wejściowym.  Mogą to być również odbicia wewnątrz kropli cieczy (np. kropli deszczu).  Piękne efekty pojawiają się tam, gdzie kaustyka rozwija się poprzez przesuwanie źródła punktowego.",
+      "movethepointsourcear": "Przesuwaj źródło punktowe,\naby obserwować modyfikacje kaustyki i\nwęzłów wewnątrz sfery skupiającej.\nZmień rozmiar i położenie blokerów\noraz rozmiar otwarcia sfery,\naby zobaczyć więcej efektów.",
+      "title": "Kaustyka z odbijającej sfery"
+    },
     "chaffCountermeasure": {
       "chaff": "Chaff",
       "description": "Jest to jakościowa symulacja systemu przeciwdziałania namiarom radarowym (pomijając efekty dyfrakcyjne).",
       "plane": "Płaszczyzna",
       "radar": "Radar",
+      "selectthechafftochan": "Wybierz chaff, aby zmienić liczbę (N) i długość (L) kawałków chaff.",
       "title": "Dipole odbijające (chaff)"
     },
     "chromaticAberration": {
@@ -199,7 +206,7 @@
       "exampleb": "Przykład - B",
       "examplec": "Przykład - C",
       "incidenceangle": "Kąt padania",
-      "inexamplesaandbbyrot": "W przykładach A i B, obracając pryzmaty między punktami A1 do A2 i B1 do B2 i zmieniając w ten sposób\nkąt padania promienia wpadającego do elementu optycznego, można łatwo zauważyć, że minimalny\nkąt odchylenia uzyskuje się gdzieś pomiędzy parą punktów.\n(w przykładzie A kąt odchylenia mierzony jest względem osi poziomej, natomiast w przykładzie B\njest mierzony względem osi pionowej).\n\nTeraz powiększ przykład C (używając powiększenia symulacyjnego) i rozszerz dwie wiązki (czerwoną i fioletową, a\nich przecięcie wygląda na różowe. Jest to faktycznie to samo, co obracanie pryzmatu sferycznego w\nprzykładzie B, zmieniające w ten sposób kąt padania promienia wchodzącego) i zobacz, że od punktu\nC1 do C2 promienie wychodzące wstecz kumulują się w dół w dwa odrębne promienie - czerwony i fioletowy\n(\"kaustyka optyczna\")– minimalny kąt odchylenia występuje koło punktu C2 i zależy od\ntdługości fali światła (kolor). Następnie, podczas rozszerzania dwóch wiązek od punktu C2 do C3,\npromienie wychodzące wstecz odwracają swój kierunek w górę.",
+      "inexamplesaandbbyrot": "W przykładach A i B, obracając pryzmaty między punktami A1 do A2 i B1 do B2 i zmieniając w ten sposób\nkąt padania promienia wpadającego do elementu optycznego, można łatwo zauważyć, że minimalny\nkąt odchylenia uzyskuje się gdzieś pomiędzy parą punktów.\n(w przykładzie A kąt odchylenia mierzony jest względem osi poziomej, natomiast w przykładzie B\njest mierzony względem osi pionowej).\n\nTeraz powiększ przykład C (używając powiększenia symulacyjnego) i rozszerz dwie wiązki (czerwoną i fioletową, a\nich przecięcie wygląda na różowe. Jest to faktycznie to samo, co obracanie pryzmatu sferycznego w\nprzykładzie B, zmieniające w ten sposób kąt padania promienia wchodzącego) i zobacz, że od punktu\nC1 do C2 promienie wychodzące wstecz kumulują się w dół w dwa odrębne promienie - czerwony i fioletowy\n(\"kaustyka optyczna\")– minimalny kąt odchylenia występuje koło punktu C2 i zależy od\ndługości fali światła (kolor). Następnie, podczas rozszerzania dwóch wiązek od punktu C2 do C3,\npromienie wychodzące wstecz odwracają swój kierunek w górę.",
       "title": "Minimalny kąt odchylenia",
       "usethebuiltinzoomtob": "Użyj wbudowanego zoomu, aby lepiej operować symulacją"
     },
@@ -320,8 +327,10 @@
       "withoutabeamexpander": "Bez ekspandera wiązki"
     },
     "theMirascope": {
+      "description": "**Miraskop** to fascynujące urządzenie do iluzji optycznej, które wykorzystuje dwa ustawione naprzeciwko siebie paraboliczne zwierciadła, aby stworzyć iluzję trójwymiarowego, unoszącego się w powietrzu obrazu. Urządzenie składa się z:\n1. **Dwóch parabolicznych luster** o dokładnie tym samym rozmiarze, z jednym lustrem skierowanym w górę, a drugim w dół, tworząc strukturę przypominającą małże. Lustra są zaprojektowane tak, aby skupiać światło w określonym punkcie. Górne zwierciadło ma otwór w swoim wierzchołku, aby umożliwić wpadanie światła do urządzenia.\n2. **Mały obiekt**: Umieszczony wewnątrz miraskopu, zazwyczaj w pobliżu ogniska górnego zwierciadła, które znajduje się bardzo blisko wierzchołka dolnego zwierciadła.\n\nGdy światło z obiektu odbija się między lustrami, jest ono przekierowywane w taki sposób, że pojawia się jako realistyczny, trójwymiarowy obraz unoszący się nad powierzchnią miraskopu. Iluzja jest tak przekonująca, że ludzie często próbują dotknąć obrazu, ale okazuje się, że nic tam nie ma.\n\nMiraskopy są popularne w demonstracjach naukowych, zabawkach i gadżetach, aby zilustrować zasady optyki, odbicia i zachowania światła.",
       "object1": "Obiekt",
-      "realimage1": "Obraz rzeczywisty"
+      "realimage1": "Obraz rzeczywisty",
+      "title": "Miraskop"
     },
     "transverseAndLongitudinalMagnification": {
       "description": "Symulacja powiększenia poprzecznego i wzdłużnego dla idealnej soczewki o ogniskowej \\(f\\). Powiększenie poprzeczne (zwane także liniowym) i wzdłużne to odpowiednio \\(M_T=1-\\frac{u}{f}\\) i \\(M_L=\\frac{dv}{du}\\), gdzie \\(u\\) and \\(v\\) to odpowiednio odległość przedmiotu i obrazu od naszej idealnej soczewki. Dla idealnej soczewki zachodzi również \\(M_L=-(M_T)^2\\)",
