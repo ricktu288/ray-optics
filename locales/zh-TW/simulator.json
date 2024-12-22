@@ -59,8 +59,8 @@
         "title": "鍵盤快速鍵"
       },
       "runLocally": {
-        "title": "在本機執行",
-        "description": "若要在您自己的電腦上執行本專案（獨立於線上版本），請參閱[此指南](/run-locally)。"
+        "description": "若要在您自己的電腦上執行本專案（獨立於線上版本），請參閱[此指南](/run-locally)。",
+        "title": "在本機執行"
       }
     },
     "processing": "處理中……按此處以終止。"
@@ -286,8 +286,8 @@
       "title": "格線大小"
     },
     "language": {
-      "title": "語言",
-      "lowFraction": "此語言翻譯完成率僅 {{fraction}}。您可以[在 Weblate 上](/weblate)協助完成翻譯。"
+      "lowFraction": "此語言翻譯完成率僅 {{fraction}}。您可以[在 Weblate 上](/weblate)協助完成翻譯。",
+      "title": "語言"
     },
     "layoutAids": {
       "lockObjs": "鎖定物件",
