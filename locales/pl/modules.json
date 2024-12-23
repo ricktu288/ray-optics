@@ -62,6 +62,12 @@
     }
   },
   "moduleTutorial": {
+    "arrayAndConditional": {
+      "lookAtExample": "Bardziej skomplikowany moduł można zbudować przy użyciu tablic i instrukcji warunkowych. Spójrzmy na przykład",
+      "preventInfiniteLoop": "Aby zapobiec przypadkowemu utworzeniu nieskończonej pętli, całkowita liczba iteracji każdej pętli `\"for\"` jest ograniczona przez właściwość `maxLoopLength` definicji modułu, której wartość domyślna wynosi 1000. W razie potrzeby można ustawić tę właściwość na większą wartość.",
+      "specialKeys": "W obrębie `modules.ExampleModule.objs`, każdy obiekt w tablicy może mieć dwa specjalne klucze: `\"for\"` i `\"if\"`. Wartością klucza `\"for\"` jest albo łańcuch w formacie `\"name=start:step:end\"` definiujący zmienną pętli, albo tablica kilku łańcuchów tego formatu opisująca wielowymiarową pętlę. Taki obiekt w tablicy jest powielany kilka razy zgodnie ze zmiennymi pętli. Wartość klucza `\"if\"` jest łańcuchem reprezentującym wyrażenie math.js, które ma wartość logiczną, a taki obiekt jest zawarty w tablicy wtedy i tylko wtedy, gdy wartość logiczna to prawda.",
+      "title": "Tablice i instrukcje warunkowe"
+    },
     "basics": {
       "createModule": "Obecnie sugerowany sposób tworzenia modułu polega na tym, aby najpierw utworzyć pusty moduł za pomocą edytora JSON, utworzyć kilka obiektów za pomocą edytora scen wizualnych, a następnie wyciąć i wkleić obiekty z `objs` do `modules.ModuleName.objs` za pomocą edytora JSON.",
       "demodulize": "Jeśli wybierzesz obiekt modułu, na pasku obiektów znajdziesz przycisk \"Demodułuj\". Kliknięcie go \"rozwinie\" obiekt modułu na jego części składowe, a `objs` będzie teraz zawierać wszystkie cztery teksty. Ta operacja nie jest odwracalna (ale oczywiście można kliknąć \"cofnij\").",
@@ -74,8 +80,10 @@
     },
     "controlPoints": {
       "coordinatesOfControlPoints": "Tutaj `modules.ModuleName.numPoints` definiuje liczbę punktów kontrolnych. Współrzędne punktów kontrolnych to (`x_1`, `y_1`), (`x_2`, `y_2`), itd. i są używane w taki sam sposób jak parametry w `modules.ExampleModule.objs`, jak opisano w poprzedniej sekcji. Należy zauważyć, że indeks zaczyna się od 1.",
+      "createAsTool": "Ponieważ nasz obiekt modułu może się teraz poruszać, tworzenie wielu wystąpień jest teraz dość łatwe, jak w zwykłych narzędziach. Nazwa modułu jest wyświetlana w menu Narzędzia -> Inne i można ją wybrać, a następnie kliknąć kolejno dwa punkty w pustej przestrzeni dla dwóch punktów kontrolnych, aby utworzyć kolejne wystąpienie modułu.  Możesz także użyć przycisku “Powiel” na pasku obiektów.",
       "lookAtExample": "Aby obiekt modułu był przeciągalny, musimy sparametryzować obiekty w module za pomocą zestawu punktów kontrolnych. Spójrzmy na przykład",
-      "title": "Dodawanie punktów kontrolnych"
+      "title": "Dodawanie punktów kontrolnych",
+      "valueStorage": "Rzeczywiste wartości współrzędnych punktów kontrolnych są przechowywane we właściwości `points` obiektu modułu, które, w przeciwieństwie do zakodowanych na stałe współrzędnych w przykładzie 1, mogą być edytowane przez wizualny edytor sceny poprzez przeciąganie punktów kontrolnych, z których każdy jest wyświetlany jako dwa koncentryczne szare okręgi na scenie. Jeśli przeciągniesz w inne miejsce obiekt modułu (np. przeciągniesz etykiety tekstowe), wszystkie punkty kontrolne przesuną się razem."
     },
     "jsonEditor": {
       "currentlyNoVisual": "Ta aplikacja nie posiada obecnie wizualnego interfejsu do tworzenia modułów, dlatego musisz bezpośrednio edytować plik JSON sceny.",
@@ -84,6 +92,14 @@
       "objsArray": "W szczególności, gdy dodajesz obiekt do sceny, jest on dodawany do tablicy `objs`. A jeśli zmienisz niektóre z jego właściwości na wartości inne niż domyślne, pojawią się one jako pary klucz-wartość w tym obiekcie.",
       "title": "Wbudowany edytor JSON",
       "updateAccordingly": "Podczas edycji sceny za pomocą zwykłego wizualnego edytora scen, kod w edytorze JSON będzie odpowiednio aktualizowany, z podświetloną zmienioną częścią. I odwrotnie, bezpośrednia edycja kodu w edytorze JSON spowoduje odpowiednią aktualizację sceny. Jeśli nie jesteś zaznajomiony z JSON lub jakimkolwiek innym formatem tekstowym danych, możesz chcieć pobawić się nim przez chwilę."
+    },
+    "objsWithEqn": {
+      "description": "W przypadku obiektów, które mają już wprowadzone niestandardowe równanie (takich jak Zwierciadła -> Równanie niestandardowe), właściwość równania w JSON jest ciągiem reprezentującym równanie LaTeX, a nie wyrażenie math.js. Aby uwzględnić parametry niestandardowe w równaniu, należy użyć tej samej składni szablonu, jak gdyby równanie LaTeX było zwykłym tekstem. Tak więc część zamknięta w nawiasach klamrowych jest w wyrażeniu math.js, podczas gdy część na zewnątrz jest w LaTeX. Dostęp do parametrów modułu można uzyskać tylko w części math.js, a dostęp do zmiennych niezależnych równania niestandardowego (np. \\(x\\)) można uzyskać tylko w części LaTeX. Oto przykład generowania zwierciadła z równaniem \\(y=\\cos(2\\pi x+\\phi)\\), gdzie \\(\\phi\\) jest parametrem modułu",
+      "future": "W przyszłości może pojawić się możliwość ujednolicenia wprowadzania równań.",
+      "title": "Obiekty z wbudowanymi niestandardowymi równaniami"
+    },
+    "objsWithShapeParam": {
+      "title": "Obiekty z wbudowaną parametryzacją kształtu"
     },
     "opening": {
       "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.",
