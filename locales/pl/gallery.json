@@ -175,6 +175,15 @@
       "title": "Pokój przesłuchań",
       "twowaymirror": "Lustro weneckie"
     },
+    "keplerianTelescope": {
+      "description": "Ta symulacja pokazuje schemat promieni w teleskopie Keplera.",
+      "eye": "oko",
+      "lightfromstar": "Światło od gwiazdy",
+      "realimage": "Obraz rzeczywisty",
+      "thekepleriantelescop": "Teleskop Keplera",
+      "title": "Teleskop Keplera",
+      "virtualimage": "Obraz pozorny"
+    },
     "lensImages": {
       "description": "Symulacja pokazuje obrazy wiązki i źródeł punktowych wytwarzanych przez idealne soczewki.",
       "title": "Obrazy w soczewce"
