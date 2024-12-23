@@ -25,6 +25,21 @@ import sharp from 'sharp';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+const usage = `Usage: node buildImages.mjs [options]
+Options:
+  --gallery <itemId>   Export only the specified gallery item
+  --module <itemId>    Export only the specified module
+  --help              Show this help message
+
+If no options are provided, all gallery and module images will be exported.`;
+
+if (args.includes('--help')) {
+  console.log(usage);
+  process.exit(0);
+}
+
 // List all existing languages, which are the directories in the /locales directory. Put English first.
 const langs = ['en'].concat(fs.readdirSync(path.join(__dirname, '../locales')).filter((file) => !file.includes('.') && file !== 'en'));
 
@@ -49,6 +64,12 @@ for (const lang of langs) {
 }
 
 const modulesDir = path.join(__dirname, '../dist/modules/');
+
+// Check if the required directories exist
+if (Object.keys(galleryDirs).length === 0 || !fs.existsSync(modulesDir)) {
+  console.error('Error: Required directories not found. Please run `npm run build-scenes` first.');
+  process.exit(1);
+}
 
 const canvasLight = createCanvas();
 const canvasBelowLight = createCanvas();
@@ -208,15 +229,27 @@ function exportImagesPromise(dir, itemId, lang, isThumbnail) {
 // Get all JSON files in the gallery directory
 const galleryItems = fs.readdirSync(galleryDirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5)).filter(file => !file.startsWith('module-example-'));
 
-async function exportAllGalleryImages() {
+async function exportAllGalleryImages(itemId) {
   const beginTime = Date.now();
-  for (let item of galleryItems) {
+  if (itemId === undefined || itemId === '') {
+    for (let item of galleryItems) {
+      for (let isThumbnail of [false, true]) {
+        for (let lang of galleryLangs) {
+          if (fs.existsSync(galleryDirs[lang] + item + '.json')) {
+            const time = Date.now();
+            await exportImagesPromise(galleryDirs[lang], item, lang, isThumbnail);
+            console.log('Exported ' + (isThumbnail ? 'thumbnail' : 'preview') + ' for ' + item + ' in ' + lang + ' in ' + (Date.now() - time) + 'ms');
+          }
+        }
+      }
+    }
+  } else {
     for (let isThumbnail of [false, true]) {
       for (let lang of galleryLangs) {
-        if (fs.existsSync(galleryDirs[lang] + item + '.json')) {
+        if (fs.existsSync(galleryDirs[lang] + itemId + '.json')) {
           const time = Date.now();
-          await exportImagesPromise(galleryDirs[lang], item, lang, isThumbnail);
-          console.log('Exported ' + (isThumbnail ? 'thumbnail' : 'preview') + ' for ' + item + ' in ' + lang + ' in ' + (Date.now() - time) + 'ms');
+          await exportImagesPromise(galleryDirs[lang], itemId, lang, isThumbnail);
+          console.log('Exported ' + (isThumbnail ? 'thumbnail' : 'preview') + ' for ' + itemId + ' in ' + lang + ' in ' + (Date.now() - time) + 'ms');
         }
       }
     }
@@ -227,15 +260,39 @@ async function exportAllGalleryImages() {
 // Get all JSON files in the modules directory, note that it is not multilingual
 const moduleItems = fs.readdirSync(modulesDir).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
 
-async function exportAllModuleImages() {
+async function exportAllModuleImages(itemId) {
   const beginTime = Date.now();
-  for (let item of moduleItems) {
-    await exportImagesPromise(modulesDir, item, 'en', true);
+  if (itemId === undefined || itemId === '') {
+    for (let item of moduleItems) {
+      await exportImagesPromise(modulesDir, item, 'en', true);
+    }
+  } else {
+    await exportImagesPromise(modulesDir, itemId, 'en', true);
   }
   console.log('Exported all module images in ' + (Date.now() - beginTime) + 'ms');
 }
 
-await exportAllGalleryImages();
-await exportAllModuleImages();
+const galleryArg = args.indexOf('--gallery');
+const moduleArg = args.indexOf('--module');
+const specificGalleryItem = galleryArg !== -1 ? args[galleryArg + 1] : null;
+const specificModuleItem = moduleArg !== -1 ? args[moduleArg + 1] : null;
 
+if (specificGalleryItem && !galleryItems.includes(specificGalleryItem)) {
+  console.error(`Error: Gallery item '${specificGalleryItem}' not found`);
+  process.exit(1);
+}
 
+if (specificModuleItem && !moduleItems.includes(specificModuleItem)) {
+  console.error(`Error: Module '${specificModuleItem}' not found`);
+  process.exit(1);
+}
+
+// Modified execution flow
+if (specificGalleryItem) {
+  await exportAllGalleryImages(specificGalleryItem);
+} else if (specificModuleItem) {
+  await exportAllModuleImages(specificModuleItem);
+} else {
+  await exportAllGalleryImages();
+  await exportAllModuleImages();
+}
