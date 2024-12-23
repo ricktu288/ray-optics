@@ -187,6 +187,8 @@ function exportImages(dir, itemId, lang, isThumbnail, callback) {
     // Find crop boxes, where the preview one is rectangular and the thumbnail one is square
     let cropBoxPreview = null;
     let cropBoxThumbnail = null;
+    let detector = null;
+    let textLabel = null;
     for (const obj of scene.objs) {
       if (obj.constructor.type === 'CropBox') {
         if (Math.abs((obj.p4.x - obj.p1.x) - (obj.p4.y - obj.p1.y)) < 1e-6) {
@@ -194,6 +196,10 @@ function exportImages(dir, itemId, lang, isThumbnail, callback) {
         } else {
           cropBoxPreview = obj;
         }
+      } else if (obj.constructor.type === 'Detector') {
+        detector = obj;
+      } else if (obj.constructor.type === 'TextLabel') {
+        textLabel = obj;
       }
     }
 
@@ -211,7 +217,19 @@ function exportImages(dir, itemId, lang, isThumbnail, callback) {
       process.exit(1);
     }
 
-    const skipLight = lang !== 'en'; // Different languages only differs in text, so we only need to re-render the light layer for the first language in the list.
+    if (!textLabel && lang !== 'en') {
+      // If there is no text label, the image is exactly the same as the English version, so we can just copy the English image
+      
+      for (let fileType of ['avif', 'jpg']) {
+        const sourceFile = galleryDirs.en + itemId + (isThumbnail ? '-thumbnail' : '') + '.' + fileType;
+        const distinctionFile = dir + itemId + (isThumbnail ? '-thumbnail' : '') + '.' + fileType;
+        fs.copyFileSync(sourceFile, distinctionFile);
+      }
+      callback();
+      return;
+    }
+
+    const skipLight = (lang !== 'en') && !detector; // Different languages only differs in text, so we only need to re-render the light layer for the first language in the list. However, if there is a detector, we need to re-render the light layer for all languages, otherwise the detector readings will be zero in other languages.
 
     // Export preview image
     exportImageFromCropBox(isThumbnail ? cropBoxThumbnail : cropBoxPreview, dir + itemId + (isThumbnail ? '-thumbnail' : ''), skipLight, function () {
