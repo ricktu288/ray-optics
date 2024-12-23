@@ -99,6 +99,7 @@
       "title": "Obiekty z wbudowanymi niestandardowymi równaniami"
     },
     "objsWithShapeParam": {
+      "description": "Dla obiektów, które już obsługują różne sposoby definiowania swojego kształtu (obecnie tylko Szkła -> Soczewka sferyczna). Istnieje specjalna składnia JSON dla takich obiektów, która może być użyta w definicji modułu, nawet jeśli są one zawsze zdefiniowane przez kształt w tablicy `objs` najwyższego poziomu. Oto przykład",
       "title": "Obiekty z wbudowaną parametryzacją kształtu"
     },
     "opening": {
