@@ -46,6 +46,10 @@
       "title": "\"Czarny kot staje się biały\" demo",
       "whenthebagisunderwat": "Gdy torebka znajduje się pod wodą, światło od papieru nie dociera do oczu,\nwięc widzimy tylko postać narysowaną na plastikowej powierzchni."
     },
+    "branchedFlow": {
+      "description": "Gdy światło przechodzi przez ośrodek, którego współczynnik załamania ma losowe fluktuacje przestrzenne (o długości korelacji znacznie większej niż długość fali światła), pojawia się przypominający drzewo wzór zwany przepływem rozgałęzionym. Ta symulacja pokazuje to zjawisko przy użyciu funkcji współczynnika załamania światła, która jest sumą kilku funkcji kosinus o losowych amplitudach, wektorach falowych i fazach.",
+      "title": "Przepływ rozgałęziony"
+    },
     "brokenPencil": {
       "brokenpencilyellowim": "złamany ołówek (żółty)\nobraz na siatkówce",
       "description": "Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z boku na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji złamanie jest bardziej wyraźne. Możesz sprawdzić symulację [Zgięty ołówek](/gallery/bended-pencil), gdzie to drugie złudzenie jest bardziej wyraźne.",
@@ -73,6 +77,7 @@
     },
     "chromaticAberration": {
       "description": "Ta symulacja pokazuje aberrację chromatyczną w soczewce sferycznej. Tutaj biały kolor powstaje przez mieszanie kolorów czerwonego, pomarańczowego, żółtego, zielonego, cyjanowego, niebieskiego i fioletowego. Ogniskowa dla światła czerwonego jest największa, a dla fioletowego najmniejsza.",
+      "dragtoadjustbeamwidt1": "Przeciągnij, aby ustawić szerokość wiązki",
       "title": "Aberracja chromatyczna"
     },
     "chromaticDispersion": {
@@ -112,6 +117,7 @@
     },
     "fresnelLens": {
       "description": "Jest to symulacja i porównanie soczewki sferycznej i soczewki Fresnela. Łatwo zauważyć jedną z zalet soczewki Fresnela: działa ona podobnie jak zwykła soczewka sferyczna, a jednocześnie zajmuje znacznie mniej miejsca - a co za tym idzie - mniej waży.",
+      "thisfresnellensismad": "Ta soczewka Fresnela jest wykonana z poniższego szkła półkolistego.\nMożna wybrać soczewkę i dostosować parametr N_silce.",
       "title": "Soczewka Fresnela"
     },
     "ganBasedLcdPixel": {
@@ -127,6 +133,8 @@
       "yellowphosphor": "Fosfor żółty"
     },
     "grinSlab": {
+      "approximatedmultilay": "Przybliżona wielowarstwowa płyta GRIN (Można wybrać i zmienić N, liczbę warstw.)",
+      "classicalgrinslabyou": "Klasyczna płyta GRIN (można wybrać i zmienić rozmiar kroku rozwiązania numerycznego.)",
       "description": "Jest to symulacja prostokątnego materiału dielektrycznego o współczynniku załamania \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), gdzie \\(n_0=2\\) jest współczynnikiem załamania światła na jego osi centralnej, a \\(\\rho \\) jest odległością radialną od jego osi centralnej, taką, że \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\), gdzie \\(R=100 \\) jest jego promieniem. Górny dielektryk w tej symulacji składa się z cienkich prostokątów dielektrycznych o stałym współczynniku załamania światła, zgodnie z \\(n(\\rho)\\), podczas gdy dolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(\\rho)\\).",
       "title": "Płyta GRIN (gradientowa)"
     },
@@ -190,15 +198,21 @@
     },
     "logarithmicSpiralLens": {
       "description": "Funkcja współczynnika załamania światła, która wspiera promienie o torach spirali logarytmicznych o postaci \\(r(θ) = r_0\\,e^{-k\\theta}\\), gdzie \\(r_0,k > 0\\) i \\(\\alpha = \\arctan k\\) to stały kąt między dwiema stycznymi w punkcie przecięcia koncentrycznej spirali logarytmicznej z okręgiem (jak pokazuje [ta](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animacja), to \\(n(r) &prop; \\frac{1}{r}\\) (można to wykazać zapisując ścieżkę optyczną we współrzędnych biegunowych i wykorzystując zasadę Fermata).",
+      "dragtochangetheiniti": "Przeciągnij, aby zmienić\npoczątkowy kierunek promienia",
       "thecircularblockeris": "Kołowy bloker znajduje się w środku,\naby uniknąć osobliwości współczynnika załamania",
-      "title": "Promień o torze spirali logarytmicznej"
+      "title": "Promień o torze spirali logarytmicznej",
+      "youcanselectthegring": "Możesz wybrać szkło GRIN i zmienić\nrozmiar kroku rozwiązania numerycznego"
     },
     "luneburgLens": {
+      "approximatedmultilay1": "Przybliżona wielowarstwowa soczewka Luneburga (Można wybrać i zmienić N, liczbę warstw.)",
+      "classicalluneburglen": "Klasyczna soczewka Luneburga (Można wybrać i zmienić rozmiar kroku rozwiązania numerycznego.)",
       "description": "Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\nho\\) to odległość od środka soczewki.\n\nGórny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,\\ldots,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nDolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).",
       "title": "Soczewka Luneburga"
     },
     "maxwellFisheyeLens": {
-      "description": "To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.\n\nGórny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,...,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nDolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).",
+      "approximatedmultilay2": "Przybliżony wielowarstwowa soczewka rybie oko Maxwella (Można wybrać i zmienić N, liczbę warstw.)",
+      "classicalmaxwellfish": "Klasyczna soczewka rybie oko Maxwella ( Można wybrać i zmienić rozmiar kroku rozwiązania numerycznego.)",
+      "description": "To jest symulacja soczewki typu rybie oko Maxwella, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\\rho\\) to odległość od środka soczewki.\n\nGórny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,\\ldots,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nDolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).",
       "title": "Soczewka rybie oko Maxwella"
     },
     "mazeSolution": {
@@ -211,6 +225,8 @@
     "minimumDeviationAngle": {
       "description": "Definicja kąta odchylenia promienia padającego na element optyczny zależy od kontekstu - na poniższym zrzucie ekranu możesz zobaczyć jego definicję dla pryzmatu trójkątnego i sferycznego. W przykładach zawartych w tej symulacji kąt odchylenia jako funkcja kąta padania promienia wchodzącego do elementu optycznego ma lokalne minimum, które nazywa się \"minimalnym kątem odchylenia\". To lokalne minimum może wyjaśniać zjawiska optyczne, takie jak [tęcze](/gallery/rainbows) i halo - z powodu tego lokalnego minimum, odchylone promienie gromadzą się w określonych kierunkach, tworząc \"optyczną kaustykę\" (jak widać w przykładzie C w symulacji), którą postrzegamy jako tęcze/halo.",
       "deviationangle": "Kąt odchylenia",
+      "dragtoadjustbeamwidt": "Przeciągnij, aby ustawić szerokości wiązki",
+      "dragtorotate": "Przeciągnij, aby obrócić",
       "examplea": "Przykład - A",
       "exampleb": "Przykład - B",
       "examplec": "Przykład - C",
@@ -247,6 +263,14 @@
       "planoconcaveresonato": "Rezonator płasko-wklęsły",
       "title": "Wnęka optyczna z dwoma zwierciadłami"
     },
+    "pairOfAxiconsMakingARainbowRing": {
+      "description": "Ta symulacja wykorzystuje dwa płasko-wypukłe aksikony, źródło białego światła i aperturę do stworzenia okrągłej tęczy. Aksikony są soczewkami stożkowymi. Padające białe światło musi być pierścieniem, który został utworzony przez wąską aperturę pierścieniową.\n\nPrzesuwanie prawego aksikonu w lewo i w prawo spowoduje zmianę rozmiaru wyjściowego tęczowego pierścienia.",
+      "leftaxicon": "Lewy aksikon",
+      "rightaxicon": "Prawy aksikon",
+      "ringaperture": "Apertura pierścieniowa",
+      "title": "Para aksikonów tworzących tęczowy pierścień",
+      "whitelightsource": "Źródło\nświatła\nbiałego"
+    },
     "parabolicMirror": {
       "description": "Symulacja pokazuje właściwości ogniskowania zwierciadła parabolicznego.",
       "title": "Zwierciadło paraboliczne"
@@ -282,7 +306,8 @@
     },
     "rayRelaying": {
       "description": "Jest to symulacja przekazywania promieni przez szereg identycznych soczewek o ogniskowej \\(f\\) i odległości \\(d\\) między kolejnymi soczewkami. Nierozbieżna trajektoria promieni wiązki zachodzi wtedy i tylko wtedy, gdy \\(d\\leq 4f\\) (w przybliżeniu przyosiowym).",
-      "title": "Przekazywanie promieni"
+      "title": "Przekazywanie promieni",
+      "youcanselectanylenst": "Można wybrać dowolną soczewkę, aby wyświetlić i dostosować parametry tablicy."
     },
     "reflect": {
       "description": "Symulacja pokazuje odbicie i załamanie na powierzchni.",
@@ -311,6 +336,19 @@
       "t8objects": "8 obiektów",
       "title": "Rochesterski płaszcz",
       "visibilityarea": "Obszar widoczności"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmosfera",
+      "description": "Jest to jakościowa symulacja efektu, w którym obiekt znajdujący się poza horyzontem może być widoczny jako miraż górny.",
+      "earthssurface": "Powierzchnia Ziemi",
+      "observer1": "Obserwator",
+      "title": "Miraż morski",
+      "vacuum": "Próżnia",
+      "virtualimage1": "Obraz pozorny"
+    },
+    "simpleDoubleGaussLens": {
+      "description": "Jest to demonstracja prostej podwójnej soczewki Gaussa.",
+      "title": "Prosta soczewka podwójna Gaussa"
     },
     "singleRayDemo": {
       "description": "Symulacja pokazująca odbicie i załamanie pojedynczego promienia.",
@@ -357,6 +395,7 @@
     },
     "zoomLens": {
       "description": "Ta symulacja przedstawia obiektyw zmiennoogniskowy, w którym można zmieniać powiększenie, przeciągając pośrodku soczewkę wklęsłą.",
+      "dragtomovethelens": "Przeciągnij, aby przesunąć soczewkę",
       "title": "Obiektyw zmiennoogniskowy",
       "zoom": "← zoom →"
     }
