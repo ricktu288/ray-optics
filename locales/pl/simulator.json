@@ -315,6 +315,9 @@
       "description": "Pokaż edytor kodu dla reprezentacji JSON sceny, który jest potrzebny podczas tworzenia niestandardowego modułu (patrz Narzędzia -> Inne -> Importuj moduły -> Twórz własne moduły).",
       "title": "Pokaż edytor JSON"
     },
+    "showRayArrows": {
+      "title": "Pokaż strzałki promienia"
+    },
     "showStatusBox": {
       "description": "Wyświetla pole stanu, które zawiera współrzędne myszy, informacje o parametrach i obciętą jasność (całkowitą jasność promieni obciętych w nieskończonej serii wewnętrznych odbić).",
       "title": "Pokaż pole stanu"
