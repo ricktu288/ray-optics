@@ -15,7 +15,7 @@
  */
 
 /**
- * @file {@link Editor} is the main class for visually editing the {@link Scene} data. It manages the user interactions with the canvas, such as dragging objects, selecting objects, and adding objects. It also manages the undo and redo operations and the crop mode.
+ * @file {@link Editor} is the main class for visually editing the {@link Scene} data. It manages the user interactions with the canvas, such as dragging objects, selecting objects, and adding objects. It also manages the undo and redo operations and the crop mode. Rendering is not done by this class, but by the {@link Simulator} class. Also, the UI update (e.g. object bar) is not done by this class. When UI update is needed, this class emits events to notify the UI to update.
  */
 
 import geometry from './geometry.js';
@@ -475,10 +475,32 @@ class Editor {
   onCanvasMouseDown(e) {
     if (e.changedTouches) {
       var et = e.changedTouches[0];
+      this.lastDeviceIsTouch = true;
     } else {
       var et = e;
+      this.lastDeviceIsTouch = false;
     }
-    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse
+
+    // Get raw coordinates first
+    const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
+    const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+    
+    // Truncate to binary fractions
+    const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
+    const truncY = this.truncateToBinaryFraction(rawY, this.scene.scale);
+    
+    var mousePos_nogrid = geometry.point(truncX, truncY);
+    var mousePos2;
+    if (this.scene.snapToGrid && !(e.altKey && !this.isConstructing)) {
+      mousePos2 = geometry.point(
+        Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize,
+        Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize
+      );
+    }
+    else {
+      mousePos2 = mousePos_nogrid;
+    }
+
     this.lastMousePos = mousePos_nogrid;
     if (this.positioningObjIndex != -1) {
       this.emit('requestPositioningComfirm', { ctrl: e.ctrlKey, shift: e.shiftKey });
@@ -608,10 +630,22 @@ class Editor {
     } else {
       var et = e;
     }
-    var mousePos_nogrid = geometry.point((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse
+    
+    // Get raw coordinates first
+    const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
+    const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+    
+    // Truncate to binary fractions
+    const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
+    const truncY = this.truncateToBinaryFraction(rawY, this.scene.scale);
+    
+    var mousePos_nogrid = geometry.point(truncX, truncY);
     var mousePos2;
     if (this.scene.snapToGrid && !(e.altKey && !this.isConstructing)) {
-      mousePos2 = geometry.point(Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize, Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize);
+      mousePos2 = geometry.point(
+        Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize,
+        Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize
+      );
     }
     else {
       mousePos2 = mousePos_nogrid;
@@ -727,14 +761,56 @@ class Editor {
   }
 
   /**
+   * Truncates a number to the nearest binary fraction while ensuring the error is less than 1 pixel.
+   * @param {number} value - The value to truncate
+   * @param {number} scale - The scale factor (pixels per unit)
+   * @returns {number} The truncated value
+   */
+  truncateToBinaryFraction(value, scale) {
+    // Find the smallest binary fraction that keeps error < 1 pixel
+    const minError = 1 / scale;
+    let step = 1;
+    while (step > minError) {
+      step /= 2;
+    }
+    return Math.round(value / step) * step;
+  }
+
+  /**
    * Handle the equivalent of the mouseup event on the canvas, which can be triggered by both mouse and single touch.
    * @param {MouseEvent} e - The event.
    */
   onCanvasMouseUp(e) {
+    if (e.changedTouches) {
+      var et = e.changedTouches[0];
+    } else {
+      var et = e;
+    }
+
+    // Get raw coordinates first
+    const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
+    const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+    
+    // Truncate to binary fractions
+    const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
+    const truncY = this.truncateToBinaryFraction(rawY, this.scene.scale);
+    
+    var mousePos_nogrid = geometry.point(truncX, truncY);
+    var mousePos2;
+    if (this.scene.snapToGrid && !(e.altKey && !this.isConstructing)) {
+      mousePos2 = geometry.point(
+        Math.round(((et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize,
+        Math.round(((et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale) / this.scene.gridSize) * this.scene.gridSize
+      );
+    }
+    else {
+      mousePos2 = mousePos_nogrid;
+    }
+
     if (this.isConstructing) {
       if ((e.which && e.which == 1) || (e.changedTouches)) {
         // If an object is being created, pass the action to it
-        const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseUp(new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
+        const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseUp(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
         if (ret && ret.isDone) {
           this.isConstructing = false;
         }
@@ -777,11 +853,20 @@ class Editor {
    */
   onCanvasDblClick(e) {
     //console.log("dblclick");
-    this.mousePos = geometry.point((e.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale, (e.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale); // The real position of the mouse (never use grid here)
+    // Get raw coordinates first
+    const rawX = (e.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
+    const rawY = (e.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+    
+    // Truncate to binary fractions
+    const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
+    const truncY = this.truncateToBinaryFraction(rawY, this.scene.scale);
+    
+    this.mousePos = geometry.point(truncX, truncY);
     if (this.isConstructing) {
     }
     else if (new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch).isOnPoint(this.lastMousePos)) {
       this.dragContext = {};
+
       if (this.scene.mode == 'observer') {
         if (geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
 

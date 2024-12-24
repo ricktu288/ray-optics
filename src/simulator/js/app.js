@@ -173,8 +173,7 @@ async function startApp() {
 
   editor.on('mouseCoordinateChange', function (e) {
     if (e.mousePos) {
-      const mousePosDigits = Math.max(Math.round(Math.log10(scene.scale)), 0);
-      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: "(" + e.mousePos.x.toFixed(mousePosDigits) + ", " + e.mousePos.y.toFixed(mousePosDigits) + ")"});
+      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: "(" + e.mousePos.x + ", " + e.mousePos.y + ")"});
     } else {
       document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: '-'});
     }
