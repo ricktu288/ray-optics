@@ -477,9 +477,9 @@ class Simulator {
         if (s_lensq == Infinity) {
           if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
             if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawRay(this.pendingRays[j], color); // Draw the ray
+              this.canvasRendererMain.drawRay(this.pendingRays[j], color, this.scene.showRayArrows); // Draw the ray
             } else {
-              this.canvasRendererMain.drawRay(this.pendingRays[j], 'rgb(255,255,128)'); // Draw the ray
+              this.canvasRendererMain.drawRay(this.pendingRays[j], 'rgb(255,255,128)', this.scene.showRayArrows); // Draw the ray
             }
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
@@ -505,9 +505,9 @@ class Simulator {
           // Here the ray will be shot on s_obj at s_point after traveling for s_len
           if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
             if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color); // Draw the ray
+              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color, this.scene.showRayArrows); // Draw the ray
             } else {
-              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), 'rgb(255,255,128)'); // Draw the ray
+              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), 'rgb(255,255,128)', this.scene.showRayArrows); // Draw the ray
             }
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {

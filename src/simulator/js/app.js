@@ -272,6 +272,8 @@ async function startApp() {
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       document.getElementById('simulateColors').checked = scene.simulateColors;
       document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
+      document.getElementById('showRayArrows').checked = scene.showRayArrows;
+      document.getElementById('showRayArrows_mobile').checked = scene.showRayArrows;
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
@@ -570,6 +572,19 @@ async function startApp() {
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
   };
+
+  document.getElementById('showRayArrows').onclick = function () {
+    this.blur();
+
+    document.getElementById('showRayArrows').checked = this.checked;
+    document.getElementById('showRayArrows_mobile').checked = this.checked;
+
+    scene.showRayArrows = this.checked;
+    editor.selectObj(editor.selectedObjIndex);
+    simulator.updateSimulation(false, true);
+    editor.onActionComplete();
+  };
+  document.getElementById('showRayArrows_mobile').onclick = document.getElementById('showRayArrows').onclick;
 
   document.getElementById('show_json_editor').onclick = function () {
     this.blur();
@@ -1155,6 +1170,7 @@ function initUIText() {
   setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
+  setText('showRayArrows_text', i18next.t('simulator:settings.showRayArrows.title'));
   setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
@@ -1227,6 +1243,7 @@ function initUIText() {
   setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
+  setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title'));
   setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
   setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
@@ -1836,6 +1853,9 @@ function init() {
 
   document.getElementById('simulateColors').checked = false;
   document.getElementById('simulateColors_mobile').checked = false;
+
+  document.getElementById('showRayArrows').checked = false;
+  document.getElementById('showRayArrows_mobile').checked = false;
 
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
