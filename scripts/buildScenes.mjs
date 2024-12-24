@@ -176,6 +176,14 @@ imageFiles.forEach((file) => {
 console.log('All Gallery scenes built successfully.');
 
 // Build the scenes for the modules. Currently just copy the files from /data/moduleScenes to /dist/modules.
+
+// Create the /dist/modules folder if it doesn't exist.
+const modulesFolder = path.join(__dirname, '../dist/modules');
+if (!fs.existsSync(modulesFolder)) {
+  fs.mkdirSync(modulesFolder, { recursive: true });
+}
+
+// Copy the files from /data/moduleScenes to /dist/modules
 const moduleFiles = fs.readdirSync(path.join(__dirname, '../data/moduleScenes'));
 moduleFiles.forEach((file) => {
   fs.copyFileSync(path.join(__dirname, `../data/moduleScenes/${file}`), path.join(__dirname, `../dist/modules/${file}`));

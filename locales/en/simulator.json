@@ -300,6 +300,9 @@
       "title": "Length Scale"
     },
     "more": "More",
+    "showRayArrows": {
+      "title": "Show Ray Arrows"
+    },
     "observerSize": {
       "title": "Observer Size"
     },

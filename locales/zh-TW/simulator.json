@@ -322,6 +322,9 @@
     "title": "設定",
     "zoom": {
       "title": "縮放"
+    },
+    "showRayArrows": {
+      "title": "顯示光線箭頭"
     }
   },
   "statusBox": {
