@@ -329,28 +329,44 @@ class Editor {
 
 
     let lastZoomTime = 0;
-    let zoomThrottle = 100; // 100 ms between zooms
+    let zoomThrottle = 16; // ~60fps for smoother feel
 
     this.canvas.addEventListener('wheel', function (e) {
+      e.preventDefault(); // Prevent default scrolling
+      
       var now = Date.now();
-      if (now - lastZoomTime < zoomThrottle) return; // Too soon since the last zoom
+      if (now - lastZoomTime < zoomThrottle) return;
       lastZoomTime = now;
 
-      // cross-browser wheel delta
-      var e = window.event || e; // old IE support
-      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-      var d = self.scene.scale * self.scene.lengthScale;
-      if (delta < 0) {
-        d = self.scene.scale * self.scene.lengthScale - 0.25;
-      } else if (delta > 0) {
-        d = self.scene.scale * self.scene.lengthScale + 0.25;
+      // Get precise delta from wheel event
+      const deltaY = e.deltaY || e.detail || e.wheelDelta;
+      
+      // Calculate zoom speed based on current scale
+      const currentScale = self.scene.scale * self.scene.lengthScale;
+      const zoomSpeed = Math.max(0.05, currentScale * 0.05); // Faster zoom at higher scales
+      
+      // Calculate new scale with pixel-precise delta
+      let newScale = currentScale;
+      if (deltaY > 0) {
+        newScale = currentScale - zoomSpeed;
+      } else if (deltaY < 0) {
+        newScale = currentScale + zoomSpeed;
       }
-      d = Math.max(0.25, Math.min(5.00, d)) * 100;
-      self.setScaleWithCenter(d / self.scene.lengthScale / 100, (e.pageX - e.target.offsetLeft) / self.scene.scale, (e.pageY - e.target.offsetTop) / self.scene.scale);
+      
+      // Clamp scale between min and max values
+      newScale = Math.max(0.25, Math.min(5.00, newScale));
+      
+      // Convert to percentage scale
+      const finalScale = newScale * 100;
+      
+      // Apply zoom centered on mouse position
+      self.setScaleWithCenter(
+        finalScale / self.scene.lengthScale / 100,
+        (e.pageX - e.target.offsetLeft) / self.scene.scale,
+        (e.pageY - e.target.offsetTop) / self.scene.scale
+      );
+      
       self.onActionComplete();
-      //window.toolBarViewModel.zoom.value(d);
-      self.onCanvasMouseMove(e);
-      return false;
     }, false);
 
     let initialPinchDistance = null;
