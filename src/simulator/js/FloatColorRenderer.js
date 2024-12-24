@@ -4,7 +4,7 @@ class FloatColorRenderer {
       alpha: true,
       depth: false,
       stencil: false,
-      antialias: false,
+      antialias: true,
       preserveDrawingBuffer: true,
       premultipliedAlpha: false,
       failIfMajorPerformanceCaveat: false
@@ -21,17 +21,20 @@ class FloatColorRenderer {
       throw new Error('OES_texture_float not supported');
     }
 
+    this.canvas = ctx.canvas;
     this.origin = origin;
     this.scale = scale;
     this.lengthScale = lengthScale;
     this.rayCache = [];
     this.segmentCache = [];
     this.pointCache = [];
+    this.arrowCache = [];
     this.hasFirstFlush = false;
     
     // Create reusable buffers
     this.lineBuffer = this.gl.createBuffer();
     this.pointBuffer = this.gl.createBuffer();
+    this.arrowBuffer = this.gl.createBuffer();
     
     // Create color parser canvas once
     this.colorCanvas = document.createElement('canvas');
@@ -285,22 +288,252 @@ class FloatColorRenderer {
 
   static MAX_CACHE_SIZE = 500;
 
-  drawRay(r, color = 'black') {
-    // Cache the ray for later drawing
-    this.rayCache.push({ r, color });
+  drawRay(r, color = 'black', showArrow = false, lineDash = []) {
+    // Check if ray has a valid direction
+    const dx = r.p2.x - r.p1.x;
+    const dy = r.p2.y - r.p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length < 1e-5 * this.lengthScale) {
+      return;
+    }
+
+    const unitX = dx / length;
+    const unitY = dy / length;
+
+    // Calculate canvas limit for ray length
+    const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+
+    // Calculate arrow parameters
+    const arrowSize = 5 * this.lengthScale;
+    const arrowDistance = 150 * this.lengthScale;
+
+    if (showArrow && arrowSize >= this.lengthScale * 1.2) {
+      // Draw first part (from start to arrow)
+      const firstSegment = {
+        p1: r.p1,
+        p2: {
+          x: r.p1.x + unitX * arrowDistance,
+          y: r.p1.y + unitY * arrowDistance
+        }
+      };
+
+      if (lineDash && lineDash.length > 0) {
+        this.drawDashedSegment(firstSegment, color, lineDash);
+      } else {
+        this.segmentCache.push({ s: firstSegment, color });
+      }
+
+      // Add arrow
+      const arrowX = r.p1.x + unitX * arrowDistance;
+      const arrowY = r.p1.y + unitY * arrowDistance;
+      const perpX = -unitY;
+      const perpY = unitX;
+      const baseWidth = this.lengthScale;
+      const tipWidth = arrowSize;
+
+      this.arrowCache.push({
+        points: [
+          // Front points (wide part)
+          arrowX - (tipWidth/2) * perpX,
+          arrowY - (tipWidth/2) * perpY,
+          arrowX + (tipWidth/2) * perpX,
+          arrowY + (tipWidth/2) * perpY,
+          // Back points (narrow part)
+          arrowX + arrowSize * unitX + (baseWidth/2) * perpX,
+          arrowY + arrowSize * unitY + (baseWidth/2) * perpY,
+          arrowX + arrowSize * unitX - (baseWidth/2) * perpX,
+          arrowY + arrowSize * unitY - (baseWidth/2) * perpY
+        ],
+        color
+      });
+
+      // Draw second part (from arrow to infinity)
+      const secondRay = {
+        p1: {
+          x: arrowX + arrowSize * unitX,
+          y: arrowY + arrowSize * unitY
+        },
+        p2: {
+          x: r.p1.x + unitX * cvsLimit,
+          y: r.p1.y + unitY * cvsLimit
+        }
+      };
+
+      if (lineDash && lineDash.length > 0) {
+        this.drawDashedSegment(secondRay, color, lineDash);
+      } else {
+        this.rayCache.push({ r: secondRay, color });
+      }
+    } else {
+      // Draw without arrow
+      if (lineDash && lineDash.length > 0) {
+        // For dashed lines, create segments
+        let dashPos = 0;
+        let isDraw = true;
+        let currentPos = 0;
+        
+        while (currentPos < cvsLimit) {
+          const dashLength = lineDash[dashPos] * this.lengthScale;
+          
+          if (isDraw) {
+            const segStart = {
+              x: r.p1.x + currentPos * unitX,
+              y: r.p1.y + currentPos * unitY
+            };
+            const segEnd = {
+              x: r.p1.x + Math.min(currentPos + dashLength, cvsLimit) * unitX,
+              y: r.p1.y + Math.min(currentPos + dashLength, cvsLimit) * unitY
+            };
+            this.segmentCache.push({ 
+              s: { p1: segStart, p2: segEnd }, 
+              color 
+            });
+          }
+          
+          currentPos += dashLength;
+          dashPos = (dashPos + 1) % lineDash.length;
+          isDraw = !isDraw;
+        }
+      } else {
+        this.rayCache.push({ r, color });
+      }
+    }
     
     // If cache is too large, flush immediately
-    if (this.rayCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+    if (this.rayCache.length >= FloatColorRenderer.MAX_CACHE_SIZE || 
+        this.segmentCache.length >= FloatColorRenderer.MAX_CACHE_SIZE ||
+        this.arrowCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
       this.flush();
     }
   }
 
-  drawSegment(s, color = 'black') {
-    // Cache the segment for later drawing
-    this.segmentCache.push({ s, color });
+  drawDashedSegment(s, color, lineDash) {
+    const dx = s.p2.x - s.p1.x;
+    const dy = s.p2.y - s.p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length < 1e-5 * this.lengthScale) {
+      return;
+    }
+
+    const unitX = dx / length;
+    const unitY = dy / length;
+    
+    let dashPos = 0;
+    let isDraw = true;
+    let currentPos = 0;
+    
+    while (currentPos < length) {
+      const dashLength = lineDash[dashPos] * this.lengthScale;
+      const remainingLength = length - currentPos;
+      
+      if (isDraw) {
+        const segStart = {
+          x: s.p1.x + currentPos * unitX,
+          y: s.p1.y + currentPos * unitY
+        };
+        const segEnd = {
+          x: s.p1.x + Math.min(currentPos + dashLength, length) * unitX,
+          y: s.p1.y + Math.min(currentPos + dashLength, length) * unitY
+        };
+        this.segmentCache.push({ 
+          s: { p1: segStart, p2: segEnd }, 
+          color 
+        });
+      }
+      
+      currentPos += dashLength;
+      dashPos = (dashPos + 1) % lineDash.length;
+      isDraw = !isDraw;
+      
+      if (currentPos >= length) break;
+    }
+  }
+
+  drawSegment(s, color = 'black', showArrow = false, lineDash = []) {
+    const dx = s.p2.x - s.p1.x;
+    const dy = s.p2.y - s.p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length < 1e-5 * this.lengthScale) {
+      return;
+    }
+
+    const arrowSize = Math.min(length * 0.15, 5 * this.lengthScale);
+    const arrowPosition = 0.67;
+
+    if (showArrow && arrowSize >= this.lengthScale * 1.2) {
+      const unitX = dx / length;
+      const unitY = dy / length;
+
+      // Calculate arrow position
+      const arrowX = s.p1.x + dx * arrowPosition;
+      const arrowY = s.p1.y + dy * arrowPosition;
+
+      // Draw first part (from start to arrow)
+      const firstSegment = {
+        p1: s.p1,
+        p2: {
+          x: arrowX - arrowSize/2 * unitX,
+          y: arrowY - arrowSize/2 * unitY
+        }
+      };
+
+      if (lineDash && lineDash.length > 0) {
+        this.drawDashedSegment(firstSegment, color, lineDash);
+      } else {
+        this.segmentCache.push({ s: firstSegment, color });
+      }
+
+      // Add arrow
+      const perpX = -unitY;
+      const perpY = unitX;
+      const baseWidth = this.lengthScale;
+      const tipWidth = arrowSize;
+
+      this.arrowCache.push({
+        points: [
+          // Front points (wide part)
+          arrowX - arrowSize/2 * unitX - (tipWidth/2) * perpX,
+          arrowY - arrowSize/2 * unitY - (tipWidth/2) * perpY,
+          arrowX - arrowSize/2 * unitX + (tipWidth/2) * perpX,
+          arrowY - arrowSize/2 * unitY + (tipWidth/2) * perpY,
+          // Back points (narrow part)
+          arrowX + arrowSize/2 * unitX + (baseWidth/2) * perpX,
+          arrowY + arrowSize/2 * unitY + (baseWidth/2) * perpY,
+          arrowX + arrowSize/2 * unitX - (baseWidth/2) * perpX,
+          arrowY + arrowSize/2 * unitY - (baseWidth/2) * perpY
+        ],
+        color
+      });
+
+      // Draw second part (from arrow to end)
+      const secondSegment = {
+        p1: {
+          x: arrowX + arrowSize/2 * unitX,
+          y: arrowY + arrowSize/2 * unitY
+        },
+        p2: s.p2
+      };
+
+      if (lineDash && lineDash.length > 0) {
+        this.drawDashedSegment(secondSegment, color, lineDash);
+      } else {
+        this.segmentCache.push({ s: secondSegment, color });
+      }
+    } else {
+      // Draw without arrow
+      if (lineDash && lineDash.length > 0) {
+        this.drawDashedSegment(s, color, lineDash);
+      } else {
+        this.segmentCache.push({ s, color });
+      }
+    }
     
     // If cache is too large, flush immediately
-    if (this.segmentCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+    if (this.segmentCache.length >= FloatColorRenderer.MAX_CACHE_SIZE ||
+        this.arrowCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
       this.flush();
     }
   }
@@ -362,7 +595,7 @@ class FloatColorRenderer {
       });
     }
 
-    // Draw rays and segments (rest of the existing flush code)
+    // Draw rays and segments
     gl.useProgram(this.rayProgram);
 
     // Set shared uniforms
@@ -427,6 +660,22 @@ class FloatColorRenderer {
       gl.drawArrays(gl.LINES, 0, 2);
     });
 
+    // Draw arrows
+    if (this.arrowCache.length > 0) {
+      // Use the same program as rays and points
+      gl.useProgram(this.rayProgram);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.arrowBuffer);
+      gl.enableVertexAttribArray(this.positionAttributeLocation);
+      gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+      
+      this.arrowCache.forEach(({ points, color }) => {
+        const [r1, g, b] = this.parseColor(color);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
+        gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+      });
+    }
+
     // Second pass: render floating point texture to screen with normalization
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -453,6 +702,7 @@ class FloatColorRenderer {
     this.rayCache.length = 0;
     this.segmentCache.length = 0;
     this.pointCache.length = 0;
+    this.arrowCache.length = 0;
   }
 
   destroy() {
@@ -461,6 +711,7 @@ class FloatColorRenderer {
     // Delete buffers
     gl.deleteBuffer(this.lineBuffer);
     gl.deleteBuffer(this.pointBuffer);
+    gl.deleteBuffer(this.arrowBuffer);
     gl.deleteBuffer(this.quadBuffer);
     
     // Delete textures

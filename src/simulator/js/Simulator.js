@@ -491,7 +491,7 @@ class Simulator {
         if (this.scene.simulateColors) {
           var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && !this.useFloatColorRenderer);
         } else {
-          this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
+          //this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
         // If not shot on any object
         if (s_lensq == Infinity) {
