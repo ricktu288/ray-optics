@@ -19,6 +19,7 @@
  */
 
 import CanvasRenderer from './CanvasRenderer.js';
+import FloatColorRenderer from './FloatColorRenderer.js';
 import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
 import * as sceneObjs from './sceneObjs.js';
@@ -72,8 +73,9 @@ class Simulator {
    * @param {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment.
    * @param {boolean} enableTimer - Whether to enable the timer for the simulation.
    * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
+   * @param {boolean} [useFloatColorRenderer=false] - Whether to use the FloatColorRenderer for the light layer.
    */
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity) {
+  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, useFloatColorRenderer = true) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -108,6 +110,9 @@ class Simulator {
     /** @property {number} rayCountLimit - The maximum number of processed rays in the simulation. When this limit is reached, the simulation will stop. */
     this.rayCountLimit = rayCountLimit;
 
+    /** @property {boolean} useFloatColorRenderer - Whether to use the FloatColorRenderer for the light layer. */
+    this.useFloatColorRenderer = useFloatColorRenderer;
+
     /** @property {Ray[]} pendingRays - The rays to be processed. */
     this.pendingRays = [];
 
@@ -137,6 +142,11 @@ class Simulator {
 
     /** @property {object} eventListeners - The event listeners of the simulator. */
     this.eventListeners = {};
+
+    this.canvasRendererMain = null;
+    this.canvasRendererBelowLight = null;
+    this.canvasRendererAboveLight = null;
+    this.canvasRendererGrid = null;
   }
 
   /**
@@ -209,13 +219,23 @@ class Simulator {
       this.simulationTimerId = -1;
     }
 
+    if (!skipLight && this.useFloatColorRenderer && this.canvasRendererMain && this.canvasRendererMain.destroy) {
+      // Destroy the canvas renderer to prevent memory leak
+      this.canvasRendererMain.destroy();
+      this.canvasRendererMain = null;
+    }
+
     if (this.ctxBelowLight && this.ctxAboveLight) {
       this.canvasRendererBelowLight = new CanvasRenderer(this.ctxBelowLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, this.scene.backgroundImage);
       this.canvasRendererAboveLight = new CanvasRenderer(this.ctxAboveLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
     }
 
     if (!skipLight) {
-      this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
+      if (this.useFloatColorRenderer) {
+        this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
+      } else {
+        this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
+      }
 
       if (this.isSVG) {
         this.ctxMain.translate(this.scene.origin.x / (this.scene.scale * this.dpr), this.scene.origin.y / (this.scene.scale * this.dpr));
@@ -469,7 +489,7 @@ class Simulator {
           }
         }
         if (this.scene.simulateColors) {
-          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG);
+          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && !this.useFloatColorRenderer);
         } else {
           this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
@@ -541,7 +561,7 @@ class Simulator {
 
 
                   if (this.scene.simulateColors) {
-                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG);
+                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
                   } else {
                     this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                   }
@@ -556,7 +576,7 @@ class Simulator {
                     if (this.scene.simulateColors) {
                       this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                     } else {
-                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)', 3); // Draw the image
+                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                     }
                   }
                   else if (rpd < s_lensq) {
@@ -604,7 +624,7 @@ class Simulator {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
             if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
               if (this.scene.simulateColors) {
-                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG);
+                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
               } else {
                 this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
               }
@@ -621,7 +641,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)', 3); // Draw the image
+                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
                 }
               }
               else if (rpd < s_lensq) {
@@ -684,6 +704,9 @@ class Simulator {
     if (this.scene.simulateColors && !this.isSVG) {
       this.canvasRendererMain.applyColorTransformation();
       this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
+    }
+    if (this.useFloatColorRenderer) {
+      this.canvasRendererMain.flush();
     }
     this.ctxMain.globalAlpha = 1.0;
     

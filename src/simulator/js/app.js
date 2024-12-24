@@ -115,13 +115,17 @@ async function startApp() {
 
   scene = new Scene();
 
+  var useFloatColorRenderer = true;
+
   simulator = new Simulator(scene,
-    canvasLight.getContext('2d'),
+    useFloatColorRenderer ? canvasLight.getContext('webgl') || canvasLight.getContext('experimental-webgl') : canvasLight.getContext('2d'),
     canvasBelowLight.getContext('2d'),
     canvasAboveLight.getContext('2d'),
     canvasGrid.getContext('2d'),
     document.createElement('canvas').getContext('2d'),
-    true
+    true,
+    Infinity,
+    useFloatColorRenderer
   );
 
   simulator.dpr = dpr;

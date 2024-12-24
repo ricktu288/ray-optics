@@ -1,0 +1,487 @@
+class FloatColorRenderer {
+  constructor(ctx, origin, scale, lengthScale) {
+    const contextAttributes = {
+      alpha: true,
+      depth: false,
+      stencil: false,
+      antialias: false,
+      preserveDrawingBuffer: true,
+      premultipliedAlpha: false,
+      failIfMajorPerformanceCaveat: false
+    };
+    this.gl = ctx.canvas.getContext('webgl', contextAttributes) || 
+              ctx.canvas.getContext('experimental-webgl', contextAttributes);
+    if (!this.gl) {
+      throw new Error('Unable to initialize WebGL. Your browser may not support it.');
+    }
+
+    // Enable floating point texture
+    const ext = this.gl.getExtension('OES_texture_float');
+    if (!ext) {
+      throw new Error('OES_texture_float not supported');
+    }
+
+    this.origin = origin;
+    this.scale = scale;
+    this.lengthScale = lengthScale;
+    this.rayCache = [];
+    this.segmentCache = [];
+    this.pointCache = [];
+    this.hasFirstFlush = false;
+    
+    // Create reusable buffers
+    this.lineBuffer = this.gl.createBuffer();
+    this.pointBuffer = this.gl.createBuffer();
+    
+    // Create color parser canvas once
+    this.colorCanvas = document.createElement('canvas');
+    this.colorCtx = this.colorCanvas.getContext('2d');
+    
+    this.initializeShaders();
+    this.initializeFramebuffer();
+  }
+
+  initializeFramebuffer() {
+    const gl = this.gl;
+    
+    // Create floating point texture
+    this.floatTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, this.floatTexture);
+    
+    // Use RGBA format for the texture
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.canvas.width, gl.canvas.height, 0, gl.RGBA, gl.FLOAT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    
+    // Create and set up framebuffer
+    this.framebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.floatTexture, 0);
+    
+    // Check framebuffer status
+    const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if (status !== gl.FRAMEBUFFER_COMPLETE) {
+      throw new Error('Framebuffer is not complete: ' + status);
+    }
+    
+    // Create quad buffer for final render
+    this.quadBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      -1, -1,
+       1, -1,
+      -1,  1,
+       1,  1
+    ]), gl.STATIC_DRAW);
+    
+    // Reset bindings
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  }
+
+  initializeShaders() {
+    // Vertex shader for rays
+    const rayVertexSource = `
+      attribute vec2 position;
+      uniform vec2 u_resolution;
+      uniform vec2 u_origin;
+      uniform float u_scale;
+      uniform bool u_isScreenSpace;
+      
+      varying vec2 v_position;
+      varying vec2 v_resolution;
+      
+      void main() {
+        vec2 pos;
+        if (u_isScreenSpace) {
+          pos = position;
+        } else {
+          pos = position * u_scale + u_origin;
+        }
+        
+        // Convert to clip space
+        vec2 clipSpace = (pos / u_resolution) * 2.0 - 1.0;
+        clipSpace.y = -clipSpace.y;
+        gl_Position = vec4(clipSpace, 0.0, 1.0);
+        
+        // Pass values to fragment shader
+        v_position = pos;
+        v_resolution = u_resolution;
+      }
+    `;
+
+    // Fragment shader for rays - just output color for additive blending
+    const rayFragmentSource = `
+      precision highp float;
+      uniform vec4 u_color;
+      uniform bool u_isScreenSpace;
+      
+      varying vec2 v_position;
+      varying vec2 v_resolution;
+      
+      void main() {
+        gl_FragColor = u_color;
+      }
+    `;
+
+    // Vertex shader for points
+    const pointVertexSource = `
+      attribute vec2 position;
+      uniform vec2 u_resolution;
+      uniform vec2 u_origin;
+      uniform float u_scale;
+      uniform vec2 u_point;
+      uniform float u_size;
+      
+      varying vec2 v_position;
+      varying vec2 v_resolution;
+      
+      void main() {
+        // Calculate point position
+        vec2 pointPos = u_point * u_scale + u_origin;
+        vec2 pos = pointPos + position * u_size * u_scale;
+        
+        // Convert to clip space
+        vec2 clipSpace = (pos / u_resolution) * 2.0 - 1.0;
+        clipSpace.y = -clipSpace.y;
+        gl_Position = vec4(clipSpace, 0.0, 1.0);
+        
+        // Pass values to fragment shader
+        v_position = pos;
+        v_resolution = u_resolution;
+      }
+    `;
+
+    // Fragment shader for points - same as rays
+    const pointFragmentSource = rayFragmentSource;
+
+    // Vertex shader for final pass
+    const quadVertexSource = `
+      attribute vec2 position;
+      varying vec2 v_texCoord;
+      
+      void main() {
+        gl_Position = vec4(position, 0.0, 1.0);
+        v_texCoord = position * 0.5 + 0.5;
+      }
+    `;
+
+    // Fragment shader for final pass - normalize accumulated colors
+    const quadFragmentSource = `
+      precision highp float;
+      uniform sampler2D u_texture;
+      varying vec2 v_texCoord;
+      
+      void main() {
+        vec4 color = texture2D(u_texture, v_texCoord);
+        float maxComponent = max(max(color.r, color.g), color.b);
+        if (maxComponent > 1.0) {
+          color.rgb /= maxComponent;
+        }
+        gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
+      }
+    `;
+
+    // Compile ray shaders
+    const rayVertexShader = this.compileShader(this.gl, rayVertexSource, this.gl.VERTEX_SHADER);
+    const rayFragmentShader = this.compileShader(this.gl, rayFragmentSource, this.gl.FRAGMENT_SHADER);
+    
+    // Create ray program
+    this.rayProgram = this.gl.createProgram();
+    this.gl.attachShader(this.rayProgram, rayVertexShader);
+    this.gl.attachShader(this.rayProgram, rayFragmentShader);
+    this.gl.linkProgram(this.rayProgram);
+
+    if (!this.gl.getProgramParameter(this.rayProgram, this.gl.LINK_STATUS)) {
+      this.gl.deleteProgram(this.rayProgram);
+      return;
+    }
+
+    // Get ray program locations
+    this.positionAttributeLocation = this.gl.getAttribLocation(this.rayProgram, 'position');
+    this.resolutionUniformLocation = this.gl.getUniformLocation(this.rayProgram, 'u_resolution');
+    this.originUniformLocation = this.gl.getUniformLocation(this.rayProgram, 'u_origin');
+    this.scaleUniformLocation = this.gl.getUniformLocation(this.rayProgram, 'u_scale');
+    this.isScreenSpaceLocation = this.gl.getUniformLocation(this.rayProgram, 'u_isScreenSpace');
+    this.colorUniformLocation = this.gl.getUniformLocation(this.rayProgram, 'u_color');
+
+    // Compile point shaders
+    const pointVertexShader = this.compileShader(this.gl, pointVertexSource, this.gl.VERTEX_SHADER);
+    const pointFragmentShader = this.compileShader(this.gl, pointFragmentSource, this.gl.FRAGMENT_SHADER);
+    
+    // Create point program
+    this.pointProgram = this.gl.createProgram();
+    this.gl.attachShader(this.pointProgram, pointVertexShader);
+    this.gl.attachShader(this.pointProgram, pointFragmentShader);
+    this.gl.linkProgram(this.pointProgram);
+
+    if (!this.gl.getProgramParameter(this.pointProgram, this.gl.LINK_STATUS)) {
+      this.gl.deleteProgram(this.pointProgram);
+      return;
+    }
+
+    // Get point program locations
+    this.pointPositionAttributeLocation = this.gl.getAttribLocation(this.pointProgram, 'position');
+    this.pointResolutionUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_resolution');
+    this.pointOriginUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_origin');
+    this.pointScaleUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_scale');
+    this.pointPositionUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_point');
+    this.pointSizeUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_size');
+    this.pointColorUniformLocation = this.gl.getUniformLocation(this.pointProgram, 'u_color');
+
+    // Compile quad shaders
+    const quadVertexShader = this.compileShader(this.gl, quadVertexSource, this.gl.VERTEX_SHADER);
+    const quadFragmentShader = this.compileShader(this.gl, quadFragmentSource, this.gl.FRAGMENT_SHADER);
+    
+    // Create quad program
+    this.quadProgram = this.gl.createProgram();
+    this.gl.attachShader(this.quadProgram, quadVertexShader);
+    this.gl.attachShader(this.quadProgram, quadFragmentShader);
+    this.gl.linkProgram(this.quadProgram);
+
+    if (!this.gl.getProgramParameter(this.quadProgram, this.gl.LINK_STATUS)) {
+      this.gl.deleteProgram(this.quadProgram);
+      return;
+    }
+
+    // Get quad program locations
+    this.quadPositionLocation = this.gl.getAttribLocation(this.quadProgram, 'position');
+    this.textureLocation = this.gl.getUniformLocation(this.quadProgram, 'u_texture');
+
+    // Create point vertices (unit square)
+    const pointVertices = new Float32Array([
+      -0.5, -0.5,
+       0.5, -0.5,
+      -0.5,  0.5,
+       0.5,  0.5
+    ]);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.pointBuffer);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, pointVertices, this.gl.STATIC_DRAW);
+  }
+
+  compileShader(gl, source, type) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
+    }
+
+    return shader;
+  }
+
+  parseColor(color) {
+    // Use canvas color parsing instead of DOM manipulation
+    this.colorCtx.fillStyle = color;
+    this.colorCtx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = this.colorCtx.getImageData(0, 0, 1, 1).data;
+    return [r/255, g/255, b/255];
+  }
+
+  static MAX_CACHE_SIZE = 500;
+
+  drawRay(r, color = 'black') {
+    // Cache the ray for later drawing
+    this.rayCache.push({ r, color });
+    
+    // If cache is too large, flush immediately
+    if (this.rayCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+      this.flush();
+    }
+  }
+
+  drawSegment(s, color = 'black') {
+    // Cache the segment for later drawing
+    this.segmentCache.push({ s, color });
+    
+    // If cache is too large, flush immediately
+    if (this.segmentCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+      this.flush();
+    }
+  }
+
+  drawPoint(p, color = 'black', size = 5) {
+    // Cache the point for later drawing
+    this.pointCache.push({ p, color, size });
+    
+    // If cache is too large, flush immediately
+    if (this.pointCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+      this.flush();
+    }
+  }
+
+  flush() {
+    if (!this.rayProgram || !this.quadProgram || !this.pointProgram) {
+      return;
+    }
+
+    const gl = this.gl;
+    const canvas = gl.canvas;
+
+    // First pass: render rays to floating point texture
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    
+    // Only clear on first use
+    if (!this.hasFirstFlush) {
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      this.hasFirstFlush = true;
+    }
+    
+    // Enable additive blending
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
+
+    // Draw points
+    if (this.pointCache.length > 0) {
+      gl.useProgram(this.pointProgram);
+      
+      // Set shared uniforms
+      gl.uniform2f(this.pointResolutionUniformLocation, canvas.width, canvas.height);
+      gl.uniform2f(this.pointOriginUniformLocation, this.origin.x, this.origin.y);
+      gl.uniform1f(this.pointScaleUniformLocation, this.scale);
+
+      // Bind point vertices
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.pointBuffer);
+      gl.enableVertexAttribArray(this.pointPositionAttributeLocation);
+      gl.vertexAttribPointer(this.pointPositionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+      // Draw each point
+      this.pointCache.forEach(({ p, color, size }) => {
+        const [r1, g, b] = this.parseColor(color);
+        gl.uniform2f(this.pointPositionUniformLocation, p.x, p.y);
+        gl.uniform1f(this.pointSizeUniformLocation, size * this.lengthScale);
+        gl.uniform4f(this.pointColorUniformLocation, r1, g, b, 1.0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      });
+    }
+
+    // Draw rays and segments (rest of the existing flush code)
+    gl.useProgram(this.rayProgram);
+
+    // Set shared uniforms
+    gl.uniform2f(this.resolutionUniformLocation, canvas.width, canvas.height);
+    gl.uniform2f(this.originUniformLocation, this.origin.x, this.origin.y);
+    gl.uniform1f(this.scaleUniformLocation, this.scale);
+
+    // Use the reusable line buffer
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.lineBuffer);
+    gl.enableVertexAttribArray(this.positionAttributeLocation);
+    gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+    // Switch to scene space for rays and segments
+    gl.uniform1i(this.isScreenSpaceLocation, false);
+    
+    // Set line width
+    const lineWidth = Math.max(1.0, 1.0 * this.lengthScale * this.scale);
+    gl.lineWidth(lineWidth);
+
+    // Draw rays
+    this.rayCache.forEach(({ r, color }) => {
+      const [r1, g, b] = this.parseColor(color);
+
+      // Calculate direction vector and normalize it
+      const dx = r.p2.x - r.p1.x;
+      const dy = r.p2.y - r.p1.y;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      
+      // Skip if ray has no direction
+      if (length < 1e-5 * this.lengthScale) {
+        return;
+      }
+      
+      const unitX = dx / length;
+      const unitY = dy / length;
+
+      // Calculate canvas limit for ray length
+      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + canvas.height + canvas.width) / Math.min(1, this.scale);
+
+      // Create vertices for the ray
+      const vertices = new Float32Array([
+        r.p1.x, r.p1.y,  // Start point
+        r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit  // End point extended to canvas limit
+      ]);
+
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
+      gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
+      gl.drawArrays(gl.LINES, 0, 2);
+    });
+
+    // Draw segments
+    this.segmentCache.forEach(({ s, color }) => {
+      const [r1, g, b] = this.parseColor(color);
+
+      const vertices = new Float32Array([
+        s.p1.x, s.p1.y,
+        s.p2.x, s.p2.y
+      ]);
+
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
+      gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
+      gl.drawArrays(gl.LINES, 0, 2);
+    });
+
+    // Second pass: render floating point texture to screen with normalization
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    // Disable blending for final pass
+    gl.disable(gl.BLEND);
+    
+    gl.useProgram(this.quadProgram);
+
+    // Bind the floating point texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.floatTexture);
+    gl.uniform1i(this.textureLocation, 0);
+
+    // Draw fullscreen quad
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
+    gl.enableVertexAttribArray(this.quadPositionLocation);
+    gl.vertexAttribPointer(this.quadPositionLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    // Clear caches
+    this.rayCache.length = 0;
+    this.segmentCache.length = 0;
+    this.pointCache.length = 0;
+  }
+
+  destroy() {
+    const gl = this.gl;
+    
+    // Delete buffers
+    gl.deleteBuffer(this.lineBuffer);
+    gl.deleteBuffer(this.pointBuffer);
+    gl.deleteBuffer(this.quadBuffer);
+    
+    // Delete textures
+    gl.deleteTexture(this.floatTexture);
+    
+    // Delete framebuffer
+    gl.deleteFramebuffer(this.framebuffer);
+    
+    // Delete shader programs
+    gl.deleteProgram(this.rayProgram);
+    gl.deleteProgram(this.pointProgram);
+    gl.deleteProgram(this.quadProgram);
+    
+    // Remove color parser canvas
+    this.colorCanvas = null;
+    this.colorCtx = null;
+  }
+
+  applyColorTransformation() {
+    // Stub for applyColorTransformation
+  }
+}
+
+export default FloatColorRenderer;

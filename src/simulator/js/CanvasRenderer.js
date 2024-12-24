@@ -184,7 +184,8 @@ class CanvasRenderer {
    * @param {boolean} [showArrow=true]
    * @param {number} [arrowPosition=0.67] Position of arrow along line (0 to 1, where 0 is at p1 and 1 is at p2)
    */
-  drawSegment(s, color = 'black', showArrow = false) {
+  drawSegment(s, color = 'black', showArrow = false, lineDash = []) {
+    this.ctx.setLineDash(lineDash);
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.fillStyle = color;
