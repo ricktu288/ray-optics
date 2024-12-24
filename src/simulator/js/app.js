@@ -1169,7 +1169,7 @@ function initUIText() {
   setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
-  setText('showRayArrows_text', i18next.t('simulator:settings.showRayArrows.title'));
+  setText('showRayArrows_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
@@ -1242,7 +1242,7 @@ function initUIText() {
   setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
-  setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title'));
+  setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
   setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));

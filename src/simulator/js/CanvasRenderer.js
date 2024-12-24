@@ -176,6 +176,7 @@ class CanvasRenderer {
    * @param {Line} s
    * @param {String} [color='black']
    * @param {boolean} [showArrow=true]
+   * @param {number} [arrowPosition=0.67] Position of arrow along line (0 to 1, where 0 is at p1 and 1 is at p2)
    */
   drawSegment(s, color = 'black', showArrow = false) {
     this.ctx.strokeStyle = color;
@@ -187,6 +188,7 @@ class CanvasRenderer {
     const dy = s.p2.y - s.p1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
     const arrowSize = Math.min(length * 0.15, 5 * this.lengthScale);
+    const arrowPosition = 0.67;
     
     // Don't draw arrow if it would be too small compared to line width
     if (!showArrow || arrowSize < this.ctx.lineWidth * 1.2) {
@@ -198,18 +200,18 @@ class CanvasRenderer {
       return;
     }
     
-    // Calculate midpoint
-    const midX = (s.p1.x + s.p2.x) / 2;
-    const midY = (s.p1.y + s.p2.y) / 2;
-    
     // Calculate direction vector and normalize it
     const unitX = dx / length;
     const unitY = dy / length;
     
+    // Calculate arrow position
+    const arrowX = s.p1.x + dx * arrowPosition;
+    const arrowY = s.p1.y + dy * arrowPosition;
+    
     // Draw first part of line (from p1 to arrow)
     this.ctx.beginPath();
     this.ctx.moveTo(s.p1.x, s.p1.y);
-    this.ctx.lineTo(midX - arrowSize/2 * unitX, midY - arrowSize/2 * unitY);
+    this.ctx.lineTo(arrowX - arrowSize/2 * unitX, arrowY - arrowSize/2 * unitY);
     this.ctx.stroke();
     
     // Calculate arrow points for trapezoid
@@ -224,28 +226,28 @@ class CanvasRenderer {
     this.ctx.beginPath();
     // Front points of arrow (wide part)
     this.ctx.moveTo(
-      midX - arrowSize/2 * unitX - (tipWidth/2) * perpX,
-      midY - arrowSize/2 * unitY - (tipWidth/2) * perpY
+      arrowX - arrowSize/2 * unitX - (tipWidth/2) * perpX,
+      arrowY - arrowSize/2 * unitY - (tipWidth/2) * perpY
     );
     this.ctx.lineTo(
-      midX - arrowSize/2 * unitX + (tipWidth/2) * perpX,
-      midY - arrowSize/2 * unitY + (tipWidth/2) * perpY
+      arrowX - arrowSize/2 * unitX + (tipWidth/2) * perpX,
+      arrowY - arrowSize/2 * unitY + (tipWidth/2) * perpY
     );
     // Back of arrow (narrow part)
     this.ctx.lineTo(
-      midX + arrowSize/2 * unitX + (baseWidth/2) * perpX,
-      midY + arrowSize/2 * unitY + (baseWidth/2) * perpY
+      arrowX + arrowSize/2 * unitX + (baseWidth/2) * perpX,
+      arrowY + arrowSize/2 * unitY + (baseWidth/2) * perpY
     );
     this.ctx.lineTo(
-      midX + arrowSize/2 * unitX - (baseWidth/2) * perpX,
-      midY + arrowSize/2 * unitY - (baseWidth/2) * perpY
+      arrowX + arrowSize/2 * unitX - (baseWidth/2) * perpX,
+      arrowY + arrowSize/2 * unitY - (baseWidth/2) * perpY
     );
     this.ctx.closePath();
     this.ctx.fill();
     
     // Draw second part of line (from arrow to p2)
     this.ctx.beginPath();
-    this.ctx.moveTo(midX + arrowSize/2 * unitX, midY + arrowSize/2 * unitY);
+    this.ctx.moveTo(arrowX + arrowSize/2 * unitX, arrowY + arrowSize/2 * unitY);
     this.ctx.lineTo(s.p2.x, s.p2.y);
     this.ctx.stroke();
   }
