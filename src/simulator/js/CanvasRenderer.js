@@ -63,23 +63,33 @@ class CanvasRenderer {
   }
 
   /**
+   * Converts an RGBA array [R, G, B, A] with values between 0 and 1 to a CSS color string.
+   * @param {number[]} rgba - The RGBA array.
+   * @returns {string} The CSS color string.
+   */
+  rgbaToCssColor(rgba) {
+    const [r, g, b, a] = rgba;
+    return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+  }
+
+  /**
    * Draw a point.
    * @param {Point} p
-   * @param {String} [color='black']
+   * @param {number[]} [color=[0, 0, 0, 1]]
    * @param {number} [size=5]
    */
-  drawPoint(p, color = 'black', size = 5) {
-    this.ctx.fillStyle = color;
+  drawPoint(p, color = [0, 0, 0, 1], size = 5) {
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
     this.ctx.fillRect(p.x - (size / 2) * this.lengthScale, p.y - (size / 2) * this.lengthScale, size * this.lengthScale, size * this.lengthScale);
   }
 
   /**
    * Draw a line.
    * @param {Line} l
-   * @param {String} [color='black']
+   * @param {number[]} [color=[0, 0, 0, 1]]
    */
-  drawLine(l, color = 'black') {
-    this.ctx.strokeStyle = color;
+  drawLine(l, color = [0, 0, 0, 1]) {
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
     this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.beginPath();
     let ang1 = Math.atan2((l.p2.x - l.p1.x), (l.p2.y - l.p1.y));
@@ -92,15 +102,15 @@ class CanvasRenderer {
   /**
    * Draw a ray.
    * @param {Line} r
-   * @param {String} [color='black']
+   * @param {number[]} [color=[0, 0, 0, 1]]
    * @param {boolean} [showArrow=true]
    * @param {number[]} [lineDash=[]]
    */
-  drawRay(r, color = 'black', showArrow = false, lineDash = []) {
+  drawRay(r, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
     this.ctx.setLineDash(lineDash);
-    this.ctx.strokeStyle = color;
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
     this.ctx.lineWidth = 1 * this.lengthScale;
-    this.ctx.fillStyle = color;
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
     
     // Check if ray has a valid direction
     if (Math.abs(r.p2.x - r.p1.x) <= 1e-5 * this.lengthScale && Math.abs(r.p2.y - r.p1.y) <= 1e-5 * this.lengthScale) {
@@ -180,15 +190,15 @@ class CanvasRenderer {
   /**
    * Draw a segment.
    * @param {Line} s
-   * @param {String} [color='black']
+   * @param {number[]} [color=[0, 0, 0, 1]]
    * @param {boolean} [showArrow=true]
    * @param {number} [arrowPosition=0.67] Position of arrow along line (0 to 1, where 0 is at p1 and 1 is at p2)
    */
-  drawSegment(s, color = 'black', showArrow = false, lineDash = []) {
+  drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
     this.ctx.setLineDash(lineDash);
-    this.ctx.strokeStyle = color;
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
     this.ctx.lineWidth = 1 * this.lengthScale;
-    this.ctx.fillStyle = color;
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
     
     // Calculate arrow size first to determine if we should draw it
     const dx = s.p2.x - s.p1.x;

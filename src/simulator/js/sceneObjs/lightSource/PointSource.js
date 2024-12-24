@@ -57,7 +57,8 @@ class PointSource extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = this.scene.simulateColors ? Simulator.wavelengthToColor(this.wavelength, 1) : isHovered ? 'cyan' : ('rgb(0,255,0)');
+    const colorArray = Simulator.wavelengthToColor(this.wavelength, 1);
+    ctx.fillStyle = this.scene.simulateColors ? canvasRenderer.rgbaToCssColor(colorArray) : isHovered ? 'cyan' : 'rgb(0,255,0)';
     ctx.fillRect(this.x - 2.5 * ls, this.y - 2.5 * ls, 5 * ls, 5 * ls);
     if (this.scene.simulateColors) {
       ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');

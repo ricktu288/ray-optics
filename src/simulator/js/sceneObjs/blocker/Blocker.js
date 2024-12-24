@@ -60,7 +60,8 @@ class Blocker extends LineObjMixin(BaseFilter) {
       return;
     }
 
-    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(70,35,10)');
+    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(70,35,10)');
     ctx.lineWidth = 3 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

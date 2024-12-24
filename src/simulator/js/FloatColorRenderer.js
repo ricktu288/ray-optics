@@ -36,10 +36,6 @@ class FloatColorRenderer {
     this.pointBuffer = this.gl.createBuffer();
     this.arrowBuffer = this.gl.createBuffer();
     
-    // Create color parser canvas once
-    this.colorCanvas = document.createElement('canvas');
-    this.colorCtx = this.colorCanvas.getContext('2d');
-    
     this.initializeShaders();
     this.initializeFramebuffer();
   }
@@ -278,17 +274,29 @@ class FloatColorRenderer {
     return shader;
   }
 
-  parseColor(color) {
-    // Use canvas color parsing instead of DOM manipulation
-    this.colorCtx.fillStyle = color;
-    this.colorCtx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = this.colorCtx.getImageData(0, 0, 1, 1).data;
-    return [r/255, g/255, b/255];
+  /**
+   * Draw a point.
+   * @param {Point} p
+   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number} [size=5]
+   */
+  drawPoint(p, color = [0, 0, 0, 1], size = 5) {
+    this.pointCache.push({ p, color, size });
+    
+    // If cache is too large, flush immediately
+    if (this.pointCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
+      this.flush();
+    }
   }
 
-  static MAX_CACHE_SIZE = 500;
-
-  drawRay(r, color = 'black', showArrow = false, lineDash = []) {
+  /**
+   * Draw a ray.
+   * @param {Line} r
+   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=false]
+   * @param {number[]} [lineDash=[]]
+   */
+  drawRay(r, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
     // Check if ray has a valid direction
     const dx = r.p2.x - r.p1.x;
     const dy = r.p2.y - r.p1.y;
@@ -451,7 +459,7 @@ class FloatColorRenderer {
     }
   }
 
-  drawSegment(s, color = 'black', showArrow = false, lineDash = []) {
+  drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
     const dx = s.p2.x - s.p1.x;
     const dy = s.p2.y - s.p1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
@@ -538,16 +546,6 @@ class FloatColorRenderer {
     }
   }
 
-  drawPoint(p, color = 'black', size = 5) {
-    // Cache the point for later drawing
-    this.pointCache.push({ p, color, size });
-    
-    // If cache is too large, flush immediately
-    if (this.pointCache.length >= FloatColorRenderer.MAX_CACHE_SIZE) {
-      this.flush();
-    }
-  }
-
   flush() {
     if (!this.rayProgram || !this.quadProgram || !this.pointProgram) {
       return;
@@ -587,10 +585,10 @@ class FloatColorRenderer {
 
       // Draw each point
       this.pointCache.forEach(({ p, color, size }) => {
-        const [r1, g, b] = this.parseColor(color);
+        const [r, g, b, a] = color;
         gl.uniform2f(this.pointPositionUniformLocation, p.x, p.y);
         gl.uniform1f(this.pointSizeUniformLocation, size * this.lengthScale);
-        gl.uniform4f(this.pointColorUniformLocation, r1, g, b, 1.0);
+        gl.uniform4f(this.pointColorUniformLocation, r * a, g * a, b * a, 1.0);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       });
     }
@@ -617,7 +615,8 @@ class FloatColorRenderer {
 
     // Draw rays
     this.rayCache.forEach(({ r, color }) => {
-      const [r1, g, b] = this.parseColor(color);
+      const [r1, g, b, a] = color;
+      gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
 
       // Calculate direction vector and normalize it
       const dx = r.p2.x - r.p1.x;
@@ -642,13 +641,13 @@ class FloatColorRenderer {
       ]);
 
       gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
       gl.drawArrays(gl.LINES, 0, 2);
     });
 
     // Draw segments
     this.segmentCache.forEach(({ s, color }) => {
-      const [r1, g, b] = this.parseColor(color);
+      const [r1, g, b, a] = color;
+      gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
 
       const vertices = new Float32Array([
         s.p1.x, s.p1.y,
@@ -656,7 +655,6 @@ class FloatColorRenderer {
       ]);
 
       gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
       gl.drawArrays(gl.LINES, 0, 2);
     });
 
@@ -669,9 +667,9 @@ class FloatColorRenderer {
       gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
       
       this.arrowCache.forEach(({ points, color }) => {
-        const [r1, g, b] = this.parseColor(color);
+        const [r1, g, b, a] = color;
+        gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
-        gl.uniform4f(this.colorUniformLocation, r1, g, b, 1.0);
         gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
       });
     }
@@ -724,15 +722,13 @@ class FloatColorRenderer {
     gl.deleteProgram(this.rayProgram);
     gl.deleteProgram(this.pointProgram);
     gl.deleteProgram(this.quadProgram);
-    
-    // Remove color parser canvas
-    this.colorCanvas = null;
-    this.colorCtx = null;
   }
 
   applyColorTransformation() {
     // Stub for applyColorTransformation
   }
+
+  static MAX_CACHE_SIZE = 500;
 }
 
 export default FloatColorRenderer;

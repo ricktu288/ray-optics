@@ -90,7 +90,8 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     // get height of (this section of) parabola
     var x0 = p12d / 2;
     var i;
-    ctx.strokeStyle = isHovered ? 'cyan' : ((this.scene.simulateColors && this.wavelength && this.filter) ? Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1) : 'rgb(168,168,168)');
+    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(168,168,168)');
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     this.tmp_points = [];

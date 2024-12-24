@@ -75,7 +75,7 @@ class Simulator {
    * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
    * @param {boolean} [useFloatColorRenderer=false] - Whether to use the FloatColorRenderer for the light layer.
    */
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, useFloatColorRenderer = true) {
+  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, useFloatColorRenderer = false) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -491,7 +491,7 @@ class Simulator {
         if (this.scene.simulateColors) {
           var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && !this.useFloatColorRenderer);
         } else {
-          //this.ctxMain.globalAlpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
+          var alpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
         // If not shot on any object
         if (s_lensq == Infinity) {
@@ -499,14 +499,14 @@ class Simulator {
             if (this.scene.simulateColors) {
               this.canvasRendererMain.drawRay(this.pendingRays[j], color, this.scene.showRayArrows); // Draw the ray
             } else {
-              this.canvasRendererMain.drawRay(this.pendingRays[j], 'rgb(255,255,128)', this.scene.showRayArrows); // Draw the ray
+              this.canvasRendererMain.drawRay(this.pendingRays[j], [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
             }
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
             if (this.scene.simulateColors) {
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the extension of the ray
             } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)', undefined, []); // Draw the extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the extension of the ray
             }
           }
 
@@ -525,7 +525,7 @@ class Simulator {
             if (this.scene.simulateColors) {
               this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color, this.scene.showRayArrows); // Draw the ray
             } else {
-              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), 'rgb(255,255,128)', this.scene.showRayArrows); // Draw the ray
+              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
             }
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
@@ -533,8 +533,8 @@ class Simulator {
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the backward extension of the ray
               this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
             } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)', undefined, []); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), 'rgb(80,80,80)', undefined, []); // Draw the forward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the backward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
             }
 
           }
@@ -563,7 +563,8 @@ class Simulator {
                   if (this.scene.simulateColors) {
                     var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
                   } else {
-                    this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
+                    const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
+                    this.ctxMain.globalAlpha = alpha;
                   }
                   if (s_point) {
                     rpd = (observed_intersection.x - this.pendingRays[j].p1.x) * (s_point.x - this.pendingRays[j].p1.x) + (observed_intersection.y - this.pendingRays[j].p1.y) * (s_point.y - this.pendingRays[j].p1.y);
@@ -576,7 +577,7 @@ class Simulator {
                     if (this.scene.simulateColors) {
                       this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                     } else {
-                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                      this.canvasRendererMain.drawPoint(observed_intersection, [1, 0.5, 0, alpha]); // Draw the image
                     }
                   }
                   else if (rpd < s_lensq) {
@@ -584,20 +585,20 @@ class Simulator {
                     if (this.scene.simulateColors) {
                       this.canvasRendererMain.drawPoint(observed_intersection, color); // Draw the image
                     } else {
-                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
+                      this.canvasRendererMain.drawPoint(observed_intersection, [1, 1, 0.5, alpha]); // Draw the image
                     }
                   }
                   if (this.scene.simulateColors) {
                     this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
+                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), [0, 0, 1, alpha], undefined, []); // Draw the observed ray
                   }
                 }
                 else {
                   if (this.scene.simulateColors) {
                     this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), [0, 0, 1, alpha], undefined, []); // Draw the observed ray
                   }
                 }
               }
@@ -606,7 +607,7 @@ class Simulator {
                   if (this.scene.simulateColors) {
                     this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), [0, 0, 1, alpha], undefined, []); // Draw the observed ray
                   }
                 }
               }
@@ -626,7 +627,8 @@ class Simulator {
               if (this.scene.simulateColors) {
                 var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
               } else {
-                this.ctxMain.globalAlpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
+                const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
+                this.ctxMain.globalAlpha = alpha;
               }
 
               if (s_point) {
@@ -641,7 +643,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                  this.canvasRendererMain.drawPoint(observed_intersection, [1, 0.5, 0, alpha]); // Draw the image
                 }
               }
               else if (rpd < s_lensq) {
@@ -649,7 +651,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color); // Draw the image
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,255,128)'); // Draw the image
+                  this.canvasRendererMain.drawPoint(observed_intersection, [1, 1, 0.5, alpha]); // Draw the image
                 }
               }
               else {
@@ -657,7 +659,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 1);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(80,80,80)');
+                  this.canvasRendererMain.drawPoint(observed_intersection, [0.3, 0.3, 0.3, alpha]);
                 }
               }
             }
@@ -824,8 +826,7 @@ class Simulator {
       B = 1 - Math.exp(-B);
     }
 
-    return "rgb(" + Math.round(R * 255) + "," + Math.round(G * 255) + "," + Math.round(B * 255) + ")";
-
+    return [R, G, B, 1];
   }
 }
 
