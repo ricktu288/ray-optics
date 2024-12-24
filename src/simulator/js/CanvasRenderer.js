@@ -21,7 +21,7 @@ import * as C2S from 'canvas2svg';
  * @class
  */
 class CanvasRenderer {
-  constructor(ctx, origin, scale, lengthScale, backgroundImage) {
+  constructor(ctx, origin, scale, lengthScale, backgroundImage, ctxVirtual) {
 
     /** @property {Object} ctx - The context of the canvas. */
     this.ctx = ctx;
@@ -40,6 +40,9 @@ class CanvasRenderer {
 
     /** @property {Object|null} backgroundImage - The background image of the scene, null if not set. */
     this.backgroundImage = backgroundImage;
+
+    /** @property {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment. */
+    this.ctxVirtual = ctxVirtual;
 
     if (typeof C2S !== 'undefined' && ctx.constructor === C2S) {
       /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
@@ -63,10 +66,11 @@ class CanvasRenderer {
    * Draw a point.
    * @param {Point} p
    * @param {String} [color='black']
+   * @param {number} [size=5]
    */
-  drawPoint(p, color = 'black') {
+  drawPoint(p, color = 'black', size = 5) {
     this.ctx.fillStyle = color;
-    this.ctx.fillRect(p.x - 2.5 * this.lengthScale, p.y - 2.5 * this.lengthScale, 5 * this.lengthScale, 5 * this.lengthScale);
+    this.ctx.fillRect(p.x - (size / 2) * this.lengthScale, p.y - (size / 2) * this.lengthScale, size * this.lengthScale, size * this.lengthScale);
   }
 
   /**
@@ -90,8 +94,10 @@ class CanvasRenderer {
    * @param {Line} r
    * @param {String} [color='black']
    * @param {boolean} [showArrow=true]
+   * @param {number[]} [lineDash=[]]
    */
-  drawRay(r, color = 'black', showArrow = false) {
+  drawRay(r, color = 'black', showArrow = false, lineDash = []) {
+    this.ctx.setLineDash(lineDash);
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 1 * this.lengthScale;
     this.ctx.fillStyle = color;
@@ -269,6 +275,35 @@ class CanvasRenderer {
       this.ctx.arc(c.c.x, c.c.y, c.r, 0, Math.PI * 2, false);
     }
     this.ctx.stroke();
+  }
+
+  /**
+   * Apply color transformation to simulate 'lighter' composition with less color saturation.
+   */
+  applyColorTransformation() {
+    this.ctxVirtual.canvas.width = this.canvas.width;
+    this.ctxVirtual.canvas.height = this.canvas.height;
+    this.ctxVirtual.drawImage(this.canvas, 0, 0);
+
+    const imageData = this.ctxVirtual.getImageData(0, 0, this.ctxVirtual.canvas.width, this.ctxVirtual.canvas.height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] === 0) continue; // Skip transparent pixels
+      const a0 = data[i + 3] / 256;
+      const R = -Math.log(1 - (data[i] / 256)) * a0;
+      const G = -Math.log(1 - (data[i + 1] / 256)) * a0;
+      const B = -Math.log(1 - (data[i + 2] / 256)) * a0;
+      const factor = Math.max(R, G, B);
+      data[i] = 255 * R / factor;
+      data[i + 1] = 255 * G / factor;
+      data[i + 2] = 255 * B / factor;
+      data[i + 3] = 255 * Math.min(factor, 1);
+    }
+    this.ctxVirtual.putImageData(imageData, 0, 0);
+    this.ctx.globalCompositeOperation = 'source-over';
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.drawImage(this.ctxVirtual.canvas, 0, 0);
   }
 }
 

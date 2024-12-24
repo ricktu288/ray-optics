@@ -215,7 +215,7 @@ class Simulator {
     }
 
     if (!skipLight) {
-      this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
+      this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
 
       if (this.isSVG) {
         this.ctxMain.translate(this.scene.origin.x / (this.scene.scale * this.dpr), this.scene.origin.y / (this.scene.scale * this.dpr));
@@ -484,11 +484,9 @@ class Simulator {
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
             if (this.scene.simulateColors) {
-              this.ctxMain.setLineDash([2 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color); // Draw the extension of the ray
-              this.ctxMain.setLineDash([]);
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the extension of the ray
             } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)', undefined, []); // Draw the extension of the ray
             }
           }
 
@@ -512,14 +510,11 @@ class Simulator {
           }
           if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
             if (this.scene.simulateColors) {
-              this.ctxMain.setLineDash([2 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color); // Draw the backward extension of the ray
-              this.ctxMain.setLineDash([1 * this.scene.lengthScale, 5 * this.scene.lengthScale]);
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color); // Draw the forward extension of the ray
-              this.ctxMain.setLineDash([]);
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the backward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
             } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)'); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), 'rgb(80,80,80)'); // Draw the forward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), 'rgb(255,128,0)', undefined, []); // Draw the backward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), 'rgb(80,80,80)', undefined, []); // Draw the forward extension of the ray
             }
 
           }
@@ -559,10 +554,9 @@ class Simulator {
                   if (rpd < 0) {
                     // Virtual image
                     if (this.scene.simulateColors) {
-                      this.ctxMain.fillStyle = color;
-                      this.ctxMain.fillRect(observed_intersection.x - 1.5 * this.scene.lengthScale, observed_intersection.y - 1.5 * this.scene.lengthScale, 3 * this.scene.lengthScale, 3 * this.scene.lengthScale);
+                      this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                     } else {
-                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                      this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)', 3); // Draw the image
                     }
                   }
                   else if (rpd < s_lensq) {
@@ -574,31 +568,25 @@ class Simulator {
                     }
                   }
                   if (this.scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
-                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), color); // Draw the observed ray
-                    this.ctxMain.setLineDash([]);
+                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), 'rgb(0,0,255)'); // Draw the observed ray
+                    this.canvasRendererMain.drawSegment(geometry.line(observed_point, observed_intersection), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
                   }
                 }
                 else {
                   if (this.scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color); // Draw the observed ray
-                    this.ctxMain.setLineDash([]);
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
                   }
                 }
               }
               else {
                 if (this.last_intersection) {
                   if (this.scene.simulateColors) {
-                    this.ctxMain.setLineDash([1 * this.scene.lengthScale, 2 * this.scene.lengthScale]);
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color); // Draw the observed ray
-                    this.ctxMain.setLineDash([]);
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), color, undefined, [1 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the observed ray
                   } else {
-                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)'); // Draw the observed ray
+                    this.canvasRendererMain.drawRay(geometry.line(observed_point, this.pendingRays[j].p1), 'rgb(0,0,255)', undefined, []); // Draw the observed ray
                   }
                 }
               }
@@ -631,10 +619,9 @@ class Simulator {
               if (rpd < 0) {
                 // Virtual image
                 if (this.scene.simulateColors) {
-                  this.ctxMain.fillStyle = color;
-                  this.ctxMain.fillRect(observed_intersection.x - 1.5 * this.scene.lengthScale, observed_intersection.y - 1.5 * this.scene.lengthScale, 3 * this.scene.lengthScale, 3 * this.scene.lengthScale);
+                  this.canvasRendererMain.drawPoint(observed_intersection, color, 3);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)'); // Draw the image
+                  this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(255,128,0)', 3); // Draw the image
                 }
               }
               else if (rpd < s_lensq) {
@@ -648,8 +635,7 @@ class Simulator {
               else {
                 // Virtual object
                 if (this.scene.simulateColors) {
-                  this.ctxMain.fillStyle = color;
-                  this.ctxMain.fillRect(observed_intersection.x - 0.5 * this.scene.lengthScale, observed_intersection.y - 0.5 * this.scene.lengthScale, 1 * this.scene.lengthScale, 1 * this.scene.lengthScale);
+                  this.canvasRendererMain.drawPoint(observed_intersection, color, 1);
                 } else {
                   this.canvasRendererMain.drawPoint(observed_intersection, 'rgb(80,80,80)');
                 }
@@ -696,39 +682,7 @@ class Simulator {
 
     //}
     if (this.scene.simulateColors && !this.isSVG) {
-      // Inverse transformation of the color adjustment made in Simulator.wavelengthToColor.
-      // This is to avoid the color satiation problem when using the 'lighter' composition.
-      // Currently not supported when exporting to SVG.
-
-
-      this.ctxVirtual.canvas.width = this.ctxMain.canvas.width;
-      this.ctxVirtual.canvas.height = this.ctxMain.canvas.height;
-
-      this.ctxVirtual.drawImage(this.ctxMain.canvas, 0, 0);
-
-      var imageData = this.ctxVirtual.getImageData(0.0, 0.0, this.ctxVirtual.canvas.width, this.ctxVirtual.canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        if (data[i + 3] == 0) continue; // Skip transparent pixels
-        var a0 = data[i + 3] / 256;
-        var R = - Math.log(1 - (data[i] / 256)) * a0;
-        var G = - Math.log(1 - (data[i + 1] / 256)) * a0;
-        var B = - Math.log(1 - (data[i + 2] / 256)) * a0;
-        var factor = Math.max(R, G, B);
-        var r = 255 * R / factor;
-        var g = 255 * G / factor;
-        var b = 255 * B / factor;
-        data[i] = r;
-        data[i + 1] = g;
-        data[i + 2] = b;
-        data[i + 3] = 255 * Math.min(factor, 1);
-      }
-      this.ctxVirtual.putImageData(imageData, 0, 0);
-      this.ctxMain.globalCompositeOperation = 'source-over';
-
-      this.ctxMain.setTransform(1, 0, 0, 1, 0, 0);
-      this.ctxMain.clearRect(0, 0, this.ctxMain.canvas.width, this.ctxMain.canvas.height);
-      this.ctxMain.drawImage(this.ctxVirtual.canvas, 0, 0);
+      this.canvasRendererMain.applyColorTransformation();
       this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
     }
     this.ctxMain.globalAlpha = 1.0;
@@ -839,7 +793,9 @@ class Simulator {
     if (transform) {
       // Adjust color to make (R,G,B) linear when using the 'screen' composition.
       // This is to avoid the color satiation problem when using the 'lighter' composition.
-      // Currently not supported when exporting to SVG as it is currently under draft in CSS Color 4 
+      // Currently not supported when exporting to SVG.
+
+
       R = 1 - Math.exp(-R);
       G = 1 - Math.exp(-G);
       B = 1 - Math.exp(-B);
