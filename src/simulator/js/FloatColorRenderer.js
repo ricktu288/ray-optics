@@ -4,7 +4,7 @@ class FloatColorRenderer {
       alpha: true,
       depth: false,
       stencil: false,
-      antialias: true,
+      antialias: false,
       preserveDrawingBuffer: true,
       premultipliedAlpha: false,
       failIfMajorPerformanceCaveat: false
@@ -615,12 +615,15 @@ class FloatColorRenderer {
 
     // Draw rays
     this.rayCache.forEach(({ r, color }) => {
-      const [r1, g, b, a] = color;
-      gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
-
-      // Calculate direction vector and normalize it
+      // Calculate direction vector
       const dx = r.p2.x - r.p1.x;
       const dy = r.p2.y - r.p1.y;
+      
+      const [r1, g, b, a] = color;
+      // Apply rasterization bias correction to alpha-premultiplied RGB values
+      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
+      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
+
       const length = Math.sqrt(dx * dx + dy * dy);
       
       // Skip if ray has no direction
@@ -646,9 +649,21 @@ class FloatColorRenderer {
 
     // Draw segments
     this.segmentCache.forEach(({ s, color }) => {
+      const dx = s.p2.x - s.p1.x;
+      const dy = s.p2.y - s.p1.y;
+      
       const [r1, g, b, a] = color;
-      gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
+      // Apply rasterization bias correction to alpha-premultiplied RGB values
+      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
+      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
 
+      const length = Math.sqrt(dx * dx + dy * dy);
+      
+      // Skip if segment has no direction
+      if (length < 1e-5 * this.lengthScale) {
+        return;
+      }
+      
       const vertices = new Float32Array([
         s.p1.x, s.p1.y,
         s.p2.x, s.p2.y
@@ -701,6 +716,19 @@ class FloatColorRenderer {
     this.segmentCache.length = 0;
     this.pointCache.length = 0;
     this.arrowCache.length = 0;
+  }
+
+  // Utility function to correct rasterization bias based on ray direction
+  correctRasterizationBias(color, dx, dy) {
+    const length = Math.sqrt(dx * dx + dy * dy);
+    if (length === 0) return color;
+    
+    // Calculate correction factor based on direction
+    // For diagonal lines (45 degrees), the correction is sqrt(2)
+    // For horizontal/vertical lines, the correction is 1
+    const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy));
+    
+    return color.map(component => component * correctionFactor);
   }
 
   destroy() {
