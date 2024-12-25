@@ -2,15 +2,16 @@ class FloatColorRenderer {
   constructor(gl, origin, scale, lengthScale) {
     this.gl = gl;
     if (!this.gl) {
-      throw new Error('Unable to initialize WebGL. Your browser may not support it.');
+      throw new Error('Unable to initialize WebGL2. Your browser may not support it.');
     }
 
-    // Enable floating point texture
-    const ext = this.gl.getExtension('OES_texture_float');
+    // Enable floating point texture rendering support
+    const ext = gl.getExtension('EXT_color_buffer_float');
     if (!ext) {
-      throw new Error('OES_texture_float not supported');
+      throw new Error('EXT_color_buffer_float extension is not supported');
     }
 
+    // WebGL2 has built-in support for floating point textures
     this.canvas = gl.canvas;
     this.origin = origin;
     this.scale = scale;
@@ -33,26 +34,47 @@ class FloatColorRenderer {
   initializeFramebuffer() {
     const gl = this.gl;
     
-    // Create floating point texture
+    // Get maximum number of samples supported
+    const maxSamples = gl.getParameter(gl.MAX_SAMPLES);
+    this.samples = Math.min(4, maxSamples); // Use 4 samples or max available if less
+    
+    // Create multisampled renderbuffer for intermediate rendering
+    this.msaaRenderBuffer = gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, this.msaaRenderBuffer);
+    gl.renderbufferStorageMultisample(gl.RENDERBUFFER, this.samples, gl.RGBA16F, gl.canvas.width, gl.canvas.height);
+    
+    // Create multisampled framebuffer
+    this.msaaFramebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.msaaFramebuffer);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, this.msaaRenderBuffer);
+    
+    // Check MSAA framebuffer status
+    let status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if (status !== gl.FRAMEBUFFER_COMPLETE) {
+      throw new Error('MSAA Framebuffer is not complete: ' + status);
+    }
+    
+    // Create floating point texture for resolved output
     this.floatTexture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.floatTexture);
-    
-    // Use RGBA format for the texture
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.canvas.width, gl.canvas.height, 0, gl.RGBA, gl.FLOAT, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, gl.canvas.width, gl.canvas.height, 0, gl.RGBA, gl.FLOAT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     
-    // Create and set up framebuffer
-    this.framebuffer = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+    // Create resolve framebuffer
+    this.resolveFramebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.resolveFramebuffer);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.floatTexture, 0);
     
-    // Check framebuffer status
-    const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    // Set up draw buffers
+    gl.drawBuffers([gl.COLOR_ATTACHMENT0]);
+    
+    // Check resolve framebuffer status
+    status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
     if (status !== gl.FRAMEBUFFER_COMPLETE) {
-      throw new Error('Framebuffer is not complete: ' + status);
+      throw new Error('Resolve Framebuffer is not complete: ' + status);
     }
     
     // Create quad buffer for final render
@@ -68,20 +90,21 @@ class FloatColorRenderer {
     // Reset bindings
     gl.bindTexture(gl.TEXTURE_2D, null);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   }
 
   initializeShaders() {
     // Vertex shader for rays
-    const rayVertexSource = `
-      attribute vec2 position;
+    const rayVertexSource = `#version 300 es
+      in vec2 position;
       uniform vec2 u_resolution;
       uniform vec2 u_origin;
       uniform float u_scale;
       uniform bool u_isScreenSpace;
       
-      varying vec2 v_position;
-      varying vec2 v_resolution;
+      out vec2 v_position;
+      out vec2 v_resolution;
       
       void main() {
         vec2 pos;
@@ -102,31 +125,34 @@ class FloatColorRenderer {
       }
     `;
 
-    // Fragment shader for rays - just output color for additive blending
-    const rayFragmentSource = `
+    // Fragment shader for rays
+    const rayFragmentSource = `#version 300 es
       precision highp float;
-      uniform vec4 u_color;
-      uniform bool u_isScreenSpace;
       
-      varying vec2 v_position;
-      varying vec2 v_resolution;
+      in vec2 v_position;
+      in vec2 v_resolution;
+      
+      uniform vec4 u_color;
+      uniform float u_lineWidth;
+      
+      out vec4 fragColor;
       
       void main() {
-        gl_FragColor = u_color;
+        fragColor = u_color;
       }
     `;
 
     // Vertex shader for points
-    const pointVertexSource = `
-      attribute vec2 position;
+    const pointVertexSource = `#version 300 es
+      in vec2 position;
       uniform vec2 u_resolution;
       uniform vec2 u_origin;
       uniform float u_scale;
       uniform vec2 u_point;
       uniform float u_size;
       
-      varying vec2 v_position;
-      varying vec2 v_resolution;
+      out vec2 v_position;
+      out vec2 v_resolution;
       
       void main() {
         // Calculate point position
@@ -144,13 +170,26 @@ class FloatColorRenderer {
       }
     `;
 
-    // Fragment shader for points - same as rays
-    const pointFragmentSource = rayFragmentSource;
+    // Fragment shader for points
+    const pointFragmentSource = `#version 300 es
+      precision highp float;
+      
+      in vec2 v_position;
+      in vec2 v_resolution;
+      
+      uniform vec4 u_color;
+      
+      out vec4 fragColor;
+      
+      void main() {
+        fragColor = u_color;
+      }
+    `;
 
     // Vertex shader for final pass
-    const quadVertexSource = `
-      attribute vec2 position;
-      varying vec2 v_texCoord;
+    const quadVertexSource = `#version 300 es
+      in vec2 position;
+      out vec2 v_texCoord;
       
       void main() {
         gl_Position = vec4(position, 0.0, 1.0);
@@ -158,19 +197,23 @@ class FloatColorRenderer {
       }
     `;
 
-    // Fragment shader for final pass - normalize accumulated colors
-    const quadFragmentSource = `
+    // Fragment shader for final pass
+    const quadFragmentSource = `#version 300 es
       precision highp float;
+      
+      in vec2 v_texCoord;
+      
       uniform sampler2D u_texture;
-      varying vec2 v_texCoord;
+      
+      out vec4 fragColor;
       
       void main() {
-        vec4 color = texture2D(u_texture, v_texCoord);
+        vec4 color = texture(u_texture, v_texCoord);
         float maxComponent = max(max(color.r, color.g), color.b);
         if (maxComponent > 1.0) {
           color.rgb /= maxComponent;
         }
-        gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
+        fragColor = vec4(color.rgb, min(maxComponent, 1.0));
       }
     `;
 
@@ -544,8 +587,8 @@ class FloatColorRenderer {
     const gl = this.gl;
     const canvas = gl.canvas;
 
-    // First pass: render rays to floating point texture
-    gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+    // First pass: render rays to multisampled framebuffer
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.msaaFramebuffer);
     gl.viewport(0, 0, canvas.width, canvas.height);
     
     // Only clear on first use
@@ -598,69 +641,32 @@ class FloatColorRenderer {
 
     // Switch to scene space for rays and segments
     gl.uniform1i(this.isScreenSpaceLocation, false);
-    
-    // Set line width
-    const lineWidth = Math.max(1.0, 1.0 * this.lengthScale * this.scale);
-    gl.lineWidth(lineWidth);
 
     // Draw rays
     this.rayCache.forEach(({ r, color }) => {
-      // Calculate direction vector
-      const dx = r.p2.x - r.p1.x;
-      const dy = r.p2.y - r.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
-
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if ray has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const unitX = dx / length;
-      const unitY = dy / length;
+      const [r_, g, b, a] = this.correctRasterizationBias(color, r.p2.x - r.p1.x, r.p2.y - r.p1.y);
+      gl.uniform4f(this.colorUniformLocation, r_ * a, g * a, b * a, 1.0);
 
       // Calculate canvas limit for ray length
-      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + canvas.height + canvas.width) / Math.min(1, this.scale);
+      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+      const rayEnd = {
+        x: r.p1.x + (r.p2.x - r.p1.x) * cvsLimit,
+        y: r.p1.y + (r.p2.y - r.p1.y) * cvsLimit
+      };
 
-      // Create vertices for the ray
-      const vertices = new Float32Array([
-        r.p1.x, r.p1.y,  // Start point
-        r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit  // End point extended to canvas limit
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(r.p1, rayEnd);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw segments
     this.segmentCache.forEach(({ s, color }) => {
-      const dx = s.p2.x - s.p1.x;
-      const dy = s.p2.y - s.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
+      const [r, g, b, a] = this.correctRasterizationBias(color, s.p2.x - s.p1.x, s.p2.y - s.p1.y);
+      gl.uniform4f(this.colorUniformLocation, r * a, g * a, b * a, 1.0);
 
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if segment has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const vertices = new Float32Array([
-        s.p1.x, s.p1.y,
-        s.p2.x, s.p2.y
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(s.p1, s.p2);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw arrows
@@ -672,12 +678,17 @@ class FloatColorRenderer {
       gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
       
       this.arrowCache.forEach(({ points, color }) => {
-        const [r1, g, b, a] = color;
-        gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
+        const [r, g, b, a] = color;
+        gl.uniform4f(this.colorUniformLocation, r * a, g * a, b * a, 1.0);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
         gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
       });
     }
+
+    // Resolve multisampled framebuffer to floating point texture
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, this.msaaFramebuffer);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, this.resolveFramebuffer);
+    gl.blitFramebuffer(0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height, gl.COLOR_BUFFER_BIT, gl.LINEAR);
 
     // Second pass: render floating point texture to screen with normalization
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -708,6 +719,34 @@ class FloatColorRenderer {
     this.arrowCache.length = 0;
   }
 
+  createRectangleFromLine(p1, p2, width = 1) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length < 1e-5 * this.lengthScale) {
+      return new Float32Array(0);
+    }
+
+    // Calculate unit vectors
+    const unitX = dx / length;
+    const unitY = dy / length;
+    const perpX = -unitY * (width * this.lengthScale / 2);
+    const perpY = unitX * (width * this.lengthScale / 2);
+
+    // Create rectangle vertices
+    return new Float32Array([
+      // First triangle
+      p1.x + perpX, p1.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x + perpX, p2.y + perpY,
+      // Second triangle
+      p2.x + perpX, p2.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x - perpX, p2.y - perpY
+    ]);
+  }
+
   // Utility function to correct rasterization bias based on ray direction
   correctRasterizationBias(color, dx, dy) {
     const length = Math.sqrt(dx * dx + dy * dy);
@@ -718,7 +757,7 @@ class FloatColorRenderer {
     // For horizontal/vertical lines, the correction is 1
     const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy));
     
-    return color.map(component => component * correctionFactor);
+    return color//.map(component => component * correctionFactor);
   }
 
   destroy() {
@@ -733,8 +772,10 @@ class FloatColorRenderer {
     // Delete textures
     gl.deleteTexture(this.floatTexture);
     
-    // Delete framebuffer
-    gl.deleteFramebuffer(this.framebuffer);
+    // Delete framebuffers
+    gl.deleteFramebuffer(this.msaaFramebuffer);
+    gl.deleteFramebuffer(this.resolveFramebuffer);
+    gl.deleteRenderbuffer(this.msaaRenderBuffer);
     
     // Delete shader programs
     gl.deleteProgram(this.rayProgram);

@@ -127,16 +127,16 @@ async function startApp() {
 
   if (useFloatColorRenderer) {
     try {
+      // Try to get WebGL2 context for float color rendering
       const contextAttributes = {
         alpha: true,
-        premultipliedAlpha: true,
+        depth: false,
+        stencil: false,
         antialias: false,
+        preserveDrawingBuffer: false
       };
-      var gl = canvasLight.getContext('webgl', contextAttributes) || canvasLight.getContext('experimental-webgl', contextAttributes);
-      var ext = gl.getSupportedExtensions('OES_texture_float');
-      if (!ext) {
-        throw new Error('OES_texture_float not supported');
-      }
+      var gl = canvasLight.getContext('webgl2', contextAttributes);
+      const useFloatColorRenderer = gl !== null;
     } catch (e) {
       error = e.toString();
       document.getElementById('float_color_renderer').checked = false;
