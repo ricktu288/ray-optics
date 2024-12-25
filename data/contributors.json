@@ -370,5 +370,17 @@
       "gallery": true
     },
     "firstCommit": "2024-12-03"
+  },
+  {
+    "name": "Artuom Jdkd",
+    "githubEmails": [
+      "artuomjdkd@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2024-12-25"
   }
 ]
