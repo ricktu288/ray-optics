@@ -1,16 +1,6 @@
 class FloatColorRenderer {
-  constructor(ctx, origin, scale, lengthScale) {
-    const contextAttributes = {
-      alpha: true,
-      depth: false,
-      stencil: false,
-      antialias: false,
-      preserveDrawingBuffer: true,
-      premultipliedAlpha: false,
-      failIfMajorPerformanceCaveat: false
-    };
-    this.gl = ctx.canvas.getContext('webgl', contextAttributes) || 
-              ctx.canvas.getContext('experimental-webgl', contextAttributes);
+  constructor(gl, origin, scale, lengthScale) {
+    this.gl = gl;
     if (!this.gl) {
       throw new Error('Unable to initialize WebGL. Your browser may not support it.');
     }
@@ -21,7 +11,7 @@ class FloatColorRenderer {
       throw new Error('OES_texture_float not supported');
     }
 
-    this.canvas = ctx.canvas;
+    this.canvas = gl.canvas;
     this.origin = origin;
     this.scale = scale;
     this.lengthScale = lengthScale;

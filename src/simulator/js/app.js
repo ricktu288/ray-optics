@@ -127,7 +127,12 @@ async function startApp() {
 
   if (useFloatColorRenderer) {
     try {
-      var gl = canvasLight.getContext('webgl') || canvasLight.getContext('experimental-webgl');
+      const contextAttributes = {
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false,
+      };
+      var gl = canvasLight.getContext('webgl', contextAttributes) || canvasLight.getContext('experimental-webgl', contextAttributes);
       var ext = gl.getSupportedExtensions('OES_texture_float');
       if (!ext) {
         throw new Error('OES_texture_float not supported');
