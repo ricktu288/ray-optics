@@ -285,7 +285,7 @@
     },
     "floatColorRenderer": {
       "title": "Float Color Renderer",
-      "description": "Render the rays with the WebGL color buffer that stores the RGB values with floating-point numbers. On most platforms, this solves the color inaccuracy and performance issues in the \"Simulate Colors\" mode. However, it may not work on some platforms. Note that ray tracing is still done on the CPU."
+      "description": "This is an experimental feature that renders the rays with the WebGL floating-point color buffer. On most platforms, this solves the issues of inaccurate colors and brightnesses in this simulator, especially in the \"Simulate Colors\" mode (where the performance issue is also solved). However, in some situations, it may create other types of rendering artifacts, making the visual appearance worse than the default renderer. Note that ray tracing is still done on the CPU."
     },
     "gridSize": {
       "title": "Grid Size"
