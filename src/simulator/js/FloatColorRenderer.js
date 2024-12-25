@@ -598,69 +598,32 @@ class FloatColorRenderer {
 
     // Switch to scene space for rays and segments
     gl.uniform1i(this.isScreenSpaceLocation, false);
-    
-    // Set line width
-    const lineWidth = Math.max(1.0, 1.0 * this.lengthScale * this.scale);
-    gl.lineWidth(lineWidth);
 
     // Draw rays
     this.rayCache.forEach(({ r, color }) => {
-      // Calculate direction vector
-      const dx = r.p2.x - r.p1.x;
-      const dy = r.p2.y - r.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
-
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if ray has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const unitX = dx / length;
-      const unitY = dy / length;
+      const [r_, g, b, a] = this.correctRasterizationBias(color, r.p2.x - r.p1.x, r.p2.y - r.p1.y);
+      gl.uniform4f(this.colorUniformLocation, r_ * a, g * a, b * a, 1.0);
 
       // Calculate canvas limit for ray length
-      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + canvas.height + canvas.width) / Math.min(1, this.scale);
+      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+      const rayEnd = {
+        x: r.p1.x + (r.p2.x - r.p1.x) * cvsLimit,
+        y: r.p1.y + (r.p2.y - r.p1.y) * cvsLimit
+      };
 
-      // Create vertices for the ray
-      const vertices = new Float32Array([
-        r.p1.x, r.p1.y,  // Start point
-        r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit  // End point extended to canvas limit
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(r.p1, rayEnd);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw segments
     this.segmentCache.forEach(({ s, color }) => {
-      const dx = s.p2.x - s.p1.x;
-      const dy = s.p2.y - s.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
+      const [r, g, b, a] = this.correctRasterizationBias(color, s.p2.x - s.p1.x, s.p2.y - s.p1.y);
+      gl.uniform4f(this.colorUniformLocation, r * a, g * a, b * a, 1.0);
 
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if segment has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const vertices = new Float32Array([
-        s.p1.x, s.p1.y,
-        s.p2.x, s.p2.y
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(s.p1, s.p2);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw arrows
@@ -672,8 +635,8 @@ class FloatColorRenderer {
       gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
       
       this.arrowCache.forEach(({ points, color }) => {
-        const [r1, g, b, a] = color;
-        gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
+        const [r, g, b, a] = color;
+        gl.uniform4f(this.colorUniformLocation, r * a, g * a, b * a, 1.0);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
         gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
       });
@@ -708,6 +671,34 @@ class FloatColorRenderer {
     this.arrowCache.length = 0;
   }
 
+  createRectangleFromLine(p1, p2, width = 1) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length < 1e-5 * this.lengthScale) {
+      return new Float32Array(0);
+    }
+
+    // Calculate unit vectors
+    const unitX = dx / length;
+    const unitY = dy / length;
+    const perpX = -unitY * (width * this.lengthScale / 2);
+    const perpY = unitX * (width * this.lengthScale / 2);
+
+    // Create rectangle vertices
+    return new Float32Array([
+      // First triangle
+      p1.x + perpX, p1.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x + perpX, p2.y + perpY,
+      // Second triangle
+      p2.x + perpX, p2.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x - perpX, p2.y - perpY
+    ]);
+  }
+
   // Utility function to correct rasterization bias based on ray direction
   correctRasterizationBias(color, dx, dy) {
     const length = Math.sqrt(dx * dx + dy * dy);
@@ -718,7 +709,7 @@ class FloatColorRenderer {
     // For horizontal/vertical lines, the correction is 1
     const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy));
     
-    return color.map(component => component * correctionFactor);
+    return color//.map(component => component * correctionFactor);
   }
 
   destroy() {
