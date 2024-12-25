@@ -115,10 +115,33 @@ async function startApp() {
 
   scene = new Scene();
 
-  var useFloatColorRenderer = true;
+  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsUseFloatColorRenderer && localStorage.rayOpticsUseFloatColorRenderer == "on") {
+    document.getElementById('float_color_renderer').checked = true;
+    document.getElementById('float_color_renderer_mobile').checked = true;
+    var useFloatColorRenderer = true;
+  } else {
+    document.getElementById('float_color_renderer').checked = false;
+    document.getElementById('float_color_renderer_mobile').checked = false;
+    var useFloatColorRenderer = false;
+  }
+
+  if (useFloatColorRenderer) {
+    try {
+      var gl = canvasLight.getContext('webgl') || canvasLight.getContext('experimental-webgl');
+      var ext = gl.getSupportedExtensions('OES_texture_float');
+      if (!ext) {
+        throw new Error('OES_texture_float not supported');
+      }
+    } catch (e) {
+      error = e.toString();
+      document.getElementById('float_color_renderer').checked = false;
+      document.getElementById('float_color_renderer_mobile').checked = false;
+      useFloatColorRenderer = false;
+    }
+  }
 
   simulator = new Simulator(scene,
-    useFloatColorRenderer ? canvasLight.getContext('webgl') || canvasLight.getContext('experimental-webgl') : canvasLight.getContext('2d'),
+    useFloatColorRenderer ? gl : canvasLight.getContext('2d'),
     canvasBelowLight.getContext('2d'),
     canvasAboveLight.getContext('2d'),
     canvasGrid.getContext('2d'),
@@ -574,6 +597,8 @@ async function startApp() {
     this.blur();
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
+
+    alert(i18next.t('simulator:common.reloadToTakeEffect'));
   };
 
   document.getElementById('showRayArrows').onclick = function () {
@@ -656,6 +681,30 @@ async function startApp() {
     document.getElementById('auto_sync_url').checked = false;
     document.getElementById('auto_sync_url_mobile').checked = false;
     autoSyncUrl = false;
+  }
+
+  document.getElementById('float_color_renderer').onclick = function () {
+    this.blur();
+
+    document.getElementById('float_color_renderer').checked = this.checked;
+    document.getElementById('float_color_renderer_mobile').checked = this.checked;
+
+    localStorage.rayOpticsUseFloatColorRenderer = this.checked ? "on" : "off";
+    //useFloatColorRenderer = this.checked;
+    alert(i18next.t('simulator:common.reloadToTakeEffect'));
+
+    editor.onActionComplete();
+  };
+  document.getElementById('float_color_renderer_mobile').onclick = document.getElementById('float_color_renderer').onclick;
+
+  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsUseFloatColorRenderer && localStorage.rayOpticsUseFloatColorRenderer == "on") {
+    document.getElementById('float_color_renderer').checked = true;
+    document.getElementById('float_color_renderer_mobile').checked = true;
+    //useFloatColorRenderer = true;
+  } else {
+    document.getElementById('float_color_renderer').checked = false;
+    document.getElementById('float_color_renderer_mobile').checked = false;
+    //useFloatColorRenderer = false;
   }
 
   document.getElementById('gridSize').onchange = function () {
@@ -1184,6 +1233,8 @@ function initUIText() {
   setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
   setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('float_color_renderer_popover', null, null, i18next.t('simulator:settings.floatColorRenderer.description'));
+  setText('float_color_renderer_text', i18next.t('simulator:settings.floatColorRenderer.title') + '<sup>Beta</sup>');
   setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
   setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
@@ -1252,6 +1303,7 @@ function initUIText() {
   setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
   setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
+  setText('float_color_renderer_mobile_text', i18next.t('simulator:settings.floatColorRenderer.title') + '<sup>Beta</sup>');
   setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));

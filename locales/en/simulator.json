@@ -3,7 +3,8 @@
     "cancelButton": "Cancel",
     "closeButton": "Close",
     "defaultOption": "Default",
-    "saveButton": "Save"
+    "saveButton": "Save",
+    "reloadToTakeEffect": "Please reload the page to take effect."
   },
   "file": {
     "copyLink": {
@@ -281,6 +282,10 @@
     "autoSyncUrl": {
       "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename.",
       "title": "Auto sync URL"
+    },
+    "floatColorRenderer": {
+      "title": "Float Color Renderer",
+      "description": "Renders the rays with the WebGL color buffer that represents the RGB values with floating-point numbers. On most platforms, this solves the color inacuracy and performance issues in the \"Simulate Colors\" mode. However, on other plaforms it may cause other rendering issues or even not work at all. Note that ray tracing is still done on the CPU."
     },
     "gridSize": {
       "title": "Grid Size"
