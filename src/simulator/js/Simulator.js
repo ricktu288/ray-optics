@@ -406,10 +406,14 @@ class Simulator {
 
     while (true) {
       if (new Date() - st_time > 50 && this.enableTimer) {
-        // If already run for 200ms
+        // If already run for 50ms
         // Pause for 10ms and continue (prevent not responding)
         this.simulationTimerId = setTimeout(() => this.processRays(), this.firstBreak ? 100 : 1);
         this.firstBreak = false;
+
+        if (this.useFloatColorRenderer) {
+          this.canvasRendererMain.flush();
+        }
 
         this.emit('simulationPause', null);
 
