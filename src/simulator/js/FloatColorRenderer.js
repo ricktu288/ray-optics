@@ -600,7 +600,7 @@ class FloatColorRenderer {
     gl.uniform1i(this.isScreenSpaceLocation, false);
     
     // Set line width
-    const lineWidth = Math.max(1.0, 1.0 * this.lengthScale * this.scale);
+    const lineWidth = Math.round(Math.max(1.0, 1.0 * this.lengthScale * this.scale));
     gl.lineWidth(lineWidth);
 
     // Draw rays
@@ -713,10 +713,12 @@ class FloatColorRenderer {
     const length = Math.sqrt(dx * dx + dy * dy);
     if (length === 0) return color;
     
+    const intendedLineWidth = 1.0 * this.lengthScale * this.scale;
     // Calculate correction factor based on direction
     // For diagonal lines (45 degrees), the correction is sqrt(2)
     // For horizontal/vertical lines, the correction is 1
-    const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy));
+    // Also correct for line width
+    const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy)) * (intendedLineWidth / Math.round(Math.max(1.0, intendedLineWidth)));
     
     return color.map(component => component * correctionFactor);
   }
