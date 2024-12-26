@@ -1,5 +1,5 @@
 class FloatColorRenderer {
-  constructor(gl, origin, scale, lengthScale) {
+  constructor(gl, origin, scale, lengthScale, msaaCount = 4) {
     this.gl = gl;
     if (!this.gl) {
       throw new Error('Unable to initialize WebGL. Your browser may not support it.');
@@ -20,6 +20,7 @@ class FloatColorRenderer {
     this.pointCache = [];
     this.arrowCache = [];
     this.hasFirstFlush = false;
+    this.msaaCount = msaaCount;
     
     // Create reusable buffers
     this.lineBuffer = this.gl.createBuffer();
@@ -159,6 +160,7 @@ class FloatColorRenderer {
     `;
 
     // Fragment shader for final pass - normalize accumulated colors
+    /*
     const quadFragmentSource = `
       precision highp float;
       uniform sampler2D u_texture;
@@ -171,6 +173,23 @@ class FloatColorRenderer {
           color.rgb /= maxComponent;
         }
         gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
+      }
+    `;
+*/
+
+    // Fragment shader for final pass - normalize accumulated colors and apply gamma correction
+    const quadFragmentSource = `
+      precision highp float;
+      uniform sampler2D u_texture;
+      varying vec2 v_texCoord;
+
+      void main() {
+        vec4 color = texture2D(u_texture, v_texCoord);
+        float maxComponent = max(max(color.r, color.g), color.b);
+        if (maxComponent > 1.0) {
+          color.rgb /= maxComponent;
+        }
+        gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), min(maxComponent, 1.0));
       }
     `;
 
@@ -271,6 +290,7 @@ class FloatColorRenderer {
    * @param {number} [size=5]
    */
   drawPoint(p, color = [0, 0, 0, 1], size = 5) {
+    color = this.preprocessColor(color);
     this.pointCache.push({ p, color, size });
     
     // If cache is too large, flush immediately
@@ -295,6 +315,8 @@ class FloatColorRenderer {
     if (length < 1e-5 * this.lengthScale) {
       return;
     }
+
+    color = this.preprocessColor(color);
 
     const unitX = dx / length;
     const unitY = dy / length;
@@ -393,6 +415,27 @@ class FloatColorRenderer {
           dashPos = (dashPos + 1) % lineDash.length;
           isDraw = !isDraw;
         }
+      } else if (this.msaaCount > 1) {
+        // For MSAA, create rays with subpixel offsets along the direction perpendicular to the ray with color averaging
+        const subpixelOffset = 1 / this.msaaCount;
+        const perpX = -unitY;
+        const perpY = unitX;
+        const dividedColor = [color[0], color[1], color[2], color[3] / this.msaaCount];
+
+        for (let i = 0; i < this.msaaCount; i++) {
+          const offset = ((i + 0.5) * subpixelOffset) / this.scale; // Note that the offset is in the pixel space
+          const subpixelRay = {
+            p1: {
+              x: r.p1.x + offset * perpX,
+              y: r.p1.y + offset * perpY
+            },
+            p2: {
+              x: r.p1.x + unitX * cvsLimit + offset * perpX,
+              y: r.p1.y + unitY * cvsLimit + offset * perpY
+            }
+          };
+          this.rayCache.push({ r: subpixelRay, color: dividedColor });
+        }
       } else {
         this.rayCache.push({ r, color });
       }
@@ -453,18 +496,19 @@ class FloatColorRenderer {
     const dx = s.p2.x - s.p1.x;
     const dy = s.p2.y - s.p1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
+    const unitX = dx / length;
+    const unitY = dy / length;
     
     if (length < 1e-5 * this.lengthScale) {
       return;
     }
 
+    color = this.preprocessColor(color);
+
     const arrowSize = Math.min(length * 0.15, 5 * this.lengthScale);
     const arrowPosition = 0.67;
 
     if (showArrow && arrowSize >= this.lengthScale * 1.2) {
-      const unitX = dx / length;
-      const unitY = dy / length;
-
       // Calculate arrow position
       const arrowX = s.p1.x + dx * arrowPosition;
       const arrowY = s.p1.y + dy * arrowPosition;
@@ -524,6 +568,27 @@ class FloatColorRenderer {
       // Draw without arrow
       if (lineDash && lineDash.length > 0) {
         this.drawDashedSegment(s, color, lineDash);
+      } else if (this.msaaCount > 1) {
+        // For MSAA, create segments with subpixel offsets along the direction perpendicular to the ray with color averaging
+        const subpixelOffset = 1 / this.msaaCount;
+        const perpX = -unitY;
+        const perpY = unitX;
+        const dividedColor = [color[0], color[1], color[2], color[3] / this.msaaCount];
+
+        for (let i = 0; i < this.msaaCount; i++) {
+          const offset = ((i + 0.5) * subpixelOffset) / this.scale; // Note that the offset is in the pixel space
+          const subpixelSegment = {
+            p1: {
+              x: s.p1.x + offset * perpX,
+              y: s.p1.y + offset * perpY
+            },
+            p2: {
+              x: s.p2.x + offset * perpX,
+              y: s.p2.y + offset * perpY
+            }
+          };
+          this.segmentCache.push({ s: subpixelSegment, color: dividedColor });
+        }
       } else {
         this.segmentCache.push({ s, color });
       }
@@ -598,69 +663,32 @@ class FloatColorRenderer {
 
     // Switch to scene space for rays and segments
     gl.uniform1i(this.isScreenSpaceLocation, false);
-    
-    // Set line width
-    const lineWidth = Math.round(Math.max(1.0, 1.0 * this.lengthScale * this.scale));
-    gl.lineWidth(lineWidth);
 
     // Draw rays
     this.rayCache.forEach(({ r, color }) => {
-      // Calculate direction vector
-      const dx = r.p2.x - r.p1.x;
-      const dy = r.p2.y - r.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
-
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if ray has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const unitX = dx / length;
-      const unitY = dy / length;
+      const [r_, g, b, a] = color;
+      gl.uniform4f(this.colorUniformLocation, r_ * a, g * a, b * a, 1.0);
 
       // Calculate canvas limit for ray length
-      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + canvas.height + canvas.width) / Math.min(1, this.scale);
+      const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+      const rayEnd = {
+        x: r.p1.x + (r.p2.x - r.p1.x) * cvsLimit,
+        y: r.p1.y + (r.p2.y - r.p1.y) * cvsLimit
+      };
 
-      // Create vertices for the ray
-      const vertices = new Float32Array([
-        r.p1.x, r.p1.y,  // Start point
-        r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit  // End point extended to canvas limit
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(r.p1, rayEnd);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw segments
     this.segmentCache.forEach(({ s, color }) => {
-      const dx = s.p2.x - s.p1.x;
-      const dy = s.p2.y - s.p1.y;
-      
-      const [r1, g, b, a] = color;
-      // Apply rasterization bias correction to alpha-premultiplied RGB values
-      const [correctedR, correctedG, correctedB] = this.correctRasterizationBias([r1 * a, g * a, b * a], dx, dy);
-      gl.uniform4f(this.colorUniformLocation, correctedR, correctedG, correctedB, 1.0);
+      const [r_, g, b, a] = color;
+      gl.uniform4f(this.colorUniformLocation, r_ * a, g * a, b * a, 1.0);
 
-      const length = Math.sqrt(dx * dx + dy * dy);
-      
-      // Skip if segment has no direction
-      if (length < 1e-5 * this.lengthScale) {
-        return;
-      }
-      
-      const vertices = new Float32Array([
-        s.p1.x, s.p1.y,
-        s.p2.x, s.p2.y
-      ]);
-
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
-      gl.drawArrays(gl.LINES, 0, 2);
+      const vertices = this.createRectangleFromLine(s.p1, s.p2);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
 
     // Draw arrows
@@ -672,8 +700,8 @@ class FloatColorRenderer {
       gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
       
       this.arrowCache.forEach(({ points, color }) => {
-        const [r1, g, b, a] = color;
-        gl.uniform4f(this.colorUniformLocation, r1 * a, g * a, b * a, 1.0);
+        const [r, g, b, a] = color;
+        gl.uniform4f(this.colorUniformLocation, r * a, g * a, b * a, 1.0);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.DYNAMIC_DRAW);
         gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
       });
@@ -708,19 +736,49 @@ class FloatColorRenderer {
     this.arrowCache.length = 0;
   }
 
-  // Utility function to correct rasterization bias based on ray direction
-  correctRasterizationBias(color, dx, dy) {
+  createRectangleFromLine(p1, p2, width = 1) {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
     const length = Math.sqrt(dx * dx + dy * dy);
-    if (length === 0) return color;
     
-    const intendedLineWidth = 1.0 * this.lengthScale * this.scale;
-    // Calculate correction factor based on direction
-    // For diagonal lines (45 degrees), the correction is sqrt(2)
-    // For horizontal/vertical lines, the correction is 1
-    // Also correct for line width
-    const correctionFactor = length / Math.max(Math.abs(dx), Math.abs(dy)) * (intendedLineWidth / Math.round(Math.max(1.0, intendedLineWidth)));
+    if (length < 1e-5 * this.lengthScale) {
+      return new Float32Array(0);
+    }
+
+    // Calculate unit vectors
+    const unitX = dx / length;
+    const unitY = dy / length;
+    const perpX = -unitY * (width * this.lengthScale / 2);
+    const perpY = unitX * (width * this.lengthScale / 2);
+
+    // Create rectangle vertices
+    return new Float32Array([
+      // First triangle
+      p1.x + perpX, p1.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x + perpX, p2.y + perpY,
+      // Second triangle
+      p2.x + perpX, p2.y + perpY,
+      p1.x - perpX, p1.y - perpY,
+      p2.x - perpX, p2.y - perpY
+    ]);
+  }
+
+  preprocessColor(color) {
+    const r = color[0] * color[3];
+    const g = color[1] * color[3];
+    const b = color[2] * color[3];
     
-    return color.map(component => component * correctionFactor);
+    const m = Math.max(r, g, b);
+
+    // Correct gamma
+    const rr = Math.pow(r, 2.2);
+    const gg = Math.pow(g, 2.2);
+    const bb = Math.pow(b, 2.2);
+
+    const ratio = m / Math.max(rr, gg, bb);
+    
+    return [rr * ratio, gg * ratio, bb * ratio, 1.0];
   }
 
   destroy() {
