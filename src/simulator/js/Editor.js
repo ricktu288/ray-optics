@@ -166,7 +166,7 @@ class Editor {
     this.delayedValidationTimerId = -1;
 
     /** @property {number} minimalDragLength - The minimal drag length threshold to trigger a drag operation. */
-    this.minimalDragLength = 5;
+    this.minimalDragLength = 3;
 
     this.initCanvas();
   }
@@ -644,8 +644,6 @@ class Editor {
    * @param {MouseEvent} e - The event.
    */
   onCanvasMouseMove(e) {
-
-    this.pendingControlPointSelection = false;
     if (e.changedTouches) {
       var et = e.changedTouches[0];
     } else {
@@ -655,6 +653,12 @@ class Editor {
     // Get raw coordinates first
     const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
     const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+
+    // Calculate the distance moved
+    const distanceSquared = geometry.distanceSquared(this.lastMousePos, geometry.point(rawX, rawY));
+    if (distanceSquared < this.minimalDragLength * this.minimalDragLength) {
+      return; // Do not proceed if the drag is less than the threshold
+    }
     
     // Truncate to binary fractions
     const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
@@ -671,6 +675,8 @@ class Editor {
     else {
       mousePos2 = mousePos_nogrid;
     }
+
+    this.pendingControlPointSelection = false;
 
     if (!this.isConstructing && this.draggingObjIndex == -1 && !this.scene.lockObjs) {
       // highlight object under mousePos cursor
@@ -744,12 +750,6 @@ class Editor {
 
       if (this.draggingObjIndex >= 0) {
         // Here the mouse is dragging an object
-
-        // Calculate the distance moved
-        const distanceSquared = geometry.distanceSquared(this.lastMousePos, mousePos2);
-        if (distanceSquared < this.minimalDragLength * this.minimalDragLength) {
-          return; // Do not proceed if the drag is less than the threshold
-        }
 
         this.scene.objs[this.draggingObjIndex].onDrag(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch, e.altKey * 1), this.dragContext, e.ctrlKey, e.shiftKey);
         // If dragging an entire object, then when Ctrl is hold, clone the object
