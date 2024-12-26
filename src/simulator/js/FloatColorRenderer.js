@@ -1,4 +1,35 @@
+/*
+ * Copyright 2024 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * An experimental canvas renderer for the light layer with the same API as `CanvasRenderer`, but uses the WebGL floating point color buffer and properly calculates color mixtures. This largely solves the issue of brightness and color inconsistency issue in this simulator, especially whe "Simulate Colors" is enabled (where the performace issue is also solved).
+ * 
+ * This renderer is currently used only in the interactive simulator in the web app when the "Float Color Rendering" experimental feature is enabled, and is not used in image exporting, generation of Gallery images, and the automatic tests.
+ * 
+ * The color mapping is done in the fragment shader, where the color is normalized and gamma corrected. The normalization preserves the hue and saturation of the color, but saturates suddently without smooth transition. This behavior may not be ideal for all situations. For example, it creates a reversal of brightness if a strong white beam is intersecting with an even stronger blue beam. In the future, there will be an option to choose between different color mapping functions.
+ * @class
+ */
 class FloatColorRenderer {
+
+  /**
+   * Maximum number of elements in the cache before flushing.
+   * @type {number}
+   */
+  static MAX_CACHE_SIZE = 500;
+
   constructor(gl, origin, scale, lengthScale, msaaCount = 4) {
     this.gl = gl;
     if (!this.gl) {
@@ -31,6 +62,9 @@ class FloatColorRenderer {
     this.initializeFramebuffer();
   }
 
+  /**
+   * Initialize the framebuffer and textures.
+   */
   initializeFramebuffer() {
     const gl = this.gl;
     
@@ -72,6 +106,9 @@ class FloatColorRenderer {
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   }
 
+  /**
+   * Initialize shaders.
+   */
   initializeShaders() {
     // Vertex shader for rays
     const rayVertexSource = `
@@ -158,24 +195,6 @@ class FloatColorRenderer {
         v_texCoord = position * 0.5 + 0.5;
       }
     `;
-
-    // Fragment shader for final pass - normalize accumulated colors
-    /*
-    const quadFragmentSource = `
-      precision highp float;
-      uniform sampler2D u_texture;
-      varying vec2 v_texCoord;
-      
-      void main() {
-        vec4 color = texture2D(u_texture, v_texCoord);
-        float maxComponent = max(max(color.r, color.g), color.b);
-        if (maxComponent > 1.0) {
-          color.rgb /= maxComponent;
-        }
-        gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
-      }
-    `;
-*/
 
     // Fragment shader for final pass - normalize accumulated colors and apply gamma correction
     const quadFragmentSource = `
@@ -270,6 +289,13 @@ class FloatColorRenderer {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, pointVertices, this.gl.STATIC_DRAW);
   }
 
+  /**
+   * Compile a shader.
+   * @param {WebGLRenderingContext} gl
+   * @param {string} source
+   * @param {number} type
+   * @returns {WebGLShader}
+   */
   compileShader(gl, source, type) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -449,6 +475,12 @@ class FloatColorRenderer {
     }
   }
 
+  /**
+   * Draw a dashed segment.
+   * @param {Line} s
+   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number[]} [lineDash=[]]
+   */
   drawDashedSegment(s, color, lineDash) {
     const dx = s.p2.x - s.p1.x;
     const dy = s.p2.y - s.p1.y;
@@ -492,6 +524,13 @@ class FloatColorRenderer {
     }
   }
 
+  /**
+   * Draw a segment.
+   * @param {Line} s
+   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=false]
+   * @param {number[]} [lineDash=[]]
+   */
   drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
     const dx = s.p2.x - s.p1.x;
     const dy = s.p2.y - s.p1.y;
@@ -601,6 +640,10 @@ class FloatColorRenderer {
     }
   }
 
+  /**
+   * Flush the caches and render the accumulated rays, segments, and points.
+   * This method is called when the cache size exceeds the maximum cache size, when the simulation is paused, or when the simulation is completed.
+   */
   flush() {
     if (!this.rayProgram || !this.quadProgram || !this.pointProgram) {
       return;
@@ -736,6 +779,12 @@ class FloatColorRenderer {
     this.arrowCache.length = 0;
   }
 
+  /**
+   * Create a rectangle from a line segment. Since WebGL lineWidth is not widely supported, this method creates a rectangle with the given width to render the line segment or ray.
+   * @param {Point} p1
+   * @param {Point} p2
+   * @param {number} [width=1]
+   */
   createRectangleFromLine(p1, p2, width = 1) {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
@@ -764,6 +813,11 @@ class FloatColorRenderer {
     ]);
   }
 
+  /**
+   * Preprocess color for gamma correction and normalization.
+   * @param {number[]} color
+   * @returns {number[]}
+   */
   preprocessColor(color) {
     const r = color[0] * color[3];
     const g = color[1] * color[3];
@@ -785,6 +839,9 @@ class FloatColorRenderer {
     return [rr * ratio, gg * ratio, bb * ratio, 1.0];
   }
 
+  /**
+   * Destroy the renderer and release resources.
+   */
   destroy() {
     const gl = this.gl;
     
@@ -807,10 +864,8 @@ class FloatColorRenderer {
   }
 
   applyColorTransformation() {
-    // Stub for applyColorTransformation
+    // This is just to maintain the same API as `CanvasRenderer`. Color transformation is already done in the fragment shader in this renderer.
   }
-
-  static MAX_CACHE_SIZE = 500;
 }
 
 export default FloatColorRenderer;
