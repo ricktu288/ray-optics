@@ -768,6 +768,10 @@ class FloatColorRenderer {
     const r = color[0] * color[3];
     const g = color[1] * color[3];
     const b = color[2] * color[3];
+
+    if (r + g + b == 0) {
+      return [0, 0, 0, 0];
+    }
     
     const m = Math.max(r, g, b);
 
