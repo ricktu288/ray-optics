@@ -134,6 +134,10 @@ async function startApp() {
       };
       var gl = canvasLight.getContext('webgl', contextAttributes) || canvasLight.getContext('experimental-webgl', contextAttributes);
       var ext = gl.getSupportedExtensions('OES_texture_float');
+
+      // Currently the color mode is always determined by the renderer, so we need to set it here.
+      scene.colorMode = 'linear';
+
       if (!ext) {
         throw new Error('OES_texture_float not supported');
       }
@@ -1873,6 +1877,12 @@ function init() {
   scene.loadJSON(JSON.stringify({ version: DATA_VERSION }), () => { });
   scene.origin = geometry.point(0, 0);
   scene.scale = 1;
+
+  if (simulator.useFloatColorRenderer) {
+    scene.colorMode = 'linear';
+  } else {
+    scene.colorMode = 'legacy';
+  }
 
   let dpr = window.devicePixelRatio || 1;
 

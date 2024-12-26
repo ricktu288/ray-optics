@@ -538,7 +538,7 @@ class Simulator {
               this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
             } else {
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), this.useFloatColorRenderer ? [0.1, 0.1, 0.1, alpha] : [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
             }
 
           }
@@ -663,7 +663,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 1);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, [0.3, 0.3, 0.3, alpha]);
+                  this.canvasRendererMain.drawPoint(observed_intersection, this.useFloatColorRenderer ? [0.01, 0.01, 0.01, alpha] : [0.3, 0.3, 0.3, alpha]);
                 }
               }
             }

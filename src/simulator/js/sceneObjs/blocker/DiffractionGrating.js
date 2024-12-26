@@ -126,6 +126,7 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
   }
 
   onRayIncident(ray, rayIndex, incidentPoint) {
+    let truncation = 0;
     const mm_in_nm = 1 / 1000000;
     var rx = ray.p1.x - incidentPoint.x;
     var ry = ray.p1.y - incidentPoint.y;
@@ -183,12 +184,17 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
       // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
       diffracted_ray.gap = true;
 
-      newRays.push(diffracted_ray);
+      if (diffracted_ray.brightness_s + diffracted_ray.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0.01)) {
+        newRays.push(diffracted_ray);
+      } else {
+        truncation += diffracted_ray.brightness_s + diffracted_ray.brightness_p;
+      }
     }
 
     return {
       isAbsorbed: true,
-      newRays: newRays
+      newRays: newRays,
+      truncation: truncation
     };
   }
 };

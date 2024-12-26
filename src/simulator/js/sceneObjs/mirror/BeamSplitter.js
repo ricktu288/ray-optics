@@ -106,13 +106,18 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     ray2.wavelength = ray.wavelength;
     ray.brightness_s *= (1 - transmission);
     ray.brightness_p *= (1 - transmission);
-    if (ray2.brightness_s + ray2.brightness_p > .01) {
+    if (ray2.brightness_s + ray2.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0.01)) {
       return {
         newRays: [ray2]
       };
-    } else {
+    } else if (ray.brightness_s + ray.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0.01)) {
       return {
         truncation: ray2.brightness_s + ray2.brightness_p
+      };
+    } else {
+      return {
+        isAbsorbed: true,
+        truncation: ray.brightness_s + ray.brightness_p + ray2.brightness_s + ray2.brightness_p
       };
     }
   }
