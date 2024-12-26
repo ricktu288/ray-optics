@@ -165,6 +165,9 @@ class Editor {
     /** @property {number} delayedValidationTimerId - The ID of the timer for performing a delayed validation. */
     this.delayedValidationTimerId = -1;
 
+    /** @property {number} minimalDragLength - The minimal drag length threshold to trigger a drag operation. */
+    this.minimalDragLength = 5;
+
     this.initCanvas();
   }
 
@@ -285,6 +288,7 @@ class Editor {
         return;
       }
 
+      e.preventDefault(); // Prevent text selection
       self.canvas.focus();
       self.onCanvasMouseDown(e);
     });
@@ -299,6 +303,7 @@ class Editor {
         return;
       }
 
+      e.preventDefault(); // Prevent text selection
       self.onCanvasMouseMove(e);
     });
 
@@ -739,6 +744,12 @@ class Editor {
 
       if (this.draggingObjIndex >= 0) {
         // Here the mouse is dragging an object
+
+        // Calculate the distance moved
+        const distanceSquared = geometry.distanceSquared(this.lastMousePos, mousePos2);
+        if (distanceSquared < this.minimalDragLength * this.minimalDragLength) {
+          return; // Do not proceed if the drag is less than the threshold
+        }
 
         this.scene.objs[this.draggingObjIndex].onDrag(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch, e.altKey * 1), this.dragContext, e.ctrlKey, e.shiftKey);
         // If dragging an entire object, then when Ctrl is hold, clone the object
