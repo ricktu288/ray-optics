@@ -232,7 +232,12 @@ class Simulator {
 
     if (!skipLight) {
       if (this.useFloatColorRenderer) {
-        this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
+        if (this.scene.colorMode == 'legacy' && this.scene.simulateColors) {
+          var colorMode = 'legacy_color';
+        } else {
+          var colorMode = this.scene.colorMode;
+        }
+        this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, null, colorMode);
       } else {
         this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
       }
@@ -538,7 +543,7 @@ class Simulator {
               this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
             } else {
               this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), this.useFloatColorRenderer ? [0.1, 0.1, 0.1, alpha] : [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
+              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
             }
 
           }
@@ -663,7 +668,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 1);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, this.useFloatColorRenderer ? [0.01, 0.01, 0.01, alpha] : [0.3, 0.3, 0.3, alpha]);
+                  this.canvasRendererMain.drawPoint(observed_intersection, this.useFloatColorRenderer ? [0.03, 0.03, 0.03, alpha] : [0.3, 0.3, 0.3, alpha]);
                 }
               }
             }
@@ -759,6 +764,14 @@ class Simulator {
       }
     } else {
       this.warning = null;
+    }
+
+    if (!this.useFloatColorRenderer && this.scene.colorMode !== 'legacy') {
+      this.warning = i18next.t('simulator:generalWarnings.needsFloatColorRenderer', { colorMode: i18next.t(`simulator:colorModeModal.${this.scene.colorMode}.title`) });
+    }
+
+    if (this.useFloatColorRenderer && this.scene.colorMode === 'legacy') {
+      this.warning = i18next.t('simulator:generalWarnings.legacyColorMode');
     }
   }
 

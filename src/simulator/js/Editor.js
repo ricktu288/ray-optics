@@ -1113,13 +1113,6 @@ class Editor {
       }
     });
     
-    // Currently the color mode is always determined by the renderer. This property of scene is only for the future when the float color renderer becomes stable and the user can choose the color mode.
-    if (this.simulator.useFloatColorRenderer) {
-      this.scene.colorMode = 'linear';
-    } else {
-      this.scene.colorMode = 'legacy';
-    }
-
     this.selectObj(-1);
     this.lastActionJson = json;
     this.simulator.updateSimulation();

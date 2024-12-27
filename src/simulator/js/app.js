@@ -36,7 +36,7 @@ import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import * as sceneObjs from './sceneObjs.js';
 import { saveAs } from 'file-saver';
-import i18next, { t } from 'i18next';
+import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -138,15 +138,44 @@ async function startApp() {
       if (!ext) {
         throw new Error('OES_texture_float not supported.');
       }
-
-      // Currently the color mode is always determined by the renderer, so we need to set it here.
-      scene.colorMode = 'linear';
     } catch (e) {
       localStorage.rayOpticsUseFloatColorRenderer = "off";
       console.log(e.toString() + ' Falling back to default renderer.');
       alert(i18next.t('simulator:settings.floatColorRenderer.error') + '\n' + i18next.t('simulator:common.reloadToTakeEffect'));
       return;
     }
+  }
+
+  if (useFloatColorRenderer) {
+    scene.colorMode = 'linear';
+    document.getElementById('colorMode').disabled = false;
+    document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.linear.title');
+    document.getElementById('colorMode_mobile').disabled = false;
+    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.linear.title');
+    document.getElementById('colorMode_linear').checked = true;
+
+    document.getElementById('colorMode_linear').addEventListener('click', function () {
+      colorModebtn_clicked('linear');
+      editor.onActionComplete();
+      simulator.updateSimulation();
+    });
+    document.getElementById('colorMode_colorizedIntensity').addEventListener('click', function () {
+      colorModebtn_clicked('colorizedIntensity');
+      editor.onActionComplete();
+      simulator.updateSimulation();
+    });
+    document.getElementById('colorMode_legacy').addEventListener('click', function () {
+      colorModebtn_clicked('legacy');
+      editor.onActionComplete();
+      simulator.updateSimulation();
+    });
+
+  } else {
+    scene.colorMode = 'legacy';
+    document.getElementById('colorMode').disabled = true;
+    document.getElementById('colorMode').innerHTML = i18next.t('simulator:common.defaultOption');
+    document.getElementById('colorMode_mobile').disabled = true;
+    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:common.defaultOption');
   }
 
   simulator = new Simulator(scene,
@@ -312,6 +341,11 @@ async function startApp() {
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+
+      if (simulator.useFloatColorRenderer) {
+        colorModebtn_clicked(scene.colorMode);
+      }
+
       editor.selectObj(editor.selectedObjIndex);
     }
   });
@@ -1229,6 +1263,8 @@ function initUIText() {
   setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
+  setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
+  setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
   setText('showRayArrows_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
@@ -1304,6 +1340,7 @@ function initUIText() {
   setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
+  setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
   setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
@@ -1330,6 +1367,14 @@ function initUIText() {
   setText('save_confirm', i18next.t('simulator:file.save.title'));
   setText('save_rename', i18next.t('simulator:saveModal.rename'));
   setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
+  setText('staticBackdropLabel_colorMode', i18next.t('simulator:settings.colorMode.title'));
+  setText('colorMode_legacy_text', i18next.t('simulator:common.legacyOption'));
+  setText('colorMode_legacy_description', i18next.t('simulator:colorModeModal.legacy.description'));
+  setText('colorMode_linear_text', i18next.t('simulator:colorModeModal.linear.title'));
+  setText('colorMode_linear_description', i18next.t('simulator:colorModeModal.linear.description'));
+  setText('colorMode_colorizedIntensity_text', i18next.t('simulator:colorModeModal.colorizedIntensity.title'));
+  setText('colorMode_colorizedIntensity_description', i18next.t('simulator:colorModeModal.colorizedIntensity.description'));
+  setText('close_colorMode', i18next.t('simulator:common.closeButton'));
   setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
   setText('language_list_title', i18next.t('simulator:settings.language.title'));
   setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
@@ -1877,7 +1922,7 @@ function init() {
   scene.scale = 1;
 
   if (simulator.useFloatColorRenderer) {
-    scene.colorMode = 'linear';
+    colorModebtn_clicked('linear');
   } else {
     scene.colorMode = 'legacy';
   }
@@ -2007,7 +2052,12 @@ function modebtn_clicked(mode1) {
   simulator.updateSimulation(false, true);
 }
 
-
+function colorModebtn_clicked(colorMode) {
+  scene.colorMode = colorMode;
+  document.getElementById('colorMode_' + scene.colorMode).checked = true;
+  document.getElementById('colorMode').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+  document.getElementById('colorMode_mobile').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+}
 
 
 function rename() {

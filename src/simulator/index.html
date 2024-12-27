@@ -465,18 +465,6 @@
                             <hr class="dropdown-divider">
                           </div>
 
-
-                          <div id="simulateColors_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,20">
-                            <div class="col-auto settings-label" id="simulateColors_text"></div>
-                            <div class="col-auto d-flex align-items-center">
-                              <div class="flex-grow-1 d-flex align-items-center">
-                                <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="simulateColors">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,20">
                             <div class="col-auto settings-label" id="showRayArrows_text"></div>
                             <div class="col-auto d-flex align-items-center">
@@ -487,7 +475,23 @@
                               </div>
                             </div>
                           </div>
-
+                          <div id="simulateColors_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,20">
+                            <div class="col-auto settings-label" id="simulateColors_text"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="form-check form-switch align-items-center">
+                                  <input class="form-check-input" type="checkbox" id="simulateColors">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="20,20" id="colorMode_popover">
+                            <div class="col-auto settings-label" id="colorMode_text"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#colorModeModal" id="colorMode" disabled>
+                              </button>
+                            </div>
+                          </div>
                           <div class="row d-flex justify-content-between align-items-center" id="gridSize_popover" data-bs-placement="left" data-bs-offset="20,20">
                             <div id="gridSize_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
@@ -547,23 +551,23 @@
                             </svg>
                           </div>
 
-                          <div id="auto_sync_url_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                            <div id="auto_sync_url_text" class="col-auto settings-label"></div>
-                            <div class="col-auto d-flex align-items-center">
-                              <div class="flex-grow-1 d-flex align-items-center">
-                                <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="auto_sync_url">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
                           <div id="float_color_renderer_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
                             <div id="float_color_renderer_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
                                   <input class="form-check-input" type="checkbox" id="float_color_renderer">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="auto_sync_url_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
+                            <div id="auto_sync_url_text" class="col-auto settings-label"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="form-check form-switch align-items-center">
+                                  <input class="form-check-input" type="checkbox" id="auto_sync_url">
                                 </div>
                               </div>
                             </div>
@@ -951,7 +955,16 @@
 
                           <hr class="dropdown-divider">
 
-
+                          <div class="row d-flex justify-content-between align-items-center">
+                            <div class="col-auto settings-label" id="showRayArrows_mobile_text"></div>
+                            <div class="col-auto d-flex align-items-center">
+                              <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="form-check form-switch align-items-center">
+                                  <input class="form-check-input" type="checkbox" id="showRayArrows_mobile">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div class="row d-flex justify-content-between align-items-center">
                             <div class="col-auto settings-label" id="simulateColors_mobile_text"></div>
                             <div class="col-auto d-flex align-items-center">
@@ -963,13 +976,10 @@
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-auto settings-label" id="showRayArrows_mobile_text"></div>
+                            <div class="col-auto settings-label" id="colorMode_mobile_text"></div>
                             <div class="col-auto d-flex align-items-center">
-                              <div class="flex-grow-1 d-flex align-items-center">
-                                <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="showRayArrows_mobile">
-                                </div>
-                              </div>
+                              <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#colorModeModal" id="colorMode_mobile" disabled>
+                              </button>
                             </div>
                           </div>
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
@@ -1034,22 +1044,22 @@
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div id="auto_sync_url_mobile_text" class="col-auto settings-label"></div>
+                            <div id="float_color_renderer_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="auto_sync_url_mobile">
+                                  <input class="form-check-input" type="checkbox" id="float_color_renderer_mobile">
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-                            <div id="float_color_renderer_mobile_text" class="col-auto settings-label"></div>
+                            <div id="auto_sync_url_mobile_text" class="col-auto settings-label"></div>
                             <div class="col-auto d-flex align-items-center">
                               <div class="flex-grow-1 d-flex align-items-center">
                                 <div class="form-check form-switch align-items-center">
-                                  <input class="form-check-input" type="checkbox" id="float_color_renderer_mobile">
+                                  <input class="form-check-input" type="checkbox" id="auto_sync_url_mobile">
                                 </div>
                               </div>
                             </div>
@@ -1174,6 +1184,38 @@
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="save_confirm"></button>
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="save_rename"></button>
             <button id="save_cancel_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color mode modal -->
+    <div class="modal fade" id="colorModeModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_colorMode" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel_colorMode"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="colorMode" id="colorMode_linear" value="linear">
+              <label class="form-check-label" for="colorMode_linear" id="colorMode_linear_text"></label>
+              <div class="form-text" id="colorMode_linear_description"></div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="colorMode" id="colorMode_colorizedIntensity" value="colorizedIntensity">
+              <label class="form-check-label" for="colorMode_colorizedIntensity" id="colorMode_colorizedIntensity_text"></label>
+              <div class="form-text" id="colorMode_colorizedIntensity_description"></div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="colorMode" id="colorMode_legacy" value="legacy">
+              <label class="form-check-label" for="colorMode_legacy" id="colorMode_legacy_text"></label>
+              <div class="form-text" id="colorMode_legacy_description"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_colorMode"></button>
           </div>
         </div>
       </div>

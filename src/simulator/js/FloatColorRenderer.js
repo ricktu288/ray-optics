@@ -30,7 +30,7 @@ class FloatColorRenderer {
    */
   static MAX_CACHE_SIZE = 500;
 
-  constructor(gl, origin, scale, lengthScale, msaaCount = 4) {
+  constructor(gl, origin, scale, lengthScale, backgroundImage, ctxVirtual, colorMode) {
     this.gl = gl;
     if (!this.gl) {
       throw new Error('Unable to initialize WebGL. Your browser may not support it.');
@@ -46,12 +46,18 @@ class FloatColorRenderer {
     this.origin = origin;
     this.scale = scale;
     this.lengthScale = lengthScale;
+    this.colorMode = colorMode;
     this.rayCache = [];
     this.segmentCache = [];
     this.pointCache = [];
     this.arrowCache = [];
     this.hasFirstFlush = false;
-    this.msaaCount = msaaCount;
+
+    if (this.colorMode === 'colorizedIntensity') {
+      this.msaaCount = 1; // Colorized intensity does not work well with MSAA since the color is not additive
+    } else {
+      this.msaaCount = 4;
+    }
     
     // Create reusable buffers
     this.lineBuffer = this.gl.createBuffer();
@@ -196,21 +202,91 @@ class FloatColorRenderer {
       }
     `;
 
-    // Fragment shader for final pass - normalize accumulated colors and apply gamma correction
-    const quadFragmentSource = `
-      precision highp float;
-      uniform sampler2D u_texture;
-      varying vec2 v_texCoord;
+    // Fragment shader for final pass
+    let quadFragmentSource;
+    switch (this.colorMode) {
+      case 'legacy':
+        quadFragmentSource = `
+          precision highp float;
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
 
-      void main() {
-        vec4 color = texture2D(u_texture, v_texCoord);
-        float maxComponent = max(max(color.r, color.g), color.b);
-        if (maxComponent > 1.0) {
-          color.rgb /= maxComponent;
-        }
-        gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), min(maxComponent, 1.0));
-      }
-    `;
+          void main() {
+            vec4 color = texture2D(u_texture, v_texCoord);
+            float maxComponent = max(max(color.r, color.g), color.b);
+            float factor = 1.0 - exp(-maxComponent);
+            gl_FragColor = vec4(color.rgb / maxComponent * factor, factor);
+          }
+        `;
+        break;
+      case 'legacy_color':
+        quadFragmentSource = `
+          precision highp float;
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
+
+          void main() {
+            vec4 color = texture2D(u_texture, v_texCoord);
+            float maxComponent = max(max(color.r, color.g), color.b);
+            if (maxComponent > 1.0) {
+              color.rgb /= maxComponent;
+            }
+            gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
+          }
+        `;
+        break;
+      case 'linear':
+        quadFragmentSource = `
+          precision highp float;
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
+
+          void main() {
+            vec4 color = texture2D(u_texture, v_texCoord);
+            float maxComponent = max(max(color.r, color.g), color.b);
+            if (maxComponent > 1.0) {
+              color.rgb /= maxComponent;
+            }
+            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), min(maxComponent, 1.0));
+          }
+        `;
+        break;
+      case 'colorizedIntensity':
+        quadFragmentSource = `
+          precision highp float;
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
+
+          vec4 brightnessToColor(float brightness) {
+              if (brightness > 100.0) {
+                  return vec4(1.0, 0.0, 0.0, 1.0); // Red
+              } else if (brightness > 10.0) {
+                  return vec4(mix(vec3(1.0, 0.5, 0.0), vec3(1.0, 0.0, 0.0), (log2(brightness) - log2(10.0)) / (log2(100.0) - log2(10.0))), 1.0); // Smooth transition from orange to red
+              } else if (brightness > 1.0) {
+                  return vec4(mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.5, 0.0), (log2(brightness) - log2(1.0)) / (log2(10.0) - log2(1.0))), 1.0); // Smooth transition from yellow to orange
+              } else if (brightness > 0.1) {
+                  return vec4(mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 0.0), (log2(brightness) - log2(0.1)) / (log2(1.0) - log2(0.1))), 1.0); // Smooth transition from green to yellow
+              } else if (brightness > 0.01) {
+                  return vec4(mix(vec3(0.0, 1.0, 1.0), vec3(0.0, 1.0, 0.0), (log2(brightness) - log2(0.01)) / (log2(0.1) - log2(0.01))), 1.0); // Smooth transition from cyan to green
+              } else if (brightness > 0.001) {
+                  return vec4(mix(vec3(0.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), (log2(brightness) - log2(0.001)) / (log2(0.01) - log2(0.001))), 1.0); // Smooth transition from blue to cyan
+              } else if (brightness > 0.0001) {
+                  return vec4(mix(vec3(0.5, 0.0, 0.5), vec3(0.0, 0.0, 1.0), (log2(brightness) - log2(0.0001)) / (log2(0.001) - log2(0.0001))), 1.0); // Smooth transition from purple to blue
+              } else {
+                  return vec4(mix(vec3(0.0, 0.0, 0.0), vec3(0.5, 0.0, 0.5), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))); // Smooth transition from purple to transparent
+              }
+          }
+
+          void main() {
+              vec4 color = texture2D(u_texture, v_texCoord);
+              float maxComponent = max(max(color.r, color.g), color.b);
+
+              vec4 mappedColor = brightnessToColor(maxComponent);
+              gl_FragColor = mappedColor; // Output color with alpha
+          }
+        `
+        break;
+    }
 
     // Compile ray shaders
     const rayVertexShader = this.compileShader(this.gl, rayVertexSource, this.gl.VERTEX_SHADER);
@@ -826,17 +902,28 @@ class FloatColorRenderer {
     if (r + g + b == 0) {
       return [0, 0, 0, 0];
     }
-    
+
     const m = Math.max(r, g, b);
 
-    // Correct gamma
-    const rr = Math.pow(r, 2.2);
-    const gg = Math.pow(g, 2.2);
-    const bb = Math.pow(b, 2.2);
+    switch (this.colorMode) {
+      case 'legacy':
+        const factor = Math.min(-Math.log(1 - m) / m, 1000);
+        return [r * factor, g * factor, b * factor, 1.0];
+      case 'legacy_color':
+        return [r, g, b, 1.0];
+      case 'linear':
 
-    const ratio = m / Math.max(rr, gg, bb);
+        // Correct gamma
+        const rr = Math.pow(r, 2.2);
+        const gg = Math.pow(g, 2.2);
+        const bb = Math.pow(b, 2.2);
+
+        const ratio = m / Math.max(rr, gg, bb);
     
-    return [rr * ratio, gg * ratio, bb * ratio, 1.0];
+        return [rr * ratio, gg * ratio, bb * ratio, 1.0];
+      case 'colorizedIntensity':
+        return [m, m, m, 1.0];
+    }
   }
 
   /**
