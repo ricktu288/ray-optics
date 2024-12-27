@@ -148,6 +148,8 @@ async function startApp() {
 
   if (useFloatColorRenderer) {
     scene.colorMode = 'linear';
+    document.getElementById('simulateColors_popover').setAttribute('data-bs-offset', '40,20');
+    setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction'));
     document.getElementById('colorMode').disabled = false;
     document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.linear.title');
     document.getElementById('colorMode_mobile').disabled = false;
@@ -172,6 +174,7 @@ async function startApp() {
 
   } else {
     scene.colorMode = 'legacy';
+    setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
     document.getElementById('colorMode').disabled = true;
     document.getElementById('colorMode').innerHTML = i18next.t('simulator:common.defaultOption');
     document.getElementById('colorMode_mobile').disabled = true;
@@ -1261,7 +1264,6 @@ function initUIText() {
   setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
   setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
-  setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
   setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
