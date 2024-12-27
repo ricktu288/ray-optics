@@ -701,8 +701,6 @@ async function startApp() {
     localStorage.rayOpticsUseFloatColorRenderer = this.checked ? "on" : "off";
     //useFloatColorRenderer = this.checked;
     alert(i18next.t('simulator:common.reloadToTakeEffect'));
-
-    editor.onActionComplete();
   };
   document.getElementById('float_color_renderer_mobile').onclick = document.getElementById('float_color_renderer').onclick;
 
