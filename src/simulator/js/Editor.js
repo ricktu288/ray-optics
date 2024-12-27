@@ -1309,12 +1309,22 @@ class Editor {
       const ctxs = [];
       for (let i = 0; i < 4; i++) {
         canvases.push(document.createElement('canvas'));
-        ctxs.push(canvases[i].getContext('2d'));
+        if (i === 0 && self.simulator.useFloatColorRenderer) {
+          const contextAttributes = {
+            alpha: true,
+            premultipliedAlpha: true,
+            antialias: false,
+          };
+          var gl = canvases[i].getContext('webgl', contextAttributes) || canvases[i].getContext('experimental-webgl', contextAttributes);
+          ctxs.push(gl)
+        } else {
+          ctxs.push(canvases[i].getContext('2d'));
+        }
         canvases[i].width = imageWidth;
         canvases[i].height = imageHeight;
       }
 
-      const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7);
+      const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7, self.simulator.useFloatColorRenderer);
 
       function onSimulationEnd() {
         const finalCanvas = document.createElement('canvas');
