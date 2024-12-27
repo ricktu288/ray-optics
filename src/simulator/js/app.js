@@ -133,18 +133,19 @@ async function startApp() {
         antialias: false,
       };
       var gl = canvasLight.getContext('webgl', contextAttributes) || canvasLight.getContext('experimental-webgl', contextAttributes);
-      var ext = gl.getSupportedExtensions('OES_texture_float');
+      var ext = gl.getExtensions('OES_texture_float');
+
+      if (!ext) {
+        throw new Error('OES_texture_float not supported.');
+      }
 
       // Currently the color mode is always determined by the renderer, so we need to set it here.
       scene.colorMode = 'linear';
-
-      if (!ext) {
-        throw new Error('OES_texture_float not supported');
-      }
     } catch (e) {
-      error = e.toString();
+      error = 'Failed to initialize WebGL: ' + e.toString() + ' Falling back to default renderer.';
       document.getElementById('float_color_renderer').checked = false;
       document.getElementById('float_color_renderer_mobile').checked = false;
+      localStorage.rayOpticsUseFloatColorRenderer = "off";
       useFloatColorRenderer = false;
     }
   }
