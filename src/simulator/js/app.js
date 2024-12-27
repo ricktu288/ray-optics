@@ -143,7 +143,8 @@ async function startApp() {
       scene.colorMode = 'linear';
     } catch (e) {
       localStorage.rayOpticsUseFloatColorRenderer = "off";
-      alert(e.toString() + ' Falling back to default renderer.' + '\n' + i18next.t('simulator:common.reloadToTakeEffect'));
+      console.log(e.toString() + ' Falling back to default renderer.');
+      alert(i18next.t('simulator:settings.floatColorRenderer.error') + '\n' + i18next.t('simulator:common.reloadToTakeEffect'));
       return;
     }
   }
