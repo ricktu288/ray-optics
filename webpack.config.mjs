@@ -69,7 +69,7 @@ export default (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [
           { from: 'src/img', to: 'img', noErrorOnMissing: true },
-          { from: 'manifest', to: 'simulator/manifest', noErrorOnMissing: true },
+          { from: 'src/simulator/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
         ],
       }),
