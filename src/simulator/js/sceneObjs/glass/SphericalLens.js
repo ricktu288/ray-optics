@@ -244,7 +244,7 @@ class SphericalLens extends Glass {
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
-    if (!mouse.isOnPoint(this.p1)) {
+    if (!mouse.snapsOnPoint(this.p1)) {
       this.p1 = null;
       this.p2 = null;
       this.params = null;

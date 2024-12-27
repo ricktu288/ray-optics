@@ -160,7 +160,7 @@ class Glass extends BaseGlass {
     }
 
     if (this.path.length > 1) {
-      if (this.path.length > 3 && mouse.isOnPoint(this.path[0])) {
+      if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) {
         // Clicked the first point
         this.path.length--;
         this.notDone = false;

@@ -110,7 +110,7 @@ class GrinGlass extends BaseGrinGlass {
       this.path = [{ x: mousePos.x, y: mousePos.y }];
     }
 
-    if (this.path.length > 3 && mouse.isOnPoint(this.path[0])) {
+    if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) {
       // Clicked the first point
       this.path.length--;
       this.notDone = false;

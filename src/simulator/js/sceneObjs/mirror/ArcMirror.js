@@ -124,7 +124,7 @@ class ArcMirror extends BaseFilter {
       return;
     }
 
-    if (this.p2 && !this.p3 && !mouse.isOnPoint(this.p1)) {
+    if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
       if (shift) {
         this.p2 = mouse.getPosSnappedToDirection(this.p1, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
       } else {

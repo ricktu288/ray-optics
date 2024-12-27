@@ -59,7 +59,7 @@ const LineObjMixin = Base => class extends Base {
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
-    if (!mouse.isOnPoint(this.p1)) {
+    if (!mouse.snapsOnPoint(this.p1)) {
       delete this.constructionPoint;
       return {
         isDone: true

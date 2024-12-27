@@ -505,6 +505,8 @@ class Editor {
     // Get raw coordinates first
     const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
     const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
+
+    this.lastMousePos = geometry.point(rawX, rawY);
     
     // Truncate to binary fractions
     const truncX = this.truncateToBinaryFraction(rawX, this.scene.scale);
@@ -522,7 +524,6 @@ class Editor {
       mousePos2 = mousePos_nogrid;
     }
 
-    this.lastMousePos = mousePos_nogrid;
     if (this.positioningObjIndex != -1) {
       this.emit('requestPositioningComfirm', { ctrl: e.ctrlKey, shift: e.shiftKey });
       if (!(e.which && e.which == 3)) {
@@ -656,7 +657,7 @@ class Editor {
 
     // Calculate the distance moved
     const distanceSquared = geometry.distanceSquared(this.lastMousePos, geometry.point(rawX, rawY));
-    if (distanceSquared < this.minimalDragLength * this.minimalDragLength) {
+    if (distanceSquared < (this.minimalDragLength * this.minimalDragLength) / (this.scene.scale * this.scene.scale)) {
       return; // Do not proceed if the drag is less than the threshold
     }
     

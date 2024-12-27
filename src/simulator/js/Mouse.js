@@ -69,6 +69,15 @@ class Mouse {
   }
 
   /**
+   * Determines if the snapped mouse is currently over a given point.
+   * @param {geometry.point} point - The point to check against the snapped mouse position.
+   * @returns {boolean} True if the snapped mouse is on the given point, false otherwise.
+   */
+  snapsOnPoint(point) {
+    return geometry.distanceSquared(this.getPosSnappedToGrid(), point) < this.getClickExtent(true) * this.getClickExtent(true);
+  }
+
+  /**
    * Determines if the mouse is currently over a given line segment.
    * @param {geometry.line} segment - The line segment to check against the mouse position.
    * @returns {boolean} True if the mouse is on the given line segment, false otherwise.
