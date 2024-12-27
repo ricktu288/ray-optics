@@ -77,7 +77,7 @@
   },
   "colorModeModal": {
     "legacy": {
-      "description": "Behaves like the non-float color renderer. The color is not gamma-corrected, and when \"Simulate Colors\" is off, the brightness on the screen does not consistently represent the total brightness."
+      "description": "Compatible with the original non-float color renderer. The color is not gamma-corrected, and when \"Simulate Colors\" is off, the brightness on the screen does not consistently represent the total brightness."
     },
     "linear": {
       "title": "Linear Value",
