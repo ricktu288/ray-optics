@@ -1613,6 +1613,7 @@ function initModes() {
       const modeId = element.id.replace('mode_', '').replace('_mobile', '');
       if (['rays', 'extended', 'images', 'observer'].includes(modeId)) {
         element.addEventListener('click', (event) => {
+          event.target.blur();
           //console.log('mode_' + modeId);
           modebtn_clicked(modeId);
           editor.onActionComplete();
