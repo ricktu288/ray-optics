@@ -449,7 +449,7 @@ class FloatColorRenderer {
         const dividedColor = [color[0], color[1], color[2], color[3] / this.msaaCount];
 
         for (let i = 0; i < this.msaaCount; i++) {
-          const offset = ((i + 0.5) * subpixelOffset) / this.scale; // Note that the offset is in the pixel space
+          const offset = (((i % 2 === 0 ? 1 : -1) * (Math.floor(i / 2) + 0.5)) * subpixelOffset) / this.scale;
           const subpixelRay = {
             p1: {
               x: r.p1.x + offset * perpX,
@@ -615,7 +615,7 @@ class FloatColorRenderer {
         const dividedColor = [color[0], color[1], color[2], color[3] / this.msaaCount];
 
         for (let i = 0; i < this.msaaCount; i++) {
-          const offset = ((i + 0.5) * subpixelOffset) / this.scale; // Note that the offset is in the pixel space
+          const offset = (((i % 2 === 0 ? 1 : -1) * (Math.floor(i / 2) + 0.5)) * subpixelOffset) / this.scale;
           const subpixelSegment = {
             p1: {
               x: s.p1.x + offset * perpX,
