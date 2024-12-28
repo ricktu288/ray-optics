@@ -161,6 +161,16 @@ async function startApp() {
       editor.onActionComplete();
       simulator.updateSimulation();
     });
+    document.getElementById('colorMode_linearRGB').addEventListener('click', function () {
+      colorModebtn_clicked('linearRGB');
+      editor.onActionComplete();
+      simulator.updateSimulation();
+    });
+    document.getElementById('colorMode_reinhard').addEventListener('click', function () {
+      colorModebtn_clicked('reinhard');
+      editor.onActionComplete();
+      simulator.updateSimulation();
+    });
     document.getElementById('colorMode_colorizedIntensity').addEventListener('click', function () {
       colorModebtn_clicked('colorizedIntensity');
       editor.onActionComplete();
@@ -1374,6 +1384,10 @@ function initUIText() {
   setText('colorMode_legacy_description', i18next.t('simulator:colorModeModal.legacy.description'));
   setText('colorMode_linear_text', i18next.t('simulator:colorModeModal.linear.title'));
   setText('colorMode_linear_description', i18next.t('simulator:colorModeModal.linear.description'));
+  setText('colorMode_linearRGB_text', i18next.t('simulator:colorModeModal.linearRGB.title'));
+  setText('colorMode_linearRGB_description', i18next.t('simulator:colorModeModal.linearRGB.description'));
+  setText('colorMode_reinhard_text', i18next.t('simulator:colorModeModal.reinhard.title'));
+  setText('colorMode_reinhard_description', i18next.t('simulator:colorModeModal.reinhard.description'));
   setText('colorMode_colorizedIntensity_text', i18next.t('simulator:colorModeModal.colorizedIntensity.title'));
   setText('colorMode_colorizedIntensity_description', i18next.t('simulator:colorModeModal.colorizedIntensity.description'));
   setText('close_colorMode', i18next.t('simulator:common.closeButton'));

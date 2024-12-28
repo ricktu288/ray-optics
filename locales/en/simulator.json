@@ -83,6 +83,14 @@
       "title": "Linear Value",
       "description": "The value V in the HSV color space equals the total brightness of the rays when \"Simulate Colors\" is off and for monochromatic light between 420 to 620 nm. V is capped to 1 while preserving H and S. The color is gamma-corrected."
     },
+    "linearRGB": {
+      "title": "Linear RGB",
+      "description": "Similar to \"Linear Value\", but each component of the RGB color space is capped to 1 independently."
+    },
+    "reinhard": {
+      "title": "Reinhard",
+      "description": "The Reinhard tone mapping applied to the total relative luminance. At the low brightness limit, the color is consistent with \"Linear Value\"."
+    },
     "colorizedIntensity": {
       "title": "Colorized Intensity",
       "description": "The total brightness of 100, 10, …, 10⁻⁵ are represented by red, orange, yellow, green, cyan, blue, purple, and black, respectively, and interpolate smoothly in log scale."

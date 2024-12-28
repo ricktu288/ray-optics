@@ -364,6 +364,14 @@
     "linear": {
       "description": "HSV 色彩空间中的明度 V 值等于「模拟色彩」关闭时光线的总亮度，或光线为 420 至 620 nm 之间的单色光时的总亮度。 V 超过 1 时将调降为 1 并保持 H 和 S 不变。颜色经过伽马修正。",
       "title": "线性明度"
+    },
+    "linearRGB": {
+      "title": "线性 RGB",
+      "description": "与「线性明度」类似，但将 RGB 色彩空间的每个分量分别调降至 1。"
+    },
+    "reinhard": {
+      "title": "Reinhard",
+      "description": "应用于相对光亮度总和的 Reinhard 色调映射。在低亮度极限下，颜色与「线性明度」一致。"
     }
   }
 }

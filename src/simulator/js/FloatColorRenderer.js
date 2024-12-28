@@ -251,6 +251,54 @@ class FloatColorRenderer {
           }
         `;
         break;
+      case 'linearRGB':
+        quadFragmentSource = `
+          precision highp float;
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
+
+          void main() {
+            vec4 color = texture2D(u_texture, v_texCoord);
+            float maxComponent = max(max(color.r, color.g), color.b);
+            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), maxComponent);
+          }
+        `;
+        break;
+      case 'reinhard':
+        quadFragmentSource = `
+          precision highp float;
+
+          uniform sampler2D u_texture;
+          varying vec2 v_texCoord;
+
+          // Convert RGB to luminance using perceptual weights
+          float getLuminance(vec3 color) {
+            return dot(color, vec3(0.2126, 0.7152, 0.0722));
+          }
+
+          void main() {
+            // Sample the texture
+            vec4 color = texture2D(u_texture, v_texCoord);
+
+            // Calculate luminance
+            float Lold = getLuminance(color.rgb);
+
+            // Apply Reinhard tone mapping to luminance
+            float Lnew = Lold / (1.0 + Lold);
+
+            // Scale RGB by ratio of new to old luminance
+            vec3 toneMapped = color.rgb * (Lnew / Lold);
+
+            // Apply gamma correction
+            vec3 gammaCorrected = pow(toneMapped, vec3(1.0 / 2.2));
+
+            // Store the maximum component of the original color
+            float maxComponent = max(max(color.r, color.g), color.b);
+
+            gl_FragColor = vec4(gammaCorrected, maxComponent);
+          }
+        `;
+        break;
       case 'colorizedIntensity':
         quadFragmentSource = `
           precision highp float;
@@ -911,8 +959,9 @@ class FloatColorRenderer {
         return [r * factor, g * factor, b * factor, 1.0];
       case 'legacy_color':
         return [r, g, b, 1.0];
-      case 'linear':
-
+      case 'colorizedIntensity':
+        return [m, m, m, 1.0];
+      default:
         // Correct gamma
         const rr = Math.pow(r, 2.2);
         const gg = Math.pow(g, 2.2);
@@ -921,8 +970,6 @@ class FloatColorRenderer {
         const ratio = m / Math.max(rr, gg, bb);
     
         return [rr * ratio, gg * ratio, bb * ratio, 1.0];
-      case 'colorizedIntensity':
-        return [m, m, m, 1.0];
     }
   }
 
