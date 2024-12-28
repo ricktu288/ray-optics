@@ -53,10 +53,14 @@ class FloatColorRenderer {
     this.arrowCache = [];
     this.hasFirstFlush = false;
 
-    if (this.colorMode === 'colorizedIntensity') {
-      this.msaaCount = 1; // Colorized intensity does not work well with MSAA since the color is not additive
-    } else {
-      this.msaaCount = 4;
+    switch (this.colorMode) {
+      case 'legacy':
+      case 'legacy_color':
+      case 'colorizedIntensity':
+        this.msaaCount = 1; // Colorized intensity does not work well with MSAA since the color is not additive
+        break;
+      default:
+        this.msaaCount = 4;
     }
     
     // Create reusable buffers
@@ -955,7 +959,7 @@ class FloatColorRenderer {
 
     switch (this.colorMode) {
       case 'legacy':
-        const factor = Math.min(-Math.log(1 - m) / m, 1000);
+        const factor = Math.min(-Math.log(1 - m) / m, 100);
         return [r * factor, g * factor, b * factor, 1.0];
       case 'legacy_color':
         return [r, g, b, 1.0];
