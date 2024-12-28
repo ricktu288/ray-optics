@@ -465,15 +465,15 @@ async function startApp() {
   };
 
   window.onkeydown = function (e) {
-    //Ctrl+Z
-    if (e.ctrlKey && e.keyCode == 90) {
+    //Ctrl+Z or Cmd+Z
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 90) {
       if (document.getElementById('undo').disabled == false) {
         editor.undo();
       }
       return false;
     }
-    //Ctrl+D
-    if (e.ctrlKey && e.keyCode == 68) {
+    //Ctrl+D or Cmd+D
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 68) {
       if (editor.selectedObjIndex != -1) {
         if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
           scene.cloneObjsByHandle(editor.selectedObjIndex);
@@ -486,19 +486,19 @@ async function startApp() {
       }
       return false;
     }
-    //Ctrl+Y
-    if (e.ctrlKey && e.keyCode == 89) {
+    //Ctrl+Y or Cmd+Y
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 89) {
       document.getElementById('redo').onclick();
     }
 
-    //Ctrl+S
-    if (e.ctrlKey && e.keyCode == 83) {
+    //Ctrl+S or Cmd+S
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 83) {
       save();
       return false;
     }
 
-    //Ctrl+O
-    if (e.ctrlKey && e.keyCode == 79) {
+    //Ctrl+O or Cmd+O
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 79) {
       document.getElementById('open').onclick();
       return false;
     }
