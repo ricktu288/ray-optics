@@ -323,9 +323,9 @@ class FloatColorRenderer {
               } else if (brightness > 0.001) {
                   return vec4(mix(vec3(0.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), (log2(brightness) - log2(0.001)) / (log2(0.01) - log2(0.001))), 1.0); // Smooth transition from blue to cyan
               } else if (brightness > 0.0001) {
-                  return vec4(mix(vec3(0.5, 0.0, 0.5), vec3(0.0, 0.0, 1.0), (log2(brightness) - log2(0.0001)) / (log2(0.001) - log2(0.0001))), 1.0); // Smooth transition from purple to blue
+                  return vec4(mix(vec3(0.3, 0.0, 0.3), vec3(0.0, 0.0, 1.0), (log2(brightness) - log2(0.0001)) / (log2(0.001) - log2(0.0001))), 1.0); // Smooth transition from purple to blue
               } else {
-                  return vec4(mix(vec3(0.0, 0.0, 0.0), vec3(0.5, 0.0, 0.5), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))); // Smooth transition from purple to transparent
+                  return vec4(mix(vec3(0.0, 0.0, 0.0), vec3(0.3, 0.0, 0.3), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))), (log2(max(brightness, 1e-7)) - log2(1e-7)) / (log2(0.0001) - log2(1e-7))); // Smooth transition from purple to transparent
               }
           }
 
@@ -334,7 +334,7 @@ class FloatColorRenderer {
               float maxComponent = max(max(color.r, color.g), color.b);
 
               vec4 mappedColor = brightnessToColor(maxComponent);
-              gl_FragColor = mappedColor; // Output color with alpha
+              gl_FragColor = vec4(mappedColor.rgb * 0.8, 0.2);
           }
         `
         break;
