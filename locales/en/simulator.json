@@ -92,7 +92,7 @@
       "description": "The Reinhard tone mapping applied to the total relative luminance. At the low brightness limit, the color is consistent with \"Linear Value\"."
     },
     "colorizedIntensity": {
-      "title": "Colorized Intensity",
+      "title": "Color-coded Intensity",
       "description": "The total brightness of 100, 10, …, 10⁻⁵ are represented by red, orange, yellow, green, cyan, blue, purple, and black, respectively, and interpolate smoothly in log scale."
     }
   },
