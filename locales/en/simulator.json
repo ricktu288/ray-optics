@@ -207,6 +207,7 @@
         "irradiance": "The irradiance in the exported CSV is in (B/s)/L.",
         "length": "L is the arbitrary unit of length used in this simulator.",
         "s": "The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.",
+        "sNewColorModes": "In the new experimental color modes that you are currently using, the dimensionless factor s always equals 1.",
         "truncation": "If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates."
       },
       "irradMap": "Irradiance Map"
@@ -284,7 +285,8 @@
       "brightness": "Brightness",
       "brightnessInfo": {
         "rayDensity": "Only effective if 'Ray Density' is high enough.",
-        "rayDensitySlider": "To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead."
+        "rayDensitySlider": "To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.",
+        "newColorModes": "In the new experimental color modes that you are currently using, the behavior of brightnesses at low 'Ray Density' is different from that in the legacy color mode. For the unit, see the info box of a detector when it is selected."
       },
       "emisAngle": "Emission Angle",
       "eqnInfo": {

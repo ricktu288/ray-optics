@@ -42,10 +42,15 @@ class PointSource extends BaseSceneObj {
   };
 
   populateObjBar(objBar) {
+    if (this.scene.colorMode !== 'legacy') {
+      var brightnessInfo = i18next.t('simulator:sceneObjs.common.brightnessInfo.newColorModes');
+    } else {
+      var brightnessInfo = '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>';
+    }
     objBar.setTitle(i18next.t('main:tools.PointSource.title') + ' (360\u00B0)');
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {
       obj.brightness = value;
-    }, '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>');
+    }, brightnessInfo);
     if (this.scene.simulateColors) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)', Simulator.UV_WAVELENGTH, Simulator.INFRARED_WAVELENGTH, 1, this.wavelength, function (obj, value) {
         obj.wavelength = value;
@@ -75,6 +80,10 @@ class PointSource extends BaseSceneObj {
     const mousePos = mouse.getPosSnappedToGrid();
     this.x = mousePos.x;
     this.y = mousePos.y;
+    if (this.scene.colorMode !== 'legacy') {
+      // In the new color modes, the default brightness for newly created sources is set to 0.1 instead.
+      this.brightness = 0.1;
+    }
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
@@ -106,14 +115,23 @@ class PointSource extends BaseSceneObj {
   }
 
   onSimulationStart() {
-    let newRays = [];
+    let rayDensity = this.scene.rayDensity;
+    do {
+      var expectBrightness = this.brightness / rayDensity;
 
-    var s = Math.PI * 2 / parseInt(this.scene.rayDensity * 500);
+      if (this.scene.colorMode !== 'legacy' && expectBrightness > 1) {
+        // In the new color modes, the brightness scale is always kept to 1 for consistent detector readings, so the ray density is overriden to keep the brightness scale to 1. Currently the strategy is to increase the number of angled rays until the brightness is less than 1. This may be improved in the future.
+        rayDensity += 1/500;
+      }
+    } while (this.scene.colorMode !== 'legacy' && expectBrightness > 1);
+
+    let newRays = [];
+    var s = Math.PI * 2 / parseInt(rayDensity * 500);
     var i0 = (this.scene.mode == 'observer') ? (-s * 2 + 1e-6) : 0;
     for (var i = i0; i < (Math.PI * 2 - 1e-5); i = i + s) {
       var ray1 = geometry.line(geometry.point(this.x, this.y), geometry.point(this.x + Math.sin(i), this.y + Math.cos(i)));
-      ray1.brightness_s = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
-      ray1.brightness_p = Math.min(this.brightness / this.scene.rayDensity, 1) * 0.5;
+      ray1.brightness_s = Math.min(this.brightness / rayDensity, 1) * 0.5;
+      ray1.brightness_p = Math.min(this.brightness / rayDensity, 1) * 0.5;
       ray1.isNew = true;
       if (this.scene.simulateColors) {
         ray1.wavelength = this.wavelength;
@@ -126,7 +144,7 @@ class PointSource extends BaseSceneObj {
 
     return {
       newRays: newRays,
-      brightnessScale: Math.min(this.brightness / this.scene.rayDensity, 1) / (this.brightness / this.scene.rayDensity)
+      brightnessScale: Math.min(this.brightness / rayDensity, 1) / (this.brightness / rayDensity)
     };
   }
 };

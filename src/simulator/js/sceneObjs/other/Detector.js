@@ -56,8 +56,13 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   }
 
   populateObjBar(objBar) {
+    if (this.scene.colorMode !== 'legacy') {
+      var sInfo = i18next.t('simulator:sceneObjs.Detector.info.sNewColorModes');
+    } else {
+      var sInfo = i18next.t('simulator:sceneObjs.Detector.info.s');
+    }
     objBar.setTitle(i18next.t('main:tools.Detector.title'));
-    objBar.createInfoBox('<ul><li>' + i18next.t('simulator:sceneObjs.Detector.info.P') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fperp') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fpar') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.irradiance') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.length') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.B') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.s') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.truncation') + '</li></ul>');
+    objBar.createInfoBox('<ul><li>' + i18next.t('simulator:sceneObjs.Detector.info.P') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fperp') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fpar') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.irradiance') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.length') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.B') + '</li><li>' + sInfo + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.truncation') + '</li></ul>');
 
     objBar.createBoolean(i18next.t('simulator:sceneObjs.Detector.irradMap'), this.irradMap, function (obj, value) {
       obj.irradMap = value;
