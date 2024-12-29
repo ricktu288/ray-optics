@@ -15,11 +15,9 @@
  */
 
 /**
- * An experimental canvas renderer for the light layer with the same API as `CanvasRenderer`, but uses the WebGL floating point color buffer and properly calculates color mixtures. This largely solves the issue of brightness and color inconsistency issue in this simulator, especially whe "Simulate Colors" is enabled (where the performace issue is also solved).
+ * An experimental canvas renderer for the light layer with the same API as `CanvasRenderer`, but uses the WebGL floating point color buffer and properly calculates color mixtures. This largely solves the issue of brightness and color inconsistency issue in this simulator, especially whe "Simulate Colors" is enabled (where the performace issue is also solved). Additionally, this renderer allows for different color modes (as defined in `Scene`, but the 'legacy' mode with `simulateColors` enabled is split into 'legacy_color').
  * 
  * This renderer is currently used only in the web app when the "Float Color Rendering" experimental feature is enabled, and is not used in generation of Gallery images and the automatic tests.
- * 
- * The color mapping is done in the fragment shader, where the color is normalized and gamma corrected. The normalization preserves the hue and saturation of the color, but saturates suddently without smooth transition. This behavior may not be ideal for all situations. For example, it creates a reversal of brightness if a strong white beam is intersecting with an even stronger blue beam. In the future, there will be an option to choose between different color mapping functions.
  * @class
  */
 class FloatColorRenderer {
