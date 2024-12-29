@@ -334,7 +334,7 @@ class FloatColorRenderer {
               float maxComponent = max(max(color.r, color.g), color.b);
 
               vec4 mappedColor = brightnessToColor(maxComponent);
-              gl_FragColor = vec4(mappedColor.rgb * 0.8, 0.2);
+              gl_FragColor = vec4(mappedColor.rgb * 0.8, 0.0);
           }
         `
         break;
