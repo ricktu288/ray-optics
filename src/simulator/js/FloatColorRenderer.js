@@ -251,7 +251,7 @@ class FloatColorRenderer {
             if (maxComponent > 1.0) {
               color.rgb /= maxComponent;
             }
-            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), min(maxComponent, 1.0));
+            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), pow(min(maxComponent, 1.0), 1.0 / 2.2));
           }
         `;
         break;
@@ -264,7 +264,7 @@ class FloatColorRenderer {
           void main() {
             vec4 color = texture2D(u_texture, v_texCoord);
             float maxComponent = max(max(color.r, color.g), color.b);
-            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), maxComponent);
+            gl_FragColor = vec4(pow(color.rgb, vec3(1.0 / 2.2)), pow(maxComponent, 1.0 / 2.2));
           }
         `;
         break;
@@ -299,7 +299,7 @@ class FloatColorRenderer {
             // Store the maximum component of the original color
             float maxComponent = max(max(color.r, color.g), color.b);
 
-            gl_FragColor = vec4(gammaCorrected, maxComponent);
+            gl_FragColor = vec4(gammaCorrected, pow(maxComponent, 1.0 / 2.2));
           }
         `;
         break;
