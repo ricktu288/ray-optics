@@ -316,7 +316,7 @@
     },
     "colorMode": {
       "title": "Color Mode",
-      "description": "Determines how the brightnesses (and spectrums if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when \"Float Color Renderer\" is enabled."
+      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when \"Float Color Renderer\" is enabled."
     },
     "gridSize": {
       "title": "Grid Size"
