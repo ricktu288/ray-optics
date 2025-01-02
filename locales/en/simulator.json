@@ -311,7 +311,7 @@
     },
     "floatColorRenderer": {
       "title": "Float Color Renderer",
-      "description": "This is an experimental feature that renders the rays with a WebGL floating-point texture. On supported platforms, this solves the issues of inaccurate colors and brightnesses in this simulator, especially when using \"Simulate Colors\" (where the performance issue is also solved). Note that ray tracing is still done on the CPU.",
+      "description": "(This is an experimental feature) Renders the rays with a WebGL floating-point texture. This solves the issues of inaccurate colors and brightnesses in this simulator (see \"Color Mode\"). The performance may be better or worse than the default renderer, depending on the browser and the hardware.",
       "error": "Your browser does not support WebGL floating-point textures. Falling back to the default renderer."
     },
     "colorMode": {
