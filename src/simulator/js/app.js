@@ -654,7 +654,7 @@ async function startApp() {
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
 
-    alert(i18next.t('simulator:common.reloadToTakeEffect'));
+    showReloadWarning();
   };
 
   document.getElementById('showRayArrows').onclick = function () {
@@ -747,7 +747,7 @@ async function startApp() {
 
     localStorage.rayOpticsUseFloatColorRenderer = this.checked ? "on" : "off";
     //useFloatColorRenderer = this.checked;
-    alert(i18next.t('simulator:common.reloadToTakeEffect'));
+    showReloadWarning();
   };
   document.getElementById('float_color_renderer_mobile').onclick = document.getElementById('float_color_renderer').onclick;
 
@@ -2205,5 +2205,25 @@ function parseLinks(text) {
     } else {
       return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
     }
+  });
+}
+
+function showReloadWarning() {
+  const warningBanners = document.querySelectorAll('.reload-warning');
+  warningBanners.forEach(banner => {
+    banner.style.display = 'flex';
+    banner.style.alignItems = 'center';
+    const warningText = document.createElement('span');
+    warningText.style.marginLeft = '6px';
+    warningText.style.flex = '1';
+    warningText.innerHTML = i18next.t('simulator:common.reloadToTakeEffect');
+    // Keep the existing icon and append the text
+    const existingIcon = banner.querySelector('svg');
+    existingIcon.style.flexShrink = '0';
+    existingIcon.style.width = '14px';
+    existingIcon.style.height = '14px';
+    banner.innerHTML = '';
+    banner.appendChild(existingIcon);
+    banner.appendChild(warningText);
   });
 }
