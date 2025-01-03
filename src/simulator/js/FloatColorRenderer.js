@@ -41,6 +41,8 @@ class FloatColorRenderer {
     }
 
     this.canvas = gl.canvas;
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
     this.origin = origin;
     this.scale = scale;
     this.lengthScale = lengthScale;

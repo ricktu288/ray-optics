@@ -241,7 +241,7 @@ class Simulator {
         }
 
         // Renew the float color renderer only if some parameters have changed
-        if (this.canvasRendererMain && this.canvasRendererMain.colorMode == colorMode && this.canvasRendererMain.scale == this.scene.scale * this.dpr && this.canvasRendererMain.lengthScale == this.scene.lengthScale && this.canvasRendererMain.origin.x == this.scene.origin.x * this.dpr && this.canvasRendererMain.origin.y == this.scene.origin.y * this.dpr) {
+        if (this.canvasRendererMain && this.canvasRendererMain.colorMode == colorMode && this.canvasRendererMain.scale == this.scene.scale * this.dpr && this.canvasRendererMain.lengthScale == this.scene.lengthScale && this.canvasRendererMain.origin.x == this.scene.origin.x * this.dpr && this.canvasRendererMain.origin.y == this.scene.origin.y * this.dpr && this.canvasRendererMain.width == this.ctxMain.canvas.width && this.canvasRendererMain.height == this.ctxMain.canvas.height) {
           this.canvasRendererMain.begin();
         } else {
           if (this.canvasRendererMain) {
