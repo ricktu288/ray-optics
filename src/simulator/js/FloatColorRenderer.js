@@ -436,6 +436,18 @@ class FloatColorRenderer {
   }
 
   /**
+   * Begin the drawing process.
+   * This method is called at the beginning of each frame.
+   */
+  begin() {
+    this.rayCache = [];
+    this.segmentCache = [];
+    this.pointCache = [];
+    this.arrowCache = [];
+    this.hasFirstFlush = false;
+  }
+
+  /**
    * Draw a point.
    * @param {Point} p
    * @param {number[]} [color=[0, 0, 0, 1]]

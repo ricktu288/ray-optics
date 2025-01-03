@@ -219,11 +219,13 @@ class Simulator {
       this.simulationTimerId = -1;
     }
 
+    /*
     if (!skipLight && this.useFloatColorRenderer && this.canvasRendererMain && this.canvasRendererMain.destroy) {
       // Destroy the canvas renderer to prevent memory leak
       this.canvasRendererMain.destroy();
       this.canvasRendererMain = null;
     }
+    */
 
     if (this.ctxBelowLight && this.ctxAboveLight) {
       this.canvasRendererBelowLight = new CanvasRenderer(this.ctxBelowLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, this.scene.backgroundImage);
@@ -237,7 +239,16 @@ class Simulator {
         } else {
           var colorMode = this.scene.colorMode;
         }
-        this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, null, colorMode);
+
+        // Renew the float color renderer only if some parameters have changed
+        if (this.canvasRendererMain && this.canvasRendererMain.colorMode == colorMode && this.canvasRendererMain.scale == this.scene.scale * this.dpr && this.canvasRendererMain.lengthScale == this.scene.lengthScale && this.canvasRendererMain.origin.x == this.scene.origin.x * this.dpr && this.canvasRendererMain.origin.y == this.scene.origin.y * this.dpr) {
+          this.canvasRendererMain.begin();
+        } else {
+          if (this.canvasRendererMain) {
+            this.canvasRendererMain.destroy();
+          }
+          this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, null, colorMode);
+        }
       } else {
         this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
       }
