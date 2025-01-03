@@ -1,0 +1,233 @@
+{
+  "aboutPage": {
+    "cite": "Citar este projeto",
+    "contributionCategories": {
+      "code": "código",
+      "gallery": "galeria",
+      "module": "módulo",
+      "translations_many": "traduções {{languages}}",
+      "translations_one": "tradução {{languages}}",
+      "translations_other": "traduções {{languages}}",
+      "uiDesign": "UI design"
+    },
+    "contributorSorting": "Contribuidores do GitHub primeiro; outros ordenados cronologicamente.",
+    "contributors": "Contribuidores",
+    "description": "Este projeto, incluindo o conteúdo da galeria, é licensiado sob a [Licença Apache 2.0](/license), e é oficialmente hospedado no site [PhyDemo(phydemo.app)](/phydemo) (anteriormente em ricktu288.github.io). O código fonte está [disponível no GitHub](/github), e [contribuições são bem-vindas](/contributing). Se houver questões ou sugestões, você pode abrir [issues](/github/issues) ou [discussões](/github/discussões) no GitHub, ou enviar um email para [ray-optics@phydemo.app](/email) se você não utilizar o GitHub.",
+    "mainAuthors_many": "Autores Principais",
+    "mainAuthors_one": "Autor Principal",
+    "mainAuthors_other": "Autores Principais"
+  },
+  "homePage": {
+    "description": "Crie e simule cenas ópticas geométricas 2D interativamente.\nTotalmente gratuito e baseado na web. Código-fonte está [disponível no GitHub](/github).",
+    "launchSimulator": "Abrir Simulador"
+  },
+  "languageDropdown": {
+    "title": "Linguagem: {{language}}",
+    "translatedFraction": "{{fraction}} traduzido"
+  },
+  "meta": {
+    "colon": "{{name}}: {{value}}",
+    "languageName": "Português (Brasil)",
+    "list": "{{first}}, {{others}}",
+    "parentheses": "{{main}} ({{sub}})"
+  },
+  "pages": {
+    "about": "Sobre",
+    "gallery": "Galeria",
+    "github": "GitHub",
+    "home": "Início",
+    "modules": "Módulos",
+    "simulator": "Simulador"
+  },
+  "project": {
+    "description": "Uma aplicação web grátis e de código aberto para criação e simulação de cenas de óptica geométrica 2D.",
+    "name": "Simulação de Óptica de Raios",
+    "shortName": "Óptica de Raios"
+  },
+  "simulateColors": {
+    "description": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros.",
+    "instruction": "Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes.",
+    "title": "Simular Cores",
+    "warning": "As cores exibidas na tela são apenas aproximações, e podem ser muito imprecisas quando 'Densidade de Raios' está muito alta ou muito baixa."
+  },
+  "tools": {
+    "AngleSource": {
+      "description": "Fonte pontual com um ângulo de emissão definido.",
+      "instruction": "Arraste ou clique para criar. O primeiro ponto é a fonte, disparando rumo ao segundo ponto."
+    },
+    "Aperture": {
+      "description": "Um par de bloqueadores de luz que absorvem os raios incidentes. O tamanho do furo pode ser ajustado simetricamente.",
+      "instruction": "Arraste ou clique nas duas pontas para criar.",
+      "title": "Abertura"
+    },
+    "ArcMirror": {
+      "description": "Um espelho cujo formato é parte de um círculo, que é definido por três pontos.",
+      "instruction": "Arraste ou clique para criar. Os primeiros dois pontos definem o vão entre as bordas do arco, e o último ponto define o tamanho do arco.",
+      "title": "Arco Circular"
+    },
+    "Beam": {
+      "description": "Um feixe paralelo ou divergente de luz emerge de um segmento de linha, com densidade controlada pelo controle deslizante 'Densidade de raios'.",
+      "title": "Feixe paralelo"
+    },
+    "BeamSplitter": {
+      "description": "Um espelho que transmite uma porcentagem da luz que chega.",
+      "title": "Divisor de Feixe"
+    },
+    "Blocker": {
+      "description": "Um segmento de linha bloqueador de luz que absorve os raios incidentes.",
+      "title": "Bloqueador Reto"
+    },
+    "CircleBlocker": {
+      "description": "Um bloqueador circular de luz que absorve os raios incidentes.",
+      "title": "Bloqueador Circular"
+    },
+    "CircleGlass": {
+      "description": "Vidro com um formato circular, definido por seu centro e um ponto na superfície.",
+      "title": "Círculo"
+    },
+    "CircleGrinGlass": {
+      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular.",
+      "title": "Círculo com gradiente de índice"
+    },
+    "CustomGlass": {
+      "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0).",
+      "title": "Equação Personalizada"
+    },
+    "CustomMirror": {
+      "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0).",
+      "title": "Equação Personalizada"
+    },
+    "Detector": {
+      "description": "Uma ferramenta para medir a taxa de fluxo de energia (P), a taxa de fluxo de momento perpendicular (F⊥), e a taxa de fluxo de momento paralelo (F∥) através de um segmento de linha.  As unidades são arbitrárias.",
+      "title": "Detector"
+    },
+    "DiffractionGrating": {
+      "description": "Uma grade de difração que divide luz em um ângulo dependente do comprimento de onda.",
+      "title": "Grade de Difração",
+      "warning": "Aviso: As intensidades de raios difratados podem não ser precisas."
+    },
+    "Drawing": {
+      "description": "Uma ferramenta de desenho à mão livre.",
+      "instruction": "Arraste para desenhar.",
+      "title": "Desenhar"
+    },
+    "Glass": {
+      "description": "Vidro com qualquer formato construído com segmentos de linha e arcos circulares.",
+      "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
+      "title": "Forma livre"
+    },
+    "GrinGlass": {
+      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
+      "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
+      "title": "Forma livre",
+      "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
+    },
+    "IdealLens": {
+      "description": "Uma lente ideal que obedece exatamente à equação de lente fina (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente.",
+      "title": "Lente Ideal"
+    },
+    "IdealMirror": {
+      "description": "O espelho 'curvo' idealizado que obedece exatamente a equação (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente.",
+      "title": "Curvo Ideal"
+    },
+    "LineArrow": {
+      "description": "Uma seta ou segmento de linha.",
+      "title": "Linha / Seta"
+    },
+    "Mirror": {
+      "description": "Simule a reflexão da luz em um espelho.",
+      "title": "Segmento"
+    },
+    "ParabolicMirror": {
+      "description": "Um espelho cujo formato é uma parábola, que é definida por três pontos.",
+      "instruction": "Arraste ou clique nas duas pontas para criar, então clique no vértice.",
+      "title": "Parabólico"
+    },
+    "PlaneGlass": {
+      "description": "Simule a refração e a reflexão da luz em uma superfície.",
+      "instruction": "Arraste ou clique em dois pontos na superfície para criar.",
+      "title": "Semi-plano"
+    },
+    "PointSource": {
+      "description": "Raios emergem de um ponto único, com quantidade controlada pelo controle deslizante 'Densidade de raios'.",
+      "title": "Fonte pontual"
+    },
+    "Protractor": {
+      "description": "Um transferidor definido a partir do centro e outro ponto para a direção do zero. A escala está em graus.",
+      "title": "Transferidor"
+    },
+    "Ruler": {
+      "description": "Uma régua a partir de um ponto zero até um outro ponto.",
+      "title": "Régua"
+    },
+    "SingleRay": {
+      "description": "Um único raio de luz definido por dois pontos.",
+      "instruction": "Arraste ou clique para criar. O primeiro ponto é a fonte, disparando rumo ao segundo ponto.",
+      "title": "Raio único"
+    },
+    "SphericalLens": {
+      "description": "Uma lente esférica.",
+      "title": "Lente Esférica"
+    },
+    "TextLabel": {
+      "description": "Um rótulo de texto.",
+      "title": "Texto"
+    },
+    "categories": {
+      "blocker": "Bloqueador",
+      "glass": "Vidro",
+      "lightSource": "Fonte de luz",
+      "mirror": "Espelho",
+      "other": "Outros"
+    },
+    "common": {
+      "circleInstruction": "Arraste ou clique para criar. Primeiro o centro, então a circunferência.",
+      "clickInstruction": "Clique para criar.",
+      "lineInstruction": "Arraste ou clique para criar."
+    },
+    "modules": {
+      "import": "Importar Módulos…",
+      "remove": "Remover módulo"
+    },
+    "moveView": {
+      "description": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)",
+      "title": "Mover Vista"
+    },
+    "otherGlass": {
+      "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0).",
+      "title": "Equação Personalizada"
+    },
+    "otherGrinGlass": {
+      "description": "Material com uma função de índice refrativo personalizada n(x,y).",
+      "title": "Polígono com gradiente de índice"
+    },
+    "otherMirror": {
+      "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0).",
+      "title": "Equação Personalizada"
+    },
+    "title": "Ferramentas"
+  },
+  "view": {
+    "extended": {
+      "description": "Exibir tanto os raios quanto suas extensões. Laranja indica extensões para trás, e cinza indica para frente.",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos na cor fonte e distinguidos por traços.",
+      "title": "Raios extendidos"
+    },
+    "images": {
+      "description": "Mostra a posição de todas imagens. Pontos amarelos indicam imagens reais, laranja indica imagens virtuais, e cinza (nenhuma nesta imagem) indica objetos virtuais. Note que algumas imagens não podem ser detectadas se 'Densidade de Raios' não estiver alta o suficiente.",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte e distinguidos por tamanhos de ponto.",
+      "title": "Todas Imagens"
+    },
+    "observer": {
+      "description": "Simule os raios e imagens vistos de uma posição. O círculo azul é o observador. Quaisquer raios atravessando ele são considerados 'Observados'. O observador não sabe onde os raios realmente começam, mas pode pensar que eles começam em algum ponto se eles intersecionam lá. Os raios são exibidos em azul, e os pontos em amarelo (real) ou laranja (virtual).",
+      "instruction": "Arraste o ponto grande azul para mover o observador.",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte.",
+      "title": "Visto por Observador"
+    },
+    "rays": {
+      "description": "Exibir os raios. Quando a 'Densidade de Raios' está alta, eles parecem ser contínuos.",
+      "title": "Raios"
+    },
+    "title": "Ver"
+  }
+}

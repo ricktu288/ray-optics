@@ -1,0 +1,171 @@
+{
+  "homePage": {
+    "description": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.\nVöllig kostenlos und webbasiert. Der Quellcode ist [auf GitHub verfügbar](/github).",
+    "launchSimulator": "Simulator starten"
+  },
+  "languageDropdown": {
+    "translatedFraction": "{{fraction}} übersetzt"
+  },
+  "meta": {
+    "colon": "{{name}}: {{value}}",
+    "languageName": "Deutsch",
+    "list": "{{first}}, {{others}}",
+    "parentheses": "{{main}} ({{sub}})"
+  },
+  "pages": {
+    "about": "Über",
+    "gallery": "Galerie",
+    "github": "GitHub",
+    "home": "Home",
+    "simulator": "Simulator"
+  },
+  "project": {
+    "description": "Eine freie, open-source Web-Applikation zum Erzeugen und Simulieren von optischen 2D-Szenen.",
+    "name": "Strahlenoptik-Simulation",
+    "shortName": "Strahlenoptik"
+  },
+  "simulateColors": {
+    "title": "Farben simulieren"
+  },
+  "tools": {
+    "AngleSource": {
+      "description": "Punktquelle mit definiertem Emissions-Winkel.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt."
+    },
+    "ArcMirror": {
+      "description": "Ein Spiegel bestehend aus einem Kreisbogen, definiert durch drei Punkte.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Die ersten 2 Punkte definieren die Länge des Bogens, der letzte die Bogenkrümmung.",
+      "title": "Kreisbogen"
+    },
+    "Beam": {
+      "title": "Bündel"
+    },
+    "BeamSplitter": {
+      "description": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt.",
+      "title": "Strahlteiler"
+    },
+    "Blocker": {
+      "description": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert.",
+      "title": "Linienförmiger Absorber"
+    },
+    "CircleBlocker": {
+      "description": "Ein kreisförmiger Absorber.",
+      "title": "Kreisförmiger Absorber"
+    },
+    "CircleGlass": {
+      "description": "Kreisförmiger Glaskörper, definiert durch Mittelpunkt und einen Punkt auf dem Umfang.",
+      "title": "Kugellinse"
+    },
+    "CustomGlass": {
+      "description": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) < y < g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0).",
+      "title": "Benutzerdefinierte Gleichung"
+    },
+    "CustomMirror": {
+      "description": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0).",
+      "title": "Benutzerdefinierte Gleichung"
+    },
+    "Detector": {
+      "description": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment.  Die Einheiten sind willkürlich.",
+      "title": "Detektor"
+    },
+    "Glass": {
+      "description": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert.",
+      "instruction": "Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen."
+    },
+    "IdealLens": {
+      "description": "Eine ideale Linse, die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden.",
+      "title": "Ideale Linse"
+    },
+    "IdealMirror": {
+      "description": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden.",
+      "title": "Ideal gebogen"
+    },
+    "Mirror": {
+      "description": "Simulieren Sie die Reflexion von Licht auf einem Spiegel.",
+      "title": "Segment"
+    },
+    "ParabolicMirror": {
+      "description": "Ein parabolischer Spiegel, definiert durch drei Punkte.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen.",
+      "title": "Parabolspiegel"
+    },
+    "PlaneGlass": {
+      "description": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen.",
+      "title": "Halbraum"
+    },
+    "PointSource": {
+      "description": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird.",
+      "title": "Punktquelle"
+    },
+    "Protractor": {
+      "description": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad.",
+      "title": "Winkelmesser"
+    },
+    "Ruler": {
+      "description": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt.",
+      "title": "Lineal"
+    },
+    "SingleRay": {
+      "description": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt.",
+      "title": "Strahl"
+    },
+    "SphericalLens": {
+      "description": "Eine sphärische Linse.",
+      "title": "Sphärische Linse"
+    },
+    "TextLabel": {
+      "description": "Ein Text-Label.",
+      "title": "Text"
+    },
+    "categories": {
+      "blocker": "Absorber",
+      "glass": "Gläser",
+      "lightSource": "Lichtquelle",
+      "mirror": "Spiegel",
+      "other": "Andere"
+    },
+    "common": {
+      "circleInstruction": "Ziehen oder Klicken zum Erzeugen.",
+      "clickInstruction": "Klicken zum Erzeugen.",
+      "lineInstruction": "Ziehen oder Klicken zum Erzeugen."
+    },
+    "moveView": {
+      "description": "Ziehen um die Ansicht zu Verschieben. (Rechte Maustaste hat die gleiche Funktion.)",
+      "title": "Ansicht bewegen"
+    },
+    "otherGlass": {
+      "description": "Glas mit beliebigen Formen, die aus Segmenten und Kreisbögen bestehen, oder Formen, die durch eine benutzerdefinierte Ungleichung f(x) < y < g(x) definiert sind.",
+      "title": "andere Formen"
+    },
+    "otherMirror": {
+      "description": "Ein Spiegel, dessen Form gebogen ist. Es kann kreisförmig, parabolisch oder durch eine benutzerdefinierte Gleichung y = f(x) definiert sein.",
+      "title": "gebogen"
+    },
+    "title": "Werkzeuge"
+  },
+  "view": {
+    "extended": {
+      "description": "In dieser Ansicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden die Quellfarben verwendet und stattdessen durch Strichelung unterschieden.",
+      "title": "Virtuelle Strahlen"
+    },
+    "images": {
+      "description": "In dieser Ansicht wird die Position aller Bilder angezeigt. Gelb bedeutet echtes Bild, orange steht für virtuelle Bilder und grau (nicht in diesem Bild dargestellt) bedeutet virtuelles Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die \"Strahl-Anzahldichte\" nicht hoch genug ist.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden Bilder in der Quellfarbe angezeigt, und stattdessen nach Punktgröße unterschieden.",
+      "title": "Alle Abbildungen"
+    },
+    "observer": {
+      "description": "In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Punkt ist der Beobachter. Alle Strahlen, die ihn kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, 'denkt' aber, dass sie an einem Punkt beginnen, an dem sie sich schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt.",
+      "instruction": "Ziehen Sie den großen blauen Kreis um den Beobachter zu bewegen.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden die Strahlen mit den Quellfarben dargestellt.",
+      "title": "Beobachterperspektive"
+    },
+    "rays": {
+      "description": "In dieser Ansicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein.",
+      "title": "Strahlen"
+    },
+    "title": "Ansicht"
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "common": {
+    "cancelButton": "Cancelar",
+    "closeButton": "Fechar",
+    "defaultOption": "Padrão",
+    "saveButton": "Salvar"
+  },
+  "file": {
+    "copyLink": {
+      "description": "Copiar e ir para a URL direta da cena atual, que pode ser utilizada para compartilhamento(possivelmente via encurtador de URL). Também veja Configurações -> Sincronização automática de URL.",
+      "title": "Copiar Link Compartilhável"
+    },
+    "export": {
+      "title": "Exportar como PNG/SVG"
+    },
+    "open": {
+      "description": "Abrir um arquivo existente ou imagem de fundo. A imagem de fundo será exibida a partir origem das coordenadas. (Ou solte o arquivo)",
+      "title": "Abrir"
+    },
+    "redo": {
+      "title": "Refazer"
+    },
+    "reset": {
+      "title": "Reiniciar"
+    },
+    "save": {
+      "title": "Salvar"
+    },
+    "title": "Arquivo",
+    "undo": {
+      "title": "Desfazer"
+    },
+    "viewGallery": {
+      "description": "Ir para a página web da Galeria para carregar um exemplo.",
+      "title": "Ver Galeria"
+    }
+  },
+  "footer": {
+    "helpPopup": {
+      "constrainedDragging": {
+        "description": "Enquanto arrasta um objeto, segure Shift para limitar ao sentido horizontal/vertical; segure Ctrl para clonar. Quando criando um objeto em formato de linha ou arrastando seus pontos finais, segure Shift para travar o ângulo ou ajustar para 0°, 45°, 90°; segure Ctrl para rotacionar/ajustar escala com relação a seu centro.",
+        "title": "Arraste restrito"
+      },
+      "contactUs": {
+        "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing)).",
+        "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
+        "title": "Contate-nos"
+      },
+      "editCoordinates": {
+        "description": "Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter.",
+        "title": "Editar coordenadas diretamente"
+      },
+      "groupRotateScale": {
+        "description": "Segure Ctrl, clique em vários pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar.",
+        "title": "Agrupar, rotacionar e ajustar escala de objetos"
+      },
+      "keyboardShortcuts": {
+        "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar.",
+        "title": "Atalhos de teclado"
+      }
+    },
+    "processing": "Processando... Clique aqui para parar."
+  },
+  "generalWarnings": {
+    "autoSyncUrlTooLarge": "A cena é grande demais para sincronizar com URL. Por favor, salve manualmente.",
+    "brightnessInconsistent": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas.",
+    "identicalObjects": "Há dois elementos ópticos idênticos na cena que se sobrepõem completamente.",
+    "shareLinkTooLong": "Talvez a URL seja comprida demais para funcionar em algumas plataformas. Você pode precisar de usar \"Salvar\" e compartilhar o arquivo ao invés disso."
+  },
+  "languageModal": {
+    "helpTranslate": "Ajude-nos a traduzir este aplicativo",
+    "title": "Linguagem",
+    "translatedFraction": "traduzido"
+  },
+  "moduleModal": {
+    "conflict": "Outro módulo com o mesmo nome já existe na cena atual. Você pode colocar outro nome, ou deixá-lo igual para sobrepor o módulo existente.",
+    "makeCustomModules": "Criar módulos personalizados",
+    "title": "Importar Módulos"
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Aplicar em Todos"
+    },
+    "delete": {
+      "title": "Apagar"
+    },
+    "duplicate": {
+      "title": "Duplicar"
+    },
+    "showAdvanced": {
+      "title": "Mais opções…"
+    },
+    "unselect": {
+      "description": "Desselecionar esse objeto (Botão direito do mouse em espaço vazio tem a mesma função.)",
+      "title": "Desselecionar"
+    }
+  },
+  "saveModal": {
+    "description": {
+      "autoSync": "Você pode usar Configurações -> Sincronizar URL automaticamente ao invés de salvar para um arquivo.",
+      "contribute": "Você pode considerar [contribuir um novo item](/contributing/gallery) para a [Galeria](/gallery).",
+      "rename": "Clique \"Renomear\" para mudar o título sem salvar um arquivo."
+    },
+    "fileName": "Nome",
+    "rename": "Renomear",
+    "title": "Salvar"
+  },
+  "sceneObjs": {
+    "AngleSource": {
+      "symmetric": "Simétrico"
+    },
+    "Aperature": {
+      "diameter": "Diâmetro"
+    },
+    "BaseFilter": {
+      "bandwidth": "Largura de banda",
+      "filter": "Filtro",
+      "invert": "Inverter"
+    },
+    "BaseGlass": {
+      "cauchyCoeff": "Coeficiente de Cauchy",
+      "refIndex": "Índice refrativo",
+      "refIndexInfo": {
+        "effective": "Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.",
+        "relative": "Relativo se dentro de outro vidro"
+      }
+    },
+    "BaseGrinGlass": {
+      "intersectTol": "Tolerância de Interseção",
+      "refIndexFnInfo": {
+        "accuracy": "Para simulação mais precisa, veja \"Mais opções...\"",
+        "constants": "Constantes suportadas",
+        "diff": "Somente suporta funções diferenciáveis.",
+        "functions": "Funções suportadas",
+        "lambda": "Para simular dispersão cromática, use o parâmetro {{lambda}} para o comprimento de onda no vácuo em nanômetros.",
+        "operators": "Operadores suportados",
+        "origin": "A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas."
+      },
+      "refIndexFnOrigin": "Origem de n(x,y)",
+      "stepSize": "Tamanho de passo da solução numérica",
+      "stepSizeInfo": "Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'BaseGrinGlass.js', para mais informações.",
+      "symbolicBodyMerging": "União simbólica de corpos",
+      "symbolicBodyMergingInfo": {
+        "all": "Esta opção se aplica a todos objetos GRIN na simulação.",
+        "impl": "Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'BaseGrinGlass.js').",
+        "implNote": "A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, tal que ao menos um deles possua uma função de índice refrativo que não é definida todo o plano, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema."
+      }
+    },
+    "Beam": {
+      "imageDetectionWarning": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
+    },
+    "BeamSplitter": {
+      "transRatio": "Razão de Transmissão"
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "functions": "Essa tolerância numérica é usada nas funções 'isOutsideGlass', 'isInsideGlass' e 'isOnBoundary', dentro do arquivo 'CircleGrinGlass.js'.",
+        "units": "Unidades - [comprimento]^2."
+      }
+    },
+    "CropBox": {
+      "cropBoxSize": "Tamanho da Caixa de Corte",
+      "format": "Formato",
+      "rayCountLimit": "Limite de quantidade de raios",
+      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
+      "svgWarning": "Exportar como SVG: Misturas de cores e índices refrativos relativos abaixo de 1 não são suportados.",
+      "title": "Exportar",
+      "width": "Largura"
+    },
+    "Detector": {
+      "binSize": "Tamanho do coletor",
+      "exportData": "Exportar dados",
+      "info": {
+        "B": "B é uma unidade arbitrária de fluxo radiante ou fluxo luminoso, correspondente à unidade da opção \"Brilho\" sendo B/L para raios não Lambertianos e 500B/360° para fontes pontuais.",
+        "Fpar": "F∥: A taxa de fluxo de momento paralelo em (B/s)/c.",
+        "Fperp": "F⊥: A taxa de fluxo de momento perpendicular em (B/s)/c.",
+        "P": "P: A taxa de fluxo de energia em B/s (ver abaixo).",
+        "irradiance": "A irradiância no CSV exportado está em (B/s)/L.",
+        "length": "L é a unidade arbitrária de comprimento utilizada nesse simulador.",
+        "s": "O fator adimensional s é a \"Escala de Brilho\" exibida em Configurações -> Mostrar caixa de status, que é igual a 1 quando \"Densidade de Raios\" está acima de certo ponto e proporcional a \"Densidade de Raios\" caso contrário.",
+        "truncation": "Se alguns raios forem truncados na série infinita de reflexão interna, a truncação total é exibida como estimativas de erro."
+      },
+      "irradMap": "Mapa de Irradiância"
+    },
+    "DiffractionGrating": {
+      "customBrightness": "Brilho Personalizado",
+      "customBrightnessInfo": "Quando ligado, os brilhos dos raios difratados são personalizados por uma lista de números correspndendo a m = 0, 1, -1, 2, -2, .... O número será normalizado ao brilho do raio incidente. Os valores não na lista são definidos como 0. Por exemplo, \"1, 0.5, 0.5\" significa que o raio m=0 tem o mesmo brilho que o raio incidente, os raios m=1 e m=-1 têm metade do brilho, e todos os outros raios são ignorados.",
+      "lineDensity": "Linhas/{{lengthUnit}}",
+      "mirrored": "Espelhado",
+      "slitRatio": "Largura de vão / Espaçamento de linha"
+    },
+    "Drawing": {
+      "finishDrawing": "Finalizar Desenho"
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "functions": "Essa tolerância numérica é usada nas funções 'isOnBoundary' e 'countIntersections', dentro do arquivo'GrinGlass.js'.",
+        "units": "Unidades - [comprimento]."
+      }
+    },
+    "Handle": {
+      "handle": "Ponto de manuseio",
+      "transformation": "Transformação",
+      "transformations": {
+        "rotation": "Rotação",
+        "scaling": "Escala",
+        "translation": "Translação",
+        "xTranslation": "Translação X",
+        "yTranslation": "Translação Y"
+      }
+    },
+    "IdealMirror": {
+      "cartesianSign": "Convenção de Sinal Cartesiana"
+    },
+    "LineArrow": {
+      "arrow": "Seta frontal",
+      "backArrow": "Seta traseira"
+    },
+    "ModuleObj": {
+      "demodulize": "Demodulizar",
+      "module": "Módulo"
+    },
+    "Ruler": {
+      "scaleInterval": "Intervalo da escala"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "focalDistances": "Distâncias Focais",
+        "radiiOfCurvature": "Raios de curvatura"
+      }
+    },
+    "TextLabel": {
+      "alignment": "Alinhamento",
+      "alignments": {
+        "center": "Centro",
+        "left": "Esquerda",
+        "right": "Direita"
+      },
+      "angle": "Ângulo",
+      "font": "Fonte",
+      "fontSize": "Tamanho da Fonte",
+      "fontStyle": "Estilo",
+      "fontStyles": {
+        "bold": "Negrito",
+        "boldItalic": "Negrito Itálico",
+        "boldOblique": "Negrito Oblíquo",
+        "italic": "Itálico",
+        "normal": "Normal",
+        "oblique": "Oblíquo"
+      },
+      "smallCaps": "Maiúsculo pequeno",
+      "textHere": "Texto Aqui"
+    },
+    "common": {
+      "brightness": "Brilho",
+      "brightnessInfo": {
+        "rayDensity": "Somente faz efeito quando 'Densidade de Raios' está alta o suficiente.",
+        "rayDensitySlider": "Para controlar o número de raios emitidos, por favor ajuste o controle global de 'Densidade de Raios'."
+      },
+      "emisAngle": "Ângulo de Emissão",
+      "eqnInfo": {
+        "constants": "Constantes suportadas",
+        "functions": "Funções suportadas",
+        "operators": "Operadores suportados"
+      },
+      "focalLength": "Comprimento focal",
+      "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
+      "lambert": "Lambertiano",
+      "lengthUnitInfo": "A unidade de comprimento utilizada nesse simulador (exceto comprimentos de onda) é arbitrária e pode ser interpretada como qualquer unidade física (ex.: milímetros) contanto que seja dentro da simulação. Se aunidade parecer pequena ou grande demais, por favor, ajuste Configurações -> Escala de Comprimento.",
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
+      "random": "Aleatório",
+      "wavelength": "Comprimento de onda"
+    }
+  },
+  "settings": {
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
+    "autoSyncUrl": {
+      "description": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear.",
+      "title": "Sincronizar URL automaticamente"
+    },
+    "gridSize": {
+      "title": "Tamanho da Grade"
+    },
+    "language": {
+      "title": "Linguagem"
+    },
+    "layoutAids": {
+      "lockObjs": "Travar Objetos",
+      "showGrid": "Grade",
+      "snapToGrid": "Ajustar na grade",
+      "title": "Auxílio de posicionamento"
+    },
+    "lengthScale": {
+      "description": "Se a unidade padrão de comprimento estiver pequena demais ou grande demais para modelar um sistema físico quando interpretado como uma unidade física comum unit (ex.: milímetros), esse fator pode ser usado para alterar a escala da aparência (ex.: larguras de linha) na cena.",
+      "title": "Escala de Comprimento"
+    },
+    "more": "Mais",
+    "observerSize": {
+      "title": "Tamanho do Observador"
+    },
+    "rayDensity": {
+      "description": "Determina o número de raios a serem emitidos por feixes e fontes pontuais. Isso também afeta a precisão da detecção de imagens e da reprodução de cores.",
+      "title": "Densidade de Raios"
+    },
+    "showHelpPopups": {
+      "description": "Define se vai exibir popups de ajuda quando pairando sobre botões. (Recarregue a página para fazer efeito.)",
+      "title": "Exibir popups de ajuda"
+    },
+    "showJsonEditor": {
+      "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados).",
+      "title": "Exibir editor JSON"
+    },
+    "showStatusBox": {
+      "description": "Exibir a caixa de status, que inclui as coordenadas do mouse, informação de performance e o brilho truncado (o brilho total dos raios truncados na série infinita de reflexão interna).",
+      "title": "Exibir caixa de status"
+    },
+    "title": "Configurações",
+    "zoom": {
+      "title": "Zoom"
+    }
+  },
+  "statusBox": {
+    "brightnessScale": "Escala de Brilho",
+    "forceStopped": "Interrompido à força.",
+    "mouseCoordinates": "Coordenadas do Mouse",
+    "rayCount": "Número de segmentos de raio",
+    "timeElapsed": "Tempo decorrido",
+    "totalTruncation": "Brilho truncado"
+  },
+  "welcome": {
+    "instruction": "Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.\nPara carregar um exemplo, por favor [visite a página da Galeria](/gallery).",
+    "loading": "Carregando cena a partir de URL... Por favor aguarde.",
+    "title": "Bem-vindo à Simulação de Óptica de Raios"
+  }
+}

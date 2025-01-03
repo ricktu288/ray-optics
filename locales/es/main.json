@@ -1,0 +1,204 @@
+{
+  "homePage": {
+    "description": "Crear y simular escenas 2D de óptica geométrica de manera interactiva.\nTotalmente gratuito y basado en web. El código fuente está [disponible en GitHub](/github).",
+    "launchSimulator": "Iniciar simulador"
+  },
+  "languageDropdown": {
+    "title": "Idioma: {{language}}",
+    "translatedFraction": "{{fraction}} traducida"
+  },
+  "meta": {
+    "colon": "{{name}}: {{value}}",
+    "languageName": "Español",
+    "list": "{{first}}, {{others}}",
+    "parentheses": "{{main}} ({{sub}})"
+  },
+  "pages": {
+    "about": "Acerca de",
+    "gallery": "Galería",
+    "github": "GitHub",
+    "home": "Inicio",
+    "simulator": "Simulador"
+  },
+  "project": {
+    "description": "Una aplicación web gratuita y de código libre para crear y simular escenas 2D de óptica geométrica.",
+    "name": "Simulación de trazado de rayos",
+    "shortName": "Óptica de rayos"
+  },
+  "simulateColors": {
+    "description": "Simular colores (longitudes de onda), mezclas de colores, filtros de color de bloqueadores y espejos y dispersión cromática de vidrios.",
+    "instruction": "Puede ajustar los parámetros de estos objetos cuando los seleccione. Para simular el espectro de colores, sobreponga rayos con diferentes longitudes de onda.",
+    "title": "Simular colores",
+    "warning": "Los colores mostrados en pantalla son solo aproximaciones burdas y puede ser muy impreciso cuando 'Densidad de rayos' es demasiado alta o demasiado baja."
+  },
+  "tools": {
+    "AngleSource": {
+      "description": "Fuente puntual con un ángulo de emisión dado.",
+      "instruction": "Arrastre o clique para crear. El primer punto es la fuente, emitiendo en dirección al segundo punto."
+    },
+    "Aperture": {
+      "description": "Un par de bloqueadores de luz que absorben los rayos incidentes. El tamaño del agujero puede ajustarse simétricamente.",
+      "instruction": "Arrastre o clique los dos puntos extremales para crear.",
+      "title": "Apertura"
+    },
+    "ArcMirror": {
+      "description": "Un espejo cuya forma es parte de un círculo, el cual está definido por tres puntos.",
+      "instruction": "Arrastre o clique para crear. Los dos primeros puntos definen el espacio entre los bordes del arco. El último define el tamaño del arco.",
+      "title": "Arco circular"
+    },
+    "Beam": {
+      "description": "Un haz de rayos paralelo o divergente emerge de un segmento de recta, con una densidad controlada por el deslizante 'Densidad de rayos'.",
+      "title": "Haz"
+    },
+    "BeamSplitter": {
+      "description": "Un espejo que transmite un porcentaje de la luz incidente.",
+      "title": "Separador de haz"
+    },
+    "Blocker": {
+      "description": "Un bloqueador de luz recto que absorbe los rayos incidentes.",
+      "title": "Bloqueador recto"
+    },
+    "CircleBlocker": {
+      "description": "Un bloqueador de luz circular que absorbe los rayos incidentes.",
+      "title": "Bloqueador circular"
+    },
+    "CircleGlass": {
+      "description": "Vidrio con una forma circular, definida mediante su centro y un punto sobre la superficie.",
+      "title": "Círculo"
+    },
+    "CircleGrinGlass": {
+      "description": "Vidrio con una función de índice refractivo n(x,y) y un borde circular.",
+      "title": "Círculo (Gradient-index)"
+    },
+    "CustomGlass": {
+      "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0).",
+      "title": "Ecuación personalizada"
+    },
+    "CustomMirror": {
+      "description": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0).",
+      "title": "Ecuación personalizada"
+    },
+    "Detector": {
+      "description": "Una herramienta para medir el flujo de energía (P), el momento perpendicular de flujo (F⊥), y el momento paralelo de flujo (F∥) a través de un segmento de recta.  Las unidades son arbitrarias.",
+      "title": "Detector"
+    },
+    "Drawing": {
+      "description": "Una herramienta para dibujar a mano alzada.",
+      "instruction": "Arrastre para dibujar.",
+      "title": "Dibujar"
+    },
+    "Glass": {
+      "description": "Vidrio con cualquier forma construida mediante segmentos de línea o arco.",
+      "instruction": "Clique para crear un segmento, arrastre para crear un arco, clique en el punto de inicio cuando haya finalizado el dibujo.",
+      "title": "Forma libre"
+    },
+    "GrinGlass": {
+      "description": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal.",
+      "instruction": "Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.",
+      "title": "Forma libre (Gradient-index)",
+      "warning": "ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible."
+    },
+    "IdealLens": {
+      "description": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal se puede establecer directamente.",
+      "title": "Lente ideal"
+    },
+    "IdealMirror": {
+      "description": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal puede establecerse directamente.",
+      "title": "Curvo ideal"
+    },
+    "LineArrow": {
+      "description": "Un segmento de recta o flecha.",
+      "title": "Línea / Flecha"
+    },
+    "Mirror": {
+      "description": "Simular la reflexión de la luz en un espejo.",
+      "title": "Segmento"
+    },
+    "ParabolicMirror": {
+      "description": "Un espejo cuya forma es una parábola, la cual está definida pr tres puntos.",
+      "instruction": "Arrastre o clique para crear.",
+      "title": "Parabólico"
+    },
+    "PlaneGlass": {
+      "description": "Simular la refracción y la reflexión de luz sobre una superficie.",
+      "instruction": "Arrastre o clique para crear.",
+      "title": "Semi-plano"
+    },
+    "PointSource": {
+      "description": "Los rayos emergen de un único punto, con un número controlado por el deslizante 'Densidad de rayos'.",
+      "title": "Fuente puntual"
+    },
+    "Protractor": {
+      "description": "Un transportador definido desde el centro y otro punto para la dirección cero. La escala está en grados.",
+      "title": "Transportador"
+    },
+    "Ruler": {
+      "description": "Una regla desde un punto cero hasta otro punto.",
+      "title": "Regla"
+    },
+    "SingleRay": {
+      "description": "Un único rayo de luz definido mediante dos puntos.",
+      "instruction": "Arrastre o clique para crear. El primer punto es la fuente, emitiendo en dirección al segundo punto.",
+      "title": "Rayo único"
+    },
+    "SphericalLens": {
+      "description": "Una lente esférica.",
+      "title": "Lente esférica"
+    },
+    "TextLabel": {
+      "description": "Un cuadro de texto.",
+      "title": "Texto"
+    },
+    "categories": {
+      "blocker": "Bloqueador",
+      "glass": "Vidrio",
+      "lightSource": "Fuente de luz",
+      "mirror": "Espejo",
+      "other": "Otros"
+    },
+    "common": {
+      "circleInstruction": "Arrastre o clique para crear.",
+      "clickInstruction": "Clique para crear.",
+      "lineInstruction": "Arrastre o clique para crear."
+    },
+    "moveView": {
+      "description": "Arrastre para mover la vista. (El botón derecho del ratón tiene la misma función.)",
+      "title": "Mover vista"
+    },
+    "otherGlass": {
+      "description": "Vidrio con otras formas construidas a partir de segmentos de lineas y arcos, o formas definidas mediante una desigualdad de la forma f(x) < y < g(x).",
+      "title": "Otras formas"
+    },
+    "otherGrinGlass": {
+      "title": "Polígono con gradiente de índice"
+    },
+    "otherMirror": {
+      "description": "Un espejo cuya forma es curva. Puede ser circular, parabólico o definido mediante una ecuación de la forma y = f(x).",
+      "title": "Curvado"
+    },
+    "title": "Herramientas"
+  },
+  "view": {
+    "extended": {
+      "description": "Mostrar los rayos y su extensión. El color naranja indica extensiones hacia atrás, y el gris indica hacia delante.",
+      "simulateColorsNote": "Cuando 'Simular colores' está seleccionado, estos se muestran en los colores de la fuente y se distinguen por un trazo discontinuo.",
+      "title": "Rayos extendidos"
+    },
+    "images": {
+      "description": "Mostrar la posición de todas las imágenes. Los puntos amarillos indican imágenes reales, naranjas indican imágenes virtuales, y grises (ninguno en esta figura) indican objetos virtuales. Cabe notar que algunas imágenes no se pueden detectar si 'Densidad de rayos' no es suficientemente elevada.",
+      "simulateColorsNote": "Cuando 'Simular colores' está seleccionado estos se muestran en los colores de la fuente y se distinguen por el tamaño del punto.",
+      "title": "Todas las imágenes"
+    },
+    "observer": {
+      "description": "Simular los rayos y las imágenes vistos desde una posición. El circulo azul es el observador. Cualquier rayo que lo cruce se considera 'observado'. El observador no sabe donde inician los rayos, pero puede pensar que tienen inicio en algún(os) punto(s) si se intersectan ahí. Los rayos se muestran en azul, y los puntos en amarillo (reales) o naranja (virtuales).",
+      "instruction": "Arrastre el punto azul grande para mover al observador.",
+      "simulateColorsNote": "Cuando 'Simular colores' está seleccionado, se muestran en los colores de la fuente.",
+      "title": "Visto por el observador"
+    },
+    "rays": {
+      "description": "Mostrar los rayos. Cuando la 'Densidad de rayos' es elevada, estos parecen continuos.",
+      "title": "Rayos"
+    },
+    "title": "Vista"
+  }
+}
