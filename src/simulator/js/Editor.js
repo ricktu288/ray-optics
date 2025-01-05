@@ -105,8 +105,8 @@ class Editor {
     /** @property {Point} mousePos - The position of the mouse in the scene. */
     this.mousePos = geometry.point(0, 0);
 
-    /** @property {Point} lastMousePos - The position of the mouse in the scene when the last mousedown event is triggered. */
-    this.lastMousePos = geometry.point(0, 0);
+    /** @property {Point|null} lastMousePos - The position of the mouse in the scene when the last mousedown event is triggered before the mouse is treated as moved. */
+    this.lastMousePos = null;
 
     /** @property {boolean} isConstructing - Whether an object is being constructed. */
     this.isConstructing = false;
@@ -655,10 +655,13 @@ class Editor {
     const rawX = (et.pageX - e.target.offsetLeft - this.scene.origin.x) / this.scene.scale;
     const rawY = (et.pageY - e.target.offsetTop - this.scene.origin.y) / this.scene.scale;
 
-    // Calculate the distance moved
-    const distanceSquared = geometry.distanceSquared(this.lastMousePos, geometry.point(rawX, rawY));
-    if (distanceSquared < (this.minimalDragLength * this.minimalDragLength) / (this.scene.scale * this.scene.scale)) {
-      return; // Do not proceed if the drag is less than the threshold
+    if (this.lastMousePos) {
+      // Calculate the distance moved
+      const distanceSquared = geometry.distanceSquared(this.lastMousePos, geometry.point(rawX, rawY));
+      if (distanceSquared < (this.minimalDragLength * this.minimalDragLength) / (this.scene.scale * this.scene.scale)) {
+        return; // Do not proceed if the drag is less than the threshold
+      }
+      this.lastMousePos = null;
     }
     
     // Truncate to binary fractions
@@ -892,7 +895,7 @@ class Editor {
     this.mousePos = geometry.point(truncX, truncY);
     if (this.isConstructing) {
     }
-    else if (new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch).isOnPoint(this.lastMousePos)) {
+    else if (this.lastMousePos && new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch).isOnPoint(this.lastMousePos)) {
       this.dragContext = {};
 
       if (this.scene.mode == 'observer') {
