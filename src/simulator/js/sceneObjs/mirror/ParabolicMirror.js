@@ -379,9 +379,15 @@ class ParabolicMirror extends BaseFilter {
     const discriminant = B * B - 4 * A * C;
     if (discriminant < 0) return null;
 
-    // Get solutions
-    const t1 = (-B + Math.sqrt(discriminant)) / (2 * A);
-    const t2 = (-B - Math.sqrt(discriminant)) / (2 * A);
+    // Use a stable quadratic formula
+    const sqrtDisc = Math.sqrt(discriminant);
+    let t1, t2;
+    if (B > 0) {
+      t1 = (-B - sqrtDisc) / (2 * A);
+    } else {
+      t1 = (-B + sqrtDisc) / (2 * A);
+    }
+    t2 = C / (A * t1);
 
     // Get intersection points
     const intersections = [];
