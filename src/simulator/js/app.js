@@ -71,6 +71,7 @@ async function startApp() {
   canvas = document.getElementById('canvasAboveLight');
   canvasBelowLight = document.getElementById('canvasBelowLight');
   canvasLight = document.getElementById('canvasLight');
+  canvasLightWebGL = document.getElementById('canvasLightWebGL');
   canvasGrid = document.getElementById('canvasGrid');
 
   canvas.width = window.innerWidth * dpr;
@@ -81,6 +82,9 @@ async function startApp() {
 
   canvasLight.width = window.innerWidth * dpr;
   canvasLight.height = window.innerHeight * dpr;
+
+  canvasLightWebGL.width = window.innerWidth * dpr;
+  canvasLightWebGL.height = window.innerHeight * dpr;
 
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
@@ -115,91 +119,34 @@ async function startApp() {
 
   scene = new Scene();
 
-  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsUseFloatColorRenderer && localStorage.rayOpticsUseFloatColorRenderer == "on") {
-    document.getElementById('float_color_renderer').checked = true;
-    document.getElementById('float_color_renderer_mobile').checked = true;
-    var useFloatColorRenderer = true;
-  } else {
-    document.getElementById('float_color_renderer').checked = false;
-    document.getElementById('float_color_renderer_mobile').checked = false;
-    var useFloatColorRenderer = false;
-  }
+  let gl;
 
-  if (useFloatColorRenderer) {
-    try {
-      const contextAttributes = {
-        alpha: true,
-        premultipliedAlpha: true,
-        antialias: false,
-      };
-      var gl = canvasLight.getContext('webgl', contextAttributes) || canvasLight.getContext('experimental-webgl', contextAttributes);
-      var ext = gl.getExtension('OES_texture_float');
+  try {
+    const contextAttributes = {
+      alpha: true,
+      premultipliedAlpha: true,
+      antialias: false,
+    };
+    gl = canvasLightWebGL.getContext('webgl', contextAttributes) || canvasLightWebGL.getContext('experimental-webgl', contextAttributes);
+    var ext = gl.getExtension('OES_texture_float');
 
-      if (!ext) {
-        throw new Error('OES_texture_float not supported.');
-      }
-    } catch (e) {
-      localStorage.rayOpticsUseFloatColorRenderer = "off";
-      console.log(e.toString() + ' Falling back to default renderer.');
-      alert(i18next.t('simulator:settings.floatColorRenderer.error') + '\n' + i18next.t('simulator:common.reloadToTakeEffect'));
-      return;
+    if (!ext) {
+      throw new Error('OES_texture_float not supported.');
     }
-  }
-
-  if (useFloatColorRenderer) {
-    scene.colorMode = 'linear';
-    document.getElementById('simulateColors_popover').setAttribute('data-bs-offset', '40,20');
-    setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction'));
-    document.getElementById('colorMode').disabled = false;
-    document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.linear.title');
-    document.getElementById('colorMode_mobile').disabled = false;
-    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.linear.title');
-    document.getElementById('colorMode_linear').checked = true;
-
-    document.getElementById('colorMode_linear').addEventListener('click', function () {
-      colorModebtn_clicked('linear');
-      editor.onActionComplete();
-      simulator.updateSimulation();
-    });
-    document.getElementById('colorMode_linearRGB').addEventListener('click', function () {
-      colorModebtn_clicked('linearRGB');
-      editor.onActionComplete();
-      simulator.updateSimulation();
-    });
-    document.getElementById('colorMode_reinhard').addEventListener('click', function () {
-      colorModebtn_clicked('reinhard');
-      editor.onActionComplete();
-      simulator.updateSimulation();
-    });
-    document.getElementById('colorMode_colorizedIntensity').addEventListener('click', function () {
-      colorModebtn_clicked('colorizedIntensity');
-      editor.onActionComplete();
-      simulator.updateSimulation();
-    });
-    document.getElementById('colorMode_legacy').addEventListener('click', function () {
-      colorModebtn_clicked('legacy');
-      editor.onActionComplete();
-      simulator.updateSimulation();
-    });
-
-  } else {
-    scene.colorMode = 'legacy';
-    setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
-    document.getElementById('colorMode').disabled = true;
-    document.getElementById('colorMode').innerHTML = i18next.t('simulator:common.defaultOption');
-    document.getElementById('colorMode_mobile').disabled = true;
-    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:common.defaultOption');
+  } catch (e) {
+    console.log('Failed to initialize WebGL: ' + e);
+    gl = null;
   }
 
   simulator = new Simulator(scene,
-    useFloatColorRenderer ? gl : canvasLight.getContext('2d'),
+    canvasLight.getContext('2d'),
     canvasBelowLight.getContext('2d'),
     canvasAboveLight.getContext('2d'),
     canvasGrid.getContext('2d'),
     document.createElement('canvas').getContext('2d'),
     true,
     Infinity,
-    useFloatColorRenderer
+    gl
   );
 
   simulator.dpr = dpr;
@@ -210,21 +157,27 @@ async function startApp() {
 
   simulator.on('simulationPause', function () {
     document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>';
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>';
   });
 
   simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
     document.getElementById('forceStop').style.display = 'none';
   });
 
   simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)});
+    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)});
     document.getElementById('forceStop').style.display = 'none';
   });
 
   simulator.on('requestUpdateErrorAndWarning', function () {
     updateErrorAndWarning();
+  });
+
+  simulator.on('webglContextLost', function () {
+    console.log('WebGL context lost');
+    canvasLightWebGL.style.display = 'none';
+    canvasLight.style.display = '';
   });
 
   editor = new Editor(scene, canvas, simulator);
@@ -354,11 +307,7 @@ async function startApp() {
       modebtn_clicked(scene.mode);
       document.getElementById('mode_' + scene.mode).checked = true;
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
-
-      if (simulator.useFloatColorRenderer) {
-        colorModebtn_clicked(scene.colorMode);
-      }
-
+      colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
     }
   });
@@ -468,6 +417,8 @@ async function startApp() {
       canvasBelowLight.height = window.innerHeight * simulator.dpr;
       canvasLight.width = window.innerWidth * simulator.dpr;
       canvasLight.height = window.innerHeight * simulator.dpr;
+      canvasLightWebGL.width = window.innerWidth * simulator.dpr;
+      canvasLightWebGL.height = window.innerHeight * simulator.dpr;
       canvasGrid.width = window.innerWidth * simulator.dpr;
       canvasGrid.height = window.innerHeight * simulator.dpr;
       simulator.updateSimulation();
@@ -739,27 +690,39 @@ async function startApp() {
     autoSyncUrl = false;
   }
 
-  document.getElementById('float_color_renderer').onclick = function () {
+  document.getElementById('correct_brightness').onclick = function () {
     this.blur();
-
-    document.getElementById('float_color_renderer').checked = this.checked;
-    document.getElementById('float_color_renderer_mobile').checked = this.checked;
-
-    localStorage.rayOpticsUseFloatColorRenderer = this.checked ? "on" : "off";
-    //useFloatColorRenderer = this.checked;
-    showReloadWarning();
+    if (this.checked) {
+      colorModebtn_clicked('linear');
+    } else {
+      colorModebtn_clicked('default');
+    }
+    editor.selectObj(editor.selectedObjIndex);
+    editor.onActionComplete();
+    simulator.updateSimulation();
   };
-  document.getElementById('float_color_renderer_mobile').onclick = document.getElementById('float_color_renderer').onclick;
+  document.getElementById('correct_brightness_mobile').onclick = document.getElementById('correct_brightness').onclick;
 
-  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsUseFloatColorRenderer && localStorage.rayOpticsUseFloatColorRenderer == "on") {
-    document.getElementById('float_color_renderer').checked = true;
-    document.getElementById('float_color_renderer_mobile').checked = true;
-    //useFloatColorRenderer = true;
-  } else {
-    document.getElementById('float_color_renderer').checked = false;
-    document.getElementById('float_color_renderer_mobile').checked = false;
-    //useFloatColorRenderer = false;
-  }
+  document.getElementById('colorMode_linear').addEventListener('click', function () {
+    colorModebtn_clicked('linear');
+    editor.onActionComplete();
+    simulator.updateSimulation();
+  });
+  document.getElementById('colorMode_linearRGB').addEventListener('click', function () {
+    colorModebtn_clicked('linearRGB');
+    editor.onActionComplete();
+    simulator.updateSimulation();
+  });
+  document.getElementById('colorMode_reinhard').addEventListener('click', function () {
+    colorModebtn_clicked('reinhard');
+    editor.onActionComplete();
+    simulator.updateSimulation();
+  });
+  document.getElementById('colorMode_colorizedIntensity').addEventListener('click', function () {
+    colorModebtn_clicked('colorizedIntensity');
+    editor.onActionComplete();
+    simulator.updateSimulation();
+  });
 
   document.getElementById('gridSize').onchange = function () {
     scene.gridSize = parseFloat(this.value);
@@ -1120,6 +1083,7 @@ startApp();
 var canvas;
 var canvasBelowLight;
 var canvasLight;
+var canvasLightWebGL;
 var canvasGrid;
 var scene;
 var editor;
@@ -1274,6 +1238,7 @@ function initUIText() {
   setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
   setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
+  setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
   setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
@@ -1288,8 +1253,8 @@ function initUIText() {
   setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
   setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
-  setText('float_color_renderer_popover', null, null, i18next.t('simulator:settings.floatColorRenderer.description'));
-  setText('float_color_renderer_text', i18next.t('simulator:settings.floatColorRenderer.title') + '<sup>Beta</sup>');
+  setText('correct_brightness_popover', null, null, i18next.t('simulator:settings.correctBrightness.description'));
+  setText('correct_brightness_text', i18next.t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>');
   setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
   setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
@@ -1359,7 +1324,7 @@ function initUIText() {
   setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
   setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
-  setText('float_color_renderer_mobile_text', i18next.t('simulator:settings.floatColorRenderer.title') + '<sup>Beta</sup>');
+  setText('correct_brightness_mobile_text', i18next.t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>');
   setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title'));
   setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
@@ -1380,8 +1345,6 @@ function initUIText() {
   setText('save_rename', i18next.t('simulator:saveModal.rename'));
   setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
   setText('staticBackdropLabel_colorMode', i18next.t('simulator:settings.colorMode.title'));
-  setText('colorMode_legacy_text', i18next.t('simulator:common.legacyOption'));
-  setText('colorMode_legacy_description', i18next.t('simulator:colorModeModal.legacy.description'));
   setText('colorMode_linear_text', i18next.t('simulator:colorModeModal.linear.title'));
   setText('colorMode_linear_description', i18next.t('simulator:colorModeModal.linear.description'));
   setText('colorMode_linearRGB_text', i18next.t('simulator:colorModeModal.linearRGB.title'));
@@ -1938,12 +1901,6 @@ function init() {
   scene.origin = geometry.point(0, 0);
   scene.scale = 1;
 
-  if (simulator.useFloatColorRenderer) {
-    colorModebtn_clicked('linear');
-  } else {
-    scene.colorMode = 'legacy';
-  }
-
   let dpr = window.devicePixelRatio || 1;
 
   scene.setViewportSize(canvas.width / dpr, canvas.height / dpr);
@@ -1957,6 +1914,7 @@ function init() {
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('rays');
+  colorModebtn_clicked('default');
   scene.backgroundImage = null;
 
   //Reset new UI.
@@ -2071,9 +2029,26 @@ function modebtn_clicked(mode1) {
 
 function colorModebtn_clicked(colorMode) {
   scene.colorMode = colorMode;
-  document.getElementById('colorMode_' + scene.colorMode).checked = true;
-  document.getElementById('colorMode').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
-  document.getElementById('colorMode_mobile').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+  if (colorMode == 'default') {
+    document.getElementById('colorMode').innerHTML = i18next.t('simulator:common.defaultOption');
+    document.getElementById('colorMode').disabled = true;
+    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:common.defaultOption');
+    document.getElementById('colorMode_mobile').disabled = true;
+    document.getElementById('correct_brightness').checked = false;
+    document.getElementById('correct_brightness_mobile').checked = false;
+    canvasLight.style.display = '';
+    canvasLightWebGL.style.display = 'none';
+  } else {
+    document.getElementById('colorMode_' + scene.colorMode).checked = true;
+    document.getElementById('colorMode').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+    document.getElementById('colorMode_mobile').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+    document.getElementById('colorMode').disabled = false;
+    document.getElementById('colorMode_mobile').disabled = false;
+    document.getElementById('correct_brightness').checked = true;
+    document.getElementById('correct_brightness_mobile').checked = true;
+    canvasLight.style.display = 'none';
+    canvasLightWebGL.style.display = '';
+  }
 }
 
 

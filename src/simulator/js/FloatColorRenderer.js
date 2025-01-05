@@ -15,9 +15,9 @@
  */
 
 /**
- * An experimental canvas renderer for the light layer with the same API as `CanvasRenderer`, but uses the WebGL floating point texture and properly calculates color mixtures. This largely solves the issue of brightness and color inconsistency issue in this simulator, especially whe "Simulate Colors" is enabled (where the performace issue is also solved). Additionally, this renderer allows for different color modes (as defined in `Scene`, but the 'legacy' mode with `simulateColors` enabled is split into 'legacy_color').
+ * An experimental canvas renderer for the light layer with the same API as `CanvasRenderer`, but uses the WebGL floating point texture and properly calculates color mixtures. This largely solves the issue of brightness and color inconsistency issue in this simulator, especially whe "Simulate Colors" is enabled.
  * 
- * This renderer is currently used only in the web app when the "Float Color Renderer" experimental feature is enabled, and is not used in generation of Gallery images and the automatic tests.
+ * This renderer is currently used only in the web app when "Correct Brightness" is enabled, and is not used in generation of Gallery images and the automatic tests.
  * @class
  */
 class FloatColorRenderer {
@@ -54,8 +54,6 @@ class FloatColorRenderer {
     this.hasFirstFlush = false;
 
     switch (this.colorMode) {
-      case 'legacy':
-      case 'legacy_color':
       case 'colorizedIntensity':
         this.msaaCount = 1; // Colorized intensity does not work well with MSAA since the color is not additive
         break;
@@ -209,36 +207,6 @@ class FloatColorRenderer {
     // Fragment shader for final pass
     let quadFragmentSource;
     switch (this.colorMode) {
-      case 'legacy':
-        quadFragmentSource = `
-          precision highp float;
-          uniform sampler2D u_texture;
-          varying vec2 v_texCoord;
-
-          void main() {
-            vec4 color = texture2D(u_texture, v_texCoord);
-            float maxComponent = max(max(color.r, color.g), color.b);
-            float factor = 1.0 - exp(-maxComponent);
-            gl_FragColor = vec4(color.rgb / maxComponent * factor, factor);
-          }
-        `;
-        break;
-      case 'legacy_color':
-        quadFragmentSource = `
-          precision highp float;
-          uniform sampler2D u_texture;
-          varying vec2 v_texCoord;
-
-          void main() {
-            vec4 color = texture2D(u_texture, v_texCoord);
-            float maxComponent = max(max(color.r, color.g), color.b);
-            if (maxComponent > 1.0) {
-              color.rgb /= maxComponent;
-            }
-            gl_FragColor = vec4(color.rgb, min(maxComponent, 1.0));
-          }
-        `;
-        break;
       case 'linear':
         quadFragmentSource = `
           precision highp float;
@@ -970,11 +938,6 @@ class FloatColorRenderer {
     const m = Math.max(r, g, b);
 
     switch (this.colorMode) {
-      case 'legacy':
-        const factor = Math.min(-Math.log(1 - m) / m, 100);
-        return [r * factor, g * factor, b * factor, 1.0];
-      case 'legacy_color':
-        return [r, g, b, 1.0];
       case 'colorizedIntensity':
         return [m, m, m, 1.0];
       default:

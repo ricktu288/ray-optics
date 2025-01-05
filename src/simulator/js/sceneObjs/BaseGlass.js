@@ -206,11 +206,11 @@ class BaseGlass extends BaseSceneObj {
       if (bodyMergingObj) {
         ray2.bodyMergingObj = bodyMergingObj;
       }
-      if (ray2.brightness_s + ray2.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0.01)) {
+      if (ray2.brightness_s + ray2.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
         newRays.push(ray2);
       } else {
         truncation += ray2.brightness_s + ray2.brightness_p;
-        if (!ray.gap && !this.scene.simulator.useFloatColorRenderer) {
+        if (!ray.gap && !this.scene.colorMode != 'default') {
           var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
           if (rayIndex % amp == 0) {
             ray2.brightness_s = ray2.brightness_s * amp;
@@ -226,7 +226,7 @@ class BaseGlass extends BaseSceneObj {
       ray.brightness_s = ray.brightness_s * (1 - R_s);
       ray.brightness_p = ray.brightness_p * (1 - R_p);
 
-      if (ray.brightness_s + ray.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0)) {
+      if (ray.brightness_s + ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0)) {
         return {
           newRays: newRays,
           truncation: truncation

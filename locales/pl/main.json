@@ -47,8 +47,7 @@
   "simulateColors": {
     "description": "Symulacja kolorów (długości fal) źródeł światła, mieszania kolorów, filtrowania kolorów przez filtry blokujące i lustra oraz dyspersji chromatycznej szkieł.",
     "instruction": "Po wybraniu można ustawić te parametry dla tych obiektów. Aby symulować widma kolorów, należy nałożyć na siebie promienie o różnych długościach fal.",
-    "title": "Symuluj kolory",
-    "warning": "Kolory wyświetlane na ekranie są jedynie przybliżone i mogą być bardzo niedokładne, gdy 'Gęstość promieni' jest zbyt wysoka lub zbyt niska."
+    "title": "Symuluj kolory"
   },
   "tools": {
     "AngleSource": {

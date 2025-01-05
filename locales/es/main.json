@@ -28,8 +28,7 @@
   "simulateColors": {
     "description": "Simular colores (longitudes de onda), mezclas de colores, filtros de color de bloqueadores y espejos y dispersión cromática de vidrios.",
     "instruction": "Puede ajustar los parámetros de estos objetos cuando los seleccione. Para simular el espectro de colores, sobreponga rayos con diferentes longitudes de onda.",
-    "title": "Simular colores",
-    "warning": "Los colores mostrados en pantalla son solo aproximaciones burdas y puede ser muy impreciso cuando 'Densidad de rayos' es demasiado alta o demasiado baja."
+    "title": "Simular colores"
   },
   "tools": {
     "AngleSource": {

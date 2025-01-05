@@ -56,7 +56,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   }
 
   populateObjBar(objBar) {
-    if (this.scene.colorMode !== 'legacy') {
+    if (this.scene.colorMode !== 'default') {
       var sInfo = i18next.t('simulator:sceneObjs.Detector.info.sNewColorModes');
     } else {
       var sInfo = i18next.t('simulator:sceneObjs.Detector.info.s');

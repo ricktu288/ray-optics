@@ -42,7 +42,7 @@ class PointSource extends BaseSceneObj {
   };
 
   populateObjBar(objBar) {
-    if (this.scene.colorMode !== 'legacy') {
+    if (this.scene.colorMode !== 'default') {
       var brightnessInfo = i18next.t('simulator:sceneObjs.common.brightnessInfo.newColorModes');
     } else {
       var brightnessInfo = '<p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensity') + '</p><p>' + i18next.t('simulator:sceneObjs.common.brightnessInfo.rayDensitySlider') + '</p>';
@@ -80,7 +80,7 @@ class PointSource extends BaseSceneObj {
     const mousePos = mouse.getPosSnappedToGrid();
     this.x = mousePos.x;
     this.y = mousePos.y;
-    if (this.scene.colorMode !== 'legacy') {
+    if (this.scene.colorMode !== 'default') {
       // In the new color modes, the default brightness for newly created sources is set to 0.1 instead.
       this.brightness = 0.1;
     }
@@ -119,11 +119,11 @@ class PointSource extends BaseSceneObj {
     do {
       var expectBrightness = this.brightness / rayDensity;
 
-      if (this.scene.colorMode !== 'legacy' && expectBrightness > 1) {
+      if (this.scene.colorMode !== 'default' && expectBrightness > 1) {
         // In the new color modes, the brightness scale is always kept to 1 for consistent detector readings, so the ray density is overriden to keep the brightness scale to 1. Currently the strategy is to increase the number of angled rays until the brightness is less than 1. This may be improved in the future.
         rayDensity += 1/500;
       }
-    } while (this.scene.colorMode !== 'legacy' && expectBrightness > 1);
+    } while (this.scene.colorMode !== 'default' && expectBrightness > 1);
 
     let newRays = [];
     var s = Math.PI * 2 / parseInt(rayDensity * 500);

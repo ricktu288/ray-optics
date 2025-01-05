@@ -41,6 +41,15 @@
   z-index: -5;
 }
 
+#canvasLightWebGL {
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: -5;
+}
+
 #canvasAboveLight {
   background-color: transparent;
   position: absolute;

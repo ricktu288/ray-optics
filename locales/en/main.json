@@ -46,7 +46,7 @@
     "description": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.",
     "instruction": "You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths.",
     "title": "Simulate Colors",
-    "warning": "The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "warning": "Color mixing is inaccurate unless used with \"Correct Brightness\"."
   },
   "tools": {
     "AngleSource": {

@@ -107,7 +107,7 @@ class CropBox extends BaseSceneObj {
     this.warning = null;
 
     if (this.format === 'svg') {
-      if (this.scene.simulateColors) {
+      if (this.scene.simulateColors || this.scene.colorMode !== 'default') {
         this.warning = i18next.t('simulator:sceneObjs.CropBox.svgWarning');
       }
 

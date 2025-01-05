@@ -184,7 +184,7 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
       // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
       diffracted_ray.gap = true;
 
-      if (diffracted_ray.brightness_s + diffracted_ray.brightness_p > (this.scene.simulator.useFloatColorRenderer ? 1e-6 : 0.01)) {
+      if (diffracted_ray.brightness_s + diffracted_ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
         newRays.push(diffracted_ray);
       } else {
         truncation += diffracted_ray.brightness_s + diffracted_ray.brightness_p;

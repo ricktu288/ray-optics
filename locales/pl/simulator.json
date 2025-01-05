@@ -70,7 +70,6 @@
     "autoSyncUrlTooLarge": "Scena jest zbyt duża, aby zsynchronizować ją z URL. Zapisz ją ręcznie.",
     "brightnessInconsistent": "Jasności dwóch lub więcej źródeł światła nasycają się w niespójnych proporcjach. Może to prowadzić do błędnych odczytów detektora i nieprawidłowego odwzorowania kolorów. Zwiększ gęstość promieni lub zmniejsz jasność źródeł światła.",
     "identicalObjects": "Na scenie znajdują się dwa identyczne elementy optyczne, które całkowicie na siebie zachodzą. Może to spowodować nieoczekiwane zachowanie.",
-    "legacyColorMode": "Ta scena jest obecnie renderowana w starszym trybie kolorów. Możesz przełączyć się na bardziej dokładny w Ustawienia -> Tryb kolorów.",
     "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Zamiast tego może być konieczne użycie \"Zapisz\" i udostępnienie pliku."
   },
   "languageModal": {

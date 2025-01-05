@@ -47,8 +47,7 @@
   "simulateColors": {
     "description": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros.",
     "instruction": "Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes.",
-    "title": "Simular Cores",
-    "warning": "As cores exibidas na tela são apenas aproximações, e podem ser muito imprecisas quando 'Densidade de Raios' está muito alta ou muito baixa."
+    "title": "Simular Cores"
   },
   "tools": {
     "AngleSource": {

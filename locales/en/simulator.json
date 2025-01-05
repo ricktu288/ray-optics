@@ -3,7 +3,6 @@
     "cancelButton": "Cancel",
     "closeButton": "Close",
     "defaultOption": "Default",
-    "legacyOption": "Legacy",
     "saveButton": "Save",
     "reloadToTakeEffect": "Please reload the page to take effect."
   },
@@ -71,14 +70,9 @@
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
-    "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead.",
-    "needsFloatColorRenderer": "This scene was created with the \"{{colorMode}}\" color mode, which requires the experimental \"Float Color Renderer\" to work. You may enable it in Settings -> Float Color Renderer.",
-    "legacyColorMode": "This scene is currently rendered in the legacy color mode. You may want to switch to a more accurate one in Settings -> Color Mode."
+    "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead."
   },
   "colorModeModal": {
-    "legacy": {
-      "description": "Compatible with the original non-float color renderer. The color is not gamma-corrected, and when \"Simulate Colors\" is off, the brightness on the screen does not consistently represent the total brightness."
-    },
     "linear": {
       "title": "Linear Value",
       "description": "The value V in the HSV color space equals the total brightness of the rays when \"Simulate Colors\" is off and for monochromatic light between 420 to 620 nm. V is capped to 1 while preserving H and S. The color is gamma-corrected."
@@ -192,7 +186,7 @@
       "format": "Format",
       "rayCountLimit": "Ray count limit",
       "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options.",
-      "svgWarning": "Export to SVG: Color mixtures and relative refractive indices below 1 are not supported.",
+      "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
       "title": "Export",
       "width": "Width"
     },
@@ -207,7 +201,7 @@
         "irradiance": "The irradiance in the exported CSV is in (B/s)/L.",
         "length": "L is the arbitrary unit of length used in this simulator.",
         "s": "The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.",
-        "sNewColorModes": "In the new experimental color modes that you are currently using, the dimensionless factor s always equals 1.",
+        "sNewColorModes": "When \"Correct Brightness\" is on, the dimensionless factor s always equals 1.",
         "truncation": "If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates."
       },
       "irradMap": "Irradiance Map"
@@ -286,7 +280,7 @@
       "brightnessInfo": {
         "rayDensity": "Only effective if 'Ray Density' is high enough.",
         "rayDensitySlider": "To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.",
-        "newColorModes": "In the new experimental color modes that you are currently using, the behavior of brightnesses at low 'Ray Density' is different from that in the legacy color mode. For the unit, see the info box of a detector when it is selected."
+        "newColorModes": "When \"Correct Brightness\" is on, the behavior at low \"Ray Density\" is different from the default. For the unit, see the info box of a detector when it is selected."
       },
       "emisAngle": "Emission Angle",
       "eqnInfo": {
@@ -309,14 +303,14 @@
       "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename.",
       "title": "Auto sync URL"
     },
-    "floatColorRenderer": {
-      "title": "Float Color Renderer",
-      "description": "(This is an experimental feature) Renders the rays with a WebGL floating-point texture. This solves the issues of inaccurate colors and brightnesses in this simulator (see \"Color Mode\"). The performance may be better or worse than the default renderer, depending on the browser and the hardware.",
-      "error": "Your browser does not support WebGL floating-point textures. Falling back to the default renderer."
+    "correctBrightness": {
+      "title": "Correct Brightness",
+      "description": "By default, the brightness on the screen does not consistently represent the brightness of the rays. This option fixes it using a specialized renderer, but may reduce the performance on some devices. (On some other devices it actually improves the performance.)",
+      "error": "Failed to enable \"Correct Brightness\". Your browser may not support WebGL floating-point textures."
     },
     "colorMode": {
       "title": "Color Mode",
-      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when \"Float Color Renderer\" is enabled."
+      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
     },
     "gridSize": {
       "title": "Grid Size"

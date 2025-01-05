@@ -73,9 +73,10 @@ class Simulator {
    * @param {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment.
    * @param {boolean} enableTimer - Whether to enable the timer for the simulation.
    * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
-   * @param {boolean} [useFloatColorRenderer=false] - Whether to use the FloatColorRenderer for the light layer.
+   * @param {WebGLRenderingContext|null} glMain - The default WebGL context for drawing the scene (used only if the colorMode is not 'default').
+   * @param {WebGLRenderingContext|null} glVirtual - Additional WebGL context.
    */
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, useFloatColorRenderer = false) {
+  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, glMain, glVirtual) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -110,8 +111,11 @@ class Simulator {
     /** @property {number} rayCountLimit - The maximum number of processed rays in the simulation. When this limit is reached, the simulation will stop. */
     this.rayCountLimit = rayCountLimit;
 
-    /** @property {boolean} useFloatColorRenderer - Whether to use the FloatColorRenderer for the light layer. */
-    this.useFloatColorRenderer = useFloatColorRenderer;
+    /** @property {WebGLRenderingContext|null} glMain - The default WebGL context for drawing the this.scene (used only if the colorMode is not 'default'). */
+    this.glMain = glMain;
+
+    /** @property {WebGLRenderingContext|null} glVirtual - Additional WebGL context. */
+    this.glVirtual = glVirtual;
 
     /** @property {Ray[]} pendingRays - The rays to be processed. */
     this.pendingRays = [];
@@ -198,6 +202,11 @@ class Simulator {
    */
 
   /**
+   * The event when the WebGL context is lost.
+   * @event webglContextLost
+   */
+
+  /**
    * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.
@@ -219,35 +228,38 @@ class Simulator {
       this.simulationTimerId = -1;
     }
 
-    /*
-    if (!skipLight && this.useFloatColorRenderer && this.canvasRendererMain && this.canvasRendererMain.destroy) {
-      // Destroy the canvas renderer to prevent memory leak
-      this.canvasRendererMain.destroy();
-      this.canvasRendererMain = null;
-    }
-    */
-
     if (this.ctxBelowLight && this.ctxAboveLight) {
       this.canvasRendererBelowLight = new CanvasRenderer(this.ctxBelowLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, this.scene.backgroundImage);
       this.canvasRendererAboveLight = new CanvasRenderer(this.ctxAboveLight, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
     }
 
+    // If the scene uses non-default color mode but the WebGL context is not available, switch to the default color mode
+    if (this.scene.colorMode != 'default' && !this.glMain) {
+      this.scene.colorMode = 'default';
+      this.error = i18next.t('simulator:settings.correctBrightness.error');
+      this.emit('requestUpdateErrorAndWarning');
+      this.emit('webglContextLost');
+    }
+
+    // If the scene has switch to the default color mode, destroy the float color renderer
+    if (this.canvasRendererMain && this.canvasRendererMain.destroy && this.scene.colorMode == 'default') {
+      this.canvasRendererMain.destroy();
+      this.canvasRendererMain = null;
+    }
+
     if (!skipLight) {
-      if (this.useFloatColorRenderer) {
-        if (this.scene.colorMode == 'legacy' && this.scene.simulateColors) {
-          var colorMode = 'legacy_color';
-        } else {
-          var colorMode = this.scene.colorMode;
-        }
+      if (this.scene.colorMode != 'default') {
+        // In non-default color mode, use WebGL to render the light layer.
+        var colorMode = this.scene.colorMode;
 
         // Renew the float color renderer only if some parameters have changed
         if (this.canvasRendererMain && this.canvasRendererMain.colorMode == colorMode && this.canvasRendererMain.scale == this.scene.scale * this.dpr && this.canvasRendererMain.lengthScale == this.scene.lengthScale && this.canvasRendererMain.origin.x == this.scene.origin.x * this.dpr && this.canvasRendererMain.origin.y == this.scene.origin.y * this.dpr && this.canvasRendererMain.width == this.ctxMain.canvas.width && this.canvasRendererMain.height == this.ctxMain.canvas.height) {
           this.canvasRendererMain.begin();
         } else {
-          if (this.canvasRendererMain) {
+          if (this.canvasRendererMain && this.canvasRendererMain.destroy) {
             this.canvasRendererMain.destroy();
           }
-          this.canvasRendererMain = new FloatColorRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, null, colorMode);
+          this.canvasRendererMain = new FloatColorRenderer(this.glMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, null, colorMode);
         }
       } else {
         this.canvasRendererMain = new CanvasRenderer(this.ctxMain, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale, null, this.ctxVirtual);
@@ -418,6 +430,8 @@ class Simulator {
 
     if (this.scene.simulateColors) {
       this.ctxMain.globalCompositeOperation = 'screen';
+    } else {
+      this.ctxMain.globalCompositeOperation = 'source-over';
     }
 
     while (true) {
@@ -427,7 +441,7 @@ class Simulator {
         this.simulationTimerId = setTimeout(() => this.processRays(), this.firstBreak ? 100 : 1);
         this.firstBreak = false;
 
-        if (this.useFloatColorRenderer) {
+        if (this.scene.colorMode != 'default') {
           this.canvasRendererMain.flush();
         }
 
@@ -509,7 +523,7 @@ class Simulator {
           }
         }
         if (this.scene.simulateColors) {
-          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && !this.useFloatColorRenderer);
+          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && (this.scene.colorMode == 'default'));
         } else {
           var alpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
         }
@@ -581,7 +595,7 @@ class Simulator {
 
 
                   if (this.scene.simulateColors) {
-                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
+                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
                   } else {
                     const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                     this.ctxMain.globalAlpha = alpha;
@@ -645,7 +659,7 @@ class Simulator {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
             if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
               if (this.scene.simulateColors) {
-                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && !this.useFloatColorRenderer);
+                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
               } else {
                 const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                 this.ctxMain.globalAlpha = alpha;
@@ -679,7 +693,7 @@ class Simulator {
                 if (this.scene.simulateColors) {
                   this.canvasRendererMain.drawPoint(observed_intersection, color, 1);
                 } else {
-                  this.canvasRendererMain.drawPoint(observed_intersection, this.useFloatColorRenderer ? [0.03, 0.03, 0.03, alpha] : [0.3, 0.3, 0.3, alpha]);
+                  this.canvasRendererMain.drawPoint(observed_intersection, (this.scene.colorMode != 'default') ? [0.03, 0.03, 0.03, alpha] : [0.3, 0.3, 0.3, alpha]);
                 }
               }
             }
@@ -727,7 +741,7 @@ class Simulator {
       this.canvasRendererMain.applyColorTransformation();
       this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
     }
-    if (this.useFloatColorRenderer) {
+    if (this.scene.colorMode != 'default') {
       this.canvasRendererMain.flush();
     }
     this.ctxMain.globalAlpha = 1.0;
@@ -775,14 +789,6 @@ class Simulator {
       }
     } else {
       this.warning = null;
-    }
-
-    if (!this.useFloatColorRenderer && this.scene.colorMode !== 'legacy') {
-      this.warning = i18next.t('simulator:generalWarnings.needsFloatColorRenderer', { colorMode: i18next.t(`simulator:colorModeModal.${this.scene.colorMode}.title`) });
-    }
-
-    if (this.useFloatColorRenderer && this.scene.colorMode === 'legacy') {
-      this.warning = i18next.t('simulator:generalWarnings.legacyColorMode');
     }
   }
 
