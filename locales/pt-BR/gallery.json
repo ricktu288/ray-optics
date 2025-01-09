@@ -1,1 +1,107 @@
-{}
+{
+  "galleryData": {
+    "causticsFromAReflectiveSphere": {
+      "description": "Uma esfera integrante (não disoersante) com um buraco de entrada.   Também pode ser os reflexos dentro de uma gota de líquido (como uma gota de chuva).   Lindos padrões emergem onde as cáusticas se desenvolvem movimentando a fonte pontual.",
+      "movethepointsourcear": "Mova a fonte pontual\npara ver as cáusticas e nodos\ndentro da esfera integrante se transformarem.\nMude tamanho e posição dos bloqueadores,\ne o tamanho de abertura da esfera\npara ver mais efeitos.",
+      "title": "Cáusticas de uma Esfera Refletiva"
+    },
+    "chaffCountermeasure": {
+      "chaff": "Chaff",
+      "description": "Isso é uma simulação qualitativa do efeito que a contramedida de chaff tem em um radar (ignorando efeitos de difração).",
+      "plane": "Plano",
+      "radar": "Radar",
+      "selectthechafftochan": "Selecione o chaff para alterar o número (N) e o comprimento (L) dos pedaços de chaff.",
+      "title": "Contramedida de chaff"
+    },
+    "common": {
+      "warningthesequenceof": "Aviso: A sequência de luz aparecendo não representa a velocidade da luz - somente a imagem final é representativa."
+    },
+    "hyperbolicMirror": {
+      "description": "Esta é uma demonstração da propriedade de reflexão do espelho hiperbólico: Raios de luz viajando a partir de um foco rumo ao espelho hiperbólico refletem como se partissem do outro foco.\n\nOs dois focos da hipérbole são pontos aplanáticos (ver [Pontos aplanáticos](/gallery/aplanatic-points)).",
+      "pointlightsourceaton": "Fonte de luz pontual em um ponto focal",
+      "theorangeraysareimag": "Os raios laranjas são raios imaginários extendidos dos raios amarelos refletidos.\nEsses raios imaginários convergem no outro ponto focal.",
+      "title": "Espelho Hiperbólico"
+    },
+    "imagesFormedByTwoMirrors": {
+      "description": "Esta simulação mostra as imagens formadas por dois espelhos. O \"L\" verde é o objeto. Se o ângulo entre os dois espelhos é \\(\\frac{360^\\circ}{n}\\), então \\(n-1\\) imagens virtuais (os L's laranjas) serão formadas. Você pode arrastar a ponta do espelho para trocar o ângulo entre eles.",
+      "title": "Imagens a partir de Dois Espelhos"
+    },
+    "mazeSolution": {
+      "controltherayorigina": "Controle a origem e direção inicial di raio de luz\narrastando os marcadores superiores e inferiores (respectivamente).",
+      "description": "Isso é uma simulação de um raio de luz originando dentro de um labirinto e refletindo repetidamente nas paredes. O maior e o menor quadrado vermelho dentro do labirinto (vistos na captura de tela abaixo) representam a origem e adireção inicial do raio de luz, respectivamente. Para algumas orientações iniciais do raio de luz, ele sai do labirinto, e assim, retraçando o caminho do raio uma solução para o labirinto pode, a princípio, ser calculada.",
+      "mazeexit": "Saída do labirinto",
+      "notethatthesimulatio": "Note que o processamento da simulação é finalizado apenas uma vez\na mensagem de processamento no canto inferior esquerdo desaparece.",
+      "title": "Solução de labirinto"
+    },
+    "newtonianTelescope": {
+      "description": "Isso é um modelo de um telescópio Newtoniano com uma ocular de Plössl.",
+      "title": "Telescópio Newtoniano"
+    },
+    "opticalCavity": {
+      "clickholdleftmouseto": "Clique + segure botão esquerdo do mouse\npara mover o raio",
+      "concaveconvexresonat": "Ressonador côncavo-convexo",
+      "concentricresonator": "Ressonador concêntrico",
+      "confocalresonator": "Ressonador confocal",
+      "d400intheresonatorsb": "d = 400 nos ressonadores abaixo",
+      "description": "Essa é uma simulação de raios dentro de uma cavidade óptica com dois espelhos. Dado o comprimento da cavidade \\(d\\), e o raio de curvatura de seus espelhos \\(R_1\\) e \\(R_2\\) respectivamente (com a convenção que \\(R>0\\) para um espelho côncavo), a cavidade óptica é estável (o que quer dizer que para cada raio que sai de um dos espelhos rumo ao outro, uma trajetória não-divergente é garantida para espelhos suficientemente altos) se, e somente se, \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). Nessa simulação nós assumimos que os espelhos são curvos ideais, o que significa que \\(f=\\frac{R}{2}\\), fazendo com que a condição de estabilidade anterior seja \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). [Esta](/gallery/resonator) é uma simulação similar com espelhos esféricos, onde a primeira condição de estabilidade é verdade na aproximação paraxial.",
+      "dragtomovetheidealmi": "Arraste para mover\no espelho ideal",
+      "planoconcaveresonato": "Ressonador plano-côncavo",
+      "title": "Cavidade óptica de dois espelhos"
+    },
+    "parabolicMirror": {
+      "description": "Esta simulação demonstra a propriedade de foco do espelho parabólico.",
+      "title": "Espelho Parabólico"
+    },
+    "penroseUnilluminableRoom": {
+      "description": "A sala iniluminável de penrose é construída com espelhos elítpicos, circulares, e lineares. Ela tem a curiosa propriadade de que uma fonte pontual (verde) dentro da sala não vai iluminar a sala inteira, não importa onde ela seja colocada. Você pode arrastar o ponto verde para mover a fonte.",
+      "nomatterwhereyouputt": "Não importa onde se coloque a fonte pontual, ela não irá iluminar a sala inteira.\nAviso: Devido a erros numéricos, ela ainda pode ser iluminada após um tempo.",
+      "title": "Sala iniluminável de Penrose"
+    },
+    "periscope": {
+      "description": "Isso é uma simulação de um periscópio feito de dois espelhos planos e alguns bloqueadores de luz.",
+      "observerseyenottosca": "Olho do observador (fora de escala)",
+      "title": "Periscópio"
+    },
+    "resonator": {
+      "description": "Essa é uma demonstração de um ressonador plano-côncavo. Se a distância entre os espelhos for maior que o raio de curvatura, o ressonador é instável. Se a distância entre os espelhos for menor ou igual ao raio de curvatura, um modo ressonante estável é formado.",
+      "flatmirror": "Espelho plano",
+      "sphericalconcavemirr": "Espelho côncavo esférico",
+      "stableresonator": "Ressonador estável",
+      "title": "Ressonador plano-côncavo",
+      "unstableresonator": "Ressonador instável"
+    },
+    "retroreflectors": {
+      "catseyeretroreflecto": "Retrorefletor olho de gato",
+      "cornerretroreflector": "Retrorefletor de canto",
+      "description": "Isso é uma simulação de dois tipos de retrorefletores:\n\n1. Retrorefletor de canto.\n2. Retrorefletor olho de gato.",
+      "dragtorotatethebeam": "Arraste para\ngirar o raio",
+      "title": "Retrorefletores"
+    },
+    "specularAndDiffuseReflection": {
+      "description": "Raios idênticos brilham em uma superfície lisa e uma superfície irregular, ilustrando a diferença entre reflexões especulares e difusas.",
+      "diffuse": "Difusa",
+      "specular": "Especular",
+      "title": "Reflexões Especulares e Difusas"
+    },
+    "theMirascope": {
+      "title": "O Mirascópio"
+    }
+  },
+  "galleryPage": {
+    "categories": {
+      "combinationOfLenses": "Combinação de Lentes",
+      "grinOptics": "Óptica de Gradiente de Índice",
+      "lens": "Lentes",
+      "miscellaneous": "Miscelâneas",
+      "reflection": "Reflexão",
+      "refraction": "Refração",
+      "title": "Categorias"
+    },
+    "contributors_many": "Contribuidores: {{contributors}}",
+    "contributors_one": "Contribuidor: {{contributors}}",
+    "contributors_other": "Contribuidores: {{contributors}}",
+    "description": "Essa é uma coleção de simulações feitas utilizando [o app web](/simulator), que podem ser utilizadas como demonstrações interativas de óptica. Contribuições de novos itens são bem-vindas. Veja [O guia de contribuição](/contributing/gallery) para mais informação. Para reportar um erro, por favor [abra um issue no GitHub](/github/issues) ou mande um email para [ray-optics@phydemo.app](/email).",
+    "openInSimulator": "Abrir no Simulador",
+    "title": "A Galeria de Óptica de Raios"
+  }
+}
