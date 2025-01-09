@@ -47,7 +47,8 @@
   "simulateColors": {
     "description": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros.",
     "instruction": "Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes.",
-    "title": "Simular Cores"
+    "title": "Simular Cores",
+    "warning": "Mistura de cores não é precisa ao menos que utilizada com \"Corrigir Brilho\"."
   },
   "tools": {
     "AngleSource": {
@@ -194,7 +195,7 @@
     },
     "otherGlass": {
       "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0).",
-      "title": "Equação Personalizada"
+      "title": "Outras formas"
     },
     "otherGrinGlass": {
       "description": "Material com uma função de índice refrativo personalizada n(x,y).",
@@ -202,7 +203,7 @@
     },
     "otherMirror": {
       "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0).",
-      "title": "Equação Personalizada"
+      "title": "Curvo"
     },
     "title": "Ferramentas"
   },
