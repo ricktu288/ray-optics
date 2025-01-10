@@ -1,8 +1,27 @@
 {
+  "colorModeModal": {
+    "colorizedIntensity": {
+      "description": "Os brilhos totais de 100,10, ...,10⁻⁵ são representados por vermelho, laranja, amarelo, verde, ciano, azul, roxo e preto, respectivamente, e interpolam suavemente em escala logarítmica.",
+      "title": "Intensidade codificada por cor"
+    },
+    "linear": {
+      "description": "O valor V no espaço de cores HSV é igual ao brilho total dos raios quando \"Simular Cores\" está desligado e para luz monocromática entre 420 e 620nm. V é limitado a 1 enquanto se preserva H e S. A cor tem correção gama aplicada.",
+      "title": "Valor Linear"
+    },
+    "linearRGB": {
+      "description": "Similar a \"Valor Linear\", mas cada componente do espaço de cores RGB é limitado a 1 independentemente.",
+      "title": "RGB Linear"
+    },
+    "reinhard": {
+      "description": "Mapeamento de tons Reinhard aplicado à luminância relativa total. No limite inferior de brilho, a cor é consistente com \"Valor Linear\".",
+      "title": "Reinhard"
+    }
+  },
   "common": {
     "cancelButton": "Cancelar",
     "closeButton": "Fechar",
     "defaultOption": "Padrão",
+    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças.",
     "saveButton": "Salvar"
   },
   "file": {
@@ -57,6 +76,10 @@
       "keyboardShortcuts": {
         "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar.",
         "title": "Atalhos de teclado"
+      },
+      "runLocally": {
+        "description": "Para rodar este projeto no seu próprio computador, independentemente da versão online, por favor veja [este guia](/run-locally).",
+        "title": "Rodar Localmente"
       }
     },
     "processing": "Processando... Clique aqui para parar."
@@ -128,7 +151,7 @@
     "BaseGrinGlass": {
       "intersectTol": "Tolerância de Interseção",
       "refIndexFnInfo": {
-        "accuracy": "Para simulação mais precisa, veja \"Mais opções...\"",
+        "accuracy": "Para simulação mais precisa, veja \"Mais opções…\"",
         "constants": "Constantes suportadas",
         "diff": "Somente suporta funções diferenciáveis.",
         "functions": "Funções suportadas",
@@ -163,7 +186,7 @@
       "format": "Formato",
       "rayCountLimit": "Limite de quantidade de raios",
       "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
-      "svgWarning": "Exportar como SVG: Misturas de cores e índices refrativos relativos abaixo de 1 não são suportados.",
+      "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
       "title": "Exportar",
       "width": "Largura"
     },
@@ -178,13 +201,14 @@
         "irradiance": "A irradiância no CSV exportado está em (B/s)/L.",
         "length": "L é a unidade arbitrária de comprimento utilizada nesse simulador.",
         "s": "O fator adimensional s é a \"Escala de Brilho\" exibida em Configurações -> Mostrar caixa de status, que é igual a 1 quando \"Densidade de Raios\" está acima de certo ponto e proporcional a \"Densidade de Raios\" caso contrário.",
+        "sNewColorModes": "Quando \"Corrigir Brilho\" está ligado, o fator adimensional s é sempre igual a 1.",
         "truncation": "Se alguns raios forem truncados na série infinita de reflexão interna, a truncação total é exibida como estimativas de erro."
       },
       "irradMap": "Mapa de Irradiância"
     },
     "DiffractionGrating": {
       "customBrightness": "Brilho Personalizado",
-      "customBrightnessInfo": "Quando ligado, os brilhos dos raios difratados são personalizados por uma lista de números correspndendo a m = 0, 1, -1, 2, -2, .... O número será normalizado ao brilho do raio incidente. Os valores não na lista são definidos como 0. Por exemplo, \"1, 0.5, 0.5\" significa que o raio m=0 tem o mesmo brilho que o raio incidente, os raios m=1 e m=-1 têm metade do brilho, e todos os outros raios são ignorados.",
+      "customBrightnessInfo": "Quando ligado, os brilhos dos raios difratados são personalizados por uma lista de números correspndendo a m = 0, 1, -1, 2, -2, …. O número será normalizado ao brilho do raio incidente. Os valores não na lista são definidos como 0. Por exemplo, \"1, 0.5, 0.5\" significa que o raio m=0 tem o mesmo brilho que o raio incidente, os raios m=1 e m=-1 têm metade do brilho, e todos os outros raios são ignorados.",
       "lineDensity": "Linhas/{{lengthUnit}}",
       "mirrored": "Espelhado",
       "slitRatio": "Largura de vão / Espaçamento de linha"
@@ -254,6 +278,7 @@
     "common": {
       "brightness": "Brilho",
       "brightnessInfo": {
+        "newColorModes": "Quando \"Corrigir Brilho\" está ligado, o comportamento com \"Densidade de Raios\" baixa é diferente do padrão. Para a unidade, veja a caixa de informações de um detector quando está selecionado.",
         "rayDensity": "Somente faz efeito quando 'Densidade de Raios' está alta o suficiente.",
         "rayDensitySlider": "Para controlar o número de raios emitidos, por favor ajuste o controle global de 'Densidade de Raios'."
       },
@@ -278,10 +303,20 @@
       "description": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear.",
       "title": "Sincronizar URL automaticamente"
     },
+    "colorMode": {
+      "description": "Determina como os brilhos (e cores se \"Simular Cores\" estiver ligado) dos raios ou imagens são mapeados a cores na tela. É configurável somente enquanto se utiliza \"Corrigir Brilho\".",
+      "title": "Modo de Cor"
+    },
+    "correctBrightness": {
+      "description": "Por padrão, o brilho na tela não representa consistentemente o brilho dos raios. Esta opção conserta isso utilizando um renderizador especializado, mas pode reduzir a performance em alguns dispositivos. (Em outros dispositivos a performance pode aumentar.)",
+      "error": "Não foi possível habilitar \"Corrigir Brilho\". Seu navegador pode não suportar texturas de ponto flutuante WebGL.",
+      "title": "Corrigir Brilho"
+    },
     "gridSize": {
       "title": "Tamanho da Grade"
     },
     "language": {
+      "lowFraction": "Esta linguagem está apenas {{fraction}} traduzida. Você pode ajudar a completá-la [no Weblate](/weblate).",
       "title": "Linguagem"
     },
     "layoutAids": {
@@ -310,6 +345,9 @@
       "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados).",
       "title": "Exibir editor JSON"
     },
+    "showRayArrows": {
+      "title": "Exibir Setas de Raio"
+    },
     "showStatusBox": {
       "description": "Exibir a caixa de status, que inclui as coordenadas do mouse, informação de performance e o brilho truncado (o brilho total dos raios truncados na série infinita de reflexão interna).",
       "title": "Exibir caixa de status"
@@ -329,7 +367,7 @@
   },
   "welcome": {
     "instruction": "Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.\nPara carregar um exemplo, por favor [visite a página da Galeria](/gallery).",
-    "loading": "Carregando cena a partir de URL... Por favor aguarde.",
+    "loading": "Carregando cena a partir de URL… Por favor aguarde.",
     "title": "Bem-vindo à Simulação de Óptica de Raios"
   }
 }
