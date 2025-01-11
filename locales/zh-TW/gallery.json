@@ -466,6 +466,10 @@
       "dragtomovethelens": "拖曳此處可移動透鏡",
       "title": "變焦鏡頭",
       "zoom": "← 變焦 →"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "平凸透鏡的方向",
+      "description": "本模擬比較了兩個方向的平凸透鏡聚焦光束的情形，突顯了球面像差的大小差異。"
     }
   },
   "galleryPage": {

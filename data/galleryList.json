@@ -210,6 +210,12 @@
         ]
       },
       {
+        "id": "orientations-of-plano-convex-lens",
+        "contributors": [
+          "Matthias Guillon"
+        ]
+      },
+      {
         "id": "hyperbolic-lens",
         "contributors": [
           "Stas Fainer"

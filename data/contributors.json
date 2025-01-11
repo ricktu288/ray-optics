@@ -392,5 +392,12 @@
       "code": true
     },
     "firstCommit": "2024-12-28"
+  },
+  {
+    "name": "Matthias Guillon",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2025-01-10"
   }
 ]
