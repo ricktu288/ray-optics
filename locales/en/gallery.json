@@ -9,7 +9,7 @@
       "yaxis": "Y axis"
     },
     "apparentDepth": {
-      "description": "When you look at an object underwater from the air, the depth of the object appears to be smaller than its actual depth. This phenomenon is due to the reflection of light, and is demonstrated in this simulation. The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle.",
+      "description": "When you look at an object underwater from the air, the depth of the object appears to be smaller than its actual depth. This phenomenon is due to the refraction of light, and is demonstrated in this simulation. The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle.",
       "objectunderwatergree": "Object underwater (green)",
       "observedimageorange": "Observed image (orange)",
       "observer": "Observer",
@@ -80,10 +80,6 @@
       "description": "This simulation shows the chromatic aberration of a spherical lens. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors. The focal length of red light is the largest, and that of violet light is the smallest.",
       "dragtoadjustbeamwidt1": "Drag to adjust beam width",
       "title": "Chromatic aberration"
-    },
-    "orientationsOfPlanoConvexLens": {
-      "title": "Orientations of plano-convex lens",
-      "description": "This simulation compares the two orientations of a plano-convex lens focusing a beam, highlighting the different sizes of spherical aberrations."
     },
     "chromaticDispersion": {
       "description": "This simulation demonstrates chromatic dispersion using a white-colored beam and a triangular prism. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors.",
@@ -309,6 +305,10 @@
       "dragtomovetheidealmi": "Drag to move\nthe ideal mirror",
       "planoconcaveresonato": "Plano-concave resonator",
       "title": "Two-mirror optical cavity"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "description": "This simulation compares the two orientations of a plano-convex lens focusing a beam, highlighting the different sizes of spherical aberrations.",
+      "title": "Orientations of plano-convex lens"
     },
     "pairOfAxiconsMakingARainbowRing": {
       "description": "This simulation uses two plano-convex axicons, a white light source and an aperture to create a circular rainbow. Axicons are conical lenses. The incoming white light needs to be a ring which was created by a narrow ring aperture.\n\nMoving the right axicon left and right will change the size of the output rainbow ring.",

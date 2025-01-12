@@ -1,5 +1,23 @@
 {
   "galleryData": {
+    "aplanaticPoints": {
+      "clickontheextendedra": "Clique no botão de \"Raios extendidos\" e verifique que a luz emitida da fonte de luz na lente esférica (ponto A),\ndiverge partindo de outro ponto no eixo óptico fora da lente esférica (ponto B) sem aberração esférica.\nPontos A e B são um exemplo de pontos aplanáticos da esfera, para os quais (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relativo ao eixo Y marcado,\nonde x1, x2 são as coordenadas horizontais dos pontos A e B, respectivamente(cada célula da grade tem dimensões de 20 por 20).\nDe maneira similar, os focos da elipse (pontos C e D) são um exemplo de pontos aplanáticos da elipse, para os quais (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)",
+      "description": "Pontos aplanáticos de um sistema óptico são pontos especiais em seu eixo óptico, tais que \"raios partindo de um deles irão todos convergir para, ou parecer divergir do outro ponto\".\n\n- Elipse: os dois focos da lente/espelho elíptico são pontos aplanáticos, já que luz emitida de um foco irá convergir rumo ao outro.\n- Esfera: uma lente esférica tem dois pontos aplanáticos, dentro e fora da esfera - para mais detalhes veja a simulação.\n- Hipérbole: os dois focos da simulação de [Espelho hiperbólico](/gallery/hyperbolic-mirror) também são pontos aplanáticos.\n\nDados dois pontos com coordenadas horizontais \\(x_1\\) e \\(x_2\\), coordenadas verticais idênticas, e dado os indíces refrativos fora e dentro do nosso elemento óptico como \\(n_1\\) e \\(n_2\\) (respectivamente), para esses dois pontos serem pontos aplanáticos, o limite do nosso elemento óptico deve fazer com que seja verdade\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation} tal que \\(k_i=1\\) ou \\(-1\\) se o raio connectando \\(x_i\\) e o limite do nosso elemento óptico for real ou imaginário, respectivamente, e \\(E\\) for uma constante para a qual essa equação possui uma solução não-trivial. Essa equação (que pode ser derivada utilizando o princípip de Fermat) é uma equação de uma Oval Cartesiana, da qual as seções cônicas são casos especiais.",
+      "ellipticallens": "Lente elíptica",
+      "sphericallens": "Lente esférica",
+      "title": "Pontos aplanáticos",
+      "yaxis": "Eixo y"
+    },
+    "apparentDepth": {
+      "description": "Quando se olha para um objeto embaixo d'água estando fora dela, a profundidade do objeto parece ser menor que a sua profundidade real. Esse fenômeno ocorre devido à refração da luz, e é demonstrado nessa simulação. A profundidade aparente depende da posição do observador, fato que pode ser demonstrado ao arrastar o círculo azul.",
+      "objectunderwatergree": "Objeto subaquático (verde)",
+      "observedimageorange": "Imagem observada (laranja)",
+      "observer": "Observador",
+      "title": "Profundidade Aparente"
+    },
+    "beamDirectors": {
+      "biprism": "Biprisma"
+    },
     "causticsFromAReflectiveSphere": {
       "description": "Uma esfera integrante (não disoersante) com um buraco de entrada.   Também pode ser os reflexos dentro de uma gota de líquido (como uma gota de chuva).   Lindos padrões emergem onde as cáusticas se desenvolvem movimentando a fonte pontual.",
       "movethepointsourcear": "Mova a fonte pontual\npara ver as cáusticas e nodos\ndentro da esfera integrante se transformarem.\nMude tamanho e posição dos bloqueadores,\ne o tamanho de abertura da esfera\npara ver mais efeitos.",

@@ -306,6 +306,10 @@
       "planoconcaveresonato": "平凹共振腔",
       "title": "雙鏡共振腔"
     },
+    "orientationsOfPlanoConvexLens": {
+      "description": "本模擬比較了兩個方向的平凸透鏡聚焦光束的情形，突顯了球面像差的大小差異。",
+      "title": "平凸透鏡的方向"
+    },
     "pairOfAxiconsMakingARainbowRing": {
       "description": "此模擬使用兩個平凸錐透鏡、一個白色光源和一個光圈來產生圓形彩虹。入射的白光必須為環狀，此處透過窄的環狀光圈來實現。\n\n將右側的錐透鏡左右移動可改變彩虹環的大小。",
       "leftaxicon": "左側錐透鏡",
@@ -466,10 +470,6 @@
       "dragtomovethelens": "拖曳此處可移動透鏡",
       "title": "變焦鏡頭",
       "zoom": "← 變焦 →"
-    },
-    "orientationsOfPlanoConvexLens": {
-      "title": "平凸透鏡的方向",
-      "description": "本模擬比較了兩個方向的平凸透鏡聚焦光束的情形，突顯了球面像差的大小差異。"
     }
   },
   "galleryPage": {

@@ -306,6 +306,10 @@
       "planoconcaveresonato": "平凹共振腔",
       "title": "双镜共振腔"
     },
+    "orientationsOfPlanoConvexLens": {
+      "description": "本模拟比较了两个方向的平凸透镜聚焦光束的情形，突显了球面像差的大小差异。",
+      "title": "平凸透镜的方向"
+    },
     "pairOfAxiconsMakingARainbowRing": {
       "description": "此模拟使用两个平凸锥透镜、一个白色光源和一个光圈来产生圆形彩虹。入射的白光必须为环状，此处透过窄的环状光圈来实现。\n\n将右侧的锥透镜左右移动可改变彩虹环的大小。",
       "leftaxicon": "左侧锥透镜",
@@ -466,10 +470,6 @@
       "dragtomovethelens": "拖拽此处可移动透镜",
       "title": "变焦镜头",
       "zoom": "← 变焦 →"
-    },
-    "orientationsOfPlanoConvexLens": {
-      "description": "本模拟比较了两个方向的平凸透镜聚焦光束的情形，突显了球面像差的大小差异。",
-      "title": "平凸透镜的方向"
     }
   },
   "galleryPage": {
