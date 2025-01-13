@@ -63,9 +63,13 @@
   },
   "moduleTutorial": {
     "basics": {
+      "createModule": "A maneira sugerida de se criar um módulo atualmente é primeiro criar um módulo vazio utilizando o editor JSON, criar alguns objetos usando o editor de cena visual, e então cortar e colar os objetos de `objs` para `modules.ModuleName.objs` utilizando o editor JSON.",
+      "demodulize": "Se você selecionar um objeto de módulo, haverá um botão \"Demodulizar\" na barra do objeto. Clicar nele irá \"expandir\" o objeto de módulo em suas partes constituintes, e `objs` agora irá conter todos os quatro textos. Essa operação não é reversível (mas você pode clicar em \"desfazer\").",
       "lookAtExample": "Vamos ver o nosso primeiro exemplo de módulo.",
       "lookAtJson": "Você deve ver quatro linhas de texto. Olhando no editor JSON, você verá que as primeira duas estão diretamente na lista `objs` de nível superior como normal, mas as últimas duas estão em `modules.ExampleModule.objs` ao invés disso.",
       "moduleDef": "O `module` é um dicionário onde a chave é o nome do módulo (neste caso `ExampleModule`), e o valor é a definição do módulo. Em específico, a lista `modules.ExampleModule.objs` descreve (o padrão de) objetos dentro desse módulo, que é diferente do `objs` do nível superior que descreve objetos na cena.",
+      "moduleDefNotEditable": "A definição de módulo no dicionário `modules`não é editável pelo editor de cena visual. Então quando se clica em qualquer um dos últimos dois textos nesse exemplo, você seleciona apenas o objeto do módulo, e não os objetos no módulo. Já que as coordenadas dos textos na definição do módulo neste exemplo são coordenadas absolutas, os últimos dois textos não são arrastáveis. Aprenderemos como torná-los arrastáveis utilizando pontos de controle mais tarde.",
+      "putToScene": "Para colocar os objetos dentro do módulo na cena, precisamos de um \"objeto do módulo\" na lista `objs` de nível superior, que é `objs[2]` nesse exemplo, cujo tipo é `ModuleObj` e cuja propriedade `module` é o nome do módulo.",
       "title": "O básico de um módulo"
     },
     "jsonEditor": {
@@ -80,6 +84,11 @@
       "compareWithHandle": "Note que nem todos pontos de controle personalizados requerem um módulo. Alguns casos simples podem ser feitos com o recurso \"ponto de mauseio\" (ver a seção \"Agrupar, rotacionar e ajustar escala de objetos\" no popup de ajuda no canto inferior direito do simulador). Já que fazer um módulo é muito mais complicado que criar um ponto de manuseio, deve-se primeiro checar se o seu caso oise ser feito pelo recurso \"ponto de manuseio\" antes de considerar fazer um módulo. Veja [aqui](/gallery/black-cat-becomes-white) para um exemplo não trivial de um ponto de controle personalizado (mover dois sacos plásticos pra fora da água) sem utilizar um módulo.",
       "description": "Este tutorial vai te guiar pelo processi básico de criação de um módulo personalizado, que pode ser completamente feito dentro do app web, sem necessidade de qualquer ambiente de desenvolvimento externo.",
       "moduleIntroduction": "O recurso \"Módulo\" da Simulação de Óptica de Raios permite a criação de combinações modulares de objetos com parâmetros personalizados, pontos de controle personalizados, e malhas de objetos. Esse recurso extende a capacidade deste simulador ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes para criar novas ferramentas. Por exemplo, o módulo `CircleSource` (ver Ferramentas -> Outros -> Importar módulo) combina uma série de fontes pontuais criadas pela ferramenta existente \"Fonte pontual (<360°)\" ao redor de um círculo, para fazer uma ferramenta \"fonte circular\" que não existia no simulador. O módulo `FresnelLens` especializa a ferramenta \"Glass->Custom equation\", para que a equação represente uma curva específica da lente Fresnel parametrizada pelo número de fatias, assim fazendo uma ferramenta especializada \"Lente Fresnel\", que tambem não existia anteriormente. Além de fazer novas ferramentas, esse recurso também pode fazer algumas demonstrações de óptica mais interativas. Por exemplo, ao arrastar o terceiro ponto de controle do módulo `BeamExpander`, pode-se ver diretamente como a posição do ponto focal em comum das duas lentes afeta a largura do raio, sem necessitar ajustar os comprimentos focais das duas lentes individualmente."
+    },
+    "parameters": {
+      "lookAtExample": "Os objetos dentro do módulo podem ser definidos por um conjunto de parâmetros. Vamos ver um exemplo simples",
+      "paramsArray": "Aqui, `modules.Modulename.params` é uma lista de strings `\"name=start:step:end:defaul\"` defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.",
+      "title": "Adicionando parâmetros"
     },
     "title": "Tutorial para fazer Módulos da Óptica de Raios"
   },
