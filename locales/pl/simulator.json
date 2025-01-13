@@ -1,4 +1,22 @@
 {
+  "colorModeModal": {
+    "colorizedIntensity": {
+      "description": "Całkowita jasność 100, 10, …, 10⁻⁵ jest reprezentowana odpowiednio przez czerwony, pomarańczowy, żółty, zielony, cyjan, niebieski, fioletowy i czarny i interpolowana płynnie w skali logarytmicznej.",
+      "title": "Intensywność kodowana kolorem"
+    },
+    "linear": {
+      "description": "Wartość V w przestrzeni kolorów HSV jest równa całkowitej jasności promieni, gdy opcja \"Symuluj kolory\" jest wyłączona i dla światła monochromatycznego o długości fali od 420 do 620 nm. V jest ograniczane do 1 przy zachowaniu H i S. Kolor podlega korekcji gamma.",
+      "title": "Wartość liniowa"
+    },
+    "linearRGB": {
+      "description": "Podobnie jak w \"Wartości liniowej\", ale każdy składnik przestrzeni kolorów RGB jest niezależnie ograniczony do 1.",
+      "title": "Liniowy RGB"
+    },
+    "reinhard": {
+      "description": "Tone mapping Reinharda zastosowane do całkowitej luminancji względnej. Przy niskim limicie jasności, kolor jest zgodny z \"Wartością liniową\".",
+      "title": "Reinhard"
+    }
+  },
   "common": {
     "cancelButton": "Anuluj",
     "closeButton": "Zamknij",
@@ -168,7 +186,7 @@
       "format": "Format",
       "rayCountLimit": "Limit liczby promieni",
       "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania.",
-      "svgWarning": "Eksportuj do SVG. Mieszanki kolorów i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
+      "svgWarning": "Eksport do SVG: Mieszanki kolorów, korekcja jasności i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
       "title": "Eksportuj",
       "width": "Szerokość"
     },
@@ -183,6 +201,7 @@
         "irradiance": "Irradiancja w wyeksportowanym pliku CSV jest wyrażona w (B/s)/L.",
         "length": "L jest arbitralną jednostką długości używaną w tym symulatorze.",
         "s": "Bezwymiarowy czynnik s to \"Skala jasności\" wyświetlana w Ustawienia -> Pokaż okno stanu, która jest równa 1, gdy \"Gęstość promieni\" przekracza pewien próg, a jeśli nie, to jest proporcjonalna do \"Gęstości promieni\".",
+        "sNewColorModes": "Gdy włączone jest \"Koryguj jasność\", bezwymiarowy współczynnik s zawsze wynosi 1.",
         "truncation": "Jeżeli niektóre promienie ulegną obcięciu w nieskończonej serii wewnętrznych odbić, całkowite obcięcie jest przedstawiane jako oszacowanie błędu."
       },
       "irradMap": "Mapa irradiancji"
@@ -259,6 +278,7 @@
     "common": {
       "brightness": "Jasność",
       "brightnessInfo": {
+        "newColorModes": "Gdy opcja \"Koryguj jasność\" jest włączona, zachowanie przy niskiej \"Gęstości promieni\" różni się od domyślnego. Informacje o jednostce można znaleźć w oknie informacyjnym detektora po jego wybraniu.",
         "rayDensity": "Efektywne tylko wtedy, gdy 'Gęstość promieni' jest wystarczająco wysoka.",
         "rayDensitySlider": "Aby kontrolować liczbę emitowanych promieni, dostosuj ogólny suwak 'Gęstość promieni'."
       },
@@ -282,6 +302,15 @@
     "autoSyncUrl": {
       "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę.",
       "title": "Automatyczna synchronizacja URL"
+    },
+    "colorMode": {
+      "description": "Określa sposób mapowania jasności (i kolorów, jeśli włączona jest opcja \"Symuluj kolory\") promieni lub obrazów na kolory na ekranie. Konfigurowalne tylko w trybie \"Koryguj jasność\".",
+      "title": "Tryb kolorów"
+    },
+    "correctBrightness": {
+      "description": "Domyślnie jasność na ekranie nie zawsze odzwierciedla jasność promieni. Ta opcja naprawia to za pomocą specjalistycznego renderera, ale może zmniejszyć wydajność na niektórych urządzeniach. (Na niektórych innych urządzeniach faktycznie poprawia wydajność.)",
+      "error": "Nie udało się włączyć opcji \"Koryguj jasność\". Twoja przeglądarka może nie obsługiwać zmiennoprzecinkowych tekstur WebGL.",
+      "title": "Koryguj jasność"
     },
     "gridSize": {
       "title": "Rozmiar siatki"

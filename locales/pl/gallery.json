@@ -40,6 +40,7 @@
     },
     "blackCatBecomesWhite": {
       "description": "\"Czarny kot staje się biały\" to demonstracja popularnonaukowa, w której część figurki znika po włożeniu do wody. Składa się z następujących kroków:\n\n1. Narysuj postać (np. czarnego kota) na kartce papieru.\n2. Włóż kartkę do przezroczystej, szczelnie zamykanej plastikowej torby.\n3. Narysuj część figury (np. obwódkę kota) lub inną figurę na plastikowej powierzchni. Po włożeniu do wody postać narysowana na papierze znika, ale nie część narysowana na plastikowej powierzchni.\n\nTa symulacja wyjaśnia, jak to działa.",
+      "dragtomovethebagouto": "Przeciągnij, aby wyciągnąć torbę z wody",
       "eyes": "Oczy",
       "lightfromthepaper": "Światło od papieru",
       "lightfromtheplastics": "Światło od plastikowej powierzchni",
@@ -98,6 +99,16 @@
     "concaveLens": {
       "description": "Symulacja pokazuje soczewkę wklęsłą rozpraszającą wiązkę.",
       "title": "Soczewka wklęsła"
+    },
+    "concaveMirrorWearableDisplay": {
+      "concavemirror": "zwierciadło wklęsłe",
+      "description": "Prosty wyświetlacz do noszenia. Wiele projektów wykorzystuje dwa zwierciadła i soczewkę skupiającą, ale ta jest wersją z jednym elementem optycznym. Skala wynosi około 5:1 mm.\n\nCC0: Ta praca została oznaczona jako należąca do domeny publicznej.",
+      "eye1": "oko",
+      "nose": "nos",
+      "pointsourcetomeasure": "źródło punktowe do pomiaru promienia",
+      "t15readingglasses": "+1.5 szkła do odczytu",
+      "tft09display": "Wyświetlacz TFT 0.9\"",
+      "title": "Wyświetlacz do noszenia z wklęsłym zwierciadłem"
     },
     "convexLens": {
       "description": "Symulacja pokazuje soczewkę wypukłą skupiającą wiązkę.",
@@ -206,7 +217,7 @@
     "luneburgLens": {
       "approximatedmultilay1": "Przybliżona wielowarstwowa soczewka Luneburga (Można wybrać i zmienić N, liczbę warstw.)",
       "classicalluneburglen": "Klasyczna soczewka Luneburga (Można wybrać i zmienić rozmiar kroku rozwiązania numerycznego.)",
-      "description": "Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(\nho\\) to odległość od środka soczewki.\n\nGórny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,\\ldots,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nDolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).",
+      "description": "Symulacja soczewki Luneburga, która jest sferycznym dielektrykiem o współczynniku załamania światła \\(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\), gdzie \\(n_0=2\\) to współczynnik załamania w środku soczewki soczewki, \\(R=100\\) to promień soczewki, a \\(r\\) to odległość od środka soczewki.\n\nGórny dielektryk składa się z \\(N=20\\) koncentrycznych soczewek sferycznych o promieniu \\(R_i=5(N+1-i)\\) i współczynniku załamania światła \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), gdzie \\(i=1,\\ldots,N\\). Jednakże, ponieważ ten symulator oblicza efektywny współczynnik załamania światła elementu optycznego poprzez pomnożenie współczynnika załamania elementu przez współczynniki załamania elementów optycznych, które są w nim osadzone, współczynnik załamania \\(i\\)-tej koncentrycznej soczewki sferycznej jest określony wzorem \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nDolny dielektryk jest materiałem gradientowym o współczynniku załamania \\(n(r)\\).",
       "title": "Soczewka Luneburga"
     },
     "maxwellFisheyeLens": {
@@ -235,6 +246,38 @@
       "title": "Minimalny kąt odchylenia",
       "usethebuiltinzoomtob": "Użyj wbudowanego zoomu, aby lepiej operować symulacją"
     },
+    "moduleExampleArraysAndConditionals": {
+      "a1darrayii": "A 1D tablica: i=`i`",
+      "thistextisshownonlyw": "Ten tekst jest wyświetlany tylko wtedy, gdy n>5",
+      "title": "Przykład modułu - tablice i instrukcje warunkowe"
+    },
+    "moduleExampleBasics": {
+      "thistextisalsoinexam": "Ten tekst jest również w ExampleModule.",
+      "thistextisalsonotina": "Ten tekst jest również nie w module.",
+      "thistextisinexamplem": "Ten tekst jest w ExampleModule.",
+      "thistextisnotinamodu": "Ten tekst nie znajduje się w module.",
+      "title": "Przykład modułu - Podstawy"
+    },
+    "moduleExampleControlPoints": {
+      "hereisthefirstdragga": "↙Oto pierwszy (przeciągalny) punkt kontrolny modułu",
+      "hereisthemidpoint": "↙Tutaj jest punkt środkowy",
+      "hereistheseconddragg": "↙Tutaj jest drugi (przeciągalny) punkt kontrolny modułu",
+      "title": "Przykład modułu - punkty kontrolne"
+    },
+    "moduleExampleCustomEquation": {
+      "amirrorofshapeycos2p": "Zwierciadło kształtu y=cos(2 pi x + `phi`)",
+      "title": "Przykład modułu - równanie niestandardowe"
+    },
+    "moduleExampleParameters": {
+      "thesizeofthistextosc": "Rozmiar tego tekstu oscyluje w funkcji theta.",
+      "thismodulehastwopara": "Moduł ten zawiera dwa parametry: n=`n` i theta=`theta`.\nMożesz wybrać i przeciągnąć suwaki, aby je regulować.",
+      "title": "Przykład modułu - Parametry"
+    },
+    "moduleExampleShapeParametrization": {
+      "alensdefinedbydffdbf": "Soczewka zdefiniowana przez d, FFD, BFD",
+      "alensdefinedbydr1r2": "Soczewka zdefiniowana przez d, R_1, R_2",
+      "title": "Przykład modułu - parametryzacja kształtu"
+    },
     "monochromaticAberrations": {
       "commaaberration": "Koma",
       "defocusaberration": "Rozogniskowanie",
@@ -262,6 +305,10 @@
       "dragtomovetheidealmi": "Przeciągnij, aby przesunąć\nidealne zwierciadło",
       "planoconcaveresonato": "Rezonator płasko-wklęsły",
       "title": "Wnęka optyczna z dwoma zwierciadłami"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "description": "Ta symulacja porównuje dwa ustawienia soczewki płasko-wypukłej skupiającej wiązkę, podkreślając różne wielkości aberracji sferycznych.",
+      "title": "Ustawienia soczewki płasko-wypukłej"
     },
     "pairOfAxiconsMakingARainbowRing": {
       "description": "Ta symulacja wykorzystuje dwa płasko-wypukłe aksikony, źródło białego światła i aperturę do stworzenia okrągłej tęczy. Aksikony są soczewkami stożkowymi. Padające białe światło musi być pierścieniem, który został utworzony przez wąską aperturę pierścieniową.\n\nPrzesuwanie prawego aksikonu w lewo i w prawo spowoduje zmianę rozmiaru wyjściowego tęczowego pierścienia.",
@@ -313,6 +360,13 @@
       "description": "Symulacja pokazuje odbicie i załamanie na powierzchni.",
       "title": "Odbicie i załamanie"
     },
+    "reflectingMonochromator": {
+      "description": "Jest to symulacja monochromatora odbiciowego, który wykorzystuje odbiciową siatkę dyfrakcyjną i szczelinę w ognisku, aby uzyskać wąskie pasmo długości fal ze światła złożonego.",
+      "exitslitmonochromati": "Szczelina wyjściowa\n\nŚwiatło monochromatyczne",
+      "reflectingmonochroma": "Monochromator odbiciowy",
+      "rotatediffractiongra": "Obróć siatkę dyfrakcyjną, \naby uzyskać wąskie pasmo \ndługości fal ze \nświatła złożonego",
+      "title": "Monochromator odbiciowy"
+    },
     "resonator": {
       "description": "To jest demonstracja rezonatora płasko-wklęsłego. Jeśli odległość między zwierciadłami jest większa niż promień krzywizny, rezonator jest niestabilny. Jeśli odległość między zwierciadłami jest mniejsza lub równa promieniowi krzywizny, otrzymujemy stabilny tryb rezonatora.",
       "flatmirror": "Zwierciadło płaskie",
@@ -338,6 +392,7 @@
       "visibilityarea": "Obszar widoczności"
     },
     "seaMirage": {
+      "architecturealpine": "Architektura/Góry",
       "atmosphere": "Atmosfera",
       "description": "Jest to jakościowa symulacja efektu, w którym obiekt znajdujący się poza horyzontem może być widoczny jako miraż górny.",
       "earthssurface": "Powierzchnia Ziemi",
@@ -353,6 +408,17 @@
     "singleRayDemo": {
       "description": "Symulacja pokazująca odbicie i załamanie pojedynczego promienia.",
       "title": "Pojedynczy promień"
+    },
+    "solarEclipses": {
+      "annulareclipse": "Zaćmienie obrączkowe",
+      "description": "Ta symulacja pokazuje różne rodzaje zaćmień Słońca. Diagram w prawym górnym rogu przedstawia zaćmienie Słońca, w którym cień Księżyca zakrywa Słońce, co powoduje całkowite zaćmienie w centrum i częściowe zaćmienie w otaczających obszarach. Diagram w prawym dolnym rogu ilustruje zaćmienie obrączkowe, w którym Księżyc jest zbyt daleko od Ziemi, aby całkowicie zakryć Słońce, pozostawiając jasny pierścień w środku (w tym dwuwymiarowym symulatorze \"pierścień\" jest demonstrowany przez światło słoneczne pochodzące tylko z górnej i dolnej części Słońca), a także częściowe zaćmienie w otaczających obszarach.",
+      "earth": "Ziemia",
+      "moon": "Księżyc",
+      "nottoscale": "(Nie w skali)",
+      "partialeclipse": "Zaćmienie częściowe",
+      "sun": "Słońce",
+      "title": "Zaćmienia Słońca",
+      "totaleclipse": "Zaćmienie całkowite"
     },
     "specularAndDiffuseReflection": {
       "description": "Identyczne wiązki promieni padają na powierzchnię gładką i chropowatą, ilustrując różnicę między odbiciem zwierciadlanym i rozproszonym.",
@@ -378,6 +444,12 @@
       "object1": "Obiekt",
       "realimage1": "Obraz rzeczywisty",
       "title": "Miraskop"
+    },
+    "thePrincipleOfCameraImaging": {
+      "camera": "Kamera",
+      "cmos": "CMOS",
+      "description": "Ten szablon pozwala na interaktywne podejście do nauki zasad obrazowania fotograficznego, obejmując podstawowe tematy, takie jak ogniskowa, przysłona, czułość czujnika i rozmycie tła, dzięki czemu jest przydatny zarówno dla studentów, jak i entuzjastów.",
+      "title": "Zasada obrazowania kamery"
     },
     "transverseAndLongitudinalMagnification": {
       "description": "Symulacja powiększenia poprzecznego i wzdłużnego dla idealnej soczewki o ogniskowej \\(f\\). Powiększenie poprzeczne (zwane także liniowym) i wzdłużne to odpowiednio \\(M_T=1-\\frac{u}{f}\\) i \\(M_L=\\frac{dv}{du}\\), gdzie \\(u\\) and \\(v\\) to odpowiednio odległość przedmiotu i obrazu od naszej idealnej soczewki. Dla idealnej soczewki zachodzi również \\(M_L=-(M_T)^2\\)",
