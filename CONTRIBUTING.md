@@ -8,10 +8,17 @@ For direct contributions, see the following guidelines.
 
 ## Contributing items to the Gallery
 
+You can submit your work to the Gallery. The scene should satisfy the following requirements:
+- The "Simulate Colors" option should only be used when necessary (e.g. to represent the actual wavelength-dependent optics or to distinguish different sources by colors).
+- The "Correct Brightness" option and glasses with relative refractive indices below 1 are not currently supported by the gallery.
+- All natural language texts in the scene should be either in English or in Chinese when submitting by email.
+- Avoid programmatically-generated large arrays of objects if possible (try using the "Module" feature instead).
+- Avoid using rays in non-optical ways (e.g. purely geometrical measurements, backward ray tracing) if possible.
+
 **Method 1: By e-mail**
 
-1. Save you work as a `.json` file using the "Save" button. If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files to ray-optics@phydemo.app. Include the title of your work, a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+1. Save you work as a `.json` file using the "Save" button (or use "Copy Shareable Link"). If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
+2. Send the files (or link) to ray-optics@phydemo.app. Include the title of your work, a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
