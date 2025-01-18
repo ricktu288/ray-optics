@@ -1,6 +1,7 @@
 {
   "common": {
     "cancelButton": "Annuler",
+    "closeButton": "Fermer",
     "saveButton": "Sauvegarder"
   },
   "file": {
