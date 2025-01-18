@@ -1,4 +1,10 @@
 {
+  "aboutPage": {
+    "cite": "Citer ce projet",
+    "contributionCategories": {
+      "code": "code"
+    }
+  },
   "homePage": {
     "description": "Une application web open-source pour simuler la reflexion et refraction de la lumière.\nEcrit en HTML, CSS et JavaScript. ([GitHub](/github))",
     "launchSimulator": "Lancer l'application"
