@@ -399,5 +399,17 @@
       "gallery": true
     },
     "firstCommit": "2025-01-10"
+  },
+  {
+    "name": "mcornillon",
+    "githubEmails": [
+      "mathieu.cornillon@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-01-18"
   }
 ]
