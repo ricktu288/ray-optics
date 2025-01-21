@@ -22,7 +22,7 @@
       "title": "Vecteurs directeurs du faisceau"
     },
     "beamExpanders": {
-      "description": "Voici une simulation de deux types d'élargisseurs de faisceaux: l'élargisseur keplérien et l'élargisseur galiléen. Un élargisseur de faisceaux élargit ou réduit le diamètre d'un faisceau de lumière collimatée. Un élargisseur galiléen est composé d'une lentille convexe et une lentille concave, tandis que l'élargisseur keplérien est composé de deux lentilles convexes. Dans les deux cas, la somme des focales des deux lentilles est égale à leur distance de séparation.",
+      "description": "Voici une simulation de deux types d'élargisseurs de faisceaux : l'élargisseur keplérien et l'élargisseur galiléen. Un élargisseur de faisceaux élargit ou réduit le diamètre d'un faisceau de lumière collimatée. Un élargisseur galiléen est composé d'une lentille convexe et une lentille concave, tandis que l'élargisseur keplérien est composé de deux lentilles convexes. Dans les deux cas, la somme des focales des deux lentilles est égale à leur distance de séparation.",
       "gallileanbeamexpande": "Elargisseur de faisceaux galiléen",
       "inbothcasesthedistan": "Dans les deux cas les distances inter-lentilles sont égales à la somme de leur focales",
       "keplerianbeamexpande": "Elargisseur de faisceau keplérien",
@@ -32,7 +32,7 @@
       "bentpencilyellowimag": "crayon tordu (jaune)\nimage sur la rétine",
       "description": "Voici une simulation de l'image perçue par nos yeux, quand l'on regarde depuis la surface, un crayon partiellement immergé dans de l'eau. La discontinuité de l'indice de réfraction entre l'air et l'eau donne l'illusion que le crayon est brisé et tordu. Cependant dans cette simulation, la torsion est plus prononcée. Vous pouvez voir la simulation [Crayon cassé](/gallery/broken-pencil) où c'est la brisure du crayon qui semble plus prononcée.",
       "dielectricmaterial": "matériau diélectrique",
-      "ignoretheorangesquar": "Ignorer les carrés oranges!",
+      "ignoretheorangesquar": "Ignorer les carrés oranges !",
       "observerseye": "œil de l'observateur",
       "originalpencilgreen": "crayon vrai (vert)",
       "title": "Crayon tordu"
