@@ -1,1 +1,47 @@
-{}
+{
+  "moduleData": {
+    "CircleSource": {
+      "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence.",
+      "title": "Source de lumière circulaire"
+    },
+    "ContSpectrum": {
+      "brightness": "Intensité totale",
+      "description": "Une source de lumière avec un spectre de couleurs continu discrétisé avec un pas constant fourni. Ne fonctionne que si \"Simuler les couleurs\" est activé.",
+      "max": "La longueur d'onde maximale",
+      "min": "La longueur d'onde minimale",
+      "point1": "L'origine des rayons",
+      "point2": "Détermine la direction des rayons",
+      "step": "Le pas de la longueur d'onde",
+      "title": "Source lumineuse à spectre continu"
+    },
+    "FresnelLens": {
+      "Nslice": "Le nombre de tranches",
+      "description": "Une lentille de Fresnel faite avec un morceau de verre taillé en demi-cercle. Version modulaire de [cet exemple de la Galerie](/gallery/fresnel-lens).",
+      "point1": "La première extrémité de la lentille",
+      "point2": "La seconde extrémité de la lentille",
+      "refIndex": "L'indice de réfraction de la lentille",
+      "title": "Lentille de Fresnel"
+    }
+  },
+  "modulesPage": {
+    "contribution": {
+      "description": "Vous êtes les bienvenus pour contribuer à la liste ci-dessus. Pour contribuer votre module, voyez [Comment contribuer un module](/contributing/modules).",
+      "title": "Contribution"
+    },
+    "customization": {
+      "description": "Les modules peuvent être créés ou personnalisés directement depuis l'interface de l'application web en utilisant l'éditeur JSON. Voyez [le tutoriel](/modules/tutorial). La personnalisation de modules importées n'affectera que la scène courante.",
+      "title": "Personnalisation"
+    },
+    "description": {
+      "embeddedInScene": "Les modules importés sont inclus dans les données de la scène, et donc ne seront pas automatiquement mis à jour quand les auteurs des modules les modifient.",
+      "makeNewTools": "\"Module\" permet de créer de nouveaux outils en combinant, spécialisant, ou en reparamétrant des objets créés par des outils existants dans ce simulateur."
+    },
+    "import": "Importer",
+    "imported": "Importé",
+    "specification": {
+      "controlPointSequence": "Suite de points de contrôle",
+      "parameters": "Paramètres",
+      "title": "Spécification"
+    }
+  }
+}

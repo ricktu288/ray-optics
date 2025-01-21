@@ -2,15 +2,28 @@
   "aboutPage": {
     "cite": "Citer ce projet",
     "contributionCategories": {
-      "code": "code"
-    }
+      "code": "code",
+      "gallery": "galerie",
+      "module": "module",
+      "translations_many": "{{langues}} traductions",
+      "translations_one": "{{langues}} traduction",
+      "translations_other": "{{langues}} traductions",
+      "uiDesign": "Conception IHM"
+    },
+    "contributorSorting": "Contributeurs de GitHub en premier; les autres sont classés par ordre chronologique.",
+    "contributors": "Contributeurs",
+    "description": "Ce projet, y compris le contenu de la galerie, est sous licence [Apache License 2.0](/license), et est officiellement hébergée sur le site web [PhyDemo (phydemo.app)](/phydemo) (auparavant sur ricktu288.github.io). Le code source est [disponible sur GitHub](/github), et vous êtes les [bienvenus pour contribuer](/contributing). Si vous avez des questions ou des suggestions, vous pouvez poster des [problèmes](/github/issues) ou ouvrir une [discussion](/github/discussions) sur GitHub, ou nous envoyer un mail à [ray-optics@phydemo.app](/email) si vous n'utilisez pas GitHub.",
+    "mainAuthors_many": "Auteurs principaux",
+    "mainAuthors_one": "Auteur principal",
+    "mainAuthors_other": "Auteurs principaux"
   },
   "homePage": {
     "description": "Une application web open-source pour simuler la reflexion et refraction de la lumière.\nEcrit en HTML, CSS et JavaScript. ([GitHub](/github))",
     "launchSimulator": "Lancer l'application"
   },
   "languageDropdown": {
-    "title": "Langue : {{language}}"
+    "title": "Langue : {{language}}",
+    "translatedFraction": "{{fraction}} traduite"
   },
   "meta": {
     "colon": "{{name}} : {{value}}",
@@ -18,9 +31,22 @@
     "list": "{{first}}, {{others}}",
     "parentheses": "{{main}} ({{sub}})"
   },
+  "pages": {
+    "about": "À propos",
+    "gallery": "Galerie",
+    "github": "GitHub",
+    "home": "Accueil",
+    "modules": "Modules",
+    "simulator": "Simulateur"
+  },
   "project": {
+    "description": "Une application web libre et open source pour créer et simuler des scènes par optique géométrique 2D.",
     "name": "Simulation de rayon optique",
     "shortName": "Rayon optique"
+  },
+  "simulateColors": {
+    "description": "Simuler les couleurs (longueurs d'onde) de sources lumineuses, des mélanges de couleurs, le filtrage de couleurs par les miroirs ou les bloqueurs de lumière, ainsi que la dispersion chromatique des verres.",
+    "instruction": "Vous pouvez régler ces paramètre pour ces objets quand ils sont sélectionnés. Pour simuler des spectres de couleur, superposez des rayons de longueur d'onde différente."
   },
   "tools": {
     "AngleSource": {
