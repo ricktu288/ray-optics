@@ -576,47 +576,52 @@ for (const lang of homeLangs) {
       }),
     }
     fs.writeFileSync(path.join(galleryDir, 'index.html'), galleryTemplate(galleryData));
+  }
 
-    // Load the gallery item template
-    const galleryItemTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/galleryItem.hbs'), 'utf8'));
+  // Load the gallery item template
+  const galleryItemTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/galleryItem.hbs'), 'utf8'));
 
-    // Create the gallery item webpages
-    for (const id of galleryIDs) {
-      if (!galleryItemsLangs[id].includes(lang)) continue;
-      if (!galleryIDInList[id]) continue;
+  // Create the gallery item webpages
+  for (const id of galleryIDs) {
+    if (!galleryItemsLangs[id].includes(lang)) continue;
+    if (!galleryIDInList[id]) continue;
 
-      const galleryItemData = {
-        title: i18next.t('gallery:galleryData.' + galleryIDToCamelCase[id] + '.title') + ' - ' + i18next.t('main:project.name'),
-        ogImage: rootAbsUrl + urlMaps[lang]['/gallery/' + id] + '.jpg',
-        absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
-        lang: lang,
-        langName: langNames[lang],
-        supportedLangs: galleryItemsLangs[id].map((lang) => {
-          return {
-            lang: lang,
-            name: langNames[lang],
-            url: rootUrl + urlMaps[lang]['/gallery/' + id],
-            absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
-          };
-        }),
-        imgUrl: rootUrl + '/img',
-        thirdpartyUrl: rootUrl + '/thirdparty',
-        homeUrl: rootUrl + urlMaps[lang]['/home'],
-        aboutUrl: rootUrl + urlMaps[lang]['/about'],
-        galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
-        simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
-        isHome: false,
-        isGallery: true,
-        isAbout: false,
-        id: id,
-        titleKey: 'gallery:galleryData.' + galleryIDToCamelCase[id] + '.title',
-        descriptionKey: 'gallery:galleryData.' + galleryIDToCamelCase[id] + '.description',
-        idHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + id,
-        contributors: galleryIDContributors[id].join(', '),
-        contributorCount: galleryIDContributors[id].length,
-      }
-      fs.writeFileSync(path.join(galleryDir, id + '.html'), galleryItemTemplate(galleryItemData));
+    // Create the gallery/ directory
+    const galleryDir = path.join(langDir, 'gallery');
+    fs.mkdirSync(galleryDir, { recursive: true });
+    rootUrl = lang == 'en' ? '..' : '../..';
+
+    const galleryItemData = {
+      title: i18next.t('gallery:galleryData.' + galleryIDToCamelCase[id] + '.title') + ' - ' + i18next.t('main:project.name'),
+      ogImage: rootAbsUrl + urlMaps[lang]['/gallery/' + id] + '.jpg',
+      absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
+      lang: lang,
+      langName: langNames[lang],
+      supportedLangs: galleryItemsLangs[id].map((lang) => {
+        return {
+          lang: lang,
+          name: langNames[lang],
+          url: rootUrl + urlMaps[lang]['/gallery/' + id],
+          absUrl: rootAbsUrl + urlMaps[lang]['/gallery/' + id],
+        };
+      }),
+      imgUrl: rootUrl + '/img',
+      thirdpartyUrl: rootUrl + '/thirdparty',
+      homeUrl: rootUrl + urlMaps[lang]['/home'],
+      aboutUrl: rootUrl + urlMaps[lang]['/about'],
+      galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
+      simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
+      isHome: false,
+      isGallery: true,
+      isAbout: false,
+      id: id,
+      titleKey: 'gallery:galleryData.' + galleryIDToCamelCase[id] + '.title',
+      descriptionKey: 'gallery:galleryData.' + galleryIDToCamelCase[id] + '.description',
+      idHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + id,
+      contributors: galleryIDContributors[id].join(', '),
+      contributorCount: galleryIDContributors[id].length,
     }
+    fs.writeFileSync(path.join(galleryDir, id + '.html'), galleryItemTemplate(galleryItemData));
   }
 
   // Create the modules webpage
