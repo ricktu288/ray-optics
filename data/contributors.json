@@ -411,5 +411,14 @@
       ]
     },
     "firstCommit": "2025-01-18"
+  },
+  {
+    "name": "Andreas Arnold",
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-01-21"
   }
 ]
