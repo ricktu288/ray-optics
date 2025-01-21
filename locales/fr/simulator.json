@@ -8,7 +8,7 @@
   },
   "file": {
     "copyLink": {
-      "description": "Copiez et allez directement à l'URL de la scène courante; cet URL peut être utilisé pour partager (éventuellement via un racourcisseur d'URL). Voyez aussi Réglages > Sync. auto. URL.",
+      "description": "Copiez et allez directement à l'URL de la scène courante ; cet URL peut être utilisé pour partager (éventuellement via un racourcisseur d'URL). Voyez aussi Réglages > Sync. auto. URL.",
       "title": "Copier lien partageable"
     },
     "export": {
@@ -39,7 +39,7 @@
   "footer": {
     "helpPopup": {
       "constrainedDragging": {
-        "description": "Quand vous déplacez un objet, maintenez l'appui sur Majuscule pour contraindre le mouvement sur la verticale/horizontale; maintenez Ctrl pour cloner. Quand vous créez un objet linéaire ou glissez ses extrémités, appuyez sur Majuscule pour verrouiller l'angle sur 0°, 45°, 90°; appuyez sur Ctrl pour tourner ou mettre à l'échelle par rapport à son milieu.",
+        "description": "Quand vous déplacez un objet, maintenez l'appui sur Majuscule pour contraindre le mouvement sur la verticale/horizontale ; maintenez Ctrl pour cloner. Quand vous créez un objet linéaire ou glissez ses extrémités, appuyez sur Majuscule pour verrouiller l'angle sur 0°, 45°, 90° ; appuyez sur Ctrl pour tourner ou mettre à l'échelle par rapport à son milieu.",
         "title": "Déplacement contraint"
       },
       "contactUs": {
@@ -52,11 +52,11 @@
         "title": "Éditer directement les coordonnées"
       },
       "groupRotateScale": {
-        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités, puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe; Majuscule+glisser pour contraindre sur la verticale/horizontale; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe; pressez sur Suppr pour dégrouper.",
+        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités, puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper.",
         "title": "Grouper, tourner et mettre des objets à l'échelle"
       },
       "keyboardShortcuts": {
-        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet, Ctrl+D pour le dupliquer; Effacer pour supprimer l'objet.",
+        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet, Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet.",
         "title": "Raccourcis clavier"
       }
     },
