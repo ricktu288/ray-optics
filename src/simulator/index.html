@@ -1239,31 +1239,7 @@
       </div>
     </div>
 
-    <!-- Language modal -->
-    <div class="modal fade" id="languageModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel_language"></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-
-            <div class="d-flex align-items-center">
-              <div class="d-flex w-100">
-                <div class="col" id="language_list_title"></div>
-                <div id="translated_text" class="col text-end"></div>
-              </div>
-            </div>
-            <div id="language_list"></div>
-            <small><a href="https://hosted.weblate.org/engage/ray-optics-simulation/" target="_blank" id="translate"></a></small>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_language"></button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Language modal is now handled by Vue component in src/simulator/components/LanguageModal.vue -->
 
     <!-- Module modal -->
     <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_module" aria-hidden="true">
@@ -1283,14 +1259,9 @@
         </div>
       </div>
     </div>
-
-    
-    
   
     <!-- Coordinates entering popup -->
     <input type="text" id="xybox" style="display:none;" value="">
-  
-    
 
     <!-- Footer buttons -->
     <div class="footer-right" id="footer-right" style="display: none">

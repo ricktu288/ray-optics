@@ -39,6 +39,8 @@ import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 
+import './vue-app.js';  // Initialize Vue components
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 async function startApp() {
@@ -1071,7 +1073,7 @@ async function startApp() {
   document.getElementById('toolbar-loading').style.display = 'none';
   document.getElementById('toolbar-wrapper').style.display = '';
   document.getElementById('saveModal').style.display = '';
-  document.getElementById('languageModal').style.display = '';
+  //document.getElementById('languageModal').style.display = '';
   document.getElementById('footer-left').style.display = '';
   document.getElementById('footer-right').style.display = '';
   document.getElementById('canvas-container').style.display = '';
@@ -1354,11 +1356,11 @@ function initUIText() {
   setText('colorMode_colorizedIntensity_text', i18next.t('simulator:colorModeModal.colorizedIntensity.title'));
   setText('colorMode_colorizedIntensity_description', i18next.t('simulator:colorModeModal.colorizedIntensity.description'));
   setText('close_colorMode', i18next.t('simulator:common.closeButton'));
-  setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
-  setText('language_list_title', i18next.t('simulator:settings.language.title'));
-  setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
-  setText('translate', i18next.t('simulator:languageModal.helpTranslate'));
-  setText('close_language', i18next.t('simulator:common.closeButton'));
+  //setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
+  //setText('language_list_title', i18next.t('simulator:settings.language.title'));
+  //setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
+  //setText('translate', i18next.t('simulator:languageModal.helpTranslate'));
+  //setText('close_language', i18next.t('simulator:common.closeButton'));
   setText('staticBackdropLabel_module', i18next.t('simulator:moduleModal.title'));
   setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
   setText('close_module', i18next.t('simulator:common.closeButton'));
@@ -1396,26 +1398,13 @@ function initUIText() {
     }
   });
 
+  /*
   // Populate the language list
   const languageList = document.getElementById('language_list');
   
   for (const locale in window.localeData) {
     const languageName = window.localeData[locale].name;
     const completeness = Math.round(window.localeData[locale].numStrings / window.localeData.en.numStrings * 100);
-    /*
-    languageList.innerHTML += `
-      <a href="?${locale}" class="btn btn-primary dropdown-item d-flex align-items-center" onclick="if (autoSyncUrl && !hasUnsavedChange) {event.preventDefault(); event.stopPropagation(); navigateToNewQuery('${locale}')}">
-        <div class="d-flex w-100">
-          <div class="col">
-            ${languageName}
-          </div>
-          <div class="col text-end">
-            ${completeness}%
-          </div>
-        </div>
-      </a>
-    `;
-    */
     const a = document.createElement('a');
     a.href = '?' + locale;
     a.classList.add('btn', 'btn-primary', 'dropdown-item', 'd-flex', 'align-items-center');
@@ -1443,6 +1432,7 @@ function initUIText() {
     a.appendChild(div);
     languageList.appendChild(a);
   }
+    */
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');

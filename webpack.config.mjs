@@ -19,6 +19,7 @@ import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import buildInlineLocaleData from './scripts/buildInlineLocaleData.mjs';
+import { VueLoaderPlugin } from 'vue-loader';
 
 export default (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -36,6 +37,10 @@ export default (env, argv) => {
     module: {
       rules: [
         {
+          test: /\.vue$/,
+          use: 'vue-loader'
+        },
+        {
           test: /\.html$/,
           use: ['html-loader'],
         },
@@ -48,7 +53,7 @@ export default (env, argv) => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jpe?g|gif|svg)$/i,
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
           type: 'asset/resource',
           generator: {
             filename: 'img/[name][ext]',
@@ -73,13 +78,16 @@ export default (env, argv) => {
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
         ],
       }),
+      new VueLoaderPlugin(),
     ],
     cache: { type: 'filesystem' },
     mode: isProduction ? 'production' : 'development',
     resolve: {
       alias: {
         mathjs: path.resolve('node_modules/mathjs'),
+        'vue$': 'vue/dist/vue.esm-bundler.js'
       },
+      extensions: ['.js', '.vue']
     },
     devServer: {
       static: './dist',
