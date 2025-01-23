@@ -420,5 +420,12 @@
       ]
     },
     "firstCommit": "2025-01-21"
+  },
+  {
+    "name": "Leon Seidel",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2025-01-23"
   }
 ]

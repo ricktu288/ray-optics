@@ -470,6 +470,19 @@
       "dragtomovethelens": "拖拽此处可移动透镜",
       "title": "变焦镜头",
       "zoom": "← 变焦 →"
+    },
+    "koehlerIllumination": {
+      "title": "科勒照明",
+      "aperture1changesinte": "光圈 1\n改变强度、NA",
+      "aperture2changesfiel": "光圈 2\n改变视野",
+      "sample": "样本",
+      "sampleisnowilluminat": "样本被\n均匀地照明",
+      "spatiallyextendedand": "空间上延展\n且不均匀的光源",
+      "objectivelens": "物镜",
+      "collectorlens": "集光透镜",
+      "condensorlens": "聚光镜",
+      "fieldlens": "场透镜",
+      "description": "这种设置由奥古斯特·克勒 (August Köhler) 于 1893 年发明，非常适合任何类型的显微镜使用。它可以从任何不均匀的光源提供样本的均匀照明，因此光源（例如灯丝）的影像不会出现在样本上。这两个光圈可以用来调节照明的强度和数值孔径（NA），或改变视野范围。第二个光圈特别有用，因为您可以关闭它来对焦样本。如果光圈的边缘清晰聚焦，那么样本也会处于聚焦状态。这种设置将四个焦距排列在一起，因此也被称为 4f 设置。"
     }
   },
   "galleryPage": {
