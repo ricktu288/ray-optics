@@ -16,7 +16,36 @@
       "title": "Profundidade Aparente"
     },
     "beamDirectors": {
-      "biprism": "Biprisma"
+      "biprism": "Biprisma",
+      "description": "Essa é uma simulação de um biprisma normal e um de Fresnel. Um biprisma pode direcionar um raio colimado para duas direções, dependendo do ângulo da ponta.",
+      "fresnelbiprism": "Biprisma de Fresnel",
+      "thisfresnelbiprismwa": "Este biprisma de Fresnel foi feito a partir do biprisma acima.\nVocê pode selecionar o biprisma e adicionar o parâmetro N_slice.",
+      "title": "Diretores de Raio"
+    },
+    "beamExpanders": {
+      "description": "Essa é uma simulação de dois tipos de expansores de feixe - Expansor de feixe kepleriano, e Expansor de feixe galileano. Um expansor de feixe expande ou reduz o diâmetro de um raio de luz colimada. Um Expansor de feixe galileano é composto de uma lênte convexa e uma côncava, enquanto um Expansor de feixe kepleriano é composto de duas lentes convexas. Em ambos os tipos, a soma dos comprimentos focais das lentes é igual à sua distância de separação.",
+      "gallileanbeamexpande": "Expansor de feixe galileano",
+      "inbothcasesthedistan": "Em ambos os casos a distância entre as lente é igual à soma de suas distâncias focais",
+      "keplerianbeamexpande": "Expansor de feixe kepleriano",
+      "title": "Expansores de feixe"
+    },
+    "bendedPencil": {
+      "bentpencilyellowimag": "lápis dobrado (amarelo)\nimagem na retina",
+      "description": "Essa é uma simulação da imagem percebida com nossos olhos, quando olhando por cima de um lápis parcialmente submerso em um copo d'água. A descontinuidade do índice refrativo entre ar e água faz com que o lápis pareça quebrado e dobrado. No entanto, nessa simulação, a dobra é mais fortemente exibida. Você pode ver a simulação [Lápis Dobrado](/gallery/broken-pencil) onde a quebra do lápis é mais fortemente exibida.",
+      "dielectricmaterial": "material dielétrico",
+      "ignoretheorangesquar": "Ignore os quadrados laranja!",
+      "observerseye": "olho do observador",
+      "originalpencilgreen": "lápis original (verde)",
+      "title": "Lápis Dobrado"
+    },
+    "blackCatBecomesWhite": {
+      "description": "\"Gato preto se torna branco\" é uma demonstração de ciência popular em que parte de uma figura desaparece quando colocada em água. Ela é feita com os seguintes passos:\n\n1. Desenhe uma figura (ex.: um gato preto) em um pedaço de papel.\n2. Coloque o papel em um saco ziploc.\n3. Desenhe parte da figura (ex.: a borda do gato) ou outra figura na superfície do plástico. Quando colocado na água, a figura desenhada no papel desaparece, mas não a parte desenhada na superfície do plástico.\n\nEssa simulação explica como isso funciona.",
+      "dragtomovethebagouto": "Arraste para mover o saco pra fora da água",
+      "eyes": "Olhos",
+      "lightfromthepaper": "Luz vinda do papel",
+      "lightfromtheplastics": "Luz vinda da superfície do plástico",
+      "title": "Demonstração \"Gato preto se torna branco\"",
+      "whenthebagisunderwat": "Quando o saco está embaixo d'água, a luz do papel não alcança os olhos,\nentão vemos somente a figura desenhada na superfície do plástico."
     },
     "causticsFromAReflectiveSphere": {
       "description": "Uma esfera integrante (não disoersante) com um buraco de entrada.   Também pode ser os reflexos dentro de uma gota de líquido (como uma gota de chuva).   Lindos padrões emergem onde as cáusticas se desenvolvem movimentando a fonte pontual.",
