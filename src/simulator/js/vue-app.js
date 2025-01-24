@@ -16,54 +16,56 @@
 
 import { createApp } from 'vue'
 import LanguageModal from '../components/LanguageModal.vue'
+import SaveModal from '../components/SaveModal.vue'
 import i18next from 'i18next'
 
-// Create a Vue app just for the language modal
-const languageApp = createApp({
-  components: {
-    LanguageModal
-  },
-  template: '<language-modal ref="modal" />'
-})
+let app = null
 
-// Export these functions for the Vue component to use
-export const handleLanguageChange = (locale) => {
-  // If there are unsaved changes, navigate directly
-  if (window.hasUnsavedChange) {
-    window.location.href = '?' + locale + window.location.hash;
-    return;
+// Create i18n plugin for Vue that uses i18next
+const i18nPlugin = {
+  install: (app) => {
+    // Add global $t method that includes parseLinks
+    app.config.globalProperties.$t = (key) => {
+      const translated = i18next.t(key)
+      return window.parseLinks ? window.parseLinks(translated) : translated
+    }
+
+    // Add composable for use in setup functions
+    app.provide('i18n', {
+      t: (key) => {
+        const translated = i18next.t(key)
+        return window.parseLinks ? window.parseLinks(translated) : translated
+      }
+    })
   }
-
-  // Get the base URL without query or hash
-  const currentUrl = window.location.href;
-  const baseUrl = currentUrl.split('?')[0].split('#')[0];
-  const hash = window.location.hash;
-  const newUrl = baseUrl + '?' + locale + hash;
-
-  // Update URL and reload
-  window.location.href = newUrl;
 }
 
-// Wait for both DOM and required data to be ready
-const initVueApp = () => {
-  // Check if i18next is initialized and localeData is available
-  if (!window.localeData || !i18next.isInitialized) {
-    // If not ready, try again in 100ms
-    setTimeout(initVueApp, 100);
-    return;
-  }
+export const getLocaleData = () => {
+  return window.localeData
+}
+
+export function initVueApp() {
+  // Create the Vue app
+  app = createApp({
+    components: {
+      LanguageModal,
+      SaveModal
+    },
+    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" />'
+  })
+
+  // Install i18n plugin
+  app.use(i18nPlugin)
 
   // Create a container for the Vue app
   const container = document.createElement('div')
-  container.id = 'language-modal-app'
+  container.id = 'vue-app'
   document.body.appendChild(container)
   
   // Mount the Vue app
-  const app = languageApp.mount('#language-modal-app')
+  const mountedApp = app.mount('#vue-app')
   
-  // Make the Vue instance accessible globally for existing JS code
-  window.languageModalVue = app.$refs.modal
+  // Make the Vue instances accessible globally for existing JS code
+  window.languageModalVue = mountedApp.$refs.languageModal
+  window.saveModalVue = mountedApp.$refs.saveModal
 }
-
-// Start initialization when DOM is ready
-document.addEventListener('DOMContentLoaded', initVueApp)

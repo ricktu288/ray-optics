@@ -121,6 +121,8 @@ async function startApp() {
 
   scene = new Scene();
 
+  window.scene = scene;
+
   let gl;
 
   try {
@@ -263,9 +265,10 @@ async function startApp() {
     if (e.needFullUpdate) {
       // Update the UI for the loaded scene.
 
+      document.dispatchEvent(new Event('sceneChanged'));
       if (scene.name) {
         document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
-        document.getElementById('save_name').value = scene.name;
+        //document.getElementById('save_name').value = scene.name;
       } else {
         document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
       }
@@ -959,6 +962,7 @@ async function startApp() {
 
 
 
+  /*
   document.getElementById('save_name').onkeydown = function (e) {
     if (e.keyCode == 13) {
       //enter
@@ -970,6 +974,7 @@ async function startApp() {
   };
   document.getElementById('save_confirm').onclick = save;
   document.getElementById('save_rename').onclick = rename;
+  */
 
   document.getElementById('xybox').onkeydown = function (e) {
     //console.log(e.keyCode)
@@ -1072,11 +1077,14 @@ async function startApp() {
 
   document.getElementById('toolbar-loading').style.display = 'none';
   document.getElementById('toolbar-wrapper').style.display = '';
-  document.getElementById('saveModal').style.display = '';
-  //document.getElementById('languageModal').style.display = '';
   document.getElementById('footer-left').style.display = '';
   document.getElementById('footer-right').style.display = '';
   document.getElementById('canvas-container').style.display = '';
+
+  // Initialize Vue app after everything else is ready
+  import('./vue-app').then(vueApp => {
+    vueApp.initVueApp();
+  });
 }
 
 startApp();
@@ -1340,12 +1348,12 @@ function initUIText() {
   setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
   setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
   setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
-  setText('staticBackdropLabel_save', i18next.t('simulator:file.save.title'));
-  setText('save_name_label', i18next.t('simulator:saveModal.fileName'));
-  setText('save_description', '<ul><li>' + i18next.t('simulator:saveModal.description.autoSync') + '</li><li>' + i18next.t('simulator:saveModal.description.rename') + '</li><li>' + parseLinks(i18next.t('simulator:saveModal.description.contribute')) + '</li></ul>');
-  setText('save_confirm', i18next.t('simulator:file.save.title'));
-  setText('save_rename', i18next.t('simulator:saveModal.rename'));
-  setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
+  //setText('staticBackdropLabel_save', i18next.t('simulator:file.save.title'));
+  //setText('save_name_label', i18next.t('simulator:saveModal.fileName'));
+  //setText('save_description', '<ul><li>' + i18next.t('simulator:saveModal.description.autoSync') + '</li><li>' + i18next.t('simulator:saveModal.description.rename') + '</li><li>' + parseLinks(i18next.t('simulator:saveModal.description.contribute')) + '</li></ul>');
+  //setText('save_confirm', i18next.t('simulator:file.save.title'));
+  //setText('save_rename', i18next.t('simulator:saveModal.rename'));
+  //setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
   setText('staticBackdropLabel_colorMode', i18next.t('simulator:settings.colorMode.title'));
   setText('colorMode_linear_text', i18next.t('simulator:colorModeModal.linear.title'));
   setText('colorMode_linear_description', i18next.t('simulator:colorModeModal.linear.description'));
@@ -1881,7 +1889,7 @@ function importModule(name) {
 
 function init() {
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
-  document.getElementById('save_name').value = "";
+  //document.getElementById('save_name').value = "";
 
   editor.isConstructing = false;
   editor.endPositioning();
@@ -2043,14 +2051,17 @@ function colorModebtn_clicked(colorMode) {
 
 
 function rename() {
-  scene.name = document.getElementById('save_name').value;
+  //scene.name = document.getElementById('save_name').value;
   if (scene.name) {
     document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   } else {
     document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   }
+  document.dispatchEvent(new Event('sceneChanged'));
   editor.onActionComplete();
 }
+
+window.rename = rename;
 
 function save() {
   rename();
@@ -2063,6 +2074,8 @@ function save() {
   }
   hasUnsavedChange = false;
 }
+
+window.save = save;
 
 function openFile(readFile) {
   var reader = new FileReader();
@@ -2173,6 +2186,8 @@ function parseLinks(text) {
   });
 }
 
+window.parseLinks = parseLinks;
+
 function showReloadWarning() {
   const warningBanners = document.querySelectorAll('.reload-warning');
   warningBanners.forEach(banner => {
@@ -2192,3 +2207,5 @@ function showReloadWarning() {
     banner.appendChild(warningText);
   });
 }
+
+window.rename = rename;

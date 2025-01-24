@@ -15,24 +15,18 @@
 -->
 
 <template>
-  <div class="modal fade" id="languageModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
+  <div class="modal fade" id="languageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel_language">
-            <translated-text path="simulator:settings.language.title" />
-          </h5>
+          <h5 class="modal-title" id="staticBackdropLabel_language" v-html="$t('simulator:settings.language.title')"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="d-flex align-items-center">
             <div class="d-flex w-100">
-              <div class="col">
-                <translated-text path="simulator:settings.language.title" />
-              </div>
-              <div class="col text-end">
-                <translated-text path="simulator:languageModal.translatedFraction" />
-              </div>
+              <div class="col" v-html="$t('simulator:settings.language.title')"></div>
+              <div class="col text-end" v-html="$t('simulator:languageModal.translatedFraction')"></div>
             </div>
           </div>
 
@@ -40,25 +34,22 @@
           <div class="language-list">
             <a v-for="(data, locale) in localeData" 
                :key="locale"
-               :href="'?' + locale + currentHash"
-               class="btn btn-primary dropdown-item d-flex align-items-center"
-               @click="handleLanguageClick($event, locale)">
+               :href="getLanguageUrl(locale)"
+               class="btn btn-primary dropdown-item d-flex align-items-center">
               <div class="d-flex w-100">
-                <div class="col">{{ data.name }}</div>
-                <div class="col text-end">{{ getCompleteness(data) }}%</div>
+                <div class="col" v-html="data.name"></div>
+                <div class="col text-end" v-html="getCompleteness(data) + '%'"></div>
               </div>
             </a>
           </div>
 
           <small>
-            <a href="https://hosted.weblate.org/engage/ray-optics-simulation/" target="_blank">
-              <translated-text path="simulator:languageModal.helpTranslate" />
+            <a href="https://hosted.weblate.org/engage/ray-optics-simulation/" target="_blank" v-html="$t('simulator:languageModal.helpTranslate')">
             </a>
           </small>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <translated-text path="simulator:common.closeButton" />
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')">
           </button>
         </div>
       </div>
@@ -67,42 +58,44 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import i18next from 'i18next';
-import TranslatedText from './TranslatedText.vue';
-import { handleLanguageChange } from '../js/vue-app.js';
+import { getLocaleData } from '../js/vue-app'
 
 export default {
   name: 'LanguageModal',
-  components: {
-    TranslatedText
-  },
-  data() {
+  setup() {
+    const localeData = getLocaleData()
+    const currentHash = ref('')
+    const currentSearch = ref('')
+    
+    // Update URL parts when modal is shown
+    onMounted(() => {
+      const modal = document.getElementById('languageModal')
+      modal.addEventListener('show.bs.modal', () => {
+        // Get current URL parts
+        const url = new URL(window.location.href)
+        currentHash.value = url.hash || ''
+        // Remove any existing language parameter
+        const search = url.search.replace(/^\?[a-zA-Z-]+/, '')
+        currentSearch.value = search
+      })
+    })
+
+    const getLanguageUrl = (locale) => {
+      // Format is ?[lang][existing-search-params][hash]
+      return '?' + locale + currentSearch.value + currentHash.value
+    }
+
     return {
-      localeData: {},
-      currentLang: ''
-    }
-  },
-  computed: {
-    currentHash() {
-      return window.location.hash;
-    }
-  },
-  mounted() {
-    // Initialize data after the component is mounted
-    this.localeData = window.localeData || {};
-    this.currentLang = i18next.language;
-  },
-  methods: {
-    getCompleteness(langData) {
-      if (!langData || !this.localeData.en) {
-        return 0;
+      localeData,
+      getLanguageUrl,
+      getCompleteness: (langData) => {
+        if (!langData || !localeData.en) {
+          return 0;
+        }
+        return Math.round(langData.numStrings / localeData.en.numStrings * 100);
       }
-      return Math.round(langData.numStrings / this.localeData.en.numStrings * 100);
-    },
-    handleLanguageClick(event, locale) {
-      event.preventDefault();
-      event.stopPropagation();
-      handleLanguageChange(locale);
     }
   }
 }
