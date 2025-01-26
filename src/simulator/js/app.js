@@ -1331,9 +1331,6 @@ function initUIText() {
   setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
   setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
   setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
-  setText('staticBackdropLabel_module', i18next.t('simulator:moduleModal.title'));
-  setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
-  setText('close_module', i18next.t('simulator:common.closeButton'));
   setText('home', null, i18next.t('main:pages.home'));
   setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.runLocally.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.runLocally.description')) + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
   setText('about', i18next.t('main:pages.about'));
@@ -1407,8 +1404,6 @@ function initUIText() {
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
   document.getElementById('about').href = mapURL('/about');
-  document.getElementById('moduleIframe').src = mapURL('/modules/modules');
-  document.getElementById('modules_tutorial').href = mapURL('/modules/tutorial');
 }
 
 function navigateToNewQuery(newQuery) {
@@ -2136,6 +2131,8 @@ function mapURL(url) {
   };
   return urlMap[url] || url;
 }
+
+window.mapURL = mapURL;
 
 // Parse the markdown-like links in the text with mapURL and return the HTML.
 function parseLinks(text) {

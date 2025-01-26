@@ -15,22 +15,18 @@
 -->
 
 <template>
-  <div class="modal fade" id="colorModeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_colorMode" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_module" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel_colorMode" v-html="$t('simulator:settings.colorMode.title')"></h5>
+          <h5 class="modal-title" id="staticBackdropLabel_module" v-html="$t('simulator:moduleModal.title')"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="form-check" v-for="mode in COLOR_MODES" :key="mode">
-            <input class="form-check-input" type="radio" name="colorMode" :id="'colorMode_' + mode" :value="mode"
-              v-model="colorMode">
-            <label class="form-check-label" :for="'colorMode_' + mode" v-html="$t(`simulator:colorModeModal.${mode}.title`)"></label>
-            <div class="form-text" v-html="$t(`simulator:colorModeModal.${mode}.description`)"></div>
-          </div>
+        <div class="modal-body module-modal-body">
+          <iframe id="moduleIframe" loading="lazy" :src="modulesUrl"></iframe>
         </div>
         <div class="modal-footer">
+          <a class="btn btn-success me-auto" :href="tutorialUrl" target="_blank" v-html="$t('simulator:moduleModal.makeCustomModules')"></a>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')"></button>
         </div>
       </div>
@@ -39,24 +35,31 @@
 </template>
 
 <script>
-import { useSceneStore } from '../store/scene'
-
-const COLOR_MODES = [
-  'linear',
-  'linearRGB',
-  'reinhard',
-  'colorizedIntensity'
-]
+import { mapURL } from '../js/vue-app'
 
 export default {
-  name: 'ColorModeModal',
+  name: 'ModuleModal',
   setup() {
-    const store = useSceneStore()
+    const modulesUrl = mapURL('/modules/modules')
+    const tutorialUrl = mapURL('/modules/tutorial')
 
     return {
-      colorMode: store.colorMode,
-      COLOR_MODES
+      modulesUrl,
+      tutorialUrl
     }
   }
 }
 </script>
+
+<style scoped>
+#moduleIframe {
+  width: 100%;
+  height: 500px;
+  max-height: 70vh;
+  border: none;
+}
+
+.module-modal-body {
+  padding: 0 !important;
+}
+</style>

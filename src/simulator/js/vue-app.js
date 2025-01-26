@@ -18,6 +18,7 @@ import { createApp } from 'vue'
 import LanguageModal from '../components/LanguageModal.vue'
 import SaveModal from '../components/SaveModal.vue'
 import ColorModeModal from '../components/ColorModeModal.vue'
+import ModuleModal from '../components/ModuleModal.vue'
 import i18next from 'i18next'
 
 let app = null
@@ -45,15 +46,20 @@ export const getLocaleData = () => {
   return window.localeData
 }
 
+export function mapURL(url) {
+  return window.mapURL(url)
+}
+
 export function initVueApp() {
   // Create the Vue app
   app = createApp({
     components: {
       LanguageModal,
       SaveModal,
-      ColorModeModal
+      ColorModeModal,
+      ModuleModal
     },
-    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" /><color-mode-modal ref="colorModeModal" />'
+    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" /><color-mode-modal ref="colorModeModal" /><module-modal ref="moduleModal" />'
   })
 
   // Install i18n plugin
