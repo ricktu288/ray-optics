@@ -17,6 +17,7 @@
 import { createApp } from 'vue'
 import LanguageModal from '../components/LanguageModal.vue'
 import SaveModal from '../components/SaveModal.vue'
+import ColorModeModal from '../components/ColorModeModal.vue'
 import i18next from 'i18next'
 
 let app = null
@@ -49,9 +50,10 @@ export function initVueApp() {
   app = createApp({
     components: {
       LanguageModal,
-      SaveModal
+      SaveModal,
+      ColorModeModal
     },
-    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" />'
+    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" /><color-mode-modal ref="colorModeModal" />'
   })
 
   // Install i18n plugin

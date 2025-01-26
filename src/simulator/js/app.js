@@ -152,6 +152,7 @@ async function startApp() {
     Infinity,
     gl
   );
+  window.simulator = simulator;
 
   simulator.dpr = dpr;
 
@@ -185,6 +186,7 @@ async function startApp() {
   });
 
   editor = new Editor(scene, canvas, simulator);
+  window.editor = editor;
 
   editor.on('positioningStart', function (e) {
     document.getElementById('xybox').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
@@ -265,7 +267,6 @@ async function startApp() {
     if (e.needFullUpdate) {
       // Update the UI for the loaded scene.
 
-      document.dispatchEvent(new Event('sceneChanged'));
       if (scene.name) {
         document.title = scene.name + " - " + i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
         //document.getElementById('save_name').value = scene.name;
@@ -314,6 +315,8 @@ async function startApp() {
       document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
       colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
+
+      document.dispatchEvent(new Event('sceneChanged'));
     }
   });
 
@@ -704,30 +707,10 @@ async function startApp() {
     }
     editor.selectObj(editor.selectedObjIndex);
     editor.onActionComplete();
+    document.dispatchEvent(new Event('sceneChanged'));
     simulator.updateSimulation();
   };
   document.getElementById('correct_brightness_mobile').onclick = document.getElementById('correct_brightness').onclick;
-
-  document.getElementById('colorMode_linear').addEventListener('click', function () {
-    colorModebtn_clicked('linear');
-    editor.onActionComplete();
-    simulator.updateSimulation();
-  });
-  document.getElementById('colorMode_linearRGB').addEventListener('click', function () {
-    colorModebtn_clicked('linearRGB');
-    editor.onActionComplete();
-    simulator.updateSimulation();
-  });
-  document.getElementById('colorMode_reinhard').addEventListener('click', function () {
-    colorModebtn_clicked('reinhard');
-    editor.onActionComplete();
-    simulator.updateSimulation();
-  });
-  document.getElementById('colorMode_colorizedIntensity').addEventListener('click', function () {
-    colorModebtn_clicked('colorizedIntensity');
-    editor.onActionComplete();
-    simulator.updateSimulation();
-  });
 
   document.getElementById('gridSize').onchange = function () {
     scene.gridSize = parseFloat(this.value);
@@ -1348,27 +1331,6 @@ function initUIText() {
   setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
   setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
   setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
-  //setText('staticBackdropLabel_save', i18next.t('simulator:file.save.title'));
-  //setText('save_name_label', i18next.t('simulator:saveModal.fileName'));
-  //setText('save_description', '<ul><li>' + i18next.t('simulator:saveModal.description.autoSync') + '</li><li>' + i18next.t('simulator:saveModal.description.rename') + '</li><li>' + parseLinks(i18next.t('simulator:saveModal.description.contribute')) + '</li></ul>');
-  //setText('save_confirm', i18next.t('simulator:file.save.title'));
-  //setText('save_rename', i18next.t('simulator:saveModal.rename'));
-  //setText('save_cancel_button', i18next.t('simulator:common.cancelButton'));
-  setText('staticBackdropLabel_colorMode', i18next.t('simulator:settings.colorMode.title'));
-  setText('colorMode_linear_text', i18next.t('simulator:colorModeModal.linear.title'));
-  setText('colorMode_linear_description', i18next.t('simulator:colorModeModal.linear.description'));
-  setText('colorMode_linearRGB_text', i18next.t('simulator:colorModeModal.linearRGB.title'));
-  setText('colorMode_linearRGB_description', i18next.t('simulator:colorModeModal.linearRGB.description'));
-  setText('colorMode_reinhard_text', i18next.t('simulator:colorModeModal.reinhard.title'));
-  setText('colorMode_reinhard_description', i18next.t('simulator:colorModeModal.reinhard.description'));
-  setText('colorMode_colorizedIntensity_text', i18next.t('simulator:colorModeModal.colorizedIntensity.title'));
-  setText('colorMode_colorizedIntensity_description', i18next.t('simulator:colorModeModal.colorizedIntensity.description'));
-  setText('close_colorMode', i18next.t('simulator:common.closeButton'));
-  //setText('staticBackdropLabel_language', i18next.t('simulator:settings.language.title'));
-  //setText('language_list_title', i18next.t('simulator:settings.language.title'));
-  //setText('translated_text', i18next.t('simulator:languageModal.translatedFraction'));
-  //setText('translate', i18next.t('simulator:languageModal.helpTranslate'));
-  //setText('close_language', i18next.t('simulator:common.closeButton'));
   setText('staticBackdropLabel_module', i18next.t('simulator:moduleModal.title'));
   setText('modules_tutorial', i18next.t('simulator:moduleModal.makeCustomModules'));
   setText('close_module', i18next.t('simulator:common.closeButton'));
@@ -2037,9 +1999,8 @@ function colorModebtn_clicked(colorMode) {
     canvasLight.style.display = '';
     canvasLightWebGL.style.display = 'none';
   } else {
-    document.getElementById('colorMode_' + scene.colorMode).checked = true;
-    document.getElementById('colorMode').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
-    document.getElementById('colorMode_mobile').innerHTML = document.getElementById('colorMode_' + scene.colorMode).nextElementSibling.innerHTML;
+    document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
+    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
     document.getElementById('colorMode').disabled = false;
     document.getElementById('colorMode_mobile').disabled = false;
     document.getElementById('correct_brightness').checked = true;
@@ -2048,6 +2009,8 @@ function colorModebtn_clicked(colorMode) {
     canvasLightWebGL.style.display = '';
   }
 }
+
+window.colorModebtn_clicked = colorModebtn_clicked;
 
 
 function rename() {

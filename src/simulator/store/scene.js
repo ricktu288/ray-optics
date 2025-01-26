@@ -1,46 +1,99 @@
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import Scene from '../js/Scene'
+
+// Map of properties to their callback functions
+const PROPERTY_CALLBACKS = {
+  name: (value) => {
+    window.rename?.()
+    window.editor?.onActionComplete()
+  },
+  colorMode: (value) => {
+    window.colorModebtn_clicked?.(value)
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  mode: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  rayModeDensity: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  imageModeDensity: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  showGrid: () => {
+    window.editor?.onActionComplete()
+  },
+  snapToGrid: () => {
+    window.editor?.onActionComplete()
+  },
+  lockObjs: () => {
+    window.editor?.onActionComplete()
+  },
+  gridSize: () => {
+    window.editor?.onActionComplete()
+  },
+  simulateColors: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  showRayArrows: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  },
+  symbolicBodyMerging: () => {
+    window.editor?.onActionComplete()
+    window.simulator?.updateSimulation()
+  }
+}
 
 export const useSceneStore = () => {
-  // Private ref for internal state
-  const _sceneName = ref('')
-  
-  // Function to sync with the existing global scene object
+  // Create refs for all serializable properties
+  const refs = Object.fromEntries(
+    Object.entries(Scene.serializableDefaults).map(([key]) => [
+      `_${key}`,
+      ref(Scene.serializableDefaults[key])
+    ])
+  )
+
+  // Function to sync with scene
   const syncWithScene = () => {
     if (window.scene) {
-      _sceneName.value = window.scene.name || ''
+      Object.keys(Scene.serializableDefaults).forEach(key => {
+        refs[`_${key}`].value = window.scene[key] ?? Scene.serializableDefaults[key]
+      })
     }
   }
 
-  // Public methods for components to interact with scene
-  const updateSceneName = (newName) => {
-    if (window.scene) {
-      window.scene.name = newName
-      _sceneName.value = newName
-      if (window.rename) {
-        window.rename()
-      }
-    }
-  }
+  // Create computed properties for all serializable properties
+  const computedProps = Object.fromEntries(
+    Object.keys(Scene.serializableDefaults).map(key => [
+      key,
+      computed({
+        get: () => refs[`_${key}`].value,
+        set: (newValue) => {
+          if (window.scene) {
+            window.scene[key] = newValue
+            refs[`_${key}`].value = newValue
+            PROPERTY_CALLBACKS[key]?.(newValue)
+          }
+        }
+      })
+    ])
+  )
 
-  // Computed property for read-only access
-  const sceneName = computed(() => _sceneName.value)
-
-  // Set up listeners when a component using this store is mounted
+  // Set up listeners
   onMounted(() => {
-    // Initial sync
     syncWithScene()
-    
-    // Listen for scene changes
     document.addEventListener('sceneChanged', syncWithScene)
   })
 
-  // Clean up listeners when component is unmounted
   onUnmounted(() => {
     document.removeEventListener('sceneChanged', syncWithScene)
   })
 
-  return {
-    sceneName,
-    updateSceneName
-  }
+  return computedProps
 }

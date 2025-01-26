@@ -67,19 +67,19 @@ export default {
     onMounted(() => {
       const modal = document.getElementById('saveModal')
       modal.addEventListener('show.bs.modal', () => {
-        modalName.value = store.sceneName.value
+        modalName.value = store.name.value
       })
     })
 
     const handleSave = () => {
-      store.updateSceneName(modalName.value)
+      store.name.value = modalName.value
       if (window.save) {
         window.save()
       }
     }
 
     const handleRename = () => {
-      store.updateSceneName(modalName.value)
+      store.name.value = modalName.value
     }
 
     return {
