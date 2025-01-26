@@ -1,9 +1,17 @@
 {
   "common": {
     "cancelButton": "Abbrechen",
+    "closeButton": "Schließen",
+    "defaultOption": "Standard",
     "saveButton": "Speichern"
   },
   "file": {
+    "copyLink": {
+      "title": "Teilbaren Link kopieren"
+    },
+    "export": {
+      "title": "Als PNG/SVG exportieren"
+    },
     "open": {
       "description": "Öffnet eine existierende Datei oder ein Hintergrundbild. Das Hintergundbild wird relativ zum Koordinatenursprung angezeigt. (Oder Datei hierher ziehen.)",
       "title": "Öffnen"
