@@ -1,53 +1,15 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Scene from '../js/Scene'
 
-// Map of properties to their callback functions
+// Map of properties to their update callbacks
 const PROPERTY_CALLBACKS = {
-  name: (value) => {
+  name: () => {
     window.rename?.()
-    window.editor?.onActionComplete()
   },
   colorMode: (value) => {
     window.colorModebtn_clicked?.(value)
-    window.editor?.onActionComplete()
     window.simulator?.updateSimulation()
   },
-  mode: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  },
-  rayModeDensity: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  },
-  imageModeDensity: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  },
-  showGrid: () => {
-    window.editor?.onActionComplete()
-  },
-  snapToGrid: () => {
-    window.editor?.onActionComplete()
-  },
-  lockObjs: () => {
-    window.editor?.onActionComplete()
-  },
-  gridSize: () => {
-    window.editor?.onActionComplete()
-  },
-  simulateColors: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  },
-  showRayArrows: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  },
-  symbolicBodyMerging: () => {
-    window.editor?.onActionComplete()
-    window.simulator?.updateSimulation()
-  }
 }
 
 export const useSceneStore = () => {
@@ -75,11 +37,13 @@ export const useSceneStore = () => {
       computed({
         get: () => refs[`_${key}`].value,
         set: (newValue) => {
+          console.log(`Setting ${key} to ${newValue}`)
           if (window.scene) {
             window.scene[key] = newValue
             refs[`_${key}`].value = newValue
             PROPERTY_CALLBACKS[key]?.(newValue)
           }
+          window.editor?.onActionComplete()
         }
       })
     ])
