@@ -427,5 +427,17 @@
       "gallery": true
     },
     "firstCommit": "2025-01-23"
+  },
+  {
+    "name": "Ettore Atalan",
+    "githubEmails": [
+      "atalanttore@googlemail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "de"
+      ]
+    },
+    "firstCommit": "2025-01-26"
   }
 ]
