@@ -15,7 +15,8 @@
 -->
 
 <template>
-  <div class="modal fade" id="moduleModal" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_module" aria-hidden="true">
+  <div class="modal fade" id="moduleModal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_module" aria-hidden="true">
+    <div class="modal-backdrop fade" :class="{ show: isModalOpen }" @click="closeModal"></div>
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -35,17 +36,40 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import { mapURL } from '../js/vue-app'
 
 export default {
   name: 'ModuleModal',
   setup() {
+    const isModalOpen = ref(false)
+
+    onMounted(() => {
+      const modal = document.getElementById('moduleModal')
+      modal.addEventListener('show.bs.modal', () => {
+        isModalOpen.value = true
+      })
+      modal.addEventListener('hide.bs.modal', () => {
+        isModalOpen.value = false
+      })
+    })
+
+    const closeModal = () => {
+      const modal = document.getElementById('moduleModal')
+      modal.classList.remove('show')
+      modal.setAttribute('aria-hidden', 'true')
+      modal.style.display = 'none'
+      isModalOpen.value = false
+    }
+
     const modulesUrl = mapURL('/modules/modules')
     const tutorialUrl = mapURL('/modules/tutorial')
 
     return {
       modulesUrl,
-      tutorialUrl
+      tutorialUrl,
+      isModalOpen,
+      closeModal
     }
   }
 }
@@ -61,5 +85,23 @@ export default {
 
 .module-modal-body {
   padding: 0 !important;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+.modal-dialog {
+  z-index: 1045;
 }
 </style>

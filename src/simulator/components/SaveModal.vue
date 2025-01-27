@@ -15,7 +15,8 @@
 -->
 
 <template>
-  <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_save" aria-hidden="true">
+  <div class="modal fade" id="saveModal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_save" aria-hidden="true">
+    <div class="modal-backdrop fade" :class="{ show: isModalOpen }" @click="closeModal"></div>
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -62,12 +63,17 @@ export default {
   setup() {
     const store = useSceneStore()
     const modalName = ref('')
+    const isModalOpen = ref(false)
     
     // Update name from store when modal is shown
     onMounted(() => {
       const modal = document.getElementById('saveModal')
       modal.addEventListener('show.bs.modal', () => {
         modalName.value = store.name.value
+        isModalOpen.value = true
+      })
+      modal.addEventListener('hide.bs.modal', () => {
+        isModalOpen.value = false
       })
     })
 
@@ -82,11 +88,41 @@ export default {
       store.name.value = modalName.value
     }
 
+    const closeModal = () => {
+      const modal = document.getElementById('saveModal')
+      modal.classList.remove('show')
+      modal.setAttribute('aria-hidden', 'true')
+      modal.style.display = 'none'
+      isModalOpen.value = false
+    }
+
     return {
       modalName,
+      isModalOpen,
       handleSave,
-      handleRename
+      handleRename,
+      closeModal
     }
   }
 }
 </script>
+
+<style scoped>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+.modal-dialog {
+  z-index: 1045;
+}
+</style>

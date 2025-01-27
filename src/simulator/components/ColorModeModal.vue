@@ -15,7 +15,8 @@
 -->
 
 <template>
-  <div class="modal fade" id="colorModeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_colorMode" aria-hidden="true">
+  <div class="modal fade" id="colorModeModal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_colorMode" aria-hidden="true">
+    <div class="modal-backdrop fade" :class="{ show: isModalOpen }" @click="closeModal"></div>
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
 
 const COLOR_MODES = [
@@ -52,11 +54,52 @@ export default {
   name: 'ColorModeModal',
   setup() {
     const store = useSceneStore()
+    const isModalOpen = ref(false)
+
+    onMounted(() => {
+      const modal = document.getElementById('colorModeModal')
+      modal.addEventListener('show.bs.modal', () => {
+        isModalOpen.value = true
+      })
+      modal.addEventListener('hide.bs.modal', () => {
+        isModalOpen.value = false
+      })
+    })
+
+    const closeModal = () => {
+      const modal = document.getElementById('colorModeModal')
+      modal.classList.remove('show')
+      modal.setAttribute('aria-hidden', 'true')
+      modal.style.display = 'none'
+      isModalOpen.value = false
+    }
 
     return {
       colorMode: store.colorMode,
-      COLOR_MODES
+      COLOR_MODES,
+      isModalOpen,
+      closeModal
     }
   }
 }
 </script>
+
+<style scoped>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+.modal-dialog {
+  z-index: 1045;
+}
+</style>

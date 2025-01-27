@@ -20,7 +20,6 @@
 
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
-import '../css/style.scss';
 import * as $ from 'jquery';
 import Editor from './Editor.js';
 import Simulator from './Simulator.js';
@@ -58,15 +57,17 @@ async function startApp() {
     }
   });
 
-  try {
-    if (localStorage.rayOpticsHelp == "off") {
-      popoversEnabled = false;
-      document.getElementById('show_help_popups').checked = false;
-    }
-  } catch { }
-  initUIText();
-  initTools();
-  initModes();
+  scene = new Scene();
+  window.scene = scene;
+
+  await import('./vue-app').then(vueApp => {
+    vueApp.initVueApp();
+  });
+
+  // Move the welcome div to the App component
+  document.getElementById('welcome-wrapper-vue').innerHTML = document.getElementById('welcome-wrapper').innerHTML;
+  document.getElementById('welcome-wrapper').innerHTML = '';
+
 
   let dpr = window.devicePixelRatio || 1;
 
@@ -90,38 +91,6 @@ async function startApp() {
 
   canvasGrid.width = window.innerWidth * dpr;
   canvasGrid.height = window.innerHeight * dpr;
-
-  objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
-
-  objBar.on('showAdvancedEnabled', function (enabled) {
-    if (enabled) {
-      document.getElementById('showAdvanced').style.display = '';
-      document.getElementById('showAdvanced_mobile_container').style.display = '';
-    } else {
-      document.getElementById('showAdvanced').style.display = 'none';
-      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
-    }
-  });
-
-  objBar.on('edit', function () {
-    simulator.updateSimulation(!objBar.targetObj.constructor.isOptical, true);
-  });
-
-  objBar.on('editEnd', function () {
-    editor.onActionComplete();
-  });
-
-  objBar.on('requestUpdate', function () {
-    editor.selectObj(editor.selectedObjIndex);
-  });
-
-  document.getElementById('apply_to_all').addEventListener('change', function () {
-    objBar.shouldApplyToAll = this.checked;
-  });
-
-  scene = new Scene();
-
-  window.scene = scene;
 
   let gl;
 
@@ -154,6 +123,55 @@ async function startApp() {
   );
   window.simulator = simulator;
 
+  editor = new Editor(scene, canvas, simulator);
+  window.editor = editor;
+
+
+
+  console.log(document.getElementById('obj_bar_main'))
+
+  try {
+    if (localStorage.rayOpticsHelp == "off") {
+      popoversEnabled = false;
+      document.getElementById('show_help_popups').checked = false;
+    }
+  } catch { }
+  initUIText();
+  initTools();
+  initModes();
+
+
+  objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
+
+  objBar.on('showAdvancedEnabled', function (enabled) {
+    if (enabled) {
+      document.getElementById('showAdvanced').style.display = '';
+      document.getElementById('showAdvanced_mobile_container').style.display = '';
+    } else {
+      document.getElementById('showAdvanced').style.display = 'none';
+      document.getElementById('showAdvanced_mobile_container').style.display = 'none';
+    }
+  });
+
+  objBar.on('edit', function () {
+    simulator.updateSimulation(!objBar.targetObj.constructor.isOptical, true);
+  });
+
+  objBar.on('editEnd', function () {
+    editor.onActionComplete();
+  });
+
+  objBar.on('requestUpdate', function () {
+    editor.selectObj(editor.selectedObjIndex);
+  });
+
+  document.getElementById('apply_to_all').addEventListener('change', function () {
+    objBar.shouldApplyToAll = this.checked;
+  });
+
+
+
+
   simulator.dpr = dpr;
 
   simulator.on('simulationStart', function () {
@@ -185,8 +203,6 @@ async function startApp() {
     canvasLight.style.display = '';
   });
 
-  editor = new Editor(scene, canvas, simulator);
-  window.editor = editor;
 
   editor.on('positioningStart', function (e) {
     document.getElementById('xybox').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
@@ -1064,58 +1080,8 @@ async function startApp() {
   document.getElementById('footer-right').style.display = '';
   document.getElementById('canvas-container').style.display = '';
 
-  // Initialize Vue app after everything else is ready
-  import('./vue-app').then(vueApp => {
-    vueApp.initVueApp();
-  });
-}
-
-startApp();
-
-
-var canvas;
-var canvasBelowLight;
-var canvasLight;
-var canvasLightWebGL;
-var canvasGrid;
-var scene;
-var editor;
-var simulator;
-var objBar;
-var xyBox_cancelContextMenu = false;
-var hasUnsavedChange = false;
-var autoSyncUrl = false;
-var warning = null;
-var error = null;
-
-
-const f = function (e) {
-  const list = document.getElementsByClassName('mobile-dropdown-menu');
-  let maxScrollHeight = 0;
-  for (let ele of list) {
-    const inner = ele.children[0];
-    if (inner.scrollHeight > maxScrollHeight) {
-      maxScrollHeight = inner.scrollHeight;
-    }
-  }
-  for (let ele of list) {
-    ele.style.height = maxScrollHeight + 'px';
-  }
-}
-document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
-document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
-
-function resetDropdownButtons() {
-  // Remove the 'selected' class from all dropdown buttons
-  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function (button) {
-    button.classList.remove('selected');
-  });
-  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function (button) {
-    button.classList.remove('selected');
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
+  document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
 
   document.getElementById('more-options-dropdown').addEventListener('click', function (e) {
     e.stopPropagation();
@@ -1165,7 +1131,57 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-});
+  document.getElementById('show_help_popups').checked = popoversEnabled;
+
+  document.getElementById('help-dropdown').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+}
+
+startApp();
+
+
+var canvas;
+var canvasBelowLight;
+var canvasLight;
+var canvasLightWebGL;
+var canvasGrid;
+var scene;
+var editor;
+var simulator;
+var objBar;
+var xyBox_cancelContextMenu = false;
+var hasUnsavedChange = false;
+var autoSyncUrl = false;
+var warning = null;
+var error = null;
+
+
+const f = function (e) {
+  const list = document.getElementsByClassName('mobile-dropdown-menu');
+  let maxScrollHeight = 0;
+  for (let ele of list) {
+    const inner = ele.children[0];
+    if (inner.scrollHeight > maxScrollHeight) {
+      maxScrollHeight = inner.scrollHeight;
+    }
+  }
+  for (let ele of list) {
+    ele.style.height = maxScrollHeight + 'px';
+  }
+}
+
+function resetDropdownButtons() {
+  // Remove the 'selected' class from all dropdown buttons
+  document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function (button) {
+    button.classList.remove('selected');
+  });
+  document.querySelectorAll('.btn.mobile-dropdown-trigger.selected').forEach(function (button) {
+    button.classList.remove('selected');
+  });
+}
+
 
 function initUIText() {
   setText('processing_text', i18next.t('simulator:footer.processing'));
@@ -1482,7 +1498,6 @@ function setText(id, text, title, popover, image) {
 var popoversEnabled = true;
 
 
-document.getElementById('show_help_popups').checked = popoversEnabled;
 
 
 var currentMobileToolGroupId = null;
@@ -1569,10 +1584,6 @@ function hideAllPopovers() {
     }
   });
 }
-
-document.getElementById('help-dropdown').addEventListener('click', function (e) {
-  e.stopPropagation();
-});
 
 var aceEditor;
 var lastCodeChangeIsFromScene = false;

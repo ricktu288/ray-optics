@@ -15,10 +15,7 @@
  */
 
 import { createApp } from 'vue'
-import LanguageModal from '../components/LanguageModal.vue'
-import SaveModal from '../components/SaveModal.vue'
-import ColorModeModal from '../components/ColorModeModal.vue'
-import ModuleModal from '../components/ModuleModal.vue'
+import App from '../components/App.vue'
 import i18next from 'i18next'
 
 let app = null
@@ -54,26 +51,14 @@ export function initVueApp() {
   // Create the Vue app
   app = createApp({
     components: {
-      LanguageModal,
-      SaveModal,
-      ColorModeModal,
-      ModuleModal
+      App
     },
-    template: '<language-modal ref="languageModal" /><save-modal ref="saveModal" /><color-mode-modal ref="colorModeModal" /><module-modal ref="moduleModal" />'
+    template: '<App />'
   })
 
   // Install i18n plugin
   app.use(i18nPlugin)
 
-  // Create a container for the Vue app
-  const container = document.createElement('div')
-  container.id = 'vue-app'
-  document.body.appendChild(container)
-  
   // Mount the Vue app
-  const mountedApp = app.mount('#vue-app')
-  
-  // Make the Vue instances accessible globally for existing JS code
-  window.languageModalVue = mountedApp.$refs.languageModal
-  window.saveModalVue = mountedApp.$refs.saveModal
+  const mountedApp = app.mount('#vue-root')
 }

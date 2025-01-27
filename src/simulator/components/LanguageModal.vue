@@ -15,7 +15,8 @@
 -->
 
 <template>
-  <div class="modal fade" id="languageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
+  <div class="modal fade" id="languageModal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel_language" aria-hidden="true">
+    <div class="modal-backdrop fade" :class="{ show: isModalOpen }" @click="closeModal"></div>
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -61,14 +62,17 @@
 import { ref, onMounted } from 'vue'
 import i18next from 'i18next';
 import { getLocaleData } from '../js/vue-app'
+import { useSceneStore } from '../store/scene'
 
 export default {
   name: 'LanguageModal',
   setup() {
+    const store = useSceneStore()
     const localeData = getLocaleData()
     const currentHash = ref('')
     const currentSearch = ref('')
-    
+    const isModalOpen = ref(false)
+
     // Update URL parts when modal is shown
     onMounted(() => {
       const modal = document.getElementById('languageModal')
@@ -79,12 +83,24 @@ export default {
         // Remove any existing language parameter
         const search = url.search.replace(/^\?[a-zA-Z-]+/, '')
         currentSearch.value = search
+        isModalOpen.value = true
+      })
+      modal.addEventListener('hide.bs.modal', () => {
+        isModalOpen.value = false
       })
     })
 
     const getLanguageUrl = (locale) => {
       // Format is ?[lang][existing-search-params][hash]
       return '?' + locale + currentSearch.value + currentHash.value
+    }
+
+    const closeModal = () => {
+      const modal = document.getElementById('languageModal')
+      modal.classList.remove('show')
+      modal.setAttribute('aria-hidden', 'true')
+      modal.style.display = 'none'
+      isModalOpen.value = false
     }
 
     return {
@@ -95,7 +111,9 @@ export default {
           return 0;
         }
         return Math.round(langData.numStrings / localeData.en.numStrings * 100);
-      }
+      },
+      isModalOpen,
+      closeModal
     }
   }
 }
@@ -104,5 +122,23 @@ export default {
 <style scoped>
 .language-list {
   margin: 1rem 0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+.modal-dialog {
+  z-index: 1045;
 }
 </style>
