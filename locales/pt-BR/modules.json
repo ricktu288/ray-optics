@@ -73,7 +73,7 @@
       "title": "O básico de um módulo"
     },
     "controlPoints": {
-      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define o número de pontos de controle. As coordenadas dos pontos de controle são (`x_1`, `y_1), (`x_2`, `y_2`), etc, e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela seção anterior. Note que o índice começa de 1.",
+      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define o número de pontos de controle. As coordenadas dos pontos de controle são (`x_1`, `y_1`), (`x_2`, `y_2`), etc, e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela seção anterior. Note que o índice começa de 1.",
       "lookAtExample": "Para fazer o objeto do módulo arrastável, precisamos de parametrizar os objetos dentro do módulo usando um conjunto de pontos de controle. Vejamos o exemplo",
       "title": "Adicionando pontos de controle"
     },
