@@ -72,6 +72,11 @@
       "putToScene": "Para colocar os objetos dentro do módulo na cena, precisamos de um \"objeto do módulo\" na lista `objs` de nível superior, que é `objs[2]` nesse exemplo, cujo tipo é `ModuleObj` e cuja propriedade `module` é o nome do módulo.",
       "title": "O básico de um módulo"
     },
+    "controlPoints": {
+      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define o número de pontos de controle. As coordenadas dos pontos de controle são (`x_1`, `y_1), (`x_2`, `y_2`), etc, e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela seção anterior. Note que o índice começa de 1.",
+      "lookAtExample": "Para fazer o objeto do módulo arrastável, precisamos de parametrizar os objetos dentro do módulo usando um conjunto de pontos de controle. Vejamos o exemplo",
+      "title": "Adicionando pontos de controle"
+    },
     "jsonEditor": {
       "currentlyNoVisual": "Este app atualmente não possui uma interface visual para criação de módulos, então é preciso diretamente editar o JSON da cena.",
       "enableJsonEditor": "Você pode habilitar o editor JSON incluso ao clicar no menu \"configurações\" no canto superior direito do app, e então marcar \"Exibir editor JSON\". O editor de código deve aparecer no lado esquerdo do app, com o código JSON da cena atual. Certifique-se que a sua tela é grande o suficiente, já que este recurso não funciona bem em dispositivos móveis.",
@@ -88,7 +93,8 @@
     "parameters": {
       "lookAtExample": "Os objetos dentro do módulo podem ser definidos por um conjunto de parâmetros. Vamos ver um exemplo simples",
       "paramsArray": "Aqui, `modules.Modulename.params` é uma lista de strings `\"name=start:step:end:defaul\"` defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.",
-      "title": "Adicionando parâmetros"
+      "title": "Adicionando parâmetros",
+      "valueStorage": "Os valores reais dos parâmetros ficam armazenados na propriedade `params` do objeto do módulo, que, diferentemente da definição do módulo, pode ser diretamente editada pelo editor de cena usando o controle deslizante."
     },
     "title": "Tutorial para fazer Módulos da Óptica de Raios"
   },
