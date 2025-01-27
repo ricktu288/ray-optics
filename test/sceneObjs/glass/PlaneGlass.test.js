@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import PlaneGlass from '../../../src/simulator/js/sceneObjs/glass/PlaneGlass';
-import Scene from '../../../src/simulator/js/Scene';
+import PlaneGlass from '../../../src/core/sceneObjs/glass/PlaneGlass';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

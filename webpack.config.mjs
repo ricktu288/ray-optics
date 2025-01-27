@@ -25,7 +25,7 @@ export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './src/simulator/js/app.js',
+    entry: './src/app/js/app.js',
     output: {
       filename: 'simulator/main.js',
       path: path.resolve('dist'),
@@ -63,10 +63,10 @@ export default (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/simulator/index.html',
+        template: './src/app/index.html',
         filename: 'simulator/index.html',
         templateContent: () => {
-          const templateContent = fs.readFileSync('./src/simulator/index.html', 'utf-8');
+          const templateContent = fs.readFileSync('./src/app/index.html', 'utf-8');
           const localeData = buildInlineLocaleData();
           return templateContent.replace('{ /* LOCALE DATA */ }', JSON.stringify(localeData));
         },
@@ -74,7 +74,7 @@ export default (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [
           { from: 'src/img', to: 'img', noErrorOnMissing: true },
-          { from: 'src/simulator/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
+          { from: 'src/app/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
         ],
       }),

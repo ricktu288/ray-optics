@@ -30,8 +30,8 @@
  * limitations under the License.
  */
 
-import CustomMirror from '../../../src/simulator/js/sceneObjs/mirror/CustomMirror.js';
-import Scene from '../../../src/simulator/js/Scene.js';
+import CustomMirror from '../../../src/core/sceneObjs/mirror/CustomMirror.js';
+import Scene from '../../../src/core/Scene.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('CustomMirror', () => {

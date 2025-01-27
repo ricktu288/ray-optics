@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import BeamSplitter from '../../../src/simulator/js/sceneObjs/mirror/BeamSplitter';
-import Scene from '../../../src/simulator/js/Scene';
+import BeamSplitter from '../../../src/core/sceneObjs/mirror/BeamSplitter';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

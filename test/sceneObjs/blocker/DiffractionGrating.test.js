@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import DiffractionGrating from '../../../src/simulator/js/sceneObjs/blocker/DiffractionGrating';
-import Scene from '../../../src/simulator/js/Scene';
+import DiffractionGrating from '../../../src/core/sceneObjs/blocker/DiffractionGrating';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

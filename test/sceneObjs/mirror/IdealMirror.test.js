@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import IdealMirror from '../../../src/simulator/js/sceneObjs/mirror/IdealMirror';
-import Scene from '../../../src/simulator/js/Scene';
+import IdealMirror from '../../../src/core/sceneObjs/mirror/IdealMirror';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

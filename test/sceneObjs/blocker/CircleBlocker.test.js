@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import CircleBlocker from '../../../src/simulator/js/sceneObjs/blocker/CircleBlocker';
-import Scene from '../../../src/simulator/js/Scene';
+import CircleBlocker from '../../../src/core/sceneObjs/blocker/CircleBlocker';
+import Scene from '../../../src/core/Scene';
 import { testCircleObj } from '../helpers/circleObjTests';
 import { MockUser } from '../helpers/test-utils';
 

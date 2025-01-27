@@ -15,7 +15,7 @@
  */
 
 import { MockUser } from './test-utils';
-import geometry from '../../../src/simulator/js/geometry';
+import geometry from '../../../src/core/geometry';
 
 export function testCircleObj(getTestContext) {
   let obj;

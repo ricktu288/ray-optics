@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import IdealLens from '../../../src/simulator/js/sceneObjs/glass/IdealLens';
-import Scene from '../../../src/simulator/js/Scene';
+import IdealLens from '../../../src/core/sceneObjs/glass/IdealLens';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

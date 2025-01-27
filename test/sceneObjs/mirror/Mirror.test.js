@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Mirror from '../../../src/simulator/js/sceneObjs/mirror/Mirror';
-import Scene from '../../../src/simulator/js/Scene';
+import Mirror from '../../../src/core/sceneObjs/mirror/Mirror';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

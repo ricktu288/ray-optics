@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Mouse from '../../../src/simulator/js/Mouse.js';
+import Mouse from '../../../src/core/Mouse.js';
 
 // Test utilities for sceneObj tests
 

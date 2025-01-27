@@ -15,7 +15,7 @@
  */
 
 // Mock Simulator
-jest.mock('../../../src/simulator/js/Simulator', () => ({
+jest.mock('../../../src/core/Simulator', () => ({
   __esModule: true,
   default: {
     GREEN_WAVELENGTH: 540,

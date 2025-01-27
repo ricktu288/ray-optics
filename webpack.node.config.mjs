@@ -19,7 +19,7 @@ import path from 'path';
 export default (env, argv) => {
 
   return {
-    entry: './src/simulator-node/main.js',
+    entry: './src/core/main.js',
     target: 'node',
     output: {
       filename: 'main.js',

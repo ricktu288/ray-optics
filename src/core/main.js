@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import Scene from '../simulator/js/Scene.js';
-import Simulator from '../simulator/js/Simulator.js';
-import * as sceneObjs from '../simulator/js/sceneObjs.js';
-import geometry from '../simulator/js/geometry.js';
+import Scene from './Scene.js';
+import Simulator from './Simulator.js';
+import * as sceneObjs from './sceneObjs.js';
+import geometry from './geometry.js';
 
 export { Scene, Simulator, sceneObjs, geometry };

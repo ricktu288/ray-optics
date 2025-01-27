@@ -30,8 +30,8 @@
  * limitations under the License.
  */
 
-import ParabolicMirror from '../../../src/simulator/js/sceneObjs/mirror/ParabolicMirror.js';
-import Scene from '../../../src/simulator/js/Scene.js';
+import ParabolicMirror from '../../../src/core/sceneObjs/mirror/ParabolicMirror.js';
+import Scene from '../../../src/core/Scene.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('ParabolicMirror', () => {

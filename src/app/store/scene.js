@@ -15,7 +15,7 @@
  */
 
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import Scene from '../js/Scene'
+import Scene from '../../core/Scene'
 
 // Map of properties to their update callbacks
 const PROPERTY_CALLBACKS = {

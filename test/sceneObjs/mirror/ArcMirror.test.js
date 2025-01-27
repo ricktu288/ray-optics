@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import ArcMirror from '../../../src/simulator/js/sceneObjs/mirror/ArcMirror';
-import Scene from '../../../src/simulator/js/Scene';
+import ArcMirror from '../../../src/core/sceneObjs/mirror/ArcMirror';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
-import geometry from '../../../src/simulator/js/geometry';
+import geometry from '../../../src/core/geometry';
 
 describe('ArcMirror', () => {
   let scene;

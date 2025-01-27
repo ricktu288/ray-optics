@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import GrinGlass from '../../../src/simulator/js/sceneObjs/glass/GrinGlass.js';
-import Scene from '../../../src/simulator/js/Scene';
+import GrinGlass from '../../../src/core/sceneObjs/glass/GrinGlass.js';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
 
 describe('GrinGlass', () => {

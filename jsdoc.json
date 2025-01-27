@@ -1,7 +1,8 @@
 {
   "source": {
     "include": [
-      "src/simulator/js/"
+      "src/core/",
+      "src/app/"
     ],
     "includePattern": ".js$",
     "excludePattern": "(node_modules/|docs)"

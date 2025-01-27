@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import CircleGrinGlass from '../../../src/simulator/js/sceneObjs/glass/CircleGrinGlass';
-import Scene from '../../../src/simulator/js/Scene';
+import CircleGrinGlass from '../../../src/core/sceneObjs/glass/CircleGrinGlass';
+import Scene from '../../../src/core/Scene';
 import { testCircleObj } from '../helpers/circleObjTests';
 import { MockUser } from '../helpers/test-utils';
 
