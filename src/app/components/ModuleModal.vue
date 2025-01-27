@@ -36,8 +36,12 @@
 </template>
 
 <script>
+/**
+ * @module ModuleModal
+ * @description The Vue component for the pop-up modal for Tools -> Other -> Import Modules.
+ */
 import { ref, onMounted } from 'vue'
-import { mapURL } from '../js/vue-app'
+import { mapURL } from '../main'
 
 export default {
   name: 'ModuleModal',

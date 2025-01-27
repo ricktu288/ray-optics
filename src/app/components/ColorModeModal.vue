@@ -40,6 +40,10 @@
 </template>
 
 <script>
+/**
+ * @module ColorModeModal
+ * @description The Vue component for the pop-up modal for Settings -> Color Mode.
+ */
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
 

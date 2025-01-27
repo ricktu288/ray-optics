@@ -59,9 +59,13 @@
 </template>
 
 <script>
+/**
+ * @module LanguageModal
+ * @description The Vue component for the pop-up modal for Settings -> Language.
+ */
 import { ref, onMounted } from 'vue'
 import i18next from 'i18next';
-import { getLocaleData } from '../js/vue-app'
+import { getLocaleData } from '../main'
 import { useSceneStore } from '../store/scene'
 
 export default {

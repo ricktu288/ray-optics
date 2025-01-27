@@ -17,7 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import rayOptics from '../dist-node/main.js';
+import rayOptics from '../dist-node/rayOptics.js';
 import { createCanvas, loadImage } from 'canvas';
 import sharp from 'sharp';
 

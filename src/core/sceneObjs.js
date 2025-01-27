@@ -15,10 +15,6 @@
  */
 
 /**
- * @file {@link sceneObjs} is the namespace for all the classes representing objects that can be added to the scene. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes).
- */
-
-/**
  * The namespace for all the classes representing objects that can be added to the scene. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes).
  * 
  * Each class represents a type of objects, and defines the rendering of the object, the options in the object bar when selected, how the mouse interacts with the object, and how the object interacts with light rays. The base class for all scene objects is {@link BaseSceneObj}, which provides common properties and methods for all scene objects. Child base classes are used for common optical interactions: {@link BaseFilter} (for mirrors and blockes), {@link BaseGlass}, and {@link BaseGrinGlass}.

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @file {@link Editor} is the main class for visually editing the {@link Scene} data. It manages the user interactions with the canvas, such as dragging objects, selecting objects, and adding objects. It also manages the undo and redo operations and the crop mode. Rendering is not done by this class, but by the {@link Simulator} class. Also, the UI update (e.g. object bar) is not done by this class. When UI update is needed, this class emits events to notify the UI to update.
- */
-
 import geometry from './geometry.js';
 import * as sceneObjs from './sceneObjs.js';
 import Mouse from './Mouse.js';

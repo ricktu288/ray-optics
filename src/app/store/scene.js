@@ -28,6 +28,11 @@ const PROPERTY_CALLBACKS = {
   },
 }
 
+/**
+ * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
+ *
+ * @returns {Object} A Vue store for the scene
+ */
 export const useSceneStore = () => {
   // Create refs for all serializable properties
   const refs = Object.fromEntries(

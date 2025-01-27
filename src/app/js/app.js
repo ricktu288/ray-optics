@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-/**
- * @file `app.js` is the main entry point for the Ray Optics Simulator web app. It handles the initialzation of the UI and the main instances of {@link Scene}, {@link Simulator} and {@link Editor}, and binds events to them. It also handles some app-level operation such as loading files.
- */
-
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import * as $ from 'jquery';
-import Editor from '../../core/Editor.js';
-import Simulator from '../../core/Simulator.js';
-import geometry from '../../core/geometry.js';
-import Scene from '../../core/Scene.js';
+import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
 import ObjBar from './ObjBar.js';
 import * as ace from 'ace-builds';
@@ -33,12 +26,9 @@ import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/mode-json';
 import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
-import * as sceneObjs from '../../core/sceneObjs.js';
 import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
-
-import './vue-app.js';  // Initialize Vue components
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -60,7 +50,7 @@ async function startApp() {
   scene = new Scene();
   window.scene = scene;
 
-  await import('./vue-app').then(vueApp => {
+  await import('../main').then(vueApp => {
     vueApp.initVueApp();
   });
 

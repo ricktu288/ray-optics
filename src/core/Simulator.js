@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @file {@link Simulator} is the class for simulating the optical system described by the {@link Scene} class and rendering the scene (optical elements, decorations, rays, etc) on the canvas layers. It can also be used in a standalone environment (e.g. Node.js).
- */
-
 import CanvasRenderer from './CanvasRenderer.js';
 import FloatColorRenderer from './FloatColorRenderer.js';
 import geometry from './geometry.js';

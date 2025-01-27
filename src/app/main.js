@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file `src/app/main.js` is the main entry point for the Ray Optics Simulation web app. It uses Vue to build the web UI for the simulator, and uses the Ray Optics Simulation core library to do the simulation and editing of optical scenes on the canvas layers.
+ * 
+ * An instance of the {@link Scene} class is created and used throughout the session. The state of the scene is stored in the Vue store and bound to the UI elements via {@link useSceneStore}.
+ */
+
 import { createApp } from 'vue'
-import App from '../components/App.vue'
+import App from './components/App.vue'
 import i18next from 'i18next'
 
 let app = null

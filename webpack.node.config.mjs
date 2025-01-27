@@ -19,10 +19,10 @@ import path from 'path';
 export default (env, argv) => {
 
   return {
-    entry: './src/core/main.js',
+    entry: './src/core/index.js',
     target: 'node',
     output: {
-      filename: 'main.js',
+      filename: 'rayOptics.js',
       libraryTarget: 'commonjs2',
       path: path.resolve('dist-node'),
       assetModuleFilename: (pathData) => {

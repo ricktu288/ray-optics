@@ -55,6 +55,10 @@
 </template>
 
 <script>
+/**
+ * @module SaveModal
+ * @description The Vue component for the pop-up modal for File -> Save.
+ */
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
 
