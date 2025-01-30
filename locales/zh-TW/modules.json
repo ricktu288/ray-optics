@@ -73,7 +73,7 @@
       "demodulize": "當您選取模組物件時，物件欄上會有一個「取消模組化」按鈕。點選後會將模組物件「展開」為構成此模組的物件，此時 `objs` 將包含所有四段文字。這個操作是不可逆的（除非按「復原」）。",
       "lookAtExample": "讓我們看第一個例子。",
       "lookAtJson": "您會看到四段文字。通過查看 JSON 編輯器，您將看到前兩段直接位於頂層的 `objs` 陣列中，但後兩段位於 `modules.ExampleModule.objs` 中。",
-      "moduleDef": "`module` 是一個字典，其中鍵是模組的名稱（在本例中是 `ExampleModule`），值是該模組的定義。特別是，`modules.ExampleModule.objs` 陣列描述了該模組中的物件（模板），這與描述場景中的物件的頂層 `objs` 陣列不同。",
+      "moduleDef": "`modules` 是一個字典，其中鍵是模組的名稱（在本例中是 `ExampleModule`），值是該模組的定義。特別是，`modules.ExampleModule.objs` 陣列描述了該模組中的物件（模板），這與描述場景中的物件的頂層 `objs` 陣列不同。",
       "moduleDefNotEditable": "`modules` 字典中的模組定義無法由視覺化場景編輯器編輯。因此，當您點選本例中的後兩段文字時，您只選擇了模組物件，而不是模組中的物件。由於本例中模組定義中的文字座標是絕對座標，因此後兩段文字無法被拖曳。我們將在後面學習到如何使用控制點來使它們可被拖曳。",
       "putToScene": "要將模組中的物件放到場景中，我們需要一個「模組物件」，它位於頂層 `objs` 陣列中，本例中是 `objs[2]`，其類型是 `ModuleObj`，其 `module` 屬性是模組的名稱。",
       "title": "模組的基本概念"
