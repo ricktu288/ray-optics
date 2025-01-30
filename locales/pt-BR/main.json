@@ -5,16 +5,16 @@
       "code": "código",
       "gallery": "galeria",
       "module": "módulo",
-      "translations_many": "traduções {{languages}}",
       "translations_one": "tradução {{languages}}",
+      "translations_many": "traduções {{languages}}",
       "translations_other": "traduções {{languages}}",
       "uiDesign": "UI design"
     },
     "contributorSorting": "Contribuidores do GitHub primeiro; outros ordenados cronologicamente.",
     "contributors": "Contribuidores",
-    "description": "Este projeto, incluindo o conteúdo da galeria, é licensiado sob a [Licença Apache 2.0](/license), e é oficialmente hospedado no site [PhyDemo(phydemo.app)](/phydemo) (anteriormente em ricktu288.github.io). O código fonte está [disponível no GitHub](/github), e [contribuições são bem-vindas](/contributing). Se houver questões ou sugestões, você pode abrir [issues](/github/issues) ou [discussões](/github/discussões) no GitHub, ou enviar um email para [ray-optics@phydemo.app](/email) se você não utilizar o GitHub.",
-    "mainAuthors_many": "Autores Principais",
+    "description": "Este projeto, incluindo o conteúdo da galeria, é licensiado sob a [Licença Apache 2.0](/license), e é oficialmente hospedado no site [PhyDemo(phydemo.app)](/phydemo) (anteriormente em ricktu288.github.io). O código fonte está [disponível no GitHub](/github), e [contribuições são bem-vindas](/contributing). Se houver questões ou sugestões, você pode abrir [issues](/github/issues) ou [discussões](/github/discussions) no GitHub, ou enviar um email para [ray-optics@phydemo.app](/email) se você não utilizar o GitHub.",
     "mainAuthors_one": "Autor Principal",
+    "mainAuthors_many": "Autores Principais",
     "mainAuthors_other": "Autores Principais"
   },
   "homePage": {
