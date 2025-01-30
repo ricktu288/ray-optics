@@ -439,5 +439,17 @@
       ]
     },
     "firstCommit": "2025-01-26"
+  },
+  {
+    "name": "TamilNeram",
+    "githubEmails": [
+      "anishprabu.t@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ta"
+      ]
+    },
+    "firstCommit": "2025-01-29"
   }
 ]
