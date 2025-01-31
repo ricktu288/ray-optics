@@ -175,7 +175,7 @@
       "description": "Drag to move the view. (Mouse right button drag has the same function.)"
     },
     "modules": {
-      "import": "Import Modules...",
+      "import": "Import Modules…",
       "remove": "Remove module"
     }
   },
@@ -206,7 +206,7 @@
     "title": "Simulate Colors",
     "description": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.",
     "instruction": "You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths.",
-    "warning": "The colors shown on the screen are only rough approximations, and can be very inaccurate when 'Ray density' is too high or too low."
+    "warning": "Color mixing is inaccurate unless used with \"Correct Brightness\"."
   },
   "aboutPage": {
     "description": "This project, including the gallery contents, is licensed under the [Apache License 2.0](/license), and is officially hosted on the [PhyDemo (phydemo.app)](/phydemo) website (formerly on ricktu288.github.io). The source code is [available on GitHub](/github), and you are [welcome to contribute](/contributing). If you have questions or suggestions, you can open [issues](/github/issues) or [discussions](/github/discussions) on GitHub, or email us at [ray-optics@phydemo.app](/email) if you do not use GitHub.",

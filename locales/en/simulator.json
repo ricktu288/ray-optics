@@ -2,7 +2,7 @@
   "welcome": {
     "title": "Welcome to Ray Optics Simulation",
     "instruction": "To add an optical component, select a tool and click the blank space.\nTo load an example, please [go to the Gallery page](/gallery).",
-    "loading": "Loading scene from URL... Please wait."
+    "loading": "Loading scene from URL… Please wait."
   },
   "common": {
     "saveButton": "Save",
@@ -103,7 +103,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "More options..."
+      "title": "More options…"
     },
     "applyToAll": {
       "title": "Apply to All"
@@ -139,7 +139,7 @@
         "functions": "Supported functions"
       },
       "imageDetectionWarning": "This tool does not support image detection.",
-      "nonSimulateColorsWarning": "This tool only works when \"Simulate Color\" is on."
+      "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
     },
     "Beam": {
       "imageDetectionWarning": "Image detection may not work with divergent/random beams."
@@ -180,7 +180,7 @@
         "lambda": "To simulate chromatic dispersion, use parameter {{lambda}} for the vacuum wavelength in nanometers.",
         "diff": "Only supports differentiable functions.",
         "origin": "The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.",
-        "accuracy": "For a more accurate simulation, see \"More options...\""
+        "accuracy": "For a more accurate simulation, see \"More options…\""
       },
       "refIndexFnOrigin": "Origin of n(x,y)",
       "stepSize": "Numerical solver step size",
@@ -211,7 +211,7 @@
     "DiffractionGrating": {
       "lineDensity": "Lines/{{lengthUnit}}",
       "customBrightness": "Custom Brightness",
-      "customBrightnessInfo": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, .... The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored.",
+      "customBrightnessInfo": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored.",
       "slitRatio": "Slit width / line spacing",
       "mirrored": "Mirrored"
     },
@@ -284,7 +284,7 @@
       "format": "Format",
       "width": "Width",
       "rayCountLimit": "Ray count limit",
-      "svgWarning": "Export to SVG: Color mixtures and relative refractive indices below 1 are not supported.",
+      "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
       "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
     }
   },
@@ -341,7 +341,7 @@
     "mouseCoordinates": "Mouse coordinates"
   },
   "footer": {
-    "processing": "Processing... Click here to stop.",
+    "processing": "Processing… Click here to stop.",
     "helpPopup": {
       "constrainedDragging": {
         "title": "Constrained dragging",
