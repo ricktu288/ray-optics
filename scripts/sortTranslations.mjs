@@ -137,6 +137,6 @@ for (const namespace of namespaces) {
 
     const langObj = JSON.parse(fs.readFileSync(langPath, 'utf8'));
     const newLangObj = sortKeys(langObj, enObj);
-    fs.writeFileSync(langPath, JSON.stringify(newLangObj, null, 2));
+    fs.writeFileSync(langPath, JSON.stringify(newLangObj, null, 2) + '\n');
   }
 }

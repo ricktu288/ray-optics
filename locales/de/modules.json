@@ -3,8 +3,8 @@
     "import": "Importieren",
     "imported": "Importiert",
     "specification": {
-      "parameters": "Parameter",
-      "title": "Spezifikation"
+      "title": "Spezifikation",
+      "parameters": "Parameter"
     }
   }
 }

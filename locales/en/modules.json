@@ -32,7 +32,7 @@
     },
     "ContSpectrum": {
       "title": "Continuous spectrum light source",
-      "description": "A light source with a uniform continuous spectrum discretized with a given constant step. Only works when \"Simulate Colors\" is on.",
+      "description": "A light source with a uniform continuous spectrum decretized with a given constant step. Only works when \"Simulate Colors\" is on.",
       "point1": "The origin of the rays",
       "point2": "Determines the direction of the rays",
       "min": "The minimum wavelength",
@@ -102,7 +102,7 @@
       "title": "Basics of a module",
       "lookAtExample": "Let&#39;s look at our first example of a module.",
       "lookAtJson": "You should see four lines of texts. By looking at the JSON editor, you will see that the first two are directly in the top-level `objs` array as usual, but the last two are in `modules.ExampleModule.objs` instead.",
-      "moduleDef": "The `modules` is a dictionary where the key is the name of the module (in this case `ExampleModule`), and the value is the definition of that module. In particular, the `modules.ExampleModule.objs` array describes the (template of) objects within that module, which is different from the top-level `objs` which describes the objects in the scene.",
+      "moduleDef": "The `module` is a dictionary where the key is the name of the module (in this case `ExampleModule`), and the value is the definition of that module. In particular, the `modules.ExampleModule.objs` array describes the (template of) objects within that module, which is different from the top-level `objs` which describes the objects in the scene.",
       "putToScene": "To put the objects within the module to the scene, we need a \"module object\" in the top-level `objs` array, which is `objs[2]` in this example, whose type is `ModuleObj` and whose `module` property is the name of the module.",
       "moduleDefNotEditable": "The module definition in the `modules` dictionary is not editable by the visual scene editor. So when you click any of the last two texts in this example, you are just selecting the module object, and not the objects in the module. Since the coordinates of the texts in the module definition in this example are absolute coordinates, the last two texts are not draggable. We will learn how to make them draggable by using control points later.",
       "demodulize": "If you select a module object, there is a \"Demodulize\" button on the object bar. Clicking it will \"expand\" the module object into its constituent, and `objs` will now contain all the four texts. This operation is not reversible (but of course you can click \"undo\").",

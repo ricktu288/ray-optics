@@ -1,22 +1,15 @@
 {
   "common": {
+    "saveButton": "Sauvegarder",
     "cancelButton": "Annuler",
-    "closeButton": "Fermer",
     "defaultOption": "Par défaut",
-    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique.",
-    "saveButton": "Sauvegarder"
+    "closeButton": "Fermer",
+    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique."
   },
   "file": {
-    "copyLink": {
-      "description": "Copiez et allez directement à l'URL de la scène courante ; cet URL peut être utilisé pour partager (éventuellement via un racourcisseur d'URL). Voyez aussi Réglages > Sync. auto. URL.",
-      "title": "Copier lien partageable"
-    },
-    "export": {
-      "title": "Exporter comme PNG/SVG"
-    },
-    "open": {
-      "description": "Ouvrir un fichier existant ou une image de fond. L'image de fond sera montrée depuis l'origine des coordonnées. (Ou déposez l'image dans la fenêtre)",
-      "title": "Ouvrir"
+    "title": "Fichier",
+    "undo": {
+      "title": "Annuler"
     },
     "redo": {
       "title": "Rétablir"
@@ -27,89 +20,96 @@
     "save": {
       "title": "Sauvegarder"
     },
-    "title": "Fichier",
-    "undo": {
-      "title": "Annuler"
+    "open": {
+      "title": "Ouvrir",
+      "description": "Ouvrir un fichier existant ou une image de fond. L'image de fond sera montrée depuis l'origine des coordonnées. (Ou déposez l'image dans la fenêtre)"
+    },
+    "export": {
+      "title": "Exporter comme PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Copier lien partageable",
+      "description": "Copiez et allez directement à l'URL de la scène courante ; cet URL peut être utilisé pour partager (éventuellement via un racourcisseur d'URL). Voyez aussi Réglages > Sync. auto. URL."
     },
     "viewGallery": {
-      "description": "Allez à la page web de la Galerie pour charger un exemple.",
-      "title": "Voir la galerie"
+      "title": "Voir la galerie",
+      "description": "Allez à la page web de la Galerie pour charger un exemple."
     }
   },
-  "footer": {
-    "helpPopup": {
-      "constrainedDragging": {
-        "description": "Quand vous déplacez un objet, maintenez l'appui sur Majuscule pour contraindre le mouvement sur la verticale/horizontale ; maintenez Ctrl pour cloner. Quand vous créez un objet linéaire ou glissez ses extrémités, appuyez sur Majuscule pour verrouiller l'angle sur 0°, 45°, 90° ; appuyez sur Ctrl pour tourner ou mettre à l'échelle par rapport à son milieu.",
-        "title": "Déplacement contraint"
-      },
-      "contactUs": {
-        "contribute": "Les contributions directes sont également les bienvenues (voir [le guide du contributeur](/contributing)).",
-        "description": "La manière suggérée est d'aller sur la page [Discussions](/github/discussions) ou [Problèmes](/github/issues) sur GitHub. Si vous n'utilisez pas GitHub, vous pouvez aussi nous écrire un e-mail à l'adresse [ray-optics@phydemo.app](/email).",
-        "title": "Nous contacter"
-      },
-      "editCoordinates": {
-        "description": "Double-cliquez ou faites clic droit sur le point de contrôle (par exemple l'extrémité) de l'objet, éditez les coordonnées (x,y) puis appuyez sur Entrée.",
-        "title": "Éditer directement les coordonnées"
-      },
-      "groupRotateScale": {
-        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités, puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper.",
-        "title": "Grouper, tourner et mettre des objets à l'échelle"
-      },
-      "keyboardShortcuts": {
-        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet, Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet.",
-        "title": "Raccourcis clavier"
-      }
+  "settings": {
+    "title": "Paramètres",
+    "rayDensity": {
+      "title": "Densité de rayon"
     },
-    "processing": "En cours de traitement… Cliquez ici pour arrêter."
-  },
-  "languageModal": {
-    "title": "Langue"
+    "layoutAids": {
+      "showGrid": "Grille",
+      "snapToGrid": "Attacher à la grille",
+      "lockObjs": "Verrouiller les objets"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "language": {
+      "title": "Langue"
+    }
   },
   "objBar": {
     "applyToAll": {
       "title": "Appliquer à tous"
     },
-    "delete": {
-      "title": "Supprimer"
-    },
     "duplicate": {
       "title": "Dupliquer"
+    },
+    "delete": {
+      "title": "Supprimer"
     }
   },
-  "saveModal": {
-    "fileName": "Nom",
-    "title": "Sauvegarder"
-  },
   "sceneObjs": {
+    "common": {
+      "brightness": "Luminosité",
+      "wavelength": "Longueur d'onde",
+      "focalLength": "Distance focale"
+    },
     "BaseFilter": {
-      "bandwidth": "Bande Passante",
       "filter": "Filtre",
+      "bandwidth": "Bande Passante",
       "invert": "Renverser"
     },
     "BaseGlass": {
       "refIndex": "Indice de réfraction"
-    },
-    "common": {
-      "brightness": "Luminosité",
-      "focalLength": "Distance focale",
-      "wavelength": "Longueur d'onde"
     }
   },
-  "settings": {
-    "language": {
-      "title": "Langue"
-    },
-    "layoutAids": {
-      "lockObjs": "Verrouiller les objets",
-      "showGrid": "Grille",
-      "snapToGrid": "Attacher à la grille"
-    },
-    "rayDensity": {
-      "title": "Densité de rayon"
-    },
-    "title": "Paramètres",
-    "zoom": {
-      "title": "Zoom"
+  "saveModal": {
+    "title": "Sauvegarder",
+    "fileName": "Nom"
+  },
+  "languageModal": {
+    "title": "Langue"
+  },
+  "footer": {
+    "processing": "En cours de traitement… Cliquez ici pour arrêter.",
+    "helpPopup": {
+      "constrainedDragging": {
+        "title": "Déplacement contraint",
+        "description": "Quand vous déplacez un objet, maintenez l'appui sur Majuscule pour contraindre le mouvement sur la verticale/horizontale ; maintenez Ctrl pour cloner. Quand vous créez un objet linéaire ou glissez ses extrémités, appuyez sur Majuscule pour verrouiller l'angle sur 0°, 45°, 90° ; appuyez sur Ctrl pour tourner ou mettre à l'échelle par rapport à son milieu."
+      },
+      "groupRotateScale": {
+        "title": "Grouper, tourner et mettre des objets à l'échelle",
+        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités, puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper."
+      },
+      "editCoordinates": {
+        "title": "Éditer directement les coordonnées",
+        "description": "Double-cliquez ou faites clic droit sur le point de contrôle (par exemple l'extrémité) de l'objet, éditez les coordonnées (x,y) puis appuyez sur Entrée."
+      },
+      "keyboardShortcuts": {
+        "title": "Raccourcis clavier",
+        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet, Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet."
+      },
+      "contactUs": {
+        "title": "Nous contacter",
+        "description": "La manière suggérée est d'aller sur la page [Discussions](/github/discussions) ou [Problèmes](/github/issues) sur GitHub. Si vous n'utilisez pas GitHub, vous pouvez aussi nous écrire un e-mail à l'adresse [ray-optics@phydemo.app](/email).",
+        "contribute": "Les contributions directes sont également les bienvenues (voir [le guide du contributeur](/contributing))."
+      }
     }
   }
 }

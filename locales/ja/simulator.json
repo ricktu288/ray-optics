@@ -1,12 +1,16 @@
 {
+  "welcome": {
+    "title": "光学シミュレーションの世界へようこそ",
+    "instruction": "光学部品を追加するには、ツールを選択し、空白部分をクリックします。\n例を読み込むには[ギャラリーページに移動してください。](/gallery)."
+  },
   "common": {
-    "cancelButton": "キャンセル",
-    "saveButton": "保存"
+    "saveButton": "保存",
+    "cancelButton": "キャンセル"
   },
   "file": {
-    "open": {
-      "description": "既存のファイルまたは背景画像を開きます。 背景画像は座標原点から表示されます。 (またはファイルをドロップします)",
-      "title": "開く"
+    "title": "ファイル",
+    "undo": {
+      "title": "元に戻す"
     },
     "redo": {
       "title": "やり直し"
@@ -17,49 +21,62 @@
     "save": {
       "title": "保存"
     },
-    "title": "ファイル",
-    "undo": {
-      "title": "元に戻す"
+    "open": {
+      "title": "開く",
+      "description": "既存のファイルまたは背景画像を開きます。 背景画像は座標原点から表示されます。 (またはファイルをドロップします)"
     },
     "viewGallery": {
-      "description": "ギャラリー Web ページに移動してサンプルをロードします。",
-      "title": "ギャラリーを見る"
+      "title": "ギャラリーを見る",
+      "description": "ギャラリー Web ページに移動してサンプルをロードします。"
     }
   },
-  "footer": {
-    "processing": "処理中...停止するにはここをクリックしてください."
-  },
-  "generalWarnings": {
-    "shareLinkTooLong": "URL が長すぎるため、一部のプラットフォームでは機能しない可能性があります。 代わりに「保存」を使用してファイルを共有する必要がある場合があります。"
-  },
-  "languageModal": {
-    "helpTranslate": "このアプリの翻訳にご協力ください",
-    "title": "言語",
-    "translatedFraction": "翻訳済み"
+  "settings": {
+    "title": "設定",
+    "rayDensity": {
+      "title": "光線密度"
+    },
+    "layoutAids": {
+      "showGrid": "グリッド",
+      "snapToGrid": "グリッドにスナップ",
+      "lockObjs": "オブジェクトを固定"
+    },
+    "zoom": {
+      "title": "ズーム"
+    },
+    "language": {
+      "title": "言語"
+    }
   },
   "objBar": {
     "applyToAll": {
       "title": "すべてに適用"
     },
-    "delete": {
-      "title": "消去"
-    },
     "duplicate": {
       "title": "複製"
+    },
+    "delete": {
+      "title": "消去"
     }
   },
-  "saveModal": {
-    "fileName": "名前",
-    "title": "保存"
-  },
   "sceneObjs": {
+    "common": {
+      "brightness": "明るさ",
+      "wavelength": "波長",
+      "emisAngle": "放射角度",
+      "random": "ランダム",
+      "lambert": "ランバーシアン",
+      "focalLength": "焦点距離"
+    },
     "AngleSource": {
       "symmetric": "対称"
     },
     "BaseFilter": {
-      "bandwidth": "帯域幅",
       "filter": "フィルタ",
+      "bandwidth": "帯域幅",
       "invert": "反転"
+    },
+    "BeamSplitter": {
+      "transRatio": "透過率"
     },
     "BaseGlass": {
       "refIndex": "屈折率",
@@ -67,48 +84,31 @@
         "effective": "もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。"
       }
     },
-    "BeamSplitter": {
-      "transRatio": "透過率"
+    "TextLabel": {
+      "fontSize": "フォントサイズ",
+      "font": "フォント",
+      "fontStyle": "スタイル",
+      "alignment": "文字揃え",
+      "smallCaps": "スモールキャピタル",
+      "angle": "角度"
     },
     "CropBox": {
       "svgWarning": "SVG にエクスポートします。 色の混合と 1 未満の相対屈折率はサポートされていません."
-    },
-    "TextLabel": {
-      "alignment": "文字揃え",
-      "angle": "角度",
-      "font": "フォント",
-      "fontSize": "フォントサイズ",
-      "fontStyle": "スタイル",
-      "smallCaps": "スモールキャピタル"
-    },
-    "common": {
-      "brightness": "明るさ",
-      "emisAngle": "放射角度",
-      "focalLength": "焦点距離",
-      "lambert": "ランバーシアン",
-      "random": "ランダム",
-      "wavelength": "波長"
     }
   },
-  "settings": {
-    "language": {
-      "title": "言語"
-    },
-    "layoutAids": {
-      "lockObjs": "オブジェクトを固定",
-      "showGrid": "グリッド",
-      "snapToGrid": "グリッドにスナップ"
-    },
-    "rayDensity": {
-      "title": "光線密度"
-    },
-    "title": "設定",
-    "zoom": {
-      "title": "ズーム"
-    }
+  "saveModal": {
+    "title": "保存",
+    "fileName": "名前"
   },
-  "welcome": {
-    "instruction": "光学部品を追加するには、ツールを選択し、空白部分をクリックします。\n例を読み込むには[ギャラリーページに移動してください。](/gallery).",
-    "title": "光学シミュレーションの世界へようこそ"
+  "languageModal": {
+    "title": "言語",
+    "translatedFraction": "翻訳済み",
+    "helpTranslate": "このアプリの翻訳にご協力ください"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "URL が長すぎるため、一部のプラットフォームでは機能しない可能性があります。 代わりに「保存」を使用してファイルを共有する必要がある場合があります。"
+  },
+  "footer": {
+    "processing": "処理中...停止するにはここをクリックしてください."
   }
 }
