@@ -211,9 +211,9 @@
   "aboutPage": {
     "description": "Ten projekt, w tym zawartość galerii, jest objęty licencją [Apache License 2.0](/license) i jest oficjalnie hostowany na stronie [PhyDemo (phydemo.app)](/phydemo) (wcześniej na ricktu288.github.io). Kod źródłowy jest [dostępny na GitHub](/github), a ty możesz [wnieść swój wkład](/contributing). Jeśli masz pytania lub sugestie, możesz otworzyć [issues](/github/issues) lub [discussions](/github/discussions) na GitHub lub wysłać do nas e-mail na adres [ray-optics@phydemo.app](/email), jeśli nie korzystasz z GitHub.",
     "cite": "Cytowanie tego projektu",
+    "mainAuthors_one": "Główny autor",
     "mainAuthors_few": "Główni autorzy",
     "mainAuthors_many": "Główni autorzy",
-    "mainAuthors_one": "Główny autor",
     "contributors": "Współtwórcy",
     "contributorSorting": "Współtwórcy z GitHub jako pierwsi; pozostali w kolejności chronologicznej.",
     "contributionCategories": {
@@ -221,9 +221,9 @@
       "uiDesign": "projekt UI",
       "gallery": "galeria",
       "module": "moduł",
+      "translations_one": "{{languages}} tłumaczenie",
       "translations_few": "{{languages}} tłumaczenia",
-      "translations_many": "{{languages}} tłumaczeń",
-      "translations_one": "{{languages}} tłumaczenie"
+      "translations_many": "{{languages}} tłumaczeń"
     }
   },
   "languageDropdown": {

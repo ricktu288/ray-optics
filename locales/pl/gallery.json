@@ -11,9 +11,9 @@
       "grinOptics": "Optyka gradientowa (GRIN)",
       "miscellaneous": "Różne"
     },
+    "contributors_one": "Osoba wnosząca wkład: {{contributors}}",
     "contributors_few": "Osoby wnoszące wkład: {{contributors}}",
     "contributors_many": "Osoby wnoszące wkład: {{contributors}}",
-    "contributors_one": "Osoba wnosząca wkład: {{contributors}}",
     "openInSimulator": "Otwórz w symulatorze"
   },
   "galleryData": {
