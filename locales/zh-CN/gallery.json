@@ -345,7 +345,7 @@
     },
     "logarithmicSpiralLens": {
       "title": "等角螺线形的光线路径",
-      "description": "能使光线路径呈现等角螺线形（ \\(r(θ) = r_0\\,e^{-k\\theta}\\)，其中\\(r_0,k > 0\\) 且\\(\\alpha = \\arctan k\\) 为等角螺线与同心圆形的交点上两切线的固定夹角，见[这个](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif)动画）的折射率函数为\\(n(r) &prop; \\frac{1}{r} \\) (这可用将光线路径以极座标表示并使用费马原理来证明）。",
+      "description": "能使光线路径呈现等角螺线形（ \\(r(θ) = r_0\\,e^{-k\\theta}\\)，其中\\(r_0,k > 0\\) 且\\(\\alpha = \\arctan k\\) 为等角螺线与同心圆形的交点上两切线的固定夹角，见[这个](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif)动画）的折射率函数为\\(n(r)\\propto\\frac{1}{r} \\) (这可用将光线路径以极座标表示并使用费马原理来证明）。",
       "thecircularblockeris": "中央的圆形遮光物是为了\n避开折射率的奇异点",
       "dragtochangetheiniti": "拖动此处可改变\n光线的初始方向",
       "youcanselectthegring": "您可以选择渐变折射率透光物\n并更改数值求解器的步长"

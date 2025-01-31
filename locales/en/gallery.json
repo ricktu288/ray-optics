@@ -346,7 +346,7 @@
     },
     "logarithmicSpiralLens": {
       "title": "Logarithmic spiral ray path",
-      "description": "The refractive index function that supports logarithmic spiral ray paths is of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in [this](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animation), is \\(n(r) &prop; \\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle).",
+      "description": "The refractive index function that supports logarithmic spiral ray paths is of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in [this](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animation), is \\(n(r)\\propto\\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle).",
       "thecircularblockeris": "The circular blocker is in the center\nto avoid the refractive index singularity",
       "dragtochangetheiniti": "Drag to change the\ninitial direction of the ray",
       "youcanselectthegring": "You can select the GRIN glass and\nchange the numerical solver step size"

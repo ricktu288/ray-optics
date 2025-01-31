@@ -334,7 +334,7 @@
     },
     "logarithmicSpiralLens": {
       "title": "Promień o torze spirali logarytmicznej",
-      "description": "Funkcja współczynnika załamania światła, która wspiera promienie o torach spirali logarytmicznych o postaci \\(r(θ) = r_0\\,e^{-k\\theta}\\), gdzie \\(r_0,k > 0\\) i \\(\\alpha = \\arctan k\\) to stały kąt między dwiema stycznymi w punkcie przecięcia koncentrycznej spirali logarytmicznej z okręgiem (jak pokazuje [ta](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animacja), to \\(n(r) &prop; \\frac{1}{r}\\) (można to wykazać zapisując ścieżkę optyczną we współrzędnych biegunowych i wykorzystując zasadę Fermata).",
+      "description": "Funkcja współczynnika załamania światła, która wspiera promienie o torach spirali logarytmicznych o postaci \\(r(θ) = r_0\\,e^{-k\\theta}\\), gdzie \\(r_0,k > 0\\) i \\(\\alpha = \\arctan k\\) to stały kąt między dwiema stycznymi w punkcie przecięcia koncentrycznej spirali logarytmicznej z okręgiem (jak pokazuje [ta](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animacja), to \\(n(r)\\propto\\frac{1}{r}\\) (można to wykazać zapisując ścieżkę optyczną we współrzędnych biegunowych i wykorzystując zasadę Fermata).",
       "thecircularblockeris": "Kołowy bloker znajduje się w środku,\naby uniknąć osobliwości współczynnika załamania",
       "dragtochangetheiniti": "Przeciągnij, aby zmienić\npoczątkowy kierunek promienia",
       "youcanselectthegring": "Możesz wybrać szkło GRIN i zmienić\nrozmiar kroku rozwiązania numerycznego"
