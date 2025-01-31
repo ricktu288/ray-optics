@@ -15,13 +15,8 @@
 -->
 
 <template>
-  <div id="canvas-container" style="display:none">
-    <canvas id="canvasGrid"></canvas>
-    <canvas id="canvasBelowLight"></canvas>
-    <canvas id="canvasLight"></canvas>
-    <canvas id="canvasLightWebGL"></canvas>
-    <canvas id="canvasAboveLight"></canvas>
-  </div>
+  <CanvasContainer />
+
   <div id="welcome-wrapper-vue"></div>
 
   <div id="sideBar" style="display: none;">
@@ -1127,6 +1122,7 @@
 </template>
 
 <script>
+import CanvasContainer from './CanvasContainer.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
 import ColorModeModal from './ColorModeModal.vue';
@@ -1134,6 +1130,7 @@ import LanguageModal from './LanguageModal.vue';
 
 export default {
   components: {
+    CanvasContainer,
     ModuleModal,
     SaveModal,
     ColorModeModal,
@@ -1143,51 +1140,6 @@ export default {
 </script>
 
 <style>
-#canvasBelowLight {
-  background-color: #000;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: -7;
-}
-
-#canvasGrid {
-  background-color: transparent;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: -6;
-}
-
-#canvasLight {
-  background-color: transparent;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: -5;
-}
-
-#canvasLightWebGL {
-  background-color: transparent;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: -5;
-}
-
-#canvasAboveLight {
-  background-color: transparent;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: -4;
-}
-
 .popover-image {
   float:left;
   margin-right: 10px;

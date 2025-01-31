@@ -67,21 +67,6 @@ async function startApp() {
   canvasLightWebGL = document.getElementById('canvasLightWebGL');
   canvasGrid = document.getElementById('canvasGrid');
 
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-
-  canvasBelowLight.width = window.innerWidth * dpr;
-  canvasBelowLight.height = window.innerHeight * dpr;
-
-  canvasLight.width = window.innerWidth * dpr;
-  canvasLight.height = window.innerHeight * dpr;
-
-  canvasLightWebGL.width = window.innerWidth * dpr;
-  canvasLightWebGL.height = window.innerHeight * dpr;
-
-  canvasGrid.width = window.innerWidth * dpr;
-  canvasGrid.height = window.innerHeight * dpr;
-
   let gl;
 
   try {
@@ -413,31 +398,6 @@ async function startApp() {
   document.getElementById('undo_mobile').disabled = true;
   document.getElementById('redo_mobile').disabled = true;
 
-
-  window.onresize = function (e) {
-    if (simulator && window.devicePixelRatio) {
-      simulator.dpr = window.devicePixelRatio;
-    }
-    if (scene) {
-      scene.setViewportSize(canvas.width / simulator.dpr, canvas.height / simulator.dpr);
-      if (editor) {
-        editor.onActionComplete();
-      }
-    }
-    if (simulator.ctxAboveLight) {
-      canvas.width = window.innerWidth * simulator.dpr;
-      canvas.height = window.innerHeight * simulator.dpr;
-      canvasBelowLight.width = window.innerWidth * simulator.dpr;
-      canvasBelowLight.height = window.innerHeight * simulator.dpr;
-      canvasLight.width = window.innerWidth * simulator.dpr;
-      canvasLight.height = window.innerHeight * simulator.dpr;
-      canvasLightWebGL.width = window.innerWidth * simulator.dpr;
-      canvasLightWebGL.height = window.innerHeight * simulator.dpr;
-      canvasGrid.width = window.innerWidth * simulator.dpr;
-      canvasGrid.height = window.innerHeight * simulator.dpr;
-      simulator.updateSimulation();
-    }
-  };
 
   window.onkeydown = function (e) {
     //Ctrl+Z or Cmd+Z
@@ -1992,8 +1952,6 @@ function colorModebtn_clicked(colorMode) {
     document.getElementById('colorMode_mobile').disabled = true;
     document.getElementById('correct_brightness').checked = false;
     document.getElementById('correct_brightness_mobile').checked = false;
-    canvasLight.style.display = '';
-    canvasLightWebGL.style.display = 'none';
   } else {
     document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
     document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
@@ -2001,8 +1959,6 @@ function colorModebtn_clicked(colorMode) {
     document.getElementById('colorMode_mobile').disabled = false;
     document.getElementById('correct_brightness').checked = true;
     document.getElementById('correct_brightness_mobile').checked = true;
-    canvasLight.style.display = 'none';
-    canvasLightWebGL.style.display = '';
   }
 }
 

@@ -45,9 +45,25 @@ export const useSceneStore = () => {
   // Function to sync with scene
   const syncWithScene = () => {
     if (window.scene) {
+      console.log('colorMode', window.scene.colorMode)
       Object.keys(Scene.serializableDefaults).forEach(key => {
         refs[`_${key}`].value = window.scene[key] ?? Scene.serializableDefaults[key]
       })
+    }
+  }
+
+  // Resize the scene
+  const setViewportSize = (width, height, dpr) => {
+    if (window.simulator) {
+      window.simulator.dpr = dpr;
+    }
+    if (window.scene) {
+      window.scene.setViewportSize(width, height);
+      refs._width.value = width;
+      refs._height.value = height;
+    }
+    if (window.simulator?.ctxAboveLight) {
+      window.simulator.updateSimulation();
     }
   }
 
@@ -80,5 +96,8 @@ export const useSceneStore = () => {
     document.removeEventListener('sceneChanged', syncWithScene)
   })
 
-  return computedProps
+  return {
+    ...computedProps,
+    setViewportSize
+  }
 }
