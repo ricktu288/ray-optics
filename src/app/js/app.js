@@ -49,7 +49,6 @@ async function startApp() {
     vueApp.initVueApp();
   });
 
-  document.getElementById('welcome-wrapper-vue').appendChild(document.getElementById('welcome-wrapper'));
 
 
   let dpr = window.devicePixelRatio || 1;

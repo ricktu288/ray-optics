@@ -16,9 +16,7 @@
 
 <template>
   <CanvasContainer />
-
-  <div id="welcome-wrapper-vue"></div>
-
+  <WelcomeMessage />
   <Sidebar />
 
   <!-- "Processing..."  spinner -->
@@ -1118,6 +1116,7 @@
 
 <script>
 import CanvasContainer from './CanvasContainer.vue';
+import WelcomeMessage from './WelcomeMessage.vue';
 import Sidebar from './Sidebar.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
@@ -1127,6 +1126,7 @@ import LanguageModal from './LanguageModal.vue';
 export default {
   components: {
     CanvasContainer,
+    WelcomeMessage,
     Sidebar,
     ModuleModal,
     SaveModal,
