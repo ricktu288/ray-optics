@@ -57,7 +57,7 @@ const COLOR_MODES = [
 export default {
   name: 'ColorModeModal',
   setup() {
-    const store = useSceneStore()
+    const sceneStore = useSceneStore()
     const isModalOpen = ref(false)
 
     onMounted(() => {
@@ -79,7 +79,7 @@ export default {
     }
 
     return {
-      colorMode: store.colorMode,
+      colorMode: sceneStore.colorMode,
       COLOR_MODES,
       isModalOpen,
       closeModal

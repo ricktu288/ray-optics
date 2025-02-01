@@ -64,14 +64,11 @@
  * @description The Vue component for the pop-up modal for Settings -> Language.
  */
 import { ref, onMounted } from 'vue'
-import i18next from 'i18next';
 import { getLocaleData } from '../main'
-import { useSceneStore } from '../store/scene'
 
 export default {
   name: 'LanguageModal',
   setup() {
-    const store = useSceneStore()
     const localeData = getLocaleData()
     const currentHash = ref('')
     const currentSearch = ref('')

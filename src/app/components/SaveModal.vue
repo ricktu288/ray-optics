@@ -65,7 +65,7 @@ import { useSceneStore } from '../store/scene'
 export default {
   name: 'SaveModal',
   setup() {
-    const store = useSceneStore()
+    const sceneStore = useSceneStore()
     const modalName = ref('')
     const isModalOpen = ref(false)
     
@@ -73,7 +73,7 @@ export default {
     onMounted(() => {
       const modal = document.getElementById('saveModal')
       modal.addEventListener('show.bs.modal', () => {
-        modalName.value = store.name.value
+        modalName.value = sceneStore.name.value
         isModalOpen.value = true
       })
       modal.addEventListener('hide.bs.modal', () => {
@@ -82,14 +82,14 @@ export default {
     })
 
     const handleSave = () => {
-      store.name.value = modalName.value
+      sceneStore.name.value = modalName.value
       if (window.save) {
         window.save()
       }
     }
 
     const handleRename = () => {
-      store.name.value = modalName.value
+      sceneStore.name.value = modalName.value
     }
 
     const closeModal = () => {

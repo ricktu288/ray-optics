@@ -45,7 +45,6 @@ export const useSceneStore = () => {
   // Function to sync with scene
   const syncWithScene = () => {
     if (window.scene) {
-      console.log('colorMode', window.scene.colorMode)
       Object.keys(Scene.serializableDefaults).forEach(key => {
         refs[`_${key}`].value = window.scene[key] ?? Scene.serializableDefaults[key]
       })
@@ -65,6 +64,24 @@ export const useSceneStore = () => {
     if (window.simulator?.ctxAboveLight) {
       window.simulator.updateSimulation();
     }
+  }
+
+  // Handle updates from the JSON editor
+  const handleJsonEditorUpdate = (jsonContent) => {
+    try {
+      window.editor?.loadJSON(jsonContent)
+      window.error = null
+      
+      // Only proceed with URL sync and validation if there are no errors
+      if (!window.scene?.error) {
+        window.syncUrl?.()
+        window.editor?.requireDelayedValidation()
+        return true
+      }
+    } catch (e) {
+      console.error('Error updating scene from JSON:', e)
+    }
+    return false
   }
 
   // Create computed properties for all serializable properties
@@ -98,6 +115,7 @@ export const useSceneStore = () => {
 
   return {
     ...computedProps,
-    setViewportSize
+    setViewportSize,
+    handleJsonEditorUpdate
   }
 }

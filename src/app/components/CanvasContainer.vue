@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div id="canvas-container" style="display:none">
+  <div>
     <canvas id="canvasGrid"></canvas>
     <canvas id="canvasBelowLight"></canvas>
     <canvas id="canvasLight" v-show="colorMode === 'default'"></canvas>
@@ -35,7 +35,7 @@ import { useSceneStore } from '../store/scene'
 export default {
   name: 'CanvasContainer',
   setup() {
-    const store = useSceneStore()
+    const sceneStore = useSceneStore()
     function resizeCanvas(canvas) {
       canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
       canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
@@ -47,7 +47,7 @@ export default {
       resizeCanvas(document.getElementById('canvasLight'));
       resizeCanvas(document.getElementById('canvasLightWebGL'));
       resizeCanvas(document.getElementById('canvasAboveLight'));
-      store.setViewportSize(window.innerWidth, window.innerHeight, window.devicePixelRatio || 1);
+      sceneStore.setViewportSize(window.innerWidth, window.innerHeight, window.devicePixelRatio || 1);
     }
 
     onMounted(() => {
@@ -56,7 +56,7 @@ export default {
     });
 
     return {
-      colorMode: store.colorMode,
+      colorMode: sceneStore.colorMode,
     };
   },
 };

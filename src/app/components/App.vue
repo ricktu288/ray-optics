@@ -19,12 +19,7 @@
 
   <div id="welcome-wrapper-vue"></div>
 
-  <div id="sideBar" style="display: none;">
-    <div id="sideBarMobileHeightDiff" class="d-none d-lg-block"></div>
-    <div id="jsonEditorContainer">
-      <div id="jsonEditor"></div>
-    </div>
-  </div>
+  <Sidebar />
 
   <!-- "Processing..."  spinner -->
   <div class="footer-left" id="footer-left" style="display: none">
@@ -1123,6 +1118,7 @@
 
 <script>
 import CanvasContainer from './CanvasContainer.vue';
+import Sidebar from './Sidebar.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
 import ColorModeModal from './ColorModeModal.vue';
@@ -1131,6 +1127,7 @@ import LanguageModal from './LanguageModal.vue';
 export default {
   components: {
     CanvasContainer,
+    Sidebar,
     ModuleModal,
     SaveModal,
     ColorModeModal,
@@ -1542,35 +1539,6 @@ export default {
   border-top-right-radius: 0.5em;
   width: fit-content;
   pointer-events: auto;
-}
-
-#sideBar {
-  position: absolute;
-  z-index: -2;
-  top: 46px;
-  left: 0;
-  width: 400px;
-  max-width: 100%;
-  height: calc(100% - 46px);
-  display: flex;
-  flex-direction: column;
-}
-
-#sideBarMobileHeightDiff {
-  height: 22px;
-}
-
-#jsonEditorContainer {
-  width: 100%;
-  flex-grow: 1;
-  background-color:rgba(45, 51, 57,0.8);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-
-#jsonEditor {
-  width: 100%;
-  height: 100%
 }
 
 #warning {

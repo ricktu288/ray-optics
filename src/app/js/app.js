@@ -20,15 +20,10 @@ import * as $ from 'jquery';
 import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
 import ObjBar from './ObjBar.js';
-import * as ace from 'ace-builds';
-import "ace-builds/webpack-resolver";
-import 'ace-builds/src-noconflict/theme-github_dark';
-import 'ace-builds/src-noconflict/mode-json';
-import "ace-builds/src-noconflict/worker-json";
-import { Range } from 'ace-builds';
 import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
+import { jsonEditorService } from '../services/jsonEditor.js';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -54,9 +49,7 @@ async function startApp() {
     vueApp.initVueApp();
   });
 
-  // Move the welcome div to the App component
-  document.getElementById('welcome-wrapper-vue').innerHTML = document.getElementById('welcome-wrapper').innerHTML;
-  document.getElementById('welcome-wrapper').innerHTML = '';
+  document.getElementById('welcome-wrapper-vue').appendChild(document.getElementById('welcome-wrapper'));
 
 
   let dpr = window.devicePixelRatio || 1;
@@ -312,35 +305,7 @@ async function startApp() {
   });
 
   editor.on('newAction', function (e) {
-    if (aceEditor && e.newJSON != e.oldJSON && !aceEditor.isFocused()) {
-
-      // Calculate the position of the first and last character that has changed
-      var minLen = Math.min(e.newJSON.length, e.oldJSON.length);
-      var startChar = 0;
-      while (startChar < minLen && e.newJSON[startChar] == e.oldJSON[startChar]) {
-        startChar++;
-      }
-      var endChar = 0;
-      while (endChar < minLen && e.newJSON[e.newJSON.length - 1 - endChar] == e.oldJSON[e.oldJSON.length - 1 - endChar]) {
-        endChar++;
-      }
-
-      // Convert the character positions to line numbers
-      var startLineNum = e.newJSON.substr(0, startChar).split("\n").length - 1;
-      var endLineNum = e.newJSON.substr(0, e.newJSON.length - endChar).split("\n").length - 1;
-
-      // Set selection range to highlight changes using the Range object
-      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
-
-      lastCodeChangeIsFromScene = true;
-      aceEditor.setValue(e.newJSON);
-      aceEditor.selection.setSelectionRange(selectionRange);
-
-      // Scroll to the first line that has changed
-      aceEditor.scrollToLine(startLineNum, true, true, function () { });
-    }
-
-
+    jsonEditorService.updateContent(e.newJSON, e.oldJSON);
     syncUrl();
     warning = "";
     hasUnsavedChange = true;
@@ -361,9 +326,7 @@ async function startApp() {
       document.getElementById('undo').disabled = true;
       document.getElementById('undo_mobile').disabled = true;
     }
-    if (aceEditor) {
-      aceEditor.session.setValue(editor.lastActionJson);
-    }
+    jsonEditorService.updateContent(editor.lastActionJson);
     syncUrl();
   });
 
@@ -375,9 +338,7 @@ async function startApp() {
       document.getElementById('redo').disabled = true;
       document.getElementById('redo_mobile').disabled = true;
     }
-    if (aceEditor) {
-      aceEditor.session.setValue(editor.lastActionJson);
-    }
+    jsonEditorService.updateContent(editor.lastActionJson);
     syncUrl();
   });
 
@@ -535,9 +496,7 @@ async function startApp() {
     document.getElementById('welcome').style.display = '';
     editor.onActionComplete();
     hasUnsavedChange = false;
-    if (aceEditor) {
-      aceEditor.session.setValue(editor.lastActionJson);
-    }
+    jsonEditorService.updateContent(editor.lastActionJson);
   };
   document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
 
@@ -601,18 +560,12 @@ async function startApp() {
     document.getElementById('show_json_editor').checked = this.checked;
     document.getElementById('show_json_editor_mobile').checked = this.checked;
 
-    if (this.checked) {
-      enableJsonEditor();
-    } else {
-      disableJsonEditor();
-    }
-
     localStorage.rayOpticsShowJsonEditor = this.checked ? "on" : "off";
+    document.dispatchEvent(new Event('preferencesChanged'));
   };
   document.getElementById('show_json_editor_mobile').onclick = document.getElementById('show_json_editor').onclick;
 
   if (typeof (Storage) !== "undefined" && localStorage.rayOpticsShowJsonEditor && localStorage.rayOpticsShowJsonEditor == "on") {
-    enableJsonEditor();
     document.getElementById('show_json_editor').checked = true;
     document.getElementById('show_json_editor_mobile').checked = true;
   } else {
@@ -1001,9 +954,7 @@ async function startApp() {
         editor.loadJSON(JSON.stringify(json));
         editor.onActionComplete();
         hasUnsavedChange = false;
-        if (aceEditor) {
-          aceEditor.session.setValue(editor.lastActionJson);
-        }
+        jsonEditorService.updateContent(editor.lastActionJson);
       }).catch(e => {
         error = "JsonUrl: " + e;
         document.getElementById('welcome').style.display = 'none';
@@ -1028,7 +979,6 @@ async function startApp() {
   document.getElementById('toolbar-wrapper').style.display = '';
   document.getElementById('footer-left').style.display = '';
   document.getElementById('footer-right').style.display = '';
-  document.getElementById('canvas-container').style.display = '';
 
   document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
   document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
@@ -1535,46 +1485,6 @@ function hideAllPopovers() {
   });
 }
 
-var aceEditor;
-var lastCodeChangeIsFromScene = false;
-
-function enableJsonEditor() {
-  aceEditor = ace.edit("jsonEditor");
-  aceEditor.setTheme("ace/theme/github_dark");
-  aceEditor.session.setMode("ace/mode/json");
-  aceEditor.session.setUseWrapMode(true);
-  aceEditor.session.setUseSoftTabs(true);
-  aceEditor.session.setTabSize(2);
-  aceEditor.setHighlightActiveLine(false)
-  aceEditor.container.style.background = "transparent"
-  aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background = "transparent"
-  aceEditor.session.setValue(editor.lastActionJson);
-
-  var debounceTimer;
-
-  aceEditor.session.on('change', function (delta) {
-    if (lastCodeChangeIsFromScene) {
-      setTimeout(function () {
-        lastCodeChangeIsFromScene = false;
-      }, 100);
-      return;
-    }
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(function () {
-      editor.loadJSON(aceEditor.session.getValue());
-      error = null;
-      const newJsonCode = editor.lastActionJson;
-      if (!scene.error) {
-        syncUrl();
-        editor.requireDelayedValidation();
-      }
-    }, 500);
-  });
-
-  document.getElementById('footer-left').style.left = '400px';
-  document.getElementById('sideBar').style.display = '';
-}
-
 function updateModuleObjsMenu() {
   for (let suffix of ['', '_mobile']) {
     const moduleStartLi = document.getElementById('module_start' + suffix);
@@ -1655,13 +1565,6 @@ function updateModuleObjsMenu() {
 
 }
 
-function disableJsonEditor() {
-  aceEditor.destroy();
-  aceEditor = null;
-  document.getElementById('footer-left').style.left = '0px';
-  document.getElementById('sideBar').style.display = 'none';
-}
-
 function updateErrorAndWarning() {
   let errors = [];
   let warnings = [];
@@ -1732,9 +1635,7 @@ function openSample(name) {
 
     editor.onActionComplete();
     hasUnsavedChange = false;
-    if (aceEditor) {
-      aceEditor.session.setValue(editor.lastActionJson);
-    }
+    jsonEditorService.updateContent(editor.lastActionJson);
   }
   client.onerror = function () {
     error = "openSample: HTTP Request Error";
@@ -2013,9 +1914,7 @@ function openFile(readFile) {
       editor.loadJSON(fileString);
       hasUnsavedChange = false;
       editor.onActionComplete();
-      if (aceEditor) {
-        aceEditor.session.setValue(editor.lastActionJson);
-      }
+      jsonEditorService.updateContent(editor.lastActionJson);
     } else {
       // Load the background image file
       reader.onload = function (e) {
