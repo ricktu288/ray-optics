@@ -24,7 +24,7 @@ import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 import { jsonEditorService } from '../services/jsonEditor.js';
-import { statusEmitter, STATUS_EVENT_NAMES } from '../store/status.js';
+import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -50,7 +50,7 @@ async function startApp() {
     vueApp.initVueApp();
   });
 
-
+  jsonEditorService.updateContent(scene.toJSON());
 
   let dpr = window.devicePixelRatio || 1;
 

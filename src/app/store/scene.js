@@ -66,24 +66,6 @@ export const useSceneStore = () => {
     }
   }
 
-  // Handle updates from the JSON editor
-  const handleJsonEditorUpdate = (jsonContent) => {
-    try {
-      window.editor?.loadJSON(jsonContent)
-      window.error = null
-      
-      // Only proceed with URL sync and validation if there are no errors
-      if (!window.scene?.error) {
-        window.syncUrl?.()
-        window.editor?.requireDelayedValidation()
-        return true
-      }
-    } catch (e) {
-      console.error('Error updating scene from JSON:', e)
-    }
-    return false
-  }
-
   // Create computed properties for all serializable properties
   const computedProps = Object.fromEntries(
     Object.keys(Scene.serializableDefaults).map(key => [
@@ -115,7 +97,6 @@ export const useSceneStore = () => {
 
   return {
     ...computedProps,
-    setViewportSize,
-    handleJsonEditorUpdate
+    setViewportSize
   }
 }

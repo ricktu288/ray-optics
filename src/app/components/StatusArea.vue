@@ -45,14 +45,14 @@
  * @description The Vue component for the status area (including mouse coordinates, simulator status, warnings and errors) at the lower left corner.
  */
 import { usePreferencesStore } from '../store/preferences'
-import { useStatusStore } from '../store/status'
+import { useStatus } from '../composables/useStatus'
 import { computed, toRef } from 'vue'
 
 export default {
   name: 'StatusArea',
   setup() {
     const preferences = usePreferencesStore()
-    const status = useStatusStore()
+    const status = useStatus()
     const showJsonEditor = toRef(preferences, 'showJsonEditor')
     
     const notificationStyle = computed(() => ({
@@ -66,7 +66,7 @@ export default {
     return {
       showStatus: preferences.showStatus,
       notificationStyle,
-      // From status store
+      // From status composable
       formattedMousePosition: status.formattedMousePosition,
       formattedSimulatorStatus: status.formattedSimulatorStatus,
       errors: status.activeErrors,

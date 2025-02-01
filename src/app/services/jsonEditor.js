@@ -19,7 +19,6 @@ import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/mode-json';
 import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
-import { useSceneStore } from '../store/scene'
 
 /**
  * Service to manage the JSON editor instance and its interactions with the scene
@@ -67,8 +66,18 @@ class JsonEditorService {
 
     clearTimeout(this.debounceTimer)
     this.debounceTimer = setTimeout(() => {
-      const scene = useSceneStore()
-      scene.handleJsonEditorUpdate(this.aceEditor.session.getValue())
+      try {
+        window.editor?.loadJSON(this.aceEditor.session.getValue())
+        window.error = null
+        
+        // Only proceed with URL sync and validation if there are no errors
+        if (!window.scene?.error) {
+          window.syncUrl?.()
+          window.editor?.requireDelayedValidation()
+        }
+      } catch (e) {
+        console.error('Error updating scene from JSON:', e)
+      }
     }, 500)
   }
 
@@ -102,38 +111,19 @@ class JsonEditorService {
         endChar++;
       }
 
-      // Convert the character positions to line numbers
-      var startLineNum = content.substr(0, startChar).split("\n").length - 1;
-      var endLineNum = content.substr(0, content.length - endChar).split("\n").length - 1;
+      // Convert character positions to row/column positions
+      var startPos = this.aceEditor.session.doc.indexToPosition(startChar);
+      var endPos = this.aceEditor.session.doc.indexToPosition(content.length - endChar);
 
-      // Set selection range to highlight changes using the Range object
-      var selectionRange = new Range(startLineNum, 0, endLineNum + 1, 0);
-
-      this.lastCodeChangeIsFromScene = true;
-      this.aceEditor.setValue(content);
-      this.aceEditor.selection.setSelectionRange(selectionRange);
-
-      // Scroll to the first line that has changed
-      this.aceEditor.scrollToLine(startLineNum, true, true, function () { });
+      // Update content and highlight changes
+      this.lastCodeChangeIsFromScene = true
+      this.aceEditor.session.setValue(content)
+      this.aceEditor.selection.setRange(new Range(startPos.row, startPos.column, endPos.row, endPos.column))
     } else {
+      // Just update content without highlighting
+      this.lastCodeChangeIsFromScene = true
       this.aceEditor.session.setValue(content)
     }
-  }
-
-  /**
-   * Check if the editor is initialized
-   * @returns {boolean}
-   */
-  isInitialized() {
-    return !!this.aceEditor
-  }
-
-  /**
-   * Check if the editor has focus
-   * @returns {boolean}
-   */
-  hasFocus() {
-    return this.aceEditor?.isFocused() ?? false
   }
 }
 
