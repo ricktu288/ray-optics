@@ -24,6 +24,7 @@ import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 import { jsonEditorService } from '../services/jsonEditor.js';
+import { statusEmitter, STATUS_EVENT_NAMES } from '../store/status.js';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -142,22 +143,47 @@ async function startApp() {
   simulator.dpr = dpr;
 
   simulator.on('simulationStart', function () {
-    document.getElementById('forceStop').style.display = 'none';
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: 0,
+      totalTruncation: 0,
+      brightnessScale: null,
+      timeElapsed: 0,
+      isSimulatorRunning: true,
+      isForceStop: false
+    });
   });
 
   simulator.on('simulationPause', function () {
-    document.getElementById('forceStop').style.display = '';
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>';
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: simulator.processedRayCount,
+      totalTruncation: simulator.totalTruncation,
+      brightnessScale: simulator.brightnessScale,
+      timeElapsed: new Date() - simulator.simulationStartTime,
+      isSimulatorRunning: true,
+      isForceStop: false
+    });
   });
-
+  
   simulator.on('simulationStop', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)}) + '<br>' + i18next.t('simulator:statusBox.forceStopped');
-    document.getElementById('forceStop').style.display = 'none';
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: simulator.processedRayCount,
+      totalTruncation: simulator.totalTruncation,
+      brightnessScale: simulator.brightnessScale,
+      timeElapsed: new Date() - simulator.simulationStartTime,
+      isSimulatorRunning: false,
+      isForceStop: true
+    });
   });
-
+  
   simulator.on('simulationComplete', function () {
-    document.getElementById('simulatorStatus').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.rayCount'), value: simulator.processedRayCount}) + '<br>' + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.totalTruncation'), value: simulator.totalTruncation.toFixed(3)}) + '<br>' + (scene.colorMode == 'default' ? i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.brightnessScale'), value: ((simulator.brightnessScale <= 0) ? "-" : simulator.brightnessScale.toFixed(3))}) + '<br>' : '') + i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.timeElapsed') + ' (ms)', value: (new Date() - simulator.simulationStartTime)});
-    document.getElementById('forceStop').style.display = 'none';
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: simulator.processedRayCount,
+      totalTruncation: simulator.totalTruncation,
+      brightnessScale: simulator.brightnessScale,
+      timeElapsed: new Date() - simulator.simulationStartTime,
+      isSimulatorRunning: false,
+      isForceStop: false
+    });
   });
 
   simulator.on('requestUpdateErrorAndWarning', function () {
@@ -192,11 +218,9 @@ async function startApp() {
   });
 
   editor.on('mouseCoordinateChange', function (e) {
-    if (e.mousePos) {
-      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: "(" + e.mousePos.x + ", " + e.mousePos.y + ")"});
-    } else {
-      document.getElementById('mouseCoordinates').innerHTML = i18next.t('main:meta.colon', {name: i18next.t('simulator:statusBox.mouseCoordinates'), value: '-'});
-    }
+    statusEmitter.emit(STATUS_EVENT_NAMES.MOUSE_POSITION, 
+      e.mousePos ? { x: e.mousePos.x, y: e.mousePos.y } : { x: undefined, y: undefined }
+    );
   });
 
   editor.emit('mouseCoordinateChange', { mousePos: null });
@@ -812,10 +836,6 @@ async function startApp() {
   document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
   document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
 
-  document.getElementById('forceStop').onclick = function () {
-    simulator.stopSimulation();
-  };
-
   document.getElementById('apply_to_all').onclick = function () {
     this.blur();
     const checked = this.checked;
@@ -1083,7 +1103,6 @@ function resetDropdownButtons() {
 
 
 function initUIText() {
-  setText('processing_text', i18next.t('simulator:footer.processing'));
   setText('reset', i18next.t('simulator:file.reset.title'));
   setText('save', i18next.t('simulator:file.save.title'));
   setText('open', i18next.t('simulator:file.open.title'), null, i18next.t('simulator:file.open.description'));
@@ -1565,58 +1584,26 @@ function updateModuleObjsMenu() {
 }
 
 function updateErrorAndWarning() {
-  let errors = [];
-  let warnings = [];
-
-  if (error) {
-    errors.push("App: " + error);
-  }
-
-  if (warning) {
-    warnings.push("App: " + warning);
-  }
-
-  if (scene.error) {
-    errors.push("Scene: " + scene.error);
-  }
-
-  if (scene.warning) {
-    warnings.push("Scene: " + scene.warning);
-  }
-
-  if (simulator.error) {
-    errors.push("Simulator: " + simulator.error);
-  }
-
-  if (simulator.warning) {
-    warnings.push("Simulator: " + simulator.warning);
-  }
-
-  for (let i in scene.objs) {
-    let error = scene.objs[i].getError();
-    if (error) {
-      errors.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${error}`);
-    }
-
-    let warning = scene.objs[i].getWarning();
-    if (warning) {
-      warnings.push(`objs[${i}] ${scene.objs[i].constructor.type}: ${warning}`);
-    }
-  }
-
-  if (errors.length > 0) {
-    document.getElementById('errorText').innerText = errors.join('\n');
-    document.getElementById('error').style.display = '';
-  } else {
-    document.getElementById('error').style.display = 'none';
-  }
-
-  if (warnings.length > 0) {
-    document.getElementById('warningText').innerText = warnings.join('\n');
-    document.getElementById('warning').style.display = '';
-  } else {
-    document.getElementById('warning').style.display = 'none';
-  }
+  statusEmitter.emit(STATUS_EVENT_NAMES.SYSTEM_STATUS, {
+    app: { 
+      error: error, 
+      warning: warning 
+    },
+    scene: { 
+      error: scene.error, 
+      warning: scene.warning 
+    },
+    simulator: { 
+      error: simulator.error, 
+      warning: simulator.warning 
+    },
+    objects: scene.objs.map((obj, i) => ({
+      index: i,
+      type: obj.constructor.type,
+      error: obj.getError(),
+      warning: obj.getWarning()
+    }))
+  });
 }
 
 function openSample(name) {

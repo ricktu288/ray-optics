@@ -35,11 +35,9 @@ const PREFERENCES_CALLBACKS = {
     if (value) {
       // Initialize JSON editor
       jsonEditorService.initialize()
-      document.getElementById('footer-left').style.left = '400px'
     } else {
       // Clean up JSON editor
       jsonEditorService.cleanup()
-      document.getElementById('footer-left').style.left = '0px'
     }
   }
 }

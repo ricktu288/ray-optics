@@ -18,30 +18,7 @@
   <CanvasContainer />
   <WelcomeMessage />
   <Sidebar />
-
-  <!-- "Processing..."  spinner -->
-  <div class="footer-left" id="footer-left" style="display: none">
-    <div id="forceStop">
-      <div class="spinner-border text-secondary" role="status"></div>
-      <span id="processing_text"></span>
-    </div>
-    <div id="status" style="display: none;">
-      <div id="mouseCoordinates"></div>
-      <div id="simulatorStatus"></div>
-    </div>
-    <div id="warning" style="display: none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 20">
-        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-      </svg>
-      <span id="warningText"></span>
-    </div>
-    <div id="error" style="display: none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 20">
-        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-      </svg>
-      <span id="errorText"></span>
-    </div>
-  </div>
+  <StatusArea />
 
   <!-- Actual toolbar -->
   <div id="toolbar-wrapper" style="display: none;">
@@ -1118,6 +1095,7 @@
 import CanvasContainer from './CanvasContainer.vue';
 import WelcomeMessage from './WelcomeMessage.vue';
 import Sidebar from './Sidebar.vue';
+import StatusArea from './StatusArea.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
 import ColorModeModal from './ColorModeModal.vue';
@@ -1128,6 +1106,7 @@ export default {
     CanvasContainer,
     WelcomeMessage,
     Sidebar,
+    StatusArea,
     ModuleModal,
     SaveModal,
     ColorModeModal,
@@ -1474,26 +1453,6 @@ export default {
 #showAdvanced {
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-}
-
-.footer-left {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: -2;
-  padding-right: 80px;
-  pointer-events: none;
-}
-
-#forceStop {
-  color: gray;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-#forceStop .spinner-border {
-  width: 1rem;
-  height: 1rem;
 }
 
 .footer-right {
