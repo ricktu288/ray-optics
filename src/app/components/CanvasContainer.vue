@@ -15,19 +15,20 @@
 -->
 
 <template>
-  <div>
-    <canvas id="canvasGrid"></canvas>
-    <canvas id="canvasBelowLight"></canvas>
-    <canvas id="canvasLight" v-show="colorMode === 'default'"></canvas>
-    <canvas id="canvasLightWebGL" v-show="colorMode !== 'default'"></canvas>
-    <canvas id="canvasAboveLight"></canvas>
-  </div>
+  <canvas id="canvasGrid"></canvas>
+  <canvas id="canvasBelowLight"></canvas>
+  <canvas id="canvasLight" v-show="colorMode === 'default'"></canvas>
+  <canvas id="canvasLightWebGL" v-show="colorMode !== 'default'"></canvas>
+  <canvas id="canvasAboveLight"></canvas>
+
+  <!-- Coordinates entering popup -->
+  <input type="text" id="xybox" style="display:none;" value="">
 </template>
 
 <script>
 /**
  * @module CanvasContainer
- * @description The Vue component for the container for the canvas layers. Rendering is done by the {@link Simulator} class (see there for the meaning of each canvas layer). Mouse events are only captured by the top-layered `canvasAboveLight` canvas, and is handled by the {@link Editor} class.
+ * @description The Vue component for the container for the canvas layers and the coordinates entering popup. Rendering is done by the {@link Simulator} class (see there for the meaning of each canvas layer). Mouse events are only captured by the top-layered `canvasAboveLight` canvas, and is handled by the {@link Editor} class.
  */
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
@@ -107,4 +108,14 @@ export default {
   margin: 0;
   z-index: -4;
 }
+
+#xybox {
+  background-color:rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  color:white;
+  position:absolute;
+  border:none;
+}
+
 </style>

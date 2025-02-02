@@ -996,8 +996,6 @@ async function startApp() {
 
   document.getElementById('toolbar-loading').style.display = 'none';
   document.getElementById('toolbar-wrapper').style.display = '';
-  document.getElementById('footer-left').style.display = '';
-  document.getElementById('footer-right').style.display = '';
 
   document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
   document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
@@ -1265,10 +1263,6 @@ function initUIText() {
   setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
   setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
   setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
-  setText('home', null, i18next.t('main:pages.home'));
-  setText('help_popover_text', '<b>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.constrainedDragging.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.groupRotateScale.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.editCoordinates.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.editCoordinates.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.title') + '</b><p>' + i18next.t('simulator:footer.helpPopup.keyboardShortcuts.description') + '</p><b>' + i18next.t('simulator:footer.helpPopup.runLocally.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.runLocally.description')) + '</p><b>' + i18next.t('simulator:footer.helpPopup.contactUs.title') + '</b><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.description')) + '</p><p>' + parseLinks(i18next.t('simulator:footer.helpPopup.contactUs.contribute')) + '</p>');
-  setText('about', i18next.t('main:pages.about'));
-  setText('github', null, i18next.t('main:pages.github'));
 
 
   document.getElementById('language').innerHTML = window.localeData[lang].name;

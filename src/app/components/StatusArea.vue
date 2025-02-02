@@ -98,4 +98,37 @@ export default {
   width: 1rem;
   height: 1rem;
 }
+
+#status {
+  color: gray;
+  background-color:rgba(0,0,0,0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  width: fit-content;
+  pointer-events: auto;
+}
+
+#warning {
+  color: black;
+  font-family: monospace;
+  padding-right: 0.5em;
+  background-color:rgb(255,255,0,0.8);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  pointer-events: auto;
+}
+
+#error {
+  color: white;
+  font-family: monospace;
+  padding-right: 0.5em;
+  background-color:rgba(255,0,0,0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  pointer-events: auto;
+}
+
 </style>
