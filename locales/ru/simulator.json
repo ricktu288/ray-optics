@@ -43,14 +43,39 @@
     },
     "layoutAids": {
       "showGrid": "Сетка",
-      "snapToGrid": "Клеиться к сетке"
+      "snapToGrid": "Клеиться к сетке",
+      "lockObjs": "Закрепить Объекты"
     },
     "zoom": {
       "title": "Масштаб"
     },
     "language": {
-      "title": "Язык"
-    }
+      "title": "Язык",
+      "lowFraction": "Этот язык переведен только на {{fraction}}. Вы можете помочь дополнить его на [Weblate](/weblate)."
+    },
+    "more": "Больше",
+    "gridSize": {
+      "title": "Размер сетки"
+    },
+    "showRayArrows": {
+      "title": "Показать направление лучей"
+    },
+    "colorMode": {
+      "title": "Цветной режим"
+    },
+    "lengthScale": {
+      "title": "Длина"
+    },
+    "correctBrightness": {
+      "title": "Изменить яркость"
+    },
+    "observerSize": {
+      "title": "Наблюдаемый размер"
+    },
+    "showHelpPopups": {
+      "title": "Показать подсказки"
+    },
+    "advancedHelp": "Для помощи нажмите на иконку с знаком вопроса в нижнем-правом углу."
   },
   "objBar": {
     "showAdvanced": {
@@ -66,14 +91,26 @@
       "title": "Удалить"
     },
     "unselect": {
-      "description": "Снимите выделение с этого объекта (щелчок правой кнопкой мыши по пустому месту имеет ту же функцию.)"
+      "description": "Снимите выделение с этого объекта (щелчок правой кнопкой мыши по пустому месту имеет ту же функцию.)",
+      "title": "Отменить выбор"
     }
   },
   "sceneObjs": {
     "common": {
       "brightness": "Яркость",
       "wavelength": "Длина волны",
-      "focalLength": "Фокальное расстояние"
+      "focalLength": "Фокальное расстояние",
+      "brightnessInfo": {
+        "rayDensity": "Работает только если 'Плотность лучей' достаточно велика."
+      },
+      "eqnInfo": {
+        "operators": "Операторы",
+        "constants": "Константы",
+        "functions": "Функции"
+      },
+      "imageDetectionWarning": "Этот инструмент не поддерживает обнаружение фотографий.",
+      "nonSimulateColorsWarning": "Этот инструмент работает только когда 'Симуляция цветов' включена.",
+      "random": "Случайный"
     },
     "BaseFilter": {
       "filter": "Фильтр",
@@ -82,11 +119,79 @@
     },
     "BaseGlass": {
       "refIndex": "Показатель преломления"
+    },
+    "CropBox": {
+      "title": "Экспорт",
+      "rayCountLimit": "Ограничение количества лучей",
+      "width": "Ширина",
+      "format": "Формат"
+    },
+    "DiffractionGrating": {
+      "customBrightness": "Настраиваемая яркость",
+      "mirrored": "Отзеркаленный"
+    },
+    "AngleSource": {
+      "symmetric": "Симметрия"
+    },
+    "TextLabel": {
+      "alignments": {
+        "left": "Лево",
+        "right": "Право",
+        "center": "Центр"
+      },
+      "fontStyles": {
+        "normal": "Нормаль",
+        "bold": "Пустой"
+      },
+      "fontSize": "Передняя сторона",
+      "font": "Перед",
+      "textHere": "Текст",
+      "fontStyle": "Стиль"
+    },
+    "Handle": {
+      "transformations": {
+        "rotation": "Поворот",
+        "scaling": "Масштабирование",
+        "translation": "Перемещение",
+        "yTranslation": "Перемещение по Y",
+        "xTranslation": "Перемещение по X"
+      },
+      "handle": "Ручной"
+    },
+    "ModuleObj": {
+      "module": "Модуль"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "radiiOfCurvature": "Радиус искривления",
+        "focalDistances": "Фокальная дистанция"
+      }
+    },
+    "BaseGrinGlass": {
+      "refIndexFnInfo": {
+        "constants": "Константы",
+        "operators": "Операторы",
+        "functions": "Функции",
+        "accuracy": "Для более точных симуляций перейдите в 'Больше настроек'"
+      }
+    },
+    "Aperature": {
+      "diameter": "Диаметр"
+    },
+    "Detector": {
+      "exportData": "Экспортировать данные"
+    },
+    "Ruler": {
+      "scaleInterval": "Интервал масштабирования"
     }
   },
   "saveModal": {
     "title": "Сохранить",
-    "fileName": "Название"
+    "fileName": "Название",
+    "rename": "Переименовать",
+    "description": {
+      "rename": "Нажмите 'Переименовать' для того чтобы изменить название без сохранения файла."
+    }
   },
   "moduleModal": {
     "title": "Импортировать модули",
@@ -133,5 +238,19 @@
         "contribute": "Прямые взносы также приветствуются (см. [руководство по внесению вклада](/contributing))."
       }
     }
+  },
+  "welcome": {
+    "loading": "Загрузка сцены... Пожалуйста подождите.",
+    "title": "Добро пожаловать в Симуляцию Оптических лучей",
+    "instruction": "Для того чтобы добавить оптический компонент, выберите инструмент и нажмите на пустое место.\nЧтобы загрузить пример перейдите в [Галерею](/gallery)."
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "Линейное значение"
+    }
+  },
+  "statusBox": {
+    "mouseCoordinates": "Координаты мыши",
+    "brightnessScale": "Показатель яркости"
   }
 }
