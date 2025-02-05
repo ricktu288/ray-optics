@@ -64,6 +64,11 @@
       "description": "Ein Spiegel bestehend aus einem Kreisbogen, definiert durch drei Punkte.",
       "instruction": "Ziehen oder Klicken zum Erzeugen. Die ersten 2 Punkte definieren die Länge des Bogens, der letzte die Bogenkrümmung."
     },
+    "ConcaveDiffractionGrating": {
+      "title": "Konkaves Reflexionsgitter",
+      "description": "Ein konkaver Gitterspiegel, welcher auf ArcMirror sowie DiffractionGrating basiert",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Die ersten 2 Punkte definieren die Länge des Bogens, der letzte die Bogenkrümmung."
+    },
     "ParabolicMirror": {
       "title": "Parabolspiegel",
       "description": "Ein parabolischer Spiegel, definiert durch drei Punkte.",

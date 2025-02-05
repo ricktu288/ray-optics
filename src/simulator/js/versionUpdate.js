@@ -56,6 +56,11 @@ const obj_update = {
     "isDichroic": "filter",
     "isDichroicFilter": "invert"
   },
+  "concavediffractiongrating": {
+    "type": "ConcaveDiffractionGrating",
+    "line_density": "lineDensity",
+    "slit_ratio": "slitRatio"
+  },
   "parabolicmirror": {
     "type": "ParabolicMirror",
     "isDichroic": "filter",
