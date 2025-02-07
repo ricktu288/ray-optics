@@ -1203,7 +1203,7 @@ function initUIText() {
   setText('mirrorToolsDropdown', i18next.t('main:tools.categories.mirror'));
   setText('tool_Mirror_label', i18next.t('main:tools.Mirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.Mirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'Mirror.svg');
   setText('tool_ArcMirror_label', i18next.t('main:tools.ArcMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ArcMirror.description'), sub: i18next.t('main:tools.ArcMirror.instruction')}), 'ArcMirror.svg');
-  setText('tool_ConcaveDiffractionGrating_label', i18next.t('main:tools.ConcaveDiffractionGrating.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ConcaveDiffractionGrating.description'), sub: i18next.t('main:tools.ConcaveDiffractionGrating.instruction')}), 'ConcaveDiffractionGrating.svg');
+  setText('tool_ConcaveDiffractionGrating_label', i18next.t('main:tools.ConcaveDiffractionGrating.title') + '<sup>Beta</sup>', null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ConcaveDiffractionGrating.description'), sub: i18next.t('main:tools.ArcMirror.instruction')}), 'ConcaveDiffractionGrating.svg');
   setText('tool_ParabolicMirror_label', i18next.t('main:tools.ParabolicMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.ParabolicMirror.description'), sub: i18next.t('main:tools.ParabolicMirror.instruction')}), 'ParabolicMirror.svg');
   setText('tool_CustomMirror_label', i18next.t('main:tools.CustomMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.CustomMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'CustomMirror.svg');
   setText('tool_IdealMirror_label', i18next.t('main:tools.IdealMirror.title'), null, i18next.t('main:meta.parentheses', {main: i18next.t('main:tools.IdealMirror.description'), sub: i18next.t('main:tools.common.lineInstruction')}), 'IdealMirror.svg');
@@ -1294,7 +1294,7 @@ function initUIText() {
   setText('tool_AngleSource_mobile_label', i18next.t('main:tools.PointSource.title') + ' (<360\u00B0)');
   setText('tool_Mirror_mobile_label', i18next.t('main:tools.Mirror.title'));
   setText('tool_ArcMirror_mobile_label', i18next.t('main:tools.ArcMirror.title'));
-  setText('tool_ConcaveDiffractionGrating_mobile_label', i18next.t('main:tools.ConcaveDiffractionGrating.title'));
+  setText('tool_ConcaveDiffractionGrating_mobile_label', i18next.t('main:tools.ConcaveDiffractionGrating.title') + '<sup>Beta</sup>');
   setText('tool_ParabolicMirror_mobile_label', i18next.t('main:tools.ParabolicMirror.title'));
   setText('tool_CustomMirror_mobile_label', i18next.t('main:tools.CustomMirror.title'));
   setText('tool_IdealMirror_mobile_label', i18next.t('main:tools.IdealMirror.title'));

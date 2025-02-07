@@ -83,6 +83,10 @@
       "title": "分光鏡",
       "description": "能穿透一個比例的光的鏡子。"
     },
+    "ConcaveDiffractionGrating": {
+      "title": "凹面光柵",
+      "description": "形狀為圓弧的凹面繞射光柵。"
+    },
     "PlaneGlass": {
       "title": "半平面",
       "description": "模擬光線經過透光物體界面時的反射與折射。",

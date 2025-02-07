@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Ray Optics Simulation authors and contributors
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import geometry from '../../geometry.js';
 /**
  * Mirror with shape of a circular arc. Diffracts light. 
  * 
- * Tools -> Mirror -> Concave Diffraction Grating
+ * Tools -> Mirror -> Concave Grating
  * @class
  * @extends BaseFilter
  * @memberof sceneObjs
@@ -86,6 +86,19 @@ class ConcaveDiffractionGrating extends BaseFilter {
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
+        ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(124,62,18)';
+        ctx.lineWidth = 2 * ls;
+        ctx.lineCap = 'butt';
+        ctx.beginPath();
+        if (this.customBrightness) {
+          ctx.setLineDash([2 * ls, 2 * ls]);
+        } else {
+          ctx.setLineDash([4 * (1 - this.slitRatio) * ls, 4 * this.slitRatio * ls]);
+        }
+        ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.lineWidth = 1 * ls;
         if (isHovered) {
           ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
           ctx.fillStyle = 'rgb(255,0,0)';
@@ -93,15 +106,6 @@ class ConcaveDiffractionGrating extends BaseFilter {
           ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
         }
       } else {
-        // The three points on the arc is colinear. Treat as a line segment.
-        const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
-        ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(168,168,168)');
-        ctx.lineWidth = 1 * ls;
-        ctx.beginPath();
-        ctx.moveTo(this.p1.x, this.p1.y);
-        ctx.lineTo(this.p2.x, this.p2.y);
-        ctx.stroke();
-
         ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
         ctx.fillStyle = 'rgb(255,0,0)';
         ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
@@ -126,7 +130,6 @@ class ConcaveDiffractionGrating extends BaseFilter {
     this.p3.y = this.p3.y + diffY;
   }
 
-  //rotate around P3
   rotate(cw) {  // cw = 1 for clockwise, cw = -1 for counterclockwise
     const angle = 0.5;  // Degree increment
     const angleInRadians = angle * Math.PI / 180 * cw;  // Convert to radians, apply direction
@@ -292,6 +295,17 @@ class ConcaveDiffractionGrating extends BaseFilter {
 
       // Update the mouse position
       dragContext.mousePos1 = mousePos;
+    }
+  }
+
+  onSimulationStart() {
+    this.warning = null;
+    if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
+      this.warning = (this.warning || "") + i18next.t('simulator:sceneObjs.common.imageDetectionWarning');
+    }
+
+    if (!this.scene.simulateColors) {
+      this.warning = (this.warning || "") + i18next.t('simulator:sceneObjs.common.nonSimulateColorsWarning');
     }
   }
 
