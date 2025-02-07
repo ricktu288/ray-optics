@@ -83,6 +83,10 @@
       "title": "Beam Splitter",
       "description": "A mirror that transmits a percentage of incoming light."
     },
+    "ConcaveDiffractionGrating": {
+      "title": "Concave Grating",
+      "description": "A concave diffraction grating whose shape is part of a circle."
+    },
     "PlaneGlass": {
       "title": "Half-plane",
       "description": "Simulate the refraction and reflection of light on a surface.",

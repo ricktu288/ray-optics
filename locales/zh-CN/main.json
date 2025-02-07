@@ -79,6 +79,10 @@
       "title": "理想曲面镜",
       "description": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距。"
     },
+    "ConcaveDiffractionGrating": {
+      "title": "凹面光栅",
+      "description": "形状为圆弧的凹面绕射光栅。"
+    },
     "BeamSplitter": {
       "title": "分光镜",
       "description": "能穿透一个比例的光的镜子。"

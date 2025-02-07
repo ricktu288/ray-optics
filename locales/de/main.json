@@ -81,6 +81,9 @@
       "title": "Strahlteiler",
       "description": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt."
     },
+    "ConcaveDiffractionGrating": {
+      "title": "Konkaves Reflexionsgitter"
+    },
     "PlaneGlass": {
       "title": "Halbraum",
       "description": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche.",

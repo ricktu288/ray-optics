@@ -36,6 +36,7 @@ export const PointSource = require('./sceneObjs/lightSource/PointSource.js').def
 export const AngleSource = require('./sceneObjs/lightSource/AngleSource.js').default;
 export const Mirror = require('./sceneObjs/mirror/Mirror.js').default;
 export const ArcMirror = require('./sceneObjs/mirror/ArcMirror.js').default;
+export const ConcaveDiffractionGrating = require('./sceneObjs/mirror/ConcaveDiffractionGrating.js').default;
 export const ParabolicMirror = require('./sceneObjs/mirror/ParabolicMirror.js').default;
 export const CustomMirror = require('./sceneObjs/mirror/CustomMirror.js').default;
 export const IdealMirror = require('./sceneObjs/mirror/IdealMirror.js').default;
