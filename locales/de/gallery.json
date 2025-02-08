@@ -1,1 +1,10 @@
-{}
+{
+  "galleryData": {
+    "apparentDepth": {
+      "observer": "Beobachter"
+    },
+    "aplanaticPoints": {
+      "yaxis": "Y-Achse"
+    }
+  }
+}

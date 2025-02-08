@@ -1,1 +1,10 @@
-{}
+{
+  "modulesPage": {
+    "import": "Importieren",
+    "imported": "Importiert",
+    "specification": {
+      "title": "Spezifikation",
+      "parameters": "Parameter"
+    }
+  }
+}

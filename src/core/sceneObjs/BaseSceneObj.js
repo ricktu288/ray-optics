@@ -156,6 +156,14 @@ class BaseSceneObj {
   }
 
   /**
+   * Rotate the object. (This feature is incomplete and currently only implemented for `ConcaveDiffractionGrating`.)
+   * @param {number} cw
+   */
+  rotate(cw) {
+    // Do nothing by default
+  }
+
+  /**
    * Mouse down event when the object is being constructed by the user.
    * @param {Mouse} mouse - The mouse object.
    * @param {boolean} ctrl - Whether the control key is pressed.
