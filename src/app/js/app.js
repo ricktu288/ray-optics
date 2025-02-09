@@ -1005,7 +1005,6 @@ async function startApp() {
   });
 
   document.getElementById('toolbar-loading').style.display = 'none';
-  document.getElementById('toolbar-wrapper').style.display = '';
 
   document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
   document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
