@@ -203,6 +203,15 @@ function exportImages(dir, itemId, lang, isThumbnail, callback) {
       }
     }
 
+    // For Tamil, override the font of all `TextLabel`s to Courier New
+    if (lang === 'ta') {
+      for (const obj of scene.objs) {
+        if (obj.constructor.type === 'TextLabel') {
+          obj.font = 'Courier New';
+        }
+      }
+    }
+
     if (cropBoxPreview) {
       cropBoxPreview.width = 2280;
     } else if (!isThumbnail) {

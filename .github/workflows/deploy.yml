@@ -31,6 +31,8 @@ jobs:
             g++ \
             fonts-noto-cjk \
             fonts-noto-core \
+            fonts-taml \
+            fonts-lohit-taml \
             fonts-dejavu
 
       - name: Setup Node.js
