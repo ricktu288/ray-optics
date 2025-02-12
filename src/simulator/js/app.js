@@ -484,12 +484,16 @@ async function startApp() {
 
     //Plus and Minus Keys for rotation
     if (e.keyCode == 107 || e.keyCode == 187) {             // + key for rotate clockwise
-      scene.objs[editor.selectedObjIndex].rotate(1);
-      simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      if (editor.selectedObjIndex != -1) {
+        scene.objs[editor.selectedObjIndex].rotate(1);
+        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      }
     }
     if (e.keyCode == 109 || e.keyCode == 189) {             // - key for rotate c-clockwise
-      scene.objs[editor.selectedObjIndex].rotate(-1);
-      simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      if (editor.selectedObjIndex != -1) {
+        scene.objs[editor.selectedObjIndex].rotate(-1);
+        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+      }
     }
 
     //Arrow Keys
