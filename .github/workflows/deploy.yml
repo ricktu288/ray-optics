@@ -30,6 +30,7 @@ jobs:
             build-essential \
             g++ \
             fonts-noto-cjk \
+            fonts-noto-core \
             fonts-dejavu
 
       - name: Setup Node.js
