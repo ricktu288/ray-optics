@@ -18,7 +18,7 @@
   <!-- Desktop Toolbar -->
   <div id="toolbar" class="container-fluid d-none d-lg-block">
     <div class="container-xxl">
-      <div class="row justify-content-between">
+      <div class="row justify-content-between" style="flex-wrap: nowrap;">
         <FileBar layout="desktop" />
         <ToolsBar layout="desktop" />
         <ViewBar layout="desktop" />

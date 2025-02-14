@@ -203,6 +203,15 @@ function exportImages(dir, itemId, lang, isThumbnail, callback) {
       }
     }
 
+    // For Tamil, override the font of all `TextLabel`s to Courier New, as it appears to be the only one that supports combining characters in Tamil script on Ubuntu, which is the OS used for the CI. Since there is no such issue on Fedora as well as Firefox on Ubuntu, this is likely an issue of node-canvas or some of its dependencies, and therefore this should be treated as a temporary workaround.
+    if (lang === 'ta') {
+      for (const obj of scene.objs) {
+        if (obj.constructor.type === 'TextLabel') {
+          obj.font = 'Courier New';
+        }
+      }
+    }
+
     if (cropBoxPreview) {
       cropBoxPreview.width = 2280;
     } else if (!isThumbnail) {

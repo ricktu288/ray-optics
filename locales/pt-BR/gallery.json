@@ -102,9 +102,26 @@
     },
     "theMirascope": {
       "title": "O Mirascópio",
+      "description": "Um **mirascópio** é um dispositivo de ilusão de óptica fascinate que usa dois espelhos parabólicos opostos para criar a ilusão de uma imagem flutuante tridimentsional. O dispositivo consiste de:\n1. **Dois Espelhos Parabólicos** com exatamente o mesmo tamanho, com um espelho virado pra cima e o outro virado para baixo, formando uma estrutura semelhante a um mexilhão. Os espelhos são projetados para focar luz em um ponto específico. O espelho superior tem um buraco em seu vértice para permitir que a luz entre no dispositivo.\n2. **Um Pequeno Objeto**: Colocado dentro do mirascópio, tipicamente próximo do ponto focal do espelho superior, que está bem próximo do vértice do espelho inferior.\n\nQuando a luz do objeto reflete entre os espelhos, é redirecionada de modo que apareça como uma imagem tridimensional flutuando acima da superfície do mirascópio. A ilusão é tão convincente que pessoas frequentemente tentam tocar na imagem, então descobrindo que não há nada lá.\n\nMirascópios são populares em demonstrações de ciência e brinquedos para ilustrar os princípios de óptica, reflexos, e o comportamento da luz.",
       "object1": "Objeto",
-      "realimage1": "Imagem real",
-      "description": "Um **mirascópio** é um dispositivo de ilusão de óptica fascinate que usa dois espelhos parabólicos opostos para criar a ilusão de uma imagem flutuante tridimentsional. O dispositivo consiste de:\n1. **Dois Espelhos Parabólicos** com exatamente o mesmo tamanho, com um espelho virado pra cima e o outro virado para baixo, formando uma estrutura semelhante a um mexilhão. Os espelhos são projetados para focar luz em um ponto específico. O espelho superior tem um buraco em seu vértice para permitir que a luz entre no dispositivo.\n2. **Um Pequeno Objeto**: Colocado dentro do mirascópio, tipicamente próximo do ponto focal do espelho superior, que está bem próximo do vértice do espelho inferior.\n\nQuando a luz do objeto reflete entre os espelhos, é redirecionada de modo que apareça como uma imagem tridimensional flutuando acima da superfície do mirascópio. A ilusão é tão convincente que pessoas frequentemente tentam tocar na imagem, então descobrindo que não há nada lá.\n\nMirascópios são populares em demonstrações de ciência e brinquedos para ilustrar os princípios de óptica, reflexos, e o comportamento da luz."
+      "realimage1": "Imagem real"
+    },
+    "reflect": {
+      "title": "Reflexão e Refração",
+      "description": "Esta simulação mostra a reflexão e refração em uma superfície."
+    },
+    "internalReflection": {
+      "title": "Reflexão Interna",
+      "description": "Esta simulação mostra a refração e reflexão interna em uma superfície."
+    },
+    "prisms": {
+      "title": "Prismas",
+      "description": "Esta simulação demonstra o prisma de ângulo reto, o prisma de Porro, o prisma rombóide, o prisma de Dove, e o pentaprisma.",
+      "rhomboid": "rombóide",
+      "rightangle": "ângulo reto",
+      "porro": "Porro",
+      "dove": "Dove",
+      "pentaprism": "pentaprisma"
     },
     "beamDirectors": {
       "title": "Diretores de Raio",
@@ -129,6 +146,40 @@
       "observerseye": "olho do observador",
       "ignoretheorangesquar": "Ignore os quadrados laranja!"
     },
+    "brokenPencil": {
+      "title": "Lápis Quebrado",
+      "description": "Esta é uma simulação da imagem percebida com nossos olhos, quando olhando pela lateral de um lápis parcialmente submerso em um copo d'água. A descontinuidade do índice refrativo entre ar e água faz com que o lápis apareça como quebrado e dobrado. No entanto, nesta simulação, a quebra é mais fortemente exibida. Você pode conferir a simulação [Lápis Dobrado](/gallery/bended-pencil) onde a dobra do lápis é mais fortemente exibida.",
+      "brokenpencilyellowim": "lápis quebrado (amarelo)\nimagem na retina"
+    },
+    "chromaticDispersion": {
+      "title": "Dispersão cromática",
+      "description": "Esta simulação demonstra dispersão cromática usando um raio de cor branca e um prisma triangular. Aqui a cor branca é formada misturando as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta.",
+      "dragheretoadjustbeam": "Arraste aqui para\najustar largura do feixe",
+      "dragheretorotatethep": "Arraste aqui para\ngirar o prisma"
+    },
+    "rainbows": {
+      "title": "Arco-íris",
+      "description": "Esta simulação demonstra a formação do arco-íris primário, e a faixa escura de Alexander. Aqui o espectro da luz do sol é aproximada ao misturar as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta. Os raios saindo do arco-íris primário/secundário se devem a uma/duas reflexões internas dentro da gota de chuva (é possível ver isso ao definir Densidade de Raios para um valor baixo e arrastar a gota de chuva). Note que estas não são reflexões totais internas, então as intensidades dos raios que saem são bem menores que os raios que entram. Já que os [ângulos de desvio mínimo](/gallery/minimum-deviation-angle) dependem do comprimento de onda, cores diferentes se acumulam em ângulos diferentes. Daí as cores nos arco-íris. Fora dos ângulos mínimos, os raios não se acumulam, então todas as cores são fracas e misturadas, produzindo a cor branca fraca (ou \"cinza\") nos ângulos logo ao redor dos dois arco-íris. Por outro lado, nenhum vai para o ângulo entre os dois arco-íris, formando a faixa escura de Alexander.",
+      "thesearethecolorspro": "Estas são as cores produzidas por uma única gota de chuva.\nOs arco-íris finais que nós vemos se devem a um enorme número de gotas de chuva no véu,\ncada uma dando uma única cor (no ângulo correspondente) ao observador.",
+      "secondaryrainbow": "Arco-íris secundário",
+      "alexandersdarkband": "Faixa escura de Alexander",
+      "raindrop": "Gota de chuva",
+      "primaryrainbow": "Arco-íris primário",
+      "sunlight": "Luz do sol"
+    },
+    "minimumDeviationAngle": {
+      "title": "Desvio angular mínimo",
+      "description": "A definição do desvio angular de um raio encontrando um elemento óptico depende do contexto - na captura de tela abaixo pode-se ver sua definição para um prisma triangular e esférico. Nos exemplos dentro desta simulação, o desvio de ângulo como função do ângulo de incidência do raio entrando no elemento óptico, possui um mínimo local em um desvio de ângulo chamado \"desvio angular mínimo\". Esse mínimo local explica fenômenos ópticos como [arco-íris](/gallery/rainbows) e halos - devido a esse mínimo local, os raios desviados se acumulam em direções específicas, criando \"cáusticas ópticas\" (como visto no exemplo C dentro da simulação), que percebemos como arco-íris/halos.",
+      "inexamplesaandbbyrot": "Nos exemplos A e B, ao girar os prismas entre os pontos A1 a A2 e B1 a B2, assim mudando o\nângulo de incidência do raio entrando no elemento óptico, pode-se claramente observar que um mínimo\ndesvio angular é alcançado em algum lugar entre o par de pontos.\n(no exemplo A o desvio angular é medido relativo a um eixo horizonta. Já no exemplo B,\né medido relativo ao eixo vertical).\n\nAgora se aproxime do exemplo C (usando o zoom da simulação), e explanda os dois feixes (vermelho e roxo, e\nsua interseção fica rosa. Isso é efetivamente o mesmo que rodar o prisma esférico no \nexemplo B, assim mudando o ângulo de incidência do raio que entra) e observe que do ponto\nC1 a C2 os raios traseiros saindo se acumulam rumo a dois raios vermelho e roxo distintos \n(\"cáusticas ópticas\") - o desvio angular mínimo é alcançado ao redor do ponto C2, e depende do comprimento\nde onda da luz (cor). Então, quando expandimos os dois feixes do ponto C2 a C3, os raios saindo por trás invertem sua direção para cima.",
+      "examplea": "Exemplo - A",
+      "examplec": "Exemplo - C",
+      "exampleb": "Exemplo - B",
+      "dragtorotate": "Arraste para girar",
+      "dragtoadjustbeamwidt": "Arraste para ajustar largura dos feixes",
+      "usethebuiltinzoomtob": "Use o zoom da simulação para melhor interagir com ela",
+      "deviationangle": "Desvio angular",
+      "incidenceangle": "Ângulo de incidência"
+    },
     "aplanaticPoints": {
       "title": "Pontos aplanáticos",
       "description": "Pontos aplanáticos de um sistema óptico são pontos especiais em seu eixo óptico, tais que \"raios partindo de um deles irão todos convergir para, ou parecer divergir do outro ponto\".\n\n- Elipse: os dois focos da lente/espelho elíptico são pontos aplanáticos, já que luz emitida de um foco irá convergir rumo ao outro.\n- Esfera: uma lente esférica tem dois pontos aplanáticos, dentro e fora da esfera - para mais detalhes veja a simulação.\n- Hipérbole: os dois focos da simulação de [Espelho hiperbólico](/gallery/hyperbolic-mirror) também são pontos aplanáticos.\n\nDados dois pontos com coordenadas horizontais \\(x_1\\) e \\(x_2\\), coordenadas verticais idênticas, e dado os indíces refrativos fora e dentro do nosso elemento óptico como \\(n_1\\) e \\(n_2\\) (respectivamente), para esses dois pontos serem pontos aplanáticos, o limite do nosso elemento óptico deve fazer com que seja verdade\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation} tal que \\(k_i=1\\) ou \\(-1\\) se o raio connectando \\(x_i\\) e o limite do nosso elemento óptico for real ou imaginário, respectivamente, e \\(E\\) for uma constante para a qual essa equação possui uma solução não-trivial. Essa equação (que pode ser derivada utilizando o princípip de Fermat) é uma equação de uma Oval Cartesiana, da qual as seções cônicas são casos especiais.",
@@ -136,6 +187,21 @@
       "sphericallens": "Lente esférica",
       "ellipticallens": "Lente elíptica",
       "yaxis": "Eixo y"
+    },
+    "concaveLens": {
+      "title": "Lente côncava",
+      "description": "Esta simulação mostra uma lente côncava divergindo um feixe."
+    },
+    "convexLens": {
+      "title": "Lente Convexa",
+      "description": "Esta simulação mostra uma lente convexa convergindo um feixe."
+    },
+    "lensImages": {
+      "title": "Imagens de Lente",
+      "description": "Esta simulação mostra as imagens de um feixe e fontes ponto produzidas por lentes ideais."
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "Magnificação transversal e longitudinal"
     },
     "beamExpanders": {
       "title": "Expansores de feixe",
@@ -152,72 +218,6 @@
       "lightfromthepaper": "Luz vinda do papel",
       "eyes": "Olhos",
       "dragtomovethebagouto": "Arraste para mover o saco pra fora da água"
-    },
-    "brokenPencil": {
-      "brokenpencilyellowim": "lápis quebrado (amarelo)\nimagem na retina",
-      "title": "Lápis Quebrado",
-      "description": "Esta é uma simulação da imagem percebida com nossos olhos, quando olhando pela lateral de um lápis parcialmente submerso em um copo d'água. A descontinuidade do índice refrativo entre ar e água faz com que o lápis apareça como quebrado e dobrado. No entanto, nesta simulação, a quebra é mais fortemente exibida. Você pode conferir a simulação [Lápis Dobrado](/gallery/bended-pencil) onde a dobra do lápis é mais fortemente exibida."
-    },
-    "chromaticDispersion": {
-      "title": "Dispersão cromática",
-      "dragheretorotatethep": "Arraste aqui para\ngirar o prisma",
-      "dragheretoadjustbeam": "Arraste aqui para\najustar largura do feixe",
-      "description": "Esta simulação demonstra dispersão cromática usando um raio de cor branca e um prisma triangular. Aqui a cor branca é formada misturando as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta."
-    },
-    "reflect": {
-      "title": "Reflexão e Refração",
-      "description": "Esta simulação mostra a reflexão e refração em uma superfície."
-    },
-    "internalReflection": {
-      "title": "Reflexão Interna",
-      "description": "Esta simulação mostra a refração e reflexão interna em uma superfície."
-    },
-    "prisms": {
-      "title": "Prismas",
-      "pentaprism": "pentaprisma",
-      "dove": "Dove",
-      "rhomboid": "rombóide",
-      "rightangle": "ângulo reto",
-      "description": "Esta simulação demonstra o prisma de ângulo reto, o prisma de Porro, o prisma rombóide, o prisma de Dove, e o pentaprisma.",
-      "porro": "Porro"
-    },
-    "rainbows": {
-      "title": "Arco-íris",
-      "sunlight": "Luz do sol",
-      "thesearethecolorspro": "Estas são as cores produzidas por uma única gota de chuva.\nOs arco-íris finais que nós vemos se devem a um enorme número de gotas de chuva no véu,\ncada uma dando uma única cor (no ângulo correspondente) ao observador.",
-      "secondaryrainbow": "Arco-íris secundário",
-      "alexandersdarkband": "Faixa escura de Alexander",
-      "raindrop": "Gota de chuva",
-      "primaryrainbow": "Arco-íris primário",
-      "description": "Esta simulação demonstra a formação do arco-íris primário, e a faixa escura de Alexander. Aqui o espectro da luz do sol é aproximada ao misturar as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta. Os raios saindo do arco-íris primário/secundário se devem a uma/duas reflexões internas dentro da gota de chuva (é possível ver isso ao definir Densidade de Raios para um valor baixo e arrastar a gota de chuva). Note que estas não são reflexões totais internas, então as intensidades dos raios que saem são bem menores que os raios que entram. Já que os [ângulos de desvio mínimo](/gallery/minimum-deviation-angle) dependem do comprimento de onda, cores diferentes se acumulam em ângulos diferentes. Daí as cores nos arco-íris. Fora dos ângulos mínimos, os raios não se acumulam, então todas as cores são fracas e misturadas, produzindo a cor branca fraca (ou \"cinza\") nos ângulos logo ao redor dos dois arco-íris. Por outro lado, nenhum vai para o ângulo entre os dois arco-íris, formando a faixa escura de Alexander."
-    },
-    "minimumDeviationAngle": {
-      "title": "Desvio angular mínimo",
-      "examplea": "Exemplo - A",
-      "examplec": "Exemplo - C",
-      "dragtoadjustbeamwidt": "Arraste para ajustar largura dos feixes",
-      "exampleb": "Exemplo - B",
-      "dragtorotate": "Arraste para girar",
-      "usethebuiltinzoomtob": "Use o zoom da simulação para melhor interagir com ela",
-      "deviationangle": "Desvio angular",
-      "incidenceangle": "Ângulo de incidência",
-      "description": "A definição do desvio angular de um raio encontrando um elemento óptico depende do contexto - na captura de tela abaixo pode-se ver sua definição para um prisma triangular e esférico. Nos exemplos dentro desta simulação, o desvio de ângulo como função do ângulo de incidência do raio entrando no elemento óptico, possui um mínimo local em um desvio de ângulo chamado \"desvio angular mínimo\". Esse mínimo local explica fenômenos ópticos como [arco-íris](/gallery/rainbows) e halos - devido a esse mínimo local, os raios desviados se acumulam em direções específicas, criando \"cáusticas ópticas\" (como visto no exemplo C dentro da simulação), que percebemos como arco-íris/halos.",
-      "inexamplesaandbbyrot": "Nos exemplos A e B, ao girar os prismas entre os pontos A1 a A2 e B1 a B2, assim mudando o\nângulo de incidência do raio entrando no elemento óptico, pode-se claramente observar que um mínimo\ndesvio angular é alcançado em algum lugar entre o par de pontos.\n(no exemplo A o desvio angular é medido relativo a um eixo horizonta. Já no exemplo B,\né medido relativo ao eixo vertical).\n\nAgora se aproxime do exemplo C (usando o zoom da simulação), e explanda os dois feixes (vermelho e roxo, e\nsua interseção fica rosa. Isso é efetivamente o mesmo que rodar o prisma esférico no \nexemplo B, assim mudando o ângulo de incidência do raio que entra) e observe que do ponto\nC1 a C2 os raios traseiros saindo se acumulam rumo a dois raios vermelho e roxo distintos \n(\"cáusticas ópticas\") - o desvio angular mínimo é alcançado ao redor do ponto C2, e depende do comprimento\nde onda da luz (cor). Então, quando expandimos os dois feixes do ponto C2 a C3, os raios saindo por trás invertem sua direção para cima."
-    },
-    "convexLens": {
-      "description": "Esta simulação mostra uma lente convexa convergindo um feixe.",
-      "title": "Lente Convexa"
-    },
-    "lensImages": {
-      "title": "Imagens de Lente",
-      "description": "Esta simulação mostra as imagens de um feixe e fontes ponto produzidas por lentes ideais."
-    },
-    "concaveLens": {
-      "description": "Esta simulação mostra uma lente côncava divergindo um feixe.",
-      "title": "Lente côncava"
-    },
-    "transverseAndLongitudinalMagnification": {
-      "title": "Magnificação transversal e longitudinal"
     }
   }
 }
