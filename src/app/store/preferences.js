@@ -71,6 +71,7 @@ export const usePreferencesStore = () => {
               return PREFERENCES_DEFAULTS[key]
             }
           })()
+          console.log('initial value', key, value)
           // Trigger callback for initial value
           setTimeout(() => PREFERENCES_CALLBACKS[key]?.(value), 0)
           return value

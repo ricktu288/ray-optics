@@ -575,6 +575,7 @@ async function startApp() {
     popoversEnabled = this.checked;
     localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
 
+    document.dispatchEvent(new Event('preferencesChanged'));
     showReloadWarning();
   };
 
@@ -1160,11 +1161,6 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('mode_rays_label', null, i18next.t('main:view.rays.title'), i18next.t('main:view.rays.description'), 'normal.svg');
-  setText('mode_extended_label', null, i18next.t('main:view.extended.title'), i18next.t('main:view.extended.description') + '<br>' + i18next.t('main:view.extended.simulateColorsNote'), 'extended_rays.svg');
-  setText('mode_images_label', null, i18next.t('main:view.images.title'), i18next.t('main:view.images.description') + '<br>' + i18next.t('main:view.images.simulateColorsNote'), 'all_images.svg');
-  setText('mode_observer_label', null, i18next.t('main:view.observer.title'), i18next.t('main:meta.parentheses', {main: i18next.t('main:view.observer.description'), sub: i18next.t('main:view.observer.instruction')}) + '<br>' + i18next.t('main:view.observer.simulateColorsNote'), 'seen_by_observer.svg');
-  setText('view_text', i18next.t('main:view.title'));
   setText('rayDensity_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
   setText('rayDensity_text', i18next.t('simulator:settings.rayDensity.title'));
   setText('showGrid_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
@@ -1246,11 +1242,6 @@ function initUIText() {
   setText('tool_LineArrow_mobile_label', i18next.t('main:tools.LineArrow.title'));
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
-  setText('view_mobile_text', i18next.t('main:view.title'));
-  setText('mode_rays_mobile_label', i18next.t('main:view.rays.title'));
-  setText('mode_extended_mobile_label', i18next.t('main:view.extended.title'));
-  setText('mode_images_mobile_label', i18next.t('main:view.images.title'));
-  setText('mode_observer_mobile_label', i18next.t('main:view.observer.title'));
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
   setText('rayDensity_mobile_text', i18next.t('simulator:settings.rayDensity.title'));
   setText('showGrid_text', i18next.t('simulator:settings.layoutAids.showGrid'));
