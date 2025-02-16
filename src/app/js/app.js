@@ -106,7 +106,6 @@ async function startApp() {
   } catch { }
   initUIText();
   initTools();
-  initModes();
 
 
   objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
@@ -318,8 +317,8 @@ async function startApp() {
       document.getElementById('showRayArrows').checked = scene.showRayArrows;
       document.getElementById('showRayArrows_mobile').checked = scene.showRayArrows;
       modebtn_clicked(scene.mode);
-      document.getElementById('mode_' + scene.mode).checked = true;
-      document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
+      //document.getElementById('mode_' + scene.mode).checked = true;
+      //document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
       colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
 
@@ -1472,24 +1471,6 @@ function initTools() {
 
 
 
-function initModes() {
-  const allElements = document.querySelectorAll('*');
-
-  allElements.forEach(element => {
-    if (element.id && element.id.startsWith('mode_')) {
-      const modeId = element.id.replace('mode_', '').replace('_mobile', '');
-      if (['rays', 'extended', 'images', 'observer'].includes(modeId)) {
-        element.addEventListener('click', (event) => {
-          event.target.blur();
-          //console.log('mode_' + modeId);
-          modebtn_clicked(modeId);
-          editor.onActionComplete();
-        });
-      }
-    }
-  });
-}
-
 function hideAllPopovers() {
   document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
     var popoverInstance = bootstrap.Popover.getInstance(element);
@@ -1727,8 +1708,8 @@ function init() {
 
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
-  document.getElementById('mode_rays').checked = true;
-  document.getElementById('mode_rays_mobile').checked = true;
+  //document.getElementById('mode_rays').checked = true;
+  //document.getElementById('mode_rays_mobile').checked = true;
 
   document.getElementById('lockObjs').checked = false;
   document.getElementById('snapToGrid').checked = false;
@@ -1825,10 +1806,9 @@ function modebtn_clicked(mode1) {
     // Initialize the observer
     scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
   }
-
-
-  simulator.updateSimulation(false, true);
 }
+
+window.modebtn_clicked = modebtn_clicked;
 
 function colorModebtn_clicked(colorMode) {
   scene.colorMode = colorMode;

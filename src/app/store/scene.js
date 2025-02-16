@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { reactive, computed, onMounted, onUnmounted } from 'vue'
 import Scene from '../../core/Scene'
 
 // Map of properties to their update callbacks
@@ -22,11 +22,18 @@ const PROPERTY_CALLBACKS = {
   name: () => {
     window.rename?.()
   },
+  mode: (value) => {
+    window.modebtn_clicked?.(value)
+    window.simulator?.updateSimulation(false, true)
+  },
   colorMode: (value) => {
     window.colorModebtn_clicked?.(value)
-    window.simulator?.updateSimulation()
+    window.simulator?.updateSimulation(false, true)
   },
 }
+
+// Create a single instance of the store
+let storeInstance = null
 
 /**
  * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
@@ -34,19 +41,21 @@ const PROPERTY_CALLBACKS = {
  * @returns {Object} A Vue store for the scene
  */
 export const useSceneStore = () => {
-  // Create refs for all serializable properties
-  const refs = Object.fromEntries(
+  if (storeInstance) return storeInstance
+
+  // Create a reactive object for all serializable properties
+  const state = reactive(Object.fromEntries(
     Object.entries(Scene.serializableDefaults).map(([key]) => [
-      `_${key}`,
-      ref(Scene.serializableDefaults[key])
+      key,
+      Scene.serializableDefaults[key]
     ])
-  )
+  ))
 
   // Function to sync with scene
   const syncWithScene = () => {
     if (window.scene) {
       Object.keys(Scene.serializableDefaults).forEach(key => {
-        refs[`_${key}`].value = window.scene[key] ?? Scene.serializableDefaults[key]
+        state[key] = window.scene[key] ?? Scene.serializableDefaults[key]
       })
     }
   }
@@ -58,8 +67,8 @@ export const useSceneStore = () => {
     }
     if (window.scene) {
       window.scene.setViewportSize(width, height);
-      refs._width.value = width;
-      refs._height.value = height;
+      state.width = width;
+      state.height = height;
     }
     if (window.simulator?.ctxAboveLight) {
       window.simulator.updateSimulation();
@@ -71,13 +80,15 @@ export const useSceneStore = () => {
     Object.keys(Scene.serializableDefaults).map(key => [
       key,
       computed({
-        get: () => refs[`_${key}`].value,
+        get: () => state[key],
         set: (newValue) => {
           console.log(`Setting ${key} to ${newValue}`)
           if (window.scene) {
             window.scene[key] = newValue
-            refs[`_${key}`].value = newValue
+            state[key] = newValue
             PROPERTY_CALLBACKS[key]?.(newValue)
+            // Emit a change event to ensure all components update
+            //document.dispatchEvent(new CustomEvent('sceneChanged'))
           }
           window.editor?.onActionComplete()
         }
@@ -95,8 +106,11 @@ export const useSceneStore = () => {
     document.removeEventListener('sceneChanged', syncWithScene)
   })
 
-  return {
+  storeInstance = {
     ...computedProps,
-    setViewportSize
+    setViewportSize,
+    state
   }
+
+  return storeInstance
 }

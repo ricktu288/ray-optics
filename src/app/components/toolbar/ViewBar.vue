@@ -19,7 +19,14 @@
     <div class="row">
       <div class="btn-group" role="group">
         <template v-for="mode in viewModes" :key="mode">
-          <input type="radio" class="btn-check" name="viewradio" :id="'mode_' + mode" autocomplete="off" :checked="mode === 'rays'">
+          <input 
+            type="radio" 
+            class="btn-check" 
+            name="viewradio" 
+            :id="'mode_' + mode" 
+            :value="mode"
+            v-model="currentMode"
+          >
           <label 
             :id="'mode_' + mode + '_label'" 
             class="btn shadow-none btn-primary" 
@@ -46,8 +53,19 @@
       <div id="mobile-dropdown-view" class="mobile-dropdown">
         <ul>
           <li v-for="mode in viewModes" :key="mode">
-            <input type="radio" class="btn-check" name="viewradio_mobile" autocomplete="off" :id="'mode_' + mode + '_mobile'" :checked="mode === 'rays'">
-            <label :id="'mode_' + mode + '_mobile_label'" class="btn btn-primary dropdown-item" :for="'mode_' + mode + '_mobile'">
+            <input 
+              type="radio" 
+              class="btn-check" 
+              name="viewradio_mobile" 
+              :id="'mode_' + mode + '_mobile'" 
+              :value="mode"
+              v-model="currentMode"
+            >
+            <label 
+              :id="'mode_' + mode + '_mobile_label'" 
+              class="btn btn-primary dropdown-item" 
+              :for="'mode_' + mode + '_mobile'"
+            >
               {{ $t(`main:view.${mode}.title`) }}
             </label>
           </li>
@@ -61,6 +79,7 @@
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import i18next from 'i18next'
 import { usePreferencesStore } from '../../store/preferences'
+import { useSceneStore } from '../../store/scene'
 import { computed, toRef } from 'vue'
 
 export default {
@@ -76,12 +95,10 @@ export default {
     const help = toRef(preferences, 'help')
     const tooltipType = computed(() => help.value ? 'popover' : undefined)
 
+    const scene = useSceneStore()
     return {
-      tooltipType
-    }
-  },
-  data() {
-    return {
+      tooltipType,
+      currentMode: scene.mode,
       viewModes: ['rays', 'extended', 'images', 'observer']
     }
   },
