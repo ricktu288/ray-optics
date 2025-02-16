@@ -27,23 +27,7 @@
           </button>
           <div class="dropdown-menu" id="more-options-dropdown" aria-labelledby="optionsDropdown">
             <div class="container">
-              <div class="row d-flex d-xl-none justify-content-between align-items-center" id="rayDensity_more_popover" data-bs-placement="left" data-bs-offset="0,20">
-                <div class="col-auto" id="rayDensity_more_text"></div>
-                <div class="btn-group col-auto d-flex align-items-center" role="group">
-                  <button class="btn shadow-none range-minus-btn" id="rayDensityMinus_more">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                      <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                    </svg>
-                  </button>
-                  <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_more">
-                  <button class="btn shadow-none range-plus-btn" id="rayDensityPlus_more">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                  </button>
-                </div>
-                <hr class="dropdown-divider">
-              </div>
+              <RayDensityBar layout="tablet" />
 
               <div class="row d-flex d-xxl-none justify-content-between align-items-center">
                 <div class="col-auto settings-label" id="layoutAids_more_text"></div>
@@ -239,22 +223,7 @@
     <div class="dropdown-menu mobile-dropdown-menu">
       <div id="mobile-dropdown-options" class="mobile-dropdown">
         <div class="container" style="padding-bottom: 15px;">
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-auto settings-label" id="rayDensity_mobile_text"></div>
-            <div class="col-auto d-flex align-items-center">
-              <button class="btn range-minus-btn" id="rayDensityMinus_mobile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                </svg>
-              </button>
-              <input type="range" class="form-range toolbar-range" min="-3" max="3" step="0.0001" value="-2.3026" id="rayDensity_mobile">
-              <button class="btn range-plus-btn" id="rayDensityPlus_mobile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+          <RayDensityBar layout="mobile" />
 
           <hr class="dropdown-divider">
 
@@ -438,10 +407,15 @@
 </template>
 
 <script>
+import RayDensityBar from './RayDensityBar.vue';
+
 export default {
   name: 'SettingsBar',
   props: {
     layout: String
+  },
+  components: {
+    RayDensityBar
   }
 }
 </script>

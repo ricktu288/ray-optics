@@ -30,11 +30,19 @@ const PROPERTY_CALLBACKS = {
     window.colorModebtn_clicked?.(value)
     window.simulator?.updateSimulation(false, true)
   },
+  rayModeDensity: (value) => {
+    window.simulator?.updateSimulation(false, true)
+  },
+  imageModeDensity: (value) => {
+    window.simulator?.updateSimulation(false, true)
+  }
 }
 
 // Create a single instance of the store
 let storeInstance = null
 
+/**
+ * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
 /**
  * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
  *

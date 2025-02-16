@@ -22,8 +22,8 @@
         <FileBar layout="desktop" />
         <ToolsBar layout="desktop" />
         <ViewBar layout="desktop" />
-        <RayDensityBar />
-        <LayoutAidsBar />
+        <RayDensityBar layout="desktop" />
+        <LayoutAidsBar layout="desktop" />
         <SettingsBar layout="desktop" />
       </div>
     </div>

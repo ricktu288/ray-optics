@@ -33,13 +33,21 @@ export const vTooltipPopover = {
         content = `<img src="../img/${options.popoverImage}" class="popover-image" id="dynamic-popover-image">${content}`
       }
 
-      const popover = new bootstrap.Popover(el, {
-        title: options.title,
+      const popoverConfig = {
+        title: options.title || '',
         content,
-        placement: options.placement || 'bottom',
         trigger: options.trigger || 'hover',
         html: options.html !== false
-      })
+      }
+      
+      if (options.placement) {
+        popoverConfig.placement = options.placement
+      }
+      if (options.offset) {
+        popoverConfig.offset = options.offset
+      }
+
+      const popover = new bootstrap.Popover(el, popoverConfig)
 
       if (options.popoverImage) {
         el.addEventListener('inserted.bs.popover', () => {
@@ -54,12 +62,18 @@ export const vTooltipPopover = {
 
       // Store popover instance for cleanup
       el._popover = popover
-    } else {
-      const tooltip = new bootstrap.Tooltip(el, {
-        title: options.title || '',
-        placement: options.placement || 'bottom',
-        trigger: options.trigger || 'hover'
-      })
+    } else if (options.title) { // Only create tooltip if title is provided
+      const tooltipConfig = {
+        title: options.title,
+        trigger: options.trigger || 'hover',
+        placement: options.placement || 'bottom'
+      }
+      
+      if (options.offset) {
+        tooltipConfig.offset = options.offset
+      }
+
+      const tooltip = new bootstrap.Tooltip(el, tooltipConfig)
 
       // Store tooltip instance for cleanup
       el._tooltip = tooltip
@@ -86,14 +100,21 @@ export const vTooltipPopover = {
         content = `<img src="../img/${options.popoverImage}" class="popover-image" id="dynamic-popover-image">${content}`
       }
 
-      // Initialize new popover
-      el._popover = new bootstrap.Popover(el, {
-        title: options.title,
+      const popoverConfig = {
+        title: options.title || '',
         content,
-        placement: options.placement || 'bottom',
         trigger: options.trigger || 'hover',
         html: options.html !== false
-      })
+      }
+      
+      if (options.placement) {
+        popoverConfig.placement = options.placement
+      }
+      if (options.offset) {
+        popoverConfig.offset = options.offset
+      }
+
+      el._popover = new bootstrap.Popover(el, popoverConfig)
 
       if (options.popoverImage) {
         el.addEventListener('inserted.bs.popover', () => {
@@ -105,22 +126,29 @@ export const vTooltipPopover = {
           }
         })
       }
-    } else {
-      // Initialize new tooltip
-      el._tooltip = new bootstrap.Tooltip(el, {
-        title: options.title || '',
-        placement: options.placement || 'bottom',
-        trigger: options.trigger || 'hover'
-      })
+    } else if (options.title) { // Only create tooltip if title is provided
+      const tooltipConfig = {
+        title: options.title,
+        trigger: options.trigger || 'hover',
+        placement: options.placement || 'bottom'
+      }
+      
+      if (options.offset) {
+        tooltipConfig.offset = options.offset
+      }
+
+      el._tooltip = new bootstrap.Tooltip(el, tooltipConfig)
     }
   },
-
+  
   unmounted(el) {
     if (el._popover) {
       el._popover.dispose()
+      el._popover = null
     }
     if (el._tooltip) {
       el._tooltip.dispose()
+      el._tooltip = null
     }
   }
 }

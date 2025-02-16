@@ -755,65 +755,6 @@ async function startApp() {
   document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
 
 
-  document.getElementById('rayDensity').oninput = function () {
-    scene.rayDensity = Math.exp(this.value);
-    document.getElementById('rayDensity').value = this.value;
-    document.getElementById('rayDensity_more').value = this.value;
-    document.getElementById('rayDensity_mobile').value = this.value;
-    simulator.updateSimulation(false, true);
-  };
-  document.getElementById('rayDensity_more').oninput = document.getElementById('rayDensity').oninput;
-  document.getElementById('rayDensity_mobile').oninput = document.getElementById('rayDensity').oninput;
-
-  document.getElementById('rayDensity').onmouseup = function () {
-    scene.rayDensity = Math.exp(this.value); // For browsers not supporting oninput
-    document.getElementById('rayDensity').value = this.value;
-    document.getElementById('rayDensity_more').value = this.value;
-    document.getElementById('rayDensity_mobile').value = this.value;
-    this.blur();
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('rayDensity_more').onmouseup = document.getElementById('rayDensity').onmouseup;
-  document.getElementById('rayDensity_mobile').onmouseup = document.getElementById('rayDensity').onmouseup;
-
-  document.getElementById('rayDensity').ontouchend = function () {
-    scene.rayDensity = Math.exp(this.value); // For browsers not supporting oninput
-    document.getElementById('rayDensity').value = this.value;
-    document.getElementById('rayDensity_more').value = this.value;
-    document.getElementById('rayDensity_mobile').value = this.value;
-    this.blur();
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('rayDensity_more').ontouchend = document.getElementById('rayDensity').ontouchend;
-  document.getElementById('rayDensity_mobile').ontouchend = document.getElementById('rayDensity').ontouchend;
-
-  document.getElementById('rayDensityPlus').onclick = function () {
-    const rayDensityValue = Math.log(scene.rayDensity) * 1.0 + 0.1;
-    scene.rayDensity = Math.exp(rayDensityValue);
-    document.getElementById('rayDensity').value = rayDensityValue;
-    document.getElementById('rayDensity_more').value = rayDensityValue;
-    document.getElementById('rayDensity_mobile').value = rayDensityValue;
-    this.blur();
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('rayDensityMinus').onclick = function () {
-    const rayDensityValue = Math.log(scene.rayDensity) * 1.0 - 0.1;
-    scene.rayDensity = Math.exp(rayDensityValue);
-    document.getElementById('rayDensity').value = rayDensityValue;
-    document.getElementById('rayDensity_more').value = rayDensityValue;
-    document.getElementById('rayDensity_mobile').value = rayDensityValue;
-    this.blur();
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('rayDensityPlus_mobile').onclick = document.getElementById('rayDensityPlus').onclick;
-  document.getElementById('rayDensityMinus_mobile').onclick = document.getElementById('rayDensityMinus').onclick;
-  document.getElementById('rayDensityPlus_more').onclick = document.getElementById('rayDensityPlus').onclick;
-  document.getElementById('rayDensityMinus_more').onclick = document.getElementById('rayDensityMinus').onclick;
-
 
   document.getElementById('snapToGrid').onclick = function (e) {
     document.getElementById('snapToGrid').checked = e.target.checked;
@@ -1160,14 +1101,10 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('rayDensity_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
-  setText('rayDensity_text', i18next.t('simulator:settings.rayDensity.title'));
   setText('showGrid_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
   setText('snapToGrid_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('layoutAids_text', i18next.t('simulator:settings.layoutAids.title'));
-  setText('rayDensity_more_popover', null, null, i18next.t('simulator:settings.rayDensity.description'));
-  setText('rayDensity_more_text', i18next.t('simulator:settings.rayDensity.title'));
   setText('layoutAids_more_text', i18next.t('simulator:settings.layoutAids.title'));
   setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
   setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
@@ -1242,7 +1179,6 @@ function initUIText() {
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
-  setText('rayDensity_mobile_text', i18next.t('simulator:settings.rayDensity.title'));
   setText('showGrid_text', i18next.t('simulator:settings.layoutAids.showGrid'));
   setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
   setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
@@ -1352,6 +1288,10 @@ function navigateToNewQuery(newQuery) {
 
 function setText(id, text, title, popover, image) {
   const elem = document.getElementById(id);
+
+  if (elem == null) {
+    throw new Error('Element with ID "' + id + '" not found.');
+  }
 
   if (text != null) {
     elem.innerHTML = text;
@@ -1691,9 +1631,6 @@ function init() {
 
   editor.selectObj(-1);
 
-  document.getElementById("rayDensity").value = scene.rayModeDensity;
-  document.getElementById("rayDensity_more").value = scene.rayModeDensity;
-  document.getElementById("rayDensity_mobile").value = scene.rayModeDensity;
   document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   toolbtn_clicked('');
@@ -1792,16 +1729,6 @@ function toolbtn_clicked(tool, e) {
 
 function modebtn_clicked(mode1) {
   scene.mode = mode1;
-  if (scene.mode == 'images' || scene.mode == 'observer') {
-    document.getElementById("rayDensity").value = Math.log(scene.imageModeDensity);
-    document.getElementById("rayDensity_more").value = Math.log(scene.imageModeDensity);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.imageModeDensity);
-  }
-  else {
-    document.getElementById("rayDensity").value = Math.log(scene.rayModeDensity);
-    document.getElementById("rayDensity_more").value = Math.log(scene.rayModeDensity);
-    document.getElementById("rayDensity_mobile").value = Math.log(scene.rayModeDensity);
-  }
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
     scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
