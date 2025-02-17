@@ -26,16 +26,25 @@ const PROPERTY_CALLBACKS = {
     window.modebtn_clicked?.(value)
     window.simulator?.updateSimulation(false, true)
   },
-  colorMode: (value) => {
-    window.colorModebtn_clicked?.(value)
-    window.simulator?.updateSimulation(false, true)
-  },
   rayModeDensity: (value) => {
     window.simulator?.updateSimulation(false, true)
   },
   imageModeDensity: (value) => {
     window.simulator?.updateSimulation(false, true)
-  }
+  },
+  showGrid: (value) => {
+    window.simulator?.updateSimulation(true, false)
+  },
+  snapToGrid: (value) => {
+    // No need to update the simulation
+  },
+  lockObjs: (value) => {
+    // No need to update the simulation
+  },
+  colorMode: (value) => {
+    window.colorModebtn_clicked?.(value)
+    window.simulator?.updateSimulation(false, true)
+  },
 }
 
 // Create a single instance of the store

@@ -284,18 +284,6 @@ async function startApp() {
         updateModuleObjsMenu();
       }
 
-      document.getElementById('showGrid').checked = scene.showGrid;
-      document.getElementById('showGrid_more').checked = scene.showGrid;
-      document.getElementById('showGrid_mobile').checked = scene.showGrid;
-
-      document.getElementById('snapToGrid').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_more').checked = scene.snapToGrid;
-      document.getElementById('snapToGrid_mobile').checked = scene.snapToGrid;
-
-      document.getElementById('lockObjs').checked = scene.lockObjs;
-      document.getElementById('lockObjs_more').checked = scene.lockObjs;
-      document.getElementById('lockObjs_mobile').checked = scene.lockObjs;
-
       if (scene.observer) {
         document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
         document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
@@ -754,43 +742,6 @@ async function startApp() {
   document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
   document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
 
-
-
-  document.getElementById('snapToGrid').onclick = function (e) {
-    document.getElementById('snapToGrid').checked = e.target.checked;
-    document.getElementById('snapToGrid_more').checked = e.target.checked;
-    document.getElementById('snapToGrid_mobile').checked = e.target.checked;
-    scene.snapToGrid = e.target.checked;
-    this.blur();
-    editor.onActionComplete();
-    //simulator.updateSimulation();
-  };
-  document.getElementById('snapToGrid_more').onclick = document.getElementById('snapToGrid').onclick;
-  document.getElementById('snapToGrid_mobile').onclick = document.getElementById('snapToGrid').onclick;
-
-  document.getElementById('showGrid').onclick = function (e) {
-    document.getElementById('showGrid').checked = e.target.checked;
-    document.getElementById('showGrid_more').checked = e.target.checked;
-    document.getElementById('showGrid_mobile').checked = e.target.checked;
-    scene.showGrid = e.target.checked;
-    this.blur();
-    simulator.updateSimulation(true, false);
-    editor.onActionComplete();
-  };
-  document.getElementById('showGrid_more').onclick = document.getElementById('showGrid').onclick;
-  document.getElementById('showGrid_mobile').onclick = document.getElementById('showGrid').onclick;
-
-  document.getElementById('lockObjs').onclick = function (e) {
-    document.getElementById('lockObjs').checked = e.target.checked;
-    document.getElementById('lockObjs_more').checked = e.target.checked;
-    document.getElementById('lockObjs_mobile').checked = e.target.checked;
-    scene.lockObjs = e.target.checked;
-    this.blur();
-    editor.onActionComplete();
-  };
-  document.getElementById('lockObjs_more').onclick = document.getElementById('lockObjs').onclick;
-  document.getElementById('lockObjs_mobile').onclick = document.getElementById('lockObjs').onclick;
-
   document.getElementById('apply_to_all').onclick = function () {
     this.blur();
     const checked = this.checked;
@@ -1101,14 +1052,6 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('showGrid_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
-  setText('snapToGrid_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
-  setText('lockObjs_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
-  setText('layoutAids_text', i18next.t('simulator:settings.layoutAids.title'));
-  setText('layoutAids_more_text', i18next.t('simulator:settings.layoutAids.title'));
-  setText('showGrid_more_label', null, i18next.t('simulator:settings.layoutAids.showGrid'));
-  setText('snapToGrid_more_label', null, i18next.t('simulator:settings.layoutAids.snapToGrid'));
-  setText('lockObjs_more_label', null, i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
   setText('simulateColors_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
@@ -1179,9 +1122,6 @@ function initUIText() {
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
-  setText('showGrid_text', i18next.t('simulator:settings.layoutAids.showGrid'));
-  setText('snapToGrid_text', i18next.t('simulator:settings.layoutAids.snapToGrid'));
-  setText('lockObjs_text', i18next.t('simulator:settings.layoutAids.lockObjs'));
   setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
   setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
@@ -1645,20 +1585,6 @@ function init() {
 
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
-  //document.getElementById('mode_rays').checked = true;
-  //document.getElementById('mode_rays_mobile').checked = true;
-
-  document.getElementById('lockObjs').checked = false;
-  document.getElementById('snapToGrid').checked = false;
-  document.getElementById('showGrid').checked = false;
-
-  document.getElementById('lockObjs_more').checked = false;
-  document.getElementById('snapToGrid_more').checked = false;
-  document.getElementById('showGrid_more').checked = false;
-
-  document.getElementById('lockObjs_mobile').checked = false;
-  document.getElementById('snapToGrid_mobile').checked = false;
-  document.getElementById('showGrid_mobile').checked = false;
 
   document.getElementById('simulateColors').checked = false;
   document.getElementById('simulateColors_mobile').checked = false;

@@ -22,10 +22,11 @@
           <input 
             type="radio" 
             class="btn-check" 
-            name="viewradio" 
             :id="'mode_' + mode" 
+            name="viewradio" 
             :value="mode"
             v-model="currentMode"
+            @click="e => e.target.blur()"
           >
           <label 
             :id="'mode_' + mode + '_label'" 

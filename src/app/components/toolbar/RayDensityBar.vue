@@ -25,7 +25,7 @@
           offset: [0, 25]
         }"
       >
-        <button class="btn shadow-none range-minus-btn" id="rayDensityMinus" @click="decreaseDensity">
+        <button class="btn shadow-none range-minus-btn" id="rayDensityMinus" @click="(e) => { decreaseDensity(); e.target.blur(); }">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
           </svg>
@@ -36,8 +36,9 @@
           max="3" 
           step="0.0001" 
           v-model="rayDensity"
+          @click="e => e.target.blur()"
         >
-        <button class="btn shadow-none range-plus-btn" id="rayDensityPlus" @click="increaseDensity">
+        <button class="btn shadow-none range-plus-btn" id="rayDensityPlus" @click="(e) => { increaseDensity(); e.target.blur(); }">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
           </svg>
@@ -57,7 +58,7 @@
   >
     <div class="col-auto">{{ $t('simulator:settings.rayDensity.title') }}</div>
     <div class="btn-group col-auto d-flex align-items-center" role="group">
-      <button class="btn shadow-none range-minus-btn" id="rayDensityMinus_more" @click="decreaseDensity">
+      <button class="btn shadow-none range-minus-btn" id="rayDensityMinus_more" @click="(e) => { decreaseDensity(); e.target.blur(); }">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
         </svg>
@@ -68,8 +69,9 @@
         max="3" 
         step="0.0001" 
         v-model="rayDensity"
+        @click="e => e.target.blur()"
       >
-      <button class="btn shadow-none range-plus-btn" id="rayDensityPlus_more" @click="increaseDensity">
+      <button class="btn shadow-none range-plus-btn" id="rayDensityPlus_more" @click="(e) => { increaseDensity(); e.target.blur(); }">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
         </svg>
@@ -81,7 +83,7 @@
   <div v-if="layout === 'mobile'" class="row d-flex justify-content-between align-items-center">
     <div class="col-auto settings-label">{{ $t('simulator:settings.rayDensity.title') }}</div>
     <div class="col-auto d-flex align-items-center">
-      <button class="btn range-minus-btn" id="rayDensityMinus_mobile" @click="decreaseDensity">
+      <button class="btn range-minus-btn" id="rayDensityMinus_mobile" @click="(e) => { decreaseDensity(); e.target.blur(); }">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
         </svg>
@@ -92,14 +94,16 @@
         max="3" 
         step="0.0001" 
         v-model="rayDensity"
+        @click="e => e.target.blur()"
       >
-      <button class="btn range-plus-btn" id="rayDensityPlus_mobile" @click="increaseDensity">
+      <button class="btn range-plus-btn" id="rayDensityPlus_mobile" @click="(e) => { increaseDensity(); e.target.blur(); }">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
         </svg>
       </button>
     </div>
   </div>
+  <hr v-if="layout === 'mobile'" class="dropdown-divider">
 </template>
 
 <script>
