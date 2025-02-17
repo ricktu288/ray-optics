@@ -1,0 +1,54 @@
+{
+  "name": "模块示例 - 控制点",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 2,
+      "params": [],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": "`x_1`",
+          "y": "`y_1`",
+          "text": "↙这是本模块的第一个（可被拖曳的）控制点"
+        },
+        {
+          "type": "TextLabel",
+          "x": "`x_2`",
+          "y": "`y_2`",
+          "text": "↙这是本模块的第二个（可被拖曳的）控制点"
+        },
+        {
+          "type": "TextLabel",
+          "x": "`(x_1+x_2)/2`",
+          "y": "`(y_1+y_2)/2`",
+          "text": "↙这是中间点"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [
+        {
+          "x": 500,
+          "y": 300
+        },
+        {
+          "x": 600,
+          "y": 600
+        }
+      ],
+      "params": {}
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 140.37500000000014,
+    "y": -57.249999999999986
+  },
+  "scale": 0.6944444444444444
+}
