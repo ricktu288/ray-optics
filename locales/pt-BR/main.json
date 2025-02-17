@@ -177,6 +177,10 @@
     "modules": {
       "import": "Importar Módulos…",
       "remove": "Remover módulo"
+    },
+    "ConcaveDiffractionGrating": {
+      "description": "Uma grade de difração cuja forma é parte de um círculo.",
+      "title": "Grade de Difração Côncava"
     }
   },
   "view": {
