@@ -112,12 +112,30 @@
       "title": "Adicionando parâmetros",
       "lookAtExample": "Os objetos dentro do módulo podem ser definidos por um conjunto de parâmetros. Vamos ver um exemplo simples",
       "paramsArray": "Aqui, `modules.Modulename.params` é uma lista de strings `\"name=start:step:end:defaul\"` defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.",
-      "valueStorage": "Os valores reais dos parâmetros ficam armazenados na propriedade `params` do objeto do módulo, que, diferentemente da definição do módulo, pode ser diretamente editada pelo editor de cena usando o controle deslizante."
+      "valueStorage": "Os valores reais dos parâmetros ficam armazenados na propriedade `params` do objeto do módulo, que, diferentemente da definição do módulo, pode ser diretamente editada pelo editor de cena usando o controle deslizante.",
+      "equationSyntax": "Dentro da lista `modules.ExampleModule.objs`, quaisquer valores podem ser expressados usando esses parâmetros. Dentro de uma string (como a propriedade `text` de um `TextLabel`), as equações das variáveis são cercadas por um par de acentos graves. Para parâmetros de número(como a propriedade `fontSize` de um `TextLabel`), você precisa transformá-la em string para que você possa usar o formato de acento grave, então cada equação é cercada por um par de acentos graves e um par de aspas. As equações são avaliadas com math.js ([syntax](/mathjs/syntax)). Veja lá a sintaxe disponível e funções que você pode usar nas equações."
     },
     "controlPoints": {
       "title": "Adicionando pontos de controle",
       "lookAtExample": "Para fazer o objeto do módulo arrastável, precisamos de parametrizar os objetos dentro do módulo usando um conjunto de pontos de controle. Vejamos o exemplo",
-      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define o número de pontos de controle. As coordenadas dos pontos de controle são (`x_1`, `y_1`), (`x_2`, `y_2`), etc, e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela seção anterior. Note que o índice começa de 1."
+      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define o número de pontos de controle. As coordenadas dos pontos de controle são (`x_1`, `y_1`), (`x_2`, `y_2`), etc, e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela seção anterior. Note que o índice começa de 1.",
+      "valueStorage": "Os valores reais das coordenadas dos pontos de controle são armazenados na propriedade `points` do objeto do módulo, que, diferentemente das coordenadas definidas diretamente no Exemplo 1, podem ser editadas no editor visual de cena arrastando os pontos de controle, cada um exibido como dois círculos cinza concêntricos na cena. Se você arrastar em outro lugar no objeto do módulo(como os rótulos de texto), todos os pontos de controle vão mover juntos.",
+      "createAsTool": "Já que o nosso objeto de módulo agora pode se mover, agora é bem fácil de se criar múltiplas instâncias como as ferramentas normais. O nome do módulo é exibido no menu Ferramentas - Outros, e você pode selecionar isso e clicar em dois pontos no espaço vazio em sequiência para criar outra instância do módulo. Você também pode usar o botão \"duplicar\" na barra do objeto."
+    },
+    "arrayAndConditional": {
+      "title": "Listas e condicionais",
+      "lookAtExample": "Um módulo mais complicado pode ser construído usando listas e condicionais. Vejamos o exemplo.",
+      "preventInfiniteLoop": "Para previnir loop infinito acidental, o número total de iterações de cada loop `\"for\"`é limitado pela propriedade `maxLoopLength` da definição do módulo, cujo valor padrão é 1000. Você pode definir essa propriedade como um valor maior, se necessário.",
+      "specialKeys": "Dentro de `modules.ExampleModule.objs`, quaisquer objetos em uma lista podem ter duas chaves especiais : `\"for\"` e `\"if\"`. O valor da chave `\"for\"`é oum uma string no formato `\"name=start:step:end\"` definindo uma variável de loop, ou uma lista de várias strings desse formato descrevendo um loop multidimensional. Tal objeto na lista é duplicado várias vezes de acordo com as variáveis do loop. O valor da chave `\"if\"` é uma string representando uma expressão de math.js que resulta em um booleano, e o objeto é incluso na lista se, e somente se o booleano for verdadeiro."
+    },
+    "objsWithEqn": {
+      "title": "Objetos com equações personalizadas inclusas",
+      "future": "No futuro, talvez exista uma maneira de unificar a entrada da equação.",
+      "description": "Para objetos que já tem entrada de equação personalizada (como Espelho -> Equação Personalizada), a propriedade da equação no JSON é uma string representando uma equação LaTeX, ao invés de uma expressão math.js. Para incluir parâmetros personalizados na equação, você deve usar a mesma sintaxe modelo como se a equação LaTeX fosse um texto normal. Então a parte cercada pelos acentos graves está na expressão math.js, enquanto a parte fora está em LaTeX. Os parâmetros do módulo só podem ser acessados na parte math.js, e as variáveis independentes da equação personalizada, (ex.: \\(x\\)) só podem ser acessadas na parte LaTeX. Aqui está um exemplo gerando um espelho com a equação \\(y=\\cos(2\\pi x+\\phi)\\), onde \\(\\phi\\) é um parâmetro do módulo"
+    },
+    "objsWithShapeParam": {
+      "title": "Objetos com parametrização de forma inclusa",
+      "description": "Para objetos que já suportam maneiras diferentes de definir sua forma (atualmente só Vidro -> Lente esférica). Existe sintaxe JSON especial para esses objetos que podem ser usados dentro da definição do módulo, mesmo que sejam sempre definidos por forma na lista `objs` de nível principal. Aqui está um exemplo"
     }
   }
 }
