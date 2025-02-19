@@ -470,5 +470,17 @@
       "code": true
     },
     "firstCommit": "2025-02-05"
+  },
+  {
+    "name": "Hong Phong Kim",
+    "githubEmails": [
+      "www.phongkim@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "km"
+      ]
+    },
+    "firstCommit": "2025-02-18"
   }
 ]
