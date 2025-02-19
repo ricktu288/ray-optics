@@ -300,13 +300,7 @@ async function startApp() {
 
       document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById('simulateColors').checked = scene.simulateColors;
-      document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-      document.getElementById('showRayArrows').checked = scene.showRayArrows;
-      document.getElementById('showRayArrows_mobile').checked = scene.showRayArrows;
       modebtn_clicked(scene.mode);
-      //document.getElementById('mode_' + scene.mode).checked = true;
-      //document.getElementById('mode_' + scene.mode + '_mobile').checked = true;
       colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
 
@@ -546,17 +540,6 @@ async function startApp() {
     openFile(this.files[0]);
   };
 
-  document.getElementById('simulateColors').onclick = function () {
-    scene.simulateColors = this.checked;
-    document.getElementById('simulateColors').checked = scene.simulateColors;
-    document.getElementById('simulateColors_mobile').checked = scene.simulateColors;
-    editor.selectObj(editor.selectedObjIndex);
-    this.blur();
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('simulateColors_mobile').onclick = document.getElementById('simulateColors').onclick;
-
   document.getElementById('show_help_popups').onclick = function () {
     this.blur();
     popoversEnabled = this.checked;
@@ -565,96 +548,6 @@ async function startApp() {
     document.dispatchEvent(new Event('preferencesChanged'));
     showReloadWarning();
   };
-
-  document.getElementById('showRayArrows').onclick = function () {
-    this.blur();
-
-    document.getElementById('showRayArrows').checked = this.checked;
-    document.getElementById('showRayArrows_mobile').checked = this.checked;
-
-    scene.showRayArrows = this.checked;
-    editor.selectObj(editor.selectedObjIndex);
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  };
-  document.getElementById('showRayArrows_mobile').onclick = document.getElementById('showRayArrows').onclick;
-
-  document.getElementById('show_json_editor').onclick = function () {
-    this.blur();
-
-    document.getElementById('show_json_editor').checked = this.checked;
-    document.getElementById('show_json_editor_mobile').checked = this.checked;
-
-    localStorage.rayOpticsShowJsonEditor = this.checked ? "on" : "off";
-    document.dispatchEvent(new Event('preferencesChanged'));
-  };
-  document.getElementById('show_json_editor_mobile').onclick = document.getElementById('show_json_editor').onclick;
-
-  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsShowJsonEditor && localStorage.rayOpticsShowJsonEditor == "on") {
-    document.getElementById('show_json_editor').checked = true;
-    document.getElementById('show_json_editor_mobile').checked = true;
-  } else {
-    document.getElementById('show_json_editor').checked = false;
-    document.getElementById('show_json_editor_mobile').checked = false;
-  }
-
-  document.getElementById('show_status').onclick = function () {
-    this.blur();
-
-    document.getElementById('show_status').checked = this.checked;
-    document.getElementById('show_status_mobile').checked = this.checked;
-
-    document.getElementById('status').style.display = this.checked ? '' : 'none';
-    localStorage.rayOpticsShowStatus = this.checked ? "on" : "off";
-  };
-  document.getElementById('show_status_mobile').onclick = document.getElementById('show_status').onclick;
-
-  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsShowStatus && localStorage.rayOpticsShowStatus == "on") {
-    document.getElementById('show_status').checked = true;
-    document.getElementById('show_status_mobile').checked = true;
-    document.getElementById('status').style.display = '';
-  } else {
-    document.getElementById('show_status').checked = false;
-    document.getElementById('show_status_mobile').checked = false;
-    document.getElementById('status').style.display = 'none';
-  }
-
-  document.getElementById('auto_sync_url').onclick = function () {
-    this.blur();
-
-    document.getElementById('auto_sync_url').checked = this.checked;
-    document.getElementById('auto_sync_url_mobile').checked = this.checked;
-
-    localStorage.rayOpticsAutoSyncUrl = this.checked ? "on" : "off";
-    autoSyncUrl = this.checked;
-
-    editor.onActionComplete();
-  };
-  document.getElementById('auto_sync_url_mobile').onclick = document.getElementById('auto_sync_url').onclick;
-
-  if (typeof (Storage) !== "undefined" && localStorage.rayOpticsAutoSyncUrl && localStorage.rayOpticsAutoSyncUrl == "on") {
-    document.getElementById('auto_sync_url').checked = true;
-    document.getElementById('auto_sync_url_mobile').checked = true;
-    autoSyncUrl = true;
-  } else {
-    document.getElementById('auto_sync_url').checked = false;
-    document.getElementById('auto_sync_url_mobile').checked = false;
-    autoSyncUrl = false;
-  }
-
-  document.getElementById('correct_brightness').onclick = function () {
-    this.blur();
-    if (this.checked) {
-      colorModebtn_clicked('linear');
-    } else {
-      colorModebtn_clicked('default');
-    }
-    editor.selectObj(editor.selectedObjIndex);
-    editor.onActionComplete();
-    document.dispatchEvent(new Event('sceneChanged'));
-    simulator.updateSimulation();
-  };
-  document.getElementById('correct_brightness_mobile').onclick = document.getElementById('correct_brightness').onclick;
 
   document.getElementById('gridSize').onchange = function () {
     scene.gridSize = parseFloat(this.value);
@@ -975,7 +868,6 @@ var simulator;
 var objBar;
 var xyBox_cancelContextMenu = false;
 var hasUnsavedChange = false;
-var autoSyncUrl = false;
 var warning = null;
 var error = null;
 
@@ -1052,11 +944,8 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('simulateColors_popover', null, null, i18next.t('main:simulateColors.description') + '<br>' + i18next.t('main:simulateColors.instruction') + '<br>' + i18next.t('main:simulateColors.warning'));
-  setText('simulateColors_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
   setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('showRayArrows_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
   setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
@@ -1065,14 +954,6 @@ function initUIText() {
   setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_text', i18next.t('simulator:settings.language.title'));
-  setText('auto_sync_url_popover', null, null, i18next.t('simulator:settings.autoSyncUrl.description'));
-  setText('auto_sync_url_text', i18next.t('simulator:settings.autoSyncUrl.title'));
-  setText('correct_brightness_popover', null, null, i18next.t('simulator:settings.correctBrightness.description'));
-  setText('correct_brightness_text', i18next.t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>');
-  setText('show_json_editor_popover', null, null, i18next.t('simulator:settings.showJsonEditor.description'));
-  setText('show_json_editor_text', i18next.t('simulator:settings.showJsonEditor.title'));
-  setText('show_status_popover', null, null, i18next.t('simulator:settings.showStatusBox.description'));
-  setText('show_status_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('show_help_popups_popover', null, null, i18next.t('simulator:settings.showHelpPopups.description'));
   setText('show_help_popups_text', i18next.t('simulator:settings.showHelpPopups.title'));
   setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
@@ -1122,17 +1003,11 @@ function initUIText() {
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
-  setText('simulateColors_mobile_text', i18next.t('main:simulateColors.title'));
   setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('showRayArrows_mobile_text', i18next.t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>');
   setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
   setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
   setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
-  setText('auto_sync_url_mobile_text', i18next.t('simulator:settings.autoSyncUrl.title'));
-  setText('correct_brightness_mobile_text', i18next.t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>');
-  setText('show_json_editor_mobile_text', i18next.t('simulator:settings.showJsonEditor.title'));
-  setText('show_status_mobile_text', i18next.t('simulator:settings.showStatusBox.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
   setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
@@ -1173,42 +1048,6 @@ function initUIText() {
       banner.style.display = 'none';
     }
   });
-
-  /*
-  // Populate the language list
-  const languageList = document.getElementById('language_list');
-  
-  for (const locale in window.localeData) {
-    const languageName = window.localeData[locale].name;
-    const completeness = Math.round(window.localeData[locale].numStrings / window.localeData.en.numStrings * 100);
-    const a = document.createElement('a');
-    a.href = '?' + locale;
-    a.classList.add('btn', 'btn-primary', 'dropdown-item', 'd-flex', 'align-items-center');
-    a.addEventListener('click', function (event) {
-      if (autoSyncUrl && !hasUnsavedChange) {
-        event.preventDefault();
-        event.stopPropagation();
-        navigateToNewQuery(locale);
-      }
-    });
-
-    const div = document.createElement('div');
-    div.classList.add('d-flex', 'w-100');
-
-    const div1 = document.createElement('div');
-    div1.classList.add('col');
-    div1.innerHTML = languageName;
-
-    const div2 = document.createElement('div');
-    div2.classList.add('col', 'text-end');
-    div2.innerHTML = completeness + '%';
-
-    div.appendChild(div1);
-    div.appendChild(div2);
-    a.appendChild(div);
-    languageList.appendChild(a);
-  }
-    */
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
@@ -1586,12 +1425,6 @@ function init() {
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
 
-  document.getElementById('simulateColors').checked = false;
-  document.getElementById('simulateColors_mobile').checked = false;
-
-  document.getElementById('showRayArrows').checked = false;
-  document.getElementById('showRayArrows_mobile').checked = false;
-
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
 
@@ -1615,7 +1448,7 @@ var lastFullURL = "";
 var syncUrlTimerId = -1;
 
 function syncUrl() {
-  if (!autoSyncUrl) return;
+  if (!window.autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
 
   if (syncUrlTimerId != -1) {
@@ -1670,15 +1503,11 @@ function colorModebtn_clicked(colorMode) {
     document.getElementById('colorMode').disabled = true;
     document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:common.defaultOption');
     document.getElementById('colorMode_mobile').disabled = true;
-    document.getElementById('correct_brightness').checked = false;
-    document.getElementById('correct_brightness_mobile').checked = false;
   } else {
     document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
     document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
     document.getElementById('colorMode').disabled = false;
     document.getElementById('colorMode_mobile').disabled = false;
-    document.getElementById('correct_brightness').checked = true;
-    document.getElementById('correct_brightness_mobile').checked = true;
   }
 }
 

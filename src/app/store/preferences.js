@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { jsonEditorService } from '../services/jsonEditor'
 
 // Define default preferences and their callbacks
@@ -30,6 +30,10 @@ const PREFERENCES_CALLBACKS = {
   help: (value) => {
     window.popoversEnabled = value
   },
+  autoSyncUrl: (value) => {
+    console.log('autoSyncUrl', value)
+    window.autoSyncUrl = value
+  },
   showJsonEditor: (value) => {
     console.log('showJsonEditor', value)
     if (value) {
@@ -42,41 +46,32 @@ const PREFERENCES_CALLBACKS = {
   }
 }
 
+// Create a single instance of the store
+let storeInstance = null
+
 /**
  * Create a Vue store for application preferences that persist to localStorage
  * 
  * @returns {Object} A Vue store for application preferences
  */
 export const usePreferencesStore = () => {
-  // Helper to set a preference value and trigger its callback
-  const setPreferenceValue = (key, value) => {
-    refs[`_${key}`].value = value
-    PREFERENCES_CALLBACKS[key]?.(value)
-  }
+  if (storeInstance) return storeInstance
 
   // Create refs for all preferences
   const refs = Object.fromEntries(
     Object.entries(PREFERENCES_DEFAULTS).map(([key]) => [
       `_${key}`,
-      ref(
-        (() => {
-          const storedValue = localStorage.getItem(`rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`)
-          const value = (() => {
-            if (storedValue === null) return PREFERENCES_DEFAULTS[key]
-            if (storedValue === "on") return true
-            if (storedValue === "off") return false
-            try {
-              return JSON.parse(storedValue)
-            } catch {
-              return PREFERENCES_DEFAULTS[key]
-            }
-          })()
-          console.log('initial value', key, value)
-          // Trigger callback for initial value
-          setTimeout(() => PREFERENCES_CALLBACKS[key]?.(value), 0)
-          return value
-        })()
-      )
+      ref((() => {
+        const storedValue = localStorage.getItem(`rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`)
+        if (storedValue === null) return PREFERENCES_DEFAULTS[key]
+        if (storedValue === "on") return true
+        if (storedValue === "off") return false
+        try {
+          return JSON.parse(storedValue)
+        } catch {
+          return PREFERENCES_DEFAULTS[key]
+        }
+      })())
     ])
   )
 
@@ -88,41 +83,28 @@ export const usePreferencesStore = () => {
         get: () => refs[`_${key}`].value,
         set: (newValue) => {
           console.log(`Setting preference ${key} to ${newValue}`)
-          setPreferenceValue(key, newValue)
+          refs[`_${key}`].value = newValue
           localStorage.setItem(
             `rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`, 
             newValue ? "on" : "off"
           )
+          PREFERENCES_CALLBACKS[key]?.(newValue)
         }
       })
     ])
   )
 
-  // Function to sync preferences from localStorage
-  const syncPreferences = () => {
-    Object.keys(PREFERENCES_DEFAULTS).forEach(key => {
-      const storedValue = localStorage.getItem(`rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`)
-      if (storedValue === null) {
-        setPreferenceValue(key, PREFERENCES_DEFAULTS[key])
-      } else if (storedValue === "on") {
-        setPreferenceValue(key, true)
-      } else if (storedValue === "off") {
-        setPreferenceValue(key, false)
-      }
-    })
-  }
-
-  // Set up listeners
+  // Set up listeners and trigger initial callbacks
   onMounted(() => {
-    syncPreferences()
-    document.addEventListener('preferencesChanged', syncPreferences)
+    // Trigger callbacks for initial values
+    Object.keys(PREFERENCES_DEFAULTS).forEach(key => {
+      PREFERENCES_CALLBACKS[key]?.(refs[`_${key}`].value)
+    })
   })
 
-  onUnmounted(() => {
-    document.removeEventListener('preferencesChanged', syncPreferences)
-  })
-
-  return {
+  storeInstance = {
     ...computedProps
   }
+
+  return storeInstance
 }

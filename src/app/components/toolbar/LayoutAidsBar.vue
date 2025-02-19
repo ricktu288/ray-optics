@@ -68,45 +68,36 @@
     <hr class="dropdown-divider">
   </div>
 
-  <div v-if="layout === 'mobile'" class="row d-flex justify-content-between align-items-center">
-    <div id="showGrid_text" class="col-auto settings-label">{{ $t('simulator:settings.layoutAids.showGrid') }}</div>
-    <div class="col-auto d-flex align-items-center">
-      <div class="flex-grow-1 d-flex align-items-center">
-        <div class="form-check form-switch align-items-center">
-          <input class="form-check-input" type="checkbox" id="showGrid_mobile" v-model="showGrid" @click="e => e.target.blur()">
-        </div>
-      </div>
-    </div>
+  <div v-if="layout === 'mobile'">
+    <ToggleControl
+      id="showGrid_mobile"
+      :label="$t('simulator:settings.layoutAids.showGrid')"
+      v-model="showGrid"
+    />
+    <ToggleControl
+      id="snapToGrid_mobile"
+      :label="$t('simulator:settings.layoutAids.snapToGrid')"
+      v-model="snapToGrid"
+    />
+    <ToggleControl
+      id="lockObjs_mobile"
+      :label="$t('simulator:settings.layoutAids.lockObjs')"
+      v-model="lockObjs"
+    />
+    <hr class="dropdown-divider">
   </div>
-  <div v-if="layout === 'mobile'" class="row d-flex justify-content-between align-items-center">
-    <div id="snapToGrid_text" class="col-auto settings-label">{{ $t('simulator:settings.layoutAids.snapToGrid') }}</div>
-    <div class="col-auto d-flex align-items-center">
-      <div class="flex-grow-1 d-flex align-items-center">
-        <div class="form-check form-switch align-items-center">
-          <input class="form-check-input" type="checkbox" id="snapToGrid_mobile" v-model="snapToGrid" @click="e => e.target.blur()">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div v-if="layout === 'mobile'" class="row d-flex justify-content-between align-items-center">
-    <div id="lockObjs_text" class="col-auto settings-label">{{ $t('simulator:settings.layoutAids.lockObjs') }}</div>
-    <div class="col-auto d-flex align-items-center">
-      <div class="flex-grow-1 d-flex align-items-center">
-        <div class="form-check form-switch align-items-center">
-          <input class="form-check-input" type="checkbox" id="lockObjs_mobile" v-model="lockObjs" @click="e => e.target.blur()">
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr v-if="layout === 'mobile'" class="dropdown-divider">
 </template>
 
 <script>
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { useSceneStore } from '../../store/scene'
+import ToggleControl from './controls/ToggleControl.vue'
 
 export default {
   name: 'LayoutAidsBar',
+  components: {
+    ToggleControl
+  },
   directives: {
     'tooltip-popover': vTooltipPopover
   },

@@ -30,36 +30,29 @@
               <RayDensityBar layout="tablet" />
               <LayoutAidsBar layout="tablet" />
 
-              <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,20">
-                <div class="col-auto settings-label" id="showRayArrows_text"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="showRayArrows">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="correct_brightness_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="25,20">
-                <div id="correct_brightness_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="correct_brightness">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="simulateColors_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="50,20">
-                <div class="col-auto settings-label" id="simulateColors_text"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="simulateColors">
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ToggleControl
+                id="showRayArrows"
+                :label="$t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>'"
+                v-model="showRayArrows"
+                :layout="layout"
+              />
+
+              <ToggleControl
+                id="correct_brightness"
+                :label="$t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>'"
+                :popoverContent="$t('simulator:settings.correctBrightness.description')"
+                v-model="correctBrightness"
+                :layout="layout"
+                :verticalOffset="25"
+              />
+              <ToggleControl
+                id="simulateColors"
+                :label="$t('main:simulateColors.title')"
+                :popoverContent="$t('main:simulateColors.description') + '<br>' + $t('main:simulateColors.instruction') + '<br>' + $t('main:simulateColors.warning')"
+                v-model="simulateColors"
+                :layout="layout"
+                :verticalOffset="50"
+              />
               <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="20,20" id="colorMode_popover">
                 <div class="col-auto settings-label" id="colorMode_text"></div>
                 <div class="col-auto d-flex align-items-center">
@@ -126,39 +119,30 @@
                 </svg>
               </div>
 
-              <div id="auto_sync_url_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="auto_sync_url_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="auto_sync_url">
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ToggleControl
+                id="auto_sync_url"
+                :label="$t('simulator:settings.autoSyncUrl.title')"
+                :popoverContent="$t('simulator:settings.autoSyncUrl.description')"
+                v-model="autoSyncUrl"
+                :layout="layout"
+              />
 
-              <div id="show_json_editor_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="show_json_editor_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="show_json_editor">
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ToggleControl
+                id="show_json_editor"
+                :label="$t('simulator:settings.showJsonEditor.title')"
+                :popoverContent="$t('simulator:settings.showJsonEditor.description')"
+                v-model="showJsonEditor"
+                :layout="layout"
+              />
 
-              <div id="show_status_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="show_status_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="show_status">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+              <ToggleControl
+                id="show_status"
+                :label="$t('simulator:settings.showStatusBox.title')"
+                :popoverContent="$t('simulator:settings.showStatusBox.description')"
+                v-model="showStatus"
+                :layout="layout"
+              />
+
               <div id="show_help_popups_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
                 <div id="show_help_popups_text" class="col-auto settings-label"></div>
                 <div class="col-auto d-flex align-items-center">
@@ -200,36 +184,26 @@
           <RayDensityBar layout="mobile" />
           <LayoutAidsBar layout="mobile" />
 
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-auto settings-label" id="showRayArrows_mobile_text"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <div class="form-check form-switch align-items-center">
-                  <input class="form-check-input" type="checkbox" id="showRayArrows_mobile">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-            <div id="correct_brightness_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <div class="form-check form-switch align-items-center">
-                  <input class="form-check-input" type="checkbox" id="correct_brightness_mobile">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-auto settings-label" id="simulateColors_mobile_text"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <div class="form-check form-switch align-items-center">
-                  <input class="form-check-input" type="checkbox" id="simulateColors_mobile">
-                </div>
-              </div>
-            </div>
-          </div>
+          <ToggleControl
+            v-if="layout === 'mobile'"
+            id="showRayArrows_mobile"
+            :label="$t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>'"
+            v-model="showRayArrows"
+            :layout="layout"
+          />
+
+          <ToggleControl
+            id="correct_brightness_mobile"
+            :label="$t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>'"
+            v-model="correctBrightness"
+            :layout="layout"
+          />
+          <ToggleControl
+            id="simulateColors_mobile"
+            :label="$t('main:simulateColors.title')"
+            v-model="simulateColors"
+            :layout="layout"
+          />
           <div class="row d-flex justify-content-between align-items-center">
             <div class="col-auto settings-label" id="colorMode_mobile_text"></div>
             <div class="col-auto d-flex align-items-center">
@@ -298,29 +272,30 @@
             </svg>
           </div>
 
+          <ToggleControl
+            v-if="layout === 'mobile'"
+            id="auto_sync_url_mobile"
+            :label="$t('simulator:settings.autoSyncUrl.title')"
+            v-model="autoSyncUrl"
+            :layout="layout"
+          />
 
+          <ToggleControl
+            v-if="layout === 'mobile'"
+            id="show_json_editor_mobile"
+            :label="$t('simulator:settings.showJsonEditor.title')"
+            v-model="showJsonEditor"
+            :layout="layout"
+          />
 
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-            <div id="auto_sync_url_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <div class="form-check form-switch align-items-center">
-                  <input class="form-check-input" type="checkbox" id="auto_sync_url_mobile">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
-            <div id="show_json_editor_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <div class="form-check form-switch align-items-center">
-                  <input class="form-check-input" type="checkbox" id="show_json_editor_mobile">
-                </div>
-              </div>
-            </div>
-          </div>
+          <ToggleControl
+            v-if="layout === 'mobile'"
+            id="show_status_mobile"
+            :label="$t('simulator:settings.showStatusBox.title')"
+            :popoverContent="$t('simulator:settings.showStatusBox.description')"
+            v-model="showStatus"
+            :layout="layout"
+          />
 
           <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left">
             <div id="show_status_mobile_text" class="col-auto settings-label"></div>
@@ -338,8 +313,6 @@
               <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
             </svg>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -347,17 +320,58 @@
 </template>
 
 <script>
-import RayDensityBar from './RayDensityBar.vue';
-import LayoutAidsBar from './LayoutAidsBar.vue';
+import { vTooltipPopover } from '../../directives/tooltip-popover'
+import { useSceneStore } from '../../store/scene'
+import { usePreferencesStore } from '../../store/preferences'
+import ToggleControl from './controls/ToggleControl.vue'
+import RayDensityBar from './RayDensityBar.vue'
+import LayoutAidsBar from './LayoutAidsBar.vue'
+import { computed, toRef } from 'vue'
 
 export default {
   name: 'SettingsBar',
+  components: {
+    ToggleControl,
+    RayDensityBar,
+    LayoutAidsBar
+  },
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
   props: {
     layout: String
   },
-  components: {
-    RayDensityBar,
-    LayoutAidsBar
+  setup() {
+    const scene = useSceneStore()
+    const preferences = usePreferencesStore()
+    const colorMode = toRef(scene, 'colorMode')
+    const showRayArrows = toRef(scene, 'showRayArrows')
+    const autoSyncUrl = toRef(preferences, 'autoSyncUrl')
+    const showJsonEditor = toRef(preferences, 'showJsonEditor')
+    const showStatus = toRef(preferences, 'showStatus')
+    
+    const correctBrightness = computed({
+      get: () => colorMode.value !== 'default',
+      set: (value) => {
+        // Only change to linear if currently in default mode
+        // This preserves other color modes when toggling off
+        if (value && colorMode.value === 'default') {
+          colorMode.value = 'linear'
+        } else if (!value) {
+          colorMode.value = 'default'
+        }
+        window.editor?.selectObj(window.editor.selectedObjIndex)
+      }
+    })
+
+    return {
+      simulateColors: scene.simulateColors,
+      correctBrightness,
+      showRayArrows,
+      autoSyncUrl,
+      showJsonEditor,
+      showStatus
+    }
   }
 }
 </script>

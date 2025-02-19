@@ -45,6 +45,13 @@ const PROPERTY_CALLBACKS = {
     window.colorModebtn_clicked?.(value)
     window.simulator?.updateSimulation(false, true)
   },
+  simulateColors: (value) => {
+    window.editor?.selectObj(window.editor.selectedObjIndex)
+    window.simulator?.updateSimulation(false, true)
+  },
+  showRayArrows: (value) => {
+    window.simulator?.updateSimulation(false, true)
+  }
 }
 
 // Create a single instance of the store
