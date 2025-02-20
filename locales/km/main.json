@@ -46,7 +46,7 @@
     },
     "PointSource": {
       "description": "កាំពន្លឺរីកចេញពីចំណុចចាប់ប្រភពពន្លឺ រាយប៉ាយជុំវិញ 360°។",
-      "title": "ប្រភពពន្លឺរីក 360°"
+      "title": "ប្រភពពន្លឺរីក"
     },
     "CircleGlass": {
       "title": "កែវរង្វង់",
@@ -129,5 +129,8 @@
   },
   "languageDropdown": {
     "title": "ភាសា: {{language}}"
+  },
+  "simulateColors": {
+    "title": "បង្ហាញកូល័រ / ពណ៍"
   }
 }
