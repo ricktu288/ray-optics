@@ -1,0 +1,303 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+      float: left;
+      margin-right: 9px;
+      margin-bottom: 9px;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul style="padding-left: 1.5rem;">
+      <li>இந்தச் சிமுலேட்டரில் இருக்கும் கருவிகளால் உருவாக்கப்பட்ட பொருள்களை ஒன்றிணைப்பதன் மூலமும், நிபுணத்துவம் பெறுவதன் மூலமும் அல்லது மறுசீரமைப்பதன் மூலமும் &quot;தொகுதி&quot; நற்பொருத்தம் புதிய கருவிகளை உருவாக்க அனுமதிக்கிறது.</li>
+      <li>இறக்குமதி செய்யப்பட்ட தொகுதிகள் &quot;பிற&quot; பிரிவில் கருவிகளாகத் தோன்றும். கட்டுப்பாட்டு புள்ளி வரிசையின் வரிசைக்கு ஏற்ப வெற்று இடத்தைத் தேர்ந்தெடுத்து சொடுக்கு செய்யவும் (&quot;விவரக்குறிப்பு&quot; ஐப் பார்க்கவும்).</li>
+      <li>இறக்குமதி செய்யப்பட்ட தொகுதிகள் காட்சியின் தரவில் உட்பொதிக்கப்பட்டுள்ளன, எனவே தொகுதிகளின் ஆசிரியர்கள் அவற்றைப் புதுப்பிக்கும்போது தானாகவே புதுப்பிக்கப்படாது.</li>
+    </ul>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/FresnelLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/FresnelLens-thumbnail.jpg" alt="ஃப்ரெச்னல் வில்லை" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ஃப்ரெச்னல் வில்லை (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ஒரு அரை வட்டமான கண்ணாடியிலிருந்து தயாரிக்கப்பட்ட ஒரு ஃப்ரெச்னல் வில்லை. <a target="_blank" href="../../ta/gallery/fresnel-lens">இந்தக் கேலரி எடுத்துக்காட்டு</a> இன் மட்டுப்படுத்தப்பட்ட பதிப்பு.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-FresnelLens" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>வில்லையின் முதல் இறுதிப் புள்ளி</li>
+        <li>வில்லையின் இரண்டாவது இறுதிப் புள்ளி</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>N_slice</code>: துண்டுகளின் எண்ணிக்கை</li>
+        <li><code>refIndex</code>: வில்லையின் ஒளிவிலகல் குறியீடு</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/ContSpectrum-thumbnail.avif" type="image/avif">
+        <img src="../../modules/ContSpectrum-thumbnail.jpg" alt="தொடர்ச்சியான அலைவிரியம் ஒளி மூல" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">தொடர்ச்சியான அலைவிரியம் ஒளி மூல (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          கொடுக்கப்பட்ட நிலையான படியுடன் தனிப்பயனாக்கப்பட்ட சீரான தொடர்ச்சியான அலைவிரியம் கொண்ட ஒரு ஒளி மூல. &quot;வண்ணங்களை உருவகப்படுத்துதல்&quot; இயக்கத்தில் இருக்கும்போது மட்டுமே வேலை செய்யும்.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-ContSpectrum" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>கதிர்களின் தோற்றம்</li>
+        <li>கதிர்களின் திசையைத் தீர்மானிக்கிறது</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>min</code>: குறைந்தபட்ச அலைநீளம்</li>
+        <li><code>step</code>: அலைநீளத்தின் படி</li>
+        <li><code>max</code>: அதிகபட்ச அலைநீளம்</li>
+        <li><code>brightness</code>: மொத்த ஒளி</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CircleSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CircleSource-thumbnail.jpg" alt="வட்ட ஒளி மூல" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">வட்ட ஒளி மூல (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          சீரான 180 டிகிரி புள்ளி ஆதாரங்களைக் கொண்ட ஒரு வட்டம் அதன் சுற்றளவுடன் வைக்கிறது.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CircleSource" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>வட்டத்தின் நடுவண்</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>r</code>: வட்டத்தின் ஆரம்</li>
+        <li><code>N</code>: புள்ளி மூலங்களின் எண்ணிக்கை</li>
+        <li><code>brightness</code>: மொத்த ஒளி</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/Chaff-thumbnail.avif" type="image/avif">
+        <img src="../../modules/Chaff-thumbnail.jpg" alt="பதர்" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">பதர் (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          கண்ணாடியின் சீரற்ற துண்டுகளைக் கொண்ட ஒரு செவ்வக வடிவத்தின் ஒரு பதர். <a target="_blank" href="../../ta/gallery/chaff-countermeasure">இந்தக் கேலரி எடுத்துக்காட்டு</a> இன் மட்டுப்படுத்தப்பட்ட பதிப்பு.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-Chaff" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>பதரின் மேல்-இடது மூலையில்</li>
+        <li>பதரின் கீழ்-வலது மூலையில்</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>N</code>: பதரின் உள்ள கண்ணாடியின் எண்ணிக்கை</li>
+        <li><code>L</code>: கண்ணாடியின் நீளம்</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/BeamExpander-thumbnail.avif" type="image/avif">
+        <img src="../../modules/BeamExpander-thumbnail.jpg" alt="அலைக்கற்றை விரிவாக்கம்" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">அலைக்கற்றை விரிவாக்கம் (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          இரண்டு சிறந்த வில்லைகள் அவற்றின் குவிய நீளங்களின் கூட்டுத்தொகையின் கலவையானது அவற்றின் பிரிப்பு தூரத்திற்கு சமம். அவை மோதிய ஒளியின் கற்றை விட்டம் விரிவாக்குகின்றன அல்லது குறைக்கின்றன. <a target="_blank" href="../../ta/gallery/beam-expanders">இந்தக் கேலரி எடுத்துக்காட்டு</a> இன் மட்டுப்படுத்தப்பட்ட பதிப்பு.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-BeamExpander" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>முதல் வில்லையின் நடுவண்</li>
+        <li>இரண்டாவது வில்லையின் இரண்டாவது புள்ளி</li>
+        <li>வில்லைகள் பொதுவான குவிய புள்ளியைத் தீர்மானிக்கிறது</li>
+      </ol>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RayRelay-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RayRelay-thumbnail.jpg" alt="கதிர் தொடரோட்டம்" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">கதிர் தொடரோட்டம் (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          வில்லைகளிடையே குவிய நீளம் \(f\) மற்றும் தூரம் \(d\) கொண்ட சிறந்த ஒரே மாதிரியான வில்லைகள். \(d\leq 4f\) என்றால் மட்டுமே வழங்கப்படாத கதிர் பாதை பொறுப்பு அளிக்கப்படுகிறது. <a target="_blank" href="../../ta/gallery/ray-relaying">இந்தக் கேலரி எடுத்துக்காட்டு</a> இன் மட்டுப்படுத்தப்பட்ட பதிப்பு.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RayRelay" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>முதல் வில்லையின் முதல் இறுதிப் புள்ளி</li>
+        <li>முதல் வில்லையின் இரண்டாவது முனைப்புள்ளி (முதல் புள்ளியாக அதே \(x\) இருக்க வேண்டும்)</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>f</code>: வில்லைகளின் குவிய நீளம்</li>
+        <li><code>d</code>: வில்லைகளுக்கு இடையிலான தூரம்</li>
+        <li><code>N</code>: வில்லைகளின் எண்ணிக்கை</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/OpticalFiber-thumbnail.avif" type="image/avif">
+        <img src="../../modules/OpticalFiber-thumbnail.jpg" alt="நோக்காடி நார்" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">நோக்காடி நார் (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='இறக்குமதி செய்யப்பட்டது';this.classList.remove('btn-primary');this.classList.add('btn-success');">இறக்குமதி</button></p>
+        <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+        <span id="module-desc">
+          கொடுக்கப்பட்ட கருவம் மற்றும் உறைப்பூச்சு தடிமன் மற்றும் ஒளிவிலகல் குறியீடுகளுடன் வரி வடிவ நோக்காடி நார்.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+          விவரக்குறிப்பு
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-OpticalFiber" class="collapse">
+      கட்டுப்பாட்டு புள்ளி வரிசை
+      <ol>
+        <li>நோக்காடி நாரின் முதல் இறுதிப் புள்ளி</li>
+        <li>நோக்காடி நாரின் இரண்டாவது இறுதிப் புள்ளி (முதல் புள்ளியாக அதுவே \(y\) இருக்க வேண்டும்)</li>
+      </ol>
+      அளவுருக்கள்
+      <ul>
+        <li><code>X</code>: கருவத்தின் தடிமன்</li>
+        <li><code>Y</code>: உறைப்பூச்சின் தடிமன்</li>
+        <li><code>n_1</code>: கருவத்தின் ஒளிவிலகல் குறியீடு</li>
+        <li><code>n_2</code>: உறைப்பூச்சின் ஒளிவிலகல் குறியீடு</li>
+      </ul>
+    </div>
+
+    <h2>தனிப்பயனாக்கம்</h2>
+    <p>உள்ளமைக்கப்பட்ட சாதொபொகு எடிட்டரைப் பயன்படுத்தி வலை பயன்பாட்டில் நேரடியாகத் தொகுதிகள் செய்யப்படலாம் அல்லது தனிப்பயனாக்கலாம். <a target="_blank" href="../../ta/modules/tutorial">பயிற்சியைப்</a> பார்க்கவும். இறக்குமதி செய்யப்பட்ட தொகுதிகளின் தனிப்பயனாக்கம் தற்போதைய காட்சியை மட்டுமே பாதிக்கும்.</p>
+
+    <h2>பங்களிப்பு</h2>
+    <p>மேலே உள்ள பட்டியலுக்குப் பங்களிப்பது வரவேற்கத்தக்கது. உங்கள் தொகுதிக்குப் பங்களிக்க, <a target="_blank" href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">பங்களிப்புத் தொகுதிகளைப்</a> பார்க்கவும்.</p>
+  </div>
+
+  <script src="../../thirdparty/jquery.min.js"></script>
+  <script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>
