@@ -98,12 +98,6 @@ async function startApp() {
 
   console.log(document.getElementById('obj_bar_main'))
 
-  try {
-    if (localStorage.rayOpticsHelp == "off") {
-      popoversEnabled = false;
-      document.getElementById('show_help_popups').checked = false;
-    }
-  } catch { }
   initUIText();
   initTools();
 
@@ -540,15 +534,6 @@ async function startApp() {
     openFile(this.files[0]);
   };
 
-  document.getElementById('show_help_popups').onclick = function () {
-    this.blur();
-    popoversEnabled = this.checked;
-    localStorage.rayOpticsHelp = popoversEnabled ? "on" : "off";
-
-    document.dispatchEvent(new Event('preferencesChanged'));
-    showReloadWarning();
-  };
-
   document.getElementById('gridSize').onchange = function () {
     scene.gridSize = parseFloat(this.value);
     document.getElementById('gridSize').value = scene.gridSize;
@@ -846,8 +831,6 @@ async function startApp() {
     }
   });
 
-  document.getElementById('show_help_popups').checked = popoversEnabled;
-
   document.getElementById('help-dropdown').addEventListener('click', function (e) {
     e.stopPropagation();
   });
@@ -954,8 +937,6 @@ function initUIText() {
   setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_text', i18next.t('simulator:settings.language.title'));
-  setText('show_help_popups_popover', null, null, i18next.t('simulator:settings.showHelpPopups.description'));
-  setText('show_help_popups_text', i18next.t('simulator:settings.showHelpPopups.title'));
   setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
   setText('settings_text', i18next.t('simulator:settings.title'));
   setText('moreSettings_text', i18next.t('simulator:settings.more'));
@@ -1191,6 +1172,7 @@ function initTools() {
 
 
 function hideAllPopovers() {
+  console.log('hideAllPopovers');
   document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
     var popoverInstance = bootstrap.Popover.getInstance(element);
     if (popoverInstance) {
@@ -1651,25 +1633,5 @@ function parseLinks(text) {
 }
 
 window.parseLinks = parseLinks;
-
-function showReloadWarning() {
-  const warningBanners = document.querySelectorAll('.reload-warning');
-  warningBanners.forEach(banner => {
-    banner.style.display = 'flex';
-    banner.style.alignItems = 'center';
-    const warningText = document.createElement('span');
-    warningText.style.marginLeft = '6px';
-    warningText.style.flex = '1';
-    warningText.innerHTML = i18next.t('simulator:common.reloadToTakeEffect');
-    // Keep the existing icon and append the text
-    const existingIcon = banner.querySelector('svg');
-    existingIcon.style.flexShrink = '0';
-    existingIcon.style.width = '14px';
-    existingIcon.style.height = '14px';
-    banner.innerHTML = '';
-    banner.appendChild(existingIcon);
-    banner.appendChild(warningText);
-  });
-}
 
 window.rename = rename;

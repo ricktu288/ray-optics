@@ -143,22 +143,13 @@
                 :layout="layout"
               />
 
-              <div id="show_help_popups_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="show_help_popups_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <div class="form-check form-switch align-items-center">
-                      <input class="form-check-input" type="checkbox" id="show_help_popups">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="reload-warning alert alert-warning py-1 mt-1" style="display: none; font-size: 0.875rem; padding-left: 10px; margin-right: 5px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle me-1" viewBox="0 0 16 16" style="margin-bottom:2px">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                </svg>
-              </div>
+              <ToggleControl
+                id="show_help_popups"
+                :label="$t('simulator:settings.showHelpPopups.title')"
+                :popoverContent="$t('simulator:settings.showHelpPopups.description')"
+                v-model="help"
+                :layout="layout"
+              />
 
               <div id="advanced-help"></div>
             </div>
@@ -307,12 +298,6 @@
               </div>
             </div>
           </div>
-          <div class="reload-warning alert alert-warning py-1 mt-1" style="display: none; font-size: 0.875rem; padding-left: 10px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle me-1" viewBox="0 0 16 16" style="margin-bottom:2px">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-            </svg>
-          </div>
         </div>
       </div>
     </div>
@@ -349,6 +334,7 @@ export default {
     const autoSyncUrl = toRef(preferences, 'autoSyncUrl')
     const showJsonEditor = toRef(preferences, 'showJsonEditor')
     const showStatus = toRef(preferences, 'showStatus')
+    const help = toRef(preferences, 'help')
     
     const correctBrightness = computed({
       get: () => colorMode.value !== 'default',
@@ -370,7 +356,8 @@ export default {
       showRayArrows,
       autoSyncUrl,
       showJsonEditor,
-      showStatus
+      showStatus,
+      help
     }
   }
 }

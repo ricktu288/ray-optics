@@ -29,6 +29,7 @@ export const vTooltipPopover = {
     
     // Store initial options for comparison in updates
     el._lastOptions = { ...options }
+    el._lastIsPopover = isPopover
     
     if (isPopover) {
       let content = options.content || ''
@@ -39,7 +40,7 @@ export const vTooltipPopover = {
       const popoverConfig = {
         title: options.title || '',
         content,
-        trigger: options.trigger || 'hover focus', // Add focus to keep popover visible on click
+        trigger: options.trigger || 'hover',
         html: options.html !== false
       }
       
@@ -68,7 +69,7 @@ export const vTooltipPopover = {
     } else if (options.title) { // Only create tooltip if title is provided
       const tooltipConfig = {
         title: options.title,
-        trigger: options.trigger || 'hover focus', // Add focus to keep tooltip visible on click
+        trigger: options.trigger || 'hover',
         placement: options.placement || 'bottom'
       }
       
@@ -87,14 +88,19 @@ export const vTooltipPopover = {
     const options = binding.value || {}
     const isPopover = binding.arg === 'popover'
     const oldOptions = el._lastOptions || {}
+    const oldIsPopover = el._lastIsPopover
+    console.log('updated', el, options, oldOptions)
     
-    // Store new options for future comparison
+    // Store new options and arg for future comparison
     el._lastOptions = { ...options }
+    el._lastIsPopover = isPopover
     
-    // Only update if options have changed
-    if (JSON.stringify(options) === JSON.stringify(oldOptions)) {
+    // Only update if options or type have changed
+    if (JSON.stringify(options) === JSON.stringify(oldOptions) && isPopover === oldIsPopover) {
       return
     }
+
+    console.log('actually updated');
 
     // Clean up any existing instances
     if (el._popover) {
@@ -115,7 +121,7 @@ export const vTooltipPopover = {
       const popoverConfig = {
         title: options.title || '',
         content,
-        trigger: options.trigger || 'hover focus', // Add focus to keep popover visible on click
+        trigger: options.trigger || 'hover',
         html: options.html !== false
       }
       
@@ -141,7 +147,7 @@ export const vTooltipPopover = {
     } else if (options.title) { // Only create tooltip if title is provided
       const tooltipConfig = {
         title: options.title,
-        trigger: options.trigger || 'hover focus', // Add focus to keep tooltip visible on click
+        trigger: options.trigger || 'hover',
         placement: options.placement || 'bottom'
       }
       
