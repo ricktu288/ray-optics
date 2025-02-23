@@ -278,20 +278,6 @@ async function startApp() {
         updateModuleObjsMenu();
       }
 
-      if (scene.observer) {
-        document.getElementById('observer_size').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-        document.getElementById('observer_size_mobile').value = Math.round(scene.observer.r * 2 * 1000000) / 1000000;
-      } else {
-        document.getElementById('observer_size').value = 40;
-        document.getElementById('observer_size_mobile').value = 40;
-      }
-
-      document.getElementById('gridSize').value = scene.gridSize;
-      document.getElementById('gridSize_mobile').value = scene.gridSize;
-
-      document.getElementById('lengthScale').value = scene.lengthScale;
-      document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-
       document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       modebtn_clicked(scene.mode);
@@ -533,79 +519,6 @@ async function startApp() {
   document.getElementById('openfile').onchange = function () {
     openFile(this.files[0]);
   };
-
-  document.getElementById('gridSize').onchange = function () {
-    scene.gridSize = parseFloat(this.value);
-    document.getElementById('gridSize').value = scene.gridSize;
-    document.getElementById('gridSize_mobile').value = scene.gridSize;
-    simulator.updateSimulation(true, false);
-    editor.onActionComplete();
-  }
-  document.getElementById('gridSize_mobile').onchange = document.getElementById('gridSize').onchange;
-
-  document.getElementById('gridSize').onclick = function () {
-    this.select();
-  }
-  document.getElementById('gridSize_mobile').onclick = document.getElementById('gridSize').onclick;
-
-  document.getElementById('gridSize').onkeydown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById('gridSize_mobile').onkeydown = document.getElementById('gridSize').onkeydown;
-
-  document.getElementById('observer_size').onchange = function () {
-    document.getElementById('observer_size').value = this.value;
-    document.getElementById('observer_size_mobile').value = this.value;
-    if (scene.observer) {
-      scene.observer.r = parseFloat(this.value) * 0.5;
-    }
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
-  }
-  document.getElementById('observer_size_mobile').onchange = document.getElementById('observer_size').onchange;
-
-  document.getElementById('observer_size').onclick = function () {
-    this.select();
-  }
-  document.getElementById('observer_size_mobile').onclick = document.getElementById('observer_size').onclick;
-
-  document.getElementById('observer_size').onkeydown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById('observer_size_mobile').onkeydown = document.getElementById('observer_size').onkeydown;
-
-  document.getElementById('lengthScale').onchange = function () {
-    scene.lengthScale = parseFloat(this.value);
-    if (isNaN(scene.lengthScale)) {
-      scene.lengthScale = 1;
-    }
-    if (scene.lengthScale < 0.1) {
-      scene.lengthScale = 0.1;
-    }
-    if (scene.lengthScale > 10) {
-      scene.lengthScale = 10;
-    }
-    document.getElementById('lengthScale').value = scene.lengthScale;
-    document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-    editor.setScale(scene.scale);
-    simulator.updateSimulation();
-    editor.onActionComplete();
-  }
-  document.getElementById('lengthScale_mobile').onchange = document.getElementById('lengthScale').onchange;
-
-  document.getElementById('lengthScale').onclick = function () {
-    this.select();
-  }
-  document.getElementById('lengthScale_mobile').onclick = document.getElementById('lengthScale').onclick;
-
-  document.getElementById('lengthScale').onkeydown = function (e) {
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById('lengthScale_mobile').onkeydown = document.getElementById('lengthScale').onkeydown;
-
 
   document.getElementById('zoomPlus').onclick = function () {
     editor.setScale(scene.scale * 1.1);
@@ -929,12 +842,6 @@ function initUIText() {
   setText('tools_text', i18next.t('main:tools.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
   setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('gridSize_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
-  setText('gridSize_text', i18next.t('simulator:settings.gridSize.title'));
-  setText('observer_size_popover', null, null, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'));
-  setText('observer_size_text', i18next.t('simulator:settings.observerSize.title'));
-  setText('lengthScale_popover', null, null, i18next.t('simulator:settings.lengthScale.description'));
-  setText('lengthScale_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
@@ -985,9 +892,6 @@ function initUIText() {
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
   setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('gridSize_mobile_text', i18next.t('simulator:settings.gridSize.title'));
-  setText('observer_size_mobile_text', i18next.t('simulator:settings.observerSize.title'));
-  setText('lengthScale_mobile_text', i18next.t('simulator:settings.lengthScale.title'));
   setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
@@ -1410,15 +1314,6 @@ function init() {
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
 
-  document.getElementById('gridSize').value = scene.gridSize;
-  document.getElementById('gridSize_mobile').value = scene.gridSize;
-
-  document.getElementById('observer_size').value = 40;
-  document.getElementById('observer_size_mobile').value = 40;
-
-  document.getElementById('lengthScale').value = scene.lengthScale;
-  document.getElementById('lengthScale_mobile').value = scene.lengthScale;
-
   simulator.updateSimulation();
 }
 
@@ -1472,7 +1367,7 @@ function modebtn_clicked(mode1) {
   scene.mode = mode1;
   if (scene.mode == 'observer' && !scene.observer) {
     // Initialize the observer
-    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), parseFloat(document.getElementById('observer_size').value) * 0.5);
+    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), 40);
   }
 }
 

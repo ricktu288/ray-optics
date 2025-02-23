@@ -22,9 +22,15 @@ const PROPERTY_CALLBACKS = {
   name: () => {
     window.rename?.()
   },
-  mode: (value) => {
+  mode: (value, state) => {
     window.modebtn_clicked?.(value)
     window.simulator?.updateSimulation(false, true)
+    // When switching to observer mode, set the observer size to the stored value
+    if (value === 'observer' && window.simulator?.scene.observer) {
+      window.simulator.scene.observer.r = state.observerSize * 0.5
+      window.simulator?.updateSimulation(false, true)
+      window.editor?.onActionComplete()
+    }
   },
   rayModeDensity: (value) => {
     window.simulator?.updateSimulation(false, true)
@@ -33,6 +39,9 @@ const PROPERTY_CALLBACKS = {
     window.simulator?.updateSimulation(false, true)
   },
   showGrid: (value) => {
+    window.simulator?.updateSimulation(true, false)
+  },
+  gridSize: (value) => {
     window.simulator?.updateSimulation(true, false)
   },
   snapToGrid: (value) => {
@@ -51,6 +60,16 @@ const PROPERTY_CALLBACKS = {
   },
   showRayArrows: (value) => {
     window.simulator?.updateSimulation(false, true)
+  },
+  observerSize: (value) => {
+    if (window.simulator?.scene.observer) {
+      window.simulator.scene.observer.r = value * 0.5
+      window.simulator?.updateSimulation(false, true)
+      window.editor?.onActionComplete()
+    }
+  },
+  lengthScale: (value) => {
+    window.simulator?.updateSimulation(false, false)
   }
 }
 
@@ -68,12 +87,15 @@ export const useSceneStore = () => {
   if (storeInstance) return storeInstance
 
   // Create a reactive object for all serializable properties
-  const state = reactive(Object.fromEntries(
-    Object.entries(Scene.serializableDefaults).map(([key]) => [
-      key,
-      Scene.serializableDefaults[key]
-    ])
-  ))
+  const state = reactive({
+    observerSize: window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40,
+    ...Object.fromEntries(
+      Object.entries(Scene.serializableDefaults).map(([key]) => [
+        key,
+        Scene.serializableDefaults[key]
+      ])
+    )
+  })
 
   // Function to sync with scene
   const syncWithScene = () => {
@@ -81,6 +103,7 @@ export const useSceneStore = () => {
       Object.keys(Scene.serializableDefaults).forEach(key => {
         state[key] = window.scene[key] ?? Scene.serializableDefaults[key]
       })
+      state.observerSize = window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40
     }
   }
 
@@ -101,16 +124,22 @@ export const useSceneStore = () => {
 
   // Create computed properties for all serializable properties
   const computedProps = Object.fromEntries(
-    Object.keys(Scene.serializableDefaults).map(key => [
+    Object.keys(Scene.serializableDefaults).concat(['observerSize']).map(key => [
       key,
       computed({
         get: () => state[key],
         set: (newValue) => {
           console.log(`Setting ${key} to ${newValue}`)
           if (window.scene) {
-            window.scene[key] = newValue
+            if (key === 'observerSize') {
+              if (window.simulator?.scene.observer) {
+                window.simulator.scene.observer.r = newValue * 0.5
+              }
+            } else {
+              window.scene[key] = newValue
+            }
             state[key] = newValue
-            PROPERTY_CALLBACKS[key]?.(newValue)
+            PROPERTY_CALLBACKS[key]?.(newValue, state)
             // Emit a change event to ensure all components update
             //document.dispatchEvent(new CustomEvent('sceneChanged'))
           }

@@ -60,32 +60,35 @@
                   </button>
                 </div>
               </div>
-              <div class="row d-flex justify-content-between align-items-center" id="gridSize_popover" data-bs-placement="left" data-bs-offset="20,20">
-                <div id="gridSize_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <input type="text" class="settings-number" id="gridSize" value="20">
-                  </div>
-                </div>
-              </div>
+              <NumberControl
+                id="gridSize"
+                :label="$t('simulator:settings.gridSize.title')"
+                :popoverContent="$t('simulator:sceneObjs.common.lengthUnitInfo')"
+                v-model="gridSize"
+                :layout="layout"
+              />
 
-              <div class="row d-flex justify-content-between align-items-center" id="observer_size_popover" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="observer_size_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <input type="text" class="settings-number" id="observer_size" value="40">
-                  </div>
-                </div>
-              </div>
+              <NumberControl
+                id="observer_size"
+                :label="$t('simulator:settings.observerSize.title')"
+                v-model="observerSize"
+                :min="1"
+                :max="100"
+                :default-value="40"
+                :layout="layout"
+                :popover-content="$t('simulator:sceneObjs.common.lengthUnitInfo')"
+              />
 
-              <div id="lengthScale_popover" class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="0,20">
-                <div id="lengthScale_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <div class="flex-grow-1 d-flex align-items-center">
-                    <input type="text" class="settings-number" id="lengthScale" value="1">
-                  </div>
-                </div>
-              </div>
+              <NumberControl
+                id="lengthScale"
+                :label="$t('simulator:settings.lengthScale.title')"
+                :popover-content="$t('simulator:settings.lengthScale.description')"
+                v-model="lengthScale"
+                :min="0.1"
+                :max="10"
+                :default-value="1"
+                :layout="layout"
+              />
 
               <div class="row d-flex justify-content-between align-items-center">
                 <div id="zoom_text" class="col-auto settings-label"></div>
@@ -202,32 +205,38 @@
               </button>
             </div>
           </div>
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-            <div id="gridSize_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <input type="text" class="settings-number" id="gridSize_mobile" value="20">
-              </div>
-            </div>
-          </div>
+          <NumberControl
+            id="grid_size_mobile"
+            :label="$t('simulator:settings.gridSize.title')"
+            v-model="gridSize"
+            :min="10"
+            :max="100"
+            :default-value="50"
+            :layout="layout"
+          />
 
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-            <div id="observer_size_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <input type="text" class="settings-number" id="observer_size_mobile" value="40">
-              </div>
-            </div>
-          </div>
+          <NumberControl
+            id="observer_size_mobile"
+            :label="$t('simulator:settings.observerSize.title')"
+            v-model="observerSize"
+            :min="1"
+            :max="100"
+            :default-value="40"
+            :layout="layout"
+            :popover-content="$t('simulator:sceneObjs.common.lengthUnitInfo')"
+          />
 
-          <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="75,0">
-            <div id="lengthScale_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <div class="flex-grow-1 d-flex align-items-center">
-                <input type="text" class="settings-number" id="lengthScale_mobile" value="1">
-              </div>
-            </div>
-          </div>
+          <NumberControl
+            id="lengthScale_mobile"
+            :label="$t('simulator:settings.lengthScale.title')"
+            :popover-content="$t('simulator:settings.lengthScale.description')"
+            v-model="lengthScale"
+            :min="0.1"
+            :max="10"
+            :default-value="1"
+            :layout="layout"
+          />
+
           <div class="row d-flex justify-content-between align-items-center">
             <div id="zoom_mobile_text" class="col-auto settings-label"></div>
             <div class="col-auto d-flex align-items-center">
@@ -309,6 +318,7 @@ import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { useSceneStore } from '../../store/scene'
 import { usePreferencesStore } from '../../store/preferences'
 import ToggleControl from './controls/ToggleControl.vue'
+import NumberControl from './controls/NumberControl.vue'
 import RayDensityBar from './RayDensityBar.vue'
 import LayoutAidsBar from './LayoutAidsBar.vue'
 import { computed, toRef } from 'vue'
@@ -317,6 +327,7 @@ export default {
   name: 'SettingsBar',
   components: {
     ToggleControl,
+    NumberControl,
     RayDensityBar,
     LayoutAidsBar
   },
@@ -330,11 +341,6 @@ export default {
     const scene = useSceneStore()
     const preferences = usePreferencesStore()
     const colorMode = toRef(scene, 'colorMode')
-    const showRayArrows = toRef(scene, 'showRayArrows')
-    const autoSyncUrl = toRef(preferences, 'autoSyncUrl')
-    const showJsonEditor = toRef(preferences, 'showJsonEditor')
-    const showStatus = toRef(preferences, 'showStatus')
-    const help = toRef(preferences, 'help')
     
     const correctBrightness = computed({
       get: () => colorMode.value !== 'default',
@@ -353,11 +359,14 @@ export default {
     return {
       simulateColors: scene.simulateColors,
       correctBrightness,
-      showRayArrows,
-      autoSyncUrl,
-      showJsonEditor,
-      showStatus,
-      help
+      showRayArrows: scene.showRayArrows,
+      gridSize: scene.gridSize,
+      observerSize: scene.observerSize,
+      lengthScale: scene.lengthScale,
+      autoSyncUrl: preferences.autoSyncUrl,
+      showJsonEditor: preferences.showJsonEditor,
+      showStatus: preferences.showStatus,
+      help: preferences.help,
     }
   }
 }
