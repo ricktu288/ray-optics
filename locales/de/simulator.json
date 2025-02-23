@@ -1,7 +1,8 @@
 {
   "welcome": {
     "title": "Willkommen bei der Strahlenoptik-Simulation",
-    "instruction": "Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.\nUm ein Beispiel zu laden, [wechseln Sie bitte zur Galerie](/gallery)."
+    "instruction": "Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.\nUm ein Beispiel zu laden, [wechseln Sie bitte zur Galerie](/gallery).",
+    "loading": "Setup wird aus der URL geladen... Bitte warten."
   },
   "common": {
     "saveButton": "Speichern",
