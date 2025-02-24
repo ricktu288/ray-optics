@@ -5,7 +5,8 @@
       "title": "ប្រភេទ",
       "refraction": "ចំណាំងបែរ",
       "miscellaneous": "ផ្សេងៗ",
-      "reflection": "ចំណាំងផ្លាត"
+      "reflection": "ចំណាំងផ្លាត",
+      "lens": "ឡង់ទី"
     },
     "openInSimulator": "បើកក្នុងកម្មវិធីពិសោធន៍អុបទិច"
   },
@@ -61,6 +62,20 @@
     },
     "hyperbolicLens": {
       "title": "ឡង់ទីអ៊ីព៊ែបូល"
+    },
+    "theMirascope": {
+      "object1": "វត្ថុ",
+      "realimage1": "រូបភាពពិត"
+    },
+    "reflect": {
+      "title": "ចំណងផ្លាត និង ចំណាំងបែរ",
+      "description": "ការពិសោធន៍នឹងបង្ហាញអំពី ចំណងផ្លាត និងចំណាំងបែរលើផ្ទៃវត្ថុមួយ។"
+    },
+    "apparentDepth": {
+      "observer": "គំហើញ"
+    },
+    "cameraObscura": {
+      "observer2": "គំហើញ"
     }
   }
 }
