@@ -122,7 +122,8 @@
   },
   "aboutPage": {
     "contributionCategories": {
-      "uiDesign": "ឌីហ្សាញ UI"
+      "uiDesign": "ឌីហ្សាញ UI",
+      "translations_other": "ការបកប្រែភាសា {{languages}}"
     },
     "mainAuthors_other": "",
     "contributors": "អ្នកស្ម័គ្រចិត្តជួយ"
