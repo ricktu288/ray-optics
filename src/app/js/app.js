@@ -824,9 +824,6 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
-  setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
   setText('settings_text', i18next.t('simulator:settings.title'));
   setText('moreSettings_text', i18next.t('simulator:settings.more'));
@@ -874,8 +871,6 @@ function initUIText() {
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
-  setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
   setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
   setText('copy', null, i18next.t('simulator:objBar.duplicate.title'));
@@ -887,34 +882,6 @@ function initUIText() {
   setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
   setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
 
-
-  document.getElementById('language').innerHTML = window.localeData[lang].name;
-  document.getElementById('language_mobile').innerHTML = window.localeData[lang].name;
-
-  // Show/hide translation warning if current language is less than 70% translated
-  const TRANSLATION_THRESHOLD = 70;
-  const currentLangCompleteness = Math.round(window.localeData[lang].numStrings / window.localeData.en.numStrings * 100);
-  const warningBanners = document.querySelectorAll('.language-warning');
-  warningBanners.forEach(banner => {
-    if (currentLangCompleteness < TRANSLATION_THRESHOLD) {
-      banner.style.display = 'flex';
-      banner.style.alignItems = 'center';
-      const warningText = document.createElement('span');
-      warningText.style.marginLeft = '6px';
-      warningText.style.flex = '1';
-      warningText.innerHTML = parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: currentLangCompleteness + '%' }));
-      // Keep the existing icon and append the text
-      const existingIcon = banner.querySelector('svg');
-      existingIcon.style.flexShrink = '0';
-      existingIcon.style.width = '14px';
-      existingIcon.style.height = '14px';
-      banner.innerHTML = '';
-      banner.appendChild(existingIcon);
-      banner.appendChild(warningText);
-    } else {
-      banner.style.display = 'none';
-    }
-  });
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
@@ -1355,17 +1322,6 @@ window.modebtn_clicked = modebtn_clicked;
 
 function colorModebtn_clicked(colorMode) {
   scene.colorMode = colorMode;
-  if (colorMode == 'default') {
-    document.getElementById('colorMode').innerHTML = i18next.t('simulator:common.defaultOption');
-    document.getElementById('colorMode').disabled = true;
-    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:common.defaultOption');
-    document.getElementById('colorMode_mobile').disabled = true;
-  } else {
-    document.getElementById('colorMode').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
-    document.getElementById('colorMode_mobile').innerHTML = i18next.t('simulator:colorModeModal.' + scene.colorMode + '.title');
-    document.getElementById('colorMode').disabled = false;
-    document.getElementById('colorMode_mobile').disabled = false;
-  }
 }
 
 window.colorModebtn_clicked = colorModebtn_clicked;

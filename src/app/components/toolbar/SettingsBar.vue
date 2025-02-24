@@ -53,13 +53,17 @@
                 :layout="layout"
                 :verticalOffset="50"
               />
-              <div class="row d-flex justify-content-between align-items-center" data-bs-placement="left" data-bs-offset="20,20" id="colorMode_popover">
-                <div class="col-auto settings-label" id="colorMode_text"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#colorModeModal" id="colorMode" disabled>
-                  </button>
-                </div>
-              </div>
+              <PopupSelectControl
+                id="colorMode"
+                :label="$t('simulator:settings.colorMode.title') + '<sup>Beta</sup>'"
+                :value="colorMode"
+                :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
+                :disabled="colorMode === 'default'"
+                popup-target="colorModeModal"
+                :popover-content="$t('simulator:settings.colorMode.description')"
+                :layout="layout"
+              />
+
               <NumberControl
                 id="gridSize"
                 :label="$t('simulator:settings.gridSize.title')"
@@ -98,21 +102,21 @@
               />
 
               <hr class="dropdown-divider">
-              <div class="row d-flex justify-content-between align-items-center">
-                <div class="col-auto settings-label" id="language_text"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <button class="btn shadow-none dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language">
-                    English
-                  </button>
-                </div>
-              </div>
-              <div class="language-warning alert alert-warning py-1 mt-1" style="display: none; font-size: 0.875rem; padding-left: 10px; margin-right: 5px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle me-1" viewBox="0 0 16 16" style="margin-bottom:2px">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                </svg>
-              </div>
-
+              <PopupSelectControl
+                id="language"
+                :label="$t('simulator:settings.language.title')"
+                :value="lang"
+                :display-fn="value => localeData[value]?.name || value"
+                popup-target="languageModal"
+                :layout="layout"
+              />
+              <SettingsWarning
+                :show="showLanguageWarning"
+                :layout="layout"
+              >
+                <span v-html="warningText"></span>
+              </SettingsWarning>
+              
               <ToggleControl
                 id="auto_sync_url"
                 :label="$t('simulator:settings.autoSyncUrl.title')"
@@ -189,13 +193,18 @@
             v-model="simulateColors"
             :layout="layout"
           />
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-auto settings-label" id="colorMode_mobile_text"></div>
-            <div class="col-auto d-flex align-items-center">
-              <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#colorModeModal" id="colorMode_mobile" disabled>
-              </button>
-            </div>
-          </div>
+          <PopupSelectControl
+            id="colorMode_mobile"
+            :label="$t('simulator:settings.colorMode.title') + '<sup>Beta</sup>'"
+            :value="colorMode"
+            :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
+            :disabled="colorMode === 'default'"
+            popup-target="colorModeModal"
+            :popover-content="$t('simulator:settings.colorMode.description')"
+            :vertical-offset="75"
+            :layout="layout"
+          />
+
           <NumberControl
             id="grid_size_mobile"
             :label="$t('simulator:settings.gridSize.title')"
@@ -236,23 +245,21 @@
           />
 
           <hr class="dropdown-divider">
-
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-auto settings-label" id="language_mobile_text"></div>
-            <div class="col-auto d-flex align-items-center">
-              <button class="btn dropdown-toggle" type="button" data-bs-toggle="modal" data-bs-target="#languageModal" id="language_mobile">
-                English
-              </button>
-            </div>
-          </div>
-
-          <div class="language-warning alert alert-warning py-1 mt-1" style="display: none; font-size: 0.875rem; padding-left: 10px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle me-1" viewBox="0 0 16 16" style="margin-bottom:2px">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-            </svg>
-          </div>
-
+          <PopupSelectControl
+            id="language_mobile"
+            :label="$t('simulator:settings.language.title')"
+            :value="lang"
+            :display-fn="value => localeData[value]?.name || value"
+            popup-target="languageModal"
+            :layout="layout"
+          />
+          <SettingsWarning
+            :show="showLanguageWarning"
+            :layout="layout"
+          >
+            <span v-html="warningText"></span>
+          </SettingsWarning>
+          
           <ToggleControl
             v-if="layout === 'mobile'"
             id="auto_sync_url_mobile"
@@ -301,9 +308,12 @@ import { usePreferencesStore } from '../../store/preferences'
 import ToggleControl from './controls/ToggleControl.vue'
 import NumberControl from './controls/NumberControl.vue'
 import ZoomControl from './controls/ZoomControl.vue'
+import PopupSelectControl from './controls/PopupSelectControl.vue'
 import RayDensityBar from './RayDensityBar.vue'
 import LayoutAidsBar from './LayoutAidsBar.vue'
-import { computed, toRef } from 'vue'
+import SettingsWarning from './controls/SettingsWarning.vue'
+import { computed, toRef, ref } from 'vue'
+import i18next from 'i18next'
 
 export default {
   name: 'SettingsBar',
@@ -311,7 +321,9 @@ export default {
     NumberControl,
     ToggleControl,
     ZoomControl,
+    PopupSelectControl,
     RayDensityBar,
+    SettingsWarning,
     LayoutAidsBar
   },
   directives: {
@@ -324,6 +336,8 @@ export default {
     const scene = useSceneStore()
     const preferences = usePreferencesStore()
     const colorMode = toRef(scene, 'colorMode')
+    const lang = ref(window.lang)
+    const localeData = ref(window.localeData)
     
     const correctBrightness = computed({
       get: () => colorMode.value !== 'default',
@@ -337,6 +351,17 @@ export default {
         }
         window.editor?.selectObj(window.editor.selectedObjIndex)
       }
+    })
+
+    const showLanguageWarning = computed(() => {
+      const TRANSLATION_THRESHOLD = 70
+      const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
+      return completeness < TRANSLATION_THRESHOLD
+    })
+
+    const warningText = computed(() => {
+      const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
+      return window.parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
     })
 
     return {
@@ -354,6 +379,10 @@ export default {
       showJsonEditor: preferences.showJsonEditor,
       showStatus: preferences.showStatus,
       help: preferences.help,
+      lang,
+      localeData,
+      showLanguageWarning,
+      warningText,
     }
   }
 }
