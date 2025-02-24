@@ -278,8 +278,6 @@ async function startApp() {
         updateModuleObjsMenu();
       }
 
-      document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-      document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
       modebtn_clicked(scene.mode);
       colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
@@ -327,8 +325,7 @@ async function startApp() {
   });
 
   editor.on('scaleChange', function (e) {
-    document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-    document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
+    document.dispatchEvent(new Event('sceneChanged'));
   });
 
   editor.on('requestUpdateErrorAndWarning', function () {
@@ -519,19 +516,6 @@ async function startApp() {
   document.getElementById('openfile').onchange = function () {
     openFile(this.files[0]);
   };
-
-  document.getElementById('zoomPlus').onclick = function () {
-    editor.setScale(scene.scale * 1.1);
-    editor.onActionComplete();
-    this.blur();
-  }
-  document.getElementById('zoomMinus').onclick = function () {
-    editor.setScale(scene.scale / 1.1);
-    editor.onActionComplete();
-    this.blur();
-  }
-  document.getElementById('zoomPlus_mobile').onclick = document.getElementById('zoomPlus').onclick;
-  document.getElementById('zoomMinus_mobile').onclick = document.getElementById('zoomMinus').onclick;
 
   document.getElementById('apply_to_all').onclick = function () {
     this.blur();
@@ -842,7 +826,6 @@ function initUIText() {
   setText('tools_text', i18next.t('main:tools.title'));
   setText('colorMode_popover', null, null, i18next.t('simulator:settings.colorMode.description'));
   setText('colorMode_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('zoom_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_text', i18next.t('simulator:settings.language.title'));
   setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
   setText('settings_text', i18next.t('simulator:settings.title'));
@@ -892,7 +875,6 @@ function initUIText() {
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
   setText('colorMode_mobile_text', i18next.t('simulator:settings.colorMode.title') + '<sup>Beta</sup>');
-  setText('zoom_mobile_text', i18next.t('simulator:settings.zoom.title'));
   setText('language_mobile_text', i18next.t('simulator:settings.language.title'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
   setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
@@ -1296,8 +1278,6 @@ function init() {
 
   editor.selectObj(-1);
 
-  document.getElementById("zoom").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
-  document.getElementById("zoom_mobile").innerText = Math.round(scene.scale * scene.lengthScale * 100) + '%';
   toolbtn_clicked('');
   modebtn_clicked('rays');
   colorModebtn_clicked('default');

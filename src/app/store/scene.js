@@ -70,6 +70,12 @@ const PROPERTY_CALLBACKS = {
   },
   lengthScale: (value) => {
     window.simulator?.updateSimulation(false, false)
+  },
+  scale: (value) => {
+    window.simulator?.updateSimulation(false, false)
+  },
+  zoom: (value) => {
+    window.simulator?.updateSimulation(false, false)
   }
 }
 
@@ -89,6 +95,7 @@ export const useSceneStore = () => {
   // Create a reactive object for all serializable properties
   const state = reactive({
     observerSize: window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40,
+    zoom: window.simulator?.scene.scale || 1,
     ...Object.fromEntries(
       Object.entries(Scene.serializableDefaults).map(([key]) => [
         key,
@@ -104,6 +111,7 @@ export const useSceneStore = () => {
         state[key] = window.scene[key] ?? Scene.serializableDefaults[key]
       })
       state.observerSize = window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40
+      state.zoom = (window.scene.scale * window.scene.lengthScale) || 1
     }
   }
 
@@ -124,7 +132,7 @@ export const useSceneStore = () => {
 
   // Create computed properties for all serializable properties
   const computedProps = Object.fromEntries(
-    Object.keys(Scene.serializableDefaults).concat(['observerSize']).map(key => [
+    Object.keys(Scene.serializableDefaults).concat(['observerSize', 'zoom']).map(key => [
       key,
       computed({
         get: () => state[key],
@@ -132,11 +140,18 @@ export const useSceneStore = () => {
           console.log(`Setting ${key} to ${newValue}`)
           if (window.scene) {
             if (key === 'observerSize') {
-              if (window.simulator?.scene.observer) {
-                window.simulator.scene.observer.r = newValue * 0.5
+              if (window.scene.observer) {
+                window.scene.observer.r = newValue * 0.5
               }
+            } else if (key === 'zoom') {
+              console.log(`Setting zoom to ${newValue}`)
+              window.editor?.setScale(newValue / window.scene.lengthScale)
             } else {
               window.scene[key] = newValue
+              // Update zoom when scale or lengthScale changes
+              if (key === 'scale' || key === 'lengthScale') {
+                state.zoom = window.scene.scale * window.scene.lengthScale
+              }
             }
             state[key] = newValue
             PROPERTY_CALLBACKS[key]?.(newValue, state)

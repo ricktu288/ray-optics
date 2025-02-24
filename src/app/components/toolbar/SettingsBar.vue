@@ -90,22 +90,13 @@
                 :layout="layout"
               />
 
-              <div class="row d-flex justify-content-between align-items-center">
-                <div id="zoom_text" class="col-auto settings-label"></div>
-                <div class="col-auto d-flex align-items-center">
-                  <button class="btn shadow-none range-minus-btn" id="zoomMinus">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                      <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                    </svg>
-                  </button>
-                  <span class="mx-2" id="zoom">100%</span>
-                  <button class="btn shadow-none range-plus-btn" id="zoomPlus">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+              <ZoomControl
+                id="zoom"
+                :label="$t('simulator:settings.zoom.title')"
+                v-model="zoom"
+                :layout="layout"
+              />
+
               <hr class="dropdown-divider">
               <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-auto settings-label" id="language_text"></div>
@@ -237,22 +228,12 @@
             :layout="layout"
           />
 
-          <div class="row d-flex justify-content-between align-items-center">
-            <div id="zoom_mobile_text" class="col-auto settings-label"></div>
-            <div class="col-auto d-flex align-items-center">
-              <button class="btn range-minus-btn" id="zoomMinus_mobile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
-                  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                </svg>
-              </button>
-              <span class="mx-2" id="zoom_mobile">100%</span>
-              <button class="btn range-plus-btn" id="zoomPlus_mobile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+          <ZoomControl
+            id="zoom_mobile"
+            :label="$t('simulator:settings.zoom.title')"
+            v-model="zoom"
+            :layout="layout"
+          />
 
           <hr class="dropdown-divider">
 
@@ -319,6 +300,7 @@ import { useSceneStore } from '../../store/scene'
 import { usePreferencesStore } from '../../store/preferences'
 import ToggleControl from './controls/ToggleControl.vue'
 import NumberControl from './controls/NumberControl.vue'
+import ZoomControl from './controls/ZoomControl.vue'
 import RayDensityBar from './RayDensityBar.vue'
 import LayoutAidsBar from './LayoutAidsBar.vue'
 import { computed, toRef } from 'vue'
@@ -326,8 +308,9 @@ import { computed, toRef } from 'vue'
 export default {
   name: 'SettingsBar',
   components: {
-    ToggleControl,
     NumberControl,
+    ToggleControl,
+    ZoomControl,
     RayDensityBar,
     LayoutAidsBar
   },
@@ -357,12 +340,16 @@ export default {
     })
 
     return {
-      simulateColors: scene.simulateColors,
-      correctBrightness,
+      colorMode: scene.colorMode,
       showRayArrows: scene.showRayArrows,
+      showGrid: scene.showGrid,
       gridSize: scene.gridSize,
+      snapToGrid: scene.snapToGrid,
       observerSize: scene.observerSize,
       lengthScale: scene.lengthScale,
+      zoom: scene.zoom,
+      simulateColors: scene.simulateColors,
+      correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
       showJsonEditor: preferences.showJsonEditor,
       showStatus: preferences.showStatus,
