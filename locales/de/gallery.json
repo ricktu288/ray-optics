@@ -1,0 +1,18 @@
+{
+  "galleryData": {
+    "apparentDepth": {
+      "observer": "Beobachter"
+    },
+    "aplanaticPoints": {
+      "yaxis": "Y-Achse"
+    }
+  },
+  "galleryPage": {
+    "title": "Gallerie (Beispiele)",
+    "categories": {
+      "refraction": "Brechung",
+      "reflection": "Reflektion",
+      "title": "Kategorien"
+    }
+  }
+}
