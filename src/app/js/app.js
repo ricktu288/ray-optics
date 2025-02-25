@@ -824,9 +824,6 @@ function initUIText() {
   setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('tool__label', null, i18next.t('main:tools.moveView.title'), i18next.t('main:tools.moveView.description'));
   setText('tools_text', i18next.t('main:tools.title'));
-  setText('advanced-help', i18next.t('simulator:settings.advancedHelp'));
-  setText('settings_text', i18next.t('simulator:settings.title'));
-  setText('moreSettings_text', i18next.t('simulator:settings.more'));
   setText('reset_mobile', i18next.t('simulator:file.reset.title'));
   setText('save_button', i18next.t('simulator:file.save.title'));
   setText('open_mobile', i18next.t('simulator:file.open.title'));
@@ -870,7 +867,6 @@ function initUIText() {
   setText('tool_LineArrow_mobile_label', i18next.t('main:tools.LineArrow.title'));
   setText('tool_Drawing_mobile_label', i18next.t('main:tools.Drawing.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
-  setText('moreSettings_text_mobile', i18next.t('simulator:settings.more'));
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
   setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
   setText('copy', null, i18next.t('simulator:objBar.duplicate.title'));
@@ -886,17 +882,6 @@ function initUIText() {
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
   document.getElementById('about').href = mapURL('/about');
-}
-
-function navigateToNewQuery(newQuery) {
-  let currentUrl = window.location.href;
-  let baseUrl = currentUrl.split('?')[0];  // Remove current query if exists
-  baseUrl = baseUrl.split('#')[0];         // Further remove the hash to get the base URL
-
-  let hash = window.location.hash;         // Capture the existing hash
-  let newUrl = baseUrl + "?" + newQuery + hash;  // Construct the new URL with the query and hash
-
-  window.location.href = newUrl;  // Set the new URL
 }
 
 function setText(id, text, title, popover, image) {

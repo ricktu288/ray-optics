@@ -8,13 +8,12 @@
       offset: [verticalOffset, 20]
     } : undefined"
   >
-    <div :id="`${id}_text`" class="col-auto settings-label" v-html="label"></div>
+    <div class="col-auto settings-label" v-html="label"></div>
     <div class="col-auto d-flex align-items-center">
       <div class="flex-grow-1 d-flex align-items-center">
         <input 
           type="text" 
           class="settings-number" 
-          :id="id"
           v-model="inputValue"
           @keyup.enter="handleEnter"
           @keydown="handleKeydown"
@@ -37,10 +36,6 @@ export default {
     'tooltip-popover': vTooltipPopover
   },
   props: {
-    id: {
-      type: String,
-      required: true
-    },
     label: {
       type: String,
       required: true

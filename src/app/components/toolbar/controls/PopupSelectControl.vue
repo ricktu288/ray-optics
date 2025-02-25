@@ -8,14 +8,13 @@
       offset: [verticalOffset || 0, 20]
     } : undefined"
   >
-    <div class="col-auto settings-label" :id="`${id}_text`" v-html="label"></div>
+    <div class="col-auto settings-label" v-html="label"></div>
     <div class="col-auto d-flex align-items-center">
       <button 
         class="btn shadow-none dropdown-toggle" 
         type="button" 
         :data-bs-toggle="popupType"
         :data-bs-target="`#${popupTarget}`"
-        :id="id"
         :disabled="disabled"
       >
         {{ displayText }}
@@ -25,8 +24,9 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../../../directives/tooltip-popover'
+import { usePreferencesStore } from '../../../store/preferences'
 
 export default {
   name: 'PopupSelectControl',
@@ -34,10 +34,6 @@ export default {
     'tooltip-popover': vTooltipPopover
   },
   props: {
-    id: {
-      type: String,
-      required: true
-    },
     label: {
       type: String,
       required: true
@@ -66,10 +62,6 @@ export default {
       type: String,
       default: ''
     },
-    tooltipType: {
-      type: String,
-      default: 'popover'
-    },
     verticalOffset: {
       type: Number,
       default: 0
@@ -80,12 +72,17 @@ export default {
     }
   },
   setup(props) {
+    const preferences = usePreferencesStore()
+    const help = toRef(preferences, 'help')
+    const tooltipType = computed(() => help.value ? 'popover' : null)
+
     const displayText = computed(() => {
       return props.displayFn(props.value)
     })
 
     return {
-      displayText
+      displayText,
+      tooltipType
     }
   }
 }

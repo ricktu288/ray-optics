@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div v-if="layout === 'desktop'" class="col-auto d-none d-xl-block">
+  <div v-if="layout === 'desktop'" class="col-auto d-none d-xxl-block">
     <div class="row justify-content-center">
       <div class="btn-group" role="group">
         <input type="checkbox" class="btn-check" id="showGrid" autocomplete="off" v-model="showGrid" @click="e => e.target.blur()">
@@ -38,7 +38,7 @@
         </label>
       </div>
     </div>
-    <div class="row justify-content-center title" id="layoutAids_text">{{ $t('simulator:settings.layoutAids.title') }}</div>
+    <div class="row justify-content-center title">{{ $t('simulator:settings.layoutAids.title') }}</div>
   </div>
 
   <div v-if="layout === 'tablet'" class="row d-flex d-xxl-none justify-content-between align-items-center">
@@ -70,17 +70,14 @@
 
   <div v-if="layout === 'mobile'">
     <ToggleControl
-      id="showGrid_mobile"
       :label="$t('simulator:settings.layoutAids.showGrid')"
       v-model="showGrid"
     />
     <ToggleControl
-      id="snapToGrid_mobile"
       :label="$t('simulator:settings.layoutAids.snapToGrid')"
       v-model="snapToGrid"
     />
     <ToggleControl
-      id="lockObjs_mobile"
       :label="$t('simulator:settings.layoutAids.lockObjs')"
       v-model="lockObjs"
     />
@@ -89,6 +86,10 @@
 </template>
 
 <script>
+/**
+ * @module LayoutAidsBar
+ * @description The vue component for the layout aids section of the toolbar (desktop) or the layout aids controls in the SettingsBar component (mobile or tablet).
+ */
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { useSceneStore } from '../../store/scene'
 import ToggleControl from './controls/ToggleControl.vue'

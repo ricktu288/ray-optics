@@ -8,15 +8,15 @@
       offset: [verticalOffset, 20]
     } : undefined"
   >
-    <div :id="`${id}_text`" class="col-auto settings-label" v-html="label"></div>
+    <div class="col-auto settings-label" v-html="label"></div>
     <div class="col-auto d-flex align-items-center">
-      <button class="btn shadow-none range-minus-btn" :id="`${id}Minus`" @click="handleMinus">
+      <button class="btn shadow-none range-minus-btn" @click="handleMinus">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
         </svg>
       </button>
-      <span class="mx-2" :id="id">{{ displayValue }}</span>
-      <button class="btn shadow-none range-plus-btn" :id="`${id}Plus`" @click="handlePlus">
+      <span class="mx-2">{{ displayValue }}</span>
+      <button class="btn shadow-none range-plus-btn" @click="handlePlus">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
         </svg>
@@ -36,10 +36,6 @@ export default {
     'tooltip-popover': vTooltipPopover
   },
   props: {
-    id: {
-      type: String,
-      required: true
-    },
     label: {
       type: String,
       required: true

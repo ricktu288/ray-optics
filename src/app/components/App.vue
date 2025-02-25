@@ -251,11 +251,6 @@ export default {
   overflow-y: auto;
 }
 
-#advanced-help {
-  font-size: 9pt;
-}
-
-
 #mobile-dropdown-options .container {
   max-height: 75vh;
   overflow-y: auto;

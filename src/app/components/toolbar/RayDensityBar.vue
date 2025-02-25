@@ -107,6 +107,10 @@
 </template>
 
 <script>
+/**
+ * @module RayDensityBar
+ * @description The vue component for the ray density section of the toolbar (desktop) or the ray density controls in the SettingsBar component (mobile or tablet).
+ */
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../store/preferences'
 import { useSceneStore } from '../../store/scene'

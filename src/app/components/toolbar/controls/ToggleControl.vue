@@ -15,7 +15,6 @@
           <input 
             class="form-check-input" 
             type="checkbox" 
-            :id="id" 
             :checked="modelValue"
             @click="e => e.target.blur()"
             @change="$emit('update:modelValue', $event.target.checked)"
@@ -37,10 +36,6 @@ export default {
     'tooltip-popover': vTooltipPopover
   },
   props: {
-    id: {
-      type: String,
-      required: true
-    },
     label: {
       type: String,
       required: true

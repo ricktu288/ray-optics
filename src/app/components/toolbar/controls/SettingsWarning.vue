@@ -2,7 +2,6 @@
   <div 
     class="settings-warning alert alert-warning py-1 mt-1" 
     :style="{
-      display: show ? 'flex' : 'none',
       alignItems: 'center',
       fontSize: '0.875rem',
       paddingLeft: '10px',
@@ -31,10 +30,6 @@
 export default {
   name: 'SettingsWarning',
   props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
     layout: {
       type: String,
       default: 'desktop'
