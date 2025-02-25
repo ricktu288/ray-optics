@@ -201,7 +201,10 @@
       "description": "Esta simulação mostra as imagens de um feixe e fontes ponto produzidas por lentes ideais."
     },
     "transverseAndLongitudinalMagnification": {
-      "title": "Magnificação transversal e longitudinal"
+      "title": "Magnificação transversal e longitudinal",
+      "inthisexamplewehavey": "Neste exemplo temos y'_j - y'_k = M_T * (y_j - y_k), onde j,k∈{0,1,2,3,4,5}.\nLogo por exemplo a magnificação transversal do obejto ponto (x_0,y_0) é M_T = -3, e podemos calcular - \n(x'_0 - x'_1)/(x_1 - x_0) ≈ -0.3699\n(x'_0 - x'_2)/(x_2 - x_0) ≈ -0.7297\n(x'_0 - x'_3)/(x_3 - x_0) ≈ -1.4211\n(x'_0 - x'_4)/(x_4 - x_0) ≈ -2.4545\n(x'_0 - x'_5)/(x_5 - x_0) = -5.4\n.\n.\n.\n(A razão irá convergir para a magnificação longitudinal: M_L = - (M_T)^2 = -9)",
+      "description": "Essa é uma simulação de magnifucação transversal e longitudinal para uma lente ideal com comprimento focal \\(f\\). A magnificação transversal (também chamada linear) e longitudinal são \\(M_T=1-\\frac{u}{f}\\) e \\(M_L=\\frac{dv}{du}\\) respectivamente, onde \\(u\\) e \\(v\\) são a distância do objeto e da imagem da nossa lente ideal, respectivamente. Além disso, para uma lente ideal \\(M_L=-(M_T)^2\\)",
+      "rightclickonarealobj": "Clique com botão direito em um objeto(real) para ver suas coordenadas.\nOs quadrados verdes são fontes pontuais reais, enquanto os quadrados amarelos são objetos imagem."
     },
     "beamExpanders": {
       "title": "Expansores de feixe",
@@ -218,6 +221,9 @@
       "lightfromthepaper": "Luz vinda do papel",
       "eyes": "Olhos",
       "dragtomovethebagouto": "Arraste para mover o saco pra fora da água"
+    },
+    "vanishingPoint": {
+      "title": "Ponto desaparecente"
     }
   }
 }
