@@ -18,155 +18,7 @@
   <div v-if="layout === 'desktop'" class="col-auto">
     <div class="row">
       <div class="btn-group" role="group">
-        <div class="dropdown">
-          <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="sourceToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu" aria-labelledby="sourceToolsDropdown">
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SingleRay">
-              <label id="tool_SingleRay_label" class="btn shadow-none btn-primary dropdown-item" for="tool_SingleRay" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Beam">
-              <label id="tool_Beam_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Beam" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_PointSource">
-              <label id="tool_PointSource_label" class="btn shadow-none btn-primary dropdown-item" for="tool_PointSource" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_AngleSource">
-              <label id="tool_AngleSource_label" class="btn shadow-none btn-primary dropdown-item" for="tool_AngleSource" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="dropdown">
-          <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="mirrorToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu" aria-labelledby="mirrorToolsDropdown">
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Mirror">
-              <label id="tool_Mirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Mirror" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ArcMirror">
-              <label id="tool_ArcMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_ArcMirror" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ParabolicMirror">
-              <label id="tool_ParabolicMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_ParabolicMirror" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CustomMirror">
-              <label id="tool_CustomMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CustomMirror" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_IdealMirror">
-              <label id="tool_IdealMirror_label" class="btn shadow-none btn-primary dropdown-item" for="tool_IdealMirror" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_BeamSplitter">
-              <label id="tool_BeamSplitter_label" class="btn shadow-none btn-primary dropdown-item" for="tool_BeamSplitter" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_ConcaveDiffractionGrating">
-              <label id="tool_ConcaveDiffractionGrating_label" class="btn shadow-none btn-primary dropdown-item" for="tool_ConcaveDiffractionGrating" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="glassToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu" aria-labelledby="glassToolsDropdown">
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_PlaneGlass">
-              <label id="tool_PlaneGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_PlaneGlass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleGlass">
-              <label id="tool_CircleGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGlass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Glass">
-              <label id="tool_Glass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Glass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CustomGlass">
-              <label id="tool_CustomGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CustomGlass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_IdealLens">
-              <label id="tool_IdealLens_label" class="btn shadow-none btn-primary dropdown-item" for="tool_IdealLens" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_SphericalLens">
-              <label id="tool_SphericalLens_label" class="btn shadow-none btn-primary dropdown-item" for="tool_SphericalLens" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleGrinGlass">
-              <label id="tool_CircleGrinGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleGrinGlass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_GrinGlass">
-              <label id="tool_GrinGlass_label" class="btn shadow-none btn-primary dropdown-item" for="tool_GrinGlass" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="blockerToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu" aria-labelledby="blockerToolsDropdown">
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Blocker">
-              <label id="tool_Blocker_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Blocker" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_CircleBlocker">
-              <label id="tool_CircleBlocker_label" class="btn shadow-none btn-primary dropdown-item" for="tool_CircleBlocker" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Aperture">
-              <label id="tool_Aperture_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Aperture" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_DiffractionGrating">
-              <label id="tool_DiffractionGrating_label" class="btn shadow-none btn-primary dropdown-item" for="tool_DiffractionGrating" data-bs-placement="right" data-bs-offset="40,8"></label>
-            </li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <button class="btn shadow-none btn-primary dropdown-toggle" type="button" id="moreToolsDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul class="dropdown-menu" aria-labelledby="moreToolsDropdown">
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Ruler">
-              <label id="tool_Ruler_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Ruler" data-bs-placement="right" data-bs-offset="60,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Protractor">
-              <label id="tool_Protractor_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Protractor" data-bs-placement="right" data-bs-offset="60,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Detector">
-              <label id="tool_Detector_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Detector" data-bs-placement="right" data-bs-offset="60,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_TextLabel">
-              <label id="tool_TextLabel_label" class="btn shadow-none btn-primary dropdown-item" for="tool_TextLabel" data-bs-placement="right" data-bs-offset="0,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_LineArrow">
-              <label id="tool_LineArrow_label" class="btn shadow-none btn-primary dropdown-item" for="tool_LineArrow" data-bs-placement="right" data-bs-offset="0,8"></label>
-            </li>
-            <li>
-              <input type="radio" class="btn-check" name="toolsradio" autocomplete="off" id="tool_Drawing">
-              <label id="tool_Drawing_label" class="btn shadow-none btn-primary dropdown-item" for="tool_Drawing" data-bs-placement="right" data-bs-offset="0,8"></label>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li id="module_start"><button class="dropdown-item" type="button" id="import_modules" data-bs-toggle="modal" data-bs-target="#moduleModal"></button></li>
-          </ul>
-        </div>
+        <ToolsList layout="desktop" />
         <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
         <label id="tool__label" class="btn shadow-none btn-primary" for="tool_">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-move" viewBox="0 0 16 16">
@@ -189,7 +41,7 @@
       <div class="mobile-dropdown">
         <ul id="mobile-dropdown-tools-root">
           <li>
-            <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-source">
+            <button class="btn btn-primary dropdown-item mobile-dropdown-trigger d-flex w-100" id="mobile-dropdown-trigger-lightSource">
               <div id="tool_lightSource__text" class="col"></div>
               <div class="col text-end">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -244,143 +96,7 @@
           </li>
         </ul>
 
-        <ul id="mobile-dropdown-source" style="display:none">
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_SingleRay_mobile">
-            <label id="tool_SingleRay_mobile_label" class="btn btn-primary dropdown-item" for="tool_SingleRay_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Beam_mobile">
-            <label id="tool_Beam_mobile_label" class="btn btn-primary dropdown-item" for="tool_Beam_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_PointSource_mobile">
-            <label id="tool_PointSource_mobile_label" class="btn btn-primary dropdown-item" for="tool_PointSource_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_AngleSource_mobile">
-            <label id="tool_AngleSource_mobile_label" class="btn btn-primary dropdown-item" for="tool_AngleSource_mobile"></label>
-          </li>
-        </ul>
-        
-        <ul id="mobile-dropdown-mirror" style="display:none">
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Mirror_mobile">
-            <label id="tool_Mirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_Mirror_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ArcMirror_mobile">
-            <label id="tool_ArcMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_ArcMirror_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ParabolicMirror_mobile">
-            <label id="tool_ParabolicMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_ParabolicMirror_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CustomMirror_mobile">
-            <label id="tool_CustomMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_CustomMirror_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_IdealMirror_mobile">
-            <label id="tool_IdealMirror_mobile_label" class="btn btn-primary dropdown-item" for="tool_IdealMirror_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_BeamSplitter_mobile">
-            <label id="tool_BeamSplitter_mobile_label" class="btn btn-primary dropdown-item" for="tool_BeamSplitter_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_ConcaveDiffractionGrating_mobile">
-            <label id="tool_ConcaveDiffractionGrating_mobile_label" class="btn btn-primary dropdown-item" for="tool_ConcaveDiffractionGrating_mobile"></label>
-          </li>
-        </ul>
-        
-        <ul id="mobile-dropdown-glass" style="display:none">
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_PlaneGlass_mobile">
-            <label id="tool_PlaneGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_PlaneGlass_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleGlass_mobile">
-            <label id="tool_CircleGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleGlass_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Glass_mobile">
-            <label id="tool_Glass_mobile_label" class="btn btn-primary dropdown-item" for="tool_Glass_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CustomGlass_mobile">
-            <label id="tool_CustomGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CustomGlass_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_IdealLens_mobile">
-            <label id="tool_IdealLens_mobile_label" class="btn btn-primary dropdown-item" for="tool_IdealLens_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_SphericalLens_mobile">
-            <label id="tool_SphericalLens_mobile_label" class="btn btn-primary dropdown-item" for="tool_SphericalLens_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleGrinGlass_mobile">
-            <label id="tool_CircleGrinGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleGrinGlass_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_GrinGlass_mobile">
-            <label id="tool_GrinGlass_mobile_label" class="btn btn-primary dropdown-item" for="tool_GrinGlass_mobile"></label>
-          </li>
-        </ul>
-        
-        <ul id="mobile-dropdown-blocker" style="display:none">
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Blocker_mobile">
-            <label id="tool_Blocker_mobile_label" class="btn btn-primary dropdown-item" for="tool_Blocker_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_CircleBlocker_mobile">
-            <label id="tool_CircleBlocker_mobile_label" class="btn btn-primary dropdown-item" for="tool_CircleBlocker_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Aperture_mobile">
-            <label id="tool_Aperture_mobile_label" class="btn btn-primary dropdown-item" for="tool_Aperture_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_DiffractionGrating_mobile">
-            <label id="tool_DiffractionGrating_mobile_label" class="btn btn-primary dropdown-item" for="tool_DiffractionGrating_mobile"></label>
-          </li>
-        </ul>
-        
-        <ul id="mobile-dropdown-more" style="display:none">
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Ruler_mobile">
-            <label id="tool_Ruler_mobile_label" class="btn btn-primary dropdown-item" for="tool_Ruler_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Protractor_mobile">
-            <label id="tool_Protractor_mobile_label" class="btn btn-primary dropdown-item" for="tool_Protractor_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Detector_mobile">
-            <label id="tool_Detector_mobile_label" class="btn btn-primary dropdown-item" for="tool_Detector_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_TextLabel_mobile">
-            <label id="tool_TextLabel_mobile_label" class="btn btn-primary dropdown-item" for="tool_TextLabel_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_LineArrow_mobile">
-            <label id="tool_LineArrow_mobile_label" class="btn btn-primary dropdown-item" for="tool_LineArrow_mobile"></label>
-          </li>
-          <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool_Drawing_mobile">
-            <label id="tool_Drawing_mobile_label" class="btn btn-primary dropdown-item" for="tool_Drawing_mobile"></label>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li id="module_start_mobile"><button class="dropdown-item" type="button" id="import_modules_mobile" data-bs-toggle="modal" data-bs-target="#moduleModal"></button></li>
-        </ul>                      
+        <ToolsList layout="mobile" />
       </div>
       
     </div>
@@ -388,10 +104,15 @@
 </template>
 
 <script>
+import ToolsList from './ToolsList.vue'
+
 export default {
   name: 'ToolsBar',
   props: {
     layout: String
+  },
+  components: {
+    ToolsList
   }
 }
 </script>

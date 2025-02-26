@@ -30,15 +30,15 @@ let app = null
 const i18nPlugin = {
   install: (app) => {
     // Add global $t method that includes parseLinks
-    app.config.globalProperties.$t = (key) => {
-      const translated = i18next.t(key)
+    app.config.globalProperties.$t = (key, options) => {
+      const translated = i18next.t(key, options)
       return window.parseLinks ? window.parseLinks(translated) : translated
     }
 
     // Add composable for use in setup functions
     app.provide('i18n', {
-      t: (key) => {
-        const translated = i18next.t(key)
+      t: (key, options) => {
+        const translated = i18next.t(key, options)
         return window.parseLinks ? window.parseLinks(translated) : translated
       }
     })
