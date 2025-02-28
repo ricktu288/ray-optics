@@ -274,10 +274,6 @@ async function startApp() {
         document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
       }
 
-      if (Object.keys(scene.modules).length > 0) {
-        updateModuleObjsMenu();
-      }
-
       modebtn_clicked(scene.mode);
       colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
@@ -952,86 +948,6 @@ function hideAllPopovers() {
   });
 }
 
-function updateModuleObjsMenu() {
-  for (let suffix of ['', '_mobile']) {
-    const moduleStartLi = document.getElementById('module_start' + suffix);
-
-    // Remove all children after moduleStartLi
-    while (moduleStartLi.nextElementSibling) {
-      moduleStartLi.nextElementSibling.remove();
-    }
-
-    // Add all module objects to the menu after moduleStartLi
-    for (let moduleName of Object.keys(scene.modules)) {
-      const moduleLi = document.createElement('li');
-
-      const moduleRadio = document.createElement('input');
-      moduleRadio.type = 'radio';
-      moduleRadio.name = 'toolsradio' + suffix;
-      moduleRadio.id = 'moduleTool_' + moduleName + suffix;
-      moduleRadio.classList.add('btn-check');
-      moduleRadio.autocomplete = 'off';
-      moduleRadio.addEventListener('change', function () {
-        if (moduleRadio.checked) {
-          resetDropdownButtons();
-          document.getElementById('moreToolsDropdown').classList.add('selected');
-          document.getElementById('mobile-dropdown-trigger-more').classList.add('selected');
-          toolbtn_clicked('ModuleObj');
-          editor.addingModuleName = moduleName;
-        }
-      });
-
-      const moduleLabel = document.createElement('label');
-      moduleLabel.classList.add('btn', 'shadow-none', 'btn-primary', 'dropdown-item', 'd-flex', 'w-100');
-      moduleLabel.htmlFor = 'moduleTool_' + moduleName + suffix;
-
-      const moduleNameDiv = document.createElement('div');
-      moduleNameDiv.classList.add('col');
-      moduleNameDiv.style.fontFamily = 'monospace';
-      moduleNameDiv.innerText = moduleName;
-      moduleLabel.appendChild(moduleNameDiv);
-
-
-      const removeButtonDiv = document.createElement('div');
-      removeButtonDiv.classList.add('col', 'text-end');
-      const removeButton = document.createElement('button');
-      removeButton.classList.add('btn');
-      removeButton.style.color = 'gray';
-      removeButton.style.padding = '0px';
-      //removeButton.style.margin = '0px';
-      removeButton.style.fontSize = '10px';
-      removeButton.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="-4 0 16 20">
-        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-      </svg>
-      `;
-      removeButton.setAttribute('data-bs-toggle', 'tooltip');
-      removeButton.setAttribute('title', i18next.t('main:tools.modules.remove'));
-      removeButton.setAttribute('data-bs-placement', 'right');
-      new bootstrap.Tooltip(removeButton);
-      removeButton.addEventListener('click', function () {
-        console.log(moduleName);
-        scene.removeModule(moduleName);
-        if (editor.addingObjType == 'ModuleObj' && editor.addingModuleName == moduleName) {
-          toolbtn_clicked('');  // Deselect the module object tool
-        }
-        simulator.updateSimulation(false, true);
-        hideAllPopovers();
-        updateModuleObjsMenu();
-        editor.onActionComplete();
-      });
-      removeButtonDiv.appendChild(removeButton);
-
-      moduleLabel.appendChild(removeButtonDiv);
-      moduleLi.appendChild(moduleRadio);
-      moduleLi.appendChild(moduleLabel);
-      moduleStartLi.after(moduleLi);
-
-    }
-  }
-
-}
-
 function updateErrorAndWarning() {
   statusEmitter.emit(STATUS_EVENT_NAMES.SYSTEM_STATUS, {
     app: { 
@@ -1115,9 +1031,9 @@ function importModule(name) {
       updateErrorAndWarning();
       return;
     }
+    document.dispatchEvent(new Event('sceneChanged'));
     simulator.updateSimulation(false, true);
     editor.onActionComplete();
-    updateModuleObjsMenu();
   }
   client.onerror = function () {
     error = "importModule: HTTP Request Error";
@@ -1167,7 +1083,6 @@ function init() {
   //Reset new UI.
 
   resetDropdownButtons();
-  updateModuleObjsMenu();
 
   document.getElementById('tool_').checked = true;
   document.getElementById('tool__mobile').checked = true;
@@ -1222,6 +1137,8 @@ function toolbtn_clicked(tool, e) {
   }
   editor.addingObjType = tool;
 }
+
+window.toolbtn_clicked = toolbtn_clicked;
 
 
 function modebtn_clicked(mode1) {

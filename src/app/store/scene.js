@@ -96,6 +96,7 @@ export const useSceneStore = () => {
   const state = reactive({
     observerSize: window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40,
     zoom: window.simulator?.scene.scale || 1,
+    moduleIds: '',
     ...Object.fromEntries(
       Object.entries(Scene.serializableDefaults).map(([key]) => [
         key,
@@ -112,6 +113,7 @@ export const useSceneStore = () => {
       })
       state.observerSize = window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40
       state.zoom = (window.scene.scale * window.scene.lengthScale) || 1
+      state.moduleIds = Object.keys(window.scene.modules || {}).join(',')
     }
   }
 
@@ -132,7 +134,7 @@ export const useSceneStore = () => {
 
   // Create computed properties for all serializable properties
   const computedProps = Object.fromEntries(
-    Object.keys(Scene.serializableDefaults).concat(['observerSize', 'zoom']).map(key => [
+    Object.keys(Scene.serializableDefaults).concat(['observerSize', 'zoom', 'moduleIds']).map(key => [
       key,
       computed({
         get: () => state[key],
@@ -146,6 +148,9 @@ export const useSceneStore = () => {
             } else if (key === 'zoom') {
               console.log(`Setting zoom to ${newValue}`)
               window.editor?.setScale(newValue / window.scene.lengthScale)
+            } else if (key === 'moduleIds') {
+              // moduleIds is just for tracking, no need to sync back to scene
+              state[key] = newValue
             } else {
               window.scene[key] = newValue
               // Update zoom when scale or lengthScale changes
@@ -153,16 +158,29 @@ export const useSceneStore = () => {
                 state.zoom = window.scene.scale * window.scene.lengthScale
               }
             }
-            state[key] = newValue
-            PROPERTY_CALLBACKS[key]?.(newValue, state)
-            // Emit a change event to ensure all components update
-            //document.dispatchEvent(new CustomEvent('sceneChanged'))
+            if (key !== 'moduleIds') {
+              state[key] = newValue
+              PROPERTY_CALLBACKS[key]?.(newValue, state)
+            }
           }
           window.editor?.onActionComplete()
         }
       })
     ])
   )
+
+  // Add module-specific methods
+  const removeModule = (moduleName) => {
+    if (window.scene) {
+      window.scene.removeModule(moduleName)
+      // Update moduleIds
+      state.moduleIds = Object.keys(window.scene.modules).join(',')
+      // Trigger necessary updates
+      window.simulator?.updateSimulation(false, true)
+      window.hideAllPopovers?.()
+      window.editor?.onActionComplete()
+    }
+  }
 
   // Set up listeners
   onMounted(() => {
@@ -177,6 +195,7 @@ export const useSceneStore = () => {
   storeInstance = {
     ...computedProps,
     setViewportSize,
+    removeModule,
     state
   }
 
