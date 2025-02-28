@@ -136,6 +136,7 @@
 /**
  * @module SettingsList
  * @description The Vue component for the list of settings in the SettingsBar component.
+ * @vue-prop {String} layout - The layout of the toolbar. Can be 'mobile' or 'desktop'.
  */
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { useSceneStore } from '../../store/scene'

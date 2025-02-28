@@ -1,3 +1,19 @@
+<!--
+  Copyright 2025 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
 <template>
   <div 
     class="row d-flex justify-content-between align-items-center"
@@ -26,6 +42,18 @@
 </template>
 
 <script>
+/**
+ * @module NumberControl
+ * @description The vue component for a number control in the setting dropdown.
+ * @vue-prop {String} label - The label for the number control.
+ * @vue-prop {Number} modelValue - The current value of the number control.
+ * @vue-prop {String} layout - The layout of the control. Can be 'mobile' or 'desktop'.
+ * @vue-prop {String} [popoverContent=''] - The content of the popover.
+ * @vue-prop {Number} [verticalOffset=0] - The vertical offset of the popover.
+ * @vue-prop {Number} [min=null] - The minimum value of the number control.
+ * @vue-prop {Number} [max=null] - The maximum value of the number control.
+ * @vue-prop {Number} [defaultValue=null] - The default value of the number control.
+ */
 import { computed, toRef, ref, watch } from 'vue'
 import { vTooltipPopover } from '../../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../../store/preferences'

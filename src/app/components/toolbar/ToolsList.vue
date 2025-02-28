@@ -154,7 +154,7 @@
     <ToolItem
       id="SphericalLens"
       :title="$t('main:tools.SphericalLens.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.SphericalLens.description'), sub: $t('main:tools.SphericalLens.instruction')})"
+      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.SphericalLens.description'), sub: $t('main:tools.common.lineInstruction')})"
       popoverImage="SphericalLens.svg"
       :layout="layout"
     />
@@ -213,7 +213,7 @@
 
   <!-- More Tools -->
   <ToolsCategory
-    id="more"
+    id="other"
     :title="$t('main:tools.categories.other')"
     :layout="layout"
   >
@@ -222,13 +222,15 @@
       :title="$t('main:tools.Ruler.title')"
       :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Ruler.description'), sub: $t('main:tools.common.lineInstruction')})"
       popoverImage="Ruler.svg"
+      :verticalOffset="60"
       :layout="layout"
     />
     <ToolItem
       id="Protractor"
       :title="$t('main:tools.Protractor.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Protractor.description'), sub: $t('main:tools.Protractor.instruction')})"
+      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Protractor.description'), sub: $t('main:tools.common.circleInstruction')})"
       popoverImage="Protractor.svg"
+      :verticalOffset="60"
       :layout="layout"
     />
     <ToolItem
@@ -236,25 +238,29 @@
       :title="$t('main:tools.Detector.title')"
       :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Detector.description'), sub: $t('main:tools.Detector.instruction')})"
       popoverImage="Detector.svg"
+      :verticalOffset="60"
       :layout="layout"
     />
     <li><hr class="dropdown-divider"></li>
     <ToolItem
       id="TextLabel"
       :title="$t('main:tools.TextLabel.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.TextLabel.description'), sub: $t('main:tools.TextLabel.instruction')})"
+      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.TextLabel.description'), sub: $t('main:tools.common.clickInstruction')})"
+      :verticalOffset="0"
       :layout="layout"
     />
     <ToolItem
       id="LineArrow"
       :title="$t('main:tools.LineArrow.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.LineArrow.description'), sub: $t('main:tools.LineArrow.instruction')})"
+      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.LineArrow.description'), sub: $t('main:tools.common.lineInstruction')})"
+      :verticalOffset="0"
       :layout="layout"
     />
     <ToolItem
       id="Drawing"
       :title="$t('main:tools.Drawing.title')"
       :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Drawing.description'), sub: $t('main:tools.Drawing.instruction')})"
+      :verticalOffset="0"
       :layout="layout"
     />
     <li><hr class="dropdown-divider"></li>
@@ -263,7 +269,12 @@
 </template>
 
 <script>
-import ToolsCategory from './controls/ToolsCategory.vue'
+/**
+ * @module ToolsList
+ * @description The Vue component for the list of tools in the toolbar.
+ * @vue-prop {String} layout - The layout of the toolbar. Can be 'mobile' or 'desktop'.
+ */
+import ToolsCategory from './ToolsCategory.vue'
 import ToolItem from './controls/ToolItem.vue'
 import ModuleTools from './ModuleTools.vue'
 

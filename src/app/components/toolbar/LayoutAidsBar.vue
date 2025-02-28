@@ -88,7 +88,8 @@
 <script>
 /**
  * @module LayoutAidsBar
- * @description The vue component for the layout aids section of the toolbar (desktop) or the layout aids controls in the SettingsBar component (mobile or tablet).
+ * @description The vue component for the 'Layout Aids' section of the toolbar (desktop) or the layout aids controls in the SettingsBar component (mobile or tablet).
+ * @vue-prop {String} layout - The layout of the toolbar. Can be 'mobile', 'tablet', or 'desktop'. Here 'tablet' means middle-sized screen where this control is to be shown inside the SettingsBar component.
  */
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { useSceneStore } from '../../store/scene'
