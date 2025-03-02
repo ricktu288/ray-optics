@@ -223,7 +223,34 @@
       "dragtomovethebagouto": "Arraste para mover o saco pra fora da água"
     },
     "vanishingPoint": {
-      "title": "Ponto desaparecente"
+      "title": "Ponto desaparecente",
+      "thesepairofparallell": "Esse par de linhas paralelas converge ao ponto B",
+      "thesepairofparallell1": "Esse par de linhas paralelas converge ao ponto A",
+      "notethatthesepairsof": "Note que esses pares de linhas paralelas não são infinitos."
+    },
+    "monochromaticAberrations": {
+      "description": "Essa é uma simulação de diferentes aberrações monocromáticas:\n\n1. Aberração esférica.\n2. Aberração de coma.\n3. Aberração de desfocagem.\n4. Curvatura de campo.",
+      "title": "Aberrações monocromáticas"
+    },
+    "compoundMicroscope": {
+      "objective": "Objetiva",
+      "eyepiece": "Ocular"
+    },
+    "inferiorMirage": {
+      "ground": "Chão"
+    },
+    "keplerianTelescope": {
+      "eye": "olho"
+    },
+    "rochesterCloak": {
+      "object": "Objeto"
+    },
+    "telescope": {
+      "title": "Telescópio"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmosfera",
+      "observer1": "Observador"
     }
   }
 }
