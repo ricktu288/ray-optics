@@ -229,8 +229,28 @@
       "notethatthesepairsof": "Note que esses pares de linhas paralelas não são infinitos."
     },
     "monochromaticAberrations": {
-      "description": "Essa é uma simulação de diferentes aberrações monocromáticas:\n\n1. Aberração esférica.\n2. Aberração de coma.\n3",
+      "description": "Essa é uma simulação de diferentes aberrações monocromáticas:\n\n1. Aberração esférica.\n2. Aberração de coma.\n3. Aberração de desfocagem.\n4. Curvatura de campo.",
       "title": "Aberrações monocromáticas"
+    },
+    "compoundMicroscope": {
+      "objective": "Objetiva",
+      "eyepiece": "Ocular"
+    },
+    "inferiorMirage": {
+      "ground": "Chão"
+    },
+    "keplerianTelescope": {
+      "eye": "olho"
+    },
+    "rochesterCloak": {
+      "object": "Objeto"
+    },
+    "telescope": {
+      "title": "Telescópio"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmosfera",
+      "observer1": "Observador"
     }
   }
 }
