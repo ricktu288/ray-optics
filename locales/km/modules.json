@@ -1,0 +1,11 @@
+{
+  "moduleData": {
+    "CircleSource": {
+      "point1": "ផ្ចឹតនៃរង្វង់",
+      "r": "កាំនៃរង្វង់"
+    },
+    "FresnelLens": {
+      "refIndex": "សន្ទស្សន៍ចំណាំងបែរនៃឡង់ទី"
+    }
+  }
+}
