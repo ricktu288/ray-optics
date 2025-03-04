@@ -2,7 +2,8 @@
   "modulesPage": {
     "description": {
       "makeNewTools": "\"Module\" permet de créer de nouveaux outils en combinant, spécialisant, ou en reparamétrant des objets créés par des outils existants dans ce simulateur.",
-      "embeddedInScene": "Les modules importés sont inclus dans les données de la scène, et donc ne seront pas automatiquement mis à jour quand les auteurs des modules les modifient."
+      "embeddedInScene": "Les modules importés sont inclus dans les données de la scène, et donc ne seront pas automatiquement mis à jour quand les auteurs des modules les modifient.",
+      "appearAsTools": "Les modules importés apparaitrons comme des outils dans la catégorie \"Autre\". Merci de sélectionner et de cliquer sur l'espace vide en suivant l'ordre de contrôle des points de séquence (voir \"Spécifications\")"
     },
     "import": "Importer",
     "imported": "Importé",
@@ -41,7 +42,13 @@
     },
     "CircleSource": {
       "title": "Source de lumière circulaire",
-      "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence."
+      "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence.",
+      "r": "Le rayon du cercle",
+      "point1": "Le centre du cercle",
+      "brightness": "La quantité totale de luminosité"
+    },
+    "Chaff": {
+      "L": "La longueur des miroirs"
     }
   }
 }
