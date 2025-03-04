@@ -51,6 +51,26 @@
     },
     "language": {
       "title": "Langue"
+    },
+    "correctBrightness": {
+      "title": "Corriger la luminosité",
+      "description": "Par défaut, la luminosité sur l'écran ne représente pas correctement la luminosité des rayons. Cette option corrige ce problème en utilisant un rendement spécial, qui peut réduire les performances sur certains appareils. (Sur d'autres appareils, cela peut augmenter les performances.)"
+    },
+    "observerSize": {
+      "title": "Taille de l'observateur"
+    },
+    "showRayArrows": {
+      "title": "Afficher les flèches directrices de la lumière"
+    },
+    "more": "Plus",
+    "colorMode": {
+      "title": "Mode Couleur"
+    },
+    "gridSize": {
+      "title": "Taille de la grille"
+    },
+    "lengthScale": {
+      "title": "Echelle de longueur"
     }
   },
   "objBar": {
@@ -62,13 +82,20 @@
     },
     "delete": {
       "title": "Supprimer"
+    },
+    "showAdvanced": {
+      "title": "Plus d'options…"
     }
   },
   "sceneObjs": {
     "common": {
       "brightness": "Luminosité",
       "wavelength": "Longueur d'onde",
-      "focalLength": "Distance focale"
+      "focalLength": "Distance focale",
+      "emisAngle": "Angle d'émission",
+      "eqnInfo": {
+        "functions": "Fonctions supportées"
+      }
     },
     "BaseFilter": {
       "filter": "Filtre",
@@ -111,5 +138,10 @@
         "contribute": "Les contributions directes sont également les bienvenues (voir [le guide du contributeur](/contributing))."
       }
     }
+  },
+  "welcome": {
+    "loading": "Chargement de la scène à partir de l'URL... Merci de patienter.",
+    "title": "Bienvenue dans Ray Optics Simulation",
+    "instruction": "Pour ajouter un composant optique, sélectionnez un outil et cliquez sur l'espace vide.\nPour charger un exemple, [allez à la page Gallerie](/gallery)."
   }
 }
