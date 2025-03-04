@@ -36,6 +36,50 @@
       "keplerianbeamexpande": "Elargisseur de faisceau keplérien",
       "gallileanbeamexpande": "Elargisseur de faisceaux galiléen",
       "inbothcasesthedistan": "Dans les deux cas les distances inter-lentilles sont égales à la somme de leur focales"
+    },
+    "penroseUnilluminableRoom": {
+      "description": "La pièce non illuminable de Penrose est composée de miroirs elliptiques, circulaires et droits. Elle possède la propriété particulière qu'en un point de source (vert) à l'intérieur de la pièce n'éclairera pas l'entièreté de la pièce, peu importe où vous le placez. Vous pouvez déplacer le point vert pour bouger la source.",
+      "nomatterwhereyouputt": "Peu importe où vous placez le point de source, il n'illuminera pas l'entièreté de la pièce.\nAttention : Due à des erreurs numériques, la pièce peut être encore illuminée après un certain temps.",
+      "title": "Pièce non illuminable de Penrose"
+    },
+    "periscope": {
+      "observerseyenottosca": "Œil de l'observateur (pas à l'échelle)"
+    },
+    "common": {
+      "warningthesequenceof": "Attention : La séquence lumineuse qui apparait ne représente pas la véritable vitesse de la lumière - seulement l'image finale est représentative."
+    },
+    "parabolicMirror": {
+      "title": "Miroir Parabolique",
+      "description": "Cette simulation montre les propriétés focales du miroir parabolique."
+    },
+    "hyperbolicMirror": {
+      "title": "Miroir Hyperbolique",
+      "theorangeraysareimag": "Les rayons oranges sont une extension imaginaire à partir des réflexions des rayons jaunes.\nCes rayons imaginaires convergent vers l'autre point focal."
+    },
+    "newtonianTelescope": {
+      "title": "Télescope de Newton",
+      "description": "Ceci est un modèle de télescope de Newton avec un oculaire Plössl."
+    },
+    "opticalCavity": {
+      "clickholdleftmouseto": "Cliquez + maintenez le clic gauche de votre souris\npour déplacer le rayon"
+    },
+    "koehlerIllumination": {
+      "sample": "Echantillon"
     }
+  },
+  "galleryPage": {
+    "title": "La Gallerie de Ray Optics",
+    "openInSimulator": "Ouvrir dans le Simulateur",
+    "categories": {
+      "refraction": "Réfraction",
+      "lens": "Lentilles",
+      "reflection": "Réflections",
+      "title": "Catégories",
+      "combinationOfLenses": "Combinaison de Lentilles",
+      "miscellaneous": "Divers"
+    },
+    "contributors_one": "Contributeur",
+    "contributors_many": "Contributeurs",
+    "contributors_other": "Contributeurs"
   }
 }
