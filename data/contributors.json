@@ -493,6 +493,15 @@
     "firstCommit": "2025-02-21"
   },
   {
+    "name": "Rafael Bastin",
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-03-04"
+  },
+  {
     "name": "Daniel Anya",
     "contributions": {
       "gallery": true
