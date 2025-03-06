@@ -498,6 +498,13 @@
       "title": "模块示例 - 形状参数化",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定义的透镜",
       "alensdefinedbydffdbf": "以 d, FFD, BFD 定义的透镜"
+    },
+    "virtualImageFormation": {
+      "title": "虚像的形成",
+      "description": "本模拟示范了汇聚透镜如何形成虚像，以及该虚像的特征。",
+      "virtualimagehighlyen": "虚像\n高度放大\n正立",
+      "object2": "物",
+      "converginglensf1000u": "汇聚透镜（F = 1000单位）"
     }
   }
 }

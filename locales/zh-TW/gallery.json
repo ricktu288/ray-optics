@@ -498,6 +498,13 @@
       "title": "模組範例 - 形狀參數化",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡",
       "alensdefinedbydffdbf": "以 d, FFD, BFD 定義的透鏡"
+    },
+    "virtualImageFormation": {
+      "title": "虛像的形成",
+      "description": "本模擬示範了匯聚透鏡如何形成虛像，以及該虛像的特徵。",
+      "virtualimagehighlyen": "虛像\n高度放大\n正立",
+      "object2": "物",
+      "converginglensf1000u": "匯聚透鏡（F = 1000單位）"
     }
   }
 }

@@ -491,5 +491,12 @@
       ]
     },
     "firstCommit": "2025-02-21"
+  },
+  {
+    "name": "Daniel Anya",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2025-03-05"
   }
 ]

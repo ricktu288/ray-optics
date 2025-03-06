@@ -199,6 +199,13 @@
       "title": "Lens Images",
       "description": "This simulation shows the images of a beam and point sources produced by ideal lenses."
     },
+    "virtualImageFormation": {
+      "title": "Virtual Image Formation",
+      "description": "This is a simulation of how a virtual image is formed with a converging lens and its characteristics.",
+      "object2": "Object",
+      "converginglensf1000u": "Converging Lens (F=1000 units)",
+      "virtualimagehighlyen": "Virtual Image\nHighly Enlarged\nUpright/Erect"
+    },
     "transverseAndLongitudinalMagnification": {
       "title": "Transverse and longitudinal magnification",
       "description": "This is a simulation of transverse and longitudinal magnification for an ideal lens with focal length \\(f\\). The transverse (also called linear) and the longitudinal magnification is \\(M_T=1-\\frac{u}{f}\\) and \\(M_L=\\frac{dv}{du}\\) respectively, where \\(u\\) and \\(v\\) is the distance of the object and the image from our ideal lens, respectively. Also, for an ideal lens \\(M_L=-(M_T)^2\\)",
