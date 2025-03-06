@@ -114,8 +114,6 @@
   "width": 1300,
   "height": 800,
   "mode": "extended",
-  "showGrid": true,
-  "snapToGrid": true,
   "origin": {
     "x": 266.82846586254504,
     "y": 258.13619194730916
