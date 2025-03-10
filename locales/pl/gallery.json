@@ -126,7 +126,7 @@
     "beamDirectors": {
       "title": "Kierowanie wiązką światła",
       "description": "Symulacja bipryzmatu regularnego i Fresnela. Bipryzmat może skierować padającą skolimowaną wiązkę w dwóch kierunkach, w zależności od kąta wierzchołkowego.",
-      "thisfresnelbiprismwa": "Ten bipryzmat Fresnela został wykonany z powyższego bipryzmatu.\nMożesz wybrać bipryzmat i dostosować parametr N_silce.",
+      "thisfresnelbiprismwa": "Ten bipryzmat Fresnela został wykonany z powyższego bipryzmatu.\nMożesz wybrać bipryzmat i dostosować parametr N_slice.",
       "fresnelbiprism": "Bipryzmat Fresnela",
       "biprism": "Bipryzmat"
     },
