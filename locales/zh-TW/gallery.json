@@ -124,7 +124,7 @@
     "beamDirectors": {
       "title": "光束導向器",
       "description": "這是一個普通雙棱鏡 (biprism) 和菲涅耳雙稜鏡（Fresnel biprism）的模擬。雙棱鏡可以將入射的平行光束導向兩個方向，其取決於頂角的大小。",
-      "thisfresnelbiprismwa": "這個菲涅耳雙稜鏡是由上面的雙稜鏡製成\n您可以選取雙稜鏡並調整 N_silce（切片數量）參數。",
+      "thisfresnelbiprismwa": "這個菲涅耳雙稜鏡是由上面的雙稜鏡製成\n您可以選取雙稜鏡並調整 N_slice（切片數量）參數。",
       "fresnelbiprism": "菲涅耳雙稜鏡",
       "biprism": "雙稜鏡"
     },

@@ -125,7 +125,7 @@
     "beamDirectors": {
       "title": "Beam Directors",
       "description": "This is a simulation of a regular and a Fresnel biprism. A biprism can direct an incoming collimated beam into two directions, depending on the apex angle.",
-      "thisfresnelbiprismwa": "This fresnel biprism was made from the above biprism.\nYou can select the biprism and adjust the N_silce parameter.",
+      "thisfresnelbiprismwa": "This fresnel biprism was made from the above biprism.\nYou can select the biprism and adjust the N_slice parameter.",
       "fresnelbiprism": "Fresnel biprism",
       "biprism": "Biprism"
     },
@@ -248,7 +248,7 @@
     "fresnelLens": {
       "title": "Fresnel lens",
       "description": "This is a simulation and comparison between a spherical and a Fresnel lens. One of the advantages of the Fresnel lens can be readily seen: it functions similar to a regular spherical lens, while taking much less space - and therefore weighing less.",
-      "thisfresnellensismad": "This Fresnel lens is made from the half circle glass below.\nYou can select the lens and adjust the N_silce parameter."
+      "thisfresnellensismad": "This Fresnel lens is made from the half circle glass below.\nYou can select the lens and adjust the N_slice parameter."
     },
     "zoomLens": {
       "title": "Zoom Lens",

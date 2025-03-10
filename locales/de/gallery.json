@@ -5,6 +5,9 @@
     },
     "aplanaticPoints": {
       "yaxis": "Y-Achse"
+    },
+    "virtualImageFormation": {
+      "object2": "Objekt"
     }
   },
   "galleryPage": {
@@ -12,7 +15,11 @@
     "categories": {
       "refraction": "Brechung",
       "reflection": "Reflektion",
-      "title": "Kategorien"
-    }
+      "title": "Kategorien",
+      "lens": "Linse",
+      "combinationOfLenses": "Kombination von Linsen",
+      "miscellaneous": "Verschiedenes"
+    },
+    "openInSimulator": "Im Simulator öffnen"
   }
 }
