@@ -126,6 +126,12 @@
         ]
       },
       {
+        "id": "distortion-in-windows-and-backside-mirrors",
+        "contributors": [
+          "Shahar Seifer"
+        ]
+      },
+      {
         "id": "bended-pencil",
         "contributors": [
           "Stas Fainer"

@@ -136,6 +136,16 @@
       "observer": "Observer",
       "objectunderwatergree": "Object underwater (green)"
     },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "Distortion in windows and backside mirrors",
+      "description": "When observing an object through a glass at a skewed angle the image appears at an offset and nearer to the observer than it should be. The simulation shows this effect in thick window and backside mirror. Viewing in the \"All Images\" mode demonstrates that the image points are in fact arcs, so depending on detector size the image may become fuzzy.\n\nTo the right of the frame you can also find the effect of a wedge on the apparent size.",
+      "source": "source",
+      "glass": "glass",
+      "mirror": "mirror",
+      "image": "image",
+      "observer3": "observer",
+      "window": "window"
+    },
     "bendedPencil": {
       "title": "Bent Pencil",
       "description": "This is a simulation of the image perceived with our eyes, when looking from above on a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the [Broken Pencil](/gallery/broken-pencil) simulation where the breaking of the pencil is more pronounced.",

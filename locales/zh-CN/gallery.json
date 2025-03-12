@@ -505,6 +505,16 @@
       "virtualimagehighlyen": "虚像\n高度放大\n正立",
       "object2": "物",
       "converginglensf1000u": "汇聚透镜（F = 1000单位）"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "window": "窗户",
+      "glass": "玻璃",
+      "mirror": "镜子",
+      "observer3": "观察者",
+      "image": "像",
+      "source": "光源",
+      "title": "窗户和背面镀膜镜中的失真",
+      "description": "以倾斜角度透过玻璃观察物体时，影像会出现偏移，并且比实际位置更靠近观察者。此模拟演示了在厚玻璃窗和背面镀膜镜中的这种效应。在「所有像」模式下查看时，可以发现影像点实际上是弧线，因此取决于探测器的大小，影像可能会变得模糊。\n\n在画面右侧，你还可以看到楔形玻璃对于表观尺寸的影响。"
     }
   }
 }
