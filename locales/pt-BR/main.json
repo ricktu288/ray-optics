@@ -118,7 +118,7 @@
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular."
     },
     "GrinGlass": {
-      "title": "Forma livre",
+      "title": "Polígono de gradiente de índice",
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
       "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
       "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
