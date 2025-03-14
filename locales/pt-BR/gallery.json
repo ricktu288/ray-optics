@@ -370,6 +370,16 @@
       "approximatedmultilay": "Bloco GRIN aproximado com múltiplas camadas (Você pode selecionar e mudar N, o número de camadas.)",
       "classicalgrinslabyou": "Bloco GRIN clássico (Você pode selecionar e alterar o tamanho de passo do resolvedor numérico.)",
       "description": "Esta é uma simulação de um material dielétrico retangular com índice refrativo \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), onde \\(n_0=2\\) é o índice refrativo em seu eixo central e \\(\\rho\\) é a distância radial de seu eixo central, tal que \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) onde \\(R=100 \\) é seu raio. O dielétrico superior nessa simulação é feito de retângulos dielétricos finos de índice refrativo constante, de acordo com \\(n(\\rho)\\), enquanto o dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(\\rho)\\)."
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "image": "imagem",
+      "observer3": "observador",
+      "glass": "vidro",
+      "window": "janela",
+      "source": "fonte",
+      "mirror": "espelho",
+      "description": "Quando se observa um objeto através de um vidro em um ângulo oblíquo a imagem aparece deslocada e mais próxima do observador que devia ser. A simulação mostra esse efeito em uma janela grossa e espelho de superfície reflexiva traseira. Visualizando no modo \"Todas Imagens\" demonstra que os pontos imagem são na verdade arcos, então dependendo do tamanho do detector a imagem pode se tornar embaçada.\n\nÀ direita do quadro você pode também pdoe encontrar o efeito de um cunho no tamanho aparente.",
+      "title": "Distorção em janelas e espelhos de reflexo traseiro"
     }
   }
 }
