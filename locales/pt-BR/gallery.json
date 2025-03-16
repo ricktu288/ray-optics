@@ -363,7 +363,9 @@
       "description": "A função de índice refrativo que suporta caminhos de raio de espiral logarítmica é da forma \\(r(θ) = r_0\\,e^{-k\\theta}\\), onde \\(r_0,k > 0\\) e\\(\\alpha = \\arctan k\\) é um ângulo constante entre a sduas tangentes no ponto de interseção entre a espiral logarítmica concêntrica e círculo(como demonstrado [nessa](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animação) é \\(n(r)\\propto\\frac{1}{r} \\) (isso pode ser demonstrado escrevendo o caminho óptico em coordenadas polares, e usando o princípio de Fermat)."
     },
     "luneburgLens": {
-      "title": "Lente de Luneburg"
+      "title": "Lente de Luneburg",
+      "approximatedmultilay1": "Lente Luneburg multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)",
+      "classicalluneburglen": "Lente Luneburg clássica (Você pode selecionar e mudar o tamanho de passo do resolvedor numérico.)"
     },
     "grinSlab": {
       "title": "Bloco GRIN",
@@ -380,6 +382,15 @@
       "mirror": "espelho",
       "description": "Quando se observa um objeto através de um vidro em um ângulo oblíquo a imagem aparece deslocada e mais próxima do observador que devia ser. A simulação mostra esse efeito em uma janela grossa e espelho de superfície reflexiva traseira. Visualizando no modo \"Todas Imagens\" demonstra que os pontos imagem são na verdade arcos, então dependendo do tamanho do detector a imagem pode se tornar embaçada.\n\nÀ direita do quadro você pode também pdoe encontrar o efeito de um cunho no tamanho aparente.",
       "title": "Distorção em janelas e espelhos de reflexo traseiro"
+    },
+    "branchedFlow": {
+      "title": "Fluxo ramificado"
+    },
+    "maxwellFisheyeLens": {
+      "classicalmaxwellfish": "Lente olho de peixe de Maxwell clássica (Você pode selecionar e mudar o tamanho do passo do resolvedor numérico.)",
+      "title": "Lente olho de peixe de Maxwell",
+      "description": "Esta é uma simulação de uma lente olho de peixe de Maxwell, que é um dielétrico esférico com índice refrativo \\(n(r) = \\frac{n_0}{1+(\\frac{r}{R})^2} \\), onde \\(n_0=2\\) é o índice refrativo no centro da lente, \\(R=100\\) é o raio da lente, e \\(r\\) é a distância radial do centro da lente.\n\nO dielétrico superior é composto de \\(N=20\\) lentes esféricas concêntricas com raio \\(R_i=5(N+1-i)\\) e índice refrativo \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), onde \\(i=1,\\ldots,N\\). No entanto, já que este simulador calcula o índice refrativo effetivo de um elemento óptico multiplicando o índice refrativo numérico do elemento com os índices refrativos numéricos dos elementos ópticos que estão inseridos nele, o índice refrativo numérico da \\(i\\)-ésima lente esférica concêntrica é dado por \\(n_{i}^\\text{numérico}=\\frac{n_i}{n_{i-1}}\\).\n\nO dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(r)\\).",
+      "approximatedmultilay2": "Lente olho de peixe de Maxwell multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)"
     }
   }
 }
