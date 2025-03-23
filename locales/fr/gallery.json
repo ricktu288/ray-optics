@@ -1,0 +1,85 @@
+{
+  "galleryData": {
+    "beamDirectors": {
+      "title": "Vecteurs directeurs du faisceau",
+      "description": "Ceci est une simulation d'un prisme régulier et d'un biprisme de Fresnel. Un biprisme peut diriger un faisceau collimaté dans deux directions, en fonction de l'angle au sommet.",
+      "thisfresnelbiprismwa": "Ce biprisme de Fresnel a été fait depuis le biprisme ci-dessus.\nVous pouvez sélectionner le biprisme et ajuster le paramètre N_slice.",
+      "fresnelbiprism": "Biprisme de Fresnel",
+      "biprism": "Biprisme"
+    },
+    "apparentDepth": {
+      "title": "Profondeur apparente",
+      "description": "Quand dans l'air, vous regardez un objet situé sous l'eau, la profondeur de l'objet paraît moindre que la réalité. Ce phénomène est causé par la réfraction de la lumière, comme montré par cette simulation. La profondeur apparente dépend de la position de l'observateur, ce qui peut être vu en glissant le cercle bleu.",
+      "observedimageorange": "Image observée (orange)",
+      "observer": "Observateur",
+      "objectunderwatergree": "Objet sous l'eau (vert)"
+    },
+    "bendedPencil": {
+      "title": "Crayon tordu",
+      "description": "Voici une simulation de l'image perçue par nos yeux, quand l'on regarde depuis la surface, un crayon partiellement immergé dans de l'eau. La discontinuité de l'indice de réfraction entre l'air et l'eau donne l'illusion que le crayon est brisé et tordu. Cependant dans cette simulation, la torsion est plus prononcée. Vous pouvez voir la simulation [Crayon cassé](/gallery/broken-pencil) où c'est la brisure du crayon qui semble plus prononcée.",
+      "bentpencilyellowimag": "crayon tordu (jaune)\nimage sur la rétine",
+      "dielectricmaterial": "matériau diélectrique",
+      "originalpencilgreen": "crayon vrai (vert)",
+      "observerseye": "œil de l'observateur",
+      "ignoretheorangesquar": "Ignorer les carrés oranges !"
+    },
+    "aplanaticPoints": {
+      "title": "Points aplanétiques",
+      "clickontheextendedra": "Cliquez sur le bouton \"Rayons étendus\" pour vérifier que la lumière émise depuis la source de lumière dans la lentille sphérique (point A)\ndivergera depuis un autre point sur l'axe optique hors de la lentille sphérique (point B) sans aberration sphérique.\nLes points A et B sont un exemple de points aplanétiques de la sphère, pour lesquels (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) par rapport à l'axe Y indiqué,\noù x1,x2 sont les coordonées horizontales des points A,B respectivement (chaque cellule de la grille est de taille 20 par 20).\nDe même les focales de l'ellipse (points C et D) sont un exemple de points aplanétiques pour l'ellipse, pour lesquels (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)",
+      "sphericallens": "Lentille sphérique",
+      "ellipticallens": "Lentille elliptique",
+      "yaxis": "Axe Y"
+    },
+    "beamExpanders": {
+      "title": "Élargisseurs de faisceaux",
+      "description": "Voici une simulation de deux types d'élargisseurs de faisceaux : l'élargisseur keplérien et l'élargisseur galiléen. Un élargisseur de faisceaux élargit ou réduit le diamètre d'un faisceau de lumière collimatée. Un élargisseur galiléen est composé d'une lentille convexe et une lentille concave, tandis que l'élargisseur keplérien est composé de deux lentilles convexes. Dans les deux cas, la somme des focales des deux lentilles est égale à leur distance de séparation.",
+      "keplerianbeamexpande": "Elargisseur de faisceau keplérien",
+      "gallileanbeamexpande": "Elargisseur de faisceaux galiléen",
+      "inbothcasesthedistan": "Dans les deux cas les distances inter-lentilles sont égales à la somme de leur focales"
+    },
+    "penroseUnilluminableRoom": {
+      "description": "La pièce non illuminable de Penrose est composée de miroirs elliptiques, circulaires et droits. Elle possède la propriété particulière qu'en un point de source (vert) à l'intérieur de la pièce n'éclairera pas l'entièreté de la pièce, peu importe où vous le placez. Vous pouvez déplacer le point vert pour bouger la source.",
+      "nomatterwhereyouputt": "Peu importe où vous placez le point de source, il n'illuminera pas l'entièreté de la pièce.\nAttention : Due à des erreurs numériques, la pièce peut être encore illuminée après un certain temps.",
+      "title": "Pièce non illuminable de Penrose"
+    },
+    "periscope": {
+      "observerseyenottosca": "Œil de l'observateur (pas à l'échelle)"
+    },
+    "common": {
+      "warningthesequenceof": "Attention : La séquence lumineuse qui apparait ne représente pas la véritable vitesse de la lumière - seulement l'image finale est représentative."
+    },
+    "parabolicMirror": {
+      "title": "Miroir Parabolique",
+      "description": "Cette simulation montre les propriétés focales du miroir parabolique."
+    },
+    "hyperbolicMirror": {
+      "title": "Miroir Hyperbolique",
+      "theorangeraysareimag": "Les rayons oranges sont une extension imaginaire à partir des réflexions des rayons jaunes.\nCes rayons imaginaires convergent vers l'autre point focal."
+    },
+    "newtonianTelescope": {
+      "title": "Télescope de Newton",
+      "description": "Ceci est un modèle de télescope de Newton avec un oculaire Plössl."
+    },
+    "opticalCavity": {
+      "clickholdleftmouseto": "Cliquez + maintenez le clic gauche de votre souris\npour déplacer le rayon"
+    },
+    "koehlerIllumination": {
+      "sample": "Echantillon"
+    }
+  },
+  "galleryPage": {
+    "title": "La Gallerie de Ray Optics",
+    "openInSimulator": "Ouvrir dans le Simulateur",
+    "categories": {
+      "refraction": "Réfraction",
+      "lens": "Lentilles",
+      "reflection": "Réflections",
+      "title": "Catégories",
+      "combinationOfLenses": "Combinaison de Lentilles",
+      "miscellaneous": "Divers"
+    },
+    "contributors_one": "Contributeur",
+    "contributors_many": "Contributeurs",
+    "contributors_other": "Contributeurs"
+  }
+}
