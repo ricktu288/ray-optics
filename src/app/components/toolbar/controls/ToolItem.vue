@@ -22,6 +22,7 @@
       :name="layout === 'mobile' ? 'toolsradio_mobile' : 'toolsradio'" 
       autocomplete="off" 
       :id="toolId"
+      @change="handleClick"
     >
     <label 
       :id="toolLabelId" 
@@ -96,10 +97,17 @@ export default {
     const toolId = computed(() => `tool_${props.id}${mobileSuffix.value}`)
     const toolLabelId = computed(() => `${toolId.value}_label`)
 
+    const handleClick = (event) => {
+      const toolId = props.id
+      window.hideWelcome()
+      window.editor.addingObjType = toolId
+    };
+
     return {
       tooltipType,
       toolId,
-      toolLabelId
+      toolLabelId,
+      handleClick
     }
   }
 }

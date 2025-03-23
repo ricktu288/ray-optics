@@ -16,7 +16,6 @@
 
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
-import * as $ from 'jquery';
 import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
 import ObjBar from './ObjBar.js';
@@ -99,8 +98,6 @@ async function startApp() {
   console.log(document.getElementById('obj_bar_main'))
 
   initUIText();
-  initTools();
-
 
   objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
 
@@ -274,8 +271,6 @@ async function startApp() {
         document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
       }
 
-      modebtn_clicked(scene.mode);
-      colorModebtn_clicked(scene.colorMode);
       editor.selectObj(editor.selectedObjIndex);
 
       document.dispatchEvent(new Event('sceneChanged'));
@@ -681,56 +676,6 @@ async function startApp() {
 
   document.getElementById('toolbar-loading').style.display = 'none';
 
-  document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
-  document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
-
-  document.getElementById('more-options-dropdown').addEventListener('click', function (e) {
-    e.stopPropagation();
-  });
-
-  document.getElementById('mobile-dropdown-options').addEventListener('click', function (e) {
-    e.stopPropagation();
-  });
-
-  // Listen for changes to any radio input within a dropdown
-  document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function (input) {
-    input.addEventListener('change', function () {
-      if (input.checked) {
-        // Reset other dropdown buttons
-        if (!input.id.includes('mobile')) {
-          resetDropdownButtons();
-
-          // Get the associated dropdown button using the aria-labelledby attribute
-          let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
-
-          // Style the button to indicate selection.
-          dropdownButton.classList.add('selected');
-        } else if (input.name == 'toolsradio_mobile') {
-          resetDropdownButtons();
-
-          // Get the associated mobile trigger button
-          let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
-          let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
-          if (toggle != null) {
-            // Style the button to indicate selection.
-            toggle.classList.add('selected');
-          }
-        }
-      }
-    });
-  });
-
-  // Listen for changes to standalone radio inputs (outside dropdowns)
-  document.querySelectorAll('input[type="radio"].btn-check').forEach(function (input) {
-    if (input.name == 'toolsradio' && !input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
-      input.addEventListener('change', function () {
-        if (input.checked) {
-          // Reset dropdown buttons
-          resetDropdownButtons();
-        }
-      });
-    }
-  });
 
   document.getElementById('help-dropdown').addEventListener('click', function (e) {
     e.stopPropagation();
@@ -756,20 +701,6 @@ var warning = null;
 var error = null;
 
 
-const f = function (e) {
-  const list = document.getElementsByClassName('mobile-dropdown-menu');
-  let maxScrollHeight = 0;
-  for (let ele of list) {
-    const inner = ele.children[0];
-    if (inner.scrollHeight > maxScrollHeight) {
-      maxScrollHeight = inner.scrollHeight;
-    }
-  }
-  for (let ele of list) {
-    ele.style.height = maxScrollHeight + 'px';
-  }
-}
-
 function resetDropdownButtons() {
   // Remove the 'selected' class from all dropdown buttons
   document.querySelectorAll('.btn.dropdown-toggle.selected').forEach(function (button) {
@@ -779,6 +710,8 @@ function resetDropdownButtons() {
     button.classList.remove('selected');
   });
 }
+
+window.resetDropdownButtons = resetDropdownButtons;
 
 
 function initUIText() {
@@ -884,60 +817,6 @@ function setText(id, text, title, popover, image) {
 
 var popoversEnabled = true;
 
-
-
-
-var currentMobileToolGroupId = null;
-
-function initTools() {
-
-  const allElements = document.querySelectorAll('*');
-
-  allElements.forEach(element => {
-    if (element.id && element.id.startsWith('mobile-dropdown-trigger-')) {
-      const toolGroupId = element.id.replace('mobile-dropdown-trigger-', '');
-      const toolGroup = document.getElementById(`mobile-dropdown-${toolGroupId}`);
-
-      element.addEventListener('click', (event) => {
-        // Show the corresponding tool group in the mobile tool dropdown.
-        event.stopPropagation();
-        const originalWidth = $("#mobile-dropdown-tools-root").width();
-        const originalMarginLeft = parseInt($("#mobile-dropdown-tools-root").css("margin-left"), 10);
-        const originalMarginRight = parseInt($("#mobile-dropdown-tools-root").css("margin-right"), 10);
-        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function () {
-          $(this).hide();
-          toolGroup.style.display = '';
-          $(this).css({
-            "margin-left": originalMarginLeft + "px",
-            "margin-right": originalMarginRight + "px"
-          });
-          f();
-        });
-
-        currentMobileToolGroupId = toolGroupId;
-      });
-    }
-
-    if (element.id && element.id.startsWith('tool_')) {
-      const toolId = element.id.replace('tool_', '').replace('_mobile', '');
-      if (sceneObjs[toolId] || toolId == '') {
-        element.addEventListener('click', (event) => {
-          toolbtn_clicked(toolId);
-        });
-      }
-    }
-  });
-
-  document.getElementById('mobile-tools').addEventListener('click', (event) => {
-    // Hide the mobile tool dropdown.
-    if (currentMobileToolGroupId != null) {
-      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display = 'none';
-      document.getElementById('mobile-dropdown-tools-root').style.display = '';
-      f();
-    }
-  });
-
-}
 
 
 
@@ -1082,9 +961,7 @@ function init() {
 
   editor.selectObj(-1);
 
-  toolbtn_clicked('');
-  modebtn_clicked('rays');
-  colorModebtn_clicked('default');
+  editor.addingObjType = '';
   scene.backgroundImage = null;
 
   //Reset new UI.
@@ -1137,32 +1014,11 @@ function syncUrl() {
   }, 1000);
 }
 
-
-function toolbtn_clicked(tool, e) {
-  if (tool != "") {
-    document.getElementById('welcome').style.display = 'none';
-  }
-  editor.addingObjType = tool;
+function hideWelcome() {
+  document.getElementById('welcome').style.display = 'none';
 }
 
-window.toolbtn_clicked = toolbtn_clicked;
-
-
-function modebtn_clicked(mode1) {
-  scene.mode = mode1;
-  if (scene.mode == 'observer' && !scene.observer) {
-    // Initialize the observer
-    scene.observer = geometry.circle(geometry.point((canvas.width * 0.5 / simulator.dpr - scene.origin.x) / scene.scale, (canvas.height * 0.5 / simulator.dpr - scene.origin.y) / scene.scale), 40);
-  }
-}
-
-window.modebtn_clicked = modebtn_clicked;
-
-function colorModebtn_clicked(colorMode) {
-  scene.colorMode = colorMode;
-}
-
-window.colorModebtn_clicked = colorModebtn_clicked;
+window.hideWelcome = hideWelcome;
 
 
 function rename() {

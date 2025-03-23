@@ -71,7 +71,8 @@ export default {
         window.resetDropdownButtons?.()
         document.getElementById('otherToolsDropdown')?.classList.add('selected')
         document.getElementById('mobile-dropdown-trigger-other')?.classList.add('selected')
-        window.toolbtn_clicked?.('ModuleObj')
+        window.hideWelcome()
+        window.editor.addingObjType = 'ModuleObj'
         window.editor.addingModuleName = moduleName
       }
     }
@@ -79,7 +80,7 @@ export default {
     // Handle module removal
     const handleRemoveModule = (moduleName) => {
       scene.removeModule(moduleName)
-      window.toolbtn_clicked?.('')
+      window.editor.addingObjType = ''
     }
 
     return {

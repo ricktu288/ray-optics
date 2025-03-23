@@ -16,6 +16,7 @@
 
 import { reactive, computed, onMounted, onUnmounted } from 'vue'
 import Scene from '../../core/Scene'
+import geometry from '../../core/geometry'
 
 // Map of properties to their update callbacks
 const PROPERTY_CALLBACKS = {
@@ -23,13 +24,14 @@ const PROPERTY_CALLBACKS = {
     window.rename?.()
   },
   mode: (value, state) => {
-    window.modebtn_clicked?.(value)
-    window.simulator?.updateSimulation(false, true)
-    // When switching to observer mode, set the observer size to the stored value
-    if (value === 'observer' && window.simulator?.scene.observer) {
-      window.simulator.scene.observer.r = state.observerSize * 0.5
-      window.simulator?.updateSimulation(false, true)
+    // Initialize the observer when switching to observer mode
+    if (value === 'observer' && !window.scene?.observer) {
+      console.log('x coord', (window.scene.width * 0.5 - window.scene.origin.x) / window.scene.scale)
+      console.log('y coord', (window.scene.height * 0.5 - window.scene.origin.y) / window.scene.scale)
+      console.log('radius', state.observerSize * 0.5)
+      window.scene.observer = geometry.circle(geometry.point((window.scene.width * 0.5 - window.scene.origin.x) / window.scene.scale, (window.scene.height * 0.5 - window.scene.origin.y) / window.scene.scale), state.observerSize * 0.5);
     }
+    window.simulator?.updateSimulation(false, true)
   },
   rayModeDensity: (value) => {
     window.simulator?.updateSimulation(false, true)
@@ -50,7 +52,6 @@ const PROPERTY_CALLBACKS = {
     // No need to update the simulation
   },
   colorMode: (value) => {
-    window.colorModebtn_clicked?.(value)
     window.simulator?.updateSimulation(false, true)
   },
   simulateColors: (value) => {

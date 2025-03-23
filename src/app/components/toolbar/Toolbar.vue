@@ -59,6 +59,23 @@ import ViewBar from './ViewBar.vue';
 import SettingsBar from './SettingsBar.vue';
 import RayDensityBar from './RayDensityBar.vue';
 import LayoutAidsBar from './LayoutAidsBar.vue';
+import * as $ from 'jquery';
+
+// TODO: Refacotor the UI code below using a proper Vue approach.
+
+const f = function (e) {
+  const list = document.getElementsByClassName('mobile-dropdown-menu');
+  let maxScrollHeight = 0;
+  for (let ele of list) {
+    const inner = ele.children[0];
+    if (inner.scrollHeight > maxScrollHeight) {
+      maxScrollHeight = inner.scrollHeight;
+    }
+  }
+  for (let ele of list) {
+    ele.style.height = maxScrollHeight + 'px';
+  }
+}
 
 export default {
   name: 'Toolbar',
@@ -69,7 +86,98 @@ export default {
     SettingsBar,
     RayDensityBar,
     LayoutAidsBar
-  }
+  },
+  mounted() {
+    document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
+    document.getElementById('toolbar-mobile').addEventListener('hidden.bs.dropdown', f);
+
+    document.getElementById('more-options-dropdown').addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+
+    document.getElementById('mobile-dropdown-options').addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+
+    // Listen for changes to any radio input within a dropdown
+    document.querySelectorAll('.dropdown-menu input[type="radio"]').forEach(function (input) {
+      input.addEventListener('change', function () {
+        if (input.checked) {
+          // Reset other dropdown buttons
+          if (!input.id.includes('mobile')) {
+            window.resetDropdownButtons();
+
+            // Get the associated dropdown button using the aria-labelledby attribute
+            let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
+
+            // Style the button to indicate selection.
+            dropdownButton.classList.add('selected');
+          } else if (input.name == 'toolsradio_mobile') {
+            window.resetDropdownButtons();
+
+            // Get the associated mobile trigger button
+            let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
+            let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
+            if (toggle != null) {
+              // Style the button to indicate selection.
+              toggle.classList.add('selected');
+            }
+          }
+        }
+      });
+    });
+
+    // Listen for changes to standalone radio inputs (outside dropdowns)
+    document.querySelectorAll('input[type="radio"].btn-check').forEach(function (input) {
+      if (input.name == 'toolsradio' && !input.closest('.dropdown-menu') && !input.id.includes('mobile')) { // Check if the radio is not inside a dropdown
+        input.addEventListener('change', function () {
+          if (input.checked) {
+            // Reset dropdown buttons
+            window.resetDropdownButtons();
+          }
+        });
+      }
+    });
+
+    var currentMobileToolGroupId = null;
+
+    const allElements = document.querySelectorAll('*');
+
+    allElements.forEach(element => {
+      if (element.id && element.id.startsWith('mobile-dropdown-trigger-')) {
+        const toolGroupId = element.id.replace('mobile-dropdown-trigger-', '');
+        const toolGroup = document.getElementById(`mobile-dropdown-${toolGroupId}`);
+
+      element.addEventListener('click', (event) => {
+        // Show the corresponding tool group in the mobile tool dropdown.
+        event.stopPropagation();
+        const originalWidth = $("#mobile-dropdown-tools-root").width();
+        const originalMarginLeft = parseInt($("#mobile-dropdown-tools-root").css("margin-left"), 10);
+        const originalMarginRight = parseInt($("#mobile-dropdown-tools-root").css("margin-right"), 10);
+        $("#mobile-dropdown-tools-root").animate({ "margin-left": -originalWidth, "margin-right": originalWidth }, 300, function () {
+          $(this).hide();
+          toolGroup.style.display = '';
+          $(this).css({
+            "margin-left": originalMarginLeft + "px",
+            "margin-right": originalMarginRight + "px"
+          });
+          f();
+        });
+
+        currentMobileToolGroupId = toolGroupId;
+      });
+    }
+  });
+
+  document.getElementById('mobile-tools').addEventListener('click', (event) => {
+    // Hide the mobile tool dropdown.
+    if (currentMobileToolGroupId != null) {
+      document.getElementById(`mobile-dropdown-${currentMobileToolGroupId}`).style.display = 'none';
+      document.getElementById('mobile-dropdown-tools-root').style.display = '';
+      f();
+    }
+  });
+  },
 }
 </script>
 
