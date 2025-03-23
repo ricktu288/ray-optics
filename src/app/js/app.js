@@ -399,12 +399,14 @@ async function startApp() {
       if (editor.selectedObjIndex != -1) {
         scene.objs[editor.selectedObjIndex].rotate(1);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.onActionComplete();
       }
     }
     if (e.keyCode == 109 || e.keyCode == 189) {             // - key for rotate c-clockwise
       if (editor.selectedObjIndex != -1) {
         scene.objs[editor.selectedObjIndex].rotate(-1);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.onActionComplete();
       }
     }
 
@@ -425,6 +427,7 @@ async function startApp() {
           scene.objs[editor.selectedObjIndex].move(0, step);
         }
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.onActionComplete();
       }
       else if (scene.mode == 'observer') {
         if (e.keyCode == 37) {
@@ -440,6 +443,7 @@ async function startApp() {
           scene.observer.c.y += step;
         }
         simulator.updateSimulation(false, true);
+        editor.onActionComplete();
       }
       else {
         // TODO: Is this a historical remnant? Should the expected behavior be to change `scene.origin` instead? Note however that some users may be using the current behavior to align the scene with the background image or the grid.
@@ -458,16 +462,19 @@ async function startApp() {
           }
         }
         simulator.updateSimulation();
+        editor.onActionComplete();
       }
     }
   };
 
+  /*
   window.onkeyup = function (e) {
     //Arrow Keys
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       editor.onActionComplete();
     }
   };
+  */
 
   document.getElementById('undo').onclick = function () {
     this.blur();

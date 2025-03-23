@@ -29,7 +29,6 @@ const PROPERTY_CALLBACKS = {
     if (value === 'observer' && window.simulator?.scene.observer) {
       window.simulator.scene.observer.r = state.observerSize * 0.5
       window.simulator?.updateSimulation(false, true)
-      window.editor?.onActionComplete()
     }
   },
   rayModeDensity: (value) => {
@@ -65,7 +64,6 @@ const PROPERTY_CALLBACKS = {
     if (window.simulator?.scene.observer) {
       window.simulator.scene.observer.r = value * 0.5
       window.simulator?.updateSimulation(false, true)
-      window.editor?.onActionComplete()
     }
   },
   lengthScale: (value) => {
@@ -177,7 +175,6 @@ export const useSceneStore = () => {
       state.moduleIds = Object.keys(window.scene.modules).join(',')
       // Trigger necessary updates
       window.simulator?.updateSimulation(false, true)
-      window.hideAllPopovers?.()
       window.editor?.onActionComplete()
     }
   }
