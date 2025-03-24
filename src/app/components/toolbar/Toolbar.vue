@@ -235,4 +235,71 @@ export default {
   background-color: rgb(255,255,255);
 }
 
+.toolbar-range {
+  width: 100px;
+  padding-top: 3px;
+}
+
+.toolbar-range::-webkit-slider-thumb {
+  background: gray;
+  border: 2px solid darkgray;
+}
+
+.toolbar-range::-moz-range-thumb {
+  background: rgb(96, 96, 96);
+  border: 2px solid gray;
+}
+
+.toolbar-range::-webkit-slider-runnable-track {
+  background: rgba(128,128,128,0.5);
+}
+
+.toolbar-range::-moz-range-track {
+  background-color: rgba(128,128,128,0.5);
+}
+
+.range-minus-btn {
+  padding-left: 0px;
+  padding-right: 7px;
+}
+
+.range-plus-btn {
+  padding-left: 7px;
+  padding-right: 0px;
+}
+
+.settings-number {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  width: 40px;
+  text-align: center;
+}
+
+.settings-label {
+  padding-right: 0px;
+}
+
+#more-options-dropdown {
+  width:350px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#mobile-dropdown-options .container {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+#mobile-dropdown-options .row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#mobile-dropdown-options .form-check-input {
+  height: 1.2em;
+  width: 2.4em;
+}
+
+
 </style>

@@ -462,26 +462,8 @@ async function startApp() {
     }
   };
 
-  /*
-  window.onkeyup = function (e) {
-    //Arrow Keys
-    if (e.keyCode >= 37 && e.keyCode <= 40) {
-      editor.onActionComplete();
-    }
-  };
-  */
 
-  document.getElementById('undo').onclick = function () {
-    this.blur();
-    editor.undo();
-  }
-  document.getElementById('undo_mobile').onclick = document.getElementById('undo').onclick;
-  document.getElementById('redo').onclick = function () {
-    this.blur();
-    editor.redo();
-  }
-  document.getElementById('redo_mobile').onclick = document.getElementById('redo').onclick;
-  document.getElementById('reset').onclick = function () {
+  window.reset = function () {
     history.replaceState('', document.title, window.location.pathname + window.location.search);
     init();
     document.getElementById("welcome_loading").style.display = 'none';
@@ -492,24 +474,14 @@ async function startApp() {
     hasUnsavedChange = false;
     jsonEditorService.updateContent(editor.lastActionJson);
   };
-  document.getElementById('reset_mobile').onclick = document.getElementById('reset').onclick
 
-  document.getElementById('get_link').onclick = getLink;
-  document.getElementById('get_link_mobile').onclick = getLink;
-  document.getElementById('export_svg').onclick = function () {
-    editor.enterCropMode();
-  };
-  document.getElementById('export_svg_mobile').onclick = function () {
-    editor.enterCropMode();
-  };
-  document.getElementById('open').onclick = function () {
+  window.getLink = getLink;
+  window.openFile = function () {
     document.getElementById('openfile').click();
   };
-  document.getElementById('open_mobile').onclick = document.getElementById('open').onclick
-  document.getElementById('view_gallery').onclick = function () {
+  window.viewGallery = function () {
     window.open(mapURL('/gallery'));
   };
-  document.getElementById('view_gallery_mobile').onclick = document.getElementById('view_gallery').onclick;
 
 
   document.getElementById('openfile').onchange = function () {
@@ -561,21 +533,6 @@ async function startApp() {
   };
   document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
 
-
-
-  /*
-  document.getElementById('save_name').onkeydown = function (e) {
-    if (e.keyCode == 13) {
-      //enter
-      document.getElementById('save_confirm').onclick();
-    }
-
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-  };
-  document.getElementById('save_confirm').onclick = save;
-  document.getElementById('save_rename').onclick = rename;
-  */
 
   document.getElementById('xybox').onkeydown = function (e) {
     //console.log(e.keyCode)
@@ -715,22 +672,6 @@ window.resetDropdownButtons = resetDropdownButtons;
 
 
 function initUIText() {
-  setText('reset', i18next.t('simulator:file.reset.title'));
-  setText('save', i18next.t('simulator:file.save.title'));
-  setText('open', i18next.t('simulator:file.open.title'), null, i18next.t('simulator:file.open.description'));
-  setText('export_svg', i18next.t('simulator:file.export.title'));
-  setText('get_link', i18next.t('simulator:file.copyLink.title'), null, i18next.t('simulator:file.copyLink.description'));
-  setText('view_gallery', i18next.t('simulator:file.viewGallery.title'), null, i18next.t('simulator:file.viewGallery.description'));
-  setText('undo', null, i18next.t('simulator:file.undo.title'));
-  setText('redo', null, i18next.t('simulator:file.redo.title'));
-  setText('file_text', i18next.t('simulator:file.title'));
-  setText('import_modules', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
-  setText('reset_mobile', i18next.t('simulator:file.reset.title'));
-  setText('save_button', i18next.t('simulator:file.save.title'));
-  setText('open_mobile', i18next.t('simulator:file.open.title'));
-  setText('export_svg_mobile', i18next.t('simulator:file.export.title'));
-  setText('get_link_mobile', i18next.t('simulator:file.copyLink.title'));
-  setText('view_gallery_mobile', i18next.t('simulator:file.viewGallery.title'));
   setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
   setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
   setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
