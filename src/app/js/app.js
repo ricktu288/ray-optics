@@ -24,6 +24,7 @@ import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 import { jsonEditorService } from '../services/jsonEditor.js';
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
+import { mapURL, parseLinks } from '../utils/links.js';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -953,43 +954,5 @@ function confirmPositioning(ctrl, shift) {
 }
 
 
-function mapURL(url) {
-  const localeData = window.localeData[window.lang];
-  const route = (localeData.route !== undefined) ? localeData.route : '/' + window.lang;
-  const rootURL = '..'
-  const urlMap = {
-    "/home": rootURL + (localeData.home ? route : '') + '/',
-    "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
-    "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
-    "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
-    "/about": rootURL + (localeData.about ? route : '') + '/about',
-    "/email": "mailto:ray-optics@phydemo.app",
-    "/github": "https://github.com/ricktu288/ray-optics",
-    "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
-    "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
-    "/run-locally": "https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md",
-    "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
-    "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
-    "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
-    "/weblate": "https://hosted.weblate.org/engage/ray-optics-simulation/",
-  };
-  return urlMap[url] || url;
-}
-
-window.mapURL = mapURL;
-
-// Parse the markdown-like links in the text with mapURL and return the HTML.
-function parseLinks(text) {
-  return text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, function (match, text, url) {
-    if (text === 'ray-optics@phydemo.app') {
-      // Prevent link from wrapping.
-      return `<a href="${mapURL(url)}" target="_blank" style="white-space: nowrap;">${text}</a>`;
-    } else {
-      return `<a href="${mapURL(url)}" target="_blank">${text}</a>`;
-    }
-  });
-}
-
-window.parseLinks = parseLinks;
 
 window.rename = rename;

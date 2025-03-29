@@ -23,6 +23,7 @@
 import { createApp } from 'vue'
 import App from './components/App.vue'
 import i18next from 'i18next'
+import { mapURL, parseLinks } from './utils/links.js'
 
 let app = null
 
@@ -32,14 +33,14 @@ const i18nPlugin = {
     // Add global $t method that includes parseLinks
     app.config.globalProperties.$t = (key, options) => {
       const translated = i18next.t(key, options)
-      return window.parseLinks ? window.parseLinks(translated) : translated
+      return parseLinks(translated)
     }
 
     // Add composable for use in setup functions
     app.provide('i18n', {
       t: (key, options) => {
         const translated = i18next.t(key, options)
-        return window.parseLinks ? window.parseLinks(translated) : translated
+        return parseLinks(translated)
       }
     })
   }
@@ -47,10 +48,6 @@ const i18nPlugin = {
 
 export const getLocaleData = () => {
   return window.localeData
-}
-
-export function mapURL(url) {
-  return window.mapURL(url)
 }
 
 export function initVueApp() {

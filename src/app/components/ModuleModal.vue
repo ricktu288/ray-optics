@@ -41,7 +41,7 @@
  * @description The Vue component for the pop-up modal for Tools -> Other -> Import Modules.
  */
 import { ref, onMounted } from 'vue'
-import { mapURL } from '../main'
+import { mapURL } from '../utils/links.js'
 
 export default {
   name: 'ModuleModal',

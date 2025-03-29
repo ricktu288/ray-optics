@@ -150,6 +150,7 @@ import LayoutAidsBar from './LayoutAidsBar.vue'
 import SettingsWarning from './controls/SettingsWarning.vue'
 import { computed, toRef, ref } from 'vue'
 import i18next from 'i18next'
+import { parseLinks } from '../../utils/links.js'
 
 export default {
   name: 'SettingsList',
@@ -197,7 +198,7 @@ export default {
 
     const warningText = computed(() => {
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
-      return window.parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
+      return parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
     })
 
     return {
