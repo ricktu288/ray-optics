@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import AngleSource from '../../../src/simulator/js/sceneObjs/lightSource/AngleSource';
-import Scene from '../../../src/simulator/js/Scene';
+import AngleSource from '../../../src/core/sceneObjs/lightSource/AngleSource';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

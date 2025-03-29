@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Glass from '../../../src/simulator/js/sceneObjs/glass/Glass';
-import Scene from '../../../src/simulator/js/Scene';
+import Glass from '../../../src/core/sceneObjs/glass/Glass';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
 
 describe('Glass', () => {

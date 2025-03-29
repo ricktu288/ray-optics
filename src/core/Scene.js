@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @file {@link Scene} is the class representing the optical scene for simulation, containing the instances from {@link sceneObjs} (optical elements, decorations, etc) and the settings of the scene. It is the main data structure of the app and can be serialized to (and deserialized from) JSON.
- */
-
 import * as sceneObjs from './sceneObjs.js';
 import { versionUpdate } from './versionUpdate.js';
 import i18next from 'i18next';

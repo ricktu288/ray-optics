@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Scene from '../../../src/simulator/js/Scene.js';
-import SphericalLens from '../../../src/simulator/js/sceneObjs/glass/SphericalLens.js';
+import Scene from '../../../src/core/Scene.js';
+import SphericalLens from '../../../src/core/sceneObjs/glass/SphericalLens.js';
 import { MockUser } from '../helpers/test-utils';
 
 describe('SphericalLens', () => {

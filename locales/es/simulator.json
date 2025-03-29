@@ -67,7 +67,7 @@
     },
     "showHelpPopups": {
       "title": "Mostrar ventanas de ayuda",
-      "description": "Definir si mostrar ventanas de ayuda al pasar sobre los botones (Volver a cargar las páginas para que tome efecto.)"
+      "description": "Definir si mostrar ventanas de ayuda al pasar sobre los botones"
     },
     "advancedHelp": "Para ayuda avanzada, vea el icono de ayuda en la esquina inferior derecha."
   },

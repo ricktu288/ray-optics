@@ -97,7 +97,7 @@
     },
     "showHelpPopups": {
       "title": "Exibir popups de ajuda",
-      "description": "Define se vai exibir popups de ajuda quando pairando sobre botões. (Recarregue a página para fazer efeito.)"
+      "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
     "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
   },

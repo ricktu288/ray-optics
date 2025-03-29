@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import SingleRay from '../../../src/simulator/js/sceneObjs/lightSource/SingleRay';
-import Scene from '../../../src/simulator/js/Scene';
+import SingleRay from '../../../src/core/sceneObjs/lightSource/SingleRay';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

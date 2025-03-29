@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Protractor from '../../../src/simulator/js/sceneObjs/other/Protractor';
-import Scene from '../../../src/simulator/js/Scene';
+import Protractor from '../../../src/core/sceneObjs/other/Protractor';
+import Scene from '../../../src/core/Scene';
 import { testCircleObj } from '../helpers/circleObjTests';
 import { MockUser } from '../helpers/test-utils';
 

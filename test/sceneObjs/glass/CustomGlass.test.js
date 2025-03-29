@@ -30,8 +30,8 @@
  * limitations under the License.
  */
 
-import CustomGlass from '../../../src/simulator/js/sceneObjs/glass/CustomGlass.js';
-import Scene from '../../../src/simulator/js/Scene.js';
+import CustomGlass from '../../../src/core/sceneObjs/glass/CustomGlass.js';
+import Scene from '../../../src/core/Scene.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('CustomGlass', () => {

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import TextLabel from '../../../src/simulator/js/sceneObjs/other/TextLabel';
-import Scene from '../../../src/simulator/js/Scene';
+import TextLabel from '../../../src/core/sceneObjs/other/TextLabel';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
 
 describe('TextLabel', () => {

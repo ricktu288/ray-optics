@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Blocker from '../../../src/simulator/js/sceneObjs/blocker/Blocker';
-import Scene from '../../../src/simulator/js/Scene';
+import Blocker from '../../../src/core/sceneObjs/blocker/Blocker';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

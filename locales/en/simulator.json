@@ -97,7 +97,7 @@
     },
     "showHelpPopups": {
       "title": "Show help popups",
-      "description": "Defines whether to show help popups when hovering over buttons. (Reload the page to take effect.)"
+      "description": "Defines whether to show help popups when hovering over buttons."
     },
     "advancedHelp": "For advanced help, see the help icon in the lower-right corner."
   },

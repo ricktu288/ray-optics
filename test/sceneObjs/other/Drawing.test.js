@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Drawing from '../../../src/simulator/js/sceneObjs/other/Drawing';
-import Scene from '../../../src/simulator/js/Scene';
+import Drawing from '../../../src/core/sceneObjs/other/Drawing';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
 
 describe('Drawing', () => {

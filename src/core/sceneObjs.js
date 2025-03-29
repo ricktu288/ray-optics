@@ -15,15 +15,11 @@
  */
 
 /**
- * @file {@link sceneObjs} is the namespace for all the classes representing objects that can be added to the scene. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes).
- */
-
-/**
  * The namespace for all the classes representing objects that can be added to the scene. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes).
  * 
  * Each class represents a type of objects, and defines the rendering of the object, the options in the object bar when selected, how the mouse interacts with the object, and how the object interacts with light rays. The base class for all scene objects is {@link BaseSceneObj}, which provides common properties and methods for all scene objects. Child base classes are used for common optical interactions: {@link BaseFilter} (for mirrors and blockes), {@link BaseGlass}, and {@link BaseGrinGlass}.
  * Mixins are used for common user interactions based on shapes: {@link LineObjMixin} and {@link CircleObjMixin}.
- * The directory structure in `src/simulator/js/sceneObjs` is organized according to the toolbars in the app, which is not always the same as the class inheritance structure. For example, `IdealLens` is categorized under "Glass" in the app, but is not a subclass of `BaseGlass`.
+ * The directory structure in `src/core/sceneObjs` is organized according to the toolbars in the app, which is not always the same as the class inheritance structure. For example, `IdealLens` is categorized under "Glass" in the app, but is not a subclass of `BaseGlass`.
  * 
  * In the Ray Optics Simulator web app, a single instance of {@link Scene} is used. The scene objects created by the users are stored in the `objs` property of that instance, each a instance of a class defined in this namespace.
  * 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Beam from '../../../src/simulator/js/sceneObjs/lightSource/Beam';
-import Scene from '../../../src/simulator/js/Scene';
+import Beam from '../../../src/core/sceneObjs/lightSource/Beam';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

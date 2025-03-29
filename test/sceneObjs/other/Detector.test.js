@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Detector from '../../../src/simulator/js/sceneObjs/other/Detector';
-import Scene from '../../../src/simulator/js/Scene';
+import Detector from '../../../src/core/sceneObjs/other/Detector';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

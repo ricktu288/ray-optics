@@ -27,7 +27,7 @@ import simpleGit from 'simple-git';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Copy the third-party libraries used by the non-app webpages to the /dist/thirdparty folder
+// Copy the third-party libraries used by the non-app pages to the /dist/thirdparty folder
 fs.mkdirSync(path.join(__dirname, '../dist/thirdparty'), { recursive: true });
 fs.copyFileSync(path.join(__dirname, '../node_modules/jquery/dist/jquery.min.js'), path.join(__dirname, '../dist/thirdparty/jquery.min.js'));
 fs.mkdirSync(path.join(__dirname, '../dist/thirdparty/bootstrap'), { recursive: true });
@@ -413,14 +413,14 @@ for (const lang of homeLangs) {
   });
 
   // Register the partials
-  Handlebars.registerPartial('head', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/head.hbs'), 'utf8'));
-  Handlebars.registerPartial('navbar', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/navbar.hbs'), 'utf8'));
-  Handlebars.registerPartial('footer', fs.readFileSync(path.join(__dirname, '../src/webpages/partials/footer.hbs'), 'utf8'));
+  Handlebars.registerPartial('head', fs.readFileSync(path.join(__dirname, '../src/pages/partials/head.hbs'), 'utf8'));
+  Handlebars.registerPartial('navbar', fs.readFileSync(path.join(__dirname, '../src/pages/partials/navbar.hbs'), 'utf8'));
+  Handlebars.registerPartial('footer', fs.readFileSync(path.join(__dirname, '../src/pages/partials/footer.hbs'), 'utf8'));
 
   const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
 
   // Load the home template
-  const homeTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/home.hbs'), 'utf8'));
+  const homeTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/home.hbs'), 'utf8'));
 
   const homeData = {
     title: i18next.t('main:project.name') + ' - PhyDemo',
@@ -474,7 +474,7 @@ for (const lang of homeLangs) {
       }
       return formatList(contribItems);
     }
-    const aboutTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/about.hbs'), 'utf8'));
+    const aboutTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/about.hbs'), 'utf8'));
     const aboutData = {
       title: i18next.t('main:pages.about') + ' - ' + i18next.t('main:project.name'),
       ogImage: rootAbsUrl + '/img/image.png',
@@ -530,7 +530,7 @@ for (const lang of homeLangs) {
     fs.mkdirSync(galleryDir, { recursive: true });
     rootUrl = lang == 'en' ? '..' : '../..';
 
-    const galleryTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/gallery.hbs'), 'utf8'));
+    const galleryTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/gallery.hbs'), 'utf8'));
     const galleryData = {
       title: i18next.t('main:pages.gallery') + ' - ' + i18next.t('main:project.name'),
       ogImage: rootAbsUrl + '/img/image.png',
@@ -579,7 +579,7 @@ for (const lang of homeLangs) {
   }
 
   // Load the gallery item template
-  const galleryItemTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/galleryItem.hbs'), 'utf8'));
+  const galleryItemTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/galleryItem.hbs'), 'utf8'));
 
   // Create the gallery item webpages
   for (const id of galleryIDs) {
@@ -632,7 +632,7 @@ for (const lang of homeLangs) {
     rootUrl = lang == 'en' ? '..' : '../..';
 
     // Load the modules template
-    const modulesTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/modules.hbs'), 'utf8'));
+    const modulesTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/modules.hbs'), 'utf8'));
     const modulePageData = {
       lang: lang,
       langName: langNames[lang],
@@ -656,7 +656,7 @@ for (const lang of homeLangs) {
 
     // Create the module tutorial webpage
     if (moduleTutorialLangs.includes(lang)) {
-      const moduleTutorialTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/webpages/moduleTutorial.hbs'), 'utf8'));
+      const moduleTutorialTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/moduleTutorial.hbs'), 'utf8'));
 
       const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
       const moduleTutorialData = {

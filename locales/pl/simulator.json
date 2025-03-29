@@ -97,7 +97,7 @@
     },
     "showHelpPopups": {
       "title": "Pokaż okienka pomocy",
-      "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski. (Załaduj ponownie stronę, aby zastosować.)"
+      "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski."
     },
     "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
   },

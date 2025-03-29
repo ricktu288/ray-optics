@@ -102,7 +102,7 @@ See the README.md in each directory for more information.
 For development of the web app, you can just use `npm run start`, and the web app will be automatically reloaded when some code for the simulator is modified. However, to rebuild some other part of this project, you need to run the following commands:
 ```bash
 # build home pages, about pages, gallery, and modules pages (not including scenes and image generation).
-npm run build-webpages
+npm run build-pages
 
 # build the scenes for the gallery and modules pages.
 npm run build-scenes
@@ -114,7 +114,7 @@ npm run build-node
 npm run build-images
 
 # build the web app version of simulator (unlike npm run start, this command builds the simulator in production mode)
-npm run build-simulator
+npm run build-app
 
 # build documentation
 npm run build-docs
@@ -153,7 +153,7 @@ npm run build-node
 ```
 After that, you can use the simulator in your own project by importing the module:
 ```javascript
-const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/dist-node/main.js');
+const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/dist-node/rayOptics.js');
 ```
 
 See the [documentation](https://phydemo.app/ray-optics/docs/index.html) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).

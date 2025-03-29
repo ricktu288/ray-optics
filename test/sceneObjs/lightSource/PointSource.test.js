@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import PointSource from '../../../src/simulator/js/sceneObjs/lightSource/PointSource';
-import Scene from '../../../src/simulator/js/Scene';
+import PointSource from '../../../src/core/sceneObjs/lightSource/PointSource';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
 
 describe('PointSource', () => {

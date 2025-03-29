@@ -18,7 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { createCanvas } from 'canvas';
 import sharp from 'sharp';
-const rayOptics = require('../../../dist-node/main.js');
+const rayOptics = require('../../../dist-node/rayOptics.js');
 
 /**
  * Compare two PNG images pixel by pixel

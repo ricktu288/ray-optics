@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Ruler from '../../../src/simulator/js/sceneObjs/other/Ruler';
-import Scene from '../../../src/simulator/js/Scene';
+import Ruler from '../../../src/core/sceneObjs/other/Ruler';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

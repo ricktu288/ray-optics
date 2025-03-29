@@ -97,7 +97,7 @@
     },
     "showHelpPopups": {
       "title": "显示提示泡泡",
-      "description": "决定滑鼠移到按钮上方时是否显示提示泡泡（须重新载入网页以套用变更）"
+      "description": "决定滑鼠移到按钮上方时是否显示提示泡泡。"
     },
     "advancedHelp": "进阶说明详见右下角的说明图示。"
   },

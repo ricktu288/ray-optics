@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import LineArrow from '../../../src/simulator/js/sceneObjs/other/LineArrow';
-import Scene from '../../../src/simulator/js/Scene';
+import LineArrow from '../../../src/core/sceneObjs/other/LineArrow';
+import Scene from '../../../src/core/Scene';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 

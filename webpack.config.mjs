@@ -19,12 +19,13 @@ import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import buildInlineLocaleData from './scripts/buildInlineLocaleData.mjs';
+import { VueLoaderPlugin } from 'vue-loader';
 
 export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './src/simulator/js/app.js',
+    entry: './src/app/main.js',
     output: {
       filename: 'simulator/main.js',
       path: path.resolve('dist'),
@@ -35,6 +36,10 @@ export default (env, argv) => {
     },
     module: {
       rules: [
+        {
+          test: /\.vue$/,
+          use: 'vue-loader'
+        },
         {
           test: /\.html$/,
           use: ['html-loader'],
@@ -48,7 +53,7 @@ export default (env, argv) => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jpe?g|gif|svg)$/i,
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
           type: 'asset/resource',
           generator: {
             filename: 'img/[name][ext]',
@@ -58,10 +63,10 @@ export default (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/simulator/index.html',
+        template: './src/app/index.html',
         filename: 'simulator/index.html',
         templateContent: () => {
-          const templateContent = fs.readFileSync('./src/simulator/index.html', 'utf-8');
+          const templateContent = fs.readFileSync('./src/app/index.html', 'utf-8');
           const localeData = buildInlineLocaleData();
           return templateContent.replace('{ /* LOCALE DATA */ }', JSON.stringify(localeData));
         },
@@ -69,17 +74,20 @@ export default (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [
           { from: 'src/img', to: 'img', noErrorOnMissing: true },
-          { from: 'src/simulator/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
+          { from: 'src/app/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
         ],
       }),
+      new VueLoaderPlugin(),
     ],
     cache: { type: 'filesystem' },
     mode: isProduction ? 'production' : 'development',
     resolve: {
       alias: {
         mathjs: path.resolve('node_modules/mathjs'),
+        'vue$': 'vue/dist/vue.esm-bundler.js'
       },
+      extensions: ['.js', '.vue']
     },
     devServer: {
       static: './dist',

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import Aperture from '../../../src/simulator/js/sceneObjs/blocker/Aperture';
-import Scene from '../../../src/simulator/js/Scene';
+import Aperture from '../../../src/core/sceneObjs/blocker/Aperture';
+import Scene from '../../../src/core/Scene';
 import { MockUser } from '../helpers/test-utils';
-import geometry from '../../../src/simulator/js/geometry';
+import geometry from '../../../src/core/geometry';
 
 describe('Aperture', () => {
   let scene;
