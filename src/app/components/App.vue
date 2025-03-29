@@ -31,6 +31,10 @@
 </template>
 
 <script>
+/**
+ * @module App
+ * @description The Vue component for the entire web application.
+ */
 import CanvasContainer from './CanvasContainer.vue';
 import WelcomeMessage from './WelcomeMessage.vue';
 import Sidebar from './Sidebar.vue';
@@ -154,128 +158,6 @@ export default {
   color: white;
 }
 
-.obj-bar {
-  z-index: -1;
-  background-color:rgba(23,162,184, 0.5);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  color:white;
-  font-size:12pt;
-  
-  padding-top: 3px;
-  padding-left: 12px;
-  padding-right: 7px;
-  padding-bottom: 3px;
-  margin: auto;
-  margin-top: 16px;
-  text-align: center;
-  border-radius: 0.5em;
-}
-
-.obj-bar .btn {
-  padding-top: 0;
-  padding-left: 7px;
-  padding-right: 7px;
-  color: white;
-}
-
-.obj-bar-nobr {
-  white-space: nowrap;
-  padding-left: 3px;
-  padding-right: 3px;
-}
-
-.obj-bar .form-range {
-  width: 125px;
-  padding-top:15px;
-  padding-left: 3px;
-}
-
-.obj-bar .form-range::-webkit-slider-thumb {
-  background: gray;
-  border: 2px solid white;
-}
-
-.obj-bar .form-range::-moz-range-thumb {
-  background: gray;
-  border: 2px solid white;
-}
-
-.obj-bar .form-range::-ms-thumb {
-  background: gray;
-  border: 2px solid white;
-}
-
-.obj-bar .form-range::-webkit-slider-runnable-track {
-  background: rgba(255,255,255, 0.5);
-}
-
-.obj-bar .form-range::-moz-range-track {
-  background-color: rgba(255,255,255, 0.5);
-}
-
-.obj-bar-editable {
-  color: white;
-  background-color: rgba(255,255,255,0.2);
-  border: none;
-  text-align: center;
-}
-
-.obj-bar-editable::selection {
-  background-color: gray;
-  color: white;
-}
-
-.obj-bar-number {
-  width: 40px;
-  padding-left: 1px;
-  padding-right: 1px;
-  font-size: 15px;
-}
-
-.mq-cursor {
-  border-color: white !important;
-}
-
-.info-icon {
-  color: rgba(255, 255, 255, 0.6);
-  padding-left:0px;
-  padding-right:0px;
-}
-
-
-.obj-bar .form-switch .form-check-input {
-  margin-top: 0px;
-  background-color: rgba(255,255,255, 0.3);
-  border: none;
-  vertical-align: middle;
-}
-
-.obj-bar .form-switch .form-check-input {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23f0f0f0'/%3e%3c/svg%3e");
-}
-
-.obj-bar .form-switch .form-check-input:focus {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
-}
-
-.obj-bar .form-switch .form-check-input:checked {
-  background-color: gray;
-  border: none;
-}
-
-.obj-bar .form-switch .form-check-input:checked {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
-}
-
-.obj-bar .form-switch .form-check-input:checked:focus {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
-}
-
-#showAdvanced {
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-}
 
 ::-webkit-scrollbar {
   background: none;

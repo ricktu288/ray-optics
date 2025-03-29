@@ -53,6 +53,10 @@
 </template>
 
 <script>
+/**
+ * @module Toolbar
+ * @description The Vue component for the toolbar (which contains both the desktop and mobile parts). Note that many UI code in this component has not been refactored using a proper Vue approach.
+ */
 import FileBar from './FileBar.vue';
 import ToolsBar from './ToolsBar.vue';
 import ViewBar from './ViewBar.vue';
@@ -60,8 +64,6 @@ import SettingsBar from './SettingsBar.vue';
 import RayDensityBar from './RayDensityBar.vue';
 import LayoutAidsBar from './LayoutAidsBar.vue';
 import * as $ from 'jquery';
-
-// TODO: Refacotor the UI code below using a proper Vue approach.
 
 const f = function (e) {
   const list = document.getElementsByClassName('mobile-dropdown-menu');

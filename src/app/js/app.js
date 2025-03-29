@@ -18,7 +18,7 @@ import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
-import ObjBar from './ObjBar.js';
+import ObjBar from '../services/objBar.js';
 import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
@@ -98,6 +98,7 @@ async function startApp() {
   document.getElementById('about').href = mapURL('/about');
 
   objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
+  window.objBar = objBar;
 
   objBar.on('showAdvancedEnabled', function (enabled) {
     if (enabled) {
@@ -486,17 +487,7 @@ async function startApp() {
     openFile(this.files[0]);
   };
 
-  document.getElementById('apply_to_all').onclick = function () {
-    this.blur();
-    const checked = this.checked;
-    objBar.shouldApplyToAll = checked;
-    document.getElementById('apply_to_all').checked = checked;
-    document.getElementById('apply_to_all_mobile').checked = checked;
-  }
-  document.getElementById('apply_to_all_mobile').onclick = document.getElementById('apply_to_all').onclick;
-
-  document.getElementById('copy').onclick = function () {
-    this.blur();
+  window.cloneSelectedObj = function () {
     if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
       scene.cloneObjsByHandle(editor.selectedObjIndex);
       scene.objs[editor.selectedObjIndex].move(scene.gridSize, scene.gridSize);
@@ -507,30 +498,24 @@ async function startApp() {
     simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
     editor.onActionComplete();
   };
-  document.getElementById('copy_mobile').onclick = document.getElementById('copy').onclick;
 
-  document.getElementById('delete').onclick = function () {
+  window.deleteSelectedObj = function () {
     var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
-    this.blur();
     editor.removeObj(editor.selectedObjIndex);
     simulator.updateSimulation(!sceneObjs[selectedObjType].isOptical, true);
     editor.onActionComplete();
   };
-  document.getElementById('delete_mobile').onclick = document.getElementById('delete').onclick;
 
-  document.getElementById('unselect').onclick = function () {
+  window.unselect = function () {
     editor.selectObj(-1);
     simulator.updateSimulation(true, true);
     editor.onActionComplete();
   };
-  document.getElementById('unselect_mobile').onclick = document.getElementById('unselect').onclick;
 
-  document.getElementById('showAdvanced').onclick = function () {
+  window.showAdvanced = function () {
     objBar.shouldShowAdvanced = true;
     editor.selectObj(editor.selectedObjIndex);
   };
-  document.getElementById('showAdvanced_mobile').onclick = document.getElementById('showAdvanced').onclick;
-
 
   document.getElementById('xybox').onkeydown = function (e) {
     //console.log(e.keyCode)
