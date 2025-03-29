@@ -122,6 +122,7 @@
 import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../store/preferences'
+import { app } from '../../services/app.js'
 
 export default {
   name: 'FileBar',
@@ -146,31 +147,31 @@ export default {
   methods: {
     handleUndo(event) {
       event.target.blur();
-      window.editor.undo();
+      app.editor.undo();
     },
     handleRedo(event) {
       event.target.blur();
-      window.editor.redo();
+      app.editor.redo();
     },
     handleReset(event) {
       event.target.blur();
-      window.reset();
+      app.reset();
     },
     handleGetLink(event) {
       event.target.blur();
-      window.getLink();
+      app.getLink();
     },
     handleExportSvg(event) {
       event.target.blur();
-      window.editor.enterCropMode();
+      app.editor.enterCropMode();
     },
     handleOpen(event) {
       event.target.blur();
-      window.openFile();
+      app.openFile();
     },
     handleViewGallery(event) {
       event.target.blur();
-      window.viewGallery();
+      app.viewGallery();
     }
   }
 }

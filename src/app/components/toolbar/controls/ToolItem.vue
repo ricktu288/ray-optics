@@ -55,6 +55,7 @@
 import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../../store/preferences'
+import { app } from '../../../services/app.js'
 
 export default {
   name: 'ToolItem',
@@ -99,8 +100,8 @@ export default {
 
     const handleClick = (event) => {
       const toolId = props.id
-      window.hideWelcome()
-      window.editor.addingObjType = toolId
+      app.hideWelcome()
+      app.editor.addingObjType = toolId
     };
 
     return {

@@ -16,6 +16,7 @@
 
 import { ref, computed } from 'vue'
 import i18next from 'i18next'
+import { app } from '../services/app'
 
 // Event names for status updates
 export const STATUS_EVENT_NAMES = {
@@ -101,7 +102,7 @@ export function useStatus() {
         name: i18next.t('simulator:statusBox.totalTruncation'), 
         value: status.totalTruncation.toFixed(3)
       }),
-      window.scene?.colorMode === 'default' ? 
+      app.scene.colorMode === 'default' ? 
         i18next.t('main:meta.colon', {
           name: i18next.t('simulator:statusBox.brightnessScale'), 
           value: status.brightnessScale <= 0 ? "-" : status.brightnessScale.toFixed(3)

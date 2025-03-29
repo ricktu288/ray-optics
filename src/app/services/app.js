@@ -32,11 +32,12 @@ import { mapURL, parseLinks } from '../utils/links.js';
 
 function initScene() {
   scene = new Scene();
-  window.scene = scene;
-  jsonEditorService.updateContent(scene.toJSON());
+  app.scene = scene;
 }
 
 function initAppService() {
+
+  jsonEditorService.updateContent(scene.toJSON());
 
   let dpr = window.devicePixelRatio || 1;
 
@@ -75,17 +76,17 @@ function initAppService() {
     Infinity,
     gl
   );
-  window.simulator = simulator;
+  app.simulator = simulator;
 
   editor = new Editor(scene, canvas, simulator);
-  window.editor = editor;
+  app.editor = editor;
 
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   document.getElementById('home').href = mapURL('/home');
   document.getElementById('about').href = mapURL('/about');
 
   objBar.initialize(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
-  window.objBar = objBar;
+  app.objBar = objBar;
 
   objBar.on('showAdvancedEnabled', function (enabled) {
     if (enabled) {
@@ -449,7 +450,7 @@ function initAppService() {
   };
 
 
-  window.reset = function () {
+  app.reset = function () {
     history.replaceState('', document.title, window.location.pathname + window.location.search);
     reset();
     document.getElementById("welcome_loading").style.display = 'none';
@@ -461,11 +462,11 @@ function initAppService() {
     jsonEditorService.updateContent(editor.lastActionJson);
   };
 
-  window.getLink = getLink;
-  window.openFile = function () {
+  app.getLink = getLink;
+  app.openFile = function () {
     document.getElementById('openfile').click();
   };
-  window.viewGallery = function () {
+  app.viewGallery = function () {
     window.open(mapURL('/gallery'));
   };
 
@@ -474,7 +475,7 @@ function initAppService() {
     openFile(this.files[0]);
   };
 
-  window.cloneSelectedObj = function () {
+  app.cloneSelectedObj = function () {
     if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
       scene.cloneObjsByHandle(editor.selectedObjIndex);
       scene.objs[editor.selectedObjIndex].move(scene.gridSize, scene.gridSize);
@@ -486,20 +487,20 @@ function initAppService() {
     editor.onActionComplete();
   };
 
-  window.deleteSelectedObj = function () {
+  app.deleteSelectedObj = function () {
     var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
     editor.removeObj(editor.selectedObjIndex);
     simulator.updateSimulation(!sceneObjs[selectedObjType].isOptical, true);
     editor.onActionComplete();
   };
 
-  window.unselect = function () {
+  app.unselect = function () {
     editor.selectObj(-1);
     simulator.updateSimulation(true, true);
     editor.onActionComplete();
   };
 
-  window.showAdvanced = function () {
+  app.showAdvanced = function () {
     objBar.shouldShowAdvanced = true;
     editor.selectObj(editor.selectedObjIndex);
   };
@@ -635,8 +636,6 @@ function resetDropdownButtons() {
   });
 }
 
-window.resetDropdownButtons = resetDropdownButtons;
-
 function hideAllPopovers() {
   console.log('hideAllPopovers');
   document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
@@ -752,14 +751,6 @@ function importModule(name) {
   client.send();
 }
 
-
-
-
-
-
-
-
-
 function reset() {
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   //document.getElementById('save_name').value = "";
@@ -794,15 +785,11 @@ function reset() {
   simulator.updateSimulation();
 }
 
-
-
-
-
 var lastFullURL = "";
 var syncUrlTimerId = -1;
 
 function syncUrl() {
-  if (!window.autoSyncUrl) return;
+  if (!app.autoSyncUrl) return;
   if (document.getElementById('welcome').style.display != 'none') return;
 
   if (syncUrlTimerId != -1) {
@@ -835,9 +822,6 @@ function hideWelcome() {
   document.getElementById('welcome').style.display = 'none';
 }
 
-window.hideWelcome = hideWelcome;
-
-
 function rename() {
   //scene.name = document.getElementById('save_name').value;
   if (scene.name) {
@@ -848,8 +832,6 @@ function rename() {
   document.dispatchEvent(new Event('sceneChanged'));
   editor.onActionComplete();
 }
-
-window.rename = rename;
 
 function save() {
   rename();
@@ -862,8 +844,6 @@ function save() {
   }
   hasUnsavedChange = false;
 }
-
-window.save = save;
 
 function openFile(readFile) {
   var reader = new FileReader();
@@ -937,10 +917,12 @@ function confirmPositioning(ctrl, shift) {
 }
 
 
-
-window.rename = rename;
-
 export const app = {
   initScene,
   initAppService,
+  resetDropdownButtons,
+  hideWelcome,
+  rename,
+  save,
+  syncUrl,
 }

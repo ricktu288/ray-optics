@@ -50,6 +50,7 @@
 <script>
 import { useSceneStore } from '../../store/scene'
 import { computed, toRef } from 'vue'
+import { app } from '../../services/app.js'
 
 export default {
   name: 'ModuleTools',
@@ -68,19 +69,19 @@ export default {
     // Handle module selection
     const onModuleSelect = (moduleName, event) => {
       if (event.target.checked) {
-        window.resetDropdownButtons?.()
+        app.resetDropdownButtons?.()
         document.getElementById('otherToolsDropdown')?.classList.add('selected')
         document.getElementById('mobile-dropdown-trigger-other')?.classList.add('selected')
-        window.hideWelcome()
-        window.editor.addingObjType = 'ModuleObj'
-        window.editor.addingModuleName = moduleName
+        app.hideWelcome()
+        app.editor.addingObjType = 'ModuleObj'
+        app.editor.addingModuleName = moduleName
       }
     }
 
     // Handle module removal
     const handleRemoveModule = (moduleName) => {
       scene.removeModule(moduleName)
-      window.editor.addingObjType = ''
+      app.editor.addingObjType = ''
     }
 
     return {

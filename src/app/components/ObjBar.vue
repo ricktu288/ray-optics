@@ -91,6 +91,7 @@
 import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 import { usePreferencesStore } from '../store/preferences'
+import { app } from '../services/app'
 
 export default {
   name: 'ObjBar',
@@ -103,8 +104,8 @@ export default {
     const tooltipType = computed(() => help.value ? 'popover' : null)
 
     const applyToAll = computed({
-      get: () => window.objBar?.shouldApplyToAll ?? false,
-      set: (value) => window.objBar.shouldApplyToAll = value
+      get: () => app.objBar?.shouldApplyToAll ?? false,
+      set: (value) => app.objBar.shouldApplyToAll = value
     })
 
     return {
@@ -116,19 +117,19 @@ export default {
     handleClone(event) {
       console.log('handleClone')
       event.target.blur()
-      window.cloneSelectedObj()
+      app.cloneSelectedObj()
     },
     handleDelete(event) {
       event.target.blur()
-      window.deleteSelectedObj()
+      app.deleteSelectedObj()
     },
     handleUnselect(event) {
       event.target.blur()
-      window.unselect()
+      app.unselect()
     },
     handleShowAdvanced(event) {
       event.target.blur()
-      window.showAdvanced()
+      app.showAdvanced()
     }
   }
 }

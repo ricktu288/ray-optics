@@ -31,6 +31,7 @@
               class="form-control" 
               id="save_name" 
               v-model="modalName"
+              @keydown.stop
             >
             <div class="form-text">
               <ul>
@@ -61,6 +62,7 @@
  */
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
+import { app } from '../services/app'
 
 export default {
   name: 'SaveModal',
@@ -83,8 +85,8 @@ export default {
 
     const handleSave = () => {
       sceneStore.name.value = modalName.value
-      if (window.save) {
-        window.save()
+      if (app.save) {
+        app.save()
       }
     }
 

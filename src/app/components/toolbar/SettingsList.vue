@@ -151,6 +151,7 @@ import SettingsWarning from './controls/SettingsWarning.vue'
 import { computed, toRef, ref } from 'vue'
 import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
+import { app } from '../../services/app.js'
 
 export default {
   name: 'SettingsList',
@@ -186,7 +187,7 @@ export default {
         } else if (!value) {
           colorMode.value = 'default'
         }
-        window.editor?.selectObj(window.editor.selectedObjIndex)
+        app.editor.selectObj(app.editor.selectedObjIndex)
       }
     })
 

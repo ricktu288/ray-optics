@@ -64,6 +64,7 @@ import SettingsBar from './SettingsBar.vue';
 import RayDensityBar from './RayDensityBar.vue';
 import LayoutAidsBar from './LayoutAidsBar.vue';
 import * as $ from 'jquery';
+import { app } from '../../services/app.js'
 
 const f = function (e) {
   const list = document.getElementsByClassName('mobile-dropdown-menu');
@@ -107,7 +108,7 @@ export default {
         if (input.checked) {
           // Reset other dropdown buttons
           if (!input.id.includes('mobile')) {
-            window.resetDropdownButtons();
+            app.resetDropdownButtons();
 
             // Get the associated dropdown button using the aria-labelledby attribute
             let dropdownButton = document.getElementById(input.closest('.dropdown-menu').getAttribute('aria-labelledby'));
@@ -115,7 +116,7 @@ export default {
             // Style the button to indicate selection.
             dropdownButton.classList.add('selected');
           } else if (input.name == 'toolsradio_mobile') {
-            window.resetDropdownButtons();
+            app.resetDropdownButtons();
 
             // Get the associated mobile trigger button
             let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
@@ -135,7 +136,7 @@ export default {
         input.addEventListener('change', function () {
           if (input.checked) {
             // Reset dropdown buttons
-            window.resetDropdownButtons();
+            app.resetDropdownButtons();
           }
         });
       }

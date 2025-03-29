@@ -47,6 +47,7 @@
 import { usePreferencesStore } from '../store/preferences'
 import { useStatus } from '../composables/useStatus'
 import { computed, toRef } from 'vue'
+import { app } from '../services/app'
 
 export default {
   name: 'StatusArea',
@@ -60,7 +61,7 @@ export default {
     }))
 
     const handleForceStop = () => {
-      window.simulator?.stopSimulation()
+      app.simulator.stopSimulation()
     }
 
     return {

@@ -16,6 +16,7 @@
 
 import { ref, computed, onMounted } from 'vue'
 import { jsonEditorService } from '../services/jsonEditor'
+import { app } from '../services/app.js'
 
 // Define default preferences and their callbacks
 const PREFERENCES_DEFAULTS = {
@@ -32,7 +33,11 @@ const PREFERENCES_CALLBACKS = {
   },
   autoSyncUrl: (value) => {
     console.log('autoSyncUrl', value)
-    window.autoSyncUrl = value
+    if (!app.autoSyncUrl && value) {
+      app.autoSyncUrl = value
+      app.syncUrl()
+    }
+    app.autoSyncUrl = value
   },
   showJsonEditor: (value) => {
     console.log('showJsonEditor', value)

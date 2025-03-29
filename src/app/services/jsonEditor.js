@@ -19,6 +19,7 @@ import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/mode-json';
 import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
+import { app } from '../services/app'
 
 /**
  * Service to manage the JSON editor instance and its interactions with the scene
@@ -47,7 +48,7 @@ class JsonEditorService {
     this.aceEditor.container.getElementsByClassName('ace_gutter')[0].style.background = "transparent"
     
     // Set initial content
-    this.aceEditor.session.setValue(window.editor?.lastActionJson ?? '')
+    this.aceEditor.session.setValue(app.editor?.lastActionJson ?? '')
 
     // Set up change listener
     this.aceEditor.session.on('change', this.handleEditorChange.bind(this))
@@ -67,13 +68,13 @@ class JsonEditorService {
     clearTimeout(this.debounceTimer)
     this.debounceTimer = setTimeout(() => {
       try {
-        window.editor?.loadJSON(this.aceEditor.session.getValue())
+        app.editor?.loadJSON(this.aceEditor.session.getValue())
         window.error = null
         
         // Only proceed with URL sync and validation if there are no errors
-        if (!window.scene?.error) {
+        if (!app.scene.error) {
           window.syncUrl?.()
-          window.editor?.requireDelayedValidation()
+          app.editor?.requireDelayedValidation()
         }
       } catch (e) {
         console.error('Error updating scene from JSON:', e)

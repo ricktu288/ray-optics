@@ -17,33 +17,34 @@
 import { reactive, computed, onMounted, onUnmounted } from 'vue'
 import Scene from '../../core/Scene'
 import geometry from '../../core/geometry'
+import { app } from '../services/app'
 
 // Map of properties to their update callbacks
 const PROPERTY_CALLBACKS = {
   name: () => {
-    window.rename?.()
+    app.rename?.()
   },
   mode: (value, state) => {
     // Initialize the observer when switching to observer mode
-    if (value === 'observer' && !window.scene?.observer) {
-      console.log('x coord', (window.scene.width * 0.5 - window.scene.origin.x) / window.scene.scale)
-      console.log('y coord', (window.scene.height * 0.5 - window.scene.origin.y) / window.scene.scale)
+    if (value === 'observer' && !app.scene.observer) {
+      console.log('x coord', (app.scene.width * 0.5 - app.scene.origin.x) / app.scene.scale)
+      console.log('y coord', (app.scene.height * 0.5 - app.scene.origin.y) / app.scene.scale)
       console.log('radius', state.observerSize * 0.5)
-      window.scene.observer = geometry.circle(geometry.point((window.scene.width * 0.5 - window.scene.origin.x) / window.scene.scale, (window.scene.height * 0.5 - window.scene.origin.y) / window.scene.scale), state.observerSize * 0.5);
+      app.scene.observer = geometry.circle(geometry.point((app.scene.width * 0.5 - app.scene.origin.x) / app.scene.scale, (app.scene.height * 0.5 - app.scene.origin.y) / app.scene.scale), state.observerSize * 0.5);
     }
-    window.simulator?.updateSimulation(false, true)
+    app.simulator?.updateSimulation(false, true)
   },
   rayModeDensity: (value) => {
-    window.simulator?.updateSimulation(false, true)
+    app.simulator?.updateSimulation(false, true)
   },
   imageModeDensity: (value) => {
-    window.simulator?.updateSimulation(false, true)
+    app.simulator?.updateSimulation(false, true)
   },
   showGrid: (value) => {
-    window.simulator?.updateSimulation(true, false)
+    app.simulator?.updateSimulation(true, false)
   },
   gridSize: (value) => {
-    window.simulator?.updateSimulation(true, false)
+    app.simulator?.updateSimulation(true, false)
   },
   snapToGrid: (value) => {
     // No need to update the simulation
@@ -52,29 +53,29 @@ const PROPERTY_CALLBACKS = {
     // No need to update the simulation
   },
   colorMode: (value) => {
-    window.simulator?.updateSimulation(false, true)
+    app.simulator?.updateSimulation(false, true)
   },
   simulateColors: (value) => {
-    window.editor?.selectObj(window.editor.selectedObjIndex)
-    window.simulator?.updateSimulation(false, true)
+    app.editor.selectObj(app.editor.selectedObjIndex)
+    app.simulator?.updateSimulation(false, true)
   },
   showRayArrows: (value) => {
-    window.simulator?.updateSimulation(false, true)
+    app.simulator?.updateSimulation(false, true)
   },
   observerSize: (value) => {
-    if (window.simulator?.scene.observer) {
-      window.simulator.scene.observer.r = value * 0.5
-      window.simulator?.updateSimulation(false, true)
+    if (app.simulator?.scene.observer) {
+      app.simulator.scene.observer.r = value * 0.5
+      app.simulator.updateSimulation(false, true)
     }
   },
   lengthScale: (value) => {
-    window.simulator?.updateSimulation(false, false)
+    app.simulator?.updateSimulation(false, false)
   },
   scale: (value) => {
-    window.simulator?.updateSimulation(false, false)
+    app.simulator?.updateSimulation(false, false)
   },
   zoom: (value) => {
-    window.simulator?.updateSimulation(false, false)
+    app.simulator?.updateSimulation(false, false)
   }
 }
 
@@ -93,8 +94,8 @@ export const useSceneStore = () => {
 
   // Create a reactive object for all serializable properties
   const state = reactive({
-    observerSize: window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40,
-    zoom: window.simulator?.scene.scale || 1,
+    observerSize: app.simulator?.scene.observer ? app.simulator?.scene.observer.r * 2 : 40,
+    zoom: app.simulator?.scene.scale || 1,
     moduleIds: '',
     ...Object.fromEntries(
       Object.entries(Scene.serializableDefaults).map(([key]) => [
@@ -106,28 +107,28 @@ export const useSceneStore = () => {
 
   // Function to sync with scene
   const syncWithScene = () => {
-    if (window.scene) {
+    if (app.scene) {
       Object.keys(Scene.serializableDefaults).forEach(key => {
-        state[key] = window.scene[key] ?? Scene.serializableDefaults[key]
+        state[key] = app.scene[key] ?? Scene.serializableDefaults[key]
       })
-      state.observerSize = window.simulator?.scene.observer ? window.simulator.scene.observer.r * 2 : 40
-      state.zoom = (window.scene.scale * window.scene.lengthScale) || 1
-      state.moduleIds = Object.keys(window.scene.modules || {}).join(',')
+      state.observerSize = app.simulator?.scene.observer ? app.simulator?.scene.observer.r * 2 : 40
+      state.zoom = (app.scene.scale * app.scene.lengthScale) || 1
+      state.moduleIds = Object.keys(app.scene.modules || {}).join(',')
     }
   }
 
   // Resize the scene
   const setViewportSize = (width, height, dpr) => {
-    if (window.simulator) {
-      window.simulator.dpr = dpr;
+    if (app.simulator) {
+      app.simulator.dpr = dpr;
     }
-    if (window.scene) {
-      window.scene.setViewportSize(width, height);
+    if (app.scene) {
+      app.scene.setViewportSize(width, height);
       state.width = width;
       state.height = height;
     }
-    if (window.simulator?.ctxAboveLight) {
-      window.simulator.updateSimulation();
+    if (app.simulator?.ctxAboveLight) {
+      app.simulator.updateSimulation();
     }
   }
 
@@ -139,22 +140,22 @@ export const useSceneStore = () => {
         get: () => state[key],
         set: (newValue) => {
           console.log(`Setting ${key} to ${newValue}`)
-          if (window.scene) {
+          if (app.scene) {
             if (key === 'observerSize') {
-              if (window.scene.observer) {
-                window.scene.observer.r = newValue * 0.5
+              if (app.scene.observer) {
+                app.scene.observer.r = newValue * 0.5
               }
             } else if (key === 'zoom') {
               console.log(`Setting zoom to ${newValue}`)
-              window.editor?.setScale(newValue / window.scene.lengthScale)
+              app.editor.setScale(newValue / app.scene.lengthScale)
             } else if (key === 'moduleIds') {
               // moduleIds is just for tracking, no need to sync back to scene
               state[key] = newValue
             } else {
-              window.scene[key] = newValue
+              app.scene[key] = newValue
               // Update zoom when scale or lengthScale changes
               if (key === 'scale' || key === 'lengthScale') {
-                state.zoom = window.scene.scale * window.scene.lengthScale
+                state.zoom = app.scene.scale * app.scene.lengthScale
               }
             }
             if (key !== 'moduleIds') {
@@ -162,7 +163,7 @@ export const useSceneStore = () => {
               PROPERTY_CALLBACKS[key]?.(newValue, state)
             }
           }
-          window.editor?.onActionComplete()
+          app.editor.onActionComplete()
         }
       })
     ])
@@ -170,13 +171,13 @@ export const useSceneStore = () => {
 
   // Add module-specific methods
   const removeModule = (moduleName) => {
-    if (window.scene) {
-      window.scene.removeModule(moduleName)
+    if (app.scene) {
+      app.scene.removeModule(moduleName)
       // Update moduleIds
-      state.moduleIds = Object.keys(window.scene.modules).join(',')
+      state.moduleIds = Object.keys(app.scene.modules).join(',')
       // Trigger necessary updates
-      window.simulator?.updateSimulation(false, true)
-      window.editor?.onActionComplete()
+      app.simulator?.updateSimulation(false, true)
+      app.editor.onActionComplete()
     }
   }
 
