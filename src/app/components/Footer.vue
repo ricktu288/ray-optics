@@ -61,6 +61,10 @@
 </template>
 
 <script>
+/**
+ * @module Footer
+ * @description The Vue component for the footer buttons on the lower right corner.
+ */
 import { vTooltipPopover } from '../directives/tooltip-popover'
 
 export default {

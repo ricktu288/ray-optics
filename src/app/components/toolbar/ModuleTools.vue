@@ -48,6 +48,11 @@
 </template>
 
 <script>
+/**
+ * @module ModuleTools
+ * @description The Vue component for the module tool list in the end of the Tools -> Others list.
+ * @vue-prop {String} layout - The layout of the toolbar. Can be 'mobile' or 'desktop'.
+ */
 import { useSceneStore } from '../../store/scene'
 import { computed, toRef } from 'vue'
 import { app } from '../../services/app.js'

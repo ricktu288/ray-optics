@@ -15,9 +15,13 @@
  */
 
 /**
- * @file `src/app/main.js` is the main entry point for the Ray Optics Simulation web app. It uses Vue to build the web UI for the simulator, and uses the Ray Optics Simulation core library to do the simulation and editing of optical scenes on the canvas layers.
+ * @file `src/app/main.js` is the main entry point for the Ray Optics Simulation web app. It uses Vue to build the web UI for the simulator, and uses the Ray Optics Simulation core library (see below) to do the simulation and editing of optical scenes on the canvas layers.
  * 
- * An instance of the {@link Scene} class is created and used throughout the session. The state of the scene is stored in the Vue store and bound to the UI elements via {@link useSceneStore}.
+ * This app was originally a non-modular app in pure HTML/JS/CSS, and the refactoring into Vue is not complete yet. In particular, the {@link ObjBar} still uses direct DOM manipulation to create the controls. There are also some UI related code in the `app` service and the `Toolbar` component which are not using the proper Vue approach.
+ * 
+ * The option-related part of the toolbar (not including the object bar) has been fully refactored into Vue. An instance of the {@link Scene} class is used throughout the session. The state of the scene is stored in the Vue store and bound to the UI elements via {@link useSceneStore}. Also, the preferences are stored in the Vue store and bound to the UI elements via {@link usePreferencesStore}. The list of controls in the "settings" section of the toolbar is in the `SettingsList` component.
+ * 
+ * The "tools" section of the toolbar has been mostly refactored into Vue. The list of tools is managed by the `ToolsList` component. However, the UI logic for the tools still uses some direct DOM manipulation (especially the paging in the mobile interface).
  */
 
 import { createApp } from 'vue'
