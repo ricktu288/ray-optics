@@ -93,11 +93,9 @@ async function startApp() {
   editor = new Editor(scene, canvas, simulator);
   window.editor = editor;
 
-
-
-  console.log(document.getElementById('obj_bar_main'))
-
-  initUIText();
+  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
+  document.getElementById('home').href = mapURL('/home');
+  document.getElementById('about').href = mapURL('/about');
 
   objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
 
@@ -669,97 +667,6 @@ function resetDropdownButtons() {
 }
 
 window.resetDropdownButtons = resetDropdownButtons;
-
-
-function initUIText() {
-  setText('import_modules_mobile', '<i>' + i18next.t('main:tools.modules.import') + '</i>');
-  setText('showAdvanced', i18next.t('simulator:objBar.showAdvanced.title'));
-  setText('apply_to_all_label', null, i18next.t('simulator:objBar.applyToAll.title'));
-  setText('copy', null, i18next.t('simulator:objBar.duplicate.title'));
-  setText('delete', null, i18next.t('simulator:objBar.delete.title'));
-  setText('unselect', null, null, i18next.t('simulator:objBar.unselect.description'));
-  setText('showAdvanced_mobile', i18next.t('simulator:objBar.showAdvanced.title'));
-  setText('apply_to_all_mobile_label', i18next.t('simulator:objBar.applyToAll.title'));
-  setText('copy_mobile', i18next.t('simulator:objBar.duplicate.title'));
-  setText('delete_mobile', i18next.t('simulator:objBar.delete.title'));
-  setText('unselect_mobile', i18next.t('simulator:objBar.unselect.title'));
-
-
-  document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
-  document.getElementById('home').href = mapURL('/home');
-  document.getElementById('about').href = mapURL('/about');
-}
-
-function setText(id, text, title, popover, image) {
-  const elem = document.getElementById(id);
-
-  if (elem == null) {
-    throw new Error('Element with ID "' + id + '" not found.');
-  }
-
-  if (text != null) {
-    elem.innerHTML = text;
-  }
-  
-  if (popoversEnabled) {
-    if (title != null) {
-      elem.setAttribute('title', title);
-    }
-
-    if (popover != null) {
-      // Popover
-      if (image != null) {
-        const content = '<img src="../img/' + image + '" class="popover-image" id="dynamic-popover-image">' + popover;
-        elem.setAttribute('data-bs-toggle', 'popover');
-        elem.setAttribute('data-bs-trigger', 'hover');
-        elem.setAttribute('data-bs-html', 'true');
-        elem.setAttribute('data-bs-content', content);
-
-        // Update popover size after image is loaded
-        elem.addEventListener('inserted.bs.popover', function () {
-          const imgElement = document.querySelectorAll('#dynamic-popover-image');
-          imgElement[imgElement.length - 1].addEventListener('load', function () {
-            bootstrap.Popover.getInstance(elem).update();
-          });
-        });
-      } else {
-        elem.setAttribute('data-bs-toggle', 'popover');
-        elem.setAttribute('data-bs-trigger', 'hover');
-        elem.setAttribute('data-bs-html', 'true');
-        elem.setAttribute('data-bs-content', popover);
-      }
-
-      // Initialize the popover
-      new bootstrap.Popover(elem);
-    } else if (title != null) {
-      // Tooltip
-      elem.setAttribute('title', title);
-      elem.setAttribute('data-bs-toggle', 'tooltip');
-      elem.setAttribute('data-bs-trigger', 'hover');
-      elem.setAttribute('data-bs-placement', 'bottom');
-
-      // Initialize the tooltip
-      new bootstrap.Tooltip(elem);
-    }
-  } else {
-    if (text == null && title != null) {
-      elem.setAttribute('title', title);
-      elem.setAttribute('data-bs-toggle', 'tooltip');
-      elem.setAttribute('data-bs-trigger', 'hover');
-      elem.setAttribute('data-bs-placement', 'bottom');
-
-      // Initialize the tooltip
-      new bootstrap.Tooltip(elem);
-    }
-  }
-}
-
-
-
-var popoversEnabled = true;
-
-
-
 
 function hideAllPopovers() {
   console.log('hideAllPopovers');
