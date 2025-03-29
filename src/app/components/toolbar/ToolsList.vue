@@ -158,6 +158,7 @@
       popoverImage="SphericalLens.svg"
       :layout="layout"
     />
+    <li><hr class="dropdown-divider"></li>
     <ToolItem
       id="CircleGrinGlass"
       :title="$t('main:tools.CircleGrinGlass.title')"

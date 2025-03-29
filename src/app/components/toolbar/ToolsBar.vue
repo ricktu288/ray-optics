@@ -19,7 +19,7 @@
     <div class="row">
       <div class="btn-group" role="group">
         <ToolsList layout="desktop" />
-        <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked>
+        <input type="radio" class="btn-check" name="toolsradio" id="tool_" autocomplete="off" checked @change="handleMoveView">
         <label 
           id="tool__label" 
           class="btn shadow-none btn-primary" 
@@ -59,7 +59,7 @@
             </button>
           </li>
           <li>
-            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool__mobile" checked>
+            <input type="radio" class="btn-check" name="toolsradio_mobile" autocomplete="off" id="tool__mobile" checked @change="handleMoveView">
             <label id="tool__mobile_label" class="btn btn-primary dropdown-item" for="tool__mobile">
               {{ $t('main:tools.moveView.title') }}
             </label>
@@ -83,6 +83,7 @@ import ToolsList from './ToolsList.vue'
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../store/preferences'
 import { computed, toRef } from 'vue'
+import { app } from '../../services/app.js'
 
 export default {
   name: 'ToolsBar',
@@ -108,9 +109,14 @@ export default {
       'other'
     ]
 
+    const handleMoveView = () => {
+      app.editor.addingObjType = ''
+    }
+
     return {
       toolCategories,
-      tooltipType
+      tooltipType,
+      handleMoveView
     }
   }
 }

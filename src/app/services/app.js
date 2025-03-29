@@ -343,7 +343,10 @@ function initAppService() {
     }
     //Ctrl+Y or Cmd+Y
     if ((e.ctrlKey || e.metaKey) && e.keyCode == 89) {
-      document.getElementById('redo').onclick();
+      if (document.getElementById('redo').disabled == false) {
+        editor.redo();
+      }
+      return false;
     }
 
     //Ctrl+S or Cmd+S

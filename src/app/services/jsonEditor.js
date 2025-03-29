@@ -120,6 +120,9 @@ class JsonEditorService {
       this.lastCodeChangeIsFromScene = true
       this.aceEditor.session.setValue(content)
       this.aceEditor.selection.setRange(new Range(startPos.row, startPos.column, endPos.row, endPos.column))
+
+      // Scroll to the first line that has changed
+      this.aceEditor.scrollToLine(startPos.row, true, true, function () { });
     } else {
       // Just update content without highlighting
       this.lastCodeChangeIsFromScene = true
