@@ -784,6 +784,7 @@ function reset() {
 
   document.getElementById('apply_to_all').checked = false;
   document.getElementById('apply_to_all_mobile').checked = false;
+  objBar.shouldApplyToAll = false;
 
   simulator.updateSimulation();
 }
