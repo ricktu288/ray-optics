@@ -470,12 +470,15 @@ class Editor {
       lastTouchTime = Date.now();
       //console.log("touchcancel");
       initialPinchDistance = null;
+      /*
       if (self.isConstructing || self.draggingObjIndex >= 0) {
         self.onCanvasMouseUp(e);
         self.undo();
       } else {
         self.onCanvasMouseUp(e);
       }
+      */
+      self.onCanvasMouseUp(e);
     });
 
     this.canvas.addEventListener('dblclick', function (e) {
