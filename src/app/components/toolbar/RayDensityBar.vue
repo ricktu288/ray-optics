@@ -170,3 +170,29 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.toolbar-range {
+  width: 100px;
+  padding-top: 3px;
+}
+
+.toolbar-range::-webkit-slider-thumb {
+  background: gray;
+  border: 2px solid darkgray;
+}
+
+.toolbar-range::-moz-range-thumb {
+  background: rgb(96, 96, 96);
+  border: 2px solid gray;
+}
+
+.toolbar-range::-webkit-slider-runnable-track {
+  background: rgba(128,128,128,0.5);
+}
+
+.toolbar-range::-moz-range-track {
+  background-color: rgba(128,128,128,0.5);
+}
+
+</style>

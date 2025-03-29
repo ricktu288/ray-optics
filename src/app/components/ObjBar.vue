@@ -135,6 +135,10 @@ export default {
 </script>
 
 <style>
+#obj-bar {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
 .obj-bar {
   z-index: -1;
   background-color:rgba(23,162,184, 0.5);

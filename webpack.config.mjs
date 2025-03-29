@@ -25,7 +25,7 @@ export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './src/app/js/app.js',
+    entry: './src/app/main.js',
     output: {
       filename: 'simulator/main.js',
       path: path.resolve('dist'),

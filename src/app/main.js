@@ -23,9 +23,11 @@
 import { createApp } from 'vue'
 import App from './components/App.vue'
 import i18next from 'i18next'
+import HttpBackend from 'i18next-http-backend'
 import { mapURL, parseLinks } from './utils/links.js'
+import { app } from './services/app'
 
-let app = null
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 // Create i18n plugin for Vue that uses i18next
 const i18nPlugin = {
@@ -50,18 +52,37 @@ export const getLocaleData = () => {
   return window.localeData
 }
 
-export function initVueApp() {
-  // Create the Vue app
-  app = createApp({
-    components: {
-      App
+async function initApp() {
+  await i18next.use(HttpBackend).init({
+    lng: window.lang,
+    debug: isDevelopment,
+    fallbackLng: 'en',
+    load: 'currentOnly',
+    ns: ['main', 'simulator'],
+    backend: {
+      loadPath: '../locales/{{lng}}/{{ns}}.json',
     },
-    template: '<App />'
-  })
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
+  // Initialize the scene (note that this must be done before creating the Vue app, since the controls will directly bind to the scene's properties)
+  app.initScene()
+
+  // Create the Vue app
+  const vueApp = createApp(App)
 
   // Install i18n plugin
-  app.use(i18nPlugin)
+  vueApp.use(i18nPlugin)
 
   // Mount the Vue app
-  const mountedApp = app.mount('#vue-root')
+  vueApp.mount('#vue-root')
+
+  // Initialize the app service (this must be done after the Vue app is mounted, since it accesses the Vue app's DOM)
+  app.initAppService()
+
 }
+
+// Start the application
+initApp()

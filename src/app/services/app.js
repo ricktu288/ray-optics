@@ -14,43 +14,29 @@
  * limitations under the License.
  */
 
+/**
+ * @module app
+ * @description The main app "service". Many parts of the app are not fully refactored to a proper Vue approach yet, so some mixed-paradigm code exists in this file.
+ */
+
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
 import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
-import ObjBar from '../services/objBar.js';
+import { objBar } from '../services/objBar.js';
 import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
-import HttpBackend from 'i18next-http-backend';
 import { jsonEditorService } from '../services/jsonEditor.js';
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
 import { mapURL, parseLinks } from '../utils/links.js';
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-async function startApp() {
-  await i18next.use(HttpBackend).init({
-    lng: window.lang,
-    debug: isDevelopment,
-    fallbackLng: 'en',
-    load: 'currentOnly',
-    ns: ['main', 'simulator'],
-    backend: {
-      loadPath: '../locales/{{lng}}/{{ns}}.json',
-    },
-    interpolation: {
-      escapeValue: false
-    }
-  });
-
+function initScene() {
   scene = new Scene();
   window.scene = scene;
-
-  await import('../main').then(vueApp => {
-    vueApp.initVueApp();
-  });
-
   jsonEditorService.updateContent(scene.toJSON());
+}
+
+function initAppService() {
 
   let dpr = window.devicePixelRatio || 1;
 
@@ -98,7 +84,7 @@ async function startApp() {
   document.getElementById('home').href = mapURL('/home');
   document.getElementById('about').href = mapURL('/about');
 
-  objBar = new ObjBar(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
+  objBar.initialize(document.getElementById('obj_bar_main'), document.getElementById('obj_name'));
   window.objBar = objBar;
 
   objBar.on('showAdvancedEnabled', function (enabled) {
@@ -323,7 +309,7 @@ async function startApp() {
     updateErrorAndWarning();
   });
 
-  init();
+  reset();
 
   document.getElementById('undo').disabled = true;
   document.getElementById('redo').disabled = true;
@@ -465,7 +451,7 @@ async function startApp() {
 
   window.reset = function () {
     history.replaceState('', document.title, window.location.pathname + window.location.search);
-    init();
+    reset();
     document.getElementById("welcome_loading").style.display = 'none';
     document.getElementById("welcome_instruction").style.display = '';
     document.getElementById('welcome').style.display = '';
@@ -624,8 +610,6 @@ async function startApp() {
 
 }
 
-startApp();
-
 
 var canvas;
 var canvasBelowLight;
@@ -635,7 +619,6 @@ var canvasGrid;
 var scene;
 var editor;
 var simulator;
-var objBar;
 var xyBox_cancelContextMenu = false;
 var hasUnsavedChange = false;
 var warning = null;
@@ -777,7 +760,7 @@ function importModule(name) {
 
 
 
-function init() {
+function reset() {
   document.title = i18next.t('main:pages.simulator') + ' - ' + i18next.t('main:project.name');
   //document.getElementById('save_name').value = "";
 
@@ -956,3 +939,8 @@ function confirmPositioning(ctrl, shift) {
 
 
 window.rename = rename;
+
+export const app = {
+  initScene,
+  initAppService,
+}

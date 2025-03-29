@@ -89,10 +89,6 @@ export default {
   flex-direction: column;
 }
 
-#obj-bar {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
 /* modifications to Bootstrap style */
 
 .btn-group {

@@ -24,7 +24,12 @@ const MQ = MathQuill.getInterface(2);
  * @class
  */
 class ObjBar {
-  constructor(elem, titleElem) {
+  /**
+   * Initialize the object bar.
+   * @param {HTMLElement} elem - The element the inputs will be populated to
+   * @param {HTMLElement} titleElem - The element that contains the title of the object bar
+   */
+  initialize(elem, titleElem) {
 
     /** @property {HTMLElement} elem - The element the inputs will be populated to */
     this.elem = elem;
@@ -635,4 +640,4 @@ class ObjBar {
 
 }
 
-export default ObjBar;
+export const objBar = new ObjBar();
