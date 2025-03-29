@@ -40,7 +40,8 @@
       },
       "brightness": "អាំងតង់ស៊ីតេពន្លឺ",
       "random": "រាយប៉ាយ",
-      "emisAngle": "មុំ"
+      "emisAngle": "មុំ",
+      "nonSimulateColorsWarning": "ឧបករណ៍នេះប្រើបានលុះត្រាអ្នកជ្រើសរើស \"បង្ហាញកូល័រ / ពណ៍\" នៅក្នុង\"ការកំណត់\"។"
     },
     "BaseFilter": {
       "filter": "សម្រង់"
@@ -74,6 +75,22 @@
     "LineArrow": {
       "arrow": "ក្បាលសញ្ញាព្រួញចុងខាងមុខ",
       "backArrow": "ក្បាលសញ្ញាព្រួញចុងខាងក្រោយ"
+    },
+    "Aperature": {
+      "diameter": "អង្កត់ផ្ចិត"
+    },
+    "CropBox": {
+      "rayCountLimit": "កម្រិតបរិមាណកាំពន្លឺ"
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "ខ្នាត - [length]។"
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "ខ្នាត - [length]^2។"
+      }
     }
   },
   "settings": {
@@ -191,5 +208,15 @@
   "statusBox": {
     "rayCount": "ចំនួនកាំពន្លឺ",
     "brightnessScale": "អាំងតង់ស៊ីតេពន្លឺ"
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "ទម្រង់កូល័រ HSV",
+      "description": "បង្ហាញកូល័រទៅតាមទម្រង់កូល័រ HSV។"
+    },
+    "linearRGB": {
+      "title": "ទម្រង់កូល័រ RGB",
+      "description": "បង្ហាញកូល័រទៅតាមទម្រង់កូល័រ RGB។"
+    }
   }
 }
