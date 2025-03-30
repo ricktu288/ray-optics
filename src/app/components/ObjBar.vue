@@ -115,7 +115,6 @@ export default {
   },
   methods: {
     handleClone(event) {
-      console.log('handleClone')
       event.target.blur()
       app.cloneSelectedObj()
     },

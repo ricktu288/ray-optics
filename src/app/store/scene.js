@@ -27,9 +27,6 @@ const PROPERTY_CALLBACKS = {
   mode: (value, state) => {
     // Initialize the observer when switching to observer mode
     if (value === 'observer' && !app.scene.observer) {
-      console.log('x coord', (app.scene.width * 0.5 - app.scene.origin.x) / app.scene.scale)
-      console.log('y coord', (app.scene.height * 0.5 - app.scene.origin.y) / app.scene.scale)
-      console.log('radius', state.observerSize * 0.5)
       app.scene.observer = geometry.circle(geometry.point((app.scene.width * 0.5 - app.scene.origin.x) / app.scene.scale, (app.scene.height * 0.5 - app.scene.origin.y) / app.scene.scale), state.observerSize * 0.5);
     }
     app.simulator?.updateSimulation(false, true)
@@ -139,14 +136,12 @@ export const useSceneStore = () => {
       computed({
         get: () => state[key],
         set: (newValue) => {
-          console.log(`Setting ${key} to ${newValue}`)
           if (app.scene) {
             if (key === 'observerSize') {
               if (app.scene.observer) {
                 app.scene.observer.r = newValue * 0.5
               }
             } else if (key === 'zoom') {
-              console.log(`Setting zoom to ${newValue}`)
               app.editor.setScale(newValue / app.scene.lengthScale)
             } else if (key === 'moduleIds') {
               // moduleIds is just for tracking, no need to sync back to scene

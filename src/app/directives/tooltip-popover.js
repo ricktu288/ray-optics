@@ -89,7 +89,6 @@ export const vTooltipPopover = {
     const isPopover = binding.arg === 'popover'
     const oldOptions = el._lastOptions || {}
     const oldIsPopover = el._lastIsPopover
-    console.log('updated', el, options, oldOptions)
     
     // Store new options and arg for future comparison
     el._lastOptions = { ...options }
@@ -99,8 +98,6 @@ export const vTooltipPopover = {
     if (JSON.stringify(options) === JSON.stringify(oldOptions) && isPopover === oldIsPopover) {
       return
     }
-
-    console.log('actually updated');
 
     // Clean up any existing instances
     if (el._popover) {

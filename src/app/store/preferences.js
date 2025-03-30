@@ -32,7 +32,6 @@ const PREFERENCES_CALLBACKS = {
     window.popoversEnabled = value
   },
   autoSyncUrl: (value) => {
-    console.log('autoSyncUrl', value)
     if (!app.autoSyncUrl && value) {
       app.autoSyncUrl = value
       app.syncUrl()
@@ -40,7 +39,6 @@ const PREFERENCES_CALLBACKS = {
     app.autoSyncUrl = value
   },
   showJsonEditor: (value) => {
-    console.log('showJsonEditor', value)
     if (value) {
       // Initialize JSON editor
       jsonEditorService.initialize()
@@ -87,7 +85,6 @@ export const usePreferencesStore = () => {
       computed({
         get: () => refs[`_${key}`].value,
         set: (newValue) => {
-          console.log(`Setting preference ${key} to ${newValue}`)
           refs[`_${key}`].value = newValue
           localStorage.setItem(
             `rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`, 

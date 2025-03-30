@@ -182,7 +182,6 @@ function initAppService() {
     document.getElementById('xybox').style.display = '';
     document.getElementById('xybox').select();
     document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
-    //console.log("show xybox");
     xyBox_cancelContextMenu = true;
   });
 
@@ -640,7 +639,6 @@ function resetDropdownButtons() {
 }
 
 function hideAllPopovers() {
-  console.log('hideAllPopovers');
   document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
     var popoverInstance = bootstrap.Popover.getInstance(element);
     if (popoverInstance) {

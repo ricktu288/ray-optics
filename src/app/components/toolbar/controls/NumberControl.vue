@@ -132,7 +132,6 @@ export default {
       // Update both local value and emit change
       inputValue.value = numValue.toString()
       emit('update:modelValue', numValue)
-      console.log(inputValue.value)
     }
 
     return {
