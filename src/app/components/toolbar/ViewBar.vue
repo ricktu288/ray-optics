@@ -34,7 +34,7 @@
             :for="'mode_' + mode"
             v-tooltip-popover:[tooltipType]="getConfig(mode)"
           >
-            <img :src="getIconPath(mode)" :alt="mode" width="16" height="20">
+            <img :src="require(`../../../img/${mode}_icon.svg`)" :alt="mode" width="16" height="20">
           </label>
         </template>
       </div>
@@ -109,9 +109,6 @@ export default {
     }
   },
   methods: {
-    getIconPath(mode) {
-      return `../../../img/${mode}_icon.svg`
-    },
     getConfig(mode) {
       const configs = {
         rays: {
