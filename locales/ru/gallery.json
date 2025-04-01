@@ -12,9 +12,9 @@
       "miscellaneous": "Разнообразный"
     },
     "openInSimulator": "Открыть в симуляторе",
-    "contributors_one": "участник:{{участник}}",
-    "contributors_few": "участники:{{участники}}",
-    "contributors_many": "участников:{{участников}}"
+    "contributors_one": "участник:{{contributors}}",
+    "contributors_few": "участники:{{contributors}}",
+    "contributors_many": "участников:{{contributors}}"
   },
   "galleryData": {
     "common": {
