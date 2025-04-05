@@ -384,13 +384,25 @@
       "title": "Distorção em janelas e espelhos de reflexo traseiro"
     },
     "branchedFlow": {
-      "title": "Fluxo ramificado"
+      "title": "Fluxo ramificado",
+      "description": "Quando luz viaja através de um meio cujo índice refrativo tem variações espaciais aleatórias (com comprimento de correlação muito maior que o comprimento de onda da luz), um padrão semelhante a galhos de árvore chamado de fluxo ramificado aparece. Esta simulação mostra esse fenômeno usando uma função de índice refrativo que é a soma de várias funções cosseno com amplitudes e fases pseudoaleatórias."
     },
     "maxwellFisheyeLens": {
       "classicalmaxwellfish": "Lente olho de peixe de Maxwell clássica (Você pode selecionar e mudar o tamanho do passo do resolvedor numérico.)",
       "title": "Lente olho de peixe de Maxwell",
       "description": "Esta é uma simulação de uma lente olho de peixe de Maxwell, que é um dielétrico esférico com índice refrativo \\(n(r) = \\frac{n_0}{1+(\\frac{r}{R})^2} \\), onde \\(n_0=2\\) é o índice refrativo no centro da lente, \\(R=100\\) é o raio da lente, e \\(r\\) é a distância radial do centro da lente.\n\nO dielétrico superior é composto de \\(N=20\\) lentes esféricas concêntricas com raio \\(R_i=5(N+1-i)\\) e índice refrativo \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), onde \\(i=1,\\ldots,N\\). No entanto, já que este simulador calcula o índice refrativo effetivo de um elemento óptico multiplicando o índice refrativo numérico do elemento com os índices refrativos numéricos dos elementos ópticos que estão inseridos nele, o índice refrativo numérico da \\(i\\)-ésima lente esférica concêntrica é dado por \\(n_{i}^\\text{numérico}=\\frac{n_i}{n_{i-1}}\\).\n\nO dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(r)\\).",
       "approximatedmultilay2": "Lente olho de peixe de Maxwell multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)"
+    },
+    "sphericalLensAndMirror": {
+      "title": "Lente e Espelho Esféricos",
+      "description": "Esta simulação mostra um raio contínuo passando por uma lente esférica e um espelho esférico."
+    },
+    "singleRayDemo": {
+      "description": "Esta simulação demonstra a reflexão e refração de um único raio.",
+      "title": "Demonstração de Raio Único"
+    },
+    "interrogationRoom": {
+      "title": "Sala de interrogação"
     }
   }
 }

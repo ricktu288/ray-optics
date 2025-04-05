@@ -78,8 +78,8 @@
       "combinationOfLenses": "Combinaison de Lentilles",
       "miscellaneous": "Divers"
     },
-    "contributors_one": "Contributeur",
-    "contributors_many": "Contributeurs",
-    "contributors_other": "Contributeurs"
+    "contributors_one": "Contributeur : {{contributors}}",
+    "contributors_many": "Contributeurs : {{contributors}}",
+    "contributors_other": "Contributeurs : {{contributors}}"
   }
 }
