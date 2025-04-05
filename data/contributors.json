@@ -514,5 +514,14 @@
       "gallery": true
     },
     "firstCommit": "2025-03-11"
+  },
+  {
+    "name": "Ilya Vasilenko",
+    "contributions": {
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2025-03-31"
   }
 ]
