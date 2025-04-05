@@ -55,6 +55,8 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     objBar.setTitle(i18next.t('main:tools.categories.mirror'));
     objBar.createEquation('y = ', this.eqn, function (obj, value) {
       obj.eqn = value;
+      // Invalidate points when equation changes
+      delete obj.tmp_points;
     }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');
     
     super.populateObjBar(objBar);
@@ -70,70 +72,61 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return;
     }
 
-    var fn;
-    try {
-      fn = evaluateLatex(this.eqn);
-    } catch (e) {
-      delete this.tmp_points;
-      ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
-      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
-      this.error = e.toString();
-      return;
+    // Initialize points if needed
+    if (!this.tmp_points) {
+      if (!this.initPoints()) {
+        // If initialization failed, draw error indicators
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+        ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
+        return;
+      }
     }
-    ctx.fillStyle = 'rgb(255,0,255)';
-    var p12d = geometry.distance(this.p1, this.p2);
-    // unit vector from p1 to p2
-    var dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
-    // perpendicular direction
-    var dir2 = [dir1[1], -dir1[0]];
-    // get height of (this section of) parabola
-    var x0 = p12d / 2;
-    var i;
+
+    // Draw the curve
     const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
     ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(168,168,168)');
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();
-    this.tmp_points = [];
-    var lastError = "";
-    for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
-      // avoid using exact integers to avoid problems with detecting intersections
-      var ix = i + 0.05 * this.scene.lengthScale;
-      if (ix < 0) ix = 0;
-      if (ix > p12d) ix = p12d;
-      var x = ix - x0;
-      var scaled_x = 2 * x / p12d;
-      var scaled_y;
-      try {
-        scaled_y = fn({ x: scaled_x, "pi": Math.PI });
-        var y = scaled_y * p12d * 0.5;
-        var pt = geometry.point(this.p1.x + dir1[0] * ix + dir2[0] * y, this.p1.y + dir1[1] * ix + dir2[1] * y);
-        if (i == -0.1) {
-          ctx.moveTo(pt.x, pt.y);
-        } else {
-          ctx.lineTo(pt.x, pt.y);
-        }
-        this.tmp_points.push(pt);
-      } catch (e) {
-        lastError = e;
-      }
+    
+    var pts = this.tmp_points;
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (var i = 1; i < pts.length; i++) {
+      ctx.lineTo(pts[i].x, pts[i].y);
     }
-    if (this.tmp_points.length == 0) {
-      delete this.tmp_points;
-      ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
-      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
-      this.error = lastError.toString();
-      return;
-    }
+    
     ctx.stroke();
+    
     if (isHovered) {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
+  }
 
-    this.error = null;
+  move(diffX, diffY) {
+    super.move(diffX, diffY);
+    // Invalidate points after moving
+    delete this.tmp_points;
+  }
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    super.onConstructMouseDown(mouse, ctrl, shift);
+    // Invalidate points during construction
+    delete this.tmp_points;
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    super.onConstructMouseMove(mouse, ctrl, shift);
+    // Invalidate points during construction
+    delete this.tmp_points;
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    const result = super.onConstructMouseUp(mouse, ctrl, shift);
+    // Invalidate points after construction
+    delete this.tmp_points;
+    return result;
   }
 
   checkMouseOver(mouse) {
@@ -149,11 +142,16 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return dragContext;
     }
 
-    if (!this.tmp_points) return;
+    // Initialize points if needed
+    if (!this.tmp_points) {
+      if (!this.initPoints()) {
+        return;
+      }
+    }
+    
     var i;
     var pts = this.tmp_points;
     for (i = 0; i < pts.length - 1; i++) {
-
       var seg = geometry.line(pts[i], pts[i + 1]);
       if (mouse.isOnSegment(seg)) {
         // Dragging the entire this
@@ -167,8 +165,22 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     }
   }
 
+  onDrag(mouse, dragContext, ctrl, shift) {
+    super.onDrag(mouse, dragContext, ctrl, shift);
+    // Invalidate points after any dragging operation
+    delete this.tmp_points;
+  }
+
   checkRayIntersects(ray) {
-    if (!this.tmp_points || !this.checkRayIntersectFilter(ray)) return;
+    // Initialize points if needed
+    if (!this.tmp_points) {
+      if (!this.initPoints() || !this.checkRayIntersectFilter(ray)) {
+        return;
+      }
+    } else if (!this.checkRayIntersectFilter(ray)) {
+      return;
+    }
+    
     var i, j;
     var pts = this.tmp_points;
     var dir = geometry.distance(this.p2, ray.p1) > geometry.distance(this.p1, ray.p1);
@@ -244,6 +256,68 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       //console.log(frac);
       ray.p2 = geometry.point(outxFinal, outyFinal);
     }
+  }
+  
+  /** Utility method */
+
+  /**
+   * Initialize the points on the curve based on the equation.
+   * This method is called by draw() and checkRayIntersects() when needed.
+   * @returns {boolean} Whether the initialization was successful.
+   */
+  initPoints() {
+    if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
+      delete this.tmp_points;
+      this.error = "Invalid mirror: endpoints are the same";
+      return false;
+    }
+
+    var fn;
+    try {
+      fn = evaluateLatex(this.eqn);
+    } catch (e) {
+      delete this.tmp_points;
+      this.error = e.toString();
+      return false;
+    }
+
+    var p12d = geometry.distance(this.p1, this.p2);
+    // unit vector from p1 to p2
+    var dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
+    // perpendicular direction
+    var dir2 = [dir1[1], -dir1[0]];
+    // get height of (this section of) parabola
+    var x0 = p12d / 2;
+    var i;
+    
+    this.tmp_points = [];
+    var lastError = "";
+    for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+      // avoid using exact integers to avoid problems with detecting intersections
+      var ix = i + 0.05 * this.scene.lengthScale;
+      if (ix < 0) ix = 0;
+      if (ix > p12d) ix = p12d;
+      var x = ix - x0;
+      var scaled_x = 2 * x / p12d;
+      var scaled_y;
+      try {
+        scaled_y = fn({ x: scaled_x, "pi": Math.PI });
+        var y = scaled_y * p12d * 0.5;
+        var pt = geometry.point(this.p1.x + dir1[0] * ix + dir2[0] * y, this.p1.y + dir1[1] * ix + dir2[1] * y);
+        this.tmp_points.push(pt);
+      } catch (e) {
+        lastError = e;
+      }
+    }
+    
+    if (this.tmp_points.length == 0) {
+      delete this.tmp_points;
+      this.error = lastError.toString();
+      return false;
+    }
+    
+    this.error = null;
+    return true;
   }
 };
 
