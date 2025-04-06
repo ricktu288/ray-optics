@@ -365,7 +365,8 @@
     "luneburgLens": {
       "title": "Lente de Luneburg",
       "approximatedmultilay1": "Lente Luneburg multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)",
-      "classicalluneburglen": "Lente Luneburg clássica (Você pode selecionar e mudar o tamanho de passo do resolvedor numérico.)"
+      "classicalluneburglen": "Lente Luneburg clássica (Você pode selecionar e mudar o tamanho de passo do resolvedor numérico.)",
+      "description": "Esta é uma simulação de uma lente de Luneburg, que é um dielétrico esférico com índice refrativo \\(n(r) = \\sqrt{n_0-(\\frac{r}{R})^2} \\), onde \\(n_0=2\\) é o índice refrativo no centro da lente, \\(R=100\\) é o raio da lente, e \\(r\\) é a distância radial do centro da lente.\n\nO dielétrico superior é composto de \\(N=20\\) lentes esféricas concêntricas com raio \\(R_i=5(N+1-i)\\) e índice refrativo \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2^\\), pnde \\(i=1,\\ldots,N\\). No entanto, já que esse simulador calcula o índice refrativo efetivo de um elemento óptico multiplicando o índice refrativo numérico do elemento com os índices refrativos numéricos dos elementos ópticos inseridos nele, o índice refrativo numérico da \\(i\\)-ésima lente esférica concêntrica é dado por \\(n_{i}^\\text{numérico}=\\frac{n_i}{n_{i-1}}\\).\n\nO dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(r)\\)."
     },
     "grinSlab": {
       "title": "Bloco GRIN",
@@ -402,7 +403,120 @@
       "title": "Demonstração de Raio Único"
     },
     "interrogationRoom": {
-      "title": "Sala de interrogação"
+      "title": "Sala de interrogação",
+      "interrogationroom": "Sala de interrogação",
+      "thelampobjectintheob": "A lâmpada no plano de imagem do observador",
+      "thelampsreflectionin": "O reflexo da lâmpada no plano de imagem do suspeito",
+      "suspectseyeris": "Olho do suspeito",
+      "thelampsreflection": "O reflexo da lâmpada",
+      "description": "Esta é uma simulação de um espelho de duas vias em uma sala de interrogação. O observador na sala escura (idealmente o interior da sala escura não emite/reflete luz, além de absorver toda a luz que vem da sala de interrogação) pode ver dentro da sala de interrogação porque a luz criada pela lâmpada na sala de interrogação é espalhada e recebida pelo observador através do espelho de duas vidas, enquanto o suspeito só pode ver dentro da sala de interrogação além do seu reflexo, e o da lâmpada (já que nenhuma luz da sala escura é recebida pelo suspeito).",
+      "pressonallimagestose": "Clique em \"Todas Imagens\" para ver a posição\ndo reflexo da lâmpada, e os objetos\nno plano de imagem do suspeito e do observador",
+      "twowaymirror": "Espelho de duas vias",
+      "lamp": "Lâmpada",
+      "darkroom": "Sala escura",
+      "thelampobjectinthesu": "A lâmpada no plano de imagem do suspeito",
+      "observerseyeris": "Olho do observador"
+    },
+    "cameraObscura": {
+      "objectsoutside": "Objetos exteriores",
+      "darkroom1": "Sala escura",
+      "description": "Esta é uma simulação de uma Câmera escura. O observador an sala escura vê uma imagem invertida dos objetos de fora, projetada na parede à frente dele/dela (sem o uso de uma lente adicional).",
+      "observer2": "Observador",
+      "title": "Câmera escura"
+    },
+    "nlSimulation": {
+      "title": "Binóculos NL",
+      "description": "Esta simulação mostra um esboço básico de binóculos Swarosvski NL."
+    },
+    "ganBasedLcdPixel": {
+      "pixelasvisibletoview": "Pixel Como Visto ao Observador",
+      "liquidcrystal": "Cristal Líquido",
+      "notpartoflcddisplay": "Não é parte da tela LCD",
+      "blueledbacklight": "Luz de fundo de LED azul",
+      "yellowphosphor": "Material Fosforescente",
+      "lightfilters": "Filtros de Luz",
+      "title": "Pixel LCD",
+      "description": "Este é um modelo de um pixel LCD. Ele simula como novas camadas de monitor microled funcionam e como os nossos olhos percebem o pixel.",
+      "pixelsaresosmallthel": "Pixels são tão pequenos que a luz\nparece, a nossos olhos, estar misturada",
+      "changetherateoftrans": "Mude a Taxa de Transmissão\nPara Criar Qualquer Valor RGB"
+    },
+    "concaveMirrorWearableDisplay": {
+      "concavemirror": "espelho côncavo",
+      "tft09display": "Tela TFT 0.9\"",
+      "title": "Monitor Vestível de Espelho Côncavo",
+      "t15readingglasses": "óculos de leitura +1.5",
+      "description": "Uma simples tela vestível. Vários modelus usam dois espelhos e uma lente positiva, mas este é uma versão de um elemento óptico. A escala é aproximadamente 5:1mm.\n\nCC0: Este trabalho foi marcado como dedicado ao domínio público.",
+      "eye1": "olho",
+      "nose": "nariz",
+      "pointsourcetomeasure": "fonte pontual para medir raio"
+    },
+    "reflectingMonochromator": {
+      "title": "Monocromador Refletor",
+      "exitslitmonochromati": "Fenda de saída\n\nLuz Monocromática",
+      "description": "Esta é uma simulação de um monocromador refletor, que usa uma grade de difração refletora e um vão no foco para obter comprimentos de onda de banda estreita a partir de luz composta.",
+      "reflectingmonochroma": "Monocromador Refletor",
+      "rotatediffractiongra": "Gire Grade de Difração \npara obter comprimentos\nde onda de banda estreita\na partir de luz composta"
+    },
+    "solarEclipses": {
+      "title": "Eclipses Solares",
+      "nottoscale": "(Fora de escala)",
+      "moon": "Lua",
+      "partialeclipse": "Eclipse parcial",
+      "earth": "Terra",
+      "description": "Esta simulação demonstra os diferentes tipos de eclipses solares. O diagrama superior direito mostra um eclipse solar onde a sombra da Lua cobre o Sol, resultando em um eclupse total no centro e um eclipse parcial nas áreas ao redor. O diagrama inferior direito ilustra um eclipse anular onde a Lua está longe demais da Terra para cobrir completamente o Sol, deixando um anel brilhante no centro (neste simulador 2D, o \"anel\" é demonstrado pela luz solar vindo apenas da parte superior e inferior do sol) e tamb´´em um eclipse parcial nas áreas ao redor.",
+      "sun": "Sol",
+      "annulareclipse": "Eclipse anular",
+      "totaleclipse": "Eclipse total"
+    },
+    "thePrincipleOfCameraImaging": {
+      "title": "O princípio de formação de imagem em câmera",
+      "camera": "Câmera",
+      "cmos": "Sensor",
+      "description": "Este modelo fornece uma maneira intuitica de se aprender os princípios de formação de imagens em câmeras, cobrindo tópicos essenciais como comprimento focal, abertura, sensitividade do sensor, e borramento do plano de fundo, fazendo com que seja útil para estudantes e entusiastas."
+    },
+    "moduleExampleBasics": {
+      "thistextisinexamplem": "Este texto está em ExampleModule.",
+      "thistextisalsoinexam": "Este texto também está em ExampleModule.",
+      "title": "Exemplo de Módulo - Básico",
+      "thistextisnotinamodu": "Este texto não extá em um módulo.",
+      "thistextisalsonotina": "Este texto também não está em um módulo."
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "Exemplo de Módulo - Parametrização de forma",
+      "alensdefinedbydr1r2": "Uma lente definida por d, R_1, R_2",
+      "alensdefinedbydffdbf": "Uma lente definida por d, FFD, BFD"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "title": "Divisor e Combinador RGB Dicróico",
+      "description": "Esta simulação demonstra a divisão e combinação de raios RGV usando espelhos dicróicos.",
+      "beamcombiner": "Combinador de Feixe",
+      "rgbcomponentsplitter": "Divisor e Combinador de Componentes RGB",
+      "lightsource": "Fonte de Luz",
+      "dichroiccube": "Cubo Dicróico"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "thistextisshownonlyw": "Este texto só é exibido quando n>5",
+      "title": "Exemplo de Módulo - Listas e condicionais",
+      "a1darrayii": "Uma lista 1D: i=`i`"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Exemplo de Módulo - Equação personalizada",
+      "amirrorofshapeycos2p": "Um espelho com forma y=cos(2 pi x + `phi`)"
+    },
+    "moduleExampleParameters": {
+      "thismodulehastwopara": "Este módulo tem dois parâmetros: n=`n` e teta=`theta`.\nVocê pode selecionar e arastar os controles deslizantes para ajustá-los.",
+      "title": "Exemplo de Módulo - Parâmetros",
+      "thesizeofthistextosc": "O tamanho deste texto oscila em função de teta."
+    },
+    "einsteinRingRefocusedToSingleImageViaEyepiece": {
+      "title": "Anel de Einstein refocado para Imagem Única usando Ocular",
+      "description": "Este é um modelo de uma lente ocular que pode ser usado em qualquer telescópio científico que vai reverter a \"auréola\" e focar um anel de Einstein de volta a sua forma original enquanto dispersa a luz de qualquer estrela ou objeto massivo usado para criar o anel."
+    },
+    "moduleExampleControlPoints": {
+      "title": "Exemplo de Módulo - Pontos de controle",
+      "hereisthefirstdragga": "↙Aqui está o primeiro ponto de controle arrastável do módulo",
+      "hereistheseconddragg": "↙Aqui está o segundo ponto de controle arrastável do módulo",
+      "hereisthemidpoint": "↙Aqui está o ponto médio"
     }
   }
 }
