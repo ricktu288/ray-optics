@@ -1,0 +1,87 @@
+{
+  "version": 5,
+  "name": "FresnelLens",
+  "modules": {
+    "FresnelLens": {
+      "numPoints": 2,
+      "params": [
+        "N_slice=1:1:100:20",
+        "refIndex=0.5:0.01:2.5:1.5"
+      ],
+      "objs": [
+        {
+          "type": "CustomGlass",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "eqn1": "-0.05",
+          "eqn2": "\\sqrt{1-x^2}-\\frac{\\operatorname{floor}\\left(`N_slice`\\cdot\\sqrt{1-x^2}\\right)}{`N_slice`}",
+          "refIndex": "`refIndex`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "FresnelLens",
+      "points": [
+        {
+          "x": 1340,
+          "y": 600
+        },
+        {
+          "x": 1340,
+          "y": 760
+        }
+      ],
+      "params": {
+        "N_slice": 40,
+        "refIndex": 1.5
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 1220,
+        "y": 640
+      },
+      "p2": {
+        "x": 1220,
+        "y": 720
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1354.9165377000306,
+      "y": 540.2654339785064,
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 1280,
+        "y": 560
+      },
+      "p4": {
+        "x": 1520,
+        "y": 800
+      },
+      "width": 300
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 1,
+  "snapToGrid": true,
+  "origin": {
+    "x": -1317.328322806106,
+    "y": -704.4960825705753
+  },
+  "scale": 1.5453605293906774
+}
