@@ -330,7 +330,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
   initPath() {
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       delete this.path;
-      this.error = "Invalid glass: endpoints are the same";
+      // this.error = "Invalid glass: endpoints are the same";
       return false;
     }
 

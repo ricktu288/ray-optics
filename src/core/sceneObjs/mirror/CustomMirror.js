@@ -268,7 +268,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
   initPoints() {
     if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
       delete this.tmp_points;
-      this.error = "Invalid mirror: endpoints are the same";
+      //this.error = "Invalid mirror: endpoints are the same";
       return false;
     }
 
