@@ -151,25 +151,10 @@ export async function runScene(jsonPath, writeOutput = false) {
   const outputDir = path.dirname(jsonPath);
   const outputs = {};
 
-  // Create canvases
-  const canvasLight = createCanvas();
-  const canvasBelowLight = createCanvas();
-  const canvasAboveLight = createCanvas();
-  const canvasGrid = createCanvas();
-  const canvasVirtual = createCanvas();
-  const canvasFinal = createCanvas();
-
-  const ctxLight = canvasLight.getContext('2d');
-  const ctxBelowLight = canvasBelowLight.getContext('2d');
-  const ctxAboveLight = canvasAboveLight.getContext('2d');
-  const ctxGrid = canvasGrid.getContext('2d');
-  const ctxVirtual = canvasVirtual.getContext('2d');
-  const ctxFinal = canvasFinal.getContext('2d');
-
-  // Initialize scene and simulator
+  // Initialize scene first
   const scene = new rayOptics.Scene();
-  const simulator = new rayOptics.Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, false);
-
+  
+  // Load the scene
   await new Promise((resolve) => {
     scene.loadJSON(JSON.stringify(sceneJson), function (needFullUpdate, completed) {
       if (!completed) return;
@@ -177,29 +162,32 @@ export async function runScene(jsonPath, writeOutput = false) {
     });
   });
 
-  // Set canvas sizes after loading scene
-  canvasLight.width = scene.width;
-  canvasLight.height = scene.height;
-  canvasBelowLight.width = scene.width;
-  canvasBelowLight.height = scene.height;
-  canvasAboveLight.width = scene.width;
-  canvasAboveLight.height = scene.height;
-  canvasGrid.width = scene.width;
-  canvasGrid.height = scene.height;
-  canvasVirtual.width = scene.width;
-  canvasVirtual.height = scene.height;
-  canvasFinal.width = scene.width;
-  canvasFinal.height = scene.height;
-
   // Find CropBox and Detector
   const cropBox = scene.objs.find(obj => obj.constructor.type === 'CropBox');
   const detector = scene.objs.find(obj => obj.constructor.type === 'Detector');
 
-  // Initialize simulator with cropbox settings
-  if (cropBox) {
-    scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
-    scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
+  // Create simulator - with or without canvases depending on whether there's a cropbox
+  let simulator;
+  let canvasLight, canvasBelowLight, canvasAboveLight, canvasGrid, canvasVirtual, canvasFinal;
+  let ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, ctxFinal;
 
+  if (cropBox) {
+    // Only create canvases if there's a cropbox
+    canvasLight = createCanvas();
+    canvasBelowLight = createCanvas();
+    canvasAboveLight = createCanvas();
+    canvasGrid = createCanvas();
+    canvasVirtual = createCanvas();
+    canvasFinal = createCanvas();
+
+    ctxLight = canvasLight.getContext('2d');
+    ctxBelowLight = canvasBelowLight.getContext('2d');
+    ctxAboveLight = canvasAboveLight.getContext('2d');
+    ctxGrid = canvasGrid.getContext('2d');
+    ctxVirtual = canvasVirtual.getContext('2d');
+    ctxFinal = canvasFinal.getContext('2d');
+
+    // Set canvas sizes
     const imageWidth = cropBox.width;
     const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
 
@@ -208,7 +196,24 @@ export async function runScene(jsonPath, writeOutput = false) {
       canvas.height = imageHeight;
     });
 
+    // Initialize simulator with canvases
+    simulator = new rayOptics.Simulator(
+      scene, 
+      ctxLight, 
+      ctxBelowLight, 
+      ctxAboveLight, 
+      ctxGrid, 
+      ctxVirtual, 
+      false
+    );
+
+    // Set cropbox settings
+    scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
+    scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
     simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
+  } else {
+    // Create simulator without canvases
+    simulator = new rayOptics.Simulator(scene);
   }
 
   // Run simulation
@@ -222,16 +227,6 @@ export async function runScene(jsonPath, writeOutput = false) {
     });
     simulator.updateSimulation(false, false);
   });
-
-  // Draw layers to final canvas
-  ctxFinal.fillStyle = 'black';
-  ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
-
-  ctxFinal.drawImage(canvasBelowLight, 0, 0);
-  ctxFinal.drawImage(canvasGrid, 0, 0);
-  ctxFinal.drawImage(canvasLight, 0, 0);
-  ctxFinal.drawImage(canvasAboveLight, 0, 0);
-
 
   // Generate detector data
   if (detector && detector.irradMap) {
@@ -252,6 +247,15 @@ export async function runScene(jsonPath, writeOutput = false) {
 
   // Generate image output if cropbox exists
   if (cropBox) {
+    // Draw layers to final canvas
+    ctxFinal.fillStyle = 'black';
+    ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+
+    ctxFinal.drawImage(canvasBelowLight, 0, 0);
+    ctxFinal.drawImage(canvasGrid, 0, 0);
+    ctxFinal.drawImage(canvasLight, 0, 0);
+    ctxFinal.drawImage(canvasAboveLight, 0, 0);
+    
     outputs.imageBuffer = canvasFinal.toBuffer('image/png');
     if (writeOutput) {
       fs.writeFileSync(path.join(outputDir, `${outputBase}.png`), outputs.imageBuffer);
