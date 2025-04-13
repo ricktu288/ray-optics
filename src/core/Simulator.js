@@ -39,7 +39,7 @@ import i18next from 'i18next';
  * 
  * In the Ray Optics Simulator web app, a single instance of this class is used in the entire session to simulate the scene interactively. `updateSimulation` is called whenever the scene is updated. If the simulation is too long, the simulator will automatically pause and resume to prevent the browser from not responding, and emit the `simulationPause` event to notify the UI to update the simulation status. When exporting the scene to PNG or SVG, a new instance of this class is created and `updateSimulation` is called once to render the scene without pausing.
  * 
- * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js) to simulate and render the scene without the UI. Note however that even if one is only interested in the numerical results (e.g. detector readings), the canvas layers are still required for the simulator to work properly. In the future, a headless mode may be implemented to allow the simulator to run without the canvas layers.
+ * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js) to simulate and render the scene without the UI. See `integrations/README.md` for an easy way to do this from other programming languages.
  * @class
  */
 class Simulator {
@@ -62,17 +62,17 @@ class Simulator {
   /**
    * Creates a new Simulator instance.
    * @param {Scene} scene - The scene to be simulated.
-   * @param {CanvasRenderingContext2D|C2S} ctxMain - The default context for drawing the scene.
-   * @param {CanvasRenderingContext2D|C2S} ctxBelowLight - The context for drawing the scene below the light layer.
-   * @param {CanvasRenderingContext2D|C2S} ctxAboveLight - The context for drawing the scene above the light layer.
-   * @param {CanvasRenderingContext2D|C2S} ctxGrid - The context for drawing the grid layer.
-   * @param {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment.
-   * @param {boolean} enableTimer - Whether to enable the timer for the simulation.
+   * @param {CanvasRenderingContext2D|C2S} [ctxMain=null] - The default context for drawing the scene.
+   * @param {CanvasRenderingContext2D|C2S} [ctxBelowLight=null] - The context for drawing the scene below the light layer.
+   * @param {CanvasRenderingContext2D|C2S} [ctxAboveLight=null] - The context for drawing the scene above the light layer.
+   * @param {CanvasRenderingContext2D|C2S} [ctxGrid=null] - The context for drawing the grid layer.
+   * @param {CanvasRenderingContext2D} [ctxVirtual=null] - The virtual context for color adjustment.
+   * @param {boolean} [enableTimer=false] - Whether to enable the timer for the simulation.
    * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
-   * @param {WebGLRenderingContext|null} glMain - The default WebGL context for drawing the scene (used only if the colorMode is not 'default').
-   * @param {WebGLRenderingContext|null} glVirtual - Additional WebGL context.
+   * @param {WebGLRenderingContext|null} [glMain=null] - The default WebGL context for drawing the scene (used only if the colorMode is not 'default').
+   * @param {WebGLRenderingContext|null} [glVirtual=null] - Additional WebGL context.
    */
-  constructor(scene, ctxMain, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, enableTimer, rayCountLimit = Infinity, glMain, glVirtual) {
+  constructor(scene, ctxMain = null, ctxBelowLight = null, ctxAboveLight = null, ctxGrid = null, ctxVirtual = null, enableTimer = false, rayCountLimit = Infinity, glMain = null, glVirtual = null) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -93,7 +93,7 @@ class Simulator {
     /** @property {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment. */
     this.ctxVirtual = ctxVirtual;
 
-    if (typeof C2S !== 'undefined' && ctxMain.constructor === C2S) {
+    if (typeof C2S !== 'undefined' && ctxMain && ctxMain.constructor === C2S) {
       /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
       this.isSVG = true;
     }
@@ -243,7 +243,7 @@ class Simulator {
       this.canvasRendererMain = null;
     }
 
-    if (!skipLight) {
+    if (!skipLight && this.ctxMain) {
       if (this.scene.colorMode != 'default') {
         // In non-default color mode, use WebGL to render the light layer.
         var colorMode = this.scene.colorMode;
@@ -264,20 +264,21 @@ class Simulator {
       if (this.isSVG) {
         this.ctxMain.translate(this.scene.origin.x / (this.scene.scale * this.dpr), this.scene.origin.y / (this.scene.scale * this.dpr));
         this.ctxMain.globalAlpha = 1;
-      } else {
+      } else if (this.ctxAboveLight) {
         this.ctxAboveLight.globalAlpha = 1;
       }
+    }
+    
+    if (!skipLight) {
       this.pendingRays = [];
       this.processedRayCount = 0;
     }
 
     if (!skipGrid && this.ctxGrid) {
-
       this.canvasRendererGrid = new CanvasRenderer(this.ctxGrid, { x: this.scene.origin.x * this.dpr, y: this.scene.origin.y * this.dpr }, (this.scene.scale * this.dpr), this.scene.lengthScale);
 
       if (this.scene.showGrid) {
         // Draw the grid
-
         this.ctxGrid.save();
         this.ctxGrid.setTransform((this.scene.scale * this.dpr), 0, 0, (this.scene.scale * this.dpr), 0, 0);
         var dashstep = 4 * this.scene.lengthScale;
@@ -317,8 +318,9 @@ class Simulator {
       }
     }
 
-
-    if (!(!this.ctxBelowLight && skipLight)) {
+    // Only draw objects if we have a canvas to draw on
+    const hasDrawingCanvas = this.ctxBelowLight || this.canvasRendererMain;
+    if (hasDrawingCanvas) {
       // Sort the objects with z-index.
       var mapped = this.scene.objs.map(function (obj, i) {
         return { index: i, value: obj.getZIndex() };
@@ -336,33 +338,31 @@ class Simulator {
           var isHovered = false;
         }
         this.scene.objs[i].draw((!this.ctxBelowLight) ? this.canvasRendererMain : this.canvasRendererBelowLight, false, isHovered);
-
       }
+    }
 
-      if (!skipLight) {
-        // Initialize the simulation (e.g. add the rays and reset the detector readings)
-        for (let obj of this.scene.opticalObjs) {
-          const ret = obj.onSimulationStart();
-          if (ret) {
-            if (ret.newRays) {
-              for (let newRay of ret.newRays) {
-                this.pendingRays.push(newRay);
-              }
+    if (!skipLight) {
+      // Initialize the simulation (e.g. add the rays and reset the detector readings)
+      for (let obj of this.scene.opticalObjs) {
+        const ret = obj.onSimulationStart();
+        if (ret) {
+          if (ret.newRays) {
+            for (let newRay of ret.newRays) {
+              this.pendingRays.push(newRay);
             }
-            if (ret.truncation) {
-              this.totalTruncation += ret.truncation;
-            }
-            if (ret.brightnessScale) {
-              if (this.brightnessScale == 0) {
-                this.brightnessScale = ret.brightnessScale;
-              } else if (this.brightnessScale != ret.brightnessScale) {
-                this.brightnessScale = -1;
-              }
+          }
+          if (ret.truncation) {
+            this.totalTruncation += ret.truncation;
+          }
+          if (ret.brightnessScale) {
+            if (this.brightnessScale == 0) {
+              this.brightnessScale = ret.brightnessScale;
+            } else if (this.brightnessScale != ret.brightnessScale) {
+              this.brightnessScale = -1;
             }
           }
         }
       }
-
     }
 
     if (!skipLight) {
@@ -375,7 +375,7 @@ class Simulator {
       this.processRays();
     }
 
-    if (skipLight) {
+    if (skipLight && hasDrawingCanvas) {
       // Draw the "above light" layer of this.scene.objs. Note that we only draw this when skipLight is true because otherwise processRays() will be called and the "above light" layer will still be drawn, since draw() is called again in processRays() with skipLight set to true.
 
       for (var i = 0; i < this.scene.objs.length; i++) {
@@ -386,7 +386,7 @@ class Simulator {
         }
         this.scene.objs[i].draw((!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight, true, isHovered); // Draw this.scene.objs[i]
       }
-      if (this.scene.mode == 'observer') {
+      if (this.scene.mode == 'observer' && this.ctxAboveLight) {
         // Draw the observer
         this.ctxAboveLight.globalAlpha = 1;
         this.ctxAboveLight.beginPath();
@@ -397,7 +397,6 @@ class Simulator {
     }
 
     this.emit('requestUpdateErrorAndWarning');
-
   }
 
   /**
@@ -409,7 +408,18 @@ class Simulator {
     this.simulationTimerId = -1;
     var st_time = new Date();
     var alpha0 = 1;
-    this.ctxMain.globalAlpha = alpha0;
+    
+    // Only set canvas properties if we have a canvas to draw on
+    if (this.ctxMain) {
+      this.ctxMain.globalAlpha = alpha0;
+      
+      if (this.scene.simulateColors) {
+        this.ctxMain.globalCompositeOperation = 'screen';
+      } else {
+        this.ctxMain.globalCompositeOperation = 'source-over';
+      }
+    }
+    
     var observed;
     var s_obj;
     var s_obj_index;
@@ -424,12 +434,6 @@ class Simulator {
 
     const opticalObjs = this.scene.opticalObjs;
 
-    if (this.scene.simulateColors) {
-      this.ctxMain.globalCompositeOperation = 'screen';
-    } else {
-      this.ctxMain.globalCompositeOperation = 'source-over';
-    }
-
     while (true) {
       if (new Date() - st_time > 50 && this.enableTimer) {
         // If already run for 50ms
@@ -437,7 +441,7 @@ class Simulator {
         this.simulationTimerId = setTimeout(() => this.processRays(), this.firstBreak ? 100 : 1);
         this.firstBreak = false;
 
-        if (this.scene.colorMode != 'default') {
+        if (this.scene.colorMode != 'default' && this.canvasRendererMain) {
           this.canvasRendererMain.flush();
         }
 
@@ -465,10 +469,6 @@ class Simulator {
         continue;
       }
       this.pendingRaysIndex++;
-
-
-
-
 
       var j = this.pendingRaysIndex;
       if (this.pendingRays[j]) {
@@ -518,25 +518,33 @@ class Simulator {
             }
           }
         }
-        if (this.scene.simulateColors) {
-          var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && (this.scene.colorMode == 'default'));
-        } else {
-          var alpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
+        
+        // Only calculate color and alpha if we have a canvas to draw on
+        if (this.canvasRendererMain) {
+          if (this.scene.simulateColors) {
+            var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && (this.scene.colorMode == 'default'));
+          } else {
+            var alpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
+          }
         }
+        
         // If not shot on any object
         if (s_lensq == Infinity) {
-          if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
-            if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawRay(this.pendingRays[j], color, this.scene.showRayArrows); // Draw the ray
-            } else {
-              this.canvasRendererMain.drawRay(this.pendingRays[j], [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
+          // Only draw rays if we have a canvas to draw on
+          if (this.canvasRendererMain) {
+            if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
+              if (this.scene.simulateColors) {
+                this.canvasRendererMain.drawRay(this.pendingRays[j], color, this.scene.showRayArrows); // Draw the ray
+              } else {
+                this.canvasRendererMain.drawRay(this.pendingRays[j], [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
+              }
             }
-          }
-          if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
-            if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the extension of the ray
-            } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the extension of the ray
+            if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
+              if (this.scene.simulateColors) {
+                this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the extension of the ray
+              } else {
+                this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the extension of the ray
+              }
             }
           }
 
@@ -551,36 +559,38 @@ class Simulator {
         }
         else {
           // Here the ray will be shot on s_obj at s_point after traveling for s_len
-          if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
-            if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color, this.scene.showRayArrows); // Draw the ray
-            } else {
-              this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
+          // Only draw rays if we have a canvas to draw on
+          if (this.canvasRendererMain) {
+            if (this.scene.mode == 'rays' || this.scene.mode == 'extended') {
+              if (this.scene.simulateColors) {
+                this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), color, this.scene.showRayArrows); // Draw the ray
+              } else {
+                this.canvasRendererMain.drawSegment(geometry.line(this.pendingRays[j].p1, s_point), [1, 1, 0.5, alpha], this.scene.showRayArrows); // Draw the ray
+              }
             }
-          }
-          if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
-            if (this.scene.simulateColors) {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
-            } else {
-              this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the backward extension of the ray
-              this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
+            if (this.scene.mode == 'extended' && !this.pendingRays[j].isNew) {
+              if (this.scene.simulateColors) {
+                this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), color, undefined, [2 * this.scene.lengthScale, 2 * this.scene.lengthScale]); // Draw the backward extension of the ray
+                this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), color, undefined, [1 * this.scene.lengthScale, 5 * this.scene.lengthScale]); // Draw the forward extension of the ray
+              } else {
+                this.canvasRendererMain.drawRay(geometry.line(this.pendingRays[j].p1, geometry.point(this.pendingRays[j].p1.x * 2 - this.pendingRays[j].p2.x, this.pendingRays[j].p1.y * 2 - this.pendingRays[j].p2.y)), [1, 0.5, 0, alpha], undefined, []); // Draw the backward extension of the ray
+                this.canvasRendererMain.drawRay(geometry.line(s_point, geometry.point(s_point.x * 2 - this.pendingRays[j].p1.x, s_point.y * 2 - this.pendingRays[j].p1.y)), [0.3, 0.3, 0.3, alpha], undefined, []); // Draw the forward extension of the ray
+              }
             }
-
           }
 
           if (this.scene.mode == 'observer') {
             observed_point = geometry.lineCircleIntersections(this.pendingRays[j], this.scene.observer)[2];
 
             if (observed_point) {
-
               if (geometry.intersectionIsOnSegment(observed_point, geometry.line(this.pendingRays[j].p1, s_point))) {
                 observed = true;
               }
             }
           }
         }
-        if (this.scene.mode == 'observer' && this.last_ray) {
+        
+        if (this.scene.mode == 'observer' && this.last_ray && this.canvasRendererMain) {
           if (!this.pendingRays[j].gap) {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray); // The intersection of the observed rays
 
@@ -588,14 +598,13 @@ class Simulator {
               if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
                 // If the intersections are near each others
                 if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, this.pendingRays[j].p1)) && geometry.distanceSquared(observed_point, this.pendingRays[j].p1) > 1e-5 * this.scene.lengthScale * this.scene.lengthScale) {
-
-
                   if (this.scene.simulateColors) {
                     var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
                   } else {
                     const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                     this.ctxMain.globalAlpha = alpha;
                   }
+
                   if (s_point) {
                     rpd = (observed_intersection.x - this.pendingRays[j].p1.x) * (s_point.x - this.pendingRays[j].p1.x) + (observed_intersection.y - this.pendingRays[j].p1.y) * (s_point.y - this.pendingRays[j].p1.y);
                   }
@@ -649,9 +658,8 @@ class Simulator {
           }
         }
 
-        if (this.scene.mode == 'images' && this.last_ray) {
+        if (this.scene.mode == 'images' && this.last_ray && this.canvasRendererMain) {
           if (!this.pendingRays[j].gap) {
-
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
             if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
               if (this.scene.simulateColors) {
@@ -695,7 +703,6 @@ class Simulator {
             }
             this.last_intersection = observed_intersection;
           }
-
         }
 
         if (this.last_s_obj_index != s_obj_index) {
@@ -732,15 +739,20 @@ class Simulator {
       }
     }
 
-    //}
-    if (this.scene.simulateColors && !this.isSVG) {
-      this.canvasRendererMain.applyColorTransformation();
-      this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
+    if (this.canvasRendererMain) {
+      if (this.scene.simulateColors && !this.isSVG) {
+        this.canvasRendererMain.applyColorTransformation();
+        if (this.ctxAboveLight) {
+          this.ctxAboveLight.setTransform(this.scene.scale * this.dpr, 0, 0, this.scene.scale * this.dpr, this.scene.origin.x * this.dpr, this.scene.origin.y * this.dpr);
+        }
+      }
+      if (this.scene.colorMode != 'default') {
+        this.canvasRendererMain.flush();
+      }
+      if (this.ctxMain) {
+        this.ctxMain.globalAlpha = 1.0;
+      }
     }
-    if (this.scene.colorMode != 'default') {
-      this.canvasRendererMain.flush();
-    }
-    this.ctxMain.globalAlpha = 1.0;
     
     this.updateSimulation(true, true);
 

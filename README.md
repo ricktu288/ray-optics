@@ -92,8 +92,10 @@ The full build may takes about half an hour to complete due to the generation of
 - `locales` contains the translations for the project in i18next format, managed by Weblate.
 - `scripts` contains the scripts for custom build steps.
 - `test` contains the automatic tests for the project.
+- `integrations` contains the integration tools for the simulator with other programming languages.
 - `dist` (generated at build time) contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
 - `dist-node` (generated at build time) contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
+- `dist-integrations` (generated at build time) contains the built files for the integrations package.
 
 See the README.md in each directory for more information.
 
@@ -157,6 +159,14 @@ const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/di
 ```
 
 See the [documentation](https://phydemo.app/ray-optics/docs/index.html) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
+
+To integrate with other programming languages, you can build the integrations package with the following command:
+```bash
+npm run build-integrations
+```
+
+Then follow the instructions in the `dist-integrations/README.md` file.
+
 
 
 ## License

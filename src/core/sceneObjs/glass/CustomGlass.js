@@ -54,9 +54,13 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     objBar.setTitle(i18next.t('main:tools.categories.glass'));
     objBar.createEquation('', this.eqn1, function (obj, value) {
       obj.eqn1 = value;
+      // Invalidate path when equation changes
+      delete obj.path;
     }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');
     objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
+      // Invalidate path when equation changes
+      delete obj.path;
     });
 
     super.populateObjBar(objBar);
@@ -79,55 +83,13 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       return;
     }
 
-    var fns;
-    try {
-      fns = [evaluateLatex(this.eqn1), evaluateLatex(this.eqn2)];
-    } catch (e) {
-      delete this.path;
-      ctx.fillStyle = "red"
-      ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
-      ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
-      this.error = e.toString();
-      return;
-    }
-
-    this.path = [{ x: this.p1.x, y: this.p1.y }];
-    for (var side = 0; side <= 1; side++) {
-      var p1 = (side == 0) ? this.p1 : this.p2;
-      var p2 = (side == 0) ? this.p2 : this.p1;
-      var p12d = geometry.distance(p1, p2);
-      var dir1 = [(p2.x - p1.x) / p12d, (p2.y - p1.y) / p12d];
-      var dir2 = [dir1[1], -dir1[0]];
-      var x0 = p12d / 2;
-      var i;
-      var lastError = "";
-      var hasPoints = false;
-      for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
-        var ix = i + 0.05 * this.scene.lengthScale;
-        if (ix < 0) ix = 0;
-        if (ix > p12d) ix = p12d;
-        var x = ix - x0;
-        var scaled_x = 2 * x / p12d;
-        var scaled_y;
-        try {
-          scaled_y = ((side == 0) ? 1 : (-1)) * fns[side]({ x: ((side == 0) ? scaled_x : (-scaled_x)) });
-          if (side == 1 && -scaled_y < fns[0]({ x: -scaled_x })) {
-            lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
-          }
-          var y = scaled_y * p12d * 0.5;
-          var pt = geometry.point(p1.x + dir1[0] * ix + dir2[0] * y, p1.y + dir1[1] * ix + dir2[1] * y);
-          this.path.push(pt);
-          hasPoints = true;
-        } catch (e) {
-          lastError = e;
-        }
-      }
-      if (!hasPoints || lastError.startsWith("Curve generation error:")) {
-        delete this.path;
-        ctx.fillStyle = "red"
+    // Initialize path if needed
+    if (!this.path) {
+      if (!this.initPath()) {
+        // If initialization failed, draw error indicators
+        ctx.fillStyle = "red";
         ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
         ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
-        this.error = lastError.toString();
         return;
       }
     }
@@ -143,6 +105,31 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     this.error = null;
   }
 
+  move(diffX, diffY) {
+    super.move(diffX, diffY);
+    // Invalidate path after moving
+    delete this.path;
+  }
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    super.onConstructMouseDown(mouse, ctrl, shift);
+    // Invalidate path during construction
+    delete this.path;
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    super.onConstructMouseMove(mouse, ctrl, shift);
+    // Invalidate path during construction
+    delete this.path;
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    const result = super.onConstructMouseUp(mouse, ctrl, shift);
+    // Invalidate path after construction
+    delete this.path;
+    return result;
+  }
+
   checkMouseOver(mouse) {
     let dragContext = {};
     if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2)) {
@@ -156,7 +143,13 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       return dragContext;
     }
 
-    if (!this.path) return false;
+    // Initialize path if needed
+    if (!this.path) {
+      if (!this.initPath()) {
+        return null;
+      }
+    }
+
     for (let i = 0; i < this.path.length - 1; i++) {
       if (mouse.isOnSegment(geometry.line(this.path[i], this.path[(i+1)%this.path.length]))) {
         const mousePos = mouse.getPosSnappedToGrid();
@@ -167,11 +160,24 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
         return dragContext;
       }
     }
+    return null;
+  }
+
+  onDrag(mouse, dragContext, ctrl, shift) {
+    super.onDrag(mouse, dragContext, ctrl, shift);
+    // Invalidate path after any dragging operation
+    delete this.path;
   }
 
   checkRayIntersects(ray) {
-    if (!this.path) return;
-    if (this.refIndex <= 0) return;
+    // Initialize path if needed
+    if (!this.path) {
+      if (!this.initPath() || this.refIndex <= 0) {
+        return null;
+      }
+    } else if (this.refIndex <= 0) {
+      return null;
+    }
 
     var s_lensq = Infinity;
     var s_lensq_temp;
@@ -201,7 +207,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       if (s_point_temp) {
         if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && s_point_index != i - 1) {
           // The ray shots on a point where the upper and the lower surfaces overlap.
-          return;
+          return null;
         } else if (s_lensq_temp < s_lensq) {
           s_lensq = s_lensq_temp;
           s_point = s_point_temp;
@@ -213,6 +219,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       this.tmp_i = s_point_index;
       return s_point;
     }
+    return null;
   }
 
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
@@ -303,7 +310,6 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     return { s_point: s_point, normal: { x: normal_xFinal, y: normal_yFinal }, incidentType: incidentType };
   }
   
-
   /* Utility methods */
 
   drawGlass(canvasRenderer, isAboveLight, isHovered) {
@@ -314,6 +320,69 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       ctx.lineTo(this.path[i].x, this.path[i].y);
     }
     this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+  }
+
+  /**
+   * Initialize the path points based on the equations.
+   * This method is called by draw() and checkRayIntersects() when needed.
+   * @returns {boolean} Whether the initialization was successful.
+   */
+  initPath() {
+    if (this.p1.x == this.p2.x && this.p1.y == this.p2.y) {
+      delete this.path;
+      // this.error = "Invalid glass: endpoints are the same";
+      return false;
+    }
+
+    var fns;
+    try {
+      fns = [evaluateLatex(this.eqn1), evaluateLatex(this.eqn2)];
+    } catch (e) {
+      delete this.path;
+      this.error = e.toString();
+      return false;
+    }
+
+    this.path = [{ x: this.p1.x, y: this.p1.y }];
+    for (var side = 0; side <= 1; side++) {
+      var p1 = (side == 0) ? this.p1 : this.p2;
+      var p2 = (side == 0) ? this.p2 : this.p1;
+      var p12d = geometry.distance(p1, p2);
+      var dir1 = [(p2.x - p1.x) / p12d, (p2.y - p1.y) / p12d];
+      var dir2 = [dir1[1], -dir1[0]];
+      var x0 = p12d / 2;
+      var i;
+      var lastError = "";
+      var hasPoints = false;
+      for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+        var ix = i + 0.05 * this.scene.lengthScale;
+        if (ix < 0) ix = 0;
+        if (ix > p12d) ix = p12d;
+        var x = ix - x0;
+        var scaled_x = 2 * x / p12d;
+        var scaled_y;
+        try {
+          scaled_y = ((side == 0) ? 1 : (-1)) * fns[side]({ x: ((side == 0) ? scaled_x : (-scaled_x)) });
+          if (side == 1 && -scaled_y < fns[0]({ x: -scaled_x })) {
+            lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
+          }
+          var y = scaled_y * p12d * 0.5;
+          var pt = geometry.point(p1.x + dir1[0] * ix + dir2[0] * y, p1.y + dir1[1] * ix + dir2[1] * y);
+          this.path.push(pt);
+          hasPoints = true;
+        } catch (e) {
+          lastError = e;
+        }
+      }
+      if (!hasPoints || lastError.startsWith("Curve generation error:")) {
+        delete this.path;
+        this.error = lastError.toString();
+        return false;
+      }
+    }
+    
+    this.error = null;
+    return true;
   }
 };
 
