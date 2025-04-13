@@ -17,6 +17,8 @@
 import path from 'path';
 
 export default (env, argv) => {
+  // Always use production mode for Node.js build
+  const isProduction = true;
 
   return {
     entry: './src/core/index.js',
@@ -29,6 +31,12 @@ export default (env, argv) => {
         const filepath = path.dirname(pathData.filename).split('/').slice(1).join('/');
         return `${filepath}/[name][ext]`;
       }
+    },
+    optimization: {
+      // Ensure a single output file
+      minimize: true,
+      runtimeChunk: false,
+      splitChunks: false
     },
     module: {
       rules: [
@@ -62,7 +70,7 @@ export default (env, argv) => {
     cache: {
       type: 'filesystem'
     },
-    mode: 'development',
+    mode: isProduction ? 'production' : 'development',
     resolve: {
       alias: {
         mathjs: path.resolve('node_modules/mathjs'),

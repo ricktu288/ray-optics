@@ -59,6 +59,7 @@
     "build-images": "node ./scripts/buildImages.mjs",
     "build-app": "webpack --mode=production",
     "build-simulator": "webpack --mode=development",
+    "build-integrations": "npm run build-node && node ./scripts/build-integrations.mjs",
     "build-docs": "jsdoc -c jsdoc.json",
     "start": "webpack serve --open simulator/ --mode=development",
     "build": "npm run build-pages && npm run build-scenes && npm run build-node && npm run build-images && npm run build-app && npm run build-docs",

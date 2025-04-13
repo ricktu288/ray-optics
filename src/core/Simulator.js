@@ -39,7 +39,7 @@ import i18next from 'i18next';
  * 
  * In the Ray Optics Simulator web app, a single instance of this class is used in the entire session to simulate the scene interactively. `updateSimulation` is called whenever the scene is updated. If the simulation is too long, the simulator will automatically pause and resume to prevent the browser from not responding, and emit the `simulationPause` event to notify the UI to update the simulation status. When exporting the scene to PNG or SVG, a new instance of this class is created and `updateSimulation` is called once to render the scene without pausing.
  * 
- * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js) to simulate and render the scene without the UI. Note however that even if one is only interested in the numerical results (e.g. detector readings), the canvas layers are still required for the simulator to work properly. In the future, a headless mode may be implemented to allow the simulator to run without the canvas layers.
+ * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js) to simulate and render the scene without the UI. See `integrations/README.md` for an easy way to do this from other programming languages.
  * @class
  */
 class Simulator {
