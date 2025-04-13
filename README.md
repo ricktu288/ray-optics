@@ -24,7 +24,7 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 - Draw irradiance map and export as CSV data
 - Export as SVG diagram
 - Create modularized combinations of optical elements with custom parameters.
-- Use the simulator as a node module in your own project.
+- Use the simulator as a node module in your own project and integrate with other programming languages.
 
 ## Links
 - [**Launch the Web App**](https://phydemo.app/ray-optics/simulator/)
@@ -149,7 +149,10 @@ Currently there is no automatic end-to-end test for the web app. So please manua
 
 ## Use as a Node Module
 
-The simulator can be used as a node module in your own project. The node module version of the simulator is built with the following command:
+The simulator can be used as a node module in your own project and integrated with other programming languages.
+The easiest way is to directly download the integrations package from [here](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) and follow the instructions in the `README.md` file. You don't need to clone this repo and build anything, but you still need to have Node.js installed.
+
+For more advanced usage, the node module version of the simulator is built with the following command:
 ```bash
 npm run build-node
 ```
@@ -160,14 +163,10 @@ const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/di
 
 See the [documentation](https://phydemo.app/ray-optics/docs/index.html) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
 
-To integrate with other programming languages, you can build the integrations package with the following command:
+To build the integrations package by yourself, run the following command:
 ```bash
 npm run build-integrations
 ```
-
-Then follow the instructions in the `dist-integrations/README.md` file.
-
-
 
 ## License
 

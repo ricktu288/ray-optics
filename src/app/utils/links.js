@@ -30,6 +30,7 @@ export function mapURL(url) {
     "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
     "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
     "/run-locally": "https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md",
+    "/integrations/download": "https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip",
     "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
     "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",

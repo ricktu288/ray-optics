@@ -42,6 +42,8 @@
             <p v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.description')"></p>
             <b v-html="$t('simulator:footer.helpPopup.runLocally.title')"></b>
             <p v-html="$t('simulator:footer.helpPopup.runLocally.description')"></p>
+            <b v-html="$t('simulator:footer.helpPopup.integrations.title')"></b>
+            <p v-html="$t('simulator:footer.helpPopup.integrations.description')"></p>
             <b v-html="$t('simulator:footer.helpPopup.contactUs.title')"></b>
             <p v-html="$t('simulator:footer.helpPopup.contactUs.description')"></p>
             <p v-html="$t('simulator:footer.helpPopup.contactUs.contribute')"></p>

@@ -363,6 +363,10 @@
         "title": "Run Locally",
         "description": "To run this project on your own computer, independently of the online version, please see [this guide](/run-locally)."
       },
+      "integrations": {
+        "title": "Integrations with programming languages",
+        "description": "You can call the simulator from programming languages such as Python or Julia with the integrations package ([download link](/integrations/download)). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
+      },
       "contactUs": {
         "title": "Contact Us",
         "description": "The suggested way is to go to [Discussions](/github/discussions) or [Issues](/github/issues) on GitHub. If you do not use GitHub, you can also email us at [ray-optics@phydemo.app](/email).",

@@ -106,7 +106,7 @@ function copyFiles(source, destination) {
 
   for (const entry of entries) {
     // Skip README.md.template
-    if (entry.name === 'README.md.template') {
+    if (entry.name === 'README.md.template' || entry.name === 'README.md') {
       continue;
     }
     

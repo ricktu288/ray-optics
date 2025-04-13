@@ -363,6 +363,10 @@
         "title": "在本機執行",
         "description": "若要在您自己的電腦上執行本專案（獨立於線上版本），請參閱[此指南](/run-locally)。"
       },
+      "integrations": {
+        "title": "與程式語言整合",
+        "description": "您可以透過整合包（[下載連結](/integrations/download)）來從程式語言（如 Python 或 Julia）呼叫本模擬器。注意此網頁程式內建的[模組](/modules/tutorial)功能本身也提供了一些程式功能。"
+      },
       "contactUs": {
         "title": "聯絡我們",
         "description": "建議使用 GitHub 上的 [Discussions](/github/discussions) 或 [Issues](/github/issues) 功能（請使用英文）。若您對 GitHub 不熟，也可發送電子郵件至 [ray-optics@phydemo.app](/email)（可使用中文）。",
