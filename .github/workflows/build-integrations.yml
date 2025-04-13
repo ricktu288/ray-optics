@@ -1,0 +1,52 @@
+name: Build Integrations Package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build integrations package
+        run: npm run build-integrations
+
+      - name: Deploy to dist-integrations branch
+        run: |
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create and switch to a new orphan branch
+          git checkout --orphan temp-dist-integrations
+          
+          # Remove all files except dist-integrations
+          find . -mindepth 1 -maxdepth 1 \
+            -not -name 'dist-integrations' \
+            -not -name '.git' \
+            -exec rm -rf {} \;
+
+          # Move dist-integrations contents to root
+          mv dist-integrations/* .
+          rm -rf dist-integrations
+          
+          # Stage all files
+          git add .
+          
+          # Create a commit
+          git commit -m "Update integrations package (${GITHUB_SHA})"
+          
+          # Force push to dist-integrations branch
+          git push -f origin temp-dist-integrations:dist-integrations
