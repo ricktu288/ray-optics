@@ -210,7 +210,7 @@
     "title": "Simular Cores",
     "description": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros.",
     "instruction": "Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes.",
-    "warning": "Mistura de cores não é precisa ao menos que utilizada com \"Corrigir Brilho\"."
+    "warning": "Mistura de cores possui precisão baixa se \"Corrigir Brilho\" estiver desligada."
   },
   "aboutPage": {
     "description": "Este projeto, incluindo o conteúdo da galeria, é licensiado sob a [Licença Apache 2.0](/license), e é oficialmente hospedado no site [PhyDemo(phydemo.app)](/phydemo) (anteriormente em ricktu288.github.io). O código fonte está [disponível no GitHub](/github), e [contribuições são bem-vindas](/contributing). Se houver questões ou sugestões, você pode abrir [issues](/github/issues) ou [discussões](/github/discussions) no GitHub, ou enviar um email para [ray-optics@phydemo.app](/email) se você não utilizar o GitHub.",
