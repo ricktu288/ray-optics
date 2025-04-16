@@ -35,5 +35,32 @@ import Simulator from './Simulator.js';
 import Editor from './Editor.js';
 import * as sceneObjs from './sceneObjs.js';
 import geometry from './geometry.js';
+import i18next from 'i18next';
 
-export { Scene, Simulator, Editor, sceneObjs, geometry };
+// Check if we're in a Node.js environment
+// This will be true when built with webpack.node.config.mjs
+if (typeof process !== 'undefined' && process.versions && process.versions.node) {
+  // Initialize i18next with English locale for simulator namespace
+  // This is needed for error and warning messages in CLI environments
+  const simulatorEnLocale = require('../../locales/en/simulator.json');
+
+  i18next.init({
+    lng: 'en',
+    resources: {
+      en: {
+        simulator: simulatorEnLocale
+      }
+    },
+    interpolation: {
+      escapeValue: false
+    }
+  });
+}
+
+export {
+  Scene,
+  Simulator,
+  Editor,
+  sceneObjs,
+  geometry
+};
