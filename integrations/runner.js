@@ -53,6 +53,10 @@ process.stdin.on('end', () => {
           warning: null
         };
 
+        // Collect error and warning information
+        const errors = [];
+        const warnings = [];
+
         // Check for canvas requirement
         if (cropBoxes.length > 0 && !hasCanvas) {
           result.error = "Canvas module not found. To use image generation, install node-canvas.";
@@ -80,10 +84,6 @@ process.stdin.on('end', () => {
             }
           }
           
-          // Collect error and warning information
-          const errors = [];
-          const warnings = [];
-
           // Scene errors and warnings
           if (scene.error) errors.push(`Scene: ${scene.error}`);
           if (scene.warning) warnings.push(`Scene: ${scene.warning}`);
