@@ -170,7 +170,8 @@
       "defBy": {
         "radiiOfCurvature": "曲率半徑",
         "focalDistances": "前/後焦距"
-      }
+      },
+      "invalidParameters": "透鏡參數無效"
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
@@ -265,7 +266,12 @@
     },
     "ModuleObj": {
       "module": "模組",
-      "demodulize": "取消模組化"
+      "demodulize": "解除模組化",
+      "loopVariableTooLarge": "迴圈變數「{{name}}」的長度過大。請設定更大的 maxLoopLength 值。",
+      "loopTooLarge": "迴圈的長度過大。請設定更大的 maxLoopLength 值。",
+      "variableRangeError": "解析變數範圍「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
+      "stringExpansionError": "展開字串「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
+      "objectExpansionError": "在陣列中展開物件 {{obj}} 時發生錯誤，參數為 {{params}}：{{error}}"
     },
     "Handle": {
       "handle": "控制桿",
@@ -283,9 +289,12 @@
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "寬度",
-      "rayCountLimit": "光線數量上限",
-      "svgWarning": "匯出為SVG：不支援混色、修正亮度與相對折射率低於1的情形。",
-      "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。"
+      "rayCountLimit": "光線數量限制",
+      "svgWarning": "匯出至 SVG：不支援顏色混合、正確亮度，以及小於 1 的相對折射率。",
+      "rayCountWarning": "目前場景中的光線數量超過了光線數量限制。您可能需要在裁剪框選項中增加光線數量限制。"
+    },
+    "CustomGlass": {
+      "curveGenerationError": "曲線生成錯誤：x = {{x}} 時 f(x) > g(x)"
     }
   },
   "saveModal": {

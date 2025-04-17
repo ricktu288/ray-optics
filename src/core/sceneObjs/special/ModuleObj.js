@@ -331,7 +331,7 @@ class ModuleObj extends BaseSceneObj {
       let defaultVal = default_ === null ? startVal : math.evaluate(default_, params);
       return {name: name, start: startVal, step: stepVal, end: endVal, defaultVal: defaultVal};
     } catch (e) {
-      throw `error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
+      throw i18next.t('simulator:sceneObjs.ModuleObj.variableRangeError', { str, params: JSON.stringify(params), error: e });
     }
   }
 
@@ -359,7 +359,7 @@ class ModuleObj extends BaseSceneObj {
         return result;
       }
     } catch (e) {
-      throw `error expanding string "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
+      throw i18next.t('simulator:sceneObjs.ModuleObj.stringExpansionError', { str, params: JSON.stringify(params), error: e });
     }
   }
 
@@ -419,7 +419,7 @@ class ModuleObj extends BaseSceneObj {
               let loopVars1 = loopVars.slice(1);
               const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
               if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
-                throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxLoopLength to a larger value.`;
+                throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
               }
               for (let value = loopVars[0].start; value <= loopVars[0].end; value += loopVars[0].step) {
                 for (let obj of expandLoopVars(loopVars1)) {
@@ -435,7 +435,7 @@ class ModuleObj extends BaseSceneObj {
           const loopParams = expandLoopVars(loopVars);
 
           if (loopParams.length > (this.moduleDef.maxLoopLength || 1000)) {
-            throw `The length of the loop is too large. Please set maxLoopLength to a larger value.`;
+            throw i18next.t('simulator:sceneObjs.ModuleObj.loopTooLarge');
           } else {
             for (let loopParam of loopParams) {
               if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
@@ -459,7 +459,7 @@ class ModuleObj extends BaseSceneObj {
           result.push(obj);
         }
       } catch (e) {
-        throw `error expanding object ${JSON.stringify(obj)} in array with parameters ${JSON.stringify(params)}: ${e}`;
+        throw i18next.t('simulator:sceneObjs.ModuleObj.objectExpansionError', { obj: JSON.stringify(obj), params: JSON.stringify(params), error: e });
       }
     }
     return result;

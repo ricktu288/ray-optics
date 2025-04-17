@@ -170,7 +170,8 @@
       "defBy": {
         "radiiOfCurvature": "Radii of Curvature",
         "focalDistances": "Focal Distances"
-      }
+      },
+      "invalidParameters": "Invalid lens parameters"
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
@@ -265,7 +266,12 @@
     },
     "ModuleObj": {
       "module": "Module",
-      "demodulize": "Demodulize"
+      "demodulize": "Demodulize",
+      "loopVariableTooLarge": "The length of the loop variable \"{{name}}\" is too large. Please set maxLoopLength to a larger value.",
+      "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
+      "variableRangeError": "Error parsing variable range \"{{str}}\" with parameters {{params}}: {{error}}",
+      "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
+      "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}"
     },
     "Handle": {
       "handle": "Handle",
@@ -286,6 +292,9 @@
       "rayCountLimit": "Ray count limit",
       "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
       "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
+    },
+    "CustomGlass": {
+      "curveGenerationError": "Curve generation error: f(x) > g(x) at x = {{x}}"
     }
   },
   "saveModal": {

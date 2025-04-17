@@ -457,7 +457,7 @@ class SphericalLens extends Glass {
       this.p2 = p2;
       this.path = null;
       this.params = { r1: r1, r2: r2, d: d };
-      this.error = 'Invalid lens parameters';
+      this.error = i18next.t('simulator:sceneObjs.SphericalLens.invalidParameters');
     } else {
       // create lens
       if (!this.path) this.path = [];
@@ -541,7 +541,7 @@ class SphericalLens extends Glass {
       if (!this.path) {
         // If the lens is invalid as defined by d,r1,r2, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
         this.params = { d: d, ffd: ffd, bfd: bfd };
-        this.error = 'Invalid lens parameters';
+        this.error = i18next.t('simulator:sceneObjs.SphericalLens.invalidParameters');
       }
     } else if (!isNaN(r1_2) && !isNaN(r2_2) && (isNaN(r1_1) || isNaN(r2_1))) {
       // If only the second solution is valid, use that.
@@ -551,7 +551,7 @@ class SphericalLens extends Glass {
       if (!this.path) {
         // If the lens is invalid as defined by d,r1,r2, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
         this.params = { d: d, ffd: ffd, bfd: bfd };
-        this.error = 'Invalid lens parameters';
+        this.error = i18next.t('simulator:sceneObjs.SphericalLens.invalidParameters');
       }
     } else if (!isNaN(r1_1) && !isNaN(r2_1) && !isNaN(r1_2) && !isNaN(r2_2)) {
       // If both solutions are valid, and if the old lens is valid, prefer the solution that is closest to the old lens.
@@ -599,7 +599,7 @@ class SphericalLens extends Glass {
         if (!this.path) {
           // If the lens is still invalid, still store the d,ffl,bfl parameters instead so the user may enter another set of d,ffl,bfl to get a valid lens.
           this.params = { d: d, ffd: ffd, bfd: bfd };
-          this.error = 'Invalid lens parameters';
+          this.error = i18next.t('simulator:sceneObjs.SphericalLens.invalidParameters');
         }
       }
     } else {
@@ -608,7 +608,7 @@ class SphericalLens extends Glass {
       this.p2 = p2;
       this.path = null;
       this.params = { d: d, ffd: ffd, bfd: bfd };
-      this.error = 'Invalid lens parameters';
+      this.error = i18next.t('simulator:sceneObjs.SphericalLens.invalidParameters');
       return;
     }
   }
