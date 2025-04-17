@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import i18next from 'i18next';
+
 /**
  * @typedef {Object} ConstructReturn
  * @property {boolean} [isDone] - Whether the construction is done.
@@ -47,13 +49,31 @@ class BaseSceneObj {
     /** @property {string|null} warning - The warning message of the object. */
     this.warning = null;
 
-    const serializableDefaults = this.constructor.serializableDefaults;
-    for (const propName in serializableDefaults) {
-      const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
-      if (jsonObj && jsonObj.hasOwnProperty(propName)) {
-        const stringifiedValue = JSON.stringify(jsonObj[propName]);
-        this[propName] = JSON.parse(stringifiedValue);
-      } else {
+    // Check for unknown keys in the jsonObj
+    if (jsonObj) {
+      const serializableDefaults = this.constructor.serializableDefaults;
+      const knownKeys = ['type', ...Object.keys(serializableDefaults)];
+      for (const key in jsonObj) {
+        if (!knownKeys.includes(key)) {
+          this.scene.error = i18next.t('simulator:generalErrors.unknownObjectKey', { key, type: this.constructor.type }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the object from replacing it, and also because this error likely indicates an incompatible scene version.
+        }
+      }
+
+      // Set the properties of the object
+      for (const propName in serializableDefaults) {
+        const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
+        if (jsonObj.hasOwnProperty(propName)) {
+          const stringifiedValue = JSON.stringify(jsonObj[propName]);
+          this[propName] = JSON.parse(stringifiedValue);
+        } else {
+          this[propName] = JSON.parse(stringifiedDefault);
+        }
+      }
+    } else {
+      // No jsonObj, use defaults
+      const serializableDefaults = this.constructor.serializableDefaults;
+      for (const propName in serializableDefaults) {
+        const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
         this[propName] = JSON.parse(stringifiedDefault);
       }
     }

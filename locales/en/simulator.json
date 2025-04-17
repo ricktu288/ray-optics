@@ -341,6 +341,15 @@
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources."
   },
+  "generalErrors": {
+    "newerVersion": "The version of the scene is newer than the current version of the simulator.",
+    "unknownObjectType": "Unknown scene object type: \"{{type}}\".",
+    "unknownSceneKey": "Unknown key in scene: \"{{key}}\".",
+    "unknownPropertyValue": "Unknown value \"{{value}}\" for property \"{{property}}\".",
+    "unknownObjectKey": "Unknown key: \"{{key}}\" in object of type \"{{type}}\".",
+    "unknownModuleKey": "Unknown key: \"{{key}}\" in module \"{{module}}\".",
+    "unknownModule": "Unknown module: \"{{module}}\"."
+  },
   "statusBox": {
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",

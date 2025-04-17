@@ -57,6 +57,26 @@ class ModuleObj extends BaseSceneObj {
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
 
+    // Check if the module definition exists
+    if (!this.moduleDef) {
+      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: this.module }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
+      
+      // Create an empty module definition
+      this.moduleDef = {
+        numPoints: 0,
+        params: [],
+        objs: []
+      };
+    }
+
+    // Check for unknown keys in the module definition
+    const knownModuleKeys = ['numPoints', 'params', 'objs', 'maxLoopLength'];
+    for (const key in this.moduleDef) {
+      if (!knownModuleKeys.includes(key)) {
+        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
+      }
+    }
+
     // Initialize the control points if not defined
     if (!this.points) {
       this.points = [];
@@ -486,9 +506,14 @@ class ModuleObj extends BaseSceneObj {
     try {
       const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
 
-      this.objs = expandedObjs.map(objData =>
-        new sceneObjs[objData.type](this.scene, objData)
-      );
+      this.objs = [];
+      for (const objData of expandedObjs) {
+        if (!sceneObjs[objData.type]) {
+          this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
+          return;
+        }
+        this.objs.push(new sceneObjs[objData.type](this.scene, objData));
+      }
     } catch (e) {
       this.error = e;
     }

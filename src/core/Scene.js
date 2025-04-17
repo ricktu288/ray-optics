@@ -153,11 +153,15 @@ class Scene {
       let jsonData = JSON.parse(json);
 
       // Convert the scene from old versions if necessary.
-      if (!jsonData.version || jsonData.version < DATA_VERSION) {
+      if (!jsonData.version) {
         jsonData = versionUpdate(jsonData);
-      } else if (jsonData.version > DATA_VERSION) {
-        // Newer than the current version
-        throw new Error('The version of the scene is newer than the current version of the simulator.');
+      } else if (typeof jsonData.version === 'string' || jsonData.version > DATA_VERSION) {
+        // Newer than the current version or non-numeric version (e.g. "5.1")
+        this.error = i18next.t('simulator:generalErrors.newerVersion');
+        callback(true, true);
+        return;
+      } else if (jsonData.version < DATA_VERSION) {
+        jsonData = versionUpdate(jsonData);
       }
 
       const serializableDefaults = Scene.serializableDefaults;
@@ -168,6 +172,31 @@ class Scene {
       // Take the approximated size of the current viewport, which may be different from that of the scene to be loaded.
       const approximatedWidth = Math.ceil(originalWidth / 100) * 100;
       const approximatedHeight = Math.ceil(originalHeight / 100) * 100;
+
+      // Check for unknown keys in the scene JSON
+      const knownKeys = ['version', 'name', 'modules', 'objs', 'backgroundImage', ...Object.keys(serializableDefaults)];
+      for (const key in jsonData) {
+        if (!knownKeys.includes(key)) {
+          this.error = i18next.t('simulator:generalErrors.unknownSceneKey', { key });
+          callback(true, true);
+          return;
+        }
+      }
+
+      // Check for valid enumerable values
+      const validModes = ['rays', 'extended', 'images', 'observer'];
+      if (jsonData.mode && !validModes.includes(jsonData.mode)) {
+        this.error = i18next.t('simulator:generalErrors.unknownPropertyValue', { property: 'mode', value: jsonData.mode });
+        callback(true, true);
+        return;
+      }
+
+      const validColorModes = ['default', 'linear', 'linearRGB', 'reinhard', 'colorizedIntensity'];
+      if (jsonData.colorMode && !validColorModes.includes(jsonData.colorMode)) {
+        this.error = i18next.t('simulator:generalErrors.unknownPropertyValue', { property: 'colorMode', value: jsonData.colorMode });
+        callback(true, true);
+        return;
+      }
 
       // Set the properties of the scene. Use the default properties if the JSON data does not contain them.
       for (let key in serializableDefaults) {
@@ -200,9 +229,20 @@ class Scene {
       }
 
       // Load the objects in the scene.
-      this.objs = jsonData.objs.map(objData =>
-        new sceneObjs[objData.type](this, objData)
-      );
+      this.objs = [];
+      for (const objData of jsonData.objs) {
+        if (!sceneObjs[objData.type]) {
+          this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
+          break;
+        }
+        this.objs.push(new sceneObjs[objData.type](this, objData));
+      }
+
+      // If there's an error, stop importing
+      if (this.error) {
+        callback(true, true);
+        return;
+      }
 
       // Load the background image.
       if (jsonData.backgroundImage) {

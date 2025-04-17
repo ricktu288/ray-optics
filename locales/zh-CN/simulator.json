@@ -341,6 +341,15 @@
     "identicalObjects": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。",
     "brightnessInconsistent": "有至少两个光源的亮度以不一致的比例达到饱和。这可能会导致探测器的读数与色彩渲染错误。请提高光线密度或降低光源亮度。"
   },
+  "generalErrors": {
+    "newerVersion": "场景版本与当前的模拟器版本不兼容。",
+    "unknownObjectType": "场景中有未知的物件类型：{{type}}",
+    "unknownSceneKey": "场景中有未知的键值：{{key}}",
+    "unknownPropertyValue": "属性\"{{property}}\"的值\"{{value}}\"未知。",
+    "unknownObjectKey": "类型为\"{{type}}\"的物件中有未知的键值：{{key}}",
+    "unknownModuleKey": "模块\"{{module}}\"中有未知的键值：{{key}}",
+    "unknownModule": "场景中有未知的模块：{{module}}"
+  },
   "statusBox": {
     "rayCount": "光线片段数量",
     "totalTruncation": "被截断的亮度",
