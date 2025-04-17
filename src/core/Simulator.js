@@ -230,7 +230,7 @@ class Simulator {
     }
 
     // If the scene uses non-default color mode but the WebGL context is not available, switch to the default color mode
-    if (this.scene.colorMode != 'default' && !this.glMain) {
+    if (this.ctxMain && this.scene.colorMode != 'default' && !this.glMain) {
       this.scene.colorMode = 'default';
       this.error = i18next.t('simulator:settings.correctBrightness.error');
       this.emit('requestUpdateErrorAndWarning');

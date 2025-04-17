@@ -48,14 +48,20 @@ process.stdin.on('end', () => {
         // Prepare result object
         const result = {
           detectors: [],
-          images: []
+          images: [],
+          error: null,
+          warning: null
         };
+
+        // Collect error and warning information
+        const errors = [];
+        const warnings = [];
 
         // Check for canvas requirement
         if (cropBoxes.length > 0 && !hasCanvas) {
           result.error = "Canvas module not found. To use image generation, install node-canvas.";
           console.log(JSON.stringify(result));
-          process.exit(0);
+          process.exit(1);
         }
 
         // Main simulation function
@@ -78,6 +84,24 @@ process.stdin.on('end', () => {
             }
           }
           
+          // Scene errors and warnings
+          if (scene.error) errors.push(`Scene: ${scene.error}`);
+          if (scene.warning) warnings.push(`Scene: ${scene.warning}`);
+
+          // Object errors and warnings
+          scene.objs.forEach((obj, i) => {
+            if (obj.getError()) {
+              errors.push(`objs[${i}] ${obj.constructor.type}: ${obj.getError()}`);
+            }
+            if (obj.getWarning()) {
+              warnings.push(`objs[${i}] ${obj.constructor.type}: ${obj.getWarning()}`);
+            }
+          });
+
+          // Set final error and warning messages
+          result.error = errors.length > 0 ? errors.join('\n') : null;
+          result.warning = warnings.length > 0 ? warnings.join('\n') : null;
+
           // Output the final result
           console.log(JSON.stringify(result));
         }
@@ -111,9 +135,11 @@ process.stdin.on('end', () => {
                 result.totalTruncation = simulator.totalTruncation;
                 result.processedRayCount = simulator.processedRayCount;
                 result.brightnessScale = simulator.brightnessScale;
-                result.error = simulator.error;
-                result.warning = simulator.warning;
               }
+              
+              // Simulator errors and warnings
+              if (simulator.error) errors.push(`Simulator: ${simulator.error}`);
+              if (simulator.warning) warnings.push(`Simulator: ${simulator.warning}`);
               
               resolve();
             });
@@ -187,9 +213,11 @@ process.stdin.on('end', () => {
               result.totalTruncation = simulator.totalTruncation;
               result.processedRayCount = simulator.processedRayCount;
               result.brightnessScale = simulator.brightnessScale;
-              result.error = simulator.error;
-              result.warning = simulator.warning;
-              
+
+              // Simulator errors and warnings
+              if (simulator.error) errors.push(`Simulator: ${simulator.error}`);
+              if (simulator.warning) warnings.push(`Simulator: ${simulator.warning}`);
+
               resolve();
             });
             

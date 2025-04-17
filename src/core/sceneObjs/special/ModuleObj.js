@@ -57,6 +57,26 @@ class ModuleObj extends BaseSceneObj {
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
 
+    // Check if the module definition exists
+    if (!this.moduleDef) {
+      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: this.module }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
+      
+      // Create an empty module definition
+      this.moduleDef = {
+        numPoints: 0,
+        params: [],
+        objs: []
+      };
+    }
+
+    // Check for unknown keys in the module definition
+    const knownModuleKeys = ['numPoints', 'params', 'objs', 'maxLoopLength'];
+    for (const key in this.moduleDef) {
+      if (!knownModuleKeys.includes(key)) {
+        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
+      }
+    }
+
     // Initialize the control points if not defined
     if (!this.points) {
       this.points = [];
@@ -331,7 +351,7 @@ class ModuleObj extends BaseSceneObj {
       let defaultVal = default_ === null ? startVal : math.evaluate(default_, params);
       return {name: name, start: startVal, step: stepVal, end: endVal, defaultVal: defaultVal};
     } catch (e) {
-      throw `error parsing variable range "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
+      throw i18next.t('simulator:sceneObjs.ModuleObj.variableRangeError', { str, params: JSON.stringify(params), error: e });
     }
   }
 
@@ -359,7 +379,7 @@ class ModuleObj extends BaseSceneObj {
         return result;
       }
     } catch (e) {
-      throw `error expanding string "${str}" with parameters ${JSON.stringify(params)}: ${e}`;
+      throw i18next.t('simulator:sceneObjs.ModuleObj.stringExpansionError', { str, params: JSON.stringify(params), error: e });
     }
   }
 
@@ -419,7 +439,7 @@ class ModuleObj extends BaseSceneObj {
               let loopVars1 = loopVars.slice(1);
               const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
               if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
-                throw `The length of the loop variable "${loopVars[0].name}" is too large. Please set maxLoopLength to a larger value.`;
+                throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
               }
               for (let value = loopVars[0].start; value <= loopVars[0].end; value += loopVars[0].step) {
                 for (let obj of expandLoopVars(loopVars1)) {
@@ -435,7 +455,7 @@ class ModuleObj extends BaseSceneObj {
           const loopParams = expandLoopVars(loopVars);
 
           if (loopParams.length > (this.moduleDef.maxLoopLength || 1000)) {
-            throw `The length of the loop is too large. Please set maxLoopLength to a larger value.`;
+            throw i18next.t('simulator:sceneObjs.ModuleObj.loopTooLarge');
           } else {
             for (let loopParam of loopParams) {
               if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
@@ -459,7 +479,7 @@ class ModuleObj extends BaseSceneObj {
           result.push(obj);
         }
       } catch (e) {
-        throw `error expanding object ${JSON.stringify(obj)} in array with parameters ${JSON.stringify(params)}: ${e}`;
+        throw i18next.t('simulator:sceneObjs.ModuleObj.objectExpansionError', { obj: JSON.stringify(obj), params: JSON.stringify(params), error: e });
       }
     }
     return result;
@@ -486,9 +506,14 @@ class ModuleObj extends BaseSceneObj {
     try {
       const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
 
-      this.objs = expandedObjs.map(objData =>
-        new sceneObjs[objData.type](this.scene, objData)
-      );
+      this.objs = [];
+      for (const objData of expandedObjs) {
+        if (!sceneObjs[objData.type]) {
+          this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
+          return;
+        }
+        this.objs.push(new sceneObjs[objData.type](this.scene, objData));
+      }
     } catch (e) {
       this.error = e;
     }

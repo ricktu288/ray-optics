@@ -354,6 +354,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       var i;
       var lastError = "";
       var hasPoints = false;
+      var hasCurveGenerationError = false;
       for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
         var ix = i + 0.05 * this.scene.lengthScale;
         if (ix < 0) ix = 0;
@@ -364,7 +365,8 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
         try {
           scaled_y = ((side == 0) ? 1 : (-1)) * fns[side]({ x: ((side == 0) ? scaled_x : (-scaled_x)) });
           if (side == 1 && -scaled_y < fns[0]({ x: -scaled_x })) {
-            lastError = "Curve generation error: f(x) > g(x) at x = " + (-scaled_x);
+            lastError = i18next.t('simulator:sceneObjs.CustomGlass.curveGenerationError', { x: (-scaled_x) });
+            hasCurveGenerationError = true;
           }
           var y = scaled_y * p12d * 0.5;
           var pt = geometry.point(p1.x + dir1[0] * ix + dir2[0] * y, p1.y + dir1[1] * ix + dir2[1] * y);
@@ -374,7 +376,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
           lastError = e;
         }
       }
-      if (!hasPoints || lastError.startsWith("Curve generation error:")) {
+      if (!hasPoints || hasCurveGenerationError) {
         delete this.path;
         this.error = lastError.toString();
         return false;

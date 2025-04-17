@@ -170,7 +170,8 @@
       "defBy": {
         "radiiOfCurvature": "曲率半径",
         "focalDistances": "前/后焦距"
-      }
+      },
+      "invalidParameters": "透镜参数无效"
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
@@ -265,7 +266,12 @@
     },
     "ModuleObj": {
       "module": "模块",
-      "demodulize": "取消模块化"
+      "demodulize": "解除模块化",
+      "loopVariableTooLarge": "循环变量“{{name}}”的长度过大。请设置更大的 maxLoopLength 值。",
+      "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
+      "variableRangeError": "解析变量范围“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
+      "stringExpansionError": "展开字符串“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
+      "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}"
     },
     "Handle": {
       "handle": "控制杆",
@@ -283,9 +289,12 @@
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "宽度",
-      "rayCountLimit": "光线数量上限",
-      "svgWarning": "导出为SVG：不支持混色、修正亮度与相对折射率低于1的情形。",
-      "rayCountWarning": "目前场景中的光线数量大于光线数量上限。 您可能需要将剪取框选项中的光线数量上限调高。"
+      "rayCountLimit": "光线数量限制",
+      "svgWarning": "导出至 SVG：不支持颜色混合、正确亮度，以及小于 1 的相对折射率。",
+      "rayCountWarning": "当前场景中的光线数量超过了光线数量限制。您可能需要在裁剪框选项中增加光线数量限制。"
+    },
+    "CustomGlass": {
+      "curveGenerationError": "曲线生成错误：x = {{x}} 时 f(x) > g(x)"
     }
   },
   "saveModal": {
@@ -331,6 +340,15 @@
     "autoSyncUrlTooLarge": "本场景过大，无法与网址同步。 请自行储存场景。",
     "identicalObjects": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。",
     "brightnessInconsistent": "有至少两个光源的亮度以不一致的比例达到饱和。这可能会导致探测器的读数与色彩渲染错误。请提高光线密度或降低光源亮度。"
+  },
+  "generalErrors": {
+    "newerVersion": "场景版本与当前的模拟器版本不兼容。",
+    "unknownObjectType": "场景中有未知的物件类型：{{type}}",
+    "unknownSceneKey": "场景中有未知的键值：{{key}}",
+    "unknownPropertyValue": "属性\"{{property}}\"的值\"{{value}}\"未知。",
+    "unknownObjectKey": "类型为\"{{type}}\"的物件中有未知的键值：{{key}}",
+    "unknownModuleKey": "模块\"{{module}}\"中有未知的键值：{{key}}",
+    "unknownModule": "场景中有未知的模块：{{module}}"
   },
   "statusBox": {
     "rayCount": "光线片段数量",

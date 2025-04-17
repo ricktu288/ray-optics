@@ -10,9 +10,9 @@ This example shows how to use the Ray Optics Simulation from Python:
 import json
 import subprocess
 import base64
+import sys
 
 print("Ray Optics Simulation - Python Example")
-print("For more information, see the README.md file.")
 
 # ========== Example 1: Detector Reading ==========
 print("\n=== Example 1: Detector Reading ===")
@@ -42,32 +42,34 @@ detector_input = json.dumps(detector_scene)
 # Run the simulation using Node.js
 # Assumes runner.js is in the same directory as this script
 print("Running simulation for detector example...")
-detector_process = subprocess.run(
-    ["node", "runner.js"],
-    input=detector_input.encode(),
-    capture_output=True,
-    check=True
-)
+try:
+    detector_process = subprocess.run(
+        ["node", "runner.js"],
+        input=detector_input.encode(),
+        capture_output=True,
+        check=True
+    )
 
-# Parse the result
-detector_result = json.loads(detector_process.stdout)
+    # Parse the result
+    detector_result = json.loads(detector_process.stdout)
 
-# Display the detector results
-print("Detector results:")
-if 'detectors' in detector_result:
+    # Display the detector results
+    print("Detector results:")
     detector = detector_result['detectors'][0]  # Get the first detector
     print(f"  Power: {detector['power']}")
 
     print("  Irradiance map:")
     for i in range(5):  # Print all 5 bins
         print(f"    Position {detector['binPositions'][i]:.2f}: {detector['irradianceMap'][i]:.6f}")
-else:
-    print("  No detector data found in the result")
 
+except FileNotFoundError:
+    print("Error: Could not run the simulation.")
+    print("It is likely because Node.js is not installed.")
+    print("You can install Node.js from https://nodejs.org/")
+    sys.exit(1)
 
 # ========== Example 2: Image Generation ==========
 print("\n=== Example 2: Image Generation ===")
-print("Note: This example requires node-canvas to be installed.")
 
 # Define a scene with a single ray and a crop box
 image_scene = {
@@ -92,18 +94,18 @@ image_input = json.dumps(image_scene)
 
 # Run the simulation using Node.js
 print("Running simulation for image example...")
-image_process = subprocess.run(
-    ["node", "runner.js"],
-    input=image_input.encode(),
-    capture_output=True
-)
+try:
+    image_process = subprocess.run(
+        ["node", "runner.js"],
+        input=image_input.encode(),
+        capture_output=True,
+        check=True
+    )
 
-# Parse the result
-image_result = json.loads(image_process.stdout)
+    # Parse the result
+    image_result = json.loads(image_process.stdout)
 
-# Check if image is available
-if 'images' in image_result and len(image_result['images']) > 0:
-    # The image is returned as a base64-encoded data URL
+    # Get the image data
     image_data = image_result['images'][0]['dataUrl'].split(',')[1]
     print(f"Received image data (base64 encoded)")
     
@@ -112,11 +114,12 @@ if 'images' in image_result and len(image_result['images']) > 0:
     with open(image_path, "wb") as f:
         f.write(base64.b64decode(image_data))
     print(f"Image saved to {image_path}")
-else:
-    # No image found, treat as error
-    print("Error: No image data found in the result")
-    print("This is likely because node-canvas is not installed")
+
+except subprocess.CalledProcessError:
+    print("Error: Could not generate the image.")
+    print("This is likely because node-canvas is not installed.")
     print("To use image generation, install node-canvas:")
     print("  npm install canvas")
 
 print("\nExamples completed!")
+print("For more information about this package, see the README.md file.")

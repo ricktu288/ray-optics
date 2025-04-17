@@ -170,7 +170,8 @@
       "defBy": {
         "radiiOfCurvature": "Radii of Curvature",
         "focalDistances": "Focal Distances"
-      }
+      },
+      "invalidParameters": "Invalid lens parameters"
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
@@ -265,7 +266,12 @@
     },
     "ModuleObj": {
       "module": "Module",
-      "demodulize": "Demodulize"
+      "demodulize": "Demodulize",
+      "loopVariableTooLarge": "The length of the loop variable \"{{name}}\" is too large. Please set maxLoopLength to a larger value.",
+      "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
+      "variableRangeError": "Error parsing variable range \"{{str}}\" with parameters {{params}}: {{error}}",
+      "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
+      "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}"
     },
     "Handle": {
       "handle": "Handle",
@@ -286,6 +292,9 @@
       "rayCountLimit": "Ray count limit",
       "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
       "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
+    },
+    "CustomGlass": {
+      "curveGenerationError": "Curve generation error: f(x) > g(x) at x = {{x}}"
     }
   },
   "saveModal": {
@@ -331,6 +340,15 @@
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources."
+  },
+  "generalErrors": {
+    "newerVersion": "The version of the scene is newer than the current version of the simulator.",
+    "unknownObjectType": "Unknown scene object type: \"{{type}}\".",
+    "unknownSceneKey": "Unknown key in scene: \"{{key}}\".",
+    "unknownPropertyValue": "Unknown value \"{{value}}\" for property \"{{property}}\".",
+    "unknownObjectKey": "Unknown key: \"{{key}}\" in object of type \"{{type}}\".",
+    "unknownModuleKey": "Unknown key: \"{{key}}\" in module \"{{module}}\".",
+    "unknownModule": "Unknown module: \"{{module}}\"."
   },
   "statusBox": {
     "rayCount": "Number of ray segments",
