@@ -86,7 +86,7 @@ class CropBox extends BaseSceneObj {
     if (objBar.showAdvanced(!this.arePropertiesDefault(['rayCountLimit']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.CropBox.rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
         obj.rayCountLimit = value;
-        if (this.scene.simulator.processedRayCount > obj.rayCountLimit) {
+        if (obj.scene.simulator.processedRayCount > obj.rayCountLimit) {
           obj.warning = i18next.t('simulator:sceneObjs.CropBox.rayCountWarning');
         } else {
           obj.warning = null;
