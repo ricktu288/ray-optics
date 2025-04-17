@@ -266,7 +266,7 @@
     },
     "ModuleObj": {
       "module": "模块",
-      "demodulize": "解除模块化",
+      "demodulize": "取消模块化",
       "loopVariableTooLarge": "循环变量“{{name}}”的长度过大。请设置更大的 maxLoopLength 值。",
       "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
       "variableRangeError": "解析变量范围“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
@@ -289,9 +289,9 @@
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "宽度",
-      "rayCountLimit": "光线数量限制",
-      "svgWarning": "导出至 SVG：不支持颜色混合、正确亮度，以及小于 1 的相对折射率。",
-      "rayCountWarning": "当前场景中的光线数量超过了光线数量限制。您可能需要在裁剪框选项中增加光线数量限制。"
+      "rayCountLimit": "光线数量上限",
+      "svgWarning": "导出为 SVG：不支持混色、修正亮度与相对折射率低于1的情形。",
+      "rayCountWarning": "当前场景中的光线数量大於光线数量上限。您可能需要將剪取框選項中的光線數量上限調高。"
     },
     "CustomGlass": {
       "curveGenerationError": "曲线生成错误：x = {{x}} 时 f(x) > g(x)"
