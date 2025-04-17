@@ -11,12 +11,27 @@ using JSON
 using Base64
 
 println("Ray Optics Simulation - Julia Example")
+println("For more information about this package, see the README.md file.")
+
+# Check if Node.js is installed
+node_check = try
+    run(`node --version`, devnull, devnull)
+    true
+catch
+    false
+end
+
+if !node_check
+    println("\nError: Node.js is not installed.")
+    println("You can install it from https://nodejs.org/")
+    exit(1)
+end
 
 # ========== Example 1: Detector Reading ==========
 println("\n=== Example 1: Detector Reading ===")
 
 # Define a scene with a single ray and a detector
-detector_scene = Dict(
+scene_with_detector = Dict(
     "version" => 5,
     "objs" => [
         Dict(
@@ -35,42 +50,57 @@ detector_scene = Dict(
 )
 
 # Convert the scene to JSON string
-detector_input = JSON.json(detector_scene)
+json_with_detector = JSON.json(scene_with_detector)
 
 # Run the simulation using Node.js
 println("Running simulation for detector example...")
-try
-    detector_process = open(`node runner.js`, "r+")
-    write(detector_process, detector_input)
-    close(detector_process.in)
-    detector_output = read(detector_process, String)
-    close(detector_process)
+simulation_process = open(`node runner.js`, "r+")
+write(simulation_process, json_with_detector)
+close(simulation_process.in)
+simulation_output = read(simulation_process, String)
+close(simulation_process)
 
-    # Parse the result
-    detector_result = JSON.parse(detector_output)
+# Parse the result
+simulation_result = JSON.parse(simulation_output)
 
-    # Display the detector results
-    println("Detector results:")
-    detector = detector_result["detectors"][1]  # Get the first detector
-    println("  Power: $(detector["power"])")
-
-    println("  Irradiance map:")
-    for i in 1:5  # Print all 5 bins
-        println("    Position $(detector["binPositions"][i]): $(detector["irradianceMap"][i])")
-    end
-catch e
-    println("Error: Could not run the simulation.")
-    println("It is likely because Node.js is not installed.")
-    println("You can install Node.js from https://nodejs.org/")
-    exit(1)
+# Check for simulator errors and warnings
+if simulation_result["error"] !== nothing
+    println("Simulator error: $(simulation_result["error"])")
 end
 
+if simulation_result["warning"] !== nothing
+    println("Simulator warning: $(simulation_result["warning"])")
+end
+
+# Display the detector results
+println("Detector results:")
+detector = simulation_result["detectors"][1]  # Get the first detector
+println("  Power: $(detector["power"])")
+
+println("  Irradiance map:")
+for i in 1:5  # Print all 5 bins
+    println("    Position $(detector["binPositions"][i]): $(detector["irradianceMap"][i])")
+end
 
 # ========== Example 2: Image Generation ==========
 println("\n=== Example 2: Image Generation ===")
 
+# Check if node-canvas is installed
+canvas_check = try
+    run(`node -e "try{require('canvas');process.exit(0)}catch(e){process.exit(1)}"`)
+    true
+catch
+    false
+end
+
+if !canvas_check
+    println("To run this example, you need to install node-canvas:")
+    println("  npm install canvas")
+    exit(0)
+end
+
 # Define a scene with a single ray and a crop box
-image_scene = Dict(
+scene_with_cropbox = Dict(
     "version" => 5,
     "objs" => [
         Dict(
@@ -88,37 +118,37 @@ image_scene = Dict(
 )
 
 # Convert the scene to JSON string
-image_input = JSON.json(image_scene)
+json_with_cropbox = JSON.json(scene_with_cropbox)
 
 # Run the simulation using Node.js
 println("Running simulation for image example...")
-try
-    image_process = open(`node runner.js`, "r+")
-    write(image_process, image_input)
-    close(image_process.in)
-    image_output = read(image_process, String)
-    close(image_process)
+render_process = open(`node runner.js`, "r+")
+write(render_process, json_with_cropbox)
+close(render_process.in)
+render_output = read(render_process, String)
+close(render_process)
 
-    # Parse the result
-    image_result = JSON.parse(image_output)
+# Parse the result
+render_result = JSON.parse(render_output)
 
-    # Get the image data
-    data_url = image_result["images"][1]["dataUrl"]
-    image_data = split(data_url, ",")[2]
-    println("Received image data (base64 encoded)")
-    
-    # Save the image to a file
-    image_path = "ray_optics_simulation.png"
-    open(image_path, "w") do f
-        write(f, base64decode(image_data))
-    end
-    println("Image saved to $image_path")
-catch e
-    println("Error: Could not generate the image.")
-    println("This is likely because node-canvas is not installed.")
-    println("To use image generation, install node-canvas:")
-    println("  npm install canvas")
+# Check for simulator errors and warnings
+if render_result["error"] !== nothing
+    println("Simulator error: $(render_result["error"])")
 end
 
+if render_result["warning"] !== nothing
+    println("Simulator warning: $(render_result["warning"])")
+end
+
+# Get the image data
+image_data = split(render_result["images"][1]["dataUrl"], ",")[2]
+println("Received image data (base64 encoded)")
+
+# Save the image to a file
+image_path = "ray_optics_simulation.png"
+open(image_path, "w") do f
+    write(f, base64decode(image_data))
+end
+println("Image saved to $image_path")
+
 println("\nExamples completed!")
-println("For more information about this package, see the README.md file.")
