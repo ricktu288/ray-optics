@@ -350,6 +350,13 @@
     "unknownModuleKey": "Unknown key: \"{{key}}\" in module \"{{module}}\".",
     "unknownModule": "Unknown module: \"{{module}}\"."
   },
+  "appErrors": {
+    "jsError": "JavaScript Error: {{msg}} at {{url}}",
+    "httpStatusError": "HTTP Request Error: {{status}}",
+    "httpError": "HTTP Request Error",
+    "httpTimeout": "HTTP Request Timeout",
+    "invalidFile": "The file is neither a valid JSON scene nor an image file."
+  },
   "statusBox": {
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",

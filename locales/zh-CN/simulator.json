@@ -350,6 +350,13 @@
     "unknownModuleKey": "模块\"{{module}}\"中有未知的键值：{{key}}",
     "unknownModule": "场景中有未知的模块：{{module}}"
   },
+  "appErrors": {
+    "jsError": "JavaScript 错误：{{msg}}，位于 {{url}}",
+    "httpStatusError": "HTTP 请求错误：{{status}}",
+    "httpError": "HTTP 请求错误",
+    "httpTimeout": "HTTP 请求超时",
+    "invalidFile": "此文件既不是有效的 JSON 场景，也不是图片文件。"
+  },
   "statusBox": {
     "rayCount": "光线片段数量",
     "totalTruncation": "被截断的亮度",

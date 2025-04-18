@@ -350,6 +350,13 @@
     "unknownModuleKey": "模組「{{module}}」中有未知的鍵值：「{{key}}」",
     "unknownModule": "場景中有未知的模組：「{{module}}」"
   },
+  "appErrors": {
+    "jsError": "JavaScript 錯誤：{{msg}}，位於 {{url}}",
+    "httpStatusError": "HTTP 請求錯誤：{{status}}",
+    "httpError": "HTTP 請求錯誤",
+    "httpTimeout": "HTTP 請求逾時",
+    "invalidFile": "此檔案既不是有效的 JSON 場景，也不是圖片檔案。"
+  },
   "statusBox": {
     "rayCount": "光線片段數量",
     "totalTruncation": "被截斷的亮度",

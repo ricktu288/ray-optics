@@ -553,11 +553,6 @@ function initAppService() {
       var files = dt.files;
       openFile(files[0]);
     }
-    else {
-      var fileString = dt.getData('text');
-      editor.loadJSON(fileString);
-      editor.onActionComplete();
-    }
   };
 
   canvas.addEventListener('contextmenu', function (e) {
@@ -569,7 +564,7 @@ function initAppService() {
   }, false);
 
   window.onerror = function (msg, url) {
-    error = `Error: ${msg} at ${url}`;
+    error = `${i18next.t('simulator:appErrors.jsError', { msg, url })}`;
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
@@ -679,7 +674,7 @@ function openSample(name) {
   client.open('GET', '../gallery/' + name);
   client.onload = function () {
     if (client.status >= 300) {
-      error = "openSample: HTTP Request Error: " + client.status;
+      error = "openSample: " + i18next.t('simulator:appErrors.httpStatusError', { status: client.status });
       document.getElementById('welcome').style.display = 'none';
       updateErrorAndWarning();
       return;
@@ -692,12 +687,12 @@ function openSample(name) {
     jsonEditorService.updateContent(editor.lastActionJson);
   }
   client.onerror = function () {
-    error = "openSample: HTTP Request Error";
+    error = "openSample: " + i18next.t('simulator:appErrors.httpError');
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
-    error = "openSample: HTTP Request Timeout";
+    error = "openSample: " + i18next.t('simulator:appErrors.httpTimeout');
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
@@ -711,7 +706,7 @@ function importModule(name) {
   client.onload = function () {
     document.getElementById('welcome').style.display = 'none';
     if (client.status >= 300) {
-      error = "importModule: HTTP Request Error: " + client.status;
+      error = "importModule: " + i18next.t('simulator:appErrors.httpStatusError', { status: client.status });
       updateErrorAndWarning();
       return;
     }
@@ -730,7 +725,7 @@ function importModule(name) {
         }
       }
     } catch (e) {
-      error = "importModule: " + e.toString();
+      error = "importModule: " + e;
       updateErrorAndWarning();
       return;
     }
@@ -739,12 +734,12 @@ function importModule(name) {
     editor.onActionComplete();
   }
   client.onerror = function () {
-    error = "importModule: HTTP Request Error";
+    error = "importModule: " + i18next.t('simulator:appErrors.httpError');
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
   client.ontimeout = function () {
-    error = "importModule: HTTP Request Timeout";
+    error = "importModule: " + i18next.t('simulator:appErrors.httpTimeout');
     document.getElementById('welcome').style.display = 'none';
     updateErrorAndWarning();
   }
@@ -879,7 +874,7 @@ function openFile(readFile) {
         }
         scene.backgroundImage.onerror = function (e1) {
           scene.backgroundImage = null;
-          error = "openFile: The file is neither a valid JSON scene nor an image file.";
+          error = "openFile: " + i18next.t('simulator:appErrors.invalidFile');
           updateErrorAndWarning();
         }
       }
