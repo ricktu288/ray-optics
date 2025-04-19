@@ -136,7 +136,8 @@
       "eqnInfo": {
         "constants": "支持的常数",
         "operators": "支持的运算符",
-        "functions": "支持的函数"
+        "functions": "支持的函数",
+        "useModuleWithArrays": "如需用参数式精确控制取样点，请改用自定义模块并建立数组（见工具->其他->导入模块->创建自定义模块）。"
       },
       "imageDetectionWarning": "本工具不支持像的侦测。",
       "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"

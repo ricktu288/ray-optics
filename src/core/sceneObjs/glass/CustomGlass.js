@@ -56,7 +56,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       obj.eqn1 = value;
       // Invalidate path when equation changes
       delete obj.path;
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.useModuleWithArrays') + '</li></ul>');
     objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
       // Invalidate path when equation changes
@@ -355,7 +355,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       var lastError = "";
       var hasPoints = false;
       var hasCurveGenerationError = false;
-      for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+      for (i = -0.1000001 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1000001 * this.scene.lengthScale) {
         var ix = i + 0.05 * this.scene.lengthScale;
         if (ix < 0) ix = 0;
         if (ix > p12d) ix = p12d;

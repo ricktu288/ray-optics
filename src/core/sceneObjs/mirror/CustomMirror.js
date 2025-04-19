@@ -57,7 +57,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       obj.eqn = value;
       // Invalidate points when equation changes
       delete obj.tmp_points;
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.useModuleWithArrays') + '</li></ul>');
     
     super.populateObjBar(objBar);
   }
@@ -235,13 +235,11 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       } else {
         segA = geometry.line(pts[i + 1], pts[i + 2]);
       }
-      var rxA = ray.p1.x - incidentPoint.x;
-      var ryA = ray.p1.y - incidentPoint.y;
       var mxA = segA.p2.x - segA.p1.x;
       var myA = segA.p2.y - segA.p1.y;
 
-      var outxA = incidentPoint.x + rxA * (myA * myA - mxA * mxA) - 2 * ryA * mxA * myA;
-      var outyA = incidentPoint.y + ryA * (mxA * mxA - myA * myA) - 2 * rxA * mxA * myA;
+      var outxA = incidentPoint.x + rx * (myA * myA - mxA * mxA) - 2 * ry * mxA * myA;
+      var outyA = incidentPoint.y + ry * (mxA * mxA - myA * myA) - 2 * rx * mxA * myA;
 
       var outxFinal;
       var outyFinal;
@@ -292,7 +290,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     
     this.tmp_points = [];
     var lastError = "";
-    for (i = -0.1 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1 * this.scene.lengthScale) {
+    for (i = -0.1000001 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1000001 * this.scene.lengthScale) {
       // avoid using exact integers to avoid problems with detecting intersections
       var ix = i + 0.05 * this.scene.lengthScale;
       if (ix < 0) ix = 0;

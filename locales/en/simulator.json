@@ -136,7 +136,8 @@
       "eqnInfo": {
         "constants": "Supported constants",
         "operators": "Supported operators",
-        "functions": "Supported functions"
+        "functions": "Supported functions",
+        "useModuleWithArrays": "If you need to accurately control the sample points with parametric equations, please use a custom module with arrays instead (see Tools -> Other -> Import Modules -> Make custom modules)."
       },
       "imageDetectionWarning": "This tool does not support image detection.",
       "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."

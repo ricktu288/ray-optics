@@ -136,7 +136,8 @@
       "eqnInfo": {
         "constants": "支援的常數",
         "operators": "支援的運算子",
-        "functions": "支援的函數"
+        "functions": "支援的函數",
+        "useModuleWithArrays": "如需用參數式準確控制取樣點，請改用自訂模組並建立陣列（見工具->其他->匯入模組->建立自訂模組）。"
       },
       "imageDetectionWarning": "本工具不支援像的偵測。",
       "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。"
