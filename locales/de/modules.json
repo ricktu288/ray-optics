@@ -1,0 +1,15 @@
+{
+  "modulesPage": {
+    "import": "Importieren",
+    "imported": "Importiert",
+    "specification": {
+      "title": "Spezifikation",
+      "parameters": "Parameter"
+    },
+    "description": {
+      "appearAsTools": "Importierte Module erscheinen als Werkzeuge in der Kategorie „Andere“.",
+      "embeddedInScene": "Importierte Module sind in den Daten der Szene eingebettet und werden nicht automatisch aktualisiert wenn die Autoren der Module diese aktualisieren.",
+      "makeNewTools": "Die Funktion „Module“ ermöglicht die Erstellung neuer Werkzeuge durch Kombination, Spezialisierung oder Neuparametrisierung von bestehenden Objekten."
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "模块示例 - 基本概念",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 450,
+          "text": "这段文字在 ExampleModule 中。"
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 500,
+          "text": "这段文字也在 ExampleModule 中。"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 300,
+      "text": "这段文字不在模块中。"
+    },
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 350,
+      "text": "这段文字也不在模块中。"
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {}
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 50.64898989898987,
+    "y": -86.41666666666666
+  },
+  "scale": 0.7175925925925926
+}
