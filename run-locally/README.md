@@ -1,6 +1,6 @@
 # Run this project locally
 
-This guide is for running the web app locally. If you want to call the command-line version of the simulator from programming languages (e.g. Python, Julia), please download the [integrations package](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) instead.
+This guide is for running the web app locally. If you want to call the command-line version of the simulator from programming languages (e.g. Python, Julia), please download the [integration tools](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) instead.
 
 ## For developers
 

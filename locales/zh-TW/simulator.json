@@ -391,7 +391,7 @@
       },
       "integrations": {
         "title": "與程式語言整合",
-        "description": "您可以透過整合包（[下載連結](/integrations/download)）來從程式語言（如 Python 或 Julia）呼叫本模擬器。注意此網頁程式內建的[模組](/modules/tutorial)功能本身也提供了一些程式功能。"
+        "description": "您可以透過整合工具（[下載連結](/integrations/download)）來從程式語言（如 Python 或 Julia）呼叫本模擬器。注意此網頁程式內建的[模組](/modules/tutorial)功能本身也提供了一些程式功能。"
       },
       "contactUs": {
         "title": "聯絡我們",

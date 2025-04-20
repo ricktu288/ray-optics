@@ -391,7 +391,7 @@
       },
       "integrations": {
         "title": "Integrations with programming languages",
-        "description": "You can call the simulator from programming languages such as Python or Julia with the integrations package ([download link](/integrations/download)). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
+        "description": "You can call the simulator from programming languages such as Python or Julia with the integration tools ([download link](/integrations/download)). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
       },
       "contactUs": {
         "title": "Contact Us",

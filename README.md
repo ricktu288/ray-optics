@@ -2,9 +2,9 @@
 
 # Ray Optics Simulation
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6386611.svg)](https://doi.org/10.5281/zenodo.6386611)
-[![Translation status](https://hosted.weblate.org/widget/ray-optics-simulation/svg-badge.svg)](https://hosted.weblate.org/engage/ray-optics-simulation/)
-[![Deploy to GitHub Pages](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml)
-[![Build Integrations Package](https://github.com/ricktu288/ray-optics/actions/workflows/build-integrations.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/build-integrations.yml)
+[![translated](https://hosted.weblate.org/widget/ray-optics-simulation/svg-badge.svg)](https://hosted.weblate.org/engage/ray-optics-simulation/)
+[![Deploy website](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml)
+[![Deploy integrations](https://github.com/ricktu288/ray-optics/actions/workflows/deploy-integrations.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy-integrations.yml)
 
 A web app for creating and simulating 2D geometric optical scenes. Our goal is to make it easy for students to build physical intuition by "playing around", for teachers to do dynamical demonstrations, and at the same time also include tools for more advanced usage.
 
@@ -96,7 +96,7 @@ The full build may takes about half an hour to complete due to the generation of
 - `integrations` contains the integration tools for the simulator with other programming languages.
 - `dist` (generated at build time) contains the built files for the project (the entire content for the [https://phydemo.app/ray-optics](https://phydemo.app/ray-optics) website).
 - `dist-node` (generated at build time) contains the built files for the node module version of the simulator, which is required for the image generation, and can also be used in your own project.
-- `dist-integrations` (generated at build time) contains the built files for the integrations package.
+- `dist-integrations` (generated at build time) contains the built files for the integration tools.
 
 See the README.md in each directory for more information.
 
@@ -151,7 +151,7 @@ Currently there is no automatic end-to-end test for the web app. So please manua
 ## Use as a Node Module
 
 The simulator can be used as a node module in your own project and integrated with other programming languages.
-The easiest way is to directly download the integrations package from [here](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) and follow the instructions in the `README.md` file. You don't need to clone this repo and build anything, but you still need to have Node.js installed.
+The easiest way is to directly download the integration tools from [here](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) and follow the instructions in the `README.md` file. You don't need to clone this repo and build anything, but you still need to have Node.js installed.
 
 For more advanced usage, the node module version of the simulator is built with the following command:
 ```bash
@@ -164,7 +164,7 @@ const { Scene, Simulator, sceneObjs, geometry } = require('path/to/ray-optics/di
 
 See the [documentation](https://phydemo.app/ray-optics/docs/index.html) for more information about the API. For a usage example, see the [image generation script](https://github.com/ricktu288/ray-optics/blob/master/scripts/buildImages.mjs).
 
-To build the integrations package by yourself, run the following command:
+To build the integration tools by yourself, run the following command:
 ```bash
 npm run build-integrations
 ```

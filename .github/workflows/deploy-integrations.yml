@@ -1,4 +1,4 @@
-name: Build Integrations Package
+name: Deploy integrations
 
 on:
   push:
@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build integrations package
+      - name: Build integrations
         run: npm run build-integrations
 
-      - name: Deploy to dist-integrations branch
+      - name: Deploy integrations
         run: |
           # Configure git
           git config --global user.name "github-actions[bot]"
@@ -50,7 +50,7 @@ jobs:
           git add .
           
           # Create a commit
-          git commit -m "Update integrations package (${GITHUB_SHA})"
+          git commit -m "Update integrations (${GITHUB_SHA})"
           
           # Force push to dist-integrations branch
           git push -f origin temp-dist-integrations:dist-integrations
