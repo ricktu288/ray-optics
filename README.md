@@ -36,11 +36,20 @@ A web app for creating and simulating 2D geometric optical scenes. Our goal is t
 
 ## Cite this project
 
-If you use this project in your research, please cite it using the metadata in the [CITATION.bib](https://github.com/ricktu288/ray-optics/blob/master/CITATION.bib) file.
+If you use this project in your research, please cite it according to the metadata:
+```bibtex
+@misc{RayOptics,
+  author = {Tu, Yi-Ting and others},
+  title = {{Ray Optics Simulation}},
+  year = {2016},
+  doi = {10.5281/zenodo.6386611},
+  url = {https://phydemo.app/ray-optics/}
+}
+```
 
-You can also include the URL https://phydemo.app/ray-optics/ in the citation. The URL will not change in the foreseeable future (at least until 2032).
+The DOI shown above is for the project, not for a specific version. Versions with individual DOIs can be downloaded from the [release page](https://github.com/ricktu288/ray-optics/releases). You may replace the project DOI with the versioned DOI shown on that page, and the year by the year of the release.
 
-If you are strict about versioning, you may consider using the latest "released" version, which is older than the online version of this project, and replace the project DOI in the citation file above with the versioned DOI. The DOI for the latest `v5.0` release is `10.5281/zenodo.14538565`. See [Run Locally](https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md#run-the-released-version) for how to run the released version locally.
+The URL field above is optional and not supported by all citation formats. You may also use the Zenodo URL or the GitHub URL.
 
 ## Contributing
 

@@ -72,11 +72,14 @@ If you use this project in your research, please cite it according to the metada
   author = {Tu, Yi-Ting and others},
   title = {{Ray Optics Simulation}},
   year = {2016},
-  doi = {10.5281/zenodo.6386611}
+  doi = {10.5281/zenodo.6386611},
+  url = {https://phydemo.app/ray-optics/}
 }
 ```
 
-See https://github.com/ricktu288/ray-optics#cite-this-project for more information.
+The DOI shown above is for the project, not for a specific version. If you download this package from the [release page](https://github.com/ricktu288/ray-optics/releases), you can replace the project DOI above with the versioned DOI shown on that page, and the year by the year of the release.
+
+The URL field above is optional and not supported by all citation formats. You may also use the Zenodo URL or the GitHub URL.
 
 ## License
 
