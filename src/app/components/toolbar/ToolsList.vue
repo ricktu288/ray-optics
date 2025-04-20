@@ -102,7 +102,7 @@
     />
     <ToolItem
       id="ConcaveDiffractionGrating"
-      :title="$t('main:tools.ConcaveDiffractionGrating.title') + '<sup>Beta</sup>'"
+      :title="$t('main:tools.ConcaveDiffractionGrating.title')"
       :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ConcaveDiffractionGrating.description'), sub: $t('main:tools.ArcMirror.instruction')})"
       popoverImage="ConcaveDiffractionGrating.svg"
       :layout="layout"

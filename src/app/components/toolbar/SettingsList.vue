@@ -16,13 +16,13 @@
 
 <template>
   <ToggleControl
-    :label="$t('simulator:settings.showRayArrows.title') + '<sup>Beta</sup>'"
+    :label="$t('simulator:settings.showRayArrows.title')"
     v-model="showRayArrows"
     :layout="layout"
   />
 
   <ToggleControl
-    :label="$t('simulator:settings.correctBrightness.title') + '<sup>Beta</sup>'"
+    :label="$t('simulator:settings.correctBrightness.title')"
     :popoverContent="$t('simulator:settings.correctBrightness.description')"
     v-model="correctBrightness"
     :layout="layout"
@@ -38,7 +38,7 @@
   />
 
   <PopupSelectControl
-    :label="$t('simulator:settings.colorMode.title') + '<sup>Beta</sup>'"
+    :label="$t('simulator:settings.colorMode.title')"
     :value="colorMode"
     :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
     :disabled="colorMode === 'default'"
