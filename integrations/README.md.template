@@ -14,6 +14,7 @@ This package contains tools for integrating the Ray Optics Simulation engine wit
 ## Usage
 
 You need to have Node.js installed to use this package. You can download it from [nodejs.org](https://nodejs.org/).
+You don't need to download the web app to use this package.
 
 The `runner.js` script takes a JSON scene description via stdin and outputs simulation results to stdout. See the example files for how to call the script from some languages.
 The JSON format is the same as the scene file saved by the web app (one can also directly view and edit the JSON in the web app by enabling Settings -> Show JSON editor).
@@ -50,6 +51,8 @@ For every crop box object in the scene (which in the web app can be created by F
 - `dataUrl`: The base64 encoded data URL of the image
 
 See the example files for how to read and save the image in your code.
+
+The image generation feature currently only supports PNG, and does not work with "Correct Brightness" and glasses with (relative) refractive index below 1.
 
 ### Simulator Statistics
 

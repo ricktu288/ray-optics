@@ -1,5 +1,7 @@
 # Run this project locally
 
+This guide is for running the web app locally. If you want to call the command-line version of the simulator from programming languages (e.g. Python, Julia), please download the [integrations package](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) instead.
+
 ## For developers
 
 If you are a developer and familiar with Node.js and npm, you may want to follow the [Installation Guide](https://github.com/ricktu288/ray-optics?tab=readme-ov-file#installation) instead, which not only allows you to run the project locally, but also allows you to see and modify the source code.
