@@ -1,0 +1,97 @@
+{
+  "version": 5,
+  "name": "truncate_correctBrightness",
+  "objs": [
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 568,
+        "y": 276
+      },
+      "p2": {
+        "x": 762,
+        "y": 269
+      }
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 600,
+        "y": 236
+      },
+      "p2": {
+        "x": 608,
+        "y": 410
+      }
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 537,
+        "y": 378
+      },
+      "p2": {
+        "x": 765,
+        "y": 375
+      }
+    },
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 728,
+        "y": 220
+      },
+      "p2": {
+        "x": 725,
+        "y": 343
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 747,
+        "y": 242
+      },
+      "p2": {
+        "x": 752,
+        "y": 405
+      },
+      "irradMap": true
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 657,
+        "y": 325
+      },
+      "p2": {
+        "x": 640,
+        "y": 303
+      }
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 682,
+          "y": 292,
+          "arc": false
+        },
+        {
+          "x": 676,
+          "y": 333,
+          "arc": false
+        },
+        {
+          "x": 702,
+          "y": 317,
+          "arc": true
+        }
+      ]
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "colorMode": "linear",
+  "randomSeed": "0"
+}

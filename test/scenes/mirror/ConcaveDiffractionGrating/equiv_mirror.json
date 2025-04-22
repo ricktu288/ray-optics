@@ -1,0 +1,108 @@
+{
+  "version": 5,
+  "name": "equiv_mirror",
+  "objs": [
+    {
+      "type": "ConcaveDiffractionGrating",
+      "p1": {
+        "x": 600,
+        "y": 240
+      },
+      "p2": {
+        "x": 600,
+        "y": 320
+      },
+      "p3": {
+        "x": 620,
+        "y": 280
+      },
+      "customBrightness": true,
+      "brightnesses": [
+        1
+      ]
+    },
+    {
+      "type": "ArcMirror",
+      "p1": {
+        "x": 600,
+        "y": 320
+      },
+      "p2": {
+        "x": 600,
+        "y": 400
+      },
+      "p3": {
+        "x": 620,
+        "y": 360
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 600,
+        "y": 240
+      },
+      "p2": {
+        "x": 600,
+        "y": 400
+      },
+      "wavelength": 493
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 660,
+        "y": 240
+      },
+      "p2": {
+        "x": 440,
+        "y": 240
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 660,
+        "y": 320
+      },
+      "p2": {
+        "x": 440,
+        "y": 320
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 660,
+        "y": 400
+      },
+      "p2": {
+        "x": 440,
+        "y": 400
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 580,
+        "y": 240
+      },
+      "p2": {
+        "x": 580,
+        "y": 400
+      },
+      "irradMap": true
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 2.5735853383900835,
+  "showGrid": true,
+  "snapToGrid": true,
+  "origin": {
+    "x": 160,
+    "y": 20
+  },
+  "simulateColors": true,
+  "randomSeed": "0"
+}
