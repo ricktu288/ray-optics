@@ -22,7 +22,7 @@
         "x": 860,
         "y": 540
       },
-      "eqn": "0.002\\cdot\\left(\\sin\\left(100x\\right)+\\sin\\left(70x\\right)-\\sin\\left(200x\\right)-\\sin\\left(631x\\right)+\\sin\\left(1391x\\right)-0.7\\cdot\\sin\\left(10000x\\right)\\right)"
+      "eqn": "0.0015\\cdot\\left(\\sin\\left(100x\\right)+\\sin\\left(70x\\right)-\\sin\\left(200x\\right)-\\sin\\left(631x\\right)\\right)"
     },
     {
       "type": "Mirror",
