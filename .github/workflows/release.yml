@@ -1,0 +1,73 @@
+name: Release Build Artifacts
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  build-artifacts:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcairo2-dev \
+            libjpeg-dev \
+            libpango1.0-dev \
+            libgif-dev \
+            build-essential \
+            g++ \
+            fonts-noto-cjk \
+            fonts-noto-core \
+            fonts-taml \
+            fonts-lohit-taml \
+            fonts-dejavu
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build website
+        run: npm run build
+
+      - name: Build integrations
+        run: npm run build-integrations
+
+      - name: Zip website build
+        run: |
+          cd dist
+          zip -r ../website-build.zip .
+          cd ..
+
+      - name: Zip integrations build
+        run: |
+          cd dist-integrations
+          zip -r ../integrations-build.zip .
+          cd ..
+
+      - name: Upload website build as release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: website-build.zip
+
+      - name: Upload integrations build as release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: integrations-build.zip
