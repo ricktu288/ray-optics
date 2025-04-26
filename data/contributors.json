@@ -523,5 +523,17 @@
       ]
     },
     "firstCommit": "2025-03-31"
+  },
+  {
+    "name": "Artyom Vasilenko",
+    "githubEmails": [
+      "ftn453@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2025-04-24"
   }
 ]
