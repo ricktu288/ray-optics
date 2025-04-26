@@ -136,7 +136,8 @@
       "eqnInfo": {
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
-        "functions": "Funções suportadas"
+        "functions": "Funções suportadas",
+        "useModuleWithArrays": "Se você precisar de controlar os pontos de amostra precisamente com equações paramétricas, por favor use um módulo personalizado com listas (ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
       "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
@@ -170,7 +171,8 @@
       "defBy": {
         "radiiOfCurvature": "Raios de curvatura",
         "focalDistances": "Distâncias Focais"
-      }
+      },
+      "invalidParameters": "Parâmetros de lente inválidos"
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
@@ -265,7 +267,11 @@
     },
     "ModuleObj": {
       "module": "Módulo",
-      "demodulize": "Demodulizar"
+      "demodulize": "Demodulizar",
+      "loopTooLarge": "O comprimento do loop é grande demais. Por favor defina maxLoopLength como um valor maior.",
+      "loopVariableTooLarge": "O comprimento da variável de loop \"{{name}}\" é grande demais. Por favor defina maxLoopLength como um valor maior.",
+      "stringExpansionError": "Erro expandindo string \"{{str}}\" com parâmetros {{params}}: {{error}}",
+      "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}"
     },
     "Handle": {
       "handle": "Ponto de manuseio",
@@ -286,6 +292,9 @@
       "rayCountLimit": "Limite de quantidade de raios",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
       "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+    },
+    "CustomGlass": {
+      "curveGenerationError": "Erro de geração de curva: f(x) > g(x) em x={{x}}"
     }
   },
   "saveModal": {
@@ -370,8 +379,24 @@
       },
       "integrations": {
         "title": "Integrações com linguagens de programação",
-        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com o pacote de integrações ([link de download](/integrations/download)). Note que este app web também tem certo suporte a programação com o recurso [módulo](/modules/tutorial)."
+        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com as ferramentas de integração([link de download](/integrations/download)). Note que este app web também possui algum suporte a programação integrado com o recurso [módulo](/modules/tutorial)."
       }
     }
+  },
+  "generalErrors": {
+    "unknownObjectType": "Tipo de objeto de cena desconhecido: \"{{type}}\".",
+    "newerVersion": "A versão da cena é mais nova que a versão atual do simulador.",
+    "unknownSceneKey": "Chave desconhecida na cena: \"{{key}}\".",
+    "unknownObjectKey": "Chave desconhecida: \"{{key}}\" em objeto de tipo \"{{type}}\".",
+    "unknownModuleKey": "Chave desconhecida: \"{{key}}\" em módulo \"{{module}}\".",
+    "unknownModule": "Módulo desconhecido: \"{{module}}\".",
+    "unknownPropertyValue": "Valor \"{{value}}\" para propriedade \"{{property}}\" desconhecido."
+  },
+  "appErrors": {
+    "jsError": "Erro de JavaScript: {{msg}} em {{url}}",
+    "httpStatusError": "Erro de Solicitação HTTP: {{status}}",
+    "httpError": "Erro de Solicitação HTTP",
+    "httpTimeout": "Timeout de Solicitação HTTP",
+    "invalidFile": "O arquivo não é nem uma cena JSON válida nem um arquivo de imagem."
   }
 }
