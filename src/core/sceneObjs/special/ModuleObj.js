@@ -24,6 +24,7 @@ import * as math from 'mathjs';
  * @typedef {Object} ModuleDef
  * @property {number} numPoints - The number of control points of the module.
  * @property {Array<string>} params - The parameters of the module.
+ * @property {Array<string>} vars - Mathematical variable definitions that can be used in the objects.
  * @property {Array<Object>} objs - The objects in the module in the form of JSON objects with template syntax.
  * @property {number} maxLoopLength - The maximum length of the list in for loops to prevent infinite loops.
  */
@@ -70,7 +71,7 @@ class ModuleObj extends BaseSceneObj {
     }
 
     // Check for unknown keys in the module definition
-    const knownModuleKeys = ['numPoints', 'params', 'objs', 'maxLoopLength'];
+    const knownModuleKeys = ['numPoints', 'params', 'vars', 'objs', 'maxLoopLength'];
     for (const key in this.moduleDef) {
       if (!knownModuleKeys.includes(key)) {
         this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
@@ -500,6 +501,21 @@ class ModuleObj extends BaseSceneObj {
     }
 
     fullParams['random'] = this.scene.rng;
+    
+    // Process variable definitions
+    if (this.moduleDef.vars && Array.isArray(this.moduleDef.vars)) {
+      try {
+        // Evaluate each variable definition directly in fullParams
+        // This allows each definition to reference previously defined variables
+        // and supports function definitions like f(x)=x+1
+        for (const varDef of this.moduleDef.vars) {
+          math.evaluate(varDef, fullParams);
+        }
+      } catch (e) {
+        this.error = i18next.t('simulator:sceneObjs.ModuleObj.variableDefinitionError', { params: JSON.stringify(fullParams), error: e });
+        return;
+      }
+    }
     
     this.error = null;
 

@@ -490,6 +490,9 @@
       "a1darrayii": "一维数组：i=`i`",
       "thistextisshownonlyw": "这段文字只在n>5时显示"
     },
+    "moduleExampleVariables": {
+      "title": "模块示例 - 变量"
+    },
     "moduleExampleCustomEquation": {
       "title": "模块示例 - 自定义数学式",
       "amirrorofshapeycos2p": "形状为 y=cos(2 pi x + `phi`) 的镜子"

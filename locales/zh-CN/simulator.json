@@ -272,7 +272,8 @@
       "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
       "variableRangeError": "解析变量范围“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
       "stringExpansionError": "展开字符串“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
-      "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}"
+      "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}",
+      "variableDefinitionError": "计算变量定义时发生错误，参数为 {{params}}：{{error}}"
     },
     "Handle": {
       "handle": "控制杆",

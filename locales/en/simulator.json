@@ -272,7 +272,8 @@
       "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
       "variableRangeError": "Error parsing variable range \"{{str}}\" with parameters {{params}}: {{error}}",
       "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
-      "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}"
+      "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}",
+      "variableDefinitionError": "Error evaluating variable definitions with parameters {{params}}: {{error}}"
     },
     "Handle": {
       "handle": "Handle",

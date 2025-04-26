@@ -272,7 +272,8 @@
       "loopTooLarge": "迴圈的長度過大。請設定更大的 maxLoopLength 值。",
       "variableRangeError": "解析變數範圍「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
       "stringExpansionError": "展開字串「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
-      "objectExpansionError": "在陣列中展開物件 {{obj}} 時發生錯誤，參數為 {{params}}：{{error}}"
+      "objectExpansionError": "在陣列中展開物件 {{obj}} 時發生錯誤，參數為 {{params}}：{{error}}",
+      "variableDefinitionError": "計算變數定義時發生錯誤，參數為 {{params}}：{{error}}"
     },
     "Handle": {
       "handle": "控制桿",

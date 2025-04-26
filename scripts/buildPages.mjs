@@ -686,6 +686,7 @@ for (const lang of homeLangs) {
         moduleExampleParametersHashUrl: (galleryItemsLangs['module-example-parameters'].includes(lang) ? galleryHashUrl : '') + 'module-example-parameters',
         moduleExampleControlPointsHashUrl: (galleryItemsLangs['module-example-control-points'].includes(lang) ? galleryHashUrl : '') + 'module-example-control-points',
         moduleExampleArraysAndConditionalsHashUrl: (galleryItemsLangs['module-example-arrays-and-conditionals'].includes(lang) ? galleryHashUrl : '') + 'module-example-arrays-and-conditionals',
+        moduleExampleVariablesHashUrl: (galleryItemsLangs['module-example-variables'].includes(lang) ? galleryHashUrl : '') + 'module-example-variables',
         moduleExampleCustomEquationHashUrl: (galleryItemsLangs['module-example-custom-equation'].includes(lang) ? galleryHashUrl : '') + 'module-example-custom-equation',
         moduleExampleShapeParametrizationHashUrl: (galleryItemsLangs['module-example-shape-parametrization'].includes(lang) ? galleryHashUrl : '') + 'module-example-shape-parametrization',
       }

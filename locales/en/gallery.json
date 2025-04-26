@@ -508,6 +508,9 @@
       "a1darrayii": "A 1D array: i=`i`",
       "thistextisshownonlyw": "This text is shown only when n>5"
     },
+    "moduleExampleVariables": {
+      "title": "Module Example - Variables"
+    },
     "moduleExampleCustomEquation": {
       "title": "Module Example - Custom equation",
       "amirrorofshapeycos2p": "A mirror of shape y=cos(2 pi x + `phi`)"

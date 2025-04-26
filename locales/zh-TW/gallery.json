@@ -494,6 +494,9 @@
       "title": "模組範例 - 自訂數學式",
       "amirrorofshapeycos2p": "形狀為 y=cos(2 pi x + `phi`) 的鏡子"
     },
+    "moduleExampleVariables": {
+      "title": "模組範例 - 變數"
+    },
     "moduleExampleShapeParametrization": {
       "title": "模組範例 - 形狀參數化",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡",

@@ -128,6 +128,12 @@
       "specialKeys": "Within `modules.ExampleModule.objs`, any objects in an array can have two special keys: `\"for\"` and `\"if\"`. The value of the `\"for\"` key is either a string of the format `\"name=start:step:end\"` defining a loop variable, or an array of several strings of this format describing a multidimensional loop. Such an object in the array is duplicated several times according to the loop variables. The value of the `\"if\"` key is a string representing a math.js expression that evaluates to a boolean, and such an object is included in the array if and only if the boolean is true.",
       "preventInfiniteLoop": "To prevent accidental infinite loop, the total number of iteration of each `\"for\"` loop is limited by the `maxLoopLength` property of the module definition, whose default value is 1000. You can set this property to a larger value if needed."
     },
+    "variables": {
+      "title": "Using variables",
+      "lookAtExample": "You can define mathematical variables and functions that can be used throughout your module. Let's look at the example",
+      "varsArray": "The `modules.ModuleName.vars` is an array of strings, each representing a math.js statement that defines a variable or function. These definitions are evaluated sequentially, so later definitions can reference earlier ones.",
+      "context": "Variable definitions have full access to all parameters and control point coordinates, and once defined, these variables can be used in object templates just like parameters and control point coordinates, allowing for more complex and reusable calculations."
+    },
     "objsWithEqn": {
       "title": "Objects with built-in custom equations",
       "description": "For objects that already have custom equation input (such as Mirror -> Custom Equation), the equation property in the JSON is a string representing a LaTeX equation, rather than a math.js expression. To include custom parameters in the equation, you must use the same template syntax as if the LaTeX equation were a regular text. So the part enclosed by the backticks is in math.js expression, while the part outside is in LaTeX. The module parameters can only be accessed in the math.js part, and the independent variables of the custom equation (e.g. \\(x\\)) can only be accessed in the LaTeX part. Here is an example of generating a mirror with equation \\(y=\\cos(2\\pi x+\\phi)\\), where \\(\\phi\\) is a module parameter",
