@@ -240,22 +240,28 @@ if (textLabels.length > 0) {
   console.log('');
 
   const translatableIndexes = translatablePrompt.translatable;
+  
+  // Initialize commonStringsIndexes to an empty array by default
+  let commonStringsIndexes = [];
 
-  // Ask if any of those translatable texts should be stored in the common gallery strings.
-  console.log('Please select which translatable texts are common strings. Common strings are shared among multiple scenes. Please mark the text as common only if it is truly general and does not depend on the context of the scene. The current convension is to only mark long warning-type texts as common strings.');
-  const commonStringsPrompt = await inquirer.prompt({
-    type: 'checkbox',
-    name: 'commonStrings',
-    message: "Which translatable texts are common strings?",
-    choices: translatableIndexes.map(index => ({
-      name: textPreviews[index],
-      value: index,
-      checked: false
-    })),
-  });
-  console.log('');
-
-  const commonStringsIndexes = commonStringsPrompt.commonStrings;
+  // Only show common strings prompt if there are translatable texts
+  if (translatableIndexes.length > 0) {
+    // Ask if any of those translatable texts should be stored in the common gallery strings.
+    console.log('Please select which translatable texts are common strings. Common strings are shared among multiple scenes. Please mark the text as common only if it is truly general and does not depend on the context of the scene. The current convension is to only mark long warning-type texts as common strings.');
+    const commonStringsPrompt = await inquirer.prompt({
+      type: 'checkbox',
+      name: 'commonStrings',
+      message: "Which translatable texts are common strings?",
+      choices: translatableIndexes.map(index => ({
+        name: textPreviews[index],
+        value: index,
+        checked: false
+      })),
+    });
+    console.log('');
+    
+    commonStringsIndexes = commonStringsPrompt.commonStrings;
+  }
   const nonCommonStringsIndexes = translatableIndexes.filter(index => !commonStringsIndexes.includes(index));
 
   let hasMultipleInstances = false;
