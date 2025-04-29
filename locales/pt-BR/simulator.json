@@ -271,7 +271,9 @@
       "loopTooLarge": "O comprimento do loop é grande demais. Por favor defina maxLoopLength como um valor maior.",
       "loopVariableTooLarge": "O comprimento da variável de loop \"{{name}}\" é grande demais. Por favor defina maxLoopLength como um valor maior.",
       "stringExpansionError": "Erro expandindo string \"{{str}}\" com parâmetros {{params}}: {{error}}",
-      "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}"
+      "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}",
+      "variableRangeError": "Erro processando alcance de variável \"{{str}}\" com parâmetros {{params}}: {{error}}",
+      "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}"
     },
     "Handle": {
       "handle": "Ponto de manuseio",
