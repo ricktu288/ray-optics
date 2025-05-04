@@ -6,7 +6,7 @@
 [![Deploy website](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy.yml)
 [![Deploy integrations](https://github.com/ricktu288/ray-optics/actions/workflows/deploy-integrations.yml/badge.svg)](https://github.com/ricktu288/ray-optics/actions/workflows/deploy-integrations.yml)
 
-A web app for creating and simulating 2D geometric optical scenes. Our goal is to make it easy for students to build physical intuition by "playing around", for teachers to do dynamical demonstrations, and at the same time also include tools for more advanced usage.
+A web app for creating and simulating 2D geometric optical scenes, with a gallery of (interactive) demos.
 
 ## Features
 - Simulate various light sources: ray, parallel/divergent beam, and point source
