@@ -285,6 +285,7 @@
         "rotation": "旋轉",
         "scaling": "縮放"
       },
+      "step": "間距",
       "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。"
     },
     "CropBox": {

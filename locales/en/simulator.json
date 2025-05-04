@@ -285,6 +285,7 @@
         "rotation": "Rotation",
         "scaling": "Scaling"
       },
+      "step": "Step",
       "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results."
     },
     "CropBox": {

@@ -285,6 +285,7 @@
         "rotation": "旋转",
         "scaling": "缩放"
       },
+      "step": "步长",
       "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。"
     },
     "CropBox": {

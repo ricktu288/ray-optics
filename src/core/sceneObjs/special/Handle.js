@@ -29,6 +29,9 @@ import i18next from 'i18next';
  * @property {Array<number>} objIndices - The indices of the objects bound to the handle.
  * @property {Array<ControlPoint>} controlPoints - The individual control points (in addition to the bound objects) bound to the handle.
  * @property {string} transformation - The transformation applied to the control points when dragging the handle, with the corresponding arrows marked on the handle. Possible values are "default", "translation", "xTranslation", "yTranslation", "rotation", "scaling". The "default" is the only behavior in older versions where no arrow is marked on the handle, and the transformation is determined by the ctrl and shift keys.
+ * @property {number} moveStep - The step size for translation.
+ * @property {number} rotateStep - The step size for rotation in degrees.
+ * @property {number} scaleStep - The step size for scaling in percentage. For example, 10 means (1/1.1)x, 1x, 1.1x, (1.1)^2 x, etc; -10 means 0.9x, 1x, (1/0.9)x, (1/0.9)^2 x, etc.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
 class Handle extends BaseSceneObj {
@@ -40,6 +43,9 @@ class Handle extends BaseSceneObj {
     objIndices: [],
     controlPoints: [],
     transformation: "default",
+    moveStep: 0,
+    rotateStep: 0,
+    scaleStep: 0,
     notDone: false
   };
 
@@ -75,6 +81,31 @@ class Handle extends BaseSceneObj {
     }, function (obj, value) {
       obj.transformation = value;
     }, null, true);
+
+    switch (this.transformation) {
+      case "xTranslation":
+      case "yTranslation":
+        if (objBar.showAdvanced(!this.arePropertiesDefault(['moveStep']))) {
+          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step'), 0, 100, 1, this.moveStep, function (obj, value) {
+            obj.moveStep = Math.abs(value);
+          }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'), true);
+        }
+        break;
+      case "rotation":
+        if (objBar.showAdvanced(!this.arePropertiesDefault(['rotateStep']))) {
+          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (\u00b0)', 0, 360, 1, this.rotateStep, function (obj, value) {
+            obj.rotateStep = Math.abs(value);
+          }, null, true);
+        }
+        break;
+      case "scaling":
+        if (objBar.showAdvanced(!this.arePropertiesDefault(['scaleStep']))) {
+          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (%)', 1, 200, 1, this.scaleStep, function (obj, value) {
+            obj.scaleStep = value;
+          }, null, true);
+        }
+        break;
+    }
   }
 
   getZIndex() {
@@ -436,21 +467,54 @@ class Handle extends BaseSceneObj {
         var factor = geometry.distance(this.p2, mouse.pos) / geometry.distance(this.p2, dragContext.targetPoint_);
         if (factor < 1e-5) return;
         
-        // Call the scale method
+        // Apply scale step if enabled
+        if (this.scaleStep !== 0) {
+          // Calculate the step size
+          const stepFactor = this.scaleStep > 0 ? 
+                            (1 + this.scaleStep / 100) : 
+                            (1 / (1 - Math.abs(this.scaleStep) / 100));
+          
+          // Find the closest power of stepFactor
+          // ln(factor) / ln(stepFactor) gives us how many steps we need
+          const stepCount = Math.round(Math.log(factor) / Math.log(stepFactor));
+          
+          // Replace with the exact power of the step factor
+          factor = Math.pow(stepFactor, stepCount);
+        }
+        
+        // Call the scale method with the snapped factor
         this.scale(factor, this.p2);
       } else if (ctrl || this.transformation == "rotation") {
         // Rotation
         var theta = Math.atan2(this.p2.y - mouse.pos.y, this.p2.x - mouse.pos.x) - 
                     Math.atan2(this.p2.y - dragContext.targetPoint_.y, this.p2.x - dragContext.targetPoint_.x);
         
-        // Call the rotate method
+        // Apply rotation step if enabled
+        if (this.rotateStep > 0) {
+          // Convert step from degrees to radians
+          const stepRadians = this.rotateStep * Math.PI / 180;
+          
+          // Round to nearest step
+          theta = Math.round(theta / stepRadians) * stepRadians;
+        }
+        
+        // Call the rotate method with the snapped angle
         this.rotate(theta, this.p2);
       } else {
         // Translation
         var diffX = this.transformation == "yTranslation" ? 0 : mousePos.x - dragContext.targetPoint_.x;
         var diffY = this.transformation == "xTranslation" ? 0 : mousePos.y - dragContext.targetPoint_.y;
         
-        // Call the move method
+        // Apply movement step if enabled
+        if (this.moveStep > 0) {
+          // Round to nearest step
+          // Scale the step by the scene's lengthScale to make it consistent with grid size
+          const step = this.moveStep * this.scene.lengthScale;
+          diffX = Math.round(diffX / step) * step;
+          diffY = Math.round(diffY / step) * step;
+        }
+        
+        // Call the move method with the snapped differences
         this.move(diffX, diffY);
       }
       
