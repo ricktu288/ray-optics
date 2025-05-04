@@ -535,5 +535,17 @@
       ]
     },
     "firstCommit": "2025-04-24"
+  },
+  {
+    "name": "German Abelentsev",
+    "githubEmails": [
+      "german@abelentsev.pro"
+    ],
+    "contributions":{
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2025-05-01"
   }
 ]

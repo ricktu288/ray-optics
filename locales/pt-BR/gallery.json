@@ -517,6 +517,9 @@
       "hereisthefirstdragga": "↙Aqui está o primeiro ponto de controle arrastável do módulo",
       "hereistheseconddragg": "↙Aqui está o segundo ponto de controle arrastável do módulo",
       "hereisthemidpoint": "↙Aqui está o ponto médio"
+    },
+    "moduleExampleVariables": {
+      "title": "Exemplo de Módulo - Variáveis"
     }
   }
 }

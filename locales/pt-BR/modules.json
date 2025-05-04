@@ -136,6 +136,12 @@
     "objsWithShapeParam": {
       "title": "Objetos com parametrização de forma inclusa",
       "description": "Para objetos que já suportam maneiras diferentes de definir sua forma (atualmente só Vidro -> Lente esférica). Existe sintaxe JSON especial para esses objetos que podem ser usados dentro da definição do módulo, mesmo que sejam sempre definidos por forma na lista `objs` de nível principal. Aqui está um exemplo"
+    },
+    "variables": {
+      "title": "Usando variáveis",
+      "lookAtExample": "Você pode definir variáveis matemáticas e funções que podem ser usadas no seu módulo. Vamos ver um exemplo",
+      "varsArray": "`modules.ModuleName.vars` é uma lista de strings, cada uma representando uma instrução math.js que define uma variável ou função. Essas definições são avaliadas sequencialmente, então definições posteriores podem referenciar anteriores.",
+      "context": "Definições de variáveis tem acesso total a todos os parâmetros e coordenadas de ponto de controle, e, uma vez definidas, essas variáveis podem ser usadas em modelos de objeto assim como parâmetros e coordenadas de ponto de controle, possibilitndo cálculos mais complexos e reutilizáveis."
     }
   }
 }
