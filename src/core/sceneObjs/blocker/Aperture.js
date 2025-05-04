@@ -102,6 +102,74 @@ class Aperture extends BaseFilter {
     this.p3.y = this.p3.y + diffY;
     this.p4.x = this.p4.x + diffX;
     this.p4.y = this.p4.y + diffY;
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    // Use the center of the aperture as default if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Apply rotation to all points
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    
+    // Rotate p1
+    let dx = this.p1.x - center.x;
+    let dy = this.p1.y - center.y;
+    this.p1.x = center.x + dx * cos - dy * sin;
+    this.p1.y = center.y + dx * sin + dy * cos;
+    
+    // Rotate p2
+    dx = this.p2.x - center.x;
+    dy = this.p2.y - center.y;
+    this.p2.x = center.x + dx * cos - dy * sin;
+    this.p2.y = center.y + dx * sin + dy * cos;
+    
+    // Rotate p3
+    dx = this.p3.x - center.x;
+    dy = this.p3.y - center.y;
+    this.p3.x = center.x + dx * cos - dy * sin;
+    this.p3.y = center.y + dx * sin + dy * cos;
+    
+    // Rotate p4
+    dx = this.p4.x - center.x;
+    dy = this.p4.y - center.y;
+    this.p4.x = center.x + dx * cos - dy * sin;
+    this.p4.y = center.y + dx * sin + dy * cos;
+    
+    return true;
+  }
+
+  scale(scale, center = null) {
+    // Use the center of the aperture as default if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Scale each point relative to the center
+    // Scale p1
+    this.p1.x = center.x + (this.p1.x - center.x) * scale;
+    this.p1.y = center.y + (this.p1.y - center.y) * scale;
+    
+    // Scale p2
+    this.p2.x = center.x + (this.p2.x - center.x) * scale;
+    this.p2.y = center.y + (this.p2.y - center.y) * scale;
+    
+    // Scale p3
+    this.p3.x = center.x + (this.p3.x - center.x) * scale;
+    this.p3.y = center.y + (this.p3.y - center.y) * scale;
+    
+    // Scale p4
+    this.p4.x = center.x + (this.p4.x - center.x) * scale;
+    this.p4.y = center.y + (this.p4.y - center.y) * scale;
+    
+    return true;
+  }
+
+  getDefaultCenter() {
+    // Return the center of the aperture (midpoint between p1 and p2)
+    return {
+      x: (this.p1.x + this.p2.x) / 2,
+      y: (this.p1.y + this.p2.y) / 2
+    };
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

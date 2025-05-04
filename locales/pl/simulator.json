@@ -349,7 +349,7 @@
       },
       "groupRotateScale": {
         "title": "Grupuj, obracaj i skaluj obiekty",
-        "description": "Przytrzymaj Ctrl, kliknij kilka punktów kontrolnych (np. punktów końcowych), a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomu/pionu; Ctrl+przeciągnij, aby obrócić grupę, Ctrl+Shift+przeciągnij, aby przeskalować grupę. Przeciągnij „+”, aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby rozgrupować."
+        "description": "Przytrzymaj Ctrl, kliknij kilka punktów kontrolnych (np. punktów końcowych) [or click one or more objects], a następnie kliknij puste miejsce, aby zgrupować te punkty i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć do poziomu/pionu; Ctrl+przeciągnij, aby obrócić grupę, Ctrl+Shift+przeciągnij, aby przeskalować grupę. Przeciągnij „+”, aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby rozgrupować."
       },
       "editCoordinates": {
         "title": "Bezpośrednio edytuj współrzędne",
@@ -357,7 +357,7 @@
       },
       "keyboardShortcuts": {
         "title": "Skróty klawiaturowe",
-        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć; Ctrl+D, aby powielić; klawisz Delete, aby usunąć."
+        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć [+/- to rotate the object]; Ctrl+D, aby powielić; klawisz Delete, aby usunąć."
       },
       "runLocally": {
         "title": "Uruchom lokalnie",

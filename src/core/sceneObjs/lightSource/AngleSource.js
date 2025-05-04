@@ -94,6 +94,10 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
     ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
   }
 
+  getDefaultCenter() {
+    return this.p1;
+  }
+
   onSimulationStart() {
     let rayDensity = this.scene.rayDensity;
     do {

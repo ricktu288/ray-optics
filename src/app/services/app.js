@@ -360,6 +360,12 @@ function initAppService() {
       return false;
     }
 
+    //Ctrl+A or Cmd+A
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == 65) {
+      editor.selectAll();
+      return false;
+    }
+
     //esc
     if (e.keyCode == 27) {
       if (editor.isConstructing) {
@@ -372,6 +378,7 @@ function initAppService() {
       if (editor.selectedObjIndex != -1) {
         var selectedObjType = scene.objs[editor.selectedObjIndex].constructor.type;
         editor.removeObj(editor.selectedObjIndex);
+        editor.hoveredObjIndex = -1;
         simulator.updateSimulation(!sceneObjs[selectedObjType].isOptical, true);
         editor.onActionComplete();
       }
@@ -379,16 +386,16 @@ function initAppService() {
     }
 
     //Plus and Minus Keys for rotation
-    if (e.keyCode == 107 || e.keyCode == 187) {             // + key for rotate clockwise
+    if (e.keyCode == 107 || e.keyCode == 187 || e.keyCode == 61) {  // + key for rotate clockwise
       if (editor.selectedObjIndex != -1) {
-        scene.objs[editor.selectedObjIndex].rotate(1);
+        scene.objs[editor.selectedObjIndex].rotate(-0.5 * Math.PI / 180);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
         editor.onActionComplete();
       }
     }
-    if (e.keyCode == 109 || e.keyCode == 189) {             // - key for rotate c-clockwise
+    if (e.keyCode == 109 || e.keyCode == 189 || e.keyCode == 173) {  // - key for rotate c-clockwise
       if (editor.selectedObjIndex != -1) {
-        scene.objs[editor.selectedObjIndex].rotate(-1);
+        scene.objs[editor.selectedObjIndex].rotate(0.5 * Math.PI / 180);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
         editor.onActionComplete();
       }

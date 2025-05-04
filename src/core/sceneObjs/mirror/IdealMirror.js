@@ -139,6 +139,12 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
     }
   }
 
+  scale(scale, center) {
+    super.scale(scale, center);
+    this.focalLength *= scale;
+    return true;
+  }
+
   checkRayIntersects(ray) {
     if (this.checkRayIntersectFilter(ray)) {
       return this.checkRayIntersectsShape(ray);

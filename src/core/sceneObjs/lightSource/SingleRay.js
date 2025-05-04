@@ -65,6 +65,10 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
     ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
   }
 
+  getDefaultCenter() {
+    return this.p1;
+  }
+
   onSimulationStart() {
     var ray1 = geometry.line(this.p1, this.p2);
     ray1.brightness_s = 0.5 * this.brightness;

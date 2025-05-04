@@ -109,6 +109,21 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     super.move(diffX, diffY);
     // Invalidate path after moving
     delete this.path;
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    super.rotate(angle, center);
+    // Invalidate path after rotating
+    delete this.path;
+    return true;
+  }
+
+  scale(scale, center = null) {
+    super.scale(scale, center);
+    // Invalidate path after scaling
+    delete this.path;
+    return true;
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

@@ -203,6 +203,21 @@ class SphericalLens extends Glass {
       this.p2.x += diffX;
       this.p2.y += diffY;
     }
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    if (this.path) {
+      return super.rotate(angle, center);
+    }
+    return false;
+  }
+
+  scale(scale, center = null) {
+    if (this.path) {
+      return super.scale(scale, center);
+    }
+    return false;
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

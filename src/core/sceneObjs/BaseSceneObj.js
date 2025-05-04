@@ -169,17 +169,38 @@ class BaseSceneObj {
    * Called when the user use arrow keys to move the object.
    * @param {number} diffX - The x-coordinate displacement.
    * @param {number} diffY - The y-coordinate displacement.
+   * @returns {boolean} True if the movement is done properly in the sense that if every object is moved by the same displacement, the resulting scene should look essentially the same as if the viewport is moved by the opposite displacement. False otherwise.
    */
   move(diffX, diffY) {
-    // Do nothing by default
+    return false;
   }
 
   /**
-   * Rotate the object. (This feature is incomplete and currently only implemented for `ConcaveDiffractionGrating`.)
-   * @param {number} cw
+   * Rotate the object by the given angle.
+   * @param {number} angle - The angle in radians. Positive for counter-clockwise.
+   * @param {Point} center - The center of rotation. If null, there should be a default center of rotation (which is used when the user uses the +/- keys to rotate the object)
+   * @returns {boolean} True if the rotation is done properly in the sense that if every object is rotated by the same angle and center, the resulting scene should look essentially the same as if the viewport is rotated by the opposite angle. False otherwise.
    */
-  rotate(cw) {
-    // Do nothing by default
+  rotate(angle, center) {
+    return false;
+  }
+
+  /**
+   * Scale the object by the given scale factor.
+   * @param {number} scale - The scale factor.
+   * @param {Point} center - The center of scaling. If null, there should be a default center of scaling.
+   * @returns {boolean} True if the scaling is done properly in the sense that if every object is scaled by the same scale factor and center, the resulting scene should look essentially the same as if the viewport is scaled by the same scale factor. False otherwise.
+   */
+  scale(scale, center) {
+    return false;
+  }
+
+  /**
+   * Get the default center of rotation or scaling.
+   * @returns {Point} The default center of rotation or scaling.
+   */
+  getDefaultCenter() {
+    return null;
   }
 
   /**

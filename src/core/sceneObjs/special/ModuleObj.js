@@ -170,6 +170,76 @@ class ModuleObj extends BaseSceneObj {
       point.y += diffY;
     }
     this.expandObjs();
+
+    return false; // It should depend on how the module is implemented. In the future there will be an automatic way to handle coordinate transformations within the module.
+  }
+
+  rotate(angle, center = null) {
+    // Similar to move(), we operate on control points directly rather than expanded objects
+    if (this.points.length === 0) {
+      return false;
+    }
+
+    // Use the geometric center of control points if no center is provided
+    center = center || this.getDefaultCenter();
+    
+    // Apply rotation to each control point
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    
+    for (let point of this.points) {
+      const dx = point.x - center.x;
+      const dy = point.y - center.y;
+      
+      point.x = center.x + dx * cos - dy * sin;
+      point.y = center.y + dx * sin + dy * cos;
+    }
+    
+    // Regenerate the expanded objects with new control point positions
+    this.expandObjs();
+    
+    return false; // Always return false as coordinated transformations are module-dependent
+  }
+
+  scale(scale, center = null) {
+    // Similar to move(), we operate on control points directly rather than expanded objects
+    if (this.points.length === 0) {
+      return false;
+    }
+
+    // Use the geometric center of control points if no center is provided
+    center = center || this.getDefaultCenter();
+    
+    // Apply scaling to each control point
+    for (let point of this.points) {
+      point.x = center.x + (point.x - center.x) * scale;
+      point.y = center.y + (point.y - center.y) * scale;
+    }
+    
+    // Regenerate the expanded objects with new control point positions
+    this.expandObjs();
+    
+    return false; // Always return false as coordinated transformations are module-dependent
+  }
+
+  getDefaultCenter() {
+    // Calculate the center as the average of all control points
+    if (this.points.length === 0) {
+      return;
+    }
+    
+    let sumX = 0;
+    let sumY = 0;
+    
+    for (const point of this.points) {
+      sumX += point.x;
+      sumY += point.y;
+    }
+    
+    return {
+      x: sumX / this.points.length,
+      y: sumY / this.points.length
+    };
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

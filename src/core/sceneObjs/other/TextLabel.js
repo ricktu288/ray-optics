@@ -162,8 +162,64 @@ class TextLabel extends BaseSceneObj {
   move(diffX, diffY) {
     this.x = this.x + diffX;
     this.y = this.y + diffY;
+    return true;
   }
-  
+
+  rotate(angle, center = null) {
+    // Convert the input angle from radians to degrees
+    // Note: In TextLabel, positive angles are clockwise (opposite of mathematical convention)
+    const angleDegrees = -angle * 180 / Math.PI;
+    
+    // Use the text position as default center if none provided
+    center = center || { x: this.x, y: this.y };
+    
+    // If rotating around a point other than the text position,
+    // we need to move the text position accordingly
+    if (center.x !== this.x || center.y !== this.y) {
+      // Calculate the distance and current angle from center to text position
+      const dx = this.x - center.x;
+      const dy = this.y - center.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const currentAngle = Math.atan2(dy, dx);
+      
+      // Calculate the new position after rotation
+      // Note: angle is positive for counterclockwise, so we use the standard convention here
+      const newAngle = currentAngle + angle;
+      this.x = center.x + distance * Math.cos(newAngle);
+      this.y = center.y + distance * Math.sin(newAngle);
+    }
+    
+    // Add the rotation angle to the text's angle property
+    this.angle = (this.angle + angleDegrees) % 360;
+    if (this.angle < 0) {
+      this.angle += 360;
+    }
+    
+    return true;
+  }
+
+  scale(scale, center = null) {
+    // Use the text position as default center if none provided
+    center = center || { x: this.x, y: this.y };
+    
+    // If scaling around a point other than the text position,
+    // we need to move the text position accordingly
+    if (center.x !== this.x || center.y !== this.y) {
+      // Scale the distance from center to text position
+      this.x = center.x + (this.x - center.x) * scale;
+      this.y = center.y + (this.y - center.y) * scale;
+    }
+    
+    // Scale the font size
+    this.fontSize *= scale;
+    
+    return true;
+  }
+
+  getDefaultCenter() {
+    return { x: this.x, y: this.y };
+  }
+
   onConstructMouseDown(mouse, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
     this.x = mousePos.x;

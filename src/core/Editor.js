@@ -151,6 +151,12 @@ class Editor {
 
     /** @property {ControlPoint[]} pendingControlPoints - The control points to be selected for a handle when the user clicks on a control point with the Ctrl key held down. */
     this.pendingControlPoints = [];
+    
+    /** @property {boolean} pendingObjectSelection - Whether a user has clicked on an object with the Ctrl key held down, and the editor is waiting to see if the user is going to select the object for a handle. */
+    this.pendingObjectSelection = false;
+    
+    /** @property {number} pendingObjectIndex - The index of the object to be bound to a handle when the user clicks on an object with the Ctrl key held down. */
+    this.pendingObjectIndex = -1;
 
     /** @property {string} addingModuleName - The name of the module that will be added when the user clicks on the canvas if `addingObjType` is 'ModuleObj'. */
     this.addingModuleName = '';
@@ -583,7 +589,7 @@ class Editor {
         var ret = rets[0];
         if (ret.targetObjIndex != -1) {
           if (!e.ctrlKey && this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
-            // User is creating a handle
+            // If the user was creating a handle but now clicking a point without holding ctrl, cancel the handle creation
             this.removeObj(0);
             ret.targetObjIndex--;
           }
@@ -592,9 +598,17 @@ class Editor {
           this.dragContext.originalObj = this.scene.objs[ret.targetObjIndex].serialize(); // Store the obj status before dragging
           this.dragContext.hasDuplicated = false;
           this.draggingObjIndex = ret.targetObjIndex;
-          if (e.ctrlKey && this.dragContext.targetPoint) {
-            this.pendingControlPointSelection = true;
-            this.pendingControlPoints = rets;
+          if (e.ctrlKey) {
+            // If we're clicking on an entire object, prepare to bind it to a new handle
+            if (this.dragContext.part === 0) {
+              this.pendingObjectSelection = true;
+              this.pendingObjectIndex = ret.targetObjIndex;
+            }
+            // If we're clicking on a control point, prepare to bind it to a new handle
+            else if (this.dragContext.targetPoint) {
+              this.pendingControlPointSelection = true;
+              this.pendingControlPoints = rets;
+            }
           }
           return;
         }
@@ -605,6 +619,9 @@ class Editor {
         if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
           // User is creating a handle
           this.finishHandleCreation(this.mousePos);
+          this.hoveredObjIndex = 0;
+          this.canvas.style.cursor = 'pointer';
+          this.simulator.updateSimulation(true, true);
           return;
         }
         if ((this.addingObjType == '') || (e.which == 3)) {
@@ -680,6 +697,13 @@ class Editor {
     }
 
     this.pendingControlPointSelection = false;
+    this.pendingObjectSelection = false;
+
+    const isCreatingHandle = this.scene.objs.length > 0 && 
+                          this.scene.objs[0].constructor.type === "Handle" && 
+                          this.scene.objs[0].notDone;
+
+    
 
     if (!this.isConstructing && this.draggingObjIndex == -1 && !this.scene.lockObjs) {
       // highlight object under mousePos cursor
@@ -699,12 +723,26 @@ class Editor {
         } else {
           this.canvas.style.cursor = '';
         }
-      } else {
-        if (this.scene.mode == 'observer' && geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
-          this.canvas.style.cursor = 'pointer';
+      } else if (this.scene.mode == 'observer' && geometry.distanceSquared(this.mousePos, this.scene.observer.c) < this.scene.observer.r * this.scene.observer.r) {
+        this.canvas.style.cursor = 'pointer';
+      } else if (isCreatingHandle) {
+        if (!e.ctrlKey) {
+          // When creating a handle and already released ctrlKey, use alias cursor to move the handle to indicate that the user is going to place the handle
+          this.canvas.style.cursor = 'alias';
+          if (mousePos2) {
+            this.scene.objs[0].p1 = mousePos2;
+            this.simulator.updateSimulation(true, true);
+          }
         } else {
+          // If the user hold the ctrlKey again, remove the handle to indicate that they are still selecting the things to be bound, and not ready to choose the handle position yet.
           this.canvas.style.cursor = '';
+          if (this.scene.objs[0].p1) {  
+            this.scene.objs[0].p1 = null;
+            this.simulator.updateSimulation(true, true);
+          }
         }
+      } else {
+        this.canvas.style.cursor = '';
       }
     }
 
@@ -860,8 +898,16 @@ class Editor {
     }
     else {
       if (this.pendingControlPointSelection) {
-        this.pendingControlPointSelection = false
+        this.pendingControlPointSelection = false;
         this.addControlPointsForHandle(this.pendingControlPoints);
+        this.hoveredObjIndex = -1;
+        this.simulator.updateSimulation(true, true);
+      }
+      if (this.pendingObjectSelection) {
+        this.pendingObjectSelection = false;
+        this.addObjectForHandle(this.pendingObjectIndex);
+        this.hoveredObjIndex = -1;
+        this.simulator.updateSimulation(true, true);
       }
       if (e.which && e.which == 3 && this.draggingObjIndex == -3 && this.mousePos.x == this.dragContext.mousePos0.x && this.mousePos.y == this.dragContext.mousePos0.y) {
         this.draggingObjIndex = -1;
@@ -1003,6 +1049,24 @@ class Editor {
   }
 
   /**
+   * Add an entire object to a handle (create a new handle or add to the currently constructing handle).
+   * @param {number} objIndex - The index of the object to bind to the handle.
+   */
+  addObjectForHandle(objIndex) {
+    // Create a new handle if one isn't already being constructed
+    if (!(this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone)) {
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
+      if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
+      // Adjust objIndex since we added an object at the beginning of the array
+      objIndex++;
+    }
+    
+    // Add the object to the handle
+    this.scene.objs[0].addObject(objIndex);
+    this.simulator.updateSimulation(true, true);
+  }
+
+  /**
    * Finish the creation of a handle.
    * @param {Point} point - The point for the position of the handle.
    */
@@ -1017,6 +1081,14 @@ class Editor {
    * @param {number} index - The index of the object to select.
    */
   selectObj(index) {
+    // If a handle is being constructed, always unselect.
+    // This is to avoid giving the user a false impression that one could adjust properties in the object bar to apply to all selected objects (which may be the case in the future)
+    if (this.scene.objs[0] && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
+      this.selectedObjIndex = -1;
+      this.emit('selectionChange', { oldIndex: this.selectedObjIndex, newIndex: -1 });
+      return;
+    }
+
     if (index < 0 || index >= this.scene.objs.length) {
       // If this object does not exist
       this.emit('selectionChange', { oldIndex: this.selectedObjIndex, newIndex: -1 });
@@ -1388,6 +1460,80 @@ class Editor {
     this.emit('requestUpdateErrorAndWarning');
   }
 
+  /**
+   * Determines if an object should be highlighted in the scene.
+   * @param {number} objIndex - The index of the object to check.
+   * @returns {boolean} - Whether the object should be highlighted.
+   */
+  isObjHighlighted(objIndex) {
+    // Check if a handle is being created (first object is a handle with notDone=true)
+    const isCreatingHandle = this.scene.objs.length > 0 && 
+                            this.scene.objs[0].constructor.type === "Handle" && 
+                            this.scene.objs[0].notDone;
+    
+    // If we're creating a handle, highlight objects bound to it
+    if (isCreatingHandle) {
+      const handle = this.scene.objs[0];
+      
+      // Check if this object is directly bound to the handle
+      if (handle.objIndices.includes(objIndex)) {
+        return true;
+      }
+    }
+    
+    // If hoveredObjIndex is not valid, check only the handle binding status above
+    if (!this.scene.objs[this.hoveredObjIndex]) {
+      return false;
+    }
+    
+    // If the hovered object is a handle, highlight both the handle and any bound objects
+    if (this.scene.objs[this.hoveredObjIndex].constructor.type === "Handle") {
+      return this.scene.objs[this.hoveredObjIndex].objIndices.includes(objIndex) || this.hoveredObjIndex === objIndex;
+    } else {
+      // Otherwise, only highlight the hovered object itself
+      return this.hoveredObjIndex === objIndex;
+    }
+  }
+
+  /**
+   * Select all objects in the scene by creating a handle that binds to all objects.
+   * If a handle is already being created, add all objects to it.
+   */
+  selectAll() {
+    // Skip if there are no objects
+    if (this.scene.objs.length === 0) {
+      return;
+    }
+
+    // Create a new handle if one isn't already being constructed
+    let handleIndex = -1;
+    if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type === "Handle" && this.scene.objs[0].notDone) {
+      handleIndex = 0;
+    } else {
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
+      if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
+      this.selectObj(-1);
+      handleIndex = 0;
+      // Adjust selected object index since we added an object at the beginning of the array
+      if (this.selectedObjIndex >= 0) {
+        this.selectedObjIndex++;
+      }
+    }
+
+    // Clear existing objIndices to avoid duplicates
+    this.scene.objs[handleIndex].objIndices = [];
+
+    // Add all objects to the handle except for itself or other handles
+    for (let i = 0; i < this.scene.objs.length; i++) {
+      // Skip the handle itself or other handles
+      if (this.scene.objs[i].constructor.type !== "Handle") {
+        this.scene.objs[handleIndex].addObject(i);
+      }
+    }
+
+    // The handle remains in notDone state so user can position it
+    this.simulator.updateSimulation(true, true);
+  }
 }
 
 export default Editor;

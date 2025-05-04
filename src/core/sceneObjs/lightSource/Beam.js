@@ -117,6 +117,12 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     ctx.lineCap = 'butt';
   }
 
+  scale(scale, center) {
+    super.scale(scale, center);
+    this.brightness /= scale;
+    return true;
+  }
+
   onSimulationStart() {
     if ((this.scene.mode == 'images' || this.scene.mode == 'observer') && (this.emisAngle > 0 || this.random)) {
       this.warning = i18next.t('simulator:sceneObjs.Beam.imageDetectionWarning');

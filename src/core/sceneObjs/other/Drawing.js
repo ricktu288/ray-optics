@@ -65,14 +65,81 @@ class Drawing extends BaseSceneObj {
   }
 
   move(diffX, diffY) {
-    let roundedDiffX = this.round(diffX);
-    let roundedDiffY = this.round(diffY);
+    // Removed rounding to avoid error accumulation
     for (const stroke of this.strokes) {
       for (let i = 0; i < stroke.length; i += 2) {
-        stroke[i] += roundedDiffX;
-        stroke[i + 1] += roundedDiffY;
+        stroke[i] += diffX;
+        stroke[i + 1] += diffY;
       }
     }
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    // Use the calculated center of the drawing if none provided
+    center = center || this.getDefaultCenter();
+    
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    
+    for (const stroke of this.strokes) {
+      for (let i = 0; i < stroke.length; i += 2) {
+        const x = stroke[i];
+        const y = stroke[i + 1];
+        
+        // Apply rotation without rounding
+        const dx = x - center.x;
+        const dy = y - center.y;
+        
+        stroke[i] = center.x + dx * cos - dy * sin;
+        stroke[i + 1] = center.y + dx * sin + dy * cos;
+      }
+    }
+    
+    return true;
+  }
+
+  scale(scale, center = null) {
+    // Use the calculated center of the drawing if none provided
+    center = center || this.getDefaultCenter();
+    
+    for (const stroke of this.strokes) {
+      for (let i = 0; i < stroke.length; i += 2) {
+        // Apply scaling without rounding
+        stroke[i] = center.x + (stroke[i] - center.x) * scale;
+        stroke[i + 1] = center.y + (stroke[i + 1] - center.y) * scale;
+      }
+    }
+    
+    return true;
+  }
+
+  getDefaultCenter() {
+    // Calculate the center as the average of all points in the drawing
+    if (this.strokes.length === 0) {
+      return { x: 0, y: 0 }; // Fallback for empty drawing
+    }
+    
+    let sumX = 0;
+    let sumY = 0;
+    let totalPoints = 0;
+    
+    for (const stroke of this.strokes) {
+      for (let i = 0; i < stroke.length; i += 2) {
+        sumX += stroke[i];
+        sumY += stroke[i + 1];
+        totalPoints++;
+      }
+    }
+    
+    if (totalPoints === 0) {
+      return { x: 0, y: 0 };
+    }
+    
+    return {
+      x: sumX / totalPoints,
+      y: sumY / totalPoints
+    };
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

@@ -122,7 +122,7 @@
       },
       "groupRotateScale": {
         "title": "Grouper, tourner et mettre des objets à l'échelle",
-        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités, puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper."
+        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités [or click one or more objects], puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper."
       },
       "editCoordinates": {
         "title": "Éditer directement les coordonnées",
@@ -130,7 +130,7 @@
       },
       "keyboardShortcuts": {
         "title": "Raccourcis clavier",
-        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet, Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet."
+        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet [+/- to rotate the object], Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet."
       },
       "contactUs": {
         "title": "Nous contacter",

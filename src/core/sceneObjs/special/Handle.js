@@ -26,7 +26,8 @@ import i18next from 'i18next';
  * @memberof sceneObjs
  * @property {Point} p1 - The position of the handle.
  * @property {Point} p2 - The position of the rotation/scale center.
- * @property {Array<ControlPoint>} controlPoints - The control points bound to the handle.
+ * @property {Array<number>} objIndices - The indices of the objects bound to the handle.
+ * @property {Array<ControlPoint>} controlPoints - The individual control points (in addition to the bound objects) bound to the handle.
  * @property {string} transformation - The transformation applied to the control points when dragging the handle, with the corresponding arrows marked on the handle. Possible values are "default", "translation", "xTranslation", "yTranslation", "rotation", "scaling". The "default" is the only behavior in older versions where no arrow is marked on the handle, and the transformation is determined by the ctrl and shift keys.
  * @property {boolean} notDone - Whether the construction of the handle is complete.
  */
@@ -36,6 +37,7 @@ class Handle extends BaseSceneObj {
   static serializableDefaults = {
     p1: null,
     p2: null,
+    objIndices: [],
     controlPoints: [],
     transformation: "default",
     notDone: false
@@ -207,14 +209,41 @@ class Handle extends BaseSceneObj {
         ctx.lineTo(this.p2.x, this.p2.y + 5 * ls);
         ctx.stroke();
       }
+    } else if (this.p1) {
+      ctx.beginPath();
+      ctx.strokeStyle = 'cyan';
+      ctx.beginPath();
+      ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, Math.PI * 2, false);
+      ctx.stroke();
     }
   }
 
   move(diffX, diffY) {
+    if (this.notDone) return;
+
+    // Move handle and rotation/scale center
     this.p1.x = this.p1.x + diffX;
     this.p1.y = this.p1.y + diffY;
     this.p2.x = this.p2.x + diffX;
     this.p2.y = this.p2.y + diffY;
+
+    // Move bound objects
+    let allSuccess = true;
+    let unsupportedType = null;
+
+    for (var i in this.objIndices) {
+      const obj = this.scene.objs[this.objIndices[i]];
+      const result = obj.move(diffX, diffY);
+      if (!result) {
+        unsupportedType = obj.constructor.type;
+        allSuccess = false;
+      }
+    }
+
+    // Move bound control points
     for (var i in this.controlPoints) {
       this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
       this.controlPoints[i].dragContext.isByHandle = true;
@@ -226,6 +255,150 @@ class Handle extends BaseSceneObj {
       this.controlPoints[i].newPoint.y = this.controlPoints[i].newPoint.y + diffY;
       this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)), false, false);
     }
+
+    // Set or clear warning
+    if (!allSuccess) {
+      this.warning = i18next.t('simulator:sceneObjs.Handle.transformationWarning', {
+        obj: unsupportedType,
+        transformation: i18next.t('simulator:sceneObjs.Handle.transformations.translation')
+      });
+    } else {
+      this.warning = null;
+    }
+
+    return allSuccess;
+  }
+
+  rotate(angle, center = null) {
+    if (this.notDone) return;
+
+    // Use p2 as the default center if none provided
+    center = center || this.p2;
+    
+    // Apply rotation to p1 (the handle position)
+    let x = this.p1.x - center.x;
+    let y = this.p1.y - center.y;
+    this.p1.x = Math.cos(angle) * x - Math.sin(angle) * y + center.x;
+    this.p1.y = Math.sin(angle) * x + Math.cos(angle) * y + center.y;
+    
+    // Only rotate p2 if it's not the center of rotation
+    if (center !== this.p2) {
+      x = this.p2.x - center.x;
+      y = this.p2.y - center.y;
+      this.p2.x = Math.cos(angle) * x - Math.sin(angle) * y + center.x;
+      this.p2.y = Math.sin(angle) * x + Math.cos(angle) * y + center.y;
+    }
+    
+    // Rotate bound objects
+    let allSuccess = true;
+    let unsupportedType = null;
+
+    for (var i in this.objIndices) {
+      const obj = this.scene.objs[this.objIndices[i]];
+      const result = obj.rotate(angle, center);
+      if (!result) {
+        unsupportedType = obj.constructor.type;
+        allSuccess = false;
+      }
+    }
+    
+    // Rotate bound control points
+    for (var i in this.controlPoints) {
+      this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+      this.controlPoints[i].dragContext.isByHandle = true;
+      this.controlPoints[i].dragContext.hasDuplicated = false;
+      this.controlPoints[i].dragContext.targetPoint = { x: this.controlPoints[i].newPoint.x, y: this.controlPoints[i].newPoint.y };
+      this.controlPoints[i].dragContext.snapContext = {};
+      
+      // Rotate the control point
+      x = this.controlPoints[i].newPoint.x - center.x;
+      y = this.controlPoints[i].newPoint.y - center.y;
+      this.controlPoints[i].newPoint.x = Math.cos(angle) * x - Math.sin(angle) * y + center.x;
+      this.controlPoints[i].newPoint.y = Math.sin(angle) * x + Math.cos(angle) * y + center.y;
+      
+      // Update the target object
+      this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(
+        new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2),
+        JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)),
+        false,
+        false
+      );
+    }
+    
+    // Set or clear warning
+    if (!allSuccess) {
+      this.warning = i18next.t('simulator:sceneObjs.Handle.transformationWarning', {
+        obj: unsupportedType,
+        transformation: i18next.t('simulator:sceneObjs.Handle.transformations.rotation')
+      });
+    } else {
+      this.warning = null;
+    }
+    
+    return allSuccess;
+  }
+
+  scale(scale, center = null) {
+    if (this.notDone) return;
+    
+    // Use p2 as the default center if none provided
+    center = center || this.p2;
+    
+    // Apply scaling to p1 (the handle position)
+    this.p1.x = (this.p1.x - center.x) * scale + center.x;
+    this.p1.y = (this.p1.y - center.y) * scale + center.y;
+    
+    // Only scale p2 if it's not the center of scaling
+    if (center !== this.p2) {
+      this.p2.x = (this.p2.x - center.x) * scale + center.x;
+      this.p2.y = (this.p2.y - center.y) * scale + center.y;
+    }
+        
+    // Scale bound objects
+    let allSuccess = true;
+    let unsupportedType = null;
+
+    for (var i in this.objIndices) {
+      const obj = this.scene.objs[this.objIndices[i]];
+      const result = obj.scale(scale, center);
+      if (!result) {
+        unsupportedType = obj.constructor.type;
+        allSuccess = false;
+      }
+    }
+    
+    // Scale bound control points
+    for (var i in this.controlPoints) {
+      this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
+      this.controlPoints[i].dragContext.isByHandle = true;
+      this.controlPoints[i].dragContext.hasDuplicated = false;
+      this.controlPoints[i].dragContext.targetPoint = { x: this.controlPoints[i].newPoint.x, y: this.controlPoints[i].newPoint.y };
+      this.controlPoints[i].dragContext.snapContext = {};
+      
+      // Scale the control point
+      this.controlPoints[i].newPoint.x = (this.controlPoints[i].newPoint.x - center.x) * scale + center.x;
+      this.controlPoints[i].newPoint.y = (this.controlPoints[i].newPoint.y - center.y) * scale + center.y;
+      
+      // Update the target object
+      this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(
+        new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2),
+        JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)),
+        false,
+        false
+      );
+    }
+    
+    // Set or clear warning
+    if (!allSuccess) {
+      this.warning = i18next.t('simulator:sceneObjs.Handle.transformationWarning', {
+        obj: unsupportedType,
+        transformation: i18next.t('simulator:sceneObjs.Handle.transformations.scaling')
+      });
+    } else {
+      this.warning = null;
+    }
+    
+    return allSuccess;
   }
 
   checkMouseOver(mouse) {
@@ -249,54 +422,39 @@ class Handle extends BaseSceneObj {
 
   onDrag(mouse, dragContext, ctrl, shift) {
     if (this.notDone) return;
+    
     if (shift) {
       var mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
     } else {
       var mousePos = mouse.getPosSnappedToGrid();
       dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
     }
+    
     if (dragContext.part == 1) {
       if ((ctrl && shift) || this.transformation == "scaling") { 
         // Scaling
-        var factor = geometry.distance(this.p2, mouse.pos) / geometry.distance(this.p2, dragContext.targetPoint_)
+        var factor = geometry.distance(this.p2, mouse.pos) / geometry.distance(this.p2, dragContext.targetPoint_);
         if (factor < 1e-5) return;
-        var center = this.p2;
-        var trans = function (p) {
-          p.x = (p.x - center.x) * factor + center.x;
-          p.y = (p.y - center.y) * factor + center.y;
-        };
+        
+        // Call the scale method
+        this.scale(factor, this.p2);
       } else if (ctrl || this.transformation == "rotation") {
         // Rotation
-        var theta = Math.atan2(this.p2.y - mouse.pos.y, this.p2.x - mouse.pos.x) - Math.atan2(this.p2.y - dragContext.targetPoint_.y, this.p2.x - dragContext.targetPoint_.x);
-        var center = this.p2;
-        var trans = function (p) {
-          var x = p.x - center.x;
-          var y = p.y - center.y;
-          p.x = Math.cos(theta) * x - Math.sin(theta) * y + center.x;
-          p.y = Math.sin(theta) * x + Math.cos(theta) * y + center.y;
-        };
+        var theta = Math.atan2(this.p2.y - mouse.pos.y, this.p2.x - mouse.pos.x) - 
+                    Math.atan2(this.p2.y - dragContext.targetPoint_.y, this.p2.x - dragContext.targetPoint_.x);
+        
+        // Call the rotate method
+        this.rotate(theta, this.p2);
       } else {
         // Translation
         var diffX = this.transformation == "yTranslation" ? 0 : mousePos.x - dragContext.targetPoint_.x;
         var diffY = this.transformation == "xTranslation" ? 0 : mousePos.y - dragContext.targetPoint_.y;
-        var trans = function (p) {
-          p.x += diffX;
-          p.y += diffY;
-        };
+        
+        // Call the move method
+        this.move(diffX, diffY);
       }
-
-      // Do the transformation
-      trans(this.p1);
-      trans(this.p2);
-      for (var i in this.controlPoints) {
-        this.controlPoints[i].dragContext.originalObj = this.scene.objs[this.controlPoints[i].targetObjIndex].serialize();
-        this.controlPoints[i].dragContext.isByHandle = true;
-        this.controlPoints[i].dragContext.hasDuplicated = false;
-        this.controlPoints[i].dragContext.targetPoint = { x: this.controlPoints[i].newPoint.x, y: this.controlPoints[i].newPoint.y };
-        this.controlPoints[i].dragContext.snapContext = {};
-        trans(this.controlPoints[i].newPoint);
-        this.scene.objs[this.controlPoints[i].targetObjIndex].onDrag(new Mouse(JSON.parse(JSON.stringify(this.controlPoints[i].newPoint)), this.scene, false, 2), JSON.parse(JSON.stringify(this.controlPoints[i].dragContext)), false, false);
-      }
+      
+      // Update the target point to the new p1 position
       dragContext.targetPoint_.x = this.p1.x;
       dragContext.targetPoint_.y = this.p1.y;
     }
@@ -321,18 +479,57 @@ class Handle extends BaseSceneObj {
   }
 
   /**
+   * Add (bind) an entire object to the handle.
+   * @param {number} objIndex - The index of the object to be bound.
+   */
+  addObject(objIndex) {
+    // Check if this object is already bound to avoid duplicates
+    if (!this.objIndices.includes(objIndex)) {
+      this.objIndices.push(objIndex);
+    }
+  }
+
+  /**
    * Finish creating the handle.
    * @param {Point} point - The position of the handle.
    */
   finishHandle(point) {
     this.p1 = point;
-    var totalX = 0;
-    var totalY = 0;
-    for (var i in this.controlPoints) {
+    
+    let totalX = 0;
+    let totalY = 0;
+    let pointCount = 0;
+    
+    // Add all control points to the average
+    for (let i in this.controlPoints) {
       totalX += this.controlPoints[i].newPoint.x;
       totalY += this.controlPoints[i].newPoint.y;
+      pointCount++;
     }
-    this.p2 = geometry.point(totalX / this.controlPoints.length, totalY / this.controlPoints.length);
+    
+    // Check default centers from bound objects
+    for (let i in this.objIndices) {
+      const obj = this.scene.objs[this.objIndices[i]];
+      const defaultCenter = obj.getDefaultCenter && obj.getDefaultCenter();
+      
+      if (defaultCenter) {
+        totalX += defaultCenter.x;
+        totalY += defaultCenter.y;
+        pointCount++;
+      }
+    }
+    
+    // Calculate the average position if we have any points
+    if (pointCount > 0) {
+      this.p2 = geometry.point(totalX / pointCount, totalY / pointCount);
+    } 
+    // If no points to average, fall back to viewport center
+    else {
+      const centerX = (this.scene.width * 0.5 - this.scene.origin.x) / this.scene.scale;
+      const centerY = (this.scene.height * 0.5 - this.scene.origin.y) / this.scene.scale;
+      this.p2 = geometry.point(centerX, centerY);
+    }
+    
     this.notDone = false;
   }
 

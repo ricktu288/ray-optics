@@ -101,6 +101,7 @@ class ArcMirror extends BaseFilter {
     }
   }
 
+
   move(diffX, diffY) {
     this.p1.x = this.p1.x + diffX;
     this.p1.y = this.p1.y + diffY;
@@ -108,6 +109,66 @@ class ArcMirror extends BaseFilter {
     this.p2.y = this.p2.y + diffY;
     this.p3.x = this.p3.x + diffX;
     this.p3.y = this.p3.y + diffY;
+
+    return true;
+  }
+
+  rotate(angle, center) {
+    // Use p3 as default rotation center if none is provided
+    const rotationCenter = center || this.p3;
+    
+    // Calculate differences from rotation center for all points
+    const diff_p1_x = this.p1.x - rotationCenter.x;
+    const diff_p1_y = this.p1.y - rotationCenter.y;
+    const diff_p2_x = this.p2.x - rotationCenter.x;
+    const diff_p2_y = this.p2.y - rotationCenter.y;
+    const diff_p3_x = this.p3.x - rotationCenter.x;
+    const diff_p3_y = this.p3.y - rotationCenter.y;
+
+    // Apply rotation matrix to p1
+    this.p1.x = rotationCenter.x + diff_p1_x * Math.cos(angle) - diff_p1_y * Math.sin(angle);
+    this.p1.y = rotationCenter.y + diff_p1_x * Math.sin(angle) + diff_p1_y * Math.cos(angle);
+
+    // Apply rotation matrix to p2
+    this.p2.x = rotationCenter.x + diff_p2_x * Math.cos(angle) - diff_p2_y * Math.sin(angle);
+    this.p2.y = rotationCenter.y + diff_p2_x * Math.sin(angle) + diff_p2_y * Math.cos(angle);
+    
+    // Apply rotation matrix to p3
+    this.p3.x = rotationCenter.x + diff_p3_x * Math.cos(angle) - diff_p3_y * Math.sin(angle);
+    this.p3.y = rotationCenter.y + diff_p3_x * Math.sin(angle) + diff_p3_y * Math.cos(angle);
+    
+    return true;
+  }
+  
+  scale(scale, center) {
+    // Use p3 as default scaling center if none is provided
+    const scalingCenter = center || this.p3;
+    
+    // Calculate differences from scaling center for all points
+    const diff_p1_x = this.p1.x - scalingCenter.x;
+    const diff_p1_y = this.p1.y - scalingCenter.y;
+    const diff_p2_x = this.p2.x - scalingCenter.x;
+    const diff_p2_y = this.p2.y - scalingCenter.y;
+    const diff_p3_x = this.p3.x - scalingCenter.x;
+    const diff_p3_y = this.p3.y - scalingCenter.y;
+    
+    // Apply scaling to p1
+    this.p1.x = scalingCenter.x + diff_p1_x * scale;
+    this.p1.y = scalingCenter.y + diff_p1_y * scale;
+    
+    // Apply scaling to p2
+    this.p2.x = scalingCenter.x + diff_p2_x * scale;
+    this.p2.y = scalingCenter.y + diff_p2_y * scale;
+    
+    // Apply scaling to p3
+    this.p3.x = scalingCenter.x + diff_p3_x * scale;
+    this.p3.y = scalingCenter.y + diff_p3_y * scale;
+    
+    return true;
+  }
+  
+  getDefaultCenter() {
+    return this.p3;
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

@@ -167,6 +167,11 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     }
   }
 
+  scale(scale, center) {
+    super.scale(scale, center);
+    return false; // It is unclear what properties should be scaled.
+  }
+
   onSimulationStart() {
     this.power = 0;
     this.normal = 0;

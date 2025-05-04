@@ -164,6 +164,35 @@ class CropBox extends BaseSceneObj {
     this.p3.y += diffY;
     this.p4.x += diffX;
     this.p4.y += diffY;
+    return true;
+  }
+  
+  scale(scale, center = null) {
+    // Use the center of the crop box if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Scale the points relative to the center
+    this.p1.x = center.x + (this.p1.x - center.x) * scale;
+    this.p1.y = center.y + (this.p1.y - center.y) * scale;
+    
+    this.p2.x = center.x + (this.p2.x - center.x) * scale;
+    this.p2.y = center.y + (this.p2.y - center.y) * scale;
+    
+    this.p3.x = center.x + (this.p3.x - center.x) * scale;
+    this.p3.y = center.y + (this.p3.y - center.y) * scale;
+    
+    this.p4.x = center.x + (this.p4.x - center.x) * scale;
+    this.p4.y = center.y + (this.p4.y - center.y) * scale;
+    
+    return true;
+  }
+  
+  getDefaultCenter() {
+    // Return the center of the crop box
+    return {
+      x: (this.p1.x + this.p2.x + this.p3.x + this.p4.x) / 4,
+      y: (this.p1.y + this.p2.y + this.p3.y + this.p4.y) / 4
+    };
   }
 
   checkMouseOver(mouse) {

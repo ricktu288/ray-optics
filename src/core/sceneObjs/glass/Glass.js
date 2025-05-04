@@ -149,6 +149,59 @@ class Glass extends BaseGlass {
       this.path[i].x += diffX;
       this.path[i].y += diffY;
     }
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    // Use the calculated center of the glass if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Apply rotation to all points
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    
+    for (var i = 0; i < this.path.length; i++) {
+      const dx = this.path[i].x - center.x;
+      const dy = this.path[i].y - center.y;
+      
+      this.path[i].x = center.x + dx * cos - dy * sin;
+      this.path[i].y = center.y + dx * sin + dy * cos;
+    }
+    
+    return true;
+  }
+
+  scale(scale, center = null) {
+    // Use the calculated center of the glass if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Scale each point relative to the center
+    for (var i = 0; i < this.path.length; i++) {
+      this.path[i].x = center.x + (this.path[i].x - center.x) * scale;
+      this.path[i].y = center.y + (this.path[i].y - center.y) * scale;
+    }
+    
+    return true;
+  }
+
+  getDefaultCenter() {
+    // Calculate the center point (average of all points)
+    if (this.path.length === 0) {
+      return { x: 0, y: 0 }; // Fallback if no points exist
+    }
+    
+    let sumX = 0;
+    let sumY = 0;
+    
+    for (var i = 0; i < this.path.length; i++) {
+      sumX += this.path[i].x;
+      sumY += this.path[i].y;
+    }
+    
+    return {
+      x: sumX / this.path.length,
+      y: sumY / this.path.length
+    };
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

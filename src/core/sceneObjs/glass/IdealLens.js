@@ -128,6 +128,12 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     }
   }
 
+  scale(scale, center) {
+    super.scale(scale, center);
+    this.focalLength *= scale;
+    return true;
+  }
+
   checkRayIntersects(ray) {
     return this.checkRayIntersectsShape(ray);
   }

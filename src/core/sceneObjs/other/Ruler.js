@@ -131,6 +131,15 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
 
     ctx.globalCompositeOperation = 'source-over';
   }
+
+  scale(scale, center) {
+    super.scale(scale, center);
+    return false; // It is unclear what properties should be scaled.
+  }
+
+  getDefaultCenter() {
+    return this.p1;
+  }
 };
 
 export default Ruler;

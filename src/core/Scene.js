@@ -328,6 +328,9 @@ class Scene {
         for (var j in this.objs[i].controlPoints) {
           this.objs[i].controlPoints[j].targetObjIndex++;
         }
+        for (var j in this.objs[i].objIndices) {
+          this.objs[i].objIndices[j]++;
+        }
       }
     }
   }
@@ -341,17 +344,39 @@ class Scene {
       let oldObj = this.objs[i+1].serialize();
       this.objs[i] = new sceneObjs[oldObj.type](this, oldObj);
     }
-  
+
     for (var i in this.objs) {
       if (this.objs[i].constructor.type == "Handle") {
-        for (var j in this.objs[i].controlPoints) {
+        // Filter out the control points that reference the deleted object
+        // and adjust indices for control points that reference objects after the deleted one
+        let newControlPoints = [];
+        for (var j = 0; j < this.objs[i].controlPoints.length; j++) {
           if (this.objs[i].controlPoints[j].targetObjIndex > index) {
+            // Adjust index for objects after the deleted one
             this.objs[i].controlPoints[j].targetObjIndex--;
-          } else if (this.objs[i].controlPoints[j].targetObjIndex == index) {
-            this.objs[i].controlPoints = [];
-            break;
+            newControlPoints.push(this.objs[i].controlPoints[j]);
+          } else if (this.objs[i].controlPoints[j].targetObjIndex != index) {
+            // Keep control points that don't reference the deleted object
+            newControlPoints.push(this.objs[i].controlPoints[j]);
           }
+          // Skip control points that reference the deleted object
         }
+        this.objs[i].controlPoints = newControlPoints;
+        
+        // Filter out the objIndices that reference the deleted object
+        // and adjust indices for objIndices that reference objects after the deleted one
+        let newObjIndices = [];
+        for (var j = 0; j < this.objs[i].objIndices.length; j++) {
+          if (this.objs[i].objIndices[j] > index) {
+            // Adjust index for objects after the deleted one
+            newObjIndices.push(this.objs[i].objIndices[j] - 1);
+          } else if (this.objs[i].objIndices[j] != index) {
+            // Keep objIndices that don't reference the deleted object
+            newObjIndices.push(this.objs[i].objIndices[j]);
+          }
+          // Skip objIndices that reference the deleted object
+        }
+        this.objs[i].objIndices = newObjIndices;
       }
     }
 
@@ -385,7 +410,11 @@ class Scene {
         indices.push(handle.controlPoints[j].targetObjIndex);
       }
     }
-    //console.log(indices);
+    for (var j in handle.objIndices) {
+      if (indices.indexOf(handle.objIndices[j]) == -1) {
+        indices.push(handle.objIndices[j]);
+      }
+    }
     for (var j in indices) {
       if (this.objs[indices[j]].constructor.type != "Handle") {
         this.cloneObj(indices[j]);

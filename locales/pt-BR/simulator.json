@@ -358,7 +358,7 @@
       },
       "groupRotateScale": {
         "title": "Agrupar, rotacionar e ajustar escala de objetos",
-        "description": "Segure Ctrl, clique em vários pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar."
+        "description": "Segure Ctrl, clique em vários pontos de controle [or click one or more objects], então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar."
       },
       "editCoordinates": {
         "title": "Editar coordenadas diretamente",
@@ -366,7 +366,7 @@
       },
       "keyboardShortcuts": {
         "title": "Atalhos de teclado",
-        "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; Ctrl+D para duplicar; tecla Delete para apagar."
+        "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo [+/- to rotate the object]; Ctrl+D para duplicar; tecla Delete para apagar."
       },
       "runLocally": {
         "title": "Rodar Localmente",

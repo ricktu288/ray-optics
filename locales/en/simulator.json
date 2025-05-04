@@ -284,7 +284,8 @@
         "yTranslation": "Y Translation",
         "rotation": "Rotation",
         "scaling": "Scaling"
-      }
+      },
+      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results."
     },
     "CropBox": {
       "title": "Export",
@@ -376,7 +377,7 @@
       },
       "groupRotateScale": {
         "title": "Group, rotate, and scale objects",
-        "description": "Hold Ctrl, click several control points (e.g. endpoints), then click empty space to group these points and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate the group, Ctrl+Shift+drag to scale the group. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup."
+        "description": "Hold Ctrl, click one or more objects or control points (e.g. endpoints), then click empty space to group them and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate the group, Ctrl+Shift+drag to scale the group. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup."
       },
       "editCoordinates": {
         "title": "Edit coordinates directly",
@@ -384,7 +385,7 @@
       },
       "keyboardShortcuts": {
         "title": "Keyboard shortcuts",
-        "description": "When an object is selected (by clicking it), press arrow keys to move the object; Ctrl+D to duplicate the object; Delete key to delete the object."
+        "description": "When an object is selected (by clicking it), press arrow keys to move the object; +/- to rotate the object; Ctrl+D to duplicate the object; Delete key to delete the object."
       },
       "runLocally": {
         "title": "Run Locally",

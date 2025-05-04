@@ -67,6 +67,21 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     }
   }
 
+  move(diffX, diffY) {
+    super.move(diffX, diffY);
+    return false; // By the current design the origin is not moved. This may need to be changed in the future.
+  }
+
+  rotate(angle, center) {
+    super.rotate(angle, center);
+    return false; // By the current design the origin is not moved. This may need to be changed in the future.
+  }
+
+  scale(scale, center) {
+    super.scale(scale, center);
+    return false; // By the current design the origin is not moved. This may need to be changed in the future.
+  }
+
   onConstructMouseDown(mouse, ctrl, shift) {
     super.onConstructMouseDown(mouse, ctrl, shift);
     this.origin = geometry.point(this.p1.x, this.p1.y);

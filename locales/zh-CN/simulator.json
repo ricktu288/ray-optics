@@ -284,7 +284,8 @@
         "yTranslation": "Y 平移",
         "rotation": "旋转",
         "scaling": "缩放"
-      }
+      },
+      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。"
     },
     "CropBox": {
       "title": "导出",
@@ -376,7 +377,7 @@
       },
       "groupRotateScale": {
         "title": "群组、旋转及缩放物件",
-        "description": "按住 Ctrl，点击多个控制点（如端点），并点击空白处可将这些点群组并建立控制杆。拖曳控制杆（或按方向键）可平移群组；Shift+拖曳可限制于水平或垂直移动；Ctrl+拖曳可旋转群组；Ctrl+Shift+拖曳可缩放群组。可移动「+」设定旋转或缩放中心。点击控制杆并按 Ctrl+D 可复制群组；按 Delete 可解散群组。"
+        "description": "按住 Ctrl，点击一个或多个物件或控制点（如端点），并点击空白处可将它们群组并建立控制杆。拖曳控制杆（或按方向键）可平移群组；Shift+拖曳可限制于水平或垂直移动；Ctrl+拖曳可旋转群组；Ctrl+Shift+拖曳可缩放群组。可移动「+」设定旋转或缩放中心。点击控制杆并按 Ctrl+D 可复制群组；按 Delete 可解散群组。"
       },
       "editCoordinates": {
         "title": "直接编辑座标",
@@ -384,7 +385,7 @@
       },
       "keyboardShortcuts": {
         "title": "键盘快速键",
-        "description": "当一物件在被选取的状态（被点击）时，按方向键可移动物件；按 Ctrl+D 可复制物件；按 Delete 可删除物件。"
+        "description": "当一物件在被选取的状态（被点击）时，按方向键可移动物件；按 +/- 可旋转物件；按 Ctrl+D 可复制物件；按 Delete 可删除物件。"
       },
       "runLocally": {
         "title": "在本地运行",

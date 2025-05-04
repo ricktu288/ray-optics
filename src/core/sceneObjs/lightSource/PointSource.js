@@ -74,6 +74,39 @@ class PointSource extends BaseSceneObj {
   move(diffX, diffY) {
     this.x += diffX;
     this.y += diffY;
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    // Use the point itself as default center if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Apply rotation
+    const dx = this.x - center.x;
+    const dy = this.y - center.y;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    
+    this.x = center.x + dx * cos - dy * sin;
+    this.y = center.y + dx * sin + dy * cos;
+    
+    return true;
+  }
+
+  scale(scale, center = null) {
+    // Use the point itself as default center if none provided
+    center = center || this.getDefaultCenter();
+    
+    // Scale the position relative to the center
+    this.x = center.x + (this.x - center.x) * scale;
+    this.y = center.y + (this.y - center.y) * scale;
+    
+    return true;
+  }
+
+  getDefaultCenter() {
+    // For a point source, the default center is itself
+    return { x: this.x, y: this.y };
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

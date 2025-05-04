@@ -108,6 +108,21 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.move(diffX, diffY);
     // Invalidate points after moving
     delete this.tmp_points;
+    return true;
+  }
+
+  rotate(angle, center = null) {
+    super.rotate(angle, center);
+    // Invalidate points after rotating
+    delete this.tmp_points;
+    return true;
+  }
+
+  scale(scale, center = null) {
+    super.scale(scale, center);
+    // Invalidate points after scaling
+    delete this.tmp_points;
+    return true;
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {
