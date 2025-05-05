@@ -494,8 +494,13 @@ class Handle extends BaseSceneObj {
           // Convert step from degrees to radians
           const stepRadians = this.rotateStep * Math.PI / 180;
           
+          // Normalize to -180 to 180 degree range
+          while (theta > Math.PI) theta -= 2 * Math.PI;
+          while (theta <= -Math.PI) theta += 2 * Math.PI;
+
           // Round to nearest step
           theta = Math.round(theta / stepRadians) * stepRadians;
+          
         }
         
         // Call the rotate method with the snapped angle
