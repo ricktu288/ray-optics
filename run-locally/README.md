@@ -1,6 +1,6 @@
 # Run this project locally
 
-This guide is for running the web app locally. If you want to call the command-line version of the simulator from programming languages (e.g. Python, Julia), please download the [integration tools](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) instead.
+This guide is for running the web app locally. If you want to call the command-line version of the simulator from programming languages (e.g. Python, Julia), please use the [integration tools](https://github.com/ricktu288/ray-optics/tree/dist-integrations) instead.
 
 ## For developers
 
@@ -13,10 +13,12 @@ The non-technical guide below will not allow you to see the actual source code.
 If you are not familiar with the development environment but still want to run the project locally, you can follow the steps below.
 
 1. Download and install [Simple Web Server](https://simplewebserver.org/).
-2. Download the [latest deployment of the website](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip) (recommended) or a [released version](https://github.com/ricktu288/ray-optics/releases) (if you want a versioned DOI) and unzip it.
+2. Download either of the following and unzip the folder:
+   - [Latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip) (same as the online version, with beta features)
+   - [Latest release](https://github.com/ricktu288/ray-optics/releases/latest) (slightly older, but has a versioned DOI for citation)
 3. Start Simple Web Server, click "New Server".
-4. Set "Folder Path" to the "ray-optics-gh-pages" folder you just unzipped. Note that some systems may put the folder in another folder with the same name. Please select the inner one.
-5. Expand "Basic Options" and turn on "Exclude .html extension". It should look like this:
+4. Set "Folder Path" to the folder you just unzipped. Note that some systems may put the folder in another folder with the same name. Please select the inner one.
+5. Expand "Basic Options" and turn on "Exclude .html extension". It should look like this (the folder name depends on which version you downloaded):
 
     ![Simple Web Server](https://raw.githubusercontent.com/ricktu288/ray-optics/refs/heads/master/run-locally/simple-web-server-config.png)
 
@@ -26,4 +28,4 @@ If you are not familiar with the development environment but still want to run t
 
     ![Simple Web Server](https://raw.githubusercontent.com/ricktu288/ray-optics/refs/heads/master/run-locally/simple-web-server-running.png)
 
-9. To update the project, simply download again the [latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip), unzip it, and replace the "ray-optics-gh-pages" folder with the new one.
+9. To update the project, simply download the latest deployment or release again, unzip it, and replace the folder with the new one.

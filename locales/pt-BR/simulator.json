@@ -381,7 +381,7 @@
       },
       "integrations": {
         "title": "Integrações com linguagens de programação",
-        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com as ferramentas de integração([link de download](/integrations/download)). Note que este app web também possui algum suporte a programação integrado com o recurso [módulo](/modules/tutorial)."
+        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com as [ferramentas de integração](/integrations). Note que este app web também possui algum suporte a programação integrado com o recurso [módulo](/modules/tutorial)."
       }
     }
   },

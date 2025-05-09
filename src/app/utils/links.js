@@ -30,11 +30,13 @@ export function mapURL(url) {
     "/github/issues": "https://github.com/ricktu288/ray-optics/issues",
     "/github/discussions": "https://github.com/ricktu288/ray-optics/discussions",
     "/run-locally": "https://github.com/ricktu288/ray-optics/blob/master/run-locally/README.md",
-    "/integrations/download": "https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip",
+    "/integrations": "https://github.com/ricktu288/ray-optics/tree/dist-integrations",
     "/contributing": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md",
     "/contributing/gallery": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery",
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
     "/weblate": "https://hosted.weblate.org/engage/ray-optics-simulation/",
+    "/ai-tools/chatgpt": "https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder",
+    "/ai-tools/instructions": "https://github.com/ricktu288/ray-optics/blob/master/ai-tools"
   };
   return urlMap[url] || url;
 }

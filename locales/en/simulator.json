@@ -361,6 +361,12 @@
     "httpTimeout": "HTTP Request Timeout",
     "invalidFile": "The file is neither a valid JSON scene nor an image file."
   },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "AI Assistant",
+      "description": "Link to Ray Optics Coder on ChatGPT. See Tools -> Other -> Import module -> Make custom modules for more information."
+    }
+  },
   "statusBox": {
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",
@@ -394,7 +400,7 @@
       },
       "integrations": {
         "title": "Integrations with programming languages",
-        "description": "You can call the simulator from programming languages such as Python or Julia with the integration tools ([download link](/integrations/download)). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
+        "description": "You can call the simulator from programming languages such as Python or Julia with the [integration tools](/integrations). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
       },
       "contactUs": {
         "title": "Contact Us",

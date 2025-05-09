@@ -313,7 +313,7 @@
   },
   "moduleModal": {
     "title": "导入模块",
-    "makeCustomModules": "制作自定义模块",
+    "makeCustomModules": "创建自定义模块",
     "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
   },
   "colorModeModal": {
@@ -361,6 +361,12 @@
     "httpTimeout": "HTTP 请求超时",
     "invalidFile": "此文件既不是有效的 JSON 场景，也不是图片文件。"
   },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "AI 助手",
+      "description": "链接到 ChatGPT 上的 Ray Optics Coder。更多信息请参见工具->其他->导入模块->创建自定义模块。"
+    }
+  },
   "statusBox": {
     "rayCount": "光线片段数量",
     "totalTruncation": "被截断的亮度",
@@ -394,7 +400,7 @@
       },
       "integrations": {
         "title": "与编程語言整合",
-        "description": "您可以透过整合工具（[下载链接](/integrations/download)）来从编程语言（如 Python 或 Julia）呼叫本模拟器。注意此网页程程序内建的[模块](/modules/tutorial)功能本身也提供了一些编程功能。"
+        "description": "您可以透过[整合工具](/integrations)来从编程语言（如 Python 或 Julia）呼叫本模拟器。注意此网页程程序内建的[模块](/modules/tutorial)功能本身也提供了一些编程功能。"
       },
       "contactUs": {
         "title": "联络我们",

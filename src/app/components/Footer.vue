@@ -91,8 +91,4 @@ export default {
 .footer-right .btn:focus {
   box-shadow: none;
 }
-
-#about {
-  color: white;
-}
 </style>

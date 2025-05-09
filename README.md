@@ -47,7 +47,7 @@ If you use this project in your research, please cite it according to the metada
 }
 ```
 
-The DOI shown above is for the project, not for a specific version. Versions with individual DOIs can be downloaded from the [release page](https://github.com/ricktu288/ray-optics/releases). You may replace the project DOI with the versioned DOI shown on that page, and the year by the year of the release.
+The DOI shown above is for the project, not for a specific version. If you want to cite a versioned DOI, please use the [latest release](https://github.com/ricktu288/ray-optics/releases/latest), which is slightly older than the online version and without beta features. You can then replace the project DOI above with the versioned DOI shown on that page, and the year by the year of the release.
 
 The URL field above is optional and not supported by all citation formats. You may also use the Zenodo URL or the GitHub URL.
 
@@ -160,7 +160,7 @@ Currently there is no automatic end-to-end test for the web app. So please manua
 ## Use as a Node Module
 
 The simulator can be used as a node module in your own project and integrated with other programming languages.
-The easiest way is to directly download the integration tools from [here](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) and follow the instructions in the `README.md` file. You don't need to clone this repo and build anything, but you still need to have Node.js installed.
+The easiest way is to use the built [integration tools](https://github.com/ricktu288/ray-optics/tree/dist-integrations). You don't need to clone this repo and build anything, but you still need to have Node.js installed.
 
 For more advanced usage, the node module version of the simulator is built with the following command:
 ```bash
