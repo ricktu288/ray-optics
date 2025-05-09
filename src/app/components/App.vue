@@ -151,9 +151,19 @@ export default {
 }
 
 #help-dropdown a {
-  color: white;
+  color: #a9ccff;
+  text-decoration: none;
 }
 
+#help-dropdown a:hover {
+  color: #bdd6f9;
+  text-decoration: underline;
+}
+
+#welcome_instruction a:hover {
+  color: #3685f9 !important;
+  text-decoration: underline !important;
+}
 
 ::-webkit-scrollbar {
   background: none;
