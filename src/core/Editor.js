@@ -245,6 +245,7 @@ class Editor {
    * @type {object}
    * @property {string} oldJSON - The JSON string representing the scene before the action.
    * @property {string} newJSON - The JSON string representing the scene after the action.
+   * @property {boolean} fromJsonEditor - Whether the action is from the JSON editor.
    */
 
   /**
@@ -1189,14 +1190,15 @@ class Editor {
     });
     
     this.selectObj(-1);
-    this.lastActionJson = json;
+    // this.lastActionJson = json;
     this.simulator.updateSimulation();
   }
 
   /**
    * Called when a change (action) is completed. This function will update the undo data, sync the JSON editor, etc.
+   * @param {boolean} fromJsonEditor - Whether the action is from the JSON editor.
    */
-  onActionComplete() {
+  onActionComplete(fromJsonEditor = false) {
     if (this.scene.error) {
       return;
     }
@@ -1204,12 +1206,12 @@ class Editor {
     const newJSON = this.scene.toJSON();
     const oldJSON = this.lastActionJson;
     this.lastActionJson = newJSON;
-    this.emit('newAction', { newJSON: newJSON, oldJSON: oldJSON });
+    this.emit('newAction', { newJSON: newJSON, oldJSON: oldJSON, fromJsonEditor: fromJsonEditor });
 
     this.emit('requestUpdateErrorAndWarning');
     this.requireDelayedValidation();
 
-    if (new Date() - this.lastActionTime > Editor.UNDO_INTERVAL) {
+    if (new Date() - this.lastActionTime > Editor.UNDO_INTERVAL && newJSON != oldJSON) {
       this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
       this.emit('newUndoPoint');
       
@@ -1250,6 +1252,7 @@ class Editor {
       return;
     this.undoIndex = (this.undoIndex + (Editor.UNDO_LIMIT - 1)) % Editor.UNDO_LIMIT;
     this.loadJSON(this.undoData[this.undoIndex]);
+    this.lastActionJson = this.undoData[this.undoIndex];
     this.emit('undo');
 
     this.requireDelayedValidation();
@@ -1266,6 +1269,7 @@ class Editor {
       return;
     this.undoIndex = (this.undoIndex + 1) % Editor.UNDO_LIMIT;
     this.loadJSON(this.undoData[this.undoIndex]);
+    this.lastActionJson = this.undoData[this.undoIndex];
     this.emit('redo');
 
     this.requireDelayedValidation();

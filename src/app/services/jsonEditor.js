@@ -70,12 +70,7 @@ class JsonEditorService {
       try {
         app.editor?.loadJSON(this.aceEditor.session.getValue())
         window.error = null
-        
-        // Only proceed with URL sync and validation if there are no errors
-        if (!app.scene.error) {
-          window.syncUrl?.()
-          app.editor?.requireDelayedValidation()
-        }
+        app.editor?.onActionComplete(true)
       } catch (e) {
         console.error('Error updating scene from JSON:', e)
       }
@@ -99,8 +94,11 @@ class JsonEditorService {
    */
   updateContent(content, oldContent) {
     if (!this.aceEditor) return
+    
+    // Blur the editor to remove focus when content is updated
+    this.aceEditor.blur()
 
-    if (oldContent && content !== oldContent && !this.aceEditor.isFocused()) {
+    if (oldContent && content !== oldContent) {
       // Calculate the position of the first and last character that has changed
       var minLen = Math.min(content.length, oldContent.length);
       var startChar = 0;

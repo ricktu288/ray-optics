@@ -264,7 +264,9 @@ function initAppService() {
   });
 
   editor.on('newAction', function (e) {
-    jsonEditorService.updateContent(e.newJSON, e.oldJSON);
+    if (!e.fromJsonEditor) {
+      jsonEditorService.updateContent(e.newJSON, e.oldJSON);
+    }
     syncUrl();
     warning = "";
     hasUnsavedChange = true;
