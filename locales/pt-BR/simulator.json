@@ -284,7 +284,9 @@
         "yTranslation": "Translação Y",
         "rotation": "Rotação",
         "scaling": "Escala"
-      }
+      },
+      "step": "Passo",
+      "transformationWarning": "Aplicar \"{{transformation}}\" a \"{{obj}}\" pode ter resultados inesperados."
     },
     "CropBox": {
       "title": "Exportar",
@@ -360,7 +362,7 @@
       },
       "groupRotateScale": {
         "title": "Agrupar, rotacionar e ajustar escala de objetos",
-        "description": "Segure Ctrl, clique em vários pontos de controle [or click one or more objects], então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar."
+        "description": "Segure Ctrl, clique em um ou mais objetos ou pontos de controle, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Delete para desagrupar."
       },
       "editCoordinates": {
         "title": "Editar coordenadas diretamente",
@@ -368,7 +370,7 @@
       },
       "keyboardShortcuts": {
         "title": "Atalhos de teclado",
-        "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo [+/- to rotate the object]; Ctrl+D para duplicar; tecla Delete para apagar."
+        "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; +/- para girar o objeto; Ctrl+D para duplicar; tecla Delete para apagar."
       },
       "runLocally": {
         "title": "Rodar Localmente",
@@ -400,5 +402,11 @@
     "httpError": "Erro de Solicitação HTTP",
     "httpTimeout": "Timeout de Solicitação HTTP",
     "invalidFile": "O arquivo não é nem uma cena JSON válida nem um arquivo de imagem."
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "Assistente de IA",
+      "description": "Link para Ray Optics Coder no ChatGPT. Ver Ferramentas -> Outros -> Importar módulo -> Criar módulos personalizados para mais informação."
+    }
   }
 }
