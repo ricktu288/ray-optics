@@ -224,8 +224,8 @@
     },
     "vanishingPoint": {
       "title": "Ponto de fuga",
-      "thesepairofparallell": "Esse par de linhas paralelas converge ao ponto B",
-      "thesepairofparallell1": "Esse par de linhas paralelas converge ao ponto A",
+      "thesepairofparallell": "Este par de linhas paralelas converge ao ponto B",
+      "thesepairofparallell1": "Este par de linhas paralelas converge ao ponto A",
       "notethatthesepairsof": "Note que esses pares de linhas paralelas não são infinitos.",
       "youcanverifythatapai": "Pode-se observar que um par de linas paralelas com inclinação - m, convergem pela lente ideal para as coordenadas (f,m∙f),\nclicando no botão \"Grade\" e percebenddo que cada célula da grade possui dimensões de 20 por 20.\nVocê também pode observar como mudar o comprimento focal da lente ideal - f, afeta os pontos convergentes (pontos de fuga).",
       "description": "Alguns sistemas ópticos tomam linhas paralelas infinitas e as projetam como linhas no plano de imagem que se encontram em um ponto único, dando a ilusão que as linhas paralelas se encontram \"no infinito\". Esse ponto único é chamado de ponto de fuga.\n\nPara um sistema óptico composto de uma lente ideal com comprimento focal \\(f\\), localizado no plano \\(XY\\), tal que seu eixo óptic coincida com o eixo \\(X\\) (horizontal) e a lente coincida com o eixo \\(Y\\), o ponto de fuga para uma linha com inclinação \\(m\\), localizada en \\(x<0\\) é dado pelas coordenadas \\((x,y)\\) \\((f, m f\\)."

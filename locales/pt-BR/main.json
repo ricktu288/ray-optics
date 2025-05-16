@@ -59,7 +59,7 @@
     },
     "otherMirror": {
       "title": "Curvo",
-      "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0)."
+      "description": "Um espelho cujo formato é curvo. Pode ser circular, parabólico, ou definido por uma equação personalizada y=f(x)."
     },
     "ArcMirror": {
       "title": "Arco Circular",
