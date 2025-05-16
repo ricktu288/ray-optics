@@ -134,6 +134,20 @@ class Simulator {
     /** @property {number} processedRayCount - The number of rays processed in the simulation. */
     this.processedRayCount = 0;
 
+    /** @property {boolean} manualLightRedraw - Whether to manually redraw the light layer. True if the user turns off "Auto refresh". */
+    this.manualLightRedraw = false;
+
+    /**
+     * @property {boolean} isLightLayerSynced - Whether the light layer is in sync with the scene.
+     */
+    this.isLightLayerSynced = true;
+
+    /** @property {Point} lastOrigin - The origin of the scene during the last redraw. */
+    this.lastOrigin = geometry.point(0, 0);
+
+    /** @property {number} lastScale - The scale of the scene during the last redraw. */
+    this.lastScale = 1;
+
     /** @property {string} error - The error message of the simulation. */
     this.error = null;
 
@@ -188,6 +202,13 @@ class Simulator {
    */
 
   /**
+   * The event emitted when the sync status of the light layer changes.
+   * @event Simulator#lightLayerSyncChange
+   * @type {object}
+   * @property {boolean} isSynced - Whether the light layer is in sync with the scene.
+   */
+
+  /**
    * The event emitted when the simulation stops (when the maximum number of processed rays is reached or if the user force stop the simulation).
    * @event Simulator#simulationStop
    */
@@ -206,10 +227,33 @@ class Simulator {
    * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.
+   * @param {boolean} forceRedraw - Whether to force redraw the light layer (when the user choose to manually redraw the light layer).
    * @returns {void}
    */
-  updateSimulation(skipLight, skipGrid) {
+  updateSimulation(skipLight, skipGrid, forceRedraw) {
+    // If the user choose to manually redraw the light layer, but the simulation update requires that the light layer be redrawn, we should mark the light layer as out of sync (in the web app the light layer will be dimmed by the app service).
+    if (!skipLight && this.ctxMain?.canvas?.style) {
+      if (this.manualLightRedraw && !forceRedraw) {
+        this.isLightLayerSynced = false;
+        this.emit('lightLayerSyncChange', { isSynced: false });
+      } else {
+        this.isLightLayerSynced = true;
+        this.emit('lightLayerSyncChange', { isSynced: true });
+      }
+    }
+
+    // In the status that the light layer is out of sync, if the user move or scale the scene, we should clear the light layer to avoid the old state being displayed at the wrong position or scale.
+    let shouldClearLightLayer = false;
+    if (this.lastScale != this.scene.scale || this.lastOrigin.x != this.scene.origin.x || this.lastOrigin.y != this.scene.origin.y) {
+      shouldClearLightLayer = true;
+    }
+
+    skipLight = skipLight || (this.manualLightRedraw && !forceRedraw);
+    
     if (!skipLight) {
+      this.lastScale = this.scene.scale;
+      this.lastOrigin.x = this.scene.origin.x;
+      this.lastOrigin.y = this.scene.origin.y;
       this.totalTruncation = 0;
       this.brightnessScale = 0;
       //clearError();
@@ -243,7 +287,7 @@ class Simulator {
       this.canvasRendererMain = null;
     }
 
-    if (!skipLight && this.ctxMain) {
+    if ((!skipLight || shouldClearLightLayer) && this.ctxMain) {
       if (this.scene.colorMode != 'default') {
         // In non-default color mode, use WebGL to render the light layer.
         var colorMode = this.scene.colorMode;
@@ -267,6 +311,11 @@ class Simulator {
       } else if (this.ctxAboveLight) {
         this.ctxAboveLight.globalAlpha = 1;
       }
+    }
+
+    if (!this.isLightLayerSynced && shouldClearLightLayer && this.canvasRendererMain.flush) {
+      // Since in this case we are not calling processRays, we need to flush the renderer directly here to clear the light layer.
+      this.canvasRendererMain.flush();
     }
     
     if (!skipLight) {
@@ -756,6 +805,14 @@ class Simulator {
     } else {
       this.emit('simulationComplete', null);
     }
+  }
+
+  /**
+   * Manually redraw the light layer.
+   * @returns {void}
+   */
+  manualRedrawLightLayer() {
+    this.updateSimulation(false, true, true);
   }
 
   /**

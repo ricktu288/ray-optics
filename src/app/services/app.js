@@ -47,6 +47,12 @@ function initAppService() {
   canvasLightWebGL = document.getElementById('canvasLightWebGL');
   canvasGrid = document.getElementById('canvasGrid');
 
+  app.canvas = canvas;
+  app.canvasBelowLight = canvasBelowLight;
+  app.canvasLight = canvasLight;
+  app.canvasLightWebGL = canvasLightWebGL;
+  app.canvasGrid = canvasGrid;
+
   let gl;
 
   try {
@@ -161,6 +167,16 @@ function initAppService() {
       isSimulatorRunning: false,
       isForceStop: false
     });
+  });
+
+  simulator.on('lightLayerSyncChange', function (e) {
+    if (e.isSynced) {
+      canvasLightWebGL.style.opacity = 1;
+      canvasLight.style.opacity = 1;
+    } else {
+      canvasLightWebGL.style.opacity = 0.5;
+      canvasLight.style.opacity = 0.5;
+    }
   });
 
   simulator.on('requestUpdateErrorAndWarning', function () {
@@ -643,14 +659,18 @@ function resetDropdownButtons() {
 }
 
 function hideAllPopovers() {
+  const objBar = document.getElementById('obj_bar');
   document.querySelectorAll('[data-bs-original-title]').forEach(function (element) {
-    var popoverInstance = bootstrap.Popover.getInstance(element);
-    if (popoverInstance) {
-      popoverInstance.hide();
-    }
-    var tooltipInstance = bootstrap.Tooltip.getInstance(element);
-    if (tooltipInstance) {
-      tooltipInstance.hide();
+    // Only hide popovers attached to elements that are children of obj_bar
+    if (objBar && (objBar.contains(element) || element.closest('#obj_bar'))) {
+      var popoverInstance = bootstrap.Popover.getInstance(element);
+      if (popoverInstance) {
+        popoverInstance.hide();
+      }
+      var tooltipInstance = bootstrap.Tooltip.getInstance(element);
+      if (tooltipInstance) {
+        tooltipInstance.hide();
+      }
     }
   });
 }
@@ -840,9 +860,16 @@ function rename() {
 }
 
 function save() {
+  // If the JSON editor is out of sync with the scene, we should save the scene from the JSON editor instead of the last action JSON (the user may want to save the edited JSON before reloading the scene to avoid accidental freezing).
+  let json = '';
+  if (jsonEditorService.isSynced) {
+    json = editor.lastActionJson;
+  } else {
+    json = jsonEditorService.aceEditor.session.getValue();
+  }
   rename();
 
-  var blob = new Blob([editor.lastActionJson], { type: 'application/json' });
+  var blob = new Blob([json], { type: 'application/json' });
   saveAs(blob, (scene.name || "scene") + ".json");
   var saveModal = bootstrap.Modal.getInstance(document.getElementById('saveModal'));
   if (saveModal) {
@@ -908,6 +935,9 @@ function getLink() {
   });
 }
 
+function setHasUnsavedChange(value) {
+  hasUnsavedChange = value;
+}
 
 window.onbeforeunload = function (e) {
   if (hasUnsavedChange) {
@@ -931,4 +961,5 @@ export const app = {
   rename,
   save,
   syncUrl,
+  setHasUnsavedChange,
 }

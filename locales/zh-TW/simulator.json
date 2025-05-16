@@ -99,6 +99,10 @@
       "title": "顯示提示泡泡",
       "description": "決定滑鼠移到按鈕上方時是否顯示提示泡泡。"
     },
+    "showSimulatorControls": {
+      "title": "顯示模擬器控制列",
+      "description": "允許手動控制模擬器，適用於模擬耗時較長、從 JSON 載入較慢或帶有隨機性的場景。"
+    },
     "advancedHelp": "進階說明詳見右下角的說明圖示。"
   },
   "objBar": {
@@ -374,6 +378,17 @@
     "timeElapsed": "花費時間",
     "forceStopped": "已強制終止。",
     "mouseCoordinates": "滑鼠座標"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "刷新場景"
+    },
+    "refreshSimulation": {
+      "title": "刷新模擬"
+    },
+    "autoRefresh": {
+      "title": "自動刷新"
+    }
   },
   "footer": {
     "processing": "處理中……按此處以終止。",

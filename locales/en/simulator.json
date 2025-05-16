@@ -95,6 +95,10 @@
       "title": "Show status box",
       "description": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
     },
+    "showSimulatorControls": {
+      "title": "Show simulator controls",
+      "description": "Allows manual control of the simulator, useful when the scene takes a long time to run, is slow to load from JSON, or contains randomization."
+    },
     "showHelpPopups": {
       "title": "Show help popups",
       "description": "Defines whether to show help popups when hovering over buttons."
@@ -374,6 +378,17 @@
     "timeElapsed": "Time elapsed",
     "forceStopped": "Force stopped.",
     "mouseCoordinates": "Mouse coordinates"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "Refresh Scene"
+    },
+    "refreshSimulation": {
+      "title": "Refresh Simulation"
+    },
+    "autoRefresh": {
+      "title": "Auto Refresh"
+    }
   },
   "footer": {
     "processing": "Processing… Click here to stop.",

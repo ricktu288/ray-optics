@@ -119,6 +119,10 @@ class Detector extends LineObjMixin(BaseSceneObj) {
 
       ctx.globalCompositeOperation = 'source-over';
     } else {
+      if (!this.scene.simulator?.isLightLayerSynced) {
+        // If the light layer is not synced (when the user disable auto refresh and modify some optical elements), gray out the readings to indicate that they are not up to date.
+        ctx.globalAlpha = 0.5;
+      }
       ctx.globalCompositeOperation = 'lighter';
       var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
 
@@ -164,6 +168,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
         ctx.fill();
         ctx.stroke();
       }
+      ctx.globalAlpha = 1;
     }
   }
 

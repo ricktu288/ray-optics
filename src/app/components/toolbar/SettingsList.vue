@@ -120,6 +120,13 @@
   />
 
   <ToggleControl
+    :label="$t('simulator:settings.showSimulatorControls.title') + '<sup>Beta</sup>'"
+    :popoverContent="$t('simulator:settings.showSimulatorControls.description')"
+    v-model="showSimulatorControls"
+    :layout="layout"
+  />
+
+  <ToggleControl
     v-if="layout === 'desktop'"
     id="show_help_popups"
     :label="$t('simulator:settings.showHelpPopups.title')"
@@ -216,6 +223,7 @@ export default {
       autoSyncUrl: preferences.autoSyncUrl,
       showJsonEditor: preferences.showJsonEditor,
       showStatus: preferences.showStatus,
+      showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,
       lang,
       localeData,

@@ -21,6 +21,7 @@
   <StatusArea />
   <Toolbar />
   <ObjBar />
+  <SimulatorControls />
   <Footer />
   <ModuleModal />
   <SaveModal />
@@ -41,6 +42,7 @@ import Sidebar from './Sidebar.vue';
 import StatusArea from './StatusArea.vue';
 import Toolbar from './toolbar/Toolbar.vue';
 import ObjBar from './ObjBar.vue';
+import SimulatorControls from './SimulatorControls.vue';
 import Footer from './Footer.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
@@ -56,6 +58,7 @@ export default {
     StatusArea,
     Toolbar,
     ObjBar,
+    SimulatorControls,
     Footer,
     ModuleModal,
     SaveModal,

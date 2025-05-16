@@ -23,6 +23,7 @@ const PREFERENCES_DEFAULTS = {
   autoSyncUrl: false,
   showJsonEditor: false,
   showStatus: false,
+  showSimulatorControls: false,
   help: true,
 }
 

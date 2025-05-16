@@ -29,6 +29,8 @@ class JsonEditorService {
     this.aceEditor = null
     this.debounceTimer = null
     this.lastCodeChangeIsFromScene = false
+    this.manualParse = false
+    this.isSynced = true
   }
 
   /**
@@ -49,6 +51,7 @@ class JsonEditorService {
     
     // Set initial content
     this.aceEditor.session.setValue(app.editor?.lastActionJson ?? '')
+    this.isSynced = true
 
     // Set up change listener
     this.aceEditor.session.on('change', this.handleEditorChange.bind(this))
@@ -65,16 +68,47 @@ class JsonEditorService {
       return
     }
 
-    clearTimeout(this.debounceTimer)
-    this.debounceTimer = setTimeout(() => {
-      try {
-        app.editor?.loadJSON(this.aceEditor.session.getValue())
-        window.error = null
-        app.editor?.onActionComplete(true)
-      } catch (e) {
-        console.error('Error updating scene from JSON:', e)
+    this.isSynced = false
+    if (!this.manualParse) {
+      clearTimeout(this.debounceTimer)
+      this.debounceTimer = setTimeout(() => {
+        this.parse()
+      }, 500)
+    } else {
+      if (app.canvas) {
+        // Dim the canvases to indicate that the scene is out of sync
+        app.canvas.style.opacity = 0.5;
+        app.canvasBelowLight.style.opacity = 0.5;
+        app.canvasLight.style.opacity = 0.5;
+        app.canvasLightWebGL.style.opacity = 0.5;
+        app.canvasGrid.style.opacity = 0.5;
       }
-    }, 500)
+      app.setHasUnsavedChange(true)
+    }
+  }
+
+  /**
+   * Parse the JSON content to the scene
+   */
+  parse() {
+    try {
+      app.editor?.loadJSON(this.aceEditor.session.getValue())
+      window.error = null
+      app.editor?.onActionComplete(true)
+      if (!app.scene.error) {
+        this.isSynced = true
+        if (app.canvas) {
+          app.canvas.style.opacity = 1.0;
+          app.canvasBelowLight.style.opacity = 1.0;
+          // Note that we do not reset the opacity of the light layer canvases, as they are done by the simulator (it will still be dimmed until the simulation is refreshed)
+          app.canvasGrid.style.opacity = 1.0;
+        }
+      } else {
+        app.setHasUnsavedChange(true)
+      }
+    } catch (e) {
+      console.error('Error updating scene from JSON:', e)
+    }
   }
 
   /**
@@ -82,6 +116,11 @@ class JsonEditorService {
    */
   cleanup() {
     if (!this.aceEditor) return
+
+    if (!this.isSynced) {
+      // Parse the scene to avoid losing any unsaved changes in the JSON editor.
+      this.parse()
+    }
 
     this.aceEditor.destroy()
     this.aceEditor = null
@@ -94,6 +133,7 @@ class JsonEditorService {
    */
   updateContent(content, oldContent) {
     if (!this.aceEditor) return
+    if (!this.isSynced) return
     
     // Blur the editor to remove focus when content is updated
     this.aceEditor.blur()
