@@ -76,6 +76,17 @@
     },
     "cameraObscura": {
       "observer2": "គំហើញ"
+    },
+    "concaveMirrorWearableDisplay": {
+      "nose": "ច្រមុះ",
+      "concavemirror": "កញ្ចក់ស្វ៊ែរផត",
+      "eye1": "ភ្នែក"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "image": "រូបភាព",
+      "mirror": "កញ្ចក់",
+      "glass": "កែវ",
+      "source": "ប្រភព"
     }
   }
 }
