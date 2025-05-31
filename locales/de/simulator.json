@@ -51,6 +51,27 @@
     },
     "zoom": {
       "title": "Zoom"
+    },
+    "showJsonEditor": {
+      "title": "JSON-Editor anzeigen"
+    },
+    "showHelpPopups": {
+      "title": "Hilfe-Popups anzeigen"
+    },
+    "correctBrightness": {
+      "title": "Helligkeit korrigieren"
+    },
+    "showStatusBox": {
+      "title": "Statusbox anzeigen"
+    },
+    "language": {
+      "title": "Sprache"
+    },
+    "colorMode": {
+      "title": "Farbmodus"
+    },
+    "gridSize": {
+      "title": "Rastergröße"
     }
   },
   "objBar": {
@@ -62,6 +83,12 @@
     },
     "delete": {
       "title": "Löschen"
+    },
+    "showAdvanced": {
+      "title": "Weitere Optionen…"
+    },
+    "unselect": {
+      "title": "Abwählen"
     }
   },
   "sceneObjs": {
@@ -69,14 +96,20 @@
       "brightness": "Helligkeit",
       "wavelength": "Wellenlänge",
       "emisAngle": "Emissionswinkel",
-      "focalLength": "Brennweite"
+      "focalLength": "Brennweite",
+      "random": "Zufällig",
+      "eqnInfo": {
+        "functions": "Unterstützte Funktionen",
+        "constants": "Unterstützte Konstanten"
+      }
     },
     "AngleSource": {
       "symmetric": "symmetrisch"
     },
     "BaseFilter": {
       "filter": "Filter",
-      "bandwidth": "Bandbreite"
+      "bandwidth": "Bandbreite",
+      "invert": "Invertieren"
     },
     "IdealMirror": {
       "cartesianSign": "Kartesische Zeichenkonvention"
@@ -93,21 +126,124 @@
       "cauchyCoeff": "Cauchy Koeffizient"
     },
     "CropBox": {
-      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
+      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt.",
+      "title": "Exportieren",
+      "width": "Breite"
+    },
+    "SphericalLens": {
+      "invalidParameters": "Ungültige Linsenparameter"
+    },
+    "BaseGrinGlass": {
+      "refIndexFnOrigin": "Ursprung von n(x,y)",
+      "refIndexFnInfo": {
+        "functions": "Unterstützte Funktionen",
+        "constants": "Unterstützte Konstanten"
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "Einheiten - [Länge]^2."
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "Einheiten - [Länge]."
+      }
+    },
+    "TextLabel": {
+      "fontStyles": {
+        "boldItalic": "Fett kursiv",
+        "bold": "Fett",
+        "italic": "Kursiv",
+        "normal": "Normal"
+      },
+      "alignments": {
+        "center": "Zentriert",
+        "right": "Rechtsbündig",
+        "left": "Linksbündig"
+      },
+      "fontStyle": "Stil",
+      "fontSize": "Schriftgröße",
+      "font": "Schriftart",
+      "alignment": "Ausrichtung",
+      "angle": "Winkel"
+    },
+    "Handle": {
+      "transformation": "Transformation",
+      "transformations": {
+        "rotation": "Drehung",
+        "scaling": "Skalierung"
+      },
+      "step": "Schritt"
+    },
+    "Aperature": {
+      "diameter": "Durchmesser"
+    },
+    "Detector": {
+      "exportData": "Daten exportieren"
+    },
+    "ModuleObj": {
+      "module": "Modul"
+    },
+    "DiffractionGrating": {
+      "mirrored": "Gespiegelt"
     }
   },
   "saveModal": {
     "title": "Speichern",
-    "fileName": "Name"
+    "fileName": "Name",
+    "rename": "Umbenennen"
   },
   "languageModal": {
     "translatedFraction": "übersetzt",
-    "helpTranslate": "Helfen beim Übersetzen"
+    "helpTranslate": "Helfen beim Übersetzen",
+    "title": "Sprache"
   },
   "generalWarnings": {
     "shareLinkTooLong": "Die URL ist zu lang für einige Platformen. Es kann nötig sein die Datei zu \"Speichern\" und zu teilen."
   },
   "footer": {
-    "processing": "In Bearbeitung... hier klicken, um zu stoppen."
+    "processing": "In Bearbeitung… Hier klicken, um zu stoppen.",
+    "helpPopup": {
+      "runLocally": {
+        "title": "Lokal ausführen"
+      },
+      "integrations": {
+        "title": "Integrationen mit Programmiersprachen"
+      },
+      "groupRotateScale": {
+        "title": "Objekte gruppieren, drehen und skalieren"
+      },
+      "editCoordinates": {
+        "title": "Koordinaten direkt bearbeiten"
+      }
+    }
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "KI-Assistent"
+    }
+  },
+  "appErrors": {
+    "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
+  },
+  "moduleModal": {
+    "title": "Module importieren"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "Szene auffrischen"
+    },
+    "refreshSimulation": {
+      "title": "Simulation auffrischen"
+    }
+  },
+  "statusBox": {
+    "mouseCoordinates": "Mauskoordinaten"
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "Linearer Wert"
+    }
   }
 }
