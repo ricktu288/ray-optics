@@ -19,8 +19,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import jsonUrl from 'json-url';
-import { type } from 'os';
-import { index } from 'mathjs';
 
 
 // Convert import.meta.url to a file path and determine the directory
@@ -147,6 +145,8 @@ for (const param of sceneData.modules[moduleID].params) {
     console.log(`Error: The parameter name "${paramName}" conflicts with an existing key "${key}".`);
     process.exit(1);
   }
+
+  newKeys.push(key);
 }
 
 // Prompt the user for the title, description, and specification of the module.
