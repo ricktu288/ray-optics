@@ -81,6 +81,16 @@
       "Y": "Grubość płaszcza",
       "n1": "Współczynnik załamania rdzenia",
       "n2": "Współczynnik załamania płaszcza"
+    },
+    "CubeBeamSplitter": {
+      "title": "Sześcienny rozdzielacz wiązki",
+      "point1": "Środek sześcianu (kwadratu)",
+      "size": "Rozmiar sześcianu",
+      "angle": "Kąt obrotu sześcianu w stopniach",
+      "cauchyB": "Współczynnik Cauchy'ego \\(B\\) sześcianu w mikrometrach kwadratowych",
+      "splitRatio": "Stosunek transmisji diagonalnego rozdzielacza wiązki",
+      "refIndex": "Współczynnik załamania światła sześcianu (lub współczynnik Cauchy'ego \\(A\\), gdy włączona jest opcja \"Symuluj kolory\")",
+      "description": "Sześcienny rozdzielacz wiązki jest często stosowanym komponentem optycznym. Jest to moduł dzielnika wiązki w kształcie sześcianu, który można regulować pod względem rozmiaru i kąta."
     }
   },
   "moduleTutorial": {
