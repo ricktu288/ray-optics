@@ -99,7 +99,11 @@
       "title": "Pokaż okienka pomocy",
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski."
     },
-    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
+    "showSimulatorControls": {
+      "title": "Pokaż kontrolki symulatora",
+      "description": "Umożliwia ręczne sterowanie symulatorem, przydatne, gdy scena uruchamia się długo, wolno ładuje się z JSON lub zawiera elementy losowe."
+    }
   },
   "objBar": {
     "showAdvanced": {
