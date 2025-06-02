@@ -177,6 +177,10 @@
     "modules": {
       "import": "Importuj moduły…",
       "remove": "Usuń moduł"
+    },
+    "ConcaveDiffractionGrating": {
+      "description": "Wklęsła siatka dyfrakcyjna, której kształt jest częścią koła.",
+      "title": "Wklęsła siatka dyfrakcyjna odbiciowa"
     }
   },
   "view": {
