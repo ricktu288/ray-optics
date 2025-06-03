@@ -1,1 +1,6 @@
-{}
+{
+  "meta": {
+    "parentheses": "Styl závorek. Pro většinu západních jazyků by měl být stejný jako v angličtině.",
+    "languageName": "Název cílového jazyka. Nepřekládejte slovo „angličtina“ do cílového jazyka."
+  }
+}
