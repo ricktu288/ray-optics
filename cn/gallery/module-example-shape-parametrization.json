@@ -1,0 +1,75 @@
+{
+  "name": "模块示例 - 形状参数化",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [],
+      "objs": [
+        {
+          "type": "SphericalLens",
+          "defBy": "DFfdBfd",
+          "p1": {
+            "x": 600,
+            "y": 200
+          },
+          "p2": {
+            "x": 600,
+            "y": 350
+          },
+          "params": {
+            "d": 40,
+            "ffd": 300,
+            "bfd": 350
+          },
+          "refIndex": 1.5
+        },
+        {
+          "type": "SphericalLens",
+          "defBy": "DR1R2",
+          "p1": {
+            "x": 600,
+            "y": 400
+          },
+          "p2": {
+            "x": 600,
+            "y": 550
+          },
+          "params": {
+            "d": 40,
+            "r1": 300,
+            "r2": -350
+          },
+          "refIndex": 1.5
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {}
+    },
+    {
+      "type": "TextLabel",
+      "x": 640,
+      "y": 480,
+      "text": "以 d, R_1, R_2 定义的透镜"
+    },
+    {
+      "type": "TextLabel",
+      "x": 640,
+      "y": 280,
+      "text": "以 d, FFD, BFD 定义的透镜"
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 207.06249999999997,
+    "y": -9.937500000000002
+  },
+  "scale": 0.6944444444444444
+}

@@ -1,0 +1,25 @@
+{
+  "galleryPage": {
+    "title": "Gallerie (Beispiele)",
+    "categories": {
+      "title": "Kategorien",
+      "reflection": "Reflektion",
+      "refraction": "Brechung",
+      "lens": "Linse",
+      "combinationOfLenses": "Kombination von Linsen",
+      "miscellaneous": "Verschiedenes"
+    },
+    "openInSimulator": "Im Simulator öffnen"
+  },
+  "galleryData": {
+    "apparentDepth": {
+      "observer": "Beobachter"
+    },
+    "aplanaticPoints": {
+      "yaxis": "Y-Achse"
+    },
+    "virtualImageFormation": {
+      "object2": "Objekt"
+    }
+  }
+}
