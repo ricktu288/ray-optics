@@ -554,5 +554,17 @@
       "modules": true
     },
     "firstCommit": "2025-05-30"
+  },
+  {
+    "name": "Nicolás De Francesco",
+    "githubEmails": [
+      "nicolasdefrancesco@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "es"
+      ]
+    },
+    "firstCommit": "2025-06-04"
   }
 ]

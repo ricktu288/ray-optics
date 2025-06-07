@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "简体中文",
-    "parentheses": "{{main}}（{{sub}}）",
-    "colon": "{{name}}：{{value}}",
-    "list": "{{first}}、{{others}}"
-  },
   "project": {
     "name": "射线光学模拟",
     "shortName": "射线光学",
@@ -229,5 +223,11 @@
   "languageDropdown": {
     "title": "语言：{{language}}",
     "translatedFraction": "已翻译 {{fraction}}"
+  },
+  "meta": {
+    "languageName": "简体中文",
+    "parentheses": "{{main}}（{{sub}}）",
+    "colon": "{{name}}：{{value}}",
+    "list": "{{first}}、{{others}}"
   }
 }

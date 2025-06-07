@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "Nederlands",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Ray Optics Simulatie"
   },
@@ -114,5 +108,11 @@
   },
   "languageDropdown": {
     "title": "Taal: {{language}}"
+  },
+  "meta": {
+    "languageName": "Nederlands",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

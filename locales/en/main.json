@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "English",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Ray Optics Simulation",
     "shortName": "Ray Optics",
@@ -231,5 +225,11 @@
   "languageDropdown": {
     "title": "Language: {{language}}",
     "translatedFraction": "{{fraction}} translated"
+  },
+  "meta": {
+    "languageName": "English",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

@@ -1,4 +1,16 @@
 {
+  "galleryPage": {
+    "title": "Gallerie (Beispiele)",
+    "categories": {
+      "title": "Kategorien",
+      "reflection": "Reflektion",
+      "refraction": "Brechung",
+      "lens": "Linse",
+      "combinationOfLenses": "Kombination von Linsen",
+      "miscellaneous": "Verschiedenes"
+    },
+    "openInSimulator": "Im Simulator öffnen"
+  },
   "galleryData": {
     "apparentDepth": {
       "observer": "Beobachter"
@@ -9,17 +21,5 @@
     "virtualImageFormation": {
       "object2": "Objekt"
     }
-  },
-  "galleryPage": {
-    "title": "Gallerie (Beispiele)",
-    "categories": {
-      "refraction": "Brechung",
-      "reflection": "Reflektion",
-      "title": "Kategorien",
-      "lens": "Linse",
-      "combinationOfLenses": "Kombination von Linsen",
-      "miscellaneous": "Verschiedenes"
-    },
-    "openInSimulator": "Im Simulator öffnen"
   }
 }

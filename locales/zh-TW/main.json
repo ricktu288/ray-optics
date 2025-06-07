@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "正體中文",
-    "parentheses": "{{main}}（{{sub}}）",
-    "colon": "{{name}}：{{value}}",
-    "list": "{{first}}、{{others}}"
-  },
   "project": {
     "name": "線光學模擬",
     "shortName": "線光學",
@@ -229,5 +223,11 @@
   "languageDropdown": {
     "title": "語言：{{language}}",
     "translatedFraction": "已翻譯 {{fraction}}"
+  },
+  "meta": {
+    "languageName": "正體中文",
+    "parentheses": "{{main}}（{{sub}}）",
+    "colon": "{{name}}：{{value}}",
+    "list": "{{first}}、{{others}}"
   }
 }
