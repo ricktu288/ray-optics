@@ -268,11 +268,11 @@
     "ModuleObj": {
       "module": "Módulo",
       "demodulize": "Demodulizar",
-      "loopTooLarge": "O comprimento do loop é grande demais. Por favor defina maxLoopLength como um valor maior.",
       "loopVariableTooLarge": "O comprimento da variável de loop \"{{name}}\" é grande demais. Por favor defina maxLoopLength como um valor maior.",
+      "loopTooLarge": "O comprimento do loop é grande demais. Por favor defina maxLoopLength como um valor maior.",
+      "variableRangeError": "Erro processando alcance de variável \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "stringExpansionError": "Erro expandindo string \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}",
-      "variableRangeError": "Erro processando alcance de variável \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}"
     },
     "Handle": {
@@ -345,6 +345,28 @@
     "identicalObjects": "Há dois elementos ópticos idênticos na cena que se sobrepõem completamente.",
     "brightnessInconsistent": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas."
   },
+  "generalErrors": {
+    "newerVersion": "A versão da cena é mais nova que a versão atual do simulador.",
+    "unknownObjectType": "Tipo de objeto de cena desconhecido: \"{{type}}\".",
+    "unknownSceneKey": "Chave desconhecida na cena: \"{{key}}\".",
+    "unknownPropertyValue": "Valor \"{{value}}\" para propriedade \"{{property}}\" desconhecido.",
+    "unknownObjectKey": "Chave desconhecida: \"{{key}}\" em objeto de tipo \"{{type}}\".",
+    "unknownModuleKey": "Chave desconhecida: \"{{key}}\" em módulo \"{{module}}\".",
+    "unknownModule": "Módulo desconhecido: \"{{module}}\"."
+  },
+  "appErrors": {
+    "jsError": "Erro de JavaScript: {{msg}} em {{url}}",
+    "httpStatusError": "Erro de Solicitação HTTP: {{status}}",
+    "httpError": "Erro de Solicitação HTTP",
+    "httpTimeout": "Timeout de Solicitação HTTP",
+    "invalidFile": "O arquivo não é nem uma cena JSON válida nem um arquivo de imagem."
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "Assistente de IA",
+      "description": "Link para Ray Optics Coder no ChatGPT. Ver Ferramentas -> Outros -> Importar módulo -> Criar módulos personalizados para mais informação."
+    }
+  },
   "statusBox": {
     "rayCount": "Número de segmentos de raio",
     "totalTruncation": "Brilho truncado",
@@ -376,37 +398,15 @@
         "title": "Rodar Localmente",
         "description": "Para rodar este projeto no seu próprio computador, independentemente da versão online, por favor veja [este guia](/run-locally)."
       },
+      "integrations": {
+        "title": "Integrações com linguagens de programação",
+        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com as [ferramentas de integração](/integrations). Note que este app web também possui algum suporte a programação integrado com o recurso [módulo](/modules/tutorial)."
+      },
       "contactUs": {
         "title": "Contate-nos",
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
-      },
-      "integrations": {
-        "title": "Integrações com linguagens de programação",
-        "description": "Você pode chamar o simulador usando linguagens de programação como Python ou Julia com as [ferramentas de integração](/integrations). Note que este app web também possui algum suporte a programação integrado com o recurso [módulo](/modules/tutorial)."
       }
-    }
-  },
-  "generalErrors": {
-    "unknownObjectType": "Tipo de objeto de cena desconhecido: \"{{type}}\".",
-    "newerVersion": "A versão da cena é mais nova que a versão atual do simulador.",
-    "unknownSceneKey": "Chave desconhecida na cena: \"{{key}}\".",
-    "unknownObjectKey": "Chave desconhecida: \"{{key}}\" em objeto de tipo \"{{type}}\".",
-    "unknownModuleKey": "Chave desconhecida: \"{{key}}\" em módulo \"{{module}}\".",
-    "unknownModule": "Módulo desconhecido: \"{{module}}\".",
-    "unknownPropertyValue": "Valor \"{{value}}\" para propriedade \"{{property}}\" desconhecido."
-  },
-  "appErrors": {
-    "jsError": "Erro de JavaScript: {{msg}} em {{url}}",
-    "httpStatusError": "Erro de Solicitação HTTP: {{status}}",
-    "httpError": "Erro de Solicitação HTTP",
-    "httpTimeout": "Timeout de Solicitação HTTP",
-    "invalidFile": "O arquivo não é nem uma cena JSON válida nem um arquivo de imagem."
-  },
-  "sidebar": {
-    "aiAssistant": {
-      "title": "Assistente de IA",
-      "description": "Link para Ray Optics Coder no ChatGPT. Ver Ferramentas -> Outros -> Importar módulo -> Criar módulos personalizados para mais informação."
     }
   }
 }

@@ -135,6 +135,16 @@
       "observer": "观察者",
       "objectunderwatergree": "水中物体（绿点）"
     },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "窗户和背面镀膜镜中的失真",
+      "description": "以倾斜角度透过玻璃观察物体时，影像会出现偏移，并且比实际位置更靠近观察者。此模拟演示了在厚玻璃窗和背面镀膜镜中的这种效应。在「所有像」模式下查看时，可以发现影像点实际上是弧线，因此取决于探测器的大小，影像可能会变得模糊。\n\n在画面右侧，你还可以看到楔形玻璃对于表观尺寸的影响。",
+      "source": "光源",
+      "glass": "玻璃",
+      "mirror": "镜子",
+      "image": "像",
+      "observer3": "观察者",
+      "window": "窗户"
+    },
     "bendedPencil": {
       "title": "弯曲的铅笔",
       "description": "从上方观察部分浸入水中的铅笔，因为空气和水之间的折射率的不连续性，我们的眼睛会感觉到铅笔看起来既断裂又弯曲。然而，在这个模拟中，弯曲的现象更为明显。您可以查看[断裂的铅笔](/gallery/broken-pencil)模拟，那里的断裂现象更为明显。",
@@ -197,6 +207,13 @@
     "lensImages": {
       "title": "透镜成像",
       "description": "模拟理想透镜成像，包括平行光与点光源成的像。"
+    },
+    "virtualImageFormation": {
+      "title": "虚像的形成",
+      "description": "本模拟示范了汇聚透镜如何形成虚像，以及该虚像的特征。",
+      "object2": "物",
+      "converginglensf1000u": "汇聚透镜（F = 1000单位）",
+      "virtualimagehighlyen": "虚像\n高度放大\n正立"
     },
     "transverseAndLongitudinalMagnification": {
       "title": "横向和纵向放大率",
@@ -501,23 +518,6 @@
       "title": "模块示例 - 形状参数化",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定义的透镜",
       "alensdefinedbydffdbf": "以 d, FFD, BFD 定义的透镜"
-    },
-    "virtualImageFormation": {
-      "title": "虚像的形成",
-      "description": "本模拟示范了汇聚透镜如何形成虚像，以及该虚像的特征。",
-      "virtualimagehighlyen": "虚像\n高度放大\n正立",
-      "object2": "物",
-      "converginglensf1000u": "汇聚透镜（F = 1000单位）"
-    },
-    "distortionInWindowsAndBacksideMirrors": {
-      "window": "窗户",
-      "glass": "玻璃",
-      "mirror": "镜子",
-      "observer3": "观察者",
-      "image": "像",
-      "source": "光源",
-      "title": "窗户和背面镀膜镜中的失真",
-      "description": "以倾斜角度透过玻璃观察物体时，影像会出现偏移，并且比实际位置更靠近观察者。此模拟演示了在厚玻璃窗和背面镀膜镜中的这种效应。在「所有像」模式下查看时，可以发现影像点实际上是弧线，因此取决于探测器的大小，影像可能会变得模糊。\n\n在画面右侧，你还可以看到楔形玻璃对于表观尺寸的影响。"
     }
   }
 }

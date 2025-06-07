@@ -95,13 +95,13 @@
       "title": "显示状态方块",
       "description": "显示状态方块，其中包含滑鼠座标，效能信息，以及被截断的亮度（光线在内反射的无穷级数中被截断的总亮度）。"
     },
-    "showHelpPopups": {
-      "title": "显示提示泡泡",
-      "description": "决定滑鼠移到按钮上方时是否显示提示泡泡。"
-    },
     "showSimulatorControls": {
       "title": "显示模拟器控制列",
       "description": "允许手动控制模拟器，适用于模拟耗时较长、从 JSON 加载较慢或带有随机性的场景。"
+    },
+    "showHelpPopups": {
+      "title": "显示提示泡泡",
+      "description": "决定滑鼠移到按钮上方时是否显示提示泡泡。"
     },
     "advancedHelp": "进阶说明详见右下角的说明图示。"
   },

@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "Deutsch",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Strahlenoptik-Simulation",
     "shortName": "Strahlenoptik",
@@ -183,5 +177,11 @@
   "languageDropdown": {
     "title": "Sprache: {{language}}",
     "translatedFraction": "{{fraction}} übersetzt"
+  },
+  "meta": {
+    "languageName": "Deutsch",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

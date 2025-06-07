@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "Español",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Simulación de trazado de rayos",
     "shortName": "Óptica de rayos",
@@ -199,5 +193,11 @@
   "languageDropdown": {
     "title": "Idioma: {{language}}",
     "translatedFraction": "{{fraction}} traducida"
+  },
+  "meta": {
+    "languageName": "Español",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

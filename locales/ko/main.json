@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "한국어",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "광선 광학 시뮬레이션",
     "shortName": "광선 광학",
@@ -170,5 +164,11 @@
   "languageDropdown": {
     "title": "언어: {{language}}",
     "translatedFraction": "{{fraction}} 번역 됨"
+  },
+  "meta": {
+    "languageName": "한국어",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

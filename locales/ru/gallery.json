@@ -11,10 +11,10 @@
       "grinOptics": "Градиентно-индексная оптика",
       "miscellaneous": "Разнообразный"
     },
-    "openInSimulator": "Открыть в симуляторе",
     "contributors_one": "участник:{{contributors}}",
     "contributors_few": "участники:{{contributors}}",
-    "contributors_many": "участников:{{contributors}}"
+    "contributors_many": "участников:{{contributors}}",
+    "openInSimulator": "Открыть в симуляторе"
   },
   "galleryData": {
     "common": {

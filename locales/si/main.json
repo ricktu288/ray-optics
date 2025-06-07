@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "සිංහල",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Ray Optics Simulation",
     "shortName": "Ray Optics",
@@ -202,5 +196,11 @@
   "languageDropdown": {
     "title": "භාෂාව: {{language}}",
     "translatedFraction": "{{fraction}} පරිවර්තිතයි"
+  },
+  "meta": {
+    "languageName": "සිංහල",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

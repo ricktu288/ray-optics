@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "日本語",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "光線光学系シミュレーション",
     "shortName": "光線光学",
@@ -169,5 +163,11 @@
   "languageDropdown": {
     "title": "言語: {{language}}",
     "translatedFraction": "{{fraction}} 翻訳済み"
+  },
+  "meta": {
+    "languageName": "日本語",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

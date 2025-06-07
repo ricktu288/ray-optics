@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "Português (Brasil)",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Simulação de Óptica de Raios",
     "shortName": "Óptica de Raios",
@@ -82,6 +76,10 @@
     "BeamSplitter": {
       "title": "Divisor de Feixe",
       "description": "Um espelho que transmite uma porcentagem da luz que chega."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Grade de Difração Côncava",
+      "description": "Uma grade de difração cuja forma é parte de um círculo."
     },
     "PlaneGlass": {
       "title": "Semi-plano",
@@ -177,10 +175,6 @@
     "modules": {
       "import": "Importar Módulos…",
       "remove": "Remover módulo"
-    },
-    "ConcaveDiffractionGrating": {
-      "description": "Uma grade de difração cuja forma é parte de um círculo.",
-      "title": "Grade de Difração Côncava"
     }
   },
   "view": {
@@ -233,5 +227,11 @@
   "languageDropdown": {
     "title": "Linguagem: {{language}}",
     "translatedFraction": "{{fraction}} traduzido"
+  },
+  "meta": {
+    "languageName": "Português (Brasil)",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

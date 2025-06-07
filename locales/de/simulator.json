@@ -49,32 +49,35 @@
       "snapToGrid": "Anrasten",
       "lockObjs": "Objekte sperren"
     },
-    "zoom": {
-      "title": "Zoom"
-    },
-    "showJsonEditor": {
-      "title": "JSON-Editor anzeigen"
-    },
-    "showHelpPopups": {
-      "title": "Hilfe-Popups anzeigen"
-    },
     "correctBrightness": {
       "title": "Helligkeit korrigieren"
-    },
-    "showStatusBox": {
-      "title": "Statusbox anzeigen"
-    },
-    "language": {
-      "title": "Sprache"
     },
     "colorMode": {
       "title": "Farbmodus"
     },
     "gridSize": {
       "title": "Rastergröße"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "language": {
+      "title": "Sprache"
+    },
+    "showJsonEditor": {
+      "title": "JSON-Editor anzeigen"
+    },
+    "showStatusBox": {
+      "title": "Statusbox anzeigen"
+    },
+    "showHelpPopups": {
+      "title": "Hilfe-Popups anzeigen"
     }
   },
   "objBar": {
+    "showAdvanced": {
+      "title": "Weitere Optionen…"
+    },
     "applyToAll": {
       "title": "Alle anwenden"
     },
@@ -83,9 +86,6 @@
     },
     "delete": {
       "title": "Löschen"
-    },
-    "showAdvanced": {
-      "title": "Weitere Optionen…"
     },
     "unselect": {
       "title": "Abwählen"
@@ -96,11 +96,11 @@
       "brightness": "Helligkeit",
       "wavelength": "Wellenlänge",
       "emisAngle": "Emissionswinkel",
-      "focalLength": "Brennweite",
       "random": "Zufällig",
+      "focalLength": "Brennweite",
       "eqnInfo": {
-        "functions": "Unterstützte Funktionen",
-        "constants": "Unterstützte Konstanten"
+        "constants": "Unterstützte Konstanten",
+        "functions": "Unterstützte Funktionen"
       }
     },
     "AngleSource": {
@@ -125,20 +125,15 @@
       },
       "cauchyCoeff": "Cauchy Koeffizient"
     },
-    "CropBox": {
-      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt.",
-      "title": "Exportieren",
-      "width": "Breite"
-    },
     "SphericalLens": {
       "invalidParameters": "Ungültige Linsenparameter"
     },
     "BaseGrinGlass": {
-      "refIndexFnOrigin": "Ursprung von n(x,y)",
       "refIndexFnInfo": {
-        "functions": "Unterstützte Funktionen",
-        "constants": "Unterstützte Konstanten"
-      }
+        "constants": "Unterstützte Konstanten",
+        "functions": "Unterstützte Funktionen"
+      },
+      "refIndexFnOrigin": "Ursprung von n(x,y)"
     },
     "CircleGrinGlass": {
       "epsInfo": {
@@ -150,23 +145,35 @@
         "units": "Einheiten - [Länge]."
       }
     },
+    "Aperature": {
+      "diameter": "Durchmesser"
+    },
+    "DiffractionGrating": {
+      "mirrored": "Gespiegelt"
+    },
+    "Detector": {
+      "exportData": "Daten exportieren"
+    },
     "TextLabel": {
-      "fontStyles": {
-        "boldItalic": "Fett kursiv",
-        "bold": "Fett",
-        "italic": "Kursiv",
-        "normal": "Normal"
-      },
-      "alignments": {
-        "center": "Zentriert",
-        "right": "Rechtsbündig",
-        "left": "Linksbündig"
-      },
-      "fontStyle": "Stil",
       "fontSize": "Schriftgröße",
       "font": "Schriftart",
+      "fontStyle": "Stil",
+      "fontStyles": {
+        "normal": "Normal",
+        "bold": "Fett",
+        "italic": "Kursiv",
+        "boldItalic": "Fett kursiv"
+      },
       "alignment": "Ausrichtung",
+      "alignments": {
+        "left": "Linksbündig",
+        "center": "Zentriert",
+        "right": "Rechtsbündig"
+      },
       "angle": "Winkel"
+    },
+    "ModuleObj": {
+      "module": "Modul"
     },
     "Handle": {
       "transformation": "Transformation",
@@ -176,17 +183,10 @@
       },
       "step": "Schritt"
     },
-    "Aperature": {
-      "diameter": "Durchmesser"
-    },
-    "Detector": {
-      "exportData": "Daten exportieren"
-    },
-    "ModuleObj": {
-      "module": "Modul"
-    },
-    "DiffractionGrating": {
-      "mirrored": "Gespiegelt"
+    "CropBox": {
+      "title": "Exportieren",
+      "width": "Breite",
+      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
     }
   },
   "saveModal": {
@@ -194,41 +194,32 @@
     "fileName": "Name",
     "rename": "Umbenennen"
   },
+  "moduleModal": {
+    "title": "Module importieren"
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "Linearer Wert"
+    }
+  },
   "languageModal": {
+    "title": "Sprache",
     "translatedFraction": "übersetzt",
-    "helpTranslate": "Helfen beim Übersetzen",
-    "title": "Sprache"
+    "helpTranslate": "Helfen beim Übersetzen"
   },
   "generalWarnings": {
     "shareLinkTooLong": "Die URL ist zu lang für einige Platformen. Es kann nötig sein die Datei zu \"Speichern\" und zu teilen."
   },
-  "footer": {
-    "processing": "In Bearbeitung… Hier klicken, um zu stoppen.",
-    "helpPopup": {
-      "runLocally": {
-        "title": "Lokal ausführen"
-      },
-      "integrations": {
-        "title": "Integrationen mit Programmiersprachen"
-      },
-      "groupRotateScale": {
-        "title": "Objekte gruppieren, drehen und skalieren"
-      },
-      "editCoordinates": {
-        "title": "Koordinaten direkt bearbeiten"
-      }
-    }
+  "appErrors": {
+    "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
   },
   "sidebar": {
     "aiAssistant": {
       "title": "KI-Assistent"
     }
   },
-  "appErrors": {
-    "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
-  },
-  "moduleModal": {
-    "title": "Module importieren"
+  "statusBox": {
+    "mouseCoordinates": "Mauskoordinaten"
   },
   "simulatorControls": {
     "refreshScene": {
@@ -238,12 +229,21 @@
       "title": "Simulation auffrischen"
     }
   },
-  "statusBox": {
-    "mouseCoordinates": "Mauskoordinaten"
-  },
-  "colorModeModal": {
-    "linear": {
-      "title": "Linearer Wert"
+  "footer": {
+    "processing": "In Bearbeitung… Hier klicken, um zu stoppen.",
+    "helpPopup": {
+      "groupRotateScale": {
+        "title": "Objekte gruppieren, drehen und skalieren"
+      },
+      "editCoordinates": {
+        "title": "Koordinaten direkt bearbeiten"
+      },
+      "runLocally": {
+        "title": "Lokal ausführen"
+      },
+      "integrations": {
+        "title": "Integrationen mit Programmiersprachen"
+      }
     }
   }
 }

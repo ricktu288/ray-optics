@@ -135,6 +135,16 @@
       "observer": "觀察者",
       "objectunderwatergree": "水中物體（綠點）"
     },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "窗戶和背面鍍膜鏡中的失真",
+      "description": "以傾斜角度透過玻璃觀察物體時，影像會出現偏移，並且比實際位置更靠近觀察者。此模擬演示了在厚玻璃窗和背面鍍膜鏡中的這種效應。在「所有像」模式下查看時，可以發現影像點實際上是弧線，因此取決於探測器的大小，影像可能會變得模糊。\n\n在畫面右側，你還可以看到楔形玻璃對於表觀尺寸的影響。",
+      "source": "光源",
+      "glass": "玻璃",
+      "mirror": "鏡子",
+      "image": "像",
+      "observer3": "觀察者",
+      "window": "窗戶"
+    },
     "bendedPencil": {
       "title": "彎曲的鉛筆",
       "description": "從上方觀察部分浸入水中的鉛筆，因為空氣和水之間的折射指數的不連續性，我們的眼睛會感覺到鉛筆看起來既斷裂又彎曲。然而，在這個模擬中，彎曲的現象更為明顯。您可以查看[斷裂的鉛筆](/gallery/broken-pencil)模擬，那裡的斷裂現象更為明顯。",
@@ -197,6 +207,13 @@
     "lensImages": {
       "title": "透鏡成像",
       "description": "模擬理想透鏡成像，包括平行光與點光源成的像。"
+    },
+    "virtualImageFormation": {
+      "title": "虛像的形成",
+      "description": "本模擬示範了匯聚透鏡如何形成虛像，以及該虛像的特徵。",
+      "object2": "物",
+      "converginglensf1000u": "匯聚透鏡（F = 1000單位）",
+      "virtualimagehighlyen": "虛像\n高度放大\n正立"
     },
     "transverseAndLongitudinalMagnification": {
       "title": "橫向和縱向放大率",
@@ -490,34 +507,17 @@
       "a1darrayii": "一維陣列：i=`i`",
       "thistextisshownonlyw": "這段文字只在 n>5 時顯示"
     },
+    "moduleExampleVariables": {
+      "title": "模組範例 - 變數"
+    },
     "moduleExampleCustomEquation": {
       "title": "模組範例 - 自訂數學式",
       "amirrorofshapeycos2p": "形狀為 y=cos(2 pi x + `phi`) 的鏡子"
-    },
-    "moduleExampleVariables": {
-      "title": "模組範例 - 變數"
     },
     "moduleExampleShapeParametrization": {
       "title": "模組範例 - 形狀參數化",
       "alensdefinedbydr1r2": "以 d, R_1, R_2 定義的透鏡",
       "alensdefinedbydffdbf": "以 d, FFD, BFD 定義的透鏡"
-    },
-    "virtualImageFormation": {
-      "title": "虛像的形成",
-      "description": "本模擬示範了匯聚透鏡如何形成虛像，以及該虛像的特徵。",
-      "virtualimagehighlyen": "虛像\n高度放大\n正立",
-      "object2": "物",
-      "converginglensf1000u": "匯聚透鏡（F = 1000單位）"
-    },
-    "distortionInWindowsAndBacksideMirrors": {
-      "window": "窗戶",
-      "glass": "玻璃",
-      "mirror": "鏡子",
-      "observer3": "觀察者",
-      "image": "像",
-      "source": "光源",
-      "title": "窗戶和背面鍍膜鏡中的失真",
-      "description": "以傾斜角度透過玻璃觀察物體時，影像會出現偏移，並且比實際位置更靠近觀察者。此模擬演示了在厚玻璃窗和背面鍍膜鏡中的這種效應。在「所有像」模式下查看時，可以發現影像點實際上是弧線，因此取決於探測器的大小，影像可能會變得模糊。\n\n在畫面右側，你還可以看到楔形玻璃對於表觀尺寸的影響。"
     }
   }
 }

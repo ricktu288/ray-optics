@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "polski",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "Symulacja biegu promieni",
     "shortName": "Optyka geometryczna",
@@ -82,6 +76,10 @@
     "BeamSplitter": {
       "title": "Rozdzielacz wiązki",
       "description": "Zwierciadło odbijające pewien procent padającego światła."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Wklęsła siatka dyfrakcyjna odbiciowa",
+      "description": "Wklęsła siatka dyfrakcyjna, której kształt jest częścią koła."
     },
     "PlaneGlass": {
       "title": "Półpłaszczyzna",
@@ -177,10 +175,6 @@
     "modules": {
       "import": "Importuj moduły…",
       "remove": "Usuń moduł"
-    },
-    "ConcaveDiffractionGrating": {
-      "description": "Wklęsła siatka dyfrakcyjna, której kształt jest częścią koła.",
-      "title": "Wklęsła siatka dyfrakcyjna odbiciowa"
     }
   },
   "view": {
@@ -233,5 +227,11 @@
   "languageDropdown": {
     "title": "Język: {{language}}",
     "translatedFraction": "{{fraction}} przetłumaczone"
+  },
+  "meta": {
+    "languageName": "polski",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }

@@ -1,10 +1,4 @@
 {
-  "meta": {
-    "languageName": "தமிழ்",
-    "parentheses": "{{main}} ({{sub}})",
-    "colon": "{{name}}: {{value}}",
-    "list": "{{first}}, {{others}}"
-  },
   "project": {
     "name": "ரே ஒளியியல் உருவகப்படுத்துதல்",
     "shortName": "ரே ஒளியியல்",
@@ -82,6 +76,10 @@
     "BeamSplitter": {
       "title": "பீம் ச்ப்ளிட்டர்",
       "description": "உள்வரும் ஒளியின் சதவீதத்தை கடத்தும் கண்ணாடி."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "குழிவான துருவல்",
+      "description": "வட்டத்தின் ஒரு பகுதியாக வடிவம் கொண்ட ஒரு குழிவான விளிம்புவிளைவு கிராதி."
     },
     "PlaneGlass": {
       "title": "அரை வானூர்தி",
@@ -177,10 +175,6 @@
     "modules": {
       "import": "தொகுதிகள் இறக்குமதி…",
       "remove": "தொகுதியை அகற்று"
-    },
-    "ConcaveDiffractionGrating": {
-      "title": "குழிவான துருவல்",
-      "description": "வட்டத்தின் ஒரு பகுதியாக வடிவம் கொண்ட ஒரு குழிவான விளிம்புவிளைவு கிராதி."
     }
   },
   "view": {
@@ -231,5 +225,11 @@
   "languageDropdown": {
     "title": "மொழி: {{language}}}",
     "translatedFraction": "{{fraction}} மொழிபெயர்க்கப்பட்டுள்ளது"
+  },
+  "meta": {
+    "languageName": "தமிழ்",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
