@@ -55,9 +55,10 @@ export default {
     const preferences = usePreferencesStore()
     const status = useStatus()
     const showJsonEditor = toRef(preferences, 'showJsonEditor')
+    const sidebarWidth = toRef(preferences, 'sidebarWidth')
     
     const notificationStyle = computed(() => ({
-      left: showJsonEditor.value ? '400px' : '0px'
+      left: showJsonEditor.value ? `${sidebarWidth.value}px` : '0px'
     }))
 
     const handleForceStop = () => {

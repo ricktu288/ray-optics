@@ -198,4 +198,9 @@ export default {
 .ace_scrollbar-h{
   margin: 0 2px
 }
+
+/* Custom syntax highlighting for math.js template expressions */
+.ace_support.ace_function {
+  color: #d4ffa9 !important;
+}
 </style>

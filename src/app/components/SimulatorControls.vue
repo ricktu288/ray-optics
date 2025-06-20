@@ -61,12 +61,13 @@ export default {
     const isAutoRefreshEnabled = ref(true) // Default to true
     const showSimulatorControls = toRef(preferences, 'showSimulatorControls')
     const showJsonEditor = toRef(preferences, 'showJsonEditor')
+    const sidebarWidth = toRef(preferences, 'sidebarWidth')
     
     // Adjust position when sidebar is shown
     const controlStyle = computed(() => {
-      const sidebarWidth = showJsonEditor.value ? 200 : 0 // Half of the sidebar width (400px/2) since we're translating from center
+      const halfSidebarWidth = showJsonEditor.value ? sidebarWidth.value / 2 : 0 // Half of the sidebar width since we're translating from center
       return {
-        transform: `translateX(calc(-50% + ${sidebarWidth}px))`
+        transform: `translateX(calc(-50% + ${halfSidebarWidth}px))`
       }
     })
     

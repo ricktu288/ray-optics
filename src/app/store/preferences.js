@@ -25,6 +25,7 @@ const PREFERENCES_DEFAULTS = {
   showStatus: false,
   showSimulatorControls: false,
   help: true,
+  sidebarWidth: 400,
 }
 
 // Callbacks for preference changes
@@ -71,7 +72,13 @@ export const usePreferencesStore = () => {
         if (storedValue === "on") return true
         if (storedValue === "off") return false
         try {
-          return JSON.parse(storedValue)
+          const parsed = JSON.parse(storedValue)
+          // Ensure numeric values are actually numbers
+          if (typeof PREFERENCES_DEFAULTS[key] === 'number') {
+            const num = Number(parsed)
+            return isNaN(num) ? PREFERENCES_DEFAULTS[key] : num
+          }
+          return parsed
         } catch {
           return PREFERENCES_DEFAULTS[key]
         }
@@ -87,9 +94,13 @@ export const usePreferencesStore = () => {
         get: () => refs[`_${key}`].value,
         set: (newValue) => {
           refs[`_${key}`].value = newValue
+          // Handle different value types for localStorage
+          const storageValue = typeof newValue === 'boolean' 
+            ? (newValue ? "on" : "off")
+            : JSON.stringify(newValue)
           localStorage.setItem(
             `rayOptics${key.charAt(0).toUpperCase()}${key.slice(1)}`, 
-            newValue ? "on" : "off"
+            storageValue
           )
           PREFERENCES_CALLBACKS[key]?.(newValue)
         }

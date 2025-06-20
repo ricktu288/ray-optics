@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div id="sidebar" v-show="showJsonEditor">
+  <div id="sidebar" v-show="showJsonEditor" :style="{ width: sidebarWidth + 'px' }" :data-width="sidebarWidth">
     <div id="sidebarMobileHeightDiff" class="d-none d-lg-block"></div>
     <div id="jsonEditorContainer">
       <div id="jsonEditor"></div>
@@ -27,6 +27,11 @@
         </a>
       </div>
     </div>
+    <div 
+      class="resize-handle"
+      @mousedown="startResize"
+      @touchstart="startResize"
+    ></div>
   </div>
 </template>
 
@@ -37,7 +42,8 @@
  */
 import { usePreferencesStore } from '../store/preferences'
 import { vTooltipPopover } from '../directives/tooltip-popover'
-import { computed, toRef } from 'vue'
+import { computed, toRef, ref, onMounted, onUnmounted } from 'vue'
+import { jsonEditorService } from '../services/jsonEditor'
 
 export default {
   name: 'Sidebar',
@@ -47,11 +53,82 @@ export default {
   setup() {
     const preferences = usePreferencesStore()
     const help = toRef(preferences, 'help')
+    const sidebarWidth = toRef(preferences, 'sidebarWidth')
     const tooltipType = computed(() => help.value ? 'popover' : undefined)
+    
+    const isResizing = ref(false)
+    const startX = ref(0)
+    const startWidth = ref(0)
+    
+    const startResize = (e) => {
+      e.preventDefault() // Prevent default touch behavior
+      const initialWidth = sidebarWidth.value
+      isResizing.value = true
+      
+      // Handle both mouse and touch events
+      const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX
+      startX.value = clientX
+      startWidth.value = initialWidth
+      
+      // Add both mouse and touch event listeners
+      document.addEventListener('mousemove', handleResize)
+      document.addEventListener('mouseup', stopResize)
+      document.addEventListener('touchmove', handleResize, { passive: false })
+      document.addEventListener('touchend', stopResize)
+      
+      document.body.style.cursor = 'ew-resize'
+      document.body.style.userSelect = 'none'
+    }
+    
+    const handleResize = (e) => {
+      if (!isResizing.value) return
+      
+      // Prevent default touch behavior
+      if (e.type === 'touchmove') {
+        e.preventDefault()
+      }
+      
+      // Handle both mouse and touch events
+      const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX
+      const deltaX = clientX - startX.value
+      const newWidth = Math.max(250, Math.min(800, startWidth.value + deltaX))
+      
+      sidebarWidth.value = newWidth
+      
+      // Trigger Ace editor resize with a small delay
+      setTimeout(() => {
+        if (jsonEditorService.aceEditor) {
+          jsonEditorService.aceEditor.resize()
+        }
+      }, 0)
+    }
+    
+    const stopResize = () => {
+      isResizing.value = false
+      
+      // Remove both mouse and touch event listeners
+      document.removeEventListener('mousemove', handleResize)
+      document.removeEventListener('mouseup', stopResize)
+      document.removeEventListener('touchmove', handleResize)
+      document.removeEventListener('touchend', stopResize)
+      
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    
+    onUnmounted(() => {
+      // Clean up event listeners if component is destroyed during resize
+      document.removeEventListener('mousemove', handleResize)
+      document.removeEventListener('mouseup', stopResize)
+      document.removeEventListener('touchmove', handleResize)
+      document.removeEventListener('touchend', stopResize)
+    })
     
     return {
       showJsonEditor: preferences.showJsonEditor,
-      tooltipType
+      sidebarWidth,
+      tooltipType,
+      startResize
     }
   }
 }
@@ -63,7 +140,6 @@ export default {
   z-index: -2;
   top: 46px;
   left: 0;
-  width: 400px;
   max-width: 100%;
   height: calc(100% - 46px);
   display: flex;
@@ -113,5 +189,19 @@ export default {
   background-color: rgba(80, 85, 90, 0.8);
   color: white;
   box-shadow: none;
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: ew-resize;
+  background: transparent;
+}
+
+.resize-handle:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 </style>

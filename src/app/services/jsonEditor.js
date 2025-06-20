@@ -20,6 +20,7 @@ import 'ace-builds/src-noconflict/mode-json';
 import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import { app } from '../services/app'
+import { CustomJsonMode } from '../utils/customJsonMode'
 
 /**
  * Service to manage the JSON editor instance and its interactions with the scene
@@ -41,7 +42,7 @@ class JsonEditorService {
 
     this.aceEditor = ace.edit("jsonEditor")
     this.aceEditor.setTheme("ace/theme/github_dark")
-    this.aceEditor.session.setMode("ace/mode/json")
+    this.aceEditor.session.setMode(new CustomJsonMode())
     this.aceEditor.session.setUseWrapMode(true)
     this.aceEditor.session.setUseSoftTabs(true)
     this.aceEditor.session.setTabSize(2)
