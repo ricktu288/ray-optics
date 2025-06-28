@@ -257,7 +257,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       };
     }
 
-    return this.refract(ray, rayIndex, incidentPoint, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingthis);
+    return this.refract(ray, rayIndex, incidentPoint, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
   }
 
   getIncidentData(ray) {
