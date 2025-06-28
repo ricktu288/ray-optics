@@ -81,6 +81,16 @@
       "Y": "A espessura do revestimento",
       "n1": "O índice refrativo do centro",
       "n2": "O índice refrativo do revestimento"
+    },
+    "CubeBeamSplitter": {
+      "title": "Divisor de Feixe em Cubo",
+      "description": "O cubo divisor de feixe é um elemento comumente utilizado na óptica. Este é um módulo de divisor de feixe de cubo que pode ser ajsutado em tamanho e ângulo.",
+      "point1": "O centro do cubo (quadrado)",
+      "size": "O tamanho do cubo",
+      "angle": "O ânuglo de rotação do cubo em graus",
+      "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
+      "cauchyB": "O coeficiente de Cauchy \\(B\\) do cubo em micrômetros quadrados",
+      "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
     }
   },
   "moduleTutorial": {
@@ -89,7 +99,8 @@
       "description": "Este tutorial vai te guiar pelo processi básico de criação de um módulo personalizado, que pode ser completamente feito dentro do app web, sem necessidade de qualquer ambiente de desenvolvimento externo.",
       "moduleIntroduction": "O recurso \"Módulo\" da Simulação de Óptica de Raios permite a criação de combinações modulares de objetos com parâmetros personalizados, pontos de controle personalizados, e malhas de objetos. Esse recurso extende a capacidade deste simulador ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes para criar novas ferramentas. Por exemplo, o módulo `CircleSource` (ver Ferramentas -> Outros -> Importar módulo) combina uma série de fontes pontuais criadas pela ferramenta existente \"Fonte pontual (<360°)\" ao redor de um círculo, para fazer uma ferramenta \"fonte circular\" que não existia no simulador. O módulo `FresnelLens` especializa a ferramenta \"Glass->Custom equation\", para que a equação represente uma curva específica da lente Fresnel parametrizada pelo número de fatias, assim fazendo uma ferramenta especializada \"Lente Fresnel\", que tambem não existia anteriormente. Além de fazer novas ferramentas, esse recurso também pode fazer algumas demonstrações de óptica mais interativas. Por exemplo, ao arrastar o terceiro ponto de controle do módulo `BeamExpander`, pode-se ver diretamente como a posição do ponto focal em comum das duas lentes afeta a largura do raio, sem necessitar ajustar os comprimentos focais das duas lentes individualmente.",
       "compareWithHandle": "Note que nem todos pontos de controle personalizados requerem um módulo. Alguns casos simples podem ser feitos com o recurso \"ponto de mauseio\" (ver a seção \"Agrupar, rotacionar e ajustar escala de objetos\" no popup de ajuda no canto inferior direito do simulador). Já que fazer um módulo é muito mais complicado que criar um ponto de manuseio, deve-se primeiro checar se o seu caso oise ser feito pelo recurso \"ponto de manuseio\" antes de considerar fazer um módulo. Veja [aqui](/gallery/black-cat-becomes-white) para um exemplo não trivial de um ponto de controle personalizado (mover dois sacos plásticos pra fora da água) sem utilizar um módulo.",
-      "compareWithIntegrations": "Por outro lado, se o seu caso requer programação complicada (como fazer animações, usar algoritmos complicados para colocar elementos ópticos, ou realizar análise em mapas de irradiância), por favor use as [ferramentas de integração](/integrations) e escreva programas em Python ou Julia."
+      "compareWithIntegrations": "Por outro lado, se o seu caso requer programação complicada (como fazer animações, usar algoritmos complicados para colocar elementos ópticos, ou realizar análise em mapas de irradiância), por favor use as [ferramentas de integração](/integrations) e escreva programas em Python ou Julia.",
+      "contribute": "Sinta-se bem-vindo para [contribuir os seus módulos para a lista de \"Importar módulos\"](/contributing/modules) se você achar que são úteis para outras pessoas, mesmo se forem feitos com vibe coding!"
     },
     "aiAssistant": {
       "title": "Usando Assistente de IA",

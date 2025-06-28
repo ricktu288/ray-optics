@@ -7,7 +7,8 @@
       "refraction": "Réfraction",
       "lens": "Lentilles",
       "combinationOfLenses": "Combinaison de Lentilles",
-      "miscellaneous": "Divers"
+      "miscellaneous": "Divers",
+      "grinOptics": "Gradient d'indices optiques"
     },
     "contributors_one": "Contributeur : {{contributors}}",
     "contributors_many": "Contributeurs : {{contributors}}",
@@ -39,7 +40,8 @@
       "nomatterwhereyouputt": "Peu importe où vous placez le point de source, il n'illuminera pas l'entièreté de la pièce.\nAttention : Due à des erreurs numériques, la pièce peut être encore illuminée après un certain temps."
     },
     "opticalCavity": {
-      "clickholdleftmouseto": "Cliquez + maintenez le clic gauche de votre souris\npour déplacer le rayon"
+      "clickholdleftmouseto": "Cliquez + maintenez le clic gauche de votre souris\npour déplacer le rayon",
+      "dragtomovetheidealmi": "Maintenir pour bouger\nle miroir idéal"
     },
     "beamDirectors": {
       "title": "Vecteurs directeurs du faisceau",
@@ -80,6 +82,12 @@
     },
     "koehlerIllumination": {
       "sample": "Echantillon"
+    },
+    "resonator": {
+      "flatmirror": "Miroir plan"
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Images provenant de deux miroirs"
     }
   }
 }

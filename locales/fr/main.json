@@ -37,7 +37,7 @@
     },
     "Beam": {
       "title": "Faisceau",
-      "description": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité contrôlée par le curseur 'Densité de rayons'. (Also supports divergent beams.)"
+      "description": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité contrôlée par le curseur 'Densité de rayons'. (Also supports divergent beams)."
     },
     "PointSource": {
       "title": "Source de lumière",
@@ -151,6 +151,9 @@
     "modules": {
       "import": "Import de modules…",
       "remove": "Retirer le module"
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Réseau de diffraction concave"
     }
   },
   "view": {

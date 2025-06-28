@@ -575,5 +575,14 @@
       ]
     },
     "firstCommit": "2025-06-11"
+  },
+  {
+    "name": "Florence",
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-06-27"
   }
 ]
