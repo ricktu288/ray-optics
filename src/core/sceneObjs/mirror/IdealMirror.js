@@ -78,32 +78,33 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
     var per_x = par_y;
     var per_y = -par_x;
 
-    var arrow_size_per = 5 * ls;
-    var arrow_size_par = 5 * ls;
-    var center_size = 1 * ls;
+    var arrow_size_per = this.scene.theme.idealCurveArrow.size / 2 * ls;
+    var arrow_size_par = this.scene.theme.idealCurveArrow.size / 2 * ls;
+    var center_size = Math.max(1, this.scene.theme.mirror.width / 2) * ls;
 
     // Draw the line segment
     const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(168,168,168)');
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
+    ctx.lineWidth = this.scene.theme.mirror.width * ls;
     ctx.globalAlpha = 1;
-    ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    ctx.lineWidth = 1 * ls;
+    
 
 
     // Draw the center point of the mirror
     var center = geometry.segmentMidpoint(this);
-    ctx.strokeStyle = 'rgb(255,255,255)';
+    ctx.strokeStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.idealCurveCenter.color);
+    ctx.lineWidth = this.scene.theme.idealCurveCenter.size * ls;
     ctx.beginPath();
     ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);
     ctx.lineTo(center.x + per_x * center_size, center.y + per_y * center_size);
     ctx.stroke();
 
 
-    ctx.fillStyle = 'rgb(255,0,0)';
+    ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.idealCurveArrow.color);
 
 
     // Draw the arrow for the two-sided version

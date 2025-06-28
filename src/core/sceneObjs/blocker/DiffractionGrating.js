@@ -88,20 +88,21 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     }
     
     if (this.mirrored) {
-      ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(168,168,168)';
+      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
+      ctx.lineWidth = this.scene.theme.mirror.width * ls;
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
       ctx.stroke();
     }
-    ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(124,62,18)';
-    ctx.lineWidth = 2 * ls;
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
+    ctx.lineWidth = this.scene.theme.diffractionGrating.width * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
     if (this.customBrightness) {
-      ctx.setLineDash([2 * ls, 2 * ls]);
+      ctx.setLineDash(this.scene.theme.diffractionGrating.dash.map(d => d * ls));
     } else {
-      ctx.setLineDash([4 * (1 - this.slitRatio) * ls, 4 * this.slitRatio * ls]);
+      ctx.setLineDash([this.scene.theme.diffractionGrating.dash[0] * 2 * (1 - this.slitRatio) * ls, this.scene.theme.diffractionGrating.dash[1] * 2 * this.slitRatio * ls]);
     }
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);

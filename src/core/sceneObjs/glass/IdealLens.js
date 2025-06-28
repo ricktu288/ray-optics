@@ -62,14 +62,14 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     var per_x = par_y;
     var per_y = -par_x;
 
-    var arrow_size_per = 5 * ls;
-    var arrow_size_par = 5 * ls;
-    var center_size = 2 * ls;
+    var arrow_size_per = this.scene.theme.idealCurveArrow.size / 2 * ls;
+    var arrow_size_par = this.scene.theme.idealCurveArrow.size / 2 * ls;
+    var center_size = this.scene.theme.idealCurveArrow.size / 5 * ls;
 
     // Draw the line segment
-    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor([(this.scene.theme.glass.color.r + this.scene.theme.background.color.r) / 2, (this.scene.theme.glass.color.g + this.scene.theme.background.color.g) / 2, (this.scene.theme.glass.color.b + this.scene.theme.background.color.b) / 2, 1]);
     ctx.globalAlpha = 1 / ((Math.abs(this.focalLength / this.scene.lengthScale) / 100) + 1);
-    ctx.lineWidth = 4 * ls;
+    ctx.lineWidth = this.scene.theme.idealCurveArrow.size / 5 * 2 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
@@ -77,11 +77,11 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     ctx.lineWidth = 1 * ls;
 
     ctx.globalAlpha = 1;
-    ctx.fillStyle = 'rgb(255,0,0)';
+    ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.idealCurveArrow.color);
 
     // Draw the center point of the lens
     var center = geometry.segmentMidpoint(this);
-    ctx.strokeStyle = 'rgb(255,255,255)';
+    ctx.strokeStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.idealCurveCenter.color);
     ctx.beginPath();
     ctx.moveTo(center.x - per_x * center_size, center.y - per_y * center_size);
     ctx.lineTo(center.x + per_x * center_size, center.y + per_y * center_size);

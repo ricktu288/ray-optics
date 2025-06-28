@@ -67,19 +67,22 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(100,100,168)');
-    ctx.lineWidth = 1 * ls;
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.beamSplitter.color);
+    ctx.lineWidth = this.scene.theme.beamSplitter.width * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
     ctx.stroke();
-    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(100,100,168)');
-    ctx.setLineDash([15 * ls, 15 * ls]);
-    ctx.beginPath();
-    ctx.moveTo(this.p1.x, this.p1.y);
-    ctx.lineTo(this.p2.x, this.p2.y);
-    ctx.stroke();
+
+    if (this.scene.simulateColors && this.wavelength && this.filter) {
+      const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(colorArray);
+      ctx.setLineDash([15 * ls, 15 * ls]);
+      ctx.beginPath();
+      ctx.moveTo(this.p1.x, this.p1.y);
+      ctx.lineTo(this.p2.x, this.p2.y);
+      ctx.stroke();
+    }
     ctx.setLineDash([]);
   }
 

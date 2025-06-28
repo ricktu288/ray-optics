@@ -60,8 +60,8 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : 'white';
-    ctx.lineWidth = 1 * ls;
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    ctx.lineWidth = this.scene.theme.decoration.width * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);
@@ -82,7 +82,7 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
     const ls = canvasRenderer.lengthScale;
 
     const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-    const len = 10 * ls;
+    const len = Math.max(this.scene.theme.decoration.width * 5 * ls, 10 * ls);
     ctx.beginPath();
     ctx.moveTo(p2.x, p2.y);
     ctx.lineTo(p2.x - len * Math.cos(angle - Math.PI / 6), p2.y - len * Math.sin(angle - Math.PI / 6));

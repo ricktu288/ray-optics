@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import BaseFilter from '../BaseFilter.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import BaseSceneObj from '../BaseSceneObj.js';
 
 /**
  * Mirror with shape of a circular arc. Diffracts light. 
  * 
  * Tools -> Mirror -> Concave Grating
  * @class
- * @extends BaseFilter
+ * @extends BaseSceneObj
  * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint.
  * @property {Point} p2 - The second endpoint.
@@ -34,7 +34,7 @@ import geometry from '../../geometry.js';
  * @property {number[]} brightnesses - The brightnesses of the diffracted rays for m = 0, 1, -1, 2, -2, ... when `customBrightness` is true. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0.
  * @property {number} slitRatio - The ratio of the slit width to the line interval.
  */
-class ConcaveDiffractionGrating extends BaseFilter {
+class ConcaveDiffractionGrating extends BaseSceneObj {
   static type = 'ConcaveDiffractionGrating';
   static isOptical = true;
   static serializableDefaults = {
@@ -80,20 +80,19 @@ class ConcaveDiffractionGrating extends BaseFilter {
         var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
         var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
         var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
-        const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
-        ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors && this.wavelength && this.filter ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(168,168,168)');
-        ctx.lineWidth = 1 * ls;
+        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
+        ctx.lineWidth = this.scene.theme.mirror.width * ls;
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
-        ctx.strokeStyle = isHovered ? 'cyan' : 'rgb(124,62,18)';
-        ctx.lineWidth = 2 * ls;
+        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
+        ctx.lineWidth = this.scene.theme.diffractionGrating.width * ls;
         ctx.lineCap = 'butt';
         ctx.beginPath();
         if (this.customBrightness) {
-          ctx.setLineDash([2 * ls, 2 * ls]);
+          ctx.setLineDash(this.scene.theme.diffractionGrating.dash.map(d => d * ls));
         } else {
-          ctx.setLineDash([4 * (1 - this.slitRatio) * ls, 4 * this.slitRatio * ls]);
+          ctx.setLineDash([this.scene.theme.diffractionGrating.dash[0] * 2 * (1 - this.slitRatio) * ls, this.scene.theme.diffractionGrating.dash[1] * 2 * this.slitRatio * ls]);
         }
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
@@ -351,28 +350,26 @@ class ConcaveDiffractionGrating extends BaseFilter {
   }
 
   checkRayIntersects(ray) {
-    if (this.checkRayIntersectFilter(ray)) {
-      if (!this.p3) { return null; }
-      var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
-      if (isFinite(center.x) && isFinite(center.y)) {
-        var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
-        var rp_exist = [];
-        var rp_lensq = [];
-        for (var i = 1; i <= 2; i++) {
-          rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
-          rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
-        }
-        if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
-        if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) { return rp_temp[2]; }
-      } else {
-        // The three points on the arc is colinear. Treat as a line segment.
-        var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
+    if (!this.p3) { return null; }
+    var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
+    if (isFinite(center.x) && isFinite(center.y)) {
+      var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
+      var rp_exist = [];
+      var rp_lensq = [];
+      for (var i = 1; i <= 2; i++) {
+        rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
+        rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
+      }
+      if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
+      if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) { return rp_temp[2]; }
+    } else {
+      // The three points on the arc is colinear. Treat as a line segment.
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
 
-        if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-          return rp_temp;
-        } else {
-          return null;
-        }
+      if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
+        return rp_temp;
+      } else {
+        return null;
       }
     }
   }

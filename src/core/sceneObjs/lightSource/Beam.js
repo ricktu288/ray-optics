@@ -99,16 +99,16 @@ class Beam extends LineObjMixin(BaseSceneObj) {
 
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
     const colorArray = Simulator.wavelengthToColor(this.wavelength, 1);
-    ctx.strokeStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(0,255,0)');
-    ctx.lineWidth = 4 * ls;
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.simulateColors ? colorArray : this.scene.theme.lightSource.color);
+    ctx.lineWidth = this.scene.theme.lightSource.size * 4 / 5 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();
-    ctx.moveTo(this.p1.x + Math.sin(a_l) * 2 * ls, this.p1.y + Math.cos(a_l) * 2 * ls);
-    ctx.lineTo(this.p2.x + Math.sin(a_l) * 2 * ls, this.p2.y + Math.cos(a_l) * 2 * ls);
+    ctx.moveTo(this.p1.x + Math.sin(a_l) * this.scene.theme.lightSource.size * 2 / 5 * ls, this.p1.y + Math.cos(a_l) * this.scene.theme.lightSource.size * 2 / 5 * ls);
+    ctx.lineTo(this.p2.x + Math.sin(a_l) * this.scene.theme.lightSource.size * 2 / 5 * ls, this.p2.y + Math.cos(a_l) * this.scene.theme.lightSource.size * 2 / 5 * ls);
     ctx.stroke();
 
-    ctx.strokeStyle = 'rgba(128,128,128,255)';
-    ctx.lineWidth = 2 * ls;
+    ctx.strokeStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.beamShield.color);
+    ctx.lineWidth = this.scene.theme.beamShield.width * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
     ctx.lineTo(this.p2.x, this.p2.y);

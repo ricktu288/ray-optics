@@ -56,7 +56,11 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
       return;
     }
     
-    ctx.globalCompositeOperation = 'lighter';
+    if (this.scene.theme.background.color.r == 0 && this.scene.theme.background.color.g == 0 && this.scene.theme.background.color.b == 0) {
+      ctx.globalCompositeOperation = 'lighter';
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+    }
     var len = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
     var par_x = (this.p2.x - this.p1.x) / len;
     var par_y = (this.p2.y - this.p1.y) / len;
@@ -70,9 +74,9 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
     var scale_len = 10 * ls;
     var scale_len_mid = 15 * ls;
 
-    ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-    ctx.font = (14 * ls) + 'px Arial';
-    ctx.fillStyle = 'rgb(128,128,128)';
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
+    ctx.font = (this.scene.theme.rulerText.size * ls) + 'px ' + this.scene.theme.rulerText.font;
+    ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.rulerText.color);
     if (ang > Math.PI * (-0.25) && ang <= Math.PI * 0.25) {
       //↘~↗
       var scale_direction = -1;
@@ -103,7 +107,7 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
       ctx.textBaseline = 'middle';
     }
 
-    ctx.lineWidth = 1 * ls;
+    ctx.lineWidth = this.scene.theme.ruler.width * ls;
 
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);

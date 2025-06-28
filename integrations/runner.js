@@ -172,10 +172,16 @@ process.stdin.on('end', () => {
             // Set cropbox settings
             const originalScale = scene.scale;
             const originalOrigin = { ...scene.origin };
+            const originalBackgroundColor = { ...scene.theme.background.color };
             
             scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
             scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
-            
+
+            if (cropBox.transparent && scene.theme.background.color.r == 0 && scene.theme.background.color.g == 0 && scene.theme.background.color.b == 0) {
+              // Use a non-black background color so that some rendering (e.g. glass) will not assume the background is black.
+              scene.theme.background.color = { r: 0.01, g: 0.01, b: 0.01 };
+            }
+
             // Create simulator with canvas
             const simulator = new rayOptics.Simulator(
               scene, 
@@ -191,8 +197,11 @@ process.stdin.on('end', () => {
             
             simulator.on('simulationComplete', () => {
               // Draw layers to final canvas
-              ctxFinal.fillStyle = 'black';
-              ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+
+              if (!cropBox.transparent) {
+                ctxFinal.fillStyle = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
+                ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+              }
               
               ctxFinal.drawImage(canvasBelowLight, 0, 0);
               ctxFinal.drawImage(canvasGrid, 0, 0);
@@ -208,7 +217,8 @@ process.stdin.on('end', () => {
               // Restore original scene settings
               scene.scale = originalScale;
               scene.origin = originalOrigin;
-
+              scene.theme.background.color = originalBackgroundColor;
+              
               // Add simulator statistics
               result.totalTruncation = simulator.totalTruncation;
               result.processedRayCount = simulator.processedRayCount;

@@ -1347,8 +1347,11 @@ class Editor {
       const imageHeight = cropBox.p4.y - cropBox.p1.y;
 
       const ctxSVG = new C2S(imageWidth, imageHeight);
-      ctxSVG.fillStyle = "black";
-      ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
+
+      if (!cropBox.transparent) {
+        ctxSVG.fillStyle = `rgb(${Math.round(exportingScene.theme.background.color.r * 255)}, ${Math.round(exportingScene.theme.background.color.g * 255)}, ${Math.round(exportingScene.theme.background.color.b * 255)})`;
+        ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
+      }
 
       const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7);
 
@@ -1379,6 +1382,11 @@ class Editor {
 
       exportingScene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
       exportingScene.origin = { x: -cropBox.p1.x * exportingScene.scale, y: -cropBox.p1.y * exportingScene.scale };
+
+      if (cropBox.transparent && exportingScene.theme.background.color.r == 0 && exportingScene.theme.background.color.g == 0 && exportingScene.theme.background.color.b == 0) {
+        // Use a non-black background color so that some rendering (e.g. glass) will not assume the background is black.
+        exportingScene.theme.background.color = { r: 0.01, g: 0.01, b: 0.01 };
+      }
 
       const imageWidth = cropBox.width;
       const imageHeight = cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x);
@@ -1415,8 +1423,12 @@ class Editor {
         finalCanvas.width = imageWidth;
         finalCanvas.height = imageHeight;
         const finalCtx = finalCanvas.getContext('2d');
-        finalCtx.fillStyle = "black";
-        finalCtx.fillRect(0, 0, cropBox.width, cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x));
+
+        if (!cropBox.transparent) {
+          finalCtx.fillStyle = `rgb(${Math.round(exportingScene.theme.background.color.r * 255)}, ${Math.round(exportingScene.theme.background.color.g * 255)}, ${Math.round(exportingScene.theme.background.color.b * 255)})`;
+          finalCtx.fillRect(0, 0, cropBox.width, cropBox.width * (cropBox.p4.y - cropBox.p1.y) / (cropBox.p4.x - cropBox.p1.x));
+        }
+
         finalCtx.drawImage(canvases[1], 0, 0);
         finalCtx.drawImage(canvases[3], 0, 0);
         if (self.scene.colorMode == 'default') {

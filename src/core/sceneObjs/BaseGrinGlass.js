@@ -107,7 +107,7 @@ class BaseGrinGlass extends BaseGlass {
       ctx.globalAlpha = 1;
       return;
     }
-    ctx.fillStyle = "rgba(255,0,255,0.15)";
+    ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.grinGlass.color);
     ctx.fill('evenodd');
     ctx.globalAlpha = 1;
   }

@@ -108,9 +108,9 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
-      ctx.lineWidth = 1 * ls;
-      ctx.setLineDash([5 * ls, 5 * ls]);
+      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.detector.color);
+      ctx.lineWidth = this.scene.theme.detector.width * ls;
+      ctx.setLineDash(this.scene.theme.detector.dash.map(d => d * ls));
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
@@ -137,10 +137,10 @@ class Detector extends LineObjMixin(BaseSceneObj) {
         var str3 = "F∥=" + this.shear.toFixed(2);
       }
 
-      ctx.font = (16 * ls) + 'px Arial';
+      ctx.font = (this.scene.theme.detectorText.size * ls) + 'px ' + this.scene.theme.detectorText.font;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = isHovered ? 'cyan' : ('rgb(192,192,192)');
+      ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.detectorText.color);
       ctx.fillText(str1, this.p2.x, this.p2.y);
       ctx.fillText(str2, this.p2.x, this.p2.y + 20 * ls);
       ctx.fillText(str3, this.p2.x, this.p2.y + 40 * ls);
@@ -155,9 +155,9 @@ class Detector extends LineObjMixin(BaseSceneObj) {
         var vy = -ux;
 
         // Draw the irradiance map
-        ctx.lineWidth = 1 * ls;
-        ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
-        ctx.fillStyle = 'blue';
+        ctx.lineWidth = this.scene.theme.irradMapBorder.width * ls;
+        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.irradMapBorder.color);
+        ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.irradMap.color);
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         for (var i = 0; i < this.binData.length; i++) {

@@ -54,9 +54,7 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2, false);
     this.fillGlass(canvasRenderer, isAboveLight, isHovered);
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'red';
-    ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+    canvasRenderer.drawPoint(this.p1, this.scene.theme.centerPoint.color, this.scene.theme.centerPoint.size);
     if (isHovered) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);

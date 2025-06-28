@@ -58,11 +58,20 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    const colorArray = Simulator.wavelengthToColor(this.wavelength, 1);
-    ctx.fillStyle = isHovered ? 'cyan' : (this.scene.simulateColors ? canvasRenderer.rgbaToCssColor(colorArray) : 'rgb(255,0,0)');
-    ctx.fillRect(this.p1.x - 2.5 * ls, this.p1.y - 2.5 * ls, 5 * ls, 5 * ls);
-    ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,0,0)');
-    ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
+    let sourceColor = this.scene.theme.sourcePoint.color;
+    let directionColor = this.scene.theme.directionPoint.color;
+
+    if (this.scene.simulateColors) {
+      sourceColor = Simulator.wavelengthToColor(this.wavelength, 1);
+    }
+    
+    if (isHovered) {
+      sourceColor = {r: 0, g: 1, b: 1, a: 1};
+      directionColor = {r: 0, g: 1, b: 1, a: 1};
+    }
+
+    canvasRenderer.drawPoint(this.p1, sourceColor, this.scene.theme.sourcePoint.size);
+    canvasRenderer.drawPoint(this.p2, directionColor, this.scene.theme.directionPoint.size);
   }
 
   getDefaultCenter() {

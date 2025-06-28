@@ -44,7 +44,11 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
     const ls = canvasRenderer.lengthScale;
 
     if (!isAboveLight) {
-      ctx.globalCompositeOperation = 'lighter';
+      if (this.scene.theme.background.color.r == 0 && this.scene.theme.background.color.g == 0 && this.scene.theme.background.color.b == 0) {
+        ctx.globalCompositeOperation = 'lighter';
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+      }
       var r = Math.sqrt((this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y));
       var scale_width_limit = 5 * ls;
 
@@ -55,9 +59,9 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
       var scale_len_mid = 15 * ls;
       var scale_len_long = 20 * ls;
 
-      ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(128,128,128)');
-      ctx.font = 'bold ' + (14 * ls) + 'px Arial';
-      ctx.fillStyle = 'rgb(128,128,128)';
+      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
+      ctx.font = 'bold ' + (this.scene.theme.rulerText.size * ls) + 'px ' + this.scene.theme.rulerText.font;
+      ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.rulerText.color);
 
       if (r * scale_step * Math.PI / 180 < scale_width_limit) {
         // The scale is too small
@@ -73,7 +77,7 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
         scale_len = 5 * ls;
         scale_len_mid = 8 * ls;
         scale_len_long = 10 * ls;
-        ctx.font = 'bold ' + (10 * ls) + 'px Arial';
+        ctx.font = 'bold ' + (this.scene.theme.rulerText.size * 10 / 14 * ls) + 'px ' + this.scene.theme.rulerText.font;
       }
       if (r * scale_step * Math.PI / 180 < scale_width_limit) {
         // The scale is too small
@@ -85,7 +89,7 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
 
-      ctx.lineWidth = 1 * ls;
+      ctx.lineWidth = this.scene.theme.ruler.width * ls;
 
       ctx.beginPath();
       ctx.arc(this.p1.x, this.p1.y, r, 0, Math.PI * 2, false);
@@ -114,8 +118,7 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
 
       ctx.globalCompositeOperation = 'source-over';
     }
-    ctx.fillStyle = 'red';
-    ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+    canvasRenderer.drawPoint(this.p1, this.scene.theme.centerPoint.color, this.scene.theme.centerPoint.size);
     if (isHovered) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(this.p2.x - 2.5 * ls, this.p2.y - 2.5 * ls, 5 * ls, 5 * ls);

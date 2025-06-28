@@ -64,18 +64,23 @@ class CanvasRenderer {
 
   /**
    * Converts an RGBA array [R, G, B, A] with values between 0 and 1 to a CSS color string.
-   * @param {number[]} rgba - The RGBA array.
+   * @param {number[]|object} rgba - The RGBA array or object with r, g, b, a properties.
    * @returns {string} The CSS color string.
    */
   rgbaToCssColor(rgba) {
-    const [r, g, b, a] = rgba;
-    return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+    if (rgba.r !== undefined) {
+      const { r, g, b, a } = rgba;
+      return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+    } else {
+      const [r, g, b, a] = rgba;
+      return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+    }
   }
 
   /**
    * Draw a point.
    * @param {Point} p
-   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
    * @param {number} [size=5]
    */
   drawPoint(p, color = [0, 0, 0, 1], size = 5) {
@@ -86,11 +91,15 @@ class CanvasRenderer {
   /**
    * Draw a line.
    * @param {Line} l
-   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=false] (not implemented, just for parameter consistency)
+   * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
    */
-  drawLine(l, color = [0, 0, 0, 1]) {
+  drawLine(l, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
     this.ctx.strokeStyle = this.rgbaToCssColor(color);
-    this.ctx.lineWidth = 1 * this.lengthScale;
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
     this.ctx.beginPath();
     let ang1 = Math.atan2((l.p2.x - l.p1.x), (l.p2.y - l.p1.y));
     let cvsLimit = (Math.abs(l.p1.x + this.origin.x) + Math.abs(l.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
@@ -102,14 +111,15 @@ class CanvasRenderer {
   /**
    * Draw a ray.
    * @param {Line} r
-   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
    * @param {boolean} [showArrow=true]
    * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
    */
-  drawRay(r, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
-    this.ctx.setLineDash(lineDash);
+  drawRay(r, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
     this.ctx.strokeStyle = this.rgbaToCssColor(color);
-    this.ctx.lineWidth = 1 * this.lengthScale;
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
     this.ctx.fillStyle = this.rgbaToCssColor(color);
     
     // Check if ray has a valid direction
@@ -190,14 +200,15 @@ class CanvasRenderer {
   /**
    * Draw a segment.
    * @param {Line} s
-   * @param {number[]} [color=[0, 0, 0, 1]]
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
    * @param {boolean} [showArrow=true]
-   * @param {number} [arrowPosition=0.67] Position of arrow along line (0 to 1, where 0 is at p1 and 1 is at p2)
+   * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
    */
-  drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = []) {
-    this.ctx.setLineDash(lineDash);
+  drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
     this.ctx.strokeStyle = this.rgbaToCssColor(color);
-    this.ctx.lineWidth = 1 * this.lengthScale;
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
     this.ctx.fillStyle = this.rgbaToCssColor(color);
     
     // Calculate arrow size first to determine if we should draw it
@@ -272,7 +283,7 @@ class CanvasRenderer {
   /**
    * Draw a circle.
    * @param {Circle} c
-   * @param {String} [color='black']
+   * @param {String|object} [color='black']
    */
   drawCircle(c, color = 'black') {
     this.ctx.strokeStyle = color;

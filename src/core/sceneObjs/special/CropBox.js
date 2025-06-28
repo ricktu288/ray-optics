@@ -32,6 +32,7 @@ import i18next from 'i18next';
  * @property {string} format - The format of the image to be exported.
  * @property {number} width - The width of the image to be exported. Not effective when the format is 'svg'.
  * @property {number} rayCountLimit - The maximum number of rays to be traced. This is to avoid infinite loop. If not set, the default value is determined by the simulator and depends on `format`.
+ * @property {boolean} transparent - Whether the image should have a transparent background.
  */
 class CropBox extends BaseSceneObj {
   static type = 'CropBox';
@@ -40,7 +41,8 @@ class CropBox extends BaseSceneObj {
     p4: null,
     format: 'png',
     width: 1920,
-    rayCountLimit: null
+    rayCountLimit: null,
+    transparent: false
   };
 
   constructor(scene, jsonObj) {
@@ -131,7 +133,7 @@ class CropBox extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.strokeStyle = isHovered ? 'cyan' : 'white';
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -140,7 +142,7 @@ class CropBox extends BaseSceneObj {
     ctx.lineTo(this.p3.x, this.p3.y);
     ctx.lineTo(this.p1.x, this.p1.y);
     ctx.stroke();
-    ctx.fillStyle = isHovered ? 'cyan' : 'white';
+    ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();

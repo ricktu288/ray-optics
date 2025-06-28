@@ -149,7 +149,7 @@ function exportImageFromCropBox(cropBox, filename, skipLight, callback) {
   initSimulatorForCropBox(cropBox, skipLight);
   simulate(skipLight, function () {
     // Clear final canvas
-    ctxFinal.fillStyle = 'black';
+    ctxFinal.fillStyle = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
     ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
 
     // Draw the layers

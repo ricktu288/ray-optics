@@ -125,6 +125,10 @@ function initAppService() {
 
   simulator.dpr = dpr;
 
+  simulator.on('update', function () {
+    canvasBelowLight.style.backgroundColor = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
+  });
+
   simulator.on('simulationStart', function () {
     statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
       rayCount: 0,

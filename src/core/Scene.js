@@ -26,6 +26,137 @@ import seedrandom from 'seedrandom';
 export const DATA_VERSION = 5;
 
 /**
+ * Recursively merge a nested object with its defaults.
+ * @param {Object} target - The target object to merge into
+ * @param {Object} source - The source object to merge from
+ * @param {Object} defaults - The default values
+ * @param {string} path - The current path for error reporting
+ * @returns {Object} The merged object
+ */
+function mergeWithDefaults(target, source, defaults, path = '') {
+  const result = JSON.parse(JSON.stringify(defaults));
+  
+  if (source && typeof source === 'object' && !Array.isArray(source)) {
+    for (const key in source) {
+      if (key in defaults) {
+        if (typeof defaults[key] === 'object' && !Array.isArray(defaults[key]) && defaults[key] !== null) {
+          result[key] = mergeWithDefaults(result[key], source[key], defaults[key], path ? `${path}.${key}` : key);
+        } else {
+          result[key] = source[key];
+        }
+      }
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * Recursively validate that an object only contains known keys.
+ * @param {Object} obj - The object to validate
+ * @param {Object} defaults - The default structure defining known keys
+ * @param {string} path - The current path for error reporting
+ * @returns {string|null} The path of unknown key if found, null otherwise
+ */
+function validateNestedKeys(obj, defaults, path = '') {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return null;
+  }
+  
+  for (const key in obj) {
+    const currentPath = path ? `${path}.${key}` : key;
+    
+    if (!(key in defaults)) {
+      return currentPath;
+    }
+    
+    if (typeof defaults[key] === 'object' && !Array.isArray(defaults[key]) && defaults[key] !== null) {
+      const nestedError = validateNestedKeys(obj[key], defaults[key], currentPath);
+      if (nestedError) {
+        return nestedError;
+      }
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * Recursively compare two objects for equality.
+ * @param {*} obj1 - First object
+ * @param {*} obj2 - Second object
+ * @returns {boolean} True if objects are equal
+ */
+function deepEqual(obj1, obj2) {
+  if (obj1 === obj2) return true;
+  
+  if (obj1 == null || obj2 == null) return obj1 === obj2;
+  
+  if (typeof obj1 !== typeof obj2) return false;
+  
+  if (typeof obj1 !== 'object') return obj1 === obj2;
+  
+  if (Array.isArray(obj1) !== Array.isArray(obj2)) return false;
+  
+  if (Array.isArray(obj1)) {
+    if (obj1.length !== obj2.length) return false;
+    for (let i = 0; i < obj1.length; i++) {
+      if (!deepEqual(obj1[i], obj2[i])) return false;
+    }
+    return true;
+  }
+  
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  
+  if (keys1.length !== keys2.length) return false;
+  
+  for (const key of keys1) {
+    if (!(key in obj2)) return false;
+    if (!deepEqual(obj1[key], obj2[key])) return false;
+  }
+  
+  return true;
+}
+
+/**
+ * Recursively extract only non-default values from a nested object.
+ * @param {Object} obj - The object to extract from
+ * @param {Object} defaults - The default values
+ * @returns {Object|null} Object containing only non-default values, or null if all values are default
+ */
+function extractNonDefaults(obj, defaults) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    // For non-objects or arrays, compare directly
+    return deepEqual(obj, defaults) ? null : obj;
+  }
+  
+  const result = {};
+  let hasNonDefaults = false;
+  
+  for (const key in obj) {
+    if (key in defaults) {
+      if (typeof defaults[key] === 'object' && !Array.isArray(defaults[key]) && defaults[key] !== null) {
+        // Recursively handle nested objects
+        const nested = extractNonDefaults(obj[key], defaults[key]);
+        if (nested !== null) {
+          result[key] = nested;
+          hasNonDefaults = true;
+        }
+      } else {
+        // For primitive values or arrays, compare directly
+        if (!deepEqual(obj[key], defaults[key])) {
+          result[key] = obj[key];
+          hasNonDefaults = true;
+        }
+      }
+    }
+  }
+  
+  return hasNonDefaults ? result : null;
+}
+
+/**
  * Represents the optical scene for simulation. The scene contains the instances of scene objects (from {@link sceneObjs}) and the settings of the simulation. Scene objects include optical elements (e.g. mirrors, lenses), detectors, decorations (e.g. rulers, text labels), and special objects (e.g. handles, cropboxes). It also contains the module definitions used in the scene. Since the settings of the scene may affect the behavior of the scene objects, a reference to the scene is also stored in each scene object.
  * 
  * The data represented by the scene can be serialized to JSON and deserialized from JSON. The JSON data format of the scene is versioned, and the version number is stored in the JSON data. The scene is backward-compatible with older versions of the JSON data format, and the scene is converted to the current version when loaded. Note that the background image of the scene is not serialized, and the viewport size is adapted to the current viewport when deserialized.
@@ -81,8 +212,164 @@ class Scene {
     colorMode: 'default',
     showRayArrows: false,
     symbolicBodyMerging: false,
-    randomSeed: null
+    randomSeed: null,
+    theme: {
+      background: {
+        color: { r: 0, g: 0, b: 0 }
+      },
+      ray: {
+        color: { r: 1, g: 1, b: 0.5 },
+        dash: [],
+      },
+      colorRay: {
+        dash: [],
+      },
+      extendedRay: {
+        color: { r: 1, g: 0.5, b: 0 },
+        dash: [],
+      },
+      colorExtendedRay: {
+        dash: [2,2],
+      },
+      forwardExtendedRay: {
+        color: { r: 0.3, g: 0.3, b: 0.3 },
+        dash: [],
+      },
+      colorForwardExtendedRay: {
+        dash: [1,5],
+      },
+      observedRay: {
+        color: { r: 0, g: 0, b: 1 },
+        dash: [],
+      },
+      colorObservedRay: {
+        dash: [1,2],
+      },
+      realImage: {
+        color: { r: 1, g: 1, b: 0.5 },
+        size: 5,
+      },
+      colorRealImage: {
+        size: 5,
+      },
+      virtualImage: {
+        color: { r: 1, g: 0.5, b: 0 },
+        size: 5,
+      },
+      colorVirtualImage: {
+        size: 3,
+      },
+      virtualObject: {
+        color: { r: 0.3, g: 0.3, b: 0.3 },
+        size: 5,
+      },
+      colorVirtualObject: {
+        size: 1,
+      },
+      grid: {
+        color: { r: 1, g: 1, b: 1, a: 0.25 },
+        dash: [2,2],
+        width: 1,
+      },
+      observer: {
+        color: { r: 0, g: 0, b: 1 },
+      },
+      sourcePoint: {
+        color: { r: 1, g: 0, b: 0, a: 1 },
+        size: 5,
+      },
+      directionPoint: {
+        color: { r: 1, g: 0, b: 0, a: 1 },
+        size: 3,
+      },
+      centerPoint: {
+        color: { r: 1, g: 0, b: 0, a: 1 },
+        size: 3,
+      },
+      lightSource: {
+        color: { r: 0, g: 1, b: 0, a: 1 },
+        size: 5,
+      },
+      beamShield: {
+        color: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+        width: 2,
+      },
+      colorSourceCenter: {
+        color: { r: 1, g: 1, b: 1, a: 1 },
+        size: 3,
+      },
+      mirror: {
+        color: { r: 0.66, g: 0.66, b: 0.66, a: 1 },
+        width: 1,
+      },
+      beamSplitter: {
+        color: { r: 0.39, g: 0.39, b: 0.66, a: 1 },
+        width: 1,
+      },
+      idealCurveCenter: {
+        color: { r: 1, g: 1, b: 1, a: 1 },
+        size: 1,
+      },
+      idealCurveArrow: {
+        color: { r: 1, g: 0, b: 0, a: 1 },
+        size: 10,
+      },
+      glass: {
+        color: { r: 1, g: 1, b: 1 },
+      },
+      grinGlass: {
+        color: { r: 1, g: 0, b: 1, a: 0.15 },
+      },
+      blocker: {
+        color: { r: 0.29, g: 0.14, b: 0.04, a: 1 },
+        width: 3,
+      },
+      diffractionGrating: {
+        color: { r: 0.49, g: 0.24, b: 0.07, a: 1 },
+        dash: [2,2],
+        width: 2,
+      },
+      detector: {
+        color: { r: 0.66, g: 0.66, b: 0.66, a: 1 },
+        dash: [5,5],
+        width: 1,
+      },
+      detectorText: {
+        color: { r: 0.66, g: 0.66, b: 0.66, a: 1 },
+        font: "Arial",
+        size: 16,
+      },
+      irradMap: {
+        color: { r: 0, g: 0, b: 1, a: 1 },
+      },
+      irradMapBorder: {
+        color: { r: 1, g: 1, b: 1, a: 1 },
+        width: 1,
+      },
+      ruler: {
+        color: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+        width: 1,
+      },
+      rulerText: {
+        color: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+        font: "Arial",
+        size: 14,
+      },
+      decoration: {
+        color: { r: 1, g: 1, b: 1, a: 1 },
+        width: 1,
+      },
+      handlePoint: {
+        color: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+      },
+      handleArrow: {
+        color: { r: 1, g: 1, b: 1, a: 1 },
+        size: 24,
+      }
+    }
   };
+
+  static nestedProperties = ['theme'];
 
   constructor() {
     this.backgroundImage = null;
@@ -183,6 +470,18 @@ class Scene {
         }
       }
 
+      // Check for unknown keys in nested properties
+      for (const nestedProp of Scene.nestedProperties) {
+        if (jsonData[nestedProp]) {
+          const unknownKey = validateNestedKeys(jsonData[nestedProp], serializableDefaults[nestedProp], nestedProp);
+          if (unknownKey) {
+            this.error = i18next.t('simulator:generalErrors.unknownSceneKey', { key: unknownKey });
+            callback(true, true);
+            return;
+          }
+        }
+      }
+
       // Check for valid enumerable values
       const validModes = ['rays', 'extended', 'images', 'observer'];
       if (jsonData.mode && !validModes.includes(jsonData.mode)) {
@@ -203,7 +502,13 @@ class Scene {
         if (!(key in jsonData)) {
           jsonData[key] = JSON.parse(JSON.stringify(serializableDefaults[key]));
         }
-        this[key] = jsonData[key];
+        
+        // Handle nested properties specially
+        if (Scene.nestedProperties.includes(key)) {
+          this[key] = mergeWithDefaults(null, jsonData[key], serializableDefaults[key]);
+        } else {
+          this[key] = jsonData[key];
+        }
       }
 
       // Rescale the scene to fit the current viewport.
@@ -294,10 +599,18 @@ class Scene {
     const serializableDefaults = Scene.serializableDefaults;
     for (let propName in serializableDefaults) {
       if (!jsonData.hasOwnProperty(propName)) {
-        const stringifiedValue = JSON.stringify(this[propName]);
-        const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
-        if (stringifiedValue !== stringifiedDefault) {
-          jsonData[propName] = JSON.parse(stringifiedValue);
+        // Handle nested properties specially
+        if (Scene.nestedProperties.includes(propName)) {
+          const nonDefaults = extractNonDefaults(this[propName], serializableDefaults[propName]);
+          if (nonDefaults !== null) {
+            jsonData[propName] = nonDefaults;
+          }
+        } else {
+          const stringifiedValue = JSON.stringify(this[propName]);
+          const stringifiedDefault = JSON.stringify(serializableDefaults[propName]);
+          if (stringifiedValue !== stringifiedDefault) {
+            jsonData[propName] = JSON.parse(stringifiedValue);
+          }
         }
       }
     }

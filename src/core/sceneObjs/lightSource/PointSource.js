@@ -59,15 +59,12 @@ class PointSource extends BaseSceneObj {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
-    const ctx = canvasRenderer.ctx;
-    const ls = canvasRenderer.lengthScale;
-
-    const colorArray = Simulator.wavelengthToColor(this.wavelength, 1);
-    ctx.fillStyle = this.scene.simulateColors ? canvasRenderer.rgbaToCssColor(colorArray) : isHovered ? 'cyan' : 'rgb(0,255,0)';
-    ctx.fillRect(this.x - 2.5 * ls, this.y - 2.5 * ls, 5 * ls, 5 * ls);
     if (this.scene.simulateColors) {
-      ctx.fillStyle = isHovered ? 'cyan' : ('rgb(255,255,255)');
-      ctx.fillRect(this.x - 1.5 * ls, this.y - 1.5 * ls, 3 * ls, 3 * ls);
+      canvasRenderer.drawPoint(this, Simulator.wavelengthToColor(this.wavelength, 1), this.scene.theme.lightSource.size);
+
+      canvasRenderer.drawPoint(this, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
+    } else {
+      canvasRenderer.drawPoint(this, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.lightSource.color, this.scene.theme.lightSource.size);
     }
   }
 

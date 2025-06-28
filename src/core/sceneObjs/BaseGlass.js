@@ -60,6 +60,9 @@ class BaseGlass extends BaseSceneObj {
 
     const n = this.refIndex;
 
+    // Only use color subtraction if the background is black. Otherwise the lighter composite operation will not work.
+    const allowColorSubtraction = !canvasRenderer.isSVG && this.scene.theme.background.color.r === 0 && this.scene.theme.background.color.g === 0 && this.scene.theme.background.color.b === 0;
+
     if (isAboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
@@ -69,13 +72,13 @@ class BaseGlass extends BaseSceneObj {
       return;
     }
     if (n >= 1) {
-      ctx.globalCompositeOperation = 'lighter';
       var alpha = Math.log(n) / Math.log(1.5) * 0.2;
-      if (!canvasRenderer.isSVG) {
-        ctx.fillStyle = "rgb(" + Math.round(alpha * 255) + "," + Math.round(alpha * 255) + "," + Math.round(alpha * 255) + ")";
+      if (allowColorSubtraction) {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = "rgb(" + Math.round(alpha * this.scene.theme.glass.color.r * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.g * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.b * 255) + ")";
       } else {
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "rgb(" + Math.round(this.scene.theme.glass.color.r * 255) + "," + Math.round(this.scene.theme.glass.color.g * 255) + "," + Math.round(this.scene.theme.glass.color.b * 255) + ")";
       }
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
@@ -83,7 +86,7 @@ class BaseGlass extends BaseSceneObj {
 
     } else {
       var alpha = Math.log(1 / n) / Math.log(1.5) * 0.2;
-      if (!canvasRenderer.isSVG) {
+      if (allowColorSubtraction) {
         // Subtract the gray color.
         // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
 
@@ -94,7 +97,7 @@ class BaseGlass extends BaseSceneObj {
         ctx.putImageData(imageData, 0, 0);
 
         ctx.globalCompositeOperation = 'difference';
-        ctx.fillStyle = "rgb(" + (alpha * 100) + "%," + (0) + "%," + (0) + "%)";
+        ctx.fillStyle = "rgb(" + (alpha * this.scene.theme.glass.color.r * 100) + "%," + (0) + "%," + (0) + "%)";
         ctx.fill('evenodd');
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -105,7 +108,7 @@ class BaseGlass extends BaseSceneObj {
 
         ctx.globalCompositeOperation = 'lighter';
 
-        ctx.fillStyle = "rgb(" + (0) + "%," + (alpha * 100) + "%," + (alpha * 100) + "%)";
+        ctx.fillStyle = "rgb(" + (0) + "%," + (alpha * this.scene.theme.glass.color.g * 100) + "%," + (alpha * this.scene.theme.glass.color.b * 100) + "%)";
         ctx.fill('evenodd');
 
         ctx.globalCompositeOperation = 'difference';

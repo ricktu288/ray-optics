@@ -52,8 +52,8 @@ class Drawing extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.strokeStyle = isHovered ? 'cyan' : 'white';
-    ctx.lineWidth = 1 * ls;
+    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    ctx.lineWidth = this.scene.theme.decoration.width * ls;
     ctx.beginPath();
     for (const stroke of this.strokes) {
       ctx.moveTo(stroke[0], stroke[1]);

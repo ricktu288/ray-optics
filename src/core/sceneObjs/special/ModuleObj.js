@@ -148,7 +148,7 @@ class ModuleObj extends BaseSceneObj {
     ctx.lineWidth = 1 * ls;
     for (let point of this.points) {
       ctx.beginPath();
-      ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
+      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
       ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
       ctx.beginPath();

@@ -122,7 +122,7 @@ class TextLabel extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = isHovered ? 'cyan' : ('white');
+    ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.textAlign = this.alignment;
     ctx.textBaseline = 'bottom';
 

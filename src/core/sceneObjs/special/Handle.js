@@ -121,7 +121,7 @@ class Handle extends BaseSceneObj {
       for (var i in this.controlPoints) {
         ctx.globalAlpha = 1;
         ctx.beginPath();
-        ctx.strokeStyle = this.notDone ? 'cyan' : isHovered ? 'cyan' : ('gray');
+        ctx.strokeStyle = this.notDone ? 'cyan' : isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.setLineDash([2 * ls, 2 * ls]);
         ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
@@ -129,12 +129,12 @@ class Handle extends BaseSceneObj {
       }
     }
 
-    const arrowLineWidthCross = 5 * ls;
-    const arrowLineWidthSingle = 8 * ls;
-    const arrowLengthCross = 30 * ls;
-    const arrowLengthSingle = 28 * ls;
-    const arrowHeadSizeCross = 8 * ls;
-    const arrowHeadSizeSingle = 12 * ls;
+    const arrowLineWidthCross = this.scene.theme.handleArrow.size / 24 * 5 * ls;
+    const arrowLineWidthSingle = this.scene.theme.handleArrow.size / 24 * 8 * ls;
+    const arrowLengthCross = this.scene.theme.handleArrow.size / 24 * 30 * ls;
+    const arrowLengthSingle = this.scene.theme.handleArrow.size / 24 * 28 * ls;
+    const arrowHeadSizeCross = this.scene.theme.handleArrow.size / 24 * 8 * ls;
+    const arrowHeadSizeSingle = this.scene.theme.handleArrow.size / 24 * 12 * ls;
 
     if (!this.notDone) {
       ctx.globalAlpha = 1;
@@ -142,7 +142,7 @@ class Handle extends BaseSceneObj {
       switch (this.transformation) {
         case "default":
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
           ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
           ctx.stroke();
           ctx.beginPath();
@@ -152,8 +152,8 @@ class Handle extends BaseSceneObj {
         case "translation":
           // Cross arrows
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('white');
-          ctx.fillStyle = isHovered ? 'cyan' : ('white');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthCross;
           ctx.moveTo(this.p1.x - arrowLengthCross / 2, this.p1.y);
           ctx.lineTo(this.p1.x + arrowLengthCross / 2, this.p1.y);
@@ -170,8 +170,8 @@ class Handle extends BaseSceneObj {
         case "xTranslation":
           // Horizontal arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('white');
-          ctx.fillStyle = isHovered ? 'cyan' : ('white');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           ctx.moveTo(this.p1.x - arrowLengthSingle / 2, this.p1.y);
           ctx.lineTo(this.p1.x + arrowLengthSingle / 2, this.p1.y);
@@ -182,8 +182,8 @@ class Handle extends BaseSceneObj {
         case "yTranslation":
           // Vertical arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('white');
-          ctx.fillStyle = isHovered ? 'cyan' : ('white');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           ctx.moveTo(this.p1.x, this.p1.y - arrowLengthSingle / 2);
           ctx.lineTo(this.p1.x, this.p1.y + arrowLengthSingle / 2);
@@ -194,8 +194,8 @@ class Handle extends BaseSceneObj {
         case "rotation":
           // A bent arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('white');
-          ctx.fillStyle = isHovered ? 'cyan' : ('white');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           //const radius = geometry.distance(this.p1, this.p2);
           const radius = 40 * ls;
@@ -213,12 +213,12 @@ class Handle extends BaseSceneObj {
         case "scaling":
           // An arrow with different arrow head sizes
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : ('white');
-          ctx.fillStyle = isHovered ? 'cyan' : ('white');
+          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           const radialAngle = Math.atan2(this.p1.y - this.p2.y, this.p1.x - this.p2.x);
-          const arrowHeadSizeLarge = 14 * ls;
-          const arrowHeadSizeSmall = 10 * ls;
+          const arrowHeadSizeLarge = this.scene.theme.handleArrow.size / 24 * 14 * ls;
+          const arrowHeadSizeSmall = this.scene.theme.handleArrow.size / 24 * 10 * ls;
           ctx.beginPath();
           ctx.moveTo(this.p1.x - arrowLengthSingle / 2 * Math.cos(radialAngle), this.p1.y - arrowLengthSingle / 2 * Math.sin(radialAngle));
           ctx.lineTo(this.p1.x + arrowLengthSingle / 2 * Math.cos(radialAngle), this.p1.y + arrowLengthSingle / 2 * Math.sin(radialAngle));
@@ -230,7 +230,7 @@ class Handle extends BaseSceneObj {
       // Draw the rotation/scale center
       ctx.lineWidth = 1 * ls;
       if (this.transformation == "default" || this.transformation == "rotation" || this.transformation == "scaling") {
-        ctx.strokeStyle = isHovered ? 'cyan' : ('gray');
+        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.beginPath();
         ctx.moveTo(this.p2.x - 5 * ls, this.p2.y);
         ctx.lineTo(this.p2.x + 5 * ls, this.p2.y);
@@ -435,7 +435,7 @@ class Handle extends BaseSceneObj {
   checkMouseOver(mouse) {
     let dragContext = {};
     if (this.notDone) return;
-    if (mouse.isOnPoint(this.p1) || (this.transformation != "default" && geometry.distance(this.p1, mouse.pos) < 20 * this.scene.lengthScale)) {
+    if (mouse.isOnPoint(this.p1) || (this.transformation != "default" && geometry.distance(this.p1, mouse.pos) < this.scene.theme.handleArrow.size / 24 * 20 * this.scene.lengthScale)) {
       dragContext.part = 1;
       dragContext.targetPoint_ = geometry.point(this.p1.x, this.p1.y);
       dragContext.mousePos0 = geometry.point(this.p1.x, this.p1.y);
