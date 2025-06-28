@@ -203,4 +203,24 @@ export default {
 .ace_support.ace_function {
   color: #d4ffa9 !important;
 }
+
+/* Fix bracket highlighting visibility for GitHub Dark theme */
+.ace-github-dark .ace_marker-layer .ace_bracket {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+.ace-github-dark .ace_marker-layer .ace_bracket-start {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+/* Fix variable name highlighting visibility for GitHub Dark theme */
+.ace-github-dark .ace_marker-layer .ace_selected-word {
+  border: none !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
 </style>

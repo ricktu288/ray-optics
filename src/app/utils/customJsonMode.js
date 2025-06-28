@@ -39,28 +39,46 @@ const CustomJsonHighlightRules = function() {
     
     // Clear start rules and rebuild with math.js detection
     this.$rules.start = [
-        // Detect array contexts which are arrays of math statements in a module definition: "params", "vars", "for" followed by ": ["
+        // Detect params array: both = and : are not mathjs syntax
         {
             token: ["variable", "text", "punctuation.separator.dictionary.pair.json", "text", "punctuation.definition.array.begin.json"],
-            regex: /("(?:params|vars|for)")(\s*)(:)(\s*)(\[)/,
-            next: "mathjs-array"
+            regex: /("params")(\s*)(:)(\s*)(\[)/,
+            next: "params-array"
         },
-        // Detect string contexts which are math statements in a module definition: "for", "if" followed by ": ""
+        // Detect for array: both = and : are not mathjs syntax  
+        {
+            token: ["variable", "text", "punctuation.separator.dictionary.pair.json", "text", "punctuation.definition.array.begin.json"],
+            regex: /("for")(\s*)(:)(\s*)(\[)/,
+            next: "for-array"
+        },
+        // Detect for string: both = and : are not mathjs syntax
         {
             token: ["variable", "text", "punctuation.separator.dictionary.pair.json", "text"],
-            regex: /("(?:for|if)")(\s*)(:)(\s*)(?=")/,
-            next: "mathjs-single"
+            regex: /("for")(\s*)(:)(\s*)(?=")/,
+            next: "for-single"
+        },
+        // Detect vars array: only = is not mathjs syntax (although the current parser sends the entire string to math.js, it is conceptually two math strings separated by =)
+        {
+            token: ["variable", "text", "punctuation.separator.dictionary.pair.json", "text", "punctuation.definition.array.begin.json"],
+            regex: /("vars")(\s*)(:)(\s*)(\[)/,
+            next: "vars-array"
+        },
+        // Detect if string: entire string is mathjs syntax
+        {
+            token: ["variable", "text", "punctuation.separator.dictionary.pair.json", "text"],
+            regex: /("if")(\s*)(:)(\s*)(?=")/,
+            next: "if-single"
         },
         // Keep all original rules
         ...originalStartRules
     ];
     
-    // Define math statement array state
-    this.$rules["mathjs-array"] = [
+    // Define params array state (both = and : are not mathjs syntax)
+    this.$rules["params-array"] = [
         {
             token: "punctuation.definition.string.begin.json",
             regex: /"/,
-            next: "mathjs-string"
+            next: "params-string"
         },
         {
             token: "punctuation.separator.array.json", 
@@ -77,11 +95,15 @@ const CustomJsonHighlightRules = function() {
         }
     ];
     
-    // Define state for content inside strings in mathjs arrays
-    this.$rules["mathjs-string"] = [
+    // Define state for content inside params strings
+    this.$rules["params-string"] = [
         {
             token: "support.function",
-            regex: /[^=:"]+/
+            regex: /[^=:"!<>]+/
+        },
+        {
+            token: "support.function",
+            regex: /(?:==|>=|<=|!=|[<>])/
         },
         {
             token: "string",
@@ -90,28 +112,140 @@ const CustomJsonHighlightRules = function() {
         {
             token: "punctuation.definition.string.end.json",
             regex: /"/,
-            next: "mathjs-array"
+            next: "params-array"
         }
     ];
     
-    // Define math statement string state  
-    this.$rules["mathjs-single"] = [
+    // Define for array state (both = and : are not mathjs syntax)
+    this.$rules["for-array"] = [
         {
             token: "punctuation.definition.string.begin.json",
             regex: /"/,
-            next: "mathjs-single-string"
+            next: "for-string"
+        },
+        {
+            token: "punctuation.separator.array.json", 
+            regex: /,/
+        },
+        {
+            token: "text",
+            regex: /\s+/
+        },
+        {
+            token: "punctuation.definition.array.end.json",
+            regex: /\]/,
+            next: "start"
         }
     ];
     
-    // Define state for content inside strings in mathjs single statements
-    this.$rules["mathjs-single-string"] = [
+    // Define state for content inside for strings
+    this.$rules["for-string"] = [
         {
             token: "support.function",
-            regex: /[^=:"]+/
+            regex: /[^=:"!<>]+/
+        },
+        {
+            token: "support.function",
+            regex: /(?:==|>=|<=|!=|[<>])/
         },
         {
             token: "string",
             regex: /[=:]/
+        },
+        {
+            token: "punctuation.definition.string.end.json",
+            regex: /"/,
+            next: "for-array"
+        }
+    ];
+    
+    // Define for single string state (both = and : are not mathjs syntax)
+    this.$rules["for-single"] = [
+        {
+            token: "punctuation.definition.string.begin.json",
+            regex: /"/,
+            next: "for-single-string"
+        }
+    ];
+    
+    // Define state for content inside for single strings
+    this.$rules["for-single-string"] = [
+        {
+            token: "support.function",
+            regex: /[^=:"!<>]+/
+        },
+        {
+            token: "support.function",
+            regex: /(?:==|>=|<=|!=|[<>])/
+        },
+        {
+            token: "string",
+            regex: /[=:]/
+        },
+        {
+            token: "punctuation.definition.string.end.json",
+            regex: /"/,
+            next: "start"
+        }
+    ];
+    
+    // Define vars array state (only = is not mathjs syntax)
+    this.$rules["vars-array"] = [
+        {
+            token: "punctuation.definition.string.begin.json",
+            regex: /"/,
+            next: "vars-string"
+        },
+        {
+            token: "punctuation.separator.array.json", 
+            regex: /,/
+        },
+        {
+            token: "text",
+            regex: /\s+/
+        },
+        {
+            token: "punctuation.definition.array.end.json",
+            regex: /\]/,
+            next: "start"
+        }
+    ];
+    
+    // Define state for content inside vars strings
+    this.$rules["vars-string"] = [
+        {
+            token: "support.function",
+            regex: /[^=:"!<>]+/
+        },
+        {
+            token: "support.function",
+            regex: /(?:==|>=|<=|!=|[:<>])/
+        },
+        {
+            token: "string",
+            regex: /=/
+        },
+        {
+            token: "punctuation.definition.string.end.json",
+            regex: /"/,
+            next: "vars-array"
+        }
+    ];
+    
+    // Define if string state (entire string is mathjs syntax)
+    this.$rules["if-single"] = [
+        {
+            token: "punctuation.definition.string.begin.json",
+            regex: /"/,
+            next: "if-single-string"
+        }
+    ];
+    
+    // Define state for content inside if strings
+    this.$rules["if-single-string"] = [
+        {
+            token: "support.function",
+            regex: /[^"]+/
         },
         {
             token: "punctuation.definition.string.end.json",
