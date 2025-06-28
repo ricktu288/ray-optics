@@ -211,7 +211,7 @@
         "functions": "This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file."
       }
     },
-    "Aperature": {
+    "Aperture": {
       "diameter": "Diameter"
     },
     "DiffractionGrating": {

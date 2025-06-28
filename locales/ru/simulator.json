@@ -190,7 +190,7 @@
       "stepSize": "Размер шага численного решателя",
       "symbolicBodyMerging": "Символическое слияние тел"
     },
-    "Aperature": {
+    "Aperture": {
       "diameter": "Диаметр"
     },
     "DiffractionGrating": {

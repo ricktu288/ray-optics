@@ -139,7 +139,7 @@ describe('Aperture', () => {
   it('sets aperture diameter', () => {
     user.click(100, 100);
     user.click(200, 200);
-    user.set("{{simulator:sceneObjs.Aperature.diameter}}", 50);
+    user.set("{{simulator:sceneObjs.Aperture.diameter}}", 50);
 
     const p3 = obj.serialize().p3;
     const p4 = obj.serialize().p4;
@@ -159,7 +159,7 @@ describe('Aperture', () => {
       p3: { x: 200, y: 200 },
       p4: { x: 100, y: 100 }
     });
-    expect(user.get("{{simulator:sceneObjs.Aperature.diameter}}")).toBeCloseTo(141.4, 1); // sqrt(2) * 100
+    expect(user.get("{{simulator:sceneObjs.Aperture.diameter}}")).toBeCloseTo(141.4, 1); // sqrt(2) * 100
   });
 
   it('drags p4 with mouse and updates diameter', () => {
@@ -174,6 +174,6 @@ describe('Aperture', () => {
       p3: { x: 200, y: 200 },
       p4: { x: 100, y: 100 }
     });
-    expect(user.get("{{simulator:sceneObjs.Aperature.diameter}}")).toBeCloseTo(141.4, 1); // sqrt(2) * 100
+    expect(user.get("{{simulator:sceneObjs.Aperture.diameter}}")).toBeCloseTo(141.4, 1); // sqrt(2) * 100
   });
 }); 
