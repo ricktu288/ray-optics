@@ -1,0 +1,51 @@
+{
+  "name": "Module Example - Basics",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 450,
+          "text": "This text is in ExampleModule."
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 500,
+          "text": "This text is also in ExampleModule."
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 300,
+      "text": "This text is not in a module."
+    },
+    {
+      "type": "TextLabel",
+      "x": 600,
+      "y": 350,
+      "text": "This text is also not in a module."
+    },
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {}
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 50.64898989898987,
+    "y": -86.41666666666666
+  },
+  "scale": 0.7175925925925926
+}
