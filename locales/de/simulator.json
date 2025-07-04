@@ -9,7 +9,7 @@
     "cancelButton": "Abbrechen",
     "defaultOption": "Standard",
     "closeButton": "Schließen",
-    "reloadToTakeEffect": "Bitte Seite neu laden,"
+    "reloadToTakeEffect": "Bitte Seite neu laden, um Änderungen zu sehen."
   },
   "file": {
     "title": "Datei",
