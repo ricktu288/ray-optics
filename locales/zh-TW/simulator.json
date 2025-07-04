@@ -219,7 +219,7 @@
         "functions": "本數值容忍度被用於 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。"
       }
     },
-    "Aperature": {
+    "Aperture": {
       "diameter": "直徑"
     },
     "DiffractionGrating": {

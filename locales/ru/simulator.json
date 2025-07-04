@@ -211,7 +211,7 @@
         "functions": "Этот численный допуск используется в функциях 'isOnBoundary' и 'countIntersections', расположенных в файле 'GrinGlass.js'."
       }
     },
-    "Aperature": {
+    "Aperture": {
       "diameter": "Диаметр"
     },
     "DiffractionGrating": {
