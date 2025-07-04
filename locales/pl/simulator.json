@@ -62,10 +62,6 @@
       "description": "Domyślnie jasność na ekranie nie zawsze odzwierciedla jasność promieni. Ta opcja naprawia to za pomocą specjalistycznego renderera, ale może zmniejszyć wydajność na niektórych urządzeniach. (Na niektórych innych urządzeniach faktycznie poprawia wydajność.)",
       "error": "Nie udało się włączyć opcji \"Koryguj jasność\". Twoja przeglądarka może nie obsługiwać zmiennoprzecinkowych tekstur WebGL."
     },
-    "colorMode": {
-      "title": "Tryb kolorów",
-      "description": "Określa sposób mapowania jasności (i kolorów, jeśli włączona jest opcja \"Symuluj kolory\") promieni lub obrazów na kolory na ekranie. Konfigurowalne tylko w trybie \"Koryguj jasność\"."
-    },
     "gridSize": {
       "title": "Rozmiar siatki"
     },
@@ -78,6 +74,10 @@
     },
     "zoom": {
       "title": "Zoom"
+    },
+    "colorMode": {
+      "title": "Tryb kolorów",
+      "description": "Określa sposób mapowania jasności (i kolorów, jeśli włączona jest opcja \"Symuluj kolory\") promieni lub obrazów na kolory na ekranie. Konfigurowalne tylko w trybie \"Koryguj jasność\"."
     },
     "language": {
       "title": "Język",

@@ -121,7 +121,7 @@ class Handle extends BaseSceneObj {
       for (var i in this.controlPoints) {
         ctx.globalAlpha = 1;
         ctx.beginPath();
-        ctx.strokeStyle = this.notDone ? 'cyan' : isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+        ctx.strokeStyle = this.notDone ? this.scene.highlightColorCss : isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.setLineDash([2 * ls, 2 * ls]);
         ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
@@ -142,7 +142,7 @@ class Handle extends BaseSceneObj {
       switch (this.transformation) {
         case "default":
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
           ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
           ctx.stroke();
           ctx.beginPath();
@@ -152,8 +152,8 @@ class Handle extends BaseSceneObj {
         case "translation":
           // Cross arrows
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
-          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthCross;
           ctx.moveTo(this.p1.x - arrowLengthCross / 2, this.p1.y);
           ctx.lineTo(this.p1.x + arrowLengthCross / 2, this.p1.y);
@@ -170,8 +170,8 @@ class Handle extends BaseSceneObj {
         case "xTranslation":
           // Horizontal arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
-          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           ctx.moveTo(this.p1.x - arrowLengthSingle / 2, this.p1.y);
           ctx.lineTo(this.p1.x + arrowLengthSingle / 2, this.p1.y);
@@ -182,8 +182,8 @@ class Handle extends BaseSceneObj {
         case "yTranslation":
           // Vertical arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
-          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           ctx.moveTo(this.p1.x, this.p1.y - arrowLengthSingle / 2);
           ctx.lineTo(this.p1.x, this.p1.y + arrowLengthSingle / 2);
@@ -194,8 +194,8 @@ class Handle extends BaseSceneObj {
         case "rotation":
           // A bent arrow
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
-          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           //const radius = geometry.distance(this.p1, this.p2);
           const radius = 40 * ls;
@@ -213,8 +213,8 @@ class Handle extends BaseSceneObj {
         case "scaling":
           // An arrow with different arrow head sizes
           ctx.beginPath();
-          ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
-          ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
+          ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handleArrow.color);
           ctx.lineWidth = arrowLineWidthSingle;
           const radialAngle = Math.atan2(this.p1.y - this.p2.y, this.p1.x - this.p2.x);
           const arrowHeadSizeLarge = this.scene.theme.handleArrow.size / 24 * 14 * ls;
@@ -230,7 +230,7 @@ class Handle extends BaseSceneObj {
       // Draw the rotation/scale center
       ctx.lineWidth = 1 * ls;
       if (this.transformation == "default" || this.transformation == "rotation" || this.transformation == "scaling") {
-        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.beginPath();
         ctx.moveTo(this.p2.x - 5 * ls, this.p2.y);
         ctx.lineTo(this.p2.x + 5 * ls, this.p2.y);
@@ -242,7 +242,7 @@ class Handle extends BaseSceneObj {
       }
     } else if (this.p1) {
       ctx.beginPath();
-      ctx.strokeStyle = 'cyan';
+      ctx.strokeStyle = this.scene.highlightColorCss;
       ctx.beginPath();
       ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
       ctx.stroke();

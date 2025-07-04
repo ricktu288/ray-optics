@@ -1,4 +1,3 @@
-
 <!--
   Copyright 2025 The Ray Optics Simulation authors and contributors
 
@@ -24,12 +23,37 @@
  * @module WelcomeMessage
  * @description The Vue component for the wrapper of the welcome message after the page is loaded. The original welcome message (which is loaded inline from index.html) is moved into this component.
  */
-import { onMounted } from 'vue'
+import { onMounted, computed, watchEffect } from 'vue'
+import { useThemeStore } from '../store/theme'
+
 export default {
   setup() {
+    const themeStore = useThemeStore()
+
+    // Computed style for welcome message text color
+    const welcomeTextColor = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use black text for light themes, white text for dark themes
+      return isLight ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)'
+    })
+
     onMounted(() => {
       // Move the welcome message (which is loaded inline from index.html) to the Vue component
       document.getElementById('welcome-wrapper-vue').appendChild(document.getElementById('welcome-wrapper'));
+      
+      // Apply initial theme-based styling
+      const welcomeElement = document.getElementById('welcome')
+      if (welcomeElement) {
+        welcomeElement.style.color = welcomeTextColor.value
+      }
+    })
+
+    // Watch for theme changes and update text color
+    watchEffect(() => {
+      const welcomeElement = document.getElementById('welcome')
+      if (welcomeElement) {
+        welcomeElement.style.color = welcomeTextColor.value
+      }
     })
   },
   name: 'WelcomeMessage'

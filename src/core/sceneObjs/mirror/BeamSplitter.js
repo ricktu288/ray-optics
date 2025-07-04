@@ -67,7 +67,7 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.beamSplitter.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.beamSplitter.color);
     ctx.lineWidth = this.scene.theme.beamSplitter.width * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -76,7 +76,7 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
 
     if (this.scene.simulateColors && this.wavelength && this.filter) {
       const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
-      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(colorArray);
+      ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(colorArray);
       ctx.setLineDash([15 * ls, 15 * ls]);
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);

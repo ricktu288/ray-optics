@@ -62,9 +62,9 @@ class PointSource extends BaseSceneObj {
     if (this.scene.simulateColors) {
       canvasRenderer.drawPoint(this, Simulator.wavelengthToColor(this.wavelength, 1), this.scene.theme.lightSource.size);
 
-      canvasRenderer.drawPoint(this, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
+      canvasRenderer.drawPoint(this, isHovered ? this.scene.highlightColor : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
     } else {
-      canvasRenderer.drawPoint(this, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.lightSource.color, this.scene.theme.lightSource.size);
+      canvasRenderer.drawPoint(this, isHovered ? this.scene.highlightColor : this.scene.theme.lightSource.color, this.scene.theme.lightSource.size);
     }
   }
 

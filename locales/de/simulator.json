@@ -52,14 +52,14 @@
     "correctBrightness": {
       "title": "Helligkeit korrigieren"
     },
-    "colorMode": {
-      "title": "Farbmodus"
-    },
     "gridSize": {
       "title": "Rastergröße"
     },
     "zoom": {
       "title": "Zoom"
+    },
+    "colorMode": {
+      "title": "Farbmodus"
     },
     "language": {
       "title": "Sprache"

@@ -45,8 +45,8 @@
       "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence.",
       "point1": "Le centre du cercle",
       "r": "Le rayon du cercle",
-      "brightness": "La quantité totale de luminosité",
-      "N": "Le nombre de points sources"
+      "N": "Le nombre de points sources",
+      "brightness": "La quantité totale de luminosité"
     },
     "Chaff": {
       "L": "La longueur des miroirs"

@@ -8,7 +8,9 @@
     "saveButton": "儲存",
     "cancelButton": "取消",
     "defaultOption": "預設",
+    "customOption": "自訂",
     "closeButton": "關閉",
+    "resetButton": "重設",
     "reloadToTakeEffect": "請重新載入頁面才能生效。"
   },
   "file": {
@@ -62,10 +64,6 @@
       "description": "在預設情況下，螢幕上的亮度並非一致地表達光線的亮度。本選項使用特製的渲染器來修正此問題，但在某些裝置上可能導致效能變差。（在另一些裝置上反而會讓效能變好。）",
       "error": "「修正亮度」啟用失敗。您的瀏覽器可能不支援 WebGL 浮點數紋理。"
     },
-    "colorMode": {
-      "title": "色彩模式",
-      "description": "決定光線或像的亮度（若啟用「模擬色彩」，則還需考慮顏色）如何對應到螢幕上的顏色。只在啟用「修正亮度」時才可調整此設定。"
-    },
     "gridSize": {
       "title": "格線大小"
     },
@@ -78,6 +76,16 @@
     },
     "zoom": {
       "title": "縮放"
+    },
+    "showAdvancedSettings": {
+      "title": "更多場景設定…"
+    },
+    "colorMode": {
+      "title": "色彩模式",
+      "description": "決定光線或像的亮度（若啟用「模擬色彩」，則還需考慮顏色）如何對應到螢幕上的顏色。只在啟用「修正亮度」時才可調整此設定。"
+    },
+    "theme": {
+      "title": "佈景主題"
     },
     "language": {
       "title": "語言",
@@ -298,6 +306,7 @@
       "format": "格式",
       "width": "寬度",
       "rayCountLimit": "光線數量上限",
+      "transparent": "透明背景",
       "svgWarning": "匯出為 SVG：不支援混色、修正亮度與相對折射率低於1的情形。",
       "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。"
     },
@@ -338,6 +347,134 @@
       "description": "總亮度 100, 10, …, 10⁻⁵ 分別以紅、橙、黃、綠、青、藍、紫、黑表示，並以對數刻度平滑插值。"
     }
   },
+  "themeModal": {
+    "title": "佈景主題樣式",
+    "background": {
+      "title": "背景顏色"
+    },
+    "ray": {
+      "title": "預設光線"
+    },
+    "colorRay": {
+      "title": "彩色光線"
+    },
+    "extendedRay": {
+      "title": "預設光線後向延長線"
+    },
+    "colorExtendedRay": {
+      "title": "彩色光線後向延長線"
+    },
+    "forwardExtendedRay": {
+      "title": "預設光線前向延長線"
+    },
+    "colorForwardExtendedRay": {
+      "title": "彩色光線前向延長線"
+    },
+    "observedRay": {
+      "title": "觀察到的預設光線"
+    },
+    "colorObservedRay": {
+      "title": "觀察到的彩色光線"
+    },
+    "realImage": {
+      "title": "預設實像"
+    },
+    "colorRealImage": {
+      "title": "彩色實像"
+    },
+    "virtualImage": {
+      "title": "預設虛像"
+    },
+    "colorVirtualImage": {
+      "title": "彩色虛像"
+    },
+    "virtualObject": {
+      "title": "預設虛物"
+    },
+    "colorVirtualObject": {
+      "title": "彩色虛物"
+    },
+    "grid": {
+      "title": "格線"
+    },
+    "observer": {
+      "title": "觀察者填充"
+    },
+    "sourcePoint": {
+      "title": "起始控制點"
+    },
+    "directionPoint": {
+      "title": "方向控制點"
+    },
+    "centerPoint": {
+      "title": "中心控制點"
+    },
+    "lightSource": {
+      "title": "預設光源表面"
+    },
+    "beamShield": {
+      "title": "光束源遮罩"
+    },
+    "colorSourceCenter": {
+      "title": "彩色光源中心"
+    },
+    "mirror": {
+      "title": "鏡子表面"
+    },
+    "beamSplitter": {
+      "title": "分光鏡表面"
+    },
+    "idealCurveCenter": {
+      "title": "理想曲面中心"
+    },
+    "idealCurveArrow": {
+      "title": "理想曲面箭頭"
+    },
+    "glass": {
+      "title": "透光物填充"
+    },
+    "grinGlass": {
+      "title": "漸變折射率透光物填充"
+    },
+    "blocker": {
+      "title": "遮光物表面"
+    },
+    "diffractionGrating": {
+      "title": "繞射光柵表面"
+    },
+    "detector": {
+      "title": "探測器表面"
+    },
+    "detectorText": {
+      "title": "探測器文字"
+    },
+    "irradMap": {
+      "title": "輻照度圖填充"
+    },
+    "irradMapBorder": {
+      "title": "輻照度圖邊框"
+    },
+    "ruler": {
+      "title": "尺標刻度線"
+    },
+    "rulerText": {
+      "title": "尺標文字"
+    },
+    "decoration": {
+      "title": "裝飾樣式"
+    },
+    "handlePoint": {
+      "title": "預設控制杆"
+    },
+    "handleArrow": {
+      "title": "控制桿箭頭"
+    },
+    "import": {
+      "title": "匯入",
+      "description": "從場景 JSON 檔案匯入佈景主題。",
+      "error": "此檔案中沒有佈景主題。"
+    }
+  },
   "languageModal": {
     "title": "語言",
     "translatedFraction": "已翻譯",
@@ -347,7 +484,8 @@
     "shareLinkTooLong": "本網址過長，在部分平臺上可能無法正常運作。建議改用「儲存」並分享檔案。",
     "autoSyncUrlTooLarge": "本場景過大，無法與網址同步。請自行儲存場景。",
     "identicalObjects": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。",
-    "brightnessInconsistent": "有至少兩個光源的亮度以不一致的比例達到飽和。這可能會導致探測器的讀數與色彩渲染錯誤。請提高光線密度或降低光源亮度。"
+    "brightnessInconsistent": "有至少兩個光源的亮度以不一致的比例達到飽和。這可能會導致探測器的讀數與色彩渲染錯誤。請提高光線密度或降低光源亮度。",
+    "blackBecomesTransparent": "使用「修正亮度」時，由於使用加法混色，非黑色背景會導致光線的黑色部分變透明。請將主題中光的顏色都設為 HSV 明度為 1 的值以避免此問題。"
   },
   "generalErrors": {
     "newerVersion": "場景版本與目前的模擬器版本不相容。",

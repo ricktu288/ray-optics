@@ -108,7 +108,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     if (!isAboveLight) {
       ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.detector.color);
+      ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.detector.color);
       ctx.lineWidth = this.scene.theme.detector.width * ls;
       ctx.setLineDash(this.scene.theme.detector.dash.map(d => d * ls));
       ctx.beginPath();
@@ -140,7 +140,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
       ctx.font = (this.scene.theme.detectorText.size * ls) + 'px ' + this.scene.theme.detectorText.font;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.detectorText.color);
+      ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.detectorText.color);
       ctx.fillText(str1, this.p2.x, this.p2.y);
       ctx.fillText(str2, this.p2.x, this.p2.y + 20 * ls);
       ctx.fillText(str3, this.p2.x, this.p2.y + 40 * ls);
@@ -156,7 +156,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
 
         // Draw the irradiance map
         ctx.lineWidth = this.scene.theme.irradMapBorder.width * ls;
-        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.irradMapBorder.color);
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.irradMapBorder.color);
         ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.irradMap.color);
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);

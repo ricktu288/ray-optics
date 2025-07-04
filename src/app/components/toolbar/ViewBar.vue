@@ -86,6 +86,7 @@ import { vTooltipPopover } from '../../directives/tooltip-popover'
 import i18next from 'i18next'
 import { usePreferencesStore } from '../../store/preferences'
 import { useSceneStore } from '../../store/scene'
+import { useThemeStore } from '../../store/theme'
 import { computed, toRef } from 'vue'
 
 export default {
@@ -102,14 +103,19 @@ export default {
     const tooltipType = computed(() => help.value ? 'popover' : undefined)
 
     const scene = useSceneStore()
+    const themeStore = useThemeStore()
+    
     return {
       tooltipType,
       currentMode: scene.mode,
-      viewModes: ['rays', 'extended', 'images', 'observer']
+      viewModes: ['rays', 'extended', 'images', 'observer'],
+      themeStore
     }
   },
   methods: {
     getConfig(mode) {
+      const customThemeWarning = !this.themeStore.isDefaultTheme.value ? `<br>${i18next.t('main:view.customThemeNote')}` : ''
+      
       const configs = {
         rays: {
           title: i18next.t('main:view.rays.title'),
@@ -118,12 +124,12 @@ export default {
         },
         extended: {
           title: i18next.t('main:view.extended.title'),
-          content: `${i18next.t('main:view.extended.description')}<br>${i18next.t('main:view.extended.simulateColorsNote')}`,
+          content: `${i18next.t('main:view.extended.description')}<br>${i18next.t('main:view.extended.simulateColorsNote')}${customThemeWarning}`,
           popoverImage: 'extended_rays.svg'
         },
         images: {
           title: i18next.t('main:view.images.title'),
-          content: `${i18next.t('main:view.images.description')}<br>${i18next.t('main:view.images.simulateColorsNote')}`,
+          content: `${i18next.t('main:view.images.description')}<br>${i18next.t('main:view.images.simulateColorsNote')}${customThemeWarning}`,
           popoverImage: 'all_images.svg'
         },
         observer: {
@@ -131,7 +137,7 @@ export default {
           content: `${i18next.t('main:meta.parentheses', {
             main: i18next.t('main:view.observer.description'),
             sub: i18next.t('main:view.observer.instruction')
-          })}<br>${i18next.t('main:view.observer.simulateColorsNote')}`,
+          })}<br>${i18next.t('main:view.observer.simulateColorsNote')}${customThemeWarning}`,
           popoverImage: 'seen_by_observer.svg'
         }
       }

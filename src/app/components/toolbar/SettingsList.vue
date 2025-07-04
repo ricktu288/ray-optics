@@ -37,16 +37,6 @@
     :verticalOffset="50"
   />
 
-  <PopupSelectControl
-    :label="$t('simulator:settings.colorMode.title')"
-    :value="colorMode"
-    :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
-    :disabled="colorMode === 'default'"
-    popup-target="colorModeModal"
-    :popover-content="$t('simulator:settings.colorMode.description')"
-    :layout="layout"
-  />
-
   <NumberControl
     :label="$t('simulator:settings.gridSize.title')"
     :popover-content="$t('simulator:sceneObjs.common.lengthUnitInfo')"
@@ -80,6 +70,35 @@
     v-model="zoom"
     :layout="layout"
   />
+
+  <span 
+    v-if="!shouldShowAdvancedSettings && !shouldShowAdvancedByDefault"
+    id="showAdvancedSettings" 
+    v-text="$t('simulator:settings.showAdvancedSettings.title')" 
+    @click="handleShowAdvancedSettings"
+  ></span>
+
+  <Transition name="advanced-settings">
+    <div v-if="shouldShowAdvancedSettings || shouldShowAdvancedByDefault" class="advanced-settings-container">
+      <PopupSelectControl
+        :label="$t('simulator:settings.colorMode.title')"
+        :value="colorMode"
+        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
+        :disabled="colorMode === 'default'"
+        popup-target="colorModeModal"
+        :popover-content="$t('simulator:settings.colorMode.description')"
+        :layout="layout"
+      />
+
+      <PopupSelectControl
+        :label="$t('simulator:settings.theme.title') + '<sup>Beta</sup>'"
+        :value="themeStore.isDefaultTheme.value ? 'default' : 'custom'"
+        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
+        popup-target="themeModal"
+        :layout="layout"
+      />
+    </div>
+  </Transition>
 
   <hr class="dropdown-divider">
 
@@ -159,6 +178,7 @@ import { computed, toRef, ref } from 'vue'
 import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
 import { app } from '../../services/app.js'
+import { useThemeStore } from '../../store/theme.js'
 
 export default {
   name: 'SettingsList',
@@ -180,9 +200,13 @@ export default {
   setup() {
     const scene = useSceneStore()
     const preferences = usePreferencesStore()
+    const themeStore = useThemeStore()
     const colorMode = toRef(scene, 'colorMode')
     const lang = ref(window.lang)
     const localeData = ref(window.localeData)
+    
+    // State for advanced settings visibility
+    const shouldShowAdvancedSettings = ref(false)
     
     const correctBrightness = computed({
       get: () => colorMode.value !== 'default',
@@ -198,6 +222,18 @@ export default {
       }
     })
 
+    // Determine if advanced settings should be shown by default based on their values
+    const shouldShowAdvancedByDefault = computed(() => {
+      // For color mode: show if value is neither 'default' nor 'linear'
+      const colorModeNotDefault = colorMode.value !== 'default' && colorMode.value !== 'linear'
+      
+      // For theme: show if theme is not default
+      const themeNotDefault = !themeStore.isDefaultTheme.value
+      
+      // Add more conditions here as more advanced options are added
+      return colorModeNotDefault || themeNotDefault
+    })
+
     const showLanguageWarning = computed(() => {
       const TRANSLATION_THRESHOLD = 70
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
@@ -208,6 +244,10 @@ export default {
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
       return parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
     })
+
+    const handleShowAdvancedSettings = () => {
+      shouldShowAdvancedSettings.value = true
+    }
 
     return {
       colorMode: scene.colorMode,
@@ -229,6 +269,10 @@ export default {
       localeData,
       showLanguageWarning,
       warningText,
+      shouldShowAdvancedSettings,
+      shouldShowAdvancedByDefault,
+      handleShowAdvancedSettings,
+      themeStore
     }
   }
 }
@@ -237,5 +281,45 @@ export default {
 <style scoped>
 .advanced-help {
   font-size: 9pt;
+}
+
+#showAdvancedSettings {
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  font-size: 14px;
+  display: block;
+}
+
+#showAdvancedSettings:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.advanced-settings-container {
+  overflow: hidden;
+}
+
+/* Advanced settings transition animations */
+.advanced-settings-enter-active {
+  transition: max-height 0.3s ease-out;
+}
+
+.advanced-settings-leave-active {
+  transition: max-height 0.3s ease-in;
+}
+
+.advanced-settings-enter-from {
+  max-height: 0;
+}
+
+.advanced-settings-enter-to {
+  max-height: 200px;
+}
+
+.advanced-settings-leave-from {
+  max-height: 200px;
+}
+
+.advanced-settings-leave-to {
+  max-height: 0;
 }
 </style>

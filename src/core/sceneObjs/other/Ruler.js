@@ -74,7 +74,7 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
     var scale_len = 10 * ls;
     var scale_len_mid = 15 * ls;
 
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
     ctx.font = (this.scene.theme.rulerText.size * ls) + 'px ' + this.scene.theme.rulerText.font;
     ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.rulerText.color);
     if (ang > Math.PI * (-0.25) && ang <= Math.PI * 0.25) {

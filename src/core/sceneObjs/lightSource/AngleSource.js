@@ -83,12 +83,12 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
     if (this.scene.simulateColors) {
       canvasRenderer.drawPoint(this.p1, Simulator.wavelengthToColor(this.wavelength, 1), this.scene.theme.lightSource.size);
 
-      canvasRenderer.drawPoint(this.p1, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
+      canvasRenderer.drawPoint(this.p1, isHovered ? this.scene.highlightColor : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
     } else {
-      canvasRenderer.drawPoint(this.p1, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.lightSource.color, this.scene.theme.lightSource.size);
+      canvasRenderer.drawPoint(this.p1, isHovered ? this.scene.highlightColor : this.scene.theme.lightSource.color, this.scene.theme.lightSource.size);
     }
 
-    canvasRenderer.drawPoint(this.p2, isHovered ? {r: 0, g: 1, b: 1, a: 1} : this.scene.theme.directionPoint.color, this.scene.theme.directionPoint.size);
+    canvasRenderer.drawPoint(this.p2, isHovered ? this.scene.highlightColor : this.scene.theme.directionPoint.color, this.scene.theme.directionPoint.size);
   }
 
   getDefaultCenter() {

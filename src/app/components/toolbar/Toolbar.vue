@@ -16,7 +16,7 @@
 
 <template>
   <!-- Desktop Toolbar -->
-  <div id="toolbar" class="container-fluid d-none d-lg-block">
+  <div id="toolbar" class="container-fluid d-none d-lg-block" :style="toolbarStyle">
     <div class="container-xxl">
       <div class="row justify-content-between" style="flex-wrap: nowrap;">
         <FileBar layout="desktop" />
@@ -32,7 +32,7 @@
   <!-- Mobile Toolbar -->
   <div id="toolbar-mobile-collapse" class="d-block d-lg-none">
     <div>
-      <div id="toolbar-mobile" class="container-fluid p-0 position-relative">
+      <div id="toolbar-mobile" class="container-fluid p-0 position-relative" :style="toolbarMobileStyle">
         <div class="container-sm p-0">
           <div class="row justify-content-between m-0">
             <FileBar layout="mobile" />
@@ -41,7 +41,7 @@
             <SettingsBar layout="mobile" />
           </div>
         </div>
-        <div class="dropdown-menu mobile-dropdown-menu" style="display: block; z-index: 1;">
+        <div class="dropdown-menu mobile-dropdown-menu" :style="[mobileDropdownStyle, { display: 'block', 'z-index': 1 }]">
           <!--dummy background for collapse transition-->
           <div>
           </div>
@@ -65,6 +65,8 @@ import RayDensityBar from './RayDensityBar.vue';
 import LayoutAidsBar from './LayoutAidsBar.vue';
 import * as $ from 'jquery';
 import { app } from '../../services/app.js'
+import { computed } from 'vue'
+import { useThemeStore } from '../../store/theme'
 
 const f = function (e) {
   const list = document.getElementsByClassName('mobile-dropdown-menu');
@@ -89,6 +91,37 @@ export default {
     SettingsBar,
     RayDensityBar,
     LayoutAidsBar
+  },
+  setup() {
+    const themeStore = useThemeStore()
+
+    // Computed styles that adapt to theme - toolbar should contrast with scene background
+    const toolbarStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use darker background for light scenes, lighter background for dark scenes
+      const backgroundColor = isLight ? 'rgba(230, 230, 230, 0.88)' : 'rgba(255, 255, 255, 0.88)'
+      return { backgroundColor }
+    })
+
+    const toolbarMobileStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use darker background for light scenes, lighter background for dark scenes
+      const backgroundColor = isLight ? 'rgb(240, 240, 240)' : 'rgb(255, 255, 255)'
+      return { backgroundColor }
+    })
+
+    const mobileDropdownStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use darker background for light scenes, lighter background for dark scenes
+      const backgroundColor = isLight ? 'rgb(240, 240, 240)' : 'rgb(255, 255, 255)'
+      return { backgroundColor }
+    })
+
+    return {
+      toolbarStyle,
+      toolbarMobileStyle,
+      mobileDropdownStyle
+    }
   },
   mounted() {
     document.getElementById('toolbar-mobile').addEventListener('shown.bs.dropdown', f);
@@ -193,13 +226,11 @@ export default {
 }
 
 #toolbar {
-  background-color: rgba(255,255,255,0.88);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
 #toolbar-mobile {
-  background-color: rgb(255,255,255);
 }
 
 
@@ -223,7 +254,6 @@ export default {
   
   border: none;
   border-radius: 0;
-  background-color: rgb(255,255,255);
 }
 
 
@@ -235,7 +265,6 @@ export default {
 
   height: 0;
   transition: height .3s ease;
-  background-color: rgb(255,255,255);
 }
 
 .range-minus-btn {

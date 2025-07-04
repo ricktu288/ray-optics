@@ -88,14 +88,14 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     }
     
     if (this.mirrored) {
-      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
+      ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
       ctx.lineWidth = this.scene.theme.mirror.width * ls;
       ctx.beginPath();
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
       ctx.stroke();
     }
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
     ctx.lineWidth = this.scene.theme.diffractionGrating.width * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

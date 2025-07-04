@@ -16,11 +16,11 @@
 
 <template>
   <div class="footer-left" id="footer-left" :style="notificationStyle">
-    <div id="forceStop" v-show="simulatorStatus?.isSimulatorRunning" @click="handleForceStop">
+    <div id="forceStop" v-show="simulatorStatus?.isSimulatorRunning" @click="handleForceStop" :style="forceStopStyle">
       <div class="spinner-border text-secondary" role="status"></div>
       <span v-html="$t('simulator:footer.processing')"></span>
     </div>
-    <div id="status" v-show="showStatus">
+    <div id="status" v-show="showStatus" :style="statusStyle">
       <div v-html="formattedMousePosition"></div>
       <div v-html="formattedSimulatorStatus.join('<br>')"></div>
     </div>
@@ -45,6 +45,7 @@
  * @description The Vue component for the status area (including mouse coordinates, simulator status, warnings and errors) at the lower left corner.
  */
 import { usePreferencesStore } from '../store/preferences'
+import { useThemeStore } from '../store/theme'
 import { useStatus } from '../composables/useStatus'
 import { computed, toRef } from 'vue'
 import { app } from '../services/app'
@@ -53,6 +54,7 @@ export default {
   name: 'StatusArea',
   setup() {
     const preferences = usePreferencesStore()
+    const themeStore = useThemeStore()
     const status = useStatus()
     const showJsonEditor = toRef(preferences, 'showJsonEditor')
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
@@ -61,6 +63,28 @@ export default {
       left: showJsonEditor.value ? `${sidebarWidth.value}px` : '0px'
     }))
 
+    // Computed styles that adapt to theme - status overlay uses scene background color
+    const statusStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      const bgColor = themeStore.getThemeObject('background')?.color || { r: 1, g: 1, b: 1 }
+      
+      // Use actual scene background color with transparency
+      const backgroundColor = `rgba(${Math.round(bgColor.r * 255)}, ${Math.round(bgColor.g * 255)}, ${Math.round(bgColor.b * 255)}, 0.8)`
+      
+      return {
+        color: isLight ? '#333333' : 'gray',
+        backgroundColor: backgroundColor
+      }
+    })
+
+    const forceStopStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Force stop button should be visible in both themes
+      return {
+        color: isLight ? '#666666' : 'gray'
+      }
+    })
+
     const handleForceStop = () => {
       app.simulator.stopSimulation()
     }
@@ -68,6 +92,8 @@ export default {
     return {
       showStatus: preferences.showStatus,
       notificationStyle,
+      statusStyle,
+      forceStopStyle,
       // From status composable
       formattedMousePosition: status.formattedMousePosition,
       formattedSimulatorStatus: status.formattedSimulatorStatus,
@@ -91,7 +117,6 @@ export default {
 }
 
 #forceStop {
-  color: gray;
   cursor: pointer;
   pointer-events: auto;
 }
@@ -102,8 +127,6 @@ export default {
 }
 
 #status {
-  color: gray;
-  background-color:rgba(0,0,0,0.7);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   border-top-right-radius: 0.5em;

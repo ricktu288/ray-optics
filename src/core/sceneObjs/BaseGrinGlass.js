@@ -102,7 +102,7 @@ class BaseGrinGlass extends BaseGlass {
     if (isAboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
-      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
+      ctx.fillStyle = isHovered ? this.scene.highlightColorCss : ('transparent');
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       return;

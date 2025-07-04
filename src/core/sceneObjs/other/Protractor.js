@@ -59,7 +59,7 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
       var scale_len_mid = 15 * ls;
       var scale_len_long = 20 * ls;
 
-      ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
+      ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.ruler.color);
       ctx.font = 'bold ' + (this.scene.theme.rulerText.size * ls) + 'px ' + this.scene.theme.rulerText.font;
       ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.rulerText.color);
 

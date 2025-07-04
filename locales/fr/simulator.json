@@ -59,9 +59,6 @@
       "title": "Corriger la luminosité",
       "description": "Par défaut, la luminosité sur l'écran ne représente pas correctement la luminosité des rayons. Cette option corrige ce problème en utilisant un rendement spécial, qui peut réduire les performances sur certains appareils. (Sur d'autres appareils, cela peut augmenter les performances.)"
     },
-    "colorMode": {
-      "title": "Mode Couleur"
-    },
     "gridSize": {
       "title": "Taille de la grille"
     },
@@ -73,6 +70,9 @@
     },
     "zoom": {
       "title": "Zoom"
+    },
+    "colorMode": {
+      "title": "Mode Couleur"
     },
     "language": {
       "title": "Langue"

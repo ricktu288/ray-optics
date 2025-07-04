@@ -5,12 +5,12 @@
     "description": "2D 기하 광학 생성 및 시뮬레이션을 위한 무료 오픈소스 웹 기반 앱입니다."
   },
   "pages": {
+    "simulator": "시뮬레이터",
     "home": "홈",
     "gallery": "갤러리",
+    "modules": "모듈",
     "about": "이 앱에 대하여",
-    "github": "GitHub",
-    "simulator": "시뮬레이터",
-    "modules": "모듈"
+    "github": "GitHub"
   },
   "homePage": {
     "description": "2D 기하 광학을 시뮬레이션할 수 있습니다.\n무료이며 웹 기반입니다. 소스 코드: [ GitHub 에서 사용 가능](/github).",
@@ -77,6 +77,10 @@
       "title": "빔 스플리터",
       "description": "입사광의 일부를 투과시키는 거울."
     },
+    "ConcaveDiffractionGrating": {
+      "title": "오목 그레이팅",
+      "description": "부분 구형의 오목 그레이팅."
+    },
     "PlaneGlass": {
       "title": "반 평면 (Half-plane)",
       "description": "표면에서의 굴절 및 반사 시뮬레이션.",
@@ -91,9 +95,9 @@
       "description": "구면 유리 (중심과 표면의 한 점으로 정의된 원)."
     },
     "Glass": {
+      "title": "다각형/원호",
       "description": "선분과 원호로 구성된 다양한 형태의 유리.",
-      "instruction": "선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭.",
-      "title": "다각형/원호"
+      "instruction": "선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭."
     },
     "CustomGlass": {
       "title": "사용자 정의 수식",
@@ -107,6 +111,19 @@
       "title": "구면 렌즈",
       "description": "구면 렌즈."
     },
+    "CircleGrinGlass": {
+      "title": "Gradient-index 원형",
+      "description": "유리 (사용자 정의 굴절률 함수 n(x,y) 및 원형 경계)."
+    },
+    "GrinGlass": {
+      "title": "Gradient-index 다각형",
+      "description": "유리 (사용자 정의 굴절률 함수 n(x,y) 및 다각형 경계).",
+      "warning": "경고: 단순한 다각형만 지원됩니다."
+    },
+    "otherGrinGlass": {
+      "title": "Gradient-index 유리",
+      "description": "사용자 정의 굴절률 함수 n(x,y)을 갖는 소재."
+    },
     "Blocker": {
       "title": "선형 차단기",
       "description": "입사 광선을 흡수하는 선형 차단기입니다."
@@ -114,6 +131,16 @@
     "CircleBlocker": {
       "title": "원형 차단기",
       "description": "입사 광선을 흡수하는 원형 차단기입니다."
+    },
+    "Aperture": {
+      "title": "조리개 (구멍)",
+      "description": "입사광선을 흡수하는 한 쌍의 빛 차단기입니다. 구멍의 크기는 대칭적으로 조정됩니다.",
+      "instruction": "두 끝 점을 드래그하거나 클릭하여 만듭니다."
+    },
+    "DiffractionGrating": {
+      "title": "회절격자",
+      "description": "파장에 따라 빛을 각도로 분할하는 회절 격자.",
+      "warning": "경고: 회절된 광선의 세기는 정확하지 않을 수 있습니다."
     },
     "Ruler": {
       "title": "자",
@@ -131,37 +158,6 @@
       "title": "텍스트",
       "description": "텍스트 추가."
     },
-    "moveView": {
-      "title": "화면 이동",
-      "description": "화면을 이동하려면 드래그하십시오. (이 버튼을 누르지 않고, 마우스 우클릭 드래그를 사용해도 됩니다.)"
-    },
-    "Aperture": {
-      "title": "조리개 (구멍)",
-      "description": "입사광선을 흡수하는 한 쌍의 빛 차단기입니다. 구멍의 크기는 대칭적으로 조정됩니다.",
-      "instruction": "두 끝 점을 드래그하거나 클릭하여 만듭니다."
-    },
-    "GrinGlass": {
-      "title": "Gradient-index 다각형",
-      "description": "유리 (사용자 정의 굴절률 함수 n(x,y) 및 다각형 경계).",
-      "warning": "경고: 단순한 다각형만 지원됩니다."
-    },
-    "CircleGrinGlass": {
-      "title": "Gradient-index 원형",
-      "description": "유리 (사용자 정의 굴절률 함수 n(x,y) 및 원형 경계)."
-    },
-    "ConcaveDiffractionGrating": {
-      "title": "오목 그레이팅",
-      "description": "부분 구형의 오목 그레이팅."
-    },
-    "otherGrinGlass": {
-      "description": "사용자 정의 굴절률 함수 n(x,y)을 갖는 소재.",
-      "title": "Gradient-index 유리"
-    },
-    "DiffractionGrating": {
-      "warning": "경고: 회절된 광선의 세기는 정확하지 않을 수 있습니다.",
-      "title": "회절격자",
-      "description": "파장에 따라 빛을 각도로 분할하는 회절 격자."
-    },
     "LineArrow": {
       "title": "선 / 화살표",
       "description": "선분 또는 화살표."
@@ -171,9 +167,13 @@
       "description": "자유롭게 그릴 수 있는 도구.",
       "instruction": "드래그하여 그리세요."
     },
+    "moveView": {
+      "title": "화면 이동",
+      "description": "화면을 이동하려면 드래그하십시오. (이 버튼을 누르지 않고, 마우스 우클릭 드래그를 사용해도 됩니다.)"
+    },
     "modules": {
-      "remove": "모듈 제거",
-      "import": "모듈 불러오기…"
+      "import": "모듈 불러오기…",
+      "remove": "모듈 제거"
     }
   },
   "view": {
@@ -205,6 +205,20 @@
     "instruction": "개체를 선택할 때 이러한 변수를 설정할 수 있습니다. 색상 스펙트럼을 시뮬레이션 하려면 여러 파장의 광선을 겹치십시오.",
     "warning": "색상 혼합은 \"올바른 밝기\"와 함께 사용해야 정확합니다."
   },
+  "aboutPage": {
+    "description": "갤러리 콘텐츠를 포함한 이 프로젝트는 [Apache License 2.0](/license) 라이선스에 따라 배포되며, [PhyDemo (phydemo.app)](/phydemo) 웹사이트(이전에는 ricktu288.github.io)에 공식적으로 호스팅됩니다. 소스 코드는 [GitHub](/github)에서 확인할 수 있으며, 여러분의 [참여를 환영합니다](/contributing). 질문이나 제안 사항이 있으시면 GitHub에서 [issues](/github/issues) 또는 [discussions](/github/discussions)를 개설하시거나, GitHub을 사용하지 않으시는 경우 [ray-optics@phydemo.app](/email)으로 이메일을 보내주세요.",
+    "cite": "이 프로젝트 인용하기",
+    "mainAuthors_other": "주저자",
+    "contributors": "기여자",
+    "contributorSorting": "GitHub 기여자 우선, 나머지는 시간순으로 정렬.",
+    "contributionCategories": {
+      "code": "코드",
+      "uiDesign": "UI 디자인",
+      "gallery": "갤러리",
+      "module": "모듈",
+      "translations_other": "{{languages}}번역"
+    }
+  },
   "languageDropdown": {
     "title": "언어: {{language}}",
     "translatedFraction": "{{fraction}} 번역 됨"
@@ -214,19 +228,5 @@
     "parentheses": "{{main}} ({{sub}})",
     "colon": "{{name}}: {{value}}",
     "list": "{{first}}, {{others}}"
-  },
-  "aboutPage": {
-    "contributionCategories": {
-      "translations_other": "{{languages}}번역",
-      "code": "코드",
-      "uiDesign": "UI 디자인",
-      "gallery": "갤러리",
-      "module": "모듈"
-    },
-    "description": "갤러리 콘텐츠를 포함한 이 프로젝트는 [Apache License 2.0](/license) 라이선스에 따라 배포되며, [PhyDemo (phydemo.app)](/phydemo) 웹사이트(이전에는 ricktu288.github.io)에 공식적으로 호스팅됩니다. 소스 코드는 [GitHub](/github)에서 확인할 수 있으며, 여러분의 [참여를 환영합니다](/contributing). 질문이나 제안 사항이 있으시면 GitHub에서 [issues](/github/issues) 또는 [discussions](/github/discussions)를 개설하시거나, GitHub을 사용하지 않으시는 경우 [ray-optics@phydemo.app](/email)으로 이메일을 보내주세요.",
-    "cite": "이 프로젝트 인용하기",
-    "mainAuthors_other": "주저자",
-    "contributors": "기여자",
-    "contributorSorting": "GitHub 기여자 우선, 나머지는 시간순으로 정렬."
   }
 }

@@ -99,7 +99,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
 
     var a_l = Math.atan2(this.p1.x - this.p2.x, this.p1.y - this.p2.y) - Math.PI / 2;
     const colorArray = Simulator.wavelengthToColor(this.wavelength, 1);
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.simulateColors ? colorArray : this.scene.theme.lightSource.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors ? colorArray : this.scene.theme.lightSource.color);
     ctx.lineWidth = this.scene.theme.lightSource.size * 4 / 5 * ls;
     ctx.lineCap = 'butt';
     ctx.beginPath();

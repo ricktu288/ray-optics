@@ -66,7 +66,7 @@ class BaseGlass extends BaseSceneObj {
     if (isAboveLight) {
       // Draw the highlight only
       ctx.globalAlpha = 0.1;
-      ctx.fillStyle = isHovered ? 'cyan' : ('transparent');
+      ctx.fillStyle = isHovered ? this.scene.highlightColorCss : ('transparent');
       ctx.fill('evenodd');
       ctx.globalAlpha = 1;
       return;
@@ -123,7 +123,7 @@ class BaseGlass extends BaseSceneObj {
       } else {
         // canvas2svg does not support globalCompositeOperation. Use the old appearance.
         ctx.globalAlpha = 1;
-        ctx.strokeStyle = isHovered ? 'cyan' : ('rgb(70,70,70)');
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : ('rgb(70,70,70)');
         ctx.lineWidth = 1 * ls;
         ctx.stroke();
       }

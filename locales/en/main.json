@@ -198,7 +198,8 @@
       "description": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual).",
       "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors instead.",
       "instruction": "Drag the big blue dot to move the observer."
-    }
+    },
+    "customThemeNote": "Note: This scene uses a custom theme."
   },
   "simulateColors": {
     "title": "Simulate Colors",

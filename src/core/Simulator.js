@@ -886,6 +886,24 @@ class Simulator {
    * @returns {void}
    */
   validate() {
+
+    // Check if the theme color of light is drawn correctly (note that the float color renderer only supports additive color mixing)
+    if (!this.scene.simulateColors && this.scene.colorMode !== 'default' && !(this.scene.theme.background.color.r <= 0.01 && this.scene.theme.background.color.g <= 0.01 && this.scene.theme.background.color.b <= 0.01)) {
+      const lightOptions = ({
+        rays: ['ray'],
+        extended: ['ray', 'extendedRay', 'forwardExtendedRay'],
+        images: ['realImage', 'virtualImage', 'virtualObject'],
+        observer: ['realImage', 'virtualImage', 'observedRay'],
+      })[this.scene.mode];
+      for (let lightOption of lightOptions) {
+        if (Math.max(this.scene.theme[lightOption].color.r, this.scene.theme[lightOption].color.g, this.scene.theme[lightOption].color.b) < 0.99) {
+          this.warning = i18next.t('simulator:generalWarnings.blackBecomesTransparent');
+          return;
+        }
+      }
+    }
+
+    // Check if the brightness scale is consistent
     if (this.brightnessScale == -1) {
       let hasDetector = false;
       for (let obj of this.scene.opticalObjs) {

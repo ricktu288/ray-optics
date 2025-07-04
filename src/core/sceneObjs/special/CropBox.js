@@ -85,7 +85,7 @@ class CropBox extends BaseSceneObj {
 
     const rayCountLimit = this.rayCountLimit || (this.format === 'svg' ? 1e4 : 1e7);
 
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['rayCountLimit']))) {
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['rayCountLimit', 'transparent']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.CropBox.rayCountLimit'), 0, 1e7, 1, rayCountLimit, function (obj, value) {
         obj.rayCountLimit = value;
         if (obj.scene.simulator.processedRayCount > obj.rayCountLimit) {
@@ -94,6 +94,9 @@ class CropBox extends BaseSceneObj {
           obj.warning = null;
         }
       }, null, true);
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.CropBox.transparent'), this.transparent, function (obj, value) {
+        obj.transparent = value;
+      });
     }
 
     const self = this;
@@ -133,7 +136,7 @@ class CropBox extends BaseSceneObj {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.lineWidth = 1 * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);
@@ -142,7 +145,7 @@ class CropBox extends BaseSceneObj {
     ctx.lineTo(this.p3.x, this.p3.y);
     ctx.lineTo(this.p1.x, this.p1.y);
     ctx.stroke();
-    ctx.fillStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, 2 * Math.PI);
     ctx.fill();

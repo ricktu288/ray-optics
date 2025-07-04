@@ -7,8 +7,8 @@
       "refraction": "Réfraction",
       "lens": "Lentilles",
       "combinationOfLenses": "Combinaison de Lentilles",
-      "miscellaneous": "Divers",
-      "grinOptics": "Gradient d'indices optiques"
+      "grinOptics": "Gradient d'indices optiques",
+      "miscellaneous": "Divers"
     },
     "contributors_one": "Contributeur : {{contributors}}",
     "contributors_many": "Contributeurs : {{contributors}}",
@@ -18,6 +18,9 @@
   "galleryData": {
     "common": {
       "warningthesequenceof": "Attention : La séquence lumineuse qui apparait ne représente pas la véritable vitesse de la lumière - seulement l'image finale est représentative."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Images provenant de deux miroirs"
     },
     "parabolicMirror": {
       "title": "Miroir Parabolique",
@@ -42,6 +45,9 @@
     "opticalCavity": {
       "clickholdleftmouseto": "Cliquez + maintenez le clic gauche de votre souris\npour déplacer le rayon",
       "dragtomovetheidealmi": "Maintenir pour bouger\nle miroir idéal"
+    },
+    "resonator": {
+      "flatmirror": "Miroir plan"
     },
     "beamDirectors": {
       "title": "Vecteurs directeurs du faisceau",
@@ -82,12 +88,6 @@
     },
     "koehlerIllumination": {
       "sample": "Echantillon"
-    },
-    "resonator": {
-      "flatmirror": "Miroir plan"
-    },
-    "imagesFormedByTwoMirrors": {
-      "title": "Images provenant de deux miroirs"
     }
   }
 }

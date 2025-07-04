@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div id="obj_bar" class="obj-bar" style="display: none;">
+  <div id="obj_bar" class="obj-bar" :style="[objBarStyle, { display: 'none' }]">
     <span class="d-none d-lg-inline" id="obj_name"></span><span id="obj_bar_main">
     </span>
     <span>
@@ -91,6 +91,7 @@
 import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 import { usePreferencesStore } from '../store/preferences'
+import { useThemeStore } from '../store/theme'
 import { app } from '../services/app'
 
 export default {
@@ -100,6 +101,7 @@ export default {
   },
   setup() {
     const preferences = usePreferencesStore()
+    const themeStore = useThemeStore()
     const help = toRef(preferences, 'help')
     const tooltipType = computed(() => help.value ? 'popover' : null)
 
@@ -108,9 +110,25 @@ export default {
       set: (value) => app.objBar.shouldApplyToAll = value
     })
 
+    // Computed style that adapts to theme
+    const objBarStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use higher alpha for light backgrounds for better visibility
+      if (isLight) {
+        return {
+          backgroundColor: 'rgba(60, 150, 164, 0.9)'
+        }
+      } else {
+        return {
+          backgroundColor: 'rgba(23, 162, 184, 0.5)'
+        }
+      }
+    })
+
     return {
       tooltipType,
-      applyToAll
+      applyToAll,
+      objBarStyle
     }
   },
   methods: {
@@ -141,7 +159,6 @@ export default {
 
 .obj-bar {
   z-index: -1;
-  background-color:rgba(23,162,184, 0.5);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   color:white;

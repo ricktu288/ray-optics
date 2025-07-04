@@ -80,12 +80,12 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
         var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
         var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
         var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
-        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.mirror.color);
         ctx.lineWidth = this.scene.theme.mirror.width * ls;
         ctx.beginPath();
         ctx.arc(center.x, center.y, r, a1, a2, (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2));
         ctx.stroke();
-        ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.diffractionGrating.color);
         ctx.lineWidth = this.scene.theme.diffractionGrating.width * ls;
         ctx.lineCap = 'butt';
         ctx.beginPath();

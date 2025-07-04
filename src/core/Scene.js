@@ -404,6 +404,31 @@ class Scene {
     }
   }
 
+  /** @property {boolean} isBackgroundLight - Whether the background is light (as opposed to dark). */
+  get isBackgroundLight() {
+    const bgColor = this.theme.background.color;
+    const luminance = 0.299 * bgColor.r + 0.587 * bgColor.g + 0.114 * bgColor.b;
+    return luminance > 0.5;
+  }
+
+  /** @property {string} highlightColor - The color used to highlight hovered objects in the scene. */
+  get highlightColor() {
+    if (this.isBackgroundLight) {
+      return { r: 0, g: 0.75, b: 0.75, a: 1 };
+    } else {
+      return { r: 0, g: 1, b: 1, a: 1 };
+    }
+  }
+
+  /** @property {string} highlightColorCss - The CSS color string used to highlight hovered objects in the scene. */
+  get highlightColorCss() {
+    if (this.isBackgroundLight) {
+      return 'rgb(0, 192, 192)';
+    } else {
+      return 'rgb(0, 255, 255)';
+    }
+  }
+
   /** @property {Array<BaseSceneObj>} opticalObjs - The objects in the scene which are optical. Module objects are expanded recursively. If the user edits only the non-optical part of the scene, then the content of this array will not change. */
   get opticalObjs() {
     function expandObjs(objs) {

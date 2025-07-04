@@ -60,7 +60,7 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
       return;
     }
     
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
     ctx.lineWidth = this.scene.theme.decoration.width * ls;
     ctx.beginPath();
     ctx.moveTo(this.p1.x, this.p1.y);

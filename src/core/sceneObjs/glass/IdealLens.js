@@ -67,7 +67,7 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     var center_size = this.scene.theme.idealCurveArrow.size / 5 * ls;
 
     // Draw the line segment
-    ctx.strokeStyle = isHovered ? 'cyan' : canvasRenderer.rgbaToCssColor([(this.scene.theme.glass.color.r + this.scene.theme.background.color.r) / 2, (this.scene.theme.glass.color.g + this.scene.theme.background.color.g) / 2, (this.scene.theme.glass.color.b + this.scene.theme.background.color.b) / 2, 1]);
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor([(this.scene.theme.glass.color.r + this.scene.theme.background.color.r) / 2, (this.scene.theme.glass.color.g + this.scene.theme.background.color.g) / 2, (this.scene.theme.glass.color.b + this.scene.theme.background.color.b) / 2, 1]);
     ctx.globalAlpha = 1 / ((Math.abs(this.focalLength / this.scene.lengthScale) / 100) + 1);
     ctx.lineWidth = this.scene.theme.idealCurveArrow.size / 5 * 2 * ls;
     ctx.beginPath();

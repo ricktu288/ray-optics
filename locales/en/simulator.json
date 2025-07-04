@@ -8,7 +8,9 @@
     "saveButton": "Save",
     "cancelButton": "Cancel",
     "defaultOption": "Default",
+    "customOption": "Custom",
     "closeButton": "Close",
+    "resetButton": "Reset",
     "reloadToTakeEffect": "Please reload the page to take effect."
   },
   "file": {
@@ -62,10 +64,6 @@
       "description": "By default, the brightness on the screen does not consistently represent the brightness of the rays. This option fixes it using a specialized renderer, but may reduce the performance on some devices. (On some other devices it actually improves the performance.)",
       "error": "Failed to enable \"Correct Brightness\". Your browser may not support WebGL floating-point textures."
     },
-    "colorMode": {
-      "title": "Color Mode",
-      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
-    },
     "gridSize": {
       "title": "Grid Size"
     },
@@ -78,6 +76,16 @@
     },
     "zoom": {
       "title": "Zoom"
+    },
+    "showAdvancedSettings": {
+      "title": "More scene settings…"
+    },
+    "colorMode": {
+      "title": "Color Mode",
+      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
+    },
+    "theme": {
+      "title": "Theme"
     },
     "language": {
       "title": "Language",
@@ -298,6 +306,7 @@
       "format": "Format",
       "width": "Width",
       "rayCountLimit": "Ray count limit",
+      "transparent": "Transparent background",
       "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
       "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
     },
@@ -338,6 +347,134 @@
       "description": "The total brightness of 100, 10, …, 10⁻⁵ are represented by red, orange, yellow, green, cyan, blue, purple, and black, respectively, and interpolate smoothly in log scale."
     }
   },
+  "themeModal": {
+    "title": "Theme styles",
+    "background": {
+      "title": "Background color"
+    },
+    "ray": {
+      "title": "Default ray"
+    },
+    "colorRay": {
+      "title": "Colored ray"
+    },
+    "extendedRay": {
+      "title": "Default backward extended ray"
+    },
+    "colorExtendedRay": {
+      "title": "Colored backward extended ray"
+    },
+    "forwardExtendedRay": {
+      "title": "Default forward extended ray"
+    },
+    "colorForwardExtendedRay": {
+      "title": "Colored forward extended ray"
+    },
+    "observedRay": {
+      "title": "Default observed ray"
+    },
+    "colorObservedRay": {
+      "title": "Colored observed ray"
+    },
+    "realImage": {
+      "title": "Default real image"
+    },
+    "colorRealImage": {
+      "title": "Colored real image"
+    },
+    "virtualImage": {
+      "title": "Default virtual image"
+    },
+    "colorVirtualImage": {
+      "title": "Colored virtual image"
+    },
+    "virtualObject": {
+      "title": "Default virtual object"
+    },
+    "colorVirtualObject": {
+      "title": "Colored virtual object"
+    },
+    "grid": {
+      "title": "Grid lines"
+    },
+    "observer": {
+      "title": "Observer fill"
+    },
+    "sourcePoint": {
+      "title": "Source control point"
+    },
+    "directionPoint": {
+      "title": "Direction control point"
+    },
+    "centerPoint": {
+      "title": "Center control point"
+    },
+    "lightSource": {
+      "title": "Default light source surface"
+    },
+    "beamShield": {
+      "title": "Beam source shield"
+    },
+    "colorSourceCenter": {
+      "title": "Colored light source center"
+    },
+    "mirror": {
+      "title": "Mirror surface"
+    },
+    "beamSplitter": {
+      "title": "Beam splitter surface"
+    },
+    "idealCurveCenter": {
+      "title": "Ideal curve center"
+    },
+    "idealCurveArrow": {
+      "title": "Ideal curve arrow"
+    },
+    "glass": {
+      "title": "Glass fill"
+    },
+    "grinGlass": {
+      "title": "Gradient-index glass fill"
+    },
+    "blocker": {
+      "title": "Blocker surface"
+    },
+    "diffractionGrating": {
+      "title": "Diffraction grating surface"
+    },
+    "detector": {
+      "title": "Detector surface"
+    },
+    "detectorText": {
+      "title": "Detector text"
+    },
+    "irradMap": {
+      "title": "Irradiance map fill"
+    },
+    "irradMapBorder": {
+      "title": "Irradiance map border"
+    },
+    "ruler": {
+      "title": "Ruler scale lines"
+    },
+    "rulerText": {
+      "title": "Ruler text"
+    },
+    "decoration": {
+      "title": "Decoration style"
+    },
+    "handlePoint": {
+      "title": "Default handle control point"
+    },
+    "handleArrow": {
+      "title": "Handle arrow"
+    },
+    "import": {
+      "title": "Import",
+      "description": "Import theme from a scene JSON file.",
+      "error": "The file does not contain a theme."
+    }
+  },
   "languageModal": {
     "title": "Language",
     "translatedFraction": "translated",
@@ -347,7 +484,8 @@
     "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead.",
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
-    "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources."
+    "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
+    "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue."
   },
   "generalErrors": {
     "newerVersion": "The version of the scene is newer than the current version of the simulator.",

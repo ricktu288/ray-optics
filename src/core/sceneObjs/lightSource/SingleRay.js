@@ -66,8 +66,8 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
     }
     
     if (isHovered) {
-      sourceColor = {r: 0, g: 1, b: 1, a: 1};
-      directionColor = {r: 0, g: 1, b: 1, a: 1};
+      sourceColor = this.scene.highlightColor;
+      directionColor = this.scene.highlightColor;
     }
 
     canvasRenderer.drawPoint(this.p1, sourceColor, this.scene.theme.sourcePoint.size);

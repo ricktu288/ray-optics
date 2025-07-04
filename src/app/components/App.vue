@@ -26,6 +26,7 @@
   <ModuleModal />
   <SaveModal />
   <ColorModeModal />
+  <ThemeModal />
   <LanguageModal />
 
   <input type="file" id="openfile" style="display:none">
@@ -47,6 +48,7 @@ import Footer from './Footer.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
 import ColorModeModal from './ColorModeModal.vue';
+import ThemeModal from './ThemeModal.vue';
 import LanguageModal from './LanguageModal.vue';
 
 
@@ -63,6 +65,7 @@ export default {
     ModuleModal,
     SaveModal,
     ColorModeModal,
+    ThemeModal,
     LanguageModal
   }
 }

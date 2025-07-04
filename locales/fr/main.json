@@ -74,6 +74,9 @@
     "BeamSplitter": {
       "description": "Un miroir qui transmet un pourcentage de la lumière entrant."
     },
+    "ConcaveDiffractionGrating": {
+      "title": "Réseau de diffraction concave"
+    },
     "PlaneGlass": {
       "title": "Demi-plan",
       "description": "Simule la réfraction et la reflexion de la lumière sur une surface.",
@@ -151,9 +154,6 @@
     "modules": {
       "import": "Import de modules…",
       "remove": "Retirer le module"
-    },
-    "ConcaveDiffractionGrating": {
-      "title": "Réseau de diffraction concave"
     }
   },
   "view": {
