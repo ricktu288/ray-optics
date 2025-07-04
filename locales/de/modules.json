@@ -23,7 +23,10 @@
       "point1": "Der erste Endpunkt der Linse",
       "point2": "Der zweite Endpunkt der Linse",
       "Nslice": "Anzahl an Slices",
-      "refIndex": "Der Brechnungsindex der Linse"
+      "refIndex": "Der Brechungsindex der Linse"
+    },
+    "ContSpectrum": {
+      "title": "Lichtquelle mit kontinuierlichem Spektrum"
     }
   }
 }
