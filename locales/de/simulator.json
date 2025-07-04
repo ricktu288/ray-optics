@@ -8,7 +8,8 @@
     "saveButton": "Speichern",
     "cancelButton": "Abbrechen",
     "defaultOption": "Standard",
-    "closeButton": "Schließen"
+    "closeButton": "Schließen",
+    "reloadToTakeEffect": "Bitte Seite neu laden, um Änderungen zu sehen."
   },
   "file": {
     "title": "Datei",
