@@ -103,7 +103,13 @@
       "title": "Exibir popups de ajuda",
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
-    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
+    "showAdvancedSettings": {
+      "title": "Mais configurações da cena…"
+    },
+    "theme": {
+      "title": "Tema"
+    }
   },
   "objBar": {
     "showAdvanced": {
@@ -299,7 +305,8 @@
       "width": "Largura",
       "rayCountLimit": "Limite de quantidade de raios",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
-      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
+      "transparent": "Fundo transparente"
     },
     "CustomGlass": {
       "curveGenerationError": "Erro de geração de curva: f(x) > g(x) em x={{x}}"
@@ -422,6 +429,24 @@
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
       }
+    }
+  },
+  "themeModal": {
+    "title": "Estilos de tema",
+    "background": {
+      "title": "Cor de fundo"
+    },
+    "ray": {
+      "title": "Raio padrão"
+    },
+    "colorRay": {
+      "title": "Raio colorido"
+    },
+    "extendedRay": {
+      "title": "Raio extendido pra trás padrão"
+    },
+    "colorExtendedRay": {
+      "title": "Raio extendido pra trás"
     }
   }
 }
