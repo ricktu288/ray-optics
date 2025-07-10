@@ -446,7 +446,67 @@
       "title": "Raio extendido para trás padrão"
     },
     "colorExtendedRay": {
-      "title": "Raio extendido para trás"
+      "title": "Raio extendido para trás colorido"
+    },
+    "forwardExtendedRay": {
+      "title": "Raio extendido para frente padrão"
+    },
+    "colorForwardExtendedRay": {
+      "title": "Raio extendido para frente colorido"
+    },
+    "observedRay": {
+      "title": "Raio observado padrão"
+    },
+    "colorObservedRay": {
+      "title": "Raio observado colorido"
+    },
+    "realImage": {
+      "title": "Imagem real padrão"
+    },
+    "colorRealImage": {
+      "title": "Imagem real colorida"
+    },
+    "virtualImage": {
+      "title": "Imagem virtual padrão"
+    },
+    "colorVirtualImage": {
+      "title": "Imagem virtual colorida"
+    },
+    "virtualObject": {
+      "title": "Objeto virtual padrão"
+    },
+    "colorVirtualObject": {
+      "title": "Objeto virtual colorido"
+    },
+    "grid": {
+      "title": "Linhas de grade"
+    },
+    "sourcePoint": {
+      "title": "Ponto de controle de fonte"
+    },
+    "directionPoint": {
+      "title": "Ponto de controle de direção"
+    },
+    "centerPoint": {
+      "title": "Ponto de controle de centro"
+    },
+    "lightSource": {
+      "title": "Superfície padrão de fonte de luz"
+    },
+    "beamShield": {
+      "title": "Escudo da fonte feixe"
+    },
+    "colorSourceCenter": {
+      "title": "Centro da fonte de luz colorida"
+    },
+    "mirror": {
+      "title": "Superfície do espelho"
+    },
+    "beamSplitter": {
+      "title": "Superfície do divisor de feixe"
+    },
+    "idealCurveCenter": {
+      "title": "Centro da curva ideal"
     }
   }
 }
