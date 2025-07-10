@@ -9,7 +9,9 @@
     "cancelButton": "Cancelar",
     "defaultOption": "Padrão",
     "closeButton": "Fechar",
-    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças."
+    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças.",
+    "customOption": "Personalizado",
+    "resetButton": "Reiniciar"
   },
   "file": {
     "title": "Arquivo",
@@ -506,7 +508,57 @@
       "title": "Superfície do divisor de feixe"
     },
     "idealCurveCenter": {
-      "title": "Centro da curva ideal"
+      "title": "Centro dos curvos ideais"
+    },
+    "idealCurveArrow": {
+      "title": "Seta dos curvos ideais"
+    },
+    "glass": {
+      "title": "Preenchimento do vidro"
+    },
+    "grinGlass": {
+      "title": "Preenchimento do vidro de gradiente de índice"
+    },
+    "blocker": {
+      "title": "Superfície do bloqueador"
+    },
+    "diffractionGrating": {
+      "title": "Superfície da grade de difração"
+    },
+    "detector": {
+      "title": "Superfície do detector"
+    },
+    "detectorText": {
+      "title": "Texto do detector"
+    },
+    "irradMap": {
+      "title": "Preenchimento do mapa de irradiância"
+    },
+    "irradMapBorder": {
+      "title": "Borda do mapa de irradiância"
+    },
+    "ruler": {
+      "title": "Linhas da escala da régua"
+    },
+    "rulerText": {
+      "title": "Texto da régua"
+    },
+    "decoration": {
+      "title": "Estilo da decoração"
+    },
+    "handlePoint": {
+      "title": "Ponto de manuseio padrão"
+    },
+    "handleArrow": {
+      "title": "Seta do ponto de manuseio"
+    },
+    "import": {
+      "title": "Importar",
+      "description": "Importar tema de um arquivo JSON.",
+      "error": "O arquivo não contém um tema."
+    },
+    "observer": {
+      "title": "Preenchimento do observador"
     }
   }
 }
