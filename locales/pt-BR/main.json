@@ -198,7 +198,8 @@
       "description": "Simule os raios e imagens vistos de uma posição. O círculo azul é o observador. Quaisquer raios atravessando ele são considerados 'Observados'. O observador não sabe onde os raios realmente começam, mas pode pensar que eles começam em algum ponto se eles intersecionam lá. Os raios são exibidos em azul, e os pontos em amarelo (real) ou laranja (virtual).",
       "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte.",
       "instruction": "Arraste o ponto grande azul para mover o observador."
-    }
+    },
+    "customThemeNote": "Nota: Esta cena utiliza um tema personalizado."
   },
   "simulateColors": {
     "title": "Simular Cores",
