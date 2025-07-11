@@ -36,6 +36,7 @@ import Simulator from '../../Simulator.js';
 class Blocker extends LineObjMixin(BaseFilter) {
   static type = 'Blocker';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,

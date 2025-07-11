@@ -36,7 +36,7 @@ import geometry from '../../geometry.js';
 class GrinGlass extends BaseGrinGlass {
   static type = 'GrinGlass';
   static isOptical = true;
-  static supportsSurfaceMerging = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     path: [],
     notDone: false,
@@ -320,7 +320,8 @@ class GrinGlass extends BaseGrinGlass {
           // The situation that may cause bugs (e.g. incident on an edge point)
           // To prevent shooting the ray to a wrong direction, absorb the ray
           return {
-            isAbsorbed: true
+            isAbsorbed: true,
+            isUndefinedBehavior: true
           };
         }
         return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, r_bodyMerging_obj);

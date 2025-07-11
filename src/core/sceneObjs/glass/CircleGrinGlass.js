@@ -36,7 +36,7 @@ import geometry from '../../geometry.js';
 class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
   static type = 'CircleGrinGlass';
   static isOptical = true;
-  static supportsSurfaceMerging = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
@@ -133,7 +133,8 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
           // The situation that may cause bugs (e.g. incident on an edge point)
           // To prevent shooting the ray to a wrong direction, absorb the ray
           return {
-            isAbsorbed: true
+            isAbsorbed: true,
+            isUndefinedBehavior: true
           };
         }
         return this.refract(ray, rayIndex, incidentPoint, normal, n1, surfaceMergingObjs, r_bodyMerging_obj);

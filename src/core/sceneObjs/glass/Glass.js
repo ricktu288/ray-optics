@@ -34,7 +34,7 @@ import geometry from '../../geometry.js';
 class Glass extends BaseGlass {
   static type = 'Glass';
   static isOptical = true;
-  static supportsSurfaceMerging = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     path: [],
     notDone: false,
@@ -461,7 +461,8 @@ class Glass extends BaseGlass {
       // The situation that may cause bugs (e.g. incident on an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
-        isAbsorbed: true
+        isAbsorbed: true,
+        isUndefinedBehavior: true
       };
     }
 

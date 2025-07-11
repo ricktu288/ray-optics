@@ -262,5 +262,8 @@ export async function runScene(jsonPath, writeOutput = false) {
     }
   }
 
+  outputs.simulatorError = simulator.error;
+  outputs.simulatorWarning = simulator.warning;
+
   return outputs;
 }

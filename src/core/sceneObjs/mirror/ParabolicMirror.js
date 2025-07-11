@@ -41,6 +41,7 @@ import geometry from '../../geometry.js';
 class ParabolicMirror extends BaseFilter {
   static type = 'ParabolicMirror';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,

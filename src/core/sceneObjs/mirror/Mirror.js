@@ -37,6 +37,7 @@ import geometry from '../../geometry.js';
 class Mirror extends LineObjMixin(BaseFilter) {
   static type = 'Mirror';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,

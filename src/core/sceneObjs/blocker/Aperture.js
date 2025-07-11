@@ -38,6 +38,7 @@ import geometry from '../../geometry.js';
 class Aperture extends BaseFilter {
   static type = 'Aperture';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,

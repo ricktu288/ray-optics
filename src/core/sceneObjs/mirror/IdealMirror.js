@@ -34,6 +34,7 @@ import geometry from '../../geometry.js';
 class IdealMirror extends LineObjMixin(BaseFilter) {
   static type = 'IdealMirror';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,

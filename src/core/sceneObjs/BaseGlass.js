@@ -137,7 +137,7 @@ class BaseGlass extends BaseSceneObj {
    * @param {Point} incidentPoint - The incident point.
    * @param {Point} normal - The normal vector at the incident point.
    * @param {number} n1 - The effective refractive index of the current object (after determining the direction of incident of the current object, but before merging the surface with other objects).
-   * @param {Array<BaseSceneObj>} surfaceMergingObjs - The objects that are to be merged with the current object.
+   * @param {Array<BaseGlass>} surfaceMergingObjs - The objects that are to be merged with the current object.
    * @param {BaseGrinGlass} bodyMergingObj - The object that is to be merged with the current object.
    * @returns {SimulationReturn} The return value for `onRayIncident`.
    */
@@ -161,7 +161,8 @@ class BaseGlass extends BaseSceneObj {
         // Situation that may cause bugs (e.g. incident on an edge point)
         // To prevent shooting the ray to a wrong direction, absorb the ray
         return {
-          isAbsorbed: true
+          isAbsorbed: true,
+          isUndefinedBehavior: true
         };
       }
     }

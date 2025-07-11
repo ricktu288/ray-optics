@@ -485,7 +485,9 @@
     "autoSyncUrlTooLarge": "本場景過大，無法與網址同步。請自行儲存場景。",
     "identicalObjects": "場景中有兩個完全相同的光學元件完全重合。這可能會導致非預期的行為。",
     "brightnessInconsistent": "有至少兩個光源的亮度以不一致的比例達到飽和。這可能會導致探測器的讀數與色彩渲染錯誤。請提高光線密度或降低光源亮度。",
-    "blackBecomesTransparent": "使用「修正亮度」時，由於使用加法混色，非黑色背景會導致光線的黑色部分變透明。請將主題中光的顏色都設為 HSV 明度為 1 的值以避免此問題。"
+    "blackBecomesTransparent": "使用「修正亮度」時，由於使用加法混色，非黑色背景會導致光線的黑色部分變透明。請將主題中光的顏色都設為 HSV 明度為 1 的值以避免此問題。",
+    "undefinedBehaviorOverlapping": "「{{involvedObj1}}」與「{{involvedObj2}}」的重疊部分不支援界面融合，導致未定義行為。請將物件稍微分開（或移動光源）以得到明確的行為。",
+    "undefinedBehaviorSingle": "物件「{{involvedObj}}」出現未定義行為。請稍微移動物件或光源以得到明確的行為。"
   },
   "generalErrors": {
     "newerVersion": "場景版本與目前的模擬器版本不相容。",

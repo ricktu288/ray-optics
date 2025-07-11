@@ -58,7 +58,13 @@ describe('Scene Tests', () => {
 
         // Run the scene and get outputs
         const writeOutput = process.env.WRITE_OUTPUT === 'true';
-        const { imageBuffer, detectorData } = await runScene(jsonPath, writeOutput);
+        const { imageBuffer, detectorData, simulatorError, simulatorWarning } = await runScene(jsonPath, writeOutput);
+
+        // Expect there is no error
+        expect(simulatorError).toBe(null, `Error in scene ${jsonPath}`);
+
+        // Expect there is no warning
+        expect(simulatorWarning).toBe(null, `Warning in scene ${jsonPath}`);
 
         // If we're writing outputs, skip comparisons
         if (writeOutput) {

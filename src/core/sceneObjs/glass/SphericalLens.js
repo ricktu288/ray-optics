@@ -39,7 +39,7 @@ import i18next from 'i18next';
 class SphericalLens extends Glass {
   static type = 'SphericalLens';
   static isOptical = true;
-  static supportsSurfaceMerging = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     path: null,
     defBy: 'DR1R2',

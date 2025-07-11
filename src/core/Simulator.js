@@ -19,6 +19,7 @@ import FloatColorRenderer from './FloatColorRenderer.js';
 import geometry from './geometry.js';
 import * as C2S from 'canvas2svg';
 import * as sceneObjs from './sceneObjs.js';
+import BaseGlass from './sceneObjs/BaseGlass.js';
 import i18next from 'i18next';
 
 /**
@@ -49,6 +50,11 @@ class Simulator {
    */
   static MIN_RAY_SEGMENT_LENGTH = 1e-6;
   static MIN_RAY_SEGMENT_LENGTH_SQUARED = Simulator.MIN_RAY_SEGMENT_LENGTH * Simulator.MIN_RAY_SEGMENT_LENGTH;
+  
+  /**
+   * The threshold for the total brightness of rays where an undefined behavior is encountered. Above this threshold, a warning will be shown.
+   */
+  static UNDEFINED_BEHAVIOR_THRESHOLD = 0.001;
 
   static UV_WAVELENGTH = 380;
   static VIOLET_WAVELENGTH = 420;
@@ -127,6 +133,12 @@ class Simulator {
 
     /** @property {number} totalTruncation - The total truncated brightness of rays in the infinite series of internal reflection during the simulation. */
     this.totalTruncation = 0;
+
+    /** @property {number} totalUndefinedBehavior - The total brightness of rays where an undefined behavior is encountered. */
+    this.totalUndefinedBehavior = 0;
+
+    /** @property {BaseSceneObj[]} undefinedBehaviorObjs - The objects causing the first undefined behavior. */
+    this.undefinedBehaviorObjs = [];
 
     /** @property {number} brightnessScale - The brightness scale of the simulation. 0 if undetermined, -1 if inconsistent. */
     this.brightnessScale = 0;
@@ -314,6 +326,8 @@ class Simulator {
       this.lastOrigin.x = this.scene.origin.x;
       this.lastOrigin.y = this.scene.origin.y;
       this.totalTruncation = 0;
+      this.totalUndefinedBehavior = 0;
+      this.undefinedBehaviorObjs = [];
       this.brightnessScale = 0;
       //clearError();
       //clearWarning();
@@ -523,6 +537,8 @@ class Simulator {
     var s_point_temp;
     var s_lensq;
     var s_lensq_temp;
+    var s_undefinedBehavior = false;
+    var s_undefinedBehaviorObjs = [];
     var observed_point;
     var observed_intersection;
     var rpd;
@@ -575,7 +591,9 @@ class Simulator {
         s_obj = null; // The current nearest object in search
         s_obj_index = -1;
         s_point = null;  // The intersection
-        surfaceMergingObjs = []; // The objects whose surface is to be merged with s_obj
+        s_undefinedBehavior = false;
+        s_undefinedBehaviorObjs = [];
+        surfaceMergingObjs = []; // The glasses whose surface is to be merged with s_obj
         s_lensq = Infinity;
         observed = false; // Whether this.pendingRays[j] is observed by the observer
         for (var i = 0; i < opticalObjs.length; i++) {
@@ -584,35 +602,60 @@ class Simulator {
           if (s_point_temp) {
             // Here opticalObjs[i] intersects with the ray at s_point_temp
             s_lensq_temp = geometry.distanceSquared(this.pendingRays[j].p1, s_point_temp);
-            if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && (opticalObjs[i].constructor.supportsSurfaceMerging || s_obj.constructor.supportsSurfaceMerging)) {
-              // The ray is shot on two objects at the same time, and at least one of them supports surface merging
+            if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && (opticalObjs[i] instanceof BaseGlass || s_obj instanceof BaseGlass)) {
+              // The ray is incident on two objects at the same time, and at least one of them is a glass
 
-              if (s_obj.constructor.supportsSurfaceMerging) {
-                if (opticalObjs[i].constructor.supportsSurfaceMerging) {
-                  // Both of them supports surface merging (e.g. two glasses with one common edge
+              if (s_obj instanceof BaseGlass) {
+                if (opticalObjs[i] instanceof BaseGlass) {
+                  // Both of them are glasses (e.g. two glasses with one common edge)
                   surfaceMergingObjs[surfaceMergingObjs.length] = opticalObjs[i];
                 }
                 else {
-                  // Only the first shot object supports surface merging
-                  // Set the object to be shot to be the one not supporting surface merging (e.g. if one surface of a glass coincides with a blocker, then only block the ray)
+                  // Only the first object is a glass
+                  if (!opticalObjs[i].constructor.mergesWithGlass) {
+                    s_undefinedBehavior = true;
+                    s_undefinedBehaviorObjs = [s_obj, opticalObjs[i]];
+                  }
+
+                  // Put the glass to the surfaceMergingObjs
+                  surfaceMergingObjs[surfaceMergingObjs.length] = s_obj;
+
+                  // Let the one which is not a glass to handle the ray
                   s_obj = opticalObjs[i];
                   s_obj_index = i;
                   s_point = s_point_temp;
                   s_lensq = s_lensq_temp;
-
-                  surfaceMergingObjs = [];
                 }
+              } else {
+                // Only the second object is a glass
+                if (!s_obj.constructor.mergesWithGlass) {
+                  s_undefinedBehavior = true;
+                  s_undefinedBehaviorObjs = [s_obj, opticalObjs[i]];
+                }
+
+                // Put the glass to the surfaceMergingObjs
+                surfaceMergingObjs[surfaceMergingObjs.length] = opticalObjs[i];
+              }
+            } else {
+              if (s_point && geometry.distanceSquared(s_point_temp, s_point) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+                // the ray is incident on two objects at the same time, and none of them is a glass
+                s_undefinedBehavior = true;
+                s_undefinedBehaviorObjs = [s_obj, opticalObjs[i]];
+              } else if (s_lensq_temp < s_lensq && s_lensq_temp > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+                s_obj = opticalObjs[i]; // Update the object to be incident on
+                s_obj_index = i;
+                s_point = s_point_temp;
+                s_lensq = s_lensq_temp;
+                s_undefinedBehavior = false;
+                s_undefinedBehaviorObjs = [];
+                surfaceMergingObjs = [];
               }
             }
-            else if (s_lensq_temp < s_lensq && s_lensq_temp > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
-              s_obj = opticalObjs[i]; // Update the object to be shot
-              s_obj_index = i;
-              s_point = s_point_temp;
-              s_lensq = s_lensq_temp;
-
-              surfaceMergingObjs = [];
-            }
           }
+        }
+
+        if (s_undefinedBehavior) {
+          this.declareUndefinedBehavior(this.pendingRays[j], s_undefinedBehaviorObjs);
         }
         
         // Only calculate color and alpha if we have a canvas to draw on
@@ -811,6 +854,9 @@ class Simulator {
         if (s_obj) {
           const ret = s_obj.onRayIncident(this.pendingRays[j], j, s_point, surfaceMergingObjs);
           if (ret) {
+            if (ret.isUndefinedBehavior) {
+              this.declareUndefinedBehavior(this.pendingRays[j], [s_obj]);
+            }
             if (ret.isAbsorbed) {
               this.pendingRays[j] = null;
             }
@@ -882,10 +928,34 @@ class Simulator {
   }
 
   /**
+   * Declare that the ray encounters an undefined behavior due to the objects in `objs`.
+   * @param {Ray} ray - The ray.
+   * @param {BaseSceneObj[]} objs - The objects causing the undefined behavior.
+   * @returns {void}
+   */
+  declareUndefinedBehavior(ray, objs) {
+    this.totalUndefinedBehavior += ray.brightness_s + ray.brightness_p;
+    if (this.undefinedBehaviorObjs.length == 0) {
+      this.undefinedBehaviorObjs = objs;
+    }
+  }
+
+  /**
    * Check the simulation and display warnings or errors if necessary.
    * @returns {void}
    */
   validate() {
+
+    // Check if the total brightness of rays where an undefined behavior is encountered is above the threshold
+    if (this.totalUndefinedBehavior > Simulator.UNDEFINED_BEHAVIOR_THRESHOLD) {
+      const involvedObjTypes = this.undefinedBehaviorObjs.map(obj => obj.constructor.type);
+      if (involvedObjTypes.length == 1) {
+        this.warning = i18next.t('simulator:generalWarnings.undefinedBehaviorSingle', { involvedObj: involvedObjTypes[0] });
+      } else {
+        this.warning = i18next.t('simulator:generalWarnings.undefinedBehaviorOverlapping', { involvedObj1: involvedObjTypes[0], involvedObj2: involvedObjTypes[1] });
+      }
+      return;
+    }
 
     // Check if the theme color of light is drawn correctly (note that the float color renderer only supports additive color mixing)
     if (!this.scene.simulateColors && this.scene.colorMode !== 'default' && !(this.scene.theme.background.color.r <= 0.01 && this.scene.theme.background.color.g <= 0.01 && this.scene.theme.background.color.b <= 0.01)) {

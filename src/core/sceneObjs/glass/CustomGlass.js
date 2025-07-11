@@ -40,7 +40,7 @@ import { evaluateLatex } from '../../equation.js';
 class CustomGlass extends LineObjMixin(BaseGlass) {
   static type = 'CustomGlass';
   static isOptical = true;
-  static supportsSurfaceMerging = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
@@ -253,7 +253,8 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       // The situation that may cause bugs (e.g. incident on an edge point)
       // To prevent shooting the ray to a wrong direction, absorb the ray
       return {
-        isAbsorbed: true
+        isAbsorbed: true,
+        isUndefinedBehavior: true
       };
     }
 
@@ -323,6 +324,10 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     }
 
     return { s_point: s_point, normal: { x: normal_xFinal, y: normal_yFinal }, incidentType: incidentType };
+  }
+
+  getIncidentType(ray) {
+    return this.getIncidentData(ray).incidentType;
   }
   
   /* Utility methods */

@@ -29,6 +29,7 @@ import i18next from 'i18next';
  * @property {Array<Ray>} [newRays] - The new rays to be added.
  * @property {number} [truncation] - The brightness of truncated rays due to numerical cutoff (e.g. after a large number of partial internal reflections within a glass). This is used to estimate the error of the simulation.
  * @property {number} [brightnessScale] - The actual brightness of the ray divided by the brightness inferred from the properties of the object. This should be 1 when "ray density" is high enough. When "ray density" is low, the calculated brightness of the individual rays will be too high (alpha value for rendering will be larger than 1). In this case, the object should rescale all the brightness of the rays by a factor to keep the maximum alpha value to be 1. This factor should be returned here and is used to generate warnings.
+ * @property {boolean} [isUndefinedBehavior] - Whether the behavior of the ray is undefined. For example, when the ray is incident on a corner of a glass.
  */
 
 /**
@@ -131,9 +132,9 @@ class BaseSceneObj {
   static isOptical = false;
 
   /**
-   * Whether the object supports surface merging. (This is currently only for glasses, where the surfaces of two glasses are merged to form a single surface if the surfaces overlap.)
+   * Whether the object can merge its surface with the surfaces of glasses (here "glass" means a subclass of `BaseGlass`). For glasses this is always true. Suppose a ray is incident on the overlapping surfaces of N+1 objects. If all objects has this property set to true, and N of them are glasses, then `onRayIncident` will be called only on the other one (glass or not), with the N glasses being in `surfaceMergingObjs`. Otherwise, the behavior is undefined, and a warning will be shown.
    */
-  static supportsSurfaceMerging = false;
+  static mergesWithGlass = false;
 
   /**
    * Populate the object bar.
@@ -298,7 +299,7 @@ class BaseSceneObj {
    * @param {Ray} ray - The ray.
    * @param {number} rayIndex - The index of the ray in the array of all rays currently in the scene in the simulator. In particular, in a bunch of continuous rays, the rays are ordered by the time they are emitted, and the index is the order of emission. This can be used to downsample the rays and increase the individual brightness if it is too low.
    * @param {Point} incidentPoint - The point where the ray is incident on the object, which is the intersection point found by `checkRayIntersects`.
-   * @param {Array<BaseSceneObj>} surfaceMergingObjs - The objects that are merged with the current object. If two or more objects with `supportsSurfaceMerging === true` has overlapping surfaces (often acheived by using the grid), and if a ray is incident on those surfaces together, only one of the object will be have `onRayIncident` being called, and the other objects will be in `surfaceMergingObjs`. In this case, this function must also deal with the combination of the surface before doing the actual interaction. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
+   * @param {Array<BaseGlass>} surfaceMergingObjs - The glass objects that are merged with the current object. When a ray is incident on the overlapping surfaces of N+1 objects with `mergesWithGlass === true`, and N of them are glasses, then this function will be called only on the other one (glass or not), with the N glasses being in this array. The function will need to handle the combination of the surfaces. Note that treating them as two very close surfaces may not give the correct result due to an essential discontinuity of ray optics (which is smoothed out at the scale of the wavelength in reality).
    * @returns {SimulationReturn|null} The return value.
    */
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {

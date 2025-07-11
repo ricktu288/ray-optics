@@ -41,6 +41,7 @@ import { evaluateLatex } from '../../equation.js';
 class CustomMirror extends LineObjMixin(BaseFilter) {
   static type = 'CustomMirror';
   static isOptical = true;
+  static mergesWithGlass = true;
   static serializableDefaults = {
     p1: null,
     p2: null,
