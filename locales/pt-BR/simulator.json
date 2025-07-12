@@ -9,7 +9,9 @@
     "cancelButton": "Cancelar",
     "defaultOption": "Padrão",
     "closeButton": "Fechar",
-    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças."
+    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças.",
+    "customOption": "Personalizado",
+    "resetButton": "Reiniciar"
   },
   "file": {
     "title": "Arquivo",
@@ -103,7 +105,13 @@
       "title": "Exibir popups de ajuda",
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
-    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
+    "showAdvancedSettings": {
+      "title": "Mais configurações da cena…"
+    },
+    "theme": {
+      "title": "Tema"
+    }
   },
   "objBar": {
     "showAdvanced": {
@@ -299,7 +307,8 @@
       "width": "Largura",
       "rayCountLimit": "Limite de quantidade de raios",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
-      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
+      "transparent": "Fundo transparente"
     },
     "CustomGlass": {
       "curveGenerationError": "Erro de geração de curva: f(x) > g(x) em x={{x}}"
@@ -422,6 +431,134 @@
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
       }
+    }
+  },
+  "themeModal": {
+    "title": "Estilos de tema",
+    "background": {
+      "title": "Cor de fundo"
+    },
+    "ray": {
+      "title": "Raio padrão"
+    },
+    "colorRay": {
+      "title": "Raio colorido"
+    },
+    "extendedRay": {
+      "title": "Raio extendido para trás padrão"
+    },
+    "colorExtendedRay": {
+      "title": "Raio extendido para trás colorido"
+    },
+    "forwardExtendedRay": {
+      "title": "Raio extendido para frente padrão"
+    },
+    "colorForwardExtendedRay": {
+      "title": "Raio extendido para frente colorido"
+    },
+    "observedRay": {
+      "title": "Raio observado padrão"
+    },
+    "colorObservedRay": {
+      "title": "Raio observado colorido"
+    },
+    "realImage": {
+      "title": "Imagem real padrão"
+    },
+    "colorRealImage": {
+      "title": "Imagem real colorida"
+    },
+    "virtualImage": {
+      "title": "Imagem virtual padrão"
+    },
+    "colorVirtualImage": {
+      "title": "Imagem virtual colorida"
+    },
+    "virtualObject": {
+      "title": "Objeto virtual padrão"
+    },
+    "colorVirtualObject": {
+      "title": "Objeto virtual colorido"
+    },
+    "grid": {
+      "title": "Linhas de grade"
+    },
+    "sourcePoint": {
+      "title": "Ponto de controle de fonte"
+    },
+    "directionPoint": {
+      "title": "Ponto de controle de direção"
+    },
+    "centerPoint": {
+      "title": "Ponto de controle de centro"
+    },
+    "lightSource": {
+      "title": "Superfície padrão de fonte de luz"
+    },
+    "beamShield": {
+      "title": "Escudo da fonte feixe"
+    },
+    "colorSourceCenter": {
+      "title": "Centro da fonte de luz colorida"
+    },
+    "mirror": {
+      "title": "Superfície do espelho"
+    },
+    "beamSplitter": {
+      "title": "Superfície do divisor de feixe"
+    },
+    "idealCurveCenter": {
+      "title": "Centro dos curvos ideais"
+    },
+    "idealCurveArrow": {
+      "title": "Seta dos curvos ideais"
+    },
+    "glass": {
+      "title": "Preenchimento do vidro"
+    },
+    "grinGlass": {
+      "title": "Preenchimento do vidro de gradiente de índice"
+    },
+    "blocker": {
+      "title": "Superfície do bloqueador"
+    },
+    "diffractionGrating": {
+      "title": "Superfície da grade de difração"
+    },
+    "detector": {
+      "title": "Superfície do detector"
+    },
+    "detectorText": {
+      "title": "Texto do detector"
+    },
+    "irradMap": {
+      "title": "Preenchimento do mapa de irradiância"
+    },
+    "irradMapBorder": {
+      "title": "Borda do mapa de irradiância"
+    },
+    "ruler": {
+      "title": "Linhas da escala da régua"
+    },
+    "rulerText": {
+      "title": "Texto da régua"
+    },
+    "decoration": {
+      "title": "Estilo da decoração"
+    },
+    "handlePoint": {
+      "title": "Ponto de manuseio padrão"
+    },
+    "handleArrow": {
+      "title": "Seta do ponto de manuseio"
+    },
+    "import": {
+      "title": "Importar",
+      "description": "Importar tema de um arquivo JSON.",
+      "error": "O arquivo não contém um tema."
+    },
+    "observer": {
+      "title": "Preenchimento do observador"
     }
   }
 }
