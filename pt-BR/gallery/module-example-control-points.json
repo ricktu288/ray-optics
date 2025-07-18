@@ -1,0 +1,54 @@
+{
+  "name": "Exemplo de Módulo - Pontos de controle",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 2,
+      "params": [],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": "`x_1`",
+          "y": "`y_1`",
+          "text": "↙Aqui está o primeiro ponto de controle arrastável do módulo"
+        },
+        {
+          "type": "TextLabel",
+          "x": "`x_2`",
+          "y": "`y_2`",
+          "text": "↙Aqui está o segundo ponto de controle arrastável do módulo"
+        },
+        {
+          "type": "TextLabel",
+          "x": "`(x_1+x_2)/2`",
+          "y": "`(y_1+y_2)/2`",
+          "text": "↙Aqui está o ponto médio"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [
+        {
+          "x": 500,
+          "y": 300
+        },
+        {
+          "x": 600,
+          "y": 600
+        }
+      ],
+      "params": {}
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 140.37500000000014,
+    "y": -57.249999999999986
+  },
+  "scale": 0.6944444444444444
+}
