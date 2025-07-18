@@ -538,6 +538,8 @@ class ObjBar {
     if (icon) {
       button.innerHTML = icon;
       button.className = 'btn';
+      button.style.paddingLeft = '4px';
+      button.style.paddingRight = '4px';
       button.setAttribute('data-bs-toggle', 'tooltip');
       button.setAttribute('title', label);
       button.setAttribute('data-bs-placement', 'bottom');

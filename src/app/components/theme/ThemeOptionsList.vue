@@ -339,6 +339,14 @@
         @update="updateHandleArrow"
       />
     </div>
+
+    <div class="theme-option-row">
+      <StrokeControl
+        :label="$t('simulator:themeModal.customSurface.title')"
+        :strokeOptions="customSurfaceOptions"
+        @update="updateCustomSurface"
+      />
+    </div>
   </div>
 </template>
 
@@ -423,6 +431,7 @@ export default {
     const decorationOptions = computed(() => themeStore.getThemeObject('decoration'))
     const handlePointOptions = computed(() => themeStore.getThemeObject('handlePoint'))
     const handleArrowOptions = computed(() => themeStore.getThemeObject('handleArrow'))
+    const customSurfaceOptions = computed(() => themeStore.getThemeObject('customSurface'))
 
     // All theme options update functions
     const updateBackground = (newBackground) => themeStore.setThemeObject('background', newBackground)
@@ -465,6 +474,7 @@ export default {
     const updateDecoration = (newDecoration) => themeStore.setThemeObject('decoration', newDecoration)
     const updateHandlePoint = (newHandlePoint) => themeStore.setThemeObject('handlePoint', newHandlePoint)
     const updateHandleArrow = (newHandleArrow) => themeStore.setThemeObject('handleArrow', newHandleArrow)
+    const updateCustomSurface = (newCustomSurface) => themeStore.setThemeObject('customSurface', newCustomSurface)
 
     return {
       // Theme options
@@ -508,6 +518,7 @@ export default {
       decorationOptions,
       handlePointOptions,
       handleArrowOptions,
+      customSurfaceOptions,
       // Update functions
       updateBackground,
       updateRay,
@@ -548,7 +559,8 @@ export default {
       updateRulerText,
       updateDecoration,
       updateHandlePoint,
-      updateHandleArrow
+      updateHandleArrow,
+      updateCustomSurface
     }
   }
 }

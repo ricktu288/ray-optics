@@ -265,6 +265,23 @@
       :layout="layout"
     />
     <li><hr class="dropdown-divider"></li>
+    <MoreToolsCollapsible :layout="layout">
+      <ToolItem
+        id="CustomSurface"
+        :title="$t('main:tools.CustomSurface.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomSurface.description'), sub: $t('main:tools.common.lineInstruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <ToolItem
+        id="CustomArcSurface"
+        :title="$t('main:tools.CustomArcSurface.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomArcSurface.description'), sub: $t('main:tools.ArcMirror.instruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <li><hr class="dropdown-divider"></li>
+    </MoreToolsCollapsible>
     <ModuleTools :layout="layout" />
   </ToolsCategory>
 </template>
@@ -278,13 +295,15 @@
 import ToolsCategory from './ToolsCategory.vue'
 import ToolItem from './controls/ToolItem.vue'
 import ModuleTools from './ModuleTools.vue'
+import MoreToolsCollapsible from './controls/MoreToolsCollapsible.vue'
 
 export default {
   name: 'ToolsList',
   components: {
     ToolsCategory,
     ToolItem,
-    ModuleTools
+    ModuleTools,
+    MoreToolsCollapsible
   },
   props: {
     layout: {

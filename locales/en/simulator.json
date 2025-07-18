@@ -312,6 +312,30 @@
     },
     "CustomGlass": {
       "curveGenerationError": "Curve generation error: f(x) > g(x) at x = {{x}}"
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} and {{theta_j}} are the angles of the incident and jth outgoing rays, respectively, in radians and relative to the normal direction.",
+        "brightnesses": "{{P_0}} and {{P_j}} are the brightnesses of the incident and jth outgoing rays, respectively, in the same unit as the detector tool.",
+        "previousFormulas": "A formula can refer to the result of previous formulas. If a formula gives an invalid value, that outgoing ray is ignored and its brightness is treated as 0.",
+        "otherParams": "Other parameters of the incident rays that can be used are {{lambda}} (wavelength in nm) and {{p}} (0 for s-polarized, 1 for p-polarized). They remain the same for the outgoing rays.",
+        "coating": "This object can act as a coating of glass objects by overlapping with their surfaces. In this case, the refraction itself also needs to be handled by the formulas of this object. The refractive indices of the material attached to the same and opposite sides of the incident ray can be referred to as {{n_0}} and {{n_1}}, respectively. If this object is inside a glass object, the values are relative to it.",
+        "twoSides": "If you want the two sides of this surface to have different formulas, you can overlap two single-sided surfaces with opposite orientations.",
+        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules -> Make custom modules for more information."
+      },
+      "twoSided": "Two-sided",
+      "addOutgoingRay": "Add outgoing ray",
+      "removeOutgoingRay": "Remove outgoing ray"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point can be referred to as {{t}}, which interpolates linearly from -1 to 1 between the two endpoints of the line-segment."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point can be referred to as {{t}}, which interpolates uniformly (with respect to angle) from -1 to 1 between the two endpoints of the arc."
+      }
     }
   },
   "saveModal": {
@@ -468,6 +492,9 @@
     },
     "handleArrow": {
       "title": "Handle arrow"
+    },
+    "customSurface": {
+      "title": "Custom surface style"
     },
     "import": {
       "title": "Import",

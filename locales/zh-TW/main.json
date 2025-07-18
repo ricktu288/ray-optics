@@ -168,6 +168,14 @@
       "description": "手繪工具。",
       "instruction": "拖曳以繪圖。"
     },
+    "CustomSurface": {
+      "title": "自訂表面",
+      "description": "當光線入射時，出射光線的角度 (θ) 和亮度 (P) 由自訂方程式決定的線段形表面。"
+    },
+    "CustomArcSurface": {
+      "title": "自訂弧形表面",
+      "description": "形狀為圓弧的自訂表面。"
+    },
     "moveView": {
       "title": "移動畫面",
       "description": "拖曳以移動視窗。（滑鼠右鍵拖曳也有相同的功能。）"
@@ -175,6 +183,9 @@
     "modules": {
       "import": "匯入模組…",
       "remove": "移除模組"
+    },
+    "moreTools": {
+      "title": "更多工具…"
     }
   },
   "view": {

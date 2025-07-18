@@ -151,12 +151,23 @@ export default {
           } else if (input.name == 'toolsradio_mobile') {
             app.resetDropdownButtons();
 
-            // Get the associated mobile trigger button
-            let groupId = input.parentElement.parentElement.id.replace('mobile-dropdown-', '');
-            let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
-            if (toggle != null) {
-              // Style the button to indicate selection.
-              toggle.classList.add('selected');
+            // Get the associated mobile trigger button by searching up the DOM tree
+            let element = input;
+            let groupId = null;
+            while (element && element.parentElement) {
+              element = element.parentElement;
+              if (element.id && element.id.startsWith('mobile-dropdown-')) {
+                groupId = element.id.replace('mobile-dropdown-', '');
+                break;
+              }
+            }
+            
+            if (groupId) {
+              let toggle = document.getElementById(`mobile-dropdown-trigger-${groupId}`);
+              if (toggle != null) {
+                // Style the button to indicate selection.
+                toggle.classList.add('selected');
+              }
             }
           }
         }

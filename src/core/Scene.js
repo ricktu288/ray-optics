@@ -365,7 +365,12 @@ class Scene {
       handleArrow: {
         color: { r: 1, g: 1, b: 1, a: 1 },
         size: 24,
-      }
+      },
+      customSurface: {
+        color: { r: 0.73, g: 0.58, b: 1, a: 1 },
+        width: 2,
+        dash: [2,2],
+      },
     }
   };
 

@@ -82,10 +82,17 @@ export default {
 .popover {
   padding-bottom:10px;
 }
+
 .popover-body {
   padding-bottom:0px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
+.popover-body ul {
+  padding-left: 10px;
+}
 
 #main-flex-wrapper {
   position: fixed;
@@ -116,12 +123,20 @@ export default {
   border-radius: 0;
 }
 
+.dropdown-menu>li>div>ul>li>.btn {
+  border-radius: 0;
+}
+
 .mobile-dropdown>ul {
   list-style-type: none;
   padding-left: 0;
 }
 
 .mobile-dropdown>ul>li>.btn {
+  border-radius: 0;
+}
+
+.mobile-dropdown>ul>li>div>ul>li>.btn {
   border-radius: 0;
 }
 

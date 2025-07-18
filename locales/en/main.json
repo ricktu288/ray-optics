@@ -168,6 +168,14 @@
       "description": "A freehand drawing tool.",
       "instruction": "Drag to draw."
     },
+    "CustomSurface": {
+      "title": "Custom Surface",
+      "description": "A custom line-segment surface where the angles (θ) and brightnesses (P) of the outgoing rays (when a ray is incident on it) are defined by custom equations."
+    },
+    "CustomArcSurface": {
+      "title": "Custom Arc Surface",
+      "description": "A custom surface with shape of a circular arc."
+    },
     "moveView": {
       "title": "Move view",
       "description": "Drag to move the view. (Mouse right button drag has the same function.)"
@@ -175,6 +183,9 @@
     "modules": {
       "import": "Import Modules…",
       "remove": "Remove module"
+    },
+    "moreTools": {
+      "title": "More Tools…"
     }
   },
   "view": {
