@@ -412,6 +412,7 @@ function initAppService() {
       if (editor.selectedObjIndex != -1) {
         scene.objs[editor.selectedObjIndex].rotate(-0.5 * Math.PI / 180);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.selectObj(editor.selectedObjIndex); // Some objects have angles in the object bar, so we need to update the object bar
         editor.onActionComplete();
       }
     }
@@ -419,6 +420,7 @@ function initAppService() {
       if (editor.selectedObjIndex != -1) {
         scene.objs[editor.selectedObjIndex].rotate(0.5 * Math.PI / 180);
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.selectObj(editor.selectedObjIndex); // Some objects have angles in the object bar, so we need to update the object bar
         editor.onActionComplete();
       }
     }
@@ -440,6 +442,7 @@ function initAppService() {
           scene.objs[editor.selectedObjIndex].move(0, step);
         }
         simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        editor.selectObj(editor.selectedObjIndex); // Some objects have coordinates in the object bar, so we need to update the object bar
         editor.onActionComplete();
       }
       else if (scene.mode == 'observer') {

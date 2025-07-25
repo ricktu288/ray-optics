@@ -78,13 +78,7 @@
       popoverImage="ParabolicMirror.svg"
       :layout="layout"
     />
-    <ToolItem
-      id="CustomMirror"
-      :title="$t('main:tools.CustomMirror.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomMirror.description'), sub: $t('main:tools.common.lineInstruction')})"
-      popoverImage="CustomMirror.svg"
-      :layout="layout"
-    />
+
     <li><hr class="dropdown-divider"></li>
     <ToolItem
       id="IdealMirror"
@@ -100,13 +94,30 @@
       popoverImage="BeamSplitter.svg"
       :layout="layout"
     />
-    <ToolItem
-      id="ConcaveDiffractionGrating"
-      :title="$t('main:tools.ConcaveDiffractionGrating.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ConcaveDiffractionGrating.description'), sub: $t('main:tools.ArcMirror.instruction')})"
-      popoverImage="ConcaveDiffractionGrating.svg"
-      :layout="layout"
-    />
+    <li><hr class="dropdown-divider"></li>
+    <MoreToolsCollapsible :layout="layout">
+      <ToolItem
+        id="CustomMirror"
+        :title="$t('main:tools.CustomMirror.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomMirror.description'), sub: $t('main:tools.common.lineInstruction')})"
+        popoverImage="CustomMirror.svg"
+        :layout="layout"
+      />
+      <ToolItem
+        id="ParamMirror"
+        :title="$t('main:tools.ParamMirror.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamMirror.description'), sub: $t('main:tools.common.clickInstruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <ToolItem
+        id="ConcaveDiffractionGrating"
+        :title="$t('main:tools.ConcaveDiffractionGrating.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ConcaveDiffractionGrating.description'), sub: $t('main:tools.ArcMirror.instruction')})"
+        popoverImage="ConcaveDiffractionGrating.svg"
+        :layout="layout"
+      />
+    </MoreToolsCollapsible>
   </ToolsCategory>
 
   <!-- Glass Tools -->
@@ -136,13 +147,6 @@
       popoverImage="Glass.svg"
       :layout="layout"
     />
-    <ToolItem
-      id="CustomGlass"
-      :title="$t('main:tools.CustomGlass.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomGlass.description'), sub: $t('main:tools.common.lineInstruction')})"
-      popoverImage="CustomGlass.svg"
-      :layout="layout"
-    />
     <li><hr class="dropdown-divider"></li>
     <ToolItem
       id="IdealLens"
@@ -159,20 +163,43 @@
       :layout="layout"
     />
     <li><hr class="dropdown-divider"></li>
-    <ToolItem
-      id="CircleGrinGlass"
-      :title="$t('main:tools.CircleGrinGlass.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CircleGrinGlass.description'), sub: $t('main:tools.common.circleInstruction')})"
-      popoverImage="CircleGrinGlass.svg"
-      :layout="layout"
-    />
-    <ToolItem
-      id="GrinGlass"
-      :title="$t('main:tools.GrinGlass.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.GrinGlass.description'), sub: $t('main:tools.GrinGlass.instruction')}) + '<br>' + $t('main:tools.GrinGlass.warning')"
-      popoverImage="GrinGlass.svg"
-      :layout="layout"
-    />
+    <MoreToolsCollapsible :layout="layout">
+      <ToolItem
+        id="CustomGlass"
+        :title="$t('main:tools.CustomGlass.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomGlass.description'), sub: $t('main:tools.common.lineInstruction')})"
+        popoverImage="CustomGlass.svg"
+        :layout="layout"
+      />
+      <ToolItem
+        id="ParamGlass"
+        :title="$t('main:tools.ParamGlass.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamGlass.description'), sub: $t('main:tools.common.clickInstruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <ToolItem
+        id="CircleGrinGlass"
+        :title="$t('main:tools.CircleGrinGlass.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CircleGrinGlass.description'), sub: $t('main:tools.common.circleInstruction')})"
+        popoverImage="CircleGrinGlass.svg"
+        :layout="layout"
+      />
+      <ToolItem
+        id="GrinGlass"
+        :title="$t('main:tools.GrinGlass.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.GrinGlass.description'), sub: $t('main:tools.GrinGlass.instruction')}) + '<br>' + $t('main:tools.GrinGlass.warning')"
+        popoverImage="GrinGlass.svg"
+        :layout="layout"
+      />
+      <ToolItem
+        id="ParamGrinGlass"
+        :title="$t('main:tools.ParamGrinGlass.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamGrinGlass.description'), sub: $t('main:tools.common.clickInstruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+    </MoreToolsCollapsible>
   </ToolsCategory>
 
   <!-- Blocker Tools -->
@@ -277,6 +304,13 @@
         id="CustomArcSurface"
         :title="$t('main:tools.CustomArcSurface.title') + '<sup>Beta</sup>'"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomArcSurface.description'), sub: $t('main:tools.ArcMirror.instruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <ToolItem
+        id="CustomParamSurface"
+        :title="$t('main:tools.CustomParamSurface.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomParamSurface.description'), sub: $t('main:tools.common.clickInstruction')})"
         :verticalOffset="0"
         :layout="layout"
       />

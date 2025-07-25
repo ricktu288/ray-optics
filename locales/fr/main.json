@@ -64,15 +64,15 @@
       "title": "Parabolique",
       "description": "Un miroir dont la forme est une parabole, qui est définie par trois points."
     },
-    "CustomMirror": {
-      "title": "Equation personnalisée"
-    },
     "IdealMirror": {
       "title": "Courbure idéale",
       "description": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement."
     },
     "BeamSplitter": {
       "description": "Un miroir qui transmet un pourcentage de la lumière entrant."
+    },
+    "CustomMirror": {
+      "title": "Equation personnalisée"
     },
     "ConcaveDiffractionGrating": {
       "title": "Réseau de diffraction concave"
@@ -95,9 +95,6 @@
       "description": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires.",
       "instruction": "Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner."
     },
-    "CustomGlass": {
-      "title": "Equation personnalisée"
-    },
     "IdealLens": {
       "title": "Lentille idéale",
       "description": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale peut être défini directement."
@@ -105,6 +102,9 @@
     "SphericalLens": {
       "title": "Lentille Sphérique",
       "description": "Une lentille sphérique, dont la forme peut être définie en utilisant plusieurs paramètres."
+    },
+    "CustomGlass": {
+      "title": "Equation personnalisée"
     },
     "GrinGlass": {
       "instruction": "Cliquez pour créer un segment, cliquez sur le point de départ quand vous avez fini de dessiner.",
@@ -147,13 +147,13 @@
       "title": "Dessin",
       "instruction": "Glissez pour dessiner."
     },
-    "moveView": {
-      "title": "Bouger la vue",
-      "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
-    },
     "modules": {
       "import": "Import de modules…",
       "remove": "Retirer le module"
+    },
+    "moveView": {
+      "title": "Bouger la vue",
+      "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
     }
   },
   "view": {

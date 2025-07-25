@@ -9,8 +9,8 @@
     "imported": "Importiert",
     "specification": {
       "title": "Spezifikation",
-      "parameters": "Parameter",
-      "controlPointSequence": "Reihenfolge der Kontrollpunkte"
+      "controlPointSequence": "Reihenfolge der Kontrollpunkte",
+      "parameters": "Parameter"
     },
     "contribution": {
       "title": "Beitrag",

@@ -65,10 +65,6 @@
       "description": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem paraboli, określonej za pomocą trzech punktów.",
       "instruction": "Przeciągnij lub kliknij, aby utworzyć."
     },
-    "CustomMirror": {
-      "title": "Równanie niestandardowe",
-      "description": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
-    },
     "IdealMirror": {
       "title": "Idealnie zakrzywione",
       "description": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio."
@@ -76,6 +72,10 @@
     "BeamSplitter": {
       "title": "Rozdzielacz wiązki",
       "description": "Zwierciadło odbijające pewien procent padającego światła."
+    },
+    "CustomMirror": {
+      "title": "Równanie niestandardowe",
+      "description": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
     },
     "ConcaveDiffractionGrating": {
       "title": "Wklęsła siatka dyfrakcyjna odbiciowa",
@@ -99,10 +99,6 @@
       "description": "Szkło o dowolnych kształtach, mających przekroje ograniczone odcinkami i fragmentami okręgów.",
       "instruction": "Kliknij, aby utworzyć odcinek; przeciągnij, aby utworzyć łuk; kliknij punkt początkowy, żeby zakończyć rysowanie."
     },
-    "CustomGlass": {
-      "title": "Równanie niestandardowe",
-      "description": "Szkło o kształcie zdefiniowanym przez niestandardową nierówność f(x) < y < g(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
-    },
     "IdealLens": {
       "title": "Soczewka idealna",
       "description": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio."
@@ -110,6 +106,10 @@
     "SphericalLens": {
       "title": "Soczewka sferyczna",
       "description": "Soczewka sferyczna."
+    },
+    "CustomGlass": {
+      "title": "Równanie niestandardowe",
+      "description": "Szkło o kształcie zdefiniowanym przez niestandardową nierówność f(x) < y < g(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
     },
     "CircleGrinGlass": {
       "title": "Koło gradientowe",
@@ -168,13 +168,13 @@
       "description": "Narzędzie do rysowania odręcznego.",
       "instruction": "Przeciągnij, aby narysować."
     },
-    "moveView": {
-      "title": "Przesuń widok",
-      "description": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję.)"
-    },
     "modules": {
       "import": "Importuj moduły…",
       "remove": "Usuń moduł"
+    },
+    "moveView": {
+      "title": "Przesuń widok",
+      "description": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję.)"
     }
   },
   "view": {

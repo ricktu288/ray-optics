@@ -144,15 +144,27 @@
       "emisAngle": "發射角",
       "random": "隨機",
       "lambert": "朗伯",
+      "coordOrigin": "原點",
       "focalLength": "焦距",
       "eqnInfo": {
         "constants": "支援的常數",
         "operators": "支援的運算子",
         "functions": "支援的函數",
-        "useModuleWithArrays": "如需用參數式準確控制取樣點，請改用自訂模組並建立陣列（見工具->其他->匯入模組->建立自訂模組）。"
+        "module": "如需自訂參數或使用複雜的方程式，請建立自訂模組。詳見工具->其他->匯入模組->建立自訂模組。"
       },
       "imageDetectionWarning": "本工具不支援像的偵測。",
       "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。"
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "新增片段",
+      "removePiece": "移除片段",
+      "step": "步長",
+      "error": {
+        "invalidStepSize": "步長無效：{{step}}",
+        "invalidRange": "參數範圍無效：tMin ({{tMin}}) >= tMax ({{tMax}})",
+        "nonFiniteCoords": "座標非有限值：({{x}}, {{y}})",
+        "pieceError": "片段 {{pieceIndex}} 在 t={{t}} 時出錯：{{error}}"
+      }
     },
     "Beam": {
       "imageDetectionWarning": "使用發散或隨機光束時，像的偵測可能無法正常運作。"
@@ -186,6 +198,18 @@
       },
       "invalidParameters": "透鏡參數無效"
     },
+    "CustomGlass": {
+      "curveGenerationError": "曲線生成錯誤：x = {{x}} 時 f(x) > g(x)"
+    },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "曲線必須封閉且正向（以電腦圖形的慣例，y 軸向下，故順時針方向為正）。"
+      },
+      "warning": {
+        "notClosed": "曲線未封閉。",
+        "notPositivelyOriented": "曲線方向不正確。"
+      }
+    },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
         "constants": "支援的常數",
@@ -217,6 +241,12 @@
       "epsInfo": {
         "units": "單位 - [長度].",
         "functions": "本數值容忍度被用於 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函數。"
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "單位 - [長度].",
+        "functions": "本數值容忍度被用於 'ParamCurveObjMixin.js' 中的 'isOnBoundary' 函數。"
       }
     },
     "Aperture": {
@@ -277,6 +307,35 @@
     "Drawing": {
       "finishDrawing": "停止繪圖"
     },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} 和 {{theta_j}} 分別是入射光線和第 j 條出射光線的角度，以弳度為單位，相對於法線方向。",
+        "brightnesses": "{{P_0}} 和 {{P_j}} 分別是入射光線和第 j 條出射光線的亮度，單位與探測器工具相同。",
+        "previousFormulas": "公式可以引用先前公式的結果。如果公式給出無效值，該出射光線將被忽略，且亮度視為 0。",
+        "otherParams": "其他可用的入射光參數為 {{lambda}}（波長，單位為 nm）及 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光線將保持相同的參數。",
+        "coating": "此物件可與透光物表面重疊來作為塗層。在這種情況下，折射本身也須包含於此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 來分別代表與入射光的同側和對側相接的材料折射率。如果此物件位於一透光物內部，則這些值相對於該透光物。",
+        "twoSides": "如需讓表面的兩側以不同公式定義，可重疊兩個方向相反的單面表面。",
+        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用自訂模組。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
+      },
+      "twoSided": "雙面",
+      "addOutgoingRay": "新增出射光線",
+      "removeOutgoingRay": "移除出射光線"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射點的位置，在線段兩端點之間從 -1 到 1 線性插值。"
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射點的位置，在圓弧兩端點之間從 -1 到 1 均勻插值（相對於角度）。"
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射點在曲線參數空間中的位置。"
+      }
+    },
     "ModuleObj": {
       "module": "模組",
       "demodulize": "取消模組化",
@@ -309,33 +368,6 @@
       "transparent": "透明背景",
       "svgWarning": "匯出為 SVG：不支援混色、修正亮度與相對折射率低於1的情形。",
       "rayCountWarning": "目前場景中的光線數量大於光線數量上限。您可能需要將剪取框選項中的光線數量上限調高。"
-    },
-    "CustomGlass": {
-      "curveGenerationError": "曲線生成錯誤：x = {{x}} 時 f(x) > g(x)"
-    },
-    "BaseCustomSurface": {
-      "info": {
-        "angles": "{{theta_0}} 和 {{theta_j}} 分別是入射光線和第 j 條出射光線的角度，以弳度為單位，相對於法線方向。",
-        "brightnesses": "{{P_0}} 和 {{P_j}} 分別是入射光線和第 j 條出射光線的亮度，單位與探測器工具相同。",
-        "previousFormulas": "公式可以引用先前公式的結果。如果公式給出無效值，該出射光線將被忽略，且亮度視為 0。",
-        "otherParams": "其他可用的入射光參數為 {{lambda}}（波長，單位為 nm）及 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光線將保持相同的參數。",
-        "coating": "此物件可與透光物表面重疊來作為塗層。在這種情況下，折射本身也須包含於此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 來分別代表與入射光的同側和對側相接的材料折射率。如果此物件位於一透光物內部，則這些值相對於該透光物。",
-        "twoSides": "如需讓表面的兩側以不同公式定義，可重疊兩個方向相反的單面表面。",
-        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用自訂模組。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
-      },
-      "twoSided": "雙面",
-      "addOutgoingRay": "新增出射光線",
-      "removeOutgoingRay": "移除出射光線"
-    },
-    "CustomSurface": {
-      "info": {
-        "incidentPos": "公式中可用 {{t}} 代表入射點的位置，在線段兩端點之間從 -1 到 1 線性插值。"
-      }
-    },
-    "CustomArcSurface": {
-      "info": {
-        "incidentPos": "公式中可用 {{t}} 代表入射點的位置，在圓弧兩端點之間從 -1 到 1 均勻插值（相對於角度）。"
-      }
     }
   },
   "saveModal": {

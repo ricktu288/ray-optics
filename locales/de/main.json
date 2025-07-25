@@ -8,9 +8,9 @@
     "simulator": "Simulator",
     "home": "Home",
     "gallery": "Galerie",
+    "modules": "Module",
     "about": "Über",
-    "github": "GitHub",
-    "modules": "Module"
+    "github": "GitHub"
   },
   "homePage": {
     "description": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.\nVöllig kostenlos und webbasiert. Der Quellcode ist [auf GitHub verfügbar](/github).",
@@ -64,10 +64,6 @@
       "description": "Ein parabolischer Spiegel, definiert durch drei Punkte.",
       "instruction": "Ziehen oder Klicken zum Erzeugen."
     },
-    "CustomMirror": {
-      "title": "Benutzerdefinierte Gleichung",
-      "description": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
-    },
     "IdealMirror": {
       "title": "Ideal gebogen",
       "description": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
@@ -75,6 +71,10 @@
     "BeamSplitter": {
       "title": "Strahlteiler",
       "description": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt."
+    },
+    "CustomMirror": {
+      "title": "Benutzerdefinierte Gleichung",
+      "description": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
     },
     "ConcaveDiffractionGrating": {
       "title": "Konkaves Reflexionsgitter"
@@ -96,10 +96,6 @@
       "description": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert.",
       "instruction": "Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen."
     },
-    "CustomGlass": {
-      "title": "Benutzerdefinierte Gleichung",
-      "description": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) < y < g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
-    },
     "IdealLens": {
       "title": "Ideale Linse",
       "description": "Eine ideale Linse, die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
@@ -107,6 +103,10 @@
     "SphericalLens": {
       "title": "Sphärische Linse",
       "description": "Eine sphärische Linse."
+    },
+    "CustomGlass": {
+      "title": "Benutzerdefinierte Gleichung",
+      "description": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) < y < g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
     },
     "Blocker": {
       "title": "Linienförmiger Absorber",

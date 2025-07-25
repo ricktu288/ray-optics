@@ -65,10 +65,6 @@
       "description": "拋物線形的鏡子，由三點決定。",
       "instruction": "拖曳或點擊兩個端點以創建，然後點擊頂點。"
     },
-    "CustomMirror": {
-      "title": "自訂函數",
-      "description": "形狀為自訂等式 y = f(x) 的鏡子，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。"
-    },
     "IdealMirror": {
       "title": "理想曲面鏡",
       "description": "完全符合面鏡公式(1/p + 1/q = 1/f)的理想化「曲面」鏡，可直接設定其焦距。"
@@ -76,6 +72,14 @@
     "BeamSplitter": {
       "title": "分光鏡",
       "description": "能穿透一個比例的光的鏡子。"
+    },
+    "CustomMirror": {
+      "title": "自訂函數",
+      "description": "形狀為自訂等式 y = f(x) 的鏡子，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。"
+    },
+    "ParamMirror": {
+      "title": "參數曲線",
+      "description": "形狀由自訂參數式定義的鏡子。"
     },
     "ConcaveDiffractionGrating": {
       "title": "凹面光柵",
@@ -99,10 +103,6 @@
       "description": "任何由線段與圓弧組成的透光物。",
       "instruction": "點擊以建立線段，拖曳以建立弧形，點擊一開始的點以結束繪製。"
     },
-    "CustomGlass": {
-      "title": "自訂函數",
-      "description": "形狀為自訂不等式 f(x) < y < g(x) 的透光物，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。"
-    },
     "IdealLens": {
       "title": "理想透鏡",
       "description": "完全符合薄透鏡公式(1/p + 1/q = 1/f)的理想化透鏡，可直接設定其焦距。"
@@ -110,6 +110,14 @@
     "SphericalLens": {
       "title": "球面透鏡",
       "description": "球面透鏡，其形狀可用多種方式定義。"
+    },
+    "CustomGlass": {
+      "title": "自訂函數",
+      "description": "形狀為自訂不等式 f(x) < y < g(x) 的透光物，其中 (x,y) 為變換過的座標，使得兩控制點為 (-1,0) 及 (1,0)。"
+    },
+    "ParamGlass": {
+      "title": "參數曲線",
+      "description": "形狀由自訂參數式定義的透光物。"
     },
     "CircleGrinGlass": {
       "title": "漸變折射率圓形",
@@ -120,6 +128,10 @@
       "description": "折射率為自訂函數 n(x,y)，邊界為多邊形的透光物。",
       "instruction": "點擊以建立線段，點擊一開始的點以結束繪製。",
       "warning": "警告：僅支援簡單多邊形，否則行為無法預測。"
+    },
+    "ParamGrinGlass": {
+      "title": "漸變折射率參數曲線",
+      "description": "邊界由自訂參數式定義的漸變折射率透光物。"
     },
     "otherGrinGlass": {
       "title": "漸變折射率透光物",
@@ -176,13 +188,17 @@
       "title": "自訂弧形表面",
       "description": "形狀為圓弧的自訂表面。"
     },
-    "moveView": {
-      "title": "移動畫面",
-      "description": "拖曳以移動視窗。（滑鼠右鍵拖曳也有相同的功能。）"
+    "CustomParamSurface": {
+      "title": "自訂參數曲線表面",
+      "description": "形狀由參數式定義的自訂表面。"
     },
     "modules": {
       "import": "匯入模組…",
       "remove": "移除模組"
+    },
+    "moveView": {
+      "title": "移動畫面",
+      "description": "拖曳以移動視窗。（滑鼠右鍵拖曳也有相同的功能。）"
     },
     "moreTools": {
       "title": "更多工具…"

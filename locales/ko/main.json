@@ -65,10 +65,6 @@
       "description": "포물면 거울 (세 개의 점으로 정의된 포물선).",
       "instruction": "드래그 또는 클릭하여 생성."
     },
-    "CustomMirror": {
-      "title": "사용자 정의 수식",
-      "description": "사용자 정의 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다."
-    },
     "IdealMirror": {
       "title": "이상 곡면 거울 (Ideal Curved)",
       "description": "거울 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 곡면 거울. 초점 거리를 설정할 수 있습니다."
@@ -76,6 +72,10 @@
     "BeamSplitter": {
       "title": "빔 스플리터",
       "description": "입사광의 일부를 투과시키는 거울."
+    },
+    "CustomMirror": {
+      "title": "사용자 정의 수식",
+      "description": "사용자 정의 수식 y=f(x) 에 의해 정의된 거울. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다."
     },
     "ConcaveDiffractionGrating": {
       "title": "오목 그레이팅",
@@ -99,10 +99,6 @@
       "description": "선분과 원호로 구성된 다양한 형태의 유리.",
       "instruction": "선분을 생성하려면 클릭, 호를 만들려면 드래그, 그리기가 끝나면 시작점을 클릭."
     },
-    "CustomGlass": {
-      "title": "사용자 정의 수식",
-      "description": "사용자 정의 수식 f(x) < y < g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다."
-    },
     "IdealLens": {
       "title": "이상 렌즈 (Ideal lens)",
       "description": "얇은 렌즈 방정식 (1/p + 1/q = 1/f) 를 따르는 이상적인 렌즈. 초점 거리를 설정할 수 있습니다."
@@ -110,6 +106,10 @@
     "SphericalLens": {
       "title": "구면 렌즈",
       "description": "구면 렌즈."
+    },
+    "CustomGlass": {
+      "title": "사용자 정의 수식",
+      "description": "사용자 정의 수식 f(x) < y < g(x) 에 의해 정의된 유리. (x, y)는 두 제어점이 각각 (-1, 0)과 (1, 0)이 되도록 변환된 좌표입니다."
     },
     "CircleGrinGlass": {
       "title": "Gradient-index 원형",
@@ -167,13 +167,13 @@
       "description": "자유롭게 그릴 수 있는 도구.",
       "instruction": "드래그하여 그리세요."
     },
-    "moveView": {
-      "title": "화면 이동",
-      "description": "화면을 이동하려면 드래그하십시오. (이 버튼을 누르지 않고, 마우스 우클릭 드래그를 사용해도 됩니다.)"
-    },
     "modules": {
       "import": "모듈 불러오기…",
       "remove": "모듈 제거"
+    },
+    "moveView": {
+      "title": "화면 이동",
+      "description": "화면을 이동하려면 드래그하십시오. (이 버튼을 누르지 않고, 마우스 우클릭 드래그를 사용해도 됩니다.)"
     }
   },
   "view": {

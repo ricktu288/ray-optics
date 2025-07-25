@@ -61,17 +61,19 @@ class BaseGrinGlass extends BaseGlass {
     objBar.createEquation('n(x,y) = ', this.refIndexFn, function (obj, value) {
       obj.refIndexFn = value;
       obj.initFns();
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + (this.constructor.type === 'ParamGrinGlass' ? '' : i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>') + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li></ul>');
 
-    objBar.createTuple(i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
-      const commaPosition = value.indexOf(',');
-      if (commaPosition != -1) {
-        const n_origin_x = parseFloat(value.slice(1, commaPosition));
-        const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
-        obj.origin = geometry.point(n_origin_x, n_origin_y);
-        obj.initFns();
-      }
-    });
+    if (this.constructor.type !== 'ParamGrinGlass') {
+      objBar.createTuple(i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
+        const commaPosition = value.indexOf(',');
+        if (commaPosition != -1) {
+          const n_origin_x = parseFloat(value.slice(1, commaPosition));
+          const n_origin_y = parseFloat(value.slice(commaPosition + 1, -1));
+          obj.origin = geometry.point(n_origin_x, n_origin_y);
+          obj.initFns();
+        }
+      });
+    }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {

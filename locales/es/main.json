@@ -64,10 +64,6 @@
       "description": "Un espejo cuya forma es una parábola, la cual está definida pr tres puntos.",
       "instruction": "Arrastre o clique para crear."
     },
-    "CustomMirror": {
-      "title": "Ecuación personalizada",
-      "description": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
-    },
     "IdealMirror": {
       "title": "Curvo ideal",
       "description": "Un espejo 'curvo' ideal que obedece exactamente la ecuación del espejo (1/p + 1/q = 1/f). La longitud focal puede establecerse directamente."
@@ -75,6 +71,10 @@
     "BeamSplitter": {
       "title": "Separador de haz",
       "description": "Un espejo que transmite un porcentaje de la luz incidente."
+    },
+    "CustomMirror": {
+      "title": "Ecuación personalizada",
+      "description": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
     "PlaneGlass": {
       "title": "Semi-plano",
@@ -94,10 +94,6 @@
       "description": "Vidrio con cualquier forma construida mediante segmentos de línea o arco.",
       "instruction": "Clique para crear un segmento, arrastre para crear un arco, clique en el punto de inicio cuando haya finalizado el dibujo."
     },
-    "CustomGlass": {
-      "title": "Ecuación personalizada",
-      "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
-    },
     "IdealLens": {
       "title": "Lente ideal",
       "description": "Una lente ideal que obedece exactamente la ecuación de las lentes delgadas (1/p + 1/q = 1/f). La longitud focal se puede establecer directamente."
@@ -105,6 +101,10 @@
     "SphericalLens": {
       "title": "Lente esférica",
       "description": "Una lente esférica."
+    },
+    "CustomGlass": {
+      "title": "Ecuación personalizada",
+      "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
     "CircleGrinGlass": {
       "title": "Círculo (Gradient-index)",

@@ -65,10 +65,6 @@
       "description": "A mirror whose shape is a parabola, which is defined by three points.",
       "instruction": "Drag or click the two endpoints to create, then click the vertex."
     },
-    "CustomMirror": {
-      "title": "Custom Equation",
-      "description": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
-    },
     "IdealMirror": {
       "title": "Ideal curved mirror",
       "description": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length can be set directly."
@@ -76,6 +72,14 @@
     "BeamSplitter": {
       "title": "Beam Splitter",
       "description": "A mirror that transmits a percentage of incoming light."
+    },
+    "CustomMirror": {
+      "title": "Custom Equation",
+      "description": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
+    },
+    "ParamMirror": {
+      "title": "Parametric Curve",
+      "description": "A mirror whose shape is defined by custom parametric equations."
     },
     "ConcaveDiffractionGrating": {
       "title": "Concave Grating",
@@ -99,10 +103,6 @@
       "description": "Glass with any shapes constructed from line segments and circular arcs.",
       "instruction": "Click to create a segment, drag to create an arc, click on the starting point when finish drawing."
     },
-    "CustomGlass": {
-      "title": "Custom Equation",
-      "description": "Glass with the shape defined by a custom inequality f(x) < y < g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
-    },
     "IdealLens": {
       "title": "Ideal Lens",
       "description": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length can be set directly."
@@ -111,15 +111,27 @@
       "title": "Spherical Lens",
       "description": "A spherical lens, whose shape can be defined using various parameters."
     },
+    "CustomGlass": {
+      "title": "Custom Equation",
+      "description": "Glass with the shape defined by a custom inequality f(x) < y < g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
+    },
+    "ParamGlass": {
+      "title": "Parametric Curve",
+      "description": "Glass with the shape defined by custom parametric equations."
+    },
     "CircleGrinGlass": {
-      "title": "Gradient-index circle",
+      "title": "GRIN Circle",
       "description": "Glass with a custom refractive index function n(x,y) and a circular boundary."
     },
     "GrinGlass": {
-      "title": "Gradient-index polygon",
+      "title": "GRIN Polygon",
       "description": "Glass with a custom refractive index function n(x,y) and a polygonal boundary.",
       "instruction": "Click to create a segment, click on the starting point when finish drawing.",
       "warning": "WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable."
+    },
+    "ParamGrinGlass": {
+      "title": "GRIN Parametric Curve",
+      "description": "Gradient-index glass with boundary defined by custom parametric equations."
     },
     "otherGrinGlass": {
       "title": "Gradient-index glass",
@@ -169,20 +181,24 @@
       "instruction": "Drag to draw."
     },
     "CustomSurface": {
-      "title": "Custom Surface",
+      "title": "Custom Line Surface",
       "description": "A custom line-segment surface where the angles (θ) and brightnesses (P) of the outgoing rays (when a ray is incident on it) are defined by custom equations."
     },
     "CustomArcSurface": {
       "title": "Custom Arc Surface",
       "description": "A custom surface with shape of a circular arc."
     },
-    "moveView": {
-      "title": "Move view",
-      "description": "Drag to move the view. (Mouse right button drag has the same function.)"
+    "CustomParamSurface": {
+      "title": "Custom Parametric Curve",
+      "description": "A custom surface with shape defined by parametric equations."
     },
     "modules": {
       "import": "Import Modules…",
       "remove": "Remove module"
+    },
+    "moveView": {
+      "title": "Move view",
+      "description": "Drag to move the view. (Mouse right button drag has the same function.)"
     },
     "moreTools": {
       "title": "More Tools…"
