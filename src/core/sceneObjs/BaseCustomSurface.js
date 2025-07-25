@@ -44,9 +44,20 @@ import Simulator from '../Simulator.js';
  */
 class BaseCustomSurface extends BaseSceneObj {
 
-  populateObjBar(objBar) {
-    const self = this;
+  constructor(scene, jsonObj) {
+    super(scene, jsonObj);
+    // Check for unknown keys in outRays
+    const knownKeys = ['eqnTheta', 'eqnP'];
+    for (let i = 0; i < this.outRays.length; i++) {
+      for (const key in this.outRays[i]) {
+        if (!knownKeys.includes(key)) {
+          this.scene.error = i18next.t('simulator:generalErrors.unknownObjectKey', { key: `outRays[${i}].${key}`, type: this.constructor.type }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the object from replacing it, and also because this error likely indicates an incompatible scene version.
+        }
+      }
+    }
+  }
 
+  populateObjBar(objBar) {
     objBar.createInfoBox('<ul><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.angles', {theta_0: 'θ<sub>0</sub> (<code>theta_0</code>)', theta_j: 'θ<sub>j</sub>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.brightnesses', {P_0: 'P<sub>0</sub> (<code>P_0</code>)', P_j: 'P<sub>j</sub>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.previousFormulas') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.otherParams', {lambda: '<code>lambda</code>', p: '<code>p</code>'}) + '</li><li>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.info.incidentPos`, {t: '<code>t</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.coating', {n_0: '<code>n_0</code>', n_1: '<code>n_1</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.twoSides') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.module') + '</li></ul>' );
     
     // Create individual equations for each ray
@@ -57,37 +68,39 @@ class BaseCustomSurface extends BaseSceneObj {
       // Create angle equation
       objBar.createEquation(`θ<sub>${rayIndex}</sub> =`, this.outRays[i].eqnTheta, function (obj, value) {
         obj.outRays[currentIndex].eqnTheta = value;
-        self.initOutRayFns();
+        obj.initOutRayFns();
       });
       
       // Create brightness equation
       objBar.createEquation(`P<sub>${rayIndex}</sub> =`, this.outRays[i].eqnP, function (obj, value) {
         obj.outRays[currentIndex].eqnP = value;
-        self.initOutRayFns();
+        obj.initOutRayFns();
       });
     }
     
     // Add "+" button to add new ray
     objBar.createButton(i18next.t('simulator:sceneObjs.BaseCustomSurface.addOutgoingRay'), function (obj) {
       obj.outRays.push({ eqnTheta: '\\theta_0', eqnP: 'P_0' });
-      self.initOutRayFns();
+      obj.initOutRayFns();
     }, true, `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
       <path d="M2 7.5h5.5V2h1v5.5H14v1H8.5V14h-1V8.5H2v-1z"/>
     </svg>
     `);
     
-    // Add "-" button to remove last ray
-    objBar.createButton(i18next.t('simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay'), function (obj) {
-      if (obj.outRays.length > 0) {
-        obj.outRays.pop();
-        self.initOutRayFns();
-      }
-    }, true, `
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-      <path d="M2 7.5h12v1H2z"/>
-    </svg>
-    `);
+    if (this.outRays.length > 0) {
+      // Add "-" button to remove last ray
+      objBar.createButton(i18next.t('simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay'), function (obj) {
+        if (obj.outRays.length > 0) {
+          obj.outRays.pop();
+          obj.initOutRayFns();
+        }
+      }, true, `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M2 7.5h12v1H2z"/>
+      </svg>
+      `);
+    }
 
     objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseCustomSurface.twoSided'), this.twoSided, function (obj, value) {
       obj.twoSided = value;
@@ -276,10 +289,16 @@ class BaseCustomSurface extends BaseSceneObj {
       }
     }
 
+    this.warning = null;
+
     if (newRays.length > 1) {
       // When there are two or more outgoing rays, image detection will not work, so just disable it.
       for (let i = 0; i < newRays.length; i++) {
         newRays[i].gap = true;
+      }
+
+      if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
+        this.warning = i18next.t('simulator:sceneObjs.common.imageDetectionWarning');
       }
     }
 

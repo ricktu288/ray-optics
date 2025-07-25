@@ -421,52 +421,24 @@ class CustomArcSurface extends BaseCustomSurface {
 
   checkRayIntersects(ray) {
     if (!this.p3) { return null; }
-    if (!this.twoSided && this.getIncidentType(ray) == -1) {
+    var incidentData = this.getIncidentData(ray);
+    if (!this.twoSided && incidentData.incidentType == -1) {
       return null;
     }
-    return this.checkRayIntersectsShape(ray);
-  }
-
-  checkRayIntersectsShape(ray) {
-    var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
-    if (isFinite(center.x) && isFinite(center.y)) {
-      var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
-      var rp_exist = [];
-      var rp_lensq = [];
-      for (var i = 1; i <= 2; i++) {
-        rp_exist[i] = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && geometry.intersectionIsOnRay(rp_temp[i], ray) && geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
-        rp_lensq[i] = geometry.distanceSquared(ray.p1, rp_temp[i]);
-      }
-      if (rp_exist[1] && ((!rp_exist[2]) || rp_lensq[1] < rp_lensq[2])) { return rp_temp[1]; }
-      if (rp_exist[2] && ((!rp_exist[1]) || rp_lensq[2] < rp_lensq[1])) { return rp_temp[2]; }
-    } else {
-      // The three points on the arc is colinear. Treat as a line segment.
-      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
-
-      if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
-        return rp_temp;
-      } else {
-        return null;
-      }
-    }
+    return incidentData.s_point;
   }
 
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    var incidentData = this.getIncidentData(ray);
     var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
     
     var incidentPos;
-    var normal;
     
     if (isFinite(center.x) && isFinite(center.y)) {
       // Arc case: calculate incidentPos using angle relative to center
-      var r = geometry.distance(center, this.p3);
       var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
       var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
       var a_incident = Math.atan2(incidentPoint.y - center.y, incidentPoint.x - center.x);
-      
-      console.log("p1 angle:", a1);
-      console.log("p2 angle:", a2);
-      console.log("incident angle:", a_incident);
       
       // Shift angles so p1 is 0
       var a1_shifted = 0;
@@ -477,91 +449,140 @@ class CustomArcSurface extends BaseCustomSurface {
       if (a2_shifted < 0) a2_shifted += 2 * Math.PI;
       if (a_incident_shifted < 0) a_incident_shifted += 2 * Math.PI;
       
-      console.log("p1 shifted:", a1_shifted);
-      console.log("p2 shifted:", a2_shifted);
-      console.log("incident shifted:", a_incident_shifted);
-      
       // Calculate incidentPos: simple proportion along the arc
       if (Math.abs(a2_shifted) > 1e-10) {
         incidentPos = -1 + 2 * a_incident_shifted / a2_shifted;
       } else {
         incidentPos = 0; // Degenerate case
       }
-
-
-      console.log("incidentPos", incidentPos);
-      
-      // Calculate normal vector (radial direction from center)
-      normal = { 
-        x: center.x - incidentPoint.x, 
-        y: center.y - incidentPoint.y 
-      };
     } else {
       // Colinear case: fall back to line segment behavior (same as CustomSurface)
       const dist1 = geometry.distance(incidentPoint, this.p1);
       const dist2 = geometry.distance(incidentPoint, this.p2);
       incidentPos = -1 + 2 * dist1 / (dist1 + dist2);
-      
-      // Calculate normal vector for line segment
-      const rdots = (ray.p2.x - ray.p1.x) * (this.p2.x - this.p1.x) + (ray.p2.y - ray.p1.y) * (this.p2.y - this.p1.y);
-      const ssq = (this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y);
-      normal = { 
-        x: rdots * (this.p2.x - this.p1.x) - ssq * (ray.p2.x - ray.p1.x), 
-        y: rdots * (this.p2.y - this.p1.y) - ssq * (ray.p2.y - ray.p1.y) 
-      };
     }
     
-    return this.handleOutRays(ray, rayIndex, incidentPoint, normal, incidentPos, surfaceMergingObjs, ray.bodyMergingObj);
+    return this.handleOutRays(ray, rayIndex, incidentPoint, incidentData.normal, incidentPos, surfaceMergingObjs, ray.bodyMergingObj);
   }
 
-  getIncidentType(ray) {
+  getIncidentData(ray) {
     var center = geometry.linesIntersection(geometry.perpendicularBisector(geometry.line(this.p1, this.p3)), geometry.perpendicularBisector(geometry.line(this.p2, this.p3)));
     
     if (isFinite(center.x) && isFinite(center.y)) {
-      // Arc case: use local tangent direction at incident point
-      var incidentPoint = this.checkRayIntersectsShape(ray);
-      if (!incidentPoint) return NaN;
+      // Arc case: check all valid intersections and their incident types
+      var rp_temp = geometry.lineCircleIntersections(geometry.line(ray.p1, ray.p2), geometry.circle(center, this.p2));
+      var validIntersections = [];
       
-      // Calculate local tangent direction at incident point (perpendicular to radius)
-      var radialX = incidentPoint.x - center.x;
-      var radialY = incidentPoint.y - center.y;
-      var tangentX = -radialY;  // 90° rotation of radial vector
-      var tangentY = radialX;
-      
-      // Determine arc direction using the same logic as drawing (considering p3 position)
-      var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
-      var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
-      var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
-      var anticlockwise = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2);
-      
-      // If arc goes anticlockwise, flip tangent to match p1->p2 direction
-      if (anticlockwise) {
-        tangentX = -tangentX;
-        tangentY = -tangentY;
+      for (var i = 1; i <= 2; i++) {
+        var isValid = !geometry.intersectionIsOnSegment(geometry.linesIntersection(geometry.line(this.p1, this.p2), geometry.line(this.p3, rp_temp[i])), geometry.line(this.p3, rp_temp[i])) && 
+                      geometry.intersectionIsOnRay(rp_temp[i], ray) && 
+                      geometry.distanceSquared(rp_temp[i], ray.p1) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
+        
+        if (isValid) {
+          // Calculate local tangent direction at this intersection point (perpendicular to radius)
+          var radialX = rp_temp[i].x - center.x;
+          var radialY = rp_temp[i].y - center.y;
+          var tangentX = -radialY;  // 90° rotation of radial vector
+          var tangentY = radialX;
+          
+          // Determine arc direction using the same logic as drawing (considering p3 position)
+          var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
+          var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
+          var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
+          var anticlockwise = (a2 < a3 && a3 < a1) || (a1 < a2 && a2 < a3) || (a3 < a1 && a1 < a2);
+          
+          // If arc goes anticlockwise, flip tangent to match p1->p2 direction
+          if (anticlockwise) {
+            tangentX = -tangentX;
+            tangentY = -tangentY;
+          }
+          
+          // Cross product of ray direction with local tangent
+          var rcrosst = (ray.p2.x - ray.p1.x) * tangentY - (ray.p2.y - ray.p1.y) * tangentX;
+          
+          var incidentType = NaN;
+          if (rcrosst > 0) {
+            incidentType = 1; // From inside to outside
+          } else if (rcrosst < 0) {
+            incidentType = -1; // From outside to inside
+          }
+          
+          // Calculate normal vector (radial direction from center)
+          var normal = { 
+            x: center.x - rp_temp[i].x, 
+            y: center.y - rp_temp[i].y 
+          };
+          
+          validIntersections.push({
+            point: rp_temp[i],
+            distance: geometry.distanceSquared(ray.p1, rp_temp[i]),
+            incidentType: incidentType,
+            normal: normal
+          });
+        }
       }
       
-      // Cross product of ray direction with local tangent
-      var rcrosst = (ray.p2.x - ray.p1.x) * tangentY - (ray.p2.y - ray.p1.y) * tangentX;
+      if (validIntersections.length === 0) {
+        return { s_point: null, normal: null, incidentType: NaN };
+      }
       
-      if (rcrosst > 0) {
-        return 1; // From inside to outside
+      var selectedIntersection;
+      
+      // For two-sided surfaces, use the nearest intersection
+      if (this.twoSided) {
+        validIntersections.sort((a, b) => a.distance - b.distance);
+        selectedIntersection = validIntersections[0];
+      } else {
+        // For one-sided surfaces, prefer forward-facing intersections (incidentType = 1)
+        var forwardIntersections = validIntersections.filter(intersection => intersection.incidentType === 1);
+        if (forwardIntersections.length > 0) {
+          // Use the nearest forward-facing intersection
+          forwardIntersections.sort((a, b) => a.distance - b.distance);
+          selectedIntersection = forwardIntersections[0];
+        } else {
+          // If no forward-facing intersections, use the nearest intersection
+          validIntersections.sort((a, b) => a.distance - b.distance);
+          selectedIntersection = validIntersections[0];
+        }
       }
-      if (rcrosst < 0) {
-        return -1; // From outside to inside
-      }
-      return NaN;
+      
+      return { 
+        s_point: selectedIntersection.point, 
+        normal: selectedIntersection.normal, 
+        incidentType: selectedIntersection.incidentType 
+      };
     } else {
-      // Colinear case: use chord direction (same as CustomSurface)
-      var rcrosss = (ray.p2.x - ray.p1.x) * (this.p2.y - this.p1.y) - (ray.p2.y - ray.p1.y) * (this.p2.x - this.p1.x);
-      if (rcrosss > 0) {
-        return 1; // From inside to outside
+      // Colinear case: treat as a line segment
+      var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.p1, this.p2));
+
+      if (geometry.intersectionIsOnSegment(rp_temp, this) && geometry.intersectionIsOnRay(rp_temp, ray)) {
+        // Calculate incident type using chord direction (same as CustomSurface)
+        var rcrosss = (ray.p2.x - ray.p1.x) * (this.p2.y - this.p1.y) - (ray.p2.y - ray.p1.y) * (this.p2.x - this.p1.x);
+        var incidentType;
+        if (rcrosss > 0) {
+          incidentType = 1; // From inside to outside
+        } else if (rcrosss < 0) {
+          incidentType = -1; // From outside to inside
+        } else {
+          incidentType = NaN;
+        }
+        
+        // Calculate normal vector for line segment
+        const rdots = (ray.p2.x - ray.p1.x) * (this.p2.x - this.p1.x) + (ray.p2.y - ray.p1.y) * (this.p2.y - this.p1.y);
+        const ssq = (this.p2.x - this.p1.x) * (this.p2.x - this.p1.x) + (this.p2.y - this.p1.y) * (this.p2.y - this.p1.y);
+        const normal = { 
+          x: rdots * (this.p2.x - this.p1.x) - ssq * (ray.p2.x - ray.p1.x), 
+          y: rdots * (this.p2.y - this.p1.y) - ssq * (ray.p2.y - ray.p1.y) 
+        };
+
+        return { s_point: rp_temp, normal: normal, incidentType: incidentType };
+      } else {
+        return { s_point: null, normal: null, incidentType: NaN };
       }
-      if (rcrosss < 0) {
-        return -1; // From outside to inside
-      }
-      return NaN;
     }
   }
+
+
 };
 
 export default CustomArcSurface;
