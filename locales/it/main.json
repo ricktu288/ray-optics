@@ -22,7 +22,8 @@
       "lightSource": "Sorgente Luminosa",
       "mirror": "Specchio",
       "glass": "Vetro",
-      "other": "Altro"
+      "other": "Altro",
+      "blocker": "Schermo"
     },
     "common": {
       "clickInstruction": "Clicca per creare.",
@@ -55,7 +56,30 @@
       "description": "Uno specchio la cui forma è curvata. Può essere circolare, parabolico, o definito da un'equazione personalizzata y = f(x)."
     },
     "ArcMirror": {
-      "title": "Arco Circolare"
+      "title": "Arco Circolare",
+      "description": "Uno specchio la cui forma è parte di un cerchio, che è definito da tre punti.",
+      "instruction": "Trascina o clicca i due estremi per creare, poi clicca un terzo punto sull'arco per definire la curvatura."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolico",
+      "description": "Uno specchio la cui forma è una parabola, che è definita da tre punti.",
+      "instruction": "Trascina o clicca i due estremi per creare, poi clicca il vertice."
+    },
+    "IdealMirror": {
+      "title": "Specchio curvo ideale",
+      "description": "Lo specchio \"curvato\" idealizzato che obbedisce esattamente all'equazione dello specchio (1/p + 1/q = 1/f). La lunghezza focale può essere impostata direttamente."
+    },
+    "BeamSplitter": {
+      "title": "Separatore di raggi",
+      "description": "Uno specchio che trasmette una percentuale della luce in arrivo."
+    },
+    "CustomMirror": {
+      "title": "Equazione personalizzata",
+      "description": "Uno specchio la cui forma è definita da un'equazione personalizzata y = f(x), dove (x,y) è nelle coordinate trasformate in cui i due punti di controllo sono (-1,0) e (1,0)."
+    },
+    "ParamMirror": {
+      "title": "Curva Parametrica",
+      "description": "Uno specchio la cui forma è definita da equazioni parametriche personalizzate."
     }
   },
   "meta": {
