@@ -1,1 +1,9 @@
-{}
+{
+  "common": {
+    "saveButton": "Salva",
+    "cancelButton": "Annulla"
+  },
+  "welcome": {
+    "title": "Benvenuti a Simulazione di Ottica a Raggi"
+  }
+}
