@@ -316,7 +316,13 @@
     },
     "ParamCurveObjMixin": {
       "addPiece": "Добавить деталь",
-      "removePiece": "Удалить часть"
+      "removePiece": "Удалить часть",
+      "step": "Шаг"
+    },
+    "ParamGlass": {
+      "warning": {
+        "notClosed": "Кривая не замкнутая"
+      }
     }
   },
   "saveModal": {
