@@ -321,7 +321,8 @@
     },
     "ParamGlass": {
       "warning": {
-        "notClosed": "Кривая не замкнутая"
+        "notClosed": "Кривая не замкнутая",
+        "notPositivelyOriented": "Кривая не \"положительно\" ориентированная"
       }
     }
   },
