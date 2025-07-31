@@ -189,7 +189,19 @@
       "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
     },
     "CustomSurface": {
-      "title": "Superfíce Personalizada de Linha"
+      "title": "Superfíce Personalizada de Linha",
+      "description": "Uma superfície personalizada de segmento de linha onde o ângulo (θ) e brilho(P) dos raios que saem (quando um raio incide na superfície) são definidos por equações personalizadas."
+    },
+    "CustomArcSurface": {
+      "title": "Superfície Personalizada em Arco",
+      "description": "Uma superfície personalizada em formato de arco circular."
+    },
+    "CustomParamSurface": {
+      "title": "Curva Paramétrica Personalizada",
+      "description": "Uma superfície personalizada com forma definida por equações paramétricas."
+    },
+    "moreTools": {
+      "title": "Mais Ferramentas…"
     }
   },
   "view": {
