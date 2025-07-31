@@ -148,10 +148,12 @@
       "eqnInfo": {
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
-        "functions": "Funções suportadas"
+        "functions": "Funções suportadas",
+        "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
+      "coordOrigin": "Origem"
     },
     "Beam": {
       "imageDetectionWarning": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
@@ -311,6 +313,40 @@
       "transparent": "Fundo transparente",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
       "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "Adicionar segmento",
+      "removePiece": "Remover segmento",
+      "step": "Passo",
+      "error": {
+        "invalidStepSize": "Tamanho de passo inválido: {{step}}",
+        "invalidRange": "Alcance de parâmetros inválido: tMin({{tMin}}) >- tMax ({{tMax}})",
+        "nonFiniteCoords": "Coordenadas não-finitas: ({{x}}, {{y}})",
+        "pieceError": "Erro em segmento {{pieceIndex}}, t={{t}}: {{error}}"
+      }
+    },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "A curva deve ser fechada e orientada positivamente (sentido horário na convenção de gráficos de computador onde o eixo y aponta para baixo)."
+      },
+      "warning": {
+        "notClosed": "A curva não está fechada.",
+        "notPositivelyOriented": "A curva não é positivamente orientada."
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [comprimento].",
+        "functions": "Essa tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'ParamCurveObjMixin.js'."
+      }
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} e {{theta_j}} são os ângulos dos raios que incidem e dos j-ésimos raios que saem, respectivamente, em radianos e relativo a direção normal.",
+        "brightnesses": "{{P_0}} e {{P_j}} são os brilhos dos raios incidentes e j-ésimos raios que saem, respectivamente, na mesma unidade que a ferramenta detector usa.",
+        "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
+        "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem."
+      }
     }
   },
   "saveModal": {
