@@ -61,10 +61,15 @@ class BaseGrinGlass extends BaseGlass {
     objBar.createEquation('n(x,y) = ', this.refIndexFn, function (obj, value) {
       obj.refIndexFn = value;
       obj.initFns();
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + (this.constructor.type === 'ParamGrinGlass' ? '' : i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>') + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + (this.constructor.type === 'ParamGrinGlass' ? '' : i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>') + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
+
+    objBar.createEquation('α(x,y) = ', this.absorptionFn, function (obj, value) {
+      obj.absorptionFn = value;
+      obj.initFns();
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '<sup>Beta</sup></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
 
     if (this.constructor.type !== 'ParamGrinGlass') {
-      objBar.createTuple(i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
+      objBar.createTuple(i18next.t('simulator:sceneObjs.common.coordOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
         const commaPosition = value.indexOf(',');
         if (commaPosition != -1) {
           const n_origin_x = parseFloat(value.slice(1, commaPosition));
@@ -78,20 +83,20 @@ class BaseGrinGlass extends BaseGlass {
     if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {
         obj.stepSize = parseFloat(value);
-      }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>');
+      }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>', true);
     }
     if (objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
         obj.intersectTol = parseFloat(value);
-      }, '<p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.functions`) + '</p>');
+      }, '<p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.functions`) + '</p>', true);
     }
 
-    const scene = this.scene;
     if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
       objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMerging'), this.scene.symbolicBodyMerging, function (obj, value) {
         obj.scene.symbolicBodyMerging = value;
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.all') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.impl') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.implNote') + '</p>');
     }
+
   }
 
   getZIndex() {
@@ -149,10 +154,13 @@ class BaseGrinGlass extends BaseGlass {
       this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn.replaceAll("\\lambda", "z")));
       this.fn_p_der_x = evaluateLatex(this.shiftOrigin(this.p_der_x_tex));
       this.fn_p_der_y = evaluateLatex(this.shiftOrigin(this.p_der_y_tex));
+
+      this.fn_alpha = evaluateLatex(this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")));
     } catch (e) {
       delete this.fn_p;
       delete this.fn_p_der_x;
       delete this.fn_p_der_y;
+      delete this.fn_alpha;
       this.error = e.toString();
     }
   }
@@ -181,7 +189,11 @@ class BaseGrinGlass extends BaseGlass {
 
       let mul_fn_p_der_y = evaluateLatex(math.derivative(mul_p, 'y').toTex());
 
-      return { p: mul_p, fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y };
+      let sum_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) + \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")) + '\\right)';
+
+      let sum_fn_alpha = evaluateLatex(sum_alpha);
+
+      return { p: mul_p, fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y, alpha: sum_alpha, fn_alpha: sum_fn_alpha };
     } else {
       let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [this.fn_p, this.fn_p_der_x, this.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
@@ -203,7 +215,13 @@ class BaseGrinGlass extends BaseGlass {
         };
       })(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
 
-      return { fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y };
+      let sum_fn_alpha = (function (fn_alpha, new_fn_alpha) {
+        return function (param) {
+          return fn_alpha(param) + new_fn_alpha(param);
+        };
+      })(this.fn_alpha, bodyMergingObj.fn_alpha);
+
+      return { fn_p: mul_fn_p, fn_p_der_x: mul_fn_p_der_x, fn_p_der_y: mul_fn_p_der_y, fn_alpha: sum_fn_alpha };
     }
   }
 
@@ -222,7 +240,11 @@ class BaseGrinGlass extends BaseGlass {
 
       let dev_fn_p_der_y = evaluateLatex(math.derivative(dev_p, 'y').toTex());
 
-      return { p: dev_p, fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
+      let diff_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) - \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")) + '\\right)';
+
+      let diff_fn_alpha = evaluateLatex(diff_alpha);
+
+      return { p: dev_p, fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y, alpha: diff_alpha, fn_alpha: diff_fn_alpha };
     } else {
       let [fn_p, fn_p_der_x, fn_p_der_y, new_fn_p, new_fn_p_der_x, new_fn_p_der_y] = [this.fn_p, this.fn_p_der_x, this.fn_p_der_y, bodyMergingObj.fn_p, bodyMergingObj.fn_p_der_x, bodyMergingObj.fn_p_der_y];
 
@@ -244,7 +266,13 @@ class BaseGrinGlass extends BaseGlass {
         };
       })(fn_p, fn_p_der_y, new_fn_p, new_fn_p_der_y);
 
-      return { fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y };
+      let diff_fn_alpha = (function (fn_alpha, new_fn_alpha) {
+        return function (param) {
+          return new_fn_alpha(param) - fn_alpha(param);
+        };
+      })(this.fn_alpha, bodyMergingObj.fn_alpha);
+
+      return { fn_p: dev_fn_p, fn_p_der_x: dev_fn_p_der_x, fn_p_der_y: dev_fn_p_der_y, fn_alpha: diff_fn_alpha };
     }
   }
 
@@ -263,13 +291,15 @@ class BaseGrinGlass extends BaseGlass {
           obj_tmp.fn_p = obj.fn_p;
           obj_tmp.fn_p_der_x = obj.fn_p_der_x;
           obj_tmp.fn_p_der_y = obj.fn_p_der_y;
+          obj_tmp.alpha = obj.shiftOrigin(obj.absorptionFn.replaceAll("\\lambda", "z"));
+          obj_tmp.fn_alpha = obj.fn_alpha;
         } else {
           obj_tmp = obj.multRefIndex(obj_tmp);
         }
       }
     }
     if (!obj_tmp) {
-      obj_tmp = { p: 1, fn_p: function () { return 1; }, fn_p_der_x: function () { return 0; }, fn_p_der_y: function () { return 0; } };
+      obj_tmp = { p: 1, fn_p: function () { return 1; }, fn_p_der_x: function () { return 0; }, fn_p_der_y: function () { return 0; }, alpha: '0', fn_alpha: function () { return 0; } };
     }
     return obj_tmp;
   }
@@ -294,6 +324,13 @@ class BaseGrinGlass extends BaseGlass {
 
     const x_new = x + this.stepSize * x_der_s;
     const y_new = y + this.stepSize * y_der_s;
+
+    // Absorption
+    const alpha = ray.bodyMergingObj.fn_alpha({ x: x, y: y, z: ray.wavelength || Simulator.GREEN_WAVELENGTH });
+    const absorption = Math.exp(-alpha * this.stepSize);
+
+    ray.brightness_s *= absorption;
+    ray.brightness_p *= absorption;
 
     return geometry.point(x_new, y_new);
   }

@@ -41,6 +41,7 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     p1: null,
     p2: null,
     refIndexFn: '1+e^{-\\frac{x^2+y^2}{50^2}}',
+    absorptionFn: '0',
     origin: { x: 0, y: 0 },
     stepSize: 1,
     intersectTol: 1e-3

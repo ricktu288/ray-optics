@@ -41,6 +41,7 @@ class GrinGlass extends BaseGrinGlass {
     path: [],
     notDone: false,
     refIndexFn: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
+    absorptionFn: '0',
     origin: { x: 0, y: 0 },
     stepSize: 1,
     intersectTol: 1e-3

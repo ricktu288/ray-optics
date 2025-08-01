@@ -212,15 +212,14 @@
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
-        "constants": "支持的常数",
-        "operators": "支持的运算符",
-        "functions": "支持的函数",
         "lambda": "如需模拟色散，请用参数 {{lambda}} 代表真空中波长，单位为纳米。",
         "diff": "仅支持可微函数。",
         "origin": "n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。",
         "accuracy": "如需较精确的模拟，请见「更多选项…」"
       },
-      "refIndexFnOrigin": "n(x,y)的原点",
+      "absorptionFnInfo": {
+        "absorption": "透光物的吸收率，单位为 1/[长度]。"
+      },
       "stepSize": "数值求解器步长",
       "stepSizeInfo": "用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'BaseGrinGlass.js' 中的 'step' 函数与原始码文件。",
       "intersectTol": "相交容忍度",

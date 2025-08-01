@@ -212,15 +212,14 @@
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
-        "constants": "Supported constants",
-        "operators": "Supported operators",
-        "functions": "Supported functions",
         "lambda": "To simulate chromatic dispersion, use parameter {{lambda}} for the vacuum wavelength in nanometers.",
         "diff": "Only supports differentiable functions.",
         "origin": "The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.",
         "accuracy": "For a more accurate simulation, see \"More options…\""
       },
-      "refIndexFnOrigin": "Origin of n(x,y)",
+      "absorptionFnInfo": {
+        "absorption": "The absorption rate of the glass, in units of 1/[length]."
+      },
       "stepSize": "Numerical solver step size",
       "stepSizeInfo": "Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'BaseGrinGlass.js' file, for more information.",
       "intersectTol": "Intersection tolerance",
