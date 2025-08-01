@@ -190,15 +190,11 @@
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
-        "constants": "Constantes suportadas",
-        "operators": "Operadores suportados",
-        "functions": "Funções suportadas",
         "lambda": "Para simular dispersão cromática, use o parâmetro {{lambda}} para o comprimento de onda no vácuo em nanômetros.",
         "diff": "Somente suporta funções diferenciáveis.",
         "origin": "A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas.",
         "accuracy": "Para simulação mais precisa, veja \"Mais opções…\""
       },
-      "refIndexFnOrigin": "Origem de n(x,y)",
       "stepSize": "Tamanho de passo da solução numérica",
       "stepSizeInfo": "Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'BaseGrinGlass.js', para mais informações.",
       "intersectTol": "Tolerância de Interseção",

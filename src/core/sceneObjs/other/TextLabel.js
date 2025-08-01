@@ -140,7 +140,7 @@ class TextLabel extends BaseSceneObj {
     this.right = 0;
     this.up = 0;
     this.down = 0;
-    this.text.split('\n').forEach(line => {
+    this.text.toString().split('\n').forEach(line => {
       ctx.fillText(line, 0, y_offset);
       let lineDimensions = ctx.measureText(line);
       this.left = Math.max(this.left, lineDimensions.actualBoundingBoxLeft);

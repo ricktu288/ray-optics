@@ -150,7 +150,7 @@
         "constants": "支持的常数",
         "operators": "支持的运算符",
         "functions": "支持的函数",
-        "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块->创建自定义模块。"
+        "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块。"
       },
       "imageDetectionWarning": "本工具不支持像的侦测。",
       "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"
@@ -314,7 +314,7 @@
         "otherParams": "其他可用的入射光线参数为 {{lambda}}（波长，单位为 nm）和 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光线将保持相同的参数。",
         "coating": "此物件可与透光物表面重叠来作为涂层。在这种情况下，折射本身也需要包含在此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 来分别代表与入射光线同侧和对侧相接的材料折射率。如果此物件位于一个透光物内部，则这些值相对于该透光物。",
         "twoSides": "如需让表面的两侧以不同公式定义，可重叠两个方向相反的单面表面。",
-        "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用自定义模块。更多信息请参见工具->其他->导入模块->创建自定义模块。"
+        "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用自定义模块。更多信息请参见工具->其他->导入模块。"
       },
       "twoSided": "双面",
       "addOutgoingRay": "添加出射光线",
@@ -343,7 +343,8 @@
       "variableRangeError": "解析变量范围“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
       "stringExpansionError": "展开字符串“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
       "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}",
-      "variableDefinitionError": "计算变量定义时发生错误，参数为 {{params}}：{{error}}"
+      "variableDefinitionError": "计算变量定义时发生错误，参数为 {{params}}：{{error}}",
+      "unclosedMathBlock": "数学式块没有结尾：{{str}}"
     },
     "Handle": {
       "handle": "控制杆",

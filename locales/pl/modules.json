@@ -139,9 +139,7 @@
       "preventInfiniteLoop": "Aby zapobiec przypadkowemu utworzeniu nieskończonej pętli, całkowita liczba iteracji każdej pętli `\"for\"` jest ograniczona przez właściwość `maxLoopLength` definicji modułu, której wartość domyślna wynosi 1000. W razie potrzeby można ustawić tę właściwość na większą wartość."
     },
     "objsWithEqn": {
-      "title": "Obiekty z wbudowanymi niestandardowymi równaniami",
-      "description": "W przypadku obiektów, które mają już wprowadzone niestandardowe równanie (takich jak Zwierciadła -> Równanie niestandardowe), właściwość równania w JSON jest ciągiem reprezentującym równanie LaTeX, a nie wyrażenie math.js. Aby uwzględnić parametry niestandardowe w równaniu, należy użyć tej samej składni szablonu, jak gdyby równanie LaTeX było zwykłym tekstem. Tak więc część zamknięta w nawiasach klamrowych jest w wyrażeniu math.js, podczas gdy część na zewnątrz jest w LaTeX. Dostęp do parametrów modułu można uzyskać tylko w części math.js, a dostęp do zmiennych niezależnych równania niestandardowego (np. \\(x\\)) można uzyskać tylko w części LaTeX. Oto przykład generowania zwierciadła z równaniem \\(y=\\cos(2\\pi x+\\phi)\\), gdzie \\(\\phi\\) jest parametrem modułu",
-      "future": "W przyszłości może pojawić się możliwość ujednolicenia wprowadzania równań."
+      "title": "Obiekty z wbudowanymi niestandardowymi równaniami"
     },
     "objsWithShapeParam": {
       "title": "Obiekty z wbudowaną parametryzacją kształtu",

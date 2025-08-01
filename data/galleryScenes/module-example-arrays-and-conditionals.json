@@ -43,8 +43,7 @@
       "module": "ExampleModule",
       "points": [],
       "params": {
-        "n": 10,
-        "theta": 1.23
+        "n": 10
       }
     }
   ],

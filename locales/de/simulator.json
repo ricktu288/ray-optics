@@ -130,11 +130,7 @@
       "invalidParameters": "Ungültige Linsenparameter"
     },
     "BaseGrinGlass": {
-      "refIndexFnInfo": {
-        "constants": "Unterstützte Konstanten",
-        "functions": "Unterstützte Funktionen"
-      },
-      "refIndexFnOrigin": "Ursprung von n(x,y)"
+      "refIndexFnInfo": {}
     },
     "CircleGrinGlass": {
       "epsInfo": {

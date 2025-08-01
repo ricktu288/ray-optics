@@ -134,7 +134,6 @@
       }
     },
     "BaseGrinGlass": {
-      "refIndexFnOrigin": "Origen de n(x,y)",
       "stepSize": "Tamaño de paso de la solución numérica",
       "stepSizeInfo": "Tamaño de paso para el método de Euler para resolver la ecuación de la eikonal de rayos - ver la función 'step' y la documentación dentro del archivo 'BaseGrinGlass.js' para más información.",
       "intersectTol": "Tolerancia de la intersección",

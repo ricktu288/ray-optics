@@ -178,15 +178,11 @@
     },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
-        "constants": "Obsługiwane stałe",
-        "operators": "Obsługiwane operatory",
-        "functions": "Obsługiwane funkcje",
         "lambda": "Aby symulować dyspersję chromatyczną, użyj parametru {{lambda}} dla długości fali w próżni w nanometrach.",
         "diff": "Obsługuje tylko funkcje różniczkowalne.",
         "origin": "Początek n(x,y) znajduje się we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.",
         "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji…\""
       },
-      "refIndexFnOrigin": "Początek układu n(x,y)",
       "stepSize": "Rozmiar kroku rozwiązywania numerycznego",
       "stepSizeInfo": "Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'BaseGrinGlass.js'.",
       "intersectTol": "Tolerancja intersekcji",

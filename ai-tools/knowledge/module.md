@@ -24,7 +24,38 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
 - `points`: An array of points, each as an object with `x` and `y` properties.
 - `params`: An object of parameters, which are the values of the parameters defined in the module.
 
+## Equations in module definition
+
+The statements in `vars` and the expressions in `objs` are evaluated using math.js. In the strings, there are two types of equation blocks:
+
+- Single-backticks: A math.js expression to be evaluated to a number, used in points coordinates, numerical parameters of objects, and text labels. For example:
+```json
+"p1": {
+  "x": "`x_1 + dx*i`",
+  "y": "`y_1 + dy*i`"
+}
+```
+- Double-backticks: A math.js formula to be evaluated to a formula string with free variables like \(t\), used in equation parameters of objects. For example:
+```json
+{
+  "eqnX": "``x_1 + r(t) * cos(t)``",
+  "eqnY": "``y_1 + r(t) * sin(t)``"
+}
+```
+
+All math.js syntax and operations are available in `vars`, `for`, `if`, and single-backticks. However, for double-backticks, and the function definitions in `vars` which are referenced by double-backticks, the allowed operations depends on where the equation is used.
+
+In refactive index functions of GRIN glasses, only the following are available (and the combination must be differentiable):
+- Constants: `pi`, `e`
+- Operators: `+`, `-`, `*`, `/`, `^` (do not use implicit multiplication)
+- Functions: `sqrt`, `sin`, `cos`, `tan`, `sec`, `csc`, `cot`, `sinh`, `cosh`, `tanh`, `log`, `asin`, `acos`, `atan` (use `e^x` instead of `exp(x)`)
+
+In other equation parameters, the following are available in addition to the above (and no requirement for differentiability):
+- Functions: `exp`, `asinh`, `acosh`, `atanh`, `floor`, `ceil`, `round`, `abs`, `sign`, `min`, `max`
+
 ## Examples
+
+You may look for examples similar to the user's request before writing your own code.
 
 ### A beam with exponentially decay intensity profile
 
@@ -103,27 +134,24 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
       "params": [
         "a=2:0.1:20:5",
         "turns=1:0.1:10:3",
-        "segments=10:1:1000:100"
+        "tStep=0.001:0.001:0.1:0.01"
       ],
       "vars": [
-        "thetaMax=2*pi*turns",
-        "theta(i)=thetaMax*i/segments",
-        "r(i)=a*theta(i)",
-        "x(i)=x_1 + r(i)*cos(theta(i))",
-        "y(i)=y_1 + r(i)*sin(theta(i))"
+        "tMax=2*pi*turns",
+        "r(t)=a*t"
       ],
       "objs": [
         {
-          "for": "i=0:1:segments-1",
-          "type": "Mirror",
-          "p1": {
-            "x": "`x(i)`",
-            "y": "`y(i)`"
-          },
-          "p2": {
-            "x": "`x(i+1)`",
-            "y": "`y(i+1)`"
-          }
+          "type": "ParamMirror",
+          "pieces": [
+            {
+              "eqnX": "``x_1 + r(t) * cos(t)``",
+              "eqnY": "``y_1 + r(t) * sin(t)``",
+              "tMin": 0,
+              "tMax": "`tMax`",
+              "tStep": "`tStep`"
+            }
+          ]
         }
       ]
     }
@@ -141,7 +169,7 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
       "params": {
         "a": 10,
         "turns": 3,
-        "segments": 300
+        "tStep": 0.005
       }
     },
     {
@@ -161,16 +189,15 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
 
 ### A chaff of random linear mirrors (with a source shining through)
 
+First, the `ChaffPiece` module is defined to represent a single linear mirror itself, with position `(x,y)`, angle `theta`, and length `L`. Then, the `Chaff` module is defined to represent a collection of random linear mirrors, with number `N` and length `L` of chaff pieces.
+
 ```json
 {
   "version": 5,
-  "name": "Chaff",
   "modules": {
     "ChaffPiece": {
-      "numPoints": 0,
+      "numPoints": 1,
       "params": [
-        "x=0:1:1000:0",
-        "y=0:1:1000:0",
         "theta=0:0.001:2pi:0",
         "L=0.01:0.01:10:5"
       ],
@@ -178,12 +205,12 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
         {
           "type": "Mirror",
           "p1": {
-            "x": "`x`",
-            "y": "`y`"
+            "x": "`x_1`",
+            "y": "`y_1`"
           },
           "p2": {
-            "x": "`x+L*cos(theta)`",
-            "y": "`y+L*sin(theta)`"
+            "x": "`x_1+L*cos(theta)`",
+            "y": "`y_1+L*sin(theta)`"
           }
         }
       ]
@@ -199,10 +226,13 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
           "for": "i=1:1:N",
           "type": "ModuleObj",
           "module": "ChaffPiece",
-          "points": [],
+          "points": [
+            {
+              "x": "`x_1+random()*(x_2-x_1)`",
+              "y": "`y_1+random()*(y_2-y_1)`"
+            }
+          ],
           "params": {
-            "x": "`x_1+random()*(x_2-x_1)`",
-            "y": "`y_1+random()*(y_2-y_1)`",
             "L": "`L`",
             "theta": "`random()*pi`"
           }
@@ -245,150 +275,161 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
 }
 ```
 
-### An optical fiber with core, cladding, and jacket
+### A spherical lens with single-layer coatings on both sides (with a beam going through)
+
+First, the `ArcCoating` module is defined to represent a single arc-shaped thin-film layer itself, with thickness `d` in nanometers (note that it is not the geometric thickness in scene coordinates, where it is just a curve with no thickness) and Cauchy coefficients `A` and `B` of the coating material (note that `n_0` and `n_1` appearing in `eqnTheta` and `eqnP` are not the parameters of the coating layer, since their values are determined by the glass the coating is attached to). Then, the `CoatedLens` module is defined to represent a spherical lens with anti-reflection coating on both sides, with height `h`, width `d`, radius of curvature `R_1` and `R_2` (in scene units), Cauchy coefficients `A` and `B` for the glass, and includes two `ArcCoating` objects with parameters named `d_c`, `A_c`, and `B_c`.
 
 ```json
 {
   "version": 5,
   "modules": {
-    "OpticalFiber": {
-      "numPoints": 2,
+    "ArcCoating": {
+      "numPoints": 3,
       "params": [
-        "core_thickness=20:1:100:1",
-        "cladding_thickness=10:1:100:1",
-        "core_n=1.5:0.01:3:0.01",
-        "cladding_n=1.4:0.01:3:0.01"
+        "d=0:1:500:110",
+        "A=1.1:0.01:3:1.22",
+        "B=0.001:0.001:0.02:0.004"
       ],
       "vars": [
-        "dx=x_2-x_1",
-        "dy=y_2-y_1",
-        "len=sqrt(dx^2+dy^2)",
-        "nx=-dy/len",
-        "ny=dx/len",
-        "x_c1=x_1+core_thickness*nx",
-        "y_c1=y_1+core_thickness*ny",
-        "x_c2=x_2+core_thickness*nx",
-        "y_c2=y_2+core_thickness*ny",
-        "x_c3=x_2-core_thickness*nx",
-        "y_c3=y_2-core_thickness*ny",
-        "x_c4=x_1-core_thickness*nx",
-        "y_c4=y_1-core_thickness*ny",
-        "x_o1=x_1+(core_thickness+cladding_thickness)*nx",
-        "y_o1=y_1+(core_thickness+cladding_thickness)*ny",
-        "x_o2=x_2+(core_thickness+cladding_thickness)*nx",
-        "y_o2=y_2+(core_thickness+cladding_thickness)*ny",
-        "x_o3=x_2-(core_thickness+cladding_thickness)*nx",
-        "y_o3=y_2-(core_thickness+cladding_thickness)*ny",
-        "x_o4=x_1-(core_thickness+cladding_thickness)*nx",
-        "y_o4=y_1-(core_thickness+cladding_thickness)*ny",
-        "x_b1=x_1+(core_thickness+cladding_thickness+10)*nx",
-        "y_b1=y_1+(core_thickness+cladding_thickness+10)*ny",
-        "x_b2=x_2+(core_thickness+cladding_thickness+10)*nx",
-        "y_b2=y_2+(core_thickness+cladding_thickness+10)*ny",
-        "x_b3=x_2-(core_thickness+cladding_thickness+10)*nx",
-        "y_b3=y_2-(core_thickness+cladding_thickness+10)*ny",
-        "x_b4=x_1-(core_thickness+cladding_thickness+10)*nx",
-        "y_b4=y_1-(core_thickness+cladding_thickness+10)*ny"
+        "cauchy(lambda)=A+B/((lambda*0.001)^2)",
+        "snell(n_0,n_1,theta_0)=asin(n_0/n_1*sin(theta_0))",
+        "fresnel(n_0,n_1,theta_0,theta_1,p)=p*(n_0*cos(theta_1)-n_1*cos(theta_0))/(n_0*cos(theta_1)+n_1*cos(theta_0))+(1-p)*(n_0*cos(theta_0)-n_1*cos(theta_1))/(n_0*cos(theta_0)+n_1*cos(theta_1))",
+        "phase(theta,lambda)=2*pi/lambda*cauchy(lambda)*d*cos(theta)",
+        "combine(r_0c,r_c1,beta)=(r_0c^2+r_c1^2+2*r_0c*r_c1*cos(2*beta))/(1+r_0c^2*r_c1^2+2*r_0c*r_c1*cos(2*beta))",
+        "refl(n_0,n_f,n_1,theta_0,theta_f,theta_1,p,lambda)=combine(fresnel(n_0,n_f,theta_0,theta_f,p),fresnel(n_f,n_1,theta_f,theta_1,p),phase(theta_f,lambda))"
+      ],
+      "objs": [
+        {
+          "type": "CustomArcSurface",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "p3": {
+            "x": "`x_3`",
+            "y": "`y_3`"
+          },
+          "outRays": [
+            {
+              "eqnTheta": "``snell(n_0,n_1,theta_0)``",
+              "eqnP": "``P_0*(1-refl(n_0,cauchy(lambda),n_1,theta_0,snell(n_0,cauchy(lambda),theta_0),theta_1,p,lambda))``"
+            },
+            {
+              "eqnTheta": "``pi-theta_0``",
+              "eqnP": "``P_0-P_1``"
+            }
+          ],
+          "twoSided": true
+        }
+      ]
+    },
+    "CoatedLens": {
+      "numPoints": 1,
+      "params": [
+        "h=5:1:100:90",
+        "d=5:1:50:60",
+        "R_1=-500:1:500:250",
+        "R_2=-500:1:500:-250",
+        "A=1.1:0.01:3:1.5",
+        "B=0.001:0.001:0.02:0.004",
+        "d_c=0:1:500:110",
+        "A_c=1.1:0.01:3:1.22",
+        "B_c=0.001:0.001:0.02:0.004"
+      ],
+      "vars": [
+        "curveShift1 = R_1 - sqrt(R_1^2 - h^2) * sign(R_1)",
+        "curveShift2 = R_2 - sqrt(R_2^2 - h^2) * sign(R_2)",
+        "x_left = x_1 - d/2",
+        "x_right = x_1 + d/2",
+        "y_top = y_1 - h",
+        "y_bottom = y_1 + h"
       ],
       "objs": [
         {
           "type": "Glass",
           "path": [
             {
-              "x": "`x_c1`",
-              "y": "`y_c1`",
+              "x": "`x_left + curveShift1`",
+              "y": "`y_top`",
               "arc": false
             },
             {
-              "x": "`x_c2`",
-              "y": "`y_c2`",
+              "x": "`x_right + curveShift2`",
+              "y": "`y_top`",
               "arc": false
             },
             {
-              "x": "`x_c3`",
-              "y": "`y_c3`",
+              "x": "`x_right`",
+              "y": "`y_1`",
+              "arc": true
+            },
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_bottom`",
               "arc": false
             },
             {
-              "x": "`x_c4`",
-              "y": "`y_c4`",
+              "x": "`x_left + curveShift1`",
+              "y": "`y_bottom`",
               "arc": false
+            },
+            {
+              "x": "`x_left`",
+              "y": "`y_1`",
+              "arc": true
             }
           ],
-          "refIndex": "`core_n`"
+          "refIndex": "`A`",
+          "cauchyB": "`B`"
         },
         {
-          "type": "Glass",
-          "path": [
+          "type": "ModuleObj",
+          "module": "ArcCoating",
+          "points": [
             {
-              "x": "`x_c1`",
-              "y": "`y_c1`",
-              "arc": false
+              "x": "`x_left + curveShift1`",
+              "y": "`y_top`"
             },
             {
-              "x": "`x_c2`",
-              "y": "`y_c2`",
-              "arc": false
+              "x": "`x_left + curveShift1`",
+              "y": "`y_bottom`"
             },
             {
-              "x": "`x_o2`",
-              "y": "`y_o2`",
-              "arc": false
-            },
-            {
-              "x": "`x_o1`",
-              "y": "`y_o1`",
-              "arc": false
+              "x": "`x_left`",
+              "y": "`y_1`"
             }
           ],
-          "refIndex": "`cladding_n`"
-        },
-        {
-          "type": "Glass",
-          "path": [
-            {
-              "x": "`x_c4`",
-              "y": "`y_c4`",
-              "arc": false
-            },
-            {
-              "x": "`x_c3`",
-              "y": "`y_c3`",
-              "arc": false
-            },
-            {
-              "x": "`x_o3`",
-              "y": "`y_o3`",
-              "arc": false
-            },
-            {
-              "x": "`x_o4`",
-              "y": "`y_o4`",
-              "arc": false
-            }
-          ],
-          "refIndex": "`cladding_n`"
-        },
-        {
-          "type": "Blocker",
-          "p1": {
-            "x": "`x_o1`",
-            "y": "`y_o1`"
-          },
-          "p2": {
-            "x": "`x_o2`",
-            "y": "`y_o2`"
+          "params": {
+            "d": "`d_c`",
+            "A": "`A_c`",
+            "B": "`B_c`"
           }
         },
         {
-          "type": "Blocker",
-          "p1": {
-            "x": "`x_o4`",
-            "y": "`y_o4`"
-          },
-          "p2": {
-            "x": "`x_o3`",
-            "y": "`y_o3`"
+          "type": "ModuleObj",
+          "module": "ArcCoating",
+          "points": [
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_top`"
+            },
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_bottom`"
+            },
+            {
+              "x": "`x_right`",
+              "y": "`y_1`"
+            }
+          ],
+          "params": {
+            "d": "`d_c`",
+            "A": "`A_c`",
+            "B": "`B_c`"
           }
         }
       ]
@@ -397,35 +438,37 @@ A module object is defined in the `objs` key of the scene's JSON code with type 
   "objs": [
     {
       "type": "ModuleObj",
-      "module": "OpticalFiber",
+      "module": "CoatedLens",
       "points": [
         {
-          "x": 500,
-          "y": 400
-        },
-        {
-          "x": 1200,
-          "y": 400
+          "x": 620,
+          "y": 500
         }
       ],
       "params": {
-        "core_thickness": 20,
-        "cladding_thickness": 10,
-        "core_n": 1.5,
-        "cladding_n": 1.45
+        "h": 90,
+        "d": 60,
+        "R_1": 250,
+        "R_2": -250,
+        "A": 1.5,
+        "B": 0.004,
+        "d_c": 110,
+        "A_c": 1.22,
+        "B_c": 0.004
       }
     },
     {
-      "type": "AngleSource",
+      "type": "Beam",
       "p1": {
         "x": 500,
-        "y": 400
+        "y": 440
       },
       "p2": {
-        "x": 600,
-        "y": 400
+        "x": 500,
+        "y": 560
       }
     }
-  ]
+  ],
+  "simulateColors": true
 }
 ```

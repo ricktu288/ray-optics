@@ -381,18 +381,21 @@ class ModuleObj extends BaseSceneObj {
   }
 
   getWarning() {
-    let warnings = [];
-    for (let i in this.objs) {
-      let warning = this.objs[i].getWarning();
-      if (warning) {
-        warnings.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${warning}`);
+    if (this.warning) {
+      return this.warning;
+    } else {
+      let warnings = [];
+      for (let i in this.objs) {
+        let warning = this.objs[i].getWarning();
+        if (warning) {
+          warnings.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${warning}`);
+        }
+      }
+
+      if (warnings.length > 0) {
+        return "In expanded objects:\n" + warnings.join("\n");
       }
     }
-
-    if (warnings.length > 0) {
-      return "In expanded objects:\n" + warnings.join("\n");
-    }
-
     return null;
   }
 
@@ -437,23 +440,180 @@ class ModuleObj extends BaseSceneObj {
   expandString(str, params) {
     try {
       let parts = str.split('`');
-      if (parts.length == 3 && parts[0] == '' && parts[2] == '') {
-
+      
+      if ((parts.length == 3 && parts[0] == '' && parts[2] == '') || (parts.length == 2 && parts[0] == '')) {
+        // The string is a single single-backtick block. Evaluate to a number.
+        if (parts.length == 2) {
+          // Use warning instead of error, since in earlier version it was unintentionally allowed.
+          this.warning = i18next.t('simulator:sceneObjs.ModuleObj.unclosedMathBlock', { str: "`" + parts[1] });
+        }
         return math.evaluate(parts[1], params);
       } else {
         let result = '';
+        let inText = true;
+
         for (let i = 0; i < parts.length; i++) {
-          if (i % 2 == 0) {
+          if (inText) {
+            // Text part
             result += parts[i];
           } else {
-            result += math.evaluate(parts[i], params);
+            // Math part. Check if it is a double backtick block.
+            if (parts[i] === '' && i < parts.length - 1) {
+              // Double backtick begins
+              if (i < parts.length - 3 && parts[i+2] === '') {
+                // The double backtick block is correctly closed.
+                result += this.expandEquation(parts[i+1], params);
+                i += 2; // Skip to the next text part
+              } else {
+                throw new Error(i18next.t('simulator:sceneObjs.ModuleObj.unclosedMathBlock', { str: "``" + parts[i+1] }));
+              }
+            } else {
+              // Single backtick block
+              result += math.evaluate(parts[i], params);
+
+              if (i == parts.length - 1) {
+                this.warning = i18next.t('simulator:sceneObjs.ModuleObj.unclosedMathBlock', { str: "`" + parts[i] });
+              }
+            }
           }
+          inText = !inText;
         }
         return result;
       }
     } catch (e) {
       throw i18next.t('simulator:sceneObjs.ModuleObj.stringExpansionError', { str, params: JSON.stringify(params), error: e });
     }
+  }
+
+  /**
+   * Expand an equation with template syntax for double backticks to a LaTeX string.
+   * @param {string} str - The equation string to evaluate.
+   * @param {Object} params - The parameters to be used for evaluating the expressions.
+   * @returns {string} The expanded equation as a LaTeX string.
+   */
+  expandEquation(str, params) {
+    // Parse the expression
+    const expr = math.parse(str);
+    
+    // Define the transform function with a name for recursion
+    const transformNode = function (node, path, parent) {
+      // Handle variable substitution
+      if (node.isSymbolNode && params.hasOwnProperty(node.name)) {
+        const value = params[node.name];
+        if (typeof value === 'number') {
+          return math.parse(value.toString());
+        } else if (typeof value === 'string') {
+          return math.parse(value);
+        }
+      }
+      // Handle function substitution using this.funcDefs
+      else if (node.isFunctionNode && this.funcDefs && this.funcDefs.hasOwnProperty(node.fn.name)) {
+        const funcInfo = this.funcDefs[node.fn.name];
+        
+        if (node.args && node.args.length > 0) {
+          // Parse the function body
+          let funcExpr = math.parse(funcInfo.body);
+          
+          // Replace parameters in the function body with the actual arguments
+          funcExpr = funcExpr.transform(function (innerNode) {
+            if (innerNode.isSymbolNode) {
+              // Check if this symbol matches any of the function parameters
+              const paramIndex = funcInfo.params.indexOf(innerNode.name);
+              if (paramIndex !== -1 && paramIndex < node.args.length) {
+                return node.args[paramIndex].clone();
+              }
+              // Also substitute any other parameters that exist in params
+              if (params.hasOwnProperty(innerNode.name)) {
+                const value = params[innerNode.name];
+                if (typeof value === 'number') {
+                  return math.parse(value.toString());
+                }
+              }
+            }
+            return innerNode;
+          });
+          
+          // Recursively apply transformation to handle nested functions
+          return funcExpr.transform(transformNode);
+        }
+      }
+      return node;
+    }.bind(this); // Bind this context so we can access this.funcDefs
+    
+    // Transform the expression to substitute parameters and functions
+    const transformedExpr = expr.transform(transformNode);
+    
+    // Convert to LaTeX using toTex() method with custom handler
+    const latex = transformedExpr.toTex({
+      handler: function(node, options) {
+        if (node.type === 'SymbolNode') {
+          let name = node.name;
+          
+          // Handle underscores as subscripts for variable names
+          if (name.includes('_')) {
+            const parts = name.split('_');
+            const base = parts[0];
+            const subscript = parts.slice(1).join('_'); // Everything after first underscore
+            // Apply backslash rule to base: single letter stays as-is, multi-letter gets backslash. The space is added to avoid, e.g., "2*x" from becoming "2\\cdotx".
+            const formattedBase = base.length === 1 ? ' ' + base : '\\' + base;
+            return formattedBase + '_{' + subscript + '}';
+          } else {
+            // No underscore - apply backslash rule to entire name
+            const formattedName = name.length === 1 ? ' ' + name : '\\' + name;
+            return formattedName;
+          }
+        }
+        
+        else if (node.type === 'FunctionNode') {
+          const name = node.fn.name || node.fn;
+          const args = node.args || [];
+          
+          // Handle special function name replacements
+          switch (name) {
+            case 'log':
+              return '\\log\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'asin':
+              return '\\arcsin\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'acos':
+              return '\\arccos\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'atan':
+              return '\\arctan\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'asinh':
+              return '\\operatorname{asinh}\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'acosh':
+              return '\\operatorname{acosh}\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'atanh':
+              return '\\operatorname{atanh}\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'floor':
+              return '\\operatorname{floor}\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'ceil':
+              return '\\operatorname{ceil}\\left(' + args[0].toTex(options) + '\\right)';
+
+            case 'round':
+              return '\\operatorname{round}\\left(' + args[0].toTex(options) + '\\right)';
+              
+            case 'sign':
+              return '\\operatorname{sign}\\left(' + args[0].toTex(options) + '\\right)';
+          }
+          
+          // Fall back to default behavior for other functions
+          return undefined; // This tells math.js to use default rendering
+        }
+
+        // Fall back to default behavior for other node types
+        return undefined;
+      }
+    });
+    
+    return latex;
   }
 
   /**
@@ -577,10 +737,22 @@ class ModuleObj extends BaseSceneObj {
     // Process variable definitions
     if (this.moduleDef.vars && Array.isArray(this.moduleDef.vars)) {
       try {
-        // Evaluate each variable definition directly in fullParams
-        // This allows each definition to reference previously defined variables
-        // and supports function definitions like f(x)=x+1
+        // Initialize function definitions storage
+        this.funcDefs = {};
+        
+        // Extract function definitions for equation template expansion
         for (const varDef of this.moduleDef.vars) {
+          // Check if this is a function definition
+          const funcDefMatch = varDef.match(/^(\w+)\s*\(\s*([^)]+)\s*\)\s*=\s*(.+)$/);
+          if (funcDefMatch) {
+            const [, funcName, paramString, funcBody] = funcDefMatch;
+            const params = paramString.split(',').map(p => p.trim());
+            this.funcDefs[funcName] = {
+              params: params,
+              body: funcBody
+            };
+          }
+          
           math.evaluate(varDef, fullParams);
         }
       } catch (e) {
@@ -588,7 +760,7 @@ class ModuleObj extends BaseSceneObj {
         return;
       }
     }
-    
+    this.warning = null;
     this.error = null;
 
     try {

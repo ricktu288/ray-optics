@@ -121,39 +121,33 @@ A mirror with the shape of a parabola. The parabola is defined by two endpoints 
 }
 ```
 
-### Custom Equation Mirror
+### Parametric Curve Mirror
 
-A mirror with the shape of a custom equation $y = f(x)$. The equation `eqn` is the function $f(x)$ in **LaTeX format** (unlike the module template which uses math.js). $(x,y)$ is in the local coordinates in which `p1` and `p2` are $(-1,0)$ and $(1,0)$, respectively. In the following example the final curve in the scene coordinates is $y = 25\cdot\sqrt{1-\left(\frac{x-50}{50}\right)^2}$.
-
-```json
-{
-  "type": "CustomMirror",
-  "p1": { "x": 0, "y": 0 },
-  "p2": { "x": 100, "y": 0 },
-  "eqn": "0.5\\cdot\\sqrt{1-x^2}",
-  "filter": false,
-  "invert": false,
-  "wavelength": 540,
-  "bandwidth": 10
-}
-```
-
-To use module parameters or variables in the equation, you need to wrap them in backticks, for example, the following module generates a mirror with shape $y = \cos(2 \pi x+\phi)$ in local coordinates with adjustable phase $\phi$.
+A mirror with the shape of piecewise defined parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve can be either open or closed, and oriented in any direction, but the end of one piece should match the start of the next piece. Here is an example of a closed semicircle:
 
 ```json
 {
-  "numPoints": 0,
-  "params": ["phi=0:0.01:2pi:1"],
-  "objs": [
+  "type": "ParamMirror",
+  "pieces": [
     {
-      "type": "CustomMirror",
-      "p1": { "x": 0, "y": 0 },
-      "p2": { "x": 100, "y": 0 },
-      "eqn": "\\cos(2 \\pi x+`phi`)"
+      "eqnX": "``500+50*cos(t)``",
+      "eqnY": "``500+50*sin(t)``",
+      "tMin": 0,
+      "tMax": "`pi`",
+      "tStep": 0.01
+    },
+    {
+      "eqnX": "``500+50*t``",
+      "eqnY": "``500``",
+      "tMin": -1,
+      "tMax": 1,
+      "tStep": 2
     }
   ]
 }
 ```
+
+In user provided scene created using the visual editor, this object may appear outside a module, and a similar object with `CustomMirror` type may also be used instead whose equation is defined in a relative coordinate system where `p1` and `p2` are $(-1,0)$ and $(1,0)$, respectively. However, when you write JSON code by yourself, please always use the `ParamMirror` type and put it inside a module.
 
 ## Blocker
 
@@ -175,6 +169,8 @@ A blocker with the shape of a line segment defined by two points `p1` and `p2`.
 }
 ```
 
+In user provided scenes created using the visual editor, they may use the `Aperture` type which is a blocker with a hole in the middle (the hole is defined by `p3` and `p4`). It is not recommended to use this type when writing JSON code directly. Use two `Blocker`s instead.
+
 ### Circular Blocker
 
 A blocker with the shape of a circle. The circle is defined by the center (`p1`) and a point on the circle (`p2`).
@@ -190,6 +186,8 @@ A blocker with the shape of a circle. The circle is defined by the center (`p1`)
   "bandwidth": 10
 }
 ```
+
+For other shapes, use `CustomArcSurface` or `CustomParamSurface` instead.
 
 ## Glass
 
@@ -243,88 +241,63 @@ For example, the following is a rectangle:
 }
 ```
 
-The following is a semi-circle where the arc is to the right of the straight segment:
+The following is a lens with flat top and bottom edges, and two circular arc surfaces:
 
 ```json
 {
   "type": "Glass",
   "path": [
-    { "x": 500, "y": 500, "arc": false },
-    { "x": 500, "y": 600, "arc": false },
-    { "x": 550, "y": 550, "arc": true }
+    { "x": 700, "y": 240, "arc": false },
+    { "x": 740, "y": 240, "arc": false },
+    { "x": 760, "y": 320, "arc": true },
+    { "x": 740, "y": 400, "arc": false },
+    { "x": 700, "y": 400, "arc": false },
+    { "x": 680, "y": 320, "arc": true }
   ],
   "refIndex": 1.5,
   "cauchyB": 0.004
 }
 ```
 
-### Custom Equation Glass
+Here, the six points correspond to, respectively:
+1. The leftmost point of the top edge
+2. The rightmost point of the top edge
+3. The intersection of the optical axis and the right surface
+4. The rightmost point of the bottom edge
+5. The leftmost point of the bottom edge
+6. The intersection of the optical axis and the left surface
 
-A glass with the shape $f(x) < y < g(x)$. The equations `eqn1` and `eqn2` are the functions $f(x)$ and $g(x)$ in **LaTeX format** (unlike the module template which uses math.js), respectively. $(x,y)$ is in the local coordinates in which `p1` and `p2` are $(-1,0)$ and $(1,0)$, respectively. In the following example the final curve in the scene coordinates is $-50\cdot\sqrt{1-\left(\frac{x-50}{50}\right)^2} < y < 25\cdot\sqrt{1-\left(\frac{x-50}{50}\right)^2}$.
+In user provided scenes created using the visual editor, they may use the `SphericalLens` type which is a wrapper of the above lens shape with UI for editing lens parameters. When writing modules, it is recommended to just use `Glass` and calculate the coordinates in the module directly.
 
-```json
-{
-  "type": "CustomGlass",
-  "p1": { "x": 0, "y": 0 },
-  "p2": { "x": 100, "y": 0 },
-  "eqn1": "-\\sqrt{1-x^2}",
-  "eqn2": "0.5\\cdot\\sqrt{1-x^2}",
-  "refIndex": 1.5,
-  "cauchyB": 0.004
-}
-```
+### Parametric Curve Glass
 
-To use module parameters or variables in the equation, you need to wrap them in backticks, for example, the following module generates a glass with shape $-1 < y < \cos(2 \pi x+\phi)$ in local coordinates with adjustable phase $\phi$.
+A glass with the shape of piecewise defined parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve must be closed (the end of one piece should match the start of the next piece, and the last point of the last piece should match the first point of the first piece) and positively oriented (since the y-axis is pointing downwards, positive corresponds to clockwise on the screen). Here is an example of a closed semicircle:
 
 ```json
 {
-  "numPoints": 0,
-  "params": ["phi=0:0.01:2pi:1"],
-  "objs": [
+  "type": "ParamGlass",
+  "pieces": [
     {
-      "type": "CustomGlass",
-      "p1": { "x": 0, "y": 0 },
-      "p2": { "x": 100, "y": 0 },
-      "eqn1": "-1",
-      "eqn2": "\\cos(2 \\pi x+`phi`)"
+      "eqnX": "``500+50*cos(t)``",
+      "eqnY": "``500+50*sin(t)``",
+      "tMin": 0,
+      "tMax": "`pi`",
+      "tStep": 0.01
+    },
+    {
+      "eqnX": "``500+50*t``",
+      "eqnY": "``500``",
+      "tMin": -1,
+      "tMax": 1,
+      "tStep": 2
     }
-  ]
-}
-```
-
-### Spherical Lens
-
-A spherical lens with a flat top and bottom surface, and two circular arc surfaces. When approximated as a thin lens, it is like a line segment from `p1` to `p2`. More accurately, when the lens is placed vertically, `p1` and `p2` are on the midpoint of the top and bottom surfaces, and their horizontal position are in the midpoint of the segment formed by the intersection of the optical axis and the lens.
-
-To define the lens with parameters $d$ (the length of the segment formed by the intersection of the optical axis and the lens), $R_1$ and $R_2$ (the radius of curvature of the left and right surfaces, respectively) use the syntax:
-
-```json
-{
-  "type": "SphericalLens",
-  "p1": { "x": 500, "y": 300 },
-  "p2": { "x": 500, "y": 400 },
-  "defBy": "DR1R2",
-  "params": { "d": 50, "r1": 100, "r2": -100 },
+  ],
   "refIndex": 1.5,
   "cauchyB": 0.004
 }
 ```
 
-The above defines a biconvex lens. To have a plano-convex or plano-concave lens, set the radius of curvature of the flat surface to the string `"inf"`.
-
-To define the lens with parameters $d$ (the length of the segment formed by the intersection of the optical axis and the lens), FFD and BFD (the focal distances of the left and right surfaces, respectively) use the syntax:
-
-```json
-{
-  "type": "SphericalLens",
-  "p1": { "x": 500, "y": 300 },
-  "p2": { "x": 500, "y": 400 },
-  "defBy": "DFfdBfd",
-  "params": { "d": 50, "ffd": 200, "bfd": 250 },
-  "refIndex": 1.5,
-  "cauchyB": 0.004
-}
-```
+In user provided scene created using the visual editor, this object may appear outside a module, and a similar object with `CustomGlass` type may also be used instead whose equation is defined in a relative coordinate system where `p1` and `p2` are $(-1,0)$ and $(1,0)$, respectively. However, when you write JSON code by yourself, please always use the `ParamGlass` type and put it inside a module.
 
 ## Ideal Objects
 
@@ -402,6 +375,8 @@ A reflective diffraction grating with the shape of a circular arc. The arc is de
 }
 ```
 
+For other shapes, use `CustomArcSurface` or `CustomParamSurface` instead.
+
 ## Beam Splitter
 
 ### Linear Beam Splitter
@@ -417,9 +392,15 @@ A linear beam splitter defined by a segment from `p1` to `p2` and a transmission
 }
 ```
 
+For other shapes, use `CustomArcSurface` or `CustomParamSurface` instead.
+
 ## GRIN Glass
 
-In each GRIN glass below, the `refIndexFn` property is the reference index function $n(x,y,\lambda)$ in **LaTeX format** (unlike the module template which uses math.js), where $\lambda$ is the wavelength. The function is defined in the shifted coordinates where the `origin` is $(0,0)$. As in normal glass, if multiple GRIN glasses overlap (or even a normal glass and a GRIN glass), the index of refraction in the overlapping region is the product of the indices of refraction of the overlapping glasses.
+In each GRIN glass below, the `refIndexFn` property is the refractive index function $n(x,y,\lambda)$, and the `absorptionFn` property is the absorption function $\alpha(x,y,\lambda)$ (in units of 1/[length]), where $(x,y)$ is the position and `lambda` is the wavelength.
+
+If multiple GRIN glasses overlap (or even a normal glass and a GRIN glass), the index of refraction in the overlapping region is the product of the indices of refraction of the overlapping glasses.
+
+In user provided scene created using the visual editor, such objects may appear outside a module. But when you write JSON code by yourself, please always put GRIN glasses inside a module.
 
 ### Circular GRIN Glass
 
@@ -430,8 +411,9 @@ A circular GRIN glass defined by the shape of a circle with center (`p1`) and a 
   "type": "CircleGrinGlass",
   "p1": { "x": 500, "y": 500 },
   "p2": { "x": 500, "y": 600 },
-  "refIndexFn": "1+e^{-\\frac{x^2+y^2}{50^2}}",
-  "origin": { "x": 500, "y": 500 }
+  "refIndexFn": "``1+e^(-((x-500)^2+(y-500)^2)/50^2)``",
+  "absorptionFn": "``0``",
+  "stepSize": 1
 }
 ```
 
@@ -448,32 +430,142 @@ A polygonal GRIN glass defined by the `path` property, which is an array of poin
     { "x": 600, "y": 600 },
     { "x": 500, "y": 600 }
   ],
-  "refIndexFn": "1+e^{-\\frac{x^2+y^2}{50^2}}",
-  "origin": { "x": 500, "y": 500 }
+  "refIndexFn": "``1+e^(-((x-500)^2+(y-500)^2)/50^2)``",
+  "absorptionFn": "``0``",
+  "stepSize": 1
 }
 ```
 
-To use module parameters or variables in the reference index function, you need to wrap them in backticks, for example, the following module generates a glass with reference index $1+e^{-\frac{x^2+y^2}{r^2}}$ with adjustable radius $r$.
+### Parametric GRIN Glass
+
+A GRIN glass with the shape of piecewise defined parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve must be closed (the end of one piece should match the start of the next piece, and the last point of the last piece should match the first point of the first piece) and positively oriented (since the y-axis is pointing downwards, positive corresponds to clockwise on the screen). Here is an example of a closed semicircle:
 
 ```json
 {
-  "numPoints": 0,
-  "params": ["r=1:10:100:1"],
-  "objs": [
+  "type": "ParamGrinGlass",
+  "pieces": [
     {
-      "type": "GrinGlass",
-      "path": [
-        { "x": 500, "y": 500 },
-        { "x": 600, "y": 500 },
-        { "x": 600, "y": 600 },
-        { "x": 500, "y": 600 }
-      ],
-      "refIndexFn": "1+e^{-\\frac{x^2+y^2}{`r`^2}}",
-      "origin": { "x": 500, "y": 500 }
+      "eqnX": "``500+50*cos(t)``",
+      "eqnY": "``500+50*sin(t)``",
+      "tMin": 0,
+      "tMax": "`pi`",
+      "tStep": 0.01
+    },
+    {
+      "eqnX": "``500+50*t``",
+      "eqnY": "``500``",
+      "tMin": -1,
+      "tMax": 1,
+      "tStep": 2
     }
-  ]
+  ],
+  "refIndexFn": "``1+e^(-((x-500)^2+(y-500)^2)/50^2)``",
+  "absorptionFn": "``0``",
+  "stepSize": 1
 }
 ```
+
+## Custom Surface
+
+If all the above objects are not enough for your needs, or if you want to create coating of glass objects, you can define surfaces where the angles and brightnesses of the outgoing rays (when a ray is incident on it) are defined by custom equations. In each of the following shapes, the `outRays` array is an array of objects with properties `eqnTheta` and `eqnP`, which are the equations for the angle (in radians relative to the normal direction) and brightness (in arbitrary units) of the outgoing ray, respectively.
+
+The equations can refer to the followings:
+- `theta_0`: The angle of the incident ray in radians relative to the normal direction, in the range $[-pi/2, pi/2]$.
+- `P_0`: The brightness of the incident ray.
+- `lambda`: The wavelength in nanometers (which remains the same for the outgoing rays).
+- `p`: The polarization of the incident ray (0 for s-polarized, 1 for p-polarized, and remains the same for the outgoing rays).
+- `t`: The position of the incident point on the surface in the parameter space (see individual shapes below).
+
+In addition, the angles and brightnesses are evaluated in sequence as $\theta_1, P_1, \theta_2, P_2, \ldots$ where the index is 1-based corresponding to the order in the `outRays` array. Each equation can refer to the result of eariler equations. If a formula gives an invalid value, that outgoing ray is ignored and its brightness is treated as 0 in later calculations.
+
+When this surface overlaps with the surface of a glass or GRIN glass object, it acts as a coating of the glass. In this case, the refractive indices of the material attached to the same and opposite sides of the incident ray can be referred to as `n_0` and `n_1`, respectively. If this object is inside a glass object, the values are relative to it.
+
+The surface has a `twoSided` property which is a boolean. If it is `false`, the surface only handles the incident ray on one side (see individual shapes below), and the ray incident from the other side will directly pass through the surface. If it is `true`, the surface handles the incident ray on both sides with the same formulas. To have different formulas for the two sides, you can overlap two single-sided surfaces with opposite orientations.
+
+In user provided scene created using the visual editor, such objects may appear outside a module. But when you write JSON code by yourself, please always put custom surfaces inside a module.
+
+### Custom Line Surface
+
+A custom line surface defined by a segment from `p1` to `p2`. The following is an example of a beam splitter with transmission ratio 0.7 and only handles incident rays from the left side.
+
+```json
+{
+  "type": "CustomSurface",
+  "p1": { "x": 500, "y": 300 },
+  "p2": { "x": 500, "y": 400 },
+  "outRays": [
+    {
+      "eqnTheta": "``theta_0``",
+      "eqnP": "``0.7*P_0``"
+    },
+    {
+      "eqnTheta": "``pi-theta_0``",
+      "eqnP": "``P_0-P_1``"
+    }
+  ],
+  "twoSided": false
+}
+```
+
+When $t$ is used in the equations, it interpolates linearly from -1 to 1 from `p1` to `p2`.
+
+### Custom Arc Surface
+
+A custom surface with the shape of a circular arc. The arc is defined by two endpoints (`p1` and `p2`) and an additional point on the arc (`p3`) that determines its curvature. The following is an example of a beam splitter with transmission ratio 0.7 and only handles incident rays from the left side.
+
+```json
+{
+  "type": "CustomArcSurface",
+  "p1": { "x": 500, "y": 300 },
+  "p2": { "x": 500, "y": 400 },
+  "p3": { "x": 510, "y": 350 },
+  "outRays": [
+    {
+      "eqnTheta": "``theta_0``",
+      "eqnP": "``0.7*P_0``"
+    },
+    {
+      "eqnTheta": "``pi-theta_0``",
+      "eqnP": "``P_0-P_1``"
+    }
+  ],
+  "twoSided": false
+}
+```
+
+When $t$ is used in the equations, it interpolates uniformly (with respect to angle) from -1 to 1 between `p1` and `p2`.
+
+### Custom Parametric Surface
+
+A custom surface with the shape of a parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve can be either open or closed (but the end of one piece should match the start of the next piece). When `twoSided` is `false`, a positively oriented curve only handles rays from inside to outside, and vice versa. The following is an example of a closed semicircle beam splitter with transmission ratio 0.7 and only handles incident rays from inside to outside.
+
+```json
+{
+  "type": "CustomParamSurface",
+  "pieces": [
+    {
+      "eqnX": "``500+50*cos(2*pi*t)``",
+      "eqnY": "``500+50*sin(2*pi*t)``",
+      "tMin": 0,
+      "tMax": "`pi`",
+      "tStep": 0.01
+    }
+  ],
+  "outRays": [
+    {
+      "eqnTheta": "``theta_0``",
+      "eqnP": "``0.7*P_0``"
+    },
+    {
+      "eqnTheta": "``pi-theta_0``",
+      "eqnP": "``P_0-P_1``"
+    }
+  ],
+  "twoSided": false
+}
+```
+
+When $t$ is used in the equations, it is the same as the parameter $t$ in the piece where the incident ray is on.
 
 ## Decorations
 

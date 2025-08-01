@@ -4,7 +4,7 @@
     "ExampleModule": {
       "numPoints": 0,
       "params": [
-        "phi=0:0.01:2pi:1"
+        "phi=0:0.01:2*pi:1"
       ],
       "objs": [
         {
@@ -17,7 +17,7 @@
             "x": 800,
             "y": 400
           },
-          "eqn": "\\cos(2 \\pi x+`phi`)"
+          "eqn": "``cos(2*pi*x+phi)``"
         },
         {
           "type": "TextLabel",
@@ -34,9 +34,6 @@
       "module": "ExampleModule",
       "points": [],
       "params": {
-        "n": 2,
-        "theta": 1.23,
-        "a": 5,
         "phi": 1.23
       }
     }

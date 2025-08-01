@@ -150,7 +150,7 @@
         "constants": "支援的常數",
         "operators": "支援的運算子",
         "functions": "支援的函數",
-        "module": "如需自訂參數或使用複雜的方程式，請建立自訂模組。詳見工具->其他->匯入模組->建立自訂模組。"
+        "module": "如需自訂參數或使用複雜的方程式，請建立自訂模組。詳見工具->其他->匯入模組。"
       },
       "imageDetectionWarning": "本工具不支援像的偵測。",
       "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。"
@@ -314,7 +314,7 @@
         "otherParams": "其他可用的入射光參數為 {{lambda}}（波長，單位為 nm）及 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光線將保持相同的參數。",
         "coating": "此物件可與透光物表面重疊來作為塗層。在這種情況下，折射本身也須包含於此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 來分別代表與入射光的同側和對側相接的材料折射率。如果此物件位於一透光物內部，則這些值相對於該透光物。",
         "twoSides": "如需讓表面的兩側以不同公式定義，可重疊兩個方向相反的單面表面。",
-        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用自訂模組。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
+        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用自訂模組。更多資訊請參見工具->其他->匯入模組。"
       },
       "twoSided": "雙面",
       "addOutgoingRay": "新增出射光線",
@@ -343,7 +343,8 @@
       "variableRangeError": "解析變數範圍「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
       "stringExpansionError": "展開字串「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
       "objectExpansionError": "在陣列中展開物件 {{obj}} 時發生錯誤，參數為 {{params}}：{{error}}",
-      "variableDefinitionError": "計算變數定義時發生錯誤，參數為 {{params}}：{{error}}"
+      "variableDefinitionError": "計算變數定義時發生錯誤，參數為 {{params}}：{{error}}",
+      "unclosedMathBlock": "數學式區塊沒有結尾：{{str}}"
     },
     "Handle": {
       "handle": "控制桿",

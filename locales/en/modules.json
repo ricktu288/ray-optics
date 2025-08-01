@@ -40,6 +40,20 @@
       "max": "The maximum wavelength",
       "brightness": "The total brightness"
     },
+    "CoatedLens": {
+      "title": "Coated Spherical Lens",
+      "description": "A spherical lens with single-layer coatings on both sides. The `ArcCoating` module embedded in this module represents a single thin-film layer, which when overlapping with a glass' surface becomes its coating.",
+      "point1": "The center of the lens",
+      "h": "The height of the lens",
+      "d": "The thickness of the lens",
+      "R1": "The radius of curvature of the front surface",
+      "R2": "The radius of curvature of the back surface",
+      "A": "The Cauchy coefficient \\(A\\) of the glass",
+      "B": "The Cauchy coefficient \\(B\\) of the glass in square micrometers",
+      "dc": "The thickness of the coating layer in nanometers",
+      "Ac": "The Cauchy coefficient \\(A\\) of the coating material",
+      "Bc": "The Cauchy coefficient \\(B\\) of the coating material in square micrometers"
+    },
     "CircleSource": {
       "title": "Circular light source",
       "description": "A circle with uniform 180-degree point sources places along its circumference.",
@@ -47,6 +61,16 @@
       "r": "The radius of the circle",
       "N": "The number of point sources",
       "brightness": "The total brightness"
+    },
+    "EllipticalMirror": {
+      "title": "Elliptical Mirror",
+      "description": "An elliptical mirror defined by the two foci and the length of the semi-major axis.",
+      "point1": "The first focus",
+      "point2": "The second focus",
+      "a": "The length of the semi-major axis",
+      "tMin": "The minimum angle of the curve",
+      "tMax": "The maximum angle of the curve",
+      "tStep": "The step angle of the curve"
     },
     "Chaff": {
       "title": "Chaff",
@@ -89,7 +113,7 @@
       "size": "The size of the cube",
       "angle": "The rotation angle of the cube in degrees",
       "refIndex": "The refractive index of the cube (or Cauchy coefficient \\(A\\) when \"Simulate Colors\" is on)",
-      "cauchyB": "The Cauchy coefficient \\(B\\) of the cube in square micrometer",
+      "cauchyB": "The Cauchy coefficient \\(B\\) of the cube in square micrometers",
       "splitRatio": "The transmission ratio of the diagonal beam splitter"
     }
   },
@@ -114,6 +138,7 @@
       "enableJsonEditor": "You can enable the built-in JSON editor by clicking the \"settings\" dropdown at the top-right corner of the app, and then check \"Show JSON editor\". The code editor should appear at the left-hand side of the app, with the JSON code of the current scene. Make sure you have a large enough screen, as this feature does not work well on mobile devices.",
       "updateAccordingly": "As you edit the scene using the usual visual scene editor, the code in the JSON editor will update accordingly, with the changed part highlighted. Conversely, directly editing the code in the JSON editor will update the scene accordingly. If you are not familiar with JSON or any kind of text-based data format, you may wish to play around with it for a while.",
       "objsArray": "In particular, when you add an object to the scene, it is added to the `objs` array. And if you modify some of its properties to a non-default value, they appear as key-value pairs in that object.",
+      "disableAutoUpdate": "If you do not want the scene to be automatically updated when you edit the JSON, you can enable Settings -> Show simulator controls and disable \"Auto Refresh\". And when the editing is done, click \"Refresh Simulation\" (or \"Refresh Scene\" if you don't want the simulation to be rerun immediately).",
       "inIframesBelow": "IMPORTANT: In this tutorial page, if you do not see the JSON code editor in the iframes below, please turn it on and reload this page, as you will need to see the code to understand how it works."
     },
     "basics": {
@@ -154,8 +179,9 @@
     },
     "objsWithEqn": {
       "title": "Objects with built-in custom equations",
-      "description": "For objects that already have custom equation input (such as Mirror -> Custom Equation), the equation property in the JSON is a string representing a LaTeX equation, rather than a math.js expression. To include custom parameters in the equation, you must use the same template syntax as if the LaTeX equation were a regular text. So the part enclosed by the backticks is in math.js expression, while the part outside is in LaTeX. The module parameters can only be accessed in the math.js part, and the independent variables of the custom equation (e.g. \\(x\\)) can only be accessed in the LaTeX part. Here is an example of generating a mirror with equation \\(y=\\cos(2\\pi x+\\phi)\\), where \\(\\phi\\) is a module parameter",
-      "future": "In the future, there may be a way to unified the equation input."
+      "syntax": "For objects that already have custom equation input (such as Mirror -> Custom Equation), the equation property in the JSON is a string representing a LaTeX equation. To represent such an equation in math.js and refer to module parameters, etc, you need to wrap the math.js expression in a pair of double backticks. Such a block expands to a LaTeX equation with free variables like \\(x\\) for `x` and \\(\\theta_0\\) for `theta_0`, which is different from a single-backtick block which expects no free variables and expands to a number. Here is an example of a custom equation mirror containing a custom parameter `phi`",
+      "supportedFunctions": "Although you can use any math.js syntax and operations in variables and single-backtick blocks, for double-backtick blocks, only the math.js counterparts of the constants, operators, and functions supported by the equation input of the target object are allowed (see the info box of the target object). You can use custom functions defined in the `vars` array, but the function definitions must ultimately consist of those allowed operations.",
+      "implicitMultiplication": "Implicit multiplication (e.g. `2x`) is also not allowed in this context, due to its ill-defined operator precedence in math.js. Please always use the `*` operator explicitly (e.g. `2*x`)."
     },
     "objsWithShapeParam": {
       "title": "Objects with built-in shape parametrization",

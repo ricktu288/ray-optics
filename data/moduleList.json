@@ -15,7 +15,19 @@
         ]
       },
       {
+        "id": "CoatedLens",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
         "id": "CircleSource",
+        "contributors": [
+          "Yi-Ting Tu"
+        ]
+      },
+      {
+        "id": "EllipticalMirror",
         "contributors": [
           "Yi-Ting Tu"
         ]

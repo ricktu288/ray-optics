@@ -38,6 +38,7 @@ export function evaluateLatex(latex) {
     .replaceAll("\\operatorname{arccosh}"," acosh")
     .replaceAll("\\operatorname{arctanh}"," atanh")
     .replaceAll("\\operatorname{floor}"," floor")
+    .replaceAll("\\operatorname{ceil}"," ceil")
     .replaceAll("\\operatorname{round}"," round")
     .replaceAll("\\operatorname{trunc}"," trunc")
     .replaceAll("\\operatorname{sign}"," sign")

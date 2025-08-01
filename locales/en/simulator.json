@@ -150,7 +150,7 @@
         "constants": "Supported constants",
         "operators": "Supported operators",
         "functions": "Supported functions",
-        "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules -> Make custom modules for more information."
+        "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules for more information."
       },
       "imageDetectionWarning": "This tool does not support image detection.",
       "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
@@ -314,7 +314,7 @@
         "otherParams": "Other parameters of the incident rays that can be used are {{lambda}} (wavelength in nm) and {{p}} (0 for s-polarized, 1 for p-polarized). They remain the same for the outgoing rays.",
         "coating": "This object can act as a coating of glass objects by overlapping with their surfaces. In this case, the refraction itself also needs to be handled by the formulas of this object. The refractive indices of the material attached to the same and opposite sides of the incident ray can be referred to as {{n_0}} and {{n_1}}, respectively. If this object is inside a glass object, the values are relative to it.",
         "twoSides": "If you want the two sides of this surface to have different formulas, you can overlap two single-sided surfaces with opposite orientations.",
-        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules -> Make custom modules for more information."
+        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules for more information."
       },
       "twoSided": "Two-sided",
       "addOutgoingRay": "Add outgoing ray",
@@ -343,7 +343,8 @@
       "variableRangeError": "Error parsing variable range \"{{str}}\" with parameters {{params}}: {{error}}",
       "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
       "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}",
-      "variableDefinitionError": "Error evaluating variable definitions with parameters {{params}}: {{error}}"
+      "variableDefinitionError": "Error evaluating variable definitions with parameters {{params}}: {{error}}",
+      "unclosedMathBlock": "Unclosed math block: {{str}}"
     },
     "Handle": {
       "handle": "Handle",

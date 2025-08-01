@@ -153,9 +153,7 @@
       "context": "Definições de variáveis tem acesso total a todos os parâmetros e coordenadas de ponto de controle, e, uma vez definidas, essas variáveis podem ser usadas em modelos de objeto assim como parâmetros e coordenadas de ponto de controle, possibilitndo cálculos mais complexos e reutilizáveis."
     },
     "objsWithEqn": {
-      "title": "Objetos com equações personalizadas inclusas",
-      "description": "Para objetos que já tem entrada de equação personalizada (como Espelho -> Equação Personalizada), a propriedade da equação no JSON é uma string representando uma equação LaTeX, ao invés de uma expressão math.js. Para incluir parâmetros personalizados na equação, você deve usar a mesma sintaxe modelo como se a equação LaTeX fosse um texto normal. Então a parte cercada pelos acentos graves está na expressão math.js, enquanto a parte fora está em LaTeX. Os parâmetros do módulo só podem ser acessados na parte math.js, e as variáveis independentes da equação personalizada, (ex.: \\(x\\)) só podem ser acessadas na parte LaTeX. Aqui está um exemplo gerando um espelho com a equação \\(y=\\cos(2\\pi x+\\phi)\\), onde \\(\\phi\\) é um parâmetro do módulo",
-      "future": "No futuro, talvez exista uma maneira de unificar a entrada da equação."
+      "title": "Objetos com equações personalizadas inclusas"
     },
     "objsWithShapeParam": {
       "title": "Objetos com parametrização de forma inclusa",

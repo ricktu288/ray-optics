@@ -1,0 +1,87 @@
+{
+  "version": 5,
+  "modules": {
+    "EllipticalMirror": {
+      "numPoints": 2,
+      "params": [
+        "a=50:1:1000:200",
+        "tMin=-pi:0.01:0: 0",
+        "tMax=0:0.01:pi: pi",
+        "tStep=0.01:0.001:0.1:0.01"
+      ],
+      "vars": [
+        "dx = x_2 - x_1",
+        "dy = y_2 - y_1",
+        "c = sqrt(dx^2 + dy^2)/2",
+        "theta = atan2(dy, dx)",
+        "b = sqrt(a^2 - c^2)",
+        "x_c = (x_1 + x_2)/2",
+        "y_c = (y_1 + y_2)/2"
+      ],
+      "objs": [
+        {
+          "type": "ParamMirror",
+          "pieces": [
+            {
+              "eqnX": "``x_c + a*cos(t)*cos(theta) - b*sin(t)*sin(theta)``",
+              "eqnY": "``y_c + a*cos(t)*sin(theta) + b*sin(t)*cos(theta)``",
+              "tMin": "`tMin`",
+              "tMax": "`tMax`",
+              "tStep": "`tStep`"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "EllipticalMirror",
+      "points": [
+        {
+          "x": 740,
+          "y": 420
+        },
+        {
+          "x": 620,
+          "y": 420
+        }
+      ],
+      "params": {
+        "a": 100,
+        "tMin": -0.001592653589793,
+        "tMax": 3.14,
+        "tStep": 0.01
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 560,
+        "y": 270
+      },
+      "p4": {
+        "x": 800,
+        "y": 510
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 620,
+        "y": 420
+      },
+      "p2": {
+        "x": 620,
+        "y": 380
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "scale": 0.8666666666666667,
+  "name": "EllipticalMirror"
+}

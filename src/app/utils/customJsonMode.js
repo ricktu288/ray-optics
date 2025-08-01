@@ -28,7 +28,13 @@ const CustomJsonHighlightRules = function() {
     
     // Highlight text between backticks in strings (for math.js expression in an object template)
     if (this.$rules.string) {
+        // Handle double backticks first (higher precedence)
         this.$rules.string.unshift({
+            token: ["string", "support.function", "string"], 
+            regex: /(``)(.*?)(``)/
+        });
+        // Then handle single backticks
+        this.$rules.string.push({
             token: ["string", "support.function", "string"], 
             regex: /(`)(.*?)(`)/
         });
