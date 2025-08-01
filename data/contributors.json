@@ -605,5 +605,17 @@
       ]
     },
     "firstCommit": "2025-07-24"
+  },
+  {
+    "name": "Savva",
+    "githubEmails": [
+      "savva_fokin@icloud.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ru"
+      ]
+    },
+    "firstCommit": "2025-07-30"
   }
 ]

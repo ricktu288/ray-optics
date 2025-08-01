@@ -112,11 +112,11 @@
       "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0)."
     },
     "CircleGrinGlass": {
-      "title": "Círculo com gradiente de índice",
+      "title": "Círculo GRIN",
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular."
     },
     "GrinGlass": {
-      "title": "Polígono de gradiente de índice",
+      "title": "Polígono GRIN",
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
       "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
       "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
@@ -175,6 +175,33 @@
     "moveView": {
       "title": "Mover Vista",
       "description": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)"
+    },
+    "ParamMirror": {
+      "title": "Curva Paramétrica",
+      "description": "Um espelho cuja forma é definida por equações paramétricas personalizadas."
+    },
+    "ParamGlass": {
+      "title": "Curva Paramétrica",
+      "description": "Vidro com a forma definida por equações paramétricas personalizadas."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva Paramétrica GRIN",
+      "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
+    },
+    "CustomSurface": {
+      "title": "Superfíce Personalizada de Linha",
+      "description": "Uma superfície personalizada de segmento de linha onde o ângulo (θ) e brilho(P) dos raios que saem (quando um raio incide na superfície) são definidos por equações personalizadas."
+    },
+    "CustomArcSurface": {
+      "title": "Superfície Personalizada em Arco",
+      "description": "Uma superfície personalizada em formato de arco circular."
+    },
+    "CustomParamSurface": {
+      "title": "Curva Paramétrica Personalizada",
+      "description": "Uma superfície personalizada com forma definida por equações paramétricas."
+    },
+    "moreTools": {
+      "title": "Mais Ferramentas…"
     }
   },
   "view": {

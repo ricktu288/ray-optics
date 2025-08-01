@@ -134,7 +134,7 @@
       "title": "Pozorna głębokość",
       "description": "Kiedy patrzysz z powietrza na obiekt pod wodą, głębokość na jakiej się znajduje wydaje się być mniejsza niż w rzeczywistości. Złudzenie to jest spowodowane załamaniem światła i zostało zademonstrowane w tej symulacji. Pozorna głębokość zależy od położenia obserwatora, co można zademonstrować, przeciągając niebieskie kółko.",
       "observedimageorange": "obserwowany obraz (pomarańczowy)",
-      "observer": "obserwator",
+      "observer": "Obserwator",
       "objectunderwatergree": "obiekt pod wodą (zielony)"
     },
     "bendedPencil": {
@@ -242,7 +242,7 @@
     "fresnelLens": {
       "title": "Soczewka Fresnela",
       "description": "Jest to symulacja i porównanie soczewki sferycznej i soczewki Fresnela. Łatwo zauważyć jedną z zalet soczewki Fresnela: działa ona podobnie jak zwykła soczewka sferyczna, a jednocześnie zajmuje znacznie mniej miejsca - a co za tym idzie - mniej waży.",
-      "thisfresnellensismad": "Ta soczewka Fresnela jest wykonana z poniższego szkła półkolistego.\nMożna wybrać soczewkę i dostosować parametr N_silce."
+      "thisfresnellensismad": "Ta soczewka Fresnela jest wykonana z poniższego szkła półkolistego.\nMożna wybrać soczewkę i dostosować parametr N_slice."
     },
     "zoomLens": {
       "title": "Obiektyw zmiennoogniskowy",
@@ -487,6 +487,39 @@
       "title": "Przykład modułu - parametryzacja kształtu",
       "alensdefinedbydr1r2": "Soczewka zdefiniowana przez d, R_1, R_2",
       "alensdefinedbydffdbf": "Soczewka zdefiniowana przez d, FFD, BFD"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "Zniekształcenia w szybach i lusterkach wstecznych",
+      "description": "Podczas obserwacji obiektu przez szybę pod dużym kątem obraz pojawia się z przesunięciem i bliżej obserwatora niż powinien. Symulacja pokazuje ten efekt w przypadku grubej szyby i wstecznego lusterka. Oglądanie w trybie \"Wszystkie obrazy\" pokazuje, że punkty obrazu są w rzeczywistości łukami, więc w zależności od rozmiaru detektora obraz może być rozmyty.\n\nPo prawej stronie ramki można również zobaczyć wpływ klina na pozorny rozmiar.",
+      "source": "źródło",
+      "glass": "szyba",
+      "mirror": "lusterko",
+      "image": "obraz",
+      "observer3": "obserwator",
+      "window": "okno"
+    },
+    "virtualImageFormation": {
+      "title": "Powstawanie obrazu pozornego",
+      "description": "Jest to symulacja powstawania obrazu pozornego za pomocą soczewki skupiającej wraz z jego charakterystyką.",
+      "object2": "Przedmiot",
+      "converginglensf1000u": "Soczewka skupiająca (F=1000 jednostek)",
+      "virtualimagehighlyen": "Obraz pozorny\nDuże powiększenie\nPionowo/prosto"
+    },
+    "koehlerIllumination": {
+      "title": "Oświetlenie Koehlera",
+      "description": "Ta konfiguracja, wynaleziona w 1893 roku przez Augusta Köhlera, jest bardzo przydatna w przypadku każdego rodzaju mikroskopii. Zapewnia jednorodne oświetlenie próbki z dowolnego niejednorodnego źródła światła. Obraz źródła oświetlenia (np. żarnika lampy) nie jest zatem widoczny na próbce. Dwie przysłony mogą być używane do zmiany natężenia i apertury numerycznej (NA) lub pola widzenia oświetlenia. Druga przysłona jest szczególnie korzystna, ponieważ można ją zamknąć, aby ustawić ostrość próbki. Jeśli krawędzie przysłony są ostre, próbka również jest ostra. Jest to również określane jako konfiguracja 4f, ponieważ stosuje cztery ogniskowe w odległości.",
+      "spatiallyextendedand": "przestrzennie rozciągnięte i\nniejednorodne źródło światła",
+      "fieldlens": "soczewka polowa",
+      "condensorlens": "soczewka kondensora",
+      "objectivelens": "soczewka obiektywu",
+      "sample": "próbka",
+      "aperture1changesinte": "apertura 1\nzmiany\nnatężenie, NA",
+      "aperture2changesfiel": "apertura 2\nzmiany\npole widzenia",
+      "sampleisnowilluminat": "próbka jest teraz\noświetlona równomiernie",
+      "collectorlens": "soczewka kolektora"
+    },
+    "moduleExampleVariables": {
+      "title": "Przykład modułu – zmienne"
     }
   }
 }

@@ -98,7 +98,9 @@
     "opening": {
       "description": "Ten poradnik poprowadzi Cię przez podstawy tworzenia niestandardowego modułu, który można wykonać w całości w aplikacji internetowej, bez potrzeby korzystania z zewnętrznego środowiska programistycznego.",
       "moduleIntroduction": "Funkcja \"Moduł\" w Symulacji Promieni optycznych umożliwia tworzenie modułowych kombinacji obiektów z niestandardowymi parametrami, niestandardowymi punktami kontrolnymi i tablicami obiektów. Funkcja ta rozszerza możliwości tego symulatora poprzez łączenie, specjalizację lub reparametryzację obiektów utworzonych przez istniejące narzędzia w celu stworzenia nowych narzędzi. Na przykład moduł `CircleSource` (patrz Narzędzia -> Inne -> Importuj moduły) łączy szereg źródeł punktowych utworzonych przez istniejące narzędzie \"Źródło punktowe (<360°)\" wzdłuż okręgu, aby utworzyć narzędzie \"Źródło kołowe\", które nie istniało w symulatorze. Moduł `FresnelLens` specjalizuje narzędzie \"Szkła-> Równanie niestandardowe\", dzięki czemu równanie reprezentuje określoną krzywą soczewki Fresnela sparametryzowaną przez liczbę pierścieni, tworząc w ten sposób wyspecjalizowane narzędzie \"Soczewka Fresnela\", które również nie istniało wcześniej. Oprócz tworzenia nowych narzędzi, funkcja ta może również sprawić, że niektóre demonstracje optyki będą bardziej interaktywne. Na przykład, przeciągając trzeci punkt kontrolny modułu `BeamExpander`, można bezpośrednio zobaczyć, jak położenie wspólnego ogniska dwóch soczewek wpływa na szerokość wiązki, bez konieczności indywidualnego dostosowywania ogniskowych każdej z nich.",
-      "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu."
+      "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.",
+      "compareWithIntegrations": "Z drugiej strony, jeśli Twój przypadek wymaga skomplikowanego programowania (takiego jak tworzenie animacji, stosowanie skomplikowanych algorytmów do rozmieszczania elementów optycznych lub przeprowadzanie analizy map natężenia oświetlenia), użyj zamiast tego [narzędzi integracyjnych](/integrations) i napisz skrypty, np. w Pythonie lub Julii.",
+      "contribute": "Możesz [wspomóc listę swoich modułów „Importuj moduły”](/contributing/modules), jeśli uważasz, że są przydatne dla innych, nawet jeśli są vibecoding!"
     },
     "jsonEditor": {
       "title": "Wbudowany edytor JSON",
@@ -144,6 +146,18 @@
     "objsWithShapeParam": {
       "title": "Obiekty z wbudowaną parametryzacją kształtu",
       "description": "Dla obiektów, które już obsługują różne sposoby definiowania swojego kształtu (obecnie tylko Szkła -> Soczewka sferyczna). Istnieje specjalna składnia JSON dla takich obiektów, która może być użyta w definicji modułu, nawet jeśli są one zawsze zdefiniowane przez kształt w tablicy `objs` najwyższego poziomu. Oto przykład"
+    },
+    "aiAssistant": {
+      "title": "Korzystanie z asystenta AI",
+      "description": "[Ray Optics Coder](/ai-tools/chatgpt) w ChatGPT pomoże Ci pisać moduły Ray Optics. Generuje on kod JSON dla sceny zawierającej moduł na podstawie Twojego opisu, a następnie możesz skopiować ten kod do edytora JSON (patrz poniżej). Możesz go również użyć do edycji istniejących modułów lub modularyzacji scen.",
+      "limitation": "Kod wygenerowany przez chatbota może nie działać bezpośrednio. W przypadku wystąpienia błędu, skopiowanie i wklejenie komunikatu o błędzie do chatbota może pomóc. W przypadku bardziej skomplikowanych modułów, warto przeczytać poniższy samouczek i napisać kod przynajmniej częściowo samodzielnie.",
+      "otherServices": "Pliki z instrukcjami i wiedzą dla chatbota są dostępne [tutaj](/ai-tools/instructions). Jeśli wolisz inną usługę LLM, możesz udostępnić te pliki, aby nauczyć go pisania modułów Ray Optics."
+    },
+    "variables": {
+      "title": "Używanie zmiennych",
+      "lookAtExample": "Możesz definiować zmienne i funkcje matematyczne, których można używać w całym module. Spójrzmy na przykład",
+      "varsArray": "`modules.ModuleName.vars` to tablica ciągów znaków, z których każdy reprezentuje instrukcję math.js definiującą zmienną lub funkcję. Definicje te są przetwarzane sekwencyjnie, więc późniejsze definicje mogą odwoływać się do wcześniejszych.",
+      "context": "Definicje zmiennych mają pełny dostęp do wszystkich parametrów i współrzędnych punktów kontrolnych, a po zdefiniowaniu zmienne te mogą być używane w szablonach obiektów, podobnie jak parametry i współrzędne punktów kontrolnych, umożliwiając bardziej złożone obliczenia wielokrotnego użytku."
     }
   }
 }
