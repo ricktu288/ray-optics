@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import * as sceneObjs from './sceneObjs.js';
+import Scene from './Scene.js';
+
 const scene_update = {
   "rayDensity_light": "rayModeDensity",
   "rayDensity_images": "imageModeDensity",
@@ -270,17 +273,29 @@ export function versionUpdate(jsonData) {
     }
     updateProperties(jsonData);
 
-    // Remove temporary data in detector
+    // Remove all unknown scene keys
+    const knownKeys = ['version', 'name', 'objs', 'backgroundImage', ...Object.keys(Scene.serializableDefaults)];
+    for (let key in jsonData) {
+      if (!knownKeys.includes(key)) {
+        delete jsonData[key];
+      }
+    }
+
+    // Remove all objects with unknown type
+    jsonData.objs = jsonData.objs.filter(objData => {
+      return objData.type in sceneObjs;
+    });
+
+    // Remove all object properties not in the serializableDefaults
     jsonData.objs = jsonData.objs.map(objData => {
-      if (objData.type === "Detector") {
-        delete objData.power;
-        delete objData.normal;
-        delete objData.shear;
-        delete objData.binData;
+      const knownKeys = ['type', ...Object.keys(sceneObjs[objData.type].serializableDefaults)];
+      for (let key in objData) {
+        if (!knownKeys.includes(key)) {
+          delete objData[key];
+        }
       }
       return objData;
     });
-
 
     // Data version number 3 and 4 do not exist since app version 3.x and 4.x do not change the data format. The next app release will be called version 5.0 so the data version number is updated to 5 to match the app version. Starting from this version, the data version number will always match the app version major number.
     jsonData.version = 5;
