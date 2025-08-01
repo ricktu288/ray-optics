@@ -144,16 +144,18 @@ class ModuleObj extends BaseSceneObj {
       this.objs[i].draw(canvasRenderer, isAboveLight, isHovered);
     }
 
-    // Draw the control points
-    ctx.lineWidth = 1 * ls;
-    for (let point of this.points) {
-      ctx.beginPath();
-      ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
-      ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
-      ctx.stroke();
+    // Draw the control points if not nested in another module
+    if (!this.isInModule) {
+      ctx.lineWidth = 1 * ls;
+      for (let point of this.points) {
+        ctx.beginPath();
+        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+        ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
+        ctx.stroke();
+      }
     }
   }
 
@@ -599,6 +601,7 @@ class ModuleObj extends BaseSceneObj {
           return;
         }
         this.objs.push(new sceneObjs[objData.type](this.scene, objData));
+        this.objs[this.objs.length - 1].isInModule = true;
       }
     } catch (e) {
       this.error = e;
@@ -612,6 +615,7 @@ class ModuleObj extends BaseSceneObj {
     // Remove the module object and add the expanded objects to the scene
     this.scene.removeObj(this.scene.objs.indexOf(this));
     for (let obj of this.objs) {
+      obj.isInModule = false;
       this.scene.objs.push(obj);
       if (this.scene.editor) {
         this.scene.editor.selectObj(-1);
