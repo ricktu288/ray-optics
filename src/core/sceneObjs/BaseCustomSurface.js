@@ -319,12 +319,14 @@ class BaseCustomSurface extends BaseSceneObj {
     const self = this;
 
     function replaceVariables(fn) {
-      let fn2 = fn.replaceAll("\\theta_0", "(theta0)").replaceAll("P_0", "(P0)").replaceAll("\\lambda", "(lambda)").replaceAll("n_0", "(n0)").replaceAll("n_1", "(n1)");
+      let fn2 = fn.replaceAll("\\theta_0", "(theta0)").replaceAll("\\theta_{0}", "(theta0)").replaceAll("P_0", "(P0)").replaceAll("P_{0}", "(P0)").replaceAll("\\lambda", "(lambda)").replaceAll("n_0", "(n0)").replaceAll("n_{0}", "(n0)").replaceAll("n_1", "(n1)").replaceAll("n_{1}", "(n1)");
       
       // Replace \\theta_i and I_i where i is from 1 to the number of outgoing rays
-      for (let i = self.outRays.length; i >= 1; i--) {
-        // Backward to prevent \\theta_10 from being replaced as (theta1)0
-        fn2 = fn2.replaceAll(`\\theta_${i}`, `(theta${i})`).replaceAll(`P_${i}`, `(P${i})`);
+      for (let i = 0; i < self.outRays.length; i++) {
+        if (i+1 < 10) {
+          fn2 = fn2.replaceAll(`\\theta_${i+1}`, `(theta${i+1})`).replaceAll(`P_${i+1}`, `(P${i+1})`);
+        }
+        fn2 = fn2.replaceAll(`\\theta_{${i+1}}`, `(theta${i+1})`).replaceAll(`P_{${i+1}}`, `(P${i+1})`);
       }
       return fn2;
     }

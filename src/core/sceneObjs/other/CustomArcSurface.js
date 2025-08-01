@@ -513,6 +513,16 @@ class CustomArcSurface extends BaseCustomSurface {
             y: center.y - rp_temp[i].y 
           };
           
+          var rayDirection = { 
+            x: ray.p2.x - ray.p1.x, 
+            y: ray.p2.y - ray.p1.y 
+          };
+          var dotProduct = rayDirection.x * normal.x + rayDirection.y * normal.y;
+          if (dotProduct > 0) {
+            normal.x = -normal.x;
+            normal.y = -normal.y;
+          }
+          
           validIntersections.push({
             point: rp_temp[i],
             distance: geometry.distanceSquared(ray.p1, rp_temp[i]),
