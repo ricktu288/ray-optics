@@ -357,7 +357,8 @@ function initAppService() {
           scene.cloneObj(editor.selectedObjIndex);
         }
 
-        simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        //simulator.updateSimulation(!scene.objs[editor.selectedObjIndex].constructor.isOptical, true);
+        simulator.updateSimulation(true, true); // Deliberately skip light, as the simulation result just after the cloning is usually meaningless and generates additional warnings that the user may not be interested in, as their next action is usually to move the objects apart.
         editor.onActionComplete();
       }
       return false;
@@ -592,6 +593,12 @@ function initAppService() {
   }, false);
 
   canvas.addEventListener('mousedown', function (e) {
+    document.activeElement.blur();
+    error = null;
+  }, false);
+
+  canvas.addEventListener('touchstart', function (e) {
+    document.activeElement.blur();
     error = null;
   }, false);
 

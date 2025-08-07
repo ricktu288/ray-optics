@@ -830,7 +830,7 @@ class Scene {
     const opticalObjs = this.opticalObjs;
   
     if (opticalObjs.length < 100) {
-      const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj));
+      const stringifiedObjs = opticalObjs.map(obj => JSON.stringify(obj.serialize()));
       for (var i = 0; i < opticalObjs.length; i++) {
         for (var j = i + 1; j < opticalObjs.length; j++) {
           if (stringifiedObjs[i] == stringifiedObjs[j]) {

@@ -296,7 +296,7 @@ class CustomArcSurface extends BaseCustomSurface {
   }
 
   onConstructMouseMove(mouse, ctrl, shift) {
-    if (!this.p3 && !mouse.isOnPoint(this.p1)) {
+    if (!this.p3 && !mouse.snapsOnPoint(this.p1)) {
       if (shift) {
         this.p2 = mouse.getPosSnappedToDirection(this.constructionPoint, [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }]);
       } else {
@@ -314,11 +314,11 @@ class CustomArcSurface extends BaseCustomSurface {
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
-    if (this.p2 && !this.p3 && !mouse.isOnPoint(this.p1)) {
+    if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
       this.p3 = mouse.getPosSnappedToGrid();
       return;
     }
-    if (this.p3 && !mouse.isOnPoint(this.p2)) {
+    if (this.p3 && !mouse.snapsOnPoint(this.p2)) {
       this.p3 = mouse.getPosSnappedToGrid();
       delete this.constructionPoint;
       return {

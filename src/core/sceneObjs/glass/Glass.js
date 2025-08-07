@@ -242,7 +242,7 @@ class Glass extends BaseGlass {
         isDone: true
       };
     }
-    if (this.path.length > 3 && mouse.isOnPoint(this.path[0])) {
+    if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) {
       // Mouse released at the first point
       this.path.length--;
       this.notDone = false;
@@ -250,7 +250,7 @@ class Glass extends BaseGlass {
         isDone: true
       };
     }
-    if (this.path[this.path.length - 2] && !this.path[this.path.length - 2].arc && mouse.isOnPoint(this.path[this.path.length - 2])) {
+    if (this.path[this.path.length - 2] && !this.path[this.path.length - 2].arc && mouse.snapsOnPoint(this.path[this.path.length - 2])) {
       delete this.path[this.path.length - 1].arc;
     } else {
       const mousePos = mouse.getPosSnappedToGrid();
