@@ -1,0 +1,9 @@
+{
+  "modulesPage": {
+    "imported": "Importato",
+    "description": {
+      "makeNewTools": "La funzione \"Module\" consente di realizzare nuovi strumenti combinando, specializzando o riparametrizzando oggetti creati da strumenti esistenti in questo simulatore.",
+      "appearAsTools": "I moduli importati appariranno come strumenti nella categoria \"Altro\". Si prega di selezionare e fare clic sullo spazio vuoto in base all'ordine della sequenza del punto di controllo (vedere \"specificazione\")."
+    }
+  }
+}
