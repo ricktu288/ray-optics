@@ -107,7 +107,7 @@ const CurveObjMixin = Base => class extends Base {
     const points_in_curve = 4;  // number of points in a curve is constant, so no need to acquire it by referencing the current curve (e.g. below)
 
     // Apply rotation to all path and curve points in the object
-    for (let i = 0; j < points_in_curve; i++) {
+    for (let i = 0; i < points_in_curve; i++) {
       // Calculate the current difference for the current curve point
       cur_diff_x = this.curve.points[i].x - rotationCenter.x;
       cur_diff_y = this.curve.points[i].y - rotationCenter.y; 
