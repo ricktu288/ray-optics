@@ -137,6 +137,16 @@ const geometry = {
     return ret;
   },
 
+  /**
+   * Calculate the intersections of a line and a curve.
+   * @param {Line} l1
+   * @param {Bezier} c1
+   * @return {Point[]}
+   */
+  lineCurveIntersections: function (l1, c1) {
+    return c1.intersects(l1);
+  },
+
 
   /**
    * Test if a point on the extension of a ray is actually on the ray.
@@ -157,6 +167,65 @@ const geometry = {
    */
   intersectionIsOnSegment: function (p1, s1) {
     return (p1.x - s1.p1.x) * (s1.p2.x - s1.p1.x) + (p1.y - s1.p1.y) * (s1.p2.y - s1.p1.y) >= 0 && (p1.x - s1.p2.x) * (s1.p1.x - s1.p2.x) + (p1.y - s1.p2.y) * (s1.p1.y - s1.p2.y) >= 0;
+  },
+
+  /**
+   * Test if a point on the extension of a curve is actually on the curve.
+   * @param {Point} p1
+   * @param {Bezier} curve
+   * @return {Boolean}
+   */
+  intersectionIsOnCurve: function (p1, curve, threshold) {
+    var bbox = curve.bbox();
+    var proj = curve.get(curve.project(geometry.point(p1.x, p1.y)).t);
+    /*if (p1.x) {
+      console.log("IoC projection:" + proj.x + "," + proj.y);
+      console.log("IoC point:" + p1.x + "," + p1.y);
+    }*/
+
+    return geometry.distance(geometry.point(proj.x, proj.y), p1) < threshold;
+  },
+
+  /**
+   * Scale the ray based on the bounding box of the curve.
+   * @param {Line} r1
+   * @param {Bezier} curve
+   * @return {Line} - Returns the vector pointing from r1.p1 to the farthest point on the curve's bounding box.
+   */
+  scaleRayForCurve: function (r1, curve) {
+    var bbox = curve.bbox();
+
+    // Offset each line from 0,0 by r1.p1
+    bbox.x.min -= r1.p1.x;
+    bbox.x.max -= r1.p1.x;
+    bbox.y.min -= r1.p1.y;
+    bbox.y.max -= r1.p1.y;
+
+    // Get vector (as a point) pointing from r1.p1 to r1.p2
+    var v1 = geometry.point(r1.p2.x - r1.p1.x, r1.p2.y - r1.p1.y);
+
+    // Figure out which bounding box corner is farthest from r1.p1 based on what quadrant v1 is in after offsetting by p1
+    var farthest = { x: Infinity, y: Infinity };
+    if (Math.abs(bbox.x.min) > Math.abs(bbox.x.max)) {
+      farthest.x = bbox.x.min;
+    } else {
+      farthest.x = bbox.x.max;
+    }
+    if (Math.abs(bbox.y.min) > Math.abs(bbox.y.max)) {
+      farthest.y = bbox.y.min;
+    } else {
+      farthest.y = bbox.y.max;
+    }
+
+    // Get distance between p1 and farthest point
+    var dist = Math.sqrt(farthest.x ** 2 + farthest.y ** 2);
+    
+    // Normalize v1 then scale it by dist
+    var len_v1 = Math.sqrt(v1.x ** 2 + v1.y ** 2);
+    v1.x = (v1.x / len_v1) * dist * 1.001;
+    v1.y = (v1.y / len_v1) * dist * 1.001;
+
+    return geometry.line(r1.p1, geometry.point(v1.x + r1.p1.x, v1.y + r1.p1.y));
   },
 
   /**
@@ -252,6 +321,30 @@ const geometry = {
     var dx = l1.p2.x - l1.p1.x;
     var dy = l1.p2.y - l1.p1.y;
     return geometry.line(p1, geometry.point(p1.x + dx, p1.y + dy));
+  },
+
+  /**
+   * Normalize the given point as if it were a vector.
+   * @param {Point} p1
+   * @return {Point}
+   */
+  normalizeVec: function(p1) {
+    var len = geometry.distance(geometry.point(0, 0), p1);
+
+    return geometry.point(p1.x / len, p1.y / len);
+  },
+
+  /**
+   * Rotate the given point as if it were a vector by the given angle in radians.
+   * @param {Point} p1
+   * @return {Point}
+   */
+  rotateVec: function(p1, angle) {
+    // Rotate by the rotation matrix
+    return {
+      x: p1.x * Math.cos(angle) - p1.y * Math.sin(angle),
+      y: p1.x * Math.sin(angle) + p1.y * Math.cos(angle)
+    }
   }
 };
 
