@@ -166,6 +166,9 @@
         "pieceError": "Error at piece {{pieceIndex}}, t={{t}}: {{error}}"
       }
     },
+    "CurveObjMixin": {
+      "displayControlPoints": "Display control points"
+    },
     "Beam": {
       "imageDetectionWarning": "Image detection may not work with divergent/random beams."
     },
