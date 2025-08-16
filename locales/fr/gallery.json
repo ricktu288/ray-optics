@@ -7,20 +7,22 @@
       "refraction": "Réfraction",
       "lens": "Lentilles",
       "combinationOfLenses": "Combinaison de Lentilles",
-      "grinOptics": "Gradient d'indices optiques",
+      "grinOptics": "Optique à gradient d'indice",
       "miscellaneous": "Divers"
     },
     "contributors_one": "Contributeur : {{contributors}}",
     "contributors_many": "Contributeurs : {{contributors}}",
     "contributors_other": "Contributeurs : {{contributors}}",
-    "openInSimulator": "Ouvrir dans le Simulateur"
+    "openInSimulator": "Ouvrir dans le Simulateur",
+    "description": "Vous trouverez ici une collection de simulations crées utilisant l'[application web](/simulator), qui peuvent être utilisées comme des démonstrations interactives d'optique. Vous êtes les bienvenus pour créer de nouveaux éléments. Lisez le [guide du contributeur](/contributing/gallery) pour plus d'informations. Pour signaler une erreur, veuillez [ouvrir une Issue sur GitHub](/github/issues) ou envoyer un mail à [ray-optics@phydemo.app](/email)."
   },
   "galleryData": {
     "common": {
       "warningthesequenceof": "Attention : La séquence lumineuse qui apparait ne représente pas la véritable vitesse de la lumière - seulement l'image finale est représentative."
     },
     "imagesFormedByTwoMirrors": {
-      "title": "Images provenant de deux miroirs"
+      "title": "Images provenant de deux miroirs",
+      "description": "Cette simulation montre les images formées par deux miroirs. Le \"L\" vert est l'objet. Si l'angle entre les deux miroirs est \\(\\frac{360^\\circ}{n}\\), alors \\(n-1\\) images virtuelles (les \"L\" oranges) font être formées. Vous pouvez déplacer les extrémités des miroirs pour modifier les angles entre eux."
     },
     "parabolicMirror": {
       "title": "Miroir Parabolique",
@@ -28,10 +30,14 @@
     },
     "hyperbolicMirror": {
       "title": "Miroir Hyperbolique",
-      "theorangeraysareimag": "Les rayons oranges sont une extension imaginaire à partir des réflexions des rayons jaunes.\nCes rayons imaginaires convergent vers l'autre point focal."
+      "theorangeraysareimag": "Les rayons oranges sont une extension imaginaire des réflexions des rayons jaunes.\nCes rayons imaginaires convergent vers l'autre point focal.",
+      "description": "Ceci est une démonstration des propriétés de réflexion d'un miroir hyperbolique : les rayons lumineux se propageant d'un foyer vers le miroir hyperbolique vont être réfléchis à l'opposé de l'autre foyer.\n\nLes deux foyers de l'hyperbole sont des points aplanétiques (voir [Points aplanétiques](/gallery/aplanatic-points)).",
+      "pointlightsourceaton": "Source ponctuelle à un point focal"
     },
     "periscope": {
-      "observerseyenottosca": "Œil de l'observateur (pas à l'échelle)"
+      "observerseyenottosca": "Œil de l'observateur (pas à l'échelle)",
+      "title": "Périscope",
+      "description": "Ceci est une simulation d'un périscope fait de deux miroirs plans et de bloqueurs."
     },
     "newtonianTelescope": {
       "title": "Télescope de Newton",
@@ -88,6 +94,13 @@
     },
     "koehlerIllumination": {
       "sample": "Echantillon"
+    },
+    "retroreflectors": {
+      "title": "Systèmes rétroréfléchissants",
+      "description": "Ceci est une simulation de deux types de systèmes rétroréfléchissants :\n\n1. Catadioptre.\n2. Œil-de-chat.",
+      "dragtorotatethebeam": "Cliquez-déplacez pour\npivoter le faisceau",
+      "catseyeretroreflecto": "Rétroréflecteur à œil-de-chat",
+      "cornerretroreflector": "Rétroréflecteur catadioptrique"
     }
   }
 }
