@@ -179,6 +179,13 @@
         :layout="layout"
       />
       <ToolItem
+        id="CurveGlass"
+        :title="$t('main:tools.CurveGlass.title')"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
+        popoverImage="CurveGlass.svg"
+        :layout="layout"
+      />
+      <ToolItem
         id="CircleGrinGlass"
         :title="$t('main:tools.CircleGrinGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CircleGrinGlass.description'), sub: $t('main:tools.common.circleInstruction')})"
