@@ -119,6 +119,11 @@
       "title": "Parametric Curve",
       "description": "Glass with the shape defined by custom parametric equations."
     },
+    "CurveGlass": {
+      "title": "Cubic Bezier curves",
+      "description": "Glass bounded by cubic Bezier curves.",
+      "instruction": "Click to create a segment, click on the starting point when finish drawing. Click and drag the boxes to manipulate the control points, changing the curve."
+    },
     "CircleGrinGlass": {
       "title": "GRIN Circle",
       "description": "Glass with a custom refractive index function n(x,y) and a circular boundary."
