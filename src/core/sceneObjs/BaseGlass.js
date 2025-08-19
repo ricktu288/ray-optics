@@ -167,6 +167,13 @@ class BaseGlass extends BaseSceneObj {
       }
     }
 
+    // Negative modifier for working with negative indices of refraction
+    var mod_neg = false;
+    if (n1 < 0) {
+      n1 = -n1;     // Flip n1 for compatibility with the following equations
+      mod_neg = true;
+    }
+
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     var normal_x = normal.x / normal_len;
     var normal_y = normal.y / normal_len;
@@ -225,6 +232,16 @@ class BaseGlass extends BaseSceneObj {
       }
 
       // Handle the refracted ray
+
+      // Handle negative refractive index
+      if (mod_neg) {
+        // Restore n1
+        n1 = -n1;
+
+        // Flip sign of cos2
+        cos2 = Math.cos(2 * Math.PI - Math.acos(cos2));
+      }
+      
       ray.p1 = incidentPoint;
       ray.p2 = geometry.point(incidentPoint.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, incidentPoint.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);
