@@ -29,6 +29,7 @@ import { Bezier } from 'bezier-js';
  * @memberof sceneObjs
  * @property {Array<object>} path - The path of the glass, connecting each curve. Each element is an object with `x` and `y` properties for coordinates.
  * @property {Array<object>} curves - The curves connected in series along the path. Each element is an object represented by a `Bezier` object whose points (a_1, c_1, c_2, a_2) may be acquired via `object_name.points`. Any modification to these points requires creation of a new `Bezier` object defined by those points (e.g. `new Bezier(a_1, c_1, c_2, a_2)`).
+ * @property {Array<object>} bboxes - Bounding boxes of the curves. Calculated and stored whenever a curve is created. Used to prevent unnecesary recalculation of bounding boxes of curves.
  * @property {boolean} notDone - Whether the user is still drawing the path of the glass.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
@@ -54,8 +55,9 @@ class CurveGlass extends BaseGlass {
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
 
-    // Initialize curves and path
+    // Initialize curves and bboxes
     this.curves = [];
+    this.bboxes = [];
 
     // Add toggle switch for whether or not to display control points and the lines which connect them to anchor points
     this.displayControlPoints = true;
@@ -72,12 +74,15 @@ class CurveGlass extends BaseGlass {
       // Go through each of the curves in the current lens
       for (let curCurve = 0; curCurve < jsonObj.points.length; curCurve++) {
         // The first point is the first anchor point, the second two control points, and the first of the next curve the last anchor point
-        this.curves.push(new Bezier(
-          jsonObj.points[curCurve].a1, 
-          jsonObj.points[curCurve].c1, 
-          jsonObj.points[curCurve].c2, 
-          jsonObj.points[(curCurve + 1) % jsonObj.points.length].a1
-        ));
+        this.newCurve(
+          [ 
+            jsonObj.points[curCurve].a1, 
+            jsonObj.points[curCurve].c1, 
+            jsonObj.points[curCurve].c2, 
+            jsonObj.points[(curCurve + 1) % jsonObj.points.length].a1
+          ], 
+          -1
+        );
       }
       //  this.curLens++;
       //}
@@ -177,7 +182,7 @@ class CurveGlass extends BaseGlass {
         this.curves[i].points[j].y += diffY;
       }
       //this.curves[i].update();
-      this.curves[i] = new Bezier(this.curves[i].points);
+      this.newCurve(this.curves[i].points, i);
     }
   }
 
@@ -209,7 +214,7 @@ class CurveGlass extends BaseGlass {
       }
 
       // Update the current curve
-      this.curves[i] = new Bezier(this.curves[i].points);
+      this.newCurve(this.curves[i].points, i);
     }
     
     return true;
@@ -237,7 +242,7 @@ class CurveGlass extends BaseGlass {
       }
 
       // Update the current curve
-      this.curves[i] = new Bezier(this.curves[i].points);
+      this.newCurve(this.curves[i].points, i);
     }
     
     return true;
@@ -269,8 +274,9 @@ class CurveGlass extends BaseGlass {
       // Initialize the construction stage
       this.notDone = true;
       
-      // Initialize path and curves
+      // Initialize path and curves and bboxes
       this.curves = [];
+      this.bboxes = [];
       this.path = [{ x: mousePos.x, y: mousePos.y }];
       //this.path = [];
       console.error(Math.round(this.path.length));
@@ -450,8 +456,8 @@ class CurveGlass extends BaseGlass {
           //this.curves[dragContext.index].update();
           //this.curves[curPrev].update();
 
-          this.curves[dragContext.index] = new Bezier(this.curves[dragContext.index].points);
-          this.curves[curPrev] = new Bezier(this.curves[curPrev].points);
+          this.newCurve(this.curves[dragContext.index].points, dragContext.index);
+          this.newCurve(this.curves[curPrev].points, curPrev);
 
          break;
       }
@@ -467,11 +473,8 @@ class CurveGlass extends BaseGlass {
       //this.curves[dragContext.index].update();
       //this.curves[curPrev].update();
 
-      console.error("A");
-      this.curves[dragContext.index] = new Bezier(this.curves[dragContext.index].points);
-      console.error("B");
-      this.curves[curPrev] = new Bezier(this.curves[curPrev].points);
-      console.error("C");
+      this.newCurve(this.curves[dragContext.index].points, dragContext.index);
+      this.newCurve(this.curves[curPrev].points, curPrev);
 
     }
 
@@ -486,7 +489,7 @@ class CurveGlass extends BaseGlass {
       this.curves[dragContext.index].points[dragContext.part - 1].y = mousePos.y;
       //this.curves[dragContext.index].update();
 
-      this.curves[dragContext.index] = new Bezier(this.curves[dragContext.index].points);
+      this.newCurve(this.curves[dragContext.index].points, dragContext.index);
 
       
       // Also handle any potential dependent curves
@@ -535,9 +538,6 @@ class CurveGlass extends BaseGlass {
   
   checkRayIntersects(ray) {
     if (this.notDone) return;
-    if (!this.fn_p) {
-      this.initFns();
-    }
     if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
     {
       this.rayLen = geometry.distance(ray.p1, ray.p2);
@@ -619,6 +619,164 @@ class CurveGlass extends BaseGlass {
 
       return s_point;
     }
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    try {
+      this.error = null;
+      console.log("TEST1");
+      //console.log("Checking incident...");
+      // If incidentPoint is not null, then that means that checkRayIntersects returned a non-null s_point, which can only be acquired for this object by there existing at least one intersection point. Hence we need not check if isOnBoundary, but instead whether or not incidentPoint is null.
+      //if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+      //if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(geometry.point(incidentPoint.x, incidentPoint.y))) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+      {
+        console.log("ray incident exists.");
+        var incidentData = this.getIncidentData(ray);
+        var incidentType = incidentData.incidentType;
+        if (incidentType == 1) {
+          // From inside to outside
+          var n1 = this.getRefIndexAt(incidentPoint, ray);
+          console.log("Incident type I");
+        } else if (incidentType == -1) {
+          // From outside to inside
+          var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+          console.log("Incident type II");
+        } else if (incidentType == 0) {
+          // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
+          var n1 = 1;
+          console.log("Incident type III");
+        } else {
+          // The situation that may cause bugs (e.g. incident on an edge point)
+          // To prevent shooting the ray to a wrong direction, absorb the ray
+          console.log("Incident type NULL");
+          return {
+            isAbsorbed: true,
+            isUndefinedBehavior: true
+          };
+        }
+        console.log(
+          "INCIDENT DATA:" + 
+          "\n\tNormal:\t" + incidentData.normal.x + ", " + incidentData.normal.y + 
+          "\n\tS_point:\t" + incidentData.s_point.x + ", " + incidentData.s_point.y + 
+          "\n\tN1:\t" + n1
+        );
+        return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
+      }
+    } catch (e) {
+      this.error = e.toString();
+      console.log(this.error);
+      return {
+        isAbsorbed: true,
+        isUndefinedBehavior: true
+      };
+    }
+  }
+
+  getIncidentType(ray) {
+    console.log("incidentType(" + ray + "):\t" + this.getIncidentData(ray).incidentType);
+    return this.getIncidentData(ray).incidentType;
+  }
+
+  isOutsideGlass(point) {
+    //console.log("isOutsideGlass(" + point + "):\t" + !this.isOnBoundary(point) && this.countIntersections(point) % 2 == 0);
+    return (!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 0)
+  }
+
+  isInsideGlass(point) {
+    console.log("isInsideGlass():\t" + String(!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 1) + "");
+    return (!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 1)
+  }
+  
+  isOnBoundary(p3) {
+    /* Old
+    for (let i = 0; i < this.path.length; i++) {
+      let p1 = this.path[i];
+      let p2 = this.path[(i + 1) % this.path.length];
+      let p1_p2 = geometry.point(p2.x - p1.x, p2.y - p1.y);
+      let p1_p3 = geometry.point(p3.x - p1.x, p3.y - p1.y);
+      if (geometry.cross(p1_p2, p1_p3) - this.intersectTol < 0 && geometry.cross(p1_p2, p1_p3) + this.intersectTol > 0) // if p1_p2 and p1_p3 are collinear
+      {
+        let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
+        let p1_p2_squared = geometry.distanceSquared(p1, p2);
+        if (p1_p2_squared - dot_p2_p3 + this.intersectTol >= 0 && dot_p2_p3 + this.intersectTol >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
+          return true;
+      }
+    }
+    return false;*/
+
+    // New (curve-oriented)
+    for (let i = 0; i < this.curves.length; i++) {
+      /*closestPoint = this.curves[i].get(this.curves[i].project(geometry.point(p3.x, p3.y)).t);
+      closestPoint = geometry.point(closestPoint.x, closestPoint.y);
+      console.log("CURVE " + i + ": Tolerance:" + this.intersectTol);
+      console.log("Closest point:\t" + closestPoint.x + ", " + closestPoint.y);
+      console.log("Point given:\t" + p3.x + ", " + p3.y);
+      console.log("Difference:\t" + (p3.x - closestPoint.x) + ", " + (p3.y - closestPoint.y));
+      console.log("Distance:\t" + geometry.distance(geometry.point(p3.x, p3.y), closestPoint));*/
+
+      /*
+      var rayVec = geometry.point(ray.p2.x - ray.p1.x, ray.p2.y - ray.p1.y);
+      var projection = this.curves[i].project(geometry.point(p3.x, p3.y));
+      // Get the normal, but rotated 90 degrees (due to how we want to use it); hence, get the normalized derivative
+      var normal = geometry.normalize(this.curves[i].derivative(projection.t));
+
+      // If the distance to the nearest point on the current curve from p3 is below the intersect tolerance threshold, p3 is on boundary
+      if (projection.d ** 2 <= this.intersectTol * (1 + Math.abs(geometry.dot(rayVec, geometry.point(normal.x, normal.y))) / (geometry.distance(ray.p1, ray.p2) * geometry.distance({x:0, y:0}, normal.x, normal.y))) ) {//(this.stepSize / this.rayLen)) {
+      */
+      
+
+      // New old
+
+      // First, check if the point is within the bounding box of the curve. This prevents unnecessary calculations of the projection
+      if (p3.x > this.bboxes[i].x.max || p3.x < this.bboxes[i].x.min || p3.y > this.bboxes[i].y.max || p3.y < this.bboxes[i].y.min) {
+        // Check how far away the nearest point on the curve to p3 is from p3
+        if (this.curves[i].project({ x: p3.x, y: p3.y }).d ** 2 <= this.intersectTol) {
+          console.log("INTERSECTION: " + this.curves[i].project({ x: p3.x, y: p3.y }).d + "");
+          return true;
+        }
+      }
+
+      // New
+      /*
+      // First, check if in bounding box. if not, we can skip the rest of the following calculations.
+      var bbox = this.curves[i].bbox();
+      if (p3.x > bbox.x.max || p3.x < bbox.x.min || p3.y > bbox.y.max || p3.y < bbox.y.min) {
+        continue;
+      }
+
+      var proj = this.curves[i].project(geometry.point(p3.x, p3.y));
+      var proj_point = this.curves[i].compute(proj.t); // Get the nearest point on the curve to p3
+
+      // Get the normalized derivative, tangent with the nearest point on the curve
+      var deriv_point = geometry.normalize(this.curves[i].derivative(proj.t));
+      deriv_point = geometry.point(-deriv_point.x, -deriv_point.y); // Flip it to have it point from far point to point on curve
+
+      // Translate the deriv point to be in the same coord space as proj_point
+      var deriv_point_translated = geometry.point(proj_point.x - deriv_point.x, proj_point.y - deriv_point.y);
+
+      // Get the point representing the vector pointing from the farthest point on the normalized derivative vector after translation to p3
+      var p1_p3 = geometry.normalize(geometry.point(p3.x - deriv_point_translated.y, p3.y - deriv_point_translated.y));
+
+      // Get the point representing the derivative vector pointing from its farthest point to the projection point from which it was derived, i.e. deriv_point rotated by pi radians
+      var p1_p2 = geometry.point(-deriv_point.x * 2, -deriv_point.y * 2);
+      console.log("DERIV POINT:\n" + deriv_point.x + ", " + deriv_point.y);
+      console.log("p1_p2:\n" + p1_p2.x + ", " + p1_p2.y);
+      console.log("p1_p3:\n" + p1_p3.x + ", " + p1_p3.y);
+      console.log("CROSS p1_p2 x p1_p3:\n" + geometry.cross(p1_p2, p1_p3));
+
+      // Use the old pre-existing boundary check using our new values calculated consideration of the use of curves
+      if (geometry.cross(p1_p2, p1_p3) - this.intersectTol < 0 && geometry.cross(p1_p2, p1_p3) + this.intersectTol > 0) // if p1_p2 and p1_p3 are collinear
+      {
+        var dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
+        console.log("DOT_P2_P3:\n" + dot_p2_p3);
+        var p1_p2_squared = geometry.distanceSquared(geometry.point(0, 0), deriv_point);
+        if (p1_p2_squared - dot_p2_p3 + this.intersectTol >= 0 && dot_p2_p3 - p1_p2_squared + this.intersectTol >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
+          console.log("INTERSECTION ON BOUND:\n" + p1_p2.x + ", " + p1_p2.y + "\n" + p1_p3.x + ", " + p1_p3.y);
+          return true;
+      }
+      */
+    }
+    return false;
   }
 
   /* Utility methods */
@@ -709,7 +867,7 @@ class CurveGlass extends BaseGlass {
     // Create one curve for each line
     for (var i = 0; i < this.path.length; i++) {
       curCtrlPts = this.generateDefaultControlPoints([ this.path[(i - 1 + this.path.length) % this.path.length], this.path[i], this.path[(i + 1) % this.path.length], this.path[(i + 2) % this.path.length] ]);
-      this.curves.push(new Bezier({ x: this.path[i].x, y: this.path[i].y }, { x: curCtrlPts[0].x, y: curCtrlPts[0].y }, { x: curCtrlPts[1].x, y: curCtrlPts[1].y }, { x: this.path[(i + 1) % this.path.length].x, y: this.path[(i + 1) % this.path.length].y }));
+      this.newCurve([{ x: this.path[i].x, y: this.path[i].y }, { x: curCtrlPts[0].x, y: curCtrlPts[0].y }, { x: curCtrlPts[1].x, y: curCtrlPts[1].y }, { x: this.path[(i + 1) % this.path.length].x, y: this.path[(i + 1) % this.path.length].y }]);
     }
     //this.polyBezier = new PolyBezier(this.curves);
   }
@@ -761,6 +919,23 @@ class CurveGlass extends BaseGlass {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
     ctx.fillRect(p1.x - 1.5 * ls, p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+  }
+
+  // Create new curve, set new bounding box
+  newCurve(pts, i) {
+    // Making complete new poly-Bezier curve (default behavior)
+    if (typeof i === "undefined" || i === -1) {
+      this.curves.push(new Bezier(pts));
+      this.bboxes.push(this.curves[this.curves.length - 1].bbox());
+
+      return this.curves[this.curves.length - 1];
+    } else {
+      // Otherwise, handle the given index
+      this.curves[i] = new Bezier(pts);
+      this.bboxes[i] = this.curves[i].bbox();
+
+      return this.curves[i];
+    }
   }
 };
 
