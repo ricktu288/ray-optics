@@ -269,35 +269,68 @@ class CurveGlass extends BaseGlass {
       // Initialize the construction stage
       this.notDone = true;
       
-      // Initialize path
+      // Initialize path and curves
+      this.curves = [];
       this.path = [{ x: mousePos.x, y: mousePos.y }];
-    }
+      //this.path = [];
+      console.error(Math.round(this.path.length));
+    } 
 
+    if (this.path.length > 0) {
+      // Check if clicked on first point in path of current lens
+      if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) {
+        // Clicked the first point
+        this.path.length--;   // Remove the ast one (removes the duplicate point at the end)
+        this.notDone = false;
+
+        this.generatePolyBezier();
+        //console.log(this.curves[0] instanceof Bezier);
+
+        // Reset path
+        //this.path = [];
+        //delete this.path;
+
+        return {
+          isDone: true
+        };
+      } else {
+        // Move the last point
+        this.path.push({ x: mousePos.x, y: mousePos.y });
+        //this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y };
+      }
+    }
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    if (!this.notDone) return { isDone: true };
+    const mousePos = mouse.getPosSnappedToGrid();
+    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    if (!this.notDone) return { isDone: true };
+    /*
     // Check if clicked on first point in path of current lens
     if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) { 
       // Clicked the first point
-      this.path.length--;
-      this.notDone = false;
 
       this.generatePolyBezier();
       //console.log(this.curves[0] instanceof Bezier);
 
       // Reset path
-      this.path = [];
-      delete this.path;
+      //this.path = [];
+      //delete this.path;
+      this.path.length--;
+      this.notDone = false;
 
       return {
         isDone: true
       };
     }
-
-    // Create a new point if continuing lens creation
-    this.path.push({ x: mousePos.x, y: mousePos.y });
-  }
-
-  onConstructMouseMove(mouse, ctrl, shift) {
     const mousePos = mouse.getPosSnappedToGrid();
-    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y }; // Move the last point
+    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y };   // Move last point
+    this.path[this.path.length] = { x: mousePos.x, y: mousePos.y };       // Create new point
+    */
   }
 
   onConstructUndo() {
@@ -676,7 +709,7 @@ class CurveGlass extends BaseGlass {
     // Create one curve for each line
     for (var i = 0; i < this.path.length; i++) {
       curCtrlPts = this.generateDefaultControlPoints([ this.path[(i - 1 + this.path.length) % this.path.length], this.path[i], this.path[(i + 1) % this.path.length], this.path[(i + 2) % this.path.length] ]);
-      this.curves.push(new Bezier(geometry.point(this.path[i].x, this.path[i].y), curCtrlPts[0], curCtrlPts[1], geometry.point(this.path[(i + 1) % this.path.length].x, this.path[(i + 1) % this.path.length].y)));
+      this.curves.push(new Bezier({ x: this.path[i].x, y: this.path[i].y }, { x: curCtrlPts[0].x, y: curCtrlPts[0].y }, { x: curCtrlPts[1].x, y: curCtrlPts[1].y }, { x: this.path[(i + 1) % this.path.length].x, y: this.path[(i + 1) % this.path.length].y }));
     }
     //this.polyBezier = new PolyBezier(this.curves);
   }
