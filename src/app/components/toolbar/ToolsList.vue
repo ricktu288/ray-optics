@@ -182,7 +182,7 @@
         id="CurveGlass"
         :title="$t('main:tools.CurveGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
-        popoverImage="CurveGlass.svg"
+        :verticalOffset="0"
         :layout="layout"
       />
       <ToolItem
