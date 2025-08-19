@@ -73,10 +73,10 @@ class CurveGlass extends BaseGlass {
       for (let curCurve = 0; curCurve < jsonObj.points.length; curCurve++) {
         // The first point is the first anchor point, the second two control points, and the first of the next curve the last anchor point
         this.curves.push(new Bezier(
-          jsonObj.points[curCurve][0], 
-          jsonObj.points[curCurve][1], 
-          jsonObj.points[curCurve][2], 
-          jsonObj.points[(curCurve + 1) % jsonObj.points.length][0], 
+          jsonObj.points[curCurve].a1, 
+          jsonObj.points[curCurve].c1, 
+          jsonObj.points[curCurve].c2, 
+          jsonObj.points[(curCurve + 1) % jsonObj.points.length].a1
         ));
       }
       //  this.curLens++;
@@ -95,10 +95,15 @@ class CurveGlass extends BaseGlass {
     if (this.curves) {
       jsonObj.points = this.curves.map(curve => {
         // Get the first three points of the curve
-        return JSON.parse(JSON.stringify(curve)).points.slice(0, 3).map(pts => {
+        const pts = JSON.parse(JSON.stringify(curve)).points.slice(0, 3).map(pts => {
           // Get only the x and y, not the t and d
           return geometry.point(pts.x, pts.y);
         });
+        return {
+          a1: pts[0],
+          c1: pts[1],
+          c2: pts[2]
+        };
       });
     } else {
       // Empty if no curves or in middle of construction
@@ -277,7 +282,10 @@ class CurveGlass extends BaseGlass {
       this.generatePolyBezier();
       //console.log(this.curves[0] instanceof Bezier);
 
-      //delete this.path;
+      // Reset path
+      this.path = [];
+      delete this.path;
+
       return {
         isDone: true
       };
@@ -309,6 +317,7 @@ class CurveGlass extends BaseGlass {
   checkMouseOver(mouse) {
     var dragContext = {};
     var curCurvePts = [];
+    var nextCurve = 0;
 
     const mousePos = mouse.getPosSnappedToGrid();
     dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
@@ -317,9 +326,26 @@ class CurveGlass extends BaseGlass {
     
     // Go thru each curve
     for (let c = 0; c < this.curves.length; c++) {
-      // Check if on one of the first 3 curve points
       curCurvePts = this.curves[c].points;
-      for (let i = 0; i < curCurvePts.length - 1; i++) {
+      // Handle path point separate from control points due to overlap with previous curve's final path point
+      if (mouse.isOnPoint(this.curves[c].points[0])) {// || mouse.isOnPoint(this.curves[(c - 1 + this.curves.length) % this.curves.length].points[3])) {
+        dragContext.part = 1;
+        dragContext.targetPoint = this.curves[c].points[0];
+        dragContext.index = c;
+        return dragContext;
+      }
+      /*nextCurve = (c + 1) % this.curves.length;
+      console.error("A");
+      if (mouse.isOnPoint(curCurvePts[3]) || mouse.isOnPoint(this.curves[nextCurve].points[0])) {
+        dragContext.part = 1;
+        console.error("B");
+        dragContext.targetPoint = curCurvePts[3];//this.curves[nextCurve].points[0];
+        dragContext.index = c;
+        return dragContext;
+      }*/
+
+      // Check if on one of the control points
+      for (let i = 1; i < curCurvePts.length - 1; i++) {
         if (mouse.isOnPoint(curCurvePts[i])) {
           dragContext.part = i + 1;
           dragContext.targetPoint = curCurvePts[i];
@@ -327,7 +353,9 @@ class CurveGlass extends BaseGlass {
           return dragContext;
         }
       }
-      // On the curve itself
+    }
+    // On the curve itself. Done outside of previous loop due to conflicts with path points
+    for (let c = 0; c < this.curves.length; c++) {
       if (mouse.isOnCurve(this.curves[c])) {
         dragContext.part = 0;
         return dragContext;
@@ -339,6 +367,7 @@ class CurveGlass extends BaseGlass {
     var mousePos;
     var mod = 0;
     var closest = { x: 0, y: 0 };
+    const curPrev = (dragContext.index - 1 + this.curves.length) % this.curves.length;
 
     if (shift) {
       mod++;
@@ -362,6 +391,7 @@ class CurveGlass extends BaseGlass {
 
         // Essentially default movement, but also taking the relevant control points along with the moving path point
         case 2:
+
           mousePos = mouse.getPosSnappedToGrid();
           dragContext.snapContext = {}; // Unlock the dragging direction when the user release the shift key
 
@@ -373,8 +403,8 @@ class CurveGlass extends BaseGlass {
           this.curves[dragContext.index].points[1].x += diffX; 
           this.curves[dragContext.index].points[1].y += diffY; 
           // Second control point of the former curve
-          this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points[2].x += diffX;
-          this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points[2].y += diffY;
+          this.curves[curPrev].points[2].x += diffX;
+          this.curves[curPrev].points[2].y += diffY;
           
           /*if (geometry.distanceSquared(this.path[(dragContext.index - 1 + this.path.length) % this.path.length], this.path[dragContext.index]) < geometry.distanceSquared(this.path[(dragContext.index + 1) % this.path.length], this.path[dragContext.index])) {
             closest = this.path[(dragContext.index - 1 + this.path.length) % this.path.length];
@@ -385,10 +415,10 @@ class CurveGlass extends BaseGlass {
           */
 
           //this.curves[dragContext.index].update();
-          //this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].update();
+          //this.curves[curPrev].update();
 
           this.curves[dragContext.index] = new Bezier(this.curves[dragContext.index].points);
-          this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length] = new Bezier(this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points);
+          this.curves[curPrev] = new Bezier(this.curves[curPrev].points);
 
          break;
       }
@@ -398,14 +428,17 @@ class CurveGlass extends BaseGlass {
       // Move the associated point on the current curve and the previous curve
       this.curves[dragContext.index].points[0].x = mousePos.x;
       this.curves[dragContext.index].points[0].y = mousePos.y;
-      this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points[3].x = mousePos.x;
-      this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points[3].y = mousePos.y;
+      this.curves[curPrev].points[3].x = mousePos.x;
+      this.curves[curPrev].points[3].y = mousePos.y;
 
       //this.curves[dragContext.index].update();
-      //this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].update();
+      //this.curves[curPrev].update();
 
+      console.error("A");
       this.curves[dragContext.index] = new Bezier(this.curves[dragContext.index].points);
-      this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length] = new Bezier(this.curves[(dragContext.index - 1 + this.curves.length) % this.curves.length].points);
+      console.error("B");
+      this.curves[curPrev] = new Bezier(this.curves[curPrev].points);
+      console.error("C");
 
     }
 
@@ -639,7 +672,7 @@ class CurveGlass extends BaseGlass {
 
   // Generate Poly Bezier (i.e. set of Bezier curves which will form the boundaries of the lens) from path
   generatePolyBezier() {
-    var curCtrlPts;
+    var curCtrlPts = null;
     // Create one curve for each line
     for (var i = 0; i < this.path.length; i++) {
       curCtrlPts = this.generateDefaultControlPoints([ this.path[(i - 1 + this.path.length) % this.path.length], this.path[i], this.path[(i + 1) % this.path.length], this.path[(i + 2) % this.path.length] ]);
@@ -665,12 +698,12 @@ class CurveGlass extends BaseGlass {
     ctx.strokeStyle = 'rgb(255,0,0)';
     //this.drawLine(p[0], p[1], offset, canvasRenderer);
     //this.drawLine(p[2], p[3], offset, canvasRenderer);
-    this.drawLine(p[0], p[1], canvasRenderer);
-    this.drawLine(p[2], p[3], canvasRenderer);
+    this.drawLine(p[0], p[1], canvasRenderer, ctx.strokeStyle);
+    this.drawLine(p[2], p[3], canvasRenderer, ctx.strokeStyle);
 
     // Draw points at each point in curve
     ctx.fillStyle = 'rgb(255,0,0)';
-    p.forEach((cur) => this.drawPoint(cur, canvasRenderer, ctx.strokeStyle));
+    p.forEach((cur) => this.drawPoint(cur, canvasRenderer));
   }
 
   // Draw line
