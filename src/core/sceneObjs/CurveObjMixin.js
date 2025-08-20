@@ -42,9 +42,6 @@ const CurveObjMixin = Base => class extends Base {
     // Initialize curve
     this.curve = null;
 
-    // Add toggle switch for whether or not to display control points and the lines which connect them to anchor points
-    this.displayControlPoints = true;
-
     // Extrapolate the (unoptimized) object from the (optimized) JSON object.
     if (jsonObj.points) {
       // Check to make sure there's the correct number of points

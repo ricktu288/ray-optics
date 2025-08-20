@@ -42,7 +42,6 @@ class CurveGlass extends BaseGlass {
   static serializableDefaults = {
     points: [],
     notDone: false,
-    displayControlPoints: true,
     refIndex: 1.5,
     cauchyB: 0.004,
     intersectTol: 0.05
@@ -58,9 +57,6 @@ class CurveGlass extends BaseGlass {
     // Initialize curves and bboxes
     this.curves = [];
     this.bboxes = [];
-
-    // Add toggle switch for whether or not to display control points and the lines which connect them to anchor points
-    this.displayControlPoints = true;
 
     // Extrapolate the (unoptimized) object from the (optimized) JSON object.
     // NOTE: The "curves" and "path" properties should eventually be combined and optimized to be consistent with the JSON representation.
@@ -116,9 +112,6 @@ class CurveGlass extends BaseGlass {
 
   populateObjectBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.CurveGrinGlass.title'));
-    objBar.createBoolean(i18next.t('simulator:sceneObjs.CurveGlass.displayControlPoints'), this.displayControlPoints, function (obj, value) {
-      obj.displayControlPoints = value;
-    }, i18next.t('simulator:sceneObjs.CurveGlass.displayControlPoints'), true);
     super.populateObjBar(objBar);
   }
 
