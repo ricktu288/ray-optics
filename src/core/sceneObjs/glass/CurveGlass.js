@@ -62,15 +62,9 @@ class CurveGlass extends BaseGlass {
     // Add toggle switch for whether or not to display control points and the lines which connect them to anchor points
     this.displayControlPoints = true;
 
-    console.log("DEBUG: CONSTRUCTOR CALLED: ");
-    console.log(jsonObj);
-
     // Extrapolate the (unoptimized) object from the (optimized) JSON object.
     // NOTE: The "curves" and "path" properties should eventually be combined and optimized to be consistent with the JSON representation.
     if (jsonObj.points) {
-      // Add new curve
-      //this.curves.push([]);
-
       // Go through each of the curves in the current lens
       for (let curCurve = 0; curCurve < jsonObj.points.length; curCurve++) {
         // The first point is the first anchor point, the second two control points, and the first of the next curve the last anchor point
@@ -84,8 +78,6 @@ class CurveGlass extends BaseGlass {
           -1
         );
       }
-      //  this.curLens++;
-      //}
     } 
   }
 
@@ -142,7 +134,7 @@ class CurveGlass extends BaseGlass {
         ctx.beginPath();
         ctx.moveTo(this.path[0].x, this.path[0].y);
 
-        for (var i = 0; i < this.path.length - 1; i++) {
+        for (let i = 0; i < this.path.length - 1; i++) {
           ctx.lineTo(this.path[(i + 1)].x, this.path[(i + 1)].y);
           this.drawPoint(this.path[i], canvasRenderer);
         }
@@ -153,13 +145,51 @@ class CurveGlass extends BaseGlass {
       }
     } else {
       // The user has completed drawing the object
-      ctx.beginPath();
-      ctx.moveTo(this.curves[0].points[0].x, this.curves[0].points[0].y);
 
-      for (var i = 0; i < this.curves.length; i++) {
-        this.drawCurve(this.curves[i], canvasRenderer);
+      // Draw the curves
+      let tmpPath = []
+      ctx.beginPath();
+      let tmp = this.curves[0].points[0];
+      ctx.moveTo(tmp.x, tmp.y);
+      // Fill each curve bound individually
+      for (let i = 0; i < this.curves.length; i++) {
+        //tmpPath.push(this.curves[i].points[0]);
+        this.drawCurve(this.curves[i], canvasRenderer, isHovered);
+        //this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+        //ctx.closePath();
       }
+      //ctx.stroke();
+      //ctx.fill();
       this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+      
+      // Draw the in-between
+      /*ctx.beginPath();
+      ctx.moveTo(tmpPath[0].x, tmpPath[0].y);
+      for (let i = 1; i < this.curves.length; i++) {
+        ctx.lineTo(tmpPath[i].x, tmpPath[i].y);
+      }
+      this.fillGlass(canvasRenderer, isAboveLight, isHovered);*/
+
+
+      // Draw their points if hovered
+      if (isHovered) {
+        ctx.beginPath();
+        ctx.moveTo(this.curves[0].points[0].x, this.curves[0].points[0].y);
+
+        for (let i = 0; i < this.curves.length; i++) {
+          let p = this.curves[i].points;
+
+          // Lines connecting anchors and control points
+          ctx.strokeStyle = 'rgb(255,0,0)';
+          //this.drawLine(p[0], p[1], offset, canvasRenderer);
+          //this.drawLine(p[2], p[3], offset, canvasRenderer);
+          this.drawLine(p[0], p[1], canvasRenderer, ctx.strokeStyle);
+          this.drawLine(p[2], p[3], canvasRenderer, ctx.strokeStyle);
+
+          // Draw points at each point in curve
+          p.forEach((cur) => this.drawPoint(cur, canvasRenderer));
+        }
+      }
     }
     ctx.lineWidth = 1;
   }
@@ -172,16 +202,11 @@ class CurveGlass extends BaseGlass {
   move(diffX, diffY) {
     // Each curve in lens
     for (let i = 0; i < this.curves.length; i++) {
-      // Move path points
-      //this.path[i].x += diffX;
-      //this.path[i].y += diffY;
-
       // Move curve points
       for (let j = 0; j < this.curves[i].points.length; j++) {
         this.curves[i].points[j].x += diffX;
         this.curves[i].points[j].y += diffY;
       }
-      //this.curves[i].update();
       this.newCurve(this.curves[i].points, i);
     }
   }
@@ -278,8 +303,6 @@ class CurveGlass extends BaseGlass {
       this.curves = [];
       this.bboxes = [];
       this.path = [{ x: mousePos.x, y: mousePos.y }];
-      //this.path = [];
-      console.error(Math.round(this.path.length));
     } 
 
     if (this.path.length > 0) {
@@ -290,11 +313,6 @@ class CurveGlass extends BaseGlass {
         this.notDone = false;
 
         this.generatePolyBezier();
-        //console.log(this.curves[0] instanceof Bezier);
-
-        // Reset path
-        //this.path = [];
-        //delete this.path;
 
         return {
           isDone: true
@@ -302,7 +320,6 @@ class CurveGlass extends BaseGlass {
       } else {
         // Move the last point
         this.path.push({ x: mousePos.x, y: mousePos.y });
-        //this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y };
       }
     }
   }
@@ -315,28 +332,6 @@ class CurveGlass extends BaseGlass {
 
   onConstructMouseUp(mouse, ctrl, shift) {
     if (!this.notDone) return { isDone: true };
-    /*
-    // Check if clicked on first point in path of current lens
-    if (this.path.length > 3 && mouse.snapsOnPoint(this.path[0])) { 
-      // Clicked the first point
-
-      this.generatePolyBezier();
-      //console.log(this.curves[0] instanceof Bezier);
-
-      // Reset path
-      //this.path = [];
-      //delete this.path;
-      this.path.length--;
-      this.notDone = false;
-
-      return {
-        isDone: true
-      };
-    }
-    const mousePos = mouse.getPosSnappedToGrid();
-    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y };   // Move last point
-    this.path[this.path.length] = { x: mousePos.x, y: mousePos.y };       // Create new point
-    */
   }
 
   onConstructUndo() {
@@ -373,15 +368,6 @@ class CurveGlass extends BaseGlass {
         dragContext.index = c;
         return dragContext;
       }
-      /*nextCurve = (c + 1) % this.curves.length;
-      console.error("A");
-      if (mouse.isOnPoint(curCurvePts[3]) || mouse.isOnPoint(this.curves[nextCurve].points[0])) {
-        dragContext.part = 1;
-        console.error("B");
-        dragContext.targetPoint = curCurvePts[3];//this.curves[nextCurve].points[0];
-        dragContext.index = c;
-        return dragContext;
-      }*/
 
       // Check if on one of the control points
       for (let i = 1; i < curCurvePts.length - 1; i++) {
@@ -444,35 +430,18 @@ class CurveGlass extends BaseGlass {
           // Second control point of the former curve
           this.curves[curPrev].points[2].x += diffX;
           this.curves[curPrev].points[2].y += diffY;
-          
-          /*if (geometry.distanceSquared(this.path[(dragContext.index - 1 + this.path.length) % this.path.length], this.path[dragContext.index]) < geometry.distanceSquared(this.path[(dragContext.index + 1) % this.path.length], this.path[dragContext.index])) {
-            closest = this.path[(dragContext.index - 1 + this.path.length) % this.path.length];
-          } else {
-            closest = this.path[(dragContext.index + 1) % this.path.length];
-          }
-          mousePos = mouse.getPosSnappedToDirection(geometry.point(closest.x, closest.y), [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
-          */
-
-          //this.curves[dragContext.index].update();
-          //this.curves[curPrev].update();
 
           this.newCurve(this.curves[dragContext.index].points, dragContext.index);
           this.newCurve(this.curves[curPrev].points, curPrev);
 
          break;
       }
-      // Move path points
-      //this.path[dragContext.index].x = mousePos.x;
-      //this.path[dragContext.index].y = mousePos.y;
       // Move the associated point on the current curve and the previous curve
       this.curves[dragContext.index].points[0].x = mousePos.x;
       this.curves[dragContext.index].points[0].y = mousePos.y;
       this.curves[curPrev].points[3].x = mousePos.x;
       this.curves[curPrev].points[3].y = mousePos.y;
-
-      //this.curves[dragContext.index].update();
-      //this.curves[curPrev].update();
-
+      
       this.newCurve(this.curves[dragContext.index].points, dragContext.index);
       this.newCurve(this.curves[curPrev].points, curPrev);
 
@@ -490,38 +459,6 @@ class CurveGlass extends BaseGlass {
       //this.curves[dragContext.index].update();
 
       this.newCurve(this.curves[dragContext.index].points, dragContext.index);
-
-      
-      // Also handle any potential dependent curves
-      /*
-      if (Object.hasOwn(this.dependentVertices, dragContext.lens)) {
-        if (Object.hasOwn(this.dependentVertices, dragContext.index)) {
-          this.dependentVertices[dragContext.index].forEach((point) => {
-            var tmp_point = this.curves[dragContext.lens][dragContext.index].compute(point.t);
-            if (point.type === "end") {
-              //this.curves[point.lens][point.index].points[3].x = tmp_point.x;
-              //this.curves[point.lens][point.index].points[3].y = tmp_point.y;
-              this.curves[point.lens][point.index] = new Bezier(
-                this.curves[point.lens][point.index].points[0],
-                this.curves[point.lens][point.index].points[1],
-                this.curves[point.lens][point.index].points[2],
-                { x: tmp_point.x, y: tmp_point.y }
-              );
-            } else {
-              // If not end point, assume start point
-              //this.curves[point.lens][point.index].points[0].x = tmp_point.x;
-              //this.curves[point.lens][point.index].points[0].y = tmp_point.y;
-              this.curves[point.lens][point.index] = new Bezier(
-                { x: tmp_point.x, y: tmp_point.y },
-                this.curves[point.lens][point.index].points[1],
-                this.curves[point.lens][point.index].points[2],
-                this.curves[point.lens][point.index].points[3]
-              );
-            }
-            this.curves[point.lens][point.index].update();
-          });
-        }
-      }*/
     }
 
     else if (dragContext.part === 0) {
@@ -570,35 +507,22 @@ class CurveGlass extends BaseGlass {
       intersections = this.curves[i].lineIntersects(scaled_ray);
       if (intersections.length >= 1) {
         // Go through each of them, get the intersection point closest to p1, since it comes sorted by coordinate
-        //rp_temp = this.curves[i].get(intersections[0]);
-        //console.log("Intersection: " + intersections[0]);
         rp_temp = { x: Infinity, y: Infinity };
 
 
         intersections.forEach((intersection) => {
           rp_temp2 = this.curves[i].get(intersection);
-          //console.log("cRI cur rp_temp2: " + rp_temp2.x + ", " + rp_temp2.y + "\n\tt: " + intersection + "\n\t" + rp_temp2);
           if (geometry.distanceSquared(geometry.point(rp_temp2.x, rp_temp2.y), scaled_ray.p1) < geometry.distanceSquared(geometry.point(rp_temp.x, rp_temp.y), scaled_ray.p1)) {
             rp_temp = rp_temp2;
-            //rp_temp = geometry.point(rp_temp.x, rp_temp.y);
           }
         });
 
-
-        //console.log("cRI intersections:\n\tLength: " + intersections.length + "\n\tFirst point: " + rp_temp.x + ", " + rp_temp.y);
-      
-        //Line segment i->i+1
-        //var rp_temp = geometry.linesIntersection(geometry.line(ray.p1, ray.p2), geometry.line(this.path[i % this.path.length], this.path[(i + 1) % this.path.length]));
-        // Curve i
-
-        //if (geometry.intersectionIsOnCurve(rp_temp, this.curves[i], this.intersectTol) && geometry.intersectionIsOnRay(rp_temp, ray) && geometry.distanceSquared(ray.p1, rp_temp) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
         // Intersection with curve can be assumed since that's where we got the point in the first place (above), hence there's no second check for if the point is on the curve here.
         if (geometry.intersectionIsOnRay(geometry.point(rp_temp.x, rp_temp.y), scaled_ray) && geometry.distanceSquared(scaled_ray.p1, geometry.point(rp_temp.x, rp_temp.y)) > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
           s_lensq_temp = geometry.distanceSquared(scaled_ray.p1, rp_temp);
           s_point_temp = rp_temp;
         }
 
-        //if (s_point_temp && (!s_point || geometry.distance(geometry.point(s_point.x, s_point.y), scaled_ray.p1) > geometry.distance(geometry.point(s_point_temp.x, s_point_temp.y), scaled_ray.p1))) {
         if (s_point_temp) {
           if (s_point && geometry.distanceSquared(geometry.point(s_point_temp.x, s_point_temp.y), geometry.point(s_point.x, s_point.y)) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale && s_point_index != i - 1) {
             // The ray shots on a point where the upper and the lower surfaces overlap.
@@ -615,8 +539,6 @@ class CurveGlass extends BaseGlass {
       // Temp store indices for curve being intersected
       this.tmp_i = s_point_index;
 
-      console.log("cRI intersection:\n\tCurrent point: " + s_point.x + ", " + s_point.y);
-
       return s_point;
     }
   }
@@ -624,42 +546,28 @@ class CurveGlass extends BaseGlass {
   onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
     try {
       this.error = null;
-      console.log("TEST1");
       //console.log("Checking incident...");
-      // If incidentPoint is not null, then that means that checkRayIntersects returned a non-null s_point, which can only be acquired for this object by there existing at least one intersection point. Hence we need not check if isOnBoundary, but instead whether or not incidentPoint is null.
-      //if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       //if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(geometry.point(incidentPoint.x, incidentPoint.y))) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
       {
-        console.log("ray incident exists.");
         var incidentData = this.getIncidentData(ray);
         var incidentType = incidentData.incidentType;
         if (incidentType == 1) {
           // From inside to outside
           var n1 = this.getRefIndexAt(incidentPoint, ray);
-          console.log("Incident type I");
         } else if (incidentType == -1) {
           // From outside to inside
           var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
-          console.log("Incident type II");
         } else if (incidentType == 0) {
           // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
           var n1 = 1;
-          console.log("Incident type III");
         } else {
           // The situation that may cause bugs (e.g. incident on an edge point)
           // To prevent shooting the ray to a wrong direction, absorb the ray
-          console.log("Incident type NULL");
           return {
             isAbsorbed: true,
             isUndefinedBehavior: true
           };
         }
-        console.log(
-          "INCIDENT DATA:" + 
-          "\n\tNormal:\t" + incidentData.normal.x + ", " + incidentData.normal.y + 
-          "\n\tS_point:\t" + incidentData.s_point.x + ", " + incidentData.s_point.y + 
-          "\n\tN1:\t" + n1
-        );
         return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
       }
     } catch (e) {
@@ -673,60 +581,21 @@ class CurveGlass extends BaseGlass {
   }
 
   getIncidentType(ray) {
-    console.log("incidentType(" + ray + "):\t" + this.getIncidentData(ray).incidentType);
     return this.getIncidentData(ray).incidentType;
   }
 
   isOutsideGlass(point) {
-    //console.log("isOutsideGlass(" + point + "):\t" + !this.isOnBoundary(point) && this.countIntersections(point) % 2 == 0);
     return (!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 0)
   }
 
   isInsideGlass(point) {
-    console.log("isInsideGlass():\t" + String(!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 1) + "");
     return (!this.isOnBoundary(point) && this.countIntersections(point, -1) % 2 == 1)
   }
   
   isOnBoundary(p3) {
-    /* Old
-    for (let i = 0; i < this.path.length; i++) {
-      let p1 = this.path[i];
-      let p2 = this.path[(i + 1) % this.path.length];
-      let p1_p2 = geometry.point(p2.x - p1.x, p2.y - p1.y);
-      let p1_p3 = geometry.point(p3.x - p1.x, p3.y - p1.y);
-      if (geometry.cross(p1_p2, p1_p3) - this.intersectTol < 0 && geometry.cross(p1_p2, p1_p3) + this.intersectTol > 0) // if p1_p2 and p1_p3 are collinear
-      {
-        let dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
-        let p1_p2_squared = geometry.distanceSquared(p1, p2);
-        if (p1_p2_squared - dot_p2_p3 + this.intersectTol >= 0 && dot_p2_p3 + this.intersectTol >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
-          return true;
-      }
-    }
-    return false;*/
 
     // New (curve-oriented)
     for (let i = 0; i < this.curves.length; i++) {
-      /*closestPoint = this.curves[i].get(this.curves[i].project(geometry.point(p3.x, p3.y)).t);
-      closestPoint = geometry.point(closestPoint.x, closestPoint.y);
-      console.log("CURVE " + i + ": Tolerance:" + this.intersectTol);
-      console.log("Closest point:\t" + closestPoint.x + ", " + closestPoint.y);
-      console.log("Point given:\t" + p3.x + ", " + p3.y);
-      console.log("Difference:\t" + (p3.x - closestPoint.x) + ", " + (p3.y - closestPoint.y));
-      console.log("Distance:\t" + geometry.distance(geometry.point(p3.x, p3.y), closestPoint));*/
-
-      /*
-      var rayVec = geometry.point(ray.p2.x - ray.p1.x, ray.p2.y - ray.p1.y);
-      var projection = this.curves[i].project(geometry.point(p3.x, p3.y));
-      // Get the normal, but rotated 90 degrees (due to how we want to use it); hence, get the normalized derivative
-      var normal = geometry.normalize(this.curves[i].derivative(projection.t));
-
-      // If the distance to the nearest point on the current curve from p3 is below the intersect tolerance threshold, p3 is on boundary
-      if (projection.d ** 2 <= this.intersectTol * (1 + Math.abs(geometry.dot(rayVec, geometry.point(normal.x, normal.y))) / (geometry.distance(ray.p1, ray.p2) * geometry.distance({x:0, y:0}, normal.x, normal.y))) ) {//(this.stepSize / this.rayLen)) {
-      */
-      
-
-      // New old
-
       // First, check if the point is within the bounding box of the curve. This prevents unnecessary calculations of the projection
       if (p3.x > this.bboxes[i].x.max || p3.x < this.bboxes[i].x.min || p3.y > this.bboxes[i].y.max || p3.y < this.bboxes[i].y.min) {
         // Check how far away the nearest point on the curve to p3 is from p3
@@ -735,46 +604,6 @@ class CurveGlass extends BaseGlass {
           return true;
         }
       }
-
-      // New
-      /*
-      // First, check if in bounding box. if not, we can skip the rest of the following calculations.
-      var bbox = this.curves[i].bbox();
-      if (p3.x > bbox.x.max || p3.x < bbox.x.min || p3.y > bbox.y.max || p3.y < bbox.y.min) {
-        continue;
-      }
-
-      var proj = this.curves[i].project(geometry.point(p3.x, p3.y));
-      var proj_point = this.curves[i].compute(proj.t); // Get the nearest point on the curve to p3
-
-      // Get the normalized derivative, tangent with the nearest point on the curve
-      var deriv_point = geometry.normalize(this.curves[i].derivative(proj.t));
-      deriv_point = geometry.point(-deriv_point.x, -deriv_point.y); // Flip it to have it point from far point to point on curve
-
-      // Translate the deriv point to be in the same coord space as proj_point
-      var deriv_point_translated = geometry.point(proj_point.x - deriv_point.x, proj_point.y - deriv_point.y);
-
-      // Get the point representing the vector pointing from the farthest point on the normalized derivative vector after translation to p3
-      var p1_p3 = geometry.normalize(geometry.point(p3.x - deriv_point_translated.y, p3.y - deriv_point_translated.y));
-
-      // Get the point representing the derivative vector pointing from its farthest point to the projection point from which it was derived, i.e. deriv_point rotated by pi radians
-      var p1_p2 = geometry.point(-deriv_point.x * 2, -deriv_point.y * 2);
-      console.log("DERIV POINT:\n" + deriv_point.x + ", " + deriv_point.y);
-      console.log("p1_p2:\n" + p1_p2.x + ", " + p1_p2.y);
-      console.log("p1_p3:\n" + p1_p3.x + ", " + p1_p3.y);
-      console.log("CROSS p1_p2 x p1_p3:\n" + geometry.cross(p1_p2, p1_p3));
-
-      // Use the old pre-existing boundary check using our new values calculated consideration of the use of curves
-      if (geometry.cross(p1_p2, p1_p3) - this.intersectTol < 0 && geometry.cross(p1_p2, p1_p3) + this.intersectTol > 0) // if p1_p2 and p1_p3 are collinear
-      {
-        var dot_p2_p3 = geometry.dot(p1_p2, p1_p3);
-        console.log("DOT_P2_P3:\n" + dot_p2_p3);
-        var p1_p2_squared = geometry.distanceSquared(geometry.point(0, 0), deriv_point);
-        if (p1_p2_squared - dot_p2_p3 + this.intersectTol >= 0 && dot_p2_p3 - p1_p2_squared + this.intersectTol >= 0) // if the projection of the segment p1_p3 onto the segment p1_p2, is contained in the segment p1_p2
-          console.log("INTERSECTION ON BOUND:\n" + p1_p2.x + ", " + p1_p2.y + "\n" + p1_p3.x + ", " + p1_p3.y);
-          return true;
-      }
-      */
     }
     return false;
   }
@@ -794,8 +623,6 @@ class CurveGlass extends BaseGlass {
     
     // Get normal from the curve at the nearest intersection to ray.p1
     if (intersections.length >= 1) {
-      //s_point = this.curves[i].get(intersections[0]);
-      
       // Get closest intersection on curve to current point (for when there are multiple intersections on the curve)
       intersections.forEach((intersection) => {
         s_point_tmp = this.curves[i].get(intersection);
@@ -809,15 +636,6 @@ class CurveGlass extends BaseGlass {
     // Get the normalized normal vector of the curve at the intersection point
     var normal = this.curves[i].normal(s_point.t);
     normal = geometry.point(normal.x, normal.y);
-
-    // Important note: Since we're dealing with computer graphics, negative y is up and positive y is down, as that's the standard convention.
-    console.log(
-      "NORMALS:" +
-      "\n\tUnchanged:\t" + normal.x + ", " + normal.y +
-      "\n\t+x, -y (in use):\t" + normal.x + ", " + (-normal.y) +
-      "\n\t-x, -y:\t" + (-normal.x) + ", " + (-normal.y) +
-      "\n\t-x, +y:\t" + (-normal.x) + ", " + (normal.y)
-    )
 
     // Reorient tangent if necessary, to ensure it's on the same side of the curve as p1. 
     //  This is necessary due to how BezierJS calculates normals to always be on the same side relative to the path from its first anchor point to its second anchor point. 
@@ -877,24 +695,12 @@ class CurveGlass extends BaseGlass {
     const ctx = canvasRenderer.ctx;
     var p = curve.points;
     ctx.strokeStyle = 'rgb(128,128,128)';
-    ctx.beginPath();
+    //ctx.beginPath();
     //ctx.moveTo(p[0].x + offset.x, p[0].y + offset.y);
-    ctx.moveTo(p[0].x, p[0].y);
+    //ctx.moveTo(p[0].x, p[0].y);
     //ctx.bezierCurveTo(p[1].x + offset.x, p[1].y + offset.y, p[2].x + offset.x, p[2].y + offset.y, p[3].x + offset.x, p[3].y + offset.y);
     ctx.bezierCurveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
-    ctx.stroke();
-    ctx.closePath();
-
-    // Lines connecting anchors and control points
-    ctx.strokeStyle = 'rgb(255,0,0)';
-    //this.drawLine(p[0], p[1], offset, canvasRenderer);
-    //this.drawLine(p[2], p[3], offset, canvasRenderer);
-    this.drawLine(p[0], p[1], canvasRenderer, ctx.strokeStyle);
-    this.drawLine(p[2], p[3], canvasRenderer, ctx.strokeStyle);
-
-    // Draw points at each point in curve
-    ctx.fillStyle = 'rgb(255,0,0)';
-    p.forEach((cur) => this.drawPoint(cur, canvasRenderer));
+    //ctx.stroke();
   }
 
   // Draw line
