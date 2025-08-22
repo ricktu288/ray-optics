@@ -44,7 +44,7 @@ class CurveGlass extends BaseGlass {
     notDone: false,
     refIndex: 1.5,
     cauchyB: 0.004,
-    intersectTol: 1e-2
+    intersectTol: 5e-2
   }
   
   /**
@@ -532,11 +532,11 @@ class CurveGlass extends BaseGlass {
       // First, check if the point is within the bounding box of the curve. This prevents unnecessary calculations of the projection
       if (p3.x <= this.bboxes[i].x.max && p3.x >= this.bboxes[i].x.min || p3.y <= this.bboxes[i].y.max && p3.y >= this.bboxes[i].y.min) {
         // Check how far away the nearest point on the curve to p3 is from p3
-        /*const proj = this.curves[i].project({ x: p3.x, y: p3.y });
-        if (geometry.distanceSquared({ x: proj.x, y: proj.y }, p3) <= this.intersectTol) {
+        const proj = Math.pow(this.curves[i].project({ x: p3.x, y: p3.y }).d, 2);
+        /*if (geometry.distanceSquared({ x: proj.x, y: proj.y }, p3) <= this.intersectTol) {
           return true;
         }*/
-        if (Math.pow(this.curves[i].project({ x: p3.x, y: p3.y }).d, 2) <= this.intersectTol) {
+        if (proj <= this.intersectTol && proj > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
           return true;
         }
       }
