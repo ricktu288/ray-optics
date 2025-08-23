@@ -180,7 +180,7 @@
       />
       <ToolItem
         id="CurveGlass"
-        :title="$t('main:tools.CurveGlass.title')"
+        :title="$t('main:tools.CurveGlass.title') + '<sup>Beta</sup>'"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
         :verticalOffset="0"
         :layout="layout"
@@ -203,6 +203,13 @@
         id="ParamGrinGlass"
         :title="$t('main:tools.ParamGrinGlass.title') + '<sup>Beta</sup>'"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamGrinGlass.description'), sub: $t('main:tools.common.clickInstruction')})"
+        :verticalOffset="0"
+        :layout="layout"
+      />
+      <ToolItem
+        id="CurveGrinGlass"
+        :title="$t('main:tools.CurveGrinGlass.title') + '<sup>Beta</sup>'"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGrinGlass.description'), sub: $t('main:tools.CurveGrinGlass.instruction')})"
         :verticalOffset="0"
         :layout="layout"
       />

@@ -138,6 +138,11 @@
       "title": "GRIN Parametric Curve",
       "description": "Gradient-index glass with boundary defined by custom parametric equations."
     },
+    "CurveGrinGlass": {
+      "title": "GRIN Cubic Bezier curves",
+      "description": "Gradient-index glass bounded by cubic Bezier curves.",
+      "instruction": "Click to create a segment, click on the starting point when finish drawing. Click and drag the boxes to manipulate the control points, changing the curve."
+    },
     "otherGrinGlass": {
       "title": "Gradient-index glass",
       "description": "Material with a custom refractive index function n(x,y)."

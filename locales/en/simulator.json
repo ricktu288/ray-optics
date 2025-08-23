@@ -256,6 +256,12 @@
         "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'ParamCurveObjMixin.js' file."
       }
     },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length].",
+        "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'ParamCurveObjMixin.js' file."
+      }
+    },
     "Aperture": {
       "diameter": "Diameter"
     },
