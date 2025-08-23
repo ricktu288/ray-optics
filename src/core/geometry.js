@@ -176,14 +176,9 @@ const geometry = {
    * @return {Boolean}
    */
   intersectionIsOnCurve: function (p1, curve, threshold) {
-    var bbox = curve.bbox();
-    var proj = curve.get(curve.project(geometry.point(p1.x, p1.y)).t);
-    /*if (p1.x) {
-      console.log("IoC projection:" + proj.x + "," + proj.y);
-      console.log("IoC point:" + p1.x + "," + p1.y);
-    }*/
-
-    return geometry.distance(geometry.point(proj.x, proj.y), p1) < threshold;
+    var d_proj = curve.project(geometry.point(p1.x, p1.y)).d;
+   
+    return Math.pow(d_proj, 2) < threshold;
   },
 
   /**
