@@ -49,6 +49,7 @@ export const SphericalLens = require('./sceneObjs/glass/SphericalLens.js').defau
 export const CircleGrinGlass = require('./sceneObjs/glass/CircleGrinGlass.js').default;
 export const GrinGlass = require('./sceneObjs/glass/GrinGlass.js').default;
 export const ParamGrinGlass = require('./sceneObjs/glass/ParamGrinGlass.js').default;
+export const CurveGrinGlass = require('./sceneObjs/glass/CurveGrinGlass.js').default;
 export const Blocker = require('./sceneObjs/blocker/Blocker.js').default;
 export const CircleBlocker = require('./sceneObjs/blocker/CircleBlocker.js').default;
 export const Aperture = require('./sceneObjs/blocker/Aperture.js').default;
