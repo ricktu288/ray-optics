@@ -257,7 +257,7 @@
     "translatedFraction": "{{fraction}} traduzido"
   },
   "meta": {
-    "languageName": "Português (Brasil)",
+    "languageName": "Português (Portugal)",
     "parentheses": "{{main}} ({{sub}})",
     "colon": "{{name}}: {{value}}",
     "list": "{{first}}, {{others}}"

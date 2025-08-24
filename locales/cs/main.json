@@ -43,5 +43,11 @@
       "title": "Bodový zdroj",
       "description": "Paprsky vycházejí z jediného bodu, počet lze nastavit pomocí posuvníku \"Hustota paprsků\"."
     }
+  },
+  "meta": {
+    "languageName": "Čeština",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
