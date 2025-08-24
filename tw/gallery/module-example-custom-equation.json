@@ -1,0 +1,49 @@
+{
+  "name": "模組範例 - 自訂數學式",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [
+        "phi=0:0.01:2*pi:1"
+      ],
+      "objs": [
+        {
+          "type": "CustomMirror",
+          "p1": {
+            "x": 600,
+            "y": 400
+          },
+          "p2": {
+            "x": 800,
+            "y": 400
+          },
+          "eqn": "``cos(2*pi*x+phi)``"
+        },
+        {
+          "type": "TextLabel",
+          "x": 520,
+          "y": 270,
+          "text": "形狀為 y=cos(2 pi x + `phi`) 的鏡子"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {
+        "phi": 1.23
+      }
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 236.49999999999994,
+    "y": -9.81249999999998
+  },
+  "scale": 0.6944444444444444
+}

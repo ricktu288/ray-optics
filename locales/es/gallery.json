@@ -1,0 +1,15 @@
+{
+  "galleryPage": {
+    "title": "La galería de The Ray Optics",
+    "categories": {
+      "title": "Categorías",
+      "reflection": "Reflexión",
+      "refraction": "Refracción",
+      "lens": "Lente",
+      "combinationOfLenses": "Combinación de Lentes",
+      "grinOptics": "Óptica de gradiente de índice",
+      "miscellaneous": "Misceláneas"
+    },
+    "openInSimulator": "Abrir en el simulador"
+  }
+}

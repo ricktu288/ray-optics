@@ -1,0 +1,118 @@
+{
+  "project": {
+    "name": "Ray Optics Simulatie"
+  },
+  "homePage": {
+    "description": "Een open-source web applicatie om reflectie en refractie van licht te simuleren.\nGeschreven in HTML, CSS en JavaScript. ([GitHub](/github))",
+    "launchSimulator": "Start Applicatie"
+  },
+  "tools": {
+    "title": "Gereedschap",
+    "categories": {
+      "lightSource": "Lichtbron",
+      "mirror": "spiegels",
+      "glass": "Glas",
+      "blocker": "Scherm",
+      "other": "Overig"
+    },
+    "common": {
+      "clickInstruction": "Klik om te maken.",
+      "lineInstruction": "Sleep of klik om te maken.",
+      "circleInstruction": "Sleep of klik om te maken."
+    },
+    "SingleRay": {
+      "title": "Straal",
+      "description": "Één straal door twee punten.",
+      "instruction": "Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting."
+    },
+    "Beam": {
+      "title": "Bundel",
+      "description": "Een evenwijdige bundel uit een lijnstuk, het aantal stralen wordt ingesteld met 'Straaldichtheid'. (Also supports divergent beams.)"
+    },
+    "PointSource": {
+      "title": "Punt bron",
+      "description": "Lichtstralen vanuit één punt, het aantal stralen wordt ingesteld met 'Straaldichtheid'."
+    },
+    "AngleSource": {
+      "instruction": "Sleep of klik om te maken. Eerste punt is de bron. Tweede punt geeft de richting."
+    },
+    "Mirror": {
+      "title": "Lijnstuk",
+      "description": "Simuleert de reflectie van licht op een spiegel."
+    },
+    "otherMirror": {
+      "title": "Cirkelboog",
+      "description": "Een spiegel in de vorm van een cirkelboog, door drie punten vastgelegd."
+    },
+    "ArcMirror": {
+      "title": "Cirkelboog",
+      "description": "Een spiegel in de vorm van een cirkelboog, door drie punten vastgelegd.",
+      "instruction": "De eerste twee punten leggen de afstand tussen de randen vast, het laatste punt de grootte."
+    },
+    "IdealMirror": {
+      "title": "Ideaal gebogen",
+      "description": "Een ideale 'gebogen' spiegel die precies de spiegel formule volgt (1/p + 1/q = 1/f). De brandpuntsafstand kan worden ingevoerd."
+    },
+    "PlaneGlass": {
+      "title": "Halve vlak",
+      "description": "Simuleert de refractie en reflectie van licht op/door een oppervlak.",
+      "instruction": "Sleep of klik om te maken."
+    },
+    "otherGlass": {
+      "title": "Overig",
+      "description": "Glas in willekeurige vorm uit lijnstukken en cirkelbogen."
+    },
+    "CircleGlass": {
+      "title": "Cirkel",
+      "description": "Glasschijf, gedefinieerd door middelpunt en een punt op de rand."
+    },
+    "Glass": {
+      "description": "Glas in willekeurige vorm uit lijnstukken en cirkelbogen.",
+      "instruction": "Klik om een lijnstuk te maken, sleep om een cirkelboog te maken, klik op startpunt om tekenen te sluiten."
+    },
+    "IdealLens": {
+      "title": "Ideale Lens",
+      "description": "Een ideale lens die de lenzenformule volgt (1/v + 1/b = 1/f). De brandpuntafstand kan worden ingevoerd."
+    },
+    "Blocker": {
+      "description": "Een lichtblokkerend lijnstuk (scherm)."
+    },
+    "Ruler": {
+      "title": "Lineaal",
+      "description": "Een lineaal van 0 tot een willekeurige afstand."
+    },
+    "Protractor": {
+      "title": "Gradenboog",
+      "description": "Een gradenboog van middelpunt tot een ander punt (hoek 0). De schaal is in graden."
+    },
+    "moveView": {
+      "title": "Verplaats beeld",
+      "description": "Sleep om beeld te verplaatsen. (Rechtermuisknop sleep heeft dezelfde functie.)"
+    }
+  },
+  "view": {
+    "title": "Beeld",
+    "rays": {
+      "title": "Stralen",
+      "description": "Toont de stralen. Als de 'Straaldichtheid' groot is lijkt het continu."
+    },
+    "extended": {
+      "title": "Virtuele stralen"
+    },
+    "images": {
+      "title": "Alle beelden"
+    },
+    "observer": {
+      "title": "Beeld voor waarnemer"
+    }
+  },
+  "languageDropdown": {
+    "title": "Taal: {{language}}"
+  },
+  "meta": {
+    "languageName": "Nederlands",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}
