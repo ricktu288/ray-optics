@@ -281,6 +281,7 @@ export default {
 <style scoped>
 .advanced-help {
   font-size: 9pt;
+  max-width: 280px;
 }
 
 #showAdvancedSettings {

@@ -197,8 +197,8 @@ export default {
    border-left-width: 4px;
    -webkit-border-radius: 6px 2px;
    -webkit-box-shadow:
-   inset 0 0 0 0px rgba(128, 128, 128, 0.2),
-   inset 0 0 0 4px rgba(128, 128, 128, 0.2);
+   inset 0 0 0 0px rgba(112, 112, 112, 0.35),
+   inset 0 0 0 4px rgba(112, 112, 112, 0.35);
 }
 ::-webkit-scrollbar-track-piece {
    margin: 4px 0;

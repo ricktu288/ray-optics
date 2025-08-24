@@ -21,7 +21,9 @@
       alignItems: 'center',
       fontSize: '0.875rem',
       paddingLeft: '10px',
-      marginRight: layout === 'mobile' ? '0' : '5px'
+      width: '300px',
+      marginLeft: 'auto',
+      marginRight: 'auto'
     }"
   >
     <svg 

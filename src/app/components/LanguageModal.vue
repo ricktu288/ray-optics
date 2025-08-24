@@ -23,8 +23,8 @@
           <h5 class="modal-title" id="staticBackdropLabel_language" v-html="$t('simulator:settings.language.title')"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <div class="d-flex align-items-center">
+        <div class="modal-body language-modal-body">
+          <div class="language-header d-flex align-items-center">
             <div class="d-flex w-100">
               <div class="col" v-html="$t('simulator:settings.language.title')"></div>
               <div class="col text-end" v-html="$t('simulator:languageModal.translatedFraction')"></div>
@@ -43,15 +43,18 @@
               </div>
             </a>
           </div>
-
-          <small>
-            <a href="https://hosted.weblate.org/engage/ray-optics-simulation/" target="_blank" v-html="$t('simulator:languageModal.helpTranslate')">
-            </a>
-          </small>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')">
-          </button>
+        <div class="modal-footer d-flex justify-content-between">
+          <div>
+            <small>
+              <a href="https://hosted.weblate.org/engage/ray-optics-simulation/" target="_blank" v-html="$t('simulator:languageModal.helpTranslate')">
+              </a>
+            </small>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')">
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -122,7 +125,17 @@ export default {
 
 <style scoped>
 .language-list {
-  margin: 1rem 0;
+  margin: 0.25rem 0 1rem 0;
+}
+
+.language-header {
+  padding: 0 0.75rem;
+}
+
+.language-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
 .modal-backdrop {

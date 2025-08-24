@@ -17,7 +17,7 @@
 <template>
   <div v-if="layout === 'desktop'" class="col-auto d-none d-xxl-block">
     <div class="row justify-content-center">
-      <div class="btn-group" role="group">
+      <div class="btn-group layout-aids-controls" role="group">
         <input type="checkbox" class="btn-check" id="showGrid" autocomplete="off" v-model="showGrid" @click="e => e.target.blur()">
         <label id="showGrid_label" class="btn shadow-none btn-secondary" for="showGrid" v-tooltip-popover="{ title: $t('simulator:settings.layoutAids.showGrid') }">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid-3x3" viewBox="0 0 16 16">
@@ -117,3 +117,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.layout-aids-controls {
+  width: max-content;
+}
+</style>

@@ -301,7 +301,8 @@ export default {
 }
 
 #more-options-dropdown {
-  width:350px;
+  min-width: 300px;
+  width: max-content;
   max-height: 80vh;
   overflow-y: auto;
 }
