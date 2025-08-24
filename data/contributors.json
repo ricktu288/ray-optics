@@ -568,7 +568,7 @@
     "firstCommit": "2025-06-04"
   },
   {
-    "name": "law820314",
+    "name": "vanapro1",
     "contributions": {
       "translations": [
         "ru"
@@ -617,5 +617,38 @@
       ]
     },
     "firstCommit": "2025-07-30"
+  },
+  {
+    "name": "Rémi Berthoz",
+    "githubEmails": [
+      "remi.berthoz@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-08-12"
+  },
+  {
+    "name": "Silvério Santos",
+    "githubEmails": [
+      "ssantos@web.de"
+    ],
+    "contributions": {
+      "translations": [
+        "pt-PT"
+      ]
+    },
+    "firstCommit": "2025-08-14"
+  },
+  {
+    "name": "Jan Pražák",
+    "contributions": {
+      "translations": [
+        "cs"
+      ]
+    },
+    "firstCommit": "2025-08-16"
   }
 ]

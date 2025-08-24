@@ -1,0 +1,47 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "„Modul“ umožňuje vytvářet nové nástroje kombinováním, specializací nebo změnou parametrů objektů vytvořených již existujícími nástroji v tomto simulátoru.",
+      "appearAsTools": "Importované moduly se objeví jako nástroje v kategorii „Ostatní“. Vyberte některý a klikněte do volné plochy pro vložení sekvence kontrolních bodů (viz „Specifikace“).",
+      "embeddedInScene": "Importované moduly jsou vložené přímo do souboru připravené scény, takže nejsou automaticky aktualizovány, pokud jejich autoři provedou nějaké změny."
+    },
+    "import": "Import",
+    "imported": "Importováno",
+    "specification": {
+      "title": "Specifikace",
+      "controlPointSequence": "Pořadí ovládacích bodů",
+      "parameters": "Parametry"
+    },
+    "customization": {
+      "title": "Přizpůsobení",
+      "description": "Moduly lze vytvářet nebo upravovat přímo v této webové aplikaci pomocí vestavěného editoru JSON. Viz [tutoriál](/modules/tutorial). Úpravy importovaných modulů ovlivní pouze aktuální scénu."
+    },
+    "contribution": {
+      "title": "Příspěvek",
+      "description": "Budeme rádi za vaše příspěvky do výše uvedeného seznamu. Pokud chcete přidat svůj modul, podívejte se na [Jak přispívat moduly](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Fresnelova čočka",
+      "description": "Fresnelova čočka vytvořená z polokruhového kusu skla. Modulární verze tohoto příkladu je [dostupná v Galerii](/gallery/fresnel-lens.",
+      "point1": "První kontrolní bod čočky",
+      "point2": "Druhý kontrolní bod čočky",
+      "Nslice": "Počet řezů",
+      "refIndex": "Index lomu čočky"
+    },
+    "ContSpectrum": {
+      "title": "Zdroj světla se spojitým spektrem",
+      "description": "Zdroj světla se spojitým spektrem s konstantním krokem vlnové délky světla. Funguje pouze při zapnuté volbě „Simulovat barvy“.",
+      "point1": "Výchozí bod paprsků",
+      "point2": "Určuje směr paprsků",
+      "min": "Minimální vlnová délka",
+      "step": "Krok vlnové délky",
+      "max": "Maximální vlnová délka",
+      "brightness": "Celkový jas"
+    },
+    "CoatedLens": {
+      "title": "Sférická čočka s potahovou vrstvou"
+    }
+  }
+}

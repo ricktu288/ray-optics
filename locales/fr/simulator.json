@@ -1,7 +1,7 @@
 {
   "welcome": {
     "title": "Bienvenue dans Ray Optics Simulation",
-    "instruction": "Pour ajouter un composant optique, sélectionnez un outil et cliquez sur l'espace vide.\nPour charger un exemple, [allez à la page Gallerie](/gallery).",
+    "instruction": "Pour ajouter un composant optique, sélectionnez un outil et cliquez sur l'espace vide.\nPour charger un exemple, [allez sur la page Gallerie](/gallery).",
     "loading": "Chargement de la scène à partir de l'URL... Merci de patienter."
   },
   "common": {
@@ -9,7 +9,9 @@
     "cancelButton": "Annuler",
     "defaultOption": "Par défaut",
     "closeButton": "Fermer",
-    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique."
+    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique.",
+    "customOption": "Personnalisé",
+    "resetButton": "Réinitialiser"
   },
   "file": {
     "title": "Fichier",
@@ -45,12 +47,14 @@
     "title": "Paramètres",
     "more": "Plus",
     "rayDensity": {
-      "title": "Densité de rayon"
+      "title": "Densité de rayon",
+      "description": "Détermine le nombre de rayons que doivent émettre les faisceaux et les sources ponctuelles.Affecte aussi la précision de la détection d'image et le rendu des couleurs."
     },
     "layoutAids": {
       "showGrid": "Grille",
       "snapToGrid": "Attacher à la grille",
-      "lockObjs": "Verrouiller les objets"
+      "lockObjs": "Verrouiller les objets",
+      "title": "Aide à la mise en page"
     },
     "showRayArrows": {
       "title": "Afficher les flèches directrices de la lumière"
