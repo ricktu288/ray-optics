@@ -70,16 +70,24 @@
       "title": "Taille de l'observateur"
     },
     "lengthScale": {
-      "title": "Echelle de longueur"
+      "title": "Echelle de longueur",
+      "description": "Si l'unité par défaut de la longueur est trop petite ou trop grande pour modélisé un système physique quand elle est interprété par une unité physique courante (par exemple millimètres), ce facteur peut être utilisé pour mettre à l'échelle l'apparence (par exemple la longueurs des lignes) dans la scène."
     },
     "zoom": {
       "title": "Zoom"
     },
     "colorMode": {
-      "title": "Mode Couleur"
+      "title": "Mode Couleur",
+      "description": "Détermine comment la luminosité (et les couleurs si \"Simuler les couleurs\" est activé) du rayon ou des images sont associé aux couleur sur l'écran. Seulement configurable quand \"Correct Brightness\" est utilisé."
     },
     "language": {
       "title": "Langue"
+    },
+    "showAdvancedSettings": {
+      "title": "Plus de paramètres de scène…"
+    },
+    "theme": {
+      "title": "Thème"
     }
   },
   "objBar": {
