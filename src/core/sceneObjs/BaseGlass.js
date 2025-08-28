@@ -71,11 +71,12 @@ class BaseGlass extends BaseSceneObj {
       ctx.globalAlpha = 1;
       return;
     }
-    if (n >= 1) {
-      var alpha = Math.log(n) / Math.log(1.5) * 0.2;
+    const mod_neg = n <= -1 ? -1 : 1;
+    if (n >= 1 || mod_neg === -1) {
+      var alpha = Math.log(n * mod_neg) / Math.log(1.5) * 0.2;
       if (allowColorSubtraction) {
         ctx.globalCompositeOperation = 'lighter';
-        ctx.fillStyle = "rgb(" + Math.round(alpha * this.scene.theme.glass.color.r * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.g * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.b * 255) + ")";
+        ctx.fillStyle = mod_neg < 0 ? "rgb(" + Math.round(alpha * this.scene.theme.glass.color.r * 0.75 * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.g * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.b * 0.75 * 255) + ")" : "rgb(" + Math.round(alpha * this.scene.theme.glass.color.r * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.g * 255) + "," + Math.round(alpha * this.scene.theme.glass.color.b * 255) + ")";
       } else {
         ctx.globalAlpha = alpha;
         ctx.fillStyle = "rgb(" + Math.round(this.scene.theme.glass.color.r * 255) + "," + Math.round(this.scene.theme.glass.color.g * 255) + "," + Math.round(this.scene.theme.glass.color.b * 255) + ")";
@@ -85,7 +86,7 @@ class BaseGlass extends BaseSceneObj {
       ctx.globalCompositeOperation = 'source-over';
 
     } else {
-      var alpha = Math.log(1 / n) / Math.log(1.5) * 0.2;
+      var alpha = Math.log(1 / (n * mod_neg)) / Math.log(1.5) * 0.2;
       if (allowColorSubtraction) {
         // Subtract the gray color.
         // Use a trick to make the color become red (indicating nonphysical) if the total refractive index is lower than one.
@@ -167,6 +168,13 @@ class BaseGlass extends BaseSceneObj {
       }
     }
 
+    // Negative modifier for working with negative indices of refraction
+    var mod_neg = false;
+    if (n1 < 0) {
+      n1 = -n1;     // Flip n1 for compatibility with the following equations
+      mod_neg = true;
+    }
+
     var normal_len = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     var normal_x = normal.x / normal_len;
     var normal_y = normal.y / normal_len;
@@ -225,6 +233,16 @@ class BaseGlass extends BaseSceneObj {
       }
 
       // Handle the refracted ray
+
+      // Handle negative refractive index
+      if (mod_neg) {
+        // Restore n1
+        n1 = -n1;
+
+        // Flip sign of cos2
+        cos2 = Math.cos(2 * Math.PI - Math.acos(cos2));
+      }
+
       ray.p1 = incidentPoint;
       ray.p2 = geometry.point(incidentPoint.x + n1 * ray_x + (n1 * cos1 - cos2) * normal_x, incidentPoint.y + n1 * ray_y + (n1 * cos1 - cos2) * normal_y);
       ray.brightness_s = ray.brightness_s * (1 - R_s);

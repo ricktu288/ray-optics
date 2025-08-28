@@ -10,6 +10,7 @@
     "@popperjs/core": "2.11.8",
     "@vue/runtime-dom": "^3.5.13",
     "ace-builds": "^1.36.0",
+    "bezier-js": "^6.1.4",
     "bootstrap": "5.1.3",
     "canvas2svg": "github:gliffy/canvas2svg",
     "copy-webpack-plugin": "^12.0.2",

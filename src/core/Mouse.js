@@ -15,6 +15,7 @@
  */
 
 import geometry from './geometry.js';
+import Bezier from 'bezier-js';
 
 /**
  * The Mouse class encapsulates the state of the mouse within the scene.
@@ -86,6 +87,15 @@ class Mouse {
     var d_per = Math.pow((this.pos.x - segment.p1.x) * (segment.p1.y - segment.p2.y) + (this.pos.y - segment.p1.y) * (segment.p2.x - segment.p1.x), 2) / ((segment.p1.y - segment.p2.y) * (segment.p1.y - segment.p2.y) + (segment.p2.x - segment.p1.x) * (segment.p2.x - segment.p1.x)); // Similar to the distance between the mouse and the line
     var d_par = (segment.p2.x - segment.p1.x) * (this.pos.x - segment.p1.x) + (segment.p2.y - segment.p1.y) * (this.pos.y - segment.p1.y); // Similar to the projected point of the mouse on the line
     return d_per < this.getClickExtent() * this.getClickExtent() && d_par >= 0 && d_par <= geometry.segmentLengthSquared(segment);
+  }
+
+  /**
+   * Determines if the mouse is currently over a given curve.
+   * @param {Bezier} curve - The curve to check against the mouse position.
+   * @returns {boolean} True if the mouse is on the given curve, false otherwise.
+   */
+  isOnCurve(curve) {
+    return curve.project(this.pos).d ** 2 < this.getClickExtent(true) * this.getClickExtent(true);
   }
 
   /**

@@ -210,6 +210,14 @@
         "notPositivelyOriented": "Curve is not positively oriented."
       }
     },
+    "CurveGlass": {
+      "refIndex": "Refractive index",
+      "refIndexInfo": {
+        "relative": "Relative if inside another glass",
+        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones."
+      },
+      "cauchyCoeff": "Cauchy coefficient"
+    },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
         "lambda": "To simulate chromatic dispersion, use parameter {{lambda}} for the vacuum wavelength in nanometers.",
@@ -243,6 +251,12 @@
       }
     },
     "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length].",
+        "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'ParamCurveObjMixin.js' file."
+      }
+    },
+    "CurveGrinGlass": {
       "epsInfo": {
         "units": "Units - [length].",
         "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'ParamCurveObjMixin.js' file."
