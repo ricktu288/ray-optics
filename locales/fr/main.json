@@ -62,14 +62,16 @@
     },
     "ParabolicMirror": {
       "title": "Parabolique",
-      "description": "Un miroir dont la forme est une parabole, qui est définie par trois points."
+      "description": "Un miroir dont la forme est une parabole, qui est définie par trois points.",
+      "instruction": "Tracez ou cliquez à deux points pour créer, ensuite cliquez sur le sommet."
     },
     "IdealMirror": {
       "title": "Courbure idéale",
       "description": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement."
     },
     "BeamSplitter": {
-      "description": "Un miroir qui transmet un pourcentage de la lumière entrant."
+      "description": "Un miroir qui transmet un pourcentage de la lumière entrant.",
+      "title": "Diviseur de rayons"
     },
     "CustomMirror": {
       "title": "Equation personnalisée"
