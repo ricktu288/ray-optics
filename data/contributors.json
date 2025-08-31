@@ -650,5 +650,17 @@
       ]
     },
     "firstCommit": "2025-08-16"
+  },
+  {
+    "name": "Eno Lak",
+    "githubEmails": [
+      "enolak64@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-08-25"
   }
 ]
