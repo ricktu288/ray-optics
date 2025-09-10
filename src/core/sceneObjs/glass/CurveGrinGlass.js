@@ -136,12 +136,15 @@ class CurveGrinGlass extends BaseGrinGlass {
 
         for (let i = 0; i < this.path.length - 1; i++) {
           ctx.lineTo(this.path[(i + 1)].x, this.path[(i + 1)].y);
+          ctx.fillStyle = 'rgb(255,0,0)';
           this.drawPoint(this.path[i], canvasRenderer);
         }
         ctx.globalAlpha = 1;
         ctx.strokeStyle = 'rgb(128,128,128)';
         ctx.lineWidth = 1 * ls;
+        ctx.setLineDash([5*ls, 5*ls]);
         ctx.stroke();
+        ctx.setLineDash([]);
       }
     } else {
       // The user has completed drawing the object
