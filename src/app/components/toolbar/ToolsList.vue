@@ -209,7 +209,7 @@
       <ToolItem
         id="CurveGrinGlass"
         :title="$t('main:tools.CurveGrinGlass.title') + '<sup>Beta</sup>'"
-        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGrinGlass.description'), sub: $t('main:tools.CurveGrinGlass.instruction')})"
+        :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGrinGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
         :verticalOffset="0"
         :layout="layout"
       />

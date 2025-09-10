@@ -120,9 +120,9 @@
       "description": "Glass with the shape defined by custom parametric equations."
     },
     "CurveGlass": {
-      "title": "Cubic Bezier curves",
-      "description": "Glass bounded by cubic Bezier curves.",
-      "instruction": "Click to create a segment, click on the starting point when finish drawing. Click and drag the boxes to manipulate the control points, changing the curve."
+      "title": "Bézier Curves",
+      "description": "Glass bounded by cubic Bézier curves.",
+      "instruction": "Click to create a piece, click on the starting point when finish drawing. After that, drag the boxes to manipulate the control points, changing the curve."
     },
     "CircleGrinGlass": {
       "title": "GRIN Circle",
@@ -139,9 +139,8 @@
       "description": "Gradient-index glass with boundary defined by custom parametric equations."
     },
     "CurveGrinGlass": {
-      "title": "GRIN Cubic Bezier curves",
-      "description": "Gradient-index glass bounded by cubic Bezier curves.",
-      "instruction": "Click to create a segment, click on the starting point when finish drawing. Click and drag the boxes to manipulate the control points, changing the curve."
+      "title": "GRIN Bézier Curves",
+      "description": "Gradient-index glass bounded by cubic Bézier curves."
     },
     "otherGrinGlass": {
       "title": "Gradient-index glass",
