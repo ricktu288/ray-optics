@@ -74,11 +74,6 @@ const CurveObjMixin = Base => class extends Base {
     return jsonObj;
   }
 
-  /**
-   * Move the object diffX in the x (right/left) direction and diffY in the Y (down/up) direction
-   * @param {number} diffX 
-   * @param {number} diffY 
-   */
   move(diffX, diffY) {
     // Move curve points
     for (let i = 0; i < this.curve.points.length; i++) {
@@ -88,12 +83,6 @@ const CurveObjMixin = Base => class extends Base {
     this.curve = new Bezier(this.curve.points);
   }
 
-  /**
-   * Rotate the curved object about a center
-   * @param {number} angle 
-   * @param {Point} center 
-   * @returns 
-   */
   rotate(angle, center) {
     // Use center of object as default rotation center if none is provided
     const rotationCenter = center || this.getDefaultCenter();
@@ -152,10 +141,6 @@ const CurveObjMixin = Base => class extends Base {
     return true;
   }
   
-  /**
-   * Calculate the default center of the curved object as the average position of all shared anchor points.
-   * @returns {Point}
-   */
   getDefaultCenter() {
     return {
       x: Math.round((this.curve.points[0].x + this.curve.points[3].x) / 2),

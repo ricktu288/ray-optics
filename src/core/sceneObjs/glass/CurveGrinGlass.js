@@ -81,10 +81,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     } 
   }
 
-  /**
-   * Serializes the object to a JSON object.
-   * @returns {Object} The serialized JSON object.
-   */
   serialize() {
     let jsonObj = super.serialize();
 
@@ -196,11 +192,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     ctx.lineWidth = 1;
   }
 
-  /**
-   * Move the object diffX in the x (right/left) direction and diffY in the Y (down/up) direction
-   * @param {number} diffX 
-   * @param {number} diffY 
-   */
   move(diffX, diffY) {
     // Each curve in lens
     for (let i = 0; i < this.curves.length; i++) {
@@ -215,12 +206,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     return false;
   }
 
-  /**
-   * Rotate the curved object about a center
-   * @param {number} angle 
-   * @param {Point} center 
-   * @returns 
-   */
   rotate(angle, center) {
     // Use center of object as default rotation center if none is provided
     const rotationCenter = center || this.getDefaultCenter();
@@ -277,10 +262,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     return false;
   }
   
-  /**
-   * Calculate the default center of the curved object as the average position of all anchor points.
-   * @returns {Point}
-   */
   getDefaultCenter() {
     var curPath = []
 
