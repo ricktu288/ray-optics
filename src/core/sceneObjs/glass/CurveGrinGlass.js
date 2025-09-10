@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Ray Optics Simulation authors and contributors
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import { Bezier, PolyBezier } from 'bezier-js';
 /**
  * Glass of the shape consists of Bezier curves.
  * 
- * Tools -> Glass -> GRIN Cubic Bezier Curves
+ * Tools -> Glass -> GRIN Bezier Curves
  * @class
  * @extends BaseGrinGlass
  * @memberof sceneObjs
@@ -261,7 +261,7 @@ class CurveGrinGlass extends BaseGrinGlass {
     
     return false;
   }
-  
+
   getDefaultCenter() {
     var curPath = []
 
@@ -462,13 +462,13 @@ class CurveGrinGlass extends BaseGrinGlass {
       this.initFns();
     }
     if (this.notDone) { return; }
-    if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1))//this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
+    if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1))//this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the glass, or on its boundary
     {
       this.rayLen = geometry.distance(ray.p1, ray.p2);
       let x = ray.p1.x + (this.stepSize / this.rayLen) * (ray.p2.x - ray.p1.x);
       let y = ray.p1.y + (this.stepSize / this.rayLen) * (ray.p2.y - ray.p1.y);
       const intersection_point = geometry.point(x, y);
-      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
+      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the glass
         return intersection_point;
     }
 
@@ -494,7 +494,7 @@ class CurveGrinGlass extends BaseGrinGlass {
       //console.log("Checking incident...");
       if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) {// && this.isOnBoundary(incidentData.s_point)) {
         //const count = this.countIntersections(ray.p1);
-        //if (!this.isOnBoundary(ray.p1) && this.isOnBoundary(incidentPoint)) // || this.isInsideGlass(geometry.point(incidentPoint.x, incidentPoint.y))))) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+        //if (!this.isOnBoundary(ray.p1) && this.isOnBoundary(incidentPoint)) // || this.isInsideGlass(geometry.point(incidentPoint.x, incidentPoint.y))))) // if the ray is hitting the glass from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the glass, and the point ray.p1 is inside/outside the glass)
       
         let r_bodyMerging_obj = ray.bodyMergingObj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
 

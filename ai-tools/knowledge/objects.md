@@ -299,10 +299,6 @@ A glass with the shape of piecewise defined parametric curve. The `pieces` prope
 
 In user provided scene created using the visual editor, this object may appear outside a module, and a similar object with `CustomGlass` type may also be used instead whose equation is defined in a relative coordinate system where `p1` and `p2` are $(-1,0)$ and $(1,0)$, respectively. However, when you write JSON code by yourself, please always use the `ParamGlass` type and put it inside a module.
 
-### Cubic Bezier Glass
-
-A glass with a shape defined by boundaries composed of cubic Bezier curves. The `points` property is an array of arrays of 2D points with length 3. Point 1 is the first anchor point, points 2 and 3 are the control points, and point 1 of the next curve in the series composing a loop of curves which represents a lens is the second control point of the curve.
-
 ## Ideal Objects
 
 ### Ideal Lens

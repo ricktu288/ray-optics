@@ -22,7 +22,7 @@ import geometry from '../../geometry.js';
 /**
  * Gradient-index glass of the shape of a polygon
  * 
- * Tools -> Glass -> Gradient-index polygon
+ * Tools -> Glass -> GRIN Polygon
  * @class
  * @extends BaseGrinGlass
  * @memberof sceneObjs
@@ -251,13 +251,13 @@ class GrinGlass extends BaseGrinGlass {
     if (!this.fn_p) {
       this.initFns();
     }
-    if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
+    if (this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the glass, or on its boundary
     {
       let len = geometry.distance(ray.p1, ray.p2);
       let x = ray.p1.x + (this.stepSize / len) * (ray.p2.x - ray.p1.x);
       let y = ray.p1.y + (this.stepSize / len) * (ray.p2.y - ray.p1.y);
       const intersection_point = geometry.point(x, y);
-      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
+      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the glass
         return intersection_point;
     }
 
@@ -300,7 +300,7 @@ class GrinGlass extends BaseGrinGlass {
     try {
       this.error = null;
 
-      if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the circle from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the circle, and the point ray.p1 is inside/outside the circle)
+      if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) // if the ray is hitting the glass from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the glass, and the point ray.p1 is inside/outside the glass)
       {
         let r_bodyMerging_obj = ray.bodyMergingObj; // save the current bodyMergingObj of the ray, to pass it later to the reflected ray in the 'refract' function
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Ray Optics Simulation authors and contributors
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import { Bezier } from 'bezier-js';
 /**
  * Glass of the shape consists of Bezier curves.
  * 
- * Tools -> Glass -> Cubic Bezier Curves
+ * Tools -> Glass -> Bezier Curves
  * @class
  * @extends BaseGlass
  * @memberof sceneObjs

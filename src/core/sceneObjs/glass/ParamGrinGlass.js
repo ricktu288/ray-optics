@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Ray Optics Simulation authors and contributors
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import geometry from '../../geometry.js';
 /**
  * Gradient-index glass with shape defined by parametric curve pieces.
  * 
- * Tools -> Glass -> Parametric GRIN
+ * Tools -> Glass -> GRIN Parametric Curve
  * @class
  * @extends BaseGrinGlass
  * @memberof sceneObjs

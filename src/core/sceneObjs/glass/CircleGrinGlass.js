@@ -22,7 +22,7 @@ import geometry from '../../geometry.js';
 /**
  * Gradient-index glass of the shape of a circle.
  * 
- * Tools -> Glass -> Gradient-index Circle
+ * Tools -> Glass -> GRIN Circle
  * @class
  * @extends BaseGrinGlass
  * @memberof sceneObjs

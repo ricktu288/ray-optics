@@ -22,7 +22,7 @@ import geometry from '../../geometry.js';
 /**
  * A line-shaped custom surface.
  * 
- * Tools -> Other -> Custom surface
+ * Tools -> Other -> Custom line surface
  * @class
  * @extends BaseCustomSurface
  * @memberof sceneObjs
