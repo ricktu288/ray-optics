@@ -33,7 +33,6 @@ import { Bezier } from 'bezier-js';
  * @property {boolean} notDone - Whether the user is still drawing the path of the glass.
  * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
  * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
- * @property {number} intersectTol - Tolerance for intersection calculations (unit: pixels).
  */
 class CurveGlass extends BaseGlass {
   static type = 'CurveGlass';
@@ -43,8 +42,7 @@ class CurveGlass extends BaseGlass {
     points: [],
     notDone: false,
     refIndex: 1.5,
-    cauchyB: 0.004,
-    intersectTol: 5e-2
+    cauchyB: 0.004
   }
   
   /**
@@ -105,13 +103,11 @@ class CurveGlass extends BaseGlass {
     delete jsonObj.curves;
     if (jsonObj.path) delete jsonObj.path;
 
-    console.log("Final: " + JSON.stringify(jsonObj));
-
     return jsonObj;
   }
 
-  populateObjectBar(objBar) {
-    objBar.setTitle(i18next.t('main:tools.CurveGrinGlass.title'));
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.CurveGlass.title') }));
     super.populateObjBar(objBar);
   }
 
@@ -198,6 +194,8 @@ class CurveGlass extends BaseGlass {
       }
       this.newCurve(this.curves[i].points, i);
     }
+
+    return true;
   }
 
   /**
@@ -216,7 +214,7 @@ class CurveGlass extends BaseGlass {
     var cur_diff_y = 0;
 
     // Apply rotation to all curve points in the object
-    for (let i = 0; i < this.curve.length; i++) {    // path length should equal curve length, hence they are effectively interchangeable here
+    for (let i = 0; i < this.curves.length; i++) {    // path length should equal curve length, hence they are effectively interchangeable here
       // Apply rotation to the rest of the current curve's points
       for (let j = 0; j < points_in_curve; j++) {
         // Calculate the current difference for the current curve point
@@ -275,8 +273,8 @@ class CurveGlass extends BaseGlass {
     }
 
     return {
-      x: Math.round(curPath.reduce((partialPointsSum, curPoint) => partialPointsSum.x + curPoint.x, 0) / this.curves.length),
-      y: Math.round(curPath.reduce((partialPointsSum, curPoint) => partialPointsSum.y + curPoint.y, 0) / this.curves.length)
+      x: Math.round(curPath.reduce((partialPointsSum, curPoint) => partialPointsSum + curPoint.x, 0) / this.curves.length),
+      y: Math.round(curPath.reduce((partialPointsSum, curPoint) => partialPointsSum + curPoint.y, 0) / this.curves.length)
     };
   }
   
@@ -464,16 +462,7 @@ class CurveGlass extends BaseGlass {
   
   checkRayIntersects(ray) {
     if (this.notDone) return;
-    if (this.countIntersections(ray.p1, ray.p2) % 2 == 1)//this.isInsideGlass(ray.p1) || this.isOnBoundary(ray.p1)) // if the first point of the ray is inside the circle, or on its boundary
-    {
-      this.rayLen = geometry.distance(ray.p1, ray.p2);
-      let x = ray.p1.x + (this.stepSize / this.rayLen) * (ray.p2.x - ray.p1.x);
-      let y = ray.p1.y + (this.stepSize / this.rayLen) * (ray.p2.y - ray.p1.y);
-      const intersection_point = geometry.point(x, y);
-      if (this.isInsideGlass(intersection_point)) // if intersection_point is inside the circle
-        return intersection_point;
-    }
-
+    this.countIntersections(ray.p1, ray.p2)
     if (this.curIntersections.shortest.i > -1 && this.curIntersections.shortest.j > -1) {
 
       return this.curves[this.curIntersections.shortest.i].get(this.curIntersections.curves[this.curIntersections.shortest.i][this.curIntersections.shortest.j]);
@@ -516,34 +505,9 @@ class CurveGlass extends BaseGlass {
     return this.getIncidentData(ray).incidentType;
   }
 
-  isOutsideGlass(point, point2) {
-    return (!this.isOnBoundary(point) && this.countIntersections(point, point2) % 2 == 0);
-  }
-
   isInsideGlass(point, point2) {
-    //const iig (!this.isOnBoundary(point) && this.countIntersections(point) % 2 == 1);
-    return (!this.isOnBoundary(point) && this.countIntersections(point, point2) % 2 == 1);
+    return this.countIntersections(point, point2) % 2 == 1;
   }
-  
-  isOnBoundary(p3) {
-
-    // New (curve-oriented)
-    for (let i = 0; i < this.curves.length; i++) {
-      // First, check if the point is within the bounding box of the curve. This prevents unnecessary calculations of the projection
-      if (p3.x <= this.bboxes[i].x.max && p3.x >= this.bboxes[i].x.min || p3.y <= this.bboxes[i].y.max && p3.y >= this.bboxes[i].y.min) {
-        // Check how far away the nearest point on the curve to p3 is from p3
-        const proj = Math.pow(this.curves[i].project({ x: p3.x, y: p3.y }).d, 2);
-        /*if (geometry.distanceSquared({ x: proj.x, y: proj.y }, p3) <= this.intersectTol) {
-          return true;
-        }*/
-        if (proj <= this.intersectTol && proj > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   /* Utility methods */
 
   getIncidentData(ray) {
@@ -578,13 +542,23 @@ class CurveGlass extends BaseGlass {
   // Using p3 and (0, 0), as the purpose of this function is to test whether the number of intersections is even or odd, hence the actual number is irrelevant, hence any secondary point will do for our purposes.
   countIntersections(p3, p4) {
     var cnt = 0;
-
-    // Replace p4 with 0,0 if not passed
+    
+    // Replace p4 with a point outside the glass if not passed
     if (typeof p4 === "undefined") {
+      // Calculate a point that's guaranteed to be outside the glass by finding the minimum x coordinate
+      // from all bounding boxes and subtracting a large offset
+      let minX = Infinity;
+      for (let i = 0; i < this.bboxes.length; i++) {
+        if (this.bboxes[i].x.min < minX) {
+          minX = this.bboxes[i].x.min;
+        }
+      }
+      const outsidePoint = { x: minX - this.scene.rng() - 100, y: p3.y + this.scene.rng() };
+      
       // Go thru each curve
       for (let i = 0; i < this.curves.length; i++) {
-        // Get the current intersections, add the number of intersections found on the current curve from p3 to (0, 0)
-        cnt += this.curves[i].lineIntersects(geometry.line(geometry.point(p3.x, p3.y), {x: 0, y: 0}));//, this.intersectTol);
+        // Get the current intersections, add the number of intersections found on the current curve from p3 to the outside point
+        cnt += this.curves[i].lineIntersects(geometry.line(geometry.point(p3.x, p3.y), outsidePoint)).length;//, this.intersectTol);
       }
     } else {
       this.curIntersections = {
@@ -599,13 +573,20 @@ class CurveGlass extends BaseGlass {
       // Scale the line from p3 to p4 in order to ensure the ray is always longer than the lens
       let mod_len = 0;
       for (let i = 0; i < this.bboxes.length; i++) {
-        mod_len += this.bboxes[i].x.max > this.bboxes[i].y.max ? this.bboxes[i].x.max : this.bboxes[i].y.max;
+        mod_len += Math.abs(this.bboxes[i].x.max) > Math.abs(this.bboxes[i].y.max) ? Math.abs(this.bboxes[i].x.max) : Math.abs(this.bboxes[i].y.max);
       }
 
       // Go thru each curve
       for (let i = 0; i < this.curves.length; i++) {
         // Get the current intersections
         this.curIntersections.curves.push(this.curves[i].lineIntersects(geometry.line(p3, geometry.point(p4.x + ((p4.x - p3.x) * mod_len), p4.y + ((p4.y - p3.y) * mod_len)))));
+
+        // If the intersection is too close to the first point, ignore it
+        for (let j = 0; j < this.curIntersections.curves[i].length; j++) {
+          if (geometry.distanceSquared(p3, this.curves[i].get(this.curIntersections.curves[i][j])) < Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+            this.curIntersections.curves[i].splice(j, 1);
+          }
+        }
         
         // Add the number of intersections found on the current curve from p3 to (0, 0)
         cnt += this.curIntersections.curves[i].length;
@@ -613,7 +594,7 @@ class CurveGlass extends BaseGlass {
         // Keep track of the nearest intersection to p3
         for (let j = 0; j < this.curIntersections.curves[i].length; j++) {
           let tmp = geometry.distanceSquared(p3, this.curves[i].get(this.curIntersections.curves[i][j]));
-          if (tmp < this.curIntersections.shortest.val && tmp > this.intersectTol && tmp > Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+          if (tmp < this.curIntersections.shortest.val) {
             this.curIntersections.shortest = {
               val: tmp,
               i: i,
