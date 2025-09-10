@@ -672,5 +672,14 @@
       ]
     },
     "firstCommit": "2025-08-25"
+  },
+  {
+    "name": "gert jansen",
+    "contributions": {
+      "translations": [
+        "nl"
+      ]
+    },
+    "firstCommit": "2025-09-10"
   }
 ]
