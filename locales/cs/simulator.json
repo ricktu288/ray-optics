@@ -1,0 +1,57 @@
+{
+  "welcome": {
+    "title": "Vítejte v Ray Optics Simulation",
+    "instruction": "Pro přidání nového optického prvku vyberte nástroj a klikněte do prázdné plochy.\nPro nahrání připraveného ukázkového příkladu, [navštivte stránku Galerie](/gallery).",
+    "loading": "Nahrávání scény z URL adresy… Počkejte, prosím."
+  },
+  "common": {
+    "saveButton": "Uložit",
+    "cancelButton": "Zrušit",
+    "defaultOption": "Výchozí",
+    "customOption": "Vlastní",
+    "closeButton": "Zavřít",
+    "resetButton": "Obnovit",
+    "reloadToTakeEffect": "Pro projevení změn je potřeba obnovit stránku."
+  },
+  "file": {
+    "title": "Soubor",
+    "undo": {
+      "title": "Zpět"
+    },
+    "redo": {
+      "title": "Znovu"
+    },
+    "reset": {
+      "title": "Obnovit"
+    },
+    "save": {
+      "title": "Uložit"
+    },
+    "open": {
+      "title": "Otevřít",
+      "description": "Otevřete existující soubor nebo obrázek na pozadí. Obrázek se umístí na počáteční souřadnice plochy. (Případně soubor přetáhněte do okna)"
+    },
+    "export": {
+      "title": "Exportovat jako PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Zkopírovat odkaz pro sdílení",
+      "description": "Zkopírujte a přejděte na přímou adresu URL aktuální scény pro sdílení (nejlépe přes zkracovač URL). Viz také Nastavení -> Automatická synchronizace URL."
+    },
+    "viewGallery": {
+      "title": "Zobrazit Galerii",
+      "description": "Přejděte na stránku Galerie a načtěte ukázku."
+    }
+  },
+  "settings": {
+    "title": "Nastavení",
+    "more": "Více",
+    "rayDensity": {
+      "title": "Hustota paprsků",
+      "description": "Určuje počet paprsků ve světelném svazku nebo vycházejících z bodového zdroje. Také ovlivňuje rozpoznání obrazu a vykreslování barev."
+    },
+    "layoutAids": {
+      "title": "Pomůcky rozvržení"
+    }
+  }
+}
