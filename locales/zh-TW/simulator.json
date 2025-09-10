@@ -248,6 +248,12 @@
         "functions": "本數值容忍度被用於 'ParamCurveObjMixin.js' 中的 'isOnBoundary' 函數。"
       }
     },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "單位 - [長度]^2.",
+        "functions": "本數值容忍度被用於 'CurveGrinGlass.js' 中的 'isOnBoundary' 函數。"
+      }
+    },
     "Aperture": {
       "diameter": "直徑"
     },

@@ -119,6 +119,11 @@
       "title": "参数曲线",
       "description": "形状由自定义参数式定义的透光物。"
     },
+    "CurveGlass": {
+      "title": "贝塞尔曲线",
+      "description": "由三次贝塞尔曲线界定的透光物。",
+      "instruction": "点击以建立片段，点击一开始的点以结束绘制。接著拖曳方块以调整控制点，改变曲线。"
+    },
     "CircleGrinGlass": {
       "title": "渐变折射率圆形",
       "description": "折射率为自定义函数 n(x,y)，边界为圆形的透光物。"
@@ -132,6 +137,10 @@
     "ParamGrinGlass": {
       "title": "渐变折射率参数曲线",
       "description": "边界由自定义参数式定义的渐变折射率透光物。"
+    },
+    "CurveGrinGlass": {
+      "title": "渐变折射率贝塞尔曲线",
+      "description": "由三次贝塞尔曲线界定的渐变折射率透光物。"
     },
     "otherGrinGlass": {
       "title": "渐变折射率透光物",
