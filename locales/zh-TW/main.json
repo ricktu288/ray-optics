@@ -119,6 +119,11 @@
       "title": "參數曲線",
       "description": "形狀由自訂參數式定義的透光物。"
     },
+    "CurveGlass": {
+      "title": "貝茲曲線",
+      "description": "由三次貝茲曲線界定的透光物。",
+      "instruction": "點擊以建立片段，點擊一開始的點以結束繪製。接著拖曳方塊以調整控制點，改變曲線。"
+    },
     "CircleGrinGlass": {
       "title": "漸變折射率圓形",
       "description": "折射率為自訂函數 n(x,y)，邊界為圓形的透光物。"
@@ -132,6 +137,10 @@
     "ParamGrinGlass": {
       "title": "漸變折射率參數曲線",
       "description": "邊界由自訂參數式定義的漸變折射率透光物。"
+    },
+    "CurveGrinGlass": {
+      "title": "漸變折射率貝茲曲線",
+      "description": "由三次貝茲曲線界定的漸變折射率透光物。"
     },
     "otherGrinGlass": {
       "title": "漸變折射率透光物",
