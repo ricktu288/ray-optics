@@ -91,6 +91,30 @@
       "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
       "cauchyB": "O coeficiente de Cauchy \\(B\\) do cubo em micrômetros quadrados",
       "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
+    },
+    "CoatedLens": {
+      "title": "Lente Esférica Revestida",
+      "description": "Uma lente esférica com revestimento de camada única em ambos os lados. O módulo `ArcCoating` inserido neste módulo representa uma única camada de filme fino, que, quando se sobrepõe com uma superfície de vidro, se torna seu revestimento.",
+      "point1": "O centro da lente",
+      "h": "A altura da lente",
+      "d": "A espessura da lente",
+      "R1": "O raio de curvatura da superfície frontal",
+      "R2": "O raio de curvatura da superfície traseira",
+      "A": "O coeficiente de Cauchy \\(A\\) do vidro",
+      "B": "O coeficiente de Cauchy \\(B\\) do vidro em micrômetros quadrados",
+      "dc": "A espessura da camada de revestimento em nanômetros",
+      "Ac": "O coeficiente de cauchy \\(A\\) do material do revestimento",
+      "Bc": "O coeficiente de Cauchy \\(B\\) do material do revestimento em micrômetros quadrados"
+    },
+    "EllipticalMirror": {
+      "title": "Espelho Elíptico",
+      "description": "Um espelho elíptico definido pelos dois focos e o comprimento do semieixo maior.",
+      "point1": "O primeiro foco",
+      "point2": "O segundo foco",
+      "a": "O comprimento do semieixo maior",
+      "tMin": "O mínimo ângulo da curva",
+      "tMax": "O máximo ângulo da curva",
+      "tStep": "O ângulo de passo da curva"
     }
   },
   "moduleTutorial": {
@@ -114,7 +138,8 @@
       "enableJsonEditor": "Você pode habilitar o editor JSON incluso ao clicar no menu \"configurações\" no canto superior direito do app, e então marcar \"Exibir editor JSON\". O editor de código deve aparecer no lado esquerdo do app, com o código JSON da cena atual. Certifique-se que a sua tela é grande o suficiente, já que este recurso não funciona bem em dispositivos móveis.",
       "updateAccordingly": "Conforme você edita a cena utilizando o editor visual de cena, o código no editor JSON vai atualizar automaticamente, com a parte modificada destacada. Do mesmo modo, editar o código no editor JSON diretamente vai atualizar a cena automaticamente. Se você não for familiar com JSON ou qualquer tipo de formato de dados à base de texto, pode ser útil brincar com isso por um tempo.",
       "objsArray": "Em particular, quando se adiciona um objeto à cena, ele é adicionado à lista `objs`. E se você modificar algumas de suas propriedades para um valor não padrão, elas aparecem como pares chave-valor nesse objeto.",
-      "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se você não ver o editor de código JSON nos iframes abaixo, por favor habilite-o e recarregue esta página, pois vocÊ precisará de ver o código para entender como funciona."
+      "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se você não ver o editor de código JSON nos iframes abaixo, por favor habilite-o e recarregue esta página, pois vocÊ precisará de ver o código para entender como funciona.",
+      "disableAutoUpdate": "Se você não quiser que a cena seja automaticamente atualizada ao editar o JSON, você pode habilitar Configurações -> Exibir controles da simulação e desabilitar \"Atualizar Automaticamente\". E quando a edição estiver pronta, clicar \"Atualizar Simulação\" (ou \"Atualizar Cena\" se você não quiser que a simulação rode novamente de imediato)."
     },
     "basics": {
       "title": "O básico de um módulo",
@@ -153,7 +178,10 @@
       "context": "Definições de variáveis tem acesso total a todos os parâmetros e coordenadas de ponto de controle, e, uma vez definidas, essas variáveis podem ser usadas em modelos de objeto assim como parâmetros e coordenadas de ponto de controle, possibilitndo cálculos mais complexos e reutilizáveis."
     },
     "objsWithEqn": {
-      "title": "Objetos com equações personalizadas inclusas"
+      "title": "Objetos com equações personalizadas inclusas",
+      "syntax": "Para objetos que já possuem entrada de equação personalizada (como Espelho -> Equação Personalizada), a propriedade de equação no JSON é uma sequência de caracteres representando uma equação LaTeX. Para representar essa equação em math.js e se referir a parâmetros de módulo, etc, você precisa de envolver a expressão math.js em um par de crases duplas. Esse bloco expande para uma equação LaTeX com variáveis livres como \\(x\\) para `x` e \\(\\theta_0\\) para `theta_0`, que é diferente de um bloco de crase único que não expera variáveis livres e se expande como número. Aqui está um exemplo de espelho de equação personalizada contendo um parâmetro personalizado `phi`",
+      "supportedFunctions": "Por mais que você possa usar qualquer sintaxe e operações math.js em variáveis e blocos de crase única, para blocos de crase dupla, somente as contrapartes math.js das constantes, operadores e funções suportadas pela entrada de equação do objeto alvo são permitidas (veja a caixa de informação do objeto alvo). Você pode usar funções personalizadas definidas na lista `vars`, mas a s definições de função deve consistir apenas dessas funções permitidas.",
+      "implicitMultiplication": "Multiplicação implícita (ex.: `2x`) também não é permitida nesse contexto, devido a sua precedência de operadores mal definida em math.js. Por favor, sempre use o operador `*` explicitamente (ex.: `2*x`)."
     },
     "objsWithShapeParam": {
       "title": "Objetos com parametrização de forma inclusa",
