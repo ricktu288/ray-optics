@@ -149,7 +149,7 @@
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
         "functions": "Funções suportadas",
-        "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados."
+        "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
       "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
@@ -205,6 +205,9 @@
         "all": "Esta opção se aplica a todos objetos GRIN na simulação.",
         "impl": "Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'BaseGrinGlass.js').",
         "implNote": "A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, tal que ao menos um deles possua uma função de índice refrativo que não é definida todo o plano, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema."
+      },
+      "absorptionFnInfo": {
+        "absorption": "A taxa de absorção do vidro, em unidades de 1/[comprimento]."
       }
     },
     "CircleGrinGlass": {
@@ -285,7 +288,8 @@
       "variableRangeError": "Erro processando alcance de variável \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "stringExpansionError": "Erro expandindo string \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}",
-      "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}"
+      "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}",
+      "unclosedMathBlock": "Bloco de matemática não fechado: {{str}}"
     },
     "Handle": {
       "handle": "Ponto de manuseio",
@@ -341,7 +345,33 @@
         "angles": "{{theta_0}} e {{theta_j}} são os ângulos dos raios que incidem e dos j-ésimos raios que saem, respectivamente, em radianos e relativo a direção normal.",
         "brightnesses": "{{P_0}} e {{P_j}} são os brilhos dos raios incidentes e j-ésimos raios que saem, respectivamente, na mesma unidade que a ferramenta detector usa.",
         "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
-        "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem."
+        "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
+        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
+        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação."
+      },
+      "twoSided": "Bilateral",
+      "addOutgoingRay": "Adicionar raio de saída",
+      "removeOutgoingRay": "Remover raio de saída"
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [comprimento]^2.",
+        "functions": "Esta tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'CurveGrinGlass.js'."
+      }
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola linearmente de -1 a 1 entre os dois pontos finais do segmento de linha."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola uniformemente (com respeito ao ângulo) de -1 a 1 entre os dois pontos finais do arco."
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente no espaço de parâmetros da curva pode ser referido como {{t}}."
       }
     }
   },
@@ -504,6 +534,9 @@
       "title": "Importar",
       "description": "Importar tema de um arquivo JSON.",
       "error": "O arquivo não contém um tema."
+    },
+    "customSurface": {
+      "title": "Estilo de superfície personalizado"
     }
   },
   "languageModal": {
@@ -515,7 +548,8 @@
     "shareLinkTooLong": "Talvez a URL seja comprida demais para funcionar em algumas plataformas. Você pode precisar de usar \"Salvar\" e compartilhar o arquivo ao invés disso.",
     "autoSyncUrlTooLarge": "A cena é grande demais para sincronizar com URL. Por favor, salve manualmente.",
     "identicalObjects": "Há dois elementos ópticos idênticos na cena que se sobrepõem completamente.",
-    "brightnessInconsistent": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas."
+    "brightnessInconsistent": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas.",
+    "blackBecomesTransparent": "Ao usar \"Corrigir Brilho\" com um plano de fundo não-preto, a parte preta da cor da luz se torna transparente devido a mistura aditiva de cores. Por favor faça todas as cores de tema de luz terem valor HSV unitário para evitar esse problema."
   },
   "generalErrors": {
     "newerVersion": "A versão da cena é mais nova que a versão atual do simulador.",
