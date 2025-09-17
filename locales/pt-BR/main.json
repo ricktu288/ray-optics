@@ -202,6 +202,15 @@
     },
     "moreTools": {
       "title": "Mais Ferramentas…"
+    },
+    "CurveGlass": {
+      "title": "Curvas de Bézier",
+      "description": "Vidro delimitado por curvas cúbicas de Bézier.",
+      "instruction": "Clique para criar um pedaço, clique no ponto de início ao finalizar o desenho. Após isso, arraste as caixas para manipular os pontos de controle, mudando a curva."
+    },
+    "CurveGrinGlass": {
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidro de gradiente de índice delimitado por curvas cúbicas de Bézier."
     }
   },
   "view": {
