@@ -9,7 +9,8 @@
     "cancelButton": "បោះបង់",
     "defaultOption": "លំនាំដើម",
     "closeButton": "បិទ",
-    "reloadToTakeEffect": "សូម Refresh នៅ Browser របស់អ្នកដើម្បីបន្តប្រតិបត្តិការ។"
+    "reloadToTakeEffect": "សូម Refresh នៅ Browser របស់អ្នកដើម្បីបន្តប្រតិបត្តិការ។",
+    "resetButton": "កំណត់ឡើងវិញ"
   },
   "file": {
     "title": "ការគ្រប់គ្រង / រៀបចំ",
@@ -90,7 +91,13 @@
       "title": "បង្ហាញពពុះជំនួយ",
       "description": "ពពុះមួយដែលនឹងបង្ហាញប្រាប់ព័ត៌មានលម្អិតបើអ្នកចង្អុរលើអ្វីមួយ។"
     },
-    "advancedHelp": "ដើម្បីជាជំនួយការបន្ថែម សូមពិនិត្យរូបសញ្ញាសួរ \"?\" នៅផ្នែកខាងក្រោមស្ដាំ។"
+    "advancedHelp": "ដើម្បីជាជំនួយការបន្ថែម សូមពិនិត្យរូបសញ្ញាសួរ \"?\" នៅផ្នែកខាងក្រោមស្ដាំ។",
+    "showAdvancedSettings": {
+      "title": "ការកំណត់បន្ថែម…"
+    },
+    "theme": {
+      "title": "រចនាបថ"
+    }
   },
   "objBar": {
     "showAdvanced": {
@@ -120,10 +127,12 @@
       "emisAngle": "មុំ",
       "random": "រាយប៉ាយ",
       "focalLength": "ប្រវែងកំណុំ",
-      "nonSimulateColorsWarning": "ឧបករណ៍នេះប្រើបានលុះត្រាអ្នកជ្រើសរើស \"បង្ហាញកូល័រ / ពណ៍\" នៅក្នុង\"ការកំណត់\"។"
+      "nonSimulateColorsWarning": "ឧបករណ៍នេះប្រើបានលុះត្រាអ្នកជ្រើសរើស \"បង្ហាញកូល័រ / ពណ៍\" នៅក្នុង\"ការកំណត់\"។",
+      "wavelength": "ជំហានរលក"
     },
     "BaseFilter": {
-      "filter": "សម្រង់"
+      "filter": "សម្រង់",
+      "invert": "ចម្រាស់"
     },
     "BaseGlass": {
       "refIndex": "សន្ទស្សន៍ចំណាំងបែរ"
@@ -173,6 +182,16 @@
     },
     "CropBox": {
       "rayCountLimit": "កម្រិតបរិមាណកាំពន្លឺ"
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "ខ្នាត - [length]^2."
+      }
+    },
+    "BaseGrinGlass": {
+      "refIndexFnInfo": {
+        "accuracy": "ដើម្បីឱ្យការពិសោធន៍សុក្រឹតបន្ថែមជាងនេះ សូមចូលពិនិត្យ \"ជម្រើសផ្សេងទៀត…\""
+      }
     }
   },
   "saveModal": {
@@ -218,6 +237,20 @@
         "description": "អ្នកអាចទាក់ទងយើងតាមរយៈបណ្ដាញ e-mail អាសយដ្ឋាន [ray-optics@phydemo.app](/email)។ យើងលើកទឹកចិត្តឱ្យអ្នកបញ្ចេញមតិនៅ [Discussions](/github/discussions) ឬ [Issues](/github/issues) នៅបណ្ដាញ GitHub។",
         "contribute": "អ្នកអាចចូលរួមអភិវឌ្ឍន៍កម្មវិធីបានដោយ [ចុចទីនេះ](/contributing)។"
       }
+    }
+  },
+  "themeModal": {
+    "title": "ការកំណត់រចនាបថ",
+    "background": {
+      "title": "ពណ៌ផ្ទៃខាងក្រោយ"
+    },
+    "grid": {
+      "title": "ខ្សែក្រឡា"
+    },
+    "import": {
+      "title": "បញ្ចូល",
+      "description": "បញ្ចូលនូវ file JSON ដើម្បីកំណត់រចនាបថជាស្រេច។",
+      "error": "ឯកសារដែលបញ្ចូលមកនេះមិនមែនជា file JSON សម្រាប់ការកំណត់រចនាបថនោះទេ។"
     }
   }
 }

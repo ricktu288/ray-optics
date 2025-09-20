@@ -202,6 +202,15 @@
     },
     "moreTools": {
       "title": "Więcej narzędzi…"
+    },
+    "CurveGlass": {
+      "title": "Krzywe Béziera",
+      "description": "Szkło ograniczone sześciennymi krzywymi Béziera.",
+      "instruction": "Kliknij, aby utworzyć element, a po zakończeniu rysowania kliknij punkt początkowy. Następnie przeciągnij pola, aby manipulować punktami kontrolnymi, zmieniając krzywą."
+    },
+    "CurveGrinGlass": {
+      "title": "Krzywe Béziera GRIN",
+      "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
     }
   },
   "view": {
