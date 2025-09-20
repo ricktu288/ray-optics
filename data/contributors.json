@@ -644,9 +644,6 @@
   },
   {
     "name": "briidee3",
-    "githubEmails": [
-      "briidee3@gmail.com"
-    ],
     "contributions": {
       "code": true
     },
@@ -681,5 +678,17 @@
       ]
     },
     "firstCommit": "2025-09-10"
+  },
+  {
+    "name": "Bearia",
+    "githubEmails": [
+      "vv.t1011.mts@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ja"
+      ]
+    },
+    "firstCommit": "2025-09-16"
   }
 ]
