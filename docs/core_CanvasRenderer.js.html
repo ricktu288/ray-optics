@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/CanvasRenderer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/CanvasRenderer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2024 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import * as C2S from 'canvas2svg';
+
+/**
+ * A class to render geometric figures from geometry.js on a canvas, and to handle the transformation and background image of the canvas.
+ * @class
+ */
+class CanvasRenderer {
+  constructor(ctx, origin, scale, lengthScale, backgroundImage, ctxVirtual) {
+
+    /** @property {Object} ctx - The context of the canvas. */
+    this.ctx = ctx;
+
+    /** @property {Object} origin - The origin of the scene in the viewport. */
+    this.origin = origin;
+
+    /** @property {number} scale - The scale factor (the viewport physical pixel per internal length unit) of the scene. */
+    this.scale = scale;
+
+    /** @property {number} lengthScale - The scale factor of the length units of the scene. */
+    this.lengthScale = lengthScale;
+
+    /** @property {Object} canvas - The canvas of the scene. */
+    this.canvas = ctx.canvas;
+
+    /** @property {Object|null} backgroundImage - The background image of the scene, null if not set. */
+    this.backgroundImage = backgroundImage;
+
+    /** @property {CanvasRenderingContext2D} ctxVirtual - The virtual context for color adjustment. */
+    this.ctxVirtual = ctxVirtual;
+
+    if (typeof C2S !== 'undefined' &amp;&amp; ctx.constructor === C2S) {
+      /** @property {boolean} isSVG - Whether the canvas is being exported to SVG. */
+      this.isSVG = true;
+    }
+
+    // Initialize the canvas
+    if (!this.isSVG) {
+      // only do this when not being exported to SVG to avoid bug
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.setTransform(this.scale, 0, 0, this.scale, this.origin.x, this.origin.y);
+      if (this.ctx.constructor !== C2S &amp;&amp; this.backgroundImage) {
+        this.ctx.globalAlpha = 1;
+        this.ctx.drawImage(this.backgroundImage, 0, 0);
+      }
+    }
+  }
+
+  /**
+   * Converts an RGBA array [R, G, B, A] with values between 0 and 1 to a CSS color string.
+   * @param {number[]|object} rgba - The RGBA array or object with r, g, b, a properties.
+   * @returns {string} The CSS color string.
+   */
+  rgbaToCssColor(rgba) {
+    if (rgba.r !== undefined) {
+      const { r, g, b, a } = rgba;
+      return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+    } else {
+      const [r, g, b, a] = rgba;
+      return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
+    }
+  }
+
+  /**
+   * Draw a point.
+   * @param {Point} p
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
+   * @param {number} [size=5]
+   */
+  drawPoint(p, color = [0, 0, 0, 1], size = 5) {
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
+    this.ctx.fillRect(p.x - (size / 2) * this.lengthScale, p.y - (size / 2) * this.lengthScale, size * this.lengthScale, size * this.lengthScale);
+  }
+
+  /**
+   * Draw a line.
+   * @param {Line} l
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=false] (not implemented, just for parameter consistency)
+   * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
+   */
+  drawLine(l, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
+    this.ctx.beginPath();
+    let ang1 = Math.atan2((l.p2.x - l.p1.x), (l.p2.y - l.p1.y));
+    let cvsLimit = (Math.abs(l.p1.x + this.origin.x) + Math.abs(l.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+    this.ctx.moveTo(l.p1.x - Math.sin(ang1) * cvsLimit, l.p1.y - Math.cos(ang1) * cvsLimit);
+    this.ctx.lineTo(l.p1.x + Math.sin(ang1) * cvsLimit, l.p1.y + Math.cos(ang1) * cvsLimit);
+    this.ctx.stroke();
+  }
+
+  /**
+   * Draw a ray.
+   * @param {Line} r
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=true]
+   * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
+   */
+  drawRay(r, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
+    
+    // Check if ray has a valid direction
+    if (Math.abs(r.p2.x - r.p1.x) &lt;= 1e-5 * this.lengthScale &amp;&amp; Math.abs(r.p2.y - r.p1.y) &lt;= 1e-5 * this.lengthScale) {
+      return;
+    }
+    
+    // Calculate direction vector and normalize it
+    const dx = r.p2.x - r.p1.x;
+    const dy = r.p2.y - r.p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const unitX = dx / length;
+    const unitY = dy / length;
+    
+    // Calculate canvas limit for ray length
+    const cvsLimit = (Math.abs(r.p1.x + this.origin.x) + Math.abs(r.p1.y + this.origin.y) + this.canvas.height + this.canvas.width) / Math.min(1, this.scale);
+    
+    // Calculate arrow size and position
+    const arrowSize = 5 * this.lengthScale;
+    const arrowDistance = 150 * this.lengthScale;  // Fixed distance from p1
+    
+    // Don't draw arrow if it would be too small compared to line width
+    if (!showArrow || arrowSize &lt; this.ctx.lineWidth * 1.2) {
+      // Draw the ray without arrow
+      this.ctx.beginPath();
+      this.ctx.moveTo(r.p1.x, r.p1.y);
+      this.ctx.lineTo(r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit);
+      this.ctx.stroke();
+      return;
+    }
+    
+    // Draw first part of ray (from p1 to arrow)
+    this.ctx.beginPath();
+    this.ctx.moveTo(r.p1.x, r.p1.y);
+    this.ctx.lineTo(r.p1.x + unitX * arrowDistance, r.p1.y + unitY * arrowDistance);
+    this.ctx.stroke();
+    
+    // Calculate arrow points for trapezoid
+    const arrowX = r.p1.x + unitX * arrowDistance;
+    const arrowY = r.p1.y + unitY * arrowDistance;
+    const baseWidth = this.ctx.lineWidth;
+    const tipWidth = arrowSize;
+    
+    // Calculate perpendicular vector for width
+    const perpX = -unitY;
+    const perpY = unitX;
+    
+    // Draw arrow as trapezoid
+    this.ctx.beginPath();
+    // Front points of arrow (wide part)
+    this.ctx.moveTo(
+      arrowX - (tipWidth/2) * perpX,
+      arrowY - (tipWidth/2) * perpY
+    );
+    this.ctx.lineTo(
+      arrowX + (tipWidth/2) * perpX,
+      arrowY + (tipWidth/2) * perpY
+    );
+    // Back of arrow (narrow part)
+    this.ctx.lineTo(
+      arrowX + arrowSize * unitX + (baseWidth/2) * perpX,
+      arrowY + arrowSize * unitY + (baseWidth/2) * perpY
+    );
+    this.ctx.lineTo(
+      arrowX + arrowSize * unitX - (baseWidth/2) * perpX,
+      arrowY + arrowSize * unitY - (baseWidth/2) * perpY
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+    
+    // Draw rest of ray (from arrow to infinity)
+    this.ctx.beginPath();
+    this.ctx.moveTo(arrowX + arrowSize * unitX, arrowY + arrowSize * unitY);
+    this.ctx.lineTo(r.p1.x + unitX * cvsLimit, r.p1.y + unitY * cvsLimit);
+    this.ctx.stroke();
+  }
+
+  /**
+   * Draw a segment.
+   * @param {Line} s
+   * @param {number[]|object} [color=[0, 0, 0, 1]]
+   * @param {boolean} [showArrow=true]
+   * @param {number[]} [lineDash=[]]
+   * @param {number} [lineWidth=1]
+   */
+  drawSegment(s, color = [0, 0, 0, 1], showArrow = false, lineDash = [], lineWidth = 1) {
+    this.ctx.setLineDash(lineDash.map(value => value * this.lengthScale));
+    this.ctx.strokeStyle = this.rgbaToCssColor(color);
+    this.ctx.lineWidth = lineWidth * this.lengthScale;
+    this.ctx.fillStyle = this.rgbaToCssColor(color);
+    
+    // Calculate arrow size first to determine if we should draw it
+    const dx = s.p2.x - s.p1.x;
+    const dy = s.p2.y - s.p1.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const arrowSize = Math.min(length * 0.15, 5 * this.lengthScale);
+    const arrowPosition = 0.67;
+    
+    // Don't draw arrow if it would be too small compared to line width
+    if (!showArrow || arrowSize &lt; this.ctx.lineWidth * 1.2) {
+      // Draw the line segment without arrow
+      this.ctx.beginPath();
+      this.ctx.moveTo(s.p1.x, s.p1.y);
+      this.ctx.lineTo(s.p2.x, s.p2.y);
+      this.ctx.stroke();
+      return;
+    }
+    
+    // Calculate direction vector and normalize it
+    const unitX = dx / length;
+    const unitY = dy / length;
+    
+    // Calculate arrow position
+    const arrowX = s.p1.x + dx * arrowPosition;
+    const arrowY = s.p1.y + dy * arrowPosition;
+    
+    // Draw first part of line (from p1 to arrow)
+    this.ctx.beginPath();
+    this.ctx.moveTo(s.p1.x, s.p1.y);
+    this.ctx.lineTo(arrowX - arrowSize/2 * unitX, arrowY - arrowSize/2 * unitY);
+    this.ctx.stroke();
+    
+    // Calculate arrow points for trapezoid
+    const baseWidth = this.ctx.lineWidth;  // Use existing line width
+    const tipWidth = arrowSize;  // Width at the front of arrow
+    
+    // Calculate perpendicular vector for width
+    const perpX = -unitY;
+    const perpY = unitX;
+    
+    // Draw arrow as trapezoid
+    this.ctx.beginPath();
+    // Front points of arrow (wide part)
+    this.ctx.moveTo(
+      arrowX - arrowSize/2 * unitX - (tipWidth/2) * perpX,
+      arrowY - arrowSize/2 * unitY - (tipWidth/2) * perpY
+    );
+    this.ctx.lineTo(
+      arrowX - arrowSize/2 * unitX + (tipWidth/2) * perpX,
+      arrowY - arrowSize/2 * unitY + (tipWidth/2) * perpY
+    );
+    // Back of arrow (narrow part)
+    this.ctx.lineTo(
+      arrowX + arrowSize/2 * unitX + (baseWidth/2) * perpX,
+      arrowY + arrowSize/2 * unitY + (baseWidth/2) * perpY
+    );
+    this.ctx.lineTo(
+      arrowX + arrowSize/2 * unitX - (baseWidth/2) * perpX,
+      arrowY + arrowSize/2 * unitY - (baseWidth/2) * perpY
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+    
+    // Draw second part of line (from arrow to p2)
+    this.ctx.beginPath();
+    this.ctx.moveTo(arrowX + arrowSize/2 * unitX, arrowY + arrowSize/2 * unitY);
+    this.ctx.lineTo(s.p2.x, s.p2.y);
+    this.ctx.stroke();
+  }
+
+  /**
+   * Draw a circle.
+   * @param {Circle} c
+   * @param {String|object} [color='black']
+   */
+  drawCircle(c, color = 'black') {
+    this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 1 * this.lengthScale;
+    this.ctx.beginPath();
+    if (typeof c.r === 'object') {
+      let dx = c.r.p1.x - c.r.p2.x;
+      let dy = c.r.p1.y - c.r.p2.y;
+      this.ctx.arc(c.c.x, c.c.y, Math.sqrt(dx * dx + dy * dy), 0, Math.PI * 2, false);
+    } else {
+      this.ctx.arc(c.c.x, c.c.y, c.r, 0, Math.PI * 2, false);
+    }
+    this.ctx.stroke();
+  }
+
+  /**
+   * Apply color transformation to simulate 'lighter' composition with less color saturation.
+   */
+  applyColorTransformation() {
+    this.ctxVirtual.canvas.width = this.canvas.width;
+    this.ctxVirtual.canvas.height = this.canvas.height;
+    this.ctxVirtual.drawImage(this.canvas, 0, 0);
+
+    const imageData = this.ctxVirtual.getImageData(0, 0, this.ctxVirtual.canvas.width, this.ctxVirtual.canvas.height);
+    const data = imageData.data;
+    for (let i = 0; i &lt; data.length; i += 4) {
+      if (data[i + 3] === 0) continue; // Skip transparent pixels
+      const a0 = data[i + 3] / 256;
+      const R = -Math.log(1 - (data[i] / 256)) * a0;
+      const G = -Math.log(1 - (data[i + 1] / 256)) * a0;
+      const B = -Math.log(1 - (data[i + 2] / 256)) * a0;
+      const factor = Math.max(R, G, B);
+      data[i] = 255 * R / factor;
+      data[i + 1] = 255 * G / factor;
+      data[i + 2] = 255 * B / factor;
+      data[i + 3] = 255 * Math.min(factor, 1);
+    }
+    this.ctxVirtual.putImageData(imageData, 0, 0);
+    this.ctx.globalCompositeOperation = 'source-over';
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.drawImage(this.ctxVirtual.canvas, 0, 0);
+  }
+}
+
+export default CanvasRenderer;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

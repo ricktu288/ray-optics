@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/sceneObjs/glass/ParamGlass.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/sceneObjs/glass/ParamGlass.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import BaseGlass from '../BaseGlass.js';
+import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
+import i18next from 'i18next';
+import Simulator from '../../Simulator.js';
+import geometry from '../../geometry.js';
+
+/**
+ * Glass with shape defined by parametric curve pieces.
+ * 
+ * Tools -> Glass -> Parametric curve
+ * @class
+ * @extends BaseGlass
+ * @memberof sceneObjs
+ * @property {Point} origin - The origin point of the parametric coordinate system.
+ * @property {Array} pieces - Array of parametric curve pieces, each with eqnX, eqnY, tMin, tMax, tStep.
+ * @property {number} refIndex - The refractive index of the glass, or the Cauchy coefficient A of the glass if "Simulate Colors" is on.
+ * @property {number} cauchyB - The Cauchy coefficient B of the glass if "Simulate Colors" is on, in micrometer squared.
+ * @property {Array&lt;Point>} path - The points on the calculated curve.
+ * @property {string} warning - Warning message if the curve is not closed or not positively oriented.
+ */
+class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
+  static type = 'ParamGlass';
+  static isOptical = true;
+  static mergesWithGlass = true;
+  static serializableDefaults = {
+    origin: { x: 0, y: 0 },
+    pieces: [
+      {
+        eqnX: "50\\cdot\\cos\\left(t\\right)",
+        eqnY: "50\\cdot\\sin\\left(t\\right)",
+        tMin: 0,
+        tMax: 2 * Math.PI,
+        tStep: 0.01
+      }
+    ],
+    refIndex: 1.5,
+    cauchyB: 0.004
+  };
+
+  populateObjBar(objBar) {
+    objBar.setTitle(i18next.t('main:tools.categories.glass'));
+    objBar.createInfoBox('&lt;ul>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '&lt;br>&lt;code>pi e&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '&lt;br>&lt;code>+ - * / ^&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '&lt;br>&lt;code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.ParamGlass.eqnInfo.closedAndPositivelyOriented') + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '&lt;/li>&lt;/ul>');
+    
+    
+    // Add parametric curve controls
+    this.populateObjBarShape(objBar);
+    
+    // Add glass controls from BaseGlass
+    super.populateObjBar(objBar);
+  }
+
+  draw(canvasRenderer, isAboveLight, isHovered) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+
+    // Initialize path if needed and validate curve
+    if (!this.path) {
+      if (!this.initPath()) {
+        // If initialization failed, draw error indicator at origin
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.origin.x - 1.5 * ls, this.origin.y - 1.5 * ls, 3 * ls, 3 * ls);
+        return;
+      }
+    }
+
+    // Check if curve is empty or fully degenerate
+    let isEmptyOrDegenerate = false;
+    
+    if (this.path.length &lt; 2) {
+      isEmptyOrDegenerate = true;
+    } else {
+      // Check if all points are identical (fully degenerate curve)
+      const firstPoint = this.path[0];
+      let allPointsIdentical = true;
+      for (let i = 1; i &lt; this.path.length; i++) {
+        if (Math.abs(this.path[i].x - firstPoint.x) > 1e-10 || 
+            Math.abs(this.path[i].y - firstPoint.y) > 1e-10) {
+          allPointsIdentical = false;
+          break;
+        }
+      }
+      isEmptyOrDegenerate = allPointsIdentical;
+    }
+
+    if (isEmptyOrDegenerate) {
+      // Empty or fully degenerate curve - always draw origin square
+      ctx.fillStyle = isHovered ? 'rgb(255,0,0)' : 'rgb(128,128,128)';
+      ctx.fillRect(this.origin.x - 1.5 * ls, this.origin.y - 1.5 * ls, 3 * ls, 3 * ls);
+      return;
+    }
+
+    if (isAboveLight) {
+      if (this.path &amp;&amp; this.path.length > 2) {
+        this.drawPath(canvasRenderer);
+        this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+      }
+      return;
+    }
+
+    // Draw the parametric curve glass
+    if (this.path &amp;&amp; this.path.length > 2) {
+      this.drawPath(canvasRenderer);
+      this.fillGlass(canvasRenderer, isAboveLight, isHovered);
+    }
+  }
+
+  checkRayIntersects(ray) {
+    if (this.refIndex &lt;= 0) return null;
+
+    var incidentData = this.getIncidentData(ray);
+    if (incidentData.incidentType === NaN || !incidentData.s_point) {
+      if (incidentData.incidentType === NaN) {
+        return {
+          isAbsorbed: true,
+          isUndefinedBehavior: true
+        };
+      }
+      return null;
+    }
+
+    return incidentData.s_point;
+  }
+
+  onRayIncident(ray, rayIndex, incidentPoint, surfaceMergingObjs) {
+    var incidentData = this.getIncidentData(ray);
+    var incidentType = incidentData.incidentType;
+    
+    if (incidentType === 1) {
+      // From inside to outside
+      var n1 = this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType === -1) {
+      // From outside to inside
+      var n1 = 1 / this.getRefIndexAt(incidentPoint, ray);
+    } else if (incidentType === 0) {
+      // Equivalent to not intersecting with the object (e.g. two interfaces overlap)
+      var n1 = 1;
+    } else {
+      // Situation that may cause bugs (e.g. incident on an edge point)
+      // To prevent shooting the ray to a wrong direction, absorb the ray
+      return {
+        isAbsorbed: true,
+        isUndefinedBehavior: true
+      };
+    }
+
+    return this.refract(ray, rayIndex, incidentPoint, incidentData.normal, n1, surfaceMergingObjs, ray.bodyMergingObj);
+  }
+
+  getIncidentData(ray) {
+    // Get all intersections from the mixin
+    const intersections = this.getRayIntersections(ray);
+    
+    if (intersections.length === 0) {
+      return {
+        s_point: null,
+        normal: { x: NaN, y: NaN },
+        incidentType: 0
+      };
+    }
+
+    // Sort intersections by distance from ray origin
+    intersections.sort((a, b) => {
+      const distA = geometry.distanceSquared(ray.p1, a.s_point);
+      const distB = geometry.distanceSquared(ray.p1, b.s_point);
+      return distA - distB;
+    });
+
+    const minInteractionLength = Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale;
+
+    // Find the first valid intersection
+    for (let i = 0; i &lt; intersections.length; i++) {
+      const currentIntersection = intersections[i];
+      
+      // Check for undefined behavior (NaN incidentType)
+      if (isNaN(currentIntersection.incidentType)) {
+        return {
+          s_point: currentIntersection.s_point,
+          normal: currentIntersection.normal,
+          incidentType: NaN
+        };
+      }
+
+      // Check if this intersection overlaps with others within minimum interaction length
+      const overlappingIntersections = intersections.filter((other, idx) => {
+        if (idx === i) return false;
+        return geometry.distanceSquared(currentIntersection.s_point, other.s_point) &lt; minInteractionLength;
+      });
+
+      if (overlappingIntersections.length === 0) {
+        // No overlapping intersections - this is valid
+        return {
+          s_point: currentIntersection.s_point,
+          normal: currentIntersection.normal,
+          incidentType: currentIntersection.incidentType
+        };
+      } else if (overlappingIntersections.length === 1) {
+        // Exactly one overlapping intersection
+        const otherIntersection = overlappingIntersections[0];
+        
+        // Check if incident types are exactly opposite (+1 and -1)
+        if ((currentIntersection.incidentType === 1 &amp;&amp; otherIntersection.incidentType === -1) ||
+            (currentIntersection.incidentType === -1 &amp;&amp; otherIntersection.incidentType === 1)) {
+          // This pair cancels each other - continue to next intersection
+          continue;
+        } else {
+          // Other overlapping case - undefined behavior
+          return {
+            s_point: currentIntersection.s_point,
+            normal: currentIntersection.normal,
+            incidentType: NaN
+          };
+        }
+      } else {
+        // Multiple overlapping intersections - undefined behavior
+        return {
+          s_point: currentIntersection.s_point,
+          normal: currentIntersection.normal,
+          incidentType: NaN
+        };
+      }
+    }
+
+    // All intersections were either undefined or canceled out - equivalent to no intersection
+    return {
+      s_point: null,
+      normal: { x: NaN, y: NaN },
+      incidentType: 0
+    };
+  }
+
+  getIncidentType(ray) {
+    return this.getIncidentData(ray).incidentType;
+  }
+
+ /**
+ * Validate that the curve is closed and positively oriented.
+ * Sets this.warning if validation fails.
+ */
+  validateCurve() {
+    if (!this.isClosed()) {
+      this.warning = i18next.t('simulator:sceneObjs.ParamGlass.warning.notClosed');
+      return;
+    }
+    
+    if (!this.isPositivelyOriented()) {
+      this.warning = i18next.t('simulator:sceneObjs.ParamGlass.warning.notPositivelyOriented');
+      return;
+    }
+    
+    this.warning = null;
+  }
+
+  /**
+   * Override initPath to validate curve after generation.
+   */
+  initPath() {
+    const result = super.initPath();
+    if (result) {
+      this.validateCurve();
+    }
+    return result;
+  }
+}
+
+export default ParamGlass; </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

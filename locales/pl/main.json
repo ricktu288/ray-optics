@@ -1,0 +1,274 @@
+{
+  "project": {
+    "name": "Symulacja biegu promieni",
+    "shortName": "Optyka geometryczna",
+    "description": "Aplikacja internetowa open source umożliwiająca symulację odbicia i załamania światła."
+  },
+  "pages": {
+    "simulator": "Symulator",
+    "home": "Strona główna",
+    "gallery": "Galeria",
+    "modules": "Moduły",
+    "about": "O aplikacji",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Twórz i symuluj interaktywnie sceny optyki geometrycznej 2D.\nCałkowicie darmowa aplikacja webowa. Kod źródłowy jest [dostępny na GitHub](/github).",
+    "launchSimulator": "Uruchom symulator"
+  },
+  "tools": {
+    "title": "Narzędzia",
+    "categories": {
+      "lightSource": "Źródło światła",
+      "mirror": "Zwierciadła",
+      "glass": "Szkła",
+      "blocker": "Przesłony",
+      "other": "Inne"
+    },
+    "common": {
+      "clickInstruction": "Kliknij, aby utworzyć.",
+      "lineInstruction": "Przeciągnij lub kliknij, aby utworzyć.",
+      "circleInstruction": "Przeciągnij lub kliknij, aby utworzyć."
+    },
+    "SingleRay": {
+      "title": "Promień",
+      "description": "Pojedynczy promień światła określony przez dwa punkty.",
+      "instruction": "Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu."
+    },
+    "Beam": {
+      "title": "Wiązka",
+      "description": "Z odcinka wyłania się równoległa lub rozbieżna wiązka promieni o gęstości kontrolowanej przez suwak 'Gęstość promieni'."
+    },
+    "PointSource": {
+      "title": "Źródło punktowe",
+      "description": "Promienie wychodzące z jednego punktu. Ich liczba regulowana jest za pomocą suwaka 'Gęstość promieni'."
+    },
+    "AngleSource": {
+      "instruction": "Przeciągnij lub kliknij, aby utworzyć. Pierwszy punkt to źródło, wysyłające promień w kierunku drugiego punktu.",
+      "description": "Źródło punktowe o zadanym kącie emisji."
+    },
+    "Mirror": {
+      "title": "Płaskie",
+      "description": "Symuluje odbicie światła w zwierciadle płaskim."
+    },
+    "otherMirror": {
+      "title": "zakrzywione",
+      "description": "Zwierciadło, którego powierzchnia jest zakrzywiona. Może być kołowa, paraboliczna lub zdefiniowana przez niestandardowe równanie y = f(x)."
+    },
+    "ArcMirror": {
+      "title": "Sferyczne",
+      "description": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem okręgu, określonym za pomocą trzech punktów.",
+      "instruction": "Przeciągnij lub kliknij, aby utworzyć. Pierwsze 2 punkty określają odstęp między końcami łuku, ostatni punkt określa promień krzywizny."
+    },
+    "ParabolicMirror": {
+      "title": "Paraboliczne",
+      "description": "Zwierciadło, którego powierzchnia w przekroju jest fragmentem paraboli, określonej za pomocą trzech punktów.",
+      "instruction": "Przeciągnij lub kliknij, aby utworzyć."
+    },
+    "IdealMirror": {
+      "title": "Idealnie zakrzywione",
+      "description": "Idealnie 'zakrzywione' zwierciadło, dokładnie spełniające równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio."
+    },
+    "BeamSplitter": {
+      "title": "Rozdzielacz wiązki",
+      "description": "Zwierciadło odbijające pewien procent padającego światła."
+    },
+    "CustomMirror": {
+      "title": "Równanie niestandardowe",
+      "description": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Wklęsła siatka dyfrakcyjna odbiciowa",
+      "description": "Wklęsła siatka dyfrakcyjna, której kształt jest częścią koła."
+    },
+    "PlaneGlass": {
+      "title": "Półpłaszczyzna",
+      "description": "Symuluje załamanie i odbicie światła na granicy ośrodków.",
+      "instruction": "Przeciągnij lub kliknij, aby utworzyć."
+    },
+    "otherGlass": {
+      "title": "inne kształty",
+      "description": "Szkło o dowolnych kształtach, ograniczonych odcinkami i łukami okręgów lub zdefiniowanych układem nierówności f(x) < y < g(x)."
+    },
+    "CircleGlass": {
+      "title": "Koło",
+      "description": "Szkło o przekroju kołowym, określonym przez środek i punkt na brzegu."
+    },
+    "Glass": {
+      "title": "Dowolny kształt / Wielokąt",
+      "description": "Szkło o dowolnych kształtach, mających przekroje ograniczone odcinkami i fragmentami okręgów.",
+      "instruction": "Kliknij, aby utworzyć odcinek; przeciągnij, aby utworzyć łuk; kliknij punkt początkowy, żeby zakończyć rysowanie."
+    },
+    "IdealLens": {
+      "title": "Soczewka idealna",
+      "description": "Idealna soczewka, która spełnia dokładnie równanie (1/x + 1/y = 1/f). Ogniskową można ustawić bezpośrednio."
+    },
+    "SphericalLens": {
+      "title": "Soczewka sferyczna",
+      "description": "Soczewka sferyczna."
+    },
+    "CustomGlass": {
+      "title": "Równanie niestandardowe",
+      "description": "Szkło o kształcie zdefiniowanym przez niestandardową nierówność f(x) < y < g(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
+    },
+    "CircleGrinGlass": {
+      "title": "Koło GRIN",
+      "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią."
+    },
+    "GrinGlass": {
+      "title": "Wielokąt GRIN",
+      "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią.",
+      "instruction": "Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.",
+      "warning": "OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne."
+    },
+    "otherGrinGlass": {
+      "title": "Szkło gradientowe (GRIN)",
+      "description": "Materiał z określoną funkcją współczynnika załamania n(x,y)."
+    },
+    "Blocker": {
+      "title": "Przesłona liniowa",
+      "description": "Przeszkoda - odcinek - pochłaniająca padające promienie."
+    },
+    "CircleBlocker": {
+      "title": "Przesłona kołowa",
+      "description": "Przeszkoda - okrąg - pochłaniająca padające promienie."
+    },
+    "Aperture": {
+      "title": "Apertura",
+      "description": "Para blokerów światła, które pochłaniają padające promienie. Rozmiar otworu można regulować symetrycznie.",
+      "instruction": "Przeciągnij lub kliknij dwa punkty końcowe, aby utworzyć."
+    },
+    "DiffractionGrating": {
+      "title": "Siatka dyfrakcyjna",
+      "description": "Siatka dyfrakcyjna rozszczepiająca światło na kierunki zależne od długości fali.",
+      "warning": "Ostrzeżenie: Natężenia promieni ugiętych mogą nie być dokładne."
+    },
+    "Ruler": {
+      "title": "Linijka",
+      "description": "Linijka odmierzająca odległość od punktu zero (pierwsze kliknięcie) do innego punktu (drugie kliknięcie)."
+    },
+    "Protractor": {
+      "title": "Kątomierz",
+      "description": "Kątomierz określony przez środek (wierzchołek kąta - pierwsze kliknięcie) i inny punkt dla kierunku zerowego (drugie kliknięcie). Skala jest w stopniach."
+    },
+    "Detector": {
+      "title": "Detektor",
+      "description": "Narzędzie do pomiaru szybkości przepływu energii (P), szybkości prostopadłego przepływu pędu (F⊥), i szybkości równoległego przepływu pędu (F∥) przez odcinek. . Jednostki są umowne."
+    },
+    "TextLabel": {
+      "title": "Tekst",
+      "description": "Etykieta tekstowa."
+    },
+    "LineArrow": {
+      "title": "Linia / Strzałka",
+      "description": "Odcinek lub strzałka."
+    },
+    "Drawing": {
+      "title": "Rysunek",
+      "description": "Narzędzie do rysowania odręcznego.",
+      "instruction": "Przeciągnij, aby narysować."
+    },
+    "modules": {
+      "import": "Importuj moduły…",
+      "remove": "Usuń moduł"
+    },
+    "moveView": {
+      "title": "Przesuń widok",
+      "description": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję.)"
+    },
+    "ParamGlass": {
+      "title": "Krzywa parametryczna",
+      "description": "Szkło o kształcie zdefiniowanym przez niestandardowe równania parametryczne."
+    },
+    "ParamGrinGlass": {
+      "title": "Krzywa parametryczna GRIN",
+      "description": "Szkło gradientowe z krawędzią zdefiniowaną przez niestandardowe równania parametryczne."
+    },
+    "ParamMirror": {
+      "title": "Krzywa parametryczna",
+      "description": "Zwierciadło, którego kształt jest definiowany przez niestandardowe równania parametryczne."
+    },
+    "CustomSurface": {
+      "title": "Powierzchnia linii niestandardowej",
+      "description": "Niestandardowa powierzchnia odcinka, w której kąty (θ) i jasności (P) wychodzących promieni (gdy promień na nią pada) są zdefiniowane przez niestandardowe równania."
+    },
+    "CustomArcSurface": {
+      "title": "Niestandardowa powierzchnia łuku",
+      "description": "Niestandardowa powierzchnia o kształcie łuku okręgu."
+    },
+    "CustomParamSurface": {
+      "title": "Niestandardowa krzywa parametryczna",
+      "description": "Niestandardowa powierzchnia, której kształt jest definiowany za pomocą równań parametrycznych."
+    },
+    "moreTools": {
+      "title": "Więcej narzędzi…"
+    },
+    "CurveGlass": {
+      "title": "Krzywe Béziera",
+      "description": "Szkło ograniczone sześciennymi krzywymi Béziera.",
+      "instruction": "Kliknij, aby utworzyć element, a po zakończeniu rysowania kliknij punkt początkowy. Następnie przeciągnij pola, aby manipulować punktami kontrolnymi, zmieniając krzywą."
+    },
+    "CurveGrinGlass": {
+      "title": "Krzywe Béziera GRIN",
+      "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
+    }
+  },
+  "view": {
+    "title": "Widok",
+    "rays": {
+      "title": "Promienie",
+      "description": "Pokaż promienie. Gdy 'Gęstość promieni' jest duża, wiązka pojawia się jako ciągła."
+    },
+    "extended": {
+      "title": "Rozszerzone promienie",
+      "description": "Pokaż zarówno promienie, jak i ich przedłużenia. Kolor pomarańczowy wskazuje przedłużenia do tyłu, a szary do przodu.",
+      "simulateColorsNote": "Gdy opcja „Symuluj kolory” jest włączona, są one wyświetlane w kolorach źródłowych i zamiast tego wyróżniane linią przerywaną."
+    },
+    "images": {
+      "title": "Wszystkie obrazy",
+      "description": "Pokaż położenie wszystkich obrazów. Żółte punkty oznaczają obrazy rzeczywiste, pomarańczowe obrazy pozorne, a szare (brak na tym zdjęciu) obiekty wirtualne. Zwróć uwagę, że niektórych obrazów nie można wykryć, jeśli 'Gęstość promieni' nie jest wystarczająco wysoka.",
+      "simulateColorsNote": "Gdy opcja „Symuluj kolory” jest włączona, są one wyświetlane w kolorach źródłowych i zamiast tego rozróżniane na podstawie wielkości kropek."
+    },
+    "observer": {
+      "title": "Widziane przez obserwatora",
+      "description": "Symuluje promienie i obrazy widziane z określonego miejsca. Obserwatora symbolizuje niebieskie kółko. Wszelkie przecinające je promienie uważa się za 'obserwowane'. Obserwator nie wie, gdzie faktycznie zaczynają się promienie, ale będzie mu się wydawało, że zaczynają się w pewnym punkcie (punktach), jeśli się tam przecinają. Promienie są pokazane na niebiesko, a punkty na żółto (rzeczywiste) lub pomarańczowo (pozorne).",
+      "simulateColorsNote": "Gdy opcja „Symuluj kolory” jest włączona, zamiast tego są one wyświetlane w kolorach źródłowych.",
+      "instruction": "Przeciągnij dużą niebieską kropkę, aby przesunąć obserwatora."
+    },
+    "customThemeNote": "Uwaga: Ta scena wykorzystuje niestandardowy motyw."
+  },
+  "simulateColors": {
+    "title": "Symuluj kolory",
+    "description": "Symulacja kolorów (długości fal) źródeł światła, mieszania kolorów, filtrowania kolorów przez filtry blokujące i lustra oraz dyspersji chromatycznej szkieł.",
+    "instruction": "Po wybraniu można ustawić te parametry dla tych obiektów. Aby symulować widma kolorów, należy nałożyć na siebie promienie o różnych długościach fal.",
+    "warning": "Mieszanie kolorów jest niedokładne, jeśli nie jest stosowane z opcją \"Koryguj jasność\"."
+  },
+  "aboutPage": {
+    "description": "Ten projekt, w tym zawartość galerii, jest objęty licencją [Apache License 2.0](/license) i jest oficjalnie hostowany na stronie [PhyDemo (phydemo.app)](/phydemo) (wcześniej na ricktu288.github.io). Kod źródłowy jest [dostępny na GitHub](/github), a ty możesz [wnieść swój wkład](/contributing). Jeśli masz pytania lub sugestie, możesz otworzyć [issues](/github/issues) lub [discussions](/github/discussions) na GitHub lub wysłać do nas e-mail na adres [ray-optics@phydemo.app](/email), jeśli nie korzystasz z GitHub.",
+    "cite": "Cytowanie tego projektu",
+    "mainAuthors_one": "Główny autor",
+    "mainAuthors_few": "Główni autorzy",
+    "mainAuthors_many": "Główni autorzy",
+    "contributors": "Współtwórcy",
+    "contributorSorting": "Współtwórcy z GitHub jako pierwsi; pozostali w kolejności chronologicznej.",
+    "contributionCategories": {
+      "code": "kod",
+      "uiDesign": "projekt UI",
+      "gallery": "galeria",
+      "module": "moduł",
+      "translations_one": "{{languages}} tłumaczenie",
+      "translations_few": "{{languages}} tłumaczenia",
+      "translations_many": "{{languages}} tłumaczeń"
+    }
+  },
+  "languageDropdown": {
+    "title": "Język: {{language}}",
+    "translatedFraction": "{{fraction}} przetłumaczone"
+  },
+  "meta": {
+    "languageName": "polski",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

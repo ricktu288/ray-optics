@@ -1,0 +1,64 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "\"Module\" permet de créer de nouveaux outils en combinant, spécialisant, ou en reparamétrant des objets créés par des outils existants dans ce simulateur.",
+      "appearAsTools": "Les modules importés apparaîtrons comme des outils dans la catégorie \"Autre\". Sélectionner et cliquer sur l'espace vide en suivant l'ordre de contrôle des points de séquence (voir \"Spécifications\").",
+      "embeddedInScene": "Les modules importés sont inclus dans les données de la scène, et donc ne seront pas automatiquement mis à jour quand les auteurs des modules les modifient."
+    },
+    "import": "Importer",
+    "imported": "Importé",
+    "specification": {
+      "title": "Spécification",
+      "controlPointSequence": "Suite de points de contrôle",
+      "parameters": "Paramètres"
+    },
+    "customization": {
+      "title": "Personnalisation",
+      "description": "Les modules peuvent être créés ou personnalisés directement depuis l'interface de l'application web en utilisant l'éditeur JSON. Voyez [le tutoriel](/modules/tutorial). La personnalisation de modules importées n'affectera que la scène courante."
+    },
+    "contribution": {
+      "title": "Contribution",
+      "description": "Vous êtes les bienvenus pour contribuer à la liste ci-dessus. Pour contribuer votre module, voyez [Comment contribuer un module](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Lentille de Fresnel",
+      "description": "Une lentille de Fresnel faite avec un morceau de verre taillé en demi-cercle. Version modulaire de [cet exemple de la Galerie](/gallery/fresnel-lens).",
+      "point1": "La première extrémité de la lentille",
+      "point2": "La seconde extrémité de la lentille",
+      "Nslice": "Le nombre de tranches",
+      "refIndex": "L'indice de réfraction de la lentille"
+    },
+    "ContSpectrum": {
+      "title": "Source lumineuse à spectre continu",
+      "description": "Une source de lumière avec un spectre de couleurs continu discrétisé avec un pas constant fourni. Ne fonctionne que si \"Simuler les couleurs\" est activé.",
+      "point1": "L'origine des rayons",
+      "point2": "Détermine la direction des rayons",
+      "min": "La longueur d'onde minimale",
+      "step": "Le pas de la longueur d'onde",
+      "max": "La longueur d'onde maximale",
+      "brightness": "Intensité totale"
+    },
+    "CircleSource": {
+      "title": "Source de lumière circulaire",
+      "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence.",
+      "point1": "Le centre du cercle",
+      "r": "Le rayon du cercle",
+      "N": "Le nombre de points sources",
+      "brightness": "La quantité totale de luminosité"
+    },
+    "Chaff": {
+      "L": "La longueur des miroirs"
+    },
+    "CoatedLens": {
+      "title": "Lentille sphérique traitée en surface",
+      "description": "Une lentilles sphérique avec une seul couche de revêtements de chaque cotés. Les module \"ArcCoating\" intégrés dans ce module représente une seule couche de film fin, qui quand il a un chevauchement avec une surface en verre celle-ci devient son revêtement.",
+      "point1": "Le centre de la lentille",
+      "h": "La largeur de la lentille",
+      "d": "L'epaisseur de la lentille",
+      "R1": "Le rayon de courbure de la face avant",
+      "R2": "Le rayon de courbure de la face arrière"
+    }
+  }
+}
