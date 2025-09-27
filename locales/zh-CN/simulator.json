@@ -287,6 +287,7 @@
       "textHere": "在此输入文字",
       "fontSize": "字型大小",
       "font": "字型",
+      "fonts": "Serif: 衬线体\nMicrosoft YaHei: 微软雅黑\nSimSun: 宋体\nPingFang SC: 苹方\nNoto Sans CJK SC: 思源黑体\nNoto Serif CJK SC: 思源宋体\nArial: Arial\nTimes New Roman: Times New Roman",
       "fontStyle": "样式",
       "fontStyles": {
         "normal": "正常",

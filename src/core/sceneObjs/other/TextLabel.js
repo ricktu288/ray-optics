@@ -49,21 +49,6 @@ class TextLabel extends BaseSceneObj {
     angle: 0
   };
 
-  // generic list of web safe fonts
-  static fonts = [
-    'Serif',
-    'Arial',
-    'Helvetica',
-    'Times New Roman',
-    'Georgia',
-    'Courier New',
-    'Verdana',
-    'Tahoma',
-    'Trebuchet MS',
-    'Impact',
-    'Lucida Sans'
-  ];
-
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.TextLabel.title'));
     objBar.createText('', this.text, function (obj, value) {
@@ -77,9 +62,28 @@ class TextLabel extends BaseSceneObj {
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['font']))) {
-      objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.font'), this.font, this.constructor.fonts, function (obj, value) {
-        obj.font = value;
-      });
+      const fontLines = i18next.t('simulator:sceneObjs.TextLabel.fonts').split('\n');
+      const fonts = {};
+      for (const line of fontLines) {
+        const [key, value] = line.split(': ');
+        fonts[key] = value;
+      }
+      fonts['custom'] = i18next.t('simulator:common.customOption');
+
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.font'), fonts[this.font] ? this.font : 'custom', fonts, function (obj, value) {
+        if (value != 'custom') {
+          obj.font = value;
+        } else {
+          obj.font = "";
+        }
+      }, null, true);
+
+      // Create a text input for the custom font.
+      if (!fonts[this.font]) {
+        objBar.createText('', this.font, function (obj, value) {
+          obj.font = value;
+        });
+      }
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fontStyle']))) {
