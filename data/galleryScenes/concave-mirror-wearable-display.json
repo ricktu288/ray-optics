@@ -186,7 +186,6 @@
       "y": 118.16309801309795,
       "text": "{{tft09display}}",
       "fontSize": 12,
-      "font": "Arial",
       "alignment": "right"
     },
     {
@@ -194,8 +193,7 @@
       "x": 727.6318965348369,
       "y": 134.83842268842255,
       "text": "{{concavemirror}}",
-      "fontSize": 12,
-      "font": "Arial"
+      "fontSize": 12
     },
     {
       "type": "TextLabel",
@@ -203,7 +201,6 @@
       "y": 363.0447718947717,
       "text": "{{eye1}}",
       "fontSize": 12,
-      "font": "Arial",
       "alignment": "right"
     },
     {
@@ -211,8 +208,7 @@
       "x": 510.6240155269562,
       "y": 482.33720168720185,
       "text": "{{nose}}",
-      "fontSize": 12,
-      "font": "Arial"
+      "fontSize": 12
     },
     {
       "type": "TextLabel",
@@ -220,7 +216,6 @@
       "y": 414.68122842070215,
       "text": "{{pointsourcetomeasure}}",
       "fontSize": 12,
-      "font": "Arial",
       "alignment": "right"
     },
     {
@@ -228,8 +223,7 @@
       "x": 612.2657106739144,
       "y": 296.0621808016546,
       "text": "{{t15readingglasses}}",
-      "fontSize": 12,
-      "font": "Arial"
+      "fontSize": 12
     },
     {
       "type": "CropBox",

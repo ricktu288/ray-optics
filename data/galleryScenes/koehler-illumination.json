@@ -105,22 +105,19 @@
       "type": "TextLabel",
       "x": 381,
       "y": 248,
-      "text": "{{collectorlens}}",
-      "font": "Times New Roman"
+      "text": "{{collectorlens}}"
     },
     {
       "type": "TextLabel",
       "x": 726.5,
       "y": 226.5,
-      "text": "{{fieldlens}}",
-      "font": "Times New Roman"
+      "text": "{{fieldlens}}"
     },
     {
       "type": "TextLabel",
       "x": 656,
       "y": 260,
       "text": "{{aperture1changesinte}}",
-      "font": "Times New Roman",
       "alignment": "center"
     },
     {
@@ -128,29 +125,25 @@
       "x": 942.75,
       "y": 278.25,
       "text": "{{aperture2changesfiel}}",
-      "font": "Times New Roman",
       "alignment": "center"
     },
     {
       "type": "TextLabel",
       "x": 993.5,
       "y": 226,
-      "text": "{{condensorlens}}",
-      "font": "Times New Roman"
+      "text": "{{condensorlens}}"
     },
     {
       "type": "TextLabel",
       "x": 1290,
       "y": 168,
-      "text": "{{objectivelens}}",
-      "font": "Times New Roman"
+      "text": "{{objectivelens}}"
     },
     {
       "type": "TextLabel",
       "x": 1594.5,
       "y": 480,
-      "text": "{{sampleisnowilluminat}}",
-      "font": "Times New Roman"
+      "text": "{{sampleisnowilluminat}}"
     },
     {
       "type": "Aperture",
@@ -309,8 +302,7 @@
       "type": "TextLabel",
       "x": 1463,
       "y": 409.25,
-      "text": "{{sample}}",
-      "font": "Times New Roman"
+      "text": "{{sample}}"
     },
     {
       "type": "Blocker",
