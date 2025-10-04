@@ -268,7 +268,8 @@
         "right": "Prawa"
       },
       "smallCaps": "Małe litery",
-      "angle": "Kąt"
+      "angle": "Kąt",
+      "fonts": "Serif: Szeryfowy\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans"
     },
     "LineArrow": {
       "arrow": "Strzałka do przodu",
