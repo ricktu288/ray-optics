@@ -288,6 +288,8 @@
       "fontSize": "字型大小",
       "font": "字型",
       "fonts": "Serif: 襯線體\nMicrosoft JhengHei: 微軟正黑體\nPMingLiU: 新細明體\nKaiU: 標楷體\nPingFang TC: 蘋方\nNoto Sans CJK TC: 思源黑體\nNoto Serif CJK TC: 思源宋體\nArial: Arial\nTimes New Roman: Times New Roman",
+      "fontNote": "如果您的系統中未安裝選擇的字型，將使用替代字型。",
+      "enterFontName": "輸入字型名稱…",
       "fontStyle": "樣式",
       "fontStyles": {
         "normal": "正常",

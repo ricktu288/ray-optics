@@ -68,7 +68,7 @@ class TextLabel extends BaseSceneObj {
         const [key, value] = line.split(': ');
         fonts[key] = value;
       }
-      fonts['custom'] = i18next.t('simulator:common.customOption');
+      fonts['custom'] = i18next.t('simulator:sceneObjs.TextLabel.enterFontName');
 
       objBar.createDropdown(i18next.t('simulator:sceneObjs.TextLabel.font'), fonts[this.font] ? this.font : 'custom', fonts, function (obj, value) {
         if (value != 'custom') {
@@ -76,7 +76,7 @@ class TextLabel extends BaseSceneObj {
         } else {
           obj.font = "";
         }
-      }, null, true);
+      }, i18next.t('simulator:sceneObjs.TextLabel.fontNote'), true);
 
       // Create a text input for the custom font.
       if (!fonts[this.font]) {
