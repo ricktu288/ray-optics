@@ -289,7 +289,7 @@
       "font": "Font",
       "fonts": "Serif: Serif\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
       "fontNote": "If the selected font is not installed on your system, a fallback font will be used.",
-      "enterFontName": "Enter font name...",
+      "enterFontName": "Enter font name…",
       "fontStyle": "Style",
       "fontStyles": {
         "normal": "Normal",

@@ -1,0 +1,13 @@
+{
+  "project": {
+    "name": "محاكاة بصريات الأشعة",
+    "shortName": "راي أوبتكس",
+    "description": "تطبيق ويب مجاني مفتوح المصدر لإنشاء ومحاكاة المشاهد البصرية الهندسية ثنائية الأبعاد."
+  },
+  "meta": {
+    "languageName": "العربية",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}
