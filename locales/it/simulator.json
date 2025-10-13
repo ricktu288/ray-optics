@@ -18,5 +18,10 @@
     "undo": {
       "title": "Annulla"
     }
+  },
+  "sceneObjs": {
+    "TextLabel": {
+      "enterFontName": "Inserire il nome del font…"
+    }
   }
 }
