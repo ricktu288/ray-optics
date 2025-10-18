@@ -199,7 +199,10 @@
   "saveModal": {
     "title": "រក្សាទុក",
     "fileName": "ឈ្មោះ",
-    "rename": "ដូរឈ្មោះ"
+    "rename": "ដូរឈ្មោះ",
+    "description": {
+      "rename": "ចុច \"ដូរឈ្មោះ\" ដើម្បីប្ដូរចំណងជើងដោយមិនបាច់រក្សាទុកជាឯកសារ។"
+    }
   },
   "colorModeModal": {
     "linear": {

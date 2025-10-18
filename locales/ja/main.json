@@ -8,7 +8,9 @@
     "home": "ホーム",
     "gallery": "ギャラリー",
     "about": "このソフトウェアについて",
-    "github": "GitHub"
+    "github": "GitHub",
+    "simulator": "シミュレーター",
+    "modules": "モジュール"
   },
   "homePage": {
     "description": "2次元の幾何学的な光学シーンを双方向的にシミュレートすることができます。\n完全無料、ウェブベース。ソースコードは [GitHubで利用可能です。](/github).",
@@ -90,7 +92,8 @@
     },
     "Glass": {
       "description": "線分と円弧から構成される任意の形状のガラス。",
-      "instruction": "クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。"
+      "instruction": "クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。",
+      "title": "多角形 / 円弧"
     },
     "IdealLens": {
       "title": "理想的なレンズ",
@@ -131,6 +134,26 @@
     "moveView": {
       "title": "ビューを移動する",
       "description": "ドラッグでビューを移動します。(マウスの右ボタンでドラッグしても同じ機能です）。"
+    },
+    "ParamMirror": {
+      "title": "パラメトリック曲線",
+      "description": "カスタムパラメトリック方程式によって形状が定義されるミラー。"
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "凹面回折格子",
+      "description": "曲面が円の一部である凹面回折格子。"
+    },
+    "ParamGlass": {
+      "title": "パラメトリック曲線",
+      "description": "カスタムパラメトリック方程式によって定義された形状を持つガラス。"
+    },
+    "CurveGlass": {
+      "title": "ベジェ曲線",
+      "description": "3次ベジェ曲線で囲まれたガラス。",
+      "instruction": "クリックしてピースを作成し、描画が完了したら開始点をクリックします。その後、ボックスをドラッグし制御点を操作することで曲線を変更します。"
+    },
+    "CircleGrinGlass": {
+      "title": "屈折率分布型円"
     }
   },
   "view": {
