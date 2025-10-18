@@ -714,5 +714,12 @@
       ]
     },
     "firstCommit": "2025-10-08"
+  },
+  {
+    "name": "Richard Ruh",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2025-10-17"
   }
 ]

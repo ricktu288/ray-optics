@@ -260,6 +260,18 @@
       "description": "This is a simulation and comparison between a spherical and a Fresnel lens. One of the advantages of the Fresnel lens can be readily seen: it functions similar to a regular spherical lens, while taking much less space - and therefore weighing less.",
       "thisfresnellensismad": "This Fresnel lens is made from the half circle glass below.\nYou can select the lens and adjust the N_slice parameter."
     },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Augustin Fresnel's Lighthouse Optics",
+      "description": "Here's a demonstration of Augustin Fresnel's Lighthouse Optics Magic:\n\n1. A [thinned lens](/gallery/fresnel-lens) replaces the thicker magnifying lens to send the central core of light to the ship by refraction at two surfaces. A further refinement, included, is the decreasing segment radius of curvature to reduce spherical aberration present in the full-thickness lens. They did not use aspheres in the 1800's.\n2. Total internal reflecting (TIR) prisms redirect high-angle beams to the ships. These are catadioptric elements with refraction going in and out and TIR on the back side. In the 1820's the best reflectors were silver, only about 50% reflective. The dirty oil lamp light source required daily cleaning of the optics. TIR reflection theoretically is 100% efficient and glass is more easily cleanable.\n\nThis raytrace validates a set of prisms and lenses built for a whiteboard demonstration of Fresnel optics at California State Parks' Pigeon Point Light Station.\n\n- The light source is an H11 headlight LED behind a slotted mask. The LED shines only about 160 degrees of light, not a full 180 degree hemisphere. An incandescent bulb could give a full 360 degrees of light, but not as brightly and much hotter.\n- The optics are about 0.5 inch, 12 mm, thick acrylic with painted white bottoms.\n- All objects magnetically mount to the whiteboard. Additional mirrors, prisms, and a full-thickness lens are in the photograph and demonstrated in the presentation.\n- The actual lighthouse lenses needed a chimney vent at the top and often a rotating structure at the bottom. They did not attempt to collect the full 180 degrees of light.",
+      "augustinfresnelsmagi": "Augustin Fresnel's Magic Lighthouse Optics ",
+      "t1athinnedlensmakesab": "#1 A thinned lens makes a bright beam with less glass\n ",
+      "comparetheperformanc": "Compare the performance of the upper half thinned Bullseye lens \nto the lower half full thickness lens. \n\nIn the 1820's, poor glass quality meant\na full thickness lens sent less light to the ship than without a lens!\nA thinned lens was much better than no lens.",
+      "amagnifyinglenscanon": "A magnifying lens can only send about 1/6, 15%, \nof the light to a ship.",
+      "mirrorsorreflectorsc": "Mirrors or reflectors can redirect high angle beams, but 1820's reflectors wasted half the light.",
+      "t2totalinternalreflec": "#2 Total Internal Reflecting (TIR) prisms enabled sending all the high angled light to a ship",
+      "inthepigeonpointligh": "In the Pigeon Point Lighthouse whiteboard optics demo,\nFrensel's magic enables ALL of the light into a hemisphere to be sent to a ship",
+      "howitworks": "How it works"
+    },
     "zoomLens": {
       "title": "Zoom Lens",
       "description": "This simulation demonstrates a zoom lens, where you can change the zoom by dragging the concave lens in the middle.",
