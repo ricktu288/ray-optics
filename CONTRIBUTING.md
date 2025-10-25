@@ -14,11 +14,12 @@ You can submit your work to the Gallery. The scene should satisfy the following 
 - All natural language texts in the scene should be either in English or in Chinese when submitting by email.
 - Avoid programmatically-generated large arrays of objects if possible (try using the "Module" feature instead).
 - Avoid using rays in non-optical ways (e.g. purely geometrical measurements, backward ray tracing) if possible.
+- To keep the style consistent, please use the default theme and font.
 
 **Method 1: By e-mail**
 
 1. Save you work as a `.json` file using the "Save" button (or use "Copy Shareable Link"). If your work contains a background image (which can be loaded with "Open"), it should be in a separate file.
-2. Send the files (or link) to ray-optics@phydemo.app. Include the title of your work, a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+2. Send the files (or link) to ray-optics@phydemo.app with the subject "Gallery submission: [title of your work]". In the body of the email, include a description of your work (to show on the webpage), and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 
@@ -42,7 +43,7 @@ See Tools -> Others -> Import Modules for more information about modules. See [t
 **Method 1: By e-mail**
 
 1. Save you scene with the new module as a `.json` file using the "Save" button.
-2. Send the files to ray-optics@phydemo.app. Include the title of your module, a description of your module, and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
+2. Send the files to ray-optics@phydemo.app with the subject "Module submission: [title of your module]". In the body of the email, include a description of your module, and your name to appear on the [list of contributors](https://phydemo.app/ray-optics/about).
 
 **Method 2: Via GitHub** (preferred if you use GitHub)
 

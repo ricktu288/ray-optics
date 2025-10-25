@@ -14,8 +14,8 @@ If you are not familiar with the development environment but still want to run t
 
 1. Download and install [Simple Web Server](https://simplewebserver.org/).
 2. Download either of the following and unzip the folder:
-   - [Latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip) (same as the online version, with beta features)
-   - [Latest release](https://github.com/ricktu288/ray-optics/releases/latest) (slightly older, but has a versioned DOI for citation)
+   - [Latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/gh-pages.zip) (same as the online version)
+   - [Latest release](https://github.com/ricktu288/ray-optics/releases/latest) (slightly older, no beta features, citable with a DOI)
 3. Start Simple Web Server, click "New Server".
 4. Set "Folder Path" to the folder you just unzipped. Note that some systems may put the folder in another folder with the same name. Please select the inner one.
 5. Expand "Basic Options" and turn on "Exclude .html extension". It should look like this (the folder name depends on which version you downloaded):
