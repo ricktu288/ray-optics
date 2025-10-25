@@ -2,10 +2,8 @@
   "version": 5,
   "modules": {
     "ChaffPiece": {
-      "numPoints": 0,
+      "numPoints": 1,
       "params": [
-        "x=0:1:1000:0",
-        "y=0:1:1000:0",
         "theta=0:0.001:2pi:0",
         "L=0.01:0.01:10:5"
       ],
@@ -13,12 +11,12 @@
         {
           "type": "Mirror",
           "p1": {
-            "x": "`x`",
-            "y": "`y`"
+            "x": "`x_1`",
+            "y": "`y_1`"
           },
           "p2": {
-            "x": "`x+L*cos(theta)`",
-            "y": "`y+L*sin(theta)`"
+            "x": "`x_1+L*cos(theta)`",
+            "y": "`y_1+L*sin(theta)`"
           }
         }
       ]
@@ -34,10 +32,13 @@
           "for": "i=1:1:N",
           "type": "ModuleObj",
           "module": "ChaffPiece",
-          "points": [],
+          "points": [
+            {
+              "x": "`x_1+random()*(x_2-x_1)`",
+              "y": "`y_1+random()*(y_2-y_1)`"
+            }
+          ],
           "params": {
-            "x": "`x_1+random()*(x_2-x_1)`",
-            "y": "`y_1+random()*(y_2-y_1)`",
             "L": "`L`",
             "theta": "`random()*pi`"
           }

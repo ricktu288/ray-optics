@@ -19,7 +19,7 @@
             "y": "`y_2`"
           },
           "eqn1": "-0.05",
-          "eqn2": "\\max(1-\\operatorname{abs}(x/3),0)-\\operatorname{floor}(`N_slice`*\\max(1-\\operatorname{abs}(x/3),0))/`N_slice`",
+          "eqn2": "``1-abs(x/3)-floor(N_slice*(1-abs(x/3)))/N_slice``",
           "refIndex": "`refIndex`"
         }
       ]

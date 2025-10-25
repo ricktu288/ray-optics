@@ -100,7 +100,7 @@
       "title": "Optical Fiber",
       "description": "Line-shaped optical fiber with given core and cladding thickness and refractive indices.",
       "point1": "The first endpoint of the optical fiber",
-      "point2": "The second endpoint of the optical fiber (should have the same \\(y\\) as the first point)",
+      "point2": "The second endpoint of the optical fiber",
       "X": "The thickness of the core",
       "Y": "The thickness of the cladding",
       "n1": "The refractive index of the core",

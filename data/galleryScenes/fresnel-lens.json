@@ -19,7 +19,7 @@
             "y": "`y_2`"
           },
           "eqn1": "-0.05",
-          "eqn2": "\\sqrt{1-x^2}-\\frac{\\operatorname{floor}\\left(`N_slice`\\cdot\\sqrt{1-x^2}\\right)}{`N_slice`}",
+          "eqn2": "``sqrt(1-x^2)-floor(N_slice*sqrt(1-x^2))/N_slice``",
           "refIndex": "`refIndex`"
         }
       ]

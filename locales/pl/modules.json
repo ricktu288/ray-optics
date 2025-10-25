@@ -76,7 +76,7 @@
       "title": "Światłowód",
       "description": "Światłowód w kształcie linii o zadanej grubości rdzenia i płaszcza oraz współczynnikach załamania światła.",
       "point1": "Pierwszy punkt końcowy światłowodu",
-      "point2": "Drugi punkt końcowy światłowodu (powinien mieć taki sam \\(y\\) jak pierwszy punkt)",
+      "point2": "Drugi punkt końcowy światłowodu",
       "X": "Grubość rdzenia",
       "Y": "Grubość płaszcza",
       "n1": "Współczynnik załamania rdzenia",

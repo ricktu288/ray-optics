@@ -76,7 +76,7 @@
       "title": "Fibra Óptica",
       "description": "Fibra óptica em formato de linha com determinadas espessuras de centro e revestimento e índices refrativos.",
       "point1": "O primeiro ponto delimitador da fibra óptica",
-      "point2": "O segundo ponto delimitador da fibra óptica (deve ter o mesmo \\(y\\) que o primeiro ponto)",
+      "point2": "O segundo ponto delimitador da fibra óptica",
       "X": "A espessura do centro",
       "Y": "A espessura do revestimento",
       "n1": "O índice refrativo do centro",
