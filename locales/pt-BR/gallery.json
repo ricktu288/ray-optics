@@ -520,6 +520,18 @@
       "title": "Exemplo de Módulo - Parametrização de forma",
       "alensdefinedbydr1r2": "Uma lente definida por d, R_1, R_2",
       "alensdefinedbydffdbf": "Uma lente definida por d, FFD, BFD"
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Ótica de Farol de Augustin Fresnel",
+      "description": "Esta é uma demonstração da mágica da Óptica dos Faróis de Augustin Fresnel:\n\n1. Uma [lente fina](/gallery/fresnel-lens) substitui a lente de magnificação mais espessa para mandar o feixe central de luz para o navio, com refração em duas superfícies. Um refinamento adicional, incluso, é o raio de curvatura decrescente nos segmentos para reduzir aberração esférica presente na lente de espessura completa. Asféricas não eram usadas no século XVII.\n2. Prismas de refleção interna total(RIT) redirecionam raios de ângulo alto para os navios. Há elementos catadióptricos com refração entrando e saindo e RIT no lado traseiro. Em 1820, os melhores refletores eram prata, somente cerca de 50% refletivos. A fonte de luz, uma lâmpada de óleo, sujava e necessitava limpeza diária da óptica. RIT é teoricamente 100% eficiente e vidro é mais facilmente limpável.\n\nEssa simulação valida um conjunto de prismas e lentes feitos para uma demonstração de ótica de Fresnel em um quadro branco no Farol de Pigeon Point do Parque Estadual da Califórnia.\n\n-A fonte de luz é um farol de carro LED H11 atrás de uma máscara com vãos. O LED emite iluminação em apenas 160 graus, não um hemisfério completo de 180. Uma lâmpada incandescente poderia emitir 360 graus completos, mas não tão brilhante e muito mais quente.\n- Os elementos óticos são feitos de acrílico de cerca de 0.5 polegadas, 12mm de espessura, com fundo pintado de branco.\n- Todos objetos montam magneticamente no quadro branco. Espelhos adicionais, prismas, e uma lente de espessura completa estão na fotografia e demonstrados na apresentação.\n- As lentes de farol de verdade necessitavam de uma chaminé no topo, e muitas vezes, uma estrutura giratória no fundo. Elas não buscavam coletar todos 180 graus de iluminação.",
+      "augustinfresnelsmagi": "Ótica Mágica de Farol de Augustin Fresnel",
+      "t1athinnedlensmakesab": "#1 Uma lente fina faz um raio brilhante com menos vidro\n\n ",
+      "comparetheperformanc": "Compare a performance da lente Fresnel fina na metade superior \ncom a espessura completa na metade inferior\n\nEm 1820, vidro de baixa qualidade fazia que\numa lente de espessura completa enviasse menos luz para o navio que lente nenhum!\nUma lente fina era muito melhor que lente nenhuma.",
+      "amagnifyinglenscanon": "Uma lente ampliadora consegue mandar apenas 1/6, 15% , \nda luz para um navio.",
+      "mirrorsorreflectorsc": "Espelhos ou refletores podem redirecionar raios de alto ângulo, mas os refletores de 1820 desperdiçavam metade da luz.",
+      "t2totalinternalreflec": "#2 Prismas de Refleção Interna Total (RIT) permitiam enviar toda a luz de ângulo alto para um navio",
+      "inthepigeonpointligh": "Na demonstração de ótica de quadro branco do Farol de Pigeon Point,\na mágica de Fresnel permite que TODA a luz do hemisfério seja enviada para o navio",
+      "howitworks": "Como funciona"
     }
   }
 }
