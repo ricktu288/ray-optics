@@ -58,7 +58,7 @@ class CurveGlass extends BaseGlass {
 
     // Extrapolate the (unoptimized) object from the (optimized) JSON object.
     // NOTE: The "curves" and "path" properties should eventually be combined and optimized to be consistent with the JSON representation.
-    if (jsonObj.points) {
+    if (jsonObj && jsonObj.points) {
       // Go through each of the curves in the current lens
       for (let curCurve = 0; curCurve < jsonObj.points.length; curCurve++) {
         // The first point is the first anchor point, the second two control points, and the first of the next curve the last anchor point

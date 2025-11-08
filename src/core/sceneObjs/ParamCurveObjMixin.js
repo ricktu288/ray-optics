@@ -632,13 +632,8 @@ const ParamCurveObjMixin = Base => class extends Base {
         delete obj.path;
       }, null, true);
       
-      // Add " < t < " text
-      var ltText = document.createElement('span');
-      ltText.innerHTML = ' &lt; t &lt;';
-      objBar.elem.appendChild(ltText);
-      
       // Create tMax input (number without slider)
-      objBar.createNumber('', -Infinity, Infinity, 0.01, this.pieces[i].tMax, function (obj, value) {
+      objBar.createNumber(' < t < ', -Infinity, Infinity, 0.01, this.pieces[i].tMax, function (obj, value) {
         obj.pieces[currentIndex].tMax = value;
         // Invalidate path when parameter changes
         delete obj.path;
