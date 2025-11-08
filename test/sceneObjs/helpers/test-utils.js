@@ -493,6 +493,26 @@ export class MockUser {
   }
 
   /**
+   * Simulate a rotation by an angle around a center
+   * @param {number} angle - Rotation angle in radians
+   * @param {Object|null} center - Center of rotation {x, y}, or null for default center
+   * @returns {boolean} Result from the rotation
+   */
+  rotate(angle, center = null) {
+    return this.targetObj.rotate(angle, center);
+  }
+
+  /**
+   * Simulate a scaling by a factor around a center
+   * @param {number} scale - Scale factor
+   * @param {Object|null} center - Center of scaling {x, y}, or null for default center
+   * @returns {boolean} Result from the scaling
+   */
+  scale(scale, center = null) {
+    return this.targetObj.scale(scale, center);
+  }
+
+  /**
    * Set a property value through the object bar
    * @param {string} label - Property label
    * @param {any} value - New value

@@ -32,6 +32,32 @@ describe('LineArrow', () => {
 
   testLineObj(() => ({ obj, user }));
 
+  it('rotates 90 degrees around default center (midpoint)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(250, 5);
+    expect(result.p1.y).toBeCloseTo(150, 5);
+    expect(result.p2.x).toBeCloseTo(50, 5);
+    expect(result.p2.y).toBeCloseTo(250, 5);
+    expect(result.type).toBe('LineArrow');
+  });
+
+  it('scales to 50% around default center (midpoint)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.scale(0.5); // Scale to 50%
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(125, 5);
+    expect(result.p1.y).toBeCloseTo(150, 5);
+    expect(result.p2.x).toBeCloseTo(175, 5);
+    expect(result.p2.y).toBeCloseTo(250, 5);
+    expect(result.type).toBe('LineArrow');
+  });
+
   it('sets properties', () => {
     user.click(100, 100);
     user.click(200, 300);

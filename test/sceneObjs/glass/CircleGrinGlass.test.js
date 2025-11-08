@@ -30,6 +30,36 @@ describe('CircleGrinGlass', () => {
     user = new MockUser(obj);
   });
 
+  it('rotates 90 degrees around default center (p1)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(100, 5); // p1 stays in place (center of rotation)
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(-100, 5); // p2 rotates around p1
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.origin.x).toBeCloseTo(100, 5); // origin stays with p1
+    expect(result.origin.y).toBeCloseTo(100, 5);
+    expect(result.type).toBe('CircleGrinGlass');
+  });
+
+  it('scales to 50% around default center (p1)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.scale(0.5); // Scale to 50%
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(100, 5); // p1 stays in place (center of scaling)
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(150, 5); // p2 scales toward p1
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.origin.x).toBeCloseTo(100, 5); // origin stays with p1
+    expect(result.origin.y).toBeCloseTo(100, 5);
+    expect(result.type).toBe('CircleGrinGlass');
+  });
+
   // Override the circle object tests to include origin
   it('creates with two clicks', () => {
     user.click(100, 100);
@@ -46,6 +76,7 @@ describe('CircleGrinGlass', () => {
     user.click(100, 100);
     user.click(200, 300);
     user.set("n(x,y) = ", "1+x^2");
+    user.set("α(x,y) = ", "0.1*x");
     user.set("{{simulator:sceneObjs.BaseGrinGlass.stepSize}}", 2);
     user.set("{{simulator:sceneObjs.BaseGrinGlass.intersectTol}}", 0.002);
 
@@ -55,6 +86,7 @@ describe('CircleGrinGlass', () => {
       p2: { x: 200, y: 300 },
       origin: { x: 100, y: 100 },
       refIndexFn: "1+x^2",
+      absorptionFn: "0.1*x",
       stepSize: 2,
       intersectTol: 0.002
     });

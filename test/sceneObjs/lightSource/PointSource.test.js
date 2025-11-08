@@ -105,6 +105,46 @@ describe('PointSource', () => {
     });
   });
 
+  it('rotates 90 degrees around default center (itself)', () => {
+    user.click(100, 100);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(100, 5); // Point stays in same place when rotating around itself
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.type).toBe('PointSource');
+  });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.click(100, 100);
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(-100, 5); // Point rotates around origin
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.type).toBe('PointSource');
+  });
+
+  it('scales to 50% around default center (itself)', () => {
+    user.click(100, 100);
+
+    user.scale(0.5); // Scale to 50%
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(100, 5); // Point stays in same place when scaling around itself
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.type).toBe('PointSource');
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.click(100, 100);
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(50, 5); // Point scales toward origin
+    expect(result.y).toBeCloseTo(50, 5);
+    expect(result.type).toBe('PointSource');
+  });
+
   it('sets properties for non-simulateColors', () => {
     user.click(100, 100);
     user.set("{{simulator:sceneObjs.common.brightness}}", 0.3);

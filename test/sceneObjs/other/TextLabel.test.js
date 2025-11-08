@@ -147,4 +147,58 @@ describe('TextLabel', () => {
       angle: 45
     });
   });
+
+  it('moves the entire object by a vector', () => {
+    user.click(100, 100);
+
+    user.move(50, 100);
+    const result = obj.serialize();
+    expect(result.x).toBe(150);
+    expect(result.y).toBe(200);
+    expect(result.type).toBe('TextLabel');
+  });
+
+  it('rotates 90 degrees around default center (itself)', () => {
+    user.click(100, 100);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(100, 5); // Position stays same when rotating around itself
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.angle).toBeCloseTo(270, 5); // Angle changes during rotation
+    expect(result.type).toBe('TextLabel');
+  });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.click(100, 100);
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(-100, 5); // Position rotates around origin
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.angle).toBeCloseTo(270, 5); // Angle changes during rotation
+    expect(result.type).toBe('TextLabel');
+  });
+
+  it('scales to 200% around default center (itself)', () => {
+    user.click(100, 100);
+
+    user.scale(2.0); // Scale to 200%
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(100, 5); // Position stays same when scaling around itself
+    expect(result.y).toBeCloseTo(100, 5);
+    expect(result.fontSize).toBeCloseTo(48, 5); // fontSize scales
+    expect(result.type).toBe('TextLabel');
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.click(100, 100);
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    const result = obj.serialize();
+    expect(result.x).toBeCloseTo(50, 5); // Position scales toward origin
+    expect(result.y).toBeCloseTo(50, 5);
+    expect(result.fontSize).toBeCloseTo(12, 5); // fontSize scales
+    expect(result.type).toBe('TextLabel');
+  });
 }); 

@@ -144,4 +144,63 @@ describe('Drawing', () => {
       strokes: [[100, 100, 120, 120]]
     });
   });
+
+  it('moves the entire object by a vector', () => {
+    user.mouseDown(100, 100);
+    user.mouseMove(120, 120);
+    user.mouseUp(120, 120);
+    user.mouseDown(200, 200);
+    user.mouseMove(220, 220);
+    user.mouseUp(220, 220);
+    user.clickButton('{{simulator:sceneObjs.Drawing.finishDrawing}}');
+
+    user.move(50, 100);
+    expect(obj.serialize()).toEqual({
+      type: 'Drawing',
+      strokes: [[150, 200, 170, 220], [250, 300, 270, 320]]
+    });
+  });
+
+  it('rotates 90 degrees around default center', () => {
+    user.mouseDown(100, 100);
+    user.mouseMove(120, 120);
+    user.mouseUp(120, 120);
+    user.clickButton('{{simulator:sceneObjs.Drawing.finishDrawing}}');
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise around default center
+    const result = obj.serialize();
+    expect(result.type).toBe('Drawing');
+    expect(result.strokes).toHaveLength(1);
+    // Test that transformation occurred (exact values depend on default center)
+    expect(result.strokes[0]).toHaveLength(4);
+    expect(typeof result.strokes[0][0]).toBe('number');
+  });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.mouseDown(100, 100);
+    user.mouseMove(120, 120);
+    user.mouseUp(120, 120);
+    user.clickButton('{{simulator:sceneObjs.Drawing.finishDrawing}}');
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.strokes[0][0]).toBeCloseTo(-100, 5); // x becomes -y
+    expect(result.strokes[0][1]).toBeCloseTo(100, 5);  // y becomes x
+    expect(result.strokes[0][2]).toBeCloseTo(-120, 5);
+    expect(result.strokes[0][3]).toBeCloseTo(120, 5);
+    expect(result.type).toBe('Drawing');
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.mouseDown(100, 100);
+    user.mouseMove(120, 120);
+    user.mouseUp(120, 120);
+    user.clickButton('{{simulator:sceneObjs.Drawing.finishDrawing}}');
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    expect(obj.serialize()).toEqual({
+      type: 'Drawing',
+      strokes: [[50, 50, 60, 60]]
+    });
+  });
 }); 

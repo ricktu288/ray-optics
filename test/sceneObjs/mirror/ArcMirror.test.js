@@ -184,4 +184,82 @@ describe('ArcMirror', () => {
     expect(user.hover(50, 50)).toBeFalsy();   // Far from line
     expect(user.hover(0, 150)).toBeFalsy();   // Beyond endpoints
   });
+
+  it('moves the entire object by a vector', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    user.move(50, 100);
+    expect(obj.serialize()).toEqual({
+      type: 'ArcMirror',
+      p1: { x: 150, y: 200 },
+      p2: { x: 250, y: 200 },
+      p3: { x: 200, y: 250 }
+    });
+  });
+
+  it('rotates 90 degrees around default center (p3)', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(200, 5); // p1 rotates around p3
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(200, 5); // p2 rotates around p3
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.p3.x).toBeCloseTo(150, 5); // p3 stays in place (center of rotation)
+    expect(result.p3.y).toBeCloseTo(150, 5);
+    expect(result.type).toBe('ArcMirror');
+  });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(-100, 5); // p1 rotates around origin
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(-100, 5); // p2 rotates around origin
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.p3.x).toBeCloseTo(-150, 5); // p3 rotates around origin
+    expect(result.p3.y).toBeCloseTo(150, 5);
+    expect(result.type).toBe('ArcMirror');
+  });
+
+  it('scales to 50% around default center (p3)', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    user.scale(0.5); // Scale to 50%
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(125, 5); // p1 scales toward p3
+    expect(result.p1.y).toBeCloseTo(125, 5);
+    expect(result.p2.x).toBeCloseTo(175, 5); // p2 scales toward p3
+    expect(result.p2.y).toBeCloseTo(125, 5);
+    expect(result.p3.x).toBeCloseTo(150, 5); // p3 stays in place (center of scaling)
+    expect(result.p3.y).toBeCloseTo(150, 5);
+    expect(result.type).toBe('ArcMirror');
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(50, 5); // p1 scales toward origin
+    expect(result.p1.y).toBeCloseTo(50, 5);
+    expect(result.p2.x).toBeCloseTo(100, 5); // p2 scales toward origin
+    expect(result.p2.y).toBeCloseTo(50, 5);
+    expect(result.p3.x).toBeCloseTo(75, 5); // p3 scales toward origin
+    expect(result.p3.y).toBeCloseTo(75, 5);
+    expect(result.type).toBe('ArcMirror');
+  });
 }); 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 The Ray Optics Simulation authors and contributors
+ * Copyright 2024 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import ConcaveDiffractionGrating from '../../../src/core/sceneObjs/mirror/ConcaveDiffractionGrating';
-import Scene from '../../../src/core/Scene';
-import { MockUser } from '../helpers/test-utils';
-import geometry from '../../../src/core/geometry';
+import CustomArcSurface from '../../../src/core/sceneObjs/other/CustomArcSurface.js';
+import Scene from '../../../src/core/Scene.js';
+import { MockUser } from '../helpers/test-utils.js';
+import geometry from '../../../src/core/geometry.js';
 
-describe('ConcaveDiffractionGrating', () => {
+describe('CustomArcSurface', () => {
   let scene;
   let obj;
   let user;
 
   beforeEach(() => {
     scene = new Scene();
-    scene.gridSize = 20; // Set grid size
-    obj = new ConcaveDiffractionGrating(scene);
+    scene.gridSize = 20;
+    obj = new CustomArcSurface(scene);
     user = new MockUser(obj);
   });
 
@@ -36,7 +36,7 @@ describe('ConcaveDiffractionGrating', () => {
     user.click(200, 100); // Second endpoint
     user.click(150, 150); // Control point on arc
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 100, y: 100 },
       p2: { x: 200, y: 100 },
       p3: { x: 150, y: 150 }
@@ -47,7 +47,7 @@ describe('ConcaveDiffractionGrating', () => {
     user.drag(100, 100, 200, 100); // Drag for endpoints
     user.click(150, 150); // Click for control point
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 100, y: 100 },
       p2: { x: 200, y: 100 },
       p3: { x: 150, y: 150 }
@@ -60,7 +60,7 @@ describe('ConcaveDiffractionGrating', () => {
     user.click(198, 97); // Should snap to (200, 100)
     user.click(152, 148); // Should snap to (160, 140)
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 100, y: 100 },
       p2: { x: 200, y: 100 },
       p3: { x: 160, y: 140 }
@@ -100,7 +100,7 @@ describe('ConcaveDiffractionGrating', () => {
 
     user.drag(100, 100, 120, 120); // Drag p1
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 120, y: 120 },
       p2: { x: 200, y: 100 },
       p3: { x: 150, y: 150 }
@@ -114,7 +114,7 @@ describe('ConcaveDiffractionGrating', () => {
 
     user.drag(150, 150, 150, 180); // Drag p3
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 100, y: 100 },
       p2: { x: 200, y: 100 },
       p3: { x: 150, y: 180 }
@@ -129,53 +129,15 @@ describe('ConcaveDiffractionGrating', () => {
 
     user.drag(101, 101, 118, 122); // Should snap to (120, 120)
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 120, y: 120 },
       p2: { x: 200, y: 100 },
       p3: { x: 160, y: 160 }
     });
   });
 
-  it('sets diffraction properties without custom brightness', () => {
-    user.click(100, 100);
-    user.click(200, 100);
-    user.click(150, 150);
-    user.set("{{simulator:sceneObjs.DiffractionGrating.lineDensity}}", 600);
-    user.set("{{simulator:sceneObjs.DiffractionGrating.slitRatio}}", 0.7);
-
-    expect(obj.serialize()).toEqual({
-      type: "ConcaveDiffractionGrating",
-      p1: { x: 100, y: 100 },
-      p2: { x: 200, y: 100 },
-      p3: { x: 150, y: 150 },
-      lineDensity: 600,
-      slitRatio: 0.7
-    });
-  });
-
-  it('sets diffraction properties with custom brightness', () => {
-    user.click(100, 100);
-    user.click(200, 100);
-    user.click(150, 150);
-    user.set("{{simulator:sceneObjs.DiffractionGrating.lineDensity}}", 600);
-    user.set("{{simulator:sceneObjs.DiffractionGrating.customBrightness}}", true);
-    user.set("{{simulator:sceneObjs.DiffractionGrating.customBrightness}}", '1, 0.7, 0.7, 0.3, 0.3', 1);
-
-    expect(obj.serialize()).toEqual({
-      type: "ConcaveDiffractionGrating",
-      p1: { x: 100, y: 100 },
-      p2: { x: 200, y: 100 },
-      p3: { x: 150, y: 150 },
-      lineDensity: 600,
-      customBrightness: true,
-      brightnesses: [1, 0.7, 0.7, 0.3, 0.3]
-    });
-  });
-
-
-
-  it('hovers over grating with colinear points', () => {
-    // Create with colinear points
+  it('hovers over surface with colinear points', () => {
+    // Create arc surface with colinear points
     user.click(0, 0);       // First endpoint
     user.click(0, 100);     // Second endpoint
     user.click(0, 50);      // Control point (colinear)
@@ -201,7 +163,7 @@ describe('ConcaveDiffractionGrating', () => {
 
     user.move(50, 100);
     expect(obj.serialize()).toEqual({
-      type: 'ConcaveDiffractionGrating',
+      type: 'CustomArcSurface',
       p1: { x: 150, y: 200 },
       p2: { x: 250, y: 200 },
       p3: { x: 200, y: 250 }
@@ -221,7 +183,7 @@ describe('ConcaveDiffractionGrating', () => {
     expect(result.p2.y).toBeCloseTo(200, 5);
     expect(result.p3.x).toBeCloseTo(150, 5); // p3 stays in place (center of rotation)
     expect(result.p3.y).toBeCloseTo(150, 5);
-    expect(result.type).toBe('ConcaveDiffractionGrating');
+    expect(result.type).toBe('CustomArcSurface');
   });
 
   it('rotates 90 degrees around explicit center', () => {
@@ -237,7 +199,7 @@ describe('ConcaveDiffractionGrating', () => {
     expect(result.p2.y).toBeCloseTo(200, 5);
     expect(result.p3.x).toBeCloseTo(-150, 5); // p3 rotates around origin
     expect(result.p3.y).toBeCloseTo(150, 5);
-    expect(result.type).toBe('ConcaveDiffractionGrating');
+    expect(result.type).toBe('CustomArcSurface');
   });
 
   it('scales to 50% around default center (p3)', () => {
@@ -253,7 +215,7 @@ describe('ConcaveDiffractionGrating', () => {
     expect(result.p2.y).toBeCloseTo(125, 5);
     expect(result.p3.x).toBeCloseTo(150, 5); // p3 stays in place (center of scaling)
     expect(result.p3.y).toBeCloseTo(150, 5);
-    expect(result.type).toBe('ConcaveDiffractionGrating');
+    expect(result.type).toBe('CustomArcSurface');
   });
 
   it('scales to 50% around explicit center', () => {
@@ -269,6 +231,170 @@ describe('ConcaveDiffractionGrating', () => {
     expect(result.p2.y).toBeCloseTo(50, 5);
     expect(result.p3.x).toBeCloseTo(75, 5); // p3 scales toward origin
     expect(result.p3.y).toBeCloseTo(75, 5);
-    expect(result.type).toBe('ConcaveDiffractionGrating');
+    expect(result.type).toBe('CustomArcSurface');
+  });
+
+  it('sets properties with default outRays', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+    user.set("θ<sub>1</sub> =", "\\theta_0+0.1");
+    user.set("P<sub>1</sub> =", "0.8\\cdot P_0");
+    user.set("θ<sub>2</sub> =", "\\pi-\\theta_0+0.05");
+    user.set("P<sub>2</sub> =", "P_0-P_1");
+
+    expect(obj.serialize()).toEqual({
+      type: 'CustomArcSurface',
+      p1: { x: 100, y: 100 },
+      p2: { x: 200, y: 100 },
+      p3: { x: 150, y: 150 },
+      outRays: [
+        {
+          eqnTheta: "\\theta_0+0.1",
+          eqnP: "0.8\\cdot P_0"
+        },
+        {
+          eqnTheta: "\\pi-\\theta_0+0.05",
+          eqnP: "P_0-P_1"
+        }
+      ]
+    });
+  });
+
+  it('sets twoSided property', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+    user.set("{{simulator:sceneObjs.BaseCustomSurface.twoSided}}", true);
+
+    expect(obj.serialize()).toEqual({
+      type: 'CustomArcSurface',
+      p1: { x: 100, y: 100 },
+      p2: { x: 200, y: 100 },
+      p3: { x: 150, y: 150 },
+      twoSided: true
+    });
+  });
+
+  it('sets properties with twoSided and custom outRays', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+    user.set("θ<sub>1</sub> =", "0");
+    user.set("P<sub>1</sub> =", "P_0");
+    user.set("θ<sub>2</sub> =", "\\pi");
+    user.set("P<sub>2</sub> =", "0");
+    user.set("{{simulator:sceneObjs.BaseCustomSurface.twoSided}}", true);
+
+    expect(obj.serialize()).toEqual({
+      type: 'CustomArcSurface',
+      p1: { x: 100, y: 100 },
+      p2: { x: 200, y: 100 },
+      p3: { x: 150, y: 150 },
+      outRays: [
+        {
+          eqnTheta: "0",
+          eqnP: "P_0"
+        },
+        {
+          eqnTheta: "\\pi",
+          eqnP: "0"
+        }
+      ],
+      twoSided: true
+    });
+  });
+
+  it('adds outgoing rays using button', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    // Initial state has 2 outRays
+    expect(obj.outRays.length).toBe(2);
+
+    // Add a third ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    expect(obj.outRays.length).toBe(3);
+    expect(obj.outRays[2]).toEqual({
+      eqnTheta: '\\theta_0',
+      eqnP: 'P_0'
+    });
+
+    // Add a fourth ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    expect(obj.outRays.length).toBe(4);
+    expect(obj.outRays[3]).toEqual({
+      eqnTheta: '\\theta_0',
+      eqnP: 'P_0'
+    });
+
+    // Verify serialization includes all rays
+    const result = obj.serialize();
+    expect(result.outRays.length).toBe(4);
+    expect(result.type).toBe('CustomArcSurface');
+  });
+
+  it('removes outgoing rays using button', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    // Add an extra ray first
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    expect(obj.outRays.length).toBe(3);
+
+    // Remove one ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay}}');
+    expect(obj.outRays.length).toBe(2);
+
+    // Remove another ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay}}');
+    expect(obj.outRays.length).toBe(1);
+
+    // Remove the last ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay}}');
+    expect(obj.outRays.length).toBe(0);
+
+    // Verify serialization
+    const result = obj.serialize();
+    expect(result.outRays.length).toBe(0);
+    expect(result.type).toBe('CustomArcSurface');
+  });
+
+  it('adds and removes outgoing rays in sequence', () => {
+    user.click(100, 100);
+    user.click(200, 100);
+    user.click(150, 150);
+
+    // Start with 2 rays
+    expect(obj.outRays.length).toBe(2);
+
+    // Add two rays
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    expect(obj.outRays.length).toBe(4);
+
+    // Remove one ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay}}');
+    expect(obj.outRays.length).toBe(3);
+
+    // Add one more ray
+    user.clickButton('{{simulator:sceneObjs.BaseCustomSurface.addOutgoingRay}}');
+    expect(obj.outRays.length).toBe(4);
+
+    // Set properties on the newly added rays
+    user.set("θ<sub>3</sub> =", "\\theta_0/2");
+    user.set("P<sub>3</sub> =", "0.5\\cdot P_0");
+    user.set("θ<sub>4</sub> =", "\\pi/4");
+    user.set("P<sub>4</sub> =", "0.25\\cdot P_0");
+
+    const result = obj.serialize();
+    expect(result.outRays.length).toBe(4);
+    expect(result.outRays[2].eqnTheta).toBe("\\theta_0/2");
+    expect(result.outRays[2].eqnP).toBe("0.5\\cdot P_0");
+    expect(result.outRays[3].eqnTheta).toBe("\\pi/4");
+    expect(result.outRays[3].eqnP).toBe("0.25\\cdot P_0");
   });
 });
+

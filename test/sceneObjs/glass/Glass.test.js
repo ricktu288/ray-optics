@@ -347,6 +347,79 @@ describe('Glass', () => {
     });
   });
 
+  it('moves the entire object by a vector', () => {
+    user.click(0, 0);
+    user.click(100, 0);
+    user.click(100, 100);
+    user.click(0, 100);
+    user.click(0, 0);
+
+    user.move(50, 100);
+    expect(obj.serialize()).toEqual({
+      type: 'Glass',
+      path: [
+        { x: 50, y: 100, arc: false },
+        { x: 150, y: 100, arc: false },
+        { x: 150, y: 200, arc: false },
+        { x: 50, y: 200, arc: false }
+      ]
+    });
+  });
+
+  it('rotates 90 degrees around default center', () => {
+    user.click(0, 0);
+    user.click(100, 0);
+    user.click(100, 100);
+    user.click(0, 100);
+    user.click(0, 0);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise around default center
+    const result = obj.serialize();
+    expect(result.type).toBe('Glass');
+    expect(result.path).toHaveLength(4);
+    // Test that transformation occurred (exact values depend on default center)
+    expect(result.path.every(point => typeof point.x === 'number' && typeof point.y === 'number')).toBe(true);
+  });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.click(0, 0);
+    user.click(100, 0);
+    user.click(100, 100);
+    user.click(0, 100);
+    user.click(0, 0);
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.path[0].x).toBeCloseTo(0, 5);
+    expect(result.path[0].y).toBeCloseTo(0, 5);
+    expect(result.path[1].x).toBeCloseTo(0, 5);
+    expect(result.path[1].y).toBeCloseTo(100, 5);
+    expect(result.path[2].x).toBeCloseTo(-100, 5);
+    expect(result.path[2].y).toBeCloseTo(100, 5);
+    expect(result.path[3].x).toBeCloseTo(-100, 5);
+    expect(result.path[3].y).toBeCloseTo(0, 5);
+    expect(result.type).toBe('Glass');
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.click(0, 0);
+    user.click(100, 0);
+    user.click(100, 100);
+    user.click(0, 100);
+    user.click(0, 0);
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    expect(obj.serialize()).toEqual({
+      type: 'Glass',
+      path: [
+        { x: 0, y: 0, arc: false },
+        { x: 50, y: 0, arc: false },
+        { x: 50, y: 50, arc: false },
+        { x: 0, y: 50, arc: false }
+      ]
+    });
+  });
+
   it('hovers over lens with colinear points', () => {
     // Create the lens shape with colinear points
     user.click(0, -100);

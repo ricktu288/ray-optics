@@ -141,4 +141,30 @@ export function testCircleObj(getTestContext) {
       p2: { x: 250, y: 400 },
     });
   });
+
+  it('rotates 90 degrees around explicit center', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(-100, 5);
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(-300, 5);
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.type).toBe(obj.constructor.type);
+  });
+
+  it('scales to 50% around explicit center', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(50, 5);
+    expect(result.p1.y).toBeCloseTo(50, 5);
+    expect(result.p2.x).toBeCloseTo(100, 5);
+    expect(result.p2.y).toBeCloseTo(150, 5);
+    expect(result.type).toBe(obj.constructor.type);
+  });
 } 

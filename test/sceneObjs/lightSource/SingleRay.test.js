@@ -32,6 +32,32 @@ describe('SingleRay', () => {
 
   testLineObj(() => ({ obj, user }));
 
+  it('rotates 90 degrees around default center (p1)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(100, 5); // p1 stays in place (center of rotation)
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(-100, 5); // p2 rotates around p1
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.type).toBe('SingleRay');
+  });
+
+  it('scales to 50% around default center (p1)', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    user.scale(0.5); // Scale to 50%
+    const result = obj.serialize();
+    expect(result.p1.x).toBeCloseTo(100, 5); // p1 stays in place (center of scaling)
+    expect(result.p1.y).toBeCloseTo(100, 5);
+    expect(result.p2.x).toBeCloseTo(150, 5); // p2 moves halfway to p1
+    expect(result.p2.y).toBeCloseTo(200, 5);
+    expect(result.type).toBe('SingleRay');
+  });
+
   it('sets properties for non-simulateColors', () => {
     user.click(100, 100);
     user.click(200, 300);

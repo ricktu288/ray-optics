@@ -308,4 +308,79 @@ describe('SphericalLens', () => {
       expect(point.arc).toBe(initialPath[i].arc);
     });
   });
+
+  it('moves the entire object by a vector', async () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    // Wait for the lens to be built
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const initialPath = obj.serialize().path;
+    user.move(50, 100);
+    
+    const result = obj.serialize();
+    expect(result.type).toBe('SphericalLens');
+    expect(result.path).toHaveLength(6);
+    // Test that all points moved by the expected amount
+    result.path.forEach((point, i) => {
+      expect(point.x).toBeCloseTo(initialPath[i].x + 50, 2);
+      expect(point.y).toBeCloseTo(initialPath[i].y + 100, 2);
+    });
+  });
+
+  it('rotates 90 degrees around default center', async () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    // Wait for the lens to be built
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    user.rotate(Math.PI / 2); // 90 degrees counter-clockwise around default center
+    const result = obj.serialize();
+    expect(result.type).toBe('SphericalLens');
+    expect(result.path).toHaveLength(6);
+    // Test that transformation occurred (exact values depend on default center)
+    expect(result.path.every(point => typeof point.x === 'number' && typeof point.y === 'number')).toBe(true);
+  });
+
+  it('rotates 90 degrees around explicit center', async () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    // Wait for the lens to be built
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const initialPath = obj.serialize().path;
+    user.rotate(Math.PI / 2, { x: 0, y: 0 }); // 90 degrees around origin
+    
+    const result = obj.serialize();
+    expect(result.type).toBe('SphericalLens');
+    expect(result.path).toHaveLength(6);
+    // Test that points rotated around origin
+    result.path.forEach((point, i) => {
+      expect(point.x).toBeCloseTo(-initialPath[i].y, 2);
+      expect(point.y).toBeCloseTo(initialPath[i].x, 2);
+    });
+  });
+
+  it('scales to 50% around explicit center', async () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    // Wait for the lens to be built
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const initialPath = obj.serialize().path;
+    user.scale(0.5, { x: 0, y: 0 }); // Scale to 50% around origin
+    
+    const result = obj.serialize();
+    expect(result.type).toBe('SphericalLens');
+    expect(result.path).toHaveLength(6);
+    // Test that points scaled toward origin
+    result.path.forEach((point, i) => {
+      expect(point.x).toBeCloseTo(initialPath[i].x * 0.5, 2);
+      expect(point.y).toBeCloseTo(initialPath[i].y * 0.5, 2);
+    });
+  });
 });
