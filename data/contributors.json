@@ -721,5 +721,14 @@
       "gallery": true
     },
     "firstCommit": "2025-10-17"
+  },
+  {
+    "name": "vimalrajrm",
+    "contributions": {
+      "translations": [
+        "ta"
+      ]
+    },
+    "firstCommit": "2025-11-07"
   }
 ]
