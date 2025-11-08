@@ -271,7 +271,10 @@
         "right": "Direita"
       },
       "smallCaps": "Maiúsculo pequeno",
-      "angle": "Ângulo"
+      "angle": "Ângulo",
+      "fonts": "Serif: Serifada\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
+      "fontNote": "Se a fonte selecionada não estiver instaladad no seu sistema, uma fonte substituta será usada.",
+      "enterFontName": "Digite nome da fonte…"
     },
     "LineArrow": {
       "arrow": "Seta frontal",
@@ -347,7 +350,8 @@
         "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
         "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
         "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
-        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação."
+        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação.",
+        "coating": "Este objeto pode agir como um revestimento de objetos de vidro ao sobrepor com suas superfícies. Nesse caso, a refração em si também precisa de ser definida pelas fórmulas deste objeto. Os índices refrativos do material associado ao mesmo lado, e ao lado oposto do raio incidente podem ser referidos como {{n_0}} e {{n_1}}, respectivamente. Se este objeto está dentro de um objeto de vidro, os valores são relativos a ele."
       },
       "twoSided": "Bilateral",
       "addOutgoingRay": "Adicionar raio de saída",
@@ -549,7 +553,9 @@
     "autoSyncUrlTooLarge": "A cena é grande demais para sincronizar com URL. Por favor, salve manualmente.",
     "identicalObjects": "Há dois elementos ópticos idênticos na cena que se sobrepõem completamente.",
     "brightnessInconsistent": "O brilho de duas ou mais fontes de luz satura com razões inconsistentes. Isso pode levar a erros nas leituras do detector e reprodução de cores. Por favor aumente a densidade de raios ou reduza os brilhos das fontes luminosas.",
-    "blackBecomesTransparent": "Ao usar \"Corrigir Brilho\" com um plano de fundo não-preto, a parte preta da cor da luz se torna transparente devido a mistura aditiva de cores. Por favor faça todas as cores de tema de luz terem valor HSV unitário para evitar esse problema."
+    "blackBecomesTransparent": "Ao usar \"Corrigir Brilho\" com um plano de fundo não-preto, a parte preta da cor da luz se torna transparente devido a mistura aditiva de cores. Por favor faça todas as cores de tema de luz terem valor HSV unitário para evitar esse problema.",
+    "undefinedBehaviorOverlapping": "Mistura de superfícies não é suportada para sobreposição entre \"{{involvedObj1}}\" e \"{{involvedObj2}}\", resultando em comportamento indefinido. Por favor, dê uma pequena distância entre os objetos (ou mova a fonte de luz) para conseguir comportamento bem-definido.",
+    "undefinedBehaviorSingle": "Comportamento não definido encontrado no objeto \"{{involvedObj}}\". Por favor, mova o objeto ou fonte de luz para conseguir comportamento bem-definido."
   },
   "generalErrors": {
     "newerVersion": "A versão da cena é mais nova que a versão atual do simulador.",
