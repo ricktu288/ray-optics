@@ -374,7 +374,7 @@ class Glass extends BaseGlass {
   }
 
   checkRayIntersects(ray) {
-    if (this.notDone || this.refIndex <= 0) return;
+    if (this.notDone) return;
 
     var s_lensq = Infinity;
     var s_lensq_temp;

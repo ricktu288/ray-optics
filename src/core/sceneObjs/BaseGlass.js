@@ -71,8 +71,8 @@ class BaseGlass extends BaseSceneObj {
       ctx.globalAlpha = 1;
       return;
     }
-    const mod_neg = n <= -1 ? -1 : 1;
-    if (n >= 1 || mod_neg === -1) {
+    const mod_neg = n < 0 ? -1 : 1;
+    if (n * mod_neg >= 1) {
       var alpha = Math.log(n * mod_neg) / Math.log(1.5) * 0.2;
       if (allowColorSubtraction) {
         ctx.globalCompositeOperation = 'lighter';
@@ -272,7 +272,7 @@ class BaseGlass extends BaseSceneObj {
    */
   getRefIndexAt(point, ray) {
     if (this.scene.simulateColors) {
-      return this.refIndex + this.cauchyB / (ray.wavelength * ray.wavelength * 0.000001);
+      return this.refIndex + this.cauchyB / (ray.wavelength * ray.wavelength * 0.000001);   // Not yet accounting for negative refractive indices
     } else {
       return this.refIndex;
     }

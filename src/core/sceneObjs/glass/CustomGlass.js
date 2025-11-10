@@ -187,11 +187,9 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
   checkRayIntersects(ray) {
     // Initialize path if needed
     if (!this.path) {
-      if (!this.initPath() || this.refIndex <= 0) {
+      if (!this.initPath()) {
         return null;
       }
-    } else if (this.refIndex <= 0) {
-      return null;
     }
 
     var s_lensq = Infinity;

@@ -121,8 +121,6 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
   }
 
   checkRayIntersects(ray) {
-    if (this.refIndex <= 0) return null;
-
     var incidentData = this.getIncidentData(ray);
     if (incidentData.incidentType === NaN || !incidentData.s_point) {
       if (incidentData.incidentType === NaN) {
