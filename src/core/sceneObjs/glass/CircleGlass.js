@@ -62,7 +62,6 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
   }
 
   checkRayIntersects(ray) {
-    if (this.refIndex <= 0) return;
     return this.checkRayIntersectsShape(ray);
   }
 

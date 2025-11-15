@@ -104,7 +104,6 @@ class PlaneGlass extends LineObjMixin(BaseGlass) {
 
 
   checkRayIntersects(ray) {
-    if (this.refIndex <= 0) return;
     var rp_temp = geometry.linesIntersection(ray, this);
 
     if (geometry.intersectionIsOnRay(rp_temp, ray)) {
