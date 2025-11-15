@@ -1,0 +1,535 @@
+{
+  "galleryPage": {
+    "title": "“射线光学模拟”作品集",
+    "description": "以下列表为使用[“射线光学模拟”网页程序](/simulator)制作的互动式光学演示。欢迎您贡献新项目（请参阅[贡献指南](/contributing/gallery)）。如发现内容有误，请[在GitHub上建立Issue](/github/issues)或发送电子邮件至[ray-optics@phydemo.app](/email)。",
+    "categories": {
+      "title": "类别",
+      "reflection": "光的反射",
+      "refraction": "光的折射",
+      "lens": "透镜",
+      "combinationOfLenses": "透镜组合",
+      "grinOptics": "渐变折射率光学",
+      "miscellaneous": "其他"
+    },
+    "contributors": "贡献者：{{contributors}}",
+    "openInSimulator": "在模拟器中打开"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "警告：光线出现的顺序并不代表实际的光速。只有最终的图像有意义。"
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "两面镜子成像",
+      "description": "本模拟项目显示了两面镜子所成的像，其中绿色的 L 为物。若两面镜子的夹脚为 \\(\\frac{360^\\circ}{n}\\) 那么将成\\(n-1\\) 个虚像(橘色的 L)。可拖曳镜子端点来改变夹角。"
+    },
+    "parabolicMirror": {
+      "title": "抛物面镜",
+      "description": "此模拟演示了抛物面镜的聚焦特性。"
+    },
+    "hyperbolicMirror": {
+      "title": "双曲面镜",
+      "description": "本模拟演示了双曲面镜的反射特性：从一个焦点向双曲面镜传播的光线将如同从另一个焦点射出。\n\n双曲面的两个焦点是等光程点（请参阅[ 等光程点](/gallery/aplanatic-points)）。",
+      "theorangeraysareimag": "橙色线是黄色反射光线的延长线。\n这些虚射线在另一个焦点上汇合。",
+      "pointlightsourceaton": "位于一个焦点的点光源"
+    },
+    "retroreflectors": {
+      "title": "回复反射器",
+      "description": "这是两种回复反射器的模拟：\n\n1. 角隅反射器。\n2. 猫眼回复反射器。",
+      "dragtorotatethebeam": "拖曳此处\n可旋转光束",
+      "catseyeretroreflecto": "猫眼回覆反射器",
+      "cornerretroreflector": "角隅反射器"
+    },
+    "periscope": {
+      "title": "潜望镜",
+      "description": "这是一个由两面平镜和一些光线阻挡器制成的潜望镜模拟。",
+      "observerseyenottosca": "观察者的眼睛（非按比例）"
+    },
+    "newtonianTelescope": {
+      "title": "牛顿望远镜",
+      "description": "这是一个配有Plössl目镜的牛顿望远镜模型。"
+    },
+    "penroseUnilluminableRoom": {
+      "title": "无法照亮的彭罗斯房间",
+      "description": "无法照亮的彭罗斯房间由椭圆形、圆形和线性镜子构成。它有一个有趣的特性，即房间内的一个点源（绿色）无论放在哪里，都不会照亮整个房间。您可以拖动绿色点以移动源。",
+      "nomatterwhereyouputt": "无论您将点光源放在哪里，它都不会照亮整个房间。\n警告：由于数值误差，可能会在一段时间后仍然照亮。"
+    },
+    "opticalCavity": {
+      "title": "双镜共振腔",
+      "description": "模拟由两面镜子组成的共振腔。假设腔体的长度为\\(d\\)，其镜子的曲率半径分别为\\(R_1\\)和\\(R_2\\)（根据惯例，\\(R>0\\)为凹面镜），那么只有当\\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\)时，共振腔才会稳定（这意味着从一面镜子向另一面镜子发出的每一道光线都保证有非发散的轨迹，前提是镜子的反射率足够高）。在此模拟中，我们假设镜子是理想曲面镜，这意味着\\(f=\\frac{R}{2}\\)，将先前的稳定条件变为\\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\)。 [这里](/gallery/resonator)有一个使用球面镜的类似模拟，在抛物面近似下，第一种稳定条件成立。",
+      "clickholdleftmouseto": "点击 + 按住左键\n以移动光线",
+      "dragtomovetheidealmi": "拖曳此处\n可水平移动镜子",
+      "d400intheresonatorsb": "下方的共振腔中d = 400",
+      "confocalresonator": "焦聚共振腔",
+      "concentricresonator": "共心共振腔",
+      "concaveconvexresonat": "凹凸共振腔",
+      "planoconcaveresonato": "平凹共振腔"
+    },
+    "resonator": {
+      "title": "平凹共振腔",
+      "description": "这是一个平凹共振腔的演示。如果镜子间的距离大于曲率半径，共振腔将会不稳定。如果镜子间的距离小于或等于曲率半径，就会形成稳定的共振腔模式。",
+      "flatmirror": "平面镜",
+      "sphericalconcavemirr": "球形凹面镜",
+      "unstableresonator": "不稳定的共振腔",
+      "stableresonator": "稳定的共振腔"
+    },
+    "mazeSolution": {
+      "title": "用一条光线解迷宫",
+      "description": "此模拟中，一条光线在迷宫内部产生，并被墙壁多次反射。迷宫内的大红色和小红色正方形（如下面的截图所示）分别代表光线的起源和初始方向。取决于光线初始方向，光线可能最终会离开迷宫，因此原则上可以通过追踪光线的路径计算出迷宫的解法。",
+      "controltherayorigina": "通过分别拖曳此两标记\n以调整光线的初始点与方向。",
+      "notethatthesimulatio": "请注意，只有当左下角的“处理中…”\n消失时，才代表模拟完成。",
+      "mazeexit": "迷宫出口"
+    },
+    "specularAndDiffuseReflection": {
+      "title": "镜面反射与漫反射",
+      "description": "同一束光线照射在光滑表面和粗糙表面上，展示了镜面反射与漫反射之间的区别。",
+      "specular": "镜面反射",
+      "diffuse": "漫反射"
+    },
+    "chaffCountermeasure": {
+      "title": "干扰箔",
+      "description": "这是一个箔片反射对雷达效应的定性模拟（忽略衍射效应）。",
+      "plane": "飞机",
+      "radar": "雷达",
+      "chaff": "箔片",
+      "selectthechafftochan": "选择箔片可改变箔片数量（N）和长度（L）。"
+    },
+    "causticsFromAReflectiveSphere": {
+      "title": "反射性球体的焦散",
+      "description": "一个反射性的积分球。也可以是液滴（如雨滴）中的反射。移动点光源的位置可以看到许多漂亮的图样。",
+      "movethepointsourcear": "移动点光源以观看焦散及节点\n在积分球中是如何变换的。\n改变遮光物的大小与位置，\n以及球的开口大小来观察更多效果。"
+    },
+    "theMirascope": {
+      "title": "幻象镜",
+      "description": "**幻象镜** 是一种有趣的光学幻觉演示装置，它利用两个面对面的抛物面镜来产生一个立体悬浮影像的幻觉。该装置由以下部件构成：\n1. **两个抛物面镜**：大小完全相同，一个朝上，一个朝下，形成贝壳状结构。这些镜子被设计成让光聚焦于特定点。顶部的镜子在其顶点处有一个孔，让光线进入装置。\n2. **一个小物体**：放置在幻象镜内，通常位于顶部镜子的焦点附近，其非常接近底部镜子的顶点。\n\n当来自物体的光线在两个镜子之间反射时，它的方向会改变为形成一个看似逼真、立体的影像，悬浮于幻象镜的表面上方。这种幻象如此逼真，人们常常试图触摸影像，结果发现什么也没有。\n\n幻象镜被广泛用于科学演示、玩具及新奇物品，以说明光学中反射和光线行为的原理。",
+      "object1": "物体",
+      "realimage1": "实像"
+    },
+    "reflect": {
+      "title": "反射与折射",
+      "description": "此模拟显示了光经过界面的反射和折射。"
+    },
+    "internalReflection": {
+      "title": "全反射",
+      "description": "此模拟显示了光经过界面的折射和内部反射，包括全反射。"
+    },
+    "prisms": {
+      "title": "稜鏡",
+      "description": "此模拟演示了直角稜鏡（right-angle prism）、波罗稜鏡（Porro prism）、菱形稜鏡（rhomboid prism）、杜福稜鏡（Dove prism），和五面稜鏡（pentaprism）。",
+      "rhomboid": "菱形",
+      "rightangle": "直角",
+      "porro": "波罗",
+      "dove": "杜福",
+      "pentaprism": "五面"
+    },
+    "beamDirectors": {
+      "title": "光束导向器",
+      "description": "这是一个普通双棱镜 (biprism) 和菲涅耳双稜鏡（Fresnel biprism）的模拟。双棱镜可以将入射的平行光束导向两个方向，其取决于顶角的大小。",
+      "thisfresnelbiprismwa": "这个菲涅耳双稜鏡是由上面的双稜鏡制成\n您可以选择双稜鏡并调整 N_slice（切片数量）参数。",
+      "fresnelbiprism": "菲涅耳双稜鏡",
+      "biprism": "双稜鏡"
+    },
+    "apparentDepth": {
+      "title": "视深度",
+      "description": "当您从空气中观察水下的物体时，物体的深度会看似小于其实际深度。本模拟演示了这种由光的折射造成的现象。视深度与观察者的位置有关，这点我们可以通过拖动蓝色圆圈来演示。",
+      "observedimageorange": "观察到的像（橘点）",
+      "observer": "观察者",
+      "objectunderwatergree": "水中物体（绿点）"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "窗户和背面镀膜镜中的失真",
+      "description": "以倾斜角度透过玻璃观察物体时，影像会出现偏移，并且比实际位置更靠近观察者。此模拟演示了在厚玻璃窗和背面镀膜镜中的这种效应。在「所有像」模式下查看时，可以发现影像点实际上是弧线，因此取决于探测器的大小，影像可能会变得模糊。\n\n在画面右侧，你还可以看到楔形玻璃对于表观尺寸的影响。",
+      "source": "光源",
+      "glass": "玻璃",
+      "mirror": "镜子",
+      "image": "像",
+      "observer3": "观察者",
+      "window": "窗户"
+    },
+    "bendedPencil": {
+      "title": "弯曲的铅笔",
+      "description": "从上方观察部分浸入水中的铅笔，因为空气和水之间的折射率的不连续性，我们的眼睛会感觉到铅笔看起来既断裂又弯曲。然而，在这个模拟中，弯曲的现象更为明显。您可以查看[断裂的铅笔](/gallery/broken-pencil)模拟，那里的断裂现象更为明显。",
+      "bentpencilyellowimag": "弯曲的铅笔（黄色）\n视网膜上的影像",
+      "dielectricmaterial": "电介质材料",
+      "originalpencilgreen": "原始铅笔（绿色）",
+      "observerseye": "观察者的眼睛",
+      "ignoretheorangesquar": "忽略橙色的正方形！"
+    },
+    "brokenPencil": {
+      "title": "断裂的铅笔",
+      "description": "从侧面观察部分浸入水中的铅笔，因为空气和水之间的折射率的不连续性，我们的眼睛会感觉到铅笔看起来既断裂又弯曲。然而，在这个模拟中，断裂的现象更为明显。您可以查看[弯曲的铅笔](/gallery/bended-pencil)模拟，那里的弯曲现象更为明显。",
+      "brokenpencilyellowim": "断裂的铅笔（黄色）\n视网膜上的影像"
+    },
+    "chromaticDispersion": {
+      "title": "色散",
+      "description": "这个模拟使用一个白色光束和一个三角稜鏡展示色散现象。此处白色是由红、橙、黄、绿、青、蓝、紫的混色形成的。",
+      "dragheretoadjustbeam": "拖曳此处\n可调整光束宽度",
+      "dragheretorotatethep": "拖曳此处\n可旋转棱镜"
+    },
+    "rainbows": {
+      "title": "彩虹",
+      "description": "本模拟演示了虹、霓以及亚历山大暗带是如何形成的。这里，我们以红、橙、黄、绿、青、蓝、紫的混色来近似阳光的光谱。对于虹/霓，离开雨滴的光线是由雨滴内部的一次/两次内部反射产生的（你可以通过将光线密调低并拖动雨滴来观察这一点）。请注意，这些并不是全内反射，因此出射光线的强度远低于入射光线。由于[最小偏向角](/gallery/minimum-deviation-angle)与波长有关，不同颜色的光线会在不同的角度堆积，于是彩虹中的颜色就产生了。远离最小偏向角时，光线不会堆积，所以所有颜色都很弱并混合在一起，使得在两彩虹之外的角度产生昏暗的白色（或“灰色”）。相较之下，虹与霓之间则没有这样的光线，于是形成亚历山大暗带。",
+      "thesearethecolorspro": "以上是由单个雨滴产生的颜色。\n我们最终看到的彩虹是由天空中大量的雨滴产生的，\n每个都对观察者呈现单一一种颜色（在相应的角度）。",
+      "secondaryrainbow": "霓",
+      "alexandersdarkband": "亚历山大暗带",
+      "raindrop": "雨滴",
+      "primaryrainbow": "虹",
+      "sunlight": "阳光"
+    },
+    "minimumDeviationAngle": {
+      "title": "最小偏向角",
+      "description": "光线射到光学元件上的偏向角有多种定义。下方的截图中可以看到对于三棱镜和球形透镜的定义。在本模拟中，光线进入光学元件的入射角与偏向角之间的关系在某个角度有局部极小值，这个偏向角被称为“最小偏向角”。这个局部极小值可以解释如[彩虹](/gallery/rainbows)和光晕这样的光学现象。由于这个局部极小值，偏转的光线在特定的方向上堆积，产生“光学焦散”（如在模拟中的例子C中看到的）我们会将其视为彩虹/光晕。",
+      "inexamplesaandbbyrot": "在例A和B中，通过在点A1到A2和B1到B2之间旋转稜鏡，改变光线进入光学元件的\n入射角，你可以清楚地看到一个最小的\n偏向角出现在两点之间的某处。\n（在例A中，偏向角为相对于水平轴测量，而在例B中，\n偏向角为相对于垂直轴测量）。\n\n现在请看例C（可用缩放功能拉近），并将两束光扩展（红色和紫色，\n重叠部分呈现粉红色。这与例B中旋转棱镜\n的效果相同，故是在改变入射角），并观察从点\nC1到C2之间的反向出射光线向下堆积于两个明显的红色和紫色\n线（“光学焦散”）- 最小偏向角出现在点C2附近，并与\n光的波长（颜色）有关。然后，把光束从C2扩展到C3时，它们的\n反向出射光线的方向反转为向上。",
+      "examplea": "例A",
+      "examplec": "例C",
+      "exampleb": "例B",
+      "dragtorotate": "拖曳以旋转",
+      "dragtoadjustbeamwidt": "拖曳以调整光束宽度",
+      "usethebuiltinzoomtob": "建议使用模拟器内建的缩放功能以利观察",
+      "deviationangle": "偏向角",
+      "incidenceangle": "入射角"
+    },
+    "aplanaticPoints": {
+      "title": "等光程点",
+      "description": "光学系统的等光程点是其光学轴上的特殊点，即“从其中一点发出的光线会汇聚到另一点，或看似从从该点发散”。\n\n- 椭圆：椭圆镜片/镜子的两个焦点是等光程点，因为从一个焦点发出的光将汇聚向另一点。\n- 球体：球形透镜有两个等光程点，分别在球内和球外 - 更多细节请见模拟。\n- 双曲线：在[双曲面镜](/gallery/hyperbolic-mirror)模拟中的两个焦点也是等光程点。\n\n给定两个拥有水平座标 \\(x_1\\) 和 \\(x_2\\) 、具有相同垂直座标的点，并且设光学元件外部和内部的折射率分别为 \\(n_1\\) 和 \\(n_2\\)，则若这两点要成为等光程点，我们的光学元件的边界必须满足\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation}使得 \\(k_i=1\\) 或 \\(-1\\)（取决于连接 \\(x_i\\) 和我们的光学元件边界的光线是实的或虚的），而 \\(E\\) 是一个使这个方程有非平凡解的常数。这个方程（可以用费马原理推导出来）是笛卡尔卵形线的方程（圆锥曲线是其特例）。",
+      "clickontheextendedra": "点选“延长光线”按钮以验证从球面镜片中的光源（点 A）发出的光，\n是从球面镜片外的光学轴上的另一点（点 B）发散，无球面像差。\n点 A 和 B 是球体的等光程点的例子。对于此点，在标记的 Y 轴的相对座标中（k1, k2, n1, n2, x1, x2, E）=（1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0），\n其中 x1,x2 是点 A,B 的水平座标（每个网格单元的尺寸为 20x20）。\n同样地，椭圆的焦点（点 C 和 D）是椭圆的等光程点的例子，对于此点（k1, k2, n1, n2, E）=（1, 1, 1.5, 1.5, > 0）",
+      "sphericallens": "球面透镜",
+      "ellipticallens": "椭圆透镜",
+      "yaxis": "Y 轴"
+    },
+    "concaveLens": {
+      "title": "凹透镜",
+      "description": "模拟凹透镜使光束分散的现象。"
+    },
+    "convexLens": {
+      "title": "凸透镜",
+      "description": "模拟凸透镜使光束聚焦的现象。"
+    },
+    "lensImages": {
+      "title": "透镜成像",
+      "description": "模拟理想透镜成像，包括平行光与点光源成的像。"
+    },
+    "virtualImageFormation": {
+      "title": "虚像的形成",
+      "description": "本模拟示范了汇聚透镜如何形成虚像，以及该虚像的特征。",
+      "object2": "物",
+      "converginglensf1000u": "汇聚透镜（F = 1000单位）",
+      "virtualimagehighlyen": "虚像\n高度放大\n正立"
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "横向和纵向放大率",
+      "description": "模拟焦距为 \\(f\\) 的理想透镜的横向和纵向放大率。横向（也称为线性）和纵向的放大率分别是 \\(M_T=1-\\frac{u}{f}\\) 和 \\(M_L=\\frac{dv}{du}\\)，其中 \\(u\\) 和 \\(v\\) 分别是物体和图像距离我们的理想透镜的距离。另外，对于理想透镜，\\(M_L=-(M_T)^2\\)",
+      "inthisexamplewehavey": "在这个例子中，我们有 y'_j - y'_k = M_T * (y_j - y_k)，其中 j,k∈{0,1,2,3,4,5}。\n因此，例如点物体（x_0,y_0）的横向放大率是 M_T = -3，我们可以计算 -\n(x'_0 - x'_1)/(x_1 - x_0) ≈ -0.3699\n(x'_0 - x'_2)/(x_2 - x_0) ≈ -0.7297\n(x'_0 - x'_3)/(x_3 - x_0) ≈ -1.4211\n(x'_0 - x'_4)/(x_4 - x_0) ≈ -2.4545\n(x'_0 - x'_5)/(x_5 - x_0) = -5.4\n.\n.\n.\n（这个比值将趋近于纵向放大率：M_L = - (M_T)^2 = -9）",
+      "rightclickonarealobj": "在（实）物上点击右键以查看其座标。\n绿色的方块是实际的点光源，黄色的方块是像。"
+    },
+    "vanishingPoint": {
+      "title": "消失点",
+      "description": "有些光学系统将无限的平行线映射到影像平面上的一些线，使得这些线在一个点上相交，于是产生一种平行线在“无穷远处”相交的幻觉。这个交点被称为消失点。\n\n考虑一个由焦距为 \\(f\\) 的理想透镜组成，位于 \\(XY\\) 平面上，光学轴与 \\(X\\)（水平）轴重合，透镜与 \\(Y\\) 轴重合的光学系统。对于斜率为 \\(m\\) ，位于 \\(x<0\\) 的线，其消失点之 \\((x,y)\\) 座标为 \\((f,m f)\\) 。",
+      "youcanverifythatapai": "你可以验证一对斜率为 m 的平行线，经过理想透镜收敛到座标 (f,m∙f),\n通过点击“网格”按钮，并注意到每个网格单元的尺寸为20乘以20。\n你也可以验证改变理想透镜的焦距 f 时，收敛点（消失点）会如何受到影响。",
+      "thesepairofparallell": "这对平行线聚集到点B",
+      "thesepairofparallell1": "这对平行线聚集到点A",
+      "notethatthesepairsof": "注意这些平行线实际上并不是无穷大。"
+    },
+    "monochromaticAberrations": {
+      "title": "单色像差",
+      "description": "这是不同单色像差的模拟：\n\n1. 球面像差（Spherical aberration）。\n2. 彗形像差（Coma aberration）。\n3. 散焦像差（Defocus aberration）。\n4. 场曲像差（Field curvature aberration）。",
+      "defocusaberration": "散焦像差",
+      "sphericalaberration": "球面像差",
+      "screen": "屏幕",
+      "fieldcurvatureaberra": "场曲像差",
+      "commaaberration": "彗形像差"
+    },
+    "chromaticAberration": {
+      "title": "色像差",
+      "description": "此模拟显示了球面透镜的色像差（Chromatic aberration）。这里的白色是由红、橙、黄、绿、青、蓝、紫混色形成的。红光的焦距最大，而紫光的焦距最小。",
+      "dragtoadjustbeamwidt1": "拖拽此处可调整光束宽度"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "平凸透镜的方向",
+      "description": "本模拟比较了两个方向的平凸透镜聚焦光束的情形，突显了球面像差的大小差异。"
+    },
+    "hyperbolicLens": {
+      "title": "双曲透镜",
+      "description": "这是双曲透镜与球面透镜的对比。这两个透镜有相同的焦距，但双曲透镜可以将单色光的平行光束集中到一点（忽略光的波动性 - 也就是在几何光学的近似下）而不像球面透镜会有有球面像差（Spherical aberrations）。",
+      "thefocallengthofthis": "此球面透镜的焦距（在近轴近似中）为：\nf=R/(n-1)=200/(1.5-1)=400",
+      "thefocallengthofthis1": "此双曲透镜的焦距是：\nf = |C| ∙ sqrt(n^2 - 1) / (n - 1) = K ∙ sqrt(0.8) ∙ sqrt(1.5^2 - 1) / (1.5 - 1) = 400\n此双曲透镜的方程式是：\ny(x) = (a/K) - sqrt( ((x/K)^2 + (C/K)^2) / (n^2 - 1) )\n= 1.5 - sqrt( (0.8 + (x / 200)^2) / (1.5^2 - 1) )\n使得K是方程式维度与网格维度之间的转换常数 - 对于这个双曲面镜，K=20\n（例如0<y<Y会被转换为垂直长度为K ∙ Y的平板）",
+      "selectthishyperbolic": "（选择此双曲透镜以查看其方程式）"
+    },
+    "fresnelLens": {
+      "title": "菲涅耳透镜",
+      "description": "这是球面镜与菲涅耳透镜（Fresnel lens）的对比。菲涅耳透镜的优点：它的功能与常规的球面镜相似，但占用的空间少很多 - 因此重量更轻。",
+      "thisfresnellensismad": "此菲涅耳透镜是由下面的半圆形透镜制成的\n您可以选择透镜并调整 N_silce（切片数量）参数。"
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "奥古斯丁·菲涅耳的灯塔光学",
+      "description": "本模拟演示了奥古斯丁·菲涅耳灯塔的光学巧思：\n\n1. 以[薄化的透镜](/gallery/fresnel-lens)取代较厚的放大镜，来通过两个表面的折射将中心部分的光线照向船只。再通过减小各段的曲率半径，可减少厚透镜中存在的球面像差来达到进一步的改进（已包含在模拟中）。1800年代并未使用非球面透镜。\n2. 全内反射（TIR）棱镜将光束边缘的部分也导向船只。这种元件为折反射元件：光线在进入和离开时发生折射，在背面发生全内反射。在1820年代，最好的反射器是银制的，反射率只有约50%。肮脏的油灯光源导致需要每天清洁光学元件。理论上全内反射的效率为100%，而且玻璃更容易清洁。\n\n本光线追踪验证了白板演示中的棱镜和透镜，其用来模拟加州州立公园鸽点灯塔的结构。\n\n- 光源是位于开槽遮罩后面的H11头灯LED。LED只照射约160度的光，而不是完整的180度半球。白炽灯泡可以提供完整的360度的光源，但亮度较低且温度更高。\n- 光学元件是约0.5英寸（12毫米）厚的亚克力，底部涂有白色涂料。\n- 所有物体都以磁性方式安装在白板上。照片中还有额外的镜子、棱镜和一个厚透镜（也在模拟中）。\n- 实际的灯塔透镜需要在顶部设置烟囱通风口，底部通常有旋转结构。该结构并未尝试收集完整的180度光源。",
+      "augustinfresnelsmagi": "奥古斯丁·菲涅耳的灯塔光学巧思",
+      "t1athinnedlensmakesab": "#1 薄化透镜用更少的玻璃产生明亮的光束",
+      "comparetheperformanc": "比较上半部薄化牛眼透镜\n与下半部全厚度透镜的性能。\n\n在1820年代，由于玻璃品质不佳，\n全厚度透镜发送到船只的光比没有透镜的情况还要少！\n薄化透镜比没有透镜要好得多。",
+      "amagnifyinglenscanon": "放大镜只能将约1/6，即15%\n的光线发送到船只。",
+      "mirrorsorreflectorsc": "镜子或反射器可以将光束的边缘部分导向船只，但1820年代的反射器会浪费一半的光线。",
+      "t2totalinternalreflec": "#2 全内反射（TIR）棱镜使所有边缘部分的光线都能发送到船只",
+      "inthepigeonpointligh": "在鸽点灯塔白板光学演示中，\n菲涅耳的巧思使半球中的所有光线都能发送到船只",
+      "howitworks": "运作原理"
+    },
+    "zoomLens": {
+      "title": "变焦镜头",
+      "description": "这个模拟展示了一个变焦镜头（Zoom Lens），您可以通过拖动中间的凹透镜来变焦。",
+      "dragtomovethelens": "拖拽此处可移动透镜",
+      "zoom": "← 变焦 →"
+    },
+    "compoundMicroscope": {
+      "title": "复式显微镜",
+      "description": "复式显微镜（Compound Microscope）由两个镜头组成，即物镜和目镜。物（绿色）非常接近轴，代表一个小物体。然后，两个镜头将物体放大，使产生一个大的倒置虚像（最终的橙色延长线的交点）。",
+      "objective": "物镜",
+      "eyepiece": "目镜"
+    },
+    "telescope": {
+      "title": "望远镜",
+      "description": "模拟一个简单的望远镜，其由一个凸透镜和一个伽利略[扩束镜](/gallery/beam-expanders)组成，其作用为增加望远镜的角分辨率，从而更好地分离两颗遥远星体的入射光。\n\n在下面的截图中，您可以比较有与没有扩束镜时望远镜的效果差异。",
+      "lightfromstar2": "来自星体2的光",
+      "lightfromstar1": "来自星体1的光",
+      "withagallileanbeamex": "使用伽利略扩束镜（更好地分离两颗星体的角度）",
+      "screen1": "屏幕",
+      "withoutabeamexpander": "没有扩束镜"
+    },
+    "keplerianTelescope": {
+      "title": "开普勒望远镜",
+      "description": "本模拟案例中描述了开普勒望远镜的光路图。",
+      "lightfromstar": "来自星体的光",
+      "virtualimage": "虚像",
+      "realimage": "实像",
+      "thekepleriantelescop": "开普勒望远镜",
+      "eye": "眼睛"
+    },
+    "beamExpanders": {
+      "title": "扩束镜",
+      "description": "模拟两种类型的扩束镜（Beam expanders）- 开普勒扩束镜和伽利略扩束镜。扩束镜可以扩大或缩小平行光束的直径。伽利略扩束镜由一个凸镜和一个凹镜组成，而开普勒扩束镜由两个凸镜组成。在这两种类型中，镜头的焦距之和都等于它们之间的距离。",
+      "keplerianbeamexpande": "开普勒扩束镜",
+      "gallileanbeamexpande": "伽利略扩束镜",
+      "inbothcasesthedistan": "在两种类型中，镜头之间的距离都等于它们的焦距之和"
+    },
+    "rayRelaying": {
+      "title": "光线中继",
+      "description": "由一系列理想相同透镜组成的光线中继模拟，其中每个透镜的焦距皆为 \\(f\\)，且之间的距离为 \\(d\\)。若且唯若 \\(d\\leq 4f\\) 时，可以保证光线轨迹不会发散。",
+      "youcanselectanylenst": "您可以选择任何透镜以查看和调整阵列的参数。"
+    },
+    "rochesterCloak": {
+      "title": "罗切斯特斗篷",
+      "description": "罗切斯特斗篷（Rochester cloak）是一种使用4个透镜构成的隐形装置。在这个模拟中，两个外部透镜的焦距为 \\(f_1\\)，两个中间的透镜的焦距为 \\(f_2\\)，使得焦距为 \\(f_1\\) 和 \\(f_2\\) 的相邻透镜之间的距离 \\(t_1=f_1+f_2\\)，中间两个透镜之间的距离为 \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\)。",
+      "observerdoesntseethe": "观察者（看不到部分隐形区域中的物体，\n但是可以看到可视区域中的物体）",
+      "partialinvisibilitya": "部分隐形区域",
+      "object": "物体",
+      "t8objects": "8个物体",
+      "visibilityarea": "可视区域"
+    },
+    "simpleDoubleGaussLens": {
+      "title": "简易双高斯透镜",
+      "description": "本模拟为一个简易双高斯透镜的演示。"
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "title": "一对锥透镜产生彩虹环",
+      "description": "此模拟使用两个平凸锥透镜、一个白色光源和一个光圈来产生圆形彩虹。入射的白光必须为环状，此处透过窄的环状光圈来实现。\n\n将右侧的锥透镜左右移动可改变彩虹环的大小。",
+      "leftaxicon": "左侧锥透镜",
+      "whitelightsource": "白光\n光源",
+      "rightaxicon": "右侧锥透镜",
+      "ringaperture": "环状光圈"
+    },
+    "koehlerIllumination": {
+      "title": "科勒照明",
+      "description": "这种设置由奥古斯特·克勒 (August Köhler) 于 1893 年发明，非常适合任何类型的显微镜使用。它可以从任何不均匀的光源提供样本的均匀照明，因此光源（例如灯丝）的影像不会出现在样本上。这两个光圈可以用来调节照明的强度和数值孔径（NA），或改变视野范围。第二个光圈特别有用，因为您可以关闭它来对焦样本。如果光圈的边缘清晰聚焦，那么样本也会处于聚焦状态。这种设置将四个焦距排列在一起，因此也被称为 4f 设置。",
+      "spatiallyextendedand": "空间上延展\n且不均匀的光源",
+      "collectorlens": "集光透镜",
+      "aperture1changesinte": "光圈 1\n改变强度、NA",
+      "fieldlens": "场透镜",
+      "aperture2changesfiel": "光圈 2\n改变视野",
+      "condensorlens": "聚光镜",
+      "objectivelens": "物镜",
+      "sample": "样本",
+      "sampleisnowilluminat": "样本被\n均匀地照明"
+    },
+    "grinSlab": {
+      "title": "渐变折射率平板",
+      "description": "模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。上方的介电材料为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。下方的介电材料是折射率为\\(n(\\rho)\\)的渐变折射率材料。",
+      "approximatedmultilay": "用多层近似的渐变折射率平板（您可以选择并更改层数 N）",
+      "classicalgrinslabyou": "正统的渐变折射率平板（您可以选择并更改数值求解器的步长）"
+    },
+    "inferiorMirage": {
+      "title": "下蜃景",
+      "description": "此为下蜃景效果的定性模拟。将天空的折射率模拟为 \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\)，其中 \\(h=600\\) 代表太阳在地面以上的高度。",
+      "airwithoutinferiormi": "空气（没有下蜃景效果）",
+      "airwithinferiormirag": "空气（有下蜃景效果）",
+      "ground": "地面",
+      "raysemittedreflected": "从物体发射或反射的光",
+      "observerseyenottosca1": "观察者的眼睛（非真实比例）"
+    },
+    "seaMirage": {
+      "title": "海市蜃楼",
+      "description": "当一个物体在地平线以下时，有时我们仍然能看见其形成的上蜃景。此为这个效果的定性模拟。",
+      "earthssurface": "地球表面",
+      "atmosphere": "大气层",
+      "architecturealpine": "建筑/高山",
+      "observer1": "观察者",
+      "vacuum": "真空",
+      "virtualimage1": "虚像"
+    },
+    "logarithmicSpiralLens": {
+      "title": "等角螺线形的光线路径",
+      "description": "能使光线路径呈现等角螺线形（ \\(r(θ) = r_0\\,e^{-k\\theta}\\)，其中\\(r_0,k > 0\\) 且\\(\\alpha = \\arctan k\\) 为等角螺线与同心圆形的交点上两切线的固定夹角，见[这个](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif)动画）的折射率函数为\\(n(r)\\propto\\frac{1}{r} \\) (这可用将光线路径以极座标表示并使用费马原理来证明）。",
+      "thecircularblockeris": "中央的圆形遮光物是为了\n避开折射率的奇异点",
+      "dragtochangetheiniti": "拖动此处可改变\n光线的初始方向",
+      "youcanselectthegring": "您可以选择渐变折射率透光物\n并更改数值求解器的步长"
+    },
+    "luneburgLens": {
+      "title": "龙勃透镜",
+      "description": "龙勃透镜（Luneburg lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\sqrt{n_0-(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。\n\n上方的介电材料为由 \\(N=20\\) 个同心球组成的龙勃透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,\\ldots,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。\n\n下方的介电材料是折射率为\\(n(r)\\)的渐变折射率材料。",
+      "approximatedmultilay1": "用多层近似的龙勃透镜（您可以选择并更改层数 N）",
+      "classicalluneburglen": "正统的龙勃透镜（您可以选择并更改数值求解器的步长）"
+    },
+    "maxwellFisheyeLens": {
+      "title": "麦克斯韦鱼眼透镜",
+      "description": "麦克斯韦鱼眼透镜（Maxwell fisheye lens）是一个球形介电材料，折射率为 \\(n(\\rho) = \\frac{n_0}{1+(\\frac{\\rho}{R})^2} \\)，其中 \\(n_0=2\\) 是其球心的折射率，\\(R=100\\) 是球的半径，\\(\\rho\\) 是与球心的距离。\n\n上方的介电材料为由 \\(N=20\\) 个同心球组成的麦克斯韦鱼眼透镜，半径 \\(R_i=5(N+1-i)\\)，折射率 \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\)，其中 \\(i=1,\\ldots,N\\)。然而，由于此模拟器会将互相重叠的光学元件的折射率相乘，所以第 \\(i\\) 个同心球形镜的数值折射率为 \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\)。\n\n下方的介电材料是折射率为\\(n(r)\\)的渐变折射率材料。",
+      "approximatedmultilay2": "用多层近似的麦克斯韦鱼眼透镜（您可以选择并更改层数 N）",
+      "classicalmaxwellfish": "正统的麦克斯韦鱼眼透镜（您可以选择并更改数值求解器的步长）"
+    },
+    "branchedFlow": {
+      "title": "分支流",
+      "description": "当光线经过折射率在空间上有随机扰动（相关长度远大于光的波长）的介质时，会形成一种类似树状的图案，称为分支流。本模拟使用一些余弦函数的和作为折射率函数来演示这个现象，其中余弦函数的振幅、波数与相位都是类似随机的数。"
+    },
+    "singleRayDemo": {
+      "title": "单一光线演示",
+      "description": "本模拟演示了一条光线的反射和折射。"
+    },
+    "sphericalLensAndMirror": {
+      "title": "球面透镜与面镜",
+      "description": "这个模拟演示了一束连续的光线穿过一个球面透镜和一个球面面镜。"
+    },
+    "interrogationRoom": {
+      "title": "审讯室",
+      "description": "这是一个审讯室双向镜的模拟。在黑暗的房间里的观察者（理想情况下，黑暗的房间内部不会发出/反射光，同时会吸收来自审讯室的所有入射光）能够通过双向镜看到审讯室内部，因为审讯室里的灯产生的光被散射并由观察者接收，而嫌疑人只能看到审讯室内部以及他/她和灯的反射（因为嫌疑人未从黑暗的房间接收到光）。",
+      "pressonallimagestose": "按下“所有像”以查看\n灯的反射以及嫌疑人和观察者\n构成的的影像平面中物体的位置",
+      "darkroom": "黑暗的房间",
+      "twowaymirror": "双向镜",
+      "lamp": "灯",
+      "interrogationroom": "审讯室",
+      "observerseyeris": "观察者的眼睛",
+      "suspectseyeris": "嫌疑人的眼睛",
+      "thelampobjectinthesu": "嫌疑人的影像平面中的灯物体",
+      "thelampsreflectionin": "嫌疑人的影像平面中的灯的反射",
+      "thelampsreflection": "灯的反射",
+      "thelampobjectintheob": "观察者的影像平面中的灯物体"
+    },
+    "cameraObscura": {
+      "title": "暗箱",
+      "description": "这是一个暗箱的模拟。在黑暗的房间里的观察者看到的是外面物体的倒置影像，并且这个影像是直接投影在他/她前面的墙壁上的（无需使用额外的透镜）。",
+      "observer2": "观察者",
+      "objectsoutside": "外面的物体",
+      "darkroom1": "黑暗的房间"
+    },
+    "thePrincipleOfCameraImaging": {
+      "title": "相机成像原理",
+      "description": "本模板提供了一种交互式方法来学习相机成像原理，涵盖焦距、光圈、传感器灵敏度和背景模糊等基本主题，对学生和爱好者都有帮助。",
+      "camera": "相机",
+      "cmos": "CMOS"
+    },
+    "nlSimulation": {
+      "title": "NL 双筒望远镜",
+      "description": "这个模拟展示了 Swarovski NL 双筒望远镜的粗略草图。"
+    },
+    "einsteinRingRefocusedToSingleImageViaEyepiece": {
+      "title": "经由目镜将爱因斯坦环重新聚焦为单一影像",
+      "description": "这是一个目镜/透镜的模型，可以用在任何科学望远镜上，透过逆转“光晕”，将爱因斯坦环聚焦回原始形态，同时散射用来创建环的星体或大质量物体的光。"
+    },
+    "blackCatBecomesWhite": {
+      "title": "「黑猫变白猫」演示",
+      "description": "「黑猫变白猫」是一个科普演示。当图画浸入水中时有部分会消失。制作步骤如下：\n\n1. 在纸上绘制图案（如黑猫）。\n2. 将纸放入塑胶套中。\n3. 在塑胶套上描出该图案的一部分（如猫的边框）或其他图案。当放入水中时，绘制在纸上的图案将消失，但绘制在塑胶套上的图案不会消失。\n\n本模拟解释它的原理。",
+      "whenthebagisunderwat": "当塑胶套在水中时，来自纸上的光无法到达眼睛，\n故我们只看到画在塑胶套上的图案。",
+      "lightfromtheplastics": "来自塑胶套上的光",
+      "lightfromthepaper": "来自纸上的光",
+      "eyes": "眼睛",
+      "dragtomovethebagouto": "拖曳此处可将塑胶套移出水面"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "title": "二色性RGB分光器与合光器",
+      "description": "这个模拟使用二色镜来分割和组合RGB光束。",
+      "rgbcomponentsplitter": "RGB分量分光器与合光器",
+      "lightsource": "光源",
+      "dichroiccube": "二色性立方体",
+      "beamcombiner": "合光器"
+    },
+    "ganBasedLcdPixel": {
+      "title": "液晶显示器像素",
+      "description": "这是一个液晶显示器像素的模型。它模拟了新型的微型发光二极体显示层的功能，以及我们的眼睛是如何感知它的。",
+      "pixelsaresosmallthel": "由于像素非常小，光\n在我们的眼中看起来是混合的",
+      "changetherateoftrans": "改变透光率\n来产生任何RGB值",
+      "blueledbacklight": "蓝色LED背光",
+      "yellowphosphor": "黄色磷光体",
+      "liquidcrystal": "液晶",
+      "lightfilters": "滤光器",
+      "pixelasvisibletoview": "观察者看到的像素",
+      "notpartoflcddisplay": "不是液晶显示器的一部分"
+    },
+    "concaveMirrorWearableDisplay": {
+      "title": "凹面镜可穿戴显示器",
+      "description": "简易的可穿戴显示器。许多设计都使用两个镜子及一个正透镜，但本模拟为只用一个光学元件的版本。比例约为5:1mm。\n\nCC0：此作品已被标记为释出至公有领域。",
+      "tft09display": "TFT 0.9吋显示屏",
+      "concavemirror": "凹面镜",
+      "eye1": "眼睛",
+      "nose": "鼻子",
+      "pointsourcetomeasure": "用来测量半径的点光源",
+      "t15readingglasses": "+1.5度阅读眼镜"
+    },
+    "reflectingMonochromator": {
+      "title": "反射式单色仪",
+      "description": "这是一个反射式单色仪的模拟，其透过反射式衍射光栅与聚焦处的出射口，从多波长混合的光之中取得窄频宽的光。",
+      "reflectingmonochroma": "反射式单色仪",
+      "rotatediffractiongra": "旋转衍射光栅\n以从多波长混合的光\n之中取得窄频宽的光",
+      "exitslitmonochromati": "出射口\n\n单色光"
+    },
+    "solarEclipses": {
+      "title": "日食",
+      "description": "本模拟演示了不同类型的日食。右上方的图中，月球的影子遮蔽了太阳，在中心产生了日全食，周围地区则是日偏食。右下方的图为日环食，其中由于月球距离地球较远，无法完全遮蔽太阳，在中心留下一个明亮的环（本二维模拟器中，这个“环”为阳光只来自太阳的最上方与最下方的部分），而周围地区也是日偏食。",
+      "nottoscale": "（非按比例）",
+      "sun": "太阳",
+      "moon": "月亮",
+      "partialeclipse": "日偏食",
+      "annulareclipse": "日环食",
+      "earth": "地球",
+      "totaleclipse": "日全食"
+    },
+    "moduleExampleBasics": {
+      "title": "模块示例 - 基本概念",
+      "thistextisinexamplem": "这段文字在 ExampleModule 中。",
+      "thistextisalsoinexam": "这段文字也在 ExampleModule 中。",
+      "thistextisnotinamodu": "这段文字不在模块中。",
+      "thistextisalsonotina": "这段文字也不在模块中。"
+    },
+    "moduleExampleParameters": {
+      "title": "模块示例 - 参数",
+      "thismodulehastwopara": "本模块有两个参数：n=`n`与theta=`theta`。\n您可以选取并拖曳数值滑杆来调整它们。",
+      "thesizeofthistextosc": "这段文字的大小会随theta震荡。"
+    },
+    "moduleExampleControlPoints": {
+      "title": "模块示例 - 控制点",
+      "hereisthefirstdragga": "↙这是本模块的第一个（可被拖曳的）控制点",
+      "hereistheseconddragg": "↙这是本模块的第二个（可被拖曳的）控制点",
+      "hereisthemidpoint": "↙这是中间点"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "模块示例 - 数组与条件",
+      "a1darrayii": "一维数组：i=`i`",
+      "thistextisshownonlyw": "这段文字只在n>5时显示"
+    },
+    "moduleExampleVariables": {
+      "title": "模块示例 - 变量"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "模块示例 - 自定义数学式",
+      "amirrorofshapeycos2p": "形状为 y=cos(2 pi x + `phi`) 的镜子"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "模块示例 - 形状参数化",
+      "alensdefinedbydr1r2": "以 d, R_1, R_2 定义的透镜",
+      "alensdefinedbydffdbf": "以 d, FFD, BFD 定义的透镜"
+    }
+  }
+}

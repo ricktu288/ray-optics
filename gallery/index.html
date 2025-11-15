@@ -1,0 +1,984 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery - Ray Optics Simulation</title>
+  <meta property="og:title" content="Gallery - Ray Optics Simulation">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/gallery/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Ray Optics Simulation">
+  <meta property="og:locale" content="en">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/gallery/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/gallery/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/gallery/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/gallery/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/gallery/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/gallery/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/gallery/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .example-container {
+      border-width: 2px;
+      margin-bottom: 5px;
+      display: inline-block;
+      width: 270px;
+      text-decoration: none;
+    }
+
+    .example-container:hover {
+      text-decoration: none;
+    }
+
+    .example-container:active {
+      text-decoration: none;
+    }
+
+    .example-container:focus {
+      text-decoration: none;
+    }
+
+    .example-image {
+      width: 250px;
+      height: 250px !important;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    .example-title {
+      font-size: 12pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .example-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .anchor {
+      padding-top: 65px; 
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> Ray Optics Simulation
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../" class="">Home</a>
+        <a href="../gallery/" class="active">Gallery</a>
+        <a href="../about" class="">About</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1>The Ray Optics Gallery</h1>
+    This is a collection of simulations made using <a href="../simulator/">the web app</a>, which can be used as interactive demos of optics. You are welcome to contribute new items. See <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery">the contribution guide</a> for more information. To report a mistake, please <a href="https://github.com/ricktu288/ray-optics/issues">open an issue on GitHub</a> or email <a href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;">ray-optics@phydemo.app</a>.
+    
+    <h3>Categories</h3>
+      <a href="#reflection">Reflection</a><br>
+      <a href="#refraction">Refraction</a><br>
+      <a href="#lens">Lens</a><br>
+      <a href="#combination-of-lenses">Combination of Lenses</a><br>
+      <a href="#GRIN-optics">Gradient-index Optics</a><br>
+      <a href="#miscellaneous">Miscellaneous</a><br>
+
+
+      <a name="reflection" class="anchor">&nbsp;</a>
+      <h2>Reflection</h2>
+        <a href="../gallery/images-formed-by-two-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/images-formed-by-two-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../gallery/images-formed-by-two-mirrors-thumbnail.jpg" alt="Images from Two Mirrors" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Images from Two Mirrors</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/parabolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/parabolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../gallery/parabolic-mirror-thumbnail.jpg" alt="Parabolic Mirror" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Parabolic Mirror</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/hyperbolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/hyperbolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../gallery/hyperbolic-mirror-thumbnail.jpg" alt="Hyperbolic mirror" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Hyperbolic mirror</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/retroreflectors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/retroreflectors-thumbnail.avif" type="image/avif">
+            <img src="../gallery/retroreflectors-thumbnail.jpg" alt="Retroreflectors" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Retroreflectors</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/periscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/periscope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/periscope-thumbnail.jpg" alt="Periscope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Periscope</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/newtonian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/newtonian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/newtonian-telescope-thumbnail.jpg" alt="Newtonian Telescope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Newtonian Telescope</p>
+            <p class="example-contributor">Matteo Ricci Cipolloni</p>
+          </div>
+        </a>
+        <a href="../gallery/penrose-unilluminable-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/penrose-unilluminable-room-thumbnail.avif" type="image/avif">
+            <img src="../gallery/penrose-unilluminable-room-thumbnail.jpg" alt="Penrose unilluminable room" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Penrose unilluminable room</p>
+            <p class="example-contributor">Vincent Fan, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/optical-cavity" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/optical-cavity-thumbnail.avif" type="image/avif">
+            <img src="../gallery/optical-cavity-thumbnail.jpg" alt="Two-mirror optical cavity" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Two-mirror optical cavity</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/resonator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/resonator-thumbnail.avif" type="image/avif">
+            <img src="../gallery/resonator-thumbnail.jpg" alt="Plano-concave resonator" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Plano-concave resonator</p>
+            <p class="example-contributor">Mikhail Kochiev</p>
+          </div>
+        </a>
+        <a href="../gallery/maze-solution" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/maze-solution-thumbnail.avif" type="image/avif">
+            <img src="../gallery/maze-solution-thumbnail.jpg" alt="Maze solution" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Maze solution</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/specular-and-diffuse-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/specular-and-diffuse-reflection-thumbnail.avif" type="image/avif">
+            <img src="../gallery/specular-and-diffuse-reflection-thumbnail.jpg" alt="Specular and Diffuse Reflections" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Specular and Diffuse Reflections</p>
+            <p class="example-contributor">Steve Stonebraker</p>
+          </div>
+        </a>
+        <a href="../gallery/chaff-countermeasure" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/chaff-countermeasure-thumbnail.avif" type="image/avif">
+            <img src="../gallery/chaff-countermeasure-thumbnail.jpg" alt="Chaff countermeasure" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Chaff countermeasure</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/caustics-from-a-reflective-sphere" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/caustics-from-a-reflective-sphere-thumbnail.avif" type="image/avif">
+            <img src="../gallery/caustics-from-a-reflective-sphere-thumbnail.jpg" alt="Caustics from a Reflective Sphere" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Caustics from a Reflective Sphere</p>
+            <p class="example-contributor">Georg Nadorff</p>
+          </div>
+        </a>
+        <a href="../gallery/the-mirascope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/the-mirascope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/the-mirascope-thumbnail.jpg" alt="The Mirascope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">The Mirascope</p>
+            <p class="example-contributor">Mario Petitclerc</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="refraction" class="anchor">&nbsp;</a>
+      <h2>Refraction</h2>
+        <a href="../gallery/reflect" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/reflect-thumbnail.avif" type="image/avif">
+            <img src="../gallery/reflect-thumbnail.jpg" alt="Reflection and Refraction" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Reflection and Refraction</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/internal-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/internal-reflection-thumbnail.avif" type="image/avif">
+            <img src="../gallery/internal-reflection-thumbnail.jpg" alt="Internal Reflection" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Internal Reflection</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/prisms" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/prisms-thumbnail.avif" type="image/avif">
+            <img src="../gallery/prisms-thumbnail.jpg" alt="Prisms" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Prisms</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/beam-directors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/beam-directors-thumbnail.avif" type="image/avif">
+            <img src="../gallery/beam-directors-thumbnail.jpg" alt="Beam Directors" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Beam Directors</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/apparent-depth" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/apparent-depth-thumbnail.avif" type="image/avif">
+            <img src="../gallery/apparent-depth-thumbnail.jpg" alt="Apparent Depth" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Apparent Depth</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/distortion-in-windows-and-backside-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/distortion-in-windows-and-backside-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../gallery/distortion-in-windows-and-backside-mirrors-thumbnail.jpg" alt="Distortion in windows and backside mirrors" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Distortion in windows and backside mirrors</p>
+            <p class="example-contributor">Shahar Seifer</p>
+          </div>
+        </a>
+        <a href="../gallery/bended-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/bended-pencil-thumbnail.avif" type="image/avif">
+            <img src="../gallery/bended-pencil-thumbnail.jpg" alt="Bent Pencil" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Bent Pencil</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/broken-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/broken-pencil-thumbnail.avif" type="image/avif">
+            <img src="../gallery/broken-pencil-thumbnail.jpg" alt="Broken Pencil" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Broken Pencil</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/chromatic-dispersion" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/chromatic-dispersion-thumbnail.avif" type="image/avif">
+            <img src="../gallery/chromatic-dispersion-thumbnail.jpg" alt="Chromatic dispersion" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Chromatic dispersion</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/rainbows" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/rainbows-thumbnail.avif" type="image/avif">
+            <img src="../gallery/rainbows-thumbnail.jpg" alt="Rainbows" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Rainbows</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/minimum-deviation-angle" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/minimum-deviation-angle-thumbnail.avif" type="image/avif">
+            <img src="../gallery/minimum-deviation-angle-thumbnail.jpg" alt="Minimum deviation angle" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Minimum deviation angle</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/aplanatic-points" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/aplanatic-points-thumbnail.avif" type="image/avif">
+            <img src="../gallery/aplanatic-points-thumbnail.jpg" alt="Aplanatic points" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Aplanatic points</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="lens" class="anchor">&nbsp;</a>
+      <h2>Lens</h2>
+        <a href="../gallery/concave-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/concave-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/concave-lens-thumbnail.jpg" alt="Concave Lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Concave Lens</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/convex-lens-thumbnail.jpg" alt="Convex Lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Convex Lens</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/lens-images" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/lens-images-thumbnail.avif" type="image/avif">
+            <img src="../gallery/lens-images-thumbnail.jpg" alt="Lens Images" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Lens Images</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/virtual-image-formation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/virtual-image-formation-thumbnail.avif" type="image/avif">
+            <img src="../gallery/virtual-image-formation-thumbnail.jpg" alt="Virtual Image Formation" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Virtual Image Formation</p>
+            <p class="example-contributor">Daniel Anya</p>
+          </div>
+        </a>
+        <a href="../gallery/transverse-and-longitudinal-magnification" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/transverse-and-longitudinal-magnification-thumbnail.avif" type="image/avif">
+            <img src="../gallery/transverse-and-longitudinal-magnification-thumbnail.jpg" alt="Transverse and longitudinal magnification" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Transverse and longitudinal magnification</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/vanishing-point" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/vanishing-point-thumbnail.avif" type="image/avif">
+            <img src="../gallery/vanishing-point-thumbnail.jpg" alt="Vanishing point" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Vanishing point</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/monochromatic-aberrations" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/monochromatic-aberrations-thumbnail.avif" type="image/avif">
+            <img src="../gallery/monochromatic-aberrations-thumbnail.jpg" alt="Monochromatic aberrations" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Monochromatic aberrations</p>
+            <p class="example-contributor">Paul Falstad, Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/chromatic-aberration" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/chromatic-aberration-thumbnail.avif" type="image/avif">
+            <img src="../gallery/chromatic-aberration-thumbnail.jpg" alt="Chromatic aberration" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Chromatic aberration</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/orientations-of-plano-convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/orientations-of-plano-convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/orientations-of-plano-convex-lens-thumbnail.jpg" alt="Orientations of plano-convex lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Orientations of plano-convex lens</p>
+            <p class="example-contributor">Matthias Guillon</p>
+          </div>
+        </a>
+        <a href="../gallery/hyperbolic-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/hyperbolic-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/hyperbolic-lens-thumbnail.jpg" alt="Hyperbolic lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Hyperbolic lens</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/fresnel-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/fresnel-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/fresnel-lens-thumbnail.jpg" alt="Fresnel lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Fresnel lens</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/augustin-fresnels-lighthouse-optics" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/augustin-fresnels-lighthouse-optics-thumbnail.avif" type="image/avif">
+            <img src="../gallery/augustin-fresnels-lighthouse-optics-thumbnail.jpg" alt="Augustin Fresnel&#x27;s Lighthouse Optics" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Augustin Fresnel&#x27;s Lighthouse Optics</p>
+            <p class="example-contributor">Richard Ruh</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="combination-of-lenses" class="anchor">&nbsp;</a>
+      <h2>Combination of Lenses</h2>
+        <a href="../gallery/zoom-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/zoom-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/zoom-lens-thumbnail.jpg" alt="Zoom Lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Zoom Lens</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../gallery/compound-microscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/compound-microscope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/compound-microscope-thumbnail.jpg" alt="Compound Microscope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Compound Microscope</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/telescope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/telescope-thumbnail.jpg" alt="Telescope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Telescope</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/keplerian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/keplerian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../gallery/keplerian-telescope-thumbnail.jpg" alt="Keplerian telescope" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Keplerian telescope</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../gallery/beam-expanders" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/beam-expanders-thumbnail.avif" type="image/avif">
+            <img src="../gallery/beam-expanders-thumbnail.jpg" alt="Beam expanders" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Beam expanders</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/ray-relaying" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/ray-relaying-thumbnail.avif" type="image/avif">
+            <img src="../gallery/ray-relaying-thumbnail.jpg" alt="Ray relaying" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Ray relaying</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/rochester-cloak" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/rochester-cloak-thumbnail.avif" type="image/avif">
+            <img src="../gallery/rochester-cloak-thumbnail.jpg" alt="Rochester cloak" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Rochester cloak</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/simple-double-gauss-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/simple-double-gauss-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/simple-double-gauss-lens-thumbnail.jpg" alt="Simple Double-Gauss Lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Simple Double-Gauss Lens</p>
+            <p class="example-contributor">Alex</p>
+          </div>
+        </a>
+        <a href="../gallery/pair-of-axicons-making-a-rainbow-ring" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.avif" type="image/avif">
+            <img src="../gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.jpg" alt="Pair of Axicons making a Rainbow Ring" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Pair of Axicons making a Rainbow Ring</p>
+            <p class="example-contributor">Peter Becher</p>
+          </div>
+        </a>
+        <a href="../gallery/koehler-illumination" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/koehler-illumination-thumbnail.avif" type="image/avif">
+            <img src="../gallery/koehler-illumination-thumbnail.jpg" alt="Köhler Illumination" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Köhler Illumination</p>
+            <p class="example-contributor">Leon Seidel</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="GRIN-optics" class="anchor">&nbsp;</a>
+      <h2>Gradient-index Optics</h2>
+        <a href="../gallery/GRIN-slab" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/GRIN-slab-thumbnail.avif" type="image/avif">
+            <img src="../gallery/GRIN-slab-thumbnail.jpg" alt="GRIN slab" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">GRIN slab</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/inferior-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/inferior-mirage-thumbnail.avif" type="image/avif">
+            <img src="../gallery/inferior-mirage-thumbnail.jpg" alt="Inferior mirage" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Inferior mirage</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/sea-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/sea-mirage-thumbnail.avif" type="image/avif">
+            <img src="../gallery/sea-mirage-thumbnail.jpg" alt="Sea mirage" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Sea mirage</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../gallery/logarithmic-spiral-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/logarithmic-spiral-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/logarithmic-spiral-lens-thumbnail.jpg" alt="Logarithmic spiral ray path" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Logarithmic spiral ray path</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/luneburg-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/luneburg-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/luneburg-lens-thumbnail.jpg" alt="Luneburg lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Luneburg lens</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/maxwell-fisheye-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/maxwell-fisheye-lens-thumbnail.avif" type="image/avif">
+            <img src="../gallery/maxwell-fisheye-lens-thumbnail.jpg" alt="Maxwell fisheye lens" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Maxwell fisheye lens</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/branched-flow" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/branched-flow-thumbnail.avif" type="image/avif">
+            <img src="../gallery/branched-flow-thumbnail.jpg" alt="Branched flow" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Branched flow</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="miscellaneous" class="anchor">&nbsp;</a>
+      <h2>Miscellaneous</h2>
+        <a href="../gallery/single-ray-demo" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/single-ray-demo-thumbnail.avif" type="image/avif">
+            <img src="../gallery/single-ray-demo-thumbnail.jpg" alt="Single Ray demo" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Single Ray demo</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/spherical-lens-and-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/spherical-lens-and-mirror-thumbnail.avif" type="image/avif">
+            <img src="../gallery/spherical-lens-and-mirror-thumbnail.jpg" alt="Spherical Lens and Mirror" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Spherical Lens and Mirror</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/interrogation-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/interrogation-room-thumbnail.avif" type="image/avif">
+            <img src="../gallery/interrogation-room-thumbnail.jpg" alt="Interrogation room" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Interrogation room</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/camera-obscura" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/camera-obscura-thumbnail.avif" type="image/avif">
+            <img src="../gallery/camera-obscura-thumbnail.jpg" alt="Camera obscura" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Camera obscura</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../gallery/the-principle-of-camera-imaging" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/the-principle-of-camera-imaging-thumbnail.avif" type="image/avif">
+            <img src="../gallery/the-principle-of-camera-imaging-thumbnail.jpg" alt="The principle of camera imaging" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">The principle of camera imaging</p>
+            <p class="example-contributor">Liu Quanhong</p>
+          </div>
+        </a>
+        <a href="../gallery/NL-simulation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/NL-simulation-thumbnail.avif" type="image/avif">
+            <img src="../gallery/NL-simulation-thumbnail.jpg" alt="NL Binoculars" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">NL Binoculars</p>
+            <p class="example-contributor">Wen Zhou</p>
+          </div>
+        </a>
+        <a href="../gallery/einstein-ring-refocused-to-single-image-via-eyepiece" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.avif" type="image/avif">
+            <img src="../gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.jpg" alt="Einstein Ring refocused to Single Image via Eyepiece" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Einstein Ring refocused to Single Image via Eyepiece</p>
+            <p class="example-contributor">Jordan Anderson</p>
+          </div>
+        </a>
+        <a href="../gallery/black-cat-becomes-white" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/black-cat-becomes-white-thumbnail.avif" type="image/avif">
+            <img src="../gallery/black-cat-becomes-white-thumbnail.jpg" alt="&quot;Black cat becomes white&quot; demo" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">&quot;Black cat becomes white&quot; demo</p>
+            <p class="example-contributor">Victory Science, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../gallery/dichroic-rbg-splitter-and-combiner" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/dichroic-rbg-splitter-and-combiner-thumbnail.avif" type="image/avif">
+            <img src="../gallery/dichroic-rbg-splitter-and-combiner-thumbnail.jpg" alt="Dichroic RGB Splitter &amp; Combiner" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Dichroic RGB Splitter &amp; Combiner</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../gallery/gan-based-lcd-pixel" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/gan-based-lcd-pixel-thumbnail.avif" type="image/avif">
+            <img src="../gallery/gan-based-lcd-pixel-thumbnail.jpg" alt="LCD Pixel" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">LCD Pixel</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../gallery/concave-mirror-wearable-display" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/concave-mirror-wearable-display-thumbnail.avif" type="image/avif">
+            <img src="../gallery/concave-mirror-wearable-display-thumbnail.jpg" alt="Concave Mirror Wearable Display" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Concave Mirror Wearable Display</p>
+            <p class="example-contributor">Rene</p>
+          </div>
+        </a>
+        <a href="../gallery/reflecting-monochromator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/reflecting-monochromator-thumbnail.avif" type="image/avif">
+            <img src="../gallery/reflecting-monochromator-thumbnail.jpg" alt="Reflecting Monochromator" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Reflecting Monochromator</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../gallery/solar-eclipses" class="thumbnail example-container">
+          <picture>
+            <source srcset="../gallery/solar-eclipses-thumbnail.avif" type="image/avif">
+            <img src="../gallery/solar-eclipses-thumbnail.jpg" alt="Solar Eclipses" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Solar Eclipses</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Language: English</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../gallery/">English<span style="color:gray"> (100% translated)</span></a></li>
+          <li><a href="../de/gallery/">Deutsch<span style="color:gray"> (4% translated)</span></a></li>
+          <li><a href="../fr/gallery/">Français<span style="color:gray"> (17% translated)</span></a></li>
+          <li><a href="../pl/gallery/">polski<span style="color:gray"> (99% translated)</span></a></li>
+          <li><a href="../pt-BR/gallery/">Português (Brasil)<span style="color:gray"> (100% translated)</span></a></li>
+          <li><a href="../pt-PT/gallery/">Português (Portugal)<span style="color:gray"> (99% translated)</span></a></li>
+          <li><a href="../ru/gallery/">Русский<span style="color:gray"> (12% translated)</span></a></li>
+          <li><a href="../ta/gallery/">தமிழ்<span style="color:gray"> (99% translated)</span></a></li>
+          <li><a href="../cn/gallery/">简体中文<span style="color:gray"> (100% translated)</span></a></li>
+          <li><a href="../tw/gallery/">正體中文<span style="color:gray"> (100% translated)</span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+</body>
+
+</html>

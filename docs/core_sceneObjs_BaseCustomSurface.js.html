@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/sceneObjs/BaseCustomSurface.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/sceneObjs/BaseCustomSurface.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import BaseSceneObj from './BaseSceneObj.js';
+import i18next from 'i18next';
+import geometry from '../geometry.js';
+import { evaluateLatex } from '../equation.js';
+import Simulator from '../Simulator.js';
+
+/**
+ * @typedef {Object} OutRay
+ * Variables that can be used in the angle and brightness functions:
+ * - \(\theta_0\): The angle of the incident ray.
+ * - \(\lambda\): The wavelength of the incident ray.
+ * - \(t\): The position of the incident ray on the surface.
+ * - \(p\): The polarization of the incident ray. 0 for s-polarized, 1 for p-polarized.
+ * - \(n_0\): The refractive index of the source medium (glass merged at the same side as the incident ray).
+ * - \(n_1\): The refractive index of the destination medium (glass merged at the opposite side as the incident ray).
+ * - \(\theta_1\), \(\theta_2\), ..., \(\theta_{j-1}\): The angles of the previous outgoing rays. For \(P_j\), \(\theta_j\) can also be used.
+ * - \(P_1\), \(P_2\), ..., \(P_{j-1}\): The brightnesses of the previous outgoing rays.
+ * @property {string} eqnTheta - The LaTeX expression of the angle \(\theta_j\) of the jth outgoing ray.
+ * @property {string} eqnP - The LaTeX expression of the brightness \(P_j\) of the jth outgoing ray.
+ */
+
+/**
+ * The base class for custom surfaces (surfaces where the ray interaction is defined by custom equations).
+ * @class
+ * @extends BaseSceneObj
+ * @memberof sceneObjs
+ * @property {Array&lt;OutRay>} outRays - The expressions of the outgoing rays.
+ */
+class BaseCustomSurface extends BaseSceneObj {
+
+  constructor(scene, jsonObj) {
+    super(scene, jsonObj);
+    // Check for unknown keys in outRays
+    const knownKeys = ['eqnTheta', 'eqnP'];
+    for (let i = 0; i &lt; this.outRays.length; i++) {
+      for (const key in this.outRays[i]) {
+        if (!knownKeys.includes(key)) {
+          this.scene.error = i18next.t('simulator:generalErrors.unknownObjectKey', { key: `outRays[${i}].${key}`, type: this.constructor.type }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the object from replacing it, and also because this error likely indicates an incompatible scene version.
+        }
+      }
+    }
+  }
+
+  populateObjBar(objBar) {
+    objBar.createInfoBox('&lt;ul>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.angles', {theta_0: 'θ&lt;sub>0&lt;/sub> (&lt;code>theta_0&lt;/code>)', theta_j: 'θ&lt;sub>j&lt;/sub>'}) + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.brightnesses', {P_0: 'P&lt;sub>0&lt;/sub> (&lt;code>P_0&lt;/code>)', P_j: 'P&lt;sub>j&lt;/sub>'}) + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '&lt;br>&lt;code>pi e&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '&lt;br>&lt;code>+ - * / ^&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '&lt;br>&lt;code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs&lt;/code>&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.previousFormulas') + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.otherParams', {lambda: '&lt;code>lambda&lt;/code>', p: '&lt;code>p&lt;/code>'}) + '&lt;/li>&lt;li>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.info.incidentPos`, {t: '&lt;code>t&lt;/code>'}) + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.coating', {n_0: '&lt;code>n_0&lt;/code>', n_1: '&lt;code>n_1&lt;/code>'}) + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.twoSides') + '&lt;/li>&lt;li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.module') + '&lt;/li>&lt;/ul>' );
+    
+    // Create individual equations for each ray
+    for (let i = 0; i &lt; this.outRays.length; i++) {
+      const rayIndex = i + 1; // 1-based indexing for display
+      const currentIndex = i; // Capture the current index for closure
+      
+      // Create angle equation
+      objBar.createEquation(`θ&lt;sub>${rayIndex}&lt;/sub> =`, this.outRays[i].eqnTheta, function (obj, value) {
+        obj.outRays[currentIndex].eqnTheta = value;
+        obj.initOutRayFns();
+      });
+      
+      // Create brightness equation
+      objBar.createEquation(`P&lt;sub>${rayIndex}&lt;/sub> =`, this.outRays[i].eqnP, function (obj, value) {
+        obj.outRays[currentIndex].eqnP = value;
+        obj.initOutRayFns();
+      });
+    }
+    
+    // Add "+" button to add new ray
+    objBar.createButton(i18next.t('simulator:sceneObjs.BaseCustomSurface.addOutgoingRay'), function (obj) {
+      obj.outRays.push({ eqnTheta: '\\theta_0', eqnP: 'P_0' });
+      obj.initOutRayFns();
+    }, true, `
+    &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      &lt;path d="M2 7.5h5.5V2h1v5.5H14v1H8.5V14h-1V8.5H2v-1z"/>
+    &lt;/svg>
+    `);
+    
+    if (this.outRays.length > 0) {
+      // Add "-" button to remove last ray
+      objBar.createButton(i18next.t('simulator:sceneObjs.BaseCustomSurface.removeOutgoingRay'), function (obj) {
+        if (obj.outRays.length > 0) {
+          obj.outRays.pop();
+          obj.initOutRayFns();
+        }
+      }, true, `
+      &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        &lt;path d="M2 7.5h12v1H2z"/>
+      &lt;/svg>
+      `);
+    }
+
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseCustomSurface.twoSided'), this.twoSided, function (obj, value) {
+      obj.twoSided = value;
+    });
+  }
+
+  handleOutRays(ray, rayIndex, incidentPoint, normal, incidentPos, surfaceMergingObjs, bodyMergingObj) {
+    if (!this.fns) {
+      this.initOutRayFns();
+    }
+
+    if (this.fns.length == 0) {
+      // If there are no outgoing rays, just absorb the incident ray.
+      return {
+        isAbsorbed: true,
+      };
+    }
+
+
+    // Determine the source and destination glasses (the overlapping glasses with the interior on the two sides of the surfaces, where the side of the incident ray is the source side)
+    const sourceGlasses = [];
+    const destinationGlasses = [];
+    for (const obj of surfaceMergingObjs) {
+      let incidentType = obj.getIncidentType(ray);
+      if (incidentType == 1) {
+        sourceGlasses.push(obj);
+      } else if (incidentType == -1) {
+        destinationGlasses.push(obj);
+      } else {
+        // An undefined behavior (e.g. incident on an edge point)
+        return {
+          isAbsorbed: true,
+          isUndefinedBehavior: true,
+        };
+      }
+    }
+
+    // Determine the refractive indices of the source and destination glasses
+    let n0 = 1;
+    let n1 = 1;
+    for (const obj of sourceGlasses) {
+      n0 *= obj.getRefIndexAt(incidentPoint, ray);
+    }
+    for (const obj of destinationGlasses) {
+      n1 *= obj.getRefIndexAt(incidentPoint, ray);
+    }
+
+    const normalAngle = Math.atan2(normal.y, normal.x);
+    const rayAngle = Math.atan2(ray.p2.y - ray.p1.y, ray.p2.x - ray.p1.x);
+    let incidentAngle = normalAngle - (rayAngle + Math.PI);
+
+    // Normalize to -pi/2 to pi/2
+    incidentAngle = (incidentAngle + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+
+    const originalBrightness_s = ray.brightness_s;
+    const originalBrightness_p = ray.brightness_p;
+    const originalWavelength = ray.wavelength;
+    const originalBodyMergingObj = bodyMergingObj;
+    const originalGap = ray.gap;
+
+    const newRays = [];
+    let isAbsorbed = false;
+    let truncation = 0;
+
+    const params = [
+      {theta0: incidentAngle, P0: originalBrightness_s, lambda: originalWavelength || Simulator.GREEN_WAVELENGTH, t: incidentPos, n0: n0, n1: n1, p: 0},
+      {theta0: incidentAngle, P0: originalBrightness_p,  lambda: originalWavelength || Simulator.GREEN_WAVELENGTH, t: incidentPos, n0: n0, n1: n1, p: 1},
+    ]
+
+    for (let i = 0; i &lt; this.fns.length; i++) {
+      let angles;
+      let brightnesses;
+
+      try {
+         angles = [
+          this.fns[i].angleFn(params[0]),
+          this.fns[i].angleFn(params[1]),
+        ];
+      } catch (e) {
+        this.error = `Error evaluating theta_${i+1}: ${e.toString()}`;
+        return {
+          isAbsorbed: true,
+        };
+      }
+
+      params[0][`theta${i+1}`] = angles[0];
+      params[1][`theta${i+1}`] = angles[1];
+
+      try {
+        brightnesses = [
+          this.fns[i].brightnessFn(params[0]),
+          this.fns[i].brightnessFn(params[1]),
+        ];
+      } catch (e) {
+        this.error = `Error evaluating P_${i+1}: ${e.toString()}`;
+        return {
+          isAbsorbed: true,
+        };
+      }
+
+      for (const p of [0, 1]) {
+        if (!(brightnesses[p] > 0) || !Number.isFinite(angles[p])) {
+          // The ray should be treated as invalid (setting the brightness to 0 will automatically prevent the ray from being added to newRays)
+          brightnesses[p] = 0;
+        }
+      }
+
+      params[0][`P${i+1}`] = brightnesses[0];
+      params[1][`P${i+1}`] = brightnesses[1];
+
+      let rayNum;
+      if (angles[0] === angles[1]) {
+        // Only need one ray (the two polarization components are going to the same direction, so just one ray with brightness_s and brightness_p).
+        rayNum = 1;
+      } else {
+        // Need two rays (the two polarization components split to two different directions).
+        rayNum = 2;
+      }
+
+      for (let j = 0; j &lt; rayNum; j++) {
+        // Initialize the outgoing ray.
+        // The first ray should be handled differently, as it will directly replace the incident ray.
+        // In case that the ray splits, directly initialized the two rays with only one polarization component.
+        let ray1;
+        if (i == 0 &amp;&amp; j == 0) {
+          ray1 = ray;
+        } else if (rayNum == 2 &amp;&amp; j == 0) {
+          ray1 = {
+            wavelength: originalWavelength,
+            bodyMergingObj: originalBodyMergingObj,
+            gap: originalGap,
+          }
+        } else if (rayNum == 2 &amp;&amp; j == 1) {
+          ray1 = {
+            wavelength: originalWavelength,
+            bodyMergingObj: originalBodyMergingObj,
+            gap: originalGap,
+          }
+        } else {
+          ray1 = {
+            wavelength: originalWavelength,
+            bodyMergingObj: originalBodyMergingObj,
+            gap: originalGap,
+          }
+        }
+
+        // Normalize angle to -pi to pi
+        angles[j] = ((angles[j] + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
+
+        // If the angle is between -pi/2 and pi/2 (that is, it is going to the destination medium), we need to call onRayExit/Enter to update the bodyMergingObj of the ray.
+        if (angles[j] > -Math.PI / 2 &amp;&amp; angles[j] &lt; Math.PI / 2) {
+          for (const obj of sourceGlasses) {
+            obj.onRayExit(ray1);
+          }
+          for (const obj of destinationGlasses) {
+            obj.onRayEnter(ray1);
+          }
+        }
+
+        // Set the parameters of the outgoing ray.
+        const outAngle = (normalAngle + Math.PI) - angles[j];
+        if (rayNum == 1) {
+          ray1.brightness_s = brightnesses[0];
+          ray1.brightness_p = brightnesses[1];
+        } else if (j == 0) {
+          ray1.brightness_s = brightnesses[0];
+          ray1.brightness_p = 0;
+        } else {
+          ray1.brightness_s = 0;
+          ray1.brightness_p = brightnesses[1];
+        }
+        ray1.p1 = incidentPoint;
+        ray1.p2 = geometry.point(incidentPoint.x + Math.cos(outAngle), incidentPoint.y + Math.sin(outAngle));
+
+        // Truncate the outgoing ray if it is too weak.
+        if (ray1.brightness_s + ray1.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+          if (ray1 !== ray) {
+            newRays.push(ray1);
+          }
+        } else {
+          truncation += ray1.brightness_s + ray1.brightness_p;
+          if (ray1 === ray) {
+            isAbsorbed = true;
+          }
+        }
+      }
+    }
+
+    this.warning = null;
+
+    if (newRays.length > 1) {
+      // When there are two or more outgoing rays, image detection will not work, so just disable it.
+      for (let i = 0; i &lt; newRays.length; i++) {
+        newRays[i].gap = true;
+      }
+
+      if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
+        this.warning = i18next.t('simulator:sceneObjs.common.imageDetectionWarning');
+      }
+    }
+
+    this.error = null;
+    return {
+      newRays,
+      isAbsorbed,
+      truncation,
+    };
+  }
+
+  /* Utility Methods */
+
+  /**
+   * Parse the expressions of the outgoing rays and store them in the `fns` property.
+   */
+  initOutRayFns() {
+    const self = this;
+
+    function replaceVariables(fn) {
+      let fn2 = fn.replaceAll("\\theta_0", "(theta0)").replaceAll("\\theta_{0}", "(theta0)").replaceAll("P_0", "(P0)").replaceAll("P_{0}", "(P0)").replaceAll("\\lambda", "(lambda)").replaceAll("n_0", "(n0)").replaceAll("n_{0}", "(n0)").replaceAll("n_1", "(n1)").replaceAll("n_{1}", "(n1)");
+      
+      // Replace \\theta_i and I_i where i is from 1 to the number of outgoing rays
+      for (let i = 0; i &lt; self.outRays.length; i++) {
+        if (i+1 &lt; 10) {
+          fn2 = fn2.replaceAll(`\\theta_${i+1}`, `(theta${i+1})`).replaceAll(`P_${i+1}`, `(P${i+1})`);
+        }
+        fn2 = fn2.replaceAll(`\\theta_{${i+1}}`, `(theta${i+1})`).replaceAll(`P_{${i+1}}`, `(P${i+1})`);
+      }
+      return fn2;
+    }
+
+    function buildFn(latex) {
+      const eqn = replaceVariables(latex);
+      const fn = evaluateLatex(eqn);
+      const thetaDeps = [];
+      for (let i = 0; i &lt; self.outRays.length; i++) {
+        thetaDeps.push(eqn.includes(`(theta${i+1})`));
+      }
+      return function (params) {
+        // Patch evaluatex so that NaN in theta parameters can be propagated to the result rather than causing an error. This is required for example to allow the snell's law to be directly used in the angle function so that when the incident angle is larger than the critical angle, the refracted ray will automatically be dropped.
+        for (let i = 0; i &lt; self.outRays.length; i++) {
+          if (`theta${i+1}` in params &amp;&amp; !Number.isFinite(params[`theta${i+1}`]) &amp;&amp; thetaDeps[i]) {
+            return NaN;
+          }
+        }
+        return fn(params);
+      }
+    }
+
+    this.error = null;
+    try {
+    this.fns = this.outRays.map(outRay => {
+      return {
+        angleFn: buildFn(outRay.eqnTheta),
+        brightnessFn: buildFn(outRay.eqnP)
+        };
+      });
+    } catch (e) {
+      this.fns = [];
+      this.error = e.toString();
+    }
+  }
+}
+
+export default BaseCustomSurface;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

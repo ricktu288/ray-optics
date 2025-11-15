@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/components/ObjBar.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/components/ObjBar.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;!--
+  Copyright 2025 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+&lt;template>
+  &lt;div id="obj_bar" class="obj-bar" :style="[objBarStyle, { display: 'none' }]">
+    &lt;span class="d-none d-lg-inline" id="obj_name">&lt;/span>&lt;span id="obj_bar_main">
+    &lt;/span>
+    &lt;span>
+      &lt;nobr>
+        &lt;span class="d-none d-lg-inline">
+          &lt;span id="showAdvanced" v-text="$t('simulator:objBar.showAdvanced.title')" @click="handleShowAdvanced">&lt;/span>
+          &lt;span id="apply_to_all_box">
+            &lt;input type="checkbox" class="btn-check" id="apply_to_all" autocomplete="off" v-model="applyToAll">
+            &lt;label id="apply_to_all_label" class="btn btn-outline-secondary" for="apply_to_all" v-tooltip-popover="{ title: $t('simulator:objBar.applyToAll.title') }">
+              &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                &lt;path d="m11.5 11.932a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
+                &lt;path d="m11.5 1.1864a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0h2.05v1h-2.05a2.5 2.5 0 0 1-4.9 0h-9.05v-1z"/>
+                &lt;path d="m10.049 6.3809v3.1367h1v-3.1367z"/>
+                &lt;path d="m11.82 6.3809v3.1367h1v-3.1367z"/>
+              &lt;/svg>
+            &lt;/label>
+          &lt;/span>
+          &lt;button class="btn" id="copy" v-tooltip-popover="{ title: $t('simulator:objBar.duplicate.title') }" @click="handleClone">
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 9.766 9.766">
+              &lt;g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
+                &lt;path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
+                &lt;path d="m401.05 0h-227c-21.3 0-38.6 17.3-38.6 38.6 0 7.5 6 13.5 13.5 13.5s13.5-6 13.5-13.5c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6v325.7c0 6.4-5.2 11.6-11.6 11.6-7.5 0-13.5 6-13.5 13.5s6 13.5 13.5 13.5c21.3 0 38.6-17.3 38.6-38.6v-325.7c0-21.3-17.3-38.6-38.6-38.6z"/>
+              &lt;/g>
+            &lt;/svg>
+          &lt;/button>
+          &lt;button class="btn" id="delete" v-tooltip-popover="{ title: $t('simulator:objBar.delete.title') }" @click="handleDelete">
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+              &lt;path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+            &lt;/svg>
+          &lt;/button>
+          &lt;button class="btn" id="unselect" v-tooltip-popover:[tooltipType]="{ content: $t('simulator:objBar.unselect.description'), placement: 'bottom' }" @click="handleUnselect">
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              &lt;path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            &lt;/svg>
+          &lt;/button>
+        &lt;/span>
+        
+        &lt;span class="d-inline d-lg-none">
+          &lt;button class="btn shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="selectedToolDropdownMobile" style="color:white; padding-left:0px;padding-right:5px">
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+              &lt;path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+            &lt;/svg>
+          &lt;/button>
+          &lt;ul class="dropdown-menu" aria-labelledby="selectedToolDropdownMobile">
+            &lt;li id="showAdvanced_mobile_container" style="display: none">
+              &lt;button class="dropdown-item" id="showAdvanced_mobile" v-text="$t('simulator:objBar.showAdvanced.title')" @click="handleShowAdvanced">&lt;/button>
+            &lt;/li>
+            &lt;li id="apply_to_all_mobile_container" style="display: none">
+              &lt;input type="checkbox" class="btn-check" autocomplete="off" id="apply_to_all_mobile" v-model="applyToAll">
+              &lt;label id="apply_to_all_mobile_label" class="dropdown-item" for="apply_to_all_mobile" v-text="$t('simulator:objBar.applyToAll.title')">&lt;/label>
+            &lt;/li>
+            &lt;li>
+              &lt;button class="dropdown-item" id="copy_mobile" v-text="$t('simulator:objBar.duplicate.title')" @click="handleClone">&lt;/button>
+            &lt;/li>
+            &lt;li>
+              &lt;button class="dropdown-item" id="delete_mobile" v-text="$t('simulator:objBar.delete.title')" @click="handleDelete">&lt;/button>
+            &lt;/li>
+            &lt;li>
+              &lt;button class="dropdown-item" id="unselect_mobile" v-text="$t('simulator:objBar.unselect.title')" @click="handleUnselect">&lt;/button>
+            &lt;/li>
+          &lt;/ul>
+        &lt;/span>
+      &lt;/nobr>
+    &lt;/span>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+/**
+ * @module ObjBar
+ * @description The Vue component for the object bar. Note that many UI code has not been refactored using a proper Vue approach. In particular, the controls in the object bar are populated using plain JavaScript in `objBar.js`.
+ */
+import { computed, toRef } from 'vue'
+import { vTooltipPopover } from '../directives/tooltip-popover'
+import { usePreferencesStore } from '../store/preferences'
+import { useThemeStore } from '../store/theme'
+import { app } from '../services/app'
+
+export default {
+  name: 'ObjBar',
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
+  setup() {
+    const preferences = usePreferencesStore()
+    const themeStore = useThemeStore()
+    const help = toRef(preferences, 'help')
+    const tooltipType = computed(() => help.value ? 'popover' : null)
+
+    const applyToAll = computed({
+      get: () => app.objBar?.shouldApplyToAll ?? false,
+      set: (value) => app.objBar.shouldApplyToAll = value
+    })
+
+    // Computed style that adapts to theme
+    const objBarStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Use higher alpha for light backgrounds for better visibility
+      if (isLight) {
+        return {
+          backgroundColor: 'rgba(60, 150, 164, 0.9)'
+        }
+      } else {
+        return {
+          backgroundColor: 'rgba(23, 162, 184, 0.5)'
+        }
+      }
+    })
+
+    return {
+      tooltipType,
+      applyToAll,
+      objBarStyle
+    }
+  },
+  methods: {
+    handleClone(event) {
+      event.target.blur()
+      app.cloneSelectedObj()
+    },
+    handleDelete(event) {
+      event.target.blur()
+      app.deleteSelectedObj()
+    },
+    handleUnselect(event) {
+      event.target.blur()
+      app.unselect()
+    },
+    handleShowAdvanced(event) {
+      event.target.blur()
+      app.showAdvanced()
+    }
+  }
+}
+&lt;/script>
+
+&lt;style>
+#obj-bar {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.obj-bar {
+  z-index: -1;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  color:white;
+  font-size:12pt;
+  
+  padding-top: 3px;
+  padding-left: 12px;
+  padding-right: 7px;
+  padding-bottom: 3px;
+  margin: auto;
+  margin-top: 16px;
+  text-align: center;
+  border-radius: 0.5em;
+}
+
+.obj-bar .btn {
+  padding-top: 0;
+  padding-left: 7px;
+  padding-right: 7px;
+  color: white;
+}
+
+.obj-bar .btn:focus {
+  box-shadow: none;
+}
+
+.obj-bar-nobr {
+  white-space: nowrap;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.obj-bar .form-range {
+  width: 125px;
+  padding-top:15px;
+  padding-left: 3px;
+}
+
+.obj-bar .form-range::-webkit-slider-thumb {
+  background: gray;
+  border: 2px solid white;
+}
+
+.obj-bar .form-range::-moz-range-thumb {
+  background: gray;
+  border: 2px solid white;
+}
+
+.obj-bar .form-range::-ms-thumb {
+  background: gray;
+  border: 2px solid white;
+}
+
+.obj-bar .form-range::-webkit-slider-runnable-track {
+  background: rgba(255,255,255, 0.5);
+}
+
+.obj-bar .form-range::-moz-range-track {
+  background-color: rgba(255,255,255, 0.5);
+}
+
+.obj-bar-editable {
+  color: white;
+  background-color: rgba(255,255,255,0.2);
+  border: none;
+  text-align: center;
+}
+
+.obj-bar-editable::selection {
+  background-color: gray;
+  color: white;
+}
+
+.obj-bar-number {
+  width: 40px;
+  padding-left: 1px;
+  padding-right: 1px;
+  font-size: 15px;
+}
+
+.mq-cursor {
+  border-color: white !important;
+}
+
+.info-icon {
+  color: rgba(255, 255, 255, 0.6);
+  padding-left:0px;
+  padding-right:0px;
+}
+
+
+.obj-bar .form-switch .form-check-input {
+  margin-top: 0px;
+  background-color: rgba(255,255,255, 0.3);
+  border: none;
+  vertical-align: middle;
+}
+
+.obj-bar .form-switch .form-check-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23f0f0f0'/%3e%3c/svg%3e");
+}
+
+.obj-bar .form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+.obj-bar .form-switch .form-check-input:checked {
+  background-color: gray;
+  border: none;
+}
+
+.obj-bar .form-switch .form-check-input:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+.obj-bar .form-switch .form-check-input:checked:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+#showAdvanced {
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>「射线光学模拟」模块制作教程 - 射线光学模拟</title>
+  <meta property="og:title" content="「射线光学模拟」模块制作教程 - 射线光学模拟">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/cn/modules/tutorial">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="射线光学模拟">
+  <meta property="og:locale" content="zh-CN">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/cn/modules/tutorial">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/modules/tutorial">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/modules/tutorial">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/modules/tutorial">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/modules/tutorial">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/modules/tutorial">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/modules/tutorial">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/modules/tutorial">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/modules/tutorial">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    iframe {
+      border: none;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../cn/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> 射线光学模拟
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../cn/" class="">首页</a>
+        <a href="../../cn/gallery/" class="">作品集</a>
+        <a href="../../cn/about" class="">关于</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1 id="tutorial">「射线光学模拟」模块制作教程</h1>
+    
+    <p>本教程将引导您完成建立自定义模块的基本步骤。这个功能可完全在本模拟器网页程序中实现，而不需要其他的开发环境。</p>
+    <p>「线光学模拟」的「模块」功能允许将物件以模块化的方式组合在一起，其中可包含自定义参数、自定义控制点与物件数组。本功能透过将本模拟器中现有的工具所建立的物件进行组合、特化或重新参数化，来制作新的工具，以扩充本模拟器的功能。例如，<code>CircleSource</code>模块（请参见工具-&gt;其他-&gt;导入模块）将现有的「点光源（&lt;360°）」工具所建立的一系列点光源沿着一个圆形组合在一起，成为一个「圆形光源」工具，这在模拟器中原本并不存在。<code>FresnelLens</code>模块则是将「透光物-&gt;自定义函数」工具特化，使函数表示菲涅耳透镜的特定曲线，由切片数参数化，以制作一个特化的「菲涅耳透镜」工具，这在模拟器中原本也不存在。除了制作新工具外，这个功能还可以使一些光学演示更具互动性。例如，通过拖曳<code>BeamExpander</code>模块的第三个控制点，可以直接观察两个透镜的共同焦点位置如何影响光束宽度，而无需分别调整两个透镜的焦距。</p>
+    <p>注意并非所有的自定义控制点都需要模块。一些简单的情况可能可以通过「控制杆」功能实现（请参见模拟器右下角的帮助弹出窗口中的「群组、旋转和缩放物件」部分）。由于制作模块比建立控制杆复杂得多，您应该在考虑制作模块之前检查您的情况是否可以通过「控制杆」功能实现。比如<a href="../../cn/gallery/black-cat-becomes-white">这个例子</a>展示了一个相对复杂但不必使用模块的自定义控制点（将两个塑料袋从水中移开）。</p>
+    <p>另一方面，如果您需要进行复杂的编程（例如制作动画、使用复杂的算法排列光学元件或对辐照度图进行分析），请改用<a href="https://github.com/ricktu288/ray-optics/tree/dist-integrations">整合工具</a>，并编写 Python 或 Julia 脚本。</p>
+    <p><b>欢迎将您的模块<a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">贡献到「导入模块」列表中</a>！只要您认为这个模块对其他人有帮助，即使是通过 AI 助手写成的也可以。</b></p>
+
+    <h2 id="ai-assistant">使用 AI 助手<sup>Beta</sup></h2>
+    <p>ChatGPT 上的 <a href="https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder">Ray Optics Coder</a> 可以帮助您编写「射线光学模拟」模块。它会根据您的描述生成场景的 JSON 代码，您只需要将其复制到 JSON 编辑器（见下）即可。您也可以使用它来编辑现有模组或模组化场景。</p>
+    <p>由聊天机器人生成的代码可能无法直接运作。如果出现错误，建议将错误讯息复制到聊天机器人中，可能能够得到解决。对于更复杂的模块，建议您仍然自行阅读以下教学并编写部分代码。</p>
+    <p>聊天机器人的指引和知识文件可在<a href="https://github.com/ricktu288/ray-optics/blob/master/ai-tools">这里</a>取得。如果您偏好其他 LLM 服务，您可以提供这些文件，教它如何写出「射线光学模拟」模块。</p>
+
+    <h2 id="the-built-in-json-editor">内置的JSON编辑器</h2>
+    <p>本应用目前没有用于建立模块的视觉界面，因此您需要直接编辑场景的JSON原始码。</p>
+    <p>您可以通过点击应用程序右上角的「设置」下拉菜单，然后勾选「显示JSON编辑器」来启用内置的JSON编辑器。原始码编辑器会出现在界面的左侧，并显示目前场景的JSON原始码。请确保您有足够大的屏幕，因为这个功能在行动装置上效果不佳。</p>
+    <p>当您使用可视化场景编辑器修改场景时，JSON编辑器中的原始码将自动更新，且更改的部分会突出显示。反之，直接在JSON编辑器中编辑原始码将相应更新场景。如果您不熟悉JSON或任何基于文字的数据格式，您可能会希望花一些时间来熟悉它。</p>
+    <p>特别是，当您将一个物件新增到场景中时，它将被新增到<code>objs</code>数组中。如果您将某些属性修改为非预设值，它们将作为该物件的键值对出现。</p>
+    <p>如果您不希望在编辑JSON时自动更新场景，您可以启用设置 -&gt; 显示模拟器控制列，并取消选择「自动刷新」。当编辑完成时，点击「刷新模拟」（如果您不希望立即重新运行模拟，也可以点击「刷新场景」）。</p>
+    <b><p>注意：如果您在本教程页面中看不到下面的iframe中的JSON编辑器，请启用它并重新加载本页，因为您需要查看原始码以了解它的运作方式。</p></b>
+
+    <h2 id="basics-of-a-module">模块的基本概念</h2>
+    <p>让我们看第一个例子。</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-basics"></iframe>
+    <p>您会看到四段文字。通过查看JSON编辑器，您将看到前两段直接位于顶层的<code>objs</code>数组中，但后两段位于<code>modules.ExampleModule.objs</code>中。</p>
+    <p><code>modules</code>是一个字典，其中键是模块的名称（在本例中是<code>ExampleModule</code>），值是该模块的定义。特别是，<code>modules.ExampleModule.objs</code>数组描述了该模块中的物件（模板），这与描述场景中的物件的顶层<code>objs</code>数组不同。</p>
+    <p>要将模块中的物件放到场景中，我们需要一个「模块物件」，它位于顶层<code>objs</code>数组中，本例中是<code>objs[2]</code>，其类型是<code>ModuleObj</code>，其<code>module</code>属性是模块的名称。</p>
+    <p><code>modules</code>字典中的模块定义无法由可视化场景编辑器编辑。因此，当您点选本例中的后两段文字时，您只选择了模块物件，而不是模块中的物件。由于本例中模块定义中的文字坐标是绝对坐标，因此后两段文字无法被拖曳。我们将在后面学习到如何使用控制点来使它们可被拖曳。</p>
+    <p>当您提取模块物件时，物件栏上会有一个「取消模块化」按钮。点选后会将模块物件「展开」为构成此模块的物件，此时<code>objs</code>将包含所有四段文字。这个操作是不可逆的（除非点击「复原」）。</p>
+    <p>目前建议制作模块的方式为，首先使用JSON编辑器建立一个空的模块，然后使用可视化场景编辑器新增一些物件，最后使用JSON编辑器将这些物件从<code>objs</code>剪下并粘贴到<code>modules.ModuleName.objs</code>中。</p>
+
+    <h2 id="adding-parameters">新增参数</h2>
+    <p>模块中的物件可以由一组参数来定义。让我们看一个简单的例子</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-parameters"></iframe>
+    <p>这里<code>modules.ModuleName.params</code>是一个由形如<code>&quot;名称=起始值：增量：终止值：预设值&quot;</code>的字串构成的数组，定义了变数的名称和数值滑杆的范围。当提取模块物件时，滑杆将出现在物件栏上。</p>
+    <p>在<code>modules.ExampleModule.objs</code>数组中，任何值都可以使用这些参数来表示。在字串中（例如<code>TextLabel</code>的<code>text</code>属性）中，带有参数的数学式被反引号包围。对于数值参数（例如<code>TextLabel</code>的<code>fontSize</code>属性），您需要将其改为字串，以便您可以在其中使用反引号格式。因此每条数学式都被一对反引号和一对引号包围。这些数学式将使用math.js来计算（<a href="https://mathjs.org/docs/reference/functions/evaluate.html">语法</a>）。请参见该网页以了解您可以在数学式中使用的语法和函数。</p>
+    <p>参数的实际值位于模块物件的<code>params</code>属性中。这部分与模块定义不同，其可以通过滑杆直接由可视化场景编辑器编辑。</p>
+
+    <h2 id="adding-control-points">新增控制点</h2>
+    <p>为了使模块物件可被拖曳，我们需要使用一组控制点来对模块中的物件位置进行参数化。让我们看一个例子</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-control-points"></iframe>
+    <p>这里<code>modules.ModuleName.numPoints</code>描述了控制点的数量。控制点坐标之符号为 (<code>x_1</code>, <code>y_1</code>)、(<code>x_2</code>, <code>y_2</code>) 等等。其用在<code>modules.ExampleModule.objs</code>中的方式与前一节所述之参数相同。请注意索引从1开始。</p>
+    <p>控制点的实际值位于模块物件的<code>controlPoints</code>属性中，其可以直接由可视化场景编辑器编辑，而非如第一个例子中写死在模块定义中的坐标。每个控制点在场景中显示为两个同心的灰色圆形，并且可以被拖曳。若您拖曳模块物件的其他地方（如文字标签），则所有的控制点会一起移动。</p>
+    <p>由于我们的模块物件已经可以移动，我们可以很容易地建立多个实例，就像在本模拟器中其他的工具中一样。模块的名称显示在工具-&gt;其他菜单中，您可以选择它，然后按两个点来指定两个控制点的位置，就可建立此模块的另一个实例。您也可以使用物件栏上的「复制」按钮。</p>
+
+    <h2 id="arrays-and-conditionals">数组与条件</h2>
+    <p>使用数组和条件语法，可以建立更复杂的模块。让我们看一个例子</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-arrays-and-conditionals"></iframe>
+    <p>在<code>modules.ExampleModule.objs</code>中，任何数组中的物件都可以有两个特殊的键：<code>&quot;for&quot;</code>和<code>&quot;if&quot;</code>。<code>&quot;for&quot;</code>键的值是一个描述循环变数的字串，格式为<code>&quot;名称=起始值：增量：终止值&quot;</code>，或者是一个包含多个这种格式的字串的数组，描述多维循环。这样的物件在数组中根据循环变数被复制多次。<code>&quot;if&quot;</code>键的值是则是一个表示布尔值的字串，使得该物件只在布尔值为真时才会包含在数组中。</p>
+    <p>为了防止意外的无穷循环，每个<code>&quot;for&quot;</code>循环的总迭代次数由模块定义中的<code>maxLoopLength</code>属性限制，其预设值为1000。如果需要，您可以将此属性设定为更大的值。</p>
+
+    <h2 id="using-variables">使用变量<sup>Beta</sup></h2>
+    <p>您可以定义数学变量和函数，以便在整个模块中使用。让我们看一个例子</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-variables"></iframe>
+    <p><code>modules.ModuleName.vars</code>是一个字符串数组，每个字符串表示一个math.js语句，其定义一个变量或函数。这些定义按顺序求值，因此后面的定义可以引用前面定义的变量。</p>
+    <p>变量定义可以引用所有参数和控制点坐标，且被定义后，这些变量可以像参数和控制点坐标一样在对象模板中被引用，从而实现更复杂和可重用的计算。</p>
+
+    <h2 id="objects-with-built-in-custom-equations">内置自定义数学式功能的物件<sup>Beta</sup></h2>
+    <p>对于已经具有自定义数学式输入的物件（例如镜子-&gt;自定义函数），JSON中的数学式属性是一个表示LaTeX数学式的字串。要使用math.js来表达这种数学式，并引用模块参数等，您需要将math.js表达式夹在在双反引号中。这种区块会展开为包含自由变量（如 \(x\) 对应 <code>x</code>，\(\theta_0\) 对应 <code>theta_0</code>）的LaTeX数学式。这与单反引号区块不同，单反引號区块不可包含自由变数，且会展开为一个数值。以下例子中，自定义方程式镜子使用了一个包含了自定义参数 <code>phi</code> 的数学式</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-custom-equation"></iframe>
+    <p>虽然您可以在变数和单反引号区块中使用任何math.js语法和运算，在双反引号区块中，您只能使用目标物件的数学式输入方块所支援的常数、运算子和函数在math.js中的对应（请参见目标物件的资讯框）。您可以使用 <code>vars</code> 数组中定义的函数，但函数定义最终也必须由支援的运算组成。</p>
+    <p>隐式乘法（例如 <code>2x</code>）在这种情况也不允许使用，因为math.js中隐式乘法的运算子优先级没有明确定义。请使用 <code>*</code> 运算子明确地表示乘法（例如 <code>2*x</code>）。</p>
+
+    <h2 id="objects-with-built-in-shape-parametrization">内置形状参数化功能的物件</h2>
+    <p>对于已经支持使用不同方式定义其形状的物件（目前仅有透光物-&gt;球面透镜），有特殊的JSON语法可用于在模块定义中用这些方式来定义该物件，即使在顶层<code>objs</code>数组中这类的物件总是以形状来定义。以下是一个例子</p>
+    <iframe loading="lazy" src="../../simulator/?zh-CN#../cn/gallery/module-example-shape-parametrization"></iframe>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">语言：简体中文</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../modules/tutorial">English<span style="color:gray"></span></a></li>
+          <li><a href="../../pl/modules/tutorial">polski<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/modules/tutorial">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-PT/modules/tutorial">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../../ru/modules/tutorial">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../../ta/modules/tutorial">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/modules/tutorial">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/modules/tutorial">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

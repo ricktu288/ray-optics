@@ -1,0 +1,536 @@
+{
+  "galleryPage": {
+    "title": "The Ray Optics Gallery",
+    "description": "This is a collection of simulations made using [the web app](/simulator), which can be used as interactive demos of optics. You are welcome to contribute new items. See [the contribution guide](/contributing/gallery) for more information. To report a mistake, please [open an issue on GitHub](/github/issues) or email [ray-optics@phydemo.app](/email).",
+    "categories": {
+      "title": "Categories",
+      "reflection": "Reflection",
+      "refraction": "Refraction",
+      "lens": "Lens",
+      "combinationOfLenses": "Combination of Lenses",
+      "grinOptics": "Gradient-index Optics",
+      "miscellaneous": "Miscellaneous"
+    },
+    "contributors_one": "Contributor: {{contributors}}",
+    "contributors_other": "Contributors: {{contributors}}",
+    "openInSimulator": "Open in Simulator"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Warning: The sequence of light appearing does not represent the actual speed of light - only the final image is meaningful."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Images from Two Mirrors",
+      "description": "This simulation shows the images formed by two mirrors. The green \"L\" is the object. If the angle between the two mirrors is \\(\\frac{360^\\circ}{n}\\), then \\(n-1\\) virtual images (the orange L's) will be formed. You can drag the endpoint of the mirror to change the angle between them."
+    },
+    "parabolicMirror": {
+      "title": "Parabolic Mirror",
+      "description": "This simulation demonstrates the focusing property of the parabolic mirror."
+    },
+    "hyperbolicMirror": {
+      "title": "Hyperbolic mirror",
+      "description": "This is a demonstration of the reflection property of the hyperbolic mirror: Light rays traveling from one focus towards the hyperbolic mirror, will reflect away from the other focus.\n\nThe two foci of the hyperbola are aplanatic points (see [Aplanatic points](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "The orange rays are imaginary extended rays from the reflected yellow rays.\nThese imaginary rays converge at the other focus point.",
+      "pointlightsourceaton": "Point light source at one focus point"
+    },
+    "retroreflectors": {
+      "title": "Retroreflectors",
+      "description": "This is a simulation of two types of retroreflectors:\n\n1. Corner retroreflector.\n2. Cat's eye retroreflector.",
+      "dragtorotatethebeam": "Drag to\nrotate the beam",
+      "catseyeretroreflecto": "Cat's eye retroreflector",
+      "cornerretroreflector": "Corner retroreflector"
+    },
+    "periscope": {
+      "title": "Periscope",
+      "description": "This is a simulation of a periscope made from two flat mirrors and some light blockers.",
+      "observerseyenottosca": "Observer's eye (not to scale)"
+    },
+    "newtonianTelescope": {
+      "title": "Newtonian Telescope",
+      "description": "This is a model of a Newtonian telescope with a Plössl ocular."
+    },
+    "penroseUnilluminableRoom": {
+      "title": "Penrose unilluminable room",
+      "description": "The Penrose unilluminable room is constructed from elliptic, circular, and linear mirrors. It has the interesting property that a point source (green) within the room will not shine the entire room, no matter where you put it. You can drag the green point to move the source.",
+      "nomatterwhereyouputt": "No matter where you put the point source, it will not shine the entire room.\nWarning: Due to numerical error, it may still shine after some time."
+    },
+    "opticalCavity": {
+      "title": "Two-mirror optical cavity",
+      "description": "This is a simulation of rays inside an optical cavity with two mirrors. Given the length of the cavity is \\(d\\), and the radius of curvature of its mirrors is \\(R_1\\) and \\(R_2\\) respectively (with the convention that \\(R>0\\) for a concave mirror), then the optical cavity is stable (meaning that for each ray that emanates from one of the mirrors towards the other mirror, a non-divergent trajectory is guaranteed for sufficiently high mirrors), if and only if \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). In this simulation we assume that the mirrors are ideal curved mirrors, meaning that \\(f=\\frac{R}{2}\\), rendering the previous stability condition to \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). [Here](/gallery/resonator) is a similar simulation with spherical mirrors, where the first stability condition holds in the paraxial approximation.",
+      "clickholdleftmouseto": "Click + hold left mouse\nto move the ray",
+      "dragtomovetheidealmi": "Drag to move\nthe ideal mirror",
+      "d400intheresonatorsb": "d = 400 in the resonators below",
+      "confocalresonator": "Confocal resonator",
+      "concentricresonator": "Concentric resonator",
+      "concaveconvexresonat": "Concave-convex resonator",
+      "planoconcaveresonato": "Plano-concave resonator"
+    },
+    "resonator": {
+      "title": "Plano-concave resonator",
+      "description": "This is a demonstration of a plano-concave resonator. If the distance between the mirrors is greater than the radius of curvature, the resonator is unstable. If the distance between the mirrors is less than or equal to the radius of curvature, a stable resonator mode is formed.",
+      "flatmirror": "Flat mirror",
+      "sphericalconcavemirr": "Spherical concave mirror",
+      "unstableresonator": "Unstable resonator",
+      "stableresonator": "Stable resonator"
+    },
+    "mazeSolution": {
+      "title": "Maze solution",
+      "description": "This is a simulation of a light ray originating inside a maze and reflected repeatedly by the walls. The larger and smaller red squares inside the maze (seen in the screenshot below) represent the origin and the initial direction of the light ray, respectively. For some initial orientations of the light ray, it exits the maze, and thus by retracing the path of the ray a solution to the maze can in principle be calculated.",
+      "controltherayorigina": "Control the ray origin and initial direction by\ndragging the top and bottom markers (respectively).",
+      "notethatthesimulatio": "Note that the simulation processing is finished only once\nthe processing message at the bottom left corner disappears.",
+      "mazeexit": "Maze exit"
+    },
+    "specularAndDiffuseReflection": {
+      "title": "Specular and Diffuse Reflections",
+      "description": "Identical beams shine on a smooth surface and a rough surface, illustrating the difference between specular and diffuse reflections.",
+      "specular": "Specular",
+      "diffuse": "Diffuse"
+    },
+    "chaffCountermeasure": {
+      "title": "Chaff countermeasure",
+      "description": "This is a qualitative simulation of the effect that the chaff countermeasure has on a radar (ignoring diffraction effects).",
+      "plane": "Plane",
+      "radar": "Radar",
+      "chaff": "Chaff",
+      "selectthechafftochan": "Select the chaff to change the number (N) and the length (L) of chaff pieces."
+    },
+    "causticsFromAReflectiveSphere": {
+      "title": "Caustics from a Reflective Sphere",
+      "description": "A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.",
+      "movethepointsourcear": "Move the point source around\nto watch the caustics and nodes \nwithin the integrating sphere transform.\nChange size and position of the blockers, \nand the opening size of the sphere\nto see more effects."
+    },
+    "theMirascope": {
+      "title": "The Mirascope",
+      "description": "A **mirascope** is a fascinating optical illusion device that uses two opposing parabolic mirrors to create the illusion of a three-dimensional floating image. The device consists of:\n1. **Two Parabolic Mirrors** of the exact same size, with one mirror facing upward and the other facing downward, forming a clam-like structure. The mirrors are designed to focus light at a specific point. The top mirror has a hole at its vertex to allow the light to enter the device.\n2. **A Small Object**: Placed inside the mirascope, typically near the focal point of the top mirror that is very close to the vertex of the bottom mirror.\n\nWhen light from the object reflects between the mirrors, it is redirected in such a way that it appears as a lifelike, three-dimensional image floating above the surface of the mirascope. The illusion is so convincing that people often try to touch the image, only to find there's nothing there.\n\nMirascopes are popular in science demonstrations, toys, and novelty items to illustrate the principles of optics, reflection, and the behavior of light.",
+      "object1": "Object",
+      "realimage1": "Real image"
+    },
+    "reflect": {
+      "title": "Reflection and Refraction",
+      "description": "This simulation shows the reflection and refraction at a surface."
+    },
+    "internalReflection": {
+      "title": "Internal Reflection",
+      "description": "This simulation shows the refraction and internal reflection at a surface."
+    },
+    "prisms": {
+      "title": "Prisms",
+      "description": "This simulation demonstrates the right-angle prism, the Porro prism, the rhomboid prism, the Dove prism, and the pentaprism.",
+      "rhomboid": "rhomboid",
+      "rightangle": "right-angle",
+      "porro": "Porro",
+      "dove": "Dove",
+      "pentaprism": "pentaprism"
+    },
+    "beamDirectors": {
+      "title": "Beam Directors",
+      "description": "This is a simulation of a regular and a Fresnel biprism. A biprism can direct an incoming collimated beam into two directions, depending on the apex angle.",
+      "thisfresnelbiprismwa": "This fresnel biprism was made from the above biprism.\nYou can select the biprism and adjust the N_slice parameter.",
+      "fresnelbiprism": "Fresnel biprism",
+      "biprism": "Biprism"
+    },
+    "apparentDepth": {
+      "title": "Apparent Depth",
+      "description": "When you look at an object underwater from the air, the depth of the object appears to be smaller than its actual depth. This phenomenon is due to the refraction of light, and is demonstrated in this simulation. The apparent depth depends on the position of the observer, which can be demonstrated by dragging the blue circle.",
+      "observedimageorange": "Observed image (orange)",
+      "observer": "Observer",
+      "objectunderwatergree": "Object underwater (green)"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "Distortion in windows and backside mirrors",
+      "description": "When observing an object through a glass at a skewed angle the image appears at an offset and nearer to the observer than it should be. The simulation shows this effect in thick window and backside mirror. Viewing in the \"All Images\" mode demonstrates that the image points are in fact arcs, so depending on detector size the image may become fuzzy.\n\nTo the right of the frame you can also find the effect of a wedge on the apparent size.",
+      "source": "source",
+      "glass": "glass",
+      "mirror": "mirror",
+      "image": "image",
+      "observer3": "observer",
+      "window": "window"
+    },
+    "bendedPencil": {
+      "title": "Bent Pencil",
+      "description": "This is a simulation of the image perceived with our eyes, when looking from above on a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the bending is more pronounced. You can check the [Broken Pencil](/gallery/broken-pencil) simulation where the breaking of the pencil is more pronounced.",
+      "bentpencilyellowimag": "bent pencil (yellow)\nimage on retina",
+      "dielectricmaterial": "dielectric material",
+      "originalpencilgreen": "original pencil (green)",
+      "observerseye": "observer's eye",
+      "ignoretheorangesquar": "Ignore the orange squares!"
+    },
+    "brokenPencil": {
+      "title": "Broken Pencil",
+      "description": "This is a simulation of the image perceived with our eyes, when looking from the side at a partially submerged pencil in a glass of water. The discontinuity of the refractive index between air and water causes the pencil to appear both broken and bent. However, in this simulation, the breaking is more pronounced. You can check the [Bent Pencil](/gallery/bended-pencil) simulation where the bending of the pencil is more pronounced.",
+      "brokenpencilyellowim": "broken pencil (yellow)\nimage on retina"
+    },
+    "chromaticDispersion": {
+      "title": "Chromatic dispersion",
+      "description": "This simulation demonstrates chromatic dispersion using a white-colored beam and a triangular prism. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors.",
+      "dragheretoadjustbeam": "Drag here to\nadjust beam width",
+      "dragheretorotatethep": "Drag here to\nrotate the prism"
+    },
+    "rainbows": {
+      "title": "Rainbows",
+      "description": "This simulation demonstrates the formation of the primary rainbow, the secondary rainbow, and Alexandar's dark band. Here the spectrum of the sunlight is approximated by mixing red, orange, yellow, green, cyan, blue, and violet colors. The outgoing rays for the primary/secondary rainbow are due to one/two internal reflections within the raindrop (you can see this by setting Ray Density to a low number and dragging the raindrop). Note that these are not total internal reflections, so the intensities of the outgoing rays are much lower than the incoming rays. Since the [minimum deviation angles](/gallery/minimum-deviation-angle) depend on the wavelength, different colors accumulate at different angles. Hence the colors in the rainbows are produced. Away from the minimum angles, the rays do not accumulate, so all colors are weak and mixed together, producing the dim white (or \"gray\") color at the angles just outside the two rainbows. On the other hand, no rays go to the angle between the two rainbows, forming Alexandar's dark band.",
+      "thesearethecolorspro": "These are the colors produced from a single raindrop.\nThe final rainbows we see are due to an enormous number of raindrops in the sky,\neach of which gives a single color (at the corresponding angle) to the observer.",
+      "secondaryrainbow": "Secondary rainbow",
+      "alexandersdarkband": "Alexander's dark band",
+      "raindrop": "Raindrop",
+      "primaryrainbow": "Primary rainbow",
+      "sunlight": "Sunlight"
+    },
+    "minimumDeviationAngle": {
+      "title": "Minimum deviation angle",
+      "description": "The definition of the deviation angle of a ray hitting an optical element depends on the context - in the screenshot below you can see its definition for a triangular and a spherical prism. In the examples inside this simulation, the deviation angle as a function of the incidence angle of the ray entering the optical element, has a local minimum at a deviation angle which is called the \"minimum deviation angle\". This local minimum can explain optical phenomena such as [rainbows](/gallery/rainbows) and halos - due to this local minimum, the deviated rays accumulate at specific directions, creating \"optical caustics\" (as seen in example C inside the simulation) which we perceive as rainbows/halos.",
+      "inexamplesaandbbyrot": "In examples A and B, by rotating the prisms between points A1 to A2 and B1 to B2, thereby changing the\nincidence angle of the ray entering into the optical element,  you can clearly observe that a minimum\ndeviation angle is achieved somewhere between the pair of points.\n(in example A the deviation angle is measured relative to a horizontal axis, whereas in example B\nit is measured relative to the vertical axis).\n\nNow zoom into example C (using the simulation zoom), and expand the two beams (red and purple, and\ntheir intersection looks pink. This is effectively the same as rotating the spherical prism in\nexample B, thereby changing the incidence angle of the entering ray) and observe that from point\nC1 to C2 the backward exiting rays accumulate down towards two distinct red and purple\nrays (\"optical caustics\") - the minimum deviation angle is achieved around point C2, and depends on\nthe light wavelength (color). Then, when expanding the two beams from point C2 to C3, the\nbackward exiting rays reverse their direction upward.",
+      "examplea": "Example - A",
+      "examplec": "Example - C",
+      "exampleb": "Example - B",
+      "dragtorotate": "Drag to rotate",
+      "dragtoadjustbeamwidt": "Drag to adjust beam widths",
+      "usethebuiltinzoomtob": "Use the built-in zoom to better interact with the simulation",
+      "deviationangle": "Deviation angle",
+      "incidenceangle": "Incidence angle"
+    },
+    "aplanaticPoints": {
+      "title": "Aplanatic points",
+      "description": "Aplanatic points of an optical system are special points on its optical axis, such that \"rays proceeding from one of them will all converge to, or seen to diverge from the other point\".\n\n- Ellipse: the two foci of the elliptical lens/mirror are aplanatic points, since light emitted from one focus will converge towards the other.\n- Sphere: a spherical lens has two aplanatic points, inside and outside the sphere - for more details see the simulation.\n- Hyperbola: the two foci of the [Hyperbolic mirror](/gallery/hyperbolic-mirror) simulation are also aplanatic points.\n\nGiven two points with horizontal coordinates \\(x_1\\) and \\(x_2\\), identical vertical coordinates, and given the refractive index outside and inside our optical element as \\(n_1\\) and \\(n_2\\) (respectively), for this two points to be aplanatic points, the boundary of our optical element must fulfill\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation}such that \\(k_i=1\\) or \\(-1\\) if the ray connecting \\(x_i\\) and the boundary of our optical element is real or imaginary, respectively, and \\(E\\) is a constant for which this equation has a non-trivial solution. This equation (which can be derived using Fermat's principle) is an equation of a Cartesian oval, of which the conic sections are special cases.",
+      "clickontheextendedra": "Click on the \"Extended rays\" button to verify that light emitted from the light source in the spherical lens (point A),\nwill diverge from another point on the optical axis outside the spherical lens (point B) without spherical aberration.\nPoints A and B are an example of aplanatic points of the sphere, for which (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relative to the marked Y axis,\nwhere x1,x2 are the horizontal coordinates of points A,B respectively (each grid cell has dimensions of 20 by 20).\nIn a similar way, the foci of the ellipse (points C and D) are an example of aplanatic points of the ellipse, for which (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)",
+      "sphericallens": "Spherical lens",
+      "ellipticallens": "Elliptical lens",
+      "yaxis": "Y axis"
+    },
+    "concaveLens": {
+      "title": "Concave Lens",
+      "description": "This simulation shows a concave lens diverging a beam."
+    },
+    "convexLens": {
+      "title": "Convex Lens",
+      "description": "This simulation shows a convex lens converging a beam."
+    },
+    "lensImages": {
+      "title": "Lens Images",
+      "description": "This simulation shows the images of a beam and point sources produced by ideal lenses."
+    },
+    "virtualImageFormation": {
+      "title": "Virtual Image Formation",
+      "description": "This is a simulation of how a virtual image is formed with a converging lens and its characteristics.",
+      "object2": "Object",
+      "converginglensf1000u": "Converging Lens (F=1000 units)",
+      "virtualimagehighlyen": "Virtual Image\nHighly Enlarged\nUpright/Erect"
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "Transverse and longitudinal magnification",
+      "description": "This is a simulation of transverse and longitudinal magnification for an ideal lens with focal length \\(f\\). The transverse (also called linear) and the longitudinal magnification is \\(M_T=1-\\frac{u}{f}\\) and \\(M_L=\\frac{dv}{du}\\) respectively, where \\(u\\) and \\(v\\) is the distance of the object and the image from our ideal lens, respectively. Also, for an ideal lens \\(M_L=-(M_T)^2\\)",
+      "inthisexamplewehavey": "In this example we have y'_j - y'_k = M_T * (y_j - y_k), where j,k∈{0,1,2,3,4,5}.\nTherefore for example the tranverse magnification of the point object (x_0,y_0) is M_T = -3, and we can calculate - \n(x'_0 - x'_1)/(x_1 - x_0) ≈ -0.3699\n(x'_0 - x'_2)/(x_2 - x_0) ≈ -0.7297\n(x'_0 - x'_3)/(x_3 - x_0) ≈ -1.4211\n(x'_0 - x'_4)/(x_4 - x_0) ≈ -2.4545\n(x'_0 - x'_5)/(x_5 - x_0) = -5.4\n.\n.\n.\n(The ratio will converge to the longitudinal magnification: M_L = - (M_T)^2 = -9)",
+      "rightclickonarealobj": "Right click on a (real) object to see its coordinates.\nThe green squares are real point sources, while the yellow squares are image objects."
+    },
+    "vanishingPoint": {
+      "title": "Vanishing point",
+      "description": "Some optical systems map infinite parallel lines, to lines on the image plane which meet at a single point, making an illusion that the parallel lines meet \"at infinity\". This single point is called the vanishing point.\n\nFor an optical system comprising an ideal lens with focal length \\(f\\), located on the \\(XY\\) plane, such that its optical axis coincides with the \\(X\\)(horizontal) axis and the lens coincides with the \\(Y\\) axis, the vanishing point for a line with a slope \\(m\\), located at \\(x<0\\), is given by the \\((x,y)\\) coordinates \\((f,m f)\\) .",
+      "youcanverifythatapai": "You can verify that a pair of parallel lines with slope - m, converge by the ideal lens to the coordinates (f,m∙f),\nby clicking the \"Grid\" button and noticing that each grid cell has dimensions of 20 by 20.\nYou can also verify how changing the ideal lens's focal length - f, effects the converging points (vanishing points).",
+      "thesepairofparallell": "These pair of parallel lines converge to point B",
+      "thesepairofparallell1": "These pair of parallel lines converge to point A",
+      "notethatthesepairsof": "Note that these pairs of parallel lines are not actually infinite."
+    },
+    "monochromaticAberrations": {
+      "title": "Monochromatic aberrations",
+      "description": "This is a simulation of different monochromatic aberrations:\n\n1. Spherical aberration.\n2. Comma aberration.\n3. Defocus aberration.\n4. Field curvature aberration.",
+      "defocusaberration": "Defocus aberration",
+      "sphericalaberration": "Spherical aberration",
+      "screen": "Screen",
+      "fieldcurvatureaberra": "Field curvature aberration",
+      "commaaberration": "Comma aberration"
+    },
+    "chromaticAberration": {
+      "title": "Chromatic aberration",
+      "description": "This simulation shows the chromatic aberration of a spherical lens. Here the white color is formed by mixing red, orange, yellow, green, cyan, blue, and violet colors. The focal length of red light is the largest, and that of violet light is the smallest.",
+      "dragtoadjustbeamwidt1": "Drag to adjust beam width"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "Orientations of plano-convex lens",
+      "description": "This simulation compares the two orientations of a plano-convex lens focusing a beam, highlighting the different sizes of spherical aberrations."
+    },
+    "hyperbolicLens": {
+      "title": "Hyperbolic lens",
+      "description": "This is a simulation and comparison between the hyperbolic and spherical lenses. Both lenses have identical focal lengths, but as opposed to the spherical lens, the hyperbolic lens can collimate a parallel beam of monochromatic light to a single point (neglecting the wave nature of light - i.e in the geometric optics approximation) without spherical aberrations.",
+      "thefocallengthofthis": "The focal length of this spherical lens (in the paraxial approximation) is:\nf=R/(n-1)=200/(1.5-1)=400",
+      "thefocallengthofthis1": "The focal length of this hyperbolic lens is:\nf = |C| ∙ sqrt(n^2 - 1) / (n - 1) = K ∙ sqrt(0.8) ∙ sqrt(1.5^2 - 1) / (1.5 - 1) = 400\nwhere the equation for this hyperbola is:\ny(x) = (a/K) - sqrt( ((x/K)^2 + (C/K)^2) / (n^2 - 1) )\n= 1.5 - sqrt( (0.8 + (x / 200)^2) / (1.5^2 - 1) )\nsuch that K is the conversion constant between the equation dimensions to the grid dimensions - for this hyperbolic lens K=200.\n(for example 0<y<Y converts to a slab with vertical length of  K ∙ Y ).",
+      "selectthishyperbolic": "(Select this hyperbolic lens to see its custom equation)."
+    },
+    "fresnelLens": {
+      "title": "Fresnel lens",
+      "description": "This is a simulation and comparison between a spherical and a Fresnel lens. One of the advantages of the Fresnel lens can be readily seen: it functions similar to a regular spherical lens, while taking much less space - and therefore weighing less.",
+      "thisfresnellensismad": "This Fresnel lens is made from the half circle glass below.\nYou can select the lens and adjust the N_slice parameter."
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Augustin Fresnel's Lighthouse Optics",
+      "description": "Here's a demonstration of Augustin Fresnel's Lighthouse Optics Magic:\n\n1. A [thinned lens](/gallery/fresnel-lens) replaces the thicker magnifying lens to send the central core of light to the ship by refraction at two surfaces. A further refinement, included, is the decreasing segment radius of curvature to reduce spherical aberration present in the full-thickness lens. They did not use aspheres in the 1800's.\n2. Total internal reflecting (TIR) prisms redirect high-angle beams to the ships. These are catadioptric elements with refraction going in and out and TIR on the back side. In the 1820's the best reflectors were silver, only about 50% reflective. The dirty oil lamp light source required daily cleaning of the optics. TIR reflection theoretically is 100% efficient and glass is more easily cleanable.\n\nThis raytrace validates a set of prisms and lenses built for a whiteboard demonstration of Fresnel optics at California State Parks' Pigeon Point Light Station.\n\n- The light source is an H11 headlight LED behind a slotted mask. The LED shines only about 160 degrees of light, not a full 180 degree hemisphere. An incandescent bulb could give a full 360 degrees of light, but not as brightly and much hotter.\n- The optics are about 0.5 inch, 12 mm, thick acrylic with painted white bottoms.\n- All objects magnetically mount to the whiteboard. Additional mirrors, prisms, and a full-thickness lens are in the photograph and demonstrated in the presentation.\n- The actual lighthouse lenses needed a chimney vent at the top and often a rotating structure at the bottom. They did not attempt to collect the full 180 degrees of light.",
+      "augustinfresnelsmagi": "Augustin Fresnel's Magic Lighthouse Optics ",
+      "t1athinnedlensmakesab": "#1 A thinned lens makes a bright beam with less glass\n ",
+      "comparetheperformanc": "Compare the performance of the upper half thinned Bullseye lens \nto the lower half full thickness lens. \n\nIn the 1820's, poor glass quality meant\na full thickness lens sent less light to the ship than without a lens!\nA thinned lens was much better than no lens.",
+      "amagnifyinglenscanon": "A magnifying lens can only send about 1/6, 15%, \nof the light to a ship.",
+      "mirrorsorreflectorsc": "Mirrors or reflectors can redirect high angle beams, but 1820's reflectors wasted half the light.",
+      "t2totalinternalreflec": "#2 Total Internal Reflecting (TIR) prisms enabled sending all the high angled light to a ship",
+      "inthepigeonpointligh": "In the Pigeon Point Lighthouse whiteboard optics demo,\nFrensel's magic enables ALL of the light into a hemisphere to be sent to a ship",
+      "howitworks": "How it works"
+    },
+    "zoomLens": {
+      "title": "Zoom Lens",
+      "description": "This simulation demonstrates a zoom lens, where you can change the zoom by dragging the concave lens in the middle.",
+      "dragtomovethelens": "Drag to move the lens",
+      "zoom": "← zoom →"
+    },
+    "compoundMicroscope": {
+      "title": "Compound Microscope",
+      "description": "A compound microscope consists of two lenses, the objective, and the eyepiece. The object (green) is very near the axis, representing a small object. The object is then magnified by the two lenses so that a large inverted virtual image (the intersection of the final orange extensions) is produced.",
+      "objective": "Objective",
+      "eyepiece": "Eyepiece"
+    },
+    "telescope": {
+      "title": "Telescope",
+      "description": "This is a simulation of a simple telescope, composed of a convex lens and a Galilean [beam expander](/gallery/beam-expanders) - which increases the telescope's angular resolution, thereby better separating the incoming light from two distant stars.\n\nIn the screenshot below you can compare the telescope's performance to its version without the beam expander (containing only a convex lens).",
+      "lightfromstar2": "Light from star 2",
+      "lightfromstar1": "Light from star 1",
+      "withagallileanbeamex": "With a Gallilean beam expander (better angular seperation of both stars)",
+      "screen1": "Screen",
+      "withoutabeamexpander": "Without a beam expander"
+    },
+    "keplerianTelescope": {
+      "title": "Keplerian telescope",
+      "description": "This simulation describes the ray diagram of the Keplerian telescope.",
+      "lightfromstar": "Light from star",
+      "virtualimage": "Virtual image",
+      "realimage": "Real image",
+      "thekepleriantelescop": "The Keplerian telescope",
+      "eye": "eye"
+    },
+    "beamExpanders": {
+      "title": "Beam expanders",
+      "description": "This is a simulation of two types of beam expanders - Keplerian beam expander, and Galilean beam expander. A beam expander expands or reduces the diameter of a beam of collimated light. A Galilean beam expander is composed of a convex and a concave lens, whereas a Keplerian beam expander is composed of two convex lenses. In both types, the sum of the lenses' focal length equals their separation distance.",
+      "keplerianbeamexpande": "Keplerian beam expander",
+      "gallileanbeamexpande": "Gallilean beam expander",
+      "inbothcasesthedistan": "In both cases the distance between the lenses is equal to the sum of their focal distance"
+    },
+    "rayRelaying": {
+      "title": "Ray relaying",
+      "description": "This is a simulation of ray relaying by a series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between consecutive lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\).",
+      "youcanselectanylenst": "You can select any lens to view and adjust the parameters of the array."
+    },
+    "rochesterCloak": {
+      "title": "Rochester cloak",
+      "description": "Rochester cloak is a type of cloaking device, which uses only 4 lenses. In the version presented in this simulation, the focal length of the two external lenses is \\(f_1\\), and of the two mid lenses is \\(f_2\\), such that the distance between consecutive lenses of focal lengths \\(f_1\\) and \\(f_2\\) equals \\(t_1=f_1+f_2\\), and the distance between the mid lenses is \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).",
+      "observerdoesntseethe": "Observer (doesn't see the objects\nfrom the partial invisibility area,\nbut sees the object from the visibility area)",
+      "partialinvisibilitya": "Partial invisibility area",
+      "object": "Object",
+      "t8objects": "8 objects",
+      "visibilityarea": "Visibility area"
+    },
+    "simpleDoubleGaussLens": {
+      "title": "Simple Double-Gauss Lens",
+      "description": "This is a demonstration of a simple double-Gauss lens."
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "title": "Pair of Axicons making a Rainbow Ring",
+      "description": "This simulation uses two plano-convex axicons, a white light source and an aperture to create a circular rainbow. Axicons are conical lenses. The incoming white light needs to be a ring which was created by a narrow ring aperture.\n\nMoving the right axicon left and right will change the size of the output rainbow ring.",
+      "leftaxicon": "Left Axicon",
+      "whitelightsource": "White\nLight\nSource",
+      "rightaxicon": "Right Axicon",
+      "ringaperture": "Ring Aperture"
+    },
+    "koehlerIllumination": {
+      "title": "Köhler Illumination",
+      "description": "This setup, invented in 1893 by August Köhler, is very useful if you are dealing with any type of microscopy. It provides a homogeneous illumination on a sample, from any inhomogeneous light source. The image of the illumination source (e.g. lamp filament) is therefore not visible on the sample. The two apertures can be used to either change the intensity and numerical aperture (NA) or the field of view of your illumination. The second aperture is particularly advantageous, as you can close it to focus your sample. If the edges of the aperture are in focus, then the sample is focused too. It is also referred to as a 4f-setup, since it uses four focal lengths in distance.",
+      "spatiallyextendedand": "spatially extended and\ninhomogeneous light source",
+      "collectorlens": "collector lens",
+      "aperture1changesinte": "aperture 1\nchanges\nintensity, NA",
+      "fieldlens": "field lens",
+      "aperture2changesfiel": "aperture 2\nchanges\nfield of view",
+      "condensorlens": "condensor lens",
+      "objectivelens": "objective lens",
+      "sample": "sample",
+      "sampleisnowilluminat": "sample is now \nilluminated homogeneously"
+    },
+    "grinSlab": {
+      "title": "GRIN slab",
+      "description": "This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius. The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).",
+      "approximatedmultilay": "Approximated multilayer GRIN slab (You can select and change N, the number of layers.)",
+      "classicalgrinslabyou": "Classical GRIN slab (You can select and change the numerical solver step size.)"
+    },
+    "inferiorMirage": {
+      "title": "Inferior mirage",
+      "description": "This is a qualitative simulation of the inferior mirage effect. The refractive index of the air in this example, is approximated with the function \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), where \\(h=600\\) represents the height of a light emitting/reflecting object above the ground.",
+      "airwithoutinferiormi": "Air (without inferior mirage effect)",
+      "airwithinferiormirag": "Air (with inferior mirage effect)",
+      "ground": "Ground",
+      "raysemittedreflected": "Rays emitted/reflected\nfrom an object",
+      "observerseyenottosca1": "Observer's eye (not to scale)"
+    },
+    "seaMirage": {
+      "title": "Sea mirage",
+      "description": "This is a qualitative simulation of the effect that an object beyond the horizon can be visible as a superior mirage.",
+      "earthssurface": "Earth's surface",
+      "atmosphere": "Atmosphere",
+      "architecturealpine": "Architecture / Alpine",
+      "observer1": "Observer",
+      "vacuum": "Vacuum",
+      "virtualimage1": "Virtual image"
+    },
+    "logarithmicSpiralLens": {
+      "title": "Logarithmic spiral ray path",
+      "description": "The refractive index function that supports logarithmic spiral ray paths is of the form \\(r(θ) = r_0\\,e^{-k\\theta}\\), where \\(r_0,k > 0\\) and \\(\\alpha = \\arctan k\\) is a constant angle between the two tangents at the intersection point between the concentric logarithmic spiral and circle (as demonstrated in [this](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animation), is \\(n(r)\\propto\\frac{1}{r} \\) (this can be shown by writing the optical path in polar coordinates, and using Fermat's principle).",
+      "thecircularblockeris": "The circular blocker is in the center\nto avoid the refractive index singularity",
+      "dragtochangetheiniti": "Drag to change the\ninitial direction of the ray",
+      "youcanselectthegring": "You can select the GRIN glass and\nchange the numerical solver step size"
+    },
+    "luneburgLens": {
+      "title": "Luneburg lens",
+      "description": "This is a simulation of a Luneburg lens, which is a spherical dielectric with refractive index \\(n(r) = \\sqrt{n_0-(\\frac{r}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(r\\) is the radial distance from the center of the lens.\n\nThe top dielectric is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2} \\), where \\(i=1,\\ldots,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nThe bottom dielectric is a gradient-index material with the refractive index \\(n(r)\\).",
+      "approximatedmultilay1": "Approximated multilayer Luneburg lens (You can select and change N, the number of layers.)",
+      "classicalluneburglen": "Classical Luneburg lens (You can select and change the numerical solver step size.)"
+    },
+    "maxwellFisheyeLens": {
+      "title": "Maxwell fisheye lens",
+      "description": "This is a simulation of a Maxwell fish-eye lens, which is a spherical dielectric with refractive index \\(n(r) = \\frac{n_0}{1+(\\frac{r}{R})^2} \\), where \\(n_0=2\\) is the refractive index in the center of the lens, \\(R=100\\) is the radius of the lens, and \\(r\\) is the radial distance from the center of the lens.\n\nThe top dielectric is composed of \\(N=20\\) concentric spherical lenses with radius \\(R_i=5(N+1-i)\\) and refractive index \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), where \\(i=1,\\ldots,N\\). However, since this simulator calculates the effective refractive index of an optical element by multiplying the element's numerical refractive index with the numerical refractive indices of the optical elements which are embedded within it, the numerical refractive index of the \\(i\\)th concentric spherical lens is given by \\(n_{i}^\\text{numerical}=\\frac{n_i}{n_{i-1}}\\).\n\nThe bottom dielectric is a gradient-index material with the refractive index \\(n(r)\\).",
+      "approximatedmultilay2": "Approximated multilayer Maxwell fisheye lens (You can select and change N, the number of layers.)",
+      "classicalmaxwellfish": "Classical Maxwell fisheye lens (You can select and change the numerical solver step size.)"
+    },
+    "branchedFlow": {
+      "title": "Branched flow",
+      "description": "When light travels through a medium whose refractive index has random spatial fluctuations (with correlation length much larger than the wavelength of the light), a tree-like pattern called branched flow will appear. This simulation shows this phenomenon using a refractive index function which is a sum of several cosine functions with random-like amplitudes, wave vectors, and phases."
+    },
+    "singleRayDemo": {
+      "title": "Single Ray demo",
+      "description": "This simulation demonstrates the reflection and refraction of a single ray."
+    },
+    "sphericalLensAndMirror": {
+      "title": "Spherical Lens and Mirror",
+      "description": "This simulation shows a continuous beam passing through a spherical lens and a spherical mirror."
+    },
+    "interrogationRoom": {
+      "title": "Interrogation room",
+      "description": "This is a simulation of a two-way mirror in an interrogation room. The observer in the dark room (ideally the dark room's interior is not emitting/reflecting light, as well as absorbing all the incoming light from the interrogation room) is able to see inside the interrogation room because the light created by the lamp in the interrogation room is scattered and received by the observer through the two-way mirror, whereas the suspect can only see inside the interrogation room as well as his/her and the lamp's reflections (since no light is received by the suspect from the dark room).",
+      "pressonallimagestose": "Press on \"All Images\" to see the location\nof the lamp's reflection, and the objects\nin the suspect's and observer's image plane",
+      "darkroom": "Dark room",
+      "twowaymirror": "Two-way mirror",
+      "lamp": "Lamp",
+      "interrogationroom": "Interrogation room",
+      "observerseyeris": "Observer's eye",
+      "suspectseyeris": "Suspect's eye",
+      "thelampobjectinthesu": "The lamp object in the suspect's image plane",
+      "thelampsreflectionin": "The lamp's reflection in the suspect's image plane",
+      "thelampsreflection": "The lamp's reflection",
+      "thelampobjectintheob": "The lamp object in the observer's image plane"
+    },
+    "cameraObscura": {
+      "title": "Camera obscura",
+      "description": "This is a simulation of a Camera obscura. The observer in the dark room sees an inverted image of the objects outside, projected on the wall in front of him/her (without the use of an extra lens).",
+      "observer2": "Observer",
+      "objectsoutside": "Objects outside",
+      "darkroom1": "Dark room"
+    },
+    "thePrincipleOfCameraImaging": {
+      "title": "The principle of camera imaging",
+      "description": "This template provides an interactive approach to learning the principles of camera imaging, covering essential topics such as focal length, aperture, sensor sensitivity, and background blur, making it useful for both students and enthusiasts.",
+      "camera": "Camera",
+      "cmos": "CMOS"
+    },
+    "nlSimulation": {
+      "title": "NL Binoculars",
+      "description": "This simulation shows a rough sketch of Swarovski NL binoculars."
+    },
+    "einsteinRingRefocusedToSingleImageViaEyepiece": {
+      "title": "Einstein Ring refocused to Single Image via Eyepiece",
+      "description": "This is a model of an eyepiece/lens that could be used on any scientific telescope which will reverse the \"halo\" and focus an Einstein ring back into its original form while scattering the light of any star or massive object used to create the ring."
+    },
+    "blackCatBecomesWhite": {
+      "title": "\"Black cat becomes white\" demo",
+      "description": "\"Black cat becomes white\" is a popular science demo in which some part of a figure disappears when put in water. It is made with the following steps:\n\n1. Draw a figure (e.g. a black cat) on a piece of paper.\n2. Put the paper in a plastic zip-lock bag.\n3. Draw part of the figure (e.g. the border of the cat) or some other figure on the plastic surface. When put in water, the figure drawn on the paper disappears, but not the part drawn on the plastic surface.\n\nThis simulation explains how it works.",
+      "whenthebagisunderwat": "When the bag is underwater, the light from the paper does not reach the eyes,\nso we only see the figure drawn on the plastic surface.",
+      "lightfromtheplastics": "Light from the plastic surface",
+      "lightfromthepaper": "Light from the paper",
+      "eyes": "Eyes",
+      "dragtomovethebagouto": "Drag to move the bag out of water"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "title": "Dichroic RGB Splitter & Combiner",
+      "description": "This simulation demonstrates the splitting and combination of RGB beams using dichroic mirrors.",
+      "rgbcomponentsplitter": "RGB Component Splitter & Combiner",
+      "lightsource": "Light Source",
+      "dichroiccube": "Dichroic Cube",
+      "beamcombiner": "Beam Combiner"
+    },
+    "ganBasedLcdPixel": {
+      "title": "LCD Pixel",
+      "description": "This is a model of an LCD pixel. It simulates how new microled display layers function and how our eyes perceive the pixel.",
+      "pixelsaresosmallthel": "Pixels are so small the light\nappears to be mixed to our eyes",
+      "changetherateoftrans": "Change the Rate of Transmission\nTo Create Any RGB Value",
+      "blueledbacklight": "Blue LED Backlight",
+      "yellowphosphor": "Yellow Phosphor",
+      "liquidcrystal": "Liquid Crystal",
+      "lightfilters": "Light Filters",
+      "pixelasvisibletoview": "Pixel as Visible to Viewer",
+      "notpartoflcddisplay": "Not part of LCD display"
+    },
+    "concaveMirrorWearableDisplay": {
+      "title": "Concave Mirror Wearable Display",
+      "description": "A simple wearable display. A lot of designs use two mirrors and a positive lens, but this is a one-optical-element version. The scale is approximately 5:1mm.\n\nCC0: This work has been marked as dedicated to the public domain.",
+      "tft09display": "TFT 0.9\" display",
+      "concavemirror": "concave mirror",
+      "eye1": "eye",
+      "nose": "nose",
+      "pointsourcetomeasure": "point source to measure radius",
+      "t15readingglasses": "+1.5 reading glasses"
+    },
+    "reflectingMonochromator": {
+      "title": "Reflecting Monochromator",
+      "description": "This is a simulation of a reflecting monochromator, which uses a reflective diffraction grating and a slit at the focus to get narrow band wavelengths from composite light.",
+      "reflectingmonochroma": "Reflecting Monochromator",
+      "rotatediffractiongra": "Rotate Diffraction Grating \nto get narrow band \nwavelengths from \ncomposite light",
+      "exitslitmonochromati": "Exit Slit\n\nMonochromatic Light"
+    },
+    "solarEclipses": {
+      "title": "Solar Eclipses",
+      "description": "This simulation demonstrates the different types of solar eclipses. The top-right diagram depicts a solar eclipse where the Moon's shadow covers the Sun, resulting in a total eclipse at the center and a partial eclipse in surrounding areas. The bottom-right diagram illustrates an annular eclipse where the Moon is too far from Earth to completely cover the Sun, leaving a bright ring at the center (in this 2D simulator, the \"ring\" is demonstrated by sunlight coming only from the upper and the lower part of the sun) and also a partial eclipse in surrounding areas.",
+      "nottoscale": "(Not to scale)",
+      "sun": "Sun",
+      "moon": "Moon",
+      "partialeclipse": "Partial eclipse",
+      "annulareclipse": "Annular eclipse",
+      "earth": "Earth",
+      "totaleclipse": "Total eclipse"
+    },
+    "moduleExampleBasics": {
+      "title": "Module Example - Basics",
+      "thistextisinexamplem": "This text is in ExampleModule.",
+      "thistextisalsoinexam": "This text is also in ExampleModule.",
+      "thistextisnotinamodu": "This text is not in a module.",
+      "thistextisalsonotina": "This text is also not in a module."
+    },
+    "moduleExampleParameters": {
+      "title": "Module Example - Parameters",
+      "thismodulehastwopara": "This module has two parameters: n=`n` and theta=`theta`.\nYou can select and drag the sliders to adjust them.",
+      "thesizeofthistextosc": "The size of this text oscillates as a function of theta."
+    },
+    "moduleExampleControlPoints": {
+      "title": "Module Example - Control points",
+      "hereisthefirstdragga": "↙Here is the first (draggable) control point of the module",
+      "hereistheseconddragg": "↙Here is the second (draggable) control point of the module",
+      "hereisthemidpoint": "↙Here is the midpoint"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "Module Example - Arrays and conditionals",
+      "a1darrayii": "A 1D array: i=`i`",
+      "thistextisshownonlyw": "This text is shown only when n>5"
+    },
+    "moduleExampleVariables": {
+      "title": "Module Example - Variables"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Module Example - Custom equation",
+      "amirrorofshapeycos2p": "A mirror of shape y=cos(2 pi x + `phi`)"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "Module Example - Shape parametrization",
+      "alensdefinedbydr1r2": "A lens defined by d, R_1, R_2",
+      "alensdefinedbydffdbf": "A lens defined by d, FFD, BFD"
+    }
+  }
+}

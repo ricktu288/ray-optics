@@ -1,0 +1,163 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "Funkcja \"Moduł\" umożliwia tworzenie nowych narzędzi poprzez łączenie, dostosowywanie lub reparametryzację obiektów utworzonych przez istniejące narzędzia w tym symulatorze.",
+      "appearAsTools": "Zaimportowane moduły pojawią się jako narzędzia w kategorii \"Inne\". Wybierz i kliknij puste miejsce zgodnie z kolejnością sekwencji punktów kontrolnych (patrz \"Specyfikacja\").",
+      "embeddedInScene": "Zaimportowane moduły są osadzone w danych sceny, więc nie będą automatycznie aktualizowane, gdy autorzy modułów dokonają ich aktualizacji."
+    },
+    "import": "Importuj",
+    "imported": "Zaimportowany",
+    "specification": {
+      "title": "Specyfikacja",
+      "controlPointSequence": "Sekwencja punktów kontrolnych",
+      "parameters": "Parametry"
+    },
+    "customization": {
+      "title": "Dostosowywanie",
+      "description": "Moduły można tworzyć lub dostosowywać bezpośrednio w aplikacji internetowej, korzystając z wbudowanego edytora JSON. Zobacz [samouczek](/modules/tutorial). Dostosowywanie zaimportowanych modułów będzie miało wpływ tylko na bieżącą scenę."
+    },
+    "contribution": {
+      "title": "Wkład",
+      "description": "Wnoszenie wkładu do powyższej listy jest mile widziane. Aby dodać swój moduł, zobacz [Wnoszenie wkładu do modułów](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Soczewka Fresnela",
+      "description": "Soczewka Fresnela wykonana z półokrągłego kawałka szkła. Modułowa wersja [tego przykładu z galerii](/gallery/fresnel-lens).",
+      "point1": "Pierwszy punkt końcowy soczewki",
+      "point2": "Drugi punkt końcowy soczewki",
+      "Nslice": "Liczba pierścieni",
+      "refIndex": "Współczynnik załamania soczewki"
+    },
+    "ContSpectrum": {
+      "title": "Źródło światła o widmie ciągłym",
+      "description": "Źródło światła o jednolitym ciągłym widmie dyskretyzowanym z zadanym stałym krokiem. Działa tylko, gdy włączona jest opcja \"Symuluj kolory\".",
+      "point1": "Początek promieni",
+      "point2": "Określa kierunek promieni",
+      "min": "Minimalna długość fali",
+      "step": "Krok długości fali",
+      "max": "Maksymalna długość fali",
+      "brightness": "Całkowita jasność"
+    },
+    "CircleSource": {
+      "title": "Źródło światła kołowe",
+      "description": "Koło z jednolitymi 180-stopniowymi źródłami punktowymi rozmieszczonymi wzdłuż jego obwodu.",
+      "point1": "Środek koła",
+      "r": "Promień koła",
+      "N": "Liczba źródeł punktowych",
+      "brightness": "Całkowita jasność"
+    },
+    "Chaff": {
+      "title": "Chaff",
+      "description": "Chaff o prostokątnym kształcie składający się z losowych kawałków luster. Modułowa wersja [tego przykładu z galerii](/gallery/chaff-countermeasure).",
+      "point1": "Lewy górny róg chaff",
+      "point2": "Prawy dolny róg chaff",
+      "N": "Liczba luster w chaff",
+      "L": "Długość zwierciadeł"
+    },
+    "BeamExpander": {
+      "title": "Ekspander wiązki",
+      "description": "Układ dwóch idealnych soczewek, których odległość jest równa sumie ogniskowych. Rozszerzają lub zmniejszają średnicę wiązki skolimowanego światła. Modułowa wersja [tego przykładu z galerii](/gallery/beam-expanders).",
+      "point1": "Środek pierwszej soczewki(",
+      "point2": "Drugi punkt drugiej soczewki",
+      "point3": "Określa wspólne ognisko soczewek"
+    },
+    "RayRelay": {
+      "title": "Przekaźnik promienia",
+      "description": "Szereg idealnych identycznych soczewek o ogniskowej \\(f\\) i odległości \\(d\\) między soczewkami. Nierozbieżna trajektoria promienia jest zapewniona wtedy i tylko wtedy, gdy \\(d\\leq 4f\\). Modułowa wersja [tego przykładu z galerii] (/gallery/ray-relaying).",
+      "point1": "Pierwszy punkt końcowy pierwszej soczewki",
+      "point2": "Drugi punkt końcowy pierwszej soczewki (powinien mieć taki sam \\(x\\) jak pierwszy punkt)",
+      "f": "Ogniskowa soczewek",
+      "d": "Odległość między soczewkami",
+      "N": "Liczba soczewek"
+    },
+    "OpticalFiber": {
+      "title": "Światłowód",
+      "description": "Światłowód w kształcie linii o zadanej grubości rdzenia i płaszcza oraz współczynnikach załamania światła.",
+      "point1": "Pierwszy punkt końcowy światłowodu",
+      "point2": "Drugi punkt końcowy światłowodu",
+      "X": "Grubość rdzenia",
+      "Y": "Grubość płaszcza",
+      "n1": "Współczynnik załamania rdzenia",
+      "n2": "Współczynnik załamania płaszcza"
+    },
+    "CubeBeamSplitter": {
+      "title": "Sześcienny rozdzielacz wiązki",
+      "description": "Sześcienny rozdzielacz wiązki jest często stosowanym komponentem optycznym. Jest to moduł dzielnika wiązki w kształcie sześcianu, który można regulować pod względem rozmiaru i kąta.",
+      "point1": "Środek sześcianu (kwadratu)",
+      "size": "Rozmiar sześcianu",
+      "angle": "Kąt obrotu sześcianu w stopniach",
+      "refIndex": "Współczynnik załamania światła sześcianu (lub współczynnik Cauchy'ego \\(A\\), gdy włączona jest opcja \"Symuluj kolory\")",
+      "cauchyB": "Współczynnik Cauchy'ego \\(B\\) sześcianu w mikrometrach kwadratowych",
+      "splitRatio": "Stosunek transmisji diagonalnego rozdzielacza wiązki"
+    }
+  },
+  "moduleTutorial": {
+    "title": "Poradnik tworzenia modułów",
+    "opening": {
+      "description": "Ten poradnik poprowadzi Cię przez podstawy tworzenia niestandardowego modułu, który można wykonać w całości w aplikacji internetowej, bez potrzeby korzystania z zewnętrznego środowiska programistycznego.",
+      "moduleIntroduction": "Funkcja \"Moduł\" w Symulacji Promieni optycznych umożliwia tworzenie modułowych kombinacji obiektów z niestandardowymi parametrami, niestandardowymi punktami kontrolnymi i tablicami obiektów. Funkcja ta rozszerza możliwości tego symulatora poprzez łączenie, specjalizację lub reparametryzację obiektów utworzonych przez istniejące narzędzia w celu stworzenia nowych narzędzi. Na przykład moduł `CircleSource` (patrz Narzędzia -> Inne -> Importuj moduły) łączy szereg źródeł punktowych utworzonych przez istniejące narzędzie \"Źródło punktowe (<360°)\" wzdłuż okręgu, aby utworzyć narzędzie \"Źródło kołowe\", które nie istniało w symulatorze. Moduł `FresnelLens` specjalizuje narzędzie \"Szkła-> Równanie niestandardowe\", dzięki czemu równanie reprezentuje określoną krzywą soczewki Fresnela sparametryzowaną przez liczbę pierścieni, tworząc w ten sposób wyspecjalizowane narzędzie \"Soczewka Fresnela\", które również nie istniało wcześniej. Oprócz tworzenia nowych narzędzi, funkcja ta może również sprawić, że niektóre demonstracje optyki będą bardziej interaktywne. Na przykład, przeciągając trzeci punkt kontrolny modułu `BeamExpander`, można bezpośrednio zobaczyć, jak położenie wspólnego ogniska dwóch soczewek wpływa na szerokość wiązki, bez konieczności indywidualnego dostosowywania ogniskowych każdej z nich.",
+      "compareWithHandle": "Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji \"uchwyt\" (patrz sekcja \"Grupuj, obracaj i skaluj obiekty\" w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji \"uchwyt\" przed rozważeniem utworzenia modułu. Zobacz [tutaj](/gallery/black-cat-becomes-white) dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.",
+      "compareWithIntegrations": "Z drugiej strony, jeśli Twój przypadek wymaga skomplikowanego programowania (takiego jak tworzenie animacji, stosowanie skomplikowanych algorytmów do rozmieszczania elementów optycznych lub przeprowadzanie analizy map natężenia oświetlenia), użyj zamiast tego [narzędzi integracyjnych](/integrations) i napisz skrypty, np. w Pythonie lub Julii.",
+      "contribute": "Możesz [wspomóc listę swoich modułów „Importuj moduły”](/contributing/modules), jeśli uważasz, że są przydatne dla innych, nawet jeśli są vibecoding!"
+    },
+    "jsonEditor": {
+      "title": "Wbudowany edytor JSON",
+      "currentlyNoVisual": "Ta aplikacja nie posiada obecnie wizualnego interfejsu do tworzenia modułów, dlatego musisz bezpośrednio edytować plik JSON sceny.",
+      "enableJsonEditor": "Możesz włączyć wbudowany edytor JSON, klikając rozwijaną listę \"ustawienia\" w prawym górnym rogu aplikacji, a następnie zaznaczając \"Pokaż edytor JSON\". Edytor kodu powinien pojawić się po lewej stronie aplikacji, z kodem JSON bieżącej sceny. Upewnij się, że masz wystarczająco duży ekran, ponieważ ta funkcja nie działa dobrze na urządzeniach mobilnych.",
+      "updateAccordingly": "Podczas edycji sceny za pomocą zwykłego wizualnego edytora scen, kod w edytorze JSON będzie odpowiednio aktualizowany, z podświetloną zmienioną częścią. I odwrotnie, bezpośrednia edycja kodu w edytorze JSON spowoduje odpowiednią aktualizację sceny. Jeśli nie jesteś zaznajomiony z JSON lub jakimkolwiek innym formatem tekstowym danych, możesz chcieć pobawić się nim przez chwilę.",
+      "objsArray": "W szczególności, gdy dodajesz obiekt do sceny, jest on dodawany do tablicy `objs`. A jeśli zmienisz niektóre z jego właściwości na wartości inne niż domyślne, pojawią się one jako pary klucz-wartość w tym obiekcie.",
+      "inIframesBelow": "WAŻNE: Jeśli na tej stronie samouczka nie widzisz edytora kodu JSON w poniższych ramkach iframe, włącz go i odśwież tę stronę, ponieważ musisz widzieć kod, aby zrozumieć, jak to działa."
+    },
+    "basics": {
+      "title": "Podstawy modułu",
+      "lookAtExample": "Spójrzmy na pierwszy przykład modułu.",
+      "lookAtJson": "Powinny być widoczne cztery linie tekstu. Patrząc na edytor JSON, zobaczysz, że pierwsze dwa znajdują się bezpośrednio w tablicy `objs` najwyższego poziomu, jak zwykle, ale dwa ostatnie znajdują się w `modules.ExampleModule.objs`.",
+      "moduleDef": "`modules` to słownik, w którym kluczem jest nazwa modułu (w tym przypadku `ExampleModule`), a wartością definicja tego modułu. W szczególności tablica `modules.ExampleModule.objs` opisuje (szablon) obiektów w tym module, co różni się od najwyższego poziomu `objs`, który opisuje obiekty w scenie.",
+      "putToScene": "Aby umieścić obiekty w ramach modułu na scenie, potrzebujemy \"obiektu modułu\" w tablicy najwyższego poziomu `objs`, którym w tym przykładzie jest `objs[2]`, którego typem jest `ModuleObj` i którego właściwością `module` jest nazwa modułu.",
+      "moduleDefNotEditable": "Definicja modułu w słowniku `modules` nie jest edytowalna przez wizualny edytor scen. Tak więc, gdy klikniesz dowolny z dwóch ostatnich tekstów w tym przykładzie, wybierasz tylko obiekt modułu, a nie obiekty w module. Ponieważ współrzędne tekstów w definicji modułu w tym przykładzie są współrzędnymi bezwzględnymi, ostatnie dwa teksty nie są przeciągalne. Później dowiemy się, jak uczynić je przeciągalnymi za pomocą punktów kontrolnych.",
+      "demodulize": "Jeśli wybierzesz obiekt modułu, na pasku obiektów znajdziesz przycisk \"Demodułuj\". Kliknięcie go \"rozwinie\" obiekt modułu na jego części składowe, a `objs` będzie teraz zawierać wszystkie cztery teksty. Ta operacja nie jest odwracalna (ale oczywiście można kliknąć \"cofnij\").",
+      "createModule": "Obecnie sugerowany sposób tworzenia modułu polega na tym, aby najpierw utworzyć pusty moduł za pomocą edytora JSON, utworzyć kilka obiektów za pomocą edytora scen wizualnych, a następnie wyciąć i wkleić obiekty z `objs` do `modules.ModuleName.objs` za pomocą edytora JSON."
+    },
+    "parameters": {
+      "title": "Dodawanie parametrów",
+      "lookAtExample": "Obiekty w module można zdefiniować za pomocą zestawu parametrów. Przyjrzyjmy się prostemu przykładowi",
+      "paramsArray": "Tutaj `modules.ModuleName.params` jest tablicą ciągów `\"name=start:step:end:default\"` definiującą nazwę zmiennych i zakres suwaków. Suwaki pojawiają się na pasku obiektów, gdy obiekt modułu jest zaznaczony.",
+      "equationSyntax": "W tablicy `modules.ExampleModule.objs`, dowolne wartości mogą być wyrażone za pomocą tych parametrów. W ciągu znaków (takim jak właściwość `text` etykiety `TextLabel`), równania zmiennych są otoczone parą znaków odwrotnego apostrofu. W przypadku parametrów liczbowych (takich jak właściwość `fontSize` etykiety `TextLabel`), należy utworzyć ciąg znaków, aby można było użyć w nim formatu odwrotnego apostrofu, więc każde równanie jest otoczone parą znaków odwrotnego apostrofu i parą cudzysłowów. Równanie jest obliczane za pomocą math.js ([syntax](/mathjs/syntax)). Zobacz tam dostępną składnię i funkcje, których można użyć w równaniach.",
+      "valueStorage": "Rzeczywiste wartości parametrów są przechowywane we właściwości `params` obiektu modułu, który, w przeciwieństwie do definicji modułu, może być bezpośrednio edytowany przez edytor scen za pomocą suwaka."
+    },
+    "controlPoints": {
+      "title": "Dodawanie punktów kontrolnych",
+      "lookAtExample": "Aby obiekt modułu był przeciągalny, musimy sparametryzować obiekty w module za pomocą zestawu punktów kontrolnych. Spójrzmy na przykład",
+      "coordinatesOfControlPoints": "Tutaj `modules.ModuleName.numPoints` definiuje liczbę punktów kontrolnych. Współrzędne punktów kontrolnych to (`x_1`, `y_1`), (`x_2`, `y_2`), itd. i są używane w taki sam sposób jak parametry w `modules.ExampleModule.objs`, jak opisano w poprzedniej sekcji. Należy zauważyć, że indeks zaczyna się od 1.",
+      "valueStorage": "Rzeczywiste wartości współrzędnych punktów kontrolnych są przechowywane we właściwości `points` obiektu modułu, które, w przeciwieństwie do zakodowanych na stałe współrzędnych w przykładzie 1, mogą być edytowane przez wizualny edytor sceny poprzez przeciąganie punktów kontrolnych, z których każdy jest wyświetlany jako dwa koncentryczne szare okręgi na scenie. Jeśli przeciągniesz w inne miejsce obiekt modułu (np. przeciągniesz etykiety tekstowe), wszystkie punkty kontrolne przesuną się razem.",
+      "createAsTool": "Ponieważ nasz obiekt modułu może się teraz poruszać, tworzenie wielu wystąpień jest teraz dość łatwe, jak w zwykłych narzędziach. Nazwa modułu jest wyświetlana w menu Narzędzia -> Inne i można ją wybrać, a następnie kliknąć kolejno dwa punkty w pustej przestrzeni dla dwóch punktów kontrolnych, aby utworzyć kolejne wystąpienie modułu.  Możesz także użyć przycisku “Powiel” na pasku obiektów."
+    },
+    "arrayAndConditional": {
+      "title": "Tablice i instrukcje warunkowe",
+      "lookAtExample": "Bardziej skomplikowany moduł można zbudować przy użyciu tablic i instrukcji warunkowych. Spójrzmy na przykład",
+      "specialKeys": "W obrębie `modules.ExampleModule.objs`, każdy obiekt w tablicy może mieć dwa specjalne klucze: `\"for\"` i `\"if\"`. Wartością klucza `\"for\"` jest albo łańcuch w formacie `\"name=start:step:end\"` definiujący zmienną pętli, albo tablica kilku łańcuchów tego formatu opisująca wielowymiarową pętlę. Taki obiekt w tablicy jest powielany kilka razy zgodnie ze zmiennymi pętli. Wartość klucza `\"if\"` jest łańcuchem reprezentującym wyrażenie math.js, które ma wartość logiczną, a taki obiekt jest zawarty w tablicy wtedy i tylko wtedy, gdy wartość logiczna to prawda.",
+      "preventInfiniteLoop": "Aby zapobiec przypadkowemu utworzeniu nieskończonej pętli, całkowita liczba iteracji każdej pętli `\"for\"` jest ograniczona przez właściwość `maxLoopLength` definicji modułu, której wartość domyślna wynosi 1000. W razie potrzeby można ustawić tę właściwość na większą wartość."
+    },
+    "objsWithEqn": {
+      "title": "Obiekty z wbudowanymi niestandardowymi równaniami"
+    },
+    "objsWithShapeParam": {
+      "title": "Obiekty z wbudowaną parametryzacją kształtu",
+      "description": "Dla obiektów, które już obsługują różne sposoby definiowania swojego kształtu (obecnie tylko Szkła -> Soczewka sferyczna). Istnieje specjalna składnia JSON dla takich obiektów, która może być użyta w definicji modułu, nawet jeśli są one zawsze zdefiniowane przez kształt w tablicy `objs` najwyższego poziomu. Oto przykład"
+    },
+    "aiAssistant": {
+      "title": "Korzystanie z asystenta AI",
+      "description": "[Ray Optics Coder](/ai-tools/chatgpt) w ChatGPT pomoże Ci pisać moduły Ray Optics. Generuje on kod JSON dla sceny zawierającej moduł na podstawie Twojego opisu, a następnie możesz skopiować ten kod do edytora JSON (patrz poniżej). Możesz go również użyć do edycji istniejących modułów lub modularyzacji scen.",
+      "limitation": "Kod wygenerowany przez chatbota może nie działać bezpośrednio. W przypadku wystąpienia błędu, skopiowanie i wklejenie komunikatu o błędzie do chatbota może pomóc. W przypadku bardziej skomplikowanych modułów, warto przeczytać poniższy samouczek i napisać kod przynajmniej częściowo samodzielnie.",
+      "otherServices": "Pliki z instrukcjami i wiedzą dla chatbota są dostępne [tutaj](/ai-tools/instructions). Jeśli wolisz inną usługę LLM, możesz udostępnić te pliki, aby nauczyć go pisania modułów Ray Optics."
+    },
+    "variables": {
+      "title": "Używanie zmiennych",
+      "lookAtExample": "Możesz definiować zmienne i funkcje matematyczne, których można używać w całym module. Spójrzmy na przykład",
+      "varsArray": "`modules.ModuleName.vars` to tablica ciągów znaków, z których każdy reprezentuje instrukcję math.js definiującą zmienną lub funkcję. Definicje te są przetwarzane sekwencyjnie, więc późniejsze definicje mogą odwoływać się do wcześniejszych.",
+      "context": "Definicje zmiennych mają pełny dostęp do wszystkich parametrów i współrzędnych punktów kontrolnych, a po zdefiniowaniu zmienne te mogą być używane w szablonach obiektów, podobnie jak parametry i współrzędne punktów kontrolnych, umożliwiając bardziej złożone obliczenia wielokrotnego użytku."
+    }
+  }
+}

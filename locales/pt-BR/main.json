@@ -1,0 +1,274 @@
+{
+  "project": {
+    "name": "Simulação de Óptica de Raios",
+    "shortName": "Óptica de Raios",
+    "description": "Uma aplicação web grátis e de código aberto para criação e simulação de cenas de óptica geométrica 2D."
+  },
+  "pages": {
+    "simulator": "Simulador",
+    "home": "Início",
+    "gallery": "Galeria",
+    "modules": "Módulos",
+    "about": "Sobre",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Crie e simule cenas ópticas geométricas 2D interativamente.\nTotalmente gratuito e baseado na web. Código-fonte está [disponível no GitHub](/github).",
+    "launchSimulator": "Abrir Simulador"
+  },
+  "tools": {
+    "title": "Ferramentas",
+    "categories": {
+      "lightSource": "Fonte de luz",
+      "mirror": "Espelho",
+      "glass": "Vidro",
+      "blocker": "Bloqueador",
+      "other": "Outros"
+    },
+    "common": {
+      "clickInstruction": "Clique para criar.",
+      "lineInstruction": "Arraste ou clique para criar.",
+      "circleInstruction": "Arraste ou clique para criar. Primeiro o centro, então a circunferência."
+    },
+    "SingleRay": {
+      "title": "Raio único",
+      "description": "Um único raio de luz definido por dois pontos.",
+      "instruction": "Arraste ou clique para criar. O primeiro ponto é a fonte, disparando rumo ao segundo ponto."
+    },
+    "Beam": {
+      "title": "Feixe paralelo",
+      "description": "Um feixe paralelo ou divergente de luz emerge de um segmento de linha, com densidade controlada pelo controle deslizante 'Densidade de raios'."
+    },
+    "PointSource": {
+      "title": "Fonte pontual",
+      "description": "Raios emergem de um ponto único, com quantidade controlada pelo controle deslizante 'Densidade de raios'."
+    },
+    "AngleSource": {
+      "instruction": "Arraste ou clique para criar. O primeiro ponto é a fonte, disparando rumo ao segundo ponto.",
+      "description": "Fonte pontual com um ângulo de emissão definido."
+    },
+    "Mirror": {
+      "title": "Segmento",
+      "description": "Simule a reflexão da luz em um espelho."
+    },
+    "otherMirror": {
+      "title": "Curvo",
+      "description": "Um espelho cujo formato é curvo. Pode ser circular, parabólico, ou definido por uma equação personalizada y=f(x)."
+    },
+    "ArcMirror": {
+      "title": "Arco Circular",
+      "description": "Um espelho cujo formato é parte de um círculo, que é definido por três pontos.",
+      "instruction": "Arraste ou clique para criar. Os primeiros dois pontos definem o vão entre as bordas do arco, e o último ponto define o tamanho do arco."
+    },
+    "ParabolicMirror": {
+      "title": "Parabólico",
+      "description": "Um espelho cujo formato é uma parábola, que é definida por três pontos.",
+      "instruction": "Arraste ou clique nas duas pontas para criar, então clique no vértice."
+    },
+    "IdealMirror": {
+      "title": "Curvo Ideal",
+      "description": "O espelho 'curvo' idealizado que obedece exatamente a equação (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente."
+    },
+    "BeamSplitter": {
+      "title": "Divisor de Feixe",
+      "description": "Um espelho que transmite uma porcentagem da luz que chega."
+    },
+    "CustomMirror": {
+      "title": "Equação Personalizada",
+      "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0)."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Grade de Difração Côncava",
+      "description": "Uma grade de difração cuja forma é parte de um círculo."
+    },
+    "PlaneGlass": {
+      "title": "Semi-plano",
+      "description": "Simule a refração e a reflexão da luz em uma superfície.",
+      "instruction": "Arraste ou clique em dois pontos na superfície para criar."
+    },
+    "otherGlass": {
+      "title": "Outras formas",
+      "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0)."
+    },
+    "CircleGlass": {
+      "title": "Círculo",
+      "description": "Vidro com um formato circular, definido por seu centro e um ponto na superfície."
+    },
+    "Glass": {
+      "title": "Forma livre",
+      "description": "Vidro com qualquer formato construído com segmentos de linha e arcos circulares.",
+      "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar."
+    },
+    "IdealLens": {
+      "title": "Lente Ideal",
+      "description": "Uma lente ideal que obedece exatamente à equação de lente fina (1/p + 1/q = 1/f). O comprimento focal pode ser definido diretamente."
+    },
+    "SphericalLens": {
+      "title": "Lente Esférica",
+      "description": "Uma lente esférica."
+    },
+    "CustomGlass": {
+      "title": "Equação Personalizada",
+      "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0)."
+    },
+    "CircleGrinGlass": {
+      "title": "Círculo GRIN",
+      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular."
+    },
+    "GrinGlass": {
+      "title": "Polígono GRIN",
+      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
+      "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
+      "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
+    },
+    "otherGrinGlass": {
+      "title": "Polígono com gradiente de índice",
+      "description": "Material com uma função de índice refrativo personalizada n(x,y)."
+    },
+    "Blocker": {
+      "title": "Bloqueador Reto",
+      "description": "Um segmento de linha bloqueador de luz que absorve os raios incidentes."
+    },
+    "CircleBlocker": {
+      "title": "Bloqueador Circular",
+      "description": "Um bloqueador circular de luz que absorve os raios incidentes."
+    },
+    "Aperture": {
+      "title": "Abertura",
+      "description": "Um par de bloqueadores de luz que absorvem os raios incidentes. O tamanho do furo pode ser ajustado simetricamente.",
+      "instruction": "Arraste ou clique nas duas pontas para criar."
+    },
+    "DiffractionGrating": {
+      "title": "Grade de Difração",
+      "description": "Uma grade de difração que divide luz em um ângulo dependente do comprimento de onda.",
+      "warning": "Aviso: As intensidades de raios difratados podem não ser precisas."
+    },
+    "Ruler": {
+      "title": "Régua",
+      "description": "Uma régua a partir de um ponto zero até um outro ponto."
+    },
+    "Protractor": {
+      "title": "Transferidor",
+      "description": "Um transferidor definido a partir do centro e outro ponto para a direção do zero. A escala está em graus."
+    },
+    "Detector": {
+      "title": "Detector",
+      "description": "Uma ferramenta para medir a taxa de fluxo de energia (P), a taxa de fluxo de momento perpendicular (F⊥), e a taxa de fluxo de momento paralelo (F∥) através de um segmento de linha.  As unidades são arbitrárias."
+    },
+    "TextLabel": {
+      "title": "Texto",
+      "description": "Um rótulo de texto."
+    },
+    "LineArrow": {
+      "title": "Linha / Seta",
+      "description": "Uma seta ou segmento de linha."
+    },
+    "Drawing": {
+      "title": "Desenhar",
+      "description": "Uma ferramenta de desenho à mão livre.",
+      "instruction": "Arraste para desenhar."
+    },
+    "modules": {
+      "import": "Importar Módulos…",
+      "remove": "Remover módulo"
+    },
+    "moveView": {
+      "title": "Mover Vista",
+      "description": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)"
+    },
+    "ParamMirror": {
+      "title": "Curva Paramétrica",
+      "description": "Um espelho cuja forma é definida por equações paramétricas personalizadas."
+    },
+    "ParamGlass": {
+      "title": "Curva Paramétrica",
+      "description": "Vidro com a forma definida por equações paramétricas personalizadas."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva Paramétrica GRIN",
+      "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
+    },
+    "CustomSurface": {
+      "title": "Superfíce Personalizada de Linha",
+      "description": "Uma superfície personalizada de segmento de linha onde o ângulo (θ) e brilho(P) dos raios que saem (quando um raio incide na superfície) são definidos por equações personalizadas."
+    },
+    "CustomArcSurface": {
+      "title": "Superfície Personalizada em Arco",
+      "description": "Uma superfície personalizada em formato de arco circular."
+    },
+    "CustomParamSurface": {
+      "title": "Curva Paramétrica Personalizada",
+      "description": "Uma superfície personalizada com forma definida por equações paramétricas."
+    },
+    "moreTools": {
+      "title": "Mais Ferramentas…"
+    },
+    "CurveGlass": {
+      "title": "Curvas de Bézier",
+      "description": "Vidro delimitado por curvas cúbicas de Bézier.",
+      "instruction": "Clique para criar um pedaço, clique no ponto de início ao finalizar o desenho. Após isso, arraste as caixas para manipular os pontos de controle, mudando a curva."
+    },
+    "CurveGrinGlass": {
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidro de gradiente de índice delimitado por curvas cúbicas de Bézier."
+    }
+  },
+  "view": {
+    "title": "Ver",
+    "rays": {
+      "title": "Raios",
+      "description": "Exibir os raios. Quando a 'Densidade de Raios' está alta, eles parecem ser contínuos."
+    },
+    "extended": {
+      "title": "Raios extendidos",
+      "description": "Exibir tanto os raios quanto suas extensões. Laranja indica extensões para trás, e cinza indica para frente.",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos na cor fonte e distinguidos por traços."
+    },
+    "images": {
+      "title": "Todas Imagens",
+      "description": "Mostra a posição de todas imagens. Pontos amarelos indicam imagens reais, laranja indica imagens virtuais, e cinza (nenhuma nesta imagem) indica objetos virtuais. Note que algumas imagens não podem ser detectadas se 'Densidade de Raios' não estiver alta o suficiente.",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte e distinguidos por tamanhos de ponto."
+    },
+    "observer": {
+      "title": "Visto por Observador",
+      "description": "Simule os raios e imagens vistos de uma posição. O círculo azul é o observador. Quaisquer raios atravessando ele são considerados 'Observados'. O observador não sabe onde os raios realmente começam, mas pode pensar que eles começam em algum ponto se eles intersecionam lá. Os raios são exibidos em azul, e os pontos em amarelo (real) ou laranja (virtual).",
+      "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte.",
+      "instruction": "Arraste o ponto grande azul para mover o observador."
+    },
+    "customThemeNote": "Nota: Esta cena utiliza um tema personalizado."
+  },
+  "simulateColors": {
+    "title": "Simular Cores",
+    "description": "Simular cores (comprimentos de onda) de fontes luminosas, mistura de cores, filtragem de cores por bloqueadores e espelhos, e dispersão cromática de vidros.",
+    "instruction": "Você pode definir esses parâmetros para esses objetos quando selecionados. Para simular espectros de cor, sobreponha raios com comprimentos de onda diferentes.",
+    "warning": "Mistura de cores possui precisão baixa se \"Corrigir Brilho\" estiver desligada."
+  },
+  "aboutPage": {
+    "description": "Este projeto, incluindo o conteúdo da galeria, é licensiado sob a [Licença Apache 2.0](/license), e é oficialmente hospedado no site [PhyDemo(phydemo.app)](/phydemo) (anteriormente em ricktu288.github.io). O código fonte está [disponível no GitHub](/github), e [contribuições são bem-vindas](/contributing). Se houver questões ou sugestões, você pode abrir [issues](/github/issues) ou [discussões](/github/discussions) no GitHub, ou enviar um email para [ray-optics@phydemo.app](/email) se você não utilizar o GitHub.",
+    "cite": "Citar este projeto",
+    "mainAuthors_one": "Autor Principal",
+    "mainAuthors_many": "Autores Principais",
+    "mainAuthors_other": "Autores Principais",
+    "contributors": "Contribuidores",
+    "contributorSorting": "Contribuidores do GitHub primeiro; outros ordenados cronologicamente.",
+    "contributionCategories": {
+      "code": "código",
+      "uiDesign": "UI design",
+      "gallery": "galeria",
+      "module": "módulo",
+      "translations_one": "tradução {{languages}}",
+      "translations_many": "traduções {{languages}}",
+      "translations_other": "traduções {{languages}}"
+    }
+  },
+  "languageDropdown": {
+    "title": "Linguagem: {{language}}",
+    "translatedFraction": "{{fraction}} traduzido"
+  },
+  "meta": {
+    "languageName": "Português (Brasil)",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

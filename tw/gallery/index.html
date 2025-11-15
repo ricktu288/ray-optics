@@ -1,0 +1,984 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品集 - 線光學模擬</title>
+  <meta property="og:title" content="作品集 - 線光學模擬">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/tw/gallery/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="線光學模擬">
+  <meta property="og:locale" content="zh-TW">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/tw/gallery/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/gallery/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/gallery/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/gallery/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/gallery/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/gallery/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/gallery/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .example-container {
+      border-width: 2px;
+      margin-bottom: 5px;
+      display: inline-block;
+      width: 270px;
+      text-decoration: none;
+    }
+
+    .example-container:hover {
+      text-decoration: none;
+    }
+
+    .example-container:active {
+      text-decoration: none;
+    }
+
+    .example-container:focus {
+      text-decoration: none;
+    }
+
+    .example-image {
+      width: 250px;
+      height: 250px !important;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    .example-title {
+      font-size: 12pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .example-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .anchor {
+      padding-top: 65px; 
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../tw/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> 線光學模擬
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../tw/" class="">首頁</a>
+        <a href="../../tw/gallery/" class="active">作品集</a>
+        <a href="../../tw/about" class="">關於</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1>「線光學模擬」作品集</h1>
+    以下列表為使用<a href="../../simulator/?zh-TW">「線光學模擬」網頁程式</a>製作的互動式光學演示。歡迎您貢獻新項目（請參閱<a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-items-to-the-gallery">貢獻指南</a>）。如發現內容有誤，請<a href="https://github.com/ricktu288/ray-optics/issues">在GitHub上建立Issue</a>或發送電子郵件至<a href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;">ray-optics@phydemo.app</a>。
+    
+    <h3>類別</h3>
+      <a href="#reflection">光的反射</a><br>
+      <a href="#refraction">光的折射</a><br>
+      <a href="#lens">透鏡</a><br>
+      <a href="#combination-of-lenses">透鏡組合</a><br>
+      <a href="#GRIN-optics">漸變折射率光學</a><br>
+      <a href="#miscellaneous">其他</a><br>
+
+
+      <a name="reflection" class="anchor">&nbsp;</a>
+      <h2>光的反射</h2>
+        <a href="../../tw/gallery/images-formed-by-two-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/images-formed-by-two-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/images-formed-by-two-mirrors-thumbnail.jpg" alt="兩面鏡子成像" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">兩面鏡子成像</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/parabolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/parabolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/parabolic-mirror-thumbnail.jpg" alt="拋物面鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">拋物面鏡</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/hyperbolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/hyperbolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/hyperbolic-mirror-thumbnail.jpg" alt="雙曲面鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">雙曲面鏡</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/retroreflectors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/retroreflectors-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/retroreflectors-thumbnail.jpg" alt="回復反射器" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">回復反射器</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/periscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/periscope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/periscope-thumbnail.jpg" alt="潛望鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">潛望鏡</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/newtonian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/newtonian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/newtonian-telescope-thumbnail.jpg" alt="牛頓望遠鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">牛頓望遠鏡</p>
+            <p class="example-contributor">Matteo Ricci Cipolloni</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/penrose-unilluminable-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/penrose-unilluminable-room-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/penrose-unilluminable-room-thumbnail.jpg" alt="無法照亮的潘洛斯房間" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">無法照亮的潘洛斯房間</p>
+            <p class="example-contributor">Vincent Fan, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/optical-cavity" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/optical-cavity-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/optical-cavity-thumbnail.jpg" alt="雙鏡共振腔" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">雙鏡共振腔</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/resonator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/resonator-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/resonator-thumbnail.jpg" alt="平凹共振腔" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">平凹共振腔</p>
+            <p class="example-contributor">Mikhail Kochiev</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/maze-solution" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/maze-solution-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/maze-solution-thumbnail.jpg" alt="用一條光線解迷宮" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">用一條光線解迷宮</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/specular-and-diffuse-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/specular-and-diffuse-reflection-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/specular-and-diffuse-reflection-thumbnail.jpg" alt="鏡面反射與漫反射" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">鏡面反射與漫反射</p>
+            <p class="example-contributor">Steve Stonebraker</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/chaff-countermeasure" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/chaff-countermeasure-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/chaff-countermeasure-thumbnail.jpg" alt="干擾箔" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">干擾箔</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/caustics-from-a-reflective-sphere" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/caustics-from-a-reflective-sphere-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/caustics-from-a-reflective-sphere-thumbnail.jpg" alt="反射性球體的焦散" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">反射性球體的焦散</p>
+            <p class="example-contributor">Georg Nadorff</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/the-mirascope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/the-mirascope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/the-mirascope-thumbnail.jpg" alt="幻象鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">幻象鏡</p>
+            <p class="example-contributor">Mario Petitclerc</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="refraction" class="anchor">&nbsp;</a>
+      <h2>光的折射</h2>
+        <a href="../../tw/gallery/reflect" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/reflect-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/reflect-thumbnail.jpg" alt="反射與折射" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">反射與折射</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/internal-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/internal-reflection-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/internal-reflection-thumbnail.jpg" alt="全反射" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">全反射</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/prisms" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/prisms-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/prisms-thumbnail.jpg" alt="稜鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">稜鏡</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/beam-directors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/beam-directors-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/beam-directors-thumbnail.jpg" alt="光束導向器" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">光束導向器</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/apparent-depth" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/apparent-depth-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/apparent-depth-thumbnail.jpg" alt="視深度" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">視深度</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/distortion-in-windows-and-backside-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/distortion-in-windows-and-backside-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/distortion-in-windows-and-backside-mirrors-thumbnail.jpg" alt="窗戶和背面鍍膜鏡中的失真" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">窗戶和背面鍍膜鏡中的失真</p>
+            <p class="example-contributor">Shahar Seifer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/bended-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/bended-pencil-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/bended-pencil-thumbnail.jpg" alt="彎曲的鉛筆" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">彎曲的鉛筆</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/broken-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/broken-pencil-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/broken-pencil-thumbnail.jpg" alt="斷裂的鉛筆" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">斷裂的鉛筆</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/chromatic-dispersion" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/chromatic-dispersion-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/chromatic-dispersion-thumbnail.jpg" alt="色散" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">色散</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/rainbows" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/rainbows-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/rainbows-thumbnail.jpg" alt="彩虹" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">彩虹</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/minimum-deviation-angle" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/minimum-deviation-angle-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/minimum-deviation-angle-thumbnail.jpg" alt="最小偏向角" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">最小偏向角</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/aplanatic-points" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/aplanatic-points-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/aplanatic-points-thumbnail.jpg" alt="等光程點" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">等光程點</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="lens" class="anchor">&nbsp;</a>
+      <h2>透鏡</h2>
+        <a href="../../tw/gallery/concave-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/concave-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/concave-lens-thumbnail.jpg" alt="凹透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">凹透鏡</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/convex-lens-thumbnail.jpg" alt="凸透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">凸透鏡</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/lens-images" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/lens-images-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/lens-images-thumbnail.jpg" alt="透鏡成像" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">透鏡成像</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/virtual-image-formation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/virtual-image-formation-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/virtual-image-formation-thumbnail.jpg" alt="虛像的形成" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">虛像的形成</p>
+            <p class="example-contributor">Daniel Anya</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/transverse-and-longitudinal-magnification" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/transverse-and-longitudinal-magnification-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/transverse-and-longitudinal-magnification-thumbnail.jpg" alt="橫向和縱向放大率" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">橫向和縱向放大率</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/vanishing-point" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/vanishing-point-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/vanishing-point-thumbnail.jpg" alt="消失點" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">消失點</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/monochromatic-aberrations" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/monochromatic-aberrations-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/monochromatic-aberrations-thumbnail.jpg" alt="單色像差" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">單色像差</p>
+            <p class="example-contributor">Paul Falstad, Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/chromatic-aberration" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/chromatic-aberration-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/chromatic-aberration-thumbnail.jpg" alt="色像差" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">色像差</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/orientations-of-plano-convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/orientations-of-plano-convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/orientations-of-plano-convex-lens-thumbnail.jpg" alt="平凸透鏡的方向" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">平凸透鏡的方向</p>
+            <p class="example-contributor">Matthias Guillon</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/hyperbolic-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/hyperbolic-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/hyperbolic-lens-thumbnail.jpg" alt="雙曲透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">雙曲透鏡</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/fresnel-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/fresnel-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/fresnel-lens-thumbnail.jpg" alt="菲涅耳透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">菲涅耳透鏡</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/augustin-fresnels-lighthouse-optics" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/augustin-fresnels-lighthouse-optics-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/augustin-fresnels-lighthouse-optics-thumbnail.jpg" alt="奧古斯丁·菲涅耳的燈塔光學" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">奧古斯丁·菲涅耳的燈塔光學</p>
+            <p class="example-contributor">Richard Ruh</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="combination-of-lenses" class="anchor">&nbsp;</a>
+      <h2>透鏡組合</h2>
+        <a href="../../tw/gallery/zoom-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/zoom-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/zoom-lens-thumbnail.jpg" alt="變焦鏡頭" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">變焦鏡頭</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/compound-microscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/compound-microscope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/compound-microscope-thumbnail.jpg" alt="複式顯微鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">複式顯微鏡</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/telescope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/telescope-thumbnail.jpg" alt="望遠鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">望遠鏡</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/keplerian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/keplerian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/keplerian-telescope-thumbnail.jpg" alt="克卜勒望遠鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">克卜勒望遠鏡</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/beam-expanders" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/beam-expanders-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/beam-expanders-thumbnail.jpg" alt="擴束鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">擴束鏡</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/ray-relaying" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/ray-relaying-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/ray-relaying-thumbnail.jpg" alt="光線中繼" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">光線中繼</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/rochester-cloak" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/rochester-cloak-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/rochester-cloak-thumbnail.jpg" alt="羅徹斯特斗篷" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">羅徹斯特斗篷</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/simple-double-gauss-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/simple-double-gauss-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/simple-double-gauss-lens-thumbnail.jpg" alt="簡易雙高斯透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">簡易雙高斯透鏡</p>
+            <p class="example-contributor">Alex</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/pair-of-axicons-making-a-rainbow-ring" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.jpg" alt="一對錐透鏡產生彩虹環" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">一對錐透鏡產生彩虹環</p>
+            <p class="example-contributor">Peter Becher</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/koehler-illumination" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/koehler-illumination-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/koehler-illumination-thumbnail.jpg" alt="科勒照明" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">科勒照明</p>
+            <p class="example-contributor">Leon Seidel</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="GRIN-optics" class="anchor">&nbsp;</a>
+      <h2>漸變折射率光學</h2>
+        <a href="../../tw/gallery/GRIN-slab" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/GRIN-slab-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/GRIN-slab-thumbnail.jpg" alt="漸變折射率平板" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">漸變折射率平板</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/inferior-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/inferior-mirage-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/inferior-mirage-thumbnail.jpg" alt="下蜃景" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">下蜃景</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/sea-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/sea-mirage-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/sea-mirage-thumbnail.jpg" alt="海市蜃樓" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">海市蜃樓</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/logarithmic-spiral-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/logarithmic-spiral-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/logarithmic-spiral-lens-thumbnail.jpg" alt="等角螺線形的光線路徑" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">等角螺線形的光線路徑</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/luneburg-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/luneburg-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/luneburg-lens-thumbnail.jpg" alt="龍伯透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">龍伯透鏡</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/maxwell-fisheye-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/maxwell-fisheye-lens-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/maxwell-fisheye-lens-thumbnail.jpg" alt="馬克士威魚眼透鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">馬克士威魚眼透鏡</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/branched-flow" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/branched-flow-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/branched-flow-thumbnail.jpg" alt="分支流" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">分支流</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="miscellaneous" class="anchor">&nbsp;</a>
+      <h2>其他</h2>
+        <a href="../../tw/gallery/single-ray-demo" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/single-ray-demo-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/single-ray-demo-thumbnail.jpg" alt="單一光線演示" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">單一光線演示</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/spherical-lens-and-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/spherical-lens-and-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/spherical-lens-and-mirror-thumbnail.jpg" alt="球面透鏡與面鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">球面透鏡與面鏡</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/interrogation-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/interrogation-room-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/interrogation-room-thumbnail.jpg" alt="審訊室" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">審訊室</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/camera-obscura" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/camera-obscura-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/camera-obscura-thumbnail.jpg" alt="暗箱" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">暗箱</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/the-principle-of-camera-imaging" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/the-principle-of-camera-imaging-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/the-principle-of-camera-imaging-thumbnail.jpg" alt="相機成像原理" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">相機成像原理</p>
+            <p class="example-contributor">Liu Quanhong</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/NL-simulation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/NL-simulation-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/NL-simulation-thumbnail.jpg" alt="NL 雙筒望遠鏡" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">NL 雙筒望遠鏡</p>
+            <p class="example-contributor">Wen Zhou</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/einstein-ring-refocused-to-single-image-via-eyepiece" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.jpg" alt="經由目鏡將愛因斯坦環重新聚焦為單一影像" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">經由目鏡將愛因斯坦環重新聚焦為單一影像</p>
+            <p class="example-contributor">Jordan Anderson</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/black-cat-becomes-white" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/black-cat-becomes-white-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/black-cat-becomes-white-thumbnail.jpg" alt="「黑貓變白貓」演示" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">「黑貓變白貓」演示</p>
+            <p class="example-contributor">Victory Science, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/dichroic-rbg-splitter-and-combiner" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/dichroic-rbg-splitter-and-combiner-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/dichroic-rbg-splitter-and-combiner-thumbnail.jpg" alt="二色性RGB分光器與合光器" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">二色性RGB分光器與合光器</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/gan-based-lcd-pixel" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/gan-based-lcd-pixel-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/gan-based-lcd-pixel-thumbnail.jpg" alt="液晶螢幕像素" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">液晶螢幕像素</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/concave-mirror-wearable-display" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/concave-mirror-wearable-display-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/concave-mirror-wearable-display-thumbnail.jpg" alt="凹面鏡可穿戴顯示器" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">凹面鏡可穿戴顯示器</p>
+            <p class="example-contributor">Rene</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/reflecting-monochromator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/reflecting-monochromator-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/reflecting-monochromator-thumbnail.jpg" alt="反射式單色儀" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">反射式單色儀</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../tw/gallery/solar-eclipses" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../tw/gallery/solar-eclipses-thumbnail.avif" type="image/avif">
+            <img src="../../tw/gallery/solar-eclipses-thumbnail.jpg" alt="日食" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">日食</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">語言：正體中文</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../gallery/">English<span style="color:gray">（已翻譯 100%）</span></a></li>
+          <li><a href="../../de/gallery/">Deutsch<span style="color:gray">（已翻譯 4%）</span></a></li>
+          <li><a href="../../fr/gallery/">Français<span style="color:gray">（已翻譯 17%）</span></a></li>
+          <li><a href="../../pl/gallery/">polski<span style="color:gray">（已翻譯 99%）</span></a></li>
+          <li><a href="../../pt-BR/gallery/">Português (Brasil)<span style="color:gray">（已翻譯 100%）</span></a></li>
+          <li><a href="../../pt-PT/gallery/">Português (Portugal)<span style="color:gray">（已翻譯 99%）</span></a></li>
+          <li><a href="../../ru/gallery/">Русский<span style="color:gray">（已翻譯 12%）</span></a></li>
+          <li><a href="../../ta/gallery/">தமிழ்<span style="color:gray">（已翻譯 99%）</span></a></li>
+          <li><a href="../../cn/gallery/">简体中文<span style="color:gray">（已翻譯 100%）</span></a></li>
+          <li><a href="../../tw/gallery/">正體中文<span style="color:gray">（已翻譯 100%）</span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+</body>
+
+</html>

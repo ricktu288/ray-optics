@@ -1,0 +1,286 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poradnik tworzenia modułów - Symulacja biegu promieni</title>
+  <meta property="og:title" content="Poradnik tworzenia modułów - Symulacja biegu promieni">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/pl/modules/tutorial">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Symulacja biegu promieni">
+  <meta property="og:locale" content="pl">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/pl/modules/tutorial">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/modules/tutorial">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/modules/tutorial">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/modules/tutorial">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/modules/tutorial">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/modules/tutorial">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/modules/tutorial">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/modules/tutorial">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/modules/tutorial">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    iframe {
+      border: none;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../pl/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> Symulacja biegu promieni
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../pl/" class="">Strona główna</a>
+        <a href="../../pl/gallery/" class="">Galeria</a>
+        <a href="../../pl/about" class="">O aplikacji</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1 id="tutorial">Poradnik tworzenia modułów</h1>
+    
+    <p>Ten poradnik poprowadzi Cię przez podstawy tworzenia niestandardowego modułu, który można wykonać w całości w aplikacji internetowej, bez potrzeby korzystania z zewnętrznego środowiska programistycznego.</p>
+    <p>Funkcja &quot;Moduł&quot; w Symulacji Promieni optycznych umożliwia tworzenie modułowych kombinacji obiektów z niestandardowymi parametrami, niestandardowymi punktami kontrolnymi i tablicami obiektów. Funkcja ta rozszerza możliwości tego symulatora poprzez łączenie, specjalizację lub reparametryzację obiektów utworzonych przez istniejące narzędzia w celu stworzenia nowych narzędzi. Na przykład moduł <code>CircleSource</code> (patrz Narzędzia -&gt; Inne -&gt; Importuj moduły) łączy szereg źródeł punktowych utworzonych przez istniejące narzędzie &quot;Źródło punktowe (&lt;360°)&quot; wzdłuż okręgu, aby utworzyć narzędzie &quot;Źródło kołowe&quot;, które nie istniało w symulatorze. Moduł <code>FresnelLens</code> specjalizuje narzędzie &quot;Szkła-&gt; Równanie niestandardowe&quot;, dzięki czemu równanie reprezentuje określoną krzywą soczewki Fresnela sparametryzowaną przez liczbę pierścieni, tworząc w ten sposób wyspecjalizowane narzędzie &quot;Soczewka Fresnela&quot;, które również nie istniało wcześniej. Oprócz tworzenia nowych narzędzi, funkcja ta może również sprawić, że niektóre demonstracje optyki będą bardziej interaktywne. Na przykład, przeciągając trzeci punkt kontrolny modułu <code>BeamExpander</code>, można bezpośrednio zobaczyć, jak położenie wspólnego ogniska dwóch soczewek wpływa na szerokość wiązki, bez konieczności indywidualnego dostosowywania ogniskowych każdej z nich.</p>
+    <p>Należy pamiętać, że nie wszystkie niestandardowe punkty kontrolne wymagają modułu. Niektóre proste przypadki można osiągnąć za pomocą funkcji &quot;uchwyt&quot; (patrz sekcja &quot;Grupuj, obracaj i skaluj obiekty&quot; w wyskakującym okienku pomocy w prawym dolnym rogu symulatora). Ponieważ tworzenie modułów jest znacznie bardziej skomplikowane niż tworzenie uchwytów, należy najpierw sprawdzić, czy dany przypadek można osiągnąć za pomocą funkcji &quot;uchwyt&quot; przed rozważeniem utworzenia modułu. Zobacz <a href="../../pl/gallery/black-cat-becomes-white">tutaj</a> dla nietrywialnego przykładu niestandardowego punktu kontrolnego (wyciąganie dwóch plastikowych toreb z wody) bez użycia modułu.</p>
+    <p>Z drugiej strony, jeśli Twój przypadek wymaga skomplikowanego programowania (takiego jak tworzenie animacji, stosowanie skomplikowanych algorytmów do rozmieszczania elementów optycznych lub przeprowadzanie analizy map natężenia oświetlenia), użyj zamiast tego <a href="https://github.com/ricktu288/ray-optics/tree/dist-integrations">narzędzi integracyjnych</a> i napisz skrypty, np. w Pythonie lub Julii.</p>
+    <p><b>Możesz <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">wspomóc listę swoich modułów „Importuj moduły”</a>, jeśli uważasz, że są przydatne dla innych, nawet jeśli są vibecoding!</b></p>
+
+    <h2 id="ai-assistant">Korzystanie z asystenta AI<sup>Beta</sup></h2>
+    <p><a href="https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder">Ray Optics Coder</a> w ChatGPT pomoże Ci pisać moduły Ray Optics. Generuje on kod JSON dla sceny zawierającej moduł na podstawie Twojego opisu, a następnie możesz skopiować ten kod do edytora JSON (patrz poniżej). Możesz go również użyć do edycji istniejących modułów lub modularyzacji scen.</p>
+    <p>Kod wygenerowany przez chatbota może nie działać bezpośrednio. W przypadku wystąpienia błędu, skopiowanie i wklejenie komunikatu o błędzie do chatbota może pomóc. W przypadku bardziej skomplikowanych modułów, warto przeczytać poniższy samouczek i napisać kod przynajmniej częściowo samodzielnie.</p>
+    <p>Pliki z instrukcjami i wiedzą dla chatbota są dostępne <a href="https://github.com/ricktu288/ray-optics/blob/master/ai-tools">tutaj</a>. Jeśli wolisz inną usługę LLM, możesz udostępnić te pliki, aby nauczyć go pisania modułów Ray Optics.</p>
+
+    <h2 id="the-built-in-json-editor">Wbudowany edytor JSON</h2>
+    <p>Ta aplikacja nie posiada obecnie wizualnego interfejsu do tworzenia modułów, dlatego musisz bezpośrednio edytować plik JSON sceny.</p>
+    <p>Możesz włączyć wbudowany edytor JSON, klikając rozwijaną listę &quot;ustawienia&quot; w prawym górnym rogu aplikacji, a następnie zaznaczając &quot;Pokaż edytor JSON&quot;. Edytor kodu powinien pojawić się po lewej stronie aplikacji, z kodem JSON bieżącej sceny. Upewnij się, że masz wystarczająco duży ekran, ponieważ ta funkcja nie działa dobrze na urządzeniach mobilnych.</p>
+    <p>Podczas edycji sceny za pomocą zwykłego wizualnego edytora scen, kod w edytorze JSON będzie odpowiednio aktualizowany, z podświetloną zmienioną częścią. I odwrotnie, bezpośrednia edycja kodu w edytorze JSON spowoduje odpowiednią aktualizację sceny. Jeśli nie jesteś zaznajomiony z JSON lub jakimkolwiek innym formatem tekstowym danych, możesz chcieć pobawić się nim przez chwilę.</p>
+    <p>W szczególności, gdy dodajesz obiekt do sceny, jest on dodawany do tablicy <code>objs</code>. A jeśli zmienisz niektóre z jego właściwości na wartości inne niż domyślne, pojawią się one jako pary klucz-wartość w tym obiekcie.</p>
+    <p>If you do not want the scene to be automatically updated when you edit the JSON, you can enable Settings -&gt; Show simulator controls and disable &quot;Auto Refresh&quot;. And when the editing is done, click &quot;Refresh Simulation&quot; (or &quot;Refresh Scene&quot; if you don&#39;t want the simulation to be rerun immediately).</p>
+    <b><p>WAŻNE: Jeśli na tej stronie samouczka nie widzisz edytora kodu JSON w poniższych ramkach iframe, włącz go i odśwież tę stronę, ponieważ musisz widzieć kod, aby zrozumieć, jak to działa.</p></b>
+
+    <h2 id="basics-of-a-module">Podstawy modułu</h2>
+    <p>Spójrzmy na pierwszy przykład modułu.</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-basics"></iframe>
+    <p>Powinny być widoczne cztery linie tekstu. Patrząc na edytor JSON, zobaczysz, że pierwsze dwa znajdują się bezpośrednio w tablicy <code>objs</code> najwyższego poziomu, jak zwykle, ale dwa ostatnie znajdują się w <code>modules.ExampleModule.objs</code>.</p>
+    <p><code>modules</code> to słownik, w którym kluczem jest nazwa modułu (w tym przypadku <code>ExampleModule</code>), a wartością definicja tego modułu. W szczególności tablica <code>modules.ExampleModule.objs</code> opisuje (szablon) obiektów w tym module, co różni się od najwyższego poziomu <code>objs</code>, który opisuje obiekty w scenie.</p>
+    <p>Aby umieścić obiekty w ramach modułu na scenie, potrzebujemy &quot;obiektu modułu&quot; w tablicy najwyższego poziomu <code>objs</code>, którym w tym przykładzie jest <code>objs[2]</code>, którego typem jest <code>ModuleObj</code> i którego właściwością <code>module</code> jest nazwa modułu.</p>
+    <p>Definicja modułu w słowniku <code>modules</code> nie jest edytowalna przez wizualny edytor scen. Tak więc, gdy klikniesz dowolny z dwóch ostatnich tekstów w tym przykładzie, wybierasz tylko obiekt modułu, a nie obiekty w module. Ponieważ współrzędne tekstów w definicji modułu w tym przykładzie są współrzędnymi bezwzględnymi, ostatnie dwa teksty nie są przeciągalne. Później dowiemy się, jak uczynić je przeciągalnymi za pomocą punktów kontrolnych.</p>
+    <p>Jeśli wybierzesz obiekt modułu, na pasku obiektów znajdziesz przycisk &quot;Demodułuj&quot;. Kliknięcie go &quot;rozwinie&quot; obiekt modułu na jego części składowe, a <code>objs</code> będzie teraz zawierać wszystkie cztery teksty. Ta operacja nie jest odwracalna (ale oczywiście można kliknąć &quot;cofnij&quot;).</p>
+    <p>Obecnie sugerowany sposób tworzenia modułu polega na tym, aby najpierw utworzyć pusty moduł za pomocą edytora JSON, utworzyć kilka obiektów za pomocą edytora scen wizualnych, a następnie wyciąć i wkleić obiekty z <code>objs</code> do <code>modules.ModuleName.objs</code> za pomocą edytora JSON.</p>
+
+    <h2 id="adding-parameters">Dodawanie parametrów</h2>
+    <p>Obiekty w module można zdefiniować za pomocą zestawu parametrów. Przyjrzyjmy się prostemu przykładowi</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-parameters"></iframe>
+    <p>Tutaj <code>modules.ModuleName.params</code> jest tablicą ciągów <code>&quot;name=start:step:end:default&quot;</code> definiującą nazwę zmiennych i zakres suwaków. Suwaki pojawiają się na pasku obiektów, gdy obiekt modułu jest zaznaczony.</p>
+    <p>W tablicy <code>modules.ExampleModule.objs</code>, dowolne wartości mogą być wyrażone za pomocą tych parametrów. W ciągu znaków (takim jak właściwość <code>text</code> etykiety <code>TextLabel</code>), równania zmiennych są otoczone parą znaków odwrotnego apostrofu. W przypadku parametrów liczbowych (takich jak właściwość <code>fontSize</code> etykiety <code>TextLabel</code>), należy utworzyć ciąg znaków, aby można było użyć w nim formatu odwrotnego apostrofu, więc każde równanie jest otoczone parą znaków odwrotnego apostrofu i parą cudzysłowów. Równanie jest obliczane za pomocą math.js (<a href="https://mathjs.org/docs/reference/functions/evaluate.html">syntax</a>). Zobacz tam dostępną składnię i funkcje, których można użyć w równaniach.</p>
+    <p>Rzeczywiste wartości parametrów są przechowywane we właściwości <code>params</code> obiektu modułu, który, w przeciwieństwie do definicji modułu, może być bezpośrednio edytowany przez edytor scen za pomocą suwaka.</p>
+
+    <h2 id="adding-control-points">Dodawanie punktów kontrolnych</h2>
+    <p>Aby obiekt modułu był przeciągalny, musimy sparametryzować obiekty w module za pomocą zestawu punktów kontrolnych. Spójrzmy na przykład</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-control-points"></iframe>
+    <p>Tutaj <code>modules.ModuleName.numPoints</code> definiuje liczbę punktów kontrolnych. Współrzędne punktów kontrolnych to (<code>x_1</code>, <code>y_1</code>), (<code>x_2</code>, <code>y_2</code>), itd. i są używane w taki sam sposób jak parametry w <code>modules.ExampleModule.objs</code>, jak opisano w poprzedniej sekcji. Należy zauważyć, że indeks zaczyna się od 1.</p>
+    <p>Rzeczywiste wartości współrzędnych punktów kontrolnych są przechowywane we właściwości <code>points</code> obiektu modułu, które, w przeciwieństwie do zakodowanych na stałe współrzędnych w przykładzie 1, mogą być edytowane przez wizualny edytor sceny poprzez przeciąganie punktów kontrolnych, z których każdy jest wyświetlany jako dwa koncentryczne szare okręgi na scenie. Jeśli przeciągniesz w inne miejsce obiekt modułu (np. przeciągniesz etykiety tekstowe), wszystkie punkty kontrolne przesuną się razem.</p>
+    <p>Ponieważ nasz obiekt modułu może się teraz poruszać, tworzenie wielu wystąpień jest teraz dość łatwe, jak w zwykłych narzędziach. Nazwa modułu jest wyświetlana w menu Narzędzia -&gt; Inne i można ją wybrać, a następnie kliknąć kolejno dwa punkty w pustej przestrzeni dla dwóch punktów kontrolnych, aby utworzyć kolejne wystąpienie modułu.  Możesz także użyć przycisku “Powiel” na pasku obiektów.</p>
+
+    <h2 id="arrays-and-conditionals">Tablice i instrukcje warunkowe</h2>
+    <p>Bardziej skomplikowany moduł można zbudować przy użyciu tablic i instrukcji warunkowych. Spójrzmy na przykład</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-arrays-and-conditionals"></iframe>
+    <p>W obrębie <code>modules.ExampleModule.objs</code>, każdy obiekt w tablicy może mieć dwa specjalne klucze: <code>&quot;for&quot;</code> i <code>&quot;if&quot;</code>. Wartością klucza <code>&quot;for&quot;</code> jest albo łańcuch w formacie <code>&quot;name=start:step:end&quot;</code> definiujący zmienną pętli, albo tablica kilku łańcuchów tego formatu opisująca wielowymiarową pętlę. Taki obiekt w tablicy jest powielany kilka razy zgodnie ze zmiennymi pętli. Wartość klucza <code>&quot;if&quot;</code> jest łańcuchem reprezentującym wyrażenie math.js, które ma wartość logiczną, a taki obiekt jest zawarty w tablicy wtedy i tylko wtedy, gdy wartość logiczna to prawda.</p>
+    <p>Aby zapobiec przypadkowemu utworzeniu nieskończonej pętli, całkowita liczba iteracji każdej pętli <code>&quot;for&quot;</code> jest ograniczona przez właściwość <code>maxLoopLength</code> definicji modułu, której wartość domyślna wynosi 1000. W razie potrzeby można ustawić tę właściwość na większą wartość.</p>
+
+    <h2 id="using-variables">Używanie zmiennych<sup>Beta</sup></h2>
+    <p>Możesz definiować zmienne i funkcje matematyczne, których można używać w całym module. Spójrzmy na przykład</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-variables"></iframe>
+    <p><code>modules.ModuleName.vars</code> to tablica ciągów znaków, z których każdy reprezentuje instrukcję math.js definiującą zmienną lub funkcję. Definicje te są przetwarzane sekwencyjnie, więc późniejsze definicje mogą odwoływać się do wcześniejszych.</p>
+    <p>Definicje zmiennych mają pełny dostęp do wszystkich parametrów i współrzędnych punktów kontrolnych, a po zdefiniowaniu zmienne te mogą być używane w szablonach obiektów, podobnie jak parametry i współrzędne punktów kontrolnych, umożliwiając bardziej złożone obliczenia wielokrotnego użytku.</p>
+
+    <h2 id="objects-with-built-in-custom-equations">Obiekty z wbudowanymi niestandardowymi równaniami<sup>Beta</sup></h2>
+    <p>For objects that already have custom equation input (such as Mirror -&gt; Custom Equation), the equation property in the JSON is a string representing a LaTeX equation. To represent such an equation in math.js and refer to module parameters, etc, you need to wrap the math.js expression in a pair of double backticks. Such a block expands to a LaTeX equation with free variables like \(x\) for <code>x</code> and \(\theta_0\) for <code>theta_0</code>, which is different from a single-backtick block which expects no free variables and expands to a number. Here is an example of a custom equation mirror containing a custom parameter <code>phi</code></p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-custom-equation"></iframe>
+    <p>Although you can use any math.js syntax and operations in variables and single-backtick blocks, for double-backtick blocks, only the math.js counterparts of the constants, operators, and functions supported by the equation input of the target object are allowed (see the info box of the target object). You can use custom functions defined in the <code>vars</code> array, but the function definitions must ultimately consist of those allowed operations.</p>
+    <p>Implicit multiplication (e.g. <code>2x</code>) is also not allowed in this context, due to its ill-defined operator precedence in math.js. Please always use the <code>*</code> operator explicitly (e.g. <code>2*x</code>).</p>
+
+    <h2 id="objects-with-built-in-shape-parametrization">Obiekty z wbudowaną parametryzacją kształtu</h2>
+    <p>Dla obiektów, które już obsługują różne sposoby definiowania swojego kształtu (obecnie tylko Szkła -&gt; Soczewka sferyczna). Istnieje specjalna składnia JSON dla takich obiektów, która może być użyta w definicji modułu, nawet jeśli są one zawsze zdefiniowane przez kształt w tablicy <code>objs</code> najwyższego poziomu. Oto przykład</p>
+    <iframe loading="lazy" src="../../simulator/?pl#../pl/gallery/module-example-shape-parametrization"></iframe>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Język: polski</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../modules/tutorial">English<span style="color:gray"></span></a></li>
+          <li><a href="../../pl/modules/tutorial">polski<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/modules/tutorial">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-PT/modules/tutorial">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../../ru/modules/tutorial">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../../ta/modules/tutorial">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/modules/tutorial">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/modules/tutorial">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,984 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>காட்சியகம் - ரே ஒளியியல் உருவகப்படுத்துதல்</title>
+  <meta property="og:title" content="காட்சியகம் - ரே ஒளியியல் உருவகப்படுத்துதல்">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/ta/gallery/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="ரே ஒளியியல் உருவகப்படுத்துதல்">
+  <meta property="og:locale" content="ta">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/ta/gallery/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/gallery/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/gallery/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/gallery/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/gallery/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/gallery/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/gallery/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .example-container {
+      border-width: 2px;
+      margin-bottom: 5px;
+      display: inline-block;
+      width: 270px;
+      text-decoration: none;
+    }
+
+    .example-container:hover {
+      text-decoration: none;
+    }
+
+    .example-container:active {
+      text-decoration: none;
+    }
+
+    .example-container:focus {
+      text-decoration: none;
+    }
+
+    .example-image {
+      width: 250px;
+      height: 250px !important;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    .example-title {
+      font-size: 12pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .example-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .anchor {
+      padding-top: 65px; 
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../ta/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> ரே ஒளியியல் உருவகப்படுத்துதல்
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../ta/" class="">வீடு</a>
+        <a href="../../ta/gallery/" class="active">காட்சியகம்</a>
+        <a href="../../ta/about" class="">பற்றி</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1>ரே ஒளியியல் கேலரி</h1>
+    இது <a href="../../simulator/?ta">வலை பயன்பாடு</a> ஐப் பயன்படுத்தி செய்யப்பட்ட உருவகப்படுத்துதல்களின் தொகுப்பாகும், இது ஒளியியலின் ஊடாடும் டெமோக்களாகப் பயன்படுத்தப்படலாம். புதிய பொருட்களைப் பங்களிக்க உங்களை வரவேற்கிறோம். மேலும் தகவலுக்குப் பங்களிப்பு வழிகாட்டி](/contributing/gallery) ஐப் பார்க்கவும். ஒரு தவறைப் புகாரளிக்க, தயவுசெய்து <a href="https://github.com/ricktu288/ray-optics/issues">Github இல் ஒரு சிக்கலைத் திறக்கவும்</a> அல்லது மின்னஞ்சல் <a href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;">ray-optics@phydemo.app</a>.
+    
+    <h3>வகைகள்</h3>
+      <a href="#reflection">பிரதிபலிப்பு</a><br>
+      <a href="#refraction">ஒளித்திரிபு</a><br>
+      <a href="#lens">லென்ச்</a><br>
+      <a href="#combination-of-lenses">லென்ச்கள் சேர்க்கை</a><br>
+      <a href="#GRIN-optics">சாய்வு-குறியீட்டு ஒளியியல்</a><br>
+      <a href="#miscellaneous">மற்றவை</a><br>
+
+
+      <a name="reflection" class="anchor">&nbsp;</a>
+      <h2>பிரதிபலிப்பு</h2>
+        <a href="../../ta/gallery/images-formed-by-two-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/images-formed-by-two-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/images-formed-by-two-mirrors-thumbnail.jpg" alt="இரண்டு கண்ணாடியிலிருந்து படங்கள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">இரண்டு கண்ணாடியிலிருந்து படங்கள்</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/parabolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/parabolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/parabolic-mirror-thumbnail.jpg" alt="பரவளைய கண்ணாடி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பரவளைய கண்ணாடி</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/hyperbolic-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/hyperbolic-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/hyperbolic-mirror-thumbnail.jpg" alt="ஐபர்போலிக் கண்ணாடி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஐபர்போலிக் கண்ணாடி</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/retroreflectors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/retroreflectors-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/retroreflectors-thumbnail.jpg" alt="ரெட்ரோஃப்ளெக்டர்கள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ரெட்ரோஃப்ளெக்டர்கள்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/periscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/periscope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/periscope-thumbnail.jpg" alt="பெரிச்கோப்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பெரிச்கோப்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/newtonian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/newtonian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/newtonian-telescope-thumbnail.jpg" alt="நியூட்டனின் தொலைநோக்கி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">நியூட்டனின் தொலைநோக்கி</p>
+            <p class="example-contributor">Matteo Ricci Cipolloni</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/penrose-unilluminable-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/penrose-unilluminable-room-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/penrose-unilluminable-room-thumbnail.jpg" alt="பென்ரோச் unilumanable அறை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பென்ரோச் unilumanable அறை</p>
+            <p class="example-contributor">Vincent Fan, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/optical-cavity" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/optical-cavity-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/optical-cavity-thumbnail.jpg" alt="இரண்டு-துடிப்பு ஆப்டிகல் குழி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">இரண்டு-துடிப்பு ஆப்டிகல் குழி</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/resonator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/resonator-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/resonator-thumbnail.jpg" alt="பிளானோ-கான்கேவ் ரெசனேட்டர்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பிளானோ-கான்கேவ் ரெசனேட்டர்</p>
+            <p class="example-contributor">Mikhail Kochiev</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/maze-solution" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/maze-solution-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/maze-solution-thumbnail.jpg" alt="பிரமை தீர்வு" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பிரமை தீர்வு</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/specular-and-diffuse-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/specular-and-diffuse-reflection-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/specular-and-diffuse-reflection-thumbnail.jpg" alt="ஏகப்பட்ட மற்றும் பரவலான பிரதிபலிப்புகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஏகப்பட்ட மற்றும் பரவலான பிரதிபலிப்புகள்</p>
+            <p class="example-contributor">Steve Stonebraker</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/chaff-countermeasure" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/chaff-countermeasure-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/chaff-countermeasure-thumbnail.jpg" alt="சஃப் எதிர்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">சஃப் எதிர்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/caustics-from-a-reflective-sphere" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/caustics-from-a-reflective-sphere-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/caustics-from-a-reflective-sphere-thumbnail.jpg" alt="ஒரு பிரதிபலிப்பு கோளத்திலிருந்து காச்டிக்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஒரு பிரதிபலிப்பு கோளத்திலிருந்து காச்டிக்ச்</p>
+            <p class="example-contributor">Georg Nadorff</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/the-mirascope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/the-mirascope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/the-mirascope-thumbnail.jpg" alt="மிராச்கோப்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மிராச்கோப்</p>
+            <p class="example-contributor">Mario Petitclerc</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="refraction" class="anchor">&nbsp;</a>
+      <h2>ஒளித்திரிபு</h2>
+        <a href="../../ta/gallery/reflect" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/reflect-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/reflect-thumbnail.jpg" alt="பிரதிபலிப்பு மற்றும் ஒளிவிலகல்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பிரதிபலிப்பு மற்றும் ஒளிவிலகல்</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/internal-reflection" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/internal-reflection-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/internal-reflection-thumbnail.jpg" alt="உள் பிரதிபலிப்பு" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">உள் பிரதிபலிப்பு</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/prisms" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/prisms-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/prisms-thumbnail.jpg" alt="பிரிசம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பிரிசம்</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/beam-directors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/beam-directors-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/beam-directors-thumbnail.jpg" alt="பீம் இயக்குநர்கள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பீம் இயக்குநர்கள்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/apparent-depth" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/apparent-depth-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/apparent-depth-thumbnail.jpg" alt="வெளிப்படையான ஆழம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வெளிப்படையான ஆழம்</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/distortion-in-windows-and-backside-mirrors" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/distortion-in-windows-and-backside-mirrors-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/distortion-in-windows-and-backside-mirrors-thumbnail.jpg" alt="சன்னல்கள் மற்றும் பின்புற கண்ணாடியில் சிதைவு" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">சன்னல்கள் மற்றும் பின்புற கண்ணாடியில் சிதைவு</p>
+            <p class="example-contributor">Shahar Seifer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/bended-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/bended-pencil-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/bended-pencil-thumbnail.jpg" alt="வளைந்த பென்சில்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வளைந்த பென்சில்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/broken-pencil" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/broken-pencil-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/broken-pencil-thumbnail.jpg" alt="உடைந்த பென்சில்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">உடைந்த பென்சில்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/chromatic-dispersion" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/chromatic-dispersion-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/chromatic-dispersion-thumbnail.jpg" alt="வண்ண சிதறல்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வண்ண சிதறல்</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/rainbows" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/rainbows-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/rainbows-thumbnail.jpg" alt="ரெயின்போச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ரெயின்போச்</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/minimum-deviation-angle" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/minimum-deviation-angle-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/minimum-deviation-angle-thumbnail.jpg" alt="குறைந்தபட்ச விலகல் கோணம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">குறைந்தபட்ச விலகல் கோணம்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/aplanatic-points" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/aplanatic-points-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/aplanatic-points-thumbnail.jpg" alt="ஆபத்தான புள்ளிகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஆபத்தான புள்ளிகள்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="lens" class="anchor">&nbsp;</a>
+      <h2>லென்ச்</h2>
+        <a href="../../ta/gallery/concave-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/concave-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/concave-lens-thumbnail.jpg" alt="குழிவில்லை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">குழிவில்லை</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/convex-lens-thumbnail.jpg" alt="குவிவில்லை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">குவிவில்லை</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/lens-images" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/lens-images-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/lens-images-thumbnail.jpg" alt="லென்ச் படங்கள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">லென்ச் படங்கள்</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/virtual-image-formation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/virtual-image-formation-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/virtual-image-formation-thumbnail.jpg" alt="மெய்நிகர் பட உருவாக்கம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மெய்நிகர் பட உருவாக்கம்</p>
+            <p class="example-contributor">Daniel Anya</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/transverse-and-longitudinal-magnification" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/transverse-and-longitudinal-magnification-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/transverse-and-longitudinal-magnification-thumbnail.jpg" alt="குறுக்கு மற்றும் நீளமான உருப்பெருக்கம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">குறுக்கு மற்றும் நீளமான உருப்பெருக்கம்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/vanishing-point" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/vanishing-point-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/vanishing-point-thumbnail.jpg" alt="மறைந்துபோகும் புள்ளி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மறைந்துபோகும் புள்ளி</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/monochromatic-aberrations" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/monochromatic-aberrations-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/monochromatic-aberrations-thumbnail.jpg" alt="ஒரே வண்ணமுடைய பிறழ்வுகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஒரே வண்ணமுடைய பிறழ்வுகள்</p>
+            <p class="example-contributor">Paul Falstad, Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/chromatic-aberration" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/chromatic-aberration-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/chromatic-aberration-thumbnail.jpg" alt="வண்ண மாறுபாடு" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வண்ண மாறுபாடு</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/orientations-of-plano-convex-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/orientations-of-plano-convex-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/orientations-of-plano-convex-lens-thumbnail.jpg" alt="பிளானோ-குவிந்த லென்சின் நோக்குநிலைகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பிளானோ-குவிந்த லென்சின் நோக்குநிலைகள்</p>
+            <p class="example-contributor">Matthias Guillon</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/hyperbolic-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/hyperbolic-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/hyperbolic-lens-thumbnail.jpg" alt="ஐபர்போலிக் லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஐபர்போலிக் லென்ச்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/fresnel-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/fresnel-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/fresnel-lens-thumbnail.jpg" alt="ஃப்ரெச்னல் லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஃப்ரெச்னல் லென்ச்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../gallery/augustin-fresnels-lighthouse-optics" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../gallery/augustin-fresnels-lighthouse-optics-thumbnail.avif" type="image/avif">
+            <img src="../../gallery/augustin-fresnels-lighthouse-optics-thumbnail.jpg" alt="Augustin Fresnel&#x27;s Lighthouse Optics" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Augustin Fresnel&#x27;s Lighthouse Optics</p>
+            <p class="example-contributor">Richard Ruh</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="combination-of-lenses" class="anchor">&nbsp;</a>
+      <h2>லென்ச்கள் சேர்க்கை</h2>
+        <a href="../../ta/gallery/zoom-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/zoom-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/zoom-lens-thumbnail.jpg" alt="சூம் லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">சூம் லென்ச்</p>
+            <p class="example-contributor">Paul Falstad</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/compound-microscope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/compound-microscope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/compound-microscope-thumbnail.jpg" alt="கூட்டு நுண்ணோக்கி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கூட்டு நுண்ணோக்கி</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/telescope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/telescope-thumbnail.jpg" alt="தொலைநோக்கி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">தொலைநோக்கி</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/keplerian-telescope" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/keplerian-telescope-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/keplerian-telescope-thumbnail.jpg" alt="கெப்லெரியன் தொலைநோக்கி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கெப்லெரியன் தொலைநோக்கி</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/beam-expanders" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/beam-expanders-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/beam-expanders-thumbnail.jpg" alt="பீம் விரிவாக்கிகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">பீம் விரிவாக்கிகள்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/ray-relaying" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/ray-relaying-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/ray-relaying-thumbnail.jpg" alt="ரே ரிலேங்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ரே ரிலேங்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/rochester-cloak" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/rochester-cloak-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/rochester-cloak-thumbnail.jpg" alt="ரோசெச்டர் க்ளோக்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ரோசெச்டர் க்ளோக்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/simple-double-gauss-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/simple-double-gauss-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/simple-double-gauss-lens-thumbnail.jpg" alt="எளிய இரட்டை-காச் லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">எளிய இரட்டை-காச் லென்ச்</p>
+            <p class="example-contributor">Alex</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/pair-of-axicons-making-a-rainbow-ring" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/pair-of-axicons-making-a-rainbow-ring-thumbnail.jpg" alt="வானவில் வளையத்தை உருவாக்கும் ஆக்சிகான்களின் இணை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வானவில் வளையத்தை உருவாக்கும் ஆக்சிகான்களின் இணை</p>
+            <p class="example-contributor">Peter Becher</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/koehler-illumination" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/koehler-illumination-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/koehler-illumination-thumbnail.jpg" alt="கோஅ்லர் வெளிச்சம்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கோஅ்லர் வெளிச்சம்</p>
+            <p class="example-contributor">Leon Seidel</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="GRIN-optics" class="anchor">&nbsp;</a>
+      <h2>சாய்வு-குறியீட்டு ஒளியியல்</h2>
+        <a href="../../ta/gallery/GRIN-slab" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/GRIN-slab-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/GRIN-slab-thumbnail.jpg" alt="கிரின் ச்லாப்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கிரின் ச்லாப்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/inferior-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/inferior-mirage-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/inferior-mirage-thumbnail.jpg" alt="தாழ்வான மிராச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">தாழ்வான மிராச்</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/sea-mirage" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/sea-mirage-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/sea-mirage-thumbnail.jpg" alt="கடல் மிராச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கடல் மிராச்</p>
+            <p class="example-contributor">chuangyu J</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/logarithmic-spiral-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/logarithmic-spiral-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/logarithmic-spiral-lens-thumbnail.jpg" alt="மடக்கை சுழல் கதிர் பாதை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மடக்கை சுழல் கதிர் பாதை</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/luneburg-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/luneburg-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/luneburg-lens-thumbnail.jpg" alt="லுன்பர்க் லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">லுன்பர்க் லென்ச்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/maxwell-fisheye-lens" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/maxwell-fisheye-lens-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/maxwell-fisheye-lens-thumbnail.jpg" alt="மேக்ச்வெல் ஃபிசே லென்ச்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மேக்ச்வெல் ஃபிசே லென்ச்</p>
+            <p class="example-contributor">Stas Fainer, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/branched-flow" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/branched-flow-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/branched-flow-thumbnail.jpg" alt="Branched பாய்வு" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">Branched பாய்வு</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+      <a name="miscellaneous" class="anchor">&nbsp;</a>
+      <h2>மற்றவை</h2>
+        <a href="../../ta/gallery/single-ray-demo" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/single-ray-demo-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/single-ray-demo-thumbnail.jpg" alt="ஒற்றை கதிர் டெமோ" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஒற்றை கதிர் டெமோ</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/spherical-lens-and-mirror" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/spherical-lens-and-mirror-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/spherical-lens-and-mirror-thumbnail.jpg" alt="கோள லென்ச் மற்றும் கண்ணாடி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கோள லென்ச் மற்றும் கண்ணாடி</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/interrogation-room" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/interrogation-room-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/interrogation-room-thumbnail.jpg" alt="வினவல் அறை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">வினவல் அறை</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/camera-obscura" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/camera-obscura-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/camera-obscura-thumbnail.jpg" alt="கேமரா அப்சுரா" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கேமரா அப்சுரா</p>
+            <p class="example-contributor">Stas Fainer</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/the-principle-of-camera-imaging" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/the-principle-of-camera-imaging-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/the-principle-of-camera-imaging-thumbnail.jpg" alt="கேமரா இமேசிங்கின் கொள்கை" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">கேமரா இமேசிங்கின் கொள்கை</p>
+            <p class="example-contributor">Liu Quanhong</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/NL-simulation" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/NL-simulation-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/NL-simulation-thumbnail.jpg" alt="என்.எல் தொலைநோக்கிகள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">என்.எல் தொலைநோக்கிகள்</p>
+            <p class="example-contributor">Wen Zhou</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/einstein-ring-refocused-to-single-image-via-eyepiece" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/einstein-ring-refocused-to-single-image-via-eyepiece-thumbnail.jpg" alt="ஐன்ச்டீன் மோதிரம் கண் பார்வை வழியாக ஒற்றை படத்திற்கு கவனம் செலுத்தியது" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">ஐன்ச்டீன் மோதிரம் கண் பார்வை வழியாக ஒற்றை படத்திற்கு கவனம் செலுத்தியது</p>
+            <p class="example-contributor">Jordan Anderson</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/black-cat-becomes-white" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/black-cat-becomes-white-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/black-cat-becomes-white-thumbnail.jpg" alt="&quot;கருப்பு பூனை வெள்ளை ஆகிறது&quot; டெமோ" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">&quot;கருப்பு பூனை வெள்ளை ஆகிறது&quot; டெமோ</p>
+            <p class="example-contributor">Victory Science, Yi-Ting Tu</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/dichroic-rbg-splitter-and-combiner" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/dichroic-rbg-splitter-and-combiner-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/dichroic-rbg-splitter-and-combiner-thumbnail.jpg" alt="டிக்ரோயிக் ஆர்சிபி ச்ப்ளிட்டர் &amp; காம்பினர்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">டிக்ரோயிக் ஆர்சிபி ச்ப்ளிட்டர் &amp; காம்பினர்</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/gan-based-lcd-pixel" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/gan-based-lcd-pixel-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/gan-based-lcd-pixel-thumbnail.jpg" alt="எல்சிடி படப்புள்ளி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">எல்சிடி படப்புள்ளி</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/concave-mirror-wearable-display" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/concave-mirror-wearable-display-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/concave-mirror-wearable-display-thumbnail.jpg" alt="குழிவான கண்ணாடி அணியக்கூடிய காட்சி" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">குழிவான கண்ணாடி அணியக்கூடிய காட்சி</p>
+            <p class="example-contributor">Rene</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/reflecting-monochromator" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/reflecting-monochromator-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/reflecting-monochromator-thumbnail.jpg" alt="மோனோக்ரோமேட்டரை பிரதிபலிக்கிறது" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">மோனோக்ரோமேட்டரை பிரதிபலிக்கிறது</p>
+            <p class="example-contributor">James Garrard</p>
+          </div>
+        </a>
+        <a href="../../ta/gallery/solar-eclipses" class="thumbnail example-container">
+          <picture>
+            <source srcset="../../ta/gallery/solar-eclipses-thumbnail.avif" type="image/avif">
+            <img src="../../ta/gallery/solar-eclipses-thumbnail.jpg" alt="சூரிய கிரகணங்கள்" class="img-rounded example-image" loading="lazy">
+          </picture>
+          <div class="caption">
+            <p class="example-title">சூரிய கிரகணங்கள்</p>
+            <p class="example-contributor">Yi-Ting Tu</p>
+          </div>
+        </a>
+      <br>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">மொழி: தமிழ்}</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../gallery/">English<span style="color:gray"> (100% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../de/gallery/">Deutsch<span style="color:gray"> (4% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../fr/gallery/">Français<span style="color:gray"> (17% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../pl/gallery/">polski<span style="color:gray"> (99% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../pt-BR/gallery/">Português (Brasil)<span style="color:gray"> (100% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../pt-PT/gallery/">Português (Portugal)<span style="color:gray"> (99% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../ru/gallery/">Русский<span style="color:gray"> (12% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../ta/gallery/">தமிழ்<span style="color:gray"> (99% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../cn/gallery/">简体中文<span style="color:gray"> (100% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+          <li><a href="../../tw/gallery/">正體中文<span style="color:gray"> (100% மொழிபெயர்க்கப்பட்டுள்ளது)</span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+</body>
+
+</html>

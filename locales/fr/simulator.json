@@ -1,0 +1,159 @@
+{
+  "welcome": {
+    "title": "Bienvenue dans Ray Optics Simulation",
+    "instruction": "Pour ajouter un composant optique, sélectionnez un outil et cliquez sur l'espace vide.\nPour charger un exemple, [allez sur la page Gallerie](/gallery).",
+    "loading": "Chargement de la scène à partir de l'URL... Merci de patienter."
+  },
+  "common": {
+    "saveButton": "Sauvegarder",
+    "cancelButton": "Annuler",
+    "defaultOption": "Par défaut",
+    "closeButton": "Fermer",
+    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique.",
+    "customOption": "Personnalisé",
+    "resetButton": "Réinitialiser"
+  },
+  "file": {
+    "title": "Fichier",
+    "undo": {
+      "title": "Annuler"
+    },
+    "redo": {
+      "title": "Rétablir"
+    },
+    "reset": {
+      "title": "Recommencer"
+    },
+    "save": {
+      "title": "Sauvegarder"
+    },
+    "open": {
+      "title": "Ouvrir",
+      "description": "Ouvrir un fichier existant ou une image de fond. L'image de fond sera montrée depuis l'origine des coordonnées. (Ou déposez l'image dans la fenêtre)"
+    },
+    "export": {
+      "title": "Exporter comme PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Copier lien partageable",
+      "description": "Copiez et allez directement à l'URL de la scène courante ; cet URL peut être utilisé pour partager (éventuellement via un racourcisseur d'URL). Voyez aussi Réglages > Sync. auto. URL."
+    },
+    "viewGallery": {
+      "title": "Voir la galerie",
+      "description": "Allez à la page web de la Galerie pour charger un exemple."
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "more": "Plus",
+    "rayDensity": {
+      "title": "Densité de rayon",
+      "description": "Détermine le nombre de rayons que doivent émettre les faisceaux et les sources ponctuelles.Affecte aussi la précision de la détection d'image et le rendu des couleurs."
+    },
+    "layoutAids": {
+      "showGrid": "Grille",
+      "snapToGrid": "Attacher à la grille",
+      "lockObjs": "Verrouiller les objets",
+      "title": "Aide à la mise en page"
+    },
+    "showRayArrows": {
+      "title": "Afficher les flèches directrices de la lumière"
+    },
+    "correctBrightness": {
+      "title": "Corriger la luminosité",
+      "description": "Par défaut, la luminosité sur l'écran ne représente pas correctement la luminosité des rayons. Cette option corrige ce problème en utilisant un rendement spécial, qui peut réduire les performances sur certains appareils. (Sur d'autres appareils, cela peut augmenter les performances.)"
+    },
+    "gridSize": {
+      "title": "Taille de la grille"
+    },
+    "observerSize": {
+      "title": "Taille de l'observateur"
+    },
+    "lengthScale": {
+      "title": "Echelle de longueur",
+      "description": "Si l'unité par défaut de la longueur est trop petite ou trop grande pour modélisé un système physique quand elle est interprété par une unité physique courante (par exemple millimètres), ce facteur peut être utilisé pour mettre à l'échelle l'apparence (par exemple la longueurs des lignes) dans la scène."
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "colorMode": {
+      "title": "Mode Couleur",
+      "description": "Détermine comment la luminosité (et les couleurs si \"Simuler les couleurs\" est activé) du rayon ou des images sont associé aux couleur sur l'écran. Seulement configurable quand \"Correct Brightness\" est utilisé."
+    },
+    "language": {
+      "title": "Langue"
+    },
+    "showAdvancedSettings": {
+      "title": "Plus de paramètres de scène…"
+    },
+    "theme": {
+      "title": "Thème"
+    }
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "Plus d'options…"
+    },
+    "applyToAll": {
+      "title": "Appliquer à tous"
+    },
+    "duplicate": {
+      "title": "Dupliquer"
+    },
+    "delete": {
+      "title": "Supprimer"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Luminosité",
+      "wavelength": "Longueur d'onde",
+      "emisAngle": "Angle d'émission",
+      "focalLength": "Distance focale",
+      "eqnInfo": {
+        "functions": "Fonctions supportées"
+      }
+    },
+    "BaseFilter": {
+      "filter": "Filtre",
+      "bandwidth": "Bande Passante",
+      "invert": "Renverser"
+    },
+    "BaseGlass": {
+      "refIndex": "Indice de réfraction"
+    }
+  },
+  "saveModal": {
+    "title": "Sauvegarder",
+    "fileName": "Nom"
+  },
+  "languageModal": {
+    "title": "Langue"
+  },
+  "footer": {
+    "processing": "En cours de traitement… Cliquez ici pour arrêter.",
+    "helpPopup": {
+      "constrainedDragging": {
+        "title": "Déplacement contraint",
+        "description": "Quand vous déplacez un objet, maintenez l'appui sur Majuscule pour contraindre le mouvement sur la verticale/horizontale ; maintenez Ctrl pour cloner. Quand vous créez un objet linéaire ou glissez ses extrémités, appuyez sur Majuscule pour verrouiller l'angle sur 0°, 45°, 90° ; appuyez sur Ctrl pour tourner ou mettre à l'échelle par rapport à son milieu."
+      },
+      "groupRotateScale": {
+        "title": "Grouper, tourner et mettre des objets à l'échelle",
+        "description": "Maintenez Ctrl, appuyez sur plusieurs points de contrôle comme des extrémités [or click one or more objects], puis appuyez sur un espace vide pour grouper ces points et créer une poignée. Glissez la poignée (ou utilisez les flèches du clavier) pour déplacer le groupe ; Majuscule+glisser pour contraindre sur la verticale/horizontale ; Ctrl+glisser pour tourner le groupe, Ctr+Maj+glisser pour mettre le groupe à l'échelle. Glissez le \"+\" pour ajuster le centre de rotation/mise à l'échelle. Cliquer sur la poignez et appuyez sur Ctrl+D pour dupliquer le groupe ; pressez sur Suppr pour dégrouper."
+      },
+      "editCoordinates": {
+        "title": "Éditer directement les coordonnées",
+        "description": "Double-cliquez ou faites clic droit sur le point de contrôle (par exemple l'extrémité) de l'objet, éditez les coordonnées (x,y) puis appuyez sur Entrée."
+      },
+      "keyboardShortcuts": {
+        "title": "Raccourcis clavier",
+        "description": "Quand un objet est sélectionné (en le cliquant), appuyez sur les touches \"flèches\" pour déplacer l'objet [+/- to rotate the object], Ctrl+D pour le dupliquer ; Effacer pour supprimer l'objet."
+      },
+      "contactUs": {
+        "title": "Nous contacter",
+        "description": "La manière suggérée est d'aller sur la page [Discussions](/github/discussions) ou [Problèmes](/github/issues) sur GitHub. Si vous n'utilisez pas GitHub, vous pouvez aussi nous écrire un e-mail à l'adresse [ray-optics@phydemo.app](/email).",
+        "contribute": "Les contributions directes sont également les bienvenues (voir [le guide du contributeur](/contributing))."
+      }
+    }
+  }
+}

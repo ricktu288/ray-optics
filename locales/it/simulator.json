@@ -1,0 +1,27 @@
+{
+  "common": {
+    "saveButton": "Salva",
+    "cancelButton": "Annulla",
+    "defaultOption": "Default",
+    "customOption": "Custom",
+    "closeButton": "Chiudi",
+    "resetButton": "Resetta",
+    "reloadToTakeEffect": "Prego ricaricare la pagina per avere effetto."
+  },
+  "welcome": {
+    "title": "Benvenuti in Ray Optics Simulation",
+    "instruction": "Per aggiungere un componente ottico, seleziona un tool e clicca sullo spazio bianco.\nPer caricare un esempio, [go to the Gallery page](/gallery).",
+    "loading": "Sto caricando la scena dal URL... Prego attendere."
+  },
+  "file": {
+    "title": "File",
+    "undo": {
+      "title": "Annulla"
+    }
+  },
+  "sceneObjs": {
+    "TextLabel": {
+      "enterFontName": "Inserire il nome del font…"
+    }
+  }
+}

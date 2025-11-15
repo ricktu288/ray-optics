@@ -1,0 +1,537 @@
+{
+  "galleryPage": {
+    "title": "A Galeria de Óptica de Raios",
+    "description": "Essa é uma coleção de simulações feitas utilizando [o app web](/simulator), que podem ser utilizadas como demonstrações interativas de óptica. Contribuições de novos itens são bem-vindas. Veja [O guia de contribuição](/contributing/gallery) para mais informação. Para reportar um erro, por favor [abra um issue no GitHub](/github/issues) ou mande um email para [ray-optics@phydemo.app](/email).",
+    "categories": {
+      "title": "Categorias",
+      "reflection": "Reflexão",
+      "refraction": "Refração",
+      "lens": "Lentes",
+      "combinationOfLenses": "Combinação de Lentes",
+      "grinOptics": "Óptica de Gradiente de Índice",
+      "miscellaneous": "Miscelâneas"
+    },
+    "contributors_one": "Contribuidor: {{contributors}}",
+    "contributors_many": "Contribuidores: {{contributors}}",
+    "contributors_other": "Contribuidores: {{contributors}}",
+    "openInSimulator": "Abrir no Simulador"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Aviso: A sequência de luz aparecendo não representa a velocidade da luz - somente a imagem final é representativa."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Imagens a partir de Dois Espelhos",
+      "description": "Esta simulação mostra as imagens formadas por dois espelhos. O \"L\" verde é o objeto. Se o ângulo entre os dois espelhos é \\(\\frac{360^\\circ}{n}\\), então \\(n-1\\) imagens virtuais (os L's laranjas) serão formadas. Você pode arrastar a ponta do espelho para trocar o ângulo entre eles."
+    },
+    "parabolicMirror": {
+      "title": "Espelho Parabólico",
+      "description": "Esta simulação demonstra a propriedade de foco do espelho parabólico."
+    },
+    "hyperbolicMirror": {
+      "title": "Espelho Hiperbólico",
+      "description": "Esta é uma demonstração da propriedade de reflexão do espelho hiperbólico: Raios de luz viajando a partir de um foco rumo ao espelho hiperbólico refletem como se partissem do outro foco.\n\nOs dois focos da hipérbole são pontos aplanáticos (ver [Pontos aplanáticos](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "Os raios laranjas são raios imaginários extendidos dos raios amarelos refletidos.\nEsses raios imaginários convergem no outro ponto focal.",
+      "pointlightsourceaton": "Fonte de luz pontual em um ponto focal"
+    },
+    "retroreflectors": {
+      "title": "Retrorefletores",
+      "description": "Isso é uma simulação de dois tipos de retrorefletores:\n\n1. Retrorefletor de canto.\n2. Retrorefletor olho de gato.",
+      "dragtorotatethebeam": "Arraste para\ngirar o raio",
+      "catseyeretroreflecto": "Retrorefletor olho de gato",
+      "cornerretroreflector": "Retrorefletor de canto"
+    },
+    "periscope": {
+      "title": "Periscópio",
+      "description": "Isso é uma simulação de um periscópio feito de dois espelhos planos e alguns bloqueadores de luz.",
+      "observerseyenottosca": "Olho do observador (fora de escala)"
+    },
+    "newtonianTelescope": {
+      "title": "Telescópio Newtoniano",
+      "description": "Isso é um modelo de um telescópio Newtoniano com uma ocular de Plössl."
+    },
+    "penroseUnilluminableRoom": {
+      "title": "Sala iniluminável de Penrose",
+      "description": "A sala iniluminável de penrose é construída com espelhos elítpicos, circulares, e lineares. Ela tem a curiosa propriadade de que uma fonte pontual (verde) dentro da sala não vai iluminar a sala inteira, não importa onde ela seja colocada. Você pode arrastar o ponto verde para mover a fonte.",
+      "nomatterwhereyouputt": "Não importa onde se coloque a fonte pontual, ela não irá iluminar a sala inteira.\nAviso: Devido a erros numéricos, ela ainda pode ser iluminada após um tempo."
+    },
+    "opticalCavity": {
+      "title": "Cavidade óptica de dois espelhos",
+      "description": "Essa é uma simulação de raios dentro de uma cavidade óptica com dois espelhos. Dado o comprimento da cavidade \\(d\\), e o raio de curvatura de seus espelhos \\(R_1\\) e \\(R_2\\) respectivamente (com a convenção que \\(R>0\\) para um espelho côncavo), a cavidade óptica é estável (o que quer dizer que para cada raio que sai de um dos espelhos rumo ao outro, uma trajetória não-divergente é garantida para espelhos suficientemente altos) se, e somente se, \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\). Nessa simulação nós assumimos que os espelhos são curvos ideais, o que significa que \\(f=\\frac{R}{2}\\), fazendo com que a condição de estabilidade anterior seja \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\). [Esta](/gallery/resonator) é uma simulação similar com espelhos esféricos, onde a primeira condição de estabilidade é verdade na aproximação paraxial.",
+      "clickholdleftmouseto": "Clique + segure botão esquerdo do mouse\npara mover o raio",
+      "dragtomovetheidealmi": "Arraste para mover\no espelho ideal",
+      "d400intheresonatorsb": "d = 400 nos ressonadores abaixo",
+      "confocalresonator": "Ressonador confocal",
+      "concentricresonator": "Ressonador concêntrico",
+      "concaveconvexresonat": "Ressonador côncavo-convexo",
+      "planoconcaveresonato": "Ressonador plano-côncavo"
+    },
+    "resonator": {
+      "title": "Ressonador plano-côncavo",
+      "description": "Essa é uma demonstração de um ressonador plano-côncavo. Se a distância entre os espelhos for maior que o raio de curvatura, o ressonador é instável. Se a distância entre os espelhos for menor ou igual ao raio de curvatura, um modo ressonante estável é formado.",
+      "flatmirror": "Espelho plano",
+      "sphericalconcavemirr": "Espelho côncavo esférico",
+      "unstableresonator": "Ressonador instável",
+      "stableresonator": "Ressonador estável"
+    },
+    "mazeSolution": {
+      "title": "Solução de labirinto",
+      "description": "Isso é uma simulação de um raio de luz originando dentro de um labirinto e refletindo repetidamente nas paredes. O maior e o menor quadrado vermelho dentro do labirinto (vistos na captura de tela abaixo) representam a origem e adireção inicial do raio de luz, respectivamente. Para algumas orientações iniciais do raio de luz, ele sai do labirinto, e assim, retraçando o caminho do raio uma solução para o labirinto pode, a princípio, ser calculada.",
+      "controltherayorigina": "Controle a origem e direção inicial di raio de luz\narrastando os marcadores superiores e inferiores (respectivamente).",
+      "notethatthesimulatio": "Note que o processamento da simulação é finalizado apenas uma vez\na mensagem de processamento no canto inferior esquerdo desaparece.",
+      "mazeexit": "Saída do labirinto"
+    },
+    "specularAndDiffuseReflection": {
+      "title": "Reflexões Especulares e Difusas",
+      "description": "Raios idênticos brilham em uma superfície lisa e uma superfície irregular, ilustrando a diferença entre reflexões especulares e difusas.",
+      "specular": "Especular",
+      "diffuse": "Difusa"
+    },
+    "chaffCountermeasure": {
+      "title": "Contramedida de chaff",
+      "description": "Isso é uma simulação qualitativa do efeito que a contramedida de chaff tem em um radar (ignorando efeitos de difração).",
+      "plane": "Plano",
+      "radar": "Radar",
+      "chaff": "Chaff",
+      "selectthechafftochan": "Selecione o chaff para alterar o número (N) e o comprimento (L) dos pedaços de chaff."
+    },
+    "causticsFromAReflectiveSphere": {
+      "title": "Cáusticas de uma Esfera Refletiva",
+      "description": "Uma esfera integrante (não disoersante) com um buraco de entrada.   Também pode ser os reflexos dentro de uma gota de líquido (como uma gota de chuva).   Lindos padrões emergem onde as cáusticas se desenvolvem movimentando a fonte pontual.",
+      "movethepointsourcear": "Mova a fonte pontual\npara ver as cáusticas e nodos\ndentro da esfera integrante se transformarem.\nMude tamanho e posição dos bloqueadores,\ne o tamanho de abertura da esfera\npara ver mais efeitos."
+    },
+    "theMirascope": {
+      "title": "O Mirascópio",
+      "description": "Um **mirascópio** é um dispositivo de ilusão de óptica fascinate que usa dois espelhos parabólicos opostos para criar a ilusão de uma imagem flutuante tridimentsional. O dispositivo consiste de:\n1. **Dois Espelhos Parabólicos** com exatamente o mesmo tamanho, com um espelho virado pra cima e o outro virado para baixo, formando uma estrutura semelhante a um mexilhão. Os espelhos são projetados para focar luz em um ponto específico. O espelho superior tem um buraco em seu vértice para permitir que a luz entre no dispositivo.\n2. **Um Pequeno Objeto**: Colocado dentro do mirascópio, tipicamente próximo do ponto focal do espelho superior, que está bem próximo do vértice do espelho inferior.\n\nQuando a luz do objeto reflete entre os espelhos, é redirecionada de modo que apareça como uma imagem tridimensional flutuando acima da superfície do mirascópio. A ilusão é tão convincente que pessoas frequentemente tentam tocar na imagem, então descobrindo que não há nada lá.\n\nMirascópios são populares em demonstrações de ciência e brinquedos para ilustrar os princípios de óptica, reflexos, e o comportamento da luz.",
+      "object1": "Objeto",
+      "realimage1": "Imagem real"
+    },
+    "reflect": {
+      "title": "Reflexão e Refração",
+      "description": "Esta simulação mostra a reflexão e refração em uma superfície."
+    },
+    "internalReflection": {
+      "title": "Reflexão Interna",
+      "description": "Esta simulação mostra a refração e reflexão interna em uma superfície."
+    },
+    "prisms": {
+      "title": "Prismas",
+      "description": "Esta simulação demonstra o prisma de ângulo reto, o prisma de Porro, o prisma rombóide, o prisma de Dove, e o pentaprisma.",
+      "rhomboid": "rombóide",
+      "rightangle": "ângulo reto",
+      "porro": "Porro",
+      "dove": "Dove",
+      "pentaprism": "pentaprisma"
+    },
+    "beamDirectors": {
+      "title": "Diretores de Raio",
+      "description": "Essa é uma simulação de um biprisma normal e um de Fresnel. Um biprisma pode direcionar um raio colimado para duas direções, dependendo do ângulo da ponta.",
+      "thisfresnelbiprismwa": "Este biprisma de Fresnel foi feito a partir do biprisma acima.\nVocê pode selecionar o biprisma e adicionar o parâmetro N_slice.",
+      "fresnelbiprism": "Biprisma de Fresnel",
+      "biprism": "Biprisma"
+    },
+    "apparentDepth": {
+      "title": "Profundidade Aparente",
+      "description": "Quando se olha para um objeto embaixo d'água estando fora dela, a profundidade do objeto parece ser menor que a sua profundidade real. Esse fenômeno ocorre devido à refração da luz, e é demonstrado nessa simulação. A profundidade aparente depende da posição do observador, fato que pode ser demonstrado ao arrastar o círculo azul.",
+      "observedimageorange": "Imagem observada (laranja)",
+      "observer": "Observador",
+      "objectunderwatergree": "Objeto subaquático (verde)"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "Distorção em janelas e espelhos de reflexo traseiro",
+      "description": "Quando se observa um objeto através de um vidro em um ângulo oblíquo a imagem aparece deslocada e mais próxima do observador que devia ser. A simulação mostra esse efeito em uma janela grossa e espelho de superfície reflexiva traseira. Visualizando no modo \"Todas Imagens\" demonstra que os pontos imagem são na verdade arcos, então dependendo do tamanho do detector a imagem pode se tornar embaçada.\n\nÀ direita do quadro você pode também pdoe encontrar o efeito de um cunho no tamanho aparente.",
+      "source": "fonte",
+      "glass": "vidro",
+      "mirror": "espelho",
+      "image": "imagem",
+      "observer3": "observador",
+      "window": "janela"
+    },
+    "bendedPencil": {
+      "title": "Lápis Dobrado",
+      "description": "Essa é uma simulação da imagem percebida com nossos olhos, quando olhando por cima de um lápis parcialmente submerso em um copo d'água. A descontinuidade do índice refrativo entre ar e água faz com que o lápis pareça quebrado e dobrado. No entanto, nessa simulação, a dobra é mais fortemente exibida. Você pode ver a simulação [Lápis Dobrado](/gallery/broken-pencil) onde a quebra do lápis é mais fortemente exibida.",
+      "bentpencilyellowimag": "lápis dobrado (amarelo)\nimagem na retina",
+      "dielectricmaterial": "material dielétrico",
+      "originalpencilgreen": "lápis original (verde)",
+      "observerseye": "olho do observador",
+      "ignoretheorangesquar": "Ignore os quadrados laranja!"
+    },
+    "brokenPencil": {
+      "title": "Lápis Quebrado",
+      "description": "Esta é uma simulação da imagem percebida com nossos olhos, quando olhando pela lateral de um lápis parcialmente submerso em um copo d'água. A descontinuidade do índice refrativo entre ar e água faz com que o lápis apareça como quebrado e dobrado. No entanto, nesta simulação, a quebra é mais fortemente exibida. Você pode conferir a simulação [Lápis Dobrado](/gallery/bended-pencil) onde a dobra do lápis é mais fortemente exibida.",
+      "brokenpencilyellowim": "lápis quebrado (amarelo)\nimagem na retina"
+    },
+    "chromaticDispersion": {
+      "title": "Dispersão cromática",
+      "description": "Esta simulação demonstra dispersão cromática usando um raio de cor branca e um prisma triangular. Aqui a cor branca é formada misturando as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta.",
+      "dragheretoadjustbeam": "Arraste aqui para\najustar largura do feixe",
+      "dragheretorotatethep": "Arraste aqui para\ngirar o prisma"
+    },
+    "rainbows": {
+      "title": "Arco-íris",
+      "description": "Esta simulação demonstra a formação do arco-íris primário, e a faixa escura de Alexander. Aqui o espectro da luz do sol é aproximada ao misturar as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta. Os raios saindo do arco-íris primário/secundário se devem a uma/duas reflexões internas dentro da gota de chuva (é possível ver isso ao definir Densidade de Raios para um valor baixo e arrastar a gota de chuva). Note que estas não são reflexões totais internas, então as intensidades dos raios que saem são bem menores que os raios que entram. Já que os [ângulos de desvio mínimo](/gallery/minimum-deviation-angle) dependem do comprimento de onda, cores diferentes se acumulam em ângulos diferentes. Daí as cores nos arco-íris. Fora dos ângulos mínimos, os raios não se acumulam, então todas as cores são fracas e misturadas, produzindo a cor branca fraca (ou \"cinza\") nos ângulos logo ao redor dos dois arco-íris. Por outro lado, nenhum vai para o ângulo entre os dois arco-íris, formando a faixa escura de Alexander.",
+      "thesearethecolorspro": "Estas são as cores produzidas por uma única gota de chuva.\nOs arco-íris finais que nós vemos se devem a um enorme número de gotas de chuva no véu,\ncada uma dando uma única cor (no ângulo correspondente) ao observador.",
+      "secondaryrainbow": "Arco-íris secundário",
+      "alexandersdarkband": "Faixa escura de Alexander",
+      "raindrop": "Gota de chuva",
+      "primaryrainbow": "Arco-íris primário",
+      "sunlight": "Luz do sol"
+    },
+    "minimumDeviationAngle": {
+      "title": "Desvio angular mínimo",
+      "description": "A definição do desvio angular de um raio encontrando um elemento óptico depende do contexto - na captura de tela abaixo pode-se ver sua definição para um prisma triangular e esférico. Nos exemplos dentro desta simulação, o desvio de ângulo como função do ângulo de incidência do raio entrando no elemento óptico, possui um mínimo local em um desvio de ângulo chamado \"desvio angular mínimo\". Esse mínimo local explica fenômenos ópticos como [arco-íris](/gallery/rainbows) e halos - devido a esse mínimo local, os raios desviados se acumulam em direções específicas, criando \"cáusticas ópticas\" (como visto no exemplo C dentro da simulação), que percebemos como arco-íris/halos.",
+      "inexamplesaandbbyrot": "Nos exemplos A e B, ao girar os prismas entre os pontos A1 a A2 e B1 a B2, assim mudando o\nângulo de incidência do raio entrando no elemento óptico, pode-se claramente observar que um mínimo\ndesvio angular é alcançado em algum lugar entre o par de pontos.\n(no exemplo A o desvio angular é medido relativo a um eixo horizonta. Já no exemplo B,\né medido relativo ao eixo vertical).\n\nAgora se aproxime do exemplo C (usando o zoom da simulação), e explanda os dois feixes (vermelho e roxo, e\nsua interseção fica rosa. Isso é efetivamente o mesmo que rodar o prisma esférico no \nexemplo B, assim mudando o ângulo de incidência do raio que entra) e observe que do ponto\nC1 a C2 os raios traseiros saindo se acumulam rumo a dois raios vermelho e roxo distintos \n(\"cáusticas ópticas\") - o desvio angular mínimo é alcançado ao redor do ponto C2, e depende do comprimento\nde onda da luz (cor). Então, quando expandimos os dois feixes do ponto C2 a C3, os raios saindo por trás invertem sua direção para cima.",
+      "examplea": "Exemplo - A",
+      "examplec": "Exemplo - C",
+      "exampleb": "Exemplo - B",
+      "dragtorotate": "Arraste para girar",
+      "dragtoadjustbeamwidt": "Arraste para ajustar largura dos feixes",
+      "usethebuiltinzoomtob": "Use o zoom da simulação para melhor interagir com ela",
+      "deviationangle": "Desvio angular",
+      "incidenceangle": "Ângulo de incidência"
+    },
+    "aplanaticPoints": {
+      "title": "Pontos aplanáticos",
+      "description": "Pontos aplanáticos de um sistema óptico são pontos especiais em seu eixo óptico, tais que \"raios partindo de um deles irão todos convergir para, ou parecer divergir do outro ponto\".\n\n- Elipse: os dois focos da lente/espelho elíptico são pontos aplanáticos, já que luz emitida de um foco irá convergir rumo ao outro.\n- Esfera: uma lente esférica tem dois pontos aplanáticos, dentro e fora da esfera - para mais detalhes veja a simulação.\n- Hipérbole: os dois focos da simulação de [Espelho hiperbólico](/gallery/hyperbolic-mirror) também são pontos aplanáticos.\n\nDados dois pontos com coordenadas horizontais \\(x_1\\) e \\(x_2\\), coordenadas verticais idênticas, e dado os indíces refrativos fora e dentro do nosso elemento óptico como \\(n_1\\) e \\(n_2\\) (respectivamente), para esses dois pontos serem pontos aplanáticos, o limite do nosso elemento óptico deve fazer com que seja verdade\\begin{equation}k_1 n_1 \\sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \\sqrt{  (x - x_2)^2 + y^2} = E\\end{equation} tal que \\(k_i=1\\) ou \\(-1\\) se o raio connectando \\(x_i\\) e o limite do nosso elemento óptico for real ou imaginário, respectivamente, e \\(E\\) for uma constante para a qual essa equação possui uma solução não-trivial. Essa equação (que pode ser derivada utilizando o princípip de Fermat) é uma equação de uma Oval Cartesiana, da qual as seções cônicas são casos especiais.",
+      "clickontheextendedra": "Clique no botão de \"Raios extendidos\" e verifique que a luz emitida da fonte de luz na lente esférica (ponto A),\ndiverge partindo de outro ponto no eixo óptico fora da lente esférica (ponto B) sem aberração esférica.\nPontos A e B são um exemplo de pontos aplanáticos da esfera, para os quais (k1, k2, n1, n2, x1, x2, E)=(1, -1, 1.5, 1, 3 * 20, -4.5 * 20, 0) relativo ao eixo Y marcado,\nonde x1, x2 são as coordenadas horizontais dos pontos A e B, respectivamente(cada célula da grade tem dimensões de 20 por 20).\nDe maneira similar, os focos da elipse (pontos C e D) são um exemplo de pontos aplanáticos da elipse, para os quais (k1, k2, n1, n2, E)=(1, 1, 1.5, 1.5, > 0)",
+      "sphericallens": "Lente esférica",
+      "ellipticallens": "Lente elíptica",
+      "yaxis": "Eixo y"
+    },
+    "concaveLens": {
+      "title": "Lente côncava",
+      "description": "Esta simulação mostra uma lente côncava divergindo um feixe."
+    },
+    "convexLens": {
+      "title": "Lente Convexa",
+      "description": "Esta simulação mostra uma lente convexa convergindo um feixe."
+    },
+    "lensImages": {
+      "title": "Imagens de Lente",
+      "description": "Esta simulação mostra as imagens de um feixe e fontes ponto produzidas por lentes ideais."
+    },
+    "virtualImageFormation": {
+      "title": "Formação de Imagem Virtual",
+      "description": "Esta é uma simulação de como uma imagem virtual é formada com uma lente convergente e suas características.",
+      "object2": "Objeto",
+      "converginglensf1000u": "Lente Convergente (F=1000 unidades)",
+      "virtualimagehighlyen": "Imagem Virtual\nAltamente Ampliada\nLado Correto Para Cima"
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "Magnificação transversal e longitudinal",
+      "description": "Essa é uma simulação de magnifucação transversal e longitudinal para uma lente ideal com comprimento focal \\(f\\). A magnificação transversal (também chamada linear) e longitudinal são \\(M_T=1-\\frac{u}{f}\\) e \\(M_L=\\frac{dv}{du}\\) respectivamente, onde \\(u\\) e \\(v\\) são a distância do objeto e da imagem da nossa lente ideal, respectivamente. Além disso, para uma lente ideal \\(M_L=-(M_T)^2\\)",
+      "inthisexamplewehavey": "Neste exemplo temos y'_j - y'_k = M_T * (y_j - y_k), onde j,k∈{0,1,2,3,4,5}.\nLogo por exemplo a magnificação transversal do obejto ponto (x_0,y_0) é M_T = -3, e podemos calcular - \n(x'_0 - x'_1)/(x_1 - x_0) ≈ -0.3699\n(x'_0 - x'_2)/(x_2 - x_0) ≈ -0.7297\n(x'_0 - x'_3)/(x_3 - x_0) ≈ -1.4211\n(x'_0 - x'_4)/(x_4 - x_0) ≈ -2.4545\n(x'_0 - x'_5)/(x_5 - x_0) = -5.4\n.\n.\n.\n(A razão irá convergir para a magnificação longitudinal: M_L = - (M_T)^2 = -9)",
+      "rightclickonarealobj": "Clique com botão direito em um objeto(real) para ver suas coordenadas.\nOs quadrados verdes são fontes pontuais reais, enquanto os quadrados amarelos são objetos imagem."
+    },
+    "vanishingPoint": {
+      "title": "Ponto de fuga",
+      "description": "Alguns sistemas ópticos tomam linhas paralelas infinitas e as projetam como linhas no plano de imagem que se encontram em um ponto único, dando a ilusão que as linhas paralelas se encontram \"no infinito\". Esse ponto único é chamado de ponto de fuga.\n\nPara um sistema óptico composto de uma lente ideal com comprimento focal \\(f\\), localizado no plano \\(XY\\), tal que seu eixo óptic coincida com o eixo \\(X\\) (horizontal) e a lente coincida com o eixo \\(Y\\), o ponto de fuga para uma linha com inclinação \\(m\\), localizada en \\(x<0\\) é dado pelas coordenadas \\((x,y)\\) \\((f, m f\\).",
+      "youcanverifythatapai": "Pode-se observar que um par de linas paralelas com inclinação - m, convergem pela lente ideal para as coordenadas (f,m∙f),\nclicando no botão \"Grade\" e percebenddo que cada célula da grade possui dimensões de 20 por 20.\nVocê também pode observar como mudar o comprimento focal da lente ideal - f, afeta os pontos convergentes (pontos de fuga).",
+      "thesepairofparallell": "Este par de linhas paralelas converge ao ponto B",
+      "thesepairofparallell1": "Este par de linhas paralelas converge ao ponto A",
+      "notethatthesepairsof": "Note que esses pares de linhas paralelas não são infinitos."
+    },
+    "monochromaticAberrations": {
+      "title": "Aberrações monocromáticas",
+      "description": "Essa é uma simulação de diferentes aberrações monocromáticas:\n\n1. Aberração esférica.\n2. Aberração de coma.\n3. Aberração de desfocagem.\n4. Curvatura de campo.",
+      "defocusaberration": "Aberração de desfocagem",
+      "sphericalaberration": "Aberração esférica",
+      "screen": "Tela",
+      "fieldcurvatureaberra": "Aberração de curvatura de campo",
+      "commaaberration": "Aberração de coma"
+    },
+    "chromaticAberration": {
+      "title": "Aberração cromática",
+      "description": "Esta simulaçã mostra a aberração cromática de uma lente esférica. Aqui a cor branca é formada misturando as cores vermelho, laranja, amarelo, verde, ciano, azul e violeta. O comprimento focal da luz vermelha é o maior e o da luz violeta é o menor.",
+      "dragtoadjustbeamwidt1": "Arraste para ajustar a largura do feixe"
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "Orientações de lentes plano-convexas",
+      "description": "Esta simulação compara as duas orientações de uma lente plano-convexa focando um feixe, destacando as diferentes quantidades de aberrações esféricas."
+    },
+    "hyperbolicLens": {
+      "title": "Lente hiperbólica",
+      "description": "Esta é uma simulação e comparação entre as lentes esférica e hiperbólica. Ambas lentes possuem comprimentos focais idênticos, mas diferentemente da lente esférica, a lente hiperbólica pode colimar um raio paralelo de luz monocromática em um ponto único (ignorando as propriedades de onda da luz - ou seja, na aproximação geométrica de óptica) sem aberrações esféricas.",
+      "thefocallengthofthis": "O comprimento focal desta lente esférica (na aproximação paraxial) é:\nf=R/(n-1)=200/(1.5-1)=400",
+      "thefocallengthofthis1": "O comprimento focal desta lente hiperbólica é:\nf = |C| ∙ sqrt(n^2 - 1) / (n - 1) = K ∙ sqrt(0.8) ∙ sqrt(1.5^2 - 1) / (1.5 - 1) = 400\nonde a equação para essa hipérbole é:\ny(x) = (a/K) - sqrt( ((x/K)^2 + (C/K)^2) / (n^2 - 1) )\n= 1.5 - sqrt( (0.8 + (x / 200)^2) / (1.5^2 - 1) )\ntal que K é seja a constante de conversão entre as dimensões da equação para as dimensões da grade - para esta lente hiperbólica K =200.\n(por exemplo 0<y<Y se converte para um bloco com comprimento vertical de  K∙Y).",
+      "selectthishyperbolic": "(Selecione esta lente hiperbólica para ver sua equação personalizada)."
+    },
+    "fresnelLens": {
+      "title": "Lente de Fresnel",
+      "description": "Esta é uma simulação e comparação entre uma lente esférica e uma lente Fresnel. Uma das vantagens da lente Fresnel pode ser facilmente observada: ela funciona de maneira simular a uma lente esférica normal, ocupando muito menos espaço, portanto sendo mais leve.",
+      "thisfresnellensismad": "Esta lente fresnel é feita a partir do meio círculo de vidro abaixo.\nVocê pode selecionar a lente e ajustar o parâmetro N_slice."
+    },
+    "zoomLens": {
+      "title": "Lente de Zoom",
+      "description": "Esta simulação demonstra uma lente de zoom, onde se pode alterar o zoom arrastando a lente côncava no meio.",
+      "dragtomovethelens": "Arraste para mover a lente",
+      "zoom": "← zoom →"
+    },
+    "compoundMicroscope": {
+      "title": "Microscópio Composto",
+      "description": "Um microscópio composto consiste de duas lentes, a objetiva, e a ocular. O objeto (verde) está muito próximo do eixo, representando um pequeno objeto. O objeto é então aumentado pelas duas lentes para que uma imagem virtual ampliada invertida (a interseção das últimas extensões laranja) é produzida.",
+      "objective": "Objetiva",
+      "eyepiece": "Ocular"
+    },
+    "telescope": {
+      "title": "Telescópio",
+      "description": "Esta é uma simulação de um telescópio simples, composto de uma lente convexa e uma Galileana [expansor de feixe](/gallery/beam-expanders) - que aumenta a resolução angular do telescópio, assim melhor separando a luz incidente de duas estrelas distantes.\n\nNa captura de tela abaixo você pode comparar a performance do telescópio a sua versão anterior sem o expansor de feixe (contendo apenas uma lente convexa).",
+      "lightfromstar2": "Luz da estrela 2",
+      "lightfromstar1": "Luz da estrela 1",
+      "withagallileanbeamex": "Com um expansor de feixe Galileano (melhor separação angular de ambas estrelas)",
+      "screen1": "Tela",
+      "withoutabeamexpander": "Sem um expansor de feixe"
+    },
+    "keplerianTelescope": {
+      "title": "Telescópio kepleriano",
+      "description": "Esta simulação descreve o diagrama de raios do telescópio Kepleriano.",
+      "lightfromstar": "Luz da estrela",
+      "virtualimage": "Imagem virtual",
+      "realimage": "Imagem real",
+      "thekepleriantelescop": "O telescópio Kepleriano",
+      "eye": "olho"
+    },
+    "beamExpanders": {
+      "title": "Expansores de feixe",
+      "description": "Essa é uma simulação de dois tipos de expansores de feixe - Expansor de feixe kepleriano, e Expansor de feixe galileano. Um expansor de feixe expande ou reduz o diâmetro de um raio de luz colimada. Um Expansor de feixe galileano é composto de uma lênte convexa e uma côncava, enquanto um Expansor de feixe kepleriano é composto de duas lentes convexas. Em ambos os tipos, a soma dos comprimentos focais das lentes é igual à sua distância de separação.",
+      "keplerianbeamexpande": "Expansor de feixe kepleriano",
+      "gallileanbeamexpande": "Expansor de feixe galileano",
+      "inbothcasesthedistan": "Em ambos os casos a distância entre as lente é igual à soma de suas distâncias focais"
+    },
+    "rayRelaying": {
+      "title": "Repassamento de raios",
+      "description": "Esta é uma simulação de repassamento de raios por uma série de lentes ideais idênticas com comprimento focal \\(f\\) e distância \\(d\\) entre lentes consecutivas. Uma trajetória de raios não divergente é garantida se e somente se \\(d\\leq 4f\\).",
+      "youcanselectanylenst": "Você pode selecionar qualquer lente para visualizar e ajustar os parâmetros da sequência."
+    },
+    "rochesterCloak": {
+      "title": "Manto de Rochester",
+      "description": "O manto de Rochester é um tipo de dispositivo de invisibilidade, que usa apenas 4 lentes. Na versão apresentada nesta simulação, o comprimento focal das duas lentes externas é \\(f_1\\), e o das duas lentes do meio é \\(f_2\\), tal que a distância entre lentes consecutivas de comprimentos focais \\(f_1\\) e \\(f_2\\) seja igual a \\(t_1=f_1+f_2\\) e a distância entre as lentes do meio seja \\(t_2=2f_2\\frac{f1+f2}{f1-f2}\\).",
+      "observerdoesntseethe": "Observador (não vê os objetos\nda área de invisibilidade parcial,\nmas vê o objeto da área de visibilidade)",
+      "partialinvisibilitya": "Área de invisibilidade parcial",
+      "object": "Objeto",
+      "t8objects": "8 objetos",
+      "visibilityarea": "Área de visibilidade"
+    },
+    "simpleDoubleGaussLens": {
+      "title": "Lente Dupla Gauss Simples",
+      "description": "Esta é uma demonstração de uma lente Gauss dupla simples."
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "title": "Par de Axicons fazendo um Anel Arco-íris",
+      "description": "Esta simulação usa dois axicons plano-convexos, uma fonte de luz branca e uma abertura para criar um arco-íris circular. Axicons são lentes cônicas. A luz branca incidente precisa de ser um anel que foi criado por uma abertura anelar fina.\n\nMover o axicon direito para a esquerda e direita vai alterar o tamano do anel arco-íris que sai.",
+      "leftaxicon": "Axicon Esquerdo",
+      "whitelightsource": "Fonte\nDe Luz\nBranca",
+      "rightaxicon": "Axicon Direito",
+      "ringaperture": "Abertura Anelar"
+    },
+    "koehlerIllumination": {
+      "title": "Iluminação de Köhler",
+      "description": "Esta configuração, inventada em 1893 por August Köhler, é muito útil se você está lidando com qualquer tipo de microscopia. Ela fornece iluminação homogênea em uma amostra, a partir de qualquer fonte de luz não homogênea. A imagem da fonte de iluminação (ex.: filamento de lâmpada) não é, portanto, visível na amostra. As duas aberturas podem ser usadas pra alterar tanto a intensidade e abertura numérica (AN) quanto o campo de visão da sua iluminação. A segunda abertura é particularmente vantajosa, já que você pode fechá-la para focar sua amostra. Se as bordas da abertura estão em foco, então a amostra é focada também. Também é chamado de configuração 4f, já que usa quatro comprimentos focais de distância.",
+      "spatiallyextendedand": "fonte de luz inhomogênea\ne espacialmente extendida",
+      "collectorlens": "lente coletora",
+      "aperture1changesinte": "abertura 1\nmuda\nintensidade, AN",
+      "fieldlens": "lente de campo",
+      "aperture2changesfiel": "abertura 2\nmuda\ncampo de visão",
+      "condensorlens": "lente condensadora",
+      "objectivelens": "lente objetiva",
+      "sample": "amostra",
+      "sampleisnowilluminat": "amostra agora \nestá iluminada homogeneamente"
+    },
+    "grinSlab": {
+      "title": "Bloco GRIN",
+      "description": "Esta é uma simulação de um material dielétrico retangular com índice refrativo \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), onde \\(n_0=2\\) é o índice refrativo em seu eixo central e \\(\\rho\\) é a distância radial de seu eixo central, tal que \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) onde \\(R=100 \\) é seu raio. O dielétrico superior nessa simulação é feito de retângulos dielétricos finos de índice refrativo constante, de acordo com \\(n(\\rho)\\), enquanto o dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(\\rho)\\).",
+      "approximatedmultilay": "Bloco GRIN aproximado com múltiplas camadas (Você pode selecionar e mudar N, o número de camadas.)",
+      "classicalgrinslabyou": "Bloco GRIN clássico (Você pode selecionar e alterar o tamanho de passo do resolvedor numérico.)"
+    },
+    "inferiorMirage": {
+      "title": "Miragem inferior",
+      "description": "Essa é uma simulação qualitativa do efeito de miragem inferior. O índice refrativo do ar nesse exemplo é aproximado com a função \\(n(y)=\\sqrt{1 + (\\frac{y}{h})^2 }\\), onde \\(h=600\\) representa a altura de um objeto emissor/refletor de luz sobre o solo.",
+      "airwithoutinferiormi": "Ar (sem efeito de miragem inferior)",
+      "airwithinferiormirag": "Ar (com efeito de miragem inferior)",
+      "ground": "Chão",
+      "raysemittedreflected": "Raios emitidos/refletidos\nde um objeto",
+      "observerseyenottosca1": "Olho do observador (fora de escala)"
+    },
+    "seaMirage": {
+      "title": "Miragem marítima",
+      "description": "Essa é uma simulação qualitativa do efeito que faz com que um objeto além do horizonte possa ser visível como uma miragem superior.",
+      "earthssurface": "Superfície da Terra",
+      "atmosphere": "Atmosfera",
+      "architecturealpine": "Constução/ Montanha",
+      "observer1": "Observador",
+      "vacuum": "Vácuo",
+      "virtualimage1": "Imagem virtual"
+    },
+    "logarithmicSpiralLens": {
+      "title": "Caminho de raios em espiral logarítmica",
+      "description": "A função de índice refrativo que suporta caminhos de raio de espiral logarítmica é da forma \\(r(θ) = r_0\\,e^{-k\\theta}\\), onde \\(r_0,k > 0\\) e\\(\\alpha = \\arctan k\\) é um ângulo constante entre a sduas tangentes no ponto de interseção entre a espiral logarítmica concêntrica e círculo(como demonstrado [nessa](https://en.wikipedia.org/wiki/Logarithmic_spiral#/media/File:Logspiral.gif) animação) é \\(n(r)\\propto\\frac{1}{r} \\) (isso pode ser demonstrado escrevendo o caminho óptico em coordenadas polares, e usando o princípio de Fermat).",
+      "thecircularblockeris": "O bloqueador circular está no centro\npara evitar a singularidade de índice refrativo",
+      "dragtochangetheiniti": "Arraste para mudar a\ndireção inicial do raio",
+      "youcanselectthegring": "Você pode selecionar o vidro GRIN e\nalterar o tamanho do passo do resolvedor numérico"
+    },
+    "luneburgLens": {
+      "title": "Lente de Luneburg",
+      "description": "Esta é uma simulação de uma lente de Luneburg, que é um dielétrico esférico com índice refrativo \\(n(r) = \\sqrt{n_0-(\\frac{r}{R})^2} \\), onde \\(n_0=2\\) é o índice refrativo no centro da lente, \\(R=100\\) é o raio da lente, e \\(r\\) é a distância radial do centro da lente.\n\nO dielétrico superior é composto de \\(N=20\\) lentes esféricas concêntricas com raio \\(R_i=5(N+1-i)\\) e índice refrativo \\(n_i = \\sqrt{n_0-(\\frac{R_i}{R})^2^\\), pnde \\(i=1,\\ldots,N\\). No entanto, já que esse simulador calcula o índice refrativo efetivo de um elemento óptico multiplicando o índice refrativo numérico do elemento com os índices refrativos numéricos dos elementos ópticos inseridos nele, o índice refrativo numérico da \\(i\\)-ésima lente esférica concêntrica é dado por \\(n_{i}^\\text{numérico}=\\frac{n_i}{n_{i-1}}\\).\n\nO dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(r)\\).",
+      "approximatedmultilay1": "Lente Luneburg multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)",
+      "classicalluneburglen": "Lente Luneburg clássica (Você pode selecionar e mudar o tamanho de passo do resolvedor numérico.)"
+    },
+    "maxwellFisheyeLens": {
+      "title": "Lente olho de peixe de Maxwell",
+      "description": "Esta é uma simulação de uma lente olho de peixe de Maxwell, que é um dielétrico esférico com índice refrativo \\(n(r) = \\frac{n_0}{1+(\\frac{r}{R})^2} \\), onde \\(n_0=2\\) é o índice refrativo no centro da lente, \\(R=100\\) é o raio da lente, e \\(r\\) é a distância radial do centro da lente.\n\nO dielétrico superior é composto de \\(N=20\\) lentes esféricas concêntricas com raio \\(R_i=5(N+1-i)\\) e índice refrativo \\(n_i = \\frac{n_0}{1+(\\frac{R_i}{R})^2} \\), onde \\(i=1,\\ldots,N\\). No entanto, já que este simulador calcula o índice refrativo effetivo de um elemento óptico multiplicando o índice refrativo numérico do elemento com os índices refrativos numéricos dos elementos ópticos que estão inseridos nele, o índice refrativo numérico da \\(i\\)-ésima lente esférica concêntrica é dado por \\(n_{i}^\\text{numérico}=\\frac{n_i}{n_{i-1}}\\).\n\nO dielétrico inferior é um material de gradiente de índice com índice refrativo \\(n(r)\\).",
+      "approximatedmultilay2": "Lente olho de peixe de Maxwell multicamadas aproximada (Você pode selecionar e mudar N, o número de camadas.)",
+      "classicalmaxwellfish": "Lente olho de peixe de Maxwell clássica (Você pode selecionar e mudar o tamanho do passo do resolvedor numérico.)"
+    },
+    "branchedFlow": {
+      "title": "Fluxo ramificado",
+      "description": "Quando luz viaja através de um meio cujo índice refrativo tem variações espaciais aleatórias (com comprimento de correlação muito maior que o comprimento de onda da luz), um padrão semelhante a galhos de árvore chamado de fluxo ramificado aparece. Esta simulação mostra esse fenômeno usando uma função de índice refrativo que é a soma de várias funções cosseno com amplitudes e fases pseudoaleatórias."
+    },
+    "singleRayDemo": {
+      "title": "Demonstração de Raio Único",
+      "description": "Esta simulação demonstra a reflexão e refração de um único raio."
+    },
+    "sphericalLensAndMirror": {
+      "title": "Lente e Espelho Esféricos",
+      "description": "Esta simulação mostra um raio contínuo passando por uma lente esférica e um espelho esférico."
+    },
+    "interrogationRoom": {
+      "title": "Sala de interrogação",
+      "description": "Esta é uma simulação de um espelho de duas vias em uma sala de interrogação. O observador na sala escura (idealmente o interior da sala escura não emite/reflete luz, além de absorver toda a luz que vem da sala de interrogação) pode ver dentro da sala de interrogação porque a luz criada pela lâmpada na sala de interrogação é espalhada e recebida pelo observador através do espelho de duas vidas, enquanto o suspeito só pode ver dentro da sala de interrogação além do seu reflexo, e o da lâmpada (já que nenhuma luz da sala escura é recebida pelo suspeito).",
+      "pressonallimagestose": "Clique em \"Todas Imagens\" para ver a posição\ndo reflexo da lâmpada, e os objetos\nno plano de imagem do suspeito e do observador",
+      "darkroom": "Sala escura",
+      "twowaymirror": "Espelho de duas vias",
+      "lamp": "Lâmpada",
+      "interrogationroom": "Sala de interrogação",
+      "observerseyeris": "Olho do observador",
+      "suspectseyeris": "Olho do suspeito",
+      "thelampobjectinthesu": "A lâmpada no plano de imagem do suspeito",
+      "thelampsreflectionin": "O reflexo da lâmpada no plano de imagem do suspeito",
+      "thelampsreflection": "O reflexo da lâmpada",
+      "thelampobjectintheob": "A lâmpada no plano de imagem do observador"
+    },
+    "cameraObscura": {
+      "title": "Câmera escura",
+      "description": "Esta é uma simulação de uma Câmera escura. O observador an sala escura vê uma imagem invertida dos objetos de fora, projetada na parede à frente dele/dela (sem o uso de uma lente adicional).",
+      "observer2": "Observador",
+      "objectsoutside": "Objetos exteriores",
+      "darkroom1": "Sala escura"
+    },
+    "thePrincipleOfCameraImaging": {
+      "title": "O princípio de formação de imagem em câmera",
+      "description": "Este modelo fornece uma maneira intuitica de se aprender os princípios de formação de imagens em câmeras, cobrindo tópicos essenciais como comprimento focal, abertura, sensitividade do sensor, e borramento do plano de fundo, fazendo com que seja útil para estudantes e entusiastas.",
+      "camera": "Câmera",
+      "cmos": "Sensor"
+    },
+    "nlSimulation": {
+      "title": "Binóculos NL",
+      "description": "Esta simulação mostra um esboço básico de binóculos Swarosvski NL."
+    },
+    "einsteinRingRefocusedToSingleImageViaEyepiece": {
+      "title": "Anel de Einstein refocado para Imagem Única usando Ocular",
+      "description": "Este é um modelo de uma lente ocular que pode ser usado em qualquer telescópio científico que vai reverter a \"auréola\" e focar um anel de Einstein de volta a sua forma original enquanto dispersa a luz de qualquer estrela ou objeto massivo usado para criar o anel."
+    },
+    "blackCatBecomesWhite": {
+      "title": "Demonstração \"Gato preto se torna branco\"",
+      "description": "\"Gato preto se torna branco\" é uma demonstração de ciência popular em que parte de uma figura desaparece quando colocada em água. Ela é feita com os seguintes passos:\n\n1. Desenhe uma figura (ex.: um gato preto) em um pedaço de papel.\n2. Coloque o papel em um saco ziploc.\n3. Desenhe parte da figura (ex.: a borda do gato) ou outra figura na superfície do plástico. Quando colocado na água, a figura desenhada no papel desaparece, mas não a parte desenhada na superfície do plástico.\n\nEssa simulação explica como isso funciona.",
+      "whenthebagisunderwat": "Quando o saco está embaixo d'água, a luz do papel não alcança os olhos,\nentão vemos somente a figura desenhada na superfície do plástico.",
+      "lightfromtheplastics": "Luz vinda da superfície do plástico",
+      "lightfromthepaper": "Luz vinda do papel",
+      "eyes": "Olhos",
+      "dragtomovethebagouto": "Arraste para mover o saco pra fora da água"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "title": "Divisor e Combinador RGB Dicróico",
+      "description": "Esta simulação demonstra a divisão e combinação de raios RGV usando espelhos dicróicos.",
+      "rgbcomponentsplitter": "Divisor e Combinador de Componentes RGB",
+      "lightsource": "Fonte de Luz",
+      "dichroiccube": "Cubo Dicróico",
+      "beamcombiner": "Combinador de Feixe"
+    },
+    "ganBasedLcdPixel": {
+      "title": "Pixel LCD",
+      "description": "Este é um modelo de um pixel LCD. Ele simula como novas camadas de monitor microled funcionam e como os nossos olhos percebem o pixel.",
+      "pixelsaresosmallthel": "Pixels são tão pequenos que a luz\nparece, a nossos olhos, estar misturada",
+      "changetherateoftrans": "Mude a Taxa de Transmissão\nPara Criar Qualquer Valor RGB",
+      "blueledbacklight": "Luz de fundo de LED azul",
+      "yellowphosphor": "Material Fosforescente",
+      "liquidcrystal": "Cristal Líquido",
+      "lightfilters": "Filtros de Luz",
+      "pixelasvisibletoview": "Pixel Como Visto ao Observador",
+      "notpartoflcddisplay": "Não é parte da tela LCD"
+    },
+    "concaveMirrorWearableDisplay": {
+      "title": "Monitor Vestível de Espelho Côncavo",
+      "description": "Uma simples tela vestível. Vários modelus usam dois espelhos e uma lente positiva, mas este é uma versão de um elemento óptico. A escala é aproximadamente 5:1mm.\n\nCC0: Este trabalho foi marcado como dedicado ao domínio público.",
+      "tft09display": "Tela TFT 0.9\"",
+      "concavemirror": "espelho côncavo",
+      "eye1": "olho",
+      "nose": "nariz",
+      "pointsourcetomeasure": "fonte pontual para medir raio",
+      "t15readingglasses": "óculos de leitura +1.5"
+    },
+    "reflectingMonochromator": {
+      "title": "Monocromador Refletor",
+      "description": "Esta é uma simulação de um monocromador refletor, que usa uma grade de difração refletora e um vão no foco para obter comprimentos de onda de banda estreita a partir de luz composta.",
+      "reflectingmonochroma": "Monocromador Refletor",
+      "rotatediffractiongra": "Gire Grade de Difração \npara obter comprimentos\nde onda de banda estreita\na partir de luz composta",
+      "exitslitmonochromati": "Fenda de saída\n\nLuz Monocromática"
+    },
+    "solarEclipses": {
+      "title": "Eclipses Solares",
+      "description": "Esta simulação demonstra os diferentes tipos de eclipses solares. O diagrama superior direito mostra um eclipse solar onde a sombra da Lua cobre o Sol, resultando em um eclupse total no centro e um eclipse parcial nas áreas ao redor. O diagrama inferior direito ilustra um eclipse anular onde a Lua está longe demais da Terra para cobrir completamente o Sol, deixando um anel brilhante no centro (neste simulador 2D, o \"anel\" é demonstrado pela luz solar vindo apenas da parte superior e inferior do sol) e tamb´´em um eclipse parcial nas áreas ao redor.",
+      "nottoscale": "(Fora de escala)",
+      "sun": "Sol",
+      "moon": "Lua",
+      "partialeclipse": "Eclipse parcial",
+      "annulareclipse": "Eclipse anular",
+      "earth": "Terra",
+      "totaleclipse": "Eclipse total"
+    },
+    "moduleExampleBasics": {
+      "title": "Exemplo de Módulo - Básico",
+      "thistextisinexamplem": "Este texto está em ExampleModule.",
+      "thistextisalsoinexam": "Este texto também está em ExampleModule.",
+      "thistextisnotinamodu": "Este texto não extá em um módulo.",
+      "thistextisalsonotina": "Este texto também não está em um módulo."
+    },
+    "moduleExampleParameters": {
+      "title": "Exemplo de Módulo - Parâmetros",
+      "thismodulehastwopara": "Este módulo tem dois parâmetros: n=`n` e teta=`theta`.\nVocê pode selecionar e arastar os controles deslizantes para ajustá-los.",
+      "thesizeofthistextosc": "O tamanho deste texto oscila em função de teta."
+    },
+    "moduleExampleControlPoints": {
+      "title": "Exemplo de Módulo - Pontos de controle",
+      "hereisthefirstdragga": "↙Aqui está o primeiro ponto de controle arrastável do módulo",
+      "hereistheseconddragg": "↙Aqui está o segundo ponto de controle arrastável do módulo",
+      "hereisthemidpoint": "↙Aqui está o ponto médio"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "title": "Exemplo de Módulo - Listas e condicionais",
+      "a1darrayii": "Uma lista 1D: i=`i`",
+      "thistextisshownonlyw": "Este texto só é exibido quando n>5"
+    },
+    "moduleExampleVariables": {
+      "title": "Exemplo de Módulo - Variáveis"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Exemplo de Módulo - Equação personalizada",
+      "amirrorofshapeycos2p": "Um espelho com forma y=cos(2 pi x + `phi`)"
+    },
+    "moduleExampleShapeParametrization": {
+      "title": "Exemplo de Módulo - Parametrização de forma",
+      "alensdefinedbydr1r2": "Uma lente definida por d, R_1, R_2",
+      "alensdefinedbydffdbf": "Uma lente definida por d, FFD, BFD"
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Ótica de Farol de Augustin Fresnel",
+      "description": "Esta é uma demonstração da mágica da Óptica dos Faróis de Augustin Fresnel:\n\n1. Uma [lente fina](/gallery/fresnel-lens) substitui a lente de magnificação mais espessa para mandar o feixe central de luz para o navio, com refração em duas superfícies. Um refinamento adicional, incluso, é o raio de curvatura decrescente nos segmentos para reduzir aberração esférica presente na lente de espessura completa. Asféricas não eram usadas no século XVII.\n2. Prismas de refleção interna total(RIT) redirecionam raios de ângulo alto para os navios. Há elementos catadióptricos com refração entrando e saindo e RIT no lado traseiro. Em 1820, os melhores refletores eram prata, somente cerca de 50% refletivos. A fonte de luz, uma lâmpada de óleo, sujava e necessitava limpeza diária da óptica. RIT é teoricamente 100% eficiente e vidro é mais facilmente limpável.\n\nEssa simulação valida um conjunto de prismas e lentes feitos para uma demonstração de ótica de Fresnel em um quadro branco no Farol de Pigeon Point do Parque Estadual da Califórnia.\n\n-A fonte de luz é um farol de carro LED H11 atrás de uma máscara com vãos. O LED emite iluminação em apenas 160 graus, não um hemisfério completo de 180. Uma lâmpada incandescente poderia emitir 360 graus completos, mas não tão brilhante e muito mais quente.\n- Os elementos óticos são feitos de acrílico de cerca de 0.5 polegadas, 12mm de espessura, com fundo pintado de branco.\n- Todos objetos montam magneticamente no quadro branco. Espelhos adicionais, prismas, e uma lente de espessura completa estão na fotografia e demonstrados na apresentação.\n- As lentes de farol de verdade necessitavam de uma chaminé no topo, e muitas vezes, uma estrutura giratória no fundo. Elas não buscavam coletar todos 180 graus de iluminação.",
+      "augustinfresnelsmagi": "Ótica Mágica de Farol de Augustin Fresnel",
+      "t1athinnedlensmakesab": "#1 Uma lente fina faz um raio brilhante com menos vidro\n\n ",
+      "comparetheperformanc": "Compare a performance da lente Fresnel fina na metade superior \ncom a espessura completa na metade inferior\n\nEm 1820, vidro de baixa qualidade fazia que\numa lente de espessura completa enviasse menos luz para o navio que lente nenhum!\nUma lente fina era muito melhor que lente nenhuma.",
+      "amagnifyinglenscanon": "Uma lente ampliadora consegue mandar apenas 1/6, 15% , \nda luz para um navio.",
+      "mirrorsorreflectorsc": "Espelhos ou refletores podem redirecionar raios de alto ângulo, mas os refletores de 1820 desperdiçavam metade da luz.",
+      "t2totalinternalreflec": "#2 Prismas de Refleção Interna Total (RIT) permitiam enviar toda a luz de ângulo alto para um navio",
+      "inthepigeonpointligh": "Na demonstração de ótica de quadro branco do Farol de Pigeon Point,\na mágica de Fresnel permite que TODA a luz do hemisfério seja enviada para o navio",
+      "howitworks": "Como funciona"
+    }
+  }
+}

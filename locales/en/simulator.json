@@ -1,0 +1,635 @@
+{
+  "welcome": {
+    "title": "Welcome to Ray Optics Simulation",
+    "instruction": "To add an optical component, select a tool and click the blank space.\nTo load an example, please [go to the Gallery page](/gallery).",
+    "loading": "Loading scene from URL… Please wait."
+  },
+  "common": {
+    "saveButton": "Save",
+    "cancelButton": "Cancel",
+    "defaultOption": "Default",
+    "customOption": "Custom",
+    "closeButton": "Close",
+    "resetButton": "Reset",
+    "reloadToTakeEffect": "Please reload the page to take effect."
+  },
+  "file": {
+    "title": "File",
+    "undo": {
+      "title": "Undo"
+    },
+    "redo": {
+      "title": "Redo"
+    },
+    "reset": {
+      "title": "Reset"
+    },
+    "save": {
+      "title": "Save"
+    },
+    "open": {
+      "title": "Open",
+      "description": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
+    },
+    "export": {
+      "title": "Export as PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Copy Shareable Link",
+      "description": "Copy and go to the direct URL for the current scene, which can be used for sharing (possibly via a URL shortener). Also see Settings -> Auto sync URL."
+    },
+    "viewGallery": {
+      "title": "View Gallery",
+      "description": "Go to the Gallery webpage to load an example."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "more": "More",
+    "rayDensity": {
+      "title": "Ray Density",
+      "description": "Determines the number of rays to be emitted by beams and point sources. This also affects the accuracy of image detection and color rendering."
+    },
+    "layoutAids": {
+      "title": "Layout Aids",
+      "showGrid": "Grid",
+      "snapToGrid": "Snap to Grid",
+      "lockObjs": "Lock Objects"
+    },
+    "showRayArrows": {
+      "title": "Show Ray Arrows"
+    },
+    "correctBrightness": {
+      "title": "Correct Brightness",
+      "description": "By default, the brightness on the screen does not consistently represent the brightness of the rays. This option fixes it using a specialized renderer, but may reduce the performance on some devices. (On some other devices it actually improves the performance.)",
+      "error": "Failed to enable \"Correct Brightness\". Your browser may not support WebGL floating-point textures."
+    },
+    "gridSize": {
+      "title": "Grid Size"
+    },
+    "observerSize": {
+      "title": "Observer Size"
+    },
+    "lengthScale": {
+      "title": "Length Scale",
+      "description": "If the default unit of length is too small or too large to model a physical system when interpreted as a common physical unit (e.g. millimeters), this factor can be used to scale the appearance (e.g. line widths) in the scene."
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "showAdvancedSettings": {
+      "title": "More scene settings…"
+    },
+    "colorMode": {
+      "title": "Color Mode",
+      "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
+    },
+    "theme": {
+      "title": "Theme"
+    },
+    "language": {
+      "title": "Language",
+      "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
+    },
+    "autoSyncUrl": {
+      "title": "Auto sync URL",
+      "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
+    },
+    "showJsonEditor": {
+      "title": "Show JSON editor",
+      "description": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
+    },
+    "showStatusBox": {
+      "title": "Show status box",
+      "description": "Show the status box, which includes the mouse coordinates, performance information, and the truncated brightness (the total brightness of the rays truncated in the infinite series of internal reflection)."
+    },
+    "showSimulatorControls": {
+      "title": "Show simulator controls",
+      "description": "Allows manual control of the simulator, useful when the scene takes a long time to run, is slow to load from JSON, or contains randomization."
+    },
+    "showHelpPopups": {
+      "title": "Show help popups",
+      "description": "Defines whether to show help popups when hovering over buttons."
+    },
+    "advancedHelp": "For advanced help, see the help icon in the lower-right corner."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "More options…"
+    },
+    "applyToAll": {
+      "title": "Apply to All"
+    },
+    "duplicate": {
+      "title": "Duplicate"
+    },
+    "delete": {
+      "title": "Delete"
+    },
+    "unselect": {
+      "title": "Unselect",
+      "description": "Unselect this object (Right-click on blank space has the same function.)"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "lengthUnitInfo": "The unit of length used in this simulator (except for wavelengths) is an arbitrary unit, which can be interpreted as any physical unit (e.g. millimeters) as long as it is consistent throughout the simulation. If the unit appears too small or too large, please adjust Settings -> Length Scale.",
+      "brightness": "Brightness",
+      "brightnessInfo": {
+        "rayDensity": "Only effective if 'Ray Density' is high enough.",
+        "rayDensitySlider": "To control the numbers of rays emitted, please adjust the global 'Ray Density' slider instead.",
+        "newColorModes": "When \"Correct Brightness\" is on, the behavior at low \"Ray Density\" is different from the default. For the unit, see the info box of a detector when it is selected."
+      },
+      "wavelength": "Wavelength",
+      "emisAngle": "Emission Angle",
+      "random": "Random",
+      "lambert": "Lambertian",
+      "coordOrigin": "Origin",
+      "focalLength": "Focal length",
+      "eqnInfo": {
+        "constants": "Supported constants",
+        "operators": "Supported operators",
+        "functions": "Supported functions",
+        "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules for more information."
+      },
+      "imageDetectionWarning": "This tool does not support image detection.",
+      "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "Add piece",
+      "removePiece": "Remove piece",
+      "step": "Step",
+      "error": {
+        "invalidStepSize": "Invalid step size: {{step}}",
+        "invalidRange": "Invalid parameter range: tMin ({{tMin}}) >= tMax ({{tMax}})",
+        "nonFiniteCoords": "Non-finite coordinates: ({{x}}, {{y}})",
+        "pieceError": "Error at piece {{pieceIndex}}, t={{t}}: {{error}}"
+      }
+    },
+    "Beam": {
+      "imageDetectionWarning": "Image detection may not work with divergent/random beams."
+    },
+    "AngleSource": {
+      "symmetric": "Symmetric"
+    },
+    "BaseFilter": {
+      "filter": "Filter",
+      "bandwidth": "Bandwidth",
+      "invert": "Invert"
+    },
+    "IdealMirror": {
+      "cartesianSign": "Cartesian Sign Convention"
+    },
+    "BeamSplitter": {
+      "transRatio": "Transmission Ratio"
+    },
+    "BaseGlass": {
+      "refIndex": "Refractive index",
+      "refIndexInfo": {
+        "relative": "Relative if inside another glass",
+        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones."
+      },
+      "cauchyCoeff": "Cauchy coefficient"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "radiiOfCurvature": "Radii of Curvature",
+        "focalDistances": "Focal Distances"
+      },
+      "invalidParameters": "Invalid lens parameters"
+    },
+    "CustomGlass": {
+      "curveGenerationError": "Curve generation error: f(x) > g(x) at x = {{x}}"
+    },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "The curve must be closed and positively oriented (clockwise in the computer graphics convention where the y-axis points down)."
+      },
+      "warning": {
+        "notClosed": "Curve is not closed.",
+        "notPositivelyOriented": "Curve is not positively oriented."
+      }
+    },
+    "BaseGrinGlass": {
+      "refIndexFnInfo": {
+        "lambda": "To simulate chromatic dispersion, use parameter {{lambda}} for the vacuum wavelength in nanometers.",
+        "diff": "Only supports differentiable functions.",
+        "origin": "The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.",
+        "accuracy": "For a more accurate simulation, see \"More options…\""
+      },
+      "absorptionFnInfo": {
+        "absorption": "The absorption rate of the glass, in units of 1/[length]."
+      },
+      "stepSize": "Numerical solver step size",
+      "stepSizeInfo": "Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'BaseGrinGlass.js' file, for more information.",
+      "intersectTol": "Intersection tolerance",
+      "symbolicBodyMerging": "Symbolic body-merging",
+      "symbolicBodyMergingInfo": {
+        "all": "This toggle applies to all GRIN objects in the simulation.",
+        "impl": "This simulator has currently two implementations of light propagation between different mediums, for GRIN objects - numerical and symbolic (see 'multRefIndex' and 'devRefIndex' functions in 'BaseGrinGlass.js').",
+        "implNote": "The numerical implementation is faster but doesn't always work properly (depending on the specific case) in scenarios when used with more than one GRIN object, such that at least one of them has a refractive index function which is not defined in the entire plane, while the symbolic implementation is slower but robust to such problems."
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length]^2.",
+        "functions": "This numerical tolerance is used in the functions 'isOutsideGlass', 'isInsideGlass' and 'isOnBoundary', inside the 'CircleGrinGlass.js' file."
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length].",
+        "functions": "This numerical tolerance is used in the functions 'isOnBoundary' and 'countIntersections', inside the 'GrinGlass.js' file."
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length].",
+        "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'ParamCurveObjMixin.js' file."
+      }
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "Units - [length]^2.",
+        "functions": "This numerical tolerance is used in the function 'isOnBoundary' inside the 'CurveGrinGlass.js' file."
+      }
+    },
+    "Aperture": {
+      "diameter": "Diameter"
+    },
+    "DiffractionGrating": {
+      "lineDensity": "Lines/{{lengthUnit}}",
+      "customBrightness": "Custom Brightness",
+      "customBrightnessInfo": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored.",
+      "slitRatio": "Slit width / line spacing",
+      "mirrored": "Mirrored"
+    },
+    "Ruler": {
+      "scaleInterval": "Scale interval"
+    },
+    "Detector": {
+      "info": {
+        "P": "P: The rate of energy flow (flux) in B/s (see below).",
+        "Fperp": "F⊥: The rate of perpendicular momentum flow in (B/s)/c.",
+        "Fpar": "F∥: The rate of parallel momentum flow in (B/s)/c.",
+        "irradiance": "The irradiance in the exported CSV is in (B/s)/L.",
+        "length": "L is the arbitrary unit of length used in this simulator.",
+        "B": "B is an arbitrary unit of radiant flux or luminous flux, corresponding to the unit of the \"Brightness\" option being B/L for non-Lambertian beams and 500B/360° for point sources.",
+        "s": "The dimensionless factor s is the \"Brightness Scale\" shown in Settings -> Show status box, which equals 1 when \"Ray Density\" is above some threshold and proportional to \"Ray Density\" otherwise.",
+        "sNewColorModes": "When \"Correct Brightness\" is on, the dimensionless factor s always equals 1.",
+        "truncation": "If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates."
+      },
+      "irradMap": "Irradiance Map",
+      "binSize": "Bin Size",
+      "exportData": "Export data"
+    },
+    "TextLabel": {
+      "textHere": "Text Here",
+      "fontSize": "Font Size",
+      "font": "Font",
+      "fonts": "Serif: Serif\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
+      "fontNote": "If the selected font is not installed on your system, a fallback font will be used.",
+      "enterFontName": "Enter font name…",
+      "fontStyle": "Style",
+      "fontStyles": {
+        "normal": "Normal",
+        "bold": "Bold",
+        "italic": "Italic",
+        "boldItalic": "Bold Italic",
+        "oblique": "Oblique",
+        "boldOblique": "Bold Oblique"
+      },
+      "alignment": "Alignment",
+      "alignments": {
+        "left": "Left",
+        "center": "Centre",
+        "right": "Right"
+      },
+      "smallCaps": "Small Caps",
+      "angle": "Angle"
+    },
+    "LineArrow": {
+      "arrow": "Forward arrow",
+      "backArrow": "Backward arrow"
+    },
+    "Drawing": {
+      "finishDrawing": "Finish Drawing"
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} and {{theta_j}} are the angles of the incident and jth outgoing rays, respectively, in radians and relative to the normal direction.",
+        "brightnesses": "{{P_0}} and {{P_j}} are the brightnesses of the incident and jth outgoing rays, respectively, in the same unit as the detector tool.",
+        "previousFormulas": "A formula can refer to the result of previous formulas. If a formula gives an invalid value, that outgoing ray is ignored and its brightness is treated as 0.",
+        "otherParams": "Other parameters of the incident rays that can be used are {{lambda}} (wavelength in nm) and {{p}} (0 for s-polarized, 1 for p-polarized). They remain the same for the outgoing rays.",
+        "coating": "This object can act as a coating of glass objects by overlapping with their surfaces. In this case, the refraction itself also needs to be handled by the formulas of this object. The refractive indices of the material attached to the same and opposite sides of the incident ray can be referred to as {{n_0}} and {{n_1}}, respectively. If this object is inside a glass object, the values are relative to it.",
+        "twoSides": "If you want the two sides of this surface to have different formulas, you can overlap two single-sided surfaces with opposite orientations.",
+        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules for more information."
+      },
+      "twoSided": "Two-sided",
+      "addOutgoingRay": "Add outgoing ray",
+      "removeOutgoingRay": "Remove outgoing ray"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point can be referred to as {{t}}, which interpolates linearly from -1 to 1 between the two endpoints of the line-segment."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point can be referred to as {{t}}, which interpolates uniformly (with respect to angle) from -1 to 1 between the two endpoints of the arc."
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point in the curve's parameter space can be referred to as {{t}}."
+      }
+    },
+    "ModuleObj": {
+      "module": "Module",
+      "demodulize": "Demodulize",
+      "loopVariableTooLarge": "The length of the loop variable \"{{name}}\" is too large. Please set maxLoopLength to a larger value.",
+      "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
+      "variableRangeError": "Error parsing variable range \"{{str}}\" with parameters {{params}}: {{error}}",
+      "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
+      "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}",
+      "variableDefinitionError": "Error evaluating variable definitions with parameters {{params}}: {{error}}",
+      "unclosedMathBlock": "Unclosed math block: {{str}}"
+    },
+    "Handle": {
+      "handle": "Handle",
+      "transformation": "Transformation",
+      "transformations": {
+        "translation": "Translation",
+        "xTranslation": "X Translation",
+        "yTranslation": "Y Translation",
+        "rotation": "Rotation",
+        "scaling": "Scaling"
+      },
+      "step": "Step",
+      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results."
+    },
+    "CropBox": {
+      "title": "Export",
+      "cropBoxSize": "Crop Box Size",
+      "format": "Format",
+      "width": "Width",
+      "rayCountLimit": "Ray count limit",
+      "transparent": "Transparent background",
+      "svgWarning": "Export to SVG: Color mixtures, correct brightness, and relative refractive indices below 1 are not supported.",
+      "rayCountWarning": "The current number of rays in the scene is larger than the ray count limit. You may need to increase the ray count limit in the Crop Box options."
+    }
+  },
+  "saveModal": {
+    "title": "Save",
+    "description": {
+      "autoSync": "You may use Settings -> Auto sync URL instead of saving to a file.",
+      "rename": "Click \"Rename\" to change the title without saving to a file.",
+      "contribute": "You may consider [contributing a new item](/contributing/gallery) to the [Gallery](/gallery)."
+    },
+    "fileName": "Name",
+    "rename": "Rename"
+  },
+  "moduleModal": {
+    "title": "Import Modules",
+    "makeCustomModules": "Make custom modules",
+    "conflict": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "Linear Value",
+      "description": "The value V in the HSV color space equals the total brightness of the rays when \"Simulate Colors\" is off and for monochromatic light between 420 to 620 nm. V is capped to 1 while preserving H and S. The color is gamma-corrected."
+    },
+    "linearRGB": {
+      "title": "Linear RGB",
+      "description": "Similar to \"Linear Value\", but each component of the RGB color space is capped to 1 independently."
+    },
+    "reinhard": {
+      "title": "Reinhard",
+      "description": "The Reinhard tone mapping applied to the total relative luminance. At the low brightness limit, the color is consistent with \"Linear Value\"."
+    },
+    "colorizedIntensity": {
+      "title": "Color-coded Intensity",
+      "description": "The total brightness of 100, 10, …, 10⁻⁵ are represented by red, orange, yellow, green, cyan, blue, purple, and black, respectively, and interpolate smoothly in log scale."
+    }
+  },
+  "themeModal": {
+    "title": "Theme styles",
+    "background": {
+      "title": "Background color"
+    },
+    "ray": {
+      "title": "Default ray"
+    },
+    "colorRay": {
+      "title": "Colored ray"
+    },
+    "extendedRay": {
+      "title": "Default backward extended ray"
+    },
+    "colorExtendedRay": {
+      "title": "Colored backward extended ray"
+    },
+    "forwardExtendedRay": {
+      "title": "Default forward extended ray"
+    },
+    "colorForwardExtendedRay": {
+      "title": "Colored forward extended ray"
+    },
+    "observedRay": {
+      "title": "Default observed ray"
+    },
+    "colorObservedRay": {
+      "title": "Colored observed ray"
+    },
+    "realImage": {
+      "title": "Default real image"
+    },
+    "colorRealImage": {
+      "title": "Colored real image"
+    },
+    "virtualImage": {
+      "title": "Default virtual image"
+    },
+    "colorVirtualImage": {
+      "title": "Colored virtual image"
+    },
+    "virtualObject": {
+      "title": "Default virtual object"
+    },
+    "colorVirtualObject": {
+      "title": "Colored virtual object"
+    },
+    "grid": {
+      "title": "Grid lines"
+    },
+    "observer": {
+      "title": "Observer fill"
+    },
+    "sourcePoint": {
+      "title": "Source control point"
+    },
+    "directionPoint": {
+      "title": "Direction control point"
+    },
+    "centerPoint": {
+      "title": "Center control point"
+    },
+    "lightSource": {
+      "title": "Default light source surface"
+    },
+    "beamShield": {
+      "title": "Beam source shield"
+    },
+    "colorSourceCenter": {
+      "title": "Colored light source center"
+    },
+    "mirror": {
+      "title": "Mirror surface"
+    },
+    "beamSplitter": {
+      "title": "Beam splitter surface"
+    },
+    "idealCurveCenter": {
+      "title": "Ideal curve center"
+    },
+    "idealCurveArrow": {
+      "title": "Ideal curve arrow"
+    },
+    "glass": {
+      "title": "Glass fill"
+    },
+    "grinGlass": {
+      "title": "Gradient-index glass fill"
+    },
+    "blocker": {
+      "title": "Blocker surface"
+    },
+    "diffractionGrating": {
+      "title": "Diffraction grating surface"
+    },
+    "detector": {
+      "title": "Detector surface"
+    },
+    "detectorText": {
+      "title": "Detector text"
+    },
+    "irradMap": {
+      "title": "Irradiance map fill"
+    },
+    "irradMapBorder": {
+      "title": "Irradiance map border"
+    },
+    "ruler": {
+      "title": "Ruler scale lines"
+    },
+    "rulerText": {
+      "title": "Ruler text"
+    },
+    "decoration": {
+      "title": "Decoration style"
+    },
+    "handlePoint": {
+      "title": "Default handle control point"
+    },
+    "handleArrow": {
+      "title": "Handle arrow"
+    },
+    "customSurface": {
+      "title": "Custom surface style"
+    },
+    "import": {
+      "title": "Import",
+      "description": "Import theme from a scene JSON file.",
+      "error": "The file does not contain a theme."
+    }
+  },
+  "languageModal": {
+    "title": "Language",
+    "translatedFraction": "translated",
+    "helpTranslate": "Help us translate this app"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead.",
+    "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
+    "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
+    "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
+    "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue.",
+    "undefinedBehaviorOverlapping": "Surface merging is not supported for overlap between \"{{involvedObj1}}\" and \"{{involvedObj2}}\", resulting in undefined behavior. Please move the objects slightly apart (or move the light source) to get a well-defined behavior.",
+    "undefinedBehaviorSingle": "Undefined behavior encountered at the object \"{{involvedObj}}\". Please move the object or the light source slightly to get a well-defined behavior."
+  },
+  "generalErrors": {
+    "newerVersion": "The version of the scene is newer than the current version of the simulator.",
+    "unknownObjectType": "Unknown scene object type: \"{{type}}\".",
+    "unknownSceneKey": "Unknown key in scene: \"{{key}}\".",
+    "unknownPropertyValue": "Unknown value \"{{value}}\" for property \"{{property}}\".",
+    "unknownObjectKey": "Unknown key: \"{{key}}\" in object of type \"{{type}}\".",
+    "unknownModuleKey": "Unknown key: \"{{key}}\" in module \"{{module}}\".",
+    "unknownModule": "Unknown module: \"{{module}}\"."
+  },
+  "appErrors": {
+    "jsError": "JavaScript Error: {{msg}} at {{url}}",
+    "httpStatusError": "HTTP Request Error: {{status}}",
+    "httpError": "HTTP Request Error",
+    "httpTimeout": "HTTP Request Timeout",
+    "invalidFile": "The file is neither a valid JSON scene nor an image file."
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "AI Assistant",
+      "description": "Link to Ray Optics Coder on ChatGPT. See Tools -> Other -> Import module -> Make custom modules for more information."
+    }
+  },
+  "statusBox": {
+    "rayCount": "Number of ray segments",
+    "totalTruncation": "Truncated brightness",
+    "brightnessScale": "Brightness Scale",
+    "timeElapsed": "Time elapsed",
+    "forceStopped": "Force stopped.",
+    "mouseCoordinates": "Mouse coordinates"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "Refresh Scene"
+    },
+    "refreshSimulation": {
+      "title": "Refresh Simulation"
+    },
+    "autoRefresh": {
+      "title": "Auto Refresh"
+    }
+  },
+  "footer": {
+    "processing": "Processing… Click here to stop.",
+    "helpPopup": {
+      "constrainedDragging": {
+        "title": "Constrained dragging",
+        "description": "When dragging an object, hold Shift to limit to horizontal/vertical; hold Ctrl to clone. When creating a line-shaped object or dragging its endpoints, hold Shift to lock the angle or snap to 0°, 45°, 90°; hold Ctrl to rotate/scale about its center."
+      },
+      "groupRotateScale": {
+        "title": "Group, rotate, and scale objects",
+        "description": "Hold Ctrl, click one or more objects or control points (e.g. endpoints), then click empty space to group them and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate the group, Ctrl+Shift+drag to scale the group. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup."
+      },
+      "editCoordinates": {
+        "title": "Edit coordinates directly",
+        "description": "Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates, then press Enter."
+      },
+      "keyboardShortcuts": {
+        "title": "Keyboard shortcuts",
+        "description": "When an object is selected (by clicking it), press arrow keys to move the object; +/- to rotate the object; Ctrl+D to duplicate the object; Delete key to delete the object."
+      },
+      "runLocally": {
+        "title": "Run Locally",
+        "description": "To run this project on your own computer, independently of the online version, please see [this guide](/run-locally)."
+      },
+      "integrations": {
+        "title": "Integrations with programming languages",
+        "description": "You can call the simulator from programming languages such as Python or Julia with the [integration tools](/integrations). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
+      },
+      "contactUs": {
+        "title": "Contact Us",
+        "description": "The suggested way is to go to [Discussions](/github/discussions) or [Issues](/github/issues) on GitHub. If you do not use GitHub, you can also email us at [ray-optics@phydemo.app](/email).",
+        "contribute": "Direct contributions are also welcome (see [the contribution guide](/contributing))."
+      }
+    }
+  }
+}
