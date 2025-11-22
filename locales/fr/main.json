@@ -1,0 +1,217 @@
+{
+  "project": {
+    "name": "Simulation de rayon optique",
+    "shortName": "Rayon optique",
+    "description": "Une application web libre et open source pour créer et simuler des scènes par optique géométrique 2D."
+  },
+  "pages": {
+    "simulator": "Simulateur",
+    "home": "Accueil",
+    "gallery": "Galerie",
+    "modules": "Modules",
+    "about": "À propos",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Créez et simulez des scènes interactives en géométrie 2D.\nTotalement gratuit et basé sur le web. Le code source est [disponible sur GitHub](/github).",
+    "launchSimulator": "Lancer l'application"
+  },
+  "tools": {
+    "title": "Outils",
+    "categories": {
+      "lightSource": "Source de lumière",
+      "mirror": "Miroirs",
+      "glass": "Verres",
+      "blocker": "Diaphragme",
+      "other": "Autre"
+    },
+    "common": {
+      "clickInstruction": "Cliquer pour le créer.",
+      "lineInstruction": "Glisser ou cliquer pour le créer.",
+      "circleInstruction": "Glisser ou cliquer pour le créer, premièrement le centre, puis la circonférence."
+    },
+    "SingleRay": {
+      "title": "Rayon",
+      "description": "Un rayon de lumière unique définit par deux points.",
+      "instruction": "Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point."
+    },
+    "Beam": {
+      "title": "Faisceau",
+      "description": "Un faisceau de rayons parallèle émergeant d'un segment, avec une densité contrôlée par le curseur 'Densité de rayons'."
+    },
+    "PointSource": {
+      "title": "Source de lumière",
+      "description": "Rayons émergeant d'un point unique, avec un nombre de rayons controlé par le curseur 'Densité de rayons'."
+    },
+    "AngleSource": {
+      "instruction": "Glisser ou cliquer pour le créer. Le premier point est la source, tirant vers le deuxième point.",
+      "description": "Point de source avec un angle d'émission donné."
+    },
+    "Mirror": {
+      "title": "Segment",
+      "description": "Simule la reflexion de la lumière sur un miroir."
+    },
+    "otherMirror": {
+      "title": "Courbé",
+      "description": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points."
+    },
+    "ArcMirror": {
+      "title": "Arc circulaire",
+      "description": "Un miroir dont la forme est un arc circulaire, qui est définit par trois points.",
+      "instruction": "Glisser ou cliquer pour le créer. Les deux premiers points définissent l'espace entre les bords de l'arc, le dernier point définit la taille de l'arc."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolique",
+      "description": "Un miroir dont la forme est une parabole, qui est définie par trois points.",
+      "instruction": "Tracez ou cliquez à deux points pour créer, ensuite cliquez sur le sommet."
+    },
+    "IdealMirror": {
+      "title": "Courbure idéale",
+      "description": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement."
+    },
+    "BeamSplitter": {
+      "description": "Un miroir qui transmet un pourcentage de la lumière entrant.",
+      "title": "Diviseur de rayons"
+    },
+    "CustomMirror": {
+      "title": "Equation personnalisée"
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Réseau de diffraction concave"
+    },
+    "PlaneGlass": {
+      "title": "Demi-plan",
+      "description": "Simule la réfraction et la reflexion de la lumière sur une surface.",
+      "instruction": "Déplacez ou cliquez deux points à la surface pour le créer."
+    },
+    "otherGlass": {
+      "title": "Autre",
+      "description": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires, ou avec la forme définie par une inéquation personnalisée f(x) < y < g(x)."
+    },
+    "CircleGlass": {
+      "title": "Cercle",
+      "description": "Verre avec une forme circulaire, définie par son centre et un point sur sa surface."
+    },
+    "Glass": {
+      "title": "Polygones / Arcs circulaires",
+      "description": "Verre avec une forme quelconque construite avec des segments et des arcs circulaires.",
+      "instruction": "Cliquer pour crée un segment, glisser pour crée un arc, cliquer sur le point de depart pour finir de dessiner."
+    },
+    "IdealLens": {
+      "title": "Lentille idéale",
+      "description": "Une lentille obéissant exactement à l'équation de lentille (1/p' + 1/p = 1/f'). La distance focale peut être défini directement."
+    },
+    "SphericalLens": {
+      "title": "Lentille Sphérique",
+      "description": "Une lentille sphérique, dont la forme peut être définie en utilisant plusieurs paramètres."
+    },
+    "CustomGlass": {
+      "title": "Equation personnalisée"
+    },
+    "GrinGlass": {
+      "instruction": "Cliquez pour créer un segment, cliquez sur le point de départ quand vous avez fini de dessiner.",
+      "warning": "ATTENTION : Seulement de simples polygones sont supportés, autrement le comportement est imprédictible."
+    },
+    "Blocker": {
+      "title": "Obturateur de rayons",
+      "description": "Un segment absorbant les rayons incidents."
+    },
+    "CircleBlocker": {
+      "description": "Un obturateur de lumière circulaire qui absorbe les rayons incidents."
+    },
+    "Aperture": {
+      "title": "Ouverture",
+      "description": "Une paire d'obturateurs de lumière qui absorbent les rayons incidents. La taille de l'ouverture peut être ajustée symétriquement."
+    },
+    "DiffractionGrating": {
+      "warning": "Attention : L'intensité des rayons incidents peut ne pas être précis."
+    },
+    "Ruler": {
+      "title": "Règle",
+      "description": "Une règle de zéro à un autre point."
+    },
+    "Protractor": {
+      "title": "Rapporteur",
+      "description": "Un rapporteur défini par le centre et un autre point pour la direction zero. L'echelle est en degrès."
+    },
+    "Detector": {
+      "title": "Détecteur"
+    },
+    "TextLabel": {
+      "title": "Texte",
+      "description": "Une légende, pour un objet quelconque."
+    },
+    "LineArrow": {
+      "title": "Ligne / Flèche",
+      "description": "Une ligne segmentée ou une flèche."
+    },
+    "Drawing": {
+      "title": "Dessin",
+      "instruction": "Glissez pour dessiner."
+    },
+    "modules": {
+      "import": "Import de modules…",
+      "remove": "Retirer le module"
+    },
+    "moveView": {
+      "title": "Bouger la vue",
+      "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
+    }
+  },
+  "view": {
+    "title": "Vue",
+    "rays": {
+      "title": "Rayons",
+      "description": "Montre les rayons. Quand la 'Densité de rayons' est élevée, elles paraissent continues."
+    },
+    "extended": {
+      "title": "Rayons étendus",
+      "description": "Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant.",
+      "simulateColorsNote": "Lorsque \"Simuler les couleurs\" est activé, elles sont affichées dans les couleurs d'origine et distinguées par des tirets."
+    },
+    "images": {
+      "title": "Toutes les images",
+      "description": "Montre la position de toutes les images. Les points jaunes indiquent les images réelles, l'orange indique les images virtuelles et le gris (absent sur l'image) indique les objets virtuels. Notons que certaines images ne peuvent pas être detectées si la 'Densité de rayon' n'est pas suffisament grande.",
+      "simulateColorsNote": "Lorsque \"Simuler les couleurs\" est activé, elles sont affichées dans les couleurs d'origine et distinguées par la taille des points."
+    },
+    "observer": {
+      "title": "Vu par un observateur",
+      "description": "Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l'observateur. N'importe quel rayon traversant ce cercle est consideré comme 'observé'. L'observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu'il commence à un certain point s'ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange.",
+      "simulateColorsNote": "Lorsque \"Simuler les couleurs\" est activé, elles sont affichées dans les couleurs d'origine.",
+      "instruction": "Faites glisser le gros point bleu pour déplacer l'observateur."
+    }
+  },
+  "simulateColors": {
+    "title": "Simuler les couleurs",
+    "description": "Simuler les couleurs (longueurs d'onde) de sources lumineuses, des mélanges de couleurs, le filtrage de couleurs par les miroirs ou les bloqueurs de lumière, ainsi que la dispersion chromatique des verres.",
+    "instruction": "Vous pouvez régler ces paramètre pour ces objets quand ils sont sélectionnés. Pour simuler des spectres de couleur, superposez des rayons de longueur d'onde différente."
+  },
+  "aboutPage": {
+    "description": "Ce projet, y compris le contenu de la galerie, est sous licence [Apache License 2.0](/license), et est officiellement hébergée sur le site web [PhyDemo (phydemo.app)](/phydemo) (auparavant sur ricktu288.github.io). Le code source est [disponible sur GitHub](/github), et vous êtes les [bienvenus pour contribuer](/contributing). Si vous avez des questions ou des suggestions, vous pouvez poster des [problèmes](/github/issues) ou ouvrir une [discussion](/github/discussions) sur GitHub, ou nous envoyer un mail à [ray-optics@phydemo.app](/email) si vous n'utilisez pas GitHub.",
+    "cite": "Citer ce projet",
+    "mainAuthors_one": "Auteur principal",
+    "mainAuthors_many": "Auteurs principaux",
+    "mainAuthors_other": "Auteurs principaux",
+    "contributors": "Contributeurs",
+    "contributorSorting": "Contributeurs de GitHub en premier ; les autres sont classés par ordre chronologique.",
+    "contributionCategories": {
+      "code": "code",
+      "uiDesign": "Conception IHM",
+      "gallery": "galerie",
+      "module": "module",
+      "translations_one": "{{languages}} traduction",
+      "translations_many": "{{languages}} traductions",
+      "translations_other": "{{languages}} traductions"
+    }
+  },
+  "languageDropdown": {
+    "title": "Langue : {{language}}",
+    "translatedFraction": "{{fraction}} traduite"
+  },
+  "meta": {
+    "languageName": "Français",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}} : {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

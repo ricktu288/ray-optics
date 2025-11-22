@@ -1,0 +1,207 @@
+{
+  "welcome": {
+    "title": "Ray Optics Simulation වෙත සාදරයෙන් පිළිගනිමු",
+    "instruction": "optical component එක් කිරීමට tool තෝරා හිස් අවකාශය මත click කරන්න.\nඋදාහරණ සඳහා [Gallery page වෙත යන්න](/gallery).",
+    "loading": "URL වෙතින් දර්ශනය load වේ... කරුණාකර රැඳී සිටින්න."
+  },
+  "common": {
+    "saveButton": "Save",
+    "cancelButton": "අවලංගු කරන්න",
+    "closeButton": "වසන්න"
+  },
+  "file": {
+    "undo": {
+      "title": "Undo"
+    },
+    "redo": {
+      "title": "Redo"
+    },
+    "reset": {
+      "title": "Reset"
+    },
+    "save": {
+      "title": "Save"
+    },
+    "open": {
+      "title": "විවෘත කරන්න"
+    },
+    "export": {
+      "title": "PNG/SVG ලෙස save කරන්න"
+    },
+    "copyLink": {
+      "title": "Share කිරීමට Link ඒක copy කරන්න"
+    },
+    "viewGallery": {
+      "title": "Gallery බලන්න",
+      "description": "උදාහරණ සදහා Galleryට යන්න."
+    }
+  },
+  "settings": {
+    "title": "සැකසුම්",
+    "more": "තවත්",
+    "rayDensity": {
+      "title": "කිරණ ඝණත්වය",
+      "description": "කදම්භ සහ ලක්ෂ්‍ය මූලාශ්‍ර මගින් විමෝචනය කළ යුතු කිරණ ගණන තීරණය කරයි. මෙය රූප හඳුනාගැනීමේ සහ වර්ණ විදැහුම්කරණයේ නිරවද්‍යතාවයට ද බලපායි."
+    },
+    "layoutAids": {
+      "showGrid": "Grid"
+    },
+    "gridSize": {
+      "title": "ජාලක ප්‍රමාණය"
+    },
+    "observerSize": {
+      "title": "නිරීක්ෂකයාගේ ප්‍රමාණය"
+    },
+    "zoom": {
+      "title": "විශාලනය"
+    },
+    "language": {
+      "title": "භාෂාව"
+    },
+    "showJsonEditor": {
+      "title": "JSON editor පෙන්වන්න"
+    },
+    "showStatusBox": {
+      "title": "Status box පෙන්වන්න"
+    },
+    "showHelpPopups": {
+      "title": "උදවු popup පෙන්වන්න",
+      "description": "බොත්තම් මත සැරිසරන විට උපකාර popup පෙන්විය යුතුද යන්න නිර්ණය."
+    },
+    "advancedHelp": "වැඩිදුර උදව් සඳහා, පහළ-දකුණු කෙළවරේ ඇති help icon බලන්න."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "තවත් විකල්පයන්…"
+    },
+    "applyToAll": {
+      "title": "සියල්ලටම අයදුම් කරන්න"
+    },
+    "duplicate": {
+      "title": "අනුපිටපත් කරන්න"
+    },
+    "delete": {
+      "title": "මකන්න"
+    },
+    "unselect": {
+      "title": "තේරීම ඉවත් කරන්න",
+      "description": "මෙම වස්තුව තේරීමෙන් ඉවත් කරන්න (හිස් අවකාශය මත දකුණු-ක්ලික් කීරීමෙන්ද කළ හැක)"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightnessInfo": {
+        "rayDensity": "'කිරණ ඝනත්වය' ප්‍රමාණවත් තරම් ඉහළ නම් පමණක් ඵලදායී වේ.",
+        "rayDensitySlider": "විමෝචනය වන කිරණ සංඛ්‍යාව පාලනය කිරීමට, කරුණාකර ගෝලීය 'කිරණ ඝනත්වය' ස්ලයිඩරය සීරුමාරු කරන්න."
+      },
+      "wavelength": "තරංග ආයාමය",
+      "emisAngle": "විමෝචන කෝණය",
+      "random": "අහඹු",
+      "focalLength": "නාභීය දුර",
+      "imageDetectionWarning": "මෙම මෙවලම ප්‍රතිබිම්භ හඳුනා ගැනීමට සහාය නොදක්වයි.",
+      "nonSimulateColorsWarning": "මෙම මෙවලම ක්‍රියා කරන්නේ \"වර්ණ අනුකරණය\" ක්‍රියාත්මක විට පමණි."
+    },
+    "Beam": {
+      "imageDetectionWarning": "අපසාරී/අහඹු කදම්භ සමඟ ප්‍රතිබිම්භ හඳුනාගැනීම ක්‍රියා නොකරයි."
+    },
+    "AngleSource": {
+      "symmetric": "සමමිතික"
+    },
+    "BaseFilter": {
+      "filter": "පෙරහන",
+      "bandwidth": "Bandwidth",
+      "invert": "Invert"
+    },
+    "BeamSplitter": {
+      "transRatio": "සම්ප්‍රේෂණ අනුපාතය"
+    },
+    "BaseGlass": {
+      "refIndex": "වර්තන අංකය",
+      "refIndexInfo": {
+        "relative": "වෙනත් වීදුරුවක් ඇතුළත නම් සාපේක්ෂ",
+        "effective": "මෙම වස්තුව (නිරපේක්ෂ) වර්තන දර්ශකය n₁ සමඟ අනුකරණය කළ යුතු නමුත්, වර්තන දර්ශකය n₀ සහිත වෙනත් වීදුරුවක් තුළ තබා තිබේ නම්, ඔබ මෙහි වර්තන දර්ශකය n₁/n₀ ලෙස සැකසිය යුතුය. වීදුරු කිහිපයක් එකට අතිච්ඡාදනය වන වඩාත් සංකීර්ණ අවස්ථාවන්හිදී, අතිච්ඡාදනය වන කලාපයේ ඵලදායී පරාවර්තක දර්ශකය එක් එක් ඒවායේ පරාවර්තක දර්ශකවල ගුණිතයට සමාන වේ."
+      },
+      "cauchyCoeff": "Cauchy සංගුණකය"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "focalDistances": "නාභීය දුර"
+      }
+    },
+    "Aperture": {
+      "diameter": "විෂ්කම්භය"
+    },
+    "DiffractionGrating": {
+      "lineDensity": "රේඛා/{{lengthUnit}}",
+      "slitRatio": "ස්ලිට් පළල / රේඛා පරතරය"
+    },
+    "Ruler": {
+      "scaleInterval": "පරිමාණ පරතරය"
+    },
+    "TextLabel": {
+      "textHere": "මෙතනින් ලියන්න",
+      "fontSize": "අකුරු ප්‍රමාණය",
+      "font": "අකුරු",
+      "fontStyle": "Style",
+      "fontStyles": {
+        "normal": "සාමාන්‍ය අකුරු",
+        "bold": "තද අකුරු",
+        "italic": "ඇල අකුරු",
+        "boldItalic": "තද ඇල අකුරු",
+        "oblique": "ආනත අකුරු",
+        "boldOblique": "තද ආනත අකුරු"
+      },
+      "alignment": "පෙළගැස්ම",
+      "alignments": {
+        "left": "වම",
+        "center": "මධ්‍ය",
+        "right": "දකුණ"
+      },
+      "smallCaps": "Small Caps",
+      "angle": "කෝණය"
+    },
+    "LineArrow": {
+      "arrow": "ඉදිරියට ඊතලය",
+      "backArrow": "පසුපසට ඊතලය"
+    },
+    "Drawing": {
+      "finishDrawing": "ඇඳීම අවසන් කරන්න"
+    },
+    "ModuleObj": {
+      "module": "මොඩියුල"
+    },
+    "CropBox": {
+      "title": "Export",
+      "cropBoxSize": "කොටුව crop කරන්න",
+      "format": "ආකෘතිය",
+      "width": "පළල",
+      "rayCountLimit": "කිරණ ගණන සීමාව"
+    }
+  },
+  "saveModal": {
+    "title": "Save",
+    "fileName": "නම",
+    "rename": "Rename"
+  },
+  "moduleModal": {
+    "title": "Import Modules"
+  },
+  "languageModal": {
+    "title": "භාෂාව",
+    "translatedFraction": "පරිවර්තිතයි",
+    "helpTranslate": "මෙම යෙදුම පරිවර්තනය කිරීමට අපට උදවු කරන්න"
+  },
+  "generalWarnings": {
+    "identicalObjects": "දර්ශනයේ සම්පූර්ණයෙන්ම අතිච්ඡාදනය වන සමාන දෘශ්‍ය මූලද්‍රව්‍ය දෙකක් ඇත."
+  },
+  "statusBox": {
+    "rayCount": "කිරණ කොටස් සංඛ්‍යාව",
+    "totalTruncation": "කපා දැමූ දීප්තිය",
+    "timeElapsed": "ගතවූ කාලය",
+    "forceStopped": "බලහත්කාරයෙන් නතර විය.",
+    "mouseCoordinates": "Mouse ඛණ්ඩාංක"
+  },
+  "footer": {
+    "processing": "සකසමින්... නතර කිරීමට මෙතන click කරන්න."
+  }
+}

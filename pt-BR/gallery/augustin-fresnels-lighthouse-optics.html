@@ -1,0 +1,247 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ótica de Farol de Augustin Fresnel - Simulação de Óptica de Raios</title>
+  <meta property="og:title" content="Ótica de Farol de Augustin Fresnel - Simulação de Óptica de Raios">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/pt-BR/gallery/augustin-fresnels-lighthouse-optics">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/pt-BR/gallery/augustin-fresnels-lighthouse-optics.jpg">
+  <meta property="og:description" content="Simulação de Óptica de Raios">
+  <meta property="og:locale" content="pt-BR">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/pt-BR/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .description {
+      display: inline-block;
+      text-align: left;
+      max-width: 80%;
+    }
+
+    .preview-image {
+      width: 100%;
+      padding-bottom: 10px;
+    }
+
+    ol, ul {
+      padding-left: 1.8em;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../pt-BR/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> Simulação de Óptica de Raios
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../pt-BR/" class="">Início</a>
+        <a href="../../pt-BR/gallery/" class="active">Galeria</a>
+        <a href="../../pt-BR/about" class="">Sobre</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>Ótica de Farol de Augustin Fresnel</span></b></h1>
+      <p>
+        Contribuidor: Richard Ruh
+      </p>
+      <div class="description">
+        <p><p>Esta é uma demonstração da mágica da Óptica dos Faróis de Augustin Fresnel:</p>
+<ol>
+<li>Uma <a href="../../pt-BR/gallery/fresnel-lens">lente fina</a> substitui a lente de magnificação mais espessa para mandar o feixe central de luz para o navio, com refração em duas superfícies. Um refinamento adicional, incluso, é o raio de curvatura decrescente nos segmentos para reduzir aberração esférica presente na lente de espessura completa. Asféricas não eram usadas no século XVII.</li>
+<li>Prismas de refleção interna total(RIT) redirecionam raios de ângulo alto para os navios. Há elementos catadióptricos com refração entrando e saindo e RIT no lado traseiro. Em 1820, os melhores refletores eram prata, somente cerca de 50% refletivos. A fonte de luz, uma lâmpada de óleo, sujava e necessitava limpeza diária da óptica. RIT é teoricamente 100% eficiente e vidro é mais facilmente limpável.</li>
+</ol>
+<p>Essa simulação valida um conjunto de prismas e lentes feitos para uma demonstração de ótica de Fresnel em um quadro branco no Farol de Pigeon Point do Parque Estadual da Califórnia.</p>
+<p>-A fonte de luz é um farol de carro LED H11 atrás de uma máscara com vãos. O LED emite iluminação em apenas 160 graus, não um hemisfério completo de 180. Uma lâmpada incandescente poderia emitir 360 graus completos, mas não tão brilhante e muito mais quente.</p>
+<ul>
+<li>Os elementos óticos são feitos de acrílico de cerca de 0.5 polegadas, 12mm de espessura, com fundo pintado de branco.</li>
+<li>Todos objetos montam magneticamente no quadro branco. Espelhos adicionais, prismas, e uma lente de espessura completa estão na fotografia e demonstrados na apresentação.</li>
+<li>As lentes de farol de verdade necessitavam de uma chaminé no topo, e muitas vezes, uma estrutura giratória no fundo. Elas não buscavam coletar todos 180 graus de iluminação.</li>
+</ul></p>
+      </div>
+      <p>
+        <a href="../../simulator/?pt-BR#../pt-BR/gallery/augustin-fresnels-lighthouse-optics" target="_blank" class="btn btn-success btn-lg">Abrir no Simulador</a>
+      </p>
+      <picture>
+        <source srcset="augustin-fresnels-lighthouse-optics.avif" type="image/avif">
+        <img src="augustin-fresnels-lighthouse-optics.jpg" alt="Ótica de Farol de Augustin Fresnel" class="preview-image">
+      </picture>
+    </div>
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Linguagem: Português (Brasil)</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../gallery/augustin-fresnels-lighthouse-optics">English<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/gallery/augustin-fresnels-lighthouse-optics">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/gallery/augustin-fresnels-lighthouse-optics">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/gallery/augustin-fresnels-lighthouse-optics">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

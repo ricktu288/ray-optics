@@ -1,0 +1,286 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="ta">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>கதிர் ஒளியியல் தொகுதிகளை உருவாக்குவதற்கான பயிற்சி - ரே ஒளியியல் உருவகப்படுத்துதல்</title>
+  <meta property="og:title" content="கதிர் ஒளியியல் தொகுதிகளை உருவாக்குவதற்கான பயிற்சி - ரே ஒளியியல் உருவகப்படுத்துதல்">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/ta/modules/tutorial">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="ரே ஒளியியல் உருவகப்படுத்துதல்">
+  <meta property="og:locale" content="ta">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/ta/modules/tutorial">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/modules/tutorial">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/modules/tutorial">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/modules/tutorial">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/modules/tutorial">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/modules/tutorial">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/modules/tutorial">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/modules/tutorial">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/modules/tutorial">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    iframe {
+      border: none;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../ta/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> ரே ஒளியியல் உருவகப்படுத்துதல்
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../ta/" class="">வீடு</a>
+        <a href="../../ta/gallery/" class="">காட்சியகம்</a>
+        <a href="../../ta/about" class="">பற்றி</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <h1 id="tutorial">கதிர் ஒளியியல் தொகுதிகளை உருவாக்குவதற்கான பயிற்சி</h1>
+    
+    <p>எந்தவொரு வெளிப்புற வளர்ச்சி சூழலும் தேவை இல்லாமல், தனிப்பயன் தொகுதியை உருவாக்குவதற்கான அடிப்படைகள்மூலம் இந்தப் பயிற்சி உங்களுக்கு வழிகாட்டும்.</p>
+    <p>கதிர் ஒளியியல் உருவகப்படுத்துதலின் &quot;தொகுதி&quot; நற்பொருத்தம் தனிப்பயன் அளவுருக்கள், தனிப்பயன் கட்டுப்பாட்டு புள்ளிகள் மற்றும் பொருள்களின் வரிசைகள் கொண்ட பொருள்களின் மட்டு சேர்க்கைகளை உருவாக்க அனுமதிக்கிறது. இந்த நற்பொருத்தம் புதிய கருவிகளை உருவாக்க ஏற்கனவே உள்ள கருவிகளால் உருவாக்கப்பட்ட பொருட்களை ஒன்றிணைப்பதன் மூலமும், தனித்துவம் பெறுவதன் மூலமும் அல்லது மறுசீரமைப்பதன் மூலமும் இந்தச் பாவனையாக்கியின் திறனை விரிவுபடுத்துகிறது. எடுத்துக்காட்டாக, <code>CircleSource</code> தொகுதி (கருவிகள் -&gt; பிற -&gt; இறக்குமதி தொகுதி பார்க்கவும்) தற்போதுள்ள&quot; புள்ளி மூல (&lt;360 °) &quot;கருவியால் உருவாக்கப்பட்ட புள்ளி மூலங்களின் வரிசையை ஒருங்கிணைக்கிறது, ஒரு வட்டத்துடன்,&quot; வட்ட மூலத்தை &quot;உருவாக்கப் பாவனையாக்கியில் இல்லாத கருவி. <code>FresnelLens</code> தொகுதி&quot; கண்ணாடி-&gt; தனிப்பயன் சமன்பாடு &quot;கருவியைத் தனித்துவம் பெற்றது, இதனால் சமன்பாடு துண்டுகளின் எண்ணிக்கையால் அளவுருவாக்கப்பட்ட ஃப்ரெச்னல் வில்லையின் ஒரு குறிப்பிட்ட வளைவைக் குறிக்கிறது, இதனால் ஒரு சிறப்பு &quot;ஃப்ரெச்னல் வில்லை&quot; கருவியை உருவாக்குகிறது, இதுவும் முன்பு இல்லை. புதிய கருவிகளை உருவாக்குவதோடு மட்டுமல்லாமல், இந்த நற்பொருத்தம் சில ஒளியியல் ஆர்ப்பாட்டங்களை மேலும் ஊடாடும். எடுத்துக்காட்டாக, <code>BeamExpander</code> தொகுதியின் மூன்றாவது கட்டுப்பாட்டு புள்ளியை இழுப்பதன் மூலம், இரண்டு லென்ச்கள் இரண்டு வில்லைகள் அகலத்தின் பொதுவான குவிய புள்ளியின் நிலை எவ்வாறு பாதிக்கிறது என்பதை ஒருவர் நேரடியாகக் காணலாம், இரண்டு வில்லைகளின் குவிய நீளங்களை தனித்தனியாகச் சரிசெய்ய தேவையில்லை.</p>
+    <p>எல்லா தனிப்பயன் கட்டுப்பாட்டு புள்ளிகளுக்கும் ஒரு தொகுதி தேவையில்லை என்பதை நினைவில் கொள்க. சில எளிய நிகழ்வுகளை &quot;கைப்பிடி&quot; அம்சத்தால் அடைய முடியும் (பாவனையாக்கியின் கீழ் வலது மூலையில் உள்ள உதவி பாப்அப்பில் &quot;குழு, சுழற்சி மற்றும் அளவிலான பொருள்கள்&quot; பகுதியைப் பார்க்கவும்). ஒரு கைப்பிடியை உருவாக்குவதை விட ஒரு தொகுதியை உருவாக்குவது மிகவும் சிக்கலானது என்பதால், ஒரு தொகுதியை உருவாக்குவதைக் கருத்தில் கொள்வதற்கு முன்பு உங்கள் வழக்கை &quot;கைப்பிடி&quot; அம்சத்தால் அடைய முடியுமா என்பதை முதலில் சரிபார்க்க வேண்டும். ஒரு தொகுதியைப் பயன்படுத்தாமல் தனிப்பயன் கட்டுப்பாட்டு புள்ளியின் (இரண்டு பிளாச்டிக் பைகளை நீரிலிருந்து இரண்டு பிளாச்டிக் பைகளை நகர்த்துவது) ஒரு கீழான எடுத்துக்காட்டுக்கு <a href="../../ta/gallery/black-cat-becomes-white">இங்கே</a> ஐப் பார்க்கவும்.</p>
+    <p>மறுபுறம், உங்கள் வழக்குக்கு சிக்கலான நிரலாக்க தேவைப்பட்டால் (அனிமேசன்களை உருவாக்குவது, ஆப்டிகல் கூறுகளை வைக்க சிக்கலான வழிமுறையைப் பயன்படுத்துதல் அல்லது கதிர்வீச்சு வரைபடங்களில் பகுப்பாய்வு செய்வது போன்றவை), தயவுசெய்து [ஒருங்கிணைப்பு கருவிகள்] (/ஒருங்கிணைப்புகள்) மற்றும் பைத்தான் அல்லது சூலியா போன்ற ச்கிரிப்ட்களை எழுதுங்கள்.</p>
+    <p><b>You are welcome to <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">contribute your modules to the &quot;Import modules&quot; list</a> as long as you think it is useful for others, even if it is vibe coded!</b></p>
+
+    <h2 id="ai-assistant">AI உதவியாளரைப் பயன்படுத்துதல்<sup>Beta</sup></h2>
+    <p>சாட்சிப்டில் உள்ள [ரே ஒளியியல் கோடர்] (/AI-TOOLS/SATGPT) ரே ஒளியியல் தொகுதிகள் எழுத உதவும். இது உங்கள் விளக்கத்தின் அடிப்படையில் தொகுதியைக் கொண்ட காட்சிக்கான சாதொபொகு குறியீட்டை உருவாக்குகிறது, மேலும் நீங்கள் குறியீட்டை சாதொபொகு எடிட்டருக்கு நகலெடுக்கலாம் (கீழே காண்க). ஏற்கனவே உள்ள தொகுதிகளைத் திருத்த அல்லது காட்சிகளை மாற்றியமைக்க இதைப் பயன்படுத்தலாம்.</p>
+    <p>சாட்போட் உருவாக்கிய குறியீடு நேரடியாக வேலை செய்யாது. பிழை ஏற்பட்டால், பிழை செய்தியை சாட்போட்டிற்கு நகலெடுத்து ஒட்டுவது உதவக்கூடும். மிகவும் சிக்கலான தொகுதிகளுக்கு, நீங்கள் இன்னும் கீழேயுள்ள டுடோரியலைப் படித்து, குறைந்தபட்சம் நீங்களே குறியீட்டை எழுத விரும்பலாம்.</p>
+    <p>சாட்போட்டிற்கான அறிவுறுத்தல் மற்றும் அறிவு கோப்புகள் [இங்கே] (/AI-கருவிகள்/வழிமுறைகள்) கிடைக்கின்றன. நீங்கள் மற்றொரு எல்.எல்.எம் சேவையை விரும்பினால், ரே ஒளியியல் தொகுதிகளை எவ்வாறு எழுதுவது என்பதை கற்பிக்க அந்தக் கோப்புகளை வழங்கலாம்.</p>
+
+    <h2 id="the-built-in-json-editor">உள்ளமைக்கப்பட்ட சாதொபொகு ஆசிரியர்</h2>
+    <p>இந்தப் பயன்பாட்டில் தற்போது தொகுதிகள் உருவாக்குவதற்கான காட்சி இடைமுகம் இல்லை, எனவே நீங்கள் காட்சியின் சாதொபொகு ஐ நேரடியாகத் திருத்த வேண்டும்.</p>
+    <p>பயன்பாட்டின் மேல்-வலது மூலையில் உள்ள &quot;அமைப்புகள்&quot; கீழ்தோன்றலைக் சொடுக்கு செய்வதன் மூலம் உள்ளமைக்கப்பட்ட சாதொபொகு திருத்தியை நீங்கள் இயக்கலாம், பின்னர் &quot;சாதொபொகு திருத்தியை காட்டு&quot; ஐ சரிபார்க்கவும். குறியீடு திருத்திப் பயன்பாட்டின் இடது புறத்தில், தற்போதைய காட்சியின் சாதொபொகு குறியீட்டைக் கொண்டு தோன்ற வேண்டும். கைபேசி சாதனங்களில் இந்த நற்பொருத்தம் சரியாக வேலை செய்யாது என்பதால், உங்களிடம் போதுமான பெரிய திரை இருப்பதை உறுதிப்படுத்திக் கொள்ளுங்கள்.</p>
+    <p>வழக்கமான காட்சி காண் திருத்திப் பயன்படுத்தி நீங்கள் காட்சியைத் திருத்தும்போது, சாதொபொகு திருத்தியில் உள்ள குறியீடு அதற்கேற்ப புதுப்பிக்கப்படும், மாற்றப்பட்ட பகுதி சிறப்பம்சமாக இருக்கும். மாறாக, சாதொபொகு திருத்தியில் குறியீட்டை நேரடியாகத் திருத்துவது அதற்கேற்ப காட்சியைப் புதுப்பிக்கும். உங்களுக்குச் சாதொபொகு அல்லது எந்த வகையான உரை அடிப்படையிலான தரவு வடிவமும் தெரிந்திருக்கவில்லை என்றால், நீங்கள் அதைச் சிறிது நேரம் விளையாட விரும்பலாம்.</p>
+    <p>குறிப்பாக, நீங்கள் காட்சியில் ஒரு பொருளைச் சேர்க்கும்போது, அது <code>objs</code> வரிசையில் சேர்க்கப்படுகிறது. அதன் சில பண்புகளை நீங்கள் தாக்கல் செய்யாத மதிப்புக்கு மாற்றினால், அவை அந்தப் பொருளின் திறவுகோல்-மதிப்பு இணைகளாகத் தோன்றும்.</p>
+    <p>If you do not want the scene to be automatically updated when you edit the JSON, you can enable Settings -&gt; Show simulator controls and disable &quot;Auto Refresh&quot;. And when the editing is done, click &quot;Refresh Simulation&quot; (or &quot;Refresh Scene&quot; if you don&#39;t want the simulation to be rerun immediately).</p>
+    <b><p>முக்கியமானது: இந்தப் பயிற்சி பக்கத்தில், கீழேயுள்ள இசட்டங்களில் சாதொபொகு குறியீடு திருத்தியை நீங்கள் காணவில்லை என்றால், தயவுசெய்து அதை இயக்கி இந்தப் பக்கத்தை மீண்டும் ஏற்றவும், ஏனெனில் அது எவ்வாறு செயல்படுகிறது என்பதைப் புரிந்துகொள்ளக் குறியீட்டை நீங்கள் காண வேண்டும்.</p></b>
+
+    <h2 id="basics-of-a-module">ஒரு தொகுதியின் அடிப்படைகள்</h2>
+    <p>ஒரு தொகுதியின் எங்கள் முதல் உதாரணத்தைப் பார்க்கட்டும்.</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-basics"></iframe>
+    <p>நீங்கள் நான்கு வரிகள் நூல்களைக் காண வேண்டும். சாதொபொகு திருத்தியைப் பார்ப்பதன் மூலம், முதல் இரண்டு நேரடியாக மேல்-நிலை <code>objs</code> வரிசையில் வழக்கம்போல் இருப்பதை நீங்கள் காண்பீர்கள், ஆனால் கடைசி இரண்டு வரிகள் <code>modules.ExampleModule.objs</code> இதில் காண்பீர்கள்.</p>
+    <p><code>modules</code> என்பது ஒரு அகராதியாகும், அங்கு முக்கியமானது தொகுதியின் பெயர் (இந்த விசயத்தில்<code>ExampleModule</code>), மற்றும் மதிப்பு அந்தத் தொகுதியின் வரையறை. அந்தத் தொகுதிக்குள் உள்ள (வார்ப்புரு) பொருள்களைக் குறிப்பாக, <code>modules.ExampleModule.objs</code> வரிசை விவரிக்கிறது, இது காட்சியில் உள்ள பொருள்களை விவரிக்கும் உயர்மட்ட <code>objs</code> இலிருந்து வேறுபட்டது.</p>
+    <p>தொகுதிக்குள் பொருள்களைக் காட்சிக்கு வைக்க, எங்களுக்கு ஒரு &quot;தொகுதி பொருள்&quot; தேவை <code>objs</code> வரிசையில், இது<code>objs[2]</code>இந்த எடுத்துக்காட்டில், அதன் வகை <code>Modelobj</code> மற்றும் அதனுடைய<code>module</code> பண்பு என்பது தொகுதியின் பெயர்.</p>
+    <p><code>modules</code> அகராதியில் உள்ள தொகுதி வரையறை காட்சி காண் திருத்தியால் திருத்தப்படவில்லை. எனவே இந்த எடுத்துக்காட்டில் உள்ள கடைசி இரண்டு நூல்களில் ஏதேனும் ஒன்றை நீங்கள் சொடுக்கு செய்யும்போது, நீங்கள் தொகுதி பொருளைத் தேர்ந்தெடுப்பீர்கள், ஆனால் தொகுதியில் உள்ள பொருள்கள் அல்ல. இந்த எடுத்துக்காட்டில் உள்ள தொகுதி வரையறையில் உள்ள நூல்களின் ஒருங்கிணைப்புகள் முழுமையான ஆயத்தொகுப்புகள் என்பதால், கடைசி இரண்டு நூல்கள் இழுக்க முடியாதவை. கட்டுப்பாட்டு புள்ளிகளைப் பயன்படுத்துவதன் மூலம் அவற்றை எவ்வாறு இழுக்க முடியும் என்பதை நாங்கள் கற்றுக்கொள்வோம்.</p>
+    <p>நீங்கள் ஒரு தொகுதி பொருளைத் தேர்ந்தெடுத்தால், பொருள் பட்டியில் &quot;செயற்காட்சிபடுத்து&quot; பொத்தான் உள்ளது. அதைக் சொடுக்குவதன் மூலம் தொகுதி பொருளை அதன் தொகுதிக்கு &quot;விரிவுபடுத்தும்&quot;, மற்றும் <code>objs</code> இப்போது நான்கு நூல்களையும் கொண்டிருக்கும். இந்தச் செயல்பாடு மீளக்கூடியது அல்ல (ஆனால் நிச்சயமாக நீங்கள் &quot;செயல்தவிர்&quot; என்பதைக் சொடுக்கு செய்யலாம்).</p>
+    <p>தற்போது ஒரு தொகுதியை உருவாக்குவதற்கான பரிந்துரைக்கப்பட்ட வழி, முதலில் சாதொபொகு திருத்தியைப் பயன்படுத்தி ஒரு வெற்று தொகுதியை உருவாக்குவது, காட்சி காண் திருத்தியைப் பயன்படுத்தி சில பொருள்களை உருவாக்கி, பின்னர் <code>objs</code> க்கு<code>modules.ModuleName.objs</code> க்கு பொருள்களை வெட்டி ஒட்டவும் சாதொபொகு திருத்தியைப் பயன்படுத்தலாம்.</p>
+
+    <h2 id="adding-parameters">அளவுருக்களைச் சேர்ப்பது</h2>
+    <p>தொகுதிக்குள் உள்ள பொருள்களை அளவுருக்களின் தொகுப்பால் வரையறுக்கலாம். ஒரு எளிய உதாரணத்தைப் பார்ப்போம்</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-parameters"></iframe>
+    <p>இங்கே <code>modules.ModuleName.params</code>என்பது சரங்களின் வரிசை <code>&quot;name=start:step:end:default&quot;</code>ஆனது மாறிகளின் பெயரையும் வழுக்கிகளின் வரம்பையும் வரையறுக்கும்.தொகுதி பொருள் தேர்ந்தெடுக்கப்படும்போது வழுக்கிகள் பொருள் பட்டியில் தோன்றும்.</p>
+    <p><code>modules.ExampleModule.objs</code> வரிசைக்குள், எந்த மதிப்புகளையும் அந்த அளவுருக்களைப் பயன்படுத்தி வெளிப்படுத்தலாம். ஒரு சரத்திற்குள் (<code>TextLabel</code> இன் <code>text</code> பண்பு போன்றவை), மாறிகளின் சமன்பாடுகள் ஒரு இணை பின்னணிகளால் இணைக்கப்பட்டுள்ளன. எண் அளவுருக்களுக்கு (<code>TextLabel</code> இன் <code>fontSize</code> பண்பு போன்றவை), நீங்கள் அதை ஒரு சரமாக மாற்ற வேண்டும், இதனால் நீங்கள் அதில் பின்மேற்கோள் வடிவமைப்பைப் பயன்படுத்தலாம், எனவே ஒவ்வொரு சமன்பாடும் ஒரு இணை பின்மேற்கோள்கள் மற்றும் ஒரு இணை மேற்கோள்களால் சொருகபடுகிறது. சமன்பாடு math.js (<a href="https://mathjs.org/docs/reference/functions/evaluate.html">தொடரியல்</a>) மூலம் மதிப்பிடப்படுகிறது. சமன்பாடுகளில் நீங்கள் பயன்படுத்தக்கூடிய கிடைக்கக்கூடிய தொடரியல் மற்றும் செயல்பாடுகளை அங்குப் பார்க்கவும்.</p>
+    <p>அளவுருக்களின் உண்மையான மதிப்புகள் தொகுதி பொருளின் <code>params</code> பண்பில் சேமிக்கப்படுகின்றன, அவை தொகுதி வரையறையைப் போலல்லாமல், வழுக்கியைப் பயன்படுத்தி காட்சி திருத்தியால் நேரடியாகத் திருத்தப்படலாம்.</p>
+
+    <h2 id="adding-control-points">கட்டுப்பாட்டு புள்ளிகளைச் சேர்க்கிறது</h2>
+    <p>தொகுதி பொருளை இழுக்கக்கூடியதாக மாற்ற, கட்டுப்பாட்டு புள்ளிகளின் தொகுப்பைப் பயன்படுத்தி தொகுதிக்குள் உள்ள பொருட்களை நாம் அளவுருவாக்க வேண்டும். உதாரணத்தைப் பார்ப்போம்</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-control-points"></iframe>
+    <p>இங்கே <code>modules.ModuleName.numPoints</code>கட்டுப்பாட்டு புள்ளிகளை வரையருக்கிறது. கட்டுப்பாட்டு புள்ளிகளின் ஆயத்தொகுப்புகள் (<code>x_1</code>, <code>y_1</code>), (<code>x_2</code>, <code>y_2</code>) போன்றவை, மேலும் அவை <code>modules.ExampleModule.objs</code> உள் பயன்படுத்தலாம், முந்தைய பிரிவில் குறிப்பிட்டதைப் போல. குறியீட்டு 1 முதல் தொடங்குகிறது என்பதை நினைவில் கொள்க.</p>
+    <p>கட்டுப்பாட்டு புள்ளிகளின் ஆயங்களின் உண்மையான மதிப்புகள் தொகுதி பொருளின் <code>points</code> பண்பில் சேமிக்கப்படுகின்றன, அவை எடுத்துக்காட்டு 1 இல் உள்ள கடின குறியீட்டு ஆயத்தொலைவுகளைப் போலல்லாமல், கட்டுப்பாட்டு புள்ளிகளை இழுப்பதன் மூலம் காட்சி காண் திருத்தியால் திருத்தப்படலாம், ஒவ்வொன்றும் காட்சியில் இரண்டு செறிவான சாம்பல் வட்டங்களாகக் காட்டப்பட்டுள்ளது. தொகுதி பொருளில் (உரை சிட்டைகளை இழுப்பது போன்றவை) நீங்கள் வேறு எங்கும் இழுத்தால், அனைத்து கட்டுப்பாட்டு புள்ளிகளும் ஒன்றாக நகரும்.</p>
+    <p>எங்கள் தொகுதி பொருள் இப்போது நகர முடியும் என்பதால், வழக்கமான கருவிகளைப் போலவே பல நிகழ்வுகளையும் உருவாக்குவது இப்போது மிகவும் எளிதானது. தொகுதியின் பெயர் கருவிகள் -&gt; பிற பட்டியலில் காட்டப்பட்டுள்ளது, மேலும் நீங்கள் அதைத் தேர்ந்தெடுத்து, பின்னர் இரண்டு கட்டுப்பாட்டு புள்ளிகளுக்கான வரிசையில் வெற்று இடத்தில் இரண்டு புள்ளிகளைக் சொடுக்கு செய்யலாம். பொருள் பட்டியில் “நகல்” பொத்தானையும் பயன்படுத்தலாம்.</p>
+
+    <h2 id="arrays-and-conditionals">வரிசைகள் மற்றும் நிபந்தனைகள்</h2>
+    <p>வரிசைகள் மற்றும் நிபந்தனைகளைப் பயன்படுத்தி மிகவும் சிக்கலான தொகுதி கட்டப்படலாம். உதாரணத்தைப் பார்ப்போம்</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-arrays-and-conditionals"></iframe>
+    <p><code>Modules.examplemodule.objs</code> க்குள், ஒரு வரிசையில் உள்ள எந்தவொரு பொருளும் இரண்டு சிறப்பு விசைகளைக் கொண்டிருக்கலாம்: <code>&quot;for&quot;</code> மற்றும் <code>&quot;if&quot;</code>. <code>&quot;for&quot;</code> விசைக்கான <code>&quot; இன் மதிப்பு என்பது </code>&quot;name=start:step:end&quot;<code>ஒரு சுழல் மாறியை வரையறுத்தல் அல்லது பல பரிமாண வளையத்தை விவரிக்கும் இந்த வடிவத்தின் பல சரங்களின் வரிசை. வரிசையில் உள்ள அத்தகைய பொருள் சுழல் மாறிகள் படி பல முறை நகலெடுக்கப்படுகிறது.</code>&quot;if&quot;` விசையின் மதிப்பு என்பது ஒரு இருமத்தை மதிப்பிடும் ஒரு கணிதத்தைக் குறிக்கும் ஒரு சரம் ஆகும், மேலும் இருமம் உண்மையாக இருந்தால் மட்டுமே அத்தகைய பொருள் வரிசையில் சேர்க்கப்பட்டுள்ளது.</p>
+    <p>தற்செயலான எல்லையற்ற வளையத்தைத் தடுக்க, <code>&quot;for&quot;</code> சுழலுக்கான மொத்த மறு செய்கையின் எண்ணிக்கையானது தொகுதி வரையறையின்<code>maxLoopLength</code> பண்பின் மூலம் வரையறுக்கப்படுகிறது, அதன் இயல்புநிலை மதிப்பு 1000 ஆகும். தேவைப்பட்டால் இந்தப் பண்பைப் பெரிய மதிப்புக்கு அமைக்கலாம்.</p>
+
+    <h2 id="using-variables">மாறிகளைப் பயன்படுத்துதல்<sup>Beta</sup></h2>
+    <p>உங்கள் தொகுதி முழுவதும் பயன்படுத்தக்கூடிய கணித மாறிகள் மற்றும் செயல்பாடுகளை நீங்கள் வரையறுக்கலாம். உதாரணத்தைப் பார்ப்போம்</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-variables"></iframe>
+    <p>`தொகுதிகள். இந்த வரையறைகள் தொடர்ச்சியாக மதிப்பிடப்படுகின்றன, எனவே பிற்கால வரையறைகள் முந்தையவற்றைக் குறிப்பிடலாம்.</p>
+    <p>மாறி வரையறைகள் அனைத்து அளவுருக்கள் மற்றும் கட்டுப்பாட்டு புள்ளி ஆயத்தொகுதிகளுக்கும் முழு அணுகலைக் கொண்டுள்ளன, மேலும் வரையறுக்கப்பட்டவுடன், இந்த மாறிகள் அளவுருக்கள் மற்றும் கட்டுப்பாட்டு புள்ளி ஆயத்தொலைவுகள் போன்ற பொருள் வார்ப்புருக்களில் பயன்படுத்தப்படலாம், இது மிகவும் சிக்கலான மற்றும் மீண்டும் பயன்படுத்தக்கூடிய கணக்கீடுகளை அனுமதிக்கிறது.</p>
+
+    <h2 id="objects-with-built-in-custom-equations">உள்ளமைக்கப்பட்ட தனிப்பயன் சமன்பாடுகளைக் கொண்ட பொருள்கள்<sup>Beta</sup></h2>
+    <p>For objects that already have custom equation input (such as Mirror -&gt; Custom Equation), the equation property in the JSON is a string representing a LaTeX equation. To represent such an equation in math.js and refer to module parameters, etc, you need to wrap the math.js expression in a pair of double backticks. Such a block expands to a LaTeX equation with free variables like \(x\) for <code>x</code> and \(\theta_0\) for <code>theta_0</code>, which is different from a single-backtick block which expects no free variables and expands to a number. Here is an example of a custom equation mirror containing a custom parameter <code>phi</code></p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-custom-equation"></iframe>
+    <p>Although you can use any math.js syntax and operations in variables and single-backtick blocks, for double-backtick blocks, only the math.js counterparts of the constants, operators, and functions supported by the equation input of the target object are allowed (see the info box of the target object). You can use custom functions defined in the <code>vars</code> array, but the function definitions must ultimately consist of those allowed operations.</p>
+    <p>Implicit multiplication (e.g. <code>2x</code>) is also not allowed in this context, due to its ill-defined operator precedence in math.js. Please always use the <code>*</code> operator explicitly (e.g. <code>2*x</code>).</p>
+
+    <h2 id="objects-with-built-in-shape-parametrization">உள்ளமைக்கப்பட்ட வடிவ அளவுரு கொண்ட பொருள்கள்</h2>
+    <p>அதன் வடிவத்தை வரையறுக்க ஏற்கனவே வெவ்வேறு வழிகளை ஆதரிக்கும் பொருள்களுக்கு (தற்போது கண்ணாடி -&gt; கோள வில்லை மட்டுமே). இது போன்ற பொருள்களுக்குச் சிறப்பு சாதொபொகு தொடரியல் உள்ளது, அவை தொகுதி வரையறைக்குள் பயன்படுத்தப்படலாம், அவை எப்போதும் மேல் நிலை <code>objs</code> வரிசையில் வடிவத்தால் வரையறுக்கப்பட்டாலும் கூட. இங்கே ஒரு எடுத்துக்காட்டு</p>
+    <iframe loading="lazy" src="../../simulator/?ta#../ta/gallery/module-example-shape-parametrization"></iframe>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">மொழி: தமிழ்}</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../modules/tutorial">English<span style="color:gray"></span></a></li>
+          <li><a href="../../pl/modules/tutorial">polski<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/modules/tutorial">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-PT/modules/tutorial">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../../ru/modules/tutorial">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../../ta/modules/tutorial">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/modules/tutorial">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/modules/tutorial">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

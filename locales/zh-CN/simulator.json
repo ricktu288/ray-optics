@@ -1,0 +1,635 @@
+{
+  "welcome": {
+    "title": "欢迎使用“射线光学模拟”",
+    "instruction": "若要加入光学元件，请选择工具并点击空白处。\n若要载入示例，[请前往“作品集”页面](/gallery)。",
+    "loading": "正在从网址载入场景……请稍候。"
+  },
+  "common": {
+    "saveButton": "保存",
+    "cancelButton": "取消",
+    "defaultOption": "默认",
+    "customOption": "自定义",
+    "closeButton": "关闭",
+    "resetButton": "重置",
+    "reloadToTakeEffect": "请重新加载页面才能生效。"
+  },
+  "file": {
+    "title": "文件",
+    "undo": {
+      "title": "撤销"
+    },
+    "redo": {
+      "title": "重做"
+    },
+    "reset": {
+      "title": "清空"
+    },
+    "save": {
+      "title": "保存"
+    },
+    "open": {
+      "title": "打开",
+      "description": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
+    },
+    "export": {
+      "title": "导出为PNG/SVG"
+    },
+    "copyLink": {
+      "title": "复制分享连结",
+      "description": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。另见设定->自动同步网址。"
+    },
+    "viewGallery": {
+      "title": "浏览作品集",
+      "description": "前往「作品集」页面以载入示例。"
+    }
+  },
+  "settings": {
+    "title": "设定",
+    "more": "更多选项",
+    "rayDensity": {
+      "title": "光线密度",
+      "description": "决定从光束与点光源射出的光线数量。这也会影响到像的侦测与颜色渲染的准确性。"
+    },
+    "layoutAids": {
+      "title": "排版辅助",
+      "showGrid": "网格",
+      "snapToGrid": "对齐网格",
+      "lockObjs": "锁定物件"
+    },
+    "showRayArrows": {
+      "title": "显示光线箭头"
+    },
+    "correctBrightness": {
+      "title": "修正亮度",
+      "description": "在默认情况下，萤幕上的亮度并非一致地表达光线的亮度。本选项使用特制的渲染器来修正此问题，但在某些装置上可能导致效能变差。 （在另一些装置上反而会让效能变好。）",
+      "error": "「修正亮度」启用失败。您的浏览器可能不支援 WebGL 浮点数纹理。"
+    },
+    "gridSize": {
+      "title": "网格大小"
+    },
+    "observerSize": {
+      "title": "观察者大小"
+    },
+    "lengthScale": {
+      "title": "长度尺度",
+      "description": "如果将默认的长度单位视为常见的物理单位（例如毫米）时，模拟的物理系统看起来太小或太大，则可以使用此比例来缩放场景中的外观（例如线宽）。"
+    },
+    "zoom": {
+      "title": "缩放"
+    },
+    "showAdvancedSettings": {
+      "title": "更多场景设置…"
+    },
+    "colorMode": {
+      "title": "色彩模式",
+      "description": "决定光线或像的亮度（若启用「模拟色彩」，则还需考虑颜色）如何对应到萤幕上的颜色。只在启用「修正亮度」时才可调整此设定。"
+    },
+    "theme": {
+      "title": "主题"
+    },
+    "language": {
+      "title": "语言",
+      "lowFraction": "此语言翻译完成率仅 {{fraction}}。您可以[在 Weblate 上](/weblate)帮助完成翻译。"
+    },
+    "autoSyncUrl": {
+      "title": "自动同步网址",
+      "description": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。如需设定标题，请用文件->保存->重命名。"
+    },
+    "showJsonEditor": {
+      "title": "显示 JSON 编辑器",
+      "description": "显示表达场景代码的 JSON 编辑器。在创建自定义模块时需要使用（见工具->其他->导入模块->创建自定义模块）。"
+    },
+    "showStatusBox": {
+      "title": "显示状态方块",
+      "description": "显示状态方块，其中包含滑鼠座标，效能信息，以及被截断的亮度（光线在内反射的无穷级数中被截断的总亮度）。"
+    },
+    "showSimulatorControls": {
+      "title": "显示模拟器控制列",
+      "description": "允许手动控制模拟器，适用于模拟耗时较长、从 JSON 加载较慢或带有随机性的场景。"
+    },
+    "showHelpPopups": {
+      "title": "显示提示泡泡",
+      "description": "决定滑鼠移到按钮上方时是否显示提示泡泡。"
+    },
+    "advancedHelp": "进阶说明详见右下角的说明图示。"
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "更多选项…"
+    },
+    "applyToAll": {
+      "title": "套用全部"
+    },
+    "duplicate": {
+      "title": "复制"
+    },
+    "delete": {
+      "title": "删除"
+    },
+    "unselect": {
+      "title": "取消选取",
+      "description": "取消选取此物件（在空白处按滑鼠右键也有相同的功能）"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "lengthUnitInfo": "本模拟器中的长度单位（除波长外）为一个任意单位。您可将其视为任何物理单位（例如毫米），只要在整个模拟中保持一致。如果单位看起来太小或太大，请调整设定->长度尺度。",
+      "brightness": "亮度",
+      "brightnessInfo": {
+        "rayDensity": "只在「光线密度」够高时才有作用。",
+        "rayDensitySlider": "如需改变射出的光线数量，请调整全域性的「光线密度」滑杆。",
+        "newColorModes": "使用「修正亮度」时，低「光线密度」下的行为与默认行为不同。关于单位，请选取一个探测器并查看其资讯框。"
+      },
+      "wavelength": "波长",
+      "emisAngle": "发射角",
+      "random": "随机",
+      "lambert": "朗伯",
+      "coordOrigin": "原点",
+      "focalLength": "焦距",
+      "eqnInfo": {
+        "constants": "支持的常数",
+        "operators": "支持的运算符",
+        "functions": "支持的函数",
+        "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块。"
+      },
+      "imageDetectionWarning": "本工具不支持像的侦测。",
+      "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "添加片段",
+      "removePiece": "移除片段",
+      "step": "步长",
+      "error": {
+        "invalidStepSize": "步长无效：{{step}}",
+        "invalidRange": "参数范围无效：tMin ({{tMin}}) >= tMax ({{tMax}})",
+        "nonFiniteCoords": "坐标非有限值：({{x}}, {{y}})",
+        "pieceError": "片段 {{pieceIndex}} 在 t={{t}} 时出错：{{error}}"
+      }
+    },
+    "Beam": {
+      "imageDetectionWarning": "使用发散或随机光束时，像的侦测可能无法正常运作。"
+    },
+    "AngleSource": {
+      "symmetric": "对称"
+    },
+    "BaseFilter": {
+      "filter": "滤光",
+      "bandwidth": "带宽",
+      "invert": "反向"
+    },
+    "IdealMirror": {
+      "cartesianSign": "笛卡尔符号约定"
+    },
+    "BeamSplitter": {
+      "transRatio": "透光率"
+    },
+    "BaseGlass": {
+      "refIndex": "折射率",
+      "refIndexInfo": {
+        "relative": "于另一透光物内部时为相对值",
+        "effective": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。"
+      },
+      "cauchyCoeff": "柯西系数"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "radiiOfCurvature": "曲率半径",
+        "focalDistances": "前/后焦距"
+      },
+      "invalidParameters": "透镜参数无效"
+    },
+    "CustomGlass": {
+      "curveGenerationError": "曲线生成错误：x = {{x}} 时 f(x) > g(x)"
+    },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "曲线必须闭合且正向（以计算机图形的惯例，y 轴向下，故顺时针方向为正）。"
+      },
+      "warning": {
+        "notClosed": "曲线未闭合。",
+        "notPositivelyOriented": "曲线方向不正确。"
+      }
+    },
+    "BaseGrinGlass": {
+      "refIndexFnInfo": {
+        "lambda": "如需模拟色散，请用参数 {{lambda}} 代表真空中波长，单位为纳米。",
+        "diff": "仅支持可微函数。",
+        "origin": "n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。",
+        "accuracy": "如需较精确的模拟，请见「更多选项…」"
+      },
+      "absorptionFnInfo": {
+        "absorption": "透光物的吸收率，单位为 1/[长度]。"
+      },
+      "stepSize": "数值求解器步长",
+      "stepSizeInfo": "用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'BaseGrinGlass.js' 中的 'step' 函数与原始码文件。",
+      "intersectTol": "相交容忍度",
+      "symbolicBodyMerging": "符号式物体融合",
+      "symbolicBodyMergingInfo": {
+        "all": "本选项会套用至所有渐变折射率透光物。",
+        "impl": "本模拟器目前有两种光线经过不同渐变折射率介质的实作 - 数值与符号(见 'BaseGrinGlass.js' 中的 'multRefIndex' 与 'devRefIndex' 函数)。",
+        "implNote": "数值的实作较快，但使用多个渐变折射率介质，且至少有一个介质的折射率没有在整个平面上有定义时，无法在所有情况下正常运作(取决于具体情况)。相较之下，符号的实作较慢但在这种情况下仍可正常运作。"
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "单位 - [长度]^2.",
+        "functions": "本数值容忍度被用于 'CircleGrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。"
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "单位 - [长度].",
+        "functions": "本数值容忍度被用于 'GrinGlass.js' 中的 'isOutsideGlass', 'isInsideGlass' 以及 'isOnBoundary' 函数。"
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "单位 - [长度].",
+        "functions": "本数值容忍度被用于 'ParamCurveObjMixin.js' 中的 'isOnBoundary' 函数。"
+      }
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "单位 - [长度]^2.",
+        "functions": "本数值容忍度被用于 'CurveGrinGlass.js' 中的 'isOnBoundary' 函数。"
+      }
+    },
+    "Aperture": {
+      "diameter": "直径"
+    },
+    "DiffractionGrating": {
+      "lineDensity": "线数/{{lengthUnit}}",
+      "customBrightness": "自定义亮度",
+      "customBrightnessInfo": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, …。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。",
+      "slitRatio": "狭缝宽度 / 线间距",
+      "mirrored": "反射"
+    },
+    "Ruler": {
+      "scaleInterval": "刻度间距"
+    },
+    "Detector": {
+      "info": {
+        "P": "P: 能量流率（通量），单位为 B/s（见下文）。",
+        "Fperp": "F⊥: 垂直动量流率，单位为 (B/s)/c。",
+        "Fpar": "F∥: 平行动量流率，单位为 (B/s)/c。",
+        "irradiance": "导出的 CSV 中的辐照度单位为 (B/s)/L。",
+        "length": "L 是本模拟器中使用的任意长度单位。",
+        "B": "B 是辐射通量或光通量的任意单位，对应到「亮度」选项的单位：非朗伯光束为 B/L，点光源为 500B/360°。",
+        "s": "无量纲因子 s 是「设定」->「显示状态栏」中显示的「亮度尺度」，当「光线密度」高于某个阈值时为1，否则与「光线密度」成正比。",
+        "sNewColorModes": "使用「修正亮度」时，无量纲因子 s 恒等于 1。",
+        "truncation": "如果某些光线在内反射的无穷级数中被截断，则总截断量将显示为误差估计。"
+      },
+      "irradMap": "辐照度图",
+      "binSize": "组距",
+      "exportData": "导出数据"
+    },
+    "TextLabel": {
+      "textHere": "在此输入文字",
+      "fontSize": "字型大小",
+      "font": "字型",
+      "fonts": "Serif: 衬线体\nMicrosoft YaHei: 微软雅黑\nSimSun: 宋体\nPingFang SC: 苹方\nNoto Sans CJK SC: 思源黑体\nNoto Serif CJK SC: 思源宋体\nArial: Arial\nTimes New Roman: Times New Roman",
+      "fontNote": "如果您的系统中未安装选择的字型，将使用替代字型。",
+      "enterFontName": "输入字型名稱…",
+      "fontStyle": "样式",
+      "fontStyles": {
+        "normal": "正常",
+        "bold": "粗体",
+        "italic": "斜体",
+        "boldItalic": "粗斜体",
+        "oblique": "倾斜",
+        "boldOblique": "粗倾斜"
+      },
+      "alignment": "对齐",
+      "alignments": {
+        "left": "左",
+        "center": "中",
+        "right": "右"
+      },
+      "smallCaps": "小型大写",
+      "angle": "角度"
+    },
+    "LineArrow": {
+      "arrow": "前向箭头",
+      "backArrow": "后向箭头"
+    },
+    "Drawing": {
+      "finishDrawing": "停止绘图"
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} 和 {{theta_j}} 分别是入射光线和第 j 条出射光线的角度，以弧度为单位，相对于法线方向。",
+        "brightnesses": "{{P_0}} 和 {{P_j}} 分别是入射光线和第 j 条出射光线的亮度，单位与探测器工具相同。",
+        "previousFormulas": "公式可以引用先前公式的结果。如果公式给出无效值，该出射光线将被忽略，且亮度视为 0。",
+        "otherParams": "其他可用的入射光线参数为 {{lambda}}（波长，单位为 nm）和 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光线将保持相同的参数。",
+        "coating": "此物件可与透光物表面重叠来作为涂层。在这种情况下，折射本身也需要包含在此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 来分别代表与入射光线同侧和对侧相接的材料折射率。如果此物件位于一个透光物内部，则这些值相对于该透光物。",
+        "twoSides": "如需让表面的两侧以不同公式定义，可重叠两个方向相反的单面表面。",
+        "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用自定义模块。更多信息请参见工具->其他->导入模块。"
+      },
+      "twoSided": "双面",
+      "addOutgoingRay": "添加出射光线",
+      "removeOutgoingRay": "移除出射光线"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射点的位置，在线段两端点之间从 -1 到 1 线性插值。"
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射点的位置，在圆弧两端点之间从 -1 到 1 均匀插值（相对于角度）。"
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射点在曲线参数空间中的位置。"
+      }
+    },
+    "ModuleObj": {
+      "module": "模块",
+      "demodulize": "取消模块化",
+      "loopVariableTooLarge": "循环变量“{{name}}”的长度过大。请设置更大的 maxLoopLength 值。",
+      "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
+      "variableRangeError": "解析变量范围“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
+      "stringExpansionError": "展开字符串“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
+      "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}",
+      "variableDefinitionError": "计算变量定义时发生错误，参数为 {{params}}：{{error}}",
+      "unclosedMathBlock": "数学式块没有结尾：{{str}}"
+    },
+    "Handle": {
+      "handle": "控制杆",
+      "transformation": "变换",
+      "transformations": {
+        "translation": "平移",
+        "xTranslation": "X 平移",
+        "yTranslation": "Y 平移",
+        "rotation": "旋转",
+        "scaling": "缩放"
+      },
+      "step": "步长",
+      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。"
+    },
+    "CropBox": {
+      "title": "导出",
+      "cropBoxSize": "剪取框大小",
+      "format": "格式",
+      "width": "宽度",
+      "rayCountLimit": "光线数量上限",
+      "transparent": "透明背景",
+      "svgWarning": "导出为 SVG：不支持混色、修正亮度与相对折射率低于1的情形。",
+      "rayCountWarning": "当前场景中的光线数量大於光线数量上限。您可能需要將剪取框選項中的光線數量上限調高。"
+    }
+  },
+  "saveModal": {
+    "title": "保存",
+    "description": {
+      "autoSync": "您可使用设定->自动同步网址而不必存成文件。",
+      "rename": "按「重命名」会改变标题但不会存成文件。",
+      "contribute": "您可以考虑[贡献新的项目](/contributing/gallery)到[「作品集」](/gallery)中。"
+    },
+    "fileName": "名称",
+    "rename": "重命名"
+  },
+  "moduleModal": {
+    "title": "导入模块",
+    "makeCustomModules": "创建自定义模块",
+    "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "线性明度",
+      "description": "HSV 色彩空间中的明度 V 值等于「模拟色彩」关闭时光线的总亮度，也等于光线为 420 至 620 nm 之间的单色光时的总亮度。V 超过 1 时将调降为 1 并保持 H 和 S 不变。颜色经过伽马校正。"
+    },
+    "linearRGB": {
+      "title": "线性 RGB",
+      "description": "与「线性明度」类似，但将 RGB 色彩空间的每个分量分别调降至 1。"
+    },
+    "reinhard": {
+      "title": "Reinhard",
+      "description": "Reinhard 色调映射，应用于相对光亮度总和。在低亮度极限下，颜色与「线性明度」一致。"
+    },
+    "colorizedIntensity": {
+      "title": "颜色编码强度",
+      "description": "总亮度 100, 10, …, 10⁻⁵ 分别以红、橙、黄、绿、青、蓝、紫、黑表示，并以对数刻度平滑插值。"
+    }
+  },
+  "themeModal": {
+    "title": "主题样式",
+    "background": {
+      "title": "背景颜色"
+    },
+    "ray": {
+      "title": "默认光线"
+    },
+    "colorRay": {
+      "title": "彩色默认光线"
+    },
+    "extendedRay": {
+      "title": "默认光线后向延长线"
+    },
+    "colorExtendedRay": {
+      "title": "彩色光线后向延长线"
+    },
+    "forwardExtendedRay": {
+      "title": "默认光线前向延长线"
+    },
+    "colorForwardExtendedRay": {
+      "title": "彩色光线前向延长线"
+    },
+    "observedRay": {
+      "title": "观察到的默认光线"
+    },
+    "colorObservedRay": {
+      "title": "观察到的彩色光线"
+    },
+    "realImage": {
+      "title": "默认实像"
+    },
+    "colorRealImage": {
+      "title": "彩色实像"
+    },
+    "virtualImage": {
+      "title": "默认虚像"
+    },
+    "colorVirtualImage": {
+      "title": "彩色虚像"
+    },
+    "virtualObject": {
+      "title": "默认虚物"
+    },
+    "colorVirtualObject": {
+      "title": "彩色虚物"
+    },
+    "grid": {
+      "title": "网格线"
+    },
+    "observer": {
+      "title": "观察者填充"
+    },
+    "sourcePoint": {
+      "title": "起始控制点"
+    },
+    "directionPoint": {
+      "title": "方向控制点"
+    },
+    "centerPoint": {
+      "title": "中心控制点"
+    },
+    "lightSource": {
+      "title": "默认光源表面"
+    },
+    "beamShield": {
+      "title": "光束源遮罩"
+    },
+    "colorSourceCenter": {
+      "title": "彩色光源中心"
+    },
+    "mirror": {
+      "title": "镜子表面"
+    },
+    "beamSplitter": {
+      "title": "分光镜表面"
+    },
+    "idealCurveCenter": {
+      "title": "理想曲面中心"
+    },
+    "idealCurveArrow": {
+      "title": "理想曲面箭头"
+    },
+    "glass": {
+      "title": "透光物填充"
+    },
+    "grinGlass": {
+      "title": "渐变折射率透光物填充"
+    },
+    "blocker": {
+      "title": "遮光物表面"
+    },
+    "diffractionGrating": {
+      "title": "衍射光栅表面"
+    },
+    "detector": {
+      "title": "探测器表面"
+    },
+    "detectorText": {
+      "title": "探测器文字"
+    },
+    "irradMap": {
+      "title": "辐照度图填充"
+    },
+    "irradMapBorder": {
+      "title": "辐照度图边框"
+    },
+    "ruler": {
+      "title": "尺标刻度线"
+    },
+    "rulerText": {
+      "title": "尺标文字"
+    },
+    "decoration": {
+      "title": "装饰样式"
+    },
+    "handlePoint": {
+      "title": "默认控制杆"
+    },
+    "handleArrow": {
+      "title": "控制杆箭头"
+    },
+    "customSurface": {
+      "title": "自定义表面样式"
+    },
+    "import": {
+      "title": "导入",
+      "description": "从场景 JSON 文件导入主题。",
+      "error": "此文件中没有主题。"
+    }
+  },
+  "languageModal": {
+    "title": "语言",
+    "translatedFraction": "已翻译",
+    "helpTranslate": "协助我们翻译本程序"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "本网址过长，在部分平台上可能无法正常运作。建议改用「保存」并分享文件。",
+    "autoSyncUrlTooLarge": "本场景过大，无法与网址同步。 请自行储存场景。",
+    "identicalObjects": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。",
+    "brightnessInconsistent": "有至少两个光源的亮度以不一致的比例达到饱和。这可能会导致探测器的读数与色彩渲染错误。请提高光线密度或降低光源亮度。",
+    "blackBecomesTransparent": "使用「修正亮度」时，由于使用加法混色，非黑色背景会导致光线的黑色部分变透明。请将主题中光的颜色都设为 HSV 明度为 1 的值以避免此问题。",
+    "undefinedBehaviorOverlapping": "「{{involvedObj1}}」与「{{involvedObj2}}」的重叠部分不支持界面融合，导致未定义行为。请将物件稍微分開（或移动光源）以获得明确的行为。",
+    "undefinedBehaviorSingle": "物件「{{involvedObj}}」出现未定义行为。请稍微移动物件或光源以获得明确的行为。"
+  },
+  "generalErrors": {
+    "newerVersion": "场景版本与当前的模拟器版本不兼容。",
+    "unknownObjectType": "场景中有未知的物件类型：{{type}}",
+    "unknownSceneKey": "场景中有未知的键值：{{key}}",
+    "unknownPropertyValue": "属性\"{{property}}\"的值\"{{value}}\"未知。",
+    "unknownObjectKey": "类型为\"{{type}}\"的物件中有未知的键值：{{key}}",
+    "unknownModuleKey": "模块\"{{module}}\"中有未知的键值：{{key}}",
+    "unknownModule": "场景中有未知的模块：{{module}}"
+  },
+  "appErrors": {
+    "jsError": "JavaScript 错误：{{msg}}，位于 {{url}}",
+    "httpStatusError": "HTTP 请求错误：{{status}}",
+    "httpError": "HTTP 请求错误",
+    "httpTimeout": "HTTP 请求超时",
+    "invalidFile": "此文件既不是有效的 JSON 场景，也不是图片文件。"
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "AI 助手",
+      "description": "链接到 ChatGPT 上的 Ray Optics Coder。更多信息请参见工具->其他->导入模块->创建自定义模块。"
+    }
+  },
+  "statusBox": {
+    "rayCount": "光线片段数量",
+    "totalTruncation": "被截断的亮度",
+    "brightnessScale": "亮度尺度",
+    "timeElapsed": "花费时间",
+    "forceStopped": "已强制终止。",
+    "mouseCoordinates": "滑鼠座标"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "刷新场景"
+    },
+    "refreshSimulation": {
+      "title": "刷新模拟"
+    },
+    "autoRefresh": {
+      "title": "自动刷新"
+    }
+  },
+  "footer": {
+    "processing": "处理中……按此处以终止。",
+    "helpPopup": {
+      "constrainedDragging": {
+        "title": "限制拖曳行为",
+        "description": "拖曳物件时，按住 Shift 可限制于水平或垂直移动；按住 Ctrl 可复制物件。建立线型物件或拖曳其端点时，按住 Shift 可锁定角度或吸附至 0°、45°、90°；按住 Ctrl 可对于中心点旋转或缩放。"
+      },
+      "groupRotateScale": {
+        "title": "群组、旋转及缩放物件",
+        "description": "按住 Ctrl，点击一个或多个物件或控制点（如端点），并点击空白处可将它们群组并建立控制杆。拖曳控制杆（或按方向键）可平移群组；Shift+拖曳可限制于水平或垂直移动；Ctrl+拖曳可旋转群组；Ctrl+Shift+拖曳可缩放群组。可移动「+」设定旋转或缩放中心。点击控制杆并按 Ctrl+D 可复制群组；按 Delete 可解散群组。"
+      },
+      "editCoordinates": {
+        "title": "直接编辑座标",
+        "description": "对控制点（如端点）点两下或按右键，输入 (x,y) 座标，然后按 Enter。"
+      },
+      "keyboardShortcuts": {
+        "title": "键盘快速键",
+        "description": "当一物件在被选取的状态（被点击）时，按方向键可移动物件；按 +/- 可旋转物件；按 Ctrl+D 可复制物件；按 Delete 可删除物件。"
+      },
+      "runLocally": {
+        "title": "在本地运行",
+        "description": "要在您自己的计算机上运行本项目（与在线版本无关），请参阅[此指南](/run-locally)。"
+      },
+      "integrations": {
+        "title": "与编程語言整合",
+        "description": "您可以透过[整合工具](/integrations)来从编程语言（如 Python 或 Julia）呼叫本模拟器。注意此网页程程序内建的[模块](/modules/tutorial)功能本身也提供了一些编程功能。"
+      },
+      "contactUs": {
+        "title": "联络我们",
+        "description": "建议使用 GitHub 上的 [Discussions](/github/discussions) 或 [Issues](/github/issues) 功能（请使用英文）。若您对 GitHub 不熟，也可发送电子邮件至 [ray-optics@phydemo.app](/email)（可使用中文）。",
+        "contribute": "也欢迎直接进行贡献（见[贡献指南](/contributing)）。"
+      }
+    }
+  }
+}

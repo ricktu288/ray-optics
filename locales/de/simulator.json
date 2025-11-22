@@ -1,0 +1,246 @@
+{
+  "welcome": {
+    "title": "Willkommen bei der Strahlenoptik-Simulation",
+    "instruction": "Um eine optische Komponente hinzuzufügen, wählen Sie ein Werkzeug aus und klicken Sie auf das leere Feld.\nUm ein Beispiel zu laden, [wechseln Sie bitte zur Galerie](/gallery).",
+    "loading": "Setup wird aus der URL geladen... Bitte warten."
+  },
+  "common": {
+    "saveButton": "Speichern",
+    "cancelButton": "Abbrechen",
+    "defaultOption": "Standard",
+    "closeButton": "Schließen",
+    "reloadToTakeEffect": "Bitte Seite neu laden, um Änderungen zu sehen."
+  },
+  "file": {
+    "title": "Datei",
+    "undo": {
+      "title": "Rückgängig"
+    },
+    "redo": {
+      "title": "Wiederherstellen"
+    },
+    "reset": {
+      "title": "Zurücksetzen"
+    },
+    "save": {
+      "title": "Speichern"
+    },
+    "open": {
+      "title": "Öffnen",
+      "description": "Öffnet eine existierende Datei oder ein Hintergrundbild. Das Hintergundbild wird relativ zum Koordinatenursprung angezeigt. (Oder Datei hierher ziehen.)"
+    },
+    "export": {
+      "title": "Als PNG/SVG exportieren"
+    },
+    "copyLink": {
+      "title": "Teilbaren Link kopieren"
+    },
+    "viewGallery": {
+      "title": "Galerie ansehen",
+      "description": "Zur Galerie-Seite wechseln und ein Beispiel laden."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "rayDensity": {
+      "title": "Strahl-Anzahldichte"
+    },
+    "layoutAids": {
+      "showGrid": "Raster",
+      "snapToGrid": "Anrasten",
+      "lockObjs": "Objekte sperren"
+    },
+    "correctBrightness": {
+      "title": "Helligkeit korrigieren"
+    },
+    "gridSize": {
+      "title": "Rastergröße"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "colorMode": {
+      "title": "Farbmodus"
+    },
+    "language": {
+      "title": "Sprache"
+    },
+    "showJsonEditor": {
+      "title": "JSON-Editor anzeigen"
+    },
+    "showStatusBox": {
+      "title": "Statusbox anzeigen"
+    },
+    "showHelpPopups": {
+      "title": "Hilfe-Popups anzeigen"
+    }
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "Weitere Optionen…"
+    },
+    "applyToAll": {
+      "title": "Alle anwenden"
+    },
+    "duplicate": {
+      "title": "Duplizieren"
+    },
+    "delete": {
+      "title": "Löschen"
+    },
+    "unselect": {
+      "title": "Abwählen"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Helligkeit",
+      "wavelength": "Wellenlänge",
+      "emisAngle": "Emissionswinkel",
+      "random": "Zufällig",
+      "focalLength": "Brennweite",
+      "eqnInfo": {
+        "constants": "Unterstützte Konstanten",
+        "functions": "Unterstützte Funktionen"
+      }
+    },
+    "AngleSource": {
+      "symmetric": "symmetrisch"
+    },
+    "BaseFilter": {
+      "filter": "Filter",
+      "bandwidth": "Bandbreite",
+      "invert": "Invertieren"
+    },
+    "IdealMirror": {
+      "cartesianSign": "Kartesische Zeichenkonvention"
+    },
+    "BeamSplitter": {
+      "transRatio": "Transmissionsgrad"
+    },
+    "BaseGlass": {
+      "refIndex": "Brechungsindex",
+      "refIndexInfo": {
+        "relative": "relativ, wenn Glaskörper überlappen",
+        "effective": "Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes."
+      },
+      "cauchyCoeff": "Cauchy Koeffizient"
+    },
+    "SphericalLens": {
+      "invalidParameters": "Ungültige Linsenparameter"
+    },
+    "BaseGrinGlass": {
+      "refIndexFnInfo": {}
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "Einheiten - [Länge]^2."
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "Einheiten - [Länge]."
+      }
+    },
+    "Aperture": {
+      "diameter": "Durchmesser"
+    },
+    "DiffractionGrating": {
+      "mirrored": "Gespiegelt"
+    },
+    "Detector": {
+      "exportData": "Daten exportieren"
+    },
+    "TextLabel": {
+      "fontSize": "Schriftgröße",
+      "font": "Schriftart",
+      "fontStyle": "Stil",
+      "fontStyles": {
+        "normal": "Normal",
+        "bold": "Fett",
+        "italic": "Kursiv",
+        "boldItalic": "Fett kursiv"
+      },
+      "alignment": "Ausrichtung",
+      "alignments": {
+        "left": "Linksbündig",
+        "center": "Zentriert",
+        "right": "Rechtsbündig"
+      },
+      "angle": "Winkel"
+    },
+    "ModuleObj": {
+      "module": "Modul"
+    },
+    "Handle": {
+      "transformation": "Transformation",
+      "transformations": {
+        "rotation": "Drehung",
+        "scaling": "Skalierung"
+      },
+      "step": "Schritt"
+    },
+    "CropBox": {
+      "title": "Exportieren",
+      "width": "Breite",
+      "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
+    }
+  },
+  "saveModal": {
+    "title": "Speichern",
+    "fileName": "Name",
+    "rename": "Umbenennen"
+  },
+  "moduleModal": {
+    "title": "Module importieren"
+  },
+  "colorModeModal": {
+    "linear": {
+      "title": "Linearer Wert"
+    }
+  },
+  "languageModal": {
+    "title": "Sprache",
+    "translatedFraction": "übersetzt",
+    "helpTranslate": "Helfen beim Übersetzen"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "Die URL ist zu lang für einige Platformen. Es kann nötig sein die Datei zu \"Speichern\" und zu teilen."
+  },
+  "appErrors": {
+    "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "KI-Assistent"
+    }
+  },
+  "statusBox": {
+    "mouseCoordinates": "Mauskoordinaten"
+  },
+  "simulatorControls": {
+    "refreshScene": {
+      "title": "Szene auffrischen"
+    },
+    "refreshSimulation": {
+      "title": "Simulation auffrischen"
+    }
+  },
+  "footer": {
+    "processing": "In Bearbeitung… Hier klicken, um zu stoppen.",
+    "helpPopup": {
+      "groupRotateScale": {
+        "title": "Objekte gruppieren, drehen und skalieren"
+      },
+      "editCoordinates": {
+        "title": "Koordinaten direkt bearbeiten"
+      },
+      "runLocally": {
+        "title": "Lokal ausführen"
+      },
+      "integrations": {
+        "title": "Integrationen mit Programmiersprachen"
+      }
+    }
+  }
+}

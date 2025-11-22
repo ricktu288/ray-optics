@@ -1,0 +1,46 @@
+{
+  "name": "Exemplo de Módulo - Parâmetros",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [
+        "n=1:1:10:1",
+        "theta=0:0.01:5*pi:0"
+      ],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 400,
+          "text": "Este módulo tem dois parâmetros: n=`n` e teta=`theta`.\nPode selecionar e arastar os controlos deslizantes para ajustá-los."
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 550,
+          "text": "O tamanho deste texto oscila em função de teta.",
+          "fontSize": "`24+3*cos(theta)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {
+        "n": 1,
+        "theta": 1.23
+      }
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 92.44791666666666,
+    "y": -68.02083333333334
+  },
+  "scale": 0.5787037037037037
+}

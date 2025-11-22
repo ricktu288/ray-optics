@@ -1,0 +1,247 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奧古斯丁·菲涅耳的燈塔光學 - 線光學模擬</title>
+  <meta property="og:title" content="奧古斯丁·菲涅耳的燈塔光學 - 線光學模擬">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/tw/gallery/augustin-fresnels-lighthouse-optics">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/tw/gallery/augustin-fresnels-lighthouse-optics.jpg">
+  <meta property="og:description" content="線光學模擬">
+  <meta property="og:locale" content="zh-TW">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/tw/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/augustin-fresnels-lighthouse-optics">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .description {
+      display: inline-block;
+      text-align: left;
+      max-width: 80%;
+    }
+
+    .preview-image {
+      width: 100%;
+      padding-bottom: 10px;
+    }
+
+    ol, ul {
+      padding-left: 1.8em;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../tw/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> 線光學模擬
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../tw/" class="">首頁</a>
+        <a href="../../tw/gallery/" class="active">作品集</a>
+        <a href="../../tw/about" class="">關於</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>奧古斯丁·菲涅耳的燈塔光學</span></b></h1>
+      <p>
+        貢獻者：Richard Ruh
+      </p>
+      <div class="description">
+        <p><p>本模擬示範了奧古斯丁·菲涅耳燈塔的光學巧思：</p>
+<ol>
+<li>以<a href="../../tw/gallery/fresnel-lens">薄化的透鏡</a>取代較厚的放大鏡，來透過兩個表面的折射將中心部分的光線照向船隻。再透過減小各段的曲率半徑，可減少厚透鏡中存在的球面像差來達到進一步的改進（已包含在模擬中）。1800年代並未使用非球面透鏡。</li>
+<li>全內反射（TIR）稜鏡將光束邊緣的部分也導向船隻。這種原件為折反射元件：光線在進入和離開時發生折射，在背面發生全內反射。在1820年代，最好的反射器是銀製的，反射率只有約50%。骯髒的油燈光源導致需要每天清潔光學元件。理論上全內反射的效率為100%，而且玻璃更容易清潔。</li>
+</ol>
+<p>本光線追蹤驗證了白板演示中的稜鏡和透鏡，其用來模擬加州州立公園鴿點燈塔的結構。</p>
+<ul>
+<li>光源是位於開槽遮罩後面的H11頭燈LED。LED只照射約160度的光，而不是完整的180度半球。白熾燈泡可以提供完整的360度的光原，但亮度較低且溫度更高。</li>
+<li>光學元件是約0.5英寸（12毫米）厚的壓克力，底部塗有白色塗料。</li>
+<li>所有物體都以磁性方式安裝在白板上。照片中還有額外的鏡子、稜鏡和一個厚透鏡（也在模擬中）。</li>
+<li>實際的燈塔透鏡需要在頂部設置煙囪通風口，底部通常有旋轉結構。該結構並未嘗試收集完整的180度光原。</li>
+</ul></p>
+      </div>
+      <p>
+        <a href="../../simulator/?zh-TW#../tw/gallery/augustin-fresnels-lighthouse-optics" target="_blank" class="btn btn-success btn-lg">在模擬器中開啟</a>
+      </p>
+      <picture>
+        <source srcset="augustin-fresnels-lighthouse-optics.avif" type="image/avif">
+        <img src="augustin-fresnels-lighthouse-optics.jpg" alt="奧古斯丁·菲涅耳的燈塔光學" class="preview-image">
+      </picture>
+    </div>
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">語言：正體中文</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../gallery/augustin-fresnels-lighthouse-optics">English<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/gallery/augustin-fresnels-lighthouse-optics">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/gallery/augustin-fresnels-lighthouse-optics">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/gallery/augustin-fresnels-lighthouse-optics">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>
