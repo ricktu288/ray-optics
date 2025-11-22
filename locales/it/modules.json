@@ -3,7 +3,39 @@
     "imported": "Importato",
     "description": {
       "makeNewTools": "La funzione \"Module\" consente di realizzare nuovi strumenti combinando, specializzando o riparametrizzando oggetti creati da strumenti esistenti in questo simulatore.",
-      "appearAsTools": "I moduli importati appariranno come strumenti nella categoria \"Altro\". Si prega di selezionare e fare clic sullo spazio vuoto in base all'ordine della sequenza del punto di controllo (vedere \"specificazione\")."
+      "appearAsTools": "I moduli importati appariranno come strumenti nella categoria \"Altro\". Si prega di selezionare e fare clic sullo spazio vuoto in base all'ordine della sequenza del punto di controllo (vedere \"specificazione\").",
+      "embeddedInScene": "I moduli importati sono incorporati nei dati della scena, quindi non verranno automaticamente aggiornati quando gli autori dei moduli li aggiorneranno."
+    },
+    "import": "Importa",
+    "specification": {
+      "title": "Specificazione",
+      "controlPointSequence": "Sequenza di punti di controllo",
+      "parameters": "Parametri"
+    },
+    "customization": {
+      "title": "Personalizzazione",
+      "description": "I moduli possono essere realizzati o personalizzati direttamente all'interno dell'app web utilizzando l'editor JSON integrato. Vedi [il tutorial](/modules/tutorial). La personalizzazione dei moduli importati influenzerà solo la scena corrente."
+    },
+    "contribution": {
+      "title": "Contributo",
+      "description": "Il contributo alla lista qui sopra è benvenuto. Per contribuire al modulo, vedere [Moduli di contributo](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Lente di Fresnel",
+      "description": "Una lente di Fresnel fatta da un pezzo di vetro a metà cerchio. Versione modulare di [questo esempio Galleria](/gallery/fresnel-lens).",
+      "point1": "Il primo margine della lente",
+      "point2": "Il secondo margine della lente",
+      "Nslice": "Il numero di divisioni",
+      "refIndex": "L'indice di rifrazione della lente"
+    },
+    "ContSpectrum": {
+      "title": "Fonte di luce a spettro continuo",
+      "description": "Una sorgente luminosa con uno spettro continuo uniforme discretizzato con un dato scarto costante. Funziona solo quando \"Simula Colori\" è acceso.",
+      "point1": "L'origine dei raggi",
+      "point2": "Determina la direzione dei raggi",
+      "min": "La lunghezza d'onda minima"
     }
   }
 }
