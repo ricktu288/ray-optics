@@ -272,6 +272,10 @@
       "inthepigeonpointligh": "In the Pigeon Point Lighthouse whiteboard optics demo,\nFrensel's magic enables ALL of the light into a hemisphere to be sent to a ship",
       "howitworks": "How it works"
     },
+    "opticsOfHumanEye": {
+      "title": "Optics of human eye",
+      "description": "This is a simulation about the workings of the eye. You can change the pupil size and the focal length of the lens."
+    },
     "zoomLens": {
       "title": "Zoom Lens",
       "description": "This simulation demonstrates a zoom lens, where you can change the zoom by dragging the concave lens in the middle.",

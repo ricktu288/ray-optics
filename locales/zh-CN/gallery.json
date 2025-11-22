@@ -271,6 +271,10 @@
       "inthepigeonpointligh": "在鸽点灯塔白板光学演示中，\n菲涅耳的巧思使半球中的所有光线都能发送到船只",
       "howitworks": "运作原理"
     },
+    "opticsOfHumanEye": {
+      "title": "人眼的光学",
+      "description": "这是一个关于眼睛如何运作的模拟。您可以调整瞳孔大小和晶状体的焦距。"
+    },
     "zoomLens": {
       "title": "变焦镜头",
       "description": "这个模拟展示了一个变焦镜头（Zoom Lens），您可以通过拖动中间的凹透镜来变焦。",
