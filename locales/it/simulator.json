@@ -17,11 +17,38 @@
     "title": "File",
     "undo": {
       "title": "Annulla"
+    },
+    "redo": {
+      "title": "Ripeti"
+    },
+    "reset": {
+      "title": "Resetta"
+    },
+    "save": {
+      "title": "Salva"
+    },
+    "open": {
+      "title": "Apri",
+      "description": "Apri un file esistente o un'immagine di sfondo. L'immagine di sfondo verrà mostrata dall'origine delle coordinate. (O trascina e rilascia il file)"
+    },
+    "export": {
+      "title": "Esporta come PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Copia link condivisibile",
+      "description": "Copia e vai all'URL diretto per la scena corrente, che può essere utilizzato per la condivisione (possibilmente tramite un abbreviatore di URL). Vedi anche Impostazioni -> Sincronizza URL automaticamente."
+    },
+    "viewGallery": {
+      "title": "Visualizza galleria",
+      "description": "Vai alla pagina web della Galleria per caricare un esempio."
     }
   },
   "sceneObjs": {
     "TextLabel": {
       "enterFontName": "Inserire il nome del font…"
     }
+  },
+  "settings": {
+    "title": "Impostazioni"
   }
 }
