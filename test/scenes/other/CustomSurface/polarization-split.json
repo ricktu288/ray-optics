@@ -1,0 +1,67 @@
+{
+  "version": 5,
+  "name": "polarization-split",
+  "objs": [
+    {
+      "type": "CustomSurface",
+      "p1": {
+        "x": 640,
+        "y": 227
+      },
+      "p2": {
+        "x": 655,
+        "y": 317
+      },
+      "outRays": [
+        {
+          "eqnTheta": "\\theta_0+0.2p",
+          "eqnP": "\\left(0.7+0.3p\\right)\\cdot P_0"
+        }
+      ]
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 599,
+        "y": 270
+      },
+      "p2": {
+        "x": 604,
+        "y": 292
+      }
+    },
+    {
+      "type": "CustomSurface",
+      "p1": {
+        "x": 649,
+        "y": 225
+      },
+      "p2": {
+        "x": 664,
+        "y": 315
+      },
+      "outRays": [
+        {
+          "eqnTheta": "\\theta_0+0.2p",
+          "eqnP": "\\left(0.7+0.3p\\right)\\cdot P_0"
+        }
+      ]
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 693,
+        "y": 207
+      },
+      "p2": {
+        "x": 720,
+        "y": 272
+      },
+      "irradMap": true,
+      "binSize": 10
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.4601972854634831
+}

@@ -1,0 +1,72 @@
+{
+  "version": 5,
+  "name": "opposite_overlap",
+  "objs": [
+    {
+      "type": "CustomArcSurface",
+      "p1": {
+        "x": 740,
+        "y": 300
+      },
+      "p2": {
+        "x": 620,
+        "y": 300
+      },
+      "p3": {
+        "x": 680,
+        "y": 240
+      },
+      "outRays": []
+    },
+    {
+      "type": "CustomArcSurface",
+      "p1": {
+        "x": 620,
+        "y": 300
+      },
+      "p2": {
+        "x": 740,
+        "y": 300
+      },
+      "p3": {
+        "x": 680,
+        "y": 240
+      },
+      "outRays": [
+        {
+          "eqnTheta": "\\pi-\\theta_0",
+          "eqnP": "P_0"
+        }
+      ]
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 720,
+        "y": 340
+      },
+      "p2": {
+        "x": 760,
+        "y": 240
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 700,
+        "y": 340
+      },
+      "p2": {
+        "x": 760,
+        "y": 220
+      },
+      "irradMap": true,
+      "binSize": 10
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.9974182454814736,
+  "showGrid": true,
+  "snapToGrid": true
+}

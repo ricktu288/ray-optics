@@ -1,0 +1,57 @@
+{
+  "version": 5,
+  "name": "absorption",
+  "objs": [
+    {
+      "type": "CircleGrinGlass",
+      "p1": {
+        "x": 780,
+        "y": 360
+      },
+      "p2": {
+        "x": 780,
+        "y": 440
+      },
+      "absorptionFn": "\\operatorname{abs}\\left(0.001y\\right)",
+      "origin": {
+        "x": 780,
+        "y": 360
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 780,
+        "y": 300
+      },
+      "p2": {
+        "x": 780,
+        "y": 420
+      },
+      "irradMap": true,
+      "binSize": 5
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 720,
+        "y": 320
+      },
+      "p2": {
+        "x": 720,
+        "y": 400
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 1.4496178935284207,
+  "showGrid": true,
+  "snapToGrid": true,
+  "lengthScale": 0.5,
+  "origin": {
+    "x": -1735.6974593090913,
+    "y": -817.7821395856222
+  },
+  "scale": 3.198063117239711
+}

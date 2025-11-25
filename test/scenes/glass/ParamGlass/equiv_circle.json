@@ -1,0 +1,98 @@
+{
+  "version": 5,
+  "name": "equiv_circle",
+  "objs": [
+    {
+      "type": "ParamGlass",
+      "origin": {
+        "x": 740,
+        "y": 360
+      }
+    },
+    {
+      "type": "CircleGlass",
+      "p1": {
+        "x": 740,
+        "y": 480
+      },
+      "p2": {
+        "x": 790,
+        "y": 490
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 670,
+        "y": 420
+      },
+      "p2": {
+        "x": 810,
+        "y": 420
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 670,
+        "y": 300
+      },
+      "p2": {
+        "x": 810,
+        "y": 300
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 670,
+        "y": 540
+      },
+      "p2": {
+        "x": 810,
+        "y": 540
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 670,
+        "y": 420
+      },
+      "p2": {
+        "x": 670,
+        "y": 540
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 780,
+        "y": 300
+      },
+      "p2": {
+        "x": 780,
+        "y": 540
+      },
+      "irradMap": true,
+      "binSize": 10
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 670,
+        "y": 300
+      },
+      "p2": {
+        "x": 670,
+        "y": 420
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.13498588075760037,
+  "showGrid": true,
+  "snapToGrid": true,
+  "gridSize": 10
+}

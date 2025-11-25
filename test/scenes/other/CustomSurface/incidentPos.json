@@ -1,0 +1,50 @@
+{
+  "version": 5,
+  "name": "incidentPos",
+  "objs": [
+    {
+      "type": "CustomSurface",
+      "p1": {
+        "x": 693,
+        "y": 225
+      },
+      "p2": {
+        "x": 752,
+        "y": 404
+      },
+      "outRays": [
+        {
+          "eqnTheta": "1",
+          "eqnP": "\\frac{t+1}{2}"
+        }
+      ]
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 570,
+        "y": 282
+      },
+      "p2": {
+        "x": 627,
+        "y": 437
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 683,
+        "y": 205
+      },
+      "p2": {
+        "x": 809,
+        "y": 207
+      },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.1105170918075648
+}
