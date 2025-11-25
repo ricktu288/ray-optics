@@ -1,10 +1,10 @@
 # Ray Optics Simulation - Integration Tools
 
-Version: {{VERSION}}
+Version: `{{VERSION}}`
 
 This package contains tools for integrating the Ray Optics Simulation engine with other programming languages.
 
-## Download
+## Download/Update
 
 - [Latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) (compatible with the online app)
 - [Latest release](https://github.com/ricktu288/ray-optics/releases/latest) (slightly older, no beta features, citable with a DOI)

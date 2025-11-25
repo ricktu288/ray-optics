@@ -45,10 +45,10 @@ jobs:
         run: npm install
 
       - name: Build website
-        run: npm run build
+        run: npm run build:release
 
       - name: Build integrations
-        run: npm run build-integrations
+        run: npm run build-integrations:release
 
       - name: Zip website build
         run: |
