@@ -269,7 +269,9 @@
       },
       "smallCaps": "Małe litery",
       "angle": "Kąt",
-      "fonts": "Serif: Szeryfowy\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans"
+      "fonts": "Serif: Szeryfowy\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
+      "fontNote": "Jeśli wybrana czcionka nie jest zainstalowana w systemie, zostanie użyta czcionka zastępcza.",
+      "enterFontName": "Wprowadź nazwę czcionki…"
     },
     "LineArrow": {
       "arrow": "Strzałka do przodu",
