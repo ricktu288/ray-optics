@@ -16,7 +16,7 @@
 
 /**
  * @module app
- * @description The main app "service". Many parts of the app are not fully refactored to a proper Vue approach yet, so some mixed-paradigm code exists in this file.
+ * @description The main app service. It is mixed-paradigm code that combines Vue and vanilla JavaScript due to historical reasons.
  */
 
 import * as bootstrap from 'bootstrap';

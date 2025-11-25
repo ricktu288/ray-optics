@@ -31,7 +31,6 @@ import * as math from 'mathjs';
 
 /**
  * The class for a module object.
- * This feature is experimental and may be changed in the future without backward compatibility.
  * Currently, there is no UI for creating a module object. You can create a module object by directly editing the JSON data of the scene.
  * @class
  * @memberof sceneObjs

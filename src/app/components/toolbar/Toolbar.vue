@@ -55,7 +55,7 @@
 <script>
 /**
  * @module Toolbar
- * @description The Vue component for the toolbar (which contains both the desktop and mobile parts). Note that many UI code in this component has not been refactored using a proper Vue approach.
+ * @description The Vue component for the toolbar (which contains both the desktop and mobile parts). It is mixed-paradigm code that combines Vue and vanilla JavaScript due to historical reasons.
  */
 import FileBar from './FileBar.vue';
 import ToolsBar from './ToolsBar.vue';
