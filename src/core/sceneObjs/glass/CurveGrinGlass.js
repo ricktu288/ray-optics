@@ -491,7 +491,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     this.error = null;
     try {
       var incidentData = this.getIncidentData(ray);
-      //console.log("Checking incident...");
       if ((this.isInsideGlass(ray.p1) || this.isOutsideGlass(ray.p1)) && this.isOnBoundary(incidentPoint)) {// && this.isOnBoundary(incidentData.s_point)) {
         //const count = this.countIntersections(ray.p1);
         //if (!this.isOnBoundary(ray.p1) && this.isOnBoundary(incidentPoint)) // || this.isInsideGlass(geometry.point(incidentPoint.x, incidentPoint.y))))) // if the ray is hitting the glass from the outside, or from the inside (meaning that the point incidentPoint is on the boundary of the glass, and the point ray.p1 is inside/outside the glass)
@@ -521,7 +520,6 @@ class CurveGrinGlass extends BaseGrinGlass {
         }
         return this.refract(ray, rayIndex, incidentData.s_point, incidentData.normal, n1, surfaceMergingObjs, r_bodyMerging_obj);
       } else {//if (this.countIntersections(ray.p1) % 2 === 1) {
-        console.log("test");
         if (ray.bodyMergingObj === undefined)
           ray.bodyMergingObj = this.initRefIndex(ray); // Initialize the bodyMerging object of the ray
         const next_point = this.step(ray.p1, incidentPoint, ray);
@@ -531,8 +529,6 @@ class CurveGrinGlass extends BaseGrinGlass {
     } catch (e) {
       this.error = e.toString();
       // Incident point is null
-      console.log("Incident point is null!");
-      console.log(this.error);
       return {
         isAbsorbed: true,
       };
