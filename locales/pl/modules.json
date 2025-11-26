@@ -91,6 +91,30 @@
       "refIndex": "Współczynnik załamania światła sześcianu (lub współczynnik Cauchy'ego \\(A\\), gdy włączona jest opcja \"Symuluj kolory\")",
       "cauchyB": "Współczynnik Cauchy'ego \\(B\\) sześcianu w mikrometrach kwadratowych",
       "splitRatio": "Stosunek transmisji diagonalnego rozdzielacza wiązki"
+    },
+    "CoatedLens": {
+      "title": "Powlekana soczewka sferyczna",
+      "description": "Soczewka sferyczna z jednowarstwowymi powłokami po obu stronach. Moduł `ArcCoating` wbudowany w ten moduł reprezentuje pojedynczą cienką warstwę, która po nałożeniu na powierzchnię szkła staje się jego powłoką.",
+      "point1": "Środek soczewki",
+      "h": "Wysokość soczewki",
+      "d": "Grubość soczewki",
+      "R1": "Promień krzywizny przedniej powierzchni",
+      "R2": "Promień krzywizny powierzchni tylnej",
+      "A": "Współczynnik Cauchy'ego \\(A\\) szkła",
+      "B": "Współczynnik Cauchy'ego \\(B\\) szkła w mikrometrach kwadratowych",
+      "dc": "Grubość warstwy powłoki w nanometrach",
+      "Ac": "Współczynnik Cauchy'ego \\(A\\) materiału powłoki",
+      "Bc": "Współczynnik Cauchy'ego \\(B\\) materiału powłoki w mikrometrach kwadratowych"
+    },
+    "EllipticalMirror": {
+      "title": "Zwierciadło eliptyczne",
+      "description": "Zwierciadło eliptyczne określone przez dwa ogniska i długość półosi wielkiej.",
+      "point1": "Pierwsze ognisko",
+      "point2": "Drugie ognisko",
+      "a": "Długość półosi wielkiej",
+      "tMin": "Minimalny kąt krzywizny",
+      "tMax": "Maksymalny kąt krzywizny",
+      "tStep": "Krok kąta krzywej"
     }
   },
   "moduleTutorial": {
@@ -108,7 +132,8 @@
       "enableJsonEditor": "Możesz włączyć wbudowany edytor JSON, klikając rozwijaną listę \"ustawienia\" w prawym górnym rogu aplikacji, a następnie zaznaczając \"Pokaż edytor JSON\". Edytor kodu powinien pojawić się po lewej stronie aplikacji, z kodem JSON bieżącej sceny. Upewnij się, że masz wystarczająco duży ekran, ponieważ ta funkcja nie działa dobrze na urządzeniach mobilnych.",
       "updateAccordingly": "Podczas edycji sceny za pomocą zwykłego wizualnego edytora scen, kod w edytorze JSON będzie odpowiednio aktualizowany, z podświetloną zmienioną częścią. I odwrotnie, bezpośrednia edycja kodu w edytorze JSON spowoduje odpowiednią aktualizację sceny. Jeśli nie jesteś zaznajomiony z JSON lub jakimkolwiek innym formatem tekstowym danych, możesz chcieć pobawić się nim przez chwilę.",
       "objsArray": "W szczególności, gdy dodajesz obiekt do sceny, jest on dodawany do tablicy `objs`. A jeśli zmienisz niektóre z jego właściwości na wartości inne niż domyślne, pojawią się one jako pary klucz-wartość w tym obiekcie.",
-      "inIframesBelow": "WAŻNE: Jeśli na tej stronie samouczka nie widzisz edytora kodu JSON w poniższych ramkach iframe, włącz go i odśwież tę stronę, ponieważ musisz widzieć kod, aby zrozumieć, jak to działa."
+      "inIframesBelow": "WAŻNE: Jeśli na tej stronie samouczka nie widzisz edytora kodu JSON w poniższych ramkach iframe, włącz go i odśwież tę stronę, ponieważ musisz widzieć kod, aby zrozumieć, jak to działa.",
+      "disableAutoUpdate": "Jeśli nie chcesz, aby scena była automatycznie aktualizowana podczas edycji pliku JSON, możesz włączyć Ustawienia -> Pokaż kontrolki symulatora i wyłączyć opcję \"Automatyczne odświeżanie\". Po zakończeniu edycji kliknij \"Odśwież symulację\" (lub \"Odśwież scenę\", jeśli nie chcesz, aby symulacja była uruchamiana ponownie od razu)."
     },
     "basics": {
       "title": "Podstawy modułu",
@@ -141,7 +166,10 @@
       "preventInfiniteLoop": "Aby zapobiec przypadkowemu utworzeniu nieskończonej pętli, całkowita liczba iteracji każdej pętli `\"for\"` jest ograniczona przez właściwość `maxLoopLength` definicji modułu, której wartość domyślna wynosi 1000. W razie potrzeby można ustawić tę właściwość na większą wartość."
     },
     "objsWithEqn": {
-      "title": "Obiekty z wbudowanymi niestandardowymi równaniami"
+      "title": "Obiekty z wbudowanymi niestandardowymi równaniami",
+      "syntax": "W przypadku obiektów, które mają już niestandardowe wprowadzanie równań (takich jak Zwierciadło -> Równanie niestandardowe), właściwość równania w JSON jest ciągiem znaków reprezentującym równanie LaTeX. Aby przedstawić takie równanie w math.js i odwołać się do parametrów modułu itp., należy otoczyć wyrażenie math.js parą podwójnych znaków backtick. Taki blok rozszerza się do równania LaTeX z wolnymi zmiennymi, takimi jak \\(x\\) dla `x` i \\(\\theta_0\\) dla `theta_0`, co różni się od bloku z pojedynczym znakiem backtick, który nie oczekuje żadnych wolnych zmiennych i rozszerza się do liczby. Oto przykład niestandardowego równania zwierciadła zawierającego niestandardowy parametr `phi`",
+      "supportedFunctions": "Chociaż w zmiennych i blokach z pojedynczym znakiem backtick można używać dowolnej składni i operacji math.js, w blokach z podwójnym znakiem backtick dozwolone są tylko odpowiedniki math.js stałych, operatorów i funkcji obsługiwanych przez wejście równania obiektu docelowego (patrz pole informacyjne obiektu docelowego). Można używać funkcji niestandardowych zdefiniowanych w tablicy `vars`, ale definicje funkcji muszą ostatecznie składać się z dozwolonych operacji.",
+      "implicitMultiplication": "W tym kontekście niedozwolone jest również niejawne mnożenie (np. `2x`) ze względu na źle zdefiniowaną kolejność operatorów w math.js. Zawsze należy używać operatora `*` jawnie (np. `2*x`)."
     },
     "objsWithShapeParam": {
       "title": "Obiekty z wbudowaną parametryzacją kształtu",

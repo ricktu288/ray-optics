@@ -2,9 +2,39 @@
   "galleryPage": {
     "categories": {
       "refraction": "Rifrazione",
-      "lens": "Lente"
+      "lens": "Lente",
+      "title": "Categorie",
+      "reflection": "Riflesso",
+      "combinationOfLenses": "Combinazione di Lenti",
+      "grinOptics": "Ottica Indice di Gradiente",
+      "miscellaneous": "Varie"
     },
     "title": "La Galleria dell'Ottica a Raggi",
-    "description": "Questa è una raccolta di simulazioni create utilizzando [la web app](/simulatore), che possono essere utilizzate come demo interattive di ottica. Siete invitati a contribuire nuovi articoli. Per ulteriori informazioni, consultare [la guida al contributo](/contributing/gallery). Per segnalare un errore, si prega di [aprire una segnalazione su GitHub](/github/issues) o scrivere una e-mail a [ray-optics@phydemo.app](/email)."
+    "description": "Questa è una raccolta di simulazioni create utilizzando [la web app](/simulatore), che possono essere utilizzate come demo interattive di ottica. Siete invitati a contribuire nuovi articoli. Per ulteriori informazioni, consultare [la guida al contributo](/contributing/gallery). Per segnalare un errore, si prega di [aprire una segnalazione su GitHub](/github/issues) o scrivere una e-mail a [ray-optics@phydemo.app](/email).",
+    "openInSimulator": "Apri nel Simulatore"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Attenzione: La sequenza dell'apparizione della luce non rappresenta la velocità effettiva della luce - solo l'immagine finale è significativa."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Immagini da due specchi",
+      "description": "Questa simulazione mostra le immagini formate da due specchi. Il verde \"L\" è l'oggetto. Se l'angolo tra i due specchi è \\(\\frac{360^\\circ}{n}\\), allora \\(n-1\\) immagini virtuali (l'arancione L's) sarà formato. È possibile trascinare il punto finale dello specchio per cambiare l'angolo tra di loro."
+    },
+    "parabolicMirror": {
+      "title": "Specchio Parabolico",
+      "description": "Questa simulazione dimostra la proprietà di messa a fuoco dello specchio parabolico."
+    },
+    "hyperbolicMirror": {
+      "title": "Specchio iperbolico",
+      "description": "Questa è una dimostrazione della proprietà di riflessione dello specchio iperbolico: i raggi luminosi che viaggiano da un fuoco verso lo specchio iperbolico, rifletteranno lontano dall'altro fuoco.\n\nI due fuochi delle iperboli sono punti aplanatici (vedere [Punti aplanatici](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "I raggi arancioni sono raggi immaginari estesi dai raggi gialli riflessi.\nQuesti raggi immaginari convergono all'altro punto focale.",
+      "pointlightsourceaton": "Punta una sorgente luminosa ad un punto focale"
+    },
+    "retroreflectors": {
+      "title": "Retroreflettori",
+      "description": "Questa è una simulazione di due tipi di retroreflettori:\n\n1. Retroreflettore d'angolo.\n2. Retroreflettore a occhio di gatto.",
+      "dragtorotatethebeam": "Trascina per\nruotare il fascio"
+    }
   }
 }

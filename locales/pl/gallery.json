@@ -520,6 +520,22 @@
     },
     "moduleExampleVariables": {
       "title": "Przykład modułu – zmienne"
+    },
+    "opticsOfHumanEye": {
+      "title": "Optyka ludzkiego oka",
+      "description": "Jest to symulacja działania oka. Można zmieniać wielkość źrenicy i ogniskową soczewki."
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Optyka latarni morskiej Augustina Fresnela",
+      "description": "Oto demonstracja magii optyki latarni morskiej Augustina Fresnela.:\n\n1. [Cienka soczewka](/gallery/fresnel-lens) zastępuje grubszą soczewkę powiększającą, aby przesłać centralny snop światła do statku poprzez załamanie na dwóch powierzchniach. Dodatkowym udoskonaleniem jest zmniejszenie promienia krzywizny segmentu w celu zmniejszenia aberracji sferycznej występującej w soczewkach o pełnej grubości. W XIX wieku nie stosowano soczewek asferycznych.\n2. Pryzmaty całkowitego wewnętrznego odbicia (TIR) przekierowują wiązki o dużym kącie do statków. Są to elementy katadioptryczne z załamaniem na wejściu i wyjściu oraz TIR z tyłu. W latach dwudziestych XIX wieku najlepsze reflektory były srebrne i miały tylko około 50% współczynnika odbicia. Brudne źródło światła lampy naftowej wymagało codziennego czyszczenia optyki. Odbicie TIR jest teoretycznie w 100% wydajne, a szkło jest łatwiejsze do czyszczenia.\n\nTen raytrace weryfikuje zestaw pryzmatów i soczewek zbudowanych na potrzeby demonstracji optyki Fresnela na tablicy w stacji latarni Pigeon Point w California State Parks.\n\n- Źródłem światła jest reflektor LED H11 umieszczony za maską szczelinową. LED świeci tylko w zakresie około 160 stopni, a nie w pełnej półkuli 180 stopni. Żarówka mogłaby zapewnić pełne 360 stopni światła, ale nie byłoby ono tak jasne i byłoby znacznie cieplejsze.\n- Optyka to akryl o grubości około 0,5 cala (12 mm) z pomalowanym na biało spodem.\n- Wszystkie obiekty można przymocować magnetycznie do tablicy. Dodatkowe zwierciadła, pryzmaty i soczewka o pełnej grubości znajdują się na zdjęciu i zostały zademonstrowane w prezentacji.\n- Rzeczywiste soczewki latarni morskiej wymagały komina wentylacyjnego u góry i często obrotowej konstrukcji u dołu. Nie próbowały one zebrać pełnego zakresu światła 180 stopni.",
+      "augustinfresnelsmagi": "Magiczna optyka latarni morskiej Augustina Fresnela ",
+      "t1athinnedlensmakesab": "#1 Pocieniona soczewka daje jasną wiązkę dzięki mniejszej ilości szkła",
+      "comparetheperformanc": "Porównaj wydajność górnej połowy soczewki Bullseye o zmniejszonej grubości\nz dolną połową soczewki o pełnej grubości.\n\nW latach dwudziestych XIX wieku słaba jakość szkła oznaczała,\nże soczewka o pełnej grubości wysyłała na statek mniej światła niż bez soczewki!\nCienka soczewka była znacznie lepsza niż brak soczewki.",
+      "amagnifyinglenscanon": "Soczewka powiększająca może przesłać do statku\ntylko około 1/6, czyli 15% światła.",
+      "mirrorsorreflectorsc": "Lustra lub odbłyśniki mogą przekierowywać wiązki o dużym kącie, ale odbłyśniki z lat dwudziestych XIX wieku marnowały połowę światła.",
+      "t2totalinternalreflec": "#2 Pryzmaty z całkowitym wewnętrznym odbiciem (TIR) umożliwiły wysłanie całego wysokokątowego światła na statek",
+      "inthepigeonpointligh": "W demonstracji optyki na tablicy w latarni morskiej Pigeon Point\nmagia Fresnela sprawia, że CAŁE światło w półkuli jest wysyłane do statku",
+      "howitworks": "Jak to działa"
     }
   }
 }
