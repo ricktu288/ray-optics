@@ -1,10 +1,10 @@
 # Ray Optics Simulation - Integration Tools
 
-Version: {{VERSION}}
+Version: `{{VERSION}}`
 
 This package contains tools for integrating the Ray Optics Simulation engine with other programming languages.
 
-## Download
+## Download/Update
 
 - [Latest deployment](https://github.com/ricktu288/ray-optics/archive/refs/heads/dist-integrations.zip) (compatible with the online app)
 - [Latest release](https://github.com/ricktu288/ray-optics/releases/latest) (slightly older, no beta features, citable with a DOI)
@@ -69,7 +69,7 @@ The JSON data returned by the script will also include some statistics about the
 - `error`: Any errors that occurred during the simulation
 - `warning`: Any warnings that occurred during the simulation
 
-## Using AI Assistant (beta)
+## Using AI Assistant
 
 The [Ray Optics Coder](https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder) on ChatGPT can help you write integration scripts. Note that it assumes the latest version of the integration tools. If you prefer another LLM service, you may provide the knowledge files (which are located at the `ai-tools` folder of the source code) directly to the LLM to teach it how to write integration scripts.
 

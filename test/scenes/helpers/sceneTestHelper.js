@@ -170,6 +170,7 @@ export async function runScene(jsonPath, writeOutput = false) {
   let simulator;
   let canvasLight, canvasBelowLight, canvasAboveLight, canvasGrid, canvasVirtual, canvasFinal;
   let ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, ctxFinal;
+  let originalScale, originalOrigin, originalBackgroundColor;
 
   if (cropBox) {
     // Only create canvases if there's a cropbox
@@ -208,8 +209,18 @@ export async function runScene(jsonPath, writeOutput = false) {
     );
 
     // Set cropbox settings
+    originalScale = scene.scale;
+    originalOrigin = { ...scene.origin };
+    originalBackgroundColor = { ...scene.theme.background.color };
+    
     scene.scale = cropBox.width / (cropBox.p4.x - cropBox.p1.x);
     scene.origin = { x: -cropBox.p1.x * scene.scale, y: -cropBox.p1.y * scene.scale };
+    
+    if (cropBox.transparent && scene.theme.background.color.r == 0 && scene.theme.background.color.g == 0 && scene.theme.background.color.b == 0) {
+      // Use a non-black background color so that some rendering (e.g. glass) will not assume the background is black.
+      scene.theme.background.color = { r: 0.01, g: 0.01, b: 0.01 };
+    }
+    
     simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
   } else {
     // Create simulator without canvases
@@ -248,13 +259,20 @@ export async function runScene(jsonPath, writeOutput = false) {
   // Generate image output if cropbox exists
   if (cropBox) {
     // Draw layers to final canvas
-    ctxFinal.fillStyle = 'black';
-    ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+    if (!cropBox.transparent) {
+      ctxFinal.fillStyle = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
+      ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+    }
 
     ctxFinal.drawImage(canvasBelowLight, 0, 0);
     ctxFinal.drawImage(canvasGrid, 0, 0);
     ctxFinal.drawImage(canvasLight, 0, 0);
     ctxFinal.drawImage(canvasAboveLight, 0, 0);
+    
+    // Restore original scene settings
+    scene.scale = originalScale;
+    scene.origin = originalOrigin;
+    scene.theme.background.color = originalBackgroundColor;
     
     outputs.imageBuffer = canvasFinal.toBuffer('image/png');
     if (writeOutput) {

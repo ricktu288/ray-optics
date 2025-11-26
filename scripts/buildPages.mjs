@@ -22,6 +22,8 @@ import { marked } from 'marked';
 import i18next from 'i18next';
 import simpleGit from 'simple-git';
 
+// Check for --release flag
+const isRelease = process.argv.includes('--release');
 
 // Convert import.meta.url to a file path and determine the directory
 const __filename = fileURLToPath(import.meta.url);
@@ -502,11 +504,18 @@ for (const lang of homeLangs) {
       isGallery: false,
       isAbout: true,
       version: (() => {
-        const packageVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version.replace('-dev', '');
-        const lastCommit = logEntries.split('\n').slice(-1)[0].split('|');
-        const commitDate = new Date(lastCommit[3]).toISOString().slice(0,10).replace(/-/g,'');
-        const commitHash = lastCommit[0].slice(0,7);
-        return `${packageVersion}+${commitDate}.${commitHash}`;
+        const fullPackageVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version;
+        if (isRelease) {
+          // For release builds, use the full major.minor.patch version
+          return fullPackageVersion;
+        } else {
+          // Extract major.minor, ignoring patch version
+          const packageVersion = fullPackageVersion.split('.').slice(0, 2).join('.');
+          const lastCommit = logEntries.split('\n').slice(-1)[0].split('|');
+          const commitDate = new Date(lastCommit[3]).toISOString().slice(0,10).replace(/-/g,'');
+          const commitHash = lastCommit[0].slice(0,7);
+          return `${packageVersion}+${commitDate}.${commitHash}`;
+        }
       })(),
       mainAuthors: sortedMainAuthors.map(c => {
         const name = (c.name === 'Yi-Ting Tu' && lang.startsWith('zh') ? '凃懿庭 Yi-Ting Tu' : c.name);

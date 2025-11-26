@@ -1,0 +1,386 @@
+{
+  "version": 5,
+  "name": "observer_real",
+  "objs": [
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 741.6461538461537,
+        "y": 191.96923076923073
+      },
+      "p4": {
+        "x": 798.8769230769229,
+        "y": 229.9076923076923
+      },
+      "width": 200
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 593.1538461538462,
+        "y": 193.3846153846154
+      },
+      "p2": {
+        "x": 597.4615384615385,
+        "y": 245.69230769230768
+      },
+      "brightness": 0.15
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 652.2210526315788,
+        "y": 176.40809716599188
+      },
+      "p2": {
+        "x": 656.2210526315788,
+        "y": 265.20809716599194
+      }
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "mode": "observer",
+  "imageModeDensity": 0.289037165150843,
+  "observer": {
+    "c": {
+      "x": 783.3012145748988,
+      "y": 208.43724696356273
+    },
+    "r": 10
+  },
+  "lengthScale": 2,
+  "origin": {
+    "x": -976.5526315789471,
+    "y": -269.02024291497975
+  },
+  "scale": 2.5,
+  "theme": {
+    "background": {
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "ray": {
+      "color": {
+        "g": 0,
+        "b": 0
+      },
+      "dash": [
+        5,
+        1
+      ]
+    },
+    "colorRay": {
+      "dash": [
+        4,
+        1
+      ]
+    },
+    "extendedRay": {
+      "color": {
+        "r": 0,
+        "g": 1
+      },
+      "dash": [
+        5,
+        2
+      ]
+    },
+    "colorExtendedRay": {
+      "dash": [
+        4,
+        2
+      ]
+    },
+    "forwardExtendedRay": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      },
+      "dash": [
+        5,
+        3
+      ]
+    },
+    "colorForwardExtendedRay": {
+      "dash": [
+        4,
+        3
+      ]
+    },
+    "observedRay": {
+      "color": {
+        "r": 1
+      },
+      "dash": [
+        5,
+        4
+      ]
+    },
+    "colorObservedRay": {
+      "dash": [
+        4,
+        4
+      ]
+    },
+    "realImage": {
+      "color": {
+        "r": 0.5,
+        "g": 0,
+        "b": 0
+      },
+      "size": 8
+    },
+    "colorRealImage": {
+      "size": 7
+    },
+    "virtualImage": {
+      "color": {
+        "r": 0
+      },
+      "size": 6
+    },
+    "colorVirtualImage": {
+      "size": 5
+    },
+    "virtualObject": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0.5
+      },
+      "size": 4
+    },
+    "colorVirtualObject": {
+      "size": 3
+    },
+    "grid": {
+      "color": {
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      },
+      "dash": [
+        4,
+        4
+      ],
+      "width": 2
+    },
+    "observer": {
+      "color": {
+        "r": 1,
+        "b": 0
+      }
+    },
+    "sourcePoint": {
+      "color": {
+        "r": 0,
+        "b": 1,
+        "a": 0.5
+      },
+      "size": 10
+    },
+    "directionPoint": {
+      "color": {
+        "r": 0,
+        "g": 1,
+        "a": 0.25
+      },
+      "size": 8
+    },
+    "centerPoint": {
+      "color": {
+        "b": 1,
+        "a": 0.75
+      },
+      "size": 6
+    },
+    "lightSource": {
+      "color": {
+        "b": 1,
+        "a": 0.4
+      },
+      "size": 12
+    },
+    "beamShield": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      },
+      "width": 5
+    },
+    "colorSourceCenter": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.6
+      },
+      "size": 5
+    },
+    "mirror": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      },
+      "width": 3
+    },
+    "beamSplitter": {
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0,
+        "a": 0.25
+      },
+      "width": 5
+    },
+    "idealCurveCenter": {
+      "color": {
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      },
+      "size": 2
+    },
+    "idealCurveArrow": {
+      "color": {
+        "r": 0,
+        "b": 1,
+        "a": 0.75
+      },
+      "size": 15
+    },
+    "glass": {
+      "color": {
+        "g": 0,
+        "b": 0
+      }
+    },
+    "grinGlass": {
+      "color": {
+        "r": 0,
+        "a": 0.5
+      }
+    },
+    "blocker": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1,
+        "a": 0.6
+      }
+    },
+    "diffractionGrating": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.3
+      },
+      "dash": [
+        5,
+        5
+      ],
+      "width": 5
+    },
+    "detector": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.7
+      },
+      "dash": [
+        2,
+        2
+      ],
+      "width": 3
+    },
+    "detectorText": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      },
+      "font": "monospace",
+      "size": 8
+    },
+    "irradMap": {
+      "color": {
+        "g": 1,
+        "b": 0
+      }
+    },
+    "irradMapBorder": {
+      "color": {
+        "g": 0,
+        "a": 0.8
+      },
+      "width": 3
+    },
+    "ruler": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.4
+      },
+      "width": 5
+    },
+    "rulerText": {
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0,
+        "a": 0.8
+      },
+      "font": "serif",
+      "size": 12
+    },
+    "decoration": {
+      "color": {
+        "g": 0,
+        "b": 0,
+        "a": 0.9
+      },
+      "width": 5
+    },
+    "handlePoint": {
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0,
+        "a": 0.5
+      }
+    },
+    "handleArrow": {
+      "color": {
+        "r": 0,
+        "g": 0,
+        "a": 0.8
+      },
+      "size": 18
+    },
+    "customSurface": {
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0,
+        "a": 0.3
+      },
+      "width": 10,
+      "dash": [
+        5,
+        3
+      ]
+    }
+  }
+}

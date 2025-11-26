@@ -131,10 +131,23 @@ class JsonEditorService {
    * Update the editor's content, optionally highlighting changes
    * @param {string} content - New content for the editor
    * @param {string} [oldContent] - Previous content for diff calculation
+   * @param {boolean} [force] - Force update the content even if the editor is out of sync
    */
-  updateContent(content, oldContent) {
+  updateContent(content, oldContent, force = false) {
     if (!this.aceEditor) return
-    if (!this.isSynced) return
+    if (force) {
+      if (!this.isSynced) {
+        this.isSynced = true
+        if (app.canvas) {
+          app.canvas.style.opacity = 1.0;
+          app.canvasBelowLight.style.opacity = 1.0;
+          // Note that we do not reset the opacity of the light layer canvases, as they are done by the simulator (it will still be dimmed until the simulation is refreshed)
+          app.canvasGrid.style.opacity = 1.0;
+        }
+      }
+    } else if (!this.isSynced) {
+      return; // Normally, we should not update the content if the editor is out of sync, as the user may be editing the JSON and updating the content will overwrite the changes.
+    }
     
     // Blur the editor to remove focus when content is updated
     this.aceEditor.blur()

@@ -1,0 +1,251 @@
+{
+  "version": 5,
+  "name": "equiv_curve",
+  "modules": {
+    "BezierGlass": {
+      "numPoints": 5,
+      "params": [
+        "refIndex=1:0.01:3:1.5",
+        "cauchyB=0:0.001:0.1:0.004",
+        "tStep=0.01:0.001:0.1:0.01"
+      ],
+      "vars": [
+        "bezierX(t)=(1-t)^3*x_2 + 3*(1-t)^2*t*x_3 + 3*(1-t)*t^2*x_4 + t^3*x_5",
+        "bezierY(t)=(1-t)^3*y_2 + 3*(1-t)^2*t*y_3 + 3*(1-t)*t^2*y_4 + t^3*y_5"
+      ],
+      "objs": [
+        {
+          "type": "ParamGrinGlass",
+          "pieces": [
+            {
+              "eqnX": "``x_1 + (x_2 - x_1) * t``",
+              "eqnY": "``y_1 + (y_2 - y_1) * t``",
+              "tMin": 0,
+              "tMax": 1,
+              "tStep": "`tStep`"
+            },
+            {
+              "eqnX": "``bezierX(t)``",
+              "eqnY": "``bezierY(t)``",
+              "tMin": 0,
+              "tMax": 1,
+              "tStep": "`tStep`"
+            },
+            {
+              "eqnX": "``x_5 + (x_1 - x_5) * t``",
+              "eqnY": "``y_5 + (y_1 - y_5) * t``",
+              "tMin": 0,
+              "tMax": 1,
+              "tStep": "`tStep`"
+            }
+          ],
+          "refIndexFn": "1.5+0.1\\cdot\\cos\\left(0.1\\cdot x\\right)"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "BezierGlass",
+      "points": [
+        {
+          "x": 800,
+          "y": 520
+        },
+        {
+          "x": 960,
+          "y": 360
+        },
+        {
+          "x": 1040,
+          "y": 300
+        },
+        {
+          "x": 980,
+          "y": 580
+        },
+        {
+          "x": 900,
+          "y": 600
+        }
+      ],
+      "params": {
+        "refIndex": 1.5,
+        "cauchyB": 0.004,
+        "tStep": 0.01
+      }
+    },
+    {
+      "type": "ModuleObj",
+      "module": "BezierGlass",
+      "points": [
+        {
+          "x": 800,
+          "y": 520
+        },
+        {
+          "x": 720,
+          "y": 380
+        },
+        {
+          "x": 780,
+          "y": 420
+        },
+        {
+          "x": 880,
+          "y": 420
+        },
+        {
+          "x": 960,
+          "y": 360
+        }
+      ],
+      "params": {
+        "refIndex": 1.5,
+        "cauchyB": 0.004,
+        "tStep": 0.01
+      }
+    },
+    {
+      "type": "ModuleObj",
+      "module": "BezierGlass",
+      "points": [
+        {
+          "x": 800,
+          "y": 520
+        },
+        {
+          "x": 900,
+          "y": 600
+        },
+        {
+          "x": 840,
+          "y": 580
+        },
+        {
+          "x": 480,
+          "y": 660
+        },
+        {
+          "x": 720,
+          "y": 380
+        }
+      ],
+      "params": {
+        "refIndex": 1.5,
+        "cauchyB": 0.004,
+        "tStep": 0.01
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 780,
+        "y": 620
+      },
+      "p2": {
+        "x": 920,
+        "y": 620
+      }
+    },
+    {
+      "type": "CurveGrinGlass",
+      "points": [
+        {
+          "a1": {
+            "x": 1140,
+            "y": 380
+          },
+          "c1": {
+            "x": 1200,
+            "y": 420
+          },
+          "c2": {
+            "x": 1300,
+            "y": 420
+          }
+        },
+        {
+          "a1": {
+            "x": 1380,
+            "y": 360
+          },
+          "c1": {
+            "x": 1460,
+            "y": 300
+          },
+          "c2": {
+            "x": 1400,
+            "y": 580
+          }
+        },
+        {
+          "a1": {
+            "x": 1320,
+            "y": 600
+          },
+          "c1": {
+            "x": 1260,
+            "y": 580
+          },
+          "c2": {
+            "x": 900,
+            "y": 660
+          }
+        }
+      ],
+      "refIndexFn": "1.5+0.1\\cdot\\cos\\left(0.1\\cdot x\\right)",
+      "origin": {
+        "x": 420,
+        "y": 0
+      },
+      "intersectTol": 0.5
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 1200,
+        "y": 620
+      },
+      "p2": {
+        "x": 1340,
+        "y": 620
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1040,
+        "y": 360
+      },
+      "p2": {
+        "x": 1040,
+        "y": 660
+      }
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 680,
+        "y": 340
+      },
+      "p2": {
+        "x": 1460,
+        "y": 340
+      },
+      "irradMap": true,
+      "binSize": 10
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.2013752707470478,
+  "showGrid": true,
+  "snapToGrid": true,
+  "origin": {
+    "x": 80.85230769230695,
+    "y": 26.516923076923028
+  },
+  "scale": 0.7000000000000003
+}

@@ -16,7 +16,7 @@
 
 /**
  * @module app
- * @description The main app "service". Many parts of the app are not fully refactored to a proper Vue approach yet, so some mixed-paradigm code exists in this file.
+ * @description The main app service. It is mixed-paradigm code that combines Vue and vanilla JavaScript due to historical reasons.
  */
 
 import * as bootstrap from 'bootstrap';
@@ -344,7 +344,12 @@ function initAppService() {
     //Ctrl+Z or Cmd+Z
     if ((e.ctrlKey || e.metaKey) && e.keyCode == 90) {
       if (document.getElementById('undo').disabled == false) {
-        editor.undo();
+        if (jsonEditorService.isSynced || !jsonEditorService.aceEditor) {
+          editor.undo();
+        } else {
+          // In this case, the user is editing the JSON and may have done something wrong there, so the user should expect the undo to be done on the JSON editor instead of the visual scene editor. But note that the enabled state of the undo/redo buttons is still determined by the visual scene editor, which is not the best behavior.
+          jsonEditorService.aceEditor.undo();
+        }
       }
       return false;
     }
@@ -366,7 +371,11 @@ function initAppService() {
     //Ctrl+Y or Cmd+Y
     if ((e.ctrlKey || e.metaKey) && e.keyCode == 89) {
       if (document.getElementById('redo').disabled == false) {
-        editor.redo();
+        if (jsonEditorService.isSynced || !jsonEditorService.aceEditor) {
+          editor.redo();
+        } else {
+          jsonEditorService.aceEditor.redo();
+        }
       }
       return false;
     }
@@ -494,7 +503,7 @@ function initAppService() {
     document.dispatchEvent(new Event('sceneChanged'));
     editor.onActionComplete();
     hasUnsavedChange = false;
-    jsonEditorService.updateContent(editor.lastActionJson);
+    jsonEditorService.updateContent(editor.lastActionJson, null, true);
   };
 
   app.getLink = getLink;
@@ -610,6 +619,9 @@ function initAppService() {
 
   // Update the scene when the URL changes
   window.onpopstate = function (event) {
+    if (!jsonEditorService.isSynced) {
+      return; // To prevent accidental data loss if the user hits back button while editing the JSON.
+    }
     if (window.location.hash.length > 70) {
       // The URL contains a compressed JSON scene.
       require('json-url')('lzma').decompress(window.location.hash.substr(1)).then(json => {
@@ -727,7 +739,7 @@ function openSample(name) {
 
     editor.onActionComplete();
     hasUnsavedChange = false;
-    jsonEditorService.updateContent(editor.lastActionJson);
+    jsonEditorService.updateContent(editor.lastActionJson, null, true);
   }
   client.onerror = function () {
     error = "openSample: " + i18next.t('simulator:appErrors.httpError');
@@ -913,7 +925,7 @@ function openFile(readFile) {
       editor.loadJSON(fileString);
       hasUnsavedChange = false;
       editor.onActionComplete();
-      jsonEditorService.updateContent(editor.lastActionJson);
+      jsonEditorService.updateContent(editor.lastActionJson, null, true);
     } else {
       // Load the background image file
       reader.onload = function (e) {

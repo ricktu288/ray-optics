@@ -105,7 +105,7 @@
       />
       <ToolItem
         id="ParamMirror"
-        :title="$t('main:tools.ParamMirror.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.ParamMirror.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamMirror.description'), sub: $t('main:tools.common.clickInstruction')})"
         :verticalOffset="0"
         :layout="layout"
@@ -173,14 +173,14 @@
       />
       <ToolItem
         id="ParamGlass"
-        :title="$t('main:tools.ParamGlass.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.ParamGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamGlass.description'), sub: $t('main:tools.common.clickInstruction')})"
         :verticalOffset="0"
         :layout="layout"
       />
       <ToolItem
         id="CurveGlass"
-        :title="$t('main:tools.CurveGlass.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.CurveGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
         :verticalOffset="0"
         :layout="layout"
@@ -201,14 +201,14 @@
       />
       <ToolItem
         id="ParamGrinGlass"
-        :title="$t('main:tools.ParamGrinGlass.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.ParamGrinGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.ParamGrinGlass.description'), sub: $t('main:tools.common.clickInstruction')})"
         :verticalOffset="0"
         :layout="layout"
       />
       <ToolItem
         id="CurveGrinGlass"
-        :title="$t('main:tools.CurveGrinGlass.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.CurveGrinGlass.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveGrinGlass.description'), sub: $t('main:tools.CurveGlass.instruction')})"
         :verticalOffset="0"
         :layout="layout"
@@ -309,21 +309,21 @@
     <MoreToolsCollapsible :layout="layout">
       <ToolItem
         id="CustomSurface"
-        :title="$t('main:tools.CustomSurface.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.CustomSurface.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomSurface.description'), sub: $t('main:tools.common.lineInstruction')})"
         :verticalOffset="0"
         :layout="layout"
       />
       <ToolItem
         id="CustomArcSurface"
-        :title="$t('main:tools.CustomArcSurface.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.CustomArcSurface.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomArcSurface.description'), sub: $t('main:tools.ArcMirror.instruction')})"
         :verticalOffset="0"
         :layout="layout"
       />
       <ToolItem
         id="CustomParamSurface"
-        :title="$t('main:tools.CustomParamSurface.title') + '<sup>Beta</sup>'"
+        :title="$t('main:tools.CustomParamSurface.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomParamSurface.description'), sub: $t('main:tools.common.clickInstruction')})"
         :verticalOffset="0"
         :layout="layout"

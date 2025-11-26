@@ -30,27 +30,40 @@ if (!fs.existsSync(distIntegrationsDir)) {
   fs.mkdirSync(distIntegrationsDir, { recursive: true });
 }
 
+// Check for --release flag
+const isRelease = process.argv.includes('--release');
+
 // Generate version information
 console.log('Generating version information...');
-const packageVersion = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'))).version.replace('-dev', '');
-let commitDate = '';
-let commitHash = '';
+const fullPackageVersion = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'))).version;
 
-try {
-  // Get the last commit info
-  const gitLog = execSync('git log -1 --format="%H|%an|%ae|%ad"', { encoding: 'utf8' });
-  const lastCommit = gitLog.split('\n')[0].split('|');
-  commitDate = new Date(lastCommit[3]).toISOString().slice(0,10).replace(/-/g,'');
-  commitHash = lastCommit[0].slice(0,7);
-} catch (error) {
-  console.warn('Could not get git commit information:', error.message);
-  // Fallback to current date if git info is not available
-  commitDate = new Date().toISOString().slice(0,10).replace(/-/g,'');
-  commitHash = 'unknown';
+let fullVersion;
+if (isRelease) {
+  // For release builds, use the full major.minor.patch version
+  fullVersion = fullPackageVersion;
+  console.log(`Version (release): ${fullVersion}`);
+} else {
+  // Extract major.minor, ignoring patch version
+  const packageVersion = fullPackageVersion.split('.').slice(0, 2).join('.');
+  let commitDate = '';
+  let commitHash = '';
+
+  try {
+    // Get the last commit info
+    const gitLog = execSync('git log -1 --format="%H|%an|%ae|%ad"', { encoding: 'utf8' });
+    const lastCommit = gitLog.split('\n')[0].split('|');
+    commitDate = new Date(lastCommit[3]).toISOString().slice(0,10).replace(/-/g,'');
+    commitHash = lastCommit[0].slice(0,7);
+  } catch (error) {
+    console.warn('Could not get git commit information:', error.message);
+    // Fallback to current date if git info is not available
+    commitDate = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    commitHash = 'unknown';
+  }
+
+  fullVersion = `${packageVersion}+${commitDate}.${commitHash}`;
+  console.log(`Version: ${fullVersion}`);
 }
-
-const fullVersion = `${packageVersion}+${commitDate}.${commitHash}`;
-console.log(`Version: ${fullVersion}`);
 
 // Process README template and inject version information
 console.log('Processing README.md template...');

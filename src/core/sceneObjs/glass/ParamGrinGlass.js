@@ -152,9 +152,7 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
   }
 
   checkRayIntersects(ray) {
-    console.log('checkRayIntersects', this.fn_p);
     if (!this.fn_p) {
-      console.log('initFns');
       this.initFns();
     }
     

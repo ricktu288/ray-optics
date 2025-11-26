@@ -91,7 +91,7 @@
       />
 
       <PopupSelectControl
-        :label="$t('simulator:settings.theme.title') + '<sup>Beta</sup>'"
+        :label="$t('simulator:settings.theme.title')"
         :value="themeStore.isDefaultTheme.value ? 'default' : 'custom'"
         :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
         popup-target="themeModal"
@@ -139,7 +139,7 @@
   />
 
   <ToggleControl
-    :label="$t('simulator:settings.showSimulatorControls.title') + '<sup>Beta</sup>'"
+    :label="$t('simulator:settings.showSimulatorControls.title')"
     :popoverContent="$t('simulator:settings.showSimulatorControls.description')"
     v-model="showSimulatorControls"
     :layout="layout"
