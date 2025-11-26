@@ -123,6 +123,7 @@ import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../../directives/tooltip-popover'
 import { usePreferencesStore } from '../../store/preferences'
 import { app } from '../../services/app.js'
+import { jsonEditorService } from '../../services/jsonEditor.js'
 
 export default {
   name: 'FileBar',
@@ -147,11 +148,20 @@ export default {
   methods: {
     handleUndo(event) {
       event.target.blur();
-      app.editor.undo();
+      if (jsonEditorService.isSynced || !jsonEditorService.aceEditor) {
+        app.editor.undo();
+      } else {
+        // In this case, the user is editing the JSON and may have done something wrong there, so the user should expect the undo to be done on the JSON editor instead of the visual scene editor. But note that the enabled state of the undo/redo buttons is still determined by the visual scene editor, which is not the best behavior.
+        jsonEditorService.aceEditor.undo();
+      }
     },
     handleRedo(event) {
       event.target.blur();
-      app.editor.redo();
+      if (jsonEditorService.isSynced || !jsonEditorService.aceEditor) {
+        app.editor.redo();
+      } else {
+        jsonEditorService.aceEditor.redo();
+      }
     },
     handleReset(event) {
       event.target.blur();
