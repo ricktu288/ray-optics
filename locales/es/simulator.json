@@ -1,0 +1,225 @@
+{
+  "welcome": {
+    "title": "Bienvenido a la simulación de Óptica de rayos",
+    "instruction": "Para añadir un componente óptico, seleccione una herramienta y presione el espacio en blanco.\nPara cargar un ejemplo, por favor, [diríjase a la página de la galería](/gallery)."
+  },
+  "common": {
+    "saveButton": "Guardar",
+    "cancelButton": "Cancelar",
+    "closeButton": "Cerrar"
+  },
+  "file": {
+    "title": "Archivo",
+    "undo": {
+      "title": "Deshacer"
+    },
+    "redo": {
+      "title": "Rehacer"
+    },
+    "reset": {
+      "title": "Restablecer"
+    },
+    "save": {
+      "title": "Guardar"
+    },
+    "open": {
+      "title": "Abrir",
+      "description": "Abrir un archivo existente o una imagen de fondo. La imagen de fondo se mostrará desde el origen de coordenadas. (O arrastre el archivo)"
+    },
+    "export": {
+      "title": "Exportar como PNG/SVG"
+    },
+    "copyLink": {
+      "title": "Copiar enlace compartible"
+    },
+    "viewGallery": {
+      "title": "Ver galería",
+      "description": "Ir a la Galería para cargar un ejemplo."
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "more": "Más",
+    "rayDensity": {
+      "title": "Densidad de rayos",
+      "description": "Determinar el numero de rayos emitidos por haces y fuentes puntuales. Esto también afecta a la precisión de la detección de las imágenes y a la renderización del color."
+    },
+    "layoutAids": {
+      "title": "Ayuda con el diseño",
+      "showGrid": "Cuadrícula",
+      "snapToGrid": "Ajustar a la cuadrícula",
+      "lockObjs": "Bloquear objetos"
+    },
+    "gridSize": {
+      "title": "Tamaño de la cuadrícula"
+    },
+    "observerSize": {
+      "title": "Tamaño del observador"
+    },
+    "zoom": {
+      "title": "Zoom"
+    },
+    "language": {
+      "title": "Idioma"
+    },
+    "showStatusBox": {
+      "title": "Mostrar diálogo de estado"
+    },
+    "showHelpPopups": {
+      "title": "Mostrar ventanas de ayuda",
+      "description": "Definir si mostrar ventanas de ayuda al pasar sobre los botones"
+    },
+    "advancedHelp": "Para ayuda avanzada, vea el icono de ayuda en la esquina inferior derecha."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "Más opciones…"
+    },
+    "applyToAll": {
+      "title": "Aplicar a todos"
+    },
+    "duplicate": {
+      "title": "Duplicar"
+    },
+    "delete": {
+      "title": "Borrar"
+    },
+    "unselect": {
+      "title": "Deseleccionar",
+      "description": "Deseleccionar este objecto (click derecho en un espacio en blanco tiene la misma función.)"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Brillo",
+      "brightnessInfo": {
+        "rayDensity": "Solo es efectivo si la 'Densidad de rayos' es suficientemente alta.",
+        "rayDensitySlider": "Para controlar el número de rayos emitidos, por favor ajustar el deslizante global 'Densidad de rayos'."
+      },
+      "wavelength": "Longitud de onda",
+      "emisAngle": "Angulo de emisión",
+      "random": "Aleatorio",
+      "lambert": "Lambertiana",
+      "focalLength": "Distancia focal"
+    },
+    "Beam": {
+      "imageDetectionWarning": "Detección de imagen puede no funcionar con rayos divergentes/ aleatorios."
+    },
+    "AngleSource": {
+      "symmetric": "Simétrico"
+    },
+    "BaseFilter": {
+      "filter": "Filtro",
+      "bandwidth": "Ancho de banda",
+      "invert": "Invertir"
+    },
+    "IdealMirror": {
+      "cartesianSign": "Convenio de signos cartesiano"
+    },
+    "BeamSplitter": {
+      "transRatio": "Cociente de transmisión"
+    },
+    "BaseGlass": {
+      "refIndex": "Indice de refracción",
+      "refIndexInfo": {
+        "relative": "Relativo si esta dentro de otro vidrio",
+        "effective": "Si este objeto se tiene que simular con un índice de refracción (absoluto) n₁, pero esta situado dentro de otro vidrio con índice de refracción n₀, entonces deberá establecer el índice de refracción en n₁/n₀ aquí. En casos más complicados donde varios vidrios se sobrepongan, el índice de refracción efectivo de la región sobrepuesta es igual al producto de los índices de refracción por separado."
+      },
+      "cauchyCoeff": "Coeficiente de Cauchy"
+    },
+    "SphericalLens": {
+      "defBy": {
+        "radiiOfCurvature": "Radios de curvatura",
+        "focalDistances": "Distancias focales"
+      }
+    },
+    "BaseGrinGlass": {
+      "stepSize": "Tamaño de paso de la solución numérica",
+      "stepSizeInfo": "Tamaño de paso para el método de Euler para resolver la ecuación de la eikonal de rayos - ver la función 'step' y la documentación dentro del archivo 'BaseGrinGlass.js' para más información.",
+      "intersectTol": "Tolerancia de la intersección",
+      "symbolicBodyMerging": "Unión simbólica de cuerpos",
+      "symbolicBodyMergingInfo": {
+        "all": "Esta opción se aplica a todos los objetos GRIN de la simulación.",
+        "impl": "Actualmente este simulador tiene dos implementaciones de propagación de la luz entre medios, para objetos GRIN - numéricos y simbólicos (vea las funciones 'multRefIndex' y 'devRefIndex' en 'BaseGrinGlass.js').",
+        "implNote": "La implementación numérica es más rápida pero no siempre funciona correctamente (dependiendo del caso en concreto) en escenarios donde se usa más de un objeto GRIN,tal que al menos una de ellas tiene una función de índice de refracción que no está definida en todo el plano, mientras que la implementación simbólica és más lenta pero robusta con estos problemas."
+      }
+    },
+    "CircleGrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [longitud]^2.",
+        "functions": "Esta tolerancia numérica se usa en las funciones 'isOutsideGlass', 'isInsideGlass' y 'isOnBoundary', dentro del archivo 'CircleGrinGlass.js'."
+      }
+    },
+    "GrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [longitud].",
+        "functions": "Esta tolerancia numérica se usa en las funciones 'isOnBoundary' y 'countIntersections', dentro del archivo 'GrinGlass.js'."
+      }
+    },
+    "Aperture": {
+      "diameter": "Diámetro"
+    },
+    "Detector": {
+      "irradMap": "Mapa de irradiación",
+      "binSize": "Tamaño del contenedor",
+      "exportData": "Exportar datos"
+    },
+    "TextLabel": {
+      "textHere": "Texto Aquí",
+      "fontSize": "Tamaño de fuente",
+      "font": "Fuente",
+      "fontStyle": "Estilo",
+      "fontStyles": {
+        "normal": "Normal",
+        "bold": "Negrita",
+        "italic": "Cursiva",
+        "boldItalic": "Negrita cursiva",
+        "oblique": "Oblicua",
+        "boldOblique": "Negrita oblicua"
+      },
+      "alignment": "Alineamiento",
+      "alignments": {
+        "left": "Izquierda",
+        "center": "Centro",
+        "right": "Derecha"
+      },
+      "smallCaps": "Mayúsculas pequeñas",
+      "angle": "Angulo"
+    },
+    "LineArrow": {
+      "arrow": "Flecha adelante",
+      "backArrow": "Flecha atrás"
+    },
+    "Drawing": {
+      "finishDrawing": "Finalizar dibujo"
+    },
+    "CropBox": {
+      "title": "Exportar",
+      "cropBoxSize": "Tamaño de crop box",
+      "format": "Formato",
+      "width": "Ancho",
+      "svgWarning": "Exportar a SVG. Las mezclas de color y indices de refracción relativos por debajo de 1 no están soportados."
+    }
+  },
+  "saveModal": {
+    "title": "Guardar",
+    "fileName": "Nombre"
+  },
+  "languageModal": {
+    "title": "Idioma",
+    "translatedFraction": "traducida",
+    "helpTranslate": "Ayúdenos a traducir esta aplicación"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "La URL es demasiado larga y posiblemente no funcione en algunas plataformas. Posiblemente deba usar \"Guardar\" y compartir el archivo."
+  },
+  "statusBox": {
+    "rayCount": "Número de segmentos de rayo",
+    "totalTruncation": "Brillo truncado",
+    "timeElapsed": "Tiempo transcurrido",
+    "forceStopped": "Fuerza detenida."
+  },
+  "footer": {
+    "processing": "Procesando... Click aquí para detener."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "file": {
+    "title": "Bestand"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "rayDensity": {
+      "title": "Straaldichtheid"
+    },
+    "language": {
+      "title": "Taal"
+    }
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "Overal toepassen"
+    },
+    "duplicate": {
+      "title": "Dupliceer"
+    },
+    "delete": {
+      "title": "Verwijder"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "Helderheid",
+      "wavelength": "Golflengte",
+      "focalLength": "Brandpuntafstand"
+    },
+    "BaseFilter": {
+      "filter": "Filter",
+      "bandwidth": "Bandbreedte",
+      "invert": "Omkeren"
+    },
+    "BaseGlass": {
+      "refIndex": "Brekingsindex"
+    }
+  },
+  "saveModal": {
+    "fileName": "Naam"
+  },
+  "languageModal": {
+    "title": "Taal"
+  },
+  "footer": {
+    "processing": "Rekenen... Klik hier om te stoppen."
+  },
+  "welcome": {
+    "title": "Welkom bij Ray Optics Simulation"
+  }
+}

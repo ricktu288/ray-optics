@@ -1,0 +1,7 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "La función \"Módulo\" permite crear nuevas herramientas mediante la combinación, especialización o reparametrización de objectos creados con las herramientas existentes en este simulador."
+    }
+  }
+}
