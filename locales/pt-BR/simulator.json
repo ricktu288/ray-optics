@@ -1,6 +1,6 @@
 {
   "welcome": {
-    "title": "Bem-vindo à Simulação de Óptica de Raios",
+    "title": "Bem-vindo à Simulação de Óptica Geométrica",
     "instruction": "Para adicionar um componente ótico, selecione uma ferramenta e clique no espaço vazio.\nPara carregar um exemplo, por favor [visite a página da Galeria](/gallery).",
     "loading": "Carregando cena a partir de URL… Por favor aguarde."
   },
