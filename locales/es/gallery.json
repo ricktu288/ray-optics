@@ -10,6 +10,47 @@
       "grinOptics": "Óptica de gradiente de índice",
       "miscellaneous": "Misceláneas"
     },
-    "openInSimulator": "Abrir en el simulador"
+    "openInSimulator": "Abrir en el simulador",
+    "description": "Esto es una colección de simulaciones hechas usando [the web app](/simulator), que pueden ser usadas como demostraciones interactivas de óptica. Eres bienvenido de contribuir con nuevas simulaciones. Véase [the contribution guide](/contributing/gallery) para más información. Para reportar un fallo, por favor [open an issue on GitHub](/github/issues) o envía un email a [ray-optics@phydemo.app](/email)."
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Atención: La secuencia de luz apareciendo no representa realmente la velocidad de la luz - solo la imagen final es significante."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Imágenes de Dos Espejos",
+      "description": "La simulación muestra imágenes formadas por dos espejos. La \"L\" verde es el objeto. Si el ángulo entre ambos espejos es \\(\\frac{360^\\circ}{n}\\), entonces \\(n-1\\) imágenes virtuales (las L's naranjas) se formarán. Puedes arrastrar el punto final del espejo para cambiar el ángulo entre ellos."
+    },
+    "parabolicMirror": {
+      "title": "Espejo parabólico",
+      "description": "La simulación demuestra la propiedad de focalización del espejo parabólico."
+    },
+    "hyperbolicMirror": {
+      "title": "Espejo hiperbólico",
+      "description": "Esto es una demostración de la propiedad de reflexión del espejo hiperbólico: Los rayos de luz que viajan de un foco hacia el espejo hiperbólico se reflejarán alejándose del otro foco.\n\nLos dos focos de la hipérbola son puntos aplanáticos (véase [Aplanatic points](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "Los rayos naranjas son rayos imaginarios extendidos a partir de los rayos amarillos reflejados.\nEstos rayos imaginarios convergen en el otro punto focal.",
+      "pointlightsourceaton": "Fuente de luz puntual en un punto focal"
+    },
+    "retroreflectors": {
+      "title": "Retrorreflectores",
+      "description": "Esta es una simulación de dos tipos de retrorreflectores:\n\n1. Retrorreflector de esquina.\n2. Retrorreflector de ojo de gato.",
+      "dragtorotatethebeam": "Arrastra\npara rotar el haz",
+      "catseyeretroreflecto": "Retrorreflector de ojo de gato",
+      "cornerretroreflector": "Retrorreflector de esquina"
+    },
+    "periscope": {
+      "title": "Periscopio",
+      "description": "Esta es una simulación de un periscopio formado por dos espejos planos y algunos bloqueadores de luz.",
+      "observerseyenottosca": "Ojo de observador (no a escala)"
+    },
+    "newtonianTelescope": {
+      "title": "Telescopio Newtoniano",
+      "description": "Esto es un modelo de un telescopio Newtoniano con un ocular de Plössl."
+    },
+    "penroseUnilluminableRoom": {
+      "title": "Sala no iluminable de Penrose",
+      "description": "La sala no iluminable de Penrose se construye a partir de espejos elípticos, circulares y lineales. Tiene la propiedad interesante de que una fuente puntual (verde) en la sala no iluminará la sala entera, sin importar dónde lo coloques. Puedes arrastrar el punto verde para mover la fuente.",
+      "nomatterwhereyouputt": "No importe dónde pongas la fuente puntual, no iluminará la sala entera.\nAtención: Debido a errores numéricos, puede que todavía brille después de un tiempo."
+    }
   }
 }
