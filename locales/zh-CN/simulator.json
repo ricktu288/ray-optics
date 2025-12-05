@@ -113,6 +113,12 @@
     },
     "advancedHelp": "进阶说明详见右下角的说明图示。"
   },
+  "editor": {
+    "objectBodyHint": "如需旋转、群组物件等功能，请详见右下角的说明图示。",
+    "coordinatesHint": "如需对物件进行变换、从公式定义座标等功能，请详见右下角的说明图示。",
+    "handleHint": "如需一次移动多个物件，请点击空白处建立控制杆。",
+    "handleArrowHint": "如需切换水平/垂直/旋转/缩放，请点击控制杆（箭头）并调整上方「变换」选项。"
+  },
   "objBar": {
     "showAdvanced": {
       "title": "更多选项…"
@@ -529,7 +535,7 @@
       "title": "装饰样式"
     },
     "handlePoint": {
-      "title": "默认控制杆"
+      "title": "模块控制点"
     },
     "handleArrow": {
       "title": "控制杆箭头"
@@ -607,11 +613,15 @@
       },
       "groupRotateScale": {
         "title": "群组、旋转及缩放物件",
-        "description": "按住 Ctrl，点击一个或多个物件或控制点（如端点），并点击空白处可将它们群组并建立控制杆。拖曳控制杆（或按方向键）可平移群组；Shift+拖曳可限制于水平或垂直移动；Ctrl+拖曳可旋转群组；Ctrl+Shift+拖曳可缩放群组。可移动「+」设定旋转或缩放中心。点击控制杆并按 Ctrl+D 可复制群组；按 Delete 可解散群组。"
+        "description": "按住 Ctrl，点击一个或多个物件（或个别控制点，如端点），并点击空白处可将它们群组并建立控制杆（箭头图示）。欲套用变换，请选择所需的变换类型和步长，然后拖曳控制杆。对於旋转/缩放，可拖曳「+」来设定中心。点击控制杆并按 Ctrl+D 可复制群组；按 Delete 可解散群组。"
       },
       "editCoordinates": {
         "title": "直接编辑座标",
         "description": "对控制点（如端点）点两下或按右键，输入 (x,y) 座标，然后按 Enter。"
+      },
+      "arrayFormula": {
+        "title": "从公式定义物件或阵列",
+        "description": "要定义阵列（例如可调整间距的镜子网格）或从公式定义物件（例如可调整角度的梯形棱镜），请参阅工具 -> 其他 -> 导入模块 -> 创建自定义模块。"
       },
       "keyboardShortcuts": {
         "title": "键盘快速键",
@@ -623,7 +633,7 @@
       },
       "integrations": {
         "title": "与编程語言整合",
-        "description": "您可以透过[整合工具](/integrations)来从编程语言（如 Python 或 Julia）呼叫本模拟器。注意此网页程程序内建的[模块](/modules/tutorial)功能本身也提供了一些编程功能。"
+        "description": "您可以透过[整合工具](/integrations)来从编程语言（如 Python 或 Julia）呼叫本模拟器。"
       },
       "contactUs": {
         "title": "联络我们",

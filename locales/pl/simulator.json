@@ -442,8 +442,7 @@
         "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka."
       },
       "groupRotateScale": {
-        "title": "Grupuj, obracaj i skaluj obiekty",
-        "description": "Przytrzymaj klawisz Ctrl, kliknij jeden lub więcej obiektów lub punktów kontrolnych (np. punkty końcowe), a następnie kliknij puste miejsce, aby je zgrupować i utworzyć uchwyt. Przeciągnij uchwyt (lub naciśnij klawisze strzałek), aby przesunąć grupę; Shift+przeciągnij, aby ograniczyć obszar do położenia poziomego/pionowego; Ctrl+przeciągnij, aby obrócić grupę; Ctrl+Shift+przeciągnij, aby przeskalować grupę. Przeciągnij znak „+”, aby ustawić środek obrotu/skalowania. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby rozgrupować."
+        "title": "Grupuj, obracaj i skaluj obiekty"
       },
       "editCoordinates": {
         "title": "Bezpośrednio edytuj współrzędne",
@@ -463,7 +462,7 @@
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
       },
       "integrations": {
-        "description": "Symulator można wywołać z języków programowania, takich jak Python czy Julia, za pomocą [narzędzi integracyjnych](/integrations). Należy pamiętać, że ta aplikacja internetowa oferuje również wbudowane wsparcie programistyczne dzięki funkcji [moduł](/modules/tutorial).",
+        "description": "Symulator można wywołać z języków programowania, takich jak Python czy Julia, za pomocą [narzędzi integracyjnych](/integrations).",
         "title": "Integracje z językami programowania"
       }
     }
@@ -583,9 +582,6 @@
     },
     "decoration": {
       "title": "Styl dekoracji"
-    },
-    "handlePoint": {
-      "title": "Domyślny punkt kontrolny uchwytu"
     },
     "handleArrow": {
       "title": "Strzałka uchwytu"

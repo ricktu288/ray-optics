@@ -195,11 +195,11 @@ function initAppService() {
 
 
   editor.on('positioningStart', function (e) {
-    document.getElementById('xybox').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
-    document.getElementById('xybox').style.top = (e.dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
+    document.getElementById('xybox-container').style.left = (e.dragContext.targetPoint.x * scene.scale + scene.origin.x) + 'px';
+    document.getElementById('xybox-container').style.top = (e.dragContext.targetPoint.y * scene.scale + scene.origin.y) + 'px';
     document.getElementById('xybox').value = '(' + (e.dragContext.targetPoint.x) + ',' + (e.dragContext.targetPoint.y) + ')';
     document.getElementById('xybox').size = document.getElementById('xybox').value.length;
-    document.getElementById('xybox').style.display = '';
+    document.getElementById('xybox-container').style.display = '';
     document.getElementById('xybox').select();
     document.getElementById('xybox').setSelectionRange(1, document.getElementById('xybox').value.length - 1);
     xyBox_cancelContextMenu = true;
@@ -210,7 +210,109 @@ function initAppService() {
   });
 
   editor.on('positioningEnd', function (e) {
-    document.getElementById('xybox').style.display = 'none';
+    document.getElementById('xybox-container').style.display = 'none';
+    // Hide the xybox info popover if it's open
+    const xyboxInfoIcon = document.querySelector('.xybox-info-icon');
+    if (xyboxInfoIcon && xyboxInfoIcon._popover) {
+      xyboxInfoIcon._popover.hide();
+    }
+  });
+
+  // Store the popover instance for object body hint
+  let objectBodyHintPopover = null;
+
+  editor.on('objectBodyClick', function (e) {
+    // Only show hint if help popovers are enabled
+    if (!window.popoversEnabled) return;
+
+    const anchor = document.getElementById('object-body-hint-anchor');
+    let content = '';
+    
+    // Dispose existing popover if any
+    if (objectBodyHintPopover) {
+      objectBodyHintPopover.dispose();
+      objectBodyHintPopover = null;
+    }
+
+    // Position the anchor at the click location
+    anchor.style.left = e.screenPos.x + 'px';
+    anchor.style.top = e.screenPos.y + 'px';
+    anchor.style.display = '';
+
+    // If the target object is a handle, show the handle arrow hint
+    if (scene.objs[e.targetObjIndex] && scene.objs[e.targetObjIndex].constructor.type == "Handle") {
+      content = i18next.t('simulator:editor.handleArrowHint');
+    } else {
+      content = i18next.t('simulator:editor.objectBodyHint');
+    }
+
+    // Create and show the popover
+    objectBodyHintPopover = new bootstrap.Popover(anchor, {
+      content: content,
+      trigger: 'manual',
+      placement: 'bottom',
+      html: true
+    });
+    objectBodyHintPopover.show();
+
+    // Hide when mouse leaves the anchor area
+    const hidePopover = function () {
+      if (objectBodyHintPopover) {
+        objectBodyHintPopover.dispose();
+        objectBodyHintPopover = null;
+      }
+      anchor.style.display = 'none';
+      anchor.removeEventListener('mouseleave', hidePopover);
+    };
+    anchor.addEventListener('mouseleave', hidePopover);
+  });
+
+  // Store the popover instance for handle creation hint
+  let handleHintPopover = null;
+
+  editor.on('handleCreationHint', function (e) {
+    // Only show hint if help popovers are enabled
+    if (!window.popoversEnabled) return;
+
+    const anchor = document.getElementById('object-body-hint-anchor');
+    
+    // Dispose existing popovers if any
+    if (objectBodyHintPopover) {
+      objectBodyHintPopover.dispose();
+      objectBodyHintPopover = null;
+    }
+    if (handleHintPopover) {
+      handleHintPopover.dispose();
+      handleHintPopover = null;
+    }
+
+    // Position the anchor at the click location
+    anchor.style.left = e.screenPos.x + 'px';
+    anchor.style.top = e.screenPos.y + 'px';
+    anchor.style.display = '';
+
+    // Create and show the popover
+    handleHintPopover = new bootstrap.Popover(anchor, {
+      content: i18next.t('simulator:editor.handleHint'),
+      trigger: 'manual',
+      placement: 'bottom',
+      html: true
+    });
+    handleHintPopover.show();
+
+    // Hide on next click anywhere (not on mouseleave, since user may be dragging)
+    const hidePopover = function () {
+      if (handleHintPopover) {
+        handleHintPopover.dispose();
+        handleHintPopover = null;
+      }
+      anchor.style.display = 'none';
+      document.removeEventListener('mousedown', hidePopover);
+    };
+    // Delay adding the listener to avoid immediate dismiss
+    setTimeout(function () {
+      document.addEventListener('mousedown', hidePopover);
+    }, 100);
   });
 
   editor.on('mouseCoordinateChange', function (e) {

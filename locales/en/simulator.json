@@ -113,6 +113,12 @@
     },
     "advancedHelp": "For advanced help, see the help icon in the lower-right corner."
   },
+  "editor": {
+    "objectBodyHint": "For rotation, grouping, etc., see the help icon in the lower-right corner.",
+    "coordinatesHint": "For transforming objects, defining coordinates from formulas, etc., see the help icon in the lower-right corner.",
+    "handleHint": "To move multiple objects together, click the empty space to create a handle.",
+    "handleArrowHint": "To switch between horizontal/vertical/rotation/scaling, click the handle (arrow) and change the \"transformation\" option above."
+  },
   "objBar": {
     "showAdvanced": {
       "title": "More options…"
@@ -529,7 +535,7 @@
       "title": "Decoration style"
     },
     "handlePoint": {
-      "title": "Default handle control point"
+      "title": "Module control point"
     },
     "handleArrow": {
       "title": "Handle arrow"
@@ -607,11 +613,15 @@
       },
       "groupRotateScale": {
         "title": "Group, rotate, and scale objects",
-        "description": "Hold Ctrl, click one or more objects or control points (e.g. endpoints), then click empty space to group them and create a handle. Drag the handle (or press arrow keys) to move the group; Shift+drag to limit to horizontal/vertical; Ctrl+drag to rotate the group, Ctrl+Shift+drag to scale the group. Drag the \"+\" to set rotation/scaling center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup."
+        "description": "Hold Ctrl, click one or more objects (or individual control points, e.g. endpoints), then click the empty space to group them and create a handle (arrow icon). To apply transformation, select the desired transformation type and step size, and then drag the handle. For rotation/scaling, drag the \"+\" to set the center. Click the handle and press Ctrl+D to duplicate the group; press Delete to ungroup."
       },
       "editCoordinates": {
         "title": "Edit coordinates directly",
         "description": "Double-click or right-click the control point (e.g. endpoint) of the object, edit the (x,y) coordinates, then press Enter."
+      },
+      "arrayFormula": {
+        "title": "Arrays and objects from formulas",
+        "description": "To define arrays of objects (e.g. a grid of mirrors with adjustable spacing) or objects from formulas (e.g. a trapezoidal prism with adjustable angles), see \"Tools -> Other -> Import Modules -> Make custom modules\"."
       },
       "keyboardShortcuts": {
         "title": "Keyboard shortcuts",
@@ -623,7 +633,7 @@
       },
       "integrations": {
         "title": "Integrations with programming languages",
-        "description": "You can call the simulator from programming languages such as Python or Julia with the [integration tools](/integrations). Note that this web app also has some built-in programming support with the [module](/modules/tutorial) feature."
+        "description": "You can call the simulator from programming languages such as Python or Julia with the [integration tools](/integrations)."
       },
       "contactUs": {
         "title": "Contact Us",

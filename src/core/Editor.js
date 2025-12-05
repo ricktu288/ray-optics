@@ -232,6 +232,22 @@ class Editor {
    */
 
   /**
+   * The event when a double-click or right-click happens on an object body (not a control point).
+   * @event Editor#objectBodyClick
+   * @type {object}
+   * @property {Point} mousePos - The mouse position in the scene.
+   * @property {Point} screenPos - The screen position of the click.
+   * @property {number} targetObjIndex - The index of the clicked object.
+   */
+
+  /**
+   * The event when the user clicks without Ctrl while creating a handle with 2+ bound items.
+   * @event Editor#handleCreationHint
+   * @type {object}
+   * @property {Point} screenPos - The screen position of the click.
+   */
+
+  /**
    * The event when the scene is loaded. If the scene contains resources that takes time to load, this event is emitted every time a resource is loaded, where the last event has the `completed` property set to `true`.
    * @event Editor#sceneLoaded
    * @type {object}
@@ -590,9 +606,18 @@ class Editor {
         var ret = rets[0];
         if (ret.targetObjIndex != -1) {
           if (!e.ctrlKey && this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
-            // If the user was creating a handle but now clicking a point without holding ctrl, cancel the handle creation
-            this.removeObj(0);
-            ret.targetObjIndex--;
+            const handle = this.scene.objs[0];
+            const boundCount = handle.objIndices.length + handle.controlPoints.length;
+            if (boundCount >= 2) {
+              // Show hint that the user needs to place the handle first
+              this.emit('handleCreationHint', {
+                screenPos: geometry.point(e.pageX, e.pageY)
+              });
+            } else {
+              // If the user was creating a handle but now clicking a point without holding ctrl, cancel the handle creation
+              this.removeObj(0);
+              ret.targetObjIndex--;
+            }
           }
           this.selectObj(ret.targetObjIndex);
           this.dragContext = ret.dragContext;
@@ -618,12 +643,19 @@ class Editor {
       if (this.draggingObjIndex == -1) {
         // The mousePos clicked the blank area
         if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone) {
-          // User is creating a handle
-          this.finishHandleCreation(this.mousePos);
-          this.hoveredObjIndex = 0;
-          this.canvas.style.cursor = 'pointer';
-          this.simulator.updateSimulation(true, true);
-          return;
+          if (e.which == 3) {
+            // Right-click cancels the handle creation
+            this.removeObj(0);
+            this.simulator.updateSimulation(true, true);
+            // Continue to normal right-click behavior below
+          } else {
+            // User is creating a handle
+            this.finishHandleCreation(this.mousePos);
+            this.hoveredObjIndex = 0;
+            this.canvas.style.cursor = 'pointer';
+            this.simulator.updateSimulation(true, true);
+            return;
+          }
         }
         if ((this.addingObjType == '') || (e.which == 3)) {
           // To drag the entire scene
@@ -970,6 +1002,13 @@ class Editor {
 
         this.emit('positioningStart', { dragContext: this.dragContext });
 
+      } else if (ret.targetObjIndex != -1 && !ret.dragContext.targetPoint) {
+        // Clicked on object body (not a control point)
+        this.emit('objectBodyClick', {
+          mousePos: this.mousePos,
+          screenPos: geometry.point(e.pageX, e.pageY),
+          targetObjIndex: ret.targetObjIndex
+        });
       }
     }
 
@@ -1037,7 +1076,7 @@ class Editor {
    */
   addControlPointsForHandle(controlPoints) {
     if (!(this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone)) {
-      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true, transformation: "xTranslation" }));
       if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
       for (var i in controlPoints) {
         controlPoints[i].targetObjIndex++;
@@ -1056,7 +1095,7 @@ class Editor {
   addObjectForHandle(objIndex) {
     // Create a new handle if one isn't already being constructed
     if (!(this.scene.objs[0].constructor.type == "Handle" && this.scene.objs[0].notDone)) {
-      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true, transformation: "xTranslation" }));
       if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
       // Adjust objIndex since we added an object at the beginning of the array
       objIndex++;
@@ -1526,7 +1565,7 @@ class Editor {
     if (this.scene.objs.length > 0 && this.scene.objs[0].constructor.type === "Handle" && this.scene.objs[0].notDone) {
       handleIndex = 0;
     } else {
-      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true }));
+      this.scene.unshiftObj(new sceneObjs["Handle"](this.scene, { notDone: true, transformation: "xTranslation" }));
       if (this.selectedObjIndex >= 0) this.selectedObjIndex++;
       this.selectObj(-1);
       handleIndex = 0;

@@ -113,6 +113,12 @@
     },
     "advancedHelp": "進階說明詳見右下角的說明圖示。"
   },
+  "editor": {
+    "objectBodyHint": "如需旋轉、群組物件等功能，請詳見右下角的說明圖示。",
+    "coordinatesHint": "如需對物件進行變換、從公式定義座標等功能，請詳見右下角的說明圖示。",
+    "handleHint": "如需一次移動多個物件，請點擊空白處建立控制桿。",
+    "handleArrowHint": "如需切換水平/垂直/旋轉/縮放，請點擊控制桿（箭頭）並調整上方「變換」選項。"
+  },
   "objBar": {
     "showAdvanced": {
       "title": "更多選項…"
@@ -365,7 +371,7 @@
         "rotation": "旋轉",
         "scaling": "縮放"
       },
-      "step": "間距",
+      "step": "步長",
       "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。"
     },
     "CropBox": {
@@ -529,7 +535,7 @@
       "title": "裝飾樣式"
     },
     "handlePoint": {
-      "title": "預設控制杆"
+      "title": "模組控制點"
     },
     "handleArrow": {
       "title": "控制桿箭頭"
@@ -607,7 +613,11 @@
       },
       "groupRotateScale": {
         "title": "群組、旋轉及縮放物件",
-        "description": "按住 Ctrl，點擊一個或多個物件或控制點（如端點），並點擊空白處可將其群組並建立控制桿。拖曳控制桿（或按方向鍵）可平移群組；Shift+拖曳可限制於水平或垂直移動；Ctrl+拖曳可旋轉群組；Ctrl+Shift+拖曳可縮放群組。可移動「+」設定旋轉或縮放中心。點擊控制桿並按 Ctrl+D 可複製群組；按 Delete 可解散群組。"
+        "description": "按住 Ctrl，點擊一個或多個物件（或個別控制點，如端點），並點擊空白處可將其群組並建立控制桿（箭頭圖示）。欲套用變換，請選擇所需的變換類型和步長，然後拖曳控制桿。對於旋轉/縮放，可拖曳「+」來設定中心。點擊控制桿並按 Ctrl+D 可複製群組；按 Delete 可解散群組。"
+      },
+      "arrayFormula": {
+        "title": "從公式定義物件或陣列",
+        "description": "欲定義陣列（例如可調整間距的鏡子網格）或從公式定義物件（例如可調整角度的梯形棱鏡），請參閱工具 -> 其他 -> 匯入模組 -> 建立自訂模組。"
       },
       "editCoordinates": {
         "title": "直接編輯座標",
@@ -623,7 +633,7 @@
       },
       "integrations": {
         "title": "與程式語言整合",
-        "description": "您可以透過[整合工具](/integrations)來從程式語言（如 Python 或 Julia）呼叫本模擬器。注意此網頁程式內建的[模組](/modules/tutorial)功能本身也提供了一些程式功能。"
+        "description": "您可以透過[整合工具](/integrations)來從程式語言（如 Python 或 Julia）呼叫本模擬器。"
       },
       "contactUs": {
         "title": "聯絡我們",

@@ -38,6 +38,8 @@
             <p v-html="$t('simulator:footer.helpPopup.groupRotateScale.description')"></p>
             <b v-html="$t('simulator:footer.helpPopup.editCoordinates.title')"></b>
             <p v-html="$t('simulator:footer.helpPopup.editCoordinates.description')"></p>
+            <b v-html="$t('simulator:footer.helpPopup.arrayFormula.title')"></b>
+            <p v-html="$t('simulator:footer.helpPopup.arrayFormula.description')"></p>
             <b v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.title')"></b>
             <p v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.description')"></p>
             <b v-html="$t('simulator:footer.helpPopup.runLocally.title')"></b>

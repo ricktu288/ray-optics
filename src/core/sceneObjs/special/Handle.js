@@ -43,9 +43,9 @@ class Handle extends BaseSceneObj {
     objIndices: [],
     controlPoints: [],
     transformation: "default",
-    moveStep: 0,
-    rotateStep: 0,
-    scaleStep: 0,
+    moveStep: 1,
+    rotateStep: 0.5,
+    scaleStep: 1,
     notDone: false
   };
 
@@ -71,39 +71,36 @@ class Handle extends BaseSceneObj {
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('simulator:sceneObjs.Handle.handle'));
-    objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation'), this.transformation, {
-      'default': i18next.t('simulator:common.defaultOption'),
-      'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
+    const transformations = {
       'xTranslation': i18next.t('simulator:sceneObjs.Handle.transformations.xTranslation'),
       'yTranslation': i18next.t('simulator:sceneObjs.Handle.transformations.yTranslation'),
+      'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
       'rotation': i18next.t('simulator:sceneObjs.Handle.transformations.rotation'),
       'scaling': i18next.t('simulator:sceneObjs.Handle.transformations.scaling')
-    }, function (obj, value) {
+    };
+    if (this.transformation == "default") {
+      transformations['default'] = i18next.t('simulator:common.defaultOption');
+    }
+    objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation'), this.transformation, transformations, function (obj, value) {
       obj.transformation = value;
     }, null, true);
 
     switch (this.transformation) {
       case "xTranslation":
       case "yTranslation":
-        if (objBar.showAdvanced(!this.arePropertiesDefault(['moveStep']))) {
-          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step'), 0, 100, 1, this.moveStep, function (obj, value) {
-            obj.moveStep = Math.abs(value);
-          }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'), true);
-        }
+        objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step'), 0, 100, 1, this.moveStep, function (obj, value) {
+          obj.moveStep = Math.abs(value);
+        }, i18next.t('simulator:sceneObjs.common.lengthUnitInfo'), true);
         break;
       case "rotation":
-        if (objBar.showAdvanced(!this.arePropertiesDefault(['rotateStep']))) {
-          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (\u00b0)', 0, 360, 1, this.rotateStep, function (obj, value) {
-            obj.rotateStep = Math.abs(value);
-          }, null, true);
-        }
+        objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (\u00b0)', 0, 360, 1, this.rotateStep, function (obj, value) {
+          obj.rotateStep = Math.abs(value);
+        }, null, true);
         break;
       case "scaling":
-        if (objBar.showAdvanced(!this.arePropertiesDefault(['scaleStep']))) {
-          objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (%)', 1, 200, 1, this.scaleStep, function (obj, value) {
-            obj.scaleStep = value;
-          }, null, true);
-        }
+        objBar.createNumber(i18next.t('simulator:sceneObjs.Handle.step') + ' (%)', 1, 200, 1, this.scaleStep, function (obj, value) {
+          obj.scaleStep = value;
+        }, null, true);
         break;
     }
   }
@@ -117,7 +114,7 @@ class Handle extends BaseSceneObj {
     const ls = canvasRenderer.lengthScale;
     ctx.lineWidth = 1 * ls;
 
-    if (this.transformation == "default" || isHovered) {
+    if (this.transformation == "default" || isHovered || this.notDone) {
       for (var i in this.controlPoints) {
         ctx.globalAlpha = 1;
         ctx.beginPath();
@@ -240,15 +237,6 @@ class Handle extends BaseSceneObj {
         ctx.lineTo(this.p2.x, this.p2.y + 5 * ls);
         ctx.stroke();
       }
-    } else if (this.p1) {
-      ctx.beginPath();
-      ctx.strokeStyle = this.scene.highlightColorCss;
-      ctx.beginPath();
-      ctx.arc(this.p1.x, this.p1.y, 2 * ls, 0, Math.PI * 2, false);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(this.p1.x, this.p1.y, 5 * ls, 0, Math.PI * 2, false);
-      ctx.stroke();
     }
   }
 

@@ -486,9 +486,6 @@
     "decoration": {
       "title": "Estilo da decoração"
     },
-    "handlePoint": {
-      "title": "Ponto de manuseio padrão"
-    },
     "handleArrow": {
       "title": "Seta do ponto de manuseio"
     },
@@ -558,8 +555,7 @@
         "description": "Enquanto arrasta um objeto, segure Shift para limitar ao sentido horizontal/vertical; segure Ctrl para clonar. Quando criando um objeto em formato de linha ou arrastando os seus pontos finais, segure Shift para travar o ângulo ou ajustar para 0°, 45°, 90°; segure Ctrl para rotacionar/ajustar escala com relação ao seu centro."
       },
       "groupRotateScale": {
-        "title": "Agrupar, rotacionar e ajustar escala de objetos",
-        "description": "Segure Ctrl, clique num ou mais objetos ou pontos de controlo, então clique em espaço vazio para agrupar esses pontos e criar um ponto de manuseio. Arraste o ponto de manuseio (ou use as setas do teclado) para mover o grupo; Shift+arraste para limitar a horizontal/vertical; Ctrl+arraste para rotacionar, Ctrl+Shift+arraste para ajustar escala. Arraste o \"+\" para definir o centro de rotação/escala. Clique no ponto de manuseio e aperte Ctrl+D para duplicar o grupo; aperte Apague para desagrupar."
+        "title": "Agrupar, rotacionar e ajustar escala de objetos"
       },
       "editCoordinates": {
         "title": "Editar coordenadas diretamente",
@@ -575,7 +571,7 @@
       },
       "integrations": {
         "title": "Integrações com linguagens de programação",
-        "description": "Pode chamar o simulador usando linguagens de programação como Python ou Julia com as [ferramentas de integração](/integrations). Note que esta app web também possui algum apoio a programação integrado com o recurso [módulo](/modules/tutorial)."
+        "description": "Pode chamar o simulador usando linguagens de programação como Python ou Julia com as [ferramentas de integração](/integrations)."
       },
       "contactUs": {
         "title": "Contate-nos",
