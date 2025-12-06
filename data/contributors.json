@@ -735,5 +735,26 @@
       "gallery": true
     },
     "firstCommit": "2025-11-21"
+  },
+  {
+    "name": "corentin N",
+    "githubEmails": [
+      "corentin.nannini@hotmail.fr"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-11-28"
+  },
+  {
+    "name": "Adrián González Rodríguez",
+    "contributions": {
+      "translations": [
+        "es"
+      ]
+    },
+    "firstCommit": "2025-12-05"
   }
 ]

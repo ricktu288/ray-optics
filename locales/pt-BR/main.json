@@ -1,7 +1,7 @@
 {
   "project": {
-    "name": "Simulação de Óptica de Raios",
-    "shortName": "Óptica de Raios",
+    "name": "Simulação de Óptica Geométrica",
+    "shortName": "Óptica Geométrica",
     "description": "Uma aplicação web grátis e de código aberto para criação e simulação de cenas de óptica geométrica 2D."
   },
   "pages": {

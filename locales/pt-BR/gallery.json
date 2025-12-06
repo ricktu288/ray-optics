@@ -1,6 +1,6 @@
 {
   "galleryPage": {
-    "title": "A Galeria de Óptica de Raios",
+    "title": "A Galeria de Óptica Geométrica",
     "description": "Essa é uma coleção de simulações feitas utilizando [o app web](/simulator), que podem ser utilizadas como demonstrações interativas de óptica. Contribuições de novos itens são bem-vindas. Veja [O guia de contribuição](/contributing/gallery) para mais informação. Para reportar um erro, por favor [abra um issue no GitHub](/github/issues) ou mande um email para [ray-optics@phydemo.app](/email).",
     "categories": {
       "title": "Categorias",
@@ -532,6 +532,10 @@
       "t2totalinternalreflec": "#2 Prismas de Refleção Interna Total (RIT) permitiam enviar toda a luz de ângulo alto para um navio",
       "inthepigeonpointligh": "Na demonstração de ótica de quadro branco do Farol de Pigeon Point,\na mágica de Fresnel permite que TODA a luz do hemisfério seja enviada para o navio",
       "howitworks": "Como funciona"
+    },
+    "opticsOfHumanEye": {
+      "title": "Ótica do olho humano",
+      "description": "Esta é uma simulação sobre o funcionamento do olho. Você pode mudar o tamanho da pupila e o comprimento focal da lente."
     }
   }
 }
