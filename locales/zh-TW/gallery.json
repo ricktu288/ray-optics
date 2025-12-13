@@ -48,6 +48,15 @@
       "title": "牛頓望遠鏡",
       "description": "這是一個配有Plössl目鏡的牛頓望遠鏡模型。"
     },
+    "classicalCassegrainTelescopes": {
+      "title": "經典卡塞格林望遠鏡",
+      "description": "本模擬展示了兩種經典卡塞格林望遠鏡。",
+      "concaveparabolicmirr": "凹拋物面鏡",
+      "convexhyperbolicmirr": "凸雙曲面鏡",
+      "convexparabolicmirro": "凸拋物面鏡",
+      "classicalcassegrain": "經典卡塞格林",
+      "collimator": "準直器"
+    },
     "penroseUnilluminableRoom": {
       "title": "無法照亮的潘洛斯房間",
       "description": "無法照亮的潘洛斯房間由橢圓形、圓形和線性鏡子構成。它有一個有趣的特性，即房間內的一個點源（綠色）無論放在哪裡，都不會照亮整個房間。您可以拖動綠色點以移動源。",

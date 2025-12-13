@@ -49,6 +49,15 @@
       "title": "Newtonian Telescope",
       "description": "This is a model of a Newtonian telescope with a Plössl ocular."
     },
+    "classicalCassegrainTelescopes": {
+      "title": "Classical Cassegrain telescopes",
+      "description": "This simulation shows two types of classical Cassegrain telescopes.",
+      "concaveparabolicmirr": "concave parabolic mirror",
+      "convexhyperbolicmirr": "convex hyperbolic mirror",
+      "convexparabolicmirro": "convex parabolic mirror",
+      "classicalcassegrain": "classical Cassegrain",
+      "collimator": "collimator"
+    },
     "penroseUnilluminableRoom": {
       "title": "Penrose unilluminable room",
       "description": "The Penrose unilluminable room is constructed from elliptic, circular, and linear mirrors. It has the interesting property that a point source (green) within the room will not shine the entire room, no matter where you put it. You can drag the green point to move the source.",
