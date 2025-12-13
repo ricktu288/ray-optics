@@ -36,6 +36,7 @@
       </svg>
       <span v-html="errors.join('<br>')"></span>
     </div>
+    <VirtualKeyboard />
   </div>
 </template>
 
@@ -49,9 +50,13 @@ import { useThemeStore } from '../store/theme'
 import { useStatus } from '../composables/useStatus'
 import { computed, toRef } from 'vue'
 import { app } from '../services/app'
+import VirtualKeyboard from './VirtualKeyboard.vue'
 
 export default {
   name: 'StatusArea',
+  components: {
+    VirtualKeyboard
+  },
   setup() {
     const preferences = usePreferencesStore()
     const themeStore = useThemeStore()

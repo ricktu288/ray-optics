@@ -96,7 +96,13 @@ class Editor {
     this.simulator = simulator;
 
     /** @property {boolean} lastDeviceIsTouch - Whether the last interaction with `canvas` is done by a touch device. */
-    this.lastDeviceIsTouch = false;
+    this._lastDeviceIsTouch = window && window.matchMedia('(max-width: 991.98px)').matches || false;
+
+    /** @property {boolean} virtualCtrlKey - Virtual Ctrl key state for touchscreen use. */
+    this.virtualCtrlKey = false;
+
+    /** @property {boolean} virtualShiftKey - Virtual Shift key state for touchscreen use. */
+    this.virtualShiftKey = false;
 
     /** @property {Point} mousePos - The position of the mouse in the scene. */
     this.mousePos = geometry.point(0, 0);
@@ -169,6 +175,21 @@ class Editor {
 
     /** @property {number} minimalDragLength - The minimal drag length threshold to trigger a drag operation. */
     this.minimalDragLength = 3;
+
+    /** @property {number|null} longPressTimer - Timer ID for long press detection on touch devices. */
+    this.longPressTimer = null;
+
+    /** @property {boolean} longPressTriggered - Whether a long press has been triggered (to prevent normal touchend behavior). */
+    this.longPressTriggered = false;
+
+    /** @property {Point|null} longPressTouchPos - The initial touch position for long press detection. */
+    this.longPressTouchPos = null;
+
+    /** @property {number} longPressDuration - The duration in ms to trigger a long press (right-click). */
+    this.longPressDuration = 500;
+
+    /** @property {number} longPressMoveThreshold - The max movement in pixels allowed during long press. */
+    this.longPressMoveThreshold = 10;
 
     this.initCanvas();
   }
@@ -290,6 +311,57 @@ class Editor {
    */
 
   /**
+   * The event when the device type (touch/mouse) changes.
+   * @event deviceChange
+   * @property {boolean} lastDeviceIsTouch - Whether the last interaction is done by a touch device.
+   */
+
+  /**
+   * Getter for lastDeviceIsTouch.
+   * @returns {boolean} Whether the last interaction is done by a touch device.
+   */
+  get lastDeviceIsTouch() {
+    return this._lastDeviceIsTouch;
+  }
+
+  /**
+   * Setter for lastDeviceIsTouch that emits deviceChange event when value changes.
+   * @param {boolean} value - Whether the last interaction is done by a touch device.
+   */
+  set lastDeviceIsTouch(value) {
+    if (this._lastDeviceIsTouch !== value) {
+      this._lastDeviceIsTouch = value;
+      this.emit('deviceChange', { lastDeviceIsTouch: value });
+    }
+  }
+
+  /**
+   * Wrap a touch event to override ctrlKey and shiftKey with virtual key states.
+   * @param {TouchEvent} e - The original touch event.
+   * @returns {Proxy} A proxy that intercepts ctrlKey and shiftKey access.
+   */
+  wrapTouchEvent(e) {
+    const virtualCtrlKey = this.virtualCtrlKey;
+    const virtualShiftKey = this.virtualShiftKey;
+    return new Proxy(e, {
+      get(target, prop) {
+        if (prop === 'ctrlKey') {
+          return target.ctrlKey || virtualCtrlKey;
+        }
+        if (prop === 'shiftKey') {
+          return target.shiftKey || virtualShiftKey;
+        }
+        const value = target[prop];
+        // Bind functions to the original event
+        if (typeof value === 'function') {
+          return value.bind(target);
+        }
+        return value;
+      }
+    });
+  }
+
+  /**
    * Initialize the canvas event listeners.
    */
   initCanvas() {
@@ -402,22 +474,27 @@ class Editor {
       if (self.scene.error) return;
       self.lastDeviceIsTouch = true;
       lastTouchTime = Date.now();
+      const wrappedEvent = self.wrapTouchEvent(e);
       if (e.touches.length === 2) {
-        // Pinch to zoom
+        // Pinch to zoom - cancel any long press
+        self.cancelLongPress();
         e.preventDefault();
         lastX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
         lastY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
         if (self.isConstructing || self.draggingObjIndex >= 0) {
-          self.onCanvasMouseUp(e);
+          self.onCanvasMouseUp(wrappedEvent);
           self.undo();
         } else {
-          self.onCanvasMouseUp(e);
+          self.onCanvasMouseUp(wrappedEvent);
         }
       } else {
         //console.log("touchstart");
         self.canvas.focus();
-        self.onCanvasMouseMove(e);
-        self.onCanvasMouseDown(e);
+        self.onCanvasMouseMove(wrappedEvent);
+        self.onCanvasMouseDown(wrappedEvent);
+        
+        // Start long press detection for single touch
+        self.startLongPress(e);
       }
     });
 
@@ -428,8 +505,20 @@ class Editor {
       lastTouchTime = Date.now();
       e.preventDefault();
       //console.log("touchmove");
+      
+      // Check if touch moved too much for long press
+      if (self.longPressTimer && e.touches.length === 1) {
+        const touch = e.touches[0];
+        const dx = touch.pageX - self.longPressTouchPos.x;
+        const dy = touch.pageY - self.longPressTouchPos.y;
+        if (Math.sqrt(dx * dx + dy * dy) > self.longPressMoveThreshold) {
+          self.cancelLongPress();
+        }
+      }
+      
       if (e.touches.length === 2) {
-        // Pinch to zoom
+        // Pinch to zoom - cancel long press
+        self.cancelLongPress();
 
         // Calculate current distance between two touches
         const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -471,7 +560,8 @@ class Editor {
         lastY = y;
 
       } else {
-        self.onCanvasMouseMove(e);
+        const wrappedEvent = self.wrapTouchEvent(e);
+        self.onCanvasMouseMove(wrappedEvent);
       }
     });
 
@@ -480,9 +570,21 @@ class Editor {
       self.lastDeviceIsTouch = true;
       lastTouchTime = Date.now();
       //console.log("touchend");
+      
+      // Cancel long press timer
+      self.cancelLongPress();
+      
       if (e.touches.length < 2) {
         initialPinchDistance = null;
-        self.onCanvasMouseUp(e);
+        
+        // If long press was triggered, skip normal touchend handling
+        if (self.longPressTriggered) {
+          self.longPressTriggered = false;
+          return;
+        }
+        
+        const wrappedEvent = self.wrapTouchEvent(e);
+        self.onCanvasMouseUp(wrappedEvent);
         self.onActionComplete();
       }
     });
@@ -492,6 +594,11 @@ class Editor {
       self.lastDeviceIsTouch = true;
       lastTouchTime = Date.now();
       //console.log("touchcancel");
+      
+      // Cancel long press timer
+      self.cancelLongPress();
+      self.longPressTriggered = false;
+      
       initialPinchDistance = null;
       /*
       if (self.isConstructing || self.draggingObjIndex >= 0) {
@@ -501,7 +608,8 @@ class Editor {
         self.onCanvasMouseUp(e);
       }
       */
-      self.onCanvasMouseUp(e);
+      const wrappedEvent = self.wrapTouchEvent(e);
+      self.onCanvasMouseUp(wrappedEvent);
     });
 
     this.canvas.addEventListener('dblclick', function (e) {
@@ -577,6 +685,7 @@ class Editor {
         const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
         if (ret && ret.isDone) {
           this.isConstructing = false;
+          this.emit('resetVirtualKeys');
         }
         if (ret && ret.requiresObjBarUpdate) {
           this.selectObj(this.selectedObjIndex);
@@ -654,6 +763,7 @@ class Editor {
             this.hoveredObjIndex = 0;
             this.canvas.style.cursor = 'pointer';
             this.simulator.updateSimulation(true, true);
+            this.emit('resetVirtualKeys');
             return;
           }
         }
@@ -681,6 +791,7 @@ class Editor {
           const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseDown(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
           if (ret && ret.isDone) {
             this.isConstructing = false;
+            this.emit('resetVirtualKeys');
           }
           this.selectObj(this.scene.objs.length - 1);
           this.simulator.updateSimulation(!this.scene.objs[this.scene.objs.length - 1].constructor.isOptical, true);
@@ -795,6 +906,7 @@ class Editor {
       const ret = this.scene.objs[this.scene.objs.length - 1].onConstructMouseMove(new Mouse(this.mousePos, this.scene, this.lastDeviceIsTouch), e.ctrlKey, e.shiftKey);
       if (ret && ret.isDone) {
         this.isConstructing = false;
+        this.emit('resetVirtualKeys');
       }
       if (ret && ret.requiresObjBarUpdate) {
         this.selectObj(this.selectedObjIndex);
@@ -922,6 +1034,7 @@ class Editor {
         if (!this.isConstructing) {
           // The object says the contruction is done
           this.onActionComplete();
+          this.emit('resetVirtualKeys');
           if (this.scene.lockObjs) {
             this.hoveredObjIndex = -1;
             this.simulator.updateSimulation(true, true);
@@ -945,12 +1058,18 @@ class Editor {
       if (e.which && e.which == 3 && this.draggingObjIndex == -3 && this.mousePos.x == this.dragContext.mousePos0.x && this.mousePos.y == this.dragContext.mousePos0.y) {
         this.draggingObjIndex = -1;
         this.dragContext = {};
+        if (!this.isConstructingHandle()) {
+          this.emit('resetVirtualKeys');
+        }
         this.onCanvasDblClick(e);
         return;
       }
       this.onActionComplete();
       this.draggingObjIndex = -1;
       this.dragContext = {};
+      if (!this.isConstructingHandle()) {
+        this.emit('resetVirtualKeys');
+      }
     }
 
   }
@@ -1114,6 +1233,16 @@ class Editor {
     this.scene.objs[0].finishHandle(point);
     this.simulator.updateSimulation(true, true);
     this.selectObj(0);
+  }
+
+  /**
+   * Check if a handle is currently being constructed.
+   * @returns {boolean} True if a handle is being constructed, false otherwise.
+   */
+  isConstructingHandle() {
+    return this.scene.objs[0] && 
+           this.scene.objs[0].constructor.type == "Handle" && 
+           this.scene.objs[0].notDone;
   }
 
   /**
@@ -1588,6 +1717,70 @@ class Editor {
 
     // The handle remains in notDone state so user can position it
     this.simulator.updateSimulation(true, true);
+  }
+
+  /**
+   * Start long press detection for touch events.
+   * @param {TouchEvent} e - The touch event.
+   */
+  startLongPress(e) {
+    if (e.touches.length !== 1) return;
+    
+    const touch = e.touches[0];
+    this.longPressTouchPos = { x: touch.pageX, y: touch.pageY };
+    this.longPressTriggered = false;
+    
+    const self = this;
+    this.longPressTimer = setTimeout(function () {
+      self.triggerLongPress(e);
+    }, this.longPressDuration);
+  }
+
+  /**
+   * Cancel the long press timer.
+   */
+  cancelLongPress() {
+    if (this.longPressTimer) {
+      clearTimeout(this.longPressTimer);
+      this.longPressTimer = null;
+    }
+    this.longPressTouchPos = null;
+  }
+
+  /**
+   * Trigger long press action (simulates right-click behavior).
+   * @param {TouchEvent} originalEvent - The original touch event.
+   */
+  triggerLongPress(originalEvent) {
+    this.longPressTimer = null;
+    this.longPressTriggered = true;
+    
+    if (!this.longPressTouchPos) return;
+    
+    // Create a synthetic event that mimics a right-click
+    const touch = originalEvent.touches[0];
+    const syntheticEvent = {
+      pageX: touch.pageX,
+      pageY: touch.pageY,
+      target: originalEvent.target,
+      which: 3, // Right mouse button
+      ctrlKey: this.virtualCtrlKey,
+      shiftKey: this.virtualShiftKey,
+      altKey: false,
+      preventDefault: function() {},
+      stopPropagation: function() {}
+    };
+    
+    // If we're currently dragging, stop the drag first
+    if (this.draggingObjIndex != -1) {
+      this.draggingObjIndex = -1;
+      this.dragContext = {};
+    }
+    
+    // Trigger double-click behavior (which handles right-click on objects)
+    this.onCanvasDblClick(syntheticEvent);
+    
+    this.longPressTouchPos = null;
   }
 }
 

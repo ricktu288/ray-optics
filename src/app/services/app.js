@@ -255,7 +255,7 @@ function initAppService() {
     });
     objectBodyHintPopover.show();
 
-    // Hide when mouse leaves the anchor area
+    // Hide when mouse leaves the anchor area or on touch elsewhere
     const hidePopover = function () {
       if (objectBodyHintPopover) {
         objectBodyHintPopover.dispose();
@@ -263,8 +263,10 @@ function initAppService() {
       }
       anchor.style.display = 'none';
       anchor.removeEventListener('mouseleave', hidePopover);
+      document.removeEventListener('touchstart', hidePopover);
     };
     anchor.addEventListener('mouseleave', hidePopover);
+    document.addEventListener('touchstart', hidePopover);
   });
 
   // Store the popover instance for handle creation hint
@@ -300,7 +302,7 @@ function initAppService() {
     });
     handleHintPopover.show();
 
-    // Hide on next click anywhere (not on mouseleave, since user may be dragging)
+    // Hide on next click/touch anywhere (not on mouseleave, since user may be dragging)
     const hidePopover = function () {
       if (handleHintPopover) {
         handleHintPopover.dispose();
@@ -308,10 +310,12 @@ function initAppService() {
       }
       anchor.style.display = 'none';
       document.removeEventListener('mousedown', hidePopover);
+      document.removeEventListener('touchstart', hidePopover);
     };
     // Delay adding the listener to avoid immediate dismiss
     setTimeout(function () {
       document.addEventListener('mousedown', hidePopover);
+      document.addEventListener('touchstart', hidePopover);
     }, 100);
   });
 
@@ -322,6 +326,14 @@ function initAppService() {
   });
 
   editor.emit('mouseCoordinateChange', { mousePos: null });
+
+  editor.on('deviceChange', function (e) {
+    statusEmitter.emit(STATUS_EVENT_NAMES.DEVICE_CHANGE, { lastDeviceIsTouch: e.lastDeviceIsTouch });
+  });
+
+  editor.on('resetVirtualKeys', function () {
+    statusEmitter.emit(STATUS_EVENT_NAMES.RESET_VIRTUAL_KEYS);
+  });
 
   editor.on('selectionChange', function (e) {
     hideAllPopovers();

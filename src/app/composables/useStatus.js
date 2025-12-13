@@ -22,7 +22,9 @@ import { app } from '../services/app'
 export const STATUS_EVENT_NAMES = {
   MOUSE_POSITION: 'mousePositionChange',
   SIMULATOR_STATUS: 'simulatorStatusChange',
-  SYSTEM_STATUS: 'systemStatusChange'
+  SYSTEM_STATUS: 'systemStatusChange',
+  DEVICE_CHANGE: 'deviceChange',
+  RESET_VIRTUAL_KEYS: 'resetVirtualKeys'
 }
 
 // Event emitter for status updates
