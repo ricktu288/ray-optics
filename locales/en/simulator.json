@@ -8,6 +8,7 @@
     "saveButton": "Save",
     "cancelButton": "Cancel",
     "defaultOption": "Default",
+    "legacyOption": "Legacy",
     "customOption": "Custom",
     "closeButton": "Close",
     "resetButton": "Reset",

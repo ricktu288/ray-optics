@@ -8,6 +8,7 @@
     "saveButton": "保存",
     "cancelButton": "取消",
     "defaultOption": "默认",
+    "legacyOption": "旧版",
     "customOption": "自定义",
     "closeButton": "关闭",
     "resetButton": "重置",

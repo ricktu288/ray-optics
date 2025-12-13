@@ -76,11 +76,9 @@ class Handle extends BaseSceneObj {
       'yTranslation': i18next.t('simulator:sceneObjs.Handle.transformations.yTranslation'),
       'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
       'rotation': i18next.t('simulator:sceneObjs.Handle.transformations.rotation'),
-      'scaling': i18next.t('simulator:sceneObjs.Handle.transformations.scaling')
+      'scaling': i18next.t('simulator:sceneObjs.Handle.transformations.scaling'),
+      'default': i18next.t('simulator:common.legacyOption')
     };
-    if (this.transformation == "default") {
-      transformations['default'] = i18next.t('simulator:common.defaultOption');
-    }
     objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation'), this.transformation, transformations, function (obj, value) {
       obj.transformation = value;
     }, null, true);
