@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div class="virtual-keyboard" v-show="lastDeviceIsTouch">
+  <div class="virtual-keyboard" v-show="isVisible">
     <button 
       class="virtual-key" 
       :class="{ active: ctrlActive }"
@@ -36,7 +36,7 @@
  * @module VirtualKeyboard
  * @description The Vue component for virtual Ctrl and Shift keys for touchscreen use.
  */
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus'
 import { app } from '../services/app'
 
@@ -49,6 +49,13 @@ export default {
     // Check if mobile layout is shown (Bootstrap lg breakpoint is 992px)
     const isMobileLayout = () => window.matchMedia('(max-width: 991.98px)').matches
     const lastDeviceIsTouch = ref(isMobileLayout())
+    
+    // Delayed visibility based on device (with 500ms delay when switching to non-touch)
+    const shouldShowForDevice = ref(isMobileLayout())
+    let hideTimeout = null
+    
+    // Show if device says so OR any key is active
+    const isVisible = computed(() => shouldShowForDevice.value || ctrlActive.value || shiftActive.value)
 
     // Update editor's lastDeviceIsTouch if available
     onMounted(() => {
@@ -56,9 +63,34 @@ export default {
         app.editor._lastDeviceIsTouch = true
       }
     })
+    
+    // Cleanup timeout on unmount
+    onUnmounted(() => {
+      if (hideTimeout) {
+        clearTimeout(hideTimeout)
+      }
+    })
 
     statusEmitter.on(STATUS_EVENT_NAMES.DEVICE_CHANGE, (e) => {
       lastDeviceIsTouch.value = e.lastDeviceIsTouch
+      
+      if (e.lastDeviceIsTouch) {
+        // Switching to touch - show immediately
+        if (hideTimeout) {
+          clearTimeout(hideTimeout)
+          hideTimeout = null
+        }
+        shouldShowForDevice.value = true
+      } else {
+        // Switching to non-touch - hide after 500ms
+        if (hideTimeout) {
+          clearTimeout(hideTimeout)
+        }
+        hideTimeout = setTimeout(() => {
+          shouldShowForDevice.value = false
+          hideTimeout = null
+        }, 500)
+      }
     })
 
     statusEmitter.on(STATUS_EVENT_NAMES.RESET_VIRTUAL_KEYS, () => {
@@ -82,7 +114,7 @@ export default {
     return {
       ctrlActive,
       shiftActive,
-      lastDeviceIsTouch
+      isVisible
     }
   }
 }
@@ -108,17 +140,9 @@ export default {
   line-height: 1;
 }
 
-.virtual-key:hover {
-  background-color: rgba(128, 128, 128, 0.3);
-}
-
 .virtual-key:focus {
   outline: none;
   box-shadow: none;
-}
-
-.virtual-key:active {
-  background-color: rgba(128, 128, 128, 0.3);
 }
 
 .virtual-key.active {

@@ -99,6 +99,12 @@ export default {
     const toolLabelId = computed(() => `${toolId.value}_label`)
 
     const handleClick = (event) => {
+      // Hide the popover to prevent it from dangling on touch devices
+      const labelEl = document.getElementById(toolLabelId.value)
+      if (labelEl && labelEl._popover) {
+        labelEl._popover.hide()
+      }
+
       const toolId = props.id
       app.hideWelcome()
       app.editor.addingObjType = toolId

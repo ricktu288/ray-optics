@@ -172,6 +172,7 @@ export default {
   height: 40px;
   transform: translate(-50%, -50%);
   user-select: none;
+  -webkit-user-select: none;
 }
 
 </style>
