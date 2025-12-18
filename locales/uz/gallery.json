@@ -6,7 +6,8 @@
       "title": "Kategoriyalar",
       "reflection": "Akslanish",
       "refraction": "Sinish",
-      "lens": "Linzalar"
+      "lens": "Linzalar",
+      "combinationOfLenses": "Linzalar kombinatsiyasi"
     }
   }
 }
