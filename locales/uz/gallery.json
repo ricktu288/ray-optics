@@ -1,1 +1,12 @@
-{}
+{
+  "galleryPage": {
+    "title": "Optik Galereya",
+    "description": "Bu [veb-ilova](/simulator) yordamida yaratilgan simulyatsiyalar to‘plami bo‘lib, ularni optikani interaktiv tarzda namoyish etish uchun foydalanish mumkin. Siz yangi materiallar qo‘shishingiz mumkin. Batafsil ma’lumot uchun [hissa qo‘shish qo‘llanmasi](/contributing/gallery) bilan tanishing. Xatolikni bildirish uchun [GitHub’da issue oching](/github/issues) yoki [ray-optics@phydemo.app](/email) manziliga elektron pochta yuboring.",
+    "categories": {
+      "title": "Kategoriyalar",
+      "reflection": "Akslanish",
+      "refraction": "Sinish",
+      "lens": "Linzalar"
+    }
+  }
+}
