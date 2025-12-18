@@ -1,1 +1,12 @@
-{}
+{
+  "project": {
+    "name": "Optika simulyatsiyasi",
+    "shortName": "Optika",
+    "description": "2D geometrik optik sahnalarni yaratish va simulyatsiya qilish uchun mo‘ljallangan bepul, ochiq manbali veb-ilova."
+  },
+  "pages": {
+    "simulator": "Simulyator",
+    "home": "Bosh sahifa",
+    "gallery": "Galereya"
+  }
+}
