@@ -1,1 +1,12 @@
-{}
+{
+  "welcome": {
+    "title": "Optika simulyatsiyasiga xush kelibsiz",
+    "instruction": "Optik komponent qo‘shish uchun asbobni tanlang va bo‘sh joyga bosing.\nNamunani yuklash uchun [Galereya sahifasiga o‘ting](/gallery).",
+    "loading": "Sahna havola orqali yuklanmoqda… Iltimos, kuting."
+  },
+  "common": {
+    "saveButton": "Saqlash",
+    "cancelButton": "Bekor qilish",
+    "defaultOption": "Odatdagi"
+  }
+}
