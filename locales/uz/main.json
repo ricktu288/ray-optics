@@ -7,6 +7,7 @@
   "pages": {
     "simulator": "Simulyator",
     "home": "Bosh sahifa",
-    "gallery": "Galereya"
+    "gallery": "Galereya",
+    "modules": "Modullar"
   }
 }
