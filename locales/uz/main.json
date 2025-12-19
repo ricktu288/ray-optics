@@ -9,5 +9,11 @@
     "home": "Bosh sahifa",
     "gallery": "Galereya",
     "modules": "Modullar"
+  },
+  "meta": {
+    "languageName": "O‘zbekcha",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
