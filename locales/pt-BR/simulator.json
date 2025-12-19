@@ -11,7 +11,8 @@
     "customOption": "Personalizado",
     "closeButton": "Fechar",
     "resetButton": "Reiniciar",
-    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças."
+    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças.",
+    "legacyOption": "Legado"
   },
   "file": {
     "title": "Arquivo",
