@@ -763,5 +763,17 @@
       "gallery": true
     },
     "firstCommit": "2025-12-12"
+  },
+  {
+    "name": "Qurbonsaid",
+    "githubEmails": [
+      "kuzatuvchi.my@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "uz"
+      ]
+    },
+    "firstCommit": "2025-12-18"
   }
 ]

@@ -78,8 +78,8 @@
       "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0)."
     },
     "ConcaveDiffractionGrating": {
-      "title": "Grade de Difração Côncava",
-      "description": "Uma grade de difração cuja forma é parte de um círculo."
+      "title": "Rede de Difração Côncava",
+      "description": "Uma rede de difração cuja forma é parte de um círculo."
     },
     "PlaneGlass": {
       "title": "Semi-plano",
@@ -139,8 +139,8 @@
       "instruction": "Arraste ou clique nas duas pontas para criar."
     },
     "DiffractionGrating": {
-      "title": "Grade de Difração",
-      "description": "Uma grade de difração que divide luz em um ângulo dependente do comprimento de onda.",
+      "title": "Rede de Difração",
+      "description": "Uma rede de difração que divide luz em um ângulo dependente do comprimento de onda.",
       "warning": "Aviso: As intensidades de raios difratados podem não ser precisas."
     },
     "Ruler": {

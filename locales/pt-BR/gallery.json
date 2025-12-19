@@ -470,9 +470,9 @@
     },
     "reflectingMonochromator": {
       "title": "Monocromador Refletor",
-      "description": "Esta é uma simulação de um monocromador refletor, que usa uma grade de difração refletora e um vão no foco para obter comprimentos de onda de banda estreita a partir de luz composta.",
+      "description": "Esta é uma simulação de um monocromador refletor, que usa uma rede de difração refletora e um vão no foco para obter comprimentos de onda de banda estreita a partir de luz composta.",
       "reflectingmonochroma": "Monocromador Refletor",
-      "rotatediffractiongra": "Gire Grade de Difração \npara obter comprimentos\nde onda de banda estreita\na partir de luz composta",
+      "rotatediffractiongra": "Gire Rede de Difração \npara obter comprimentos\nde onda de banda estreita\na partir de luz composta",
       "exitslitmonochromati": "Fenda de saída\n\nLuz Monocromática"
     },
     "solarEclipses": {
@@ -536,6 +536,15 @@
     "opticsOfHumanEye": {
       "title": "Ótica do olho humano",
       "description": "Esta é uma simulação sobre o funcionamento do olho. Você pode mudar o tamanho da pupila e o comprimento focal da lente."
+    },
+    "classicalCassegrainTelescopes": {
+      "title": "Telescópios Cassegrain clássicos",
+      "description": "Esta simulação mostra dois tipos de telescópios Cassegrain clássicos.",
+      "concaveparabolicmirr": "espelho parabólico côncavo",
+      "convexhyperbolicmirr": "espelho hiperbólico convexo",
+      "convexparabolicmirro": "espelho parabólico convexo",
+      "classicalcassegrain": "Cassegrain clássico",
+      "collimator": "colimador"
     }
   }
 }
