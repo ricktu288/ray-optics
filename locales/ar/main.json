@@ -9,5 +9,11 @@
     "parentheses": "{{main}} ({{sub}})",
     "colon": "{{name}}: {{value}}",
     "list": "{{first}}, {{others}}"
+  },
+  "pages": {
+    "simulator": "المحاكي",
+    "home": "الرئيسية",
+    "gallery": "المعرض(مشاريع جاهزة)",
+    "modules": "وحدات"
   }
 }
