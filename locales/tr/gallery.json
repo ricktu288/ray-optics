@@ -1,1 +1,35 @@
-{}
+{
+  "galleryPage": {
+    "title": "Ray Optics Galerisi",
+    "description": "Bu, optik konusunda etkileşimli demolar olarak kullanılabilen [web uygulaması](/simulator) kullanılarak yapılan simülasyonların bir koleksiyonudur. Yeni öğeler ekleyerek katkıda bulunabilirsiniz. Daha fazla bilgi için [katkı kılavuzuna](/contributing/gallery) bakın. Bir hatayı bildirmek için lütfen [GitHub'da bir sorun açın](/github/issues) veya [ray-optics@phydemo.app](/email) adresine e-posta gönderin.",
+    "categories": {
+      "title": "Kategoriler",
+      "reflection": "Yansıma",
+      "refraction": "Kırılma",
+      "lens": "Mercek",
+      "combinationOfLenses": "Merceklerin Kombinasyonu",
+      "grinOptics": "Gradyan-indeks optiği",
+      "miscellaneous": "Çeşitli"
+    },
+    "contributors_one": "Katkıda bulunan: {{contributors}}",
+    "contributors_other": "Katkıda bulunanlar: {{contributors}}",
+    "openInSimulator": "Simülatörde aç"
+  },
+  "galleryData": {
+    "retroreflectors": {
+      "description": "Bu, iki tür retroreflektörün simülasyonudur:\n\n1. Köşe retroreflektörü.\n2. Kedi gözü retroreflektörü.",
+      "dragtorotatethebeam": "Sürükleyerek\nışını döndürün",
+      "catseyeretroreflecto": "Kedi gözü retroreflektör",
+      "cornerretroreflector": "Köşe retroreflektör"
+    },
+    "periscope": {
+      "title": "Periskop",
+      "description": "Bu, iki düz ayna ve bazı ışık engelleyicilerden yapılmış bir periskop simülasyonudur.",
+      "observerseyenottosca": "Gözlemcinin gözü (ölçekli değildir)"
+    },
+    "newtonianTelescope": {
+      "title": "Newtoniyen Teleskop",
+      "description": "Bu, Plössl okülerli bir Newtoniyen teleskop modelidir."
+    }
+  }
+}
