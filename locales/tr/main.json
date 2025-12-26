@@ -1,1 +1,54 @@
-{}
+{
+  "project": {
+    "name": "Ray Optik Simülasyonu",
+    "shortName": "Ray Optics",
+    "description": "2D geometrik optik sahneler oluşturmak ve simüle etmek için ücretsiz, açık kaynaklı bir web uygulaması."
+  },
+  "pages": {
+    "simulator": "Simülatör",
+    "home": "Anasafya",
+    "gallery": "Galeri",
+    "modules": "Moedüller",
+    "about": "Hakkında",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "2B geometrik optik sahneleri etkileşimli olarak oluşturun ve simüle edin.\nTamamen ücretsiz ve web tabanlıdır. Kaynak kodu [GitHub'da mevcuttur](/github).",
+    "launchSimulator": "Simülatörü Başlat"
+  },
+  "tools": {
+    "title": "Araçlar",
+    "categories": {
+      "lightSource": "Işık Kaynağı",
+      "mirror": "Ayna",
+      "glass": "Cam",
+      "blocker": "Engelleyici",
+      "other": "Diğer"
+    },
+    "common": {
+      "clickInstruction": "Oluşturmak için tıklayın.",
+      "lineInstruction": "Oluşturmak için sürükleyin veya tıklayın.",
+      "circleInstruction": "Oluşturmak için sürükleyin veya tıklayın, önce merkezi, sonra çevresini."
+    },
+    "SingleRay": {
+      "title": "Tek ışın",
+      "description": "İki nokta ile tanımlanan tek bir ışık ışını.",
+      "instruction": "Sürükleyin veya tıklayın, önce kaynağı, ardından yönü oluşturun."
+    },
+    "Beam": {
+      "title": "Işın",
+      "description": "Bir çizgi segmentinden paralel veya farklı yönlere yayılan ışın demeti çıkar ve yoğunluğu ‘Işın yoğunluğu’ sürgüsü ile kontrol edilir."
+    },
+    "PointSource": {
+      "title": "Nokta kaynağı",
+      "description": "Işınlar tek bir noktadan çıkar ve sayısı ‘Işın yoğunluğu’ sürgüsü ile kontrol edilir."
+    },
+    "AngleSource": {
+      "instruction": "Sürükleyin veya tıklayın, önce kaynağı, ardından yönü oluşturun.",
+      "description": "Belirli bir emisyon açısına sahip nokta kaynağı."
+    },
+    "Mirror": {
+      "title": "Bölüm(segment)"
+    }
+  }
+}
