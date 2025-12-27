@@ -1,0 +1,428 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+      float: left;
+      margin-right: 9px;
+      margin-bottom: 9px;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+    ::-webkit-scrollbar {
+      background: none;
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: solid 0 rgba(0, 0, 0, 0);
+      border-right-width: 4px;
+      border-left-width: 4px;
+      -webkit-border-radius: 6px 2px;
+      -webkit-box-shadow:
+      inset 0 0 0 0px rgba(112, 112, 112, 0.35),
+      inset 0 0 0 4px rgba(112, 112, 112, 0.35);
+    }
+    ::-webkit-scrollbar-track-piece {
+      margin: 4px 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        border-right-width: 3px;
+        border-left-width: 3px;
+      -webkit-box-shadow:
+        inset 0 0 0 0px rgba(128,128,128,0.9),
+        inset 0 0 0 4px rgba(128,128,128,0.9);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul style="padding-left: 1.5rem;">
+      <li>Функция «Модуль» позволяет создавать новые инструменты путем комбинирования, специализации или перепараметризации объектов, созданных существующими инструментами в этом симуляторе.</li>
+      <li>Импортированные модули будут отображаться как инструменты в категории «Другое». Выберите и щелкните пустое место в соответствии с порядком последовательности контрольных точек (см. «Спецификация»).</li>
+      <li>Импортированные модули встроены в данные сцены, поэтому не будут автоматически обновляться при обновлении модулей авторами.</li>
+    </ul>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/FresnelLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/FresnelLens-thumbnail.jpg" alt="Линза Френеля" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Линза Френеля (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Линза Френеля, сделанная из полукруглого куска стекла. Модульная версия <a target="_blank" href="../../gallery/fresnel-lens">этого примера галереи</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-FresnelLens" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Первая конечная точка линзы</li>
+        <li>Вторая конечная точка линзы</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>N_slice</code>: Количество ломтиков</li>
+        <li><code>refIndex</code>: Показатель преломления линзы</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/ContSpectrum-thumbnail.avif" type="image/avif">
+        <img src="../../modules/ContSpectrum-thumbnail.jpg" alt="Источник света непрерывного спектра" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Источник света непрерывного спектра (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Источник света с равномерным непрерывным спектром, дискретизированным с заданным постоянным шагом. Работает только при включенном &quot;Имитировать цвета&quot;.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-ContSpectrum" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Происхождение лучей</li>
+        <li>Определяет направление лучей</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>min</code>: Минимальная длина волны</li>
+        <li><code>step</code>: Шаг длины волны</li>
+        <li><code>max</code>: Максимальная длина волны</li>
+        <li><code>brightness</code>: Общая яркость</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CoatedLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CoatedLens-thumbnail.jpg" alt="Coated Spherical Lens" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Coated Spherical Lens (<code>CoatedLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CoatedLens'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          A spherical lens with single-layer coatings on both sides. The <code>ArcCoating</code> module embedded in this module represents a single thin-film layer, which when overlapping with a glass&#39; surface becomes its coating.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CoatedLens">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CoatedLens" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>The center of the lens</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>h</code>: The height of the lens</li>
+        <li><code>d</code>: The thickness of the lens</li>
+        <li><code>R_1</code>: The radius of curvature of the front surface</li>
+        <li><code>R_2</code>: The radius of curvature of the back surface</li>
+        <li><code>A</code>: The Cauchy coefficient \(A\) of the glass</li>
+        <li><code>B</code>: The Cauchy coefficient \(B\) of the glass in square micrometers</li>
+        <li><code>d_c</code>: The thickness of the coating layer in nanometers</li>
+        <li><code>A_c</code>: The Cauchy coefficient \(A\) of the coating material</li>
+        <li><code>B_c</code>: The Cauchy coefficient \(B\) of the coating material in square micrometers</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CircleSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CircleSource-thumbnail.jpg" alt="Круглый источник света" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Круглый источник света (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Круг с равномерно расположенными по его окружности точечными источниками света со стороной 180 градусов.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CircleSource" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Центр круга</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>r</code>: Радиус окружности</li>
+        <li><code>N</code>: Количество точечных источников</li>
+        <li><code>brightness</code>: Общая яркость</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/EllipticalMirror-thumbnail.avif" type="image/avif">
+        <img src="../../modules/EllipticalMirror-thumbnail.jpg" alt="Elliptical Mirror" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Elliptical Mirror (<code>EllipticalMirror</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'EllipticalMirror'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          An elliptical mirror defined by the two foci and the length of the semi-major axis.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-EllipticalMirror">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-EllipticalMirror" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>The first focus</li>
+        <li>The second focus</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>a</code>: The length of the semi-major axis</li>
+        <li><code>tMin</code>: The minimum angle of the curve</li>
+        <li><code>tMax</code>: The maximum angle of the curve</li>
+        <li><code>tStep</code>: The step angle of the curve</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/Chaff-thumbnail.avif" type="image/avif">
+        <img src="../../modules/Chaff-thumbnail.jpg" alt="Мякина" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Мякина (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Чафф прямоугольной формы, состоящий из случайных кусков зеркал. Модульная версия <a target="_blank" href="../../gallery/chaff-countermeasure">этого примера галереи</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-Chaff" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Верхний левый угол шелухи</li>
+        <li>Правый нижний угол шелухи</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>N</code>: Число зеркал в мякине</li>
+        <li><code>L</code>: Длина зеркал</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/BeamExpander-thumbnail.avif" type="image/avif">
+        <img src="../../modules/BeamExpander-thumbnail.jpg" alt="Расширитель луча" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Расширитель луча (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Комбинация двух идеальных линз, сумма фокусных расстояний которых равна расстоянию между ними. Они расширяют или уменьшают диаметр пучка коллимированного света. Модульная версия <a target="_blank" href="../../gallery/beam-expanders">этого примера галереи</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-BeamExpander" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Центр первой линзы</li>
+        <li>Вторая точка второй линзы</li>
+        <li>Определяет общую фокусную точку линз</li>
+      </ol>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RayRelay-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RayRelay-thumbnail.jpg" alt="Рэй Реле" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Рэй Реле (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Серия идеальных идентичных линз с фокусным расстоянием \(f\) и расстоянием \(d\) между линзами. Нерасходящаяся траектория луча гарантируется тогда и только тогда, когда \(d\leq 4f\). Модуляризированная версия <a target="_blank" href="../../gallery/ray-relaying">этого примера галереи</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RayRelay" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Первая концевая точка первой линзы</li>
+        <li>Вторая конечная точка первой линзы (должна иметь тот же \(x\), что и первая точка)</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>f</code>: Фокусное расстояние линз</li>
+        <li><code>d</code>: Расстояние между линзами</li>
+        <li><code>N</code>: Количество линз</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/OpticalFiber-thumbnail.avif" type="image/avif">
+        <img src="../../modules/OpticalFiber-thumbnail.jpg" alt="Оптоволокно" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Оптоволокно (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Оптическое волокно линейной формы с заданными толщиной и показателями преломления сердцевины и оболочки.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-OpticalFiber" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Первая конечная точка оптического волокна</li>
+        <li>Вторая конечная точка оптического волокна</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>X</code>: Толщина сердцевины</li>
+        <li><code>Y</code>: Толщина оболочки</li>
+        <li><code>n_1</code>: Показатель преломления сердцевины</li>
+        <li><code>n_2</code>: Показатель преломления оболочки</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CubeBeamSplitter-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CubeBeamSplitter-thumbnail.jpg" alt="Кубический разделитель лучей" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Кубический разделитель лучей (<code>CubeBeamSplitter</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CubeBeamSplitter'},'*');this.innerText='Импортировано';this.classList.remove('btn-primary');this.classList.add('btn-success');">Импортировать</button></p>
+        <p class="module-contributor">Feng</p>
+        <span id="module-desc">
+          Кубический делитель луча - широко используемый оптический компонент. Этот модуль представляет собой кубический делитель луча, который можно регулировать по размеру и углу наклона.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CubeBeamSplitter">
+          Спецификация
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CubeBeamSplitter" class="collapse">
+      Последовательность контрольных точек
+      <ol>
+        <li>Центр куба (квадрата)</li>
+      </ol>
+      Параметры
+      <ul>
+        <li><code>size</code>: Размер куба</li>
+        <li><code>angle</code>: Угол поворота куба в градусах</li>
+        <li><code>refIndex</code>: Показатель преломления куба (или коэффициент Коши \(A\), если включена функция &quot;Моделировать цвета&quot;)</li>
+        <li><code>cauchyB</code>: Коэффициент Коши \(B\) куба в квадратном микрометре</li>
+        <li><code>splitRatio</code>: Коэффициент передачи диагонального делителя луча</li>
+      </ul>
+    </div>
+
+    <h2>Кастомизация</h2>
+    <p>Модули можно создавать или настраивать непосредственно в веб-приложении с помощью встроенного редактора JSON. См. <a target="_blank" href="../../ru/modules/tutorial">руководство</a>. Настройка импортированных модулей повлияет только на текущую сцену.</p>
+
+    <h2>Вклад</h2>
+    <p>Приветствуется участие в списке выше. Чтобы внести свой модуль, см. <a target="_blank" href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">Внесение модулей</a>.</p>
+  </div>
+
+  <script src="../../thirdparty/jquery.min.js"></script>
+  <script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

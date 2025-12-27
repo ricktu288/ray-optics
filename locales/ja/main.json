@@ -1,0 +1,196 @@
+{
+  "project": {
+    "name": "光線光学系シミュレーション",
+    "shortName": "光線光学",
+    "description": "2Dの幾何学的な光学場面を作成し、シミュレーションするための無料のオープンソースのウェブアプリケーションです。"
+  },
+  "pages": {
+    "home": "ホーム",
+    "gallery": "ギャラリー",
+    "about": "このソフトウェアについて",
+    "github": "GitHub",
+    "simulator": "シミュレーター",
+    "modules": "モジュール"
+  },
+  "homePage": {
+    "description": "2次元の幾何学的な光学シーンを双方向的にシミュレートすることができます。\n完全無料、ウェブベース。ソースコードは [GitHubで利用可能です。](/github).",
+    "launchSimulator": "シミュレーターを起動"
+  },
+  "tools": {
+    "title": "ツール",
+    "categories": {
+      "lightSource": "光源",
+      "mirror": "鏡",
+      "glass": "ガラス",
+      "blocker": "ブロッカ",
+      "other": "その他"
+    },
+    "common": {
+      "clickInstruction": "クリックして作成します。",
+      "lineInstruction": "ドラッグまたはクリックして作成します。",
+      "circleInstruction": "ドラッグまたはクリックして作成します。"
+    },
+    "SingleRay": {
+      "title": "光線",
+      "description": "2 つの点によって定義される単一光線。",
+      "instruction": "ドラッグまたはクリックして作成します。最初のポイントがソースとなり、2 番目のポイントで発射方向を決めます。"
+    },
+    "Beam": {
+      "title": "光束",
+      "description": "平行な光線が線分から現れ、密度は「光線密度」スライダーで調整できます。(Also supports divergent beams.)"
+    },
+    "PointSource": {
+      "title": "点源",
+      "description": "光線は 1 つの点から出現し、その数は「光線密度」スライダーで調整できます。"
+    },
+    "AngleSource": {
+      "instruction": "ドラッグまたはクリックして作成します。最初のポイントがソースとなり、2 番目のポイントで発射方向を決めます。",
+      "description": "指定された放射角度を持つ点光源。"
+    },
+    "Mirror": {
+      "title": "分割鏡",
+      "description": "鏡での光の反射をシミュレートします。"
+    },
+    "otherMirror": {
+      "title": "カスタム式",
+      "description": "カスタム方程式 y = f(x) によって形状が定義されるミラー。ここで (x,y) は、2 つの制御点が (-1,0) と (1,0) である変換された座標にあります。"
+    },
+    "ArcMirror": {
+      "title": "円弧鏡",
+      "description": "3 つの点で定義される円の一部の形状を持つ鏡。",
+      "instruction": "ドラッグまたはクリックして作成します。最初の 2 点は円弧のエッジ間のギャップを定義し、最後の点は円弧のサイズを定義します。"
+    },
+    "ParabolicMirror": {
+      "title": "放物線鏡",
+      "description": "3 つの点で定義される放物線の形状を持つ鏡。",
+      "instruction": "ドラッグまたはクリックして作成します。"
+    },
+    "IdealMirror": {
+      "title": "理想的なカーブ",
+      "description": "ミラー方程式 (1/p + 1/q = 1/f) に正確に従う理想的な「曲面」ミラー。 焦点距離を直接設定できます。"
+    },
+    "BeamSplitter": {
+      "title": "ビームスプリッター",
+      "description": "入ってくる光の一定の割合を透過するミラー。"
+    },
+    "CustomMirror": {
+      "title": "カスタム式",
+      "description": "カスタム方程式 y = f(x) によって形状が定義されるミラー。ここで (x,y) は、2 つの制御点が (-1,0) と (1,0) である変換された座標にあります。"
+    },
+    "PlaneGlass": {
+      "title": "半平面",
+      "description": "表面上の光の屈折と反射をシミュレートします。",
+      "instruction": "ドラッグまたはクリックして作成します。"
+    },
+    "otherGlass": {
+      "title": "カスタム式",
+      "description": "カスタム不等式f(x) < y < g(x)で定義される形状を持つガラスで、（x,y）は2つの制御点が（-1,0）と。"
+    },
+    "CircleGlass": {
+      "title": "円",
+      "description": "中心と表面上の点によって定義される円形のガラス。"
+    },
+    "Glass": {
+      "description": "線分と円弧から構成される任意の形状のガラス。",
+      "instruction": "クリックしてセグメントを作成し、ドラッグして円弧を作成し、描画が終了したら開始点をクリックします。",
+      "title": "多角形 / 円弧"
+    },
+    "IdealLens": {
+      "title": "理想的なレンズ",
+      "description": "薄いレンズの方程式 (1/p + 1/q = 1/f) に正確に従う理想的なレンズ。 焦点距離を直接設定できます。"
+    },
+    "SphericalLens": {
+      "title": "球面レンズ",
+      "description": "球面レンズ"
+    },
+    "CustomGlass": {
+      "title": "カスタム式",
+      "description": "カスタム不等式f(x) < y < g(x)で定義される形状を持つガラスで、（x,y）は2つの制御点が（-1,0）と。"
+    },
+    "Blocker": {
+      "title": "ラインブロッカー",
+      "description": "入射光線を吸収する線分型の遮光板です。"
+    },
+    "CircleBlocker": {
+      "title": "サークルブロッカー",
+      "description": "入射光線を吸収する円形の遮光板です。"
+    },
+    "Ruler": {
+      "title": "定規",
+      "description": "ゼロと別の点の点からの定規。"
+    },
+    "Protractor": {
+      "title": "分度器",
+      "description": "中心とゼロ方向の別の点から定義された分度器。 スケールは度単位です。"
+    },
+    "Detector": {
+      "title": "検出器",
+      "description": "線分を通るエネルギー流の速度 (P)、垂直運動量流の速度 (F⊥)、および平行運動量流の速度 (F∥) を測定するためのツールです。 単位は任意です。"
+    },
+    "TextLabel": {
+      "title": "テキスト",
+      "description": "テキストラベル."
+    },
+    "moveView": {
+      "title": "ビューを移動する",
+      "description": "ドラッグでビューを移動します。(マウスの右ボタンでドラッグしても同じ機能です）。"
+    },
+    "ParamMirror": {
+      "title": "パラメトリック曲線",
+      "description": "カスタムパラメトリック方程式によって形状が定義されるミラー。"
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "凹面回折格子",
+      "description": "曲面が円の一部である凹面回折格子。"
+    },
+    "ParamGlass": {
+      "title": "パラメトリック曲線",
+      "description": "カスタムパラメトリック方程式によって定義された形状を持つガラス。"
+    },
+    "CurveGlass": {
+      "title": "ベジェ曲線",
+      "description": "3次ベジェ曲線で囲まれたガラス。",
+      "instruction": "クリックしてピースを作成し、描画が完了したら開始点をクリックします。その後、ボックスをドラッグし制御点を操作することで曲線を変更します。"
+    },
+    "CircleGrinGlass": {
+      "title": "屈折率分布型円"
+    }
+  },
+  "view": {
+    "title": "ビュー",
+    "rays": {
+      "title": "光線",
+      "description": "光線を表示します。光線密度が高いと、連続しているように見えます。"
+    },
+    "extended": {
+      "title": "拡張光線",
+      "description": "光線とその延長線の両方を表示します。 オレンジは後方拡張を示し、グレーは前方拡張を示します。",
+      "simulateColorsNote": "「カラーのシミュレート」がオンの場合、それらはソース カラーで表示され、代わりにダッシュで区別されます。"
+    },
+    "images": {
+      "title": "すべての画像",
+      "description": "すべての画像の位置を表示します。 黄色の点は実像を示し、オレンジ色は虚像を示し、灰色 (この図には何もありません) は仮想オブジェクトを示します。 「レイ密度」が十分に高くない場合、一部のイメージは検出できないことに注意してください。",
+      "simulateColorsNote": "「カラーのシミュレート」がオンの場合、イメージはソース カラーで表示され、代わりにドット サイズによって区別されます。"
+    },
+    "observer": {
+      "title": "観察者が見た",
+      "description": "ある位置から見た光線と画像をシミュレートします。 青い丸が観察者です。 それを横切る光線はすべて「観測された」とみなされます。 観察者は、光線が実際にどこから始まるのかを知りませんが、光線が交差する場合、ある点で光線が始まると考えるかもしれません。 光線は青、点は黄色 (現実) またはオレンジ (仮想) で表示されます。",
+      "simulateColorsNote": "「カラーのシミュレート」がオンの場合、代わりにソース カラーで表示されます。",
+      "instruction": "大きな青い点をドラッグして観察者を移動します。"
+    }
+  },
+  "simulateColors": {
+    "title": "色のシミュレーション",
+    "description": "光源の色（波長）、色の混色、ガラスの波長分散をシミュレーションします。"
+  },
+  "languageDropdown": {
+    "title": "言語: {{language}}",
+    "translatedFraction": "{{fraction}} 翻訳済み"
+  },
+  "meta": {
+    "languageName": "日本語",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "welcome": {
+    "title": "광선 광학 시뮬레이션에 오신 것을 환영합니다",
+    "instruction": "광학 요소를 추가하려면 도구를 선택한 후 빈 공간을 클릭하십시오.\n예제를 불러오려면 [ 갤러리 페이지](/gallery)로 이동하십시오."
+  },
+  "common": {
+    "saveButton": "저장",
+    "cancelButton": "취소",
+    "closeButton": "닫기"
+  },
+  "file": {
+    "title": "파일",
+    "undo": {
+      "title": "실행 취소"
+    },
+    "redo": {
+      "title": "재실행"
+    },
+    "reset": {
+      "title": "재설정"
+    },
+    "save": {
+      "title": "저장"
+    },
+    "open": {
+      "title": "열기",
+      "description": "기존 파일이나 배경 이미지 열기. 배경 이미지는 좌표 원점을 기준으로 표시됩니다. (또는 파일을 올려놓으십시오.)"
+    },
+    "viewGallery": {
+      "title": "갤러리 보기",
+      "description": "예제를 불러오기 위해 갤러리로 이동."
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "more": "더 보기",
+    "rayDensity": {
+      "title": "광선 밀도",
+      "description": "빔이나 점광원으로부터 발생하는 광선의 개수를 결정합니다. 상 검출과 색 표현에도 영향을 미칩니다."
+    },
+    "layoutAids": {
+      "title": "레이아웃 도구",
+      "showGrid": "격자",
+      "snapToGrid": "격자선에 물리기",
+      "lockObjs": "사물 고정"
+    },
+    "zoom": {
+      "title": "확대/축소"
+    },
+    "language": {
+      "title": "언어"
+    },
+    "showHelpPopups": {
+      "title": "도움말 팝업 표시",
+      "description": "버튼 위를 지날 때 도움말을 표시할 지 결정합니다."
+    },
+    "advancedHelp": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "추가 옵션…"
+    },
+    "applyToAll": {
+      "title": "전체에 적용"
+    },
+    "duplicate": {
+      "title": "복제"
+    },
+    "delete": {
+      "title": "삭제"
+    },
+    "unselect": {
+      "title": "선택 해제",
+      "description": "이 물체의 선택을 해제합니다. (또는 빈 영역에 우클릭합니다.)"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "밝기",
+      "brightnessInfo": {
+        "rayDensity": "'광선 밀도'가 충분히 높을 때 유효합니다.",
+        "rayDensitySlider": "방출되는 광선의 개수를 조절하려면 '광선 밀도' 슬라이더를 조절하십시오."
+      },
+      "wavelength": "파장",
+      "emisAngle": "방출 각",
+      "random": "랜덤",
+      "lambert": "램버시안 (Lambertian)",
+      "focalLength": "초점 거리"
+    },
+    "Beam": {
+      "imageDetectionWarning": "발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
+    },
+    "AngleSource": {
+      "symmetric": "대칭"
+    },
+    "BaseFilter": {
+      "filter": "필터",
+      "bandwidth": "대역폭 (Bandwidth)",
+      "invert": "반전"
+    },
+    "IdealMirror": {
+      "cartesianSign": "직교좌표계 부호 변환"
+    },
+    "BeamSplitter": {
+      "transRatio": "전송률"
+    },
+    "BaseGlass": {
+      "refIndex": "굴절률",
+      "refIndexInfo": {
+        "relative": "다른 매질 내부에 있다면 상대 굴절률",
+        "effective": "이 물체를 (절대) 굴절률 n₁로 시뮬레이션하고자 하지만 굴절률 n₀인 다른 매질 안에 배치하는 경우 굴절률을 n₁/n₀로 설정해야 합니다. 여러 매질이 서로 겹쳐지는 복잡한 경우에는 겹치는 영역의 유효 굴절률(effective refractive index)이 각 매질의 굴절률의 곱과 같습니다."
+      },
+      "cauchyCoeff": "코시 계수 (Cauchy coefficient)"
+    },
+    "TextLabel": {
+      "fontSize": "폰트 크기",
+      "font": "폰트",
+      "fontStyle": "스타일",
+      "alignment": "정렬",
+      "smallCaps": "Small Caps",
+      "angle": "각도"
+    },
+    "CropBox": {
+      "svgWarning": "SVG로 추출하기. 색상 혼합, 실제 밝기, 또는 1 미만의 상대 굴절률은 지원되지 않습니다."
+    }
+  },
+  "saveModal": {
+    "title": "저장",
+    "fileName": "이름"
+  },
+  "languageModal": {
+    "title": "언어",
+    "translatedFraction": "번역 됨",
+    "helpTranslate": "이 앱의 번역 참여"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "URL이 너무 길어서 일부 플랫폼에서 작동하지 않을 수 있습니다. 이 경우 \"저장\"을 사용해 파일을 공유하십시오."
+  },
+  "footer": {
+    "processing": "작업 중... 클릭하여 중단."
+  }
+}
