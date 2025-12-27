@@ -1,0 +1,50 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "“Modül” özelliği, bu simülatörde mevcut araçlar tarafından oluşturulan nesneleri birleştirerek, özelleştirerek veya yeniden yapılandırarak yeni araçlar oluşturmaya olanak tanır.",
+      "appearAsTools": "İçe aktarılan modüller “Diğer” kategorisinde araçlar olarak görünecektir. Kontrol noktası sırasına göre boş alanı seçin ve tıklayın (bkz. “Özellikler”).",
+      "embeddedInScene": "İçe aktarılan modüller sahnenin verilerine gömülüdür, bu nedenle modüllerin yazarları bunları güncellediğinde otomatik olarak güncellenmezler."
+    },
+    "import": "İçeri aktar",
+    "imported": "İçeri aktarıldı",
+    "specification": {
+      "title": "Özellikler",
+      "controlPointSequence": "Kontrol noktası serisi",
+      "parameters": "Değişkenler"
+    },
+    "customization": {
+      "title": "Kişiselleştirme",
+      "description": "Modüller, yerleşik JSON düzenleyicisi kullanılarak doğrudan web uygulaması içinde oluşturulabilir veya özelleştirilebilir. [Öğreticiye bakın](/modules/tutorial). İçe aktarılan modüllerin özelleştirilmesi yalnızca mevcut sahneyi etkiler."
+    },
+    "contribution": {
+      "title": "Katkı",
+      "description": "Yukarıdaki listeye katkı yapabilirsiniz. Modülünüzü katkıda bulunmak için [Modül katkısı](/contributing/modules) bölümüne bakın."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Fresnel Merceği",
+      "description": "Yarım daire şeklinde bir cam parçasından yapılmış Fresnel merceği. [Bu Galeri örneğinin](/gallery/fresnel-lens) modülerleştirilmiş versiyonu.",
+      "point1": "Merceğin ilk uç noktası",
+      "point2": "Merceğin ikinci uç noktası",
+      "Nslice": "Dilim sayısı",
+      "refIndex": "Merceğin kırılma indisi"
+    },
+    "ContSpectrum": {
+      "title": "Sürekli spektrum ışık kaynağı",
+      "description": "Belirli bir sabit adımla ayrıştırılmış, düzgün bir sürekli spektruma sahip ışık kaynağı. Yalnızca “Renkleri Simüle Et” seçeneği açıkken çalışır.",
+      "point1": "Işınların kaynağı",
+      "point2": "Işınların yönünü belirler",
+      "min": "Minimum dalga boyu",
+      "step": "Dalgaboyu adımı",
+      "max": "Maksimum dalgaboyu",
+      "brightness": "Toplam parlaklık"
+    },
+    "CoatedLens": {
+      "title": "Kaplamalı Küresel Mercek",
+      "description": "Her iki tarafında tek katmanlı kaplamalar bulunan küresel bir mercek. Bu modüle gömülü olan `ArcCoating` modülü, cam yüzeyi ile örtüştüğünde kaplaması haline gelen tek bir ince film tabakasını temsil eder.",
+      "point1": "Merceğin merkezi",
+      "h": "Merceğin yüksekliği"
+    }
+  }
+}

@@ -3,5 +3,12 @@
     "title": "مرحبًا بكم في Ray Optics Simulation",
     "instruction": "لإضافة مكون بصري، حدد أداة وانقر على المساحة الفارغة. لتحميل مثال، يُرجى [الانتقال إلى صفحة المعرض](/gallery).",
     "loading": "جاري تحميل المشهد من الرابط…يرجى الانتظار."
+  },
+  "common": {
+    "saveButton": "حفظ",
+    "cancelButton": "الغاء",
+    "customOption": "مُخصص",
+    "closeButton": "اغلاق",
+    "resetButton": "اعادة ضبط"
   }
 }

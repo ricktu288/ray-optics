@@ -118,6 +118,10 @@
       "title": "Solution du labyrinthe",
       "description": "Il s'agit d'une simulation d'un rayon lumineux provenant de l'intérieur d'un labyrinthe et réfléchi à plusieurs reprises par les murs. Les carrés rouges plus grands et plus petits à l'intérieur du labyrinthe (visibles sur la capture d'écran ci-dessous) représentent respectivement l'origine et la direction initiale du rayon lumineux. Pour certaines orientations initiales du rayon lumineux, celui-ci sort du labyrinthe, et ainsi, en retraçant le chemin du rayon, une solution au labyrinthe peut en principe être calculée.",
       "controltherayorigina": "Contrôlez l'origine et la direction initiale du rayon en\nfaisant glisser les marqueurs supérieur et inférieur (respectivement)."
+    },
+    "classicalCassegrainTelescopes": {
+      "concaveparabolicmirr": "miroir parabolique concave",
+      "convexhyperbolicmirr": "miroir parabolique convexe"
     }
   }
 }

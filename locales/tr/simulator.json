@@ -1,0 +1,61 @@
+{
+  "welcome": {
+    "title": "Ray Optik Simülasyonuna Hoş Geldiniz",
+    "instruction": "Optik bileşen eklemek için bir araç seçin ve boş alana tıklayın.\nÖrnek yüklemek için lütfen [Galeri sayfasına gidin](/gallery).",
+    "loading": "URL' den sahne yükleniyor… Lütfen bekleyin."
+  },
+  "common": {
+    "saveButton": "Kaydet",
+    "cancelButton": "İptal",
+    "defaultOption": "Varsayılan",
+    "legacyOption": "Lisans",
+    "customOption": "Kişisel",
+    "closeButton": "Kapat",
+    "resetButton": "Sıfırla",
+    "reloadToTakeEffect": "Etkinleştirmek için lütfen sayfayı yeniden yükleyin."
+  },
+  "file": {
+    "title": "Dosya",
+    "undo": {
+      "title": "Geri al"
+    },
+    "redo": {
+      "title": "İleri git"
+    },
+    "reset": {
+      "title": "İptal"
+    },
+    "save": {
+      "title": "Kaydet"
+    },
+    "open": {
+      "title": "Aç",
+      "description": "Mevcut bir dosyayı veya arka plan görüntüsünü açın. Arka plan görüntüsü koordinat başlangıç noktasından gösterilecektir. (Veya dosyayı bırakın)"
+    },
+    "export": {
+      "title": "PNG/SVG olarak dışa aktar"
+    },
+    "copyLink": {
+      "title": "Paylaşılabilir Bağlantıyı Kopyala",
+      "description": "Kopyalayın ve paylaşım için kullanılabilecek (muhtemelen bir URL kısaltıcı aracılığıyla) mevcut sahnenin doğrudan URL 'sine gidin. Ayrıca Ayarlar -> Otomatik senkronizasyon URL' si bölümüne bakın."
+    },
+    "viewGallery": {
+      "title": "Galeriyi Görüntüle",
+      "description": "Örnek yüklemek için Galeri web sayfasına gidin."
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "more": "Daha fazla",
+    "rayDensity": {
+      "title": "Işın Yoğunluğu",
+      "description": "Işınlar ve nokta kaynakları tarafından yayılacak ışınların sayısını belirler. Bu, görüntü algılama ve renk sunumunun doğruluğunu da etkiler."
+    },
+    "layoutAids": {
+      "title": "Düzen Yardımcıları",
+      "showGrid": "Izgara",
+      "snapToGrid": "Izgara'ya Yapıştır",
+      "lockObjs": "Nesneleri Kilitle"
+    }
+  }
+}
