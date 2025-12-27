@@ -50,5 +50,11 @@
     "Mirror": {
       "title": "Bölüm(segment)"
     }
+  },
+  "meta": {
+    "languageName": "Türkçe",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
