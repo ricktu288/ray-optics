@@ -775,5 +775,41 @@
       ]
     },
     "firstCommit": "2025-12-18"
+  },
+  {
+    "name": "Georges Le Goaster",
+    "githubEmails": [
+      "g.legoaster@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2025-12-21"
+  },
+  {
+    "name": "Mars goshi",
+    "githubEmails": [
+      "mars536325@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "ar"
+      ]
+    },
+    "firstCommit": "2025-12-23"
+  },
+  {
+    "name": "Levent Candan",
+    "githubEmails": [
+      "leventcandan@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "tr"
+      ]
+    },
+    "firstCommit": "2025-12-25"
   }
 ]
