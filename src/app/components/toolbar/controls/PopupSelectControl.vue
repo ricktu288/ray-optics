@@ -16,7 +16,7 @@
 
 <template>
   <div 
-    class="row d-flex justify-content-between align-items-center"
+    class="row settings-control-row d-flex justify-content-between align-items-center"
     v-tooltip-popover:[tooltipType]="layout === 'desktop' && popoverContent ? { 
       content: popoverContent,
       html: true,
@@ -27,7 +27,7 @@
     <div class="col-auto settings-label" v-html="label"></div>
     <div class="col-auto d-flex align-items-center">
       <button 
-        class="btn shadow-none dropdown-toggle" 
+        class="btn shadow-none dropdown-toggle settings-popup-btn" 
         type="button" 
         :data-bs-toggle="popupType"
         :data-bs-target="`#${popupTarget}`"
@@ -113,3 +113,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.settings-popup-btn {
+  height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-right: 4px;
+}
+</style>

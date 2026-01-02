@@ -16,7 +16,7 @@
 
 <template>
   <div 
-    class="row d-flex justify-content-between align-items-center"
+    class="row settings-control-row d-flex justify-content-between align-items-center"
     v-tooltip-popover:[tooltipType]="layout === 'desktop' && popoverContent ? { 
       content: popoverContent,
       html: true,
@@ -31,7 +31,7 @@
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
         </svg>
       </button>
-      <span class="mx-2">{{ displayValue }}</span>
+      <span class="percentage-value">{{ displayValue }}</span>
       <button class="btn shadow-none range-plus-btn" @click="handlePlus">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -116,3 +116,20 @@ export default {
   emits: ['update:modelValue']
 }
 </script>
+
+<style scoped>
+.range-minus-btn,
+.range-plus-btn {
+  height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.percentage-value {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+</style>
