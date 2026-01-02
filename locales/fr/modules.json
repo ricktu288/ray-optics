@@ -40,6 +40,15 @@
       "max": "La longueur d'onde maximale",
       "brightness": "Intensité totale"
     },
+    "CoatedLens": {
+      "title": "Lentille sphérique traitée en surface",
+      "description": "Une lentilles sphérique avec une seul couche de revêtements de chaque cotés. Les module \"ArcCoating\" intégrés dans ce module représente une seule couche de film fin, qui quand il a un chevauchement avec une surface en verre celle-ci devient son revêtement.",
+      "point1": "Le centre de la lentille",
+      "h": "La largeur de la lentille",
+      "d": "L'epaisseur de la lentille",
+      "R1": "Le rayon de courbure de la face avant",
+      "R2": "Le rayon de courbure de la face arrière"
+    },
     "CircleSource": {
       "title": "Source de lumière circulaire",
       "description": "Un cercle avec des sources lumineuses à 180° placées uniformément le long de sa circonférence.",
@@ -50,15 +59,6 @@
     },
     "Chaff": {
       "L": "La longueur des miroirs"
-    },
-    "CoatedLens": {
-      "title": "Lentille sphérique traitée en surface",
-      "description": "Une lentilles sphérique avec une seul couche de revêtements de chaque cotés. Les module \"ArcCoating\" intégrés dans ce module représente une seule couche de film fin, qui quand il a un chevauchement avec une surface en verre celle-ci devient son revêtement.",
-      "point1": "Le centre de la lentille",
-      "h": "La largeur de la lentille",
-      "d": "L'epaisseur de la lentille",
-      "R1": "Le rayon de courbure de la face avant",
-      "R2": "Le rayon de courbure de la face arrière"
     }
   }
 }

@@ -79,12 +79,12 @@
     "showAdvancedSettings": {
       "title": "Mais configurações da cena…"
     },
+    "theme": {
+      "title": "Tema"
+    },
     "colorMode": {
       "title": "Modo de Cor",
       "description": "Determina como os brilhos (e cores se \"Simular Cores\" estiver ligado) dos raios ou imagens são mapeados a cores no ecrã. É configurável somente enquanto se utiliza \"Corrigir Brilho\"."
-    },
-    "theme": {
-      "title": "Tema"
     },
     "language": {
       "title": "Linguagem",

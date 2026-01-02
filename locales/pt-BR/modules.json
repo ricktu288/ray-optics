@@ -40,6 +40,20 @@
       "max": "O comprimento de onda máximo",
       "brightness": "O brilho total"
     },
+    "CoatedLens": {
+      "title": "Lente Esférica Revestida",
+      "description": "Uma lente esférica com revestimento de camada única em ambos os lados. O módulo `ArcCoating` inserido neste módulo representa uma única camada de filme fino, que, quando se sobrepõe com uma superfície de vidro, se torna seu revestimento.",
+      "point1": "O centro da lente",
+      "h": "A altura da lente",
+      "d": "A espessura da lente",
+      "R1": "O raio de curvatura da superfície frontal",
+      "R2": "O raio de curvatura da superfície traseira",
+      "A": "O coeficiente de Cauchy \\(A\\) do vidro",
+      "B": "O coeficiente de Cauchy \\(B\\) do vidro em micrômetros quadrados",
+      "dc": "A espessura da camada de revestimento em nanômetros",
+      "Ac": "O coeficiente de cauchy \\(A\\) do material do revestimento",
+      "Bc": "O coeficiente de Cauchy \\(B\\) do material do revestimento em micrômetros quadrados"
+    },
     "CircleSource": {
       "title": "Fonte de luz circular",
       "description": "Um círculo com fontes pontuais de 180 graus uniformes colocadas ao redor de sua circunferência.",
@@ -47,6 +61,16 @@
       "r": "O raio do círculo",
       "N": "O número de fontes pontuais",
       "brightness": "O brilho total"
+    },
+    "EllipticalMirror": {
+      "title": "Espelho Elíptico",
+      "description": "Um espelho elíptico definido pelos dois focos e o comprimento do semieixo maior.",
+      "point1": "O primeiro foco",
+      "point2": "O segundo foco",
+      "a": "O comprimento do semieixo maior",
+      "tMin": "O mínimo ângulo da curva",
+      "tMax": "O máximo ângulo da curva",
+      "tStep": "O ângulo de passo da curva"
     },
     "Chaff": {
       "title": "Chaff",
@@ -91,30 +115,6 @@
       "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
       "cauchyB": "O coeficiente de Cauchy \\(B\\) do cubo em micrômetros quadrados",
       "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
-    },
-    "CoatedLens": {
-      "title": "Lente Esférica Revestida",
-      "description": "Uma lente esférica com revestimento de camada única em ambos os lados. O módulo `ArcCoating` inserido neste módulo representa uma única camada de filme fino, que, quando se sobrepõe com uma superfície de vidro, se torna seu revestimento.",
-      "point1": "O centro da lente",
-      "h": "A altura da lente",
-      "d": "A espessura da lente",
-      "R1": "O raio de curvatura da superfície frontal",
-      "R2": "O raio de curvatura da superfície traseira",
-      "A": "O coeficiente de Cauchy \\(A\\) do vidro",
-      "B": "O coeficiente de Cauchy \\(B\\) do vidro em micrômetros quadrados",
-      "dc": "A espessura da camada de revestimento em nanômetros",
-      "Ac": "O coeficiente de cauchy \\(A\\) do material do revestimento",
-      "Bc": "O coeficiente de Cauchy \\(B\\) do material do revestimento em micrômetros quadrados"
-    },
-    "EllipticalMirror": {
-      "title": "Espelho Elíptico",
-      "description": "Um espelho elíptico definido pelos dois focos e o comprimento do semieixo maior.",
-      "point1": "O primeiro foco",
-      "point2": "O segundo foco",
-      "a": "O comprimento do semieixo maior",
-      "tMin": "O mínimo ângulo da curva",
-      "tMax": "O máximo ângulo da curva",
-      "tStep": "O ângulo de passo da curva"
     }
   },
   "moduleTutorial": {
@@ -138,8 +138,8 @@
       "enableJsonEditor": "Você pode habilitar o editor JSON incluso ao clicar no menu \"configurações\" no canto superior direito do app, e então marcar \"Exibir editor JSON\". O editor de código deve aparecer no lado esquerdo do app, com o código JSON da cena atual. Certifique-se que a sua tela é grande o suficiente, já que este recurso não funciona bem em dispositivos móveis.",
       "updateAccordingly": "Conforme você edita a cena utilizando o editor visual de cena, o código no editor JSON vai atualizar automaticamente, com a parte modificada destacada. Do mesmo modo, editar o código no editor JSON diretamente vai atualizar a cena automaticamente. Se você não for familiar com JSON ou qualquer tipo de formato de dados à base de texto, pode ser útil brincar com isso por um tempo.",
       "objsArray": "Em particular, quando se adiciona um objeto à cena, ele é adicionado à lista `objs`. E se você modificar algumas de suas propriedades para um valor não padrão, elas aparecem como pares chave-valor nesse objeto.",
-      "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se você não ver o editor de código JSON nos iframes abaixo, por favor habilite-o e recarregue esta página, pois vocÊ precisará de ver o código para entender como funciona.",
-      "disableAutoUpdate": "Se você não quiser que a cena seja automaticamente atualizada ao editar o JSON, você pode habilitar Configurações -> Exibir controles da simulação e desabilitar \"Atualizar Automaticamente\". E quando a edição estiver pronta, clicar \"Atualizar Simulação\" (ou \"Atualizar Cena\" se você não quiser que a simulação rode novamente de imediato)."
+      "disableAutoUpdate": "Se você não quiser que a cena seja automaticamente atualizada ao editar o JSON, você pode habilitar Configurações -> Exibir controles da simulação e desabilitar \"Atualizar Automaticamente\". E quando a edição estiver pronta, clicar \"Atualizar Simulação\" (ou \"Atualizar Cena\" se você não quiser que a simulação rode novamente de imediato).",
+      "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se você não ver o editor de código JSON nos iframes abaixo, por favor habilite-o e recarregue esta página, pois vocÊ precisará de ver o código para entender como funciona."
     },
     "basics": {
       "title": "O básico de um módulo",

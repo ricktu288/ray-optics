@@ -22,8 +22,8 @@
       "lightSource": "Sorgente Luminosa",
       "mirror": "Specchio",
       "glass": "Vetro",
-      "other": "Altro",
-      "blocker": "Schermo"
+      "blocker": "Schermo",
+      "other": "Altro"
     },
     "common": {
       "clickInstruction": "Clicca per creare.",

@@ -1,4 +1,7 @@
 {
+  "welcome": {
+    "title": "Welkom bij Ray Optics Simulation"
+  },
   "file": {
     "title": "Bestand"
   },
@@ -45,8 +48,5 @@
   },
   "footer": {
     "processing": "Rekenen... Klik hier om te stoppen."
-  },
-  "welcome": {
-    "title": "Welkom bij Ray Optics Simulation"
   }
 }

@@ -8,10 +8,10 @@
     "saveButton": "Zapisz",
     "cancelButton": "Anuluj",
     "defaultOption": "Domyślnie",
-    "closeButton": "Zamknij",
-    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt.",
     "customOption": "Niestandardowy",
-    "resetButton": "Resetuj"
+    "closeButton": "Zamknij",
+    "resetButton": "Resetuj",
+    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt."
   },
   "file": {
     "title": "Plik",
@@ -77,6 +77,12 @@
     "zoom": {
       "title": "Zoom"
     },
+    "showAdvancedSettings": {
+      "title": "Więcej ustawień sceny…"
+    },
+    "theme": {
+      "title": "Motyw"
+    },
     "colorMode": {
       "title": "Tryb kolorów",
       "description": "Określa sposób mapowania jasności (i kolorów, jeśli włączona jest opcja \"Symuluj kolory\") promieni lub obrazów na kolory na ekranie. Konfigurowalne tylko w trybie \"Koryguj jasność\"."
@@ -105,13 +111,7 @@
       "title": "Pokaż okienka pomocy",
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski."
     },
-    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
-    "showAdvancedSettings": {
-      "title": "Więcej ustawień sceny…"
-    },
-    "theme": {
-      "title": "Motyw"
-    }
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
   },
   "objBar": {
     "showAdvanced": {
@@ -144,6 +144,7 @@
       "emisAngle": "Kąt emisji",
       "random": "Losowo",
       "lambert": "Lambertowskie",
+      "coordOrigin": "Początek",
       "focalLength": "Ogniskowa",
       "eqnInfo": {
         "constants": "Obsługiwane stałe",
@@ -152,8 +153,18 @@
         "module": "Aby mieć niestandardowe parametry lub skomplikowane równania, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły ->."
       },
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
-      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
-      "coordOrigin": "Początek"
+      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone."
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "Dodaj element",
+      "removePiece": "Usuń element",
+      "step": "Krok",
+      "error": {
+        "invalidStepSize": "Nieprawidłowy rozmiar kroku: {{step}}",
+        "invalidRange": "Nieprawidłowy zakres parametru: tMin ({{tMin}}) >= tMax ({{tMax}})",
+        "nonFiniteCoords": "Współrzędne nieskończone: ({{x}}, {{y}})",
+        "pieceError": "Błąd w elemencie {{pieceIndex}}, t={{t}}: {{error}}"
+      }
     },
     "Beam": {
       "imageDetectionWarning": "Wykrywanie obrazu może nie działać w przypadku wiązek rozbieżnych/losowych."
@@ -187,12 +198,27 @@
       },
       "invalidParameters": "Nieprawidłowe parametry soczewki"
     },
+    "CustomGlass": {
+      "curveGenerationError": "Błąd generowania krzywej: f(x) > g(x) przy x = {{x}}"
+    },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "Krzywa musi być zamknięta i zorientowana dodatnio (zgodnie z ruchem wskazówek zegara w konwencji grafiki komputerowej, gdzie oś y wskazuje w dół)."
+      },
+      "warning": {
+        "notClosed": "Krzywa nie jest zamknięta.",
+        "notPositivelyOriented": "Krzywa nie jest zorientowana dodatnio."
+      }
+    },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
         "lambda": "Aby symulować dyspersję chromatyczną, użyj parametru {{lambda}} dla długości fali w próżni w nanometrach.",
         "diff": "Obsługuje tylko funkcje różniczkowalne.",
         "origin": "Początek n(x,y) znajduje się we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.",
         "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji…\""
+      },
+      "absorptionFnInfo": {
+        "absorption": "Współczynnik absorpcji szkła w jednostkach 1/[długość]."
       },
       "stepSize": "Rozmiar kroku rozwiązywania numerycznego",
       "stepSizeInfo": "Wielkość kroku metody Eulera do rozwiązywania równania eikonału promienia - więcej informacji można znaleźć w funkcji 'step' i dokumentacji w pliku 'BaseGrinGlass.js'.",
@@ -202,9 +228,6 @@
         "all": "Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.",
         "impl": "Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'BaseGrinGlass.js').",
         "implNote": "Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w całej płaszczyźnie, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy."
-      },
-      "absorptionFnInfo": {
-        "absorption": "Współczynnik absorpcji szkła w jednostkach 1/[długość]."
       }
     },
     "CircleGrinGlass": {
@@ -217,6 +240,18 @@
       "epsInfo": {
         "units": "Jednostki - [długość].",
         "functions": "Ta tolerancja numeryczna jest używana w funkcjach 'isOnBoundary' i 'countIntersections' w pliku 'GrinGlass.js'."
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "Jednostki - [długość].",
+        "functions": "Ta tolerancja numeryczna jest używana w funkcji 'isOnBoundary' w pliku 'ParamCurveObjMixin.js'."
+      }
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "Jednostki - [długość]^2.",
+        "functions": "Ta tolerancja numeryczna jest używana w funkcji „isOnBoundary” w pliku „CurveGrinGlass.js”."
       }
     },
     "Aperture": {
@@ -252,6 +287,9 @@
       "textHere": "Tekst tutaj",
       "fontSize": "Rozmiar czcionki",
       "font": "Czcionka",
+      "fonts": "Serif: Szeryfowy\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
+      "fontNote": "Jeśli wybrana czcionka nie jest zainstalowana w systemie, zostanie użyta czcionka zastępcza.",
+      "enterFontName": "Wprowadź nazwę czcionki…",
       "fontStyle": "Styl",
       "fontStyles": {
         "normal": "Normalna",
@@ -268,10 +306,7 @@
         "right": "Prawa"
       },
       "smallCaps": "Małe litery",
-      "angle": "Kąt",
-      "fonts": "Serif: Szeryfowy\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
-      "fontNote": "Jeśli wybrana czcionka nie jest zainstalowana w systemie, zostanie użyta czcionka zastępcza.",
-      "enterFontName": "Wprowadź nazwę czcionki…"
+      "angle": "Kąt"
     },
     "LineArrow": {
       "arrow": "Strzałka do przodu",
@@ -279,6 +314,35 @@
     },
     "Drawing": {
       "finishDrawing": "Zakończ rysowanie"
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} i {{theta_j}} to odpowiednio kąty padającego i j-tego wychodzącego promienia, w radianach i względem normalnej.",
+        "brightnesses": "{{P_0}} i {{P_j}} to jasności odpowiednio promienia padającego i j-tego promienia wychodzącego, w tej samej jednostce co narzędzie detekcji.",
+        "previousFormulas": "Formuła może odwoływać się do wyników poprzednich formuł. Jeśli formuła daje nieprawidłową wartość, promień wychodzący jest ignorowany, a jego jasność jest traktowana jako 0.",
+        "otherParams": "Inne parametry promieni padających, które można wykorzystać, to {{lambda}} (długość fali w nm) i {{p}} (0 dla polaryzacji s, 1 dla polaryzacji p). Pozostają one takie same dla promieni wychodzących.",
+        "coating": "Obiekt ten może działać jako powłoka szklanych obiektów, nakładając się na ich powierzchnie. W tym przypadku samo załamanie również musi być obsługiwane przez formuły tego obiektu. Współczynniki załamania materiału przylegającego do tej samej i przeciwnej strony co padający promień mogą być określane odpowiednio jako {{n_0}} i {{n_1}}. Jeśli ten obiekt znajduje się wewnątrz szklanego obiektu, wartości są względem niego.",
+        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach.",
+        "module": "Aby uzyskać niestandardowe parametry, skomplikowane formuły lub dużą liczbę promieni wychodzących, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły -> ."
+      },
+      "twoSided": "Dwustronny",
+      "addOutgoingRay": "Dodaj promień wychodzący",
+      "removeOutgoingRay": "Usuń promień wychodzący"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje liniowo od -1 do 1 pomiędzy dwoma punktami końcowymi odcinka."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje jednostajnie (w odniesieniu do kąta) od -1 do 1 między dwoma punktami końcowymi łuku."
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "Położenie punktu padania w przestrzeni parametrów krzywej można określić jako {{t}}."
+      }
     },
     "ModuleObj": {
       "module": "Moduł",
@@ -310,73 +374,9 @@
       "format": "Format",
       "width": "Szerokość",
       "rayCountLimit": "Limit liczby promieni",
+      "transparent": "Przezroczyste tło",
       "svgWarning": "Eksport do SVG: Mieszanki kolorów, korekcja jasności i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
-      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania.",
-      "transparent": "Przezroczyste tło"
-    },
-    "ParamCurveObjMixin": {
-      "addPiece": "Dodaj element",
-      "removePiece": "Usuń element",
-      "step": "Krok",
-      "error": {
-        "invalidStepSize": "Nieprawidłowy rozmiar kroku: {{step}}",
-        "invalidRange": "Nieprawidłowy zakres parametru: tMin ({{tMin}}) >= tMax ({{tMax}})",
-        "nonFiniteCoords": "Współrzędne nieskończone: ({{x}}, {{y}})",
-        "pieceError": "Błąd w elemencie {{pieceIndex}}, t={{t}}: {{error}}"
-      }
-    },
-    "CustomGlass": {
-      "curveGenerationError": "Błąd generowania krzywej: f(x) > g(x) przy x = {{x}}"
-    },
-    "ParamGlass": {
-      "eqnInfo": {
-        "closedAndPositivelyOriented": "Krzywa musi być zamknięta i zorientowana dodatnio (zgodnie z ruchem wskazówek zegara w konwencji grafiki komputerowej, gdzie oś y wskazuje w dół)."
-      },
-      "warning": {
-        "notClosed": "Krzywa nie jest zamknięta.",
-        "notPositivelyOriented": "Krzywa nie jest zorientowana dodatnio."
-      }
-    },
-    "ParamGrinGlass": {
-      "epsInfo": {
-        "units": "Jednostki - [długość].",
-        "functions": "Ta tolerancja numeryczna jest używana w funkcji 'isOnBoundary' w pliku 'ParamCurveObjMixin.js'."
-      }
-    },
-    "BaseCustomSurface": {
-      "info": {
-        "angles": "{{theta_0}} i {{theta_j}} to odpowiednio kąty padającego i j-tego wychodzącego promienia, w radianach i względem normalnej.",
-        "brightnesses": "{{P_0}} i {{P_j}} to jasności odpowiednio promienia padającego i j-tego promienia wychodzącego, w tej samej jednostce co narzędzie detekcji.",
-        "previousFormulas": "Formuła może odwoływać się do wyników poprzednich formuł. Jeśli formuła daje nieprawidłową wartość, promień wychodzący jest ignorowany, a jego jasność jest traktowana jako 0.",
-        "otherParams": "Inne parametry promieni padających, które można wykorzystać, to {{lambda}} (długość fali w nm) i {{p}} (0 dla polaryzacji s, 1 dla polaryzacji p). Pozostają one takie same dla promieni wychodzących.",
-        "coating": "Obiekt ten może działać jako powłoka szklanych obiektów, nakładając się na ich powierzchnie. W tym przypadku samo załamanie również musi być obsługiwane przez formuły tego obiektu. Współczynniki załamania materiału przylegającego do tej samej i przeciwnej strony co padający promień mogą być określane odpowiednio jako {{n_0}} i {{n_1}}. Jeśli ten obiekt znajduje się wewnątrz szklanego obiektu, wartości są względem niego.",
-        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach.",
-        "module": "Aby uzyskać niestandardowe parametry, skomplikowane formuły lub dużą liczbę promieni wychodzących, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły -> ."
-      },
-      "twoSided": "Dwustronny",
-      "addOutgoingRay": "Dodaj promień wychodzący",
-      "removeOutgoingRay": "Usuń promień wychodzący"
-    },
-    "CustomParamSurface": {
-      "info": {
-        "incidentPos": "Położenie punktu padania w przestrzeni parametrów krzywej można określić jako {{t}}."
-      }
-    },
-    "CustomSurface": {
-      "info": {
-        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje liniowo od -1 do 1 pomiędzy dwoma punktami końcowymi odcinka."
-      }
-    },
-    "CustomArcSurface": {
-      "info": {
-        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje jednostajnie (w odniesieniu do kąta) od -1 do 1 między dwoma punktami końcowymi łuku."
-      }
-    },
-    "CurveGrinGlass": {
-      "epsInfo": {
-        "units": "Jednostki - [długość]^2.",
-        "functions": "Ta tolerancja numeryczna jest używana w funkcji „isOnBoundary” w pliku „CurveGrinGlass.js”."
-      }
+      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania."
     }
   },
   "saveModal": {
@@ -410,61 +410,6 @@
     "colorizedIntensity": {
       "title": "Intensywność kodowana kolorem",
       "description": "Całkowita jasność 100, 10, …, 10⁻⁵ jest reprezentowana odpowiednio przez czerwony, pomarańczowy, żółty, zielony, cyjan, niebieski, fioletowy i czarny i interpolowana płynnie w skali logarytmicznej."
-    }
-  },
-  "languageModal": {
-    "title": "Język",
-    "translatedFraction": "przetłumaczone",
-    "helpTranslate": "Pomóż nam przetłumaczyć tę aplikację"
-  },
-  "generalWarnings": {
-    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Zamiast tego może być konieczne użycie \"Zapisz\" i udostępnienie pliku.",
-    "autoSyncUrlTooLarge": "Scena jest zbyt duża, aby zsynchronizować ją z URL. Zapisz ją ręcznie.",
-    "identicalObjects": "Na scenie znajdują się dwa identyczne elementy optyczne, które całkowicie na siebie zachodzą. Może to spowodować nieoczekiwane zachowanie.",
-    "brightnessInconsistent": "Jasności dwóch lub więcej źródeł światła nasycają się w niespójnych proporcjach. Może to prowadzić do błędnych odczytów detektora i nieprawidłowego odwzorowania kolorów. Zwiększ gęstość promieni lub zmniejsz jasność źródeł światła.",
-    "blackBecomesTransparent": "Podczas korzystania z opcji \"Koryguj jasność\" na tle innym niż czarne, czarna część koloru światła staje się przezroczysta z powodu addytywnego mieszania kolorów. Aby uniknąć tego problemu, należy ustawić wszystkie kolory kompozycji światła tak, aby miały jednostkową wartość HSV.",
-    "undefinedBehaviorOverlapping": "Scalanie powierzchni nie jest obsługiwane w przypadku nakładania się obiektów \"{{involvedObj1}}\" i \"{{involvedObj2}}\", co skutkuje niezdefiniowanym zachowaniem. Aby uzyskać dobrze zdefiniowane zachowanie, należy nieznacznie rozsunąć obiekty (lub przesunąć źródło światła).",
-    "undefinedBehaviorSingle": "Napotkano niezdefiniowane zachowanie obiektu \"{{involvedObj}}\". Aby uzyskać dobrze zdefiniowane zachowanie, należy nieznacznie przesunąć obiekt lub źródło światła."
-  },
-  "statusBox": {
-    "rayCount": "Liczba promieni",
-    "totalTruncation": "Obcięta jasność",
-    "brightnessScale": "Skala jasności",
-    "timeElapsed": "Czas, który upłynął",
-    "forceStopped": "Wymuszone zatrzymanie.",
-    "mouseCoordinates": "Współrzędne myszy"
-  },
-  "footer": {
-    "processing": "Przetwarzanie… Kliknij tutaj, aby zatrzymać.",
-    "helpPopup": {
-      "constrainedDragging": {
-        "title": "Przeciąganie ograniczone",
-        "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka."
-      },
-      "groupRotateScale": {
-        "title": "Grupuj, obracaj i skaluj obiekty"
-      },
-      "editCoordinates": {
-        "title": "Bezpośrednio edytuj współrzędne",
-        "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter."
-      },
-      "keyboardShortcuts": {
-        "title": "Skróty klawiaturowe",
-        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć; +/-, aby go obrócić; Ctrl+D, aby powielić; klawisz Delete, aby usunąć."
-      },
-      "runLocally": {
-        "title": "Uruchom lokalnie",
-        "description": "Aby uruchomić ten projekt na własnym komputerze, niezależnie od wersji online, zapoznaj się z [tym przewodnikiem](/run-locally)."
-      },
-      "contactUs": {
-        "title": "Skontaktuj się z nami",
-        "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
-        "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
-      },
-      "integrations": {
-        "description": "Symulator można wywołać z języków programowania, takich jak Python czy Julia, za pomocą [narzędzi integracyjnych](/integrations).",
-        "title": "Integracje z językami programowania"
-      }
     }
   },
   "themeModal": {
@@ -535,9 +480,6 @@
     "beamShield": {
       "title": "Osłona źródła wiązki"
     },
-    "detectorText": {
-      "title": "Tekst detektora"
-    },
     "colorSourceCenter": {
       "title": "Centrum źródła światła kolorowego"
     },
@@ -568,6 +510,9 @@
     "detector": {
       "title": "Powierzchnia detektora"
     },
+    "detectorText": {
+      "title": "Tekst detektora"
+    },
     "irradMap": {
       "title": "Wypełnienie mapy irradiancji"
     },
@@ -595,20 +540,28 @@
       "error": "Plik nie zawiera motywu."
     }
   },
-  "sidebar": {
-    "aiAssistant": {
-      "title": "Asystent AI",
-      "description": "Link do Ray Optics Coder na ChatGPT. Zobacz Narzędzia -> Inne -> Importuj moduł -> Twórz niestandardowe moduły, aby uzyskać więcej informacji."
-    }
+  "languageModal": {
+    "title": "Język",
+    "translatedFraction": "przetłumaczone",
+    "helpTranslate": "Pomóż nam przetłumaczyć tę aplikację"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "Adres URL jest zbyt długi i może nie działać na niektórych platformach. Zamiast tego może być konieczne użycie \"Zapisz\" i udostępnienie pliku.",
+    "autoSyncUrlTooLarge": "Scena jest zbyt duża, aby zsynchronizować ją z URL. Zapisz ją ręcznie.",
+    "identicalObjects": "Na scenie znajdują się dwa identyczne elementy optyczne, które całkowicie na siebie zachodzą. Może to spowodować nieoczekiwane zachowanie.",
+    "brightnessInconsistent": "Jasności dwóch lub więcej źródeł światła nasycają się w niespójnych proporcjach. Może to prowadzić do błędnych odczytów detektora i nieprawidłowego odwzorowania kolorów. Zwiększ gęstość promieni lub zmniejsz jasność źródeł światła.",
+    "blackBecomesTransparent": "Podczas korzystania z opcji \"Koryguj jasność\" na tle innym niż czarne, czarna część koloru światła staje się przezroczysta z powodu addytywnego mieszania kolorów. Aby uniknąć tego problemu, należy ustawić wszystkie kolory kompozycji światła tak, aby miały jednostkową wartość HSV.",
+    "undefinedBehaviorOverlapping": "Scalanie powierzchni nie jest obsługiwane w przypadku nakładania się obiektów \"{{involvedObj1}}\" i \"{{involvedObj2}}\", co skutkuje niezdefiniowanym zachowaniem. Aby uzyskać dobrze zdefiniowane zachowanie, należy nieznacznie rozsunąć obiekty (lub przesunąć źródło światła).",
+    "undefinedBehaviorSingle": "Napotkano niezdefiniowane zachowanie obiektu \"{{involvedObj}}\". Aby uzyskać dobrze zdefiniowane zachowanie, należy nieznacznie przesunąć obiekt lub źródło światła."
   },
   "generalErrors": {
+    "newerVersion": "Wersja sceny jest nowsza niż aktualna wersja symulatora.",
     "unknownObjectType": "Nieznany typ obiektu sceny: \"{{type}}\".",
     "unknownSceneKey": "Nieznany klucz w scenie: \"{{key}}\".",
     "unknownPropertyValue": "Nieznana wartość \"{{value}}\" dla właściwości \"{{property}}\".",
     "unknownObjectKey": "Nieznany klucz: \"{{key}}\" w obiekcie typu \"{{type}}\".",
     "unknownModuleKey": "Nieznany klucz: \"{{key}}\" w module \"{{module}}\".",
-    "unknownModule": "Nieznany moduł: \"{{module}}\".",
-    "newerVersion": "Wersja sceny jest nowsza niż aktualna wersja symulatora."
+    "unknownModule": "Nieznany moduł: \"{{module}}\"."
   },
   "appErrors": {
     "jsError": "Błąd JavaScript: {{msg}} w {{url}}",
@@ -616,6 +569,20 @@
     "httpError": "Błąd żądania HTTP",
     "httpTimeout": "Przekroczono limit czasu żądania HTTP",
     "invalidFile": "Plik nie jest prawidłową sceną JSON ani plikiem obrazu."
+  },
+  "sidebar": {
+    "aiAssistant": {
+      "title": "Asystent AI",
+      "description": "Link do Ray Optics Coder na ChatGPT. Zobacz Narzędzia -> Inne -> Importuj moduł -> Twórz niestandardowe moduły, aby uzyskać więcej informacji."
+    }
+  },
+  "statusBox": {
+    "rayCount": "Liczba promieni",
+    "totalTruncation": "Obcięta jasność",
+    "brightnessScale": "Skala jasności",
+    "timeElapsed": "Czas, który upłynął",
+    "forceStopped": "Wymuszone zatrzymanie.",
+    "mouseCoordinates": "Współrzędne myszy"
   },
   "simulatorControls": {
     "refreshScene": {
@@ -626,6 +593,39 @@
     },
     "autoRefresh": {
       "title": "Automatyczne odświeżanie"
+    }
+  },
+  "footer": {
+    "processing": "Przetwarzanie… Kliknij tutaj, aby zatrzymać.",
+    "helpPopup": {
+      "constrainedDragging": {
+        "title": "Przeciąganie ograniczone",
+        "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka."
+      },
+      "groupRotateScale": {
+        "title": "Grupuj, obracaj i skaluj obiekty"
+      },
+      "editCoordinates": {
+        "title": "Bezpośrednio edytuj współrzędne",
+        "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter."
+      },
+      "keyboardShortcuts": {
+        "title": "Skróty klawiaturowe",
+        "description": "Gdy obiekt jest zaznaczony (przez kliknięcie), naciśnij klawisze strzałek, aby go przesunąć; +/-, aby go obrócić; Ctrl+D, aby powielić; klawisz Delete, aby usunąć."
+      },
+      "runLocally": {
+        "title": "Uruchom lokalnie",
+        "description": "Aby uruchomić ten projekt na własnym komputerze, niezależnie od wersji online, zapoznaj się z [tym przewodnikiem](/run-locally)."
+      },
+      "integrations": {
+        "title": "Integracje z językami programowania",
+        "description": "Symulator można wywołać z języków programowania, takich jak Python czy Julia, za pomocą [narzędzi integracyjnych](/integrations)."
+      },
+      "contactUs": {
+        "title": "Skontaktuj się z nami",
+        "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
+        "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
+      }
     }
   }
 }

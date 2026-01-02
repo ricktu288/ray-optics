@@ -1,16 +1,16 @@
 {
   "galleryPage": {
+    "title": "La Galleria dell'Ottica a Raggi",
+    "description": "Questa è una raccolta di simulazioni create utilizzando [la web app](/simulatore), che possono essere utilizzate come demo interattive di ottica. Siete invitati a contribuire nuovi articoli. Per ulteriori informazioni, consultare [la guida al contributo](/contributing/gallery). Per segnalare un errore, si prega di [aprire una segnalazione su GitHub](/github/issues) o scrivere una e-mail a [ray-optics@phydemo.app](/email).",
     "categories": {
-      "refraction": "Rifrazione",
-      "lens": "Lente",
       "title": "Categorie",
       "reflection": "Riflesso",
+      "refraction": "Rifrazione",
+      "lens": "Lente",
       "combinationOfLenses": "Combinazione di Lenti",
       "grinOptics": "Ottica Indice di Gradiente",
       "miscellaneous": "Varie"
     },
-    "title": "La Galleria dell'Ottica a Raggi",
-    "description": "Questa è una raccolta di simulazioni create utilizzando [la web app](/simulatore), che possono essere utilizzate come demo interattive di ottica. Siete invitati a contribuire nuovi articoli. Per ulteriori informazioni, consultare [la guida al contributo](/contributing/gallery). Per segnalare un errore, si prega di [aprire una segnalazione su GitHub](/github/issues) o scrivere una e-mail a [ray-optics@phydemo.app](/email).",
     "openInSimulator": "Apri nel Simulatore"
   },
   "galleryData": {

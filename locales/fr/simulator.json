@@ -8,10 +8,10 @@
     "saveButton": "Sauvegarder",
     "cancelButton": "Annuler",
     "defaultOption": "Par défaut",
-    "closeButton": "Fermer",
-    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique.",
     "customOption": "Personnalisé",
-    "resetButton": "Réinitialiser"
+    "closeButton": "Fermer",
+    "resetButton": "Réinitialiser",
+    "reloadToTakeEffect": "Rechargez la page pour que la modification s'applique."
   },
   "file": {
     "title": "Fichier",
@@ -51,10 +51,10 @@
       "description": "Détermine le nombre de rayons que doivent émettre les faisceaux et les sources ponctuelles.Affecte aussi la précision de la détection d'image et le rendu des couleurs."
     },
     "layoutAids": {
+      "title": "Aide à la mise en page",
       "showGrid": "Grille",
       "snapToGrid": "Attacher à la grille",
-      "lockObjs": "Verrouiller les objets",
-      "title": "Aide à la mise en page"
+      "lockObjs": "Verrouiller les objets"
     },
     "showRayArrows": {
       "title": "Afficher les flèches directrices de la lumière"
@@ -76,18 +76,18 @@
     "zoom": {
       "title": "Zoom"
     },
+    "showAdvancedSettings": {
+      "title": "Plus de paramètres de scène…"
+    },
+    "theme": {
+      "title": "Thème"
+    },
     "colorMode": {
       "title": "Mode Couleur",
       "description": "Détermine comment la luminosité (et les couleurs si \"Simuler les couleurs\" est activé) du rayon ou des images sont associé aux couleur sur l'écran. Seulement configurable quand \"Correct Brightness\" est utilisé."
     },
     "language": {
       "title": "Langue"
-    },
-    "showAdvancedSettings": {
-      "title": "Plus de paramètres de scène…"
-    },
-    "theme": {
-      "title": "Thème"
     }
   },
   "objBar": {

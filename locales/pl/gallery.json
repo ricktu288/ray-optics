@@ -137,6 +137,16 @@
       "observer": "Obserwator",
       "objectunderwatergree": "obiekt pod wodą (zielony)"
     },
+    "distortionInWindowsAndBacksideMirrors": {
+      "title": "Zniekształcenia w szybach i lusterkach wstecznych",
+      "description": "Podczas obserwacji obiektu przez szybę pod dużym kątem obraz pojawia się z przesunięciem i bliżej obserwatora niż powinien. Symulacja pokazuje ten efekt w przypadku grubej szyby i wstecznego lusterka. Oglądanie w trybie \"Wszystkie obrazy\" pokazuje, że punkty obrazu są w rzeczywistości łukami, więc w zależności od rozmiaru detektora obraz może być rozmyty.\n\nPo prawej stronie ramki można również zobaczyć wpływ klina na pozorny rozmiar.",
+      "source": "źródło",
+      "glass": "szyba",
+      "mirror": "lusterko",
+      "image": "obraz",
+      "observer3": "obserwator",
+      "window": "okno"
+    },
     "bendedPencil": {
       "title": "Zgięty ołówek",
       "description": "Jest to symulacja obrazu postrzeganego przez nas, gdy patrzymy z góry na częściowo zanurzony w szklance wody ołówek. Załamanie promieni powoduje, że ołówek może wyglądać zarówno na wygięty, jak i złamany (w zależności od położenia oczu obserwatora). Jednak w tej symulacji zginanie jest bardziej wyraźne. Możesz sprawdzić symulację [Złamany ołówek](/gallery/broken-pencil), gdzie to drugie złudzenie jest bardziej wyraźne.",
@@ -200,6 +210,13 @@
       "title": "Obrazy w soczewce",
       "description": "Symulacja pokazuje obrazy wiązki i źródeł punktowych wytwarzanych przez idealne soczewki."
     },
+    "virtualImageFormation": {
+      "title": "Powstawanie obrazu pozornego",
+      "description": "Jest to symulacja powstawania obrazu pozornego za pomocą soczewki skupiającej wraz z jego charakterystyką.",
+      "object2": "Przedmiot",
+      "converginglensf1000u": "Soczewka skupiająca (F=1000 jednostek)",
+      "virtualimagehighlyen": "Obraz pozorny\nDuże powiększenie\nPionowo/prosto"
+    },
     "transverseAndLongitudinalMagnification": {
       "title": "Powiększenie poprzeczne i wzdłużne",
       "description": "Symulacja powiększenia poprzecznego i wzdłużnego dla idealnej soczewki o ogniskowej \\(f\\). Powiększenie poprzeczne (zwane także liniowym) i wzdłużne to odpowiednio \\(M_T=1-\\frac{u}{f}\\) i \\(M_L=\\frac{dv}{du}\\), gdzie \\(u\\) and \\(v\\) to odpowiednio odległość przedmiotu i obrazu od naszej idealnej soczewki. Dla idealnej soczewki zachodzi również \\(M_L=-(M_T)^2\\)",
@@ -243,6 +260,22 @@
       "title": "Soczewka Fresnela",
       "description": "Jest to symulacja i porównanie soczewki sferycznej i soczewki Fresnela. Łatwo zauważyć jedną z zalet soczewki Fresnela: działa ona podobnie jak zwykła soczewka sferyczna, a jednocześnie zajmuje znacznie mniej miejsca - a co za tym idzie - mniej waży.",
       "thisfresnellensismad": "Ta soczewka Fresnela jest wykonana z poniższego szkła półkolistego.\nMożna wybrać soczewkę i dostosować parametr N_slice."
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "title": "Optyka latarni morskiej Augustina Fresnela",
+      "description": "Oto demonstracja magii optyki latarni morskiej Augustina Fresnela.:\n\n1. [Cienka soczewka](/gallery/fresnel-lens) zastępuje grubszą soczewkę powiększającą, aby przesłać centralny snop światła do statku poprzez załamanie na dwóch powierzchniach. Dodatkowym udoskonaleniem jest zmniejszenie promienia krzywizny segmentu w celu zmniejszenia aberracji sferycznej występującej w soczewkach o pełnej grubości. W XIX wieku nie stosowano soczewek asferycznych.\n2. Pryzmaty całkowitego wewnętrznego odbicia (TIR) przekierowują wiązki o dużym kącie do statków. Są to elementy katadioptryczne z załamaniem na wejściu i wyjściu oraz TIR z tyłu. W latach dwudziestych XIX wieku najlepsze reflektory były srebrne i miały tylko około 50% współczynnika odbicia. Brudne źródło światła lampy naftowej wymagało codziennego czyszczenia optyki. Odbicie TIR jest teoretycznie w 100% wydajne, a szkło jest łatwiejsze do czyszczenia.\n\nTen raytrace weryfikuje zestaw pryzmatów i soczewek zbudowanych na potrzeby demonstracji optyki Fresnela na tablicy w stacji latarni Pigeon Point w California State Parks.\n\n- Źródłem światła jest reflektor LED H11 umieszczony za maską szczelinową. LED świeci tylko w zakresie około 160 stopni, a nie w pełnej półkuli 180 stopni. Żarówka mogłaby zapewnić pełne 360 stopni światła, ale nie byłoby ono tak jasne i byłoby znacznie cieplejsze.\n- Optyka to akryl o grubości około 0,5 cala (12 mm) z pomalowanym na biało spodem.\n- Wszystkie obiekty można przymocować magnetycznie do tablicy. Dodatkowe zwierciadła, pryzmaty i soczewka o pełnej grubości znajdują się na zdjęciu i zostały zademonstrowane w prezentacji.\n- Rzeczywiste soczewki latarni morskiej wymagały komina wentylacyjnego u góry i często obrotowej konstrukcji u dołu. Nie próbowały one zebrać pełnego zakresu światła 180 stopni.",
+      "augustinfresnelsmagi": "Magiczna optyka latarni morskiej Augustina Fresnela ",
+      "t1athinnedlensmakesab": "#1 Pocieniona soczewka daje jasną wiązkę dzięki mniejszej ilości szkła",
+      "comparetheperformanc": "Porównaj wydajność górnej połowy soczewki Bullseye o zmniejszonej grubości\nz dolną połową soczewki o pełnej grubości.\n\nW latach dwudziestych XIX wieku słaba jakość szkła oznaczała,\nże soczewka o pełnej grubości wysyłała na statek mniej światła niż bez soczewki!\nCienka soczewka była znacznie lepsza niż brak soczewki.",
+      "amagnifyinglenscanon": "Soczewka powiększająca może przesłać do statku\ntylko około 1/6, czyli 15% światła.",
+      "mirrorsorreflectorsc": "Lustra lub odbłyśniki mogą przekierowywać wiązki o dużym kącie, ale odbłyśniki z lat dwudziestych XIX wieku marnowały połowę światła.",
+      "t2totalinternalreflec": "#2 Pryzmaty z całkowitym wewnętrznym odbiciem (TIR) umożliwiły wysłanie całego wysokokątowego światła na statek",
+      "inthepigeonpointligh": "W demonstracji optyki na tablicy w latarni morskiej Pigeon Point\nmagia Fresnela sprawia, że CAŁE światło w półkuli jest wysyłane do statku",
+      "howitworks": "Jak to działa"
+    },
+    "opticsOfHumanEye": {
+      "title": "Optyka ludzkiego oka",
+      "description": "Jest to symulacja działania oka. Można zmieniać wielkość źrenicy i ogniskową soczewki."
     },
     "zoomLens": {
       "title": "Obiektyw zmiennoogniskowy",
@@ -306,6 +339,19 @@
       "whitelightsource": "Źródło\nświatła\nbiałego",
       "rightaxicon": "Prawy aksikon",
       "ringaperture": "Apertura pierścieniowa"
+    },
+    "koehlerIllumination": {
+      "title": "Oświetlenie Koehlera",
+      "description": "Ta konfiguracja, wynaleziona w 1893 roku przez Augusta Köhlera, jest bardzo przydatna w przypadku każdego rodzaju mikroskopii. Zapewnia jednorodne oświetlenie próbki z dowolnego niejednorodnego źródła światła. Obraz źródła oświetlenia (np. żarnika lampy) nie jest zatem widoczny na próbce. Dwie przysłony mogą być używane do zmiany natężenia i apertury numerycznej (NA) lub pola widzenia oświetlenia. Druga przysłona jest szczególnie korzystna, ponieważ można ją zamknąć, aby ustawić ostrość próbki. Jeśli krawędzie przysłony są ostre, próbka również jest ostra. Jest to również określane jako konfiguracja 4f, ponieważ stosuje cztery ogniskowe w odległości.",
+      "spatiallyextendedand": "przestrzennie rozciągnięte i\nniejednorodne źródło światła",
+      "collectorlens": "soczewka kolektora",
+      "aperture1changesinte": "apertura 1\nzmiany\nnatężenie, NA",
+      "fieldlens": "soczewka polowa",
+      "aperture2changesfiel": "apertura 2\nzmiany\npole widzenia",
+      "condensorlens": "soczewka kondensora",
+      "objectivelens": "soczewka obiektywu",
+      "sample": "próbka",
+      "sampleisnowilluminat": "próbka jest teraz\noświetlona równomiernie"
     },
     "grinSlab": {
       "title": "Płyta GRIN (gradientowa)",
@@ -479,6 +525,9 @@
       "a1darrayii": "A 1D tablica: i=`i`",
       "thistextisshownonlyw": "Ten tekst jest wyświetlany tylko wtedy, gdy n>5"
     },
+    "moduleExampleVariables": {
+      "title": "Przykład modułu – zmienne"
+    },
     "moduleExampleCustomEquation": {
       "title": "Przykład modułu - równanie niestandardowe",
       "amirrorofshapeycos2p": "Zwierciadło kształtu y=cos(2 pi x + `phi`)"
@@ -487,55 +536,6 @@
       "title": "Przykład modułu - parametryzacja kształtu",
       "alensdefinedbydr1r2": "Soczewka zdefiniowana przez d, R_1, R_2",
       "alensdefinedbydffdbf": "Soczewka zdefiniowana przez d, FFD, BFD"
-    },
-    "distortionInWindowsAndBacksideMirrors": {
-      "title": "Zniekształcenia w szybach i lusterkach wstecznych",
-      "description": "Podczas obserwacji obiektu przez szybę pod dużym kątem obraz pojawia się z przesunięciem i bliżej obserwatora niż powinien. Symulacja pokazuje ten efekt w przypadku grubej szyby i wstecznego lusterka. Oglądanie w trybie \"Wszystkie obrazy\" pokazuje, że punkty obrazu są w rzeczywistości łukami, więc w zależności od rozmiaru detektora obraz może być rozmyty.\n\nPo prawej stronie ramki można również zobaczyć wpływ klina na pozorny rozmiar.",
-      "source": "źródło",
-      "glass": "szyba",
-      "mirror": "lusterko",
-      "image": "obraz",
-      "observer3": "obserwator",
-      "window": "okno"
-    },
-    "virtualImageFormation": {
-      "title": "Powstawanie obrazu pozornego",
-      "description": "Jest to symulacja powstawania obrazu pozornego za pomocą soczewki skupiającej wraz z jego charakterystyką.",
-      "object2": "Przedmiot",
-      "converginglensf1000u": "Soczewka skupiająca (F=1000 jednostek)",
-      "virtualimagehighlyen": "Obraz pozorny\nDuże powiększenie\nPionowo/prosto"
-    },
-    "koehlerIllumination": {
-      "title": "Oświetlenie Koehlera",
-      "description": "Ta konfiguracja, wynaleziona w 1893 roku przez Augusta Köhlera, jest bardzo przydatna w przypadku każdego rodzaju mikroskopii. Zapewnia jednorodne oświetlenie próbki z dowolnego niejednorodnego źródła światła. Obraz źródła oświetlenia (np. żarnika lampy) nie jest zatem widoczny na próbce. Dwie przysłony mogą być używane do zmiany natężenia i apertury numerycznej (NA) lub pola widzenia oświetlenia. Druga przysłona jest szczególnie korzystna, ponieważ można ją zamknąć, aby ustawić ostrość próbki. Jeśli krawędzie przysłony są ostre, próbka również jest ostra. Jest to również określane jako konfiguracja 4f, ponieważ stosuje cztery ogniskowe w odległości.",
-      "spatiallyextendedand": "przestrzennie rozciągnięte i\nniejednorodne źródło światła",
-      "fieldlens": "soczewka polowa",
-      "condensorlens": "soczewka kondensora",
-      "objectivelens": "soczewka obiektywu",
-      "sample": "próbka",
-      "aperture1changesinte": "apertura 1\nzmiany\nnatężenie, NA",
-      "aperture2changesfiel": "apertura 2\nzmiany\npole widzenia",
-      "sampleisnowilluminat": "próbka jest teraz\noświetlona równomiernie",
-      "collectorlens": "soczewka kolektora"
-    },
-    "moduleExampleVariables": {
-      "title": "Przykład modułu – zmienne"
-    },
-    "opticsOfHumanEye": {
-      "title": "Optyka ludzkiego oka",
-      "description": "Jest to symulacja działania oka. Można zmieniać wielkość źrenicy i ogniskową soczewki."
-    },
-    "augustinFresnelsLighthouseOptics": {
-      "title": "Optyka latarni morskiej Augustina Fresnela",
-      "description": "Oto demonstracja magii optyki latarni morskiej Augustina Fresnela.:\n\n1. [Cienka soczewka](/gallery/fresnel-lens) zastępuje grubszą soczewkę powiększającą, aby przesłać centralny snop światła do statku poprzez załamanie na dwóch powierzchniach. Dodatkowym udoskonaleniem jest zmniejszenie promienia krzywizny segmentu w celu zmniejszenia aberracji sferycznej występującej w soczewkach o pełnej grubości. W XIX wieku nie stosowano soczewek asferycznych.\n2. Pryzmaty całkowitego wewnętrznego odbicia (TIR) przekierowują wiązki o dużym kącie do statków. Są to elementy katadioptryczne z załamaniem na wejściu i wyjściu oraz TIR z tyłu. W latach dwudziestych XIX wieku najlepsze reflektory były srebrne i miały tylko około 50% współczynnika odbicia. Brudne źródło światła lampy naftowej wymagało codziennego czyszczenia optyki. Odbicie TIR jest teoretycznie w 100% wydajne, a szkło jest łatwiejsze do czyszczenia.\n\nTen raytrace weryfikuje zestaw pryzmatów i soczewek zbudowanych na potrzeby demonstracji optyki Fresnela na tablicy w stacji latarni Pigeon Point w California State Parks.\n\n- Źródłem światła jest reflektor LED H11 umieszczony za maską szczelinową. LED świeci tylko w zakresie około 160 stopni, a nie w pełnej półkuli 180 stopni. Żarówka mogłaby zapewnić pełne 360 stopni światła, ale nie byłoby ono tak jasne i byłoby znacznie cieplejsze.\n- Optyka to akryl o grubości około 0,5 cala (12 mm) z pomalowanym na biało spodem.\n- Wszystkie obiekty można przymocować magnetycznie do tablicy. Dodatkowe zwierciadła, pryzmaty i soczewka o pełnej grubości znajdują się na zdjęciu i zostały zademonstrowane w prezentacji.\n- Rzeczywiste soczewki latarni morskiej wymagały komina wentylacyjnego u góry i często obrotowej konstrukcji u dołu. Nie próbowały one zebrać pełnego zakresu światła 180 stopni.",
-      "augustinfresnelsmagi": "Magiczna optyka latarni morskiej Augustina Fresnela ",
-      "t1athinnedlensmakesab": "#1 Pocieniona soczewka daje jasną wiązkę dzięki mniejszej ilości szkła",
-      "comparetheperformanc": "Porównaj wydajność górnej połowy soczewki Bullseye o zmniejszonej grubości\nz dolną połową soczewki o pełnej grubości.\n\nW latach dwudziestych XIX wieku słaba jakość szkła oznaczała,\nże soczewka o pełnej grubości wysyłała na statek mniej światła niż bez soczewki!\nCienka soczewka była znacznie lepsza niż brak soczewki.",
-      "amagnifyinglenscanon": "Soczewka powiększająca może przesłać do statku\ntylko około 1/6, czyli 15% światła.",
-      "mirrorsorreflectorsc": "Lustra lub odbłyśniki mogą przekierowywać wiązki o dużym kącie, ale odbłyśniki z lat dwudziestych XIX wieku marnowały połowę światła.",
-      "t2totalinternalreflec": "#2 Pryzmaty z całkowitym wewnętrznym odbiciem (TIR) umożliwiły wysłanie całego wysokokątowego światła na statek",
-      "inthepigeonpointligh": "W demonstracji optyki na tablicy w latarni morskiej Pigeon Point\nmagia Fresnela sprawia, że CAŁE światło w półkuli jest wysyłane do statku",
-      "howitworks": "Jak to działa"
     }
   }
 }
