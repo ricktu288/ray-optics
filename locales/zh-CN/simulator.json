@@ -81,12 +81,20 @@
     "showAdvancedSettings": {
       "title": "更多场景设置…"
     },
+    "theme": {
+      "title": "主题"
+    },
     "colorMode": {
       "title": "色彩模式",
       "description": "决定光线或像的亮度（若启用「模拟色彩」，则还需考虑颜色）如何对应到萤幕上的颜色。只在启用「修正亮度」时才可调整此设定。"
     },
-    "theme": {
-      "title": "主题"
+    "redWavelength": {
+      "title": "红色波长 (nm)",
+      "description": "当「模拟色彩」启用时显示为红色的波长。可用於模拟不可见光的假色光谱。"
+    },
+    "violetWavelength": {
+      "title": "紫色波长 (nm)",
+      "description": "当「模拟色彩」启用时显示为紫色的波长。可用於模拟不可见光的假色光谱。"
     },
     "language": {
       "title": "语言",

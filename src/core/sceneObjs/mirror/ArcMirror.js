@@ -65,7 +65,7 @@ class ArcMirror extends BaseFilter {
         var a1 = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
         var a2 = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
         var a3 = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
-        const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+        const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
         ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
         ctx.lineWidth = this.scene.theme.mirror.width * ls;
         ctx.beginPath();
@@ -79,7 +79,7 @@ class ArcMirror extends BaseFilter {
         }
       } else {
         // The three points on the arc is colinear. Treat as a line segment.
-        const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+        const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
         ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
         ctx.lineWidth = this.scene.theme.mirror.width * ls;
         ctx.beginPath();

@@ -62,7 +62,7 @@ class Mirror extends LineObjMixin(BaseFilter) {
       return;
     }
 
-    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+    const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
     ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
     ctx.lineWidth = this.scene.theme.mirror.width * ls;
     ctx.beginPath();
