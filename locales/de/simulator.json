@@ -65,7 +65,7 @@
     "language": {
       "title": "Sprache"
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "JSON-Editor anzeigen"
     },
     "showStatusBox": {

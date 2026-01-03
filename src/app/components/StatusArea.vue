@@ -61,11 +61,11 @@ export default {
     const preferences = usePreferencesStore()
     const themeStore = useThemeStore()
     const status = useStatus()
-    const showJsonEditor = toRef(preferences, 'showJsonEditor')
+    const showSidebar = toRef(preferences, 'showSidebar')
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
     
     const notificationStyle = computed(() => ({
-      left: showJsonEditor.value ? `${sidebarWidth.value}px` : '0px'
+      left: showSidebar.value ? `${sidebarWidth.value}px` : '0px'
     }))
 
     // Computed styles that adapt to theme - status overlay uses scene background color

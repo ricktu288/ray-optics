@@ -15,16 +15,60 @@
 -->
 
 <template>
-  <div id="sidebar" v-show="showJsonEditor" :style="{ width: sidebarWidth + 'px' }" :data-width="sidebarWidth">
-    <div id="sidebarMobileHeightDiff" class="d-none d-lg-block"></div>
+  <div id="sidebar" :class="{ 'sidebar-visible': showSidebar }" :style="{ width: sidebarWidth + 'px' }" :data-width="sidebarWidth">
+    <div id="sidebarMobileHeightDiff" class="d-none d-lg-block sidebar-mobile-height-diff"></div>
     <div id="jsonEditorContainer">
-      <div id="jsonEditor"></div>
-      <div class="json-editor-button">
-        <a href="https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder" target="_blank" class="btn btn-ai-assistant" tabindex="-1" @click="blurButton" v-tooltip-popover:[tooltipType]="{ title: $t('simulator:sidebar.aiAssistant.title'), content: $t('simulator:sidebar.aiAssistant.description'), placement: 'left' }">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16">
-            <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z"/>
+      <div class="sidebar-tabs" role="tablist" aria-label="Sidebar tabs">
+        <div class="sidebar-tabs-left">
+          <button
+            type="button"
+            class="sidebar-tab"
+            :class="{ active: activeTab === 'visual' }"
+            role="tab"
+            :aria-selected="activeTab === 'visual'"
+            @click="setActiveTab('visual')"
+          >
+            {{ $t('simulator:sidebar.tabs.visual') }}<sup>Beta</sup>
+          </button>
+          <button
+            type="button"
+            class="sidebar-tab"
+            :class="{ active: activeTab === 'code' }"
+            role="tab"
+            :aria-selected="activeTab === 'code'"
+            @click="setActiveTab('code')"
+          >
+            {{ $t('simulator:sidebar.tabs.code') }}
+          </button>
+          <button
+            type="button"
+            class="sidebar-tab"
+            :class="{ active: activeTab === 'ai' }"
+            role="tab"
+            :aria-selected="activeTab === 'ai'"
+            @click="setActiveTab('ai')"
+          >
+            {{ $t('simulator:sidebar.tabs.ai') }}
+          </button>
+        </div>
+
+        <button
+          type="button"
+          class="sidebar-collapse-btn"
+          aria-label="Hide sidebar"
+          @click.stop="hideSidebar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M12 2.8L7.2 8 12 13.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.2 2.8L2.4 8 7.2 13.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </a>
+        </button>
+      </div>
+
+      <div class="sidebar-tab-content">
+        <VisualTab v-show="activeTab === 'visual'" />
+        <div id="jsonEditor" v-show="activeTab === 'code'"></div>
+        <AITab v-show="activeTab === 'ai'" />
       </div>
     </div>
     <div 
@@ -32,6 +76,25 @@
       @mousedown="startResize"
       @touchstart="startResize"
     ></div>
+  </div>
+
+  <!-- Hidden state hover region -->
+  <div
+    class="drawer-hover-region"
+    :class="{ 'drawer-hover-region-active': !showSidebar }"
+  >
+    <div class="d-none d-lg-block sidebar-mobile-height-diff"></div>
+    <button
+      type="button"
+      class="drawer-toggle-expand"
+      aria-label="Show sidebar"
+      @click="expandSidebar"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M4 2.8L8.8 8 4 13.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8.8 2.8L13.6 8 8.8 13.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -41,20 +104,19 @@
  * @description The Vue component for the sidebar containing the JSON editor.
  */
 import { usePreferencesStore } from '../store/preferences'
-import { vTooltipPopover } from '../directives/tooltip-popover'
-import { computed, toRef, ref, onMounted, onUnmounted } from 'vue'
+import { toRef, ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { jsonEditorService } from '../services/jsonEditor'
+import VisualTab from './sidebar/VisualTab.vue'
+import AITab from './sidebar/AITab.vue'
 
 export default {
   name: 'Sidebar',
-  directives: {
-    'tooltip-popover': vTooltipPopover
-  },
+  components: { VisualTab, AITab },
   setup() {
     const preferences = usePreferencesStore()
-    const help = toRef(preferences, 'help')
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
-    const tooltipType = computed(() => help.value ? 'popover' : undefined)
+    const showSidebar = toRef(preferences, 'showSidebar')
+    const activeTab = toRef(preferences, 'sidebarTab')
     
     const isResizing = ref(false)
     const startX = ref(0)
@@ -122,12 +184,47 @@ export default {
       document.body.style.userSelect = ''
     }
 
-    const blurButton = () => {
-      const button = document.querySelector('.btn-ai-assistant');
-      if (button) {
-        button.blur();
+    const hideSidebar = () => {
+      showSidebar.value = false
+    }
+
+    const expandSidebar = () => {
+      showSidebar.value = true
+      // Helps Ace re-measure if it was off-screen during the transition.
+      setTimeout(() => {
+        if (jsonEditorService.aceEditor) {
+          jsonEditorService.aceEditor.resize()
+        }
+      }, 350)
+    }
+
+    const setActiveTab = (tab) => {
+      activeTab.value = tab
+    }
+
+    // If we show the code editor after being hidden or after being on another tab,
+    // ask Ace to re-measure.
+    const resizeAceSoon = async () => {
+      await nextTick()
+      setTimeout(() => {
+        if (jsonEditorService.aceEditor) {
+          jsonEditorService.aceEditor.resize()
+        }
+      }, 0)
+    }
+
+    watch(activeTab, (tab) => {
+      if (tab === 'code') {
+        resizeAceSoon()
       }
-    };
+    })
+
+    watch(showSidebar, (isShown) => {
+      if (isShown && activeTab.value === 'code') {
+        // Wait for the drawer slide-in transition as well.
+        setTimeout(() => resizeAceSoon(), 320)
+      }
+    })
     
     onMounted(() => {
       // Add keyboard event listeners to prevent propagation from JSON editor
@@ -158,11 +255,13 @@ export default {
     })
     
     return {
-      showJsonEditor: preferences.showJsonEditor,
+      showSidebar,
       sidebarWidth,
-      tooltipType,
+      activeTab,
       startResize,
-      blurButton
+      hideSidebar,
+      expandSidebar,
+      setActiveTab
     }
   }
 }
@@ -178,9 +277,17 @@ export default {
   height: calc(100% - 46px);
   display: flex;
   flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  pointer-events: none;
 }
 
-#sidebarMobileHeightDiff {
+#sidebar.sidebar-visible {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.sidebar-mobile-height-diff {
   height: 22px;
 }
 
@@ -191,38 +298,88 @@ export default {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.sidebar-tabs-left {
+  display: flex;
+  gap: 4px;
+}
+
+.sidebar-collapse-btn {
+  margin-left: auto;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-collapse-btn:hover {
+  background: rgba(60, 65, 70, 0.55);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sidebar-collapse-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.22);
+  outline-offset: 2px;
+}
+
+.sidebar-collapse-btn svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.sidebar-tab {
+  appearance: none;
+  border: none;
+  background: rgba(60, 65, 70, 0.35);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-tab:hover {
+  background: rgba(60, 65, 70, 0.55);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sidebar-tab.active {
+  background: rgba(90, 95, 100, 0.9);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sidebar-tab:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.22);
+  outline-offset: 2px;
+}
+
+.sidebar-tab-content {
+  flex-grow: 1;
+  min-height: 0;
+  position: relative;
 }
 
 #jsonEditor {
   width: 100%;
   height: 100%
-}
-
-.json-editor-button {
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
-  z-index: 10;
-}
-
-.btn-ai-assistant {
-  color: gray;
-  padding: 5px;
-  background-color: rgba(60, 65, 70, 0.7);
-  border-radius: 50%;
-  border: none;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
-
-.btn-ai-assistant:hover, .btn-ai-assistant:focus {
-  background-color: rgba(80, 85, 90, 0.8);
-  color: white;
-  box-shadow: none;
 }
 
 .resize-handle {
@@ -232,10 +389,110 @@ export default {
   width: 4px;
   height: 100%;
   cursor: ew-resize;
-  background: transparent;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
 }
 
 .resize-handle:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Drawer toggle button on resize handle */
+.drawer-toggle {
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  background-color: rgb(80, 84, 88);
+  border: none;
+  border-radius: 4px;
+  width: 14px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease, width 0.2s ease, right 0.2s ease;
+  pointer-events: auto;
+  opacity: 0;
+}
+
+.resize-handle:hover .drawer-toggle,
+.drawer-toggle:hover,
+.drawer-toggle:focus-visible {
+  opacity: 1;
+}
+
+.drawer-toggle:hover,
+.drawer-toggle:focus-visible {
+  background-color: rgb(90, 95, 100);
+  color: rgba(255, 255, 255, 0.9);
+  width: 16px;
+  right: -6px;
+}
+
+/* Hidden state hover region */
+.drawer-hover-region {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  width: 10px;
+  height: calc(100% - 46px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+
+.drawer-hover-region-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-toggle-expand {
+  position: relative;
+  left: 0;
+  background-color: rgb(55, 60, 65);
+  border: none;
+  border-radius: 0 4px 4px 0;
+  width: 14px;
+  height: 40px;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease, width 0.2s ease;
+  opacity: 0;
+}
+
+.drawer-toggle-expand svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.drawer-hover-region:hover .drawer-toggle-expand,
+.drawer-toggle-expand:focus-visible {
+  opacity: 1;
+  background-color: rgba(60, 65, 70, 0.85);
+  color: rgba(255, 255, 255, 0.7);
+  width: 18px;
+}
+
+.drawer-toggle-expand:hover,
+.drawer-toggle-expand:focus-visible {
+  background-color: rgba(70, 75, 80, 0.95);
+  color: rgba(255, 255, 255, 0.9);
+  width: 20px;
+}
+
+.drawer-toggle-expand:active {
+  background-color: rgba(85, 90, 95, 1);
 }
 </style>

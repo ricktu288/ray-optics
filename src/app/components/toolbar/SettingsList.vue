@@ -125,9 +125,9 @@
   />
 
   <ToggleControl
-    :label="$t('simulator:settings.showJsonEditor.title')"
-    :popoverContent="$t('simulator:settings.showJsonEditor.description')"
-    v-model="showJsonEditor"
+    :label="$t('simulator:settings.showSidebar.title')"
+    :popoverContent="$t('simulator:settings.showSidebar.description')"
+    v-model="showSidebar"
     :layout="layout"
   />
 
@@ -261,7 +261,7 @@ export default {
       simulateColors: scene.simulateColors,
       correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
-      showJsonEditor: preferences.showJsonEditor,
+      showSidebar: preferences.showSidebar,
       showStatus: preferences.showStatus,
       showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,

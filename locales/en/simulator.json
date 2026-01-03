@@ -96,7 +96,7 @@
       "title": "Auto sync URL",
       "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "Show JSON editor",
       "description": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
     },
@@ -581,6 +581,14 @@
     "invalidFile": "The file is neither a valid JSON scene nor an image file."
   },
   "sidebar": {
+    "tabs": {
+      "visual": "Visual",
+      "code": "Code",
+      "ai": "AI"
+    },
+    "visualSubTabs": {
+      "scene": "Scene"
+    },
     "aiAssistant": {
       "title": "AI Assistant",
       "description": "Link to Ray Optics Coder on ChatGPT. See Tools -> Other -> Import module -> Make custom modules for more information."

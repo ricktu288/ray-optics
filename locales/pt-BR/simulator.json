@@ -96,7 +96,7 @@
       "title": "Sincronizar URL automaticamente",
       "description": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear."
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "Exibir editor JSON",
       "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
     },

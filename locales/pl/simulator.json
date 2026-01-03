@@ -89,7 +89,7 @@
       "title": "Automatyczna synchronizacja URL",
       "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę."
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "Pokaż edytor JSON",
       "description": "Pokaż edytor kodu dla reprezentacji JSON sceny, który jest potrzebny podczas tworzenia niestandardowego modułu (patrz Narzędzia -> Inne -> Importuj moduły -> Twórz własne moduły)."
     },

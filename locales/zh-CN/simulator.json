@@ -96,7 +96,7 @@
       "title": "自动同步网址",
       "description": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。如需设定标题，请用文件->保存->重命名。"
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "显示 JSON 编辑器",
       "description": "显示表达场景代码的 JSON 编辑器。在创建自定义模块时需要使用（见工具->其他->导入模块->创建自定义模块）。"
     },
@@ -581,6 +581,14 @@
     "invalidFile": "此文件既不是有效的 JSON 场景，也不是图片文件。"
   },
   "sidebar": {
+    "tabs": {
+      "visual": "可视化",
+      "code": "代码",
+      "ai": "AI"
+    },
+    "visualSubTabs": {
+      "scene": "场景"
+    },
     "aiAssistant": {
       "title": "AI 助手",
       "description": "链接到 ChatGPT 上的 Ray Optics Coder。更多信息请参见工具->其他->导入模块->创建自定义模块。"

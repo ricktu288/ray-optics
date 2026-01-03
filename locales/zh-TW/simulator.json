@@ -96,7 +96,7 @@
       "title": "自動同步網址",
       "description": "啟用時，網址會隨著場景自動更新，而不必持續手動儲存場景。如需設定標題，請用檔案->儲存->重新命名。"
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "顯示 JSON 編輯器",
       "description": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->匯入模組->建立自訂模組）。"
     },
@@ -581,6 +581,14 @@
     "invalidFile": "此檔案既不是有效的 JSON 場景，也不是圖片檔案。"
   },
   "sidebar": {
+    "tabs": {
+      "visual": "視覺化",
+      "code": "程式碼",
+      "ai": "AI"
+    },
+    "visualSubTabs": {
+      "scene": "場景"
+    },
     "aiAssistant": {
       "title": "AI 輔助",
       "description": "連結至 ChatGPT 上的 Ray Optics Coder。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
