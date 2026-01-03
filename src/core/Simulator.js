@@ -661,7 +661,7 @@ class Simulator {
         // Only calculate color and alpha if we have a canvas to draw on
         if (this.canvasRendererMain) {
           if (this.scene.simulateColors) {
-            var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && (this.scene.colorMode == 'default'));
+            var color = this.scene.simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p), !this.isSVG && (this.scene.colorMode == 'default'));
           } else {
             var alpha = alpha0 * (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p);
           }
@@ -738,7 +738,7 @@ class Simulator {
                 // If the intersections are near each others
                 if (geometry.intersectionIsOnRay(observed_intersection, geometry.line(observed_point, this.pendingRays[j].p1)) && geometry.distanceSquared(observed_point, this.pendingRays[j].p1) > 1e-5 * this.scene.lengthScale * this.scene.lengthScale) {
                   if (this.scene.simulateColors) {
-                    var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
+                    var color = this.scene.simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
                   } else {
                     const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                     this.ctxMain.globalAlpha = alpha;
@@ -802,7 +802,7 @@ class Simulator {
             observed_intersection = geometry.linesIntersection(this.pendingRays[j], this.last_ray);
             if (this.last_intersection && geometry.distanceSquared(this.last_intersection, observed_intersection) < 25 * this.scene.lengthScale * this.scene.lengthScale) {
               if (this.scene.simulateColors) {
-                var color = Simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
+                var color = this.scene.simulator.wavelengthToColor(this.pendingRays[j].wavelength, (this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) * 0.5, !this.isSVG && (this.scene.colorMode == 'default'));
               } else {
                 const alpha = alpha0 * ((this.pendingRays[j].brightness_s + this.pendingRays[j].brightness_p) + (this.last_ray.brightness_s + this.last_ray.brightness_p)) * 0.5;
                 this.ctxMain.globalAlpha = alpha;
@@ -992,7 +992,7 @@ class Simulator {
     }
   }
 
-  static wavelengthToColor(wavelength, brightness, transform) {
+  wavelengthToColor(wavelength, brightness, transform) {
     // From https://scienceprimer.com/javascript-code-convert-light-wavelength-color
     var R,
       G,
@@ -1000,31 +1000,57 @@ class Simulator {
       alpha,
       wl = wavelength;
 
-    if (wl >= Simulator.UV_WAVELENGTH && wl < Simulator.VIOLET_WAVELENGTH) {
+    // Allow scenes to remap which wavelengths are shown as "violet" and "red".
+    // This enables false-color visualization for non-visible ranges (e.g. IR/UV optics).
+    // We proportionally scale all wavelength breakpoints so that:
+    // - base violet (Simulator.VIOLET_WAVELENGTH) maps to scene.violetWavelength
+    // - base red (Simulator.RED_WAVELENGTH) maps to scene.redWavelength
+    const baseViolet = Simulator.VIOLET_WAVELENGTH;
+    const baseRed = Simulator.RED_WAVELENGTH;
+    const sceneViolet = (this.scene && Number.isFinite(this.scene.violetWavelength)) ? this.scene.violetWavelength : baseViolet;
+    const sceneRed = (this.scene && Number.isFinite(this.scene.redWavelength)) ? this.scene.redWavelength : baseRed;
+
+    // Avoid invalid / degenerate settings.
+    const targetViolet = (sceneRed > sceneViolet) ? sceneViolet : baseViolet;
+    const targetRed = (sceneRed > sceneViolet) ? sceneRed : baseRed;
+
+    const scale = (targetRed - targetViolet) / (baseRed - baseViolet);
+    const scaled = (x) => targetViolet + (x - baseViolet) * scale;
+
+    const UV_WAVELENGTH = scaled(Simulator.UV_WAVELENGTH);
+    const VIOLET_WAVELENGTH = targetViolet;
+    const BLUE_WAVELENGTH = scaled(Simulator.BLUE_WAVELENGTH);
+    const CYAN_WAVELENGTH = scaled(Simulator.CYAN_WAVELENGTH);
+    const GREEN_WAVELENGTH = scaled(Simulator.GREEN_WAVELENGTH);
+    const YELLOW_WAVELENGTH = scaled(Simulator.YELLOW_WAVELENGTH);
+    const RED_WAVELENGTH = targetRed;
+    const INFRARED_WAVELENGTH = scaled(Simulator.INFRARED_WAVELENGTH);
+
+    if (wl >= UV_WAVELENGTH && wl < VIOLET_WAVELENGTH) {
       R = 0.5;
       G = 0;
       B = 1;
-    } else if (wl >= Simulator.VIOLET_WAVELENGTH && wl < Simulator.BLUE_WAVELENGTH) {
-      R = -0.5 * (wl - Simulator.BLUE_WAVELENGTH) / (Simulator.BLUE_WAVELENGTH - Simulator.VIOLET_WAVELENGTH);
+    } else if (wl >= VIOLET_WAVELENGTH && wl < BLUE_WAVELENGTH) {
+      R = -0.5 * (wl - BLUE_WAVELENGTH) / (BLUE_WAVELENGTH - VIOLET_WAVELENGTH);
       G = 0;
       B = 1;
-    } else if (wl >= Simulator.BLUE_WAVELENGTH && wl < Simulator.CYAN_WAVELENGTH) {
+    } else if (wl >= BLUE_WAVELENGTH && wl < CYAN_WAVELENGTH) {
       R = 0;
-      G = (wl - Simulator.BLUE_WAVELENGTH) / (Simulator.CYAN_WAVELENGTH - Simulator.BLUE_WAVELENGTH);
+      G = (wl - BLUE_WAVELENGTH) / (CYAN_WAVELENGTH - BLUE_WAVELENGTH);
       B = 1;
-    } else if (wl >= Simulator.CYAN_WAVELENGTH && wl < Simulator.GREEN_WAVELENGTH) {
+    } else if (wl >= CYAN_WAVELENGTH && wl < GREEN_WAVELENGTH) {
       R = 0;
       G = 1;
-      B = -1 * (wl - Simulator.GREEN_WAVELENGTH) / (Simulator.GREEN_WAVELENGTH - Simulator.CYAN_WAVELENGTH);
-    } else if (wl >= Simulator.GREEN_WAVELENGTH && wl < Simulator.YELLOW_WAVELENGTH) {
-      R = (wl - Simulator.GREEN_WAVELENGTH) / (Simulator.YELLOW_WAVELENGTH - Simulator.GREEN_WAVELENGTH);
+      B = -1 * (wl - GREEN_WAVELENGTH) / (GREEN_WAVELENGTH - CYAN_WAVELENGTH);
+    } else if (wl >= GREEN_WAVELENGTH && wl < YELLOW_WAVELENGTH) {
+      R = (wl - GREEN_WAVELENGTH) / (YELLOW_WAVELENGTH - GREEN_WAVELENGTH);
       G = 1;
       B = 0;
-    } else if (wl >= Simulator.YELLOW_WAVELENGTH && wl < Simulator.RED_WAVELENGTH) {
+    } else if (wl >= YELLOW_WAVELENGTH && wl < RED_WAVELENGTH) {
       R = 1;
-      G = -1 * (wl - Simulator.RED_WAVELENGTH) / (Simulator.RED_WAVELENGTH - Simulator.YELLOW_WAVELENGTH);
+      G = -1 * (wl - RED_WAVELENGTH) / (RED_WAVELENGTH - YELLOW_WAVELENGTH);
       B = 0.0;
-    } else if (wl >= Simulator.RED_WAVELENGTH && wl <= Simulator.INFRARED_WAVELENGTH) {
+    } else if (wl >= RED_WAVELENGTH && wl <= INFRARED_WAVELENGTH) {
       R = 1;
       G = 0;
       B = 0;
@@ -1035,12 +1061,12 @@ class Simulator {
     }
 
     // intensty is lower at the edges of the visible spectrum.
-    if (wl > Simulator.INFRARED_WAVELENGTH || wl < Simulator.UV_WAVELENGTH) {
+    if (wl > INFRARED_WAVELENGTH || wl < UV_WAVELENGTH) {
       alpha = 0;
-    } else if (wl > Simulator.RED_WAVELENGTH) {
-      alpha = (Simulator.INFRARED_WAVELENGTH - wl) / (Simulator.INFRARED_WAVELENGTH - Simulator.RED_WAVELENGTH);
-    } else if (wl < Simulator.VIOLET_WAVELENGTH) {
-      alpha = (wl - Simulator.UV_WAVELENGTH) / (Simulator.VIOLET_WAVELENGTH - Simulator.UV_WAVELENGTH);
+    } else if (wl > RED_WAVELENGTH) {
+      alpha = (INFRARED_WAVELENGTH - wl) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
+    } else if (wl < VIOLET_WAVELENGTH) {
+      alpha = (wl - UV_WAVELENGTH) / (VIOLET_WAVELENGTH - UV_WAVELENGTH);
     } else {
       alpha = 1;
     }

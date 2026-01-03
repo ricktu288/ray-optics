@@ -52,6 +52,12 @@ const PROPERTY_CALLBACKS = {
   colorMode: (value) => {
     app.simulator?.updateSimulation(false, true)
   },
+  redWavelength: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
+  violetWavelength: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
   simulateColors: (value) => {
     app.editor.selectObj(app.editor.selectedObjIndex)
     app.simulator?.updateSimulation(false, true)

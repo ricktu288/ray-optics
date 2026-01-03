@@ -84,7 +84,7 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
     var center_size = Math.max(1, this.scene.theme.mirror.width / 2) * ls;
 
     // Draw the line segment
-    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+    const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
     ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
     ctx.lineWidth = this.scene.theme.mirror.width * ls;
     ctx.globalAlpha = 1;

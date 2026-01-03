@@ -70,8 +70,8 @@
       "description": "Un miroir 'courbé' qui obéit exactement à l'équation (1/p + 1/q = 1/f). La distance focale peut être défini directement."
     },
     "BeamSplitter": {
-      "description": "Un miroir qui transmet un pourcentage de la lumière entrant.",
-      "title": "Diviseur de rayons"
+      "title": "Diviseur de rayons",
+      "description": "Un miroir qui transmet un pourcentage de la lumière entrant."
     },
     "CustomMirror": {
       "title": "Equation personnalisée"

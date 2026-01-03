@@ -81,7 +81,7 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     if (this.scene.simulateColors) {
-      canvasRenderer.drawPoint(this.p1, Simulator.wavelengthToColor(this.wavelength, 1), this.scene.theme.lightSource.size);
+      canvasRenderer.drawPoint(this.p1, this.scene.simulator.wavelengthToColor(this.wavelength, 1), this.scene.theme.lightSource.size);
 
       canvasRenderer.drawPoint(this.p1, isHovered ? this.scene.highlightColor : this.scene.theme.colorSourceCenter.color, this.scene.theme.colorSourceCenter.size);
     } else {

@@ -811,5 +811,14 @@
       ]
     },
     "firstCommit": "2025-12-25"
+  },
+  {
+    "name": "Márk Fazekas",
+    "contributions": {
+      "translations": [
+        "hu"
+      ]
+    },
+    "firstCommit": "2025-12-30"
   }
 ]

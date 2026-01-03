@@ -75,7 +75,7 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     ctx.stroke();
 
     if (this.scene.simulateColors && this.wavelength && this.filter) {
-      const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+      const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
       ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(colorArray);
       ctx.setLineDash([15 * ls, 15 * ls]);
       ctx.beginPath();

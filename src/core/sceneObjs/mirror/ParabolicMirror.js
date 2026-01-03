@@ -76,7 +76,7 @@ class ParabolicMirror extends BaseFilter {
       var x0 = p12d / 2;
       var a = height / (x0 * x0); // y=ax^2
       var i;
-      const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+      const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
       ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
       ctx.lineWidth = this.scene.theme.mirror.width * ls;
       ctx.beginPath();

@@ -77,6 +77,10 @@
       "title": "Równanie niestandardowe",
       "description": "Zwierciadło, którego kształt jest określony przez niestandardowe równanie y = f(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
     },
+    "ParamMirror": {
+      "title": "Krzywa parametryczna",
+      "description": "Zwierciadło, którego kształt jest definiowany przez niestandardowe równania parametryczne."
+    },
     "ConcaveDiffractionGrating": {
       "title": "Wklęsła siatka dyfrakcyjna odbiciowa",
       "description": "Wklęsła siatka dyfrakcyjna, której kształt jest częścią koła."
@@ -111,6 +115,15 @@
       "title": "Równanie niestandardowe",
       "description": "Szkło o kształcie zdefiniowanym przez niestandardową nierówność f(x) < y < g(x), gdzie (x,y) jest w przekształconych współrzędnych, w których dwoma punktami kontrolnymi są (-1,0) i (1,0)."
     },
+    "ParamGlass": {
+      "title": "Krzywa parametryczna",
+      "description": "Szkło o kształcie zdefiniowanym przez niestandardowe równania parametryczne."
+    },
+    "CurveGlass": {
+      "title": "Krzywe Béziera",
+      "description": "Szkło ograniczone sześciennymi krzywymi Béziera.",
+      "instruction": "Kliknij, aby utworzyć element, a po zakończeniu rysowania kliknij punkt początkowy. Następnie przeciągnij pola, aby manipulować punktami kontrolnymi, zmieniając krzywą."
+    },
     "CircleGrinGlass": {
       "title": "Koło GRIN",
       "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią."
@@ -120,6 +133,14 @@
       "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią.",
       "instruction": "Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.",
       "warning": "OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne."
+    },
+    "ParamGrinGlass": {
+      "title": "Krzywa parametryczna GRIN",
+      "description": "Szkło gradientowe z krawędzią zdefiniowaną przez niestandardowe równania parametryczne."
+    },
+    "CurveGrinGlass": {
+      "title": "Krzywe Béziera GRIN",
+      "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
     },
     "otherGrinGlass": {
       "title": "Szkło gradientowe (GRIN)",
@@ -168,26 +189,6 @@
       "description": "Narzędzie do rysowania odręcznego.",
       "instruction": "Przeciągnij, aby narysować."
     },
-    "modules": {
-      "import": "Importuj moduły…",
-      "remove": "Usuń moduł"
-    },
-    "moveView": {
-      "title": "Przesuń widok",
-      "description": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję.)"
-    },
-    "ParamGlass": {
-      "title": "Krzywa parametryczna",
-      "description": "Szkło o kształcie zdefiniowanym przez niestandardowe równania parametryczne."
-    },
-    "ParamGrinGlass": {
-      "title": "Krzywa parametryczna GRIN",
-      "description": "Szkło gradientowe z krawędzią zdefiniowaną przez niestandardowe równania parametryczne."
-    },
-    "ParamMirror": {
-      "title": "Krzywa parametryczna",
-      "description": "Zwierciadło, którego kształt jest definiowany przez niestandardowe równania parametryczne."
-    },
     "CustomSurface": {
       "title": "Powierzchnia linii niestandardowej",
       "description": "Niestandardowa powierzchnia odcinka, w której kąty (θ) i jasności (P) wychodzących promieni (gdy promień na nią pada) są zdefiniowane przez niestandardowe równania."
@@ -200,17 +201,16 @@
       "title": "Niestandardowa krzywa parametryczna",
       "description": "Niestandardowa powierzchnia, której kształt jest definiowany za pomocą równań parametrycznych."
     },
+    "modules": {
+      "import": "Importuj moduły…",
+      "remove": "Usuń moduł"
+    },
+    "moveView": {
+      "title": "Przesuń widok",
+      "description": "Przeciągnij, aby przesunąć widok. (Przeciąganie prawym przyciskiem myszy ma tę samą funkcję.)"
+    },
     "moreTools": {
       "title": "Więcej narzędzi…"
-    },
-    "CurveGlass": {
-      "title": "Krzywe Béziera",
-      "description": "Szkło ograniczone sześciennymi krzywymi Béziera.",
-      "instruction": "Kliknij, aby utworzyć element, a po zakończeniu rysowania kliknij punkt początkowy. Następnie przeciągnij pola, aby manipulować punktami kontrolnymi, zmieniając krzywą."
-    },
-    "CurveGrinGlass": {
-      "title": "Krzywe Béziera GRIN",
-      "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
     }
   },
   "view": {

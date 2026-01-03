@@ -62,7 +62,7 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
     let directionColor = this.scene.theme.directionPoint.color;
 
     if (this.scene.simulateColors) {
-      sourceColor = Simulator.wavelengthToColor(this.wavelength, 1);
+      sourceColor = this.scene.simulator.wavelengthToColor(this.wavelength, 1);
     }
     
     if (isHovered) {

@@ -1,6 +1,7 @@
 {
   "galleryPage": {
     "title": "La galería de The Ray Optics",
+    "description": "Esto es una colección de simulaciones hechas usando [the web app](/simulator), que pueden ser usadas como demostraciones interactivas de óptica. Eres bienvenido de contribuir con nuevas simulaciones. Véase [the contribution guide](/contributing/gallery) para más información. Para reportar un fallo, por favor [open an issue on GitHub](/github/issues) o envía un email a [ray-optics@phydemo.app](/email).",
     "categories": {
       "title": "Categorías",
       "reflection": "Reflexión",
@@ -10,8 +11,7 @@
       "grinOptics": "Óptica de gradiente de índice",
       "miscellaneous": "Misceláneas"
     },
-    "openInSimulator": "Abrir en el simulador",
-    "description": "Esto es una colección de simulaciones hechas usando [the web app](/simulator), que pueden ser usadas como demostraciones interactivas de óptica. Eres bienvenido de contribuir con nuevas simulaciones. Véase [the contribution guide](/contributing/gallery) para más información. Para reportar un fallo, por favor [open an issue on GitHub](/github/issues) o envía un email a [ray-optics@phydemo.app](/email)."
+    "openInSimulator": "Abrir en el simulador"
   },
   "galleryData": {
     "common": {

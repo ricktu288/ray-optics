@@ -58,7 +58,7 @@ class CircleBlocker extends CircleObjMixin(BaseFilter) {
 
     ctx.beginPath();
     ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2);
-    const colorArray = Simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
+    const colorArray = this.scene.simulator.wavelengthToColor(this.wavelength || Simulator.GREEN_WAVELENGTH, 1);
     ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.blocker.color);
     ctx.lineWidth = this.scene.theme.blocker.width * ls;
     ctx.stroke();

@@ -8,11 +8,11 @@
     "saveButton": "Salvar",
     "cancelButton": "Cancelar",
     "defaultOption": "Padrão",
+    "legacyOption": "Legado",
     "customOption": "Personalizado",
     "closeButton": "Fechar",
     "resetButton": "Reiniciar",
-    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças.",
-    "legacyOption": "Legado"
+    "reloadToTakeEffect": "Por favor recarregue a página para aplicar as mudanças."
   },
   "file": {
     "title": "Arquivo",
@@ -81,12 +81,12 @@
     "showAdvancedSettings": {
       "title": "Mais configurações da cena…"
     },
+    "theme": {
+      "title": "Tema"
+    },
     "colorMode": {
       "title": "Modo de Cor",
       "description": "Determina como os brilhos (e cores se \"Simular Cores\" estiver ligado) dos raios ou imagens são mapeados a cores na tela. É configurável somente enquanto se utiliza \"Corrigir Brilho\"."
-    },
-    "theme": {
-      "title": "Tema"
     },
     "language": {
       "title": "Linguagem",
@@ -113,6 +113,12 @@
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
     "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
+  },
+  "editor": {
+    "objectBodyHint": "Para rotação, agrupamento, etc., veja o ícone de ajuda no canto inferior direito.",
+    "coordinatesHint": "Para transformar objetos, definir coordenadas a partir de fórmulas, etc., veja o ícone de ajuda no canto inferior direito.",
+    "handleHint": "Para mover múltiplos objetos juntos, clique no espaço vazio para criar um ponto de manuseio.",
+    "handleArrowHint": "Para alternar entre horizontal/vertical/rotação/escala, clique no ponto de manuseio (seta) e mude a opção \"transformação\" acima."
   },
   "objBar": {
     "showAdvanced": {
@@ -145,6 +151,7 @@
       "emisAngle": "Ângulo de Emissão",
       "random": "Aleatório",
       "lambert": "Lambertiano",
+      "coordOrigin": "Origem",
       "focalLength": "Comprimento focal",
       "eqnInfo": {
         "constants": "Constantes suportadas",
@@ -153,8 +160,18 @@
         "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
-      "coordOrigin": "Origem"
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
+    },
+    "ParamCurveObjMixin": {
+      "addPiece": "Adicionar segmento",
+      "removePiece": "Remover segmento",
+      "step": "Passo",
+      "error": {
+        "invalidStepSize": "Tamanho de passo inválido: {{step}}",
+        "invalidRange": "Alcance de parâmetros inválido: tMin({{tMin}}) >- tMax ({{tMax}})",
+        "nonFiniteCoords": "Coordenadas não-finitas: ({{x}}, {{y}})",
+        "pieceError": "Erro em segmento {{pieceIndex}}, t={{t}}: {{error}}"
+      }
     },
     "Beam": {
       "imageDetectionWarning": "Detecção de imagem pode não funcionar com raios aleatórios/divergentes."
@@ -191,12 +208,24 @@
     "CustomGlass": {
       "curveGenerationError": "Erro de geração de curva: f(x) > g(x) em x={{x}}"
     },
+    "ParamGlass": {
+      "eqnInfo": {
+        "closedAndPositivelyOriented": "A curva deve ser fechada e orientada positivamente (sentido horário na convenção de gráficos de computador onde o eixo y aponta para baixo)."
+      },
+      "warning": {
+        "notClosed": "A curva não está fechada.",
+        "notPositivelyOriented": "A curva não é positivamente orientada."
+      }
+    },
     "BaseGrinGlass": {
       "refIndexFnInfo": {
         "lambda": "Para simular dispersão cromática, use o parâmetro {{lambda}} para o comprimento de onda no vácuo em nanômetros.",
         "diff": "Somente suporta funções diferenciáveis.",
         "origin": "A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas.",
         "accuracy": "Para simulação mais precisa, veja \"Mais opções…\""
+      },
+      "absorptionFnInfo": {
+        "absorption": "A taxa de absorção do vidro, em unidades de 1/[comprimento]."
       },
       "stepSize": "Tamanho de passo da solução numérica",
       "stepSizeInfo": "Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do arquivo 'BaseGrinGlass.js', para mais informações.",
@@ -206,9 +235,6 @@
         "all": "Esta opção se aplica a todos objetos GRIN na simulação.",
         "impl": "Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'BaseGrinGlass.js').",
         "implNote": "A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, tal que ao menos um deles possua uma função de índice refrativo que não é definida todo o plano, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema."
-      },
-      "absorptionFnInfo": {
-        "absorption": "A taxa de absorção do vidro, em unidades de 1/[comprimento]."
       }
     },
     "CircleGrinGlass": {
@@ -221,6 +247,18 @@
       "epsInfo": {
         "units": "Unidades - [comprimento].",
         "functions": "Essa tolerância numérica é usada nas funções 'isOnBoundary' e 'countIntersections', dentro do arquivo'GrinGlass.js'."
+      }
+    },
+    "ParamGrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [comprimento].",
+        "functions": "Essa tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'ParamCurveObjMixin.js'."
+      }
+    },
+    "CurveGrinGlass": {
+      "epsInfo": {
+        "units": "Unidades - [comprimento]^2.",
+        "functions": "Esta tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'CurveGrinGlass.js'."
       }
     },
     "Aperture": {
@@ -256,6 +294,9 @@
       "textHere": "Texto Aqui",
       "fontSize": "Tamanho da Fonte",
       "font": "Fonte",
+      "fonts": "Serif: Serifada\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
+      "fontNote": "Se a fonte selecionada não estiver instaladad no seu sistema, uma fonte substituta será usada.",
+      "enterFontName": "Digite nome da fonte…",
       "fontStyle": "Estilo",
       "fontStyles": {
         "normal": "Normal",
@@ -272,10 +313,7 @@
         "right": "Direita"
       },
       "smallCaps": "Maiúsculo pequeno",
-      "angle": "Ângulo",
-      "fonts": "Serif: Serifada\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
-      "fontNote": "Se a fonte selecionada não estiver instaladad no seu sistema, uma fonte substituta será usada.",
-      "enterFontName": "Digite nome da fonte…"
+      "angle": "Ângulo"
     },
     "LineArrow": {
       "arrow": "Seta frontal",
@@ -283,6 +321,35 @@
     },
     "Drawing": {
       "finishDrawing": "Finalizar Desenho"
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "angles": "{{theta_0}} e {{theta_j}} são os ângulos dos raios que incidem e dos j-ésimos raios que saem, respectivamente, em radianos e relativo a direção normal.",
+        "brightnesses": "{{P_0}} e {{P_j}} são os brilhos dos raios incidentes e j-ésimos raios que saem, respectivamente, na mesma unidade que a ferramenta detector usa.",
+        "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
+        "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
+        "coating": "Este objeto pode agir como um revestimento de objetos de vidro ao sobrepor com suas superfícies. Nesse caso, a refração em si também precisa de ser definida pelas fórmulas deste objeto. Os índices refrativos do material associado ao mesmo lado, e ao lado oposto do raio incidente podem ser referidos como {{n_0}} e {{n_1}}, respectivamente. Se este objeto está dentro de um objeto de vidro, os valores são relativos a ele.",
+        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
+        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação."
+      },
+      "twoSided": "Bilateral",
+      "addOutgoingRay": "Adicionar raio de saída",
+      "removeOutgoingRay": "Remover raio de saída"
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola linearmente de -1 a 1 entre os dois pontos finais do segmento de linha."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola uniformemente (com respeito ao ângulo) de -1 a 1 entre os dois pontos finais do arco."
+      }
+    },
+    "CustomParamSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente no espaço de parâmetros da curva pode ser referido como {{t}}."
+      }
     },
     "ModuleObj": {
       "module": "Módulo",
@@ -317,67 +384,6 @@
       "transparent": "Fundo transparente",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
       "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
-    },
-    "ParamCurveObjMixin": {
-      "addPiece": "Adicionar segmento",
-      "removePiece": "Remover segmento",
-      "step": "Passo",
-      "error": {
-        "invalidStepSize": "Tamanho de passo inválido: {{step}}",
-        "invalidRange": "Alcance de parâmetros inválido: tMin({{tMin}}) >- tMax ({{tMax}})",
-        "nonFiniteCoords": "Coordenadas não-finitas: ({{x}}, {{y}})",
-        "pieceError": "Erro em segmento {{pieceIndex}}, t={{t}}: {{error}}"
-      }
-    },
-    "ParamGlass": {
-      "eqnInfo": {
-        "closedAndPositivelyOriented": "A curva deve ser fechada e orientada positivamente (sentido horário na convenção de gráficos de computador onde o eixo y aponta para baixo)."
-      },
-      "warning": {
-        "notClosed": "A curva não está fechada.",
-        "notPositivelyOriented": "A curva não é positivamente orientada."
-      }
-    },
-    "ParamGrinGlass": {
-      "epsInfo": {
-        "units": "Unidades - [comprimento].",
-        "functions": "Essa tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'ParamCurveObjMixin.js'."
-      }
-    },
-    "BaseCustomSurface": {
-      "info": {
-        "angles": "{{theta_0}} e {{theta_j}} são os ângulos dos raios que incidem e dos j-ésimos raios que saem, respectivamente, em radianos e relativo a direção normal.",
-        "brightnesses": "{{P_0}} e {{P_j}} são os brilhos dos raios incidentes e j-ésimos raios que saem, respectivamente, na mesma unidade que a ferramenta detector usa.",
-        "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
-        "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
-        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
-        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação.",
-        "coating": "Este objeto pode agir como um revestimento de objetos de vidro ao sobrepor com suas superfícies. Nesse caso, a refração em si também precisa de ser definida pelas fórmulas deste objeto. Os índices refrativos do material associado ao mesmo lado, e ao lado oposto do raio incidente podem ser referidos como {{n_0}} e {{n_1}}, respectivamente. Se este objeto está dentro de um objeto de vidro, os valores são relativos a ele."
-      },
-      "twoSided": "Bilateral",
-      "addOutgoingRay": "Adicionar raio de saída",
-      "removeOutgoingRay": "Remover raio de saída"
-    },
-    "CurveGrinGlass": {
-      "epsInfo": {
-        "units": "Unidades - [comprimento]^2.",
-        "functions": "Esta tolerância numérica é usada na função 'isOnBoundary' dentro do arquivo 'CurveGrinGlass.js'."
-      }
-    },
-    "CustomSurface": {
-      "info": {
-        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola linearmente de -1 a 1 entre os dois pontos finais do segmento de linha."
-      }
-    },
-    "CustomArcSurface": {
-      "info": {
-        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que interpola uniformemente (com respeito ao ângulo) de -1 a 1 entre os dois pontos finais do arco."
-      }
-    },
-    "CustomParamSurface": {
-      "info": {
-        "incidentPos": "A posição do ponto incidente no espaço de parâmetros da curva pode ser referido como {{t}}."
-      }
     }
   },
   "saveModal": {
@@ -529,19 +535,19 @@
     "decoration": {
       "title": "Estilo da decoração"
     },
+    "handlePoint": {
+      "title": "Ponto de controle de módulo"
+    },
     "handleArrow": {
       "title": "Seta do ponto de manuseio"
+    },
+    "customSurface": {
+      "title": "Estilo de superfície personalizado"
     },
     "import": {
       "title": "Importar",
       "description": "Importar tema de um arquivo JSON.",
       "error": "O arquivo não contém um tema."
-    },
-    "customSurface": {
-      "title": "Estilo de superfície personalizado"
-    },
-    "handlePoint": {
-      "title": "Ponto de controle de módulo"
     }
   },
   "languageModal": {
@@ -614,6 +620,10 @@
         "title": "Editar coordenadas diretamente",
         "description": "Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter."
       },
+      "arrayFormula": {
+        "title": "Listas e objetos a partir de fórmulas",
+        "description": "Para definir listas de objetos (ex.: uma grade de espelhos com espaçamento ajustável) ou objetos a partir de fórmulas (ex.: um prisma trapezoidal com ângulos ajustáveis), veja \"Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados\"."
+      },
       "keyboardShortcuts": {
         "title": "Atalhos de teclado",
         "description": "Quando um objeto está selecionado (ao clicar nele), aperte as setas do teclado para movê-lo; +/- para girar o objeto; Ctrl+D para duplicar; tecla Delete para apagar."
@@ -630,17 +640,7 @@
         "title": "Contate-nos",
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
-      },
-      "arrayFormula": {
-        "title": "Listas e objetos a partir de fórmulas",
-        "description": "Para definir listas de objetos (ex.: uma grade de espelhos com espaçamento ajustável) ou objetos a partir de fórmulas (ex.: um prisma trapezoidal com ângulos ajustáveis), veja \"Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados\"."
       }
     }
-  },
-  "editor": {
-    "objectBodyHint": "Para rotação, agrupamento, etc., veja o ícone de ajuda no canto inferior direito.",
-    "coordinatesHint": "Para transformar objetos, definir coordenadas a partir de fórmulas, etc., veja o ícone de ajuda no canto inferior direito.",
-    "handleHint": "Para mover múltiplos objetos juntos, clique no espaço vazio para criar um ponto de manuseio.",
-    "handleArrowHint": "Para alternar entre horizontal/vertical/rotação/escala, clique no ponto de manuseio (seta) e mude a opção \"transformação\" acima."
   }
 }

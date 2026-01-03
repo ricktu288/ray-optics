@@ -81,6 +81,14 @@
   <Transition name="advanced-settings">
     <div v-if="shouldShowAdvancedSettings || shouldShowAdvancedByDefault" class="advanced-settings-container">
       <PopupSelectControl
+        :label="$t('simulator:settings.theme.title')"
+        :value="themeStore.isDefaultTheme.value ? 'default' : 'custom'"
+        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
+        popup-target="themeModal"
+        :layout="layout"
+      />
+
+      <PopupSelectControl
         :label="$t('simulator:settings.colorMode.title')"
         :value="colorMode"
         :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
@@ -90,11 +98,23 @@
         :layout="layout"
       />
 
-      <PopupSelectControl
-        :label="$t('simulator:settings.theme.title')"
-        :value="themeStore.isDefaultTheme.value ? 'default' : 'custom'"
-        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
-        popup-target="themeModal"
+      <NumberControl
+        :label="$t('simulator:settings.redWavelength.title') + '<sup>Beta</sup>'"
+        :popover-content="$t('simulator:settings.redWavelength.description')"
+        v-model="redWavelength"
+        :min="violetWavelength + 1"
+        :max="Infinity"
+        :default-value="620"
+        :layout="layout"
+      />
+
+      <NumberControl
+        :label="$t('simulator:settings.violetWavelength.title') + '<sup>Beta</sup>'"
+        :popover-content="$t('simulator:settings.violetWavelength.description')"
+        v-model="violetWavelength"
+        :min="0"
+        :max="redWavelength - 1"
+        :default-value="420"
         :layout="layout"
       />
     </div>
@@ -229,9 +249,12 @@ export default {
       
       // For theme: show if theme is not default
       const themeNotDefault = !themeStore.isDefaultTheme.value
+
+      // For spectrum remapping: show if non-default
+      const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
       
       // Add more conditions here as more advanced options are added
-      return colorModeNotDefault || themeNotDefault
+      return colorModeNotDefault || themeNotDefault || spectrumNotDefault
     })
 
     const showLanguageWarning = computed(() => {
@@ -259,6 +282,8 @@ export default {
       lengthScale: scene.lengthScale,
       zoom: scene.zoom,
       simulateColors: scene.simulateColors,
+      redWavelength: scene.redWavelength,
+      violetWavelength: scene.violetWavelength,
       correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
       showSidebar: preferences.showSidebar,
@@ -289,6 +314,7 @@ export default {
   cursor: pointer;
   font-size: 14px;
   display: block;
+  padding-top: 3px;
 }
 
 #showAdvancedSettings:hover {

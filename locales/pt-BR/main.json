@@ -77,6 +77,10 @@
       "title": "Equação Personalizada",
       "description": "Um espelho cujo formato é definido por uma equação personalizada y = f(x), onde (x,y) está nas coordenadas transformadas em que os dois pontos de controle são (-1,0) and (1,0)."
     },
+    "ParamMirror": {
+      "title": "Curva Paramétrica",
+      "description": "Um espelho cuja forma é definida por equações paramétricas personalizadas."
+    },
     "ConcaveDiffractionGrating": {
       "title": "Rede de Difração Côncava",
       "description": "Uma rede de difração cuja forma é parte de um círculo."
@@ -111,6 +115,15 @@
       "title": "Equação Personalizada",
       "description": "Vidro com o formato definido por uma inequalidade personalizada f(x) < y < g(x), onde (x,y) está nas coordenadas transformadas em que os pontos de controle são (-1,0) e (1,0)."
     },
+    "ParamGlass": {
+      "title": "Curva Paramétrica",
+      "description": "Vidro com a forma definida por equações paramétricas personalizadas."
+    },
+    "CurveGlass": {
+      "title": "Curvas de Bézier",
+      "description": "Vidro delimitado por curvas cúbicas de Bézier.",
+      "instruction": "Clique para criar um pedaço, clique no ponto de início ao finalizar o desenho. Após isso, arraste as caixas para manipular os pontos de controle, mudando a curva."
+    },
     "CircleGrinGlass": {
       "title": "Círculo GRIN",
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular."
@@ -120,6 +133,14 @@
       "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
       "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
       "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva Paramétrica GRIN",
+      "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
+    },
+    "CurveGrinGlass": {
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidro de gradiente de índice delimitado por curvas cúbicas de Bézier."
     },
     "otherGrinGlass": {
       "title": "Polígono com gradiente de índice",
@@ -168,26 +189,6 @@
       "description": "Uma ferramenta de desenho à mão livre.",
       "instruction": "Arraste para desenhar."
     },
-    "modules": {
-      "import": "Importar Módulos…",
-      "remove": "Remover módulo"
-    },
-    "moveView": {
-      "title": "Mover Vista",
-      "description": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)"
-    },
-    "ParamMirror": {
-      "title": "Curva Paramétrica",
-      "description": "Um espelho cuja forma é definida por equações paramétricas personalizadas."
-    },
-    "ParamGlass": {
-      "title": "Curva Paramétrica",
-      "description": "Vidro com a forma definida por equações paramétricas personalizadas."
-    },
-    "ParamGrinGlass": {
-      "title": "Curva Paramétrica GRIN",
-      "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
-    },
     "CustomSurface": {
       "title": "Superfíce Personalizada de Linha",
       "description": "Uma superfície personalizada de segmento de linha onde o ângulo (θ) e brilho(P) dos raios que saem (quando um raio incide na superfície) são definidos por equações personalizadas."
@@ -200,17 +201,16 @@
       "title": "Curva Paramétrica Personalizada",
       "description": "Uma superfície personalizada com forma definida por equações paramétricas."
     },
+    "modules": {
+      "import": "Importar Módulos…",
+      "remove": "Remover módulo"
+    },
+    "moveView": {
+      "title": "Mover Vista",
+      "description": "Arraste para mover a vista. (Arrastar com o botão direito do mouse tem a mesma função.)"
+    },
     "moreTools": {
       "title": "Mais Ferramentas…"
-    },
-    "CurveGlass": {
-      "title": "Curvas de Bézier",
-      "description": "Vidro delimitado por curvas cúbicas de Bézier.",
-      "instruction": "Clique para criar um pedaço, clique no ponto de início ao finalizar o desenho. Após isso, arraste as caixas para manipular os pontos de controle, mudando a curva."
-    },
-    "CurveGrinGlass": {
-      "title": "Curvas de Bézier GRIN",
-      "description": "Vidro de gradiente de índice delimitado por curvas cúbicas de Bézier."
     }
   },
   "view": {

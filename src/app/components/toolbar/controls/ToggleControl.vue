@@ -16,7 +16,7 @@
 
 <template>
   <div 
-    class="row d-flex justify-content-between align-items-center"
+    class="row settings-control-row d-flex justify-content-between align-items-center"
     v-tooltip-popover:[tooltipType]="layout === 'desktop' && popoverContent ? { 
       content: popoverContent,
       html: true,
