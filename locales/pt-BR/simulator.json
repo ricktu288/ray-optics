@@ -112,7 +112,15 @@
       "title": "Exibir popups de ajuda",
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
-    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
+    "redWavelength": {
+      "title": "Comprimento de onda vermelho (nm)",
+      "description": "O comprimento de onda exibido como vermelho quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
+    },
+    "violetWavelength": {
+      "title": "Comprimento de onda violeta (nm)",
+      "description": "O comprimento de onda exibido como violeta quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
+    }
   },
   "editor": {
     "objectBodyHint": "Para rotação, agrupamento, etc., veja o ícone de ajuda no canto inferior direito.",
