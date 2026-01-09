@@ -50,6 +50,105 @@ class ArcMirror extends BaseFilter {
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.ArcMirror.title') }));
+
+    // Alternative parametrization: focal length (paraxial approximation).
+    if (this.p1 && this.p2 && this.p3) {
+      const chordLen = geometry.distance(this.p1, this.p2);
+      const eps = 1e-12;
+      if (chordLen > eps) {
+        const apertureHalf = chordLen * 0.5;
+
+        // Axis direction (unit) through p3, perpendicular to the mirror at p3.
+        // If the arc is valid, this is along the radius (p3 -> center).
+        // If degenerate (collinear), fall back to the perpendicular of the chord.
+        let axisDirX, axisDirY;
+        const center = geometry.linesIntersection(
+          geometry.perpendicularBisector(geometry.line(this.p1, this.p3)),
+          geometry.perpendicularBisector(geometry.line(this.p2, this.p3))
+        );
+        if (center && isFinite(center.x) && isFinite(center.y)) {
+          const dx = center.x - this.p3.x;
+          const dy = center.y - this.p3.y;
+          const d = Math.hypot(dx, dy);
+          axisDirX = dx / d;
+          axisDirY = dy / d;
+        } else {
+          const ux = (this.p2.x - this.p1.x) / chordLen;
+          const uy = (this.p2.y - this.p1.y) / chordLen;
+          axisDirX = uy;
+          axisDirY = -ux;
+        }
+        const tanDirX = axisDirY;
+        const tanDirY = -axisDirX;
+
+        // Initial focal length shown in obj bar.
+        // Use Infinity for degenerate / flat case.
+        // Sign convention (per request): if p3 is on the left of the directed line p1->p2, focal length is positive,
+        // otherwise negative. (Uses the same "left normal" convention as dir2 = [dy, -dx] elsewhere in this codebase.)
+        let focalLength = Infinity;
+        if (center && isFinite(center.x) && isFinite(center.y)) {
+          const r = geometry.distance(center, this.p3);
+          const side = (this.p3.x - this.p1.x) * tanDirX + (this.p3.y - this.p1.y) * tanDirY;
+          const sgn = side === 0 ? 1 : Math.sign(side);
+          focalLength = sgn * (r / 2);
+        }
+
+        objBar.createNumber(
+          i18next.t('simulator:sceneObjs.common.focalLength'),
+          -1000 * this.scene.lengthScale,
+          1000 * this.scene.lengthScale,
+          1 * this.scene.lengthScale,
+          focalLength,
+          function (obj, value) {
+            // Map slider value 0 -> Infinity. Also accept typed "inf"/"-inf".
+            const f = (value === 0) ? Infinity : value;
+
+            // Keep p3 fixed.
+            const p3x = obj.p3.x;
+            const p3y = obj.p3.y;
+
+            if (!isFinite(f)) {
+              // Flat / degenerate: treat as a line segment centered at p3 along the tangent direction.
+              obj.p1 = geometry.point(p3x + tanDirX * apertureHalf, p3y + tanDirY * apertureHalf);
+              obj.p2 = geometry.point(p3x - tanDirX * apertureHalf, p3y - tanDirY * apertureHalf);
+              return;
+            }
+
+            // Desired radius from focal length (paraxial): R = 2f.
+            let R = 2 * f;
+            let absR = Math.abs(R);
+            if (!(absR > eps)) {
+              // Extremely small values behave like Infinity for robustness.
+              obj.p1 = geometry.point(p3x + tanDirX * apertureHalf, p3y + tanDirY * apertureHalf);
+              obj.p2 = geometry.point(p3x - tanDirX * apertureHalf, p3y - tanDirY * apertureHalf);
+              return;
+            }
+
+            // If radius is too small to support the captured aperture, temporarily use a semicircle
+            // with the requested radius (effective apertureHalf = |R|). Do NOT mutate captured apertureHalf.
+            const apertureHalfEffective = (absR < apertureHalf) ? absR : apertureHalf;
+
+            // Build a symmetric arc: p3 is the mid-arc point, endpoints are rotations by ±theta.
+            const centerNew = geometry.point(p3x + axisDirX * R, p3y + axisDirY * R);
+            const theta = Math.asin(Math.min(1, apertureHalfEffective / absR)); // theta ∈ (0, π/2]
+            const cosT = Math.cos(theta);
+            const sinT = Math.sin(theta);
+
+            // p = center - R*(axis*cosT ± tan*sinT)
+            obj.p1 = geometry.point(
+              centerNew.x - R * (axisDirX * cosT + tanDirX * sinT),
+              centerNew.y - R * (axisDirY * cosT + tanDirY * sinT)
+            );
+            obj.p2 = geometry.point(
+              centerNew.x - R * (axisDirX * cosT - tanDirX * sinT),
+              centerNew.y - R * (axisDirY * cosT - tanDirY * sinT)
+            );
+          },
+          i18next.t('simulator:sceneObjs.common.lengthUnitInfo')
+        );
+      }
+    }
+
     super.populateObjBar(objBar);
   }
 
@@ -73,6 +172,13 @@ class ArcMirror extends BaseFilter {
         ctx.stroke();
         if (isHovered) {
           ctx.fillRect(this.p3.x - 1.5 * ls, this.p3.y - 1.5 * ls, 3 * ls, 3 * ls);
+          // Show (paraxial) focal point assuming the axis goes through p3 and is perpendicular to the mirror at p3,
+          // i.e. along the radius direction (p3 -> center). For a circular mirror, f ≈ R/2.
+          if (isFinite(r) && r > 1e-12) {
+            const focusx = (this.p3.x + center.x) * 0.5;
+            const focusy = (this.p3.y + center.y) * 0.5;
+            ctx.fillRect(focusx - 1.5 * ls, focusy - 1.5 * ls, 3 * ls, 3 * ls);
+          }
           ctx.fillStyle = 'rgb(255,0,0)';
           ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
           ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
@@ -183,7 +289,9 @@ class ArcMirror extends BaseFilter {
 
     if (!this.p2 && !this.p3) {
       this.p2 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
 
     if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
@@ -193,7 +301,9 @@ class ArcMirror extends BaseFilter {
         this.p2 = mouse.getPosSnappedToGrid();
       }
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
   }
 
@@ -207,24 +317,31 @@ class ArcMirror extends BaseFilter {
 
       this.p1 = ctrl ? geometry.point(2 * this.constructionPoint.x - this.p2.x, 2 * this.constructionPoint.y - this.p2.y) : this.constructionPoint;
 
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
     if (this.p3) {
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
     if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
     if (this.p3 && !mouse.snapsOnPoint(this.p2)) {
       this.p3 = mouse.getPosSnappedToGrid();
       delete this.constructionPoint;
       return {
-        isDone: true
+        isDone: true,
+        requiresObjBarUpdate: true
       };
     }
   }
@@ -234,16 +351,19 @@ class ArcMirror extends BaseFilter {
     if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p3)) {
       dragContext.part = 1;
       dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
     if (mouse.isOnPoint(this.p2) && geometry.distanceSquared(mouse.pos, this.p2) <= geometry.distanceSquared(mouse.pos, this.p3)) {
       dragContext.part = 2;
       dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
     if (mouse.isOnPoint(this.p3)) {
       dragContext.part = 3;
       dragContext.targetPoint = geometry.point(this.p3.x, this.p3.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
 
@@ -261,6 +381,7 @@ class ArcMirror extends BaseFilter {
         dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
         dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
         dragContext.snapContext = {};
+        dragContext.requiresObjBarUpdate = true;
         return dragContext;
       }
     } else {
@@ -270,6 +391,7 @@ class ArcMirror extends BaseFilter {
         dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
         dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
         dragContext.snapContext = {};
+        dragContext.requiresObjBarUpdate = true;
         return dragContext;
       }
     }

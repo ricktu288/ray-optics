@@ -54,6 +54,52 @@ class ParabolicMirror extends BaseFilter {
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.ParabolicMirror.title') }));
+
+    // Alternative parametrization: focal length.
+    if (this.p1 && this.p2 && this.p3) {
+      const p12d = geometry.distance(this.p1, this.p2);
+      if (p12d > 0) {
+        const dir1 = [(this.p2.x - this.p1.x) / p12d, (this.p2.y - this.p1.y) / p12d];
+        const dir2 = [dir1[1], -dir1[0]];
+        const midpoint = geometry.point((this.p1.x + this.p2.x) * 0.5, (this.p1.y + this.p2.y) * 0.5);
+        const height = (this.p3.x - midpoint.x) * dir2[0] + (this.p3.y - midpoint.y) * dir2[1];
+        const x0 = p12d * 0.5;
+        const eps = 1e-12;
+        // Represent the degenerate/flat case as Infinity in UI.
+        const focalLength = Math.abs(height) < eps ? Infinity : (x0 * x0) / (4 * height);
+
+        objBar.createNumber(
+          i18next.t('simulator:sceneObjs.common.focalLength'),
+          -1000 * this.scene.lengthScale,
+          1000 * this.scene.lengthScale,
+          1 * this.scene.lengthScale,
+          focalLength,
+          function (obj, value) {
+            const p12dInner = geometry.distance(obj.p1, obj.p2);
+            if (!(p12dInner > 0)) return;
+
+            const dir1Inner = [(obj.p2.x - obj.p1.x) / p12dInner, (obj.p2.y - obj.p1.y) / p12dInner];
+            const dir2Inner = [dir1Inner[1], -dir1Inner[0]];
+            const midpointInner = geometry.point((obj.p1.x + obj.p2.x) * 0.5, (obj.p1.y + obj.p2.y) * 0.5);
+            const heightInner = (obj.p3.x - midpointInner.x) * dir2Inner[0] + (obj.p3.y - midpointInner.y) * dir2Inner[1];
+            const x0Inner = p12dInner * 0.5;
+
+            // Map slider value 0 -> f = Infinity -> h = 0 (degenerate / flat).
+            // Also accept typed "inf"/"-inf" (ObjBar supports it in the text field).
+            const f = (value === 0) ? Infinity : value;
+            const newHeight = (!isFinite(f) || f === 0) ? 0 : (x0Inner * x0Inner) / (4 * f);
+            const deltaHeight = heightInner - newHeight;
+
+            // Move p1 and p2 in the parallel direction (translate along the parabola axis),
+            // while keeping p3 fixed.
+            obj.p1 = geometry.point(obj.p1.x + dir2Inner[0] * deltaHeight, obj.p1.y + dir2Inner[1] * deltaHeight);
+            obj.p2 = geometry.point(obj.p2.x + dir2Inner[0] * deltaHeight, obj.p2.y + dir2Inner[1] * deltaHeight);
+          },
+          i18next.t('simulator:sceneObjs.common.lengthUnitInfo')
+        );
+      }
+    }
+
     super.populateObjBar(objBar);
   }
 
@@ -191,7 +237,9 @@ class ParabolicMirror extends BaseFilter {
 
     if (!this.p2 && !this.p3) {
       this.p2 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
 
     if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
@@ -201,7 +249,9 @@ class ParabolicMirror extends BaseFilter {
         this.p2 = mouse.getPosSnappedToGrid();
       }
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
   }
 
@@ -215,24 +265,31 @@ class ParabolicMirror extends BaseFilter {
 
       this.p1 = ctrl ? geometry.point(2 * this.constructionPoint.x - this.p2.x, 2 * this.constructionPoint.y - this.p2.y) : this.constructionPoint;
 
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
     if (this.p3) {
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
     if (this.p2 && !this.p3 && !mouse.snapsOnPoint(this.p1)) {
       this.p3 = mouse.getPosSnappedToGrid();
-      return;
+      return {
+        requiresObjBarUpdate: true
+      };
     }
     if (this.p3 && !mouse.snapsOnPoint(this.p2)) {
       this.p3 = mouse.getPosSnappedToGrid();
       delete this.constructionPoint;
       return {
-        isDone: true
+        isDone: true,
+        requiresObjBarUpdate: true
       };
     }
   }
@@ -242,16 +299,19 @@ class ParabolicMirror extends BaseFilter {
     if (mouse.isOnPoint(this.p1) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p2) && geometry.distanceSquared(mouse.pos, this.p1) <= geometry.distanceSquared(mouse.pos, this.p3)) {
       dragContext.part = 1;
       dragContext.targetPoint = geometry.point(this.p1.x, this.p1.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
     if (this.p2 && mouse.isOnPoint(this.p2) && geometry.distanceSquared(mouse.pos, this.p2) <= geometry.distanceSquared(mouse.pos, this.p3)) {
       dragContext.part = 2;
       dragContext.targetPoint = geometry.point(this.p2.x, this.p2.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
     if (this.p3 && mouse.isOnPoint(this.p3)) {
       dragContext.part = 3;
       dragContext.targetPoint = geometry.point(this.p3.x, this.p3.y);
+      dragContext.requiresObjBarUpdate = true;
       return dragContext;
     }
 
@@ -266,6 +326,7 @@ class ParabolicMirror extends BaseFilter {
         dragContext.mousePos0 = mousePos;
         dragContext.mousePos1 = mousePos;
         dragContext.snapContext = {};
+        dragContext.requiresObjBarUpdate = true;
         return dragContext;
       }
     }
