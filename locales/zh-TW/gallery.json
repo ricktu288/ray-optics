@@ -444,6 +444,10 @@
       "camera": "相機",
       "cmos": "CMOS"
     },
+    "digitalCamera": {
+      "title": "數位相機",
+      "description": "這個簡單的模擬展示了數位相機的聚焦和光圈的概念。"
+    },
     "nlSimulation": {
       "title": "NL 雙筒望遠鏡",
       "description": "這個模擬展示了 Swarovski NL 雙筒望遠鏡的粗略草圖。"

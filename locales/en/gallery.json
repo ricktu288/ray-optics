@@ -445,6 +445,10 @@
       "camera": "Camera",
       "cmos": "CMOS"
     },
+    "digitalCamera": {
+      "title": "Digital Camera",
+      "description": "Simple diagram showing the concepts of focus and aperture on a digital camera."
+    },
     "nlSimulation": {
       "title": "NL Binoculars",
       "description": "This simulation shows a rough sketch of Swarovski NL binoculars."
