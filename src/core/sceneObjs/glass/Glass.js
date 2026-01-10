@@ -39,7 +39,8 @@ class Glass extends BaseGlass {
     path: [],
     notDone: false,
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   };
 
   populateObjBar(objBar) {

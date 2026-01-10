@@ -39,7 +39,8 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
     p1: null,
     p2: null,
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   };
 
   populateObjBar(objBar) {

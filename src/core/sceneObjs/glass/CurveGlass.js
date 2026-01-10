@@ -42,7 +42,8 @@ class CurveGlass extends BaseGlass {
     points: [],
     notDone: false,
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   }
   
   /**

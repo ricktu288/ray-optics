@@ -50,7 +50,8 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
       }
     ],
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   };
 
   populateObjBar(objBar) {

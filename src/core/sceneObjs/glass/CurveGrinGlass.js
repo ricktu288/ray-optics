@@ -48,7 +48,8 @@ class CurveGrinGlass extends BaseGrinGlass {
     absorptionFn: '0',
     origin: { x: 0, y: 0 },
     stepSize: 1,
-    intersectTol: 5e-2
+    intersectTol: 5e-2,
+    partialReflect: true
   }
   
   /**

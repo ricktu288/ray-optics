@@ -40,6 +40,12 @@ class BaseGlass extends BaseSceneObj {
         obj.refIndex = value * 1;
       }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
     }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['partialReflect']))) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGlass.partialReflect'), this.partialReflect, function (obj, value) {
+        obj.partialReflect = value;
+      });
+    }
   }
 
   getZIndex() {
@@ -202,9 +208,14 @@ class BaseGlass extends BaseSceneObj {
       // Refraction
       var cos2 = Math.sqrt(sq1);
 
-      var R_s = Math.pow((n1 * cos1 - cos2) / (n1 * cos1 + cos2), 2);
-      var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
+      if (this.partialReflect) {
+        var R_s = Math.pow((n1 * cos1 - cos2) / (n1 * cos1 + cos2), 2);
+        var R_p = Math.pow((n1 * cos2 - cos1) / (n1 * cos2 + cos1), 2);
       // Reference http://en.wikipedia.org/wiki/Fresnel_equations#Definitions_and_power_equations
+      } else {
+        var R_s = 0;
+        var R_p = 0;
+      }
 
       let newRays = [];
       let truncation = 0;

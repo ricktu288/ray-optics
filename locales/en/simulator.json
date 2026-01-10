@@ -208,7 +208,8 @@
         "relative": "Relative if inside another glass",
         "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones."
       },
-      "cauchyCoeff": "Cauchy coefficient"
+      "cauchyCoeff": "Cauchy coefficient",
+      "partialReflect": "Simulate partial reflections"
     },
     "SphericalLens": {
       "defBy": {

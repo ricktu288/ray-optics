@@ -44,7 +44,8 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     absorptionFn: '0',
     origin: { x: 0, y: 0 },
     stepSize: 1,
-    intersectTol: 1e-3
+    intersectTol: 1e-3,
+    partialReflect: true
   };
 
   populateObjBar(objBar) {

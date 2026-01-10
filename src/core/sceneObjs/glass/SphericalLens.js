@@ -47,7 +47,8 @@ class SphericalLens extends Glass {
     p2: null,
     params: null,
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   };
 
   constructor(scene, jsonObj) {
@@ -150,6 +151,12 @@ class SphericalLens extends Glass {
           obj.createLensWithDFfdBfd(old_params.d, old_params.ffd, old_params.bfd);
         }
       }, '<p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>');
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['partialReflect']))) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGlass.partialReflect'), this.partialReflect, function (obj, value) {
+        obj.partialReflect = value;
+      });
     }
   }
 
