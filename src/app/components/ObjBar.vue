@@ -104,6 +104,8 @@ export default {
     const themeStore = useThemeStore()
     const help = toRef(preferences, 'help')
     const tooltipType = computed(() => help.value ? 'popover' : null)
+    const showSidebar = toRef(preferences, 'showSidebar')
+    const sidebarWidth = toRef(preferences, 'sidebarWidth')
 
     const applyToAll = computed({
       get: () => app.objBar?.shouldApplyToAll ?? false,
@@ -113,13 +115,21 @@ export default {
     // Computed style that adapts to theme
     const objBarStyle = computed(() => {
       const isLight = themeStore.backgroundIsLight.value
+      const sidebarOffset = showSidebar.value ? sidebarWidth.value : 0
+      const halfSidebarWidth = showSidebar.value ? sidebarWidth.value / 2 : 0
       // Use higher alpha for light backgrounds for better visibility
       if (isLight) {
         return {
+          // Keep the bar content-sized, but shift its center into the canvas area.
+          transform: `translateX(${halfSidebarWidth}px)`,
+          // Prevent overflow into the sidebar when content gets wide.
+          maxWidth: `calc(100% - ${sidebarOffset}px)`,
           backgroundColor: 'rgba(60, 150, 164, 0.9)'
         }
       } else {
         return {
+          transform: `translateX(${halfSidebarWidth}px)`,
+          maxWidth: `calc(100% - ${sidebarOffset}px)`,
           backgroundColor: 'rgba(23, 162, 184, 0.5)'
         }
       }
@@ -159,6 +169,7 @@ export default {
 
 .obj-bar {
   z-index: -1;
+  box-sizing: border-box;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   color:white;
@@ -168,8 +179,12 @@ export default {
   padding-left: 12px;
   padding-right: 7px;
   padding-bottom: 3px;
-  margin: auto;
-  margin-top: 16px;
+  /* Keep it content-sized (not stretched by the column flex parent). */
+  align-self: center;
+  width: fit-content;
+  max-width: 100%;
+  /* Avoid vertical auto-margins, which would center it in the viewport. */
+  margin: 16px auto 0;
   text-align: center;
   border-radius: 0.5em;
 }
