@@ -101,25 +101,39 @@ export default {
     const preferences = usePreferencesStore()
     const help = toRef(preferences, 'help')
     const tooltipType = computed(() => help.value ? 'popover' : null)
+
+    const numberToDisplayString = (num) => {
+      if (num === Infinity) return 'inf'
+      if (num === -Infinity) return '-inf'
+      return (num ?? '').toString()
+    }
+
+    const displayStringToNumber = (str) => {
+      const s = (str ?? '').toString().trim().toLowerCase()
+      if (s.startsWith('-inf')) return -Infinity
+      if (s.startsWith('inf')) return Infinity
+      return parseFloat(str)
+    }
     
     // Create a local input value ref
-    const inputValue = ref(props.modelValue?.toString() || '')
+    const inputValue = ref(numberToDisplayString(props.modelValue))
 
     // Watch for external changes to modelValue
     watch(() => props.modelValue, (newVal) => {
-      inputValue.value = newVal?.toString() || ''
+      inputValue.value = numberToDisplayString(newVal)
     })
 
     const validateAndEmit = (value) => {
       // Handle empty or invalid input
-      if (value === '' || isNaN(parseFloat(value))) {
+      const parsed = displayStringToNumber(value)
+      if (value === '' || Number.isNaN(parsed)) {
         const defaultVal = props.defaultValue !== null ? props.defaultValue : 0
-        inputValue.value = defaultVal.toString()
+        inputValue.value = numberToDisplayString(defaultVal)
         emit('update:modelValue', defaultVal)
         return
       }
 
-      let numValue = parseFloat(value)
+      let numValue = parsed
 
       // Apply min/max constraints
       if (props.min !== null && numValue < props.min) {
@@ -130,7 +144,7 @@ export default {
       }
 
       // Update both local value and emit change
-      inputValue.value = numValue.toString()
+      inputValue.value = numberToDisplayString(numValue)
       emit('update:modelValue', numValue)
     }
 

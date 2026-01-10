@@ -47,7 +47,8 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     eqn1: "0",
     eqn2: "0.5\\cdot\\sqrt{1-x^2}",
     refIndex: 1.5,
-    cauchyB: 0.004
+    cauchyB: 0.004,
+    partialReflect: true
   };
 
   populateObjBar(objBar) {

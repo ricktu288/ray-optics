@@ -409,6 +409,12 @@
         ]
       },
       {
+        "id": "digital-camera",
+        "contributors": [
+          "Jorge Bodroghy Leite"
+        ]
+      },
+      {
         "id": "NL-simulation",
         "contributors": [
           "Wen Zhou"

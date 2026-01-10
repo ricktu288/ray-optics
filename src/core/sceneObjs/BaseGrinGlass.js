@@ -97,6 +97,12 @@ class BaseGrinGlass extends BaseGlass {
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.all') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.impl') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.implNote') + '</p>');
     }
 
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['partialReflect']))) {
+      objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGlass.partialReflect'), this.partialReflect, function (obj, value) {
+        obj.partialReflect = value;
+      });
+    }
+
   }
 
   getZIndex() {
