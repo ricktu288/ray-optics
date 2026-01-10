@@ -1,0 +1,428 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+      float: left;
+      margin-right: 9px;
+      margin-bottom: 9px;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+    ::-webkit-scrollbar {
+      background: none;
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: solid 0 rgba(0, 0, 0, 0);
+      border-right-width: 4px;
+      border-left-width: 4px;
+      -webkit-border-radius: 6px 2px;
+      -webkit-box-shadow:
+      inset 0 0 0 0px rgba(112, 112, 112, 0.35),
+      inset 0 0 0 4px rgba(112, 112, 112, 0.35);
+    }
+    ::-webkit-scrollbar-track-piece {
+      margin: 4px 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        border-right-width: 3px;
+        border-left-width: 3px;
+      -webkit-box-shadow:
+        inset 0 0 0 0px rgba(128,128,128,0.9),
+        inset 0 0 0 4px rgba(128,128,128,0.9);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul style="padding-left: 1.5rem;">
+      <li>「模块」功能透过将本模拟器中现有的工具所建立的物件进行组合、特化或重新参数化，来制作新的工具。</li>
+      <li>导入的模块将显示为「其他」类别中的工具。请选择并依照控制点顺序点击空白处（参见「规格」）。</li>
+      <li>导入的模块将嵌入于场景的数据中，所以当原作者更新时并不会自动更新。</li>
+    </ul>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/FresnelLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/FresnelLens-thumbnail.jpg" alt="菲涅耳透镜" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">菲涅耳透镜 (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          从半圆形透光物制成的菲涅耳透镜。<a target="_blank" href="../../cn/gallery/fresnel-lens">此作品集范例</a>的模块化版本。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-FresnelLens" class="collapse">
+      控制点顺序
+      <ol>
+        <li>透镜的第一个端点</li>
+        <li>透镜的第二个端点</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>N_slice</code>: 切片数量</li>
+        <li><code>refIndex</code>: 透镜的折射率</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/ContSpectrum-thumbnail.avif" type="image/avif">
+        <img src="../../modules/ContSpectrum-thumbnail.jpg" alt="连续光谱光源" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">连续光谱光源 (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          具有均匀连续光谱的光源，以指定的步长离散化。只在「模拟色彩」模式中运作。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-ContSpectrum" class="collapse">
+      控制点顺序
+      <ol>
+        <li>光线的起点</li>
+        <li>决定光线的方向</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>min</code>: 波长最小值</li>
+        <li><code>step</code>: 波长的步长</li>
+        <li><code>max</code>: 波长最大值</li>
+        <li><code>brightness</code>: 总亮度</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CoatedLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CoatedLens-thumbnail.jpg" alt="镀膜球面透镜" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">镀膜球面透镜 (<code>CoatedLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CoatedLens'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          两面具有单层涂层的球面透镜。嵌入于本模块中的 <code>ArcCoating</code> 模块代表一个薄膜层，其与透光物的表面重叠时，会成为该透光物的涂层。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CoatedLens">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CoatedLens" class="collapse">
+      控制点顺序
+      <ol>
+        <li>透镜的中心</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>h</code>: 透镜的高度</li>
+        <li><code>d</code>: 透镜的厚度</li>
+        <li><code>R_1</code>: 前表面的曲率半径</li>
+        <li><code>R_2</code>: 后表面的曲率半径</li>
+        <li><code>A</code>: 透镜材料的柯西系数 \(A\)</li>
+        <li><code>B</code>: 透镜材料的柯西系数 \(B\)（以平方微米为单位）</li>
+        <li><code>d_c</code>: 涂层的厚度（以纳米为单位）</li>
+        <li><code>A_c</code>: 涂层材料的柯西系数 \(A\)</li>
+        <li><code>B_c</code>: 涂层材料的柯西系数 \(B\)（以平方微米为单位）</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CircleSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CircleSource-thumbnail.jpg" alt="圆形光源" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">圆形光源 (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          将一系列均匀的180度点光源置于圆周上所形成的光源。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CircleSource" class="collapse">
+      控制点顺序
+      <ol>
+        <li>该圆形的圆心</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>r</code>: 该圆形的半径</li>
+        <li><code>N</code>: 点光源的数量</li>
+        <li><code>brightness</code>: 总亮度</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/EllipticalMirror-thumbnail.avif" type="image/avif">
+        <img src="../../modules/EllipticalMirror-thumbnail.jpg" alt="椭圆镜" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">椭圆镜 (<code>EllipticalMirror</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'EllipticalMirror'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          由两个焦点和半长轴长度所定义的椭圆形镜子。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-EllipticalMirror">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-EllipticalMirror" class="collapse">
+      控制点顺序
+      <ol>
+        <li>第一个焦点</li>
+        <li>第二个焦点</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>a</code>: 半长轴的长度</li>
+        <li><code>tMin</code>: 曲线的最小角度</li>
+        <li><code>tMax</code>: 曲线的最大角度</li>
+        <li><code>tStep</code>: 曲线的步长</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/Chaff-thumbnail.avif" type="image/avif">
+        <img src="../../modules/Chaff-thumbnail.jpg" alt="干扰箔" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">干扰箔 (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          矩形的干扰箔，由许多随机的镜子组成。<a target="_blank" href="../../cn/gallery/chaff-countermeasure">此作品集范例</a>的模块化版本。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-Chaff" class="collapse">
+      控制点顺序
+      <ol>
+        <li>干扰箔的左上角</li>
+        <li>干扰箔的右下角</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>N</code>: 干扰箔中镜子的数量</li>
+        <li><code>L</code>: 镜子的长度</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/BeamExpander-thumbnail.avif" type="image/avif">
+        <img src="../../modules/BeamExpander-thumbnail.jpg" alt="扩束镜" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">扩束镜 (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          两个理想透镜的组合，使得两者焦距之和等于两者间的距离。此组合可以扩大或缩小准直光束的直径<a target="_blank" href="../../cn/gallery/beam-expanders">此作品集范例</a>的模块化版本。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-BeamExpander" class="collapse">
+      控制点顺序
+      <ol>
+        <li>第一个透镜的中心点</li>
+        <li>第二个透镜的第二个点</li>
+        <li>决定共同焦点的位置</li>
+      </ol>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RayRelay-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RayRelay-thumbnail.jpg" alt="光线中继" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">光线中继 (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          一系列相同的理想透镜，焦距为 \(f\)，间距为 \(d\)。若且唯若\(d\leq 4f\)时，可以保证光线轨迹不会发散。<a target="_blank" href="../../cn/gallery/ray-relaying">此作品集范例</a>的模块化版本。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RayRelay" class="collapse">
+      控制点顺序
+      <ol>
+        <li>第一个透镜的第一个端点</li>
+        <li>第一个透镜的第二个端点（应与第一点有相同的 \(x\)）</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>f</code>: 透镜的焦距</li>
+        <li><code>d</code>: 透镜之间的距离</li>
+        <li><code>N</code>: 透镜的数量</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/OpticalFiber-thumbnail.avif" type="image/avif">
+        <img src="../../modules/OpticalFiber-thumbnail.jpg" alt="光纤" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">光纤 (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+        <span id="module-desc">
+          指定核心和包层折射率的线状光纤。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-OpticalFiber" class="collapse">
+      控制点顺序
+      <ol>
+        <li>光纤的第一个端点</li>
+        <li>光纤的第二个端点</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>X</code>: 核心的厚度</li>
+        <li><code>Y</code>: 包层的厚度</li>
+        <li><code>n_1</code>: 核心的折射率</li>
+        <li><code>n_2</code>: 包层的折射率</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CubeBeamSplitter-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CubeBeamSplitter-thumbnail.jpg" alt="立方体分束器" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">立方体分束器 (<code>CubeBeamSplitter</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CubeBeamSplitter'},'*');this.innerText='已导入';this.classList.remove('btn-primary');this.classList.add('btn-success');">导入</button></p>
+        <p class="module-contributor">Feng</p>
+        <span id="module-desc">
+          立方体分束器是常见的光学元件。此模组可以调整立方体的大小和角度。
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CubeBeamSplitter">
+          规格
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CubeBeamSplitter" class="collapse">
+      控制点顺序
+      <ol>
+        <li>立方体（正方形）的中心</li>
+      </ol>
+      参数
+      <ul>
+        <li><code>size</code>: 立方体的大小</li>
+        <li><code>angle</code>: 立方体的旋转角度（以度为单位）</li>
+        <li><code>refIndex</code>: 立方体的折射率（或当「模拟色彩」开启时的柯西系数 \(A\)）</li>
+        <li><code>cauchyB</code>: 立方体的柯西系数 \(B\)（以平方微米为单位）</li>
+        <li><code>splitRatio</code>: 对角线分光镜的透光率</li>
+      </ul>
+    </div>
+
+    <h2>客制化</h2>
+    <p>您可直接在本网页程序中使用内置的JSON编辑器制作或客制化模块。请参见<a target="_blank" href="../../cn/modules/tutorial">教程</a>。将导入的模块客制化仅会影响目前的场景。</p>
+
+    <h2>贡献</h2>
+    <p>欢迎您贡献项目至以上的清单。欲贡献您的模块，请参见<a target="_blank" href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">貢獻模块</a>。</p>
+  </div>
+
+  <script src="../../thirdparty/jquery.min.js"></script>
+  <script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

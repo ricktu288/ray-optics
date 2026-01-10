@@ -1,0 +1,270 @@
+{
+  "project": {
+    "name": "射线光学模拟",
+    "shortName": "射线光学",
+    "description": "自由、开源的网页程序，用于建立及模拟二维几何光学场景。"
+  },
+  "pages": {
+    "simulator": "模拟器",
+    "home": "首页",
+    "gallery": "作品集",
+    "modules": "模块",
+    "about": "关于",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "建立二维几何光学场景，并实时模拟光线行为。\n完全免费，免下载，源代码[公开于 GitHub](/github)。",
+    "launchSimulator": "启动程序"
+  },
+  "tools": {
+    "title": "工具",
+    "categories": {
+      "lightSource": "光源",
+      "mirror": "镜子",
+      "glass": "透光物",
+      "blocker": "遮光物",
+      "other": "其他"
+    },
+    "common": {
+      "clickInstruction": "点击以创建。",
+      "lineInstruction": "拖曳或点击以创建。",
+      "circleInstruction": "拖曳或点击以创建，第一点为圆心，第二点于圆周上。"
+    },
+    "SingleRay": {
+      "title": "单一光线",
+      "description": "由两点决定一条光线。",
+      "instruction": "拖曳或点击以创建，第一个点是光源，射向第二个点。"
+    },
+    "Beam": {
+      "title": "光束",
+      "description": "由一线段产生平行或发散光束，密度由「光线密度」滑杆决定。"
+    },
+    "PointSource": {
+      "title": "点光源",
+      "description": "由一点向四周发射光线，数量由「光线密度」滑杆决定。"
+    },
+    "AngleSource": {
+      "instruction": "拖曳或点击以创建，第一个点是光源，射向第二个点。",
+      "description": "指定发射角之点光源。"
+    },
+    "Mirror": {
+      "title": "线段",
+      "description": "模拟光线射到镜子时的反射。"
+    },
+    "otherMirror": {
+      "title": "曲线",
+      "description": "曲线形的镜子。可选圆弧、抛物线，或自定义函数 y = f(x)。"
+    },
+    "ArcMirror": {
+      "title": "圆弧",
+      "description": "圆弧形的镜子，由三点决定。",
+      "instruction": "拖曳或点击两个端点以创建，然后点击弧上另一点以决定曲率。"
+    },
+    "ParabolicMirror": {
+      "title": "抛物线",
+      "description": "抛物线形的镜子，由三点决定。",
+      "instruction": "拖曳或点击两个端点以创建，然后点击顶点。"
+    },
+    "IdealMirror": {
+      "title": "理想曲面镜",
+      "description": "完全符合面镜公式(1/p + 1/q = 1/f)的理想化「曲面」镜，可直接设定其焦距。"
+    },
+    "BeamSplitter": {
+      "title": "分光镜",
+      "description": "能穿透一个比例的光的镜子。"
+    },
+    "CustomMirror": {
+      "title": "自定义函数",
+      "description": "形状为自订等式 y = f(x) 的镜子，其中 (x,y) 为变换过的座标，使得两控制点为 (-1,0) 及 (1,0)。"
+    },
+    "ParamMirror": {
+      "title": "参数曲线",
+      "description": "形状由自定义参数式定义的镜子。"
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "凹面光栅",
+      "description": "形状为圆弧的凹面绕射光栅。"
+    },
+    "PlaneGlass": {
+      "title": "半平面",
+      "description": "模拟光线经过透光物体界面时的反射与折射。",
+      "instruction": "拖曳或点击界面上的两点以创建。"
+    },
+    "otherGlass": {
+      "title": "其他形状",
+      "description": "任何由线段与圆弧组成的透光物，或自定义不等式 f(x) < y < g(x)。"
+    },
+    "CircleGlass": {
+      "title": "圆形",
+      "description": "圆形透光物，由圆心与表面上一点决定。"
+    },
+    "Glass": {
+      "title": "多边形 / 圆弧",
+      "description": "任何由线段与圆弧组成的透光物。",
+      "instruction": "点击以建立线段，拖曳以建立弧形，点击一开始的点以结束绘制。"
+    },
+    "IdealLens": {
+      "title": "理想透镜",
+      "description": "完全符合薄透镜公式(1/p + 1/q = 1/f)的理想化透镜，可直接设定其焦距。"
+    },
+    "SphericalLens": {
+      "title": "球面透镜",
+      "description": "球面透镜，其形状可用多种方式定义。"
+    },
+    "CustomGlass": {
+      "title": "自定义函数",
+      "description": "形状为自订不等式 f(x) < y < g(x) 的透光物，其中 (x,y) 为变换过的座标，使得两控制点为 (-1,0) 及 (1,0)。"
+    },
+    "ParamGlass": {
+      "title": "参数曲线",
+      "description": "形状由自定义参数式定义的透光物。"
+    },
+    "CurveGlass": {
+      "title": "贝塞尔曲线",
+      "description": "由三次贝塞尔曲线界定的透光物。",
+      "instruction": "点击以建立片段，点击一开始的点以结束绘制。接著拖曳方块以调整控制点，改变曲线。"
+    },
+    "CircleGrinGlass": {
+      "title": "渐变折射率圆形",
+      "description": "折射率为自定义函数 n(x,y)，边界为圆形的透光物。"
+    },
+    "GrinGlass": {
+      "title": "渐变折射率多边形",
+      "description": "折射率为自定义函数 n(x,y)，边界为多边形的透光物。",
+      "instruction": "点击以建立线段，点击一开始的点以结束绘制。",
+      "warning": "警告：仅支持简单多边形，否则行为无法预测。"
+    },
+    "ParamGrinGlass": {
+      "title": "渐变折射率参数曲线",
+      "description": "边界由自定义参数式定义的渐变折射率透光物。"
+    },
+    "CurveGrinGlass": {
+      "title": "渐变折射率贝塞尔曲线",
+      "description": "由三次贝塞尔曲线界定的渐变折射率透光物。"
+    },
+    "otherGrinGlass": {
+      "title": "渐变折射率透光物",
+      "description": "折射率为自订函数 n(x,y) 的材料。"
+    },
+    "Blocker": {
+      "title": "吸光片",
+      "description": "线段形状的吸光片，光线射到其上后就不会再射出。"
+    },
+    "CircleBlocker": {
+      "title": "圆形遮光物",
+      "description": "圆形遮光物，光线射到其上后就不会再射出。"
+    },
+    "Aperture": {
+      "title": "光圈",
+      "description": "一对线段形状的吸光片，可用对称方式调整其孔洞的大小。",
+      "instruction": "拖曳或点击两个端点以创建。"
+    },
+    "DiffractionGrating": {
+      "title": "衍射光栅",
+      "description": "将光线依波长分割成不同角度的衍射光栅。",
+      "warning": "注意：衍射光的强度可能不准确。"
+    },
+    "Ruler": {
+      "title": "直尺",
+      "description": "指定原点与另一点。"
+    },
+    "Protractor": {
+      "title": "量角器",
+      "description": "指定圆心和圆周上一点作为零度位置。刻度单位为度。"
+    },
+    "Detector": {
+      "title": "探测器",
+      "description": "测量通过一线段的能量流率(P)、垂直动量流率(F⊥)与水平动量流率(F∥)。单位为任意。"
+    },
+    "TextLabel": {
+      "title": "文字",
+      "description": "文字标签。"
+    },
+    "LineArrow": {
+      "title": "线段 / 箭头",
+      "description": "线段或箭头。"
+    },
+    "Drawing": {
+      "title": "绘图",
+      "description": "手绘工具。",
+      "instruction": "拖曳以绘图。"
+    },
+    "CustomSurface": {
+      "title": "自定义表面",
+      "description": "当光线入射时，出射光线的角度 (θ) 和亮度 (P) 由自定义方程决定的线段形表面。"
+    },
+    "CustomArcSurface": {
+      "title": "自定义弧形表面",
+      "description": "形状为圆弧的自定义表面。"
+    },
+    "CustomParamSurface": {
+      "title": "自定义参数曲线表面",
+      "description": "形状由参数式定义的自定义表面。"
+    },
+    "modules": {
+      "import": "导入模块…",
+      "remove": "移除模块"
+    },
+    "moveView": {
+      "title": "移动画面",
+      "description": "拖曳以移动视窗。（滑鼠右键拖曳也有相同的功能。）"
+    },
+    "moreTools": {
+      "title": "更多工具…"
+    }
+  },
+  "view": {
+    "title": "视图",
+    "rays": {
+      "title": "光线",
+      "description": "画出光线。当「光线密度」高时，光线呈现连续。"
+    },
+    "extended": {
+      "title": "延长光线",
+      "description": "除光线实际路径外，亦画出其延长线。橘色、灰色分别表示向后、向前的延长线。",
+      "simulateColorsNote": "若使用「模拟色彩」，则改以光源颜色显示并以虚线区分。"
+    },
+    "images": {
+      "title": "所有像",
+      "description": "点出像的位置。黄点表示实像，橘点表示虚像，灰点(图中没有)表示虚物。注意「光线密度」不够高时有些像无法正常显示。",
+      "simulateColorsNote": "若使用「模拟色彩」，则改以光源颜色显示并以点的大小区分。"
+    },
+    "observer": {
+      "title": "观察者所见",
+      "description": "模拟从某位置见到的光线与像。蓝色圆形为观察者，与其相交的光线被其「观察」到。观察者无法知道光线真正的起始位置，但若其在某处相交，它会认为光线是从该处来的。光线以蓝色表示，相交处以黄色（实像）或橘色（虚像）表示。",
+      "simulateColorsNote": "若使用「模拟色彩」，则改以光源颜色显示。",
+      "instruction": "拖曳大蓝点以移动观察者。"
+    },
+    "customThemeNote": "注意：此场景使用自定义主题。"
+  },
+  "simulateColors": {
+    "title": "模拟色彩",
+    "description": "模拟光源的颜色（波长）、混色、遮光物与镜子的滤光，以及透光物的色散。",
+    "instruction": "选取物件后可调整这些参数。重叠多条不同波长的光线可用于模拟光谱。",
+    "warning": "除非使用「修正亮度」，否则混色并不准确。"
+  },
+  "aboutPage": {
+    "description": "本项目，包括作品集内容，皆采用 [Apache License 2.0](/license) 授权条款，且官方版本位于 [PhyDemo（phydemo.app）](/phydemo)网站（原先于 ricktu288.github.io）。本项目源代码公开于[此 GitHub Repo](/github)，欢迎您[贡献本项目](/contributing)。若有问题或建议，您可以在 GitHub 上建立 [Issue](/github/issues) 或 [Discussion](/github/discussions)（请使用英文），也可以传送电子邮件至 [ray-optics@phydemo.app](/email)（可使用中文）。",
+    "cite": "引用本项目",
+    "mainAuthors": "主要作者",
+    "contributors": "贡献者",
+    "contributorSorting": "GitHub 贡献者优先；其余依时间排序。",
+    "contributionCategories": {
+      "code": "代码",
+      "uiDesign": "介面设计",
+      "gallery": "作品集",
+      "module": "模块",
+      "translations": "{{languages}} 翻译"
+    }
+  },
+  "languageDropdown": {
+    "title": "语言：{{language}}",
+    "translatedFraction": "已翻译 {{fraction}}"
+  },
+  "meta": {
+    "languageName": "简体中文",
+    "parentheses": "{{main}}（{{sub}}）",
+    "colon": "{{name}}：{{value}}",
+    "list": "{{first}}、{{others}}"
+  }
+}

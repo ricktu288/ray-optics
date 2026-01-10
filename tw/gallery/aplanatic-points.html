@@ -1,0 +1,250 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>等光程點 - 線光學模擬</title>
+  <meta property="og:title" content="等光程點 - 線光學模擬">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points.jpg">
+  <meta property="og:description" content="線光學模擬">
+  <meta property="og:locale" content="zh-TW">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/gallery/aplanatic-points">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/gallery/aplanatic-points">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../../thirdparty/jquery.min.js"></script>
+  <script defer src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .description {
+      display: inline-block;
+      text-align: left;
+      max-width: 80%;
+    }
+
+    .preview-image {
+      width: 100%;
+      padding-bottom: 10px;
+    }
+
+    ol, ul {
+      padding-left: 1.8em;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../../tw/" class="navbar-left brand">
+      <img src="../../img/icon.png" alt="" style="width:18pt; height:18pt"> 線光學模擬
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../../tw/" class="">首頁</a>
+        <a href="../../tw/gallery/" class="active">作品集</a>
+        <a href="../../tw/about" class="">關於</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>等光程點</span></b></h1>
+      <p>
+        貢獻者：Stas Fainer
+      </p>
+      <div class="description">
+        <p>光學系統的等光程點是其光學軸上的特殊點，即「從其中一點發出的光線會匯聚到另一點，或看似從從該點發散」。</p>
+<ul>
+<li>橢圓：橢圓鏡片/鏡子的兩個焦點是等光程點，因為從一個焦點發出的光將匯聚向另一點。</li>
+<li>球體：球形透鏡有兩個等光程點，分別在球內和球外 - 更多細節請見模擬。</li>
+<li>雙曲線：在<a href="../../tw/gallery/hyperbolic-mirror">雙曲面鏡</a>模擬中的兩個焦點也是等光程點。</li>
+</ul>
+<p>給定兩個擁有水平座標 \(x_1\) 和 \(x_2\) 、具有相同垂直座標的點，並且設光學元件外部和內部的折射率分別為 \(n_1\) 和 \(n_2\)，則若這兩點要成為等光程點，我們的光學元件的邊界必須滿足\begin{equation}k_1 n_1 \sqrt{ (x - x_1)^2 + y^2} + k_2 n_2 \sqrt{  (x - x_2)^2 + y^2} = E\end{equation}使得 \(k_i=1\) 或 \(-1\)（取決於連接 \(x_i\) 和我們的光學元件邊界的光線是實的或虛的），而 \(E\) 是一個使這個方程有非平凡解的常數。這個方程（可以用費馬原理推導出來）是笛卡爾卵形線的方程（圓錐曲線是其特例）。</p>
+      </div>
+      <p>
+        <a href="../../simulator/?zh-TW#../tw/gallery/aplanatic-points" target="_blank" class="btn btn-success btn-lg">在模擬器中開啟</a>
+      </p>
+      <picture>
+        <source srcset="aplanatic-points.avif" type="image/avif">
+        <img src="aplanatic-points.jpg" alt="等光程點" class="preview-image">
+      </picture>
+    </div>
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">語言：正體中文</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../../gallery/aplanatic-points">English<span style="color:gray"></span></a></li>
+          <li><a href="../../fr/gallery/aplanatic-points">Français<span style="color:gray"></span></a></li>
+          <li><a href="../../pl/gallery/aplanatic-points">polski<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-BR/gallery/aplanatic-points">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../../pt-PT/gallery/aplanatic-points">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../../ta/gallery/aplanatic-points">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../../cn/gallery/aplanatic-points">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../../tw/gallery/aplanatic-points">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

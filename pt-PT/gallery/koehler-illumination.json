@@ -1,0 +1,350 @@
+{
+  "name": "Iluminação de Köhler",
+  "version": 5,
+  "objs": [
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 260,
+        "y": 440
+      },
+      "p2": {
+        "x": 280,
+        "y": 440
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 260,
+        "y": 480
+      },
+      "p2": {
+        "x": 280,
+        "y": 480
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 260,
+        "y": 520
+      },
+      "p2": {
+        "x": 280,
+        "y": 520
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 440,
+        "y": 260
+      },
+      "p2": {
+        "x": 440,
+        "y": 700
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 765.25,
+        "y": 240
+      },
+      "p2": {
+        "x": 765.25,
+        "y": 720
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1060,
+        "y": 240
+      },
+      "p2": {
+        "x": 1060,
+        "y": 720
+      },
+      "focalLength": 195
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1353.5,
+        "y": 180
+      },
+      "p2": {
+        "x": 1353.5,
+        "y": 780
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 260,
+        "y": 400
+      },
+      "p2": {
+        "x": 280,
+        "y": 400
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 260,
+        "y": 560
+      },
+      "p2": {
+        "x": 280,
+        "y": 560
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 381,
+      "y": 248,
+      "text": "lente coletora"
+    },
+    {
+      "type": "TextLabel",
+      "x": 726.5,
+      "y": 226.5,
+      "text": "lente de campo"
+    },
+    {
+      "type": "TextLabel",
+      "x": 656,
+      "y": 260,
+      "text": "abertura 1\nmuda\nintensidade, AN",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 942.75,
+      "y": 278.25,
+      "text": "abertura 2\nmuda\ncampo de visão",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 993.5,
+      "y": 226,
+      "text": "lente condensadora"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1290,
+      "y": 168,
+      "text": "lente objetiva"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1594.5,
+      "y": 480,
+      "text": "amostra agora \nestá iluminada homogeneamente"
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 664.625,
+        "y": 360.25
+      },
+      "p2": {
+        "x": 664.625,
+        "y": 640.25
+      },
+      "p3": {
+        "x": 664.625,
+        "y": 360.5
+      },
+      "p4": {
+        "x": 664.625,
+        "y": 640
+      }
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 945.25,
+        "y": 340.125
+      },
+      "p2": {
+        "x": 945.25,
+        "y": 620.125
+      },
+      "p3": {
+        "x": 945.25,
+        "y": 433.75
+      },
+      "p4": {
+        "x": 945.25,
+        "y": 526.5
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 664.75,
+        "y": 740
+      },
+      "p2": {
+        "x": 764.125,
+        "y": 740
+      },
+      "arrow": true,
+      "backArrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 765.5,
+        "y": 740
+      },
+      "p2": {
+        "x": 866,
+        "y": 740
+      },
+      "arrow": true,
+      "backArrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 868.25,
+        "y": 740
+      },
+      "p2": {
+        "x": 1059,
+        "y": 740
+      },
+      "arrow": true,
+      "backArrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1061,
+        "y": 740
+      },
+      "p2": {
+        "x": 1256.25,
+        "y": 740
+      },
+      "arrow": true,
+      "backArrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 707,
+      "y": 771,
+      "text": "f₁"
+    },
+    {
+      "type": "TextLabel",
+      "x": 955.75,
+      "y": 771.5,
+      "text": "f₂"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1153.625,
+      "y": 771.625,
+      "text": "f₂"
+    },
+    {
+      "type": "TextLabel",
+      "x": 811.125,
+      "y": 771.25,
+      "text": "f₁"
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 1474.75,
+        "y": 440.625
+      },
+      "p2": {
+        "x": 1474.75,
+        "y": 520.625
+      },
+      "irradMap": true,
+      "binSize": 2.62
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 665.125,
+        "y": 327.5
+      },
+      "p2": {
+        "x": 665.125,
+        "y": 633
+      },
+      "p3": {
+        "x": 665.125,
+        "y": 367
+      },
+      "p4": {
+        "x": 665.125,
+        "y": 593.5
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 236.5,
+      "y": 473.5,
+      "text": "fonte de luz inhomogênea\ne espacialmente extendida",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1463,
+      "y": 409.25,
+      "text": "amostra"
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1476,
+        "y": 421.75
+      },
+      "p2": {
+        "x": 1476,
+        "y": 541.75
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -230,
+        "y": 63
+      },
+      "p4": {
+        "x": 1977,
+        "y": 884
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 245,
+        "y": -185
+      },
+      "p4": {
+        "x": 1580,
+        "y": 1150
+      }
+    }
+  ],
+  "width": 3310.5,
+  "height": 1924.5,
+  "rayModeDensity": 2.4833290030907684,
+  "origin": {
+    "x": 781.75,
+    "y": 488.75
+  },
+  "scale": 1
+}
