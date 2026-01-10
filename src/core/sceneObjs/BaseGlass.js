@@ -223,7 +223,7 @@ class BaseGlass extends BaseSceneObj {
       } else {
         truncation += ray2.brightness_s + ray2.brightness_p;
         if (!ray.gap && !this.scene.colorMode != 'default') {
-          var amp = Math.floor(0.01 / ray2.brightness_s + ray2.brightness_p) + 1;
+          var amp = Math.floor(0.01 / (ray2.brightness_s + ray2.brightness_p)) + 1;
           if (rayIndex % amp == 0) {
             ray2.brightness_s = ray2.brightness_s * amp;
             ray2.brightness_p = ray2.brightness_p * amp;
