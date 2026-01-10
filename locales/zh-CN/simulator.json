@@ -595,7 +595,18 @@
       "ai": "AI"
     },
     "visualSubTabs": {
-      "scene": "场景"
+      "scene": "场景",
+      "createModule": "创建模块",
+      "createModuleInfo": "模块可让您组装和重复使用自定义光学元件/设置。创建模块以开始构建可重复使用的组件。"
+    },
+    "moduleEditor": {
+      "renameButton": "重命名",
+      "removeButton": "移除模块",
+      "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
+      "errorEmptyName": "模块名称不能为空。",
+      "errorComma": "模块名称不能包含逗号。",
+      "errorNameExists": "名为「{{name}}」的模块已存在。",
+      "confirmRemove": "移除模块「{{name}}」？"
     },
     "aiAssistant": {
       "title": "AI 助手",

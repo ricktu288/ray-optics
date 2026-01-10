@@ -595,7 +595,18 @@
       "ai": "AI"
     },
     "visualSubTabs": {
-      "scene": "Scene"
+      "scene": "Scene",
+      "createModule": "Create Module",
+      "createModuleInfo": "Modules let you group and reuse custom optical elements/settings. Create a module to start building a reusable component."
+    },
+    "moduleEditor": {
+      "renameButton": "Rename",
+      "removeButton": "Remove Module",
+      "promptNewName": "New module name: (usually in PascalCase)",
+      "errorEmptyName": "Module name cannot be empty.",
+      "errorComma": "Module name cannot contain commas.",
+      "errorNameExists": "A module named \"{{name}}\" already exists.",
+      "confirmRemove": "Remove module \"{{name}}\"?"
     },
     "aiAssistant": {
       "title": "AI Assistant",

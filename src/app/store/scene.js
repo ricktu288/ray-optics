@@ -181,6 +181,26 @@ export const useSceneStore = () => {
       app.editor.onActionComplete()
     }
   }
+  const renameModule = (oldName, newName) => {
+    if (app.scene) {
+      app.scene.renameModule(oldName, newName)
+      // Update moduleIds
+      state.moduleIds = Object.keys(app.scene.modules).join(',')
+      // Trigger necessary updates
+      app.simulator?.updateSimulation(false, true)
+      app.editor.onActionComplete()
+    }
+  }
+  const createModule = (moduleName) => {
+    if (app.scene) {
+      app.scene.createModule(moduleName)
+      // Update moduleIds
+      state.moduleIds = Object.keys(app.scene.modules).join(',')
+      // Trigger necessary updates
+      app.simulator?.updateSimulation(false, true)
+      app.editor.onActionComplete()
+    }
+  }
 
   // Set up listeners
   onMounted(() => {
@@ -196,6 +216,8 @@ export const useSceneStore = () => {
     ...computedProps,
     setViewportSize,
     removeModule,
+    renameModule,
+    createModule,
     state
   }
 

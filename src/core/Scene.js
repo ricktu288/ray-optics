@@ -807,6 +807,66 @@ class Scene {
   }
 
   /**
+   * Rename a module.
+   * @param {string} oldName - The old name of the module.
+   * @param {string} newName - The new name of the module.
+   * @returns {boolean} Whether the module is successfully renamed.
+   */
+  renameModule(oldName, newName) {
+    if (oldName === newName) {
+      return false;
+    }
+    if (!this.modules[oldName]) {
+      return false;
+    }
+    if (this.modules[newName]) {
+      return false;
+    }
+
+    // Rename the module definition.
+    this.modules[newName] = this.modules[oldName];
+    delete this.modules[oldName];
+    
+    // Rename the module objects in the scene.
+    for (let obj of this.objs) {
+      if (obj.constructor.type === "ModuleObj" && obj.module === oldName) {
+        obj.module = newName;
+      }
+    }
+
+    // Rename the module objects in the module definitions.
+    for (let moduleDef of Object.values(this.modules)) {
+      if (!moduleDef || !Array.isArray(moduleDef.objs)) continue;
+      for (let obj of moduleDef.objs) {
+        if (obj.type === "ModuleObj" && obj.module === oldName) {
+          obj.module = newName;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Create a blank module and add a blank instance of it to the scene.
+   * @param {string} moduleName - The name of the module.
+   * @returns {boolean} Whether the module is successfully created.
+   */
+  createModule(moduleName) {
+    if (this.modules[moduleName]) {
+      return false;
+    }
+    this.modules[moduleName] = {
+      numPoints: 0,
+      params: [],
+      vars: [],
+      objs: [],
+    };
+    this.objs.push(new sceneObjs.ModuleObj(this, { module: moduleName }));
+    return true;
+  }
+
+  /**
    * Set the scale of the scene while keeping a given center point fixed.
    * @param {number} value - The new scale factor.
    * @param {number} centerX - The x-coordinate of the center point.

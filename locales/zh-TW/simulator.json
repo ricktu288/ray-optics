@@ -595,7 +595,18 @@
       "ai": "AI"
     },
     "visualSubTabs": {
-      "scene": "場景"
+      "scene": "場景",
+      "createModule": "建立模組",
+      "createModuleInfo": "模組可讓您群組和重複使用自訂光學元件/設定。建立模組以開始建立可重複使用的元件。"
+    },
+    "moduleEditor": {
+      "renameButton": "重新命名",
+      "removeButton": "移除模組",
+      "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
+      "errorEmptyName": "模組名稱不能為空。",
+      "errorComma": "模組名稱不能包含逗號。",
+      "errorNameExists": "名為「{{name}}」的模組已存在。",
+      "confirmRemove": "移除模組「{{name}}」？"
     },
     "aiAssistant": {
       "title": "AI 輔助",

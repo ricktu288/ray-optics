@@ -24,24 +24,47 @@
       >
         {{ moduleName }}
       </button>
+
+      <div class="visual-create-module">
+        <button
+          type="button"
+          class="visual-subtab is-create-module"
+          role="tab"
+          aria-selected="false"
+          @click="onCreateModuleClick"
+        >
+          {{ $t('simulator:sidebar.visualSubTabs.createModule') }}
+        </button>
+        <InfoPopoverIcon
+          :content="$t('simulator:sidebar.visualSubTabs.createModuleInfo')"
+          aria-label="Modules info"
+        />
+      </div>
     </div>
 
     <div class="visual-subtab-content" role="tabpanel">
       <SceneObjsEditor v-if="activeTabId === 'scene'" />
-      <ModuleEditor v-else :moduleName="activeTabId.slice('module:'.length)" />
+      <ModuleEditor
+        v-else
+        :moduleName="activeTabId.slice('module:'.length)"
+        @module-renamed="activeTabId = `module:${$event}`"
+        @module-removed="activeTabId = 'scene'"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { computed, ref, toRef, watch } from 'vue'
+import i18next from 'i18next'
 import { useSceneStore } from '../../store/scene'
 import SceneObjsEditor from './SceneObjsEditor.vue'
 import ModuleEditor from './ModuleEditor.vue'
+import InfoPopoverIcon from '../InfoPopoverIcon.vue'
 
 export default {
   name: 'VisualTab',
-  components: { SceneObjsEditor, ModuleEditor },
+  components: { SceneObjsEditor, ModuleEditor, InfoPopoverIcon },
   setup() {
     const scene = useSceneStore()
     const moduleIds = toRef(scene, 'moduleIds')
@@ -54,6 +77,40 @@ export default {
     // NOTE: kept local per request (no store binding)
     const activeTabId = ref('scene')
 
+    const suggestNewModuleName = (names) => {
+      const base = 'NewModule'
+      if (!names.includes(base)) return base
+      for (let i = 2; i < 10000; i++) {
+        const candidate = `${base}${i}`
+        if (!names.includes(candidate)) return candidate
+      }
+      // Extremely unlikely, but keep the UI unblocked.
+      return `${base}${Date.now()}`
+    }
+
+    const onCreateModuleClick = () => {
+      const defaultName = suggestNewModuleName(moduleNames.value)
+      const proposed = window.prompt(i18next.t('simulator:sidebar.moduleEditor.promptNewName'), defaultName)
+      if (proposed == null) return
+
+      const newName = proposed.trim()
+      if (!newName) {
+        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorEmptyName'))
+        return
+      }
+      if (newName.includes(',')) {
+        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorComma'))
+        return
+      }
+      if (moduleNames.value.includes(newName)) {
+        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorNameExists', { name: newName }))
+        return
+      }
+
+      scene.createModule(newName)
+      activeTabId.value = `module:${newName}`
+    }
+
     // If the selected module disappears, fall back to Scene.
     watch(moduleNames, (names) => {
       if (activeTabId.value === 'scene') return
@@ -65,7 +122,8 @@ export default {
 
     return {
       activeTabId,
-      moduleNames
+      moduleNames,
+      onCreateModuleClick
     }
   }
 }
@@ -102,6 +160,14 @@ export default {
   background: transparent;
 }
 
+.visual-create-module {
+  margin-left: auto; /* right-align when tabs fit; scrolls with tabs when overflow */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
 .visual-subtab {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.10);
@@ -134,14 +200,26 @@ export default {
   font-family: monospace;
 }
 
+.visual-subtab.is-create-module {
+  clip-path: none; /* not a trapezoid */
+  border: none; /* no border for the new module button */
+  background: transparent;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .visual-subtab:hover {
   background: rgba(60, 65, 70, 0.32);
   color: rgba(255, 255, 255, 0.82);
   z-index: 2;
 }
 
+.visual-subtab.is-create-module:hover {
+  border: none;
+}
+
 .visual-subtab.active {
-  background: rgba(80, 85, 90, 0.55);
+  background: rgba(80, 85, 90, 0.5);
   color: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 255, 255, 0.12);
   z-index: 3;
@@ -156,7 +234,7 @@ export default {
   flex-grow: 1;
   min-height: 0;
   padding: 12px;
-  background: rgba(80, 85, 90, 0.55); /* same as active tab, but dim */
+  background: rgba(80, 85, 90, 0.5); /* same as active tab, but dim */
   overflow: auto;
 }
 </style>
