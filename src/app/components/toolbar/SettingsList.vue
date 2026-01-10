@@ -117,6 +117,16 @@
         :default-value="420"
         :layout="layout"
       />
+
+      <NumberControl
+        :label="$t('simulator:settings.maxRayDepth.title') + '<sup>Beta</sup>'"
+        :popover-content="$t('simulator:settings.maxRayDepth.description')"
+        v-model="maxRayDepth"
+        :min="0"
+        :max="Infinity"
+        :default-value="Infinity"
+        :layout="layout"
+      />
     </div>
   </Transition>
 
@@ -252,9 +262,12 @@ export default {
 
       // For spectrum remapping: show if non-default
       const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
+
+      // For max depth: show if non-default (i.e. not Infinity)
+      const maxRayDepthNotDefault = scene.maxRayDepth.value !== Infinity
       
       // Add more conditions here as more advanced options are added
-      return colorModeNotDefault || themeNotDefault || spectrumNotDefault
+      return colorModeNotDefault || themeNotDefault || spectrumNotDefault || maxRayDepthNotDefault
     })
 
     const showLanguageWarning = computed(() => {
@@ -284,6 +297,7 @@ export default {
       simulateColors: scene.simulateColors,
       redWavelength: scene.redWavelength,
       violetWavelength: scene.violetWavelength,
+      maxRayDepth: scene.maxRayDepth,
       correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
       showJsonEditor: preferences.showJsonEditor,

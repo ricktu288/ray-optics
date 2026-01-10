@@ -96,6 +96,10 @@
       "title": "紫色波長 (nm)",
       "description": "當「模擬色彩」啟用時顯示為紫色的波長。可用於模擬不可見光的假色光譜。"
     },
+    "maxRayDepth": {
+      "title": "最大光線深度",
+      "description": "光線與物體交互作用的最大次數（超過此深度的光線將被截斷）。設為 \"inf\" 表示無限制。"
+    },
     "language": {
       "title": "語言",
       "lowFraction": "此語言翻譯完成率僅 {{fraction}}。您可以[在 Weblate 上](/weblate)協助完成翻譯。"

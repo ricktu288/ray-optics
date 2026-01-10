@@ -462,6 +462,9 @@ class Simulator {
         if (ret) {
           if (ret.newRays) {
             for (let newRay of ret.newRays) {
+              if (newRay && newRay.depth == null) {
+                newRay.depth = 0;
+              }
               this.pendingRays.push(newRay);
             }
           }
@@ -852,6 +855,26 @@ class Simulator {
         this.last_ray = { p1: this.pendingRays[j].p1, p2: this.pendingRays[j].p2 };
         this.last_s_obj_index = s_obj_index;
         if (s_obj) {
+          // Track and enforce maximum ray interaction depth.
+          // Depth is incremented per ray-object interaction (incident), and spawned rays inherit the updated depth.
+          if (this.pendingRays[j].depth == null) {
+            this.pendingRays[j].depth = 0;
+          }
+          this.pendingRays[j].depth += 1;
+          const incidentDepth = this.pendingRays[j].depth;
+          let maxRayDepth = this.scene.maxRayDepth;
+          if (!Number.isFinite(maxRayDepth)) {
+            maxRayDepth = Infinity;
+          } else if (maxRayDepth < 0) {
+            maxRayDepth = 0;
+          }
+          if (this.pendingRays[j].depth > maxRayDepth) {
+            this.totalTruncation += (this.pendingRays[j].brightness_s || 0) + (this.pendingRays[j].brightness_p || 0);
+            this.pendingRays[j] = null;
+            this.processedRayCount = this.processedRayCount + 1;
+            continue;
+          }
+
           const ret = s_obj.onRayIncident(this.pendingRays[j], j, s_point, surfaceMergingObjs);
           if (ret) {
             if (ret.isUndefinedBehavior) {
@@ -862,6 +885,9 @@ class Simulator {
             }
             if (ret.newRays) {
               for (let newRay of ret.newRays) {
+                if (newRay && newRay.depth == null) {
+                  newRay.depth = incidentDepth;
+                }
                 this.pendingRays.push(newRay);
               }
             }

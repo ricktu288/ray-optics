@@ -96,6 +96,10 @@
       "title": "Violet wavelength (nm)",
       "description": "The wavelength to be shown as violet when \"Simulate Colors\" is on. Useful for visualizing non-visible light with false color spectrum."
     },
+    "maxRayDepth": {
+      "title": "Maximum Ray Depth",
+      "description": "Maximum number of ray-object interactions before truncating rays. Use \"inf\" for no limit."
+    },
     "language": {
       "title": "Language",
       "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
