@@ -536,6 +536,19 @@
       "title": "Przykład modułu - parametryzacja kształtu",
       "alensdefinedbydr1r2": "Soczewka zdefiniowana przez d, R_1, R_2",
       "alensdefinedbydffdbf": "Soczewka zdefiniowana przez d, FFD, BFD"
+    },
+    "digitalCamera": {
+      "description": "Prosty schemat przedstawiający pojęcia ostrości i przysłony w aparacie cyfrowym.",
+      "title": "Aparat cyfrowy"
+    },
+    "classicalCassegrainTelescopes": {
+      "title": "Klasyczne teleskopy Cassegraina",
+      "description": "Symulacja przedstawia dwa typy klasycznych teleskopów Cassegraina.",
+      "concaveparabolicmirr": "wklęsłe zwierciadło paraboliczne",
+      "convexhyperbolicmirr": "wypukłe zwierciadło hiperboliczne",
+      "convexparabolicmirro": "wypukłe zwierciadło paraboliczne",
+      "classicalcassegrain": "klasyczny Cassegrain",
+      "collimator": "kolimator"
     }
   }
 }
