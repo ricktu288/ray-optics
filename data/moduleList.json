@@ -15,6 +15,12 @@
         ]
       },
       {
+        "id": "RainbowPointSource",
+        "contributors": [
+          "Brad Goodman"
+        ]
+      },
+      {
         "id": "CoatedLens",
         "contributors": [
           "Yi-Ting Tu"
