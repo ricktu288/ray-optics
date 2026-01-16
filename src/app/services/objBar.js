@@ -16,6 +16,10 @@
 
 import * as bootstrap from 'bootstrap';
 import MathQuill from 'mathquill';
+import { createApp, h, ref } from 'vue';
+import i18next from 'i18next';
+import StrokeControl from '../components/theme/controls/StrokeControl.vue';
+import FillControl from '../components/theme/controls/FillControl.vue';
 
 const MQ = MathQuill.getInterface(2);
 
@@ -51,6 +55,9 @@ class ObjBar {
 
     /** @property {object} eventListeners - The event listeners of the obj bar. */
     this.eventListeners = {};
+
+    /** @property {number|null} styleEditEndTimer - Timer id for style control updates */
+    this.styleEditEndTimer = null;
   }
 
   /**
@@ -565,6 +572,141 @@ class ObjBar {
     var space = document.createTextNode(' ');
     this.elem.appendChild(space);
   }
+
+  /**
+   * Create a Vue-based style control in the object bar. (Note that this is considered a temporary solution, as the main app itself is using Vue. The ObjBar itself should ultimately be converted to Vue.)
+   * @param {Object} options - The options for the control.
+   * @param {Object} options.component - The Vue component to render.
+   * @param {string} options.label - The label for the control.
+   * @param {Object} options.value - The initial options to pass to the control.
+   * @param {string} options.valueProp - The prop name for the options (e.g. "strokeOptions").
+   * @param {function} options.onUpdate - Callback for updates.
+   * @param {Object} [options.reset] - Optional reset button configuration.
+   * @param {boolean} options.reset.show - Whether to show the reset button.
+   * @param {function} options.reset.onReset - Callback for reset.
+   * @param {string} [options.reset.label] - Tooltip label for reset.
+   * @param {string} [options.reset.icon] - SVG icon for reset button.
+   */
+  createStyleControl({ component, label, value, valueProp, onUpdate, reset }) {
+    const container = document.createElement('span');
+    container.className = 'obj-bar-nobr obj-bar-vue-control';
+    const self = this;
+
+    const vueApp = createApp({
+      setup() {
+        const localValue = ref(value);
+        const handleUpdate = (nextValue) => {
+          localValue.value = nextValue;
+          if (onUpdate) {
+            onUpdate(nextValue);
+          }
+          if (self.styleEditEndTimer) {
+            clearTimeout(self.styleEditEndTimer);
+          }
+          self.styleEditEndTimer = setTimeout(() => {
+            self.emit('editEnd', null);
+            self.styleEditEndTimer = null;
+          }, 200);
+        };
+
+        return () => h(component, {
+          label,
+          [valueProp]: localValue.value,
+          onUpdate: handleUpdate
+        });
+      }
+    });
+
+    vueApp.mount(container);
+
+    // Prevent Bootstrap dropdown auto-close when interacting inside menus.
+    setTimeout(() => {
+      const dropdownMenus = container.querySelectorAll('.dropdown-menu');
+      dropdownMenus.forEach((menu) => {
+        menu.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+      });
+    }, 0);
+
+    const observer = new MutationObserver(() => {
+      if (!container.isConnected) {
+        observer.disconnect();
+        vueApp.unmount();
+      }
+    });
+    observer.observe(this.elem, { childList: true, subtree: true });
+
+    this.elem.appendChild(container);
+
+    if (reset?.show) {
+      const resetLabel = reset.label || i18next.t('simulator:sceneObjs.common.useThemeStyle');
+      const resetIcon = reset.icon || `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+      </svg>
+      `;
+
+      this.createButton(resetLabel, () => {
+        this.setOption((obj) => reset.onReset(obj));
+      }, true, resetIcon);
+    }
+  }
+
+  /**
+   * Create a stroke style control in the object bar.
+   * @param {string} label - The label for the control.
+   * @param {Object} strokeOptions - The stroke options.
+   * @param {function} onUpdate - Callback for updates.
+   */
+  createStrokeStyleControl(label, currentStyle, themeStyle, onUpdate, onReset) {
+    const baseStyle = currentStyle || themeStyle || {};
+    const strokeOptions = JSON.parse(JSON.stringify({
+      color: baseStyle.color,
+      width: baseStyle.width,
+      dash: Array.isArray(baseStyle.dash) ? baseStyle.dash : []
+    }));
+    this.createStyleControl({
+      component: StrokeControl,
+      label,
+      value: strokeOptions,
+      valueProp: 'strokeOptions',
+      onUpdate,
+      reset: {
+        show: true,
+        onReset
+      }
+    });
+  }
+
+  /**
+   * Create a fill style control in the object bar.
+   * @param {string} label - The label for the control.
+   * @param {Object|null} currentStyle - The current style for the object.
+   * @param {Object|null} themeStyle - The theme style to fall back to.
+   * @param {function} onUpdate - Callback for updates.
+   * @param {function} onReset - Callback for reset.
+   */
+  createFillStyleControl(label, currentStyle, themeStyle, onUpdate, onReset) {
+    const baseStyle = currentStyle || themeStyle || {};
+    const fillOptions = JSON.parse(JSON.stringify({
+      color: baseStyle.color
+    }));
+    this.createStyleControl({
+      component: FillControl,
+      label,
+      value: fillOptions,
+      valueProp: 'fillOptions',
+      onUpdate,
+      reset: {
+        show: true,
+        onReset
+      }
+    });
+  }
+
+ 
 
   /**
    * Create an popover info icon in the object bar.
