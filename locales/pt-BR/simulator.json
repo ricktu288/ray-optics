@@ -172,7 +172,10 @@
         "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
+      "lineStyle": "Estilo de linha",
+      "fillStyle": "Estilo de preenchimento",
+      "useThemeStyle": "Usar estilo do tema"
     },
     "ParamCurveObjMixin": {
       "addPiece": "Adicionar segmento",
