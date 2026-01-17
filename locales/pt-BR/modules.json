@@ -115,6 +115,16 @@
       "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
       "cauchyB": "O coeficiente de Cauchy \\(B\\) do cubo em micrômetros quadrados",
       "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
+    },
+    "RainbowPointSource": {
+      "title": "Fonte Pontual Arco-Íris",
+      "description": "Fonte pontual de luz <360 graus - porém emite um espectro de cores. Necessita de \"Simular Cores\" habilitado.",
+      "point1": "A fonte",
+      "N": "O número de raios",
+      "brightness": "O brilho total",
+      "angle": "O ângulo de emissão",
+      "lambdaMin": "O comprimento de onda mínimo",
+      "lambdaMax": "O comprimento de onda máximo"
     }
   },
   "moduleTutorial": {
