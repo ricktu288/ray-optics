@@ -167,7 +167,7 @@
     },
     "arrayAndConditional": {
       "title": "Listas e condicionais",
-      "lookAtExample": "Um módulo mais complicado pode ser construído usando listas e condicionais. Vejamos o exemplo.",
+      "lookAtExample": "Um módulo mais complicado pode ser construído usando listas e condicionais. Vejamos o exemplo",
       "specialKeys": "Dentro de `modules.ExampleModule.objs`, quaisquer objetos em uma lista podem ter duas chaves especiais : `\"for\"` e `\"if\"`. O valor da chave `\"for\"`é oum uma string no formato `\"name=start:step:end\"` definindo uma variável de loop, ou uma lista de várias strings desse formato descrevendo um loop multidimensional. Tal objeto na lista é duplicado várias vezes de acordo com as variáveis do loop. O valor da chave `\"if\"` é uma string representando uma expressão de math.js que resulta em um booleano, e o objeto é incluso na lista se, e somente se o booleano for verdadeiro.",
       "preventInfiniteLoop": "Para previnir loop infinito acidental, o número total de iterações de cada loop `\"for\"`é limitado pela propriedade `maxLoopLength` da definição do módulo, cujo valor padrão é 1000. Você pode definir essa propriedade como um valor maior, se necessário."
     },
