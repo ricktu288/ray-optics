@@ -46,7 +46,8 @@ class TextLabel extends BaseSceneObj {
     fontStyle: 'Normal',
     alignment: 'left',
     smallCaps: false,
-    angle: 0
+    angle: 0,
+    fillStyle: null
   };
 
   populateObjBar(objBar) {
@@ -120,13 +121,31 @@ class TextLabel extends BaseSceneObj {
         obj.angle = value;
       }, null, true);
     }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['fillStyle']))) {
+      objBar.createFillStyleControl(
+        i18next.t('simulator:sceneObjs.common.fillStyle') + '<sup>Beta</sup>',
+        this.fillStyle,
+        this.scene.theme.decoration,
+        function (value) {
+          objBar.setOption(function (obj) {
+            obj.fillStyle = JSON.parse(JSON.stringify(value));
+          });
+        },
+        function (obj) {
+          obj.fillStyle = null;
+        }
+      );
+    }
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
+    const style = this.fillStyle || this.scene.theme.decoration;
+    const fillColor = style.color || this.scene.theme.decoration.color;
+    ctx.fillStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(fillColor);
     ctx.textAlign = this.alignment;
     ctx.textBaseline = 'bottom';
 

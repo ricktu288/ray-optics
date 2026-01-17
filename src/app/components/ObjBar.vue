@@ -191,6 +191,11 @@ export default {
   padding-right: 3px;
 }
 
+.obj-bar-vue-control {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .obj-bar .form-range {
   width: 125px;
   padding-top:15px;

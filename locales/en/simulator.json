@@ -165,6 +165,9 @@
       "lambert": "Lambertian",
       "coordOrigin": "Origin",
       "focalLength": "Focal length",
+      "lineStyle": "Line style",
+      "fillStyle": "Fill style",
+      "useThemeStyle": "Use theme style",
       "eqnInfo": {
         "constants": "Supported constants",
         "operators": "Supported operators",

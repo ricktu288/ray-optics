@@ -503,6 +503,10 @@
       "rotatediffractiongra": "Rotate Diffraction Grating \nto get narrow band \nwavelengths from \ncomposite light",
       "exitslitmonochromati": "Exit Slit\n\nMonochromatic Light"
     },
+    "gratingPulseCompressor": {
+      "title": "Grating Pulse Compressor",
+      "description": "A foldered Treacy pulse compressor using a transmission grating. The wavelengths are in the IR range and are shown as false colors."
+    },
     "solarEclipses": {
       "title": "Solar Eclipses",
       "description": "This simulation demonstrates the different types of solar eclipses. The top-right diagram depicts a solar eclipse where the Moon's shadow covers the Sun, resulting in a total eclipse at the center and a partial eclipse in surrounding areas. The bottom-right diagram illustrates an annular eclipse where the Moon is too far from Earth to completely cover the Sun, leaving a bright ring at the center (in this 2D simulator, the \"ring\" is demonstrated by sunlight coming only from the upper and the lower part of the sun) and also a partial eclipse in surrounding areas.",

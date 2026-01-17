@@ -165,6 +165,9 @@
       "lambert": "朗伯",
       "coordOrigin": "原点",
       "focalLength": "焦距",
+      "lineStyle": "线条样式",
+      "fillStyle": "填充样式",
+      "useThemeStyle": "使用主题样式",
       "eqnInfo": {
         "constants": "支持的常数",
         "operators": "支持的运算符",

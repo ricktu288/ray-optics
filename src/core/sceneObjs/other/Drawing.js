@@ -33,7 +33,8 @@ class Drawing extends BaseSceneObj {
   static type = 'Drawing';
   static serializableDefaults = {
     strokes: [],
-    isDrawing: false
+    isDrawing: false,
+    lineStyle: null
   };
 
   populateObjBar(objBar) {
@@ -46,14 +47,34 @@ class Drawing extends BaseSceneObj {
         }
       }, true);
     }
+
+    objBar.createStrokeStyleControl(
+      i18next.t('simulator:sceneObjs.common.lineStyle') + '<sup>Beta</sup>',
+      this.lineStyle,
+      this.scene.theme.decoration,
+      function (value) {
+        objBar.setOption(function (obj) {
+          obj.lineStyle = JSON.parse(JSON.stringify(value));
+        });
+      },
+      function (obj) {
+        obj.lineStyle = null;
+      }
+    );
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
-    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.decoration.color);
-    ctx.lineWidth = this.scene.theme.decoration.width * ls;
+    const style = this.lineStyle || this.scene.theme.decoration;
+    const strokeColor = style.color || this.scene.theme.decoration.color;
+    const strokeWidth = style.width !== undefined ? style.width : this.scene.theme.decoration.width;
+    const dashPattern = style.dash ? style.dash.map((value) => value * ls) : [];
+
+    ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(strokeColor);
+    ctx.lineWidth = strokeWidth * ls;
+    ctx.setLineDash(dashPattern);
     ctx.beginPath();
     for (const stroke of this.strokes) {
       ctx.moveTo(stroke[0], stroke[1]);
@@ -62,6 +83,7 @@ class Drawing extends BaseSceneObj {
       }
     }
     ctx.stroke();
+    ctx.setLineDash([]);
   }
 
   move(diffX, diffY) {
