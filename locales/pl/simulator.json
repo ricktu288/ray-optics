@@ -11,7 +11,8 @@
     "customOption": "Niestandardowy",
     "closeButton": "Zamknij",
     "resetButton": "Resetuj",
-    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt."
+    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt.",
+    "legacyOption": "Stara wersja"
   },
   "file": {
     "title": "Plik",
@@ -111,7 +112,19 @@
       "title": "Pokaż okienka pomocy",
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski."
     },
-    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
+    "redWavelength": {
+      "title": "Długość fali czerwonej (nm)",
+      "description": "Długość fali pokazywana jako czerwona, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
+    },
+    "violetWavelength": {
+      "title": "Długość fali fioletowej (nm)",
+      "description": "Długość fali pokazywana jako fioletowa, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
+    },
+    "maxRayDepth": {
+      "title": "Maksymalna głębokość promienia",
+      "description": "Maksymalna liczba interakcji promień-obiekt przed ucięciem promieni. Użyj \"inf\", aby nie ustawiać limitu."
+    }
   },
   "objBar": {
     "showAdvanced": {
@@ -189,7 +202,8 @@
         "relative": "względny, jeśli znajduje się w innym szkle",
         "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, w których kilka szkieł nakłada się na siebie, efektywny współczynnik załamania światła w obszarze nakładania się jest równy iloczynowi współczynników załamania światła poszczególnych szkieł."
       },
-      "cauchyCoeff": "Współczynnik Cauchy'ego"
+      "cauchyCoeff": "Współczynnik Cauchy'ego",
+      "partialReflect": "Symuluj odbicia częściowe"
     },
     "SphericalLens": {
       "defBy": {
@@ -538,6 +552,9 @@
       "title": "Importuj",
       "description": "Importuj motyw z pliku JSON sceny.",
       "error": "Plik nie zawiera motywu."
+    },
+    "handlePoint": {
+      "title": "Punkt sterowania modułem"
     }
   },
   "languageModal": {
@@ -603,7 +620,8 @@
         "description": "Przeciągając obiekt przytrzymaj Shift, aby ograniczyć do poziomu/pionu; przytrzymaj Ctrl, aby klonować. Tworząc obiekt w kształcie linii lub przeciągając jego punkty końcowe, przytrzymaj Shift, aby zablokować kąt lub przyciągnąć do 0°, 45°, 90°; przytrzymaj Ctrl, aby obrócić/skalować wokół jego środka."
       },
       "groupRotateScale": {
-        "title": "Grupuj, obracaj i skaluj obiekty"
+        "title": "Grupuj, obracaj i skaluj obiekty",
+        "description": "Przytrzymaj klawisz Ctrl, kliknij jeden lub więcej obiektów (lub pojedyncze punkty kontrolne, np. punkty końcowe), a następnie kliknij puste miejsce, aby je zgrupować i utworzyć uchwyt (ikona strzałki). Aby zastosować transformację, wybierz żądany typ transformacji i rozmiar kroku, a następnie przeciągnij uchwyt. Aby obrócić/skalować, przeciągnij \"+\", aby ustawić środek. Kliknij uchwyt i naciśnij Ctrl+D, aby powielić grupę; naciśnij Delete, aby ją rozgrupować."
       },
       "editCoordinates": {
         "title": "Bezpośrednio edytuj współrzędne",
@@ -625,7 +643,17 @@
         "title": "Skontaktuj się z nami",
         "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
+      },
+      "arrayFormula": {
+        "title": "Tablice i obiekty ze wzorów",
+        "description": "Aby zdefiniować tablice obiektów (np. siatkę luster z regulowanymi odstępami) lub obiekty ze wzorów (np. graniastosłup trapezowy z regulowanymi kątami), zobacz \"Narzędzia -> Inne -> Importuj moduły -> Utwórz własne moduły\"."
       }
     }
+  },
+  "editor": {
+    "objectBodyHint": "Odnośnie obracania, grupowania itp., zobacz ikonę pomocy w prawym dolnym rogu.",
+    "coordinatesHint": "Odnośnie przekształcania obiektów, definiowania współrzędnych na podstawie wzorów itp., zobacz ikonę pomocy w prawym dolnym rogu.",
+    "handleHint": "Aby przesunąć wiele obiektów jednocześnie, kliknij puste miejsce, aby utworzyć uchwyt.",
+    "handleArrowHint": "Aby przełączać się między trybem poziomo/pionowo/obrót/skalowanie, kliknij uchwyt (strzałkę) i zmień opcję \"transformacji\" powyżej."
   }
 }
