@@ -166,7 +166,10 @@
         "module": "Aby mieć niestandardowe parametry lub skomplikowane równania, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły ->."
       },
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
-      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone."
+      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
+      "lineStyle": "Styl linii",
+      "fillStyle": "Styl wypełnienia",
+      "useThemeStyle": "Użyj stylu motywu"
     },
     "ParamCurveObjMixin": {
       "addPiece": "Dodaj element",
@@ -594,7 +597,7 @@
     }
   },
   "statusBox": {
-    "rayCount": "Liczba promieni",
+    "rayCount": "Liczba odcinków promieni",
     "totalTruncation": "Obcięta jasność",
     "brightnessScale": "Skala jasności",
     "timeElapsed": "Czas, który upłynął",
