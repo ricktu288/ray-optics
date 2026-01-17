@@ -458,6 +458,12 @@
         ]
       },
       {
+        "id": "grating-pulse-compressor",
+        "contributors": [
+          "DeadeyeSun"
+        ]
+      },
+      {
         "id": "solar-eclipses",
         "contributors": [
           "Yi-Ting Tu"

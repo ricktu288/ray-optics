@@ -834,5 +834,12 @@
       "modules": true
     },
     "firstCommit": "2026-01-16"
+  },
+  {
+    "name": "DeadeyeSun",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2026-01-16"
   }
 ]
