@@ -649,7 +649,8 @@ class ModuleObj extends BaseSceneObj {
     let result = [];
     for (let obj of arr) {
       try {
-        if ('for' in obj) {
+        const isPlainObject = typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+        if (isPlainObject && 'for' in obj) {
           let forObj = obj['for'];
           let loopVars = [];
           if (typeof forObj === 'string') {
@@ -697,7 +698,7 @@ class ModuleObj extends BaseSceneObj {
             }
           }
 
-        } else if ('if' in obj) {
+        } else if (isPlainObject && 'if' in obj) {
           if (math.evaluate(obj['if'], params)) {
             result.push(this.expandObject(obj, params));
           }
@@ -705,7 +706,7 @@ class ModuleObj extends BaseSceneObj {
           result.push(this.expandString(obj, params));
         } else if (Array.isArray(obj)) {
           result.push(this.expandArray(obj, params));
-        } else if (typeof obj === 'object') {
+        } else if (isPlainObject) {
           result.push(this.expandObject(obj, params));
         } else {
           result.push(obj);
