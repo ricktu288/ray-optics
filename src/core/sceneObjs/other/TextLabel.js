@@ -173,7 +173,7 @@ class TextLabel extends BaseSceneObj {
       if (lineDimensions.fontBoundingBoxAscent) {
         y_offset += lineDimensions.fontBoundingBoxAscent + lineDimensions.fontBoundingBoxDescent;
       } else {
-        y_offset += this.fontSize * 1.5;
+        y_offset += this.fontSize * 1.15;
       }
     });
     ctx.restore();
