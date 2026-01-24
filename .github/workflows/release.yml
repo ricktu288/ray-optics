@@ -31,6 +31,7 @@ jobs:
             build-essential \
             g++ \
             fonts-noto-cjk \
+            fonts-noto-cjk-extra \
             fonts-noto-core \
             fonts-taml \
             fonts-lohit-taml \
