@@ -549,6 +549,10 @@
       "convexparabolicmirro": "wypukłe zwierciadło paraboliczne",
       "classicalcassegrain": "klasyczny Cassegrain",
       "collimator": "kolimator"
+    },
+    "gratingPulseCompressor": {
+      "title": "Kompresor impulsów z siatką dyfrakcyjną",
+      "description": "Złożony kompresor impulsów Treacy'ego wykorzystujący siatkę transmisyjną. Długości fal mieszczą się w zakresie podczerwieni i są przedstawione w postaci fałszywych kolorów."
     }
   }
 }

@@ -115,6 +115,16 @@
       "refIndex": "Współczynnik załamania światła sześcianu (lub współczynnik Cauchy'ego \\(A\\), gdy włączona jest opcja \"Symuluj kolory\")",
       "cauchyB": "Współczynnik Cauchy'ego \\(B\\) sześcianu w mikrometrach kwadratowych",
       "splitRatio": "Stosunek transmisji diagonalnego rozdzielacza wiązki"
+    },
+    "RainbowPointSource": {
+      "title": "Punktowe źródło tęczy",
+      "description": "Punktowe źródło światła <360 stopni - ale emituje spektrum kolorów. Wymaga włączenia opcji \"Symuluj kolory\".",
+      "point1": "Źródło",
+      "N": "Liczba promieni",
+      "brightness": "Całkowita jasność",
+      "angle": "Kąt emisji",
+      "lambdaMin": "Minimalna długość fali",
+      "lambdaMax": "Maksymalna długość fali"
     }
   },
   "moduleTutorial": {

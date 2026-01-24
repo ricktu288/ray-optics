@@ -30,6 +30,13 @@
     "newtonianTelescope": {
       "title": "Newtoniyen Teleskop",
       "description": "Bu, Plössl okülerli bir Newtoniyen teleskop modelidir."
+    },
+    "common": {
+      "warningthesequenceof": "Uyarı: Işığın görünme süresi, ışığın gerçek hızını temsil etmez - sadece son görüntü anlamlıdır."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "İki Aynadan Görüntüler",
+      "description": "Bu simülasyon, iki ayna tarafından oluşturulan görüntüleri göstermektedir. Yeşil “L” nesnedir. İki ayna arasındaki açı \\(\\frac{360^\\circ}{n}\\) ise, \\(n-1\\) sanal görüntü (turuncu L'ler) oluşacaktır. Aynanın uç noktasını sürükleyerek aralarındaki açıyı değiştirebilirsiniz."
     }
   }
 }
