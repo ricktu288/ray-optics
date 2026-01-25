@@ -40,6 +40,16 @@
       "max": "波長最大值",
       "brightness": "總亮度"
     },
+    "RainbowPointSource": {
+      "title": "彩虹點光源",
+      "description": "點光源（<360度） - 但發射出光譜中的色彩。必須在「模擬色彩」模式中運作。",
+      "point1": "光源",
+      "N": "光線的數量",
+      "brightness": "總亮度",
+      "angle": "發射角",
+      "lambdaMin": "波長最小值",
+      "lambdaMax": "波長最大值"
+    },
     "CoatedLens": {
       "title": "鍍膜球面透鏡",
       "description": "兩面具有單層塗層的球面透鏡。嵌入於本模組中的`ArcCoating` 模組代表一個薄膜層，其與透光物的表面重疊時，會成為該透光物的塗層。",

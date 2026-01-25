@@ -28,6 +28,10 @@ export function createMockObjBar() {
     targetObj: null,
     setTitle: function() {},
     eventListeners: {},
+    setOption: function(func) {
+      func(this.targetObj);
+      this.emit('edit', null);
+    },
 
     on: function(eventName, callback) {
       if (!this.eventListeners[eventName]) {
@@ -142,6 +146,38 @@ export function createMockObjBar() {
           if (updateOnChange) {
             this.emit('requestUpdate', null);
           }
+        }
+      };
+      this.controls.push(control);
+      return control;
+    },
+
+    createStrokeStyleControl: function(label, currentStyle, themeStyle, onUpdate, onReset) {
+      const control = {
+        label,
+        value: currentStyle || themeStyle || {},
+        setValue: (value) => {
+          control.value = value;
+          onUpdate(value);
+        },
+        reset: () => {
+          onReset(this.targetObj);
+        }
+      };
+      this.controls.push(control);
+      return control;
+    },
+
+    createFillStyleControl: function(label, currentStyle, themeStyle, onUpdate, onReset) {
+      const control = {
+        label,
+        value: currentStyle || themeStyle || {},
+        setValue: (value) => {
+          control.value = value;
+          onUpdate(value);
+        },
+        reset: () => {
+          onReset(this.targetObj);
         }
       };
       this.controls.push(control);

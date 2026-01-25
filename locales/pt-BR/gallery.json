@@ -545,6 +545,14 @@
       "title": "Exemplo de Módulo - Parametrização de forma",
       "alensdefinedbydr1r2": "Uma lente definida por d, R_1, R_2",
       "alensdefinedbydffdbf": "Uma lente definida por d, FFD, BFD"
+    },
+    "digitalCamera": {
+      "title": "Câmera Digital",
+      "description": "Diagrama simples demonstrando os conceitos de foco e abertura em uma câmera digital."
+    },
+    "gratingPulseCompressor": {
+      "title": "Compressor de Pulso de Rede",
+      "description": "Um compressor de pulso de Treacy dobrado usando uma rede de transmissão. Os comprimentos de onda estão na faixa do infravermelho e são exibidos com cores falsas."
     }
   }
 }

@@ -40,6 +40,16 @@
       "max": "The maximum wavelength",
       "brightness": "The total brightness"
     },
+    "RainbowPointSource": {
+      "title": "Rainbow Point Source",
+      "description": "Point light source <360 degrees - but emits a spectrum of colors. Must run with \"Simulate Colors\" on.",
+      "point1": "The source",
+      "N": "The number of rays",
+      "brightness": "The total brightness",
+      "angle": "The emission angle",
+      "lambdaMin": "The minimum wavelength",
+      "lambdaMax": "The maximum wavelength"
+    },
     "CoatedLens": {
       "title": "Coated Spherical Lens",
       "description": "A spherical lens with single-layer coatings on both sides. The `ArcCoating` module embedded in this module represents a single thin-film layer, which when overlapping with a glass' surface becomes its coating.",
