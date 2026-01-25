@@ -127,6 +127,10 @@ class Editor {
 
     /** @property {number} hoveredObjIndex - The index of the hovered object. -1 if no object is hovered. */
     this.hoveredObjIndex = -1;
+    /** @property {number} externalHoverIndex - Highlighted from UI list hover. */
+    this.externalHoverIndex = -1;
+    /** @property {number[]} externalHighlightIndices - Multi-highlight from UI list. */
+    this.externalHighlightIndices = [];
 
     /** @property {string} addingObjType - The type of the object that will be added when the user clicks on the canvas. Empty if 'Move view' tool is selected so that no object will be added. */
     this.addingObjType = '';
@@ -1665,6 +1669,13 @@ class Editor {
       }
     }
     
+    if (this.externalHighlightIndices.includes(objIndex)) {
+      return true;
+    }
+    if (this.externalHoverIndex === objIndex) {
+      return true;
+    }
+
     // If hoveredObjIndex is not valid, check only the handle binding status above
     if (!this.scene.objs[this.hoveredObjIndex]) {
       return false;
@@ -1677,6 +1688,26 @@ class Editor {
       // Otherwise, only highlight the hovered object itself
       return this.hoveredObjIndex === objIndex;
     }
+  }
+
+  /**
+   * Set an external hover index for highlighting from UI.
+   * @param {number} index - The index to highlight, or -1 to clear.
+   */
+  setExternalHoverIndex(index) {
+    this.externalHoverIndex = Number.isInteger(index) ? index : -1;
+  }
+
+  /**
+   * Set external highlight indices for multi-selection highlighting.
+   * @param {number[]} indices - The indices to highlight.
+   */
+  setExternalHighlightIndices(indices) {
+    if (!Array.isArray(indices)) {
+      this.externalHighlightIndices = [];
+      return;
+    }
+    this.externalHighlightIndices = indices.filter((index) => Number.isInteger(index));
   }
 
   /**

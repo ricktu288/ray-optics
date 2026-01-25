@@ -599,14 +599,30 @@
       "code": "程式碼",
       "ai": "AI"
     },
+    "objectList": {
+      "title": "物件",
+      "unnamedObject": "未命名物件",
+      "unknownType": "未知類型",
+      "sceneInfo": "直接位於場景中的物件清單。若要以自訂變數、陣列等來參數化，需先將其移入模組。模組內的物件不會直接列出，而是每個模組實例以單一物件顯示。",
+      "moduleInfo": "此模組中的物件（或物件模板）。可使用自訂變數和陣列等進行參數化，但無法直接在畫布中編輯。座標為硬編碼的物件在畫布中將無法移動。"
+    },
     "visualSubTabs": {
       "scene": "場景",
-      "createModule": "建立模組",
+      "createModule": "新增模組",
       "createModuleInfo": "模組可讓您群組和重複使用自訂光學元件/設定。建立模組以開始建立可重複使用的元件。"
+    },
+    "sceneObjsEditor": {
+      "moveIntoModule": "移入模組",
+      "createModule": "建立新模組",
+      "emptyHint": "要建立物件，請使用工具列並在畫布中建立。"
     },
     "moduleEditor": {
       "renameButton": "重新命名",
       "removeButton": "移除模組",
+      "moveOut": "移出模組",
+      "moveInHint": "要將物件加入此模組，請先使用工具列建立物件，或在畫布中選取現有物件。",
+      "moveIntoModule": "將「{{name}}」移入此模組",
+      "noInstances": "此模組目前沒有任何實例在場景中。若要建立實例，請使用工具->其他->{{name}}。",
       "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
       "errorEmptyName": "模組名稱不能為空。",
       "errorComma": "模組名稱不能包含逗號。",

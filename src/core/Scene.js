@@ -733,6 +733,55 @@ class Scene {
   }
 
   /**
+   * Reorder an object in the scene.
+   * @param {number} fromIndex - The original index.
+   * @param {number} toIndex - The destination index.
+   */
+  reorderObj(fromIndex, toIndex) {
+    if (fromIndex === toIndex) {
+      return;
+    }
+    if (fromIndex < 0 || toIndex < 0 || fromIndex >= this.objs.length || toIndex >= this.objs.length) {
+      return;
+    }
+
+    const moved = this.objs.splice(fromIndex, 1)[0];
+    this.objs.splice(toIndex, 0, moved);
+
+    const remapIndex = (oldIndex) => {
+      if (oldIndex === fromIndex) {
+        return toIndex;
+      }
+      if (fromIndex < toIndex) {
+        if (oldIndex > fromIndex && oldIndex <= toIndex) {
+          return oldIndex - 1;
+        }
+      } else {
+        if (oldIndex >= toIndex && oldIndex < fromIndex) {
+          return oldIndex + 1;
+        }
+      }
+      return oldIndex;
+    };
+
+    for (let i = 0; i < this.objs.length; i++) {
+      if (this.objs[i].constructor.type === "Handle") {
+        const handle = this.objs[i];
+        if (Array.isArray(handle.controlPoints)) {
+          for (let j = 0; j < handle.controlPoints.length; j++) {
+            if (typeof handle.controlPoints[j].targetObjIndex === 'number') {
+              handle.controlPoints[j].targetObjIndex = remapIndex(handle.controlPoints[j].targetObjIndex);
+            }
+          }
+        }
+        if (Array.isArray(handle.objIndices)) {
+          handle.objIndices = handle.objIndices.map(remapIndex);
+        }
+      }
+    }
+  }
+
+  /**
    * Clone the object at an index.
    * @param {number} index
    * @returns {BaseSceneObj} The cloned object
@@ -788,6 +837,140 @@ class Scene {
     }
 
     return true;
+  }
+
+  /**
+   * Reload a module definition and re-expand its objects.
+   * @param {string} moduleName
+   */
+  reloadModule(moduleName) {
+    if (!this.modules[moduleName]) {
+      return;
+    }
+    for (let i = 0; i < this.objs.length; i++) {
+      const obj = this.objs[i];
+      if (obj.constructor.type === "ModuleObj" && obj.module === moduleName) {
+        this.objs[i] = new sceneObjs.ModuleObj(this, obj.serialize());
+      }
+    }
+  }
+
+  /**
+   * Reload all module objects in the scene.
+   */
+  reloadAllModules() {
+    for (let i = 0; i < this.objs.length; i++) {
+      const obj = this.objs[i];
+      if (obj.constructor.type === "ModuleObj") {
+        this.objs[i] = new sceneObjs.ModuleObj(this, obj.serialize());
+      }
+    }
+  }
+
+  /**
+   * Move objects into a module definition.
+   * @param {number[]} indices
+   * @param {string} moduleName
+   * @returns {{ moved: number, skipped: number }}
+   */
+  moveObjsToModule(indices, moduleName) {
+    if (!Array.isArray(indices) || !this.modules[moduleName]) {
+      return { moved: 0, skipped: 0 };
+    }
+
+    const unique = Array.from(new Set(indices.filter(Number.isInteger))).sort((a, b) => b - a);
+    const moduleDef = this.modules[moduleName];
+    if (!Array.isArray(moduleDef.objs)) {
+      moduleDef.objs = [];
+    }
+
+    const movedObjs = [];
+    let skipped = 0;
+    for (const index of unique) {
+      const obj = this.objs[index];
+      if (!obj) {
+        continue;
+      }
+      if (obj.constructor.type === "Handle") {
+        skipped += 1;
+        continue;
+      }
+      movedObjs.unshift(obj.serialize());
+      this.removeObj(index);
+    }
+
+    if (movedObjs.length > 0) {
+      moduleDef.objs.push(...movedObjs);
+      this.reloadAllModules();
+    }
+
+    return { moved: movedObjs.length, skipped };
+  }
+
+  /**
+   * Move module definition objects out into the scene.
+   * @param {string} moduleName
+   * @param {number[]} sourceIndices
+   * @returns {{ moved: number }}
+   */
+  moveModuleObjsToScene(moduleName, sourceIndices) {
+    if (!this.modules[moduleName] || !Array.isArray(sourceIndices)) {
+      return { moved: 0 };
+    }
+
+    const moduleDef = this.modules[moduleName];
+    const unique = Array.from(new Set(sourceIndices.filter(Number.isInteger))).sort((a, b) => a - b);
+    const sourceSet = new Set(unique);
+    if (!Array.isArray(moduleDef.objs)) {
+      moduleDef.objs = [];
+    }
+
+    const movedObjs = [];
+    moduleDef.objs = moduleDef.objs.filter((obj, index) => {
+      if (sourceSet.has(index)) {
+        movedObjs.push(obj);
+        return false;
+      }
+      return true;
+    });
+
+    if (!movedObjs.length) {
+      return { moved: 0 };
+    }
+
+    const appendExpanded = (moduleObj) => {
+      if (!moduleObj?.objs) return;
+      for (const obj of moduleObj.objs) {
+        if (obj?.constructor?.type === 'ModuleObj') {
+          appendExpanded(obj);
+        } else if (Number.isInteger(obj?._moduleSourceIndex) && sourceSet.has(obj._moduleSourceIndex)) {
+          const serialized = obj.serialize();
+          const newObj = new sceneObjs[serialized.type](this, serialized);
+          this.objs.push(newObj);
+        }
+      }
+    };
+
+    const walkModuleInstances = (obj) => {
+      if (!obj) return;
+      if (obj.constructor?.type === 'ModuleObj') {
+        if (obj.module === moduleName) {
+          appendExpanded(obj);
+        }
+        if (Array.isArray(obj.objs)) {
+          for (const child of obj.objs) {
+            walkModuleInstances(child);
+          }
+        }
+      }
+    };
+
+    for (const obj of this.objs) {
+      walkModuleInstances(obj);
+    }
+
+    this.reloadAllModules();
+    return { moved: movedObjs.length };
   }
 
   /**

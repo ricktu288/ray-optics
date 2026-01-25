@@ -16,6 +16,7 @@
 
 import { reactive, computed, onMounted, onUnmounted } from 'vue'
 import Scene from '../../core/Scene'
+import { sceneObjs } from '../../core/index.js'
 import geometry from '../../core/geometry'
 import { app } from '../services/app'
 
@@ -87,6 +88,8 @@ const PROPERTY_CALLBACKS = {
 
 // Create a single instance of the store
 let storeInstance = null
+const objIdMap = new WeakMap()
+let nextObjId = 1
 
 /**
  * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
@@ -103,6 +106,7 @@ export const useSceneStore = () => {
     observerSize: app.simulator?.scene.observer ? app.simulator?.scene.observer.r * 2 : 40,
     zoom: app.simulator?.scene.scale || 1,
     moduleIds: '',
+    objList: [],
     ...Object.fromEntries(
       Object.entries(Scene.serializableDefaults).map(([key]) => [
         key,
@@ -110,6 +114,27 @@ export const useSceneStore = () => {
       ])
     )
   })
+
+  const getObjId = (obj) => {
+    if (!objIdMap.has(obj)) {
+      objIdMap.set(obj, `scene-obj-${nextObjId}`)
+      nextObjId += 1
+    }
+    return objIdMap.get(obj)
+  }
+
+  const syncObjList = () => {
+    console.log('syncObjList')
+    if (!app.scene) {
+      state.objList = []
+      return
+    }
+    state.objList = app.scene.objs.map((obj) => ({
+      id: getObjId(obj),
+      obj,
+      type: obj?.constructor?.type || 'Unknown'
+    }))
+  }
 
   // Function to sync with scene
   const syncWithScene = () => {
@@ -121,6 +146,7 @@ export const useSceneStore = () => {
       state.zoom = (app.scene.scale * app.scene.lengthScale) || 1
       state.moduleIds = Object.keys(app.scene.modules || {}).join(',')
     }
+    syncObjList()
   }
 
   // Resize the scene
@@ -205,14 +231,49 @@ export const useSceneStore = () => {
     }
   }
 
+  const removeObj = (index) => {
+    if (!app.scene || !app.editor) return
+    const objType = app.scene.objs[index]?.constructor?.type
+    if (!objType) return
+    app.editor.removeObj(index)
+    app.simulator?.updateSimulation(!sceneObjs[objType]?.isOptical, true)
+    app.editor.onActionComplete()
+    syncObjList()
+  }
+
+  const duplicateObj = (index) => {
+    if (!app.scene || !app.editor) return
+    const obj = app.scene.objs[index]
+    if (!obj) return
+    if (obj.constructor.type === 'Handle') {
+      app.scene.cloneObjsByHandle(index)
+    } else {
+      app.scene.cloneObj(index)
+    }
+    app.simulator?.updateSimulation(true, true)
+    app.editor.onActionComplete()
+    syncObjList()
+  }
+
+  const reorderObjs = (fromIndex, toIndex) => {
+    if (!app.scene || !app.editor) return
+    if (fromIndex === toIndex) return
+    app.scene.reorderObj(fromIndex, toIndex)
+    app.simulator?.updateSimulation(true, true)
+    app.editor.onActionComplete()
+    syncObjList()
+  }
+
   // Set up listeners
   onMounted(() => {
     syncWithScene()
     document.addEventListener('sceneChanged', syncWithScene)
+    document.addEventListener('sceneObjsChanged', syncObjList)
   })
 
   onUnmounted(() => {
     document.removeEventListener('sceneChanged', syncWithScene)
+    document.removeEventListener('sceneObjsChanged', syncObjList)
   })
 
   storeInstance = {
@@ -221,6 +282,10 @@ export const useSceneStore = () => {
     removeModule,
     renameModule,
     createModule,
+    removeObj,
+    duplicateObj,
+    reorderObjs,
+    syncObjList,
     state
   }
 

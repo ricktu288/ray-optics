@@ -377,6 +377,7 @@ function initAppService() {
       document.getElementById('obj_bar').style.display = 'none';
       objBar.shouldShowAdvanced = false;
     }
+    document.dispatchEvent(new CustomEvent('sceneObjSelectionChanged', { detail: { index: e.newIndex } }));
   });
 
   editor.on('sceneLoaded', function (e) {
@@ -404,6 +405,7 @@ function initAppService() {
     syncUrl();
     warning = "";
     hasUnsavedChange = true;
+    document.dispatchEvent(new Event('sceneObjsChanged'));
   });
 
   editor.on('newUndoPoint', function (e) {
@@ -423,6 +425,7 @@ function initAppService() {
     }
     jsonEditorService.updateContent(editor.lastActionJson);
     syncUrl();
+    document.dispatchEvent(new Event('sceneObjsChanged'));
   });
 
   editor.on('redo', function (e) {
@@ -435,6 +438,7 @@ function initAppService() {
     }
     jsonEditorService.updateContent(editor.lastActionJson);
     syncUrl();
+    document.dispatchEvent(new Event('sceneObjsChanged'));
   });
 
   editor.on('scaleChange', function (e) {

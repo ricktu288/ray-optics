@@ -599,14 +599,30 @@
       "code": "Code",
       "ai": "AI"
     },
+    "objectList": {
+      "title": "Objects",
+      "unnamedObject": "Unnamed object",
+      "unknownType": "Unknown type",
+      "sceneInfo": "List of objects which are directly in the scene. To parametrize them (with custom variables, arrays, etc.), you need to move them into a module. Objects inside modules are not directly listed here, and each instance of a module is shown as a single object.",
+      "moduleInfo": "Objects (or template of objects) inside this module. They can be parametrized with custom variables and arrays, but cannot be directly edited in the canvas. Objects with hard-coded coordinates will be unmovable in the canvas."
+    },
     "visualSubTabs": {
       "scene": "Scene",
       "createModule": "Create Module",
       "createModuleInfo": "Modules let you group and reuse custom optical elements/settings. Create a module to start building a reusable component."
     },
+    "sceneObjsEditor": {
+      "moveIntoModule": "Move into module",
+      "createModule": "Create Module",
+      "emptyHint": "To create an object, please use the toolbar and create it in the canvas."
+    },
     "moduleEditor": {
       "renameButton": "Rename",
       "removeButton": "Remove Module",
+      "moveOut": "Move out",
+      "moveInHint": "To add an object to this module, please first create the object using the toolbar or select an existing object in the canvas.",
+      "moveIntoModule": "Move \"{{name}}\" into this module",
+      "noInstances": "No instances of this module are currently in the scene. To create an instance, use Tools -> Other -> {{name}}.",
       "promptNewName": "New module name: (usually in PascalCase)",
       "errorEmptyName": "Module name cannot be empty.",
       "errorComma": "Module name cannot contain commas.",

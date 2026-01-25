@@ -54,8 +54,10 @@ class ModuleObj extends BaseSceneObj {
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
 
+    this.highlightSourceIndices = [];
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
+    this.highlightSourceIndices = [];
 
     // Check if the module definition exists
     if (!this.moduleDef) {
@@ -140,7 +142,11 @@ class ModuleObj extends BaseSceneObj {
     // Draw the expanded objects
     for (let j = 0; j < this.objs.length; j++) {
       let i = mapped[j].index;
-      this.objs[i].draw(canvasRenderer, isAboveLight, isHovered);
+      const obj = this.objs[i];
+      const sourceIndex = obj?._moduleSourceIndex;
+      const isSourceHighlighted = Number.isInteger(sourceIndex)
+        && (this.highlightSourceIndices || []).includes(sourceIndex);
+      obj.draw(canvasRenderer, isAboveLight, isHovered || isSourceHighlighted);
     }
 
     // Draw the control points if not nested in another module
@@ -645,7 +651,7 @@ class ModuleObj extends BaseSceneObj {
    * @param {Object} params - The parameters to be used for evaluating the expressions.
    * @returns {Array} The expanded array.
    */
-  expandArray(arr, params) {
+  expandArray(arr, params, sourceIndex = null) {
     let result = [];
     for (let obj of arr) {
       try {
@@ -693,20 +699,32 @@ class ModuleObj extends BaseSceneObj {
               if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
                 continue;
               }
-              result.push(this.expandObject(obj, loopParam));
+              const expanded = this.expandObject(obj, loopParam);
+              if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
+                expanded.__moduleSourceIndex = sourceIndex;
+              }
+              result.push(expanded);
             }
           }
 
         } else if ('if' in obj) {
           if (math.evaluate(obj['if'], params)) {
-            result.push(this.expandObject(obj, params));
+            const expanded = this.expandObject(obj, params);
+            if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
+              expanded.__moduleSourceIndex = sourceIndex;
+            }
+            result.push(expanded);
           }
         } else if (typeof obj === 'string') {
           result.push(this.expandString(obj, params));
         } else if (Array.isArray(obj)) {
           result.push(this.expandArray(obj, params));
         } else if (typeof obj === 'object') {
-          result.push(this.expandObject(obj, params));
+          const expanded = this.expandObject(obj, params);
+          if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
+            expanded.__moduleSourceIndex = sourceIndex;
+          }
+          result.push(expanded);
         } else {
           result.push(obj);
         }
@@ -763,16 +781,25 @@ class ModuleObj extends BaseSceneObj {
     this.error = null;
 
     try {
-      const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
+      const expandedObjs = [];
+      for (let i = 0; i < this.moduleDef.objs.length; i++) {
+        expandedObjs.push(...this.expandArray([this.moduleDef.objs[i]], fullParams, i));
+      }
 
       this.objs = [];
       for (const objData of expandedObjs) {
+        const sourceIndex = typeof objData.__moduleSourceIndex === 'number' ? objData.__moduleSourceIndex : -1;
+        if (objData && typeof objData === 'object') {
+          delete objData.__moduleSourceIndex;
+        }
         if (!sceneObjs[objData.type]) {
           this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
           return;
         }
-        this.objs.push(new sceneObjs[objData.type](this.scene, objData));
-        this.objs[this.objs.length - 1].isInModule = true;
+        const expandedObj = new sceneObjs[objData.type](this.scene, objData);
+        expandedObj.isInModule = true;
+        expandedObj._moduleSourceIndex = sourceIndex;
+        this.objs.push(expandedObj);
       }
     } catch (e) {
       this.error = e;
@@ -792,6 +819,14 @@ class ModuleObj extends BaseSceneObj {
         this.scene.editor.selectObj(-1);
       }
     }
+  }
+
+  setHighlightedSourceIndices(indices) {
+    if (!Array.isArray(indices)) {
+      this.highlightSourceIndices = [];
+      return;
+    }
+    this.highlightSourceIndices = indices.filter((index) => Number.isInteger(index));
   }
 }
 

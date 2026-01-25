@@ -1,3 +1,19 @@
+<!--
+  Copyright 2026 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
 <template>
   <div class="visual-tab">
     <div class="visual-subtabs" role="tablist" aria-label="Visual editor tabs">
@@ -42,7 +58,7 @@
       </div>
     </div>
 
-    <div class="visual-subtab-content" role="tabpanel">
+    <div class="visual-subtab-content" role="tabpanel" @click="handleContentClick">
       <SceneObjsEditor v-if="activeTabId === 'scene'" />
       <ModuleEditor
         v-else
@@ -55,9 +71,10 @@
 </template>
 
 <script>
-import { computed, ref, toRef, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import i18next from 'i18next'
 import { useSceneStore } from '../../store/scene'
+import { app } from '../../services/app'
 import SceneObjsEditor from './SceneObjsEditor.vue'
 import ModuleEditor from './ModuleEditor.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
@@ -111,6 +128,24 @@ export default {
       activeTabId.value = `module:${newName}`
     }
 
+    const handleSelectModuleTab = (event) => {
+      const moduleName = event?.detail?.moduleName
+      if (moduleName) {
+        activeTabId.value = `module:${moduleName}`
+      }
+    }
+
+    const handleSelectSceneTab = () => {
+      activeTabId.value = 'scene'
+    }
+
+    const handleContentClick = (event) => {
+      if (event?.target?.closest?.('.sidebar-item-list') || event?.target?.closest?.('.scene-objs-editor-actions')) {
+        return
+      }
+      document.dispatchEvent(new CustomEvent('clearVisualEditorSelection'))
+    }
+
     // If the selected module disappears, fall back to Scene.
     watch(moduleNames, (names) => {
       if (activeTabId.value === 'scene') return
@@ -120,10 +155,27 @@ export default {
       }
     })
 
+    onMounted(() => {
+      document.addEventListener('selectVisualModuleTab', handleSelectModuleTab)
+      document.addEventListener('selectVisualSceneTab', handleSelectSceneTab)
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener('selectVisualModuleTab', handleSelectModuleTab)
+      document.removeEventListener('selectVisualSceneTab', handleSelectSceneTab)
+    })
+
+    watch(activeTabId, (nextValue) => {
+      if (nextValue === 'scene') {
+        app.editor?.selectObj(-1)
+      }
+    })
+
     return {
       activeTabId,
       moduleNames,
-      onCreateModuleClick
+      onCreateModuleClick,
+      handleContentClick
     }
   }
 }
@@ -131,7 +183,8 @@ export default {
 
 <style scoped>
 .visual-tab {
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   min-height: 0;

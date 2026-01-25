@@ -66,7 +66,7 @@
       </div>
 
       <div class="sidebar-tab-content">
-        <VisualTab v-show="activeTab === 'visual'" />
+        <VisualTab v-if="showSidebar && activeTab === 'visual'" />
         <div id="jsonEditor" v-show="activeTab === 'code'"></div>
         <AITab v-show="activeTab === 'ai'" />
       </div>

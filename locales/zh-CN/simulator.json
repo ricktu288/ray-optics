@@ -599,14 +599,30 @@
       "code": "代码",
       "ai": "AI"
     },
+    "objectList": {
+      "title": "物件",
+      "unnamedObject": "未命名物件",
+      "unknownType": "未知类型",
+      "sceneInfo": "直接位于场景中的物件列表。若要以自定义变量、数组等来参数化，需先将其移入模块。模块内的物件不会直接列出，而是每个模块实例以单一物件显示。",
+      "moduleInfo": "此模块中的物件（或物件模板）。可使用自定义变量和数组等进行参数化，但无法直接在画布中编辑。座标为硬编码的物件在画布中将无法移动。"
+    },
     "visualSubTabs": {
       "scene": "场景",
       "createModule": "创建模块",
       "createModuleInfo": "模块可让您组装和重复使用自定义光学元件/设置。创建模块以开始构建可重复使用的组件。"
     },
+    "sceneObjsEditor": {
+      "moveIntoModule": "移入模块",
+      "createModule": "创建新模块",
+      "emptyHint": "要创建物件，请使用工具栏并在画布中创建。"
+    },
     "moduleEditor": {
       "renameButton": "重命名",
       "removeButton": "移除模块",
+      "moveOut": "移出模块",
+      "moveInHint": "要将物件加入此模块，请先使用工具栏创建物件，或在画布中选择现有物件。",
+      "moveIntoModule": "将「{{name}}」移入此模块",
+      "noInstances": "此模块目前没有任何实例在场景中。若要创建实例，请使用工具->其他->{{name}}。",
       "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
       "errorEmptyName": "模块名称不能为空。",
       "errorComma": "模块名称不能包含逗号。",

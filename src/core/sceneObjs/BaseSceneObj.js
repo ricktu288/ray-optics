@@ -49,11 +49,13 @@ class BaseSceneObj {
     this.error = null;
     /** @property {string|null} warning - The warning message of the object. */
     this.warning = null;
+    /** @property {string|null} name - The name of the object. */
+    this.name = jsonObj?.name || '';
 
     // Check for unknown keys in the jsonObj
     if (jsonObj) {
       const serializableDefaults = this.constructor.serializableDefaults;
-      const knownKeys = ['type', ...Object.keys(serializableDefaults)];
+      const knownKeys = ['type', 'name', ...Object.keys(serializableDefaults)];
       for (const key in jsonObj) {
         if (!knownKeys.includes(key)) {
           this.scene.error = i18next.t('simulator:generalErrors.unknownObjectKey', { key, type: this.constructor.type }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the object from replacing it, and also because this error likely indicates an incompatible scene version.
@@ -86,7 +88,10 @@ class BaseSceneObj {
    */
   serialize() {
     const jsonObj = { type: this.constructor.type };
-    const serializableDefaults = this.constructor.serializableDefaults;
+    const serializableDefaults = {
+      name: '',
+      ...this.constructor.serializableDefaults
+    };
 
     for (const propName in serializableDefaults) {
       const stringifiedValue = JSON.stringify(this[propName]);
