@@ -9,7 +9,8 @@
     "home": "Inicio",
     "gallery": "Galería",
     "about": "Acerca de",
-    "github": "GitHub"
+    "github": "GitHub",
+    "modules": "Módulos"
   },
   "homePage": {
     "description": "Crear y simular escenas 2D de óptica geométrica de manera interactiva.\nTotalmente gratuito y basado en web. El código fuente está [disponible en GitHub](/github).",
