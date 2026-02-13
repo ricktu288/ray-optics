@@ -94,7 +94,7 @@ class ArcMirror extends BaseFilter {
         }
 
         objBar.createNumber(
-          i18next.t('simulator:sceneObjs.common.focalLength'),
+          i18next.t('simulator:sceneObjs.common.focalLength') + '<sup>Beta</sup>',
           -1000 * this.scene.lengthScale,
           1000 * this.scene.lengthScale,
           1 * this.scene.lengthScale,

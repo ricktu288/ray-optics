@@ -89,11 +89,11 @@
       "description": "决定光线或像的亮度（若启用「模拟色彩」，则还需考虑颜色）如何对应到萤幕上的颜色。只在启用「修正亮度」时才可调整此设定。"
     },
     "redWavelength": {
-      "title": "红色波长 (nm)",
+      "title": "红色波长",
       "description": "当「模拟色彩」启用时显示为红色的波长。可用於模拟不可见光的假色光谱。"
     },
     "violetWavelength": {
-      "title": "紫色波长 (nm)",
+      "title": "紫色波长",
       "description": "当「模拟色彩」启用时显示为紫色的波长。可用於模拟不可见光的假色光谱。"
     },
     "maxRayDepth": {
@@ -623,6 +623,13 @@
   },
   "footer": {
     "processing": "处理中……按此处以终止。",
+    "betaFeatures": {
+      "title": "Beta 功能",
+      "description": "您正在使用以下 Beta 功能：",
+      "details": "Beta 功能可能不稳定，且可能在不向后兼容的情况下修改。若要报告错误，请在 GitHub 上建立 [Issue](/github/issues) 或发送电子邮件至 [ray-optics@phydemo.app](/email)。",
+      "sceneFromBeta": "此场景是从作品集中的 Beta 项目导入（重新导入以更新）。",
+      "moduleFromBeta": "模块 `{{moduleId}}` 是从模块清单中的 Beta 项目导入（重新导入以更新）。"
+    },
     "helpPopup": {
       "constrainedDragging": {
         "title": "限制拖曳行为",

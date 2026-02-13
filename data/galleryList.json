@@ -41,6 +41,7 @@
       },
       {
         "id": "classical-cassegrain-telescopes",
+        "beta": true,
         "contributors": [
           "bird0cosmic"
         ]
@@ -410,6 +411,7 @@
       },
       {
         "id": "digital-camera",
+        "beta": true,
         "contributors": [
           "Jorge Bodroghy Leite"
         ]
@@ -459,6 +461,7 @@
       },
       {
         "id": "grating-pulse-compressor",
+        "beta": true,
         "contributors": [
           "DeadeyeSun"
         ]

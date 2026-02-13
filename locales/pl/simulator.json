@@ -114,11 +114,11 @@
     },
     "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
     "redWavelength": {
-      "title": "Długość fali czerwonej (nm)",
+      "title": "Długość fali czerwonej",
       "description": "Długość fali pokazywana jako czerwona, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
     },
     "violetWavelength": {
-      "title": "Długość fali fioletowej (nm)",
+      "title": "Długość fali fioletowej",
       "description": "Długość fali pokazywana jako fioletowa, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
     },
     "maxRayDepth": {

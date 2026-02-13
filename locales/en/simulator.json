@@ -89,11 +89,11 @@
       "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
     },
     "redWavelength": {
-      "title": "Red wavelength (nm)",
+      "title": "Red wavelength",
       "description": "The wavelength to be shown as red when \"Simulate Colors\" is on. Useful for visualizing non-visible light with false color spectrum."
     },
     "violetWavelength": {
-      "title": "Violet wavelength (nm)",
+      "title": "Violet wavelength",
       "description": "The wavelength to be shown as violet when \"Simulate Colors\" is on. Useful for visualizing non-visible light with false color spectrum."
     },
     "maxRayDepth": {
@@ -623,6 +623,13 @@
   },
   "footer": {
     "processing": "Processing… Click here to stop.",
+    "betaFeatures": {
+      "title": "Beta features",
+      "description": "You are using the following beta features:",
+      "details": "Beta features may be unstable and may change without backward compatibility. To report bugs, please go to [Issues](/github/issues) on GitHub or email us at [ray-optics@phydemo.app](/email).",
+      "sceneFromBeta": "This scene is imported from a beta item in the Gallery (re-import to update).",
+      "moduleFromBeta": "The module `{{moduleId}}` is imported from a beta item in the module list (re-import to update)."
+    },
     "helpPopup": {
       "constrainedDragging": {
         "title": "Constrained dragging",

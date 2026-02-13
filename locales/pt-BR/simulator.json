@@ -114,11 +114,11 @@
     },
     "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
     "redWavelength": {
-      "title": "Comprimento de onda vermelho (nm)",
+      "title": "Comprimento de onda vermelho",
       "description": "O comprimento de onda exibido como vermelho quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
     },
     "violetWavelength": {
-      "title": "Comprimento de onda violeta (nm)",
+      "title": "Comprimento de onda violeta",
       "description": "O comprimento de onda exibido como violeta quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
     },
     "maxRayDepth": {

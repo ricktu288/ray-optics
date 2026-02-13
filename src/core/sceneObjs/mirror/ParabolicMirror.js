@@ -69,7 +69,7 @@ class ParabolicMirror extends BaseFilter {
         const focalLength = Math.abs(height) < eps ? Infinity : (x0 * x0) / (4 * height);
 
         objBar.createNumber(
-          i18next.t('simulator:sceneObjs.common.focalLength'),
+          i18next.t('simulator:sceneObjs.common.focalLength') + '<sup>Beta</sup>',
           -1000 * this.scene.lengthScale,
           1000 * this.scene.lengthScale,
           1 * this.scene.lengthScale,

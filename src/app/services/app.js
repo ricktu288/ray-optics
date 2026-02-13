@@ -815,6 +815,93 @@ function hideAllPopovers() {
   });
 }
 
+function getBetaFeaturesInUse() {
+  if (!scene) {
+    return [];
+  }
+
+  const features = [];
+  const defaultScene = Scene.serializableDefaults;
+
+  const expandObjs = (objs) => {
+    const expanded = [];
+    for (const obj of objs) {
+      if (obj && obj.constructor === sceneObjs.ModuleObj) {
+        expanded.push(obj);
+        expanded.push(...expandObjs(obj.objs || []));
+      } else {
+        expanded.push(obj);
+      }
+    }
+    return expanded;
+  };
+
+  const allObjs = expandObjs(scene.objs || []);
+
+  if (scene.redWavelength !== defaultScene.redWavelength) {
+    features.push(i18next.t('simulator:settings.redWavelength.title'));
+  }
+
+  if (scene.importedFromBeta) {
+    features.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
+  }
+
+  if (scene.violetWavelength !== defaultScene.violetWavelength) {
+    features.push(i18next.t('simulator:settings.violetWavelength.title'));
+  }
+
+  const maxRayDepth = Number.isFinite(scene.maxRayDepth) ? scene.maxRayDepth : Infinity;
+  if (maxRayDepth !== defaultScene.maxRayDepth) {
+    features.push(i18next.t('simulator:settings.maxRayDepth.title'));
+  }
+
+  const usesLineStyle = allObjs.some((obj) =>
+    obj &&
+    (obj.constructor.type === 'Drawing' || obj.constructor.type === 'LineArrow') &&
+    obj.lineStyle
+  );
+  if (usesLineStyle) {
+    features.push(i18next.t('simulator:sceneObjs.common.lineStyle'));
+  }
+
+  const usesTextFillStyle = allObjs.some((obj) =>
+    obj &&
+    obj.constructor.type === 'TextLabel' &&
+    obj.fillStyle
+  );
+  if (usesTextFillStyle) {
+    features.push(i18next.t('simulator:sceneObjs.common.fillStyle'));
+  }
+
+  const usesPartialReflectBeta = allObjs.some((obj) =>
+    obj &&
+    Object.prototype.hasOwnProperty.call(obj, 'partialReflect') &&
+    obj.partialReflect === false
+  );
+  if (usesPartialReflectBeta) {
+    features.push(i18next.t('simulator:sceneObjs.BaseGlass.partialReflect'));
+  }
+
+  const betaModuleIds = new Set();
+  for (const [moduleId, moduleDef] of Object.entries(scene.modules || {})) {
+    if (moduleDef?.importedFromBeta) {
+      betaModuleIds.add(moduleId);
+    }
+  }
+  for (const obj of allObjs) {
+    if (obj && obj.constructor === sceneObjs.ModuleObj && obj.moduleDef?.importedFromBeta) {
+      betaModuleIds.add(obj.module);
+    }
+  }
+  if (betaModuleIds.size > 0) {
+    [...betaModuleIds].sort().forEach((moduleId) => {
+      features.push(i18next.t('simulator:footer.betaFeatures.moduleFromBeta', { moduleId }));
+    });
+  }
+
+  return features;
+}
+
 function updateErrorAndWarning() {
   statusEmitter.emit(STATUS_EVENT_NAMES.SYSTEM_STATUS, {
     app: { 
@@ -829,6 +916,7 @@ function updateErrorAndWarning() {
       error: simulator.error, 
       warning: simulator.warning 
     },
+    betaFeatures: getBetaFeaturesInUse(),
     objects: scene.objs.map((obj, i) => ({
       index: i,
       type: obj.constructor.type,

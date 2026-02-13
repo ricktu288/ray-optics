@@ -167,6 +167,7 @@ function extractNonDefaults(obj, defaults) {
  * This class can also be used by other projects, including those running in a standalone environment (e.g. Node.js).
  * @class
  * @property {string} name - The name of the scene.
+ * @property {boolean} importedFromBeta - Whether the scene is imported from an item in the Gallery which is marked as beta (that is, not in the latest release).
  * @property {Object<string,ModuleDef>} modules - The definitions of modules used in the scene.
  * @property {Array<BaseSceneObj>} objs - The objects (optical elements and/or decorations created by the user with "Tools") in the scene.
  * @property {string} mode - The mode of the scene. Possible values: 'rays' (Rays), 'extended' (Extended Rays), 'images' (All Images), 'observer' (Seen by Observer).
@@ -196,6 +197,7 @@ function extractNonDefaults(obj, defaults) {
 class Scene {
   static serializableDefaults = {
     name: '',
+    importedFromBeta: false,
     modules: {},
     objs: [],
     mode: 'rays',
@@ -615,6 +617,10 @@ class Scene {
     // Put the name of the scene first.
     if (this.name) {
       jsonData.name = this.name;
+    }
+
+    if (this.importedFromBeta) {
+      jsonData.importedFromBeta = true;
     }
 
     // And then the module definitions.

@@ -16,9 +16,25 @@
 
 <template>
   <div class="footer-left" id="footer-left" :style="notificationStyle">
-    <div id="forceStop" v-show="simulatorStatus?.isSimulatorRunning" @click="handleForceStop" :style="forceStopStyle">
-      <div class="spinner-border text-secondary" role="status"></div>
-      <span v-html="$t('simulator:footer.processing')"></span>
+    <div class="status-inline">
+      <span
+        v-show="betaFeatures.length > 0"
+        class="beta-icon"
+        v-tooltip-popover:popover="{
+          title: $t('simulator:footer.betaFeatures.title'),
+          content: betaPopoverContent,
+          trigger: 'click',
+          placement: 'top',
+          html: true
+        }"
+        @click.stop
+      >
+        Beta
+      </span>
+      <div id="forceStop" v-show="simulatorStatus?.isSimulatorRunning" @click="handleForceStop" :style="forceStopStyle">
+        <div class="spinner-border text-secondary" role="status"></div>
+        <span v-html="$t('simulator:footer.processing')"></span>
+      </div>
     </div>
     <div id="status" v-show="showStatus" :style="statusStyle">
       <div v-html="formattedMousePosition"></div>
@@ -49,13 +65,19 @@ import { usePreferencesStore } from '../store/preferences'
 import { useThemeStore } from '../store/theme'
 import { useStatus } from '../composables/useStatus'
 import { computed, toRef } from 'vue'
+import i18next from 'i18next'
 import { app } from '../services/app'
 import VirtualKeyboard from './VirtualKeyboard.vue'
+import { vTooltipPopover } from '../directives/tooltip-popover'
+import { parseLinks } from '../utils/links.js'
 
 export default {
   name: 'StatusArea',
   components: {
     VirtualKeyboard
+  },
+  directives: {
+    'tooltip-popover': vTooltipPopover
   },
   setup() {
     const preferences = usePreferencesStore()
@@ -94,6 +116,20 @@ export default {
       app.simulator.stopSimulation()
     }
 
+    const betaPopoverContent = computed(() => {
+      if (!status.activeBetaFeatures.value?.length) {
+        return ''
+      }
+
+      const listItems = status.activeBetaFeatures.value
+        .map((feature) => `<li>${feature}</li>`)
+        .join('')
+
+      const description = i18next.t('simulator:footer.betaFeatures.description')
+      const details = i18next.t('simulator:footer.betaFeatures.details')
+      return parseLinks(`${description}<ul>${listItems}</ul>${details}`)
+    })
+
     return {
       showStatus: preferences.showStatus,
       notificationStyle,
@@ -104,7 +140,9 @@ export default {
       formattedSimulatorStatus: status.formattedSimulatorStatus,
       errors: status.activeErrors,
       warnings: status.activeWarnings,
+      betaFeatures: status.activeBetaFeatures,
       simulatorStatus: status.simulatorStatus,
+      betaPopoverContent,
       // Methods
       handleForceStop
     }
@@ -123,7 +161,34 @@ export default {
 
 #forceStop {
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   pointer-events: auto;
+}
+
+.status-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.beta-icon {
+  color: #f28d28d0;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  padding: 0 6px;
+  margin: 3px;
+  box-sizing: border-box;
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
 }
 
 #forceStop .spinner-border {

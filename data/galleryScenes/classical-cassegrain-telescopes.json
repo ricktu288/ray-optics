@@ -1,5 +1,6 @@
 {
   "version": 5,
+  "importedFromBeta": true,
   "objs": [
     {
       "type": "CustomMirror",
@@ -352,8 +353,6 @@
       "y": 720,
       "text": "{{classicalcassegrain}}",
       "fontSize": 40,
-      "font": "Times New Roman",
-      "fontStyle": "Bold",
       "alignment": "right"
     },
     {

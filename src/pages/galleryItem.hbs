@@ -26,6 +26,21 @@
       max-width: 80%;
     }
 
+    .beta-badge {
+      flex-shrink: 0;
+      display: inline-block;
+      background: orange;
+      color: white;
+      font-size: 10pt;
+      font-weight: 600;
+      line-height: 1.2em;
+      height: 1.2em;
+      padding: 0 6px;
+      margin-left: 4px;
+      vertical-align: top;
+      border-radius: 0.6em;
+    }
+
     .preview-image {
       width: 100%;
       padding-bottom: 10px;
@@ -41,7 +56,7 @@
   {{> navbar}}
   <div class="container">
     <div align="center">
-      <h1><b><span>{{t titleKey}}</span></b></h1>
+      <h1><b><span>{{t titleKey}}</span>{{#if beta}}<span class="beta-badge">Beta</span>{{/if}}</b></h1>
       <p>
         {{t "gallery:galleryPage.contributors" count=contributorCount contributors=contributors}}
       </p>

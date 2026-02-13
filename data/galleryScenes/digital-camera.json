@@ -1,5 +1,6 @@
 {
   "version": 5,
+  "importedFromBeta": true,
   "objs": [
     {
       "type": "Handle",
