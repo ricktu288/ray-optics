@@ -1,0 +1,89 @@
+{
+  "version": 5,
+  "name": "BeamExpander",
+  "modules": {
+    "BeamExpander": {
+      "numPoints": 3,
+      "params": [],
+      "objs": [
+        {
+          "type": "IdealLens",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_2`"
+          },
+          "p2": {
+            "x": "`x_1`",
+            "y": "`2y_1-y_2`"
+          },
+          "focalLength": "`x_3-x_1`"
+        },
+        {
+          "type": "IdealLens",
+          "p1": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`2y_1-y_2`"
+          },
+          "focalLength": "`x_2-x_3`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 780,
+        "y": 460
+      },
+      "p2": {
+        "x": 780,
+        "y": 540
+      }
+    },
+    {
+      "type": "ModuleObj",
+      "module": "BeamExpander",
+      "points": [
+        {
+          "x": 880,
+          "y": 500
+        },
+        {
+          "x": 1000,
+          "y": 560
+        },
+        {
+          "x": 960,
+          "y": 560
+        }
+      ],
+      "params": {}
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 820,
+        "y": 380
+      },
+      "p4": {
+        "x": 1060,
+        "y": 620
+      },
+      "width": 300
+    }
+  ],
+  "width": 1500,
+  "height": 900,
+  "rayModeDensity": 0.049787068367863944,
+  "snapToGrid": true,
+  "origin": {
+    "x": -792.7833333333332,
+    "y": -453.6166666666665
+  },
+  "scale": 1.75
+}

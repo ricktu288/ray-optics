@@ -1,0 +1,161 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "O recurso \"Módulo\" permite fazer novas ferramentas ao combinar, especializar ou reparametrizar objetos criados por ferramentas existentes neste simulador.",
+      "appearAsTools": "Módulos importados aparecerão como ferramentas na categoria \"Outros\". Por favor selecione e clique no espaço em branco de acordo com a ordem da sequência de pontos de controlo (ver \"Especificação\").",
+      "embeddedInScene": "Módulos importados são embutidos nos dados da cena, então não serão automaticamente atualizados quando os autores dos módulos os atualizarem."
+    },
+    "import": "Importar",
+    "imported": "Importado",
+    "specification": {
+      "title": "Especificação",
+      "controlPointSequence": "Sequência de pontos de controlo",
+      "parameters": "Parâmetros"
+    },
+    "customization": {
+      "title": "Personalização",
+      "description": "Módulos podem ser feitos ou personalizados diretamente na app web utilizando o editor JSON incluso. Ver [o tutorial](/modules/tutorial). Personalização de módulos importados vai afetar apenas a cena atual."
+    },
+    "contribution": {
+      "title": "Contribuição",
+      "description": "Contribuições à lista acima são bem-vindas. Para contribuir o seu módulo, veja [Contribuindo módulos](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Lente Fresnel",
+      "description": "Uma lente Fresnel feita a partir de um semicírculo de vidro. Versão modularizada [deste exemplo da Galeria](/gallery/fresnel-lens).",
+      "point1": "O primeiro ponto delimitador da lente",
+      "point2": "O segundo ponto delimitador da lente",
+      "Nslice": "A quantidade de fatias",
+      "refIndex": "O índice refrativo da lente"
+    },
+    "ContSpectrum": {
+      "title": "Fonte de luz de espectro contínuo",
+      "description": "Uma fonte de luz com um espectro contínuo uniforme discretizada com determinado passo constante. Funciona somente quando \"Simular Cores\" está ligado.",
+      "point1": "A origem dos raios",
+      "point2": "Determina a direção dos raios",
+      "min": "O comprimento de onda mínimo",
+      "step": "O passo do comprimento de onda",
+      "max": "O comprimento de onda máximo",
+      "brightness": "O brilho total"
+    },
+    "CircleSource": {
+      "title": "Fonte de luz circular",
+      "description": "Um círculo com fontes pontuais de 180 graus uniformes postas ao redor da sua circunferência.",
+      "point1": "O centro do círculo",
+      "r": "O raio do círculo",
+      "N": "A quantidade de fontes pontuais",
+      "brightness": "O brilho total"
+    },
+    "Chaff": {
+      "title": "Chaff",
+      "description": "Chaff num formato retangular consistindo de pedaços aleatórios de espelhos. Versão modularizada [deste exemplo da Galeria](/gallery/chaff-countermeasure).",
+      "point1": "O canto superior esquerdo do chaff",
+      "point2": "O canto inferior direito do chaff",
+      "N": "A quantidade de espelhos no chaff",
+      "L": "O comprimento dos espelhos"
+    },
+    "BeamExpander": {
+      "title": "Expansor de Raio",
+      "description": "A combinação de duas lentes ideais com a soma dos seus comprimentos focais igual a sua distância de separação. Elas expandem ou reduzem o diâmetro de um raio de luz colimada. Versão modularizada [deste exemplo da Galeria](/gallery/beam-expanders).",
+      "point1": "O centro da primeira lente",
+      "point2": "O segundo ponto da segunda lente",
+      "point3": "Determina o ponto focal comum das lentes"
+    },
+    "RayRelay": {
+      "title": "Repassador de Raios",
+      "description": "Uma série de lentes idênticas com comprimento focal \\(f\\) e distância \\(d\\) entre as lentes. Uma trajetória de raios não divergente é garantida se e somente se \\(d\\leq 4f\\). Versão modularizada [deste exemplo da Galeria](/gallery/ray-relaying).",
+      "point1": "O primeiro ponto delimitador da primeira lente",
+      "point2": "O segundo ponto delimitador da primeira lente (deve ter o mesmo \\(x\\) que o primeiro ponto)",
+      "f": "O comprimento focal das lentes",
+      "d": "A distância entre as lentes",
+      "N": "A quantidade de lentes"
+    },
+    "OpticalFiber": {
+      "title": "Fibra Óptica",
+      "description": "Fibra óptica em formato de linha com determinadas espessuras de centro e revestimento e índices refrativos.",
+      "point1": "O primeiro ponto delimitador da fibra óptica",
+      "point2": "O segundo ponto delimitador da fibra óptica",
+      "X": "A espessura do centro",
+      "Y": "A espessura do revestimento",
+      "n1": "O índice refrativo do centro",
+      "n2": "O índice refrativo do revestimento"
+    },
+    "CubeBeamSplitter": {
+      "title": "Divisor de Feixe em Cubo",
+      "description": "O cubo divisor de feixe é um elemento comumente utilizado na óptica. Este é um módulo de divisor de feixe de cubo que pode ser ajsutado em tamanho e ângulo.",
+      "point1": "O centro do cubo (quadrado)",
+      "size": "O tamanho do cubo",
+      "angle": "O ânuglo de rotação do cubo em graus",
+      "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
+      "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
+    }
+  },
+  "moduleTutorial": {
+    "title": "Tutorial para fazer Módulos da Óptica de Raios",
+    "opening": {
+      "description": "Este tutorial vai guiar-lo pelo processo básico de criação de um módulo personalizado, que pode ser completamente feito dentro da app web, sem necessidade de qualquer ambiente de desenvolvimento externo.",
+      "moduleIntroduction": "O recurso \"Módulo\" da Simulação de Óptica de Raios permite a criação de combinações modulares de objetos com parâmetros personalizados, pontos de controlo personalizados e malhas de objetos. Este recurso estende a capacidade deste simulador ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes para criar ferramentas. Por exemplo, o módulo `CircleSource` (ver Ferramentas -> Outros -> Importar módulo) combina uma série de fontes pontuais criadas pela ferramenta existente \"Fonte pontual (<360°)\" ao redor de um círculo, para fazer uma ferramenta \"fonte circular\" que não existia no simulador. O módulo `FresnelLens` especializa a ferramenta \"Glass->Custom equation\", para que a equação represente uma curva específica da lente Fresnel parametrizada pelo número de fatias, assim fazendo uma ferramenta especializada \"Lente Fresnel\", que também não existia anteriormente. Além de fazer novas ferramentas, este recurso também pode fazer algumas demonstrações de óptica mais interativas. Por exemplo, ao arrastar o terceiro ponto de controlo do módulo `BeamExpander`, pode-se ver diretamente como a posição do ponto focal em comum das duas lentes afeta a largura do raio, sem necessitar ajustar os comprimentos focais das duas lentes individualmente.",
+      "compareWithIntegrations": "Por outro lado, se o seu caso requer programação complicada (como fazer animações, usar algoritmos complicados para posicionar elementos óticos, ou analisar mapas de irradiância), por favor use as [ferramentas de integração](/integrations) e escreva programas em Python ou Julia.",
+      "contribute": "Sinta-se bem-vindo para [contribuir os seus módulos para a lista de \"Importar módulos\"](/contributing/modules) se achar que são úteis para outras pessoas, mesmo se forem feitos com vibe coding!"
+    },
+    "aiAssistant": {
+      "title": "Usar o Assistente de IA",
+      "description": "O [Ray Optics Coder](/ai-tools/chatgpt) no ChatGPT pode ajudá-lo a escrever módulos de Óptica de Raios. Ele gera o código JSON para a cena contendo o módulo baseado na sua descrição e depois pode copiar o código para o editor JSON (ver abaixo). Também pode usá-lo para editar módulos existentes ou modularizar cenas.",
+      "limitation": "O código gerado pelo chatbot pode não funcionar diretamente. Se um erro ocorrer, copiar e colar a mensagem de erro para o chatbot pode ajudar. Para módulos mais complicados, pode ser útil ler o tutorial abaixo e escrever o código ao menos parcialmente por conta própria.",
+      "otherServices": "Os ficheiros de instrução e conhecimento para o chatbot estão disponíveis [aqui](/ai-tools/instructions). Se preferir outro serviço LLM, pode fornecer esses ficheiros para ensiná-lo a escrever módulos de Ótica de Raios."
+    },
+    "jsonEditor": {
+      "title": "O editor JSON incluso",
+      "currentlyNoVisual": "Esta app atualmente não possui uma interface visual para criação de módulos, então é preciso diretamente editar o JSON da cena.",
+      "enableJsonEditor": "Pode ativar o editor JSON incluso ao clicar no menu \"configurações\" no canto superior direito da app e depois marcar \"Exibir editor JSON\". O editor de código deve aparecer no lado esquerdo da app, com o código JSON da cena atual. Certifique-se que o seu ecrã é grande o suficiente, já que este recurso não funciona bem em dispositivos móveis.",
+      "updateAccordingly": "Conforme edita a cena utilizando o editor visual de cena, o código no editor JSON vai atualizar automaticamente, com a parte modificada destacada. Do mesmo modo, editar o código no editor JSON diretamente vai atualizar a cena automaticamente. Se não conhecer JSON ou qualquer tipo de formato de dados à base de texto, pode ser útil brincar com isso por algum tempo.",
+      "objsArray": "Em particular, quando adiciona um objeto à cena é adicionado à lista `objs`. E se modificar algumas das suas propriedades para um valor não padrão, elas aparecem como pares chave-valor nesse objeto.",
+      "inIframesBelow": "IMPORTANTE: Nessa página de tutorial, se não ver o editor de código JSON nos iframes abaixo, por favor ative-o e recarregue esta página, pois precisará de ver o código para perceber como funciona."
+    },
+    "basics": {
+      "title": "O básico de um módulo",
+      "lookAtExample": "Vamos ver o nosso primeiro exemplo de módulo.",
+      "lookAtJson": "Deve ver quatro linhas de texto. Olhando no editor JSON, verá que as primeira duas estão diretamente na lista `objs` de nível superior como normal, mas as últimas duas estão em `modules.ExampleModule.objs` ao invés disso.",
+      "moduleDef": "O `modules` é um dicionário onde a chave é o nome do módulo (neste caso `ExampleModule`) e o valor é a definição do módulo. Em específico, a lista `modules.ExampleModule.objs` descreve (o padrão de) objetos dentro desse módulo, que é diferente do `objs` do nível superior que descreve objetos na cena.",
+      "putToScene": "Para posicionar os objetos no módulo na cena, precisamos de um \"objeto do módulo\" na lista `objs` de nível superior, que é `objs[2]` nesse exemplo, cujo tipo é `ModuleObj` e cuja propriedade `module` é o nome do módulo.",
+      "moduleDefNotEditable": "A definição de módulo no dicionário `modules`não é editável pelo editor de cena visual. Então, quando clicar em qualquer um dos últimos dois textos nesse exemplo, seleciona apenas o objeto do módulo e não os objetos no módulo. Já que as coordenadas dos textos na definição do módulo neste exemplo são coordenadas absolutas, os últimos dois textos não são arrastáveis. Aprenderemos como fazê-los arrastáveis através de pontos de controlo mais tarde.",
+      "demodulize": "Se selecionar um objeto de módulo, haverá um botão \"Demodulizar\" na barra do objeto. Clicar nele irá \"expandir\" o objeto de módulo nas suas partes constituintes e `objs` agora irá conter todos os quatro textos. Esta operação não é reversível (mas pode clicar em \"desfazer\").",
+      "createModule": "A maneira sugerida de criar um módulo atualmente é primeiro criar um módulo vazio utilizando o editor JSON, criar alguns objetos usando o editor de cena visual e então cortar e colar os objetos de `objs` para `modules.ModuleName.objs` utilizando o editor JSON."
+    },
+    "parameters": {
+      "title": "Adicionar parâmetros",
+      "lookAtExample": "Os objetos dentro do módulo podem ser definidos por um conjunto de parâmetros. Vamos ver um exemplo simples",
+      "paramsArray": "Aqui, `modules.Modulename.params` é uma lista de cadeias `\"name=start:step:end:defaul\"` defining the name of the variables and the range of the sliders. The sliders appear on the object bar when the module object is selected.",
+      "equationSyntax": "Dentro da lista `modules.ExampleModule.objs`, quaisquer valores podem ser expressados usando esses parâmetros. Dentro de uma cadeia (como a propriedade `text` de um `TextLabel`), as equações das variáveis são cercadas por um par de acentos graves. Para parâmetros de número(como a propriedade `fontSize` de um `TextLabel`), precisa transformá-la em cadeia para que possa usar o formato de acento grave, então cada equação é cercada por um par de acentos graves e um par de aspas. As equações são avaliadas com math.js ([syntax](/mathjs/syntax)). Veja lá a sintaxe disponível e funções que pode usar nas equações.",
+      "valueStorage": "Os valores reais dos parâmetros ficam armazenados na propriedade `params` do objeto do módulo, que, diferentemente da definição do módulo, pode ser diretamente editada pelo editor de cena usando o controlo deslizante."
+    },
+    "controlPoints": {
+      "title": "Adicionar pontos de controlo",
+      "lookAtExample": "Para fazer o objeto do módulo arrastável, precisamos de parametrizar os objetos dentro do módulo usando um conjunto de pontos de controlo. Vejamos o exemplo",
+      "coordinatesOfControlPoints": "Aqui `modules.ModuleName.numPoints` define a quantidade de pontos de controlo. As coordenadas dos pontos de controlo são (`x_1`, `y_1`), (`x_2`, `y_2`), etc. e são utilizadas do mesmo modo que os parâmetros dentro de `modules.ExampleModule.objs` como descrito pela secção anterior. Note que o índice começa de 1.",
+      "valueStorage": "Os valores reais das coordenadas dos pontos de controlo são armazenados na propriedade `points` do objeto do módulo, que, diferentemente das coordenadas definidas diretamente no Exemplo 1, podem ser editadas no editor visual de cena arrastando os pontos de controlo, cada um exibido como dois círculos cinzento concêntricos na cena. Se arrastar para outro lugar no objeto do módulo (como os rótulos de texto), todos os pontos de controlo vão mover juntos.",
+      "createAsTool": "Já que o nosso objeto de módulo agora pode mover-se, agora é bem fácil de se criar múltiplas instâncias como as ferramentas normais. O nome do módulo é exibido no menu Ferramentas - Outros e pode selecionar isso e clicar em dois pontos no espaço vazio em sequência para criar outra instância do módulo. Também pode usar o botão \"duplicar\" na barra do objeto."
+    },
+    "arrayAndConditional": {
+      "title": "Listas e condicionais",
+      "lookAtExample": "Um módulo mais complicado pode ser construído usando listas e condicionais. Vejamos o exemplo.",
+      "specialKeys": "Em `modules.ExampleModule.objs`, quaisquer objetos numa lista podem ter duas chaves especiais : `\"for\"` e `\"if\"`. O valor da chave `\"for\"`ou é uma cadeia no formato `\"name=start:step:end\"` definindo uma variável de loop, ou uma lista de várias cadeias desse formato descrevendo um loop multidimensional. Tal objeto na lista é duplicado várias vezes de acordo com as variáveis do loop. O valor da chave `\"if\"` é uma cadeia representando uma expressão de math.js que resulta num booleano e o objeto é incluso na lista se, e somente se o booleano for verdadeiro.",
+      "preventInfiniteLoop": "Para prevenir um loop infinito acidental, a quantidade total de iterações de cada loop `\"for\"`é limitado pela propriedade `maxLoopLength` da definição do módulo, cujo valor padrão é 1000. Pode definir esta propriedade como um valor maior, se necessário."
+    },
+    "variables": {
+      "title": "Usar variáveis",
+      "lookAtExample": "Pode definir variáveis matemáticas e funções que podem ser usadas no seu módulo. Vamos ver um exemplo",
+      "varsArray": "`modules.ModuleName.vars` é uma lista de cadeias, cada uma representando uma instrução math.js que define uma variável ou função. Estas definições são avaliadas sequencialmente, então definições posteriores podem referenciar anteriores.",
+      "context": "Definições de variáveis tem acesso total a todos os parâmetros e coordenadas de ponto de controlo e, uma vez definidas, estas variáveis podem ser usadas em modelos de objeto assim como parâmetros e coordenadas de ponto de controlo, possibilitndo cálculos mais complexos e reutilizáveis."
+    },
+    "objsWithEqn": {
+      "title": "Objetos com equações personalizadas inclusas"
+    },
+    "objsWithShapeParam": {
+      "title": "Objetos com parametrização de forma inclusa",
+      "description": "Para objetos que já suportam maneiras diferentes de definir a sua forma (atualmente só Vidro -> Lente esférica). Existe sintaxe JSON especial para esses objetos que podem ser usados dentro da definição do módulo, mesmo que sejam sempre definidos por forma na lista `objs` de nível principal. Aqui está um exemplo"
+    }
+  }
+}
