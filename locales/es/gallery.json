@@ -11,7 +11,10 @@
       "grinOptics": "Óptica de gradiente de índice",
       "miscellaneous": "Misceláneas"
     },
-    "openInSimulator": "Abrir en el simulador"
+    "openInSimulator": "Abrir en el simulador",
+    "contributors_one": "Colaborador",
+    "contributors_many": "Colaboradores",
+    "contributors_other": "Colaboradores"
   },
   "galleryData": {
     "common": {
