@@ -28,31 +28,38 @@
         <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
       </svg>
     </button>
-    <div class="dropdown-menu" id="help-dropdown" aria-labelledby="helpDropdown">
-      <div class="container">
-        <div id="help_popover_text">
-          <div>
-            <b v-html="$t('simulator:footer.helpPopup.constrainedDragging.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.constrainedDragging.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.groupRotateScale.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.groupRotateScale.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.editCoordinates.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.editCoordinates.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.arrayFormula.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.arrayFormula.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.runLocally.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.runLocally.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.integrations.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.integrations.description')"></p>
-            <b v-html="$t('simulator:footer.helpPopup.contactUs.title')"></b>
-            <p v-html="$t('simulator:footer.helpPopup.contactUs.description')"></p>
-            <p v-html="$t('simulator:footer.helpPopup.contactUs.contribute')"></p>
+    <div class="dropdown-menu" id="help-dropdown" ref="helpDropdown" aria-labelledby="helpDropdown">
+      <div class="container help-dropdown-inner">
+        <div class="help-popup-body-wrapper">
+          <div class="help-popup-body" id="help_popover_text" ref="helpBody" @scroll="onHelpScroll">
+            <div>
+              <b v-html="$t('simulator:footer.helpPopup.constrainedDragging.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.constrainedDragging.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.groupRotateScale.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.groupRotateScale.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.editCoordinates.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.editCoordinates.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.arrayFormula.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.arrayFormula.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.keyboardShortcuts.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.runLocally.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.runLocally.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.integrations.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.integrations.description')"></p>
+              <b v-html="$t('simulator:footer.helpPopup.contactUs.title')"></b>
+              <p v-html="$t('simulator:footer.helpPopup.contactUs.description')"></p>
+              <p v-html="$t('simulator:footer.helpPopup.contactUs.contribute')"></p>
+            </div>
           </div>
+          <div class="scroll-fade-overlay" v-show="showScrollFade"></div>
         </div>
-        <hr class="dropdown-divider">
-        <b><a href="https://phydemo.app/ray-optics/about" target="_blank" id="about" v-html="$t('main:pages.about')"></a></b>
+        <div class="help-popup-footer">
+          <hr class="dropdown-divider">
+          <a href="https://phydemo.app/ray-optics/about" target="_blank" id="about" v-html="$t('main:pages.about')"></a>
+          <span class="help-divider-dot" aria-hidden="true">&middot;</span>
+          <a href="https://github.com/ricktu288/ray-optics/blob/master/CITATION.md" target="_blank" id="cite-this-project" v-html="$t('main:aboutPage.cite')"></a>
+        </div>
       </div>
     </div>
 
@@ -74,6 +81,30 @@ import { vTooltipPopover } from '../directives/tooltip-popover'
 export default {
   directives: {
     'tooltip-popover': vTooltipPopover
+  },
+  data() {
+    return {
+      showScrollFade: true
+    }
+  },
+  mounted() {
+    // Re-check scroll state each time the dropdown is shown
+    const dropdown = this.$refs.helpDropdown
+    if (dropdown) {
+      dropdown.addEventListener('shown.bs.dropdown', this.checkScroll)
+    }
+  },
+  methods: {
+    onHelpScroll() {
+      this.checkScroll()
+    },
+    checkScroll() {
+      const el = this.$refs.helpBody
+      if (!el) return
+      // Hide the fade when scrolled to (or near) the bottom
+      const threshold = 8
+      this.showScrollFade = el.scrollHeight - el.scrollTop - el.clientHeight > threshold
+    }
   }
 }
 </script>
@@ -92,5 +123,35 @@ export default {
 
 .footer-right .btn:focus {
   box-shadow: none;
+}
+
+.help-divider-dot {
+  color: var(--bs-dropdown-divider-bg, #e9ecef);
+  margin: 0 0.35rem;
+  font-size: 0.95em;
+}
+
+.help-popup-body-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-fade-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(64, 64, 64)
+  );
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.2s ease;
 }
 </style>
