@@ -16,7 +16,6 @@
       },
       {
         "id": "RainbowPointSource",
-        "beta": true,
         "contributors": [
           "Brad Goodman"
         ]

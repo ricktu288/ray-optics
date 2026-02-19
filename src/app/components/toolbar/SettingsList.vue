@@ -99,7 +99,7 @@
       />
 
       <NumberControl
-        :label="$t('simulator:settings.redWavelength.title') + ' (nm)' + '<sup>Beta</sup>'"
+        :label="$t('simulator:settings.redWavelength.title') + ' (nm)'"
         :popover-content="$t('simulator:settings.redWavelength.description')"
         v-model="redWavelength"
         :min="violetWavelength + 1"
@@ -109,7 +109,7 @@
       />
 
       <NumberControl
-        :label="$t('simulator:settings.violetWavelength.title') + ' (nm)' + '<sup>Beta</sup>'"
+        :label="$t('simulator:settings.violetWavelength.title') + ' (nm)'"
         :popover-content="$t('simulator:settings.violetWavelength.description')"
         v-model="violetWavelength"
         :min="0"
@@ -119,7 +119,7 @@
       />
 
       <NumberControl
-        :label="$t('simulator:settings.maxRayDepth.title') + '<sup>Beta</sup>'"
+        :label="$t('simulator:settings.maxRayDepth.title')"
         :popover-content="$t('simulator:settings.maxRayDepth.description')"
         v-model="maxRayDepth"
         :min="0"

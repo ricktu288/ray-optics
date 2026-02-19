@@ -2,7 +2,6 @@
   "version": 5,
   "modules": {
     "RainbowPointSource": {
-      "importedFromBeta": true,
       "numPoints": 1,
       "params": [
         "N=3:1:720:473",
