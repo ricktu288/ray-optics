@@ -525,6 +525,18 @@ for (const lang of homeLangs) {
           return `${packageVersion}+${commitDate}.${commitHash}`;
         }
       })(),
+      // Temporary anniversary text (not intended to be translated to more languages; to be removed after v5.3.0 release)
+      anniversaryText: (() => {
+        const fullPackageVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version;
+        if (isRelease && fullPackageVersion === '5.3.0') {
+          const texts = {
+            'zh-TW': '十週年紀念版',
+            'zh-CN': '十周年纪念版'
+          };
+          return texts[lang] || '10th Anniversary Release';
+        }
+        return '';
+      })(),
       mainAuthors: sortedMainAuthors.map(c => {
         const name = (c.name === 'Yi-Ting Tu' && lang.startsWith('zh') ? '凃懿庭 Yi-Ting Tu' : c.name);
         const url = (c.name === 'Yi-Ting Tu') ? 'https://yitingtu.com' : '';
