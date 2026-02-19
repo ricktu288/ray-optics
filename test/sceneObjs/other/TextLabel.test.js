@@ -201,4 +201,14 @@ describe('TextLabel', () => {
     expect(result.fontSize).toBeCloseTo(12, 5); // fontSize scales
     expect(result.type).toBe('TextLabel');
   });
+
+  it('sets fill style', () => {
+    user.click(100, 100);
+
+    const customStyle = { color: [0, 0, 255, 0.8] };
+    user.setFillStyle("{{simulator:sceneObjs.common.fillStyle}}", customStyle);
+
+    const result = obj.serialize();
+    expect(result.fillStyle).toEqual({ color: [0, 0, 255, 0.8] });
+  });
 }); 

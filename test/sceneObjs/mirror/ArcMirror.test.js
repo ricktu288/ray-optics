@@ -262,4 +262,81 @@ describe('ArcMirror', () => {
     expect(result.p3.y).toBeCloseTo(75, 5);
     expect(result.type).toBe('ArcMirror');
   });
+
+  describe('focal length', () => {
+    // Setup: p1=(100,200), p2=(300,200), p3=(200,100)
+    // This gives: center=(200,200), R=100, chord=200, apertureHalf=100
+    // axisDir=(0,1) from p3 toward center, tanDir=(1,0)
+    // Focal length = R/2 = 50 (positive since p3 is on the left of p1→p2)
+
+    it('gets focal length from geometry', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 100);
+
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(50, 5);
+    });
+
+    it('sets focal length with enough diameter', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 100);
+
+      // apertureHalf=100, f=100 → R=200 >= apertureHalf → enough diameter
+      user.set("{{simulator:sceneObjs.common.focalLength}}", 100);
+
+      const result = obj.serialize();
+      // p3 stays fixed
+      expect(result.p3.x).toBeCloseTo(200, 5);
+      expect(result.p3.y).toBeCloseTo(100, 5);
+      // p1 and p2 x-coordinates stay symmetric around x=200
+      expect(result.p1.x).toBeCloseTo(100, 5);
+      expect(result.p2.x).toBeCloseTo(300, 5);
+      // p1.y and p2.y should be equal (symmetric arc)
+      expect(result.p1.y).toBeCloseTo(result.p2.y, 5);
+      // Verify focal length reads back correctly
+      user.updateObjBar();
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(100, 3);
+    });
+
+    it('sets focal length with not enough diameter', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 100);
+
+      // apertureHalf=100, f=30 → R=60 < apertureHalf → not enough diameter
+      // The mirror becomes a semicircle with R=60
+      user.set("{{simulator:sceneObjs.common.focalLength}}", 30);
+
+      const result = obj.serialize();
+      // p3 stays fixed
+      expect(result.p3.x).toBeCloseTo(200, 5);
+      expect(result.p3.y).toBeCloseTo(100, 5);
+      // Endpoints form a semicircle: center=(200,160), R=60
+      expect(result.p1.x).toBeCloseTo(140, 5);
+      expect(result.p1.y).toBeCloseTo(160, 5);
+      expect(result.p2.x).toBeCloseTo(260, 5);
+      expect(result.p2.y).toBeCloseTo(160, 5);
+      // Chord shrinks from 200 to 120
+      const newChord = geometry.distance(result.p1, result.p2);
+      expect(newChord).toBeCloseTo(120, 3);
+      // Verify focal length reads back correctly
+      user.updateObjBar();
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(30, 3);
+    });
+
+    it('drags p3 and updates focal length', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 100);
+
+      // Initial focal length is 50
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(50, 5);
+
+      // Drag p3 closer to the chord → larger radius → larger focal length
+      // New: p3=(200,150), center=(200,275), R=125, f=62.5
+      user.drag(200, 100, 200, 150);
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(62.5, 3);
+    });
+  });
 }); 

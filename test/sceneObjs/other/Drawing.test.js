@@ -203,4 +203,17 @@ describe('Drawing', () => {
       strokes: [[50, 50, 60, 60]]
     });
   });
+
+  it('sets stroke style', () => {
+    user.mouseDown(100, 100);
+    user.mouseMove(120, 120);
+    user.mouseUp(120, 120);
+    user.clickButton('{{simulator:sceneObjs.Drawing.finishDrawing}}');
+
+    const customStyle = { color: [255, 0, 0, 1], width: 5, dash: [8, 4] };
+    user.setStrokeStyle("{{simulator:sceneObjs.common.lineStyle}}", customStyle);
+
+    const result = obj.serialize();
+    expect(result.lineStyle).toEqual({ color: [255, 0, 0, 1], width: 5, dash: [8, 4] });
+  });
 }); 
