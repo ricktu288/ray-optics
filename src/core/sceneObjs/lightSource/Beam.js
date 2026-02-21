@@ -50,6 +50,17 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     random: false
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'brightness', type: 'number', label: i18next.t('simulator:sceneObjs.common.brightness') },
+      { key: 'wavelength', type: 'number', label: i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)' },
+      { key: 'emisAngle', type: 'number', label: i18next.t('simulator:sceneObjs.common.emisAngle') + ' (\u00B0)' },
+      { key: 'lambert', type: 'boolean', label: i18next.t('simulator:sceneObjs.common.lambert') },
+      { key: 'random', type: 'boolean', label: i18next.t('simulator:sceneObjs.common.random') },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.colorMode !== 'default') {
       var brightnessInfo = i18next.t('simulator:sceneObjs.common.brightnessInfo.newColorModes');

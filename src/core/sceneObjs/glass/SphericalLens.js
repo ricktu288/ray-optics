@@ -15,6 +15,7 @@
  */
 
 import Glass from './Glass.js';
+import BaseGlass from '../BaseGlass.js';
 import geometry from '../../geometry.js';
 import i18next from 'i18next';
 
@@ -50,6 +51,18 @@ class SphericalLens extends Glass {
     cauchyB: 0.004,
     partialReflect: true
   };
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'path.0', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 1 }) },
+      { key: 'path.1', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 2 }) },
+      { key: 'path.2', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 3 }) },
+      { key: 'path.3', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 4 }) },
+      { key: 'path.4', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 5 }) },
+      { key: 'path.5', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 6 }) },
+      ...BaseGlass.getPropertySchema(objData, scene),
+    ];
+  }
 
   constructor(scene, jsonObj) {
     super(scene, jsonObj);

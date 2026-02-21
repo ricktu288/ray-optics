@@ -16,6 +16,7 @@
 
 import geometry from '../geometry.js';
 import BaseSceneObj from './BaseSceneObj.js';
+import i18next from 'i18next';
 
 /**
  * The mixin for the scene objects that are defined by a line segment.
@@ -24,6 +25,14 @@ import BaseSceneObj from './BaseSceneObj.js';
  * @returns {T}
  */
 const LineObjMixin = Base => class extends Base {
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint2') },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
 
   move(diffX, diffY) {
     // Move the first point

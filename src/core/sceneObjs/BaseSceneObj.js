@@ -17,6 +17,21 @@
 import i18next from 'i18next';
 
 /**
+ * @typedef {Object} PropertyDescriptor
+ * @property {string} key - Dot-separated property path (e.g. 'focalLength', 'p1', 'path.0', 'params.r1'). Numeric segments are array indices. Empty string '' means the root object itself (e.g. PointSource x/y).
+ * @property {'point'|'number'|'boolean'|'dropdown'|'equation'|'text'|'style'|'array'} type - The type of the property.
+ * @property {'stroke'|'fill'} [styleKind] - For 'style' type: 'stroke' = line/stroke style (color, width, dash); 'fill' = fill style (color only). Required when type is 'style'.
+ * @property {string} label - Pre-rendered HTML label string (i18n already expanded).
+ * @property {string|null} [info] - Optional pre-rendered HTML for an info popover (i18n already expanded).
+ * @property {Object<string,string>|null} [options] - For 'dropdown' type: value -> display label map (already translated).
+ * @property {Array<string|RegExp>|null} [variables] - For 'equation' type: valid variable names (literal strings or RegExp patterns).
+ * @property {boolean} [differentiable] - For 'equation' type: if true, only the differentiable function subset is allowed (for symbolic derivative). Default false.
+ * @property {boolean} [readOnly] - If true, the property is display-only (e.g. module name in ModuleObj).
+ * @property {boolean} [updatesSchema] - If true, changing this property invalidates the schema (reserved for future use).
+ * @property {Array<PropertyDescriptor>|null} [itemSchema] - For 'array' type: schema for each array item. Keys within itemSchema are relative to each array element.
+ */
+
+/**
  * @typedef {Object} ConstructReturn
  * @property {boolean} [isDone] - Whether the construction is done.
  * @property {boolean} [requiresObjBarUpdate] - Whether the object bar should be updated.
@@ -142,7 +157,21 @@ class BaseSceneObj {
   static mergesWithGlass = false;
 
   /**
-   * Populate the object bar.
+   * Get the property schema for this object type. This is for the UI of the visual editor in the sidebar, mainly designed for editing object templates in modules, and not intended for basic usage of this app (unlike the object bar). Therefore, the schema only contains direct properties (not derived from other properties), and are context-independent (e.g. not depend on whether "Simulate Colors" is on). The only context is the "resource"-like information of the scene such as the module parameter names. Also, since it is for module templates, the objData is not the class instance, but the raw JSON data of the object/template.
+   * Returns an ordered array of {@link PropertyDescriptor} objects describing all editable properties.
+   * This is a static method that works on raw JSON data (no instance needed), so it can be used
+   * for both live objects and module templates. The schema is context-independent: it always lists
+   * all properties a type can have, regardless of current scene settings.
+   * @param {Object} objData - The raw JSON data of the object (or template).
+   * @param {Scene} scene - The scene instance. Provides access to scene-level definitions (e.g. `scene.modules`). Must not be used to branch on scene settings.
+   * @returns {PropertyDescriptor[]} The property descriptors.
+   */
+  static getPropertySchema(objData, scene) {
+    return [];
+  }
+
+  /**
+   * Populate the object bar. Note that this is different from the property schema (which is for the sidebar). The object bar is for regular users, and contains whatever properties which are most convenient for the users to edit, so it may contains dependent properties (like focal length of an arc mirror, which is derived from the three points of the arc). And since editing the points for regular users is done in the canvas, their coordinates are not shown in the object bar.
    * Called when the user selects the object (it is selected automatically when the user creates it, so the construction may not be completed at this stage).
    * @param {ObjBar} objBar - The object bar to be populated.
    */

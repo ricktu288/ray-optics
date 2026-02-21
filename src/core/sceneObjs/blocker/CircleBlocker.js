@@ -47,6 +47,12 @@ class CircleBlocker extends CircleObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.CircleBlocker.title'));
     super.populateObjBar(objBar);

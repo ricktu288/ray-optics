@@ -101,6 +101,23 @@ class ModuleObj extends BaseSceneObj {
     this.expandObjs();
   }
 
+  static getPropertySchema(objData, scene) {
+    const moduleDef = scene?.modules?.[objData.module];
+    const schema = [
+      { key: 'module', type: 'text', label: i18next.t('simulator:sceneObjs.ModuleObj.module'), readOnly: true },
+    ];
+    if (moduleDef) {
+      for (let i = 0; i < (moduleDef.numPoints || 0); i++) {
+        schema.push({ key: `points.${i}`, type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: i + 1 }) });
+      }
+      for (const param of moduleDef.params || []) {
+        const name = param.split('=')[0].trim();
+        schema.push({ key: `params.${name}`, type: 'number', label: name });
+      }
+    }
+    return schema;
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>' }));
 

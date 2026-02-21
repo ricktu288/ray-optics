@@ -43,6 +43,12 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
     partialReflect: true
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.CircleGlass.title') }));
     super.populateObjBar(objBar);

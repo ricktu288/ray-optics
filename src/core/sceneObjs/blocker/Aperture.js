@@ -50,6 +50,16 @@ class Aperture extends BaseFilter {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 1 }) },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 2 }) },
+      { key: 'p3', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 3 }) },
+      { key: 'p4', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 4 }) },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.Aperture.title'));
 

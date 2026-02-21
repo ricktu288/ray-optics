@@ -51,6 +51,14 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     partialReflect: true
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'eqn1', type: 'equation', label: 'f(x)', variables: ['x'] },
+      { key: 'eqn2', type: 'equation', label: 'g(x)', variables: ['x'] },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.glass'));
     objBar.createEquation('', this.eqn1, function (obj, value) {

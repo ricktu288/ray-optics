@@ -164,6 +164,7 @@
       "random": "随机",
       "lambert": "朗伯",
       "coordOrigin": "原点",
+      "bezierControlPoints": "贝塞尔控制点",
       "focalLength": "焦距",
       "lineStyle": "线条样式",
       "fillStyle": "填充样式",
@@ -174,10 +175,22 @@
         "functions": "支持的函数",
         "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块。"
       },
+      "pointN": "点 {{i}}",
       "imageDetectionWarning": "本工具不支持像的侦测。",
       "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"
     },
+    "LineObjMixin": {
+      "endpoint1": "第一端点",
+      "endpoint2": "第二端点",
+      "sourcePoint": "起始点",
+      "directionPoint": "方向点"
+    },
+    "CircleObjMixin": {
+      "center": "圆心",
+      "radiusPoint": "圆上的点"
+    },
     "ParamCurveObjMixin": {
+      "pieces": "片段",
       "addPiece": "添加片段",
       "removePiece": "移除片段",
       "step": "步长",
@@ -202,6 +215,12 @@
     "IdealMirror": {
       "cartesianSign": "笛卡尔符号约定"
     },
+    "ArcMirror": {
+      "pointOnArc": "圆弧上的点"
+    },
+    "ParabolicMirror": {
+      "vertex": "顶点"
+    },
     "BeamSplitter": {
       "transRatio": "透光率"
     },
@@ -209,10 +228,15 @@
       "refIndex": "折射率",
       "refIndexInfo": {
         "relative": "于另一透光物内部时为相对值",
-        "effective": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。"
+        "effective": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。",
+        "dualMeaning": "启用「模拟色彩」时，此处改为柯西系数 A。"
       },
       "cauchyCoeff": "柯西系数",
       "partialReflect": "模拟部分反射"
+    },
+    "Glass": {
+      "vertices": "顶点",
+      "arc": "圆弧"
     },
     "SphericalLens": {
       "defBy": {
@@ -284,11 +308,16 @@
       "lineDensity": "线数/{{lengthUnit}}",
       "customBrightness": "自定义亮度",
       "customBrightnessInfo": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, …。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。",
+      "brightnesses": "亮度",
       "slitRatio": "狭缝宽度 / 线间距",
       "mirrored": "反射"
     },
     "Ruler": {
+      "zeroPoint": "零点",
       "scaleInterval": "刻度间距"
+    },
+    "Protractor": {
+      "zeroPoint": "零点"
     },
     "Detector": {
       "info": {
@@ -307,6 +336,7 @@
       "exportData": "导出数据"
     },
     "TextLabel": {
+      "text": "文字",
       "textHere": "在此输入文字",
       "fontSize": "字型大小",
       "font": "字型",
@@ -349,6 +379,7 @@
         "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用自定义模块。更多信息请参见工具->其他->导入模块。"
       },
       "twoSided": "双面",
+      "outgoingRays": "出射光线",
       "addOutgoingRay": "添加出射光线",
       "removeOutgoingRay": "移除出射光线"
     },

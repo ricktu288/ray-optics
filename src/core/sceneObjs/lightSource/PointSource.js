@@ -41,6 +41,14 @@ class PointSource extends BaseSceneObj {
     wavelength: Simulator.GREEN_WAVELENGTH
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.sourcePoint') },
+      { key: 'brightness', type: 'number', label: i18next.t('simulator:sceneObjs.common.brightness') },
+      { key: 'wavelength', type: 'number', label: i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)' },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.colorMode !== 'default') {
       var brightnessInfo = i18next.t('simulator:sceneObjs.common.brightnessInfo.newColorModes');

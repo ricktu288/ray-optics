@@ -47,6 +47,12 @@ class Mirror extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.Mirror.title') }));
     super.populateObjBar(objBar);

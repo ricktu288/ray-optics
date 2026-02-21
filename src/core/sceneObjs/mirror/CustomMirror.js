@@ -52,6 +52,13 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'eqn', type: 'equation', label: 'f(x)', variables: ['x'] },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.mirror'));
     objBar.createEquation('y = ', this.eqn, function (obj, value) {

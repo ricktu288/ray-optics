@@ -103,6 +103,19 @@ class CurveGlass extends BaseGlass {
     return jsonObj;
   }
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'points', type: 'array', label: i18next.t('simulator:sceneObjs.common.bezierControlPoints'),
+        itemSchema: [
+          { key: 'a1', type: 'point', label: 'a' },
+          { key: 'c1', type: 'point', label: 'c1' },
+          { key: 'c2', type: 'point', label: 'c2' },
+        ],
+      },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.CurveGlass.title') }));
     super.populateObjBar(objBar);

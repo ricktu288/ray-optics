@@ -44,6 +44,27 @@ import Simulator from '../Simulator.js';
  */
 class BaseCustomSurface extends BaseSceneObj {
 
+  static getPropertySchema(objData, scene) {
+    const outRaysInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.angles', { theta_0: 'θ<sub>0</sub> (<code>theta_0</code>)', theta_j: 'θ<sub>j</sub>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.brightnesses', { P_0: 'P<sub>0</sub> (<code>P_0</code>)', P_j: 'P<sub>j</sub>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.previousFormulas') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.otherParams', { lambda: '<code>lambda</code>', p: '<code>p</code>' }) + '</li><li>' + i18next.t(`simulator:sceneObjs.${objData.type}.info.incidentPos`, { t: '<code>t</code>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.coating', { n_0: '<code>n_0</code>', n_1: '<code>n_1</code>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseCustomSurface.info.twoSides') + '</li></ul>';
+
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'outRays', type: 'array',
+        label: i18next.t('simulator:sceneObjs.BaseCustomSurface.outgoingRays'),
+        info: outRaysInfo,
+        itemSchema: [
+          { key: 'eqnTheta', type: 'equation', label: 'θ',
+            variables: ['theta_0', 'P_0', 'lambda', 't', 'p', 'n_0', 'n_1',
+                        /^theta_\d+$/, /^P_\d+$/] },
+          { key: 'eqnP', type: 'equation', label: 'P',
+            variables: ['theta_0', 'P_0', 'lambda', 't', 'p', 'n_0', 'n_1',
+                        /^theta_\d+$/, /^P_\d+$/] },
+        ],
+      },
+      { key: 'twoSided', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseCustomSurface.twoSided') },
+    ];
+  }
+
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
     // Check for unknown keys in outRays

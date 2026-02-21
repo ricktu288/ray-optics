@@ -51,6 +51,12 @@ class CustomSurface extends LineObjMixin(BaseCustomSurface) {
     twoSided: false,
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.CustomSurface.title'));
     super.populateObjBar(objBar);

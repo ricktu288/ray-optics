@@ -16,6 +16,7 @@
 
 import geometry from '../geometry.js';
 import Simulator from '../Simulator.js';
+import i18next from 'i18next';
 
 /**
  * The mixin for the scene objects that are defined by a circle.
@@ -24,6 +25,14 @@ import Simulator from '../Simulator.js';
  * @returns {T}
  */
 const CircleObjMixin = Base => class extends Base {
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.CircleObjMixin.center') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.CircleObjMixin.radiusPoint') },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
 
   move(diffX, diffY) {
     // Move the first point

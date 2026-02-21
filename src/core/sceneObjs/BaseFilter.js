@@ -29,6 +29,15 @@ import i18next from 'i18next';
  */
 class BaseFilter extends BaseSceneObj {
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'filter', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseFilter.filter') },
+      { key: 'invert', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseFilter.invert') },
+      { key: 'wavelength', type: 'number', label: i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)' },
+      { key: 'bandwidth', type: 'number', label: i18next.t('simulator:sceneObjs.BaseFilter.bandwidth') + ' (nm)' },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
       objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseFilter.filter'), this.filter, function (obj, value) {

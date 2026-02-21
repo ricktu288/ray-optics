@@ -48,6 +48,15 @@ class ArcMirror extends BaseFilter {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint2') },
+      { key: 'p3', type: 'point', label: i18next.t('simulator:sceneObjs.ArcMirror.pointOnArc') },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.ArcMirror.title') }));
 

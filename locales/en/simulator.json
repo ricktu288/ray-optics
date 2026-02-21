@@ -164,6 +164,7 @@
       "random": "Random",
       "lambert": "Lambertian",
       "coordOrigin": "Origin",
+      "bezierControlPoints": "Bézier control points",
       "focalLength": "Focal length",
       "lineStyle": "Line style",
       "fillStyle": "Fill style",
@@ -174,10 +175,22 @@
         "functions": "Supported functions",
         "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules for more information."
       },
+      "pointN": "Point {{i}}",
       "imageDetectionWarning": "This tool does not support image detection.",
       "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
     },
+    "LineObjMixin": {
+      "endpoint1": "1st endpoint",
+      "endpoint2": "2nd endpoint",
+      "sourcePoint": "Source point",
+      "directionPoint": "Direction point"
+    },
+    "CircleObjMixin": {
+      "center": "Center",
+      "radiusPoint": "Point on circle"
+    },
     "ParamCurveObjMixin": {
+      "pieces": "Pieces",
       "addPiece": "Add piece",
       "removePiece": "Remove piece",
       "step": "Step",
@@ -202,6 +215,12 @@
     "IdealMirror": {
       "cartesianSign": "Cartesian Sign Convention"
     },
+    "ArcMirror": {
+      "pointOnArc": "Point on arc"
+    },
+    "ParabolicMirror": {
+      "vertex": "Vertex"
+    },
     "BeamSplitter": {
       "transRatio": "Transmission Ratio"
     },
@@ -209,10 +228,15 @@
       "refIndex": "Refractive index",
       "refIndexInfo": {
         "relative": "Relative if inside another glass",
-        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones."
+        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones.",
+        "dualMeaning": "When \"Simulate Colors\" is on, it serves as the Cauchy coefficient A instead."
       },
       "cauchyCoeff": "Cauchy coefficient",
       "partialReflect": "Simulate partial reflections"
+    },
+    "Glass": {
+      "vertices": "Vertices",
+      "arc": "Circular arc"
     },
     "SphericalLens": {
       "defBy": {
@@ -284,11 +308,16 @@
       "lineDensity": "Lines/{{lengthUnit}}",
       "customBrightness": "Custom Brightness",
       "customBrightnessInfo": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored.",
+      "brightnesses": "Brightnesses",
       "slitRatio": "Slit width / line spacing",
       "mirrored": "Mirrored"
     },
     "Ruler": {
+      "zeroPoint": "Zero point",
       "scaleInterval": "Scale interval"
+    },
+    "Protractor": {
+      "zeroPoint": "Zero point"
     },
     "Detector": {
       "info": {
@@ -307,6 +336,7 @@
       "exportData": "Export data"
     },
     "TextLabel": {
+      "text": "Text",
       "textHere": "Text Here",
       "fontSize": "Font Size",
       "font": "Font",
@@ -349,6 +379,7 @@
         "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules for more information."
       },
       "twoSided": "Two-sided",
+      "outgoingRays": "Outgoing Rays",
       "addOutgoingRay": "Add outgoing ray",
       "removeOutgoingRay": "Remove outgoing ray"
     },

@@ -47,6 +47,23 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
     slitRatio: 0.5,
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint2') },
+      { key: 'p3', type: 'point', label: i18next.t('simulator:sceneObjs.ArcMirror.pointOnArc') },
+      { key: 'lineDensity', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', { lengthUnit: 'mm' }) },
+      { key: 'customBrightness', type: 'boolean', label: i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightness'),
+        info: i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightnessInfo') },
+      { key: 'brightnesses', type: 'array', label: i18next.t('simulator:sceneObjs.DiffractionGrating.brightnesses'),
+        itemSchema: [
+          { key: '', type: 'number', label: '' },
+        ],
+      },
+      { key: 'slitRatio', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.slitRatio') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.ConcaveDiffractionGrating.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', {lengthUnit: 'mm'}), 1, 2500, 5, this.lineDensity, function (obj, value) {

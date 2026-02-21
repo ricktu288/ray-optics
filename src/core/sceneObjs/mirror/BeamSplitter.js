@@ -48,6 +48,13 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'transRatio', type: 'number', label: i18next.t('simulator:sceneObjs.BeamSplitter.transRatio') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.BeamSplitter.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.BeamSplitter.transRatio'), 0, 1, 0.01, this.transRatio, function (obj, value) {

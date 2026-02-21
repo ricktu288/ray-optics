@@ -48,6 +48,18 @@ class GrinGlass extends BaseGrinGlass {
     partialReflect: true
   };
   
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'path', type: 'array', label: i18next.t('simulator:sceneObjs.Glass.vertices'),
+        itemSchema: [
+          { key: '', type: 'point', label: '' },
+        ],
+      },
+      { key: 'origin', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.GrinGlass.title'));
     super.populateObjBar(objBar);

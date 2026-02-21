@@ -42,6 +42,15 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
     wavelength: Simulator.GREEN_WAVELENGTH
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.sourcePoint') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.directionPoint') },
+      { key: 'brightness', type: 'number', label: i18next.t('simulator:sceneObjs.common.brightness') },
+      { key: 'wavelength', type: 'number', label: i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)' },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.SingleRay.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.common.brightness'), 0.01, 1, 0.01, this.brightness, function (obj, value) {

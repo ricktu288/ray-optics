@@ -50,6 +50,22 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     mirrored: false
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'lineDensity', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', { lengthUnit: 'mm' }) },
+      { key: 'customBrightness', type: 'boolean', label: i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightness'),
+        info: i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightnessInfo') },
+      { key: 'brightnesses', type: 'array', label: i18next.t('simulator:sceneObjs.DiffractionGrating.brightnesses'),
+        itemSchema: [
+          { key: '', type: 'number', label: '' },
+        ],
+      },
+      { key: 'slitRatio', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.slitRatio') },
+      { key: 'mirrored', type: 'boolean', label: i18next.t('simulator:sceneObjs.DiffractionGrating.mirrored') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.DiffractionGrating.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.DiffractionGrating.lineDensity', {lengthUnit: 'mm'}), 1, 2500, 5, this.lineDensity, function (obj, value) {

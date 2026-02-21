@@ -40,6 +40,15 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
     lineStyle: null
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'arrow', type: 'boolean', label: i18next.t('simulator:sceneObjs.LineArrow.arrow') },
+      { key: 'backArrow', type: 'boolean', label: i18next.t('simulator:sceneObjs.LineArrow.backArrow') },
+      { key: 'lineStyle', type: 'style', styleKind: 'stroke', label: i18next.t('simulator:sceneObjs.common.lineStyle') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.LineArrow.title'));
     objBar.createBoolean(i18next.t('simulator:sceneObjs.LineArrow.arrow'), this.arrow, function (obj, value) {

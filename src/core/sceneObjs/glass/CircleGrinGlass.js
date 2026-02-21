@@ -48,6 +48,13 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     partialReflect: true
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'origin', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.CircleGrinGlass.title'));
     super.populateObjBar(objBar);

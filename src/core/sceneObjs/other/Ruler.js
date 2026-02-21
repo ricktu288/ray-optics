@@ -37,6 +37,14 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
     scaleInterval: 10
   };
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.Ruler.zeroPoint') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint2') },
+      { key: 'scaleInterval', type: 'number', label: i18next.t('simulator:sceneObjs.Ruler.scaleInterval') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.Ruler.title'));
     objBar.createNumber(i18next.t('simulator:sceneObjs.Ruler.scaleInterval'), 0, 10, 1, this.scaleInterval, function (obj, value) {
