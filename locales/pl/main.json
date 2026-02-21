@@ -143,7 +143,7 @@
       "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
     },
     "otherGrinGlass": {
-      "title": "Szkło gradientowe (GRIN)",
+      "title": "Szkło gradientowe",
       "description": "Materiał z określoną funkcją współczynnika załamania n(x,y)."
     },
     "Blocker": {

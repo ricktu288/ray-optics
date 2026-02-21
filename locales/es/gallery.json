@@ -12,9 +12,9 @@
       "miscellaneous": "Misceláneas"
     },
     "openInSimulator": "Abrir en el simulador",
-    "contributors_one": "Colaborador",
-    "contributors_many": "Colaboradores",
-    "contributors_other": "Colaboradores"
+    "contributors_one": "Colaborador: {{contributors}}",
+    "contributors_many": "Colaboradores: {{contributors}}",
+    "contributors_other": "Colaboradores: {{contributors}}"
   },
   "galleryData": {
     "common": {
@@ -54,6 +54,106 @@
       "title": "Sala no iluminable de Penrose",
       "description": "La sala no iluminable de Penrose se construye a partir de espejos elípticos, circulares y lineales. Tiene la propiedad interesante de que una fuente puntual (verde) en la sala no iluminará la sala entera, sin importar dónde lo coloques. Puedes arrastrar el punto verde para mover la fuente.",
       "nomatterwhereyouputt": "No importe dónde pongas la fuente puntual, no iluminará la sala entera.\nAtención: Debido a errores numéricos, puede que todavía brille después de un tiempo."
+    },
+    "internalReflection": {
+      "title": "Reflejo interno",
+      "description": "Esta simulación muestra la refracción y la reflexión interna en una superficie."
+    },
+    "hyperbolicLens": {
+      "title": "Lente hiperbólica"
+    },
+    "interrogationRoom": {
+      "darkroom": "Cuarto oscuro",
+      "lamp": "Lámpara"
+    },
+    "prisms": {
+      "title": "Prismas"
+    },
+    "rainbows": {
+      "title": "Arcoíris",
+      "sunlight": "Luz solar"
+    },
+    "minimumDeviationAngle": {
+      "examplea": "Ejemplo A",
+      "examplec": "Ejemplo C",
+      "exampleb": "Ejemplo B",
+      "dragtorotate": "Arrastre para rotar",
+      "deviationangle": "Ángulo de desviación",
+      "incidenceangle": "Ángulo de incidencia"
+    },
+    "mazeSolution": {
+      "mazeexit": "Salida del laberinto",
+      "title": "Solución del puzle"
+    },
+    "specularAndDiffuseReflection": {
+      "title": "Reflexión especular y difusa",
+      "diffuse": "Difusa"
+    },
+    "chaffCountermeasure": {
+      "radar": "Radar"
+    },
+    "cameraObscura": {
+      "observer2": "Observador"
+    },
+    "blackCatBecomesWhite": {
+      "eyes": "Ojos",
+      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua"
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "ringaperture": "Apertura de anillo"
+    },
+    "keplerianTelescope": {
+      "realimage": "Imagen real",
+      "thekepleriantelescop": "El telescopio kepleriano",
+      "eye": "ojo"
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "howitworks": "Cómo funciona"
+    },
+    "opticsOfHumanEye": {
+      "title": "Óptica del ojo humano",
+      "description": "Accede a una simulación sobre el funcionamiento del ojo. Puedes cambiar el tamaño de la pupila y la distancia focal de la lente."
+    },
+    "monochromaticAberrations": {
+      "sphericalaberration": "Aberración esférica",
+      "screen": "Pantalla",
+      "title": "Aberraciones monocromáticas"
+    },
+    "moduleExampleParameters": {
+      "title": "Ejemplo de módulo - Parámetros"
+    },
+    "moduleExampleControlPoints": {
+      "hereisthemidpoint": "↙Aquí está el punto intermedio"
+    },
+    "luneburgLens": {
+      "title": "Lente de Luneburg"
+    },
+    "aplanaticPoints": {
+      "title": "Puntos aplanáticos",
+      "sphericallens": "Lente esférica",
+      "ellipticallens": "Lente elíptica",
+      "yaxis": "Eje Y"
+    },
+    "concaveLens": {
+      "title": "Lente cóncava",
+      "description": "Esta simulación muestra cómo una lente cóncava diverge un haz."
+    },
+    "convexLens": {
+      "title": "Lente convexa",
+      "description": "Esta simulación muestra cómo una lente convexa converge un haz."
+    },
+    "lensImages": {
+      "title": "Imágenes de lentes",
+      "description": "Esta simulación muestra las imágenes de un haz y fuentes puntuales producidas por lentes ideales."
+    },
+    "zoomLens": {
+      "zoom": "← zoom →",
+      "title": "Zoom de lente",
+      "description": "Accede a una simulación que muestra el zoom de una lente, en la que podrás cambiar el zoom arrastrando la lente cóncava que hay en medio.",
+      "dragtomovethelens": "Arrastra para mover la lente"
+    },
+    "classicalCassegrainTelescopes": {
+      "collimator": "Colimador"
     }
   }
 }
