@@ -76,6 +76,7 @@ export function useStatus() {
     scene: { error: null, warning: null },
     simulator: { error: null, warning: null },
     betaFeatures: [],
+    alphaFeatures: [],
     objects: []
   })
 
@@ -153,6 +154,7 @@ export function useStatus() {
   })
 
   const activeBetaFeatures = computed(() => systemStatus.value.betaFeatures || [])
+  const activeAlphaFeatures = computed(() => systemStatus.value.alphaFeatures || [])
 
   // Set up event listeners
   statusEmitter.on(STATUS_EVENT_NAMES.MOUSE_POSITION, (pos) => {
@@ -177,6 +179,7 @@ export function useStatus() {
     formattedSimulatorStatus,
     activeErrors,
     activeWarnings,
-    activeBetaFeatures
+    activeBetaFeatures,
+    activeAlphaFeatures
   }
 }

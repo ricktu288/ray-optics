@@ -821,10 +821,11 @@ function hideAllPopovers() {
 
 function getBetaFeaturesInUse() {
   if (!scene) {
-    return [];
+    return { betaFeatures: [], alphaFeatures: [] };
   }
 
-  const features = [];
+  const betaFeatures = [];
+  const alphaFeatures = [];
   const defaultScene = Scene.serializableDefaults;
 
   const expandObjs = (objs) => {
@@ -843,7 +844,7 @@ function getBetaFeaturesInUse() {
   const allObjs = expandObjs(scene.objs || []);
 
   if (scene.importedFromBeta) {
-    features.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
+    betaFeatures.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
   }
 
   const betaModuleIds = new Set();
@@ -854,7 +855,7 @@ function getBetaFeaturesInUse() {
   }
   if (betaModuleIds.size > 0) {
     [...betaModuleIds].sort().forEach((moduleId) => {
-      features.push(i18next.t('simulator:footer.betaFeatures.moduleFromBeta', { moduleId }));
+      betaFeatures.push(i18next.t('simulator:footer.betaFeatures.moduleFromBeta', { moduleId }));
     });
   }
 
@@ -878,7 +879,7 @@ function getBetaFeaturesInUse() {
 
   const usesName = allObjs.some((obj) => obj && obj.name)
   if (usesName) {
-    features.push('<code>sceneObj.name</code>');
+    alphaFeatures.push('<code>sceneObj.name</code>');
   }
 
   try {
@@ -887,14 +888,18 @@ function getBetaFeaturesInUse() {
     const tabStored = localStorage.getItem('rayOpticsSidebarTab');
     const tab = tabStored === null ? 'visual' : JSON.parse(tabStored);
     if (showSidebar && tab === 'visual') {
-      features.push(i18next.t('simulator:settings.showSidebar.title') + ' > ' + i18next.t('simulator:sidebar.tabs.visual'));
+      alphaFeatures.push(i18next.t('simulator:settings.showSidebar.title') + ' > ' + i18next.t('simulator:sidebar.tabs.visual'));
     }
   } catch (_) {}
 
-  return features;
+  // When new alpha features are added, add them as follows:
+  // alphaFeatures.push("Alpha Feature Name");
+
+  return { betaFeatures, alphaFeatures };
 }
 
 function updateErrorAndWarning() {
+  const { betaFeatures, alphaFeatures } = getBetaFeaturesInUse();
   statusEmitter.emit(STATUS_EVENT_NAMES.SYSTEM_STATUS, {
     app: { 
       error: error, 
@@ -908,7 +913,8 @@ function updateErrorAndWarning() {
       error: simulator.error, 
       warning: simulator.warning 
     },
-    betaFeatures: getBetaFeaturesInUse(),
+    betaFeatures,
+    alphaFeatures,
     objects: scene.objs.map((obj, i) => ({
       index: i,
       type: obj.constructor.type,
