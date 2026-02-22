@@ -108,7 +108,7 @@
       "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
     "CircleGrinGlass": {
-      "title": "Círculo (Gradient-index)",
+      "title": "Círculo GRIN",
       "description": "Vidrio con una función de índice refractivo n(x,y) y un borde circular."
     },
     "GrinGlass": {
@@ -172,7 +172,8 @@
       "title": "Red cóncava"
     },
     "ParamGlass": {
-      "title": "Curva paramétrica"
+      "title": "Curva paramétrica",
+      "description": "Vidrio con forma definida por ecuaciones paramétricas personalizadas."
     },
     "modules": {
       "import": "Importar módulos…",
@@ -182,7 +183,9 @@
       "title": "Más herramientas…"
     },
     "CurveGlass": {
-      "title": "Curvas de Bézier"
+      "title": "Curvas de Bézier",
+      "description": "Vidrio encerrado por curvas cúbicas de Bézier.",
+      "instruction": "Haz clic para crear una pieza. Haz clic en el punto inicial al terminar de dibujar. Después, arrastra las cajas para manipular los puntos de control, cambiando la curvatura."
     },
     "CustomParamSurface": {
       "title": "Curva paramétrica personalizada",
@@ -198,10 +201,16 @@
       "title": "Arco personalizado"
     },
     "CustomSurface": {
-      "title": "Línea personalizada"
+      "title": "Línea personalizada",
+      "description": "Una superficie con segmentos de línea personalizados donde los ángulos (θ) y brillos (P) de los rayos salientes (si existe un rayo incidente) se definen mediante ecuaciones personalizadas."
     },
     "CurveGrinGlass": {
-      "title": "Curvas de Bézier GRIN"
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por curvas cúbicas de Bézier."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva paramétrica GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por ecuaciones paramétricas personalizadas."
     }
   },
   "view": {

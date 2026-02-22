@@ -651,6 +651,13 @@
         "title": "Tablice i obiekty ze wzorów",
         "description": "Aby zdefiniować tablice obiektów (np. siatkę luster z regulowanymi odstępami) lub obiekty ze wzorów (np. graniastosłup trapezowy z regulowanymi kątami), zobacz \"Narzędzia -> Inne -> Importuj moduły -> Utwórz własne moduły\"."
       }
+    },
+    "betaFeatures": {
+      "moduleFromBeta": "Moduł `{{moduleId}}` jest importowany z pozycji beta na liście modułów (ponowny import w celu aktualizacji).",
+      "title": "Funkcje wersji beta",
+      "description": "Korzystasz z następujących funkcji beta:",
+      "details": "Funkcje beta mogą być niestabilne i mogą ulec zmianie bez zapewnienia wstecznej kompatybilności. Aby zgłosić błędy, przejdź do sekcji [Issues](/github/issues) w serwisie GitHub lub napisz do nas na adres [ray-optics@phydemo.app](/email).",
+      "sceneFromBeta": "Ta scena została zaimportowana z elementu beta w Galerii (ponowny import w celu aktualizacji)."
     }
   },
   "editor": {
