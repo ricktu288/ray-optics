@@ -882,6 +882,11 @@ function getBetaFeaturesInUse() {
     alphaFeatures.push('<code>sceneObj.name</code>');
   }
 
+  const usesLock = allObjs.some((obj) => obj && obj.locked !== 'default')
+  if (usesLock) {
+    alphaFeatures.push(i18next.t('<code>obj.locked</code>'));
+  }
+
   try {
     const sidebarStored = localStorage.getItem('rayOpticsShowSidebar');
     const showSidebar = sidebarStored === null ? false : sidebarStored === 'on';

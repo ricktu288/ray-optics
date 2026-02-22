@@ -48,6 +48,37 @@
         >
         <div class="obj-list-item-description">{{ objDescription }}</div>
       </div>
+      <button
+        v-if="!isTemplate"
+        type="button"
+        class="obj-list-item-lock"
+        :class="{ 'obj-list-item-lock--default': isLockDefault }"
+        :aria-label="lockAriaLabel"
+        v-tooltip-popover="{ title: lockAriaLabel }"
+        @click.stop="onLockClick"
+      >
+        <svg v-if="isEffectivelyLocked" class="obj-list-item-lock-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" fill="currentColor" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4M4.5 7A1.5 1.5 0 0 0 3 8.5v5A1.5 1.5 0 0 0 4.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 11.5 7zM8 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
+        </svg>
+        <svg v-else class="obj-list-item-lock-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" fill="currentColor" d="M8 0c1.07 0 2.041.42 2.759 1.104l.14.14.062.08a.5.5 0 0 1-.71.675l-.076-.066-.216-.205A3 3 0 0 0 5 4v2h6.5A2.5 2.5 0 0 1 14 8.5v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4M4.5 7A1.5 1.5 0 0 0 3 8.5v5A1.5 1.5 0 0 0 4.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 11.5 7z"/>
+        </svg>
+      </button>
+      <span
+        v-if="isTemplate && templateLockVisible"
+        ref="templateLockEl"
+        class="obj-list-item-lock obj-list-item-lock--template"
+        role="button"
+        tabindex="0"
+        :aria-label="$t('simulator:sidebar.objectList.templateLockInfo')"
+        v-tooltip-popover:popover="templateLockPopoverOptions"
+        @keydown.enter.prevent="onTemplateLockKeyActivate"
+        @keydown.space.prevent="onTemplateLockKeyActivate"
+      >
+        <svg class="obj-list-item-lock-svg" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" fill="currentColor" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4M4.5 7A1.5 1.5 0 0 0 3 8.5v5A1.5 1.5 0 0 0 4.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 11.5 7zM8 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
+        </svg>
+      </span>
     </div>
     <Transition name="drawer">
       <div v-if="expanded && schema.length > 0" class="obj-list-item-expanded">
@@ -65,13 +96,20 @@
 
 <script>
 import { computed, ref } from 'vue'
+import i18next from 'i18next'
 import { app } from '../../services/app'
+import { useSceneStore } from '../../store/scene'
 import * as sceneObjs from '../../../core/sceneObjs.js'
+import { templatePointLockState } from '../../../core/propertyUtils/parametrization.js'
+import { vTooltipPopover } from '../../directives/tooltip-popover'
 import PropertyList from './PropertyList.vue'
 
 export default {
   name: 'ObjListItemContent',
   components: { PropertyList },
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
   props: {
     item: {
       type: Object,
@@ -89,6 +127,7 @@ export default {
   emits: ['update:name', 'blur'],
   setup(props, { emit }) {
     const expanded = ref(false)
+    const sceneStore = useSceneStore()
 
     const objData = computed(() => props.item?.obj)
 
@@ -133,6 +172,70 @@ export default {
       return { name: '', ...Ctor.serializableDefaults }
     })
 
+    const isEffectivelyLocked = computed(() => {
+      const obj = objData.value
+      if (!obj) return false
+      if (obj.locked === 'locked') return true
+      if (obj.locked === 'unlocked') return false
+      return !!sceneStore.lockObjs.value
+    })
+
+    const isLockDefault = computed(() => {
+      const obj = objData.value
+      return !obj || (obj.locked ?? 'default') === 'default'
+    })
+
+    const lockAriaLabel = computed(() => {
+      const obj = objData.value
+      if (!obj) return ''
+      const state = obj.locked ?? 'default'
+      if (state === 'locked') return i18next.t('simulator:sidebar.objectList.lockLocked')
+      if (state === 'unlocked') return i18next.t('simulator:sidebar.objectList.lockUnlocked')
+      return i18next.t('simulator:sidebar.objectList.lockDefault')
+    })
+
+    const templateLockState = computed(() => {
+      if (!props.isTemplate) return { hasPointProperties: false, allHardcoded: false }
+      const obj = objData.value
+      const sch = schema.value
+      if (!obj || !Array.isArray(sch)) return { hasPointProperties: false, allHardcoded: false }
+      return templatePointLockState(obj, sch)
+    })
+
+    const templateLockVisible = computed(() => {
+      const { hasPointProperties, allHardcoded } = templateLockState.value
+      return hasPointProperties && allHardcoded
+    })
+
+    const templateLockPopoverOptions = computed(() => ({
+      title: '',
+      content: i18next.t('simulator:sidebar.objectList.templateLockInfo'),
+      trigger: 'click',
+      placement: 'bottom',
+      html: true
+    }))
+
+    const templateLockEl = ref(null)
+    const onTemplateLockKeyActivate = () => {
+      templateLockEl.value?.click?.()
+    }
+
+    const onLockClick = () => {
+      const obj = objData.value
+      if (!obj || props.isTemplate) return
+      const current = obj.locked ?? 'default'
+      const lockObjsOn = !!sceneStore.lockObjs.value
+      let next
+      if (lockObjsOn) {
+        next = current === 'unlocked' ? 'default' : 'unlocked'
+      } else {
+        next = current === 'locked' ? 'default' : 'locked'
+      }
+      obj.locked = next
+      app.editor?.onActionComplete()
+      app.simulator?.updateSimulation(true, true)
+    }
+
     const toggleExpanded = () => {
       expanded.value = !expanded.value
     }
@@ -161,6 +264,14 @@ export default {
       nameValue,
       schema,
       serializableDefaults,
+      isEffectivelyLocked,
+      isLockDefault,
+      lockAriaLabel,
+      templateLockVisible,
+      templateLockPopoverOptions,
+      templateLockEl,
+      onTemplateLockKeyActivate,
+      onLockClick,
       toggleExpanded,
       onChevronClick,
       onNameInput,
@@ -210,6 +321,49 @@ export default {
   flex-shrink: 0;
   width: 20px;
   height: 20px;
+}
+
+.obj-list-item-lock {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.obj-list-item-lock--default {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.obj-list-item-lock:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.obj-list-item-lock--default:hover {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.obj-list-item-lock--template {
+  cursor: pointer;
+  color: rgba(135, 206, 250, 0.95);
+}
+
+.obj-list-item-lock--template:hover {
+  color: rgba(135, 206, 250, 0.95);
+}
+
+.obj-list-item-lock-svg {
+  width: 14px;
+  height: 14px;
 }
 
 .obj-list-item-chevron-svg {

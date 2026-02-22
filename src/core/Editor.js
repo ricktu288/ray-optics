@@ -199,6 +199,28 @@ class Editor {
   }
 
   /**
+   * Whether any object in the scene can be selected (i.e. at least one is unlocked).
+   * @returns {boolean}
+   */
+  canSelectAnyObject() {
+    if (!this.scene.lockObjs) return true;
+    return this.scene.objs.some(obj => obj && obj.locked === 'unlocked');
+  }
+
+  /**
+   * Whether the object at the given index is locked (not selectable, not draggable).
+   * @param {number} objIndex - The object index.
+   * @returns {boolean}
+   */
+  isObjLocked(objIndex) {
+    const obj = this.scene.objs[objIndex];
+    if (!obj) return false;
+    if (obj.locked === 'locked') return true;
+    if (obj.locked === 'unlocked') return false;
+    return this.scene.lockObjs;
+  }
+
+  /**
    * Add an event listener to the editor.
    * @param {string} eventName - The name of the event.
    * @param {function} callback - The callback function.
@@ -698,8 +720,8 @@ class Editor {
       }
     }
     else {
-      // lockObjs prevents selection, but alt overrides it
-      if ((!(this.scene.lockObjs) != (e.altKey && this.addingObjType != '')) && !(e.which == 3)) {
+      // lockObjs prevents selection (or per-object lock), but alt overrides it for adding
+      if ((this.canSelectAnyObject() != (e.altKey && this.addingObjType != '')) && !(e.which == 3)) {
 
         this.dragContext = {};
 
@@ -788,6 +810,8 @@ class Editor {
           if (this.scene.objs[this.selectedObjIndex]) {
             if (this.scene.objs[this.selectedObjIndex].constructor.type == this.addingObjType) {
               referenceObj = this.scene.objs[this.selectedObjIndex].serialize();
+              delete referenceObj.name;
+              delete referenceObj.locked;
             }
           }
           this.scene.pushObj(new sceneObjs[this.addingObjType](this.scene, referenceObj));
@@ -853,7 +877,7 @@ class Editor {
 
     
 
-    if (!this.isConstructing && this.draggingObjIndex == -1 && !this.scene.lockObjs) {
+    if (!this.isConstructing && this.draggingObjIndex == -1 && this.canSelectAnyObject()) {
       // highlight object under mousePos cursor
       var ret = this.selectionSearch(mousePos_nogrid)[0];
       //console.log(mousePos_nogrid);
@@ -1039,7 +1063,7 @@ class Editor {
           // The object says the contruction is done
           this.onActionComplete();
           this.emit('resetVirtualKeys');
-          if (this.scene.lockObjs) {
+          if (!this.canSelectAnyObject()) {
             this.hoveredObjIndex = -1;
             this.simulator.updateSimulation(true, true);
           }
@@ -1155,8 +1179,8 @@ class Editor {
     for (var i = 0; i < this.scene.objs.length; i++) {
       if (typeof this.scene.objs[i] != 'undefined') {
         let dragContext_ = this.scene.objs[i].checkMouseOver(new Mouse(mousePos_nogrid, this.scene, this.lastDeviceIsTouch));
-        if (dragContext_) {
-          // the mouse is over the object
+        if (dragContext_ && !this.isObjLocked(i)) {
+          // the mouse is over the object and it is selectable
 
           if (dragContext_.targetPoint || dragContext_.targetPoint_) {
             // The mousePos clicked a point

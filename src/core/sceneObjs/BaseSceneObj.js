@@ -66,11 +66,13 @@ class BaseSceneObj {
     this.warning = null;
     /** @property {string|null} name - The name of the object. */
     this.name = jsonObj?.name || '';
+    /** @property {'default'|'locked'|'unlocked'} locked - Lock override: 'default' follows scene.lockObjs, 'locked' always locked, 'unlocked' always unlocked. Not serialized when 'default'. */
+    this.locked = jsonObj?.locked ?? 'default';
 
     // Check for unknown keys in the jsonObj
     if (jsonObj) {
       const serializableDefaults = this.constructor.serializableDefaults;
-      const knownKeys = ['type', 'name', ...Object.keys(serializableDefaults)];
+      const knownKeys = ['type', 'name', 'locked', ...Object.keys(serializableDefaults)];
       for (const key in jsonObj) {
         if (!knownKeys.includes(key)) {
           this.scene.error = i18next.t('simulator:generalErrors.unknownObjectKey', { key, type: this.constructor.type }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the object from replacing it, and also because this error likely indicates an incompatible scene version.
@@ -105,6 +107,7 @@ class BaseSceneObj {
     const jsonObj = { type: this.constructor.type };
     const serializableDefaults = {
       name: '',
+      locked: 'default',
       ...this.constructor.serializableDefaults
     };
 
