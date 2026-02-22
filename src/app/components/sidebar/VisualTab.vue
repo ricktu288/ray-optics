@@ -286,7 +286,7 @@ export default {
 .visual-subtab-content {
   flex-grow: 1;
   min-height: 0;
-  padding: 12px;
+  padding: 8px;
   background: rgba(80, 85, 90, 0.5); /* same as active tab, but dim */
   overflow: auto;
 }

@@ -61,7 +61,13 @@
         @selection-change="handleSelectionChange"
       >
         <template #content="{ item, index }">
-          <SceneObjListItemContent :obj="item.obj" :index="index" />
+          <ObjListItemContent
+            :item="item"
+            :index="index"
+            :isTemplate="false"
+            @update:name="(v) => onNameUpdate(item, v)"
+            @blur="commitName"
+          />
         </template>
       </SidebarItemList>
       <p v-if="items.length === 0" class="scene-objs-editor-move-in-hint">
@@ -76,7 +82,7 @@ import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
 import i18next from 'i18next'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
-import SceneObjListItemContent from './SceneObjListItemContent.vue'
+import ObjListItemContent from './ObjListItemContent.vue'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
 
@@ -85,7 +91,7 @@ export default {
   components: {
     SidebarItemList,
     InfoPopoverIcon,
-    SceneObjListItemContent
+    ObjListItemContent
   },
   setup() {
     const sceneStore = useSceneStore()
@@ -164,6 +170,16 @@ export default {
         return
       }
       handleSceneTabClick()
+    }
+
+    const onNameUpdate = (item, value) => {
+      if (item?.obj) {
+        item.obj.name = value
+      }
+    }
+
+    const commitName = () => {
+      app.editor?.onActionComplete()
     }
 
     const onMoveToModule = (moduleName) => {
@@ -252,6 +268,8 @@ export default {
       handleSelectionChange,
       handleSceneTabClick,
       handleEditorClick,
+      onNameUpdate,
+      commitName,
       moduleNames,
       hasSelection,
       onMoveToModule,

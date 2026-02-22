@@ -49,22 +49,13 @@
         @select="handleSelect"
       >
         <template #content="{ item, index }">
-          <div class="module-obj-list-item">
-            <input
-              class="module-obj-list-item-name-input"
-              type="text"
-              :value="item.obj?.name || ''"
-              :placeholder="$t('simulator:sidebar.objectList.unnamedObject')"
-              @input="onNameInput(item, index, $event)"
-              @blur="commitName"
-              @keydown.enter.prevent="commitAndBlur"
-              @keydown.stop
-              @click.stop="onNameClick(item)"
-            >
-            <div class="module-obj-list-item-type">
-              {{ item.obj?.type || $t('simulator:sidebar.objectList.unknownType') }}
-            </div>
-          </div>
+          <ObjListItemContent
+            :item="item"
+            :index="index"
+            :isTemplate="true"
+            @update:name="(v) => onNameUpdate(item, index, v)"
+            @blur="commitName"
+          />
         </template>
       </SidebarItemList>
       <p v-if="!canMoveSelectedObjIn" class="module-editor-move-in-hint">
@@ -97,10 +88,11 @@ import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
+import ObjListItemContent from './ObjListItemContent.vue'
 
 export default {
   name: 'ModuleEditor',
-  components: { SidebarItemList, InfoPopoverIcon },
+  components: { SidebarItemList, InfoPopoverIcon, ObjListItemContent },
   props: {
     moduleName: { type: String, required: true }
   },
@@ -188,7 +180,13 @@ export default {
       const obj = selectedMoveInObj.value
       const fallback = i18next.t('simulator:sidebar.objectList.unknownType')
       if (!obj) return fallback
-      return obj.name || obj.constructor?.type || fallback
+      if (obj.name) return obj.name
+      const Ctor = obj?.constructor
+      const scene = app.scene
+      if (Ctor && scene && typeof Ctor.getDescription === 'function') {
+        return Ctor.getDescription(obj, scene, false) || fallback
+      }
+      return Ctor?.type || fallback
     })
 
     const moduleNames = computed(() => {
@@ -334,10 +332,6 @@ export default {
         selectedIds.value = []
       }
       activeId.value = item.id
-    }
-
-    const onNameClick = (item) => {
-      handleSelect({ item })
       updateHighlights()
     }
 
@@ -399,14 +393,14 @@ export default {
       resetListSelection()
     }
 
-    const onNameInput = (item, index, event) => {
+    const onNameUpdate = (item, index, value) => {
       if (!item?.obj || !app.scene?.modules?.[props.moduleName]) {
         return
       }
-      item.obj.name = event.target.value
+      item.obj.name = value
       const moduleObj = app.scene.modules[props.moduleName].objs[index]
       if (moduleObj) {
-        moduleObj.name = event.target.value
+        moduleObj.name = value
       }
     }
 
@@ -417,7 +411,7 @@ export default {
 
     const commitAndBlur = (event) => {
       commitName()
-      event.target.blur()
+      if (event?.target?.blur) event.target.blur()
     }
 
     const selectModuleInstance = (event) => {
@@ -478,13 +472,12 @@ export default {
       handleRemove,
       handleDuplicate,
       handleReorder,
-      onNameInput,
+      onNameUpdate,
       commitName,
       commitAndBlur,
       handleHover,
       handleSelectionChange,
       handleSelect,
-      onNameClick,
       onMoveOut,
       hasSelection,
       activeId,
@@ -597,46 +590,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.module-obj-list-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-  width: 100%;
-}
-
-.module-obj-list-item-name {
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.module-obj-list-item-name-input {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  color: rgba(255, 255, 255, 0.92);
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 1.2;
-  padding: 0;
-  width: 100%;
-  min-width: 0;
-  transition: color 120ms ease;
-}
-
-.module-obj-list-item-name-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.module-obj-list-item-name-input:focus {
-  outline: none;
-}
-
-.module-obj-list-item-type {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.92);
 }
 
 .module-editor-footer {

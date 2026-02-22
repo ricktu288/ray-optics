@@ -386,8 +386,7 @@ export default {
 .sidebar-item-list-row {
   display: flex;
   align-items: stretch;
-  gap: 8px;
-  padding: 6px 8px;
+  padding: 6px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.06);
   position: relative;
@@ -512,7 +511,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
   color: rgba(255, 255, 255, 0.75);
 }
 

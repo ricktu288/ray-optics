@@ -639,7 +639,11 @@
       "unnamedObject": "Unnamed object",
       "unknownType": "Unknown type",
       "sceneInfo": "List of objects which are directly in the scene. To parametrize them (with custom variables, arrays, etc.), you need to move them into a module. Objects inside modules are not directly listed here, and each instance of a module is shown as a single object.",
-      "moduleInfo": "Objects (or template of objects) inside this module. They can be parametrized with custom variables and arrays, but cannot be directly edited in the canvas. Objects with hard-coded coordinates will be unmovable in the canvas."
+      "moduleInfo": "Objects (or template of objects) inside this module. They can be parametrized with custom variables and arrays, but cannot be directly edited in the canvas. Objects with hard-coded coordinates will be unmovable in the canvas.",
+      "expand": "Expand to show properties",
+      "collapse": "Collapse properties",
+      "showAllProperties": "Show all properties",
+      "hideDefaultProperties": "Hide default properties"
     },
     "visualSubTabs": {
       "scene": "Scene",
