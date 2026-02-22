@@ -876,6 +876,21 @@ function getBetaFeaturesInUse() {
   }
   */
 
+  const usesName = allObjs.some((obj) => obj && obj.name)
+  if (usesName) {
+    features.push('<code>sceneObj.name</code>');
+  }
+
+  try {
+    const sidebarStored = localStorage.getItem('rayOpticsShowSidebar');
+    const showSidebar = sidebarStored === null ? false : sidebarStored === 'on';
+    const tabStored = localStorage.getItem('rayOpticsSidebarTab');
+    const tab = tabStored === null ? 'visual' : JSON.parse(tabStored);
+    if (showSidebar && tab === 'visual') {
+      features.push(i18next.t('simulator:settings.showSidebar.title') + ' > ' + i18next.t('simulator:sidebar.tabs.visual'));
+    }
+  } catch (_) {}
+
   return features;
 }
 
