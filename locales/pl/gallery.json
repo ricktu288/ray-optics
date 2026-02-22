@@ -8,7 +8,7 @@
       "refraction": "Załamanie",
       "lens": "Soczewka",
       "combinationOfLenses": "Układy soczewek",
-      "grinOptics": "Optyka gradientowa (GRIN)",
+      "grinOptics": "Optyka gradientowa",
       "miscellaneous": "Różne"
     },
     "contributors_one": "Osoba wnosząca wkład: {{contributors}}",

@@ -76,6 +76,7 @@ export const useStatusStore = () => {
     app: { error: null, warning: null },
     scene: { error: null, warning: null },
     simulator: { error: null, warning: null },
+    betaFeatures: [],
     objects: []
   })
 
@@ -152,6 +153,8 @@ export const useStatusStore = () => {
     return warnings
   })
 
+  const activeBetaFeatures = computed(() => systemStatus.value.betaFeatures || [])
+
   // Set up event listeners
   statusEmitter.on(STATUS_EVENTS.MOUSE_POSITION, (pos) => {
     mousePosition.value = pos
@@ -174,7 +177,8 @@ export const useStatusStore = () => {
     formattedMousePosition,
     formattedSimulatorStatus,
     activeErrors,
-    activeWarnings
+    activeWarnings,
+    activeBetaFeatures
   }
 }
 

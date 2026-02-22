@@ -53,7 +53,7 @@ class Drawing extends BaseSceneObj {
     }
 
     objBar.createStrokeStyleControl(
-      i18next.t('simulator:sceneObjs.common.lineStyle') + '<sup>Beta</sup>',
+      i18next.t('simulator:sceneObjs.common.lineStyle'),
       this.lineStyle,
       this.scene.theme.decoration,
       function (value) {

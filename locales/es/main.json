@@ -9,10 +9,11 @@
     "home": "Inicio",
     "gallery": "Galería",
     "about": "Acerca de",
-    "github": "GitHub"
+    "github": "GitHub",
+    "modules": "Módulos"
   },
   "homePage": {
-    "description": "Crear y simular escenas 2D de óptica geométrica de manera interactiva.\nTotalmente gratuito y basado en web. El código fuente está [disponible en GitHub](/github).",
+    "description": "Crea y simula escenas 2D de óptica geométrica de manera interactiva.\nTotalmente gratuito y basado en web. El código fuente está [disponible en GitHub](/github).",
     "launchSimulator": "Iniciar simulador"
   },
   "tools": {
@@ -27,7 +28,7 @@
     "common": {
       "clickInstruction": "Clique para crear.",
       "lineInstruction": "Arrastre o clique para crear.",
-      "circleInstruction": "Arrastre o clique para crear."
+      "circleInstruction": "Arrastra o haz clic para crear (centro >> circunferencia)."
     },
     "SingleRay": {
       "title": "Rayo único",
@@ -100,14 +101,14 @@
     },
     "SphericalLens": {
       "title": "Lente esférica",
-      "description": "Una lente esférica."
+      "description": "Una lente esférica, cuya forma puede definirse usando varios parámetros."
     },
     "CustomGlass": {
       "title": "Ecuación personalizada",
       "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
     "CircleGrinGlass": {
-      "title": "Círculo (Gradient-index)",
+      "title": "Círculo GRIN",
       "description": "Vidrio con una función de índice refractivo n(x,y) y un borde circular."
     },
     "GrinGlass": {
@@ -117,7 +118,8 @@
       "warning": "ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible."
     },
     "otherGrinGlass": {
-      "title": "Polígono con gradiente de índice"
+      "title": "Polígono con gradiente de índice",
+      "description": "Material con una función n(x,y) personalizada para el índice de refracción."
     },
     "Blocker": {
       "title": "Bloqueador recto",
@@ -160,6 +162,55 @@
     "moveView": {
       "title": "Mover vista",
       "description": "Arrastre para mover la vista. (El botón derecho del ratón tiene la misma función.)"
+    },
+    "ParamMirror": {
+      "title": "Curva paramétrica",
+      "description": "Un espejo cuya forma viene definida por ecuaciones paramétricas personalizables."
+    },
+    "ConcaveDiffractionGrating": {
+      "description": "Una rejilla de difracción cóncava cuya forma es la de una sección de un círculo.",
+      "title": "Red cóncava"
+    },
+    "ParamGlass": {
+      "title": "Curva paramétrica",
+      "description": "Vidrio con forma definida por ecuaciones paramétricas personalizadas."
+    },
+    "modules": {
+      "import": "Importar módulos…",
+      "remove": "Eliminar módulo"
+    },
+    "moreTools": {
+      "title": "Más herramientas…"
+    },
+    "CurveGlass": {
+      "title": "Curvas de Bézier",
+      "description": "Vidrio encerrado por curvas cúbicas de Bézier.",
+      "instruction": "Haz clic para crear una pieza. Haz clic en el punto inicial al terminar de dibujar. Después, arrastra las cajas para manipular los puntos de control, cambiando la curvatura."
+    },
+    "CustomParamSurface": {
+      "title": "Curva paramétrica personalizada",
+      "description": "Una superficie personalizada con una forma definida mediante ecuaciones paramétricas."
+    },
+    "DiffractionGrating": {
+      "title": "Red de difracción",
+      "warning": "Aviso: Las intensidades de los rayos difractados podrían no ser precisas.",
+      "description": "Una red de difracción que separa la luz en un ángulo que dependerá de la longitud de onda."
+    },
+    "CustomArcSurface": {
+      "description": "Una superficie personalizada con la forma de un arco de circunferencia.",
+      "title": "Arco personalizado"
+    },
+    "CustomSurface": {
+      "title": "Línea personalizada",
+      "description": "Una superficie con segmentos de línea personalizados donde los ángulos (θ) y brillos (P) de los rayos salientes (si existe un rayo incidente) se definen mediante ecuaciones personalizadas."
+    },
+    "CurveGrinGlass": {
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por curvas cúbicas de Bézier."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva paramétrica GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por ecuaciones paramétricas personalizadas."
     }
   },
   "view": {
@@ -183,12 +234,14 @@
       "description": "Simular los rayos y las imágenes vistos desde una posición. El circulo azul es el observador. Cualquier rayo que lo cruce se considera 'observado'. El observador no sabe donde inician los rayos, pero puede pensar que tienen inicio en algún(os) punto(s) si se intersectan ahí. Los rayos se muestran en azul, y los puntos en amarillo (reales) o naranja (virtuales).",
       "simulateColorsNote": "Cuando 'Simular colores' está seleccionado, se muestran en los colores de la fuente.",
       "instruction": "Arrastre el punto azul grande para mover al observador."
-    }
+    },
+    "customThemeNote": "Nota: Esta escena usa un tema personalizado."
   },
   "simulateColors": {
     "title": "Simular colores",
     "description": "Simular colores (longitudes de onda), mezclas de colores, filtros de color de bloqueadores y espejos y dispersión cromática de vidrios.",
-    "instruction": "Puede ajustar los parámetros de estos objetos cuando los seleccione. Para simular el espectro de colores, sobreponga rayos con diferentes longitudes de onda."
+    "instruction": "Puede ajustar los parámetros de estos objetos cuando los seleccione. Para simular el espectro de colores, sobreponga rayos con diferentes longitudes de onda.",
+    "warning": "La mezcla de colores es imprecisa a menos que se use junto con \"Corregir brillo\"."
   },
   "languageDropdown": {
     "title": "Idioma: {{language}}",

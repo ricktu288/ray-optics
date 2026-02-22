@@ -65,7 +65,7 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['lineStyle']))) {
     objBar.createStrokeStyleControl(
-      i18next.t('simulator:sceneObjs.common.lineStyle') + '<sup>Beta</sup>',
+      i18next.t('simulator:sceneObjs.common.lineStyle'),
       this.lineStyle,
       this.scene.theme.decoration,
       function (value) {

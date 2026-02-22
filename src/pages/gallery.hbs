@@ -53,9 +53,31 @@
       font-size: 12pt;
       margin-top: 0px;
       margin-bottom: 0px;
-      white-space: nowrap;
+      display: flex;
+      align-items: flex-start;
+      overflow: hidden;
+    }
+
+    .example-title-text {
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .beta-badge {
+      flex-shrink: 0;
+      display: inline-block;
+      background: orange;
+      color: white;
+      font-size: 8pt;
+      font-weight: 600;
+      line-height: 1.2em;
+      height: 1.2em;
+      padding: 0 6px;
+      margin-left: 4px;
+      vertical-align: top;
+      border-radius: 0.6em;
     }
 
     .example-contributor {
@@ -96,7 +118,7 @@
             <img src="{{url}}-thumbnail.jpg" alt="{{title}}" class="img-rounded example-image" loading="lazy">
           </picture>
           <div class="caption">
-            <p class="example-title">{{title}}</p>
+            <p class="example-title"><span class="example-title-text">{{title}}</span>{{#if beta}}<span class="beta-badge">Beta</span>{{/if}}</p>
             <p class="example-contributor">{{contributors}}</p>
           </div>
         </a>

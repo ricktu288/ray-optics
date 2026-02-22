@@ -136,6 +136,14 @@ for (const category of galleryList) {
   }
 }
 
+// Create a dictionary converting the scene IDs to the beta flag.
+const galleryIDBeta = {};
+for (const category of galleryList) {
+  for (const item of category.content) {
+    galleryIDBeta[item.id] = !!item.beta;
+  }
+}
+
 // Create a dictionary converting the scene IDs to the camelCase format.
 const galleryIDToCamelCase = {};
 galleryIDs.forEach((id) => {
@@ -517,6 +525,18 @@ for (const lang of homeLangs) {
           return `${packageVersion}+${commitDate}.${commitHash}`;
         }
       })(),
+      // Temporary anniversary text (not intended to be translated to more languages; to be removed after v5.3.0 release)
+      anniversaryText: (() => {
+        const fullPackageVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'))).version;
+        if (isRelease && fullPackageVersion === '5.3.0') {
+          const texts = {
+            'zh-TW': '十週年紀念版',
+            'zh-CN': '十周年纪念版'
+          };
+          return texts[lang] || '10th Anniversary Release';
+        }
+        return '';
+      })(),
       mainAuthors: sortedMainAuthors.map(c => {
         const name = (c.name === 'Yi-Ting Tu' && lang.startsWith('zh') ? '凃懿庭 Yi-Ting Tu' : c.name);
         const url = (c.name === 'Yi-Ting Tu') ? 'https://yitingtu.com' : '';
@@ -582,6 +602,7 @@ for (const lang of homeLangs) {
               title: i18next.t('gallery:galleryData.' + galleryIDToCamelCase[contentItem.id] + '.title'),
               url: rootUrl + urlMaps[lang]['/gallery/' + contentItem.id],
               contributors: contentItem.contributors.join(', '),
+              beta: !!contentItem.beta,
             };
           }),
         };
@@ -632,6 +653,7 @@ for (const lang of homeLangs) {
       idHashUrl: (lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/') + id,
       contributors: galleryIDContributors[id].join(', '),
       contributorCount: galleryIDContributors[id].length,
+      beta: galleryIDBeta[id],
     }
     fs.writeFileSync(path.join(galleryDir, id + '.html'), galleryItemTemplate(galleryItemData));
   }
@@ -661,6 +683,7 @@ for (const lang of homeLangs) {
           hasParameters: Object.keys(moduleParametersKeys[item.id]).length > 0,
           controlPointSequenceKeys: moduleControlPointSequenceKeys[item.id],
           parametersKeys: moduleParametersKeys[item.id],
+          beta: !!item.beta,
         };
       }),
     }

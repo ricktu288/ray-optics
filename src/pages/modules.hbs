@@ -46,6 +46,21 @@
       margin-bottom: 0px;
     }
 
+    .beta-badge {
+      display: inline-block;
+      background: orange;
+      color: white;
+      font-size: 9pt;
+      font-weight: 600;
+      line-height: 1.2em;
+      height: 1.2em;
+      padding: 0 6px;
+      padding-top: 1px;
+      margin-left: 6px;
+      vertical-align: top;
+      border-radius: 0.6em;
+    }
+
     .import-btn {
       float: right;
       margin-right: 8px;
@@ -118,7 +133,7 @@
         <img src="{{this.thumbnailUrl}}.jpg" alt="{{t this.titleKey}}" class="img-rounded module-image" loading="lazy">
       </picture>
       <div class="caption">
-        <p class="module-title">{{t this.titleKey}} (<code>{{this.id}}</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: '{{this.id}}'},'*');this.innerText='{{t "modules:modulesPage:imported"}}';this.classList.remove('btn-primary');this.classList.add('btn-success');">{{t "modules:modulesPage:import"}}</button></p>
+        <p class="module-title">{{t this.titleKey}} (<code>{{this.id}}</code>){{#if this.beta}}<span class="beta-badge">Beta</span>{{/if}}<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: '{{this.id}}'},'*');this.innerText='{{t "modules:modulesPage:imported"}}';this.classList.remove('btn-primary');this.classList.add('btn-success');">{{t "modules:modulesPage:import"}}</button></p>
         <p class="module-contributor">{{this.contributors}}</p>
         <span id="module-desc">
           {{t this.descriptionKey blank=true}}

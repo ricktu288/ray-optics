@@ -108,6 +108,9 @@ if (sceneIDs.includes(moduleID)) {
 // Set the name of the scene to the module ID.
 sceneData.name = moduleID;
 
+// Set the module to be beta.
+sceneData.modules[moduleID].importedFromBeta = true;
+
 // Ensure that the scene data contains a square CropBox object.
 let cropBoxThumbnail;
 for (const obj of sceneData.objs) {
@@ -222,7 +225,7 @@ const contributors = contributorsPrompt.contributors;
 const contributorList = contributors.split(';').map((name) => name.trim());
 
 // Insert the new module into the category.
-categoryModules.splice(position + 1, 0, {id: moduleID, contributors: contributorList});
+categoryModules.splice(position + 1, 0, {id: moduleID, beta: true, contributors: contributorList});
 
 // Update the module strings, inserting the new keys next to the selected module.
 const newModuleStrings = {};

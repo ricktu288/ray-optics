@@ -72,7 +72,7 @@ class ModuleObj extends BaseSceneObj {
     }
 
     // Check for unknown keys in the module definition
-    const knownModuleKeys = ['numPoints', 'params', 'vars', 'objs', 'maxLoopLength'];
+    const knownModuleKeys = ['importedFromBeta', 'numPoints', 'params', 'vars', 'objs', 'maxLoopLength'];
     for (const key in this.moduleDef) {
       if (!knownModuleKeys.includes(key)) {
         this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.

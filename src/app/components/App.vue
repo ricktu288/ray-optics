@@ -168,7 +168,32 @@ export default {
   background: rgb(64, 64, 64);
   color: white;
   max-height: 80vh;
-  overflow-y: auto
+  overflow: hidden;
+  padding: 0;
+}
+
+#help-dropdown .help-dropdown-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  padding-right: 0px;
+}
+
+#help-dropdown .help-popup-body-wrapper {
+  flex: 1;
+  min-height: 0;
+}
+
+#help-dropdown .help-popup-body {
+  overflow-y: auto;
+  height: 100%;
+  padding: 0.5rem 0;
+  padding-right: 0.5rem;
+}
+
+#help-dropdown .help-popup-footer {
+  flex-shrink: 0;
+  padding: 0 0 0.5rem;
 }
 
 #help-dropdown a {

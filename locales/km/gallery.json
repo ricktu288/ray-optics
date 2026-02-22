@@ -6,7 +6,8 @@
       "reflection": "ចំណាំងផ្លាត",
       "refraction": "ចំណាំងបែរ",
       "lens": "ឡង់ទី",
-      "miscellaneous": "ផ្សេងៗ"
+      "miscellaneous": "ផ្សេងៗ",
+      "combinationOfLenses": "បង្គុំនៃឡង់ទី"
     },
     "contributors_other": "បង្កើតដោយ៖ {{contributors}}",
     "openInSimulator": "បើកក្នុងកម្មវិធីពិសោធន៍អុបទិច"
@@ -40,7 +41,8 @@
       "description": "ការពិសោធន៍នឹងបង្ហាញអំពី ចំណងផ្លាត និងចំណាំងបែរលើផ្ទៃវត្ថុមួយ។"
     },
     "prisms": {
-      "title": "ព្រីស"
+      "title": "ព្រីស",
+      "rightangle": "មុំកែង"
     },
     "apparentDepth": {
       "observer": "គំហើញ"
@@ -76,7 +78,8 @@
       "description": "ការពិសោធន៍នេះនឹងបង្ហាញអ្នកអំពីបាតុភូតដែលកើតឡើងពេលបាច់ពន្លឺឆ្លងកាត់ឡង់ទីប៉ោង។"
     },
     "lensImages": {
-      "title": "រូបភាពនៃឡង់ទី"
+      "title": "រូបភាពនៃឡង់ទី",
+      "description": "ការពិសោធន៍នេះបង្ហាញពីដំណើរនៃកាំពន្លឺ និងរូបភាពបង្កើតឡើងដោយឡង់ទីអ៊ីឌីអ៊ែល។"
     },
     "hyperbolicLens": {
       "title": "ឡង់ទីអ៊ីព៊ែបូល"
@@ -85,13 +88,22 @@
       "title": "អុបទិកនៃភ្នែកមនុស្ស"
     },
     "zoomLens": {
-      "title": "ឡង់ទីពង្រីក"
+      "title": "ឡង់ទីពង្រីក",
+      "dragtomovethelens": "អូសដើម្បីរំកិល",
+      "zoom": "← ពង្រីក →"
     },
     "seaMirage": {
-      "earthssurface": "ផ្ទៃភពផែនដី"
+      "earthssurface": "ផ្ទៃភពផែនដី",
+      "vacuum": "សុញ្ញាកាស",
+      "atmosphere": "បរិយាកាស",
+      "virtualimage1": "រូបភាពមិនពិត"
     },
     "cameraObscura": {
-      "observer2": "គំហើញ"
+      "observer2": "គំហើញ",
+      "title": "រូបភាពឱ្យដោយបន្ទប់ងងឹត",
+      "description": "ការពិសោធន៍នេះបង្ហាញពីរូបភាពដែលបង្កើតឡើងនៅក្នុងបន្ទប់ងងឹត កាលណាពន្លឺដាលចូលក្នុងបន្ទប់ងងឹតតាមប្រហោងរន្ធចោះតូចមួយ។",
+      "objectsoutside": "វត្ថុខាងក្រៅ",
+      "darkroom1": "បន្ទប់ងងឹត"
     },
     "concaveMirrorWearableDisplay": {
       "concavemirror": "កញ្ចក់ស្វ៊ែរផត",
@@ -108,6 +120,76 @@
       "annulareclipse": "សូរ្យគ្រាសចញ្ចៀនភ្លើង",
       "earth": "ផែនដី",
       "totaleclipse": "សូរ្យគ្រាសពេញ"
+    },
+    "newtonianTelescope": {
+      "title": "តេឡេទស្សន៍ញូតុន"
+    },
+    "bendedPencil": {
+      "observerseye": "ភ្នែក"
+    },
+    "brokenPencil": {
+      "title": "ខ្មៅដៃបាក់"
+    },
+    "minimumDeviationAngle": {
+      "examplea": "ឧទាហរណ៍ទី១",
+      "examplec": "ឧទាហរណ៍ទី៣",
+      "exampleb": "ឧទាហរណ៍ទី២"
+    },
+    "aplanaticPoints": {
+      "yaxis": "អ័ក្សឈរ",
+      "ellipticallens": "ឡង់ទីអេលីប",
+      "sphericallens": "ឡង់ទីស្វ៊ែរ"
+    },
+    "virtualImageFormation": {
+      "title": "ការបង្កើតនូវរូបភាពមិនពិត",
+      "object2": "វត្ថុ"
+    },
+    "monochromaticAberrations": {
+      "screen": "អេក្រង់"
+    },
+    "chromaticAberration": {
+      "dragtoadjustbeamwidt1": "អូសដើម្បីតម្រូវប្រវែង"
+    },
+    "compoundMicroscope": {
+      "title": "មីក្រូទស្សន៍សមាស",
+      "objective": "អុបសិចទីប",
+      "eyepiece": "អូគុយលែ"
+    },
+    "telescope": {
+      "title": "តេឡេទស្សន៍",
+      "screen1": "អេក្រង់"
+    },
+    "keplerianTelescope": {
+      "virtualimage": "រូបភាពមិនពិត",
+      "realimage": "រូបភាពពិត",
+      "eye": "ភ្នែក"
+    },
+    "rochesterCloak": {
+      "object": "វត្ថុ"
+    },
+    "sphericalLensAndMirror": {
+      "title": "ឡង់ទីស្វ៊ែរ និងកញ្ចក់ស្វ៊ែរ",
+      "description": "ការពិសោធន៍នេះបង្ហាញពីដំណើរនៃបាច់ពន្លឺឆ្លងកាត់ឡង់ទីស្វ៊ែរ និងកញ្ចក់ស្វ៊ែរ។"
+    },
+    "interrogationRoom": {
+      "darkroom": "បន្ទប់ងងឹត",
+      "lamp": "អំពូល"
+    },
+    "thePrincipleOfCameraImaging": {
+      "title": "ទ្រឹស្តីគោលទាក់ទងនឹងកាមេរ៉ា",
+      "camera": "កាមេរ៉ា"
+    },
+    "digitalCamera": {
+      "title": "កាមេរ៉ាឌីជីថល"
+    },
+    "blackCatBecomesWhite": {
+      "title": "ការពិសោធន៍ \"ឆ្មាខ្មៅក្លាយជា ឆ្មាស\"",
+      "lightfromtheplastics": "ពន្លឺពីផ្ទៃបន្ទះប្លាស្ទិច",
+      "lightfromthepaper": "ពន្លឺពីផ្ទៃក្រដាស",
+      "eyes": "ភ្នែក"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "lightsource": "ប្រភពពន្លឺ"
     }
   }
 }

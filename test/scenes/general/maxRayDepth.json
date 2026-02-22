@@ -1,0 +1,57 @@
+{
+  "version": 5,
+  "name": "maxRayDepth",
+  "objs": [
+    {
+      "type": "Mirror",
+      "p1": {
+        "x": 429,
+        "y": 171
+      },
+      "p2": {
+        "x": 424,
+        "y": 344
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 436,
+        "y": 218
+      },
+      "p2": {
+        "x": 464,
+        "y": 225
+      },
+      "brightness": 10
+    },
+    {
+      "type": "Detector",
+      "p1": {
+        "x": 476,
+        "y": 190
+      },
+      "p2": {
+        "x": 474,
+        "y": 310
+      },
+      "irradMap": true
+    },
+    {
+      "type": "BeamSplitter",
+      "p1": {
+        "x": 448,
+        "y": 159
+      },
+      "p2": {
+        "x": 441,
+        "y": 348
+      },
+      "transRatio": 0.2
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 11.56288037968601,
+  "maxRayDepth": 5
+}

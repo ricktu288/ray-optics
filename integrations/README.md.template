@@ -73,22 +73,9 @@ The JSON data returned by the script will also include some statistics about the
 
 The [Ray Optics Coder](https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder) on ChatGPT can help you write integration scripts. Note that it assumes the latest version of the integration tools. If you prefer another LLM service, you may provide the knowledge files (which are located at the `ai-tools` folder of the source code) directly to the LLM to teach it how to write integration scripts.
 
-## Citing
+## Cite this package
 
-If you use this project in your research, please cite it according to the metadata:
-```bibtex
-@misc{RayOptics,
-  author = {Tu, Yi-Ting and others},
-  title = {{Ray Optics Simulation}},
-  year = {2016},
-  doi = {10.5281/zenodo.6386611},
-  url = {https://phydemo.app/ray-optics/}
-}
-```
-
-The DOI shown above is for the project, not for a specific version. If you download the released version of the integration tools, you can replace the project DOI above with the versioned DOI shown on the release page, and the year by the year of the release.
-
-The URL field above is optional and not supported by all citation formats. You may also use the Zenodo URL or the GitHub URL.
+Please follow the Zenodo link of the version you are using in the [Releases](https://github.com/ricktu288/ray-optics/releases) page if you downloaded this package there. If you are not using a released version (e.g. downloaded from a previous "latest deployment" link or cloned from the repository), you may either cite the Zenodo record corresponding to the most recent parent release of the version you are using with comment on the usage of beta/modified features (if any), or directly cite the GitHub repository with access date.
 
 ## License
 

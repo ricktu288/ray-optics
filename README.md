@@ -37,20 +37,11 @@ A web app for creating and simulating 2D geometric optical scenes, with a galler
 
 ## Cite this project
 
-If you use this project in your research, please cite it according to the metadata:
-```bibtex
-@misc{RayOptics,
-  author = {Tu, Yi-Ting and others},
-  title = {{Ray Optics Simulation}},
-  year = {2016},
-  doi = {10.5281/zenodo.6386611},
-  url = {https://phydemo.app/ray-optics/}
-}
-```
+If you use this project in your research, please cite it according to the following instruction depending on the version you are using.
 
-The DOI shown above is for the project, not for a specific version. If you want to cite a versioned DOI, please use the [latest release](https://github.com/ricktu288/ray-optics/releases/latest), which is slightly older than the online version and without beta features. You can then replace the project DOI above with the versioned DOI shown on that page, and the year by the year of the release.
+If you are using the [online version](https://phydemo.app/ray-optics/simulator/), please check if you are using any beta features (if some are used, a "Beta" icon is shown in the lower left corner of the web app). If no beta features are used, then please cite [the Zenodo record of the latest release](https://doi.org/10.5281/zenodo.6386611) by following the "Citation" or "Export" panel there. If beta features are used, you may either cite as above but with additional comment on the usage of beta features (as the latest release does not include beta features), or directly cite the GitHub repository with access date.
 
-The URL field above is optional and not supported by all citation formats. You may also use the Zenodo URL or the GitHub URL.
+If you are running the project locally, please follow the Zenodo link of the version you are using in the [Releases](https://github.com/ricktu288/ray-optics/releases) page if you downloaded it there. If you are not using a released version (e.g. downloaded from a previous "latest deployment" link or cloned from the repository), you may either cite the Zenodo record corresponding to the most recent parent release of the version you are using with comment on the usage of beta/modified features (if any), or directly cite the GitHub repository with access date.
 
 ## Contributing
 

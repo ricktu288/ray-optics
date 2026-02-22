@@ -549,6 +549,52 @@ export class MockUser {
   }
 
   /**
+   * Set a stroke style value through the object bar
+   * @param {string} label - Label of the stroke style control (partial match)
+   * @param {Object} value - Style object with properties like color, width, dash
+   * @throws {Error} If control is not found
+   */
+  setStrokeStyle(label, value) {
+    this.set(label, value);
+  }
+
+  /**
+   * Reset a stroke style control to default
+   * @param {string} label - Label of the stroke style control (partial match)
+   * @throws {Error} If control is not found
+   */
+  resetStrokeStyle(label) {
+    const matches = this.objBar.controls.filter(c => c.label.includes(label) && c.reset);
+    if (matches.length === 0) {
+      throw new Error(`No style control found with label containing "${label}"`);
+    }
+    matches[0].reset();
+  }
+
+  /**
+   * Set a fill style value through the object bar
+   * @param {string} label - Label of the fill style control (partial match)
+   * @param {Object} value - Style object with properties like color
+   * @throws {Error} If control is not found
+   */
+  setFillStyle(label, value) {
+    this.set(label, value);
+  }
+
+  /**
+   * Reset a fill style control to default
+   * @param {string} label - Label of the fill style control (partial match)
+   * @throws {Error} If control is not found
+   */
+  resetFillStyle(label) {
+    const matches = this.objBar.controls.filter(c => c.label.includes(label) && c.reset);
+    if (matches.length === 0) {
+      throw new Error(`No style control found with label containing "${label}"`);
+    }
+    matches[0].reset();
+  }
+
+  /**
    * Set a property value through the object bar
    * @param {string} label - Property label
    * @param {any} value - New value

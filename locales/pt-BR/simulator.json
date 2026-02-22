@@ -114,11 +114,11 @@
     },
     "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
     "redWavelength": {
-      "title": "Comprimento de onda vermelho (nm)",
+      "title": "Comprimento de onda vermelho",
       "description": "O comprimento de onda exibido como vermelho quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
     },
     "violetWavelength": {
-      "title": "Comprimento de onda violeta (nm)",
+      "title": "Comprimento de onda violeta",
       "description": "O comprimento de onda exibido como violeta quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
     },
     "maxRayDepth": {
@@ -657,6 +657,13 @@
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
       }
+    },
+    "betaFeatures": {
+      "title": "Recursos beta",
+      "description": "Você está utilizando os seguintes recursos beta:",
+      "details": "Recursos beta podem ser insáveis e podem mudar sem retrocompatibilidade. Para reportar bugs, por favor visite [Issues](/github/issues) no GitHub ou nos mande um email em [ray-optics@phydemo.app](/email).",
+      "sceneFromBeta": "Esta cena é importada de um item beta na Galeria (reimporte para atualizar).",
+      "moduleFromBeta": "O módulo `{{moduleId}}` é importado de um item beta na lista de módulos (reimporte para atualizar)."
     }
   }
 }

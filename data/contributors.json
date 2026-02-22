@@ -841,5 +841,38 @@
       "gallery": true
     },
     "firstCommit": "2026-01-16"
+  },
+  {
+    "name": "Rai Gar",
+    "githubEmails": [
+      "rai28@outlook.es"
+    ],
+    "contributions": {
+      "translations": [
+        "es"
+      ]
+    },
+    "firstCommit": "2026-02-09"
+  },
+  {
+    "name": "Estyx Translations",
+    "githubEmails": [
+      "aghtranslation@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "es"
+      ]
+    },
+    "firstCommit": "2026-02-13"
+  },
+  {
+    "name": "Dullayachat Boonudom",
+    "contributions": {
+      "translations": [
+        "lo"
+      ]
+    },
+    "firstCommit": "2026-02-18"
   }
 ]

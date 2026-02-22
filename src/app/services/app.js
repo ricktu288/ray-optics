@@ -819,6 +819,66 @@ function hideAllPopovers() {
   });
 }
 
+function getBetaFeaturesInUse() {
+  if (!scene) {
+    return [];
+  }
+
+  const features = [];
+  const defaultScene = Scene.serializableDefaults;
+
+  const expandObjs = (objs) => {
+    const expanded = [];
+    for (const obj of objs) {
+      if (obj && obj.constructor === sceneObjs.ModuleObj) {
+        expanded.push(obj);
+        expanded.push(...expandObjs(obj.objs || []));
+      } else {
+        expanded.push(obj);
+      }
+    }
+    return expanded;
+  };
+
+  const allObjs = expandObjs(scene.objs || []);
+
+  if (scene.importedFromBeta) {
+    features.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
+  }
+
+  const betaModuleIds = new Set();
+  for (const [moduleId, moduleDef] of Object.entries(scene.modules || {})) {
+    if (moduleDef?.importedFromBeta) {
+      betaModuleIds.add(moduleId);
+    }
+  }
+  if (betaModuleIds.size > 0) {
+    [...betaModuleIds].sort().forEach((moduleId) => {
+      features.push(i18next.t('simulator:footer.betaFeatures.moduleFromBeta', { moduleId }));
+    });
+  }
+
+  // When new features of the scene are added, add them as follows:
+  /*
+  if (scene.newFeature !== defaultScene.newFeature) {
+    features.push("New Feature");
+  }
+  */
+
+  // When new features of some objects are added, add them as follows:
+  /*
+  const usesNewFeature = allObjs.some((obj) =>
+    obj &&
+    (obj.constructor.type === 'Type') && obj.newFeature !== someDefaultValue
+  );
+  if (usesNewFeature) {
+    features.push("New Feature");
+  }
+  */
+
+  return features;
+}
+
 function updateErrorAndWarning() {
   statusEmitter.emit(STATUS_EVENT_NAMES.SYSTEM_STATUS, {
     app: { 
@@ -833,6 +893,7 @@ function updateErrorAndWarning() {
       error: simulator.error, 
       warning: simulator.warning 
     },
+    betaFeatures: getBetaFeaturesInUse(),
     objects: scene.objs.map((obj, i) => ({
       index: i,
       type: obj.constructor.type,

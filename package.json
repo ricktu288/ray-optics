@@ -2,7 +2,7 @@
   "name": "ray-optics",
   "displayName": "Ray Optics Simulation",
   "description": "A web app for creating and simulating 2D geometric optical scenes.",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "author": "Yi-Ting Tu",
   "license": "Apache-2.0",
   "private": true,
@@ -32,7 +32,7 @@
     "style-loader": "^4.0.0",
     "tex-math-parser": "^2.0.4",
     "vue": "^3.0.0",
-    "webpack": "^5.95.0",
+    "webpack": "^5.105.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.2.1"
   },

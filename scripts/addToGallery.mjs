@@ -122,6 +122,9 @@ if (!title) {
 // The title is not stored in the extracted scene data.
 delete sceneData.name;
 
+// Set the scene to be beta.
+sceneData.importedFromBeta = true;
+
 // Ensure that the scene data contains two CropBox objects, one is square (for thumbnail) and the other is rectangular (for preview).
 let cropBoxPreview = null;
 let cropBoxThumbnail = null;
@@ -391,7 +394,7 @@ if (forGalleryPage) {
   const contributorList = contributors.split(';').map((name) => name.trim());
 
   // Insert the new scene into the category.
-  categoryScenes.splice(position + 1, 0, { id: id, contributors: contributorList });
+  categoryScenes.splice(position + 1, 0, { id: id, beta: true, contributors: contributorList });
 
   // Update the gallery strings, inserting the new item next to the selected item.
   const newGalleryStrings = {};
