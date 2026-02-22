@@ -69,6 +69,16 @@ class Handle extends BaseSceneObj {
     return jsonObj;
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('simulator:sceneObjs.Handle.handle');
+    if (!detailed) return base;
+    const transformation = objData?.transformation || 'default';
+    const transformationLabel = transformation === 'default'
+      ? i18next.t('simulator:common.legacyOption')
+      : i18next.t(`simulator:sceneObjs.Handle.transformations.${transformation}`);
+    return i18next.t('main:meta.colon', { name: base, value: transformationLabel });
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('simulator:sceneObjs.Handle.handle'));
     const transformations = {

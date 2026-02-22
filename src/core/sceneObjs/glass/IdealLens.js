@@ -39,6 +39,10 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     focalLength: 100
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.IdealLens.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

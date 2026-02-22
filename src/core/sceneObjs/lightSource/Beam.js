@@ -50,6 +50,10 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     random: false
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Beam.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

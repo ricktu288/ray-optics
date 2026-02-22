@@ -47,6 +47,10 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
     slitRatio: 0.5,
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.ConcaveDiffractionGrating.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },

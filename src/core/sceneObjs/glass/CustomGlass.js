@@ -51,6 +51,17 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.glass');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.CustomGlass.title') });
+    }
+    const eqn1 = objData?.eqn1 ?? '';
+    const eqn2 = objData?.eqn2 ?? '';
+    const parts = [eqn1, eqn2].filter(Boolean);
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: parts.join(', ') }) : base;
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

@@ -43,6 +43,10 @@ class PlaneGlass extends LineObjMixin(BaseGlass) {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.PlaneGlass.title') });
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

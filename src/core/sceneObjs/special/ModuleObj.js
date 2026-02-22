@@ -101,6 +101,12 @@ class ModuleObj extends BaseSceneObj {
     this.expandObjs();
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    const baseLabel = i18next.t('simulator:sceneObjs.ModuleObj.module');
+    const moduleName = objData?.module ?? '';
+    return moduleName ? i18next.t('main:meta.colon', { name: baseLabel, value: moduleName }) : baseLabel;
+  }
+
   static getPropertySchema(objData, scene) {
     const moduleDef = scene?.modules?.[objData.module];
     const schema = [

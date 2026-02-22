@@ -52,6 +52,10 @@ class ParabolicMirror extends BaseFilter {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.ParabolicMirror.title') });
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },

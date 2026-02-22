@@ -424,6 +424,7 @@
     },
     "CropBox": {
       "title": "匯出",
+      "label": "剪取框",
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "寬度",

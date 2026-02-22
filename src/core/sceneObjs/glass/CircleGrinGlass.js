@@ -48,6 +48,10 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.CircleGrinGlass.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

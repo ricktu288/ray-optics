@@ -424,6 +424,7 @@
     },
     "CropBox": {
       "title": "Export",
+      "label": "Crop Box",
       "cropBoxSize": "Crop Box Size",
       "format": "Format",
       "width": "Width",

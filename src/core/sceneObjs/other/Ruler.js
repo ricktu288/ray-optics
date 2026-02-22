@@ -37,6 +37,10 @@ class Ruler extends LineObjMixin(BaseSceneObj) {
     scaleInterval: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Ruler.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.Ruler.zeroPoint') },

@@ -109,6 +109,10 @@ class CurveGrinGlass extends BaseGrinGlass {
     return jsonObj;
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.CurveGrinGlass.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'points', type: 'array', label: i18next.t('simulator:sceneObjs.common.bezierControlPoints'),

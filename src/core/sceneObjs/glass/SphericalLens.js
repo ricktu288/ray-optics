@@ -52,6 +52,10 @@ class SphericalLens extends Glass {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.SphericalLens.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'path.0', type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: 1 }) },

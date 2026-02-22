@@ -48,6 +48,10 @@ class GrinGlass extends BaseGrinGlass {
     partialReflect: true
   };
   
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.GrinGlass.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'path', type: 'array', label: i18next.t('simulator:sceneObjs.Glass.vertices'),

@@ -40,6 +40,10 @@ class LineArrow extends LineObjMixin(BaseSceneObj) {
     lineStyle: null
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.LineArrow.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

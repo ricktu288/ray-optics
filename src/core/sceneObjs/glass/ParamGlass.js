@@ -54,6 +54,16 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.glass');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.ParamGlass.title') });
+    }
+    const pieces = objData?.pieces ?? [];
+    const parts = pieces.map(p => '(' + (p.eqnX ?? '') + ',' + (p.eqnY ?? '') + ')').filter(c => c !== '(,)');
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: parts.join(', ') }) : base;
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

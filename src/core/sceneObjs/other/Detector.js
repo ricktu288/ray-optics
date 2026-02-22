@@ -55,6 +55,10 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     this.binData = null;
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Detector.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

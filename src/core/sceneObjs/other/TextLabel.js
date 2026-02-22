@@ -50,6 +50,13 @@ class TextLabel extends BaseSceneObj {
     fillStyle: null
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    const baseTitle = i18next.t('main:tools.TextLabel.title');
+    if (!detailed) return baseTitle;
+    const text = objData?.text ?? '';
+    return text ? i18next.t('main:meta.colon', { name: baseTitle, value: text }) : baseTitle;
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },

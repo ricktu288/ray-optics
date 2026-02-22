@@ -157,6 +157,19 @@ class BaseSceneObj {
   static mergesWithGlass = false;
 
   /**
+   * Get a short description of the object for display (e.g. in list items, tooltips).
+   * This is a static method that works on raw JSON data (no instance needed), so it can be used
+   * for both live objects and module templates.
+   * @param {Object} objData - The raw JSON data of the object (or template).
+   * @param {Scene|null} scene - The scene instance. Provides access to scene-level definitions (e.g. `scene.modules` for ModuleObj). May be null if not available.
+   * @param {boolean} [detailed=false] - If true, include more contextual information (e.g. for TextLabel, the actual text content; for ModuleObj, the module name is always shown).
+   * @returns {string} A plain-text description. For most objects when not detailed, this should match what objBar.setTitle would show conceptually (but as plain text, not HTML).
+   */
+  static getDescription(objData, scene, detailed = false) {
+    return objData?.type || '';
+  }
+
+  /**
    * Get the property schema for this object type. This is for the UI of the visual editor in the sidebar, mainly designed for editing object templates in modules, and not intended for basic usage of this app (unlike the object bar). Therefore, the schema only contains direct properties (not derived from other properties), and are context-independent (e.g. not depend on whether "Simulate Colors" is on). The only context is the "resource"-like information of the scene such as the module parameter names. Also, since it is for module templates, the objData is not the class instance, but the raw JSON data of the object/template.
    * Returns an ordered array of {@link PropertyDescriptor} objects describing all editable properties.
    * This is a static method that works on raw JSON data (no instance needed), so it can be used

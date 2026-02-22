@@ -46,6 +46,10 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
     symmetric: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.PointSource.title') + ' (<360°)';
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.sourcePoint') },

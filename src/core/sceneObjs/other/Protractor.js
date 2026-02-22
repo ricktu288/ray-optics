@@ -35,6 +35,10 @@ class Protractor extends CircleObjMixin(BaseSceneObj) {
     p2: null
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Protractor.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.CircleObjMixin.center') },

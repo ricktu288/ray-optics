@@ -56,6 +56,16 @@ class ParamMirror extends ParamCurveObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.mirror');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.ParamMirror.title') });
+    }
+    const pieces = objData?.pieces ?? [];
+    const parts = pieces.map(p => '(' + (p.eqnX ?? '') + ',' + (p.eqnY ?? '') + ')').filter(c => c !== '(,)');
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: parts.join(', ') }) : base;
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

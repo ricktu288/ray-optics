@@ -52,6 +52,15 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.mirror');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.CustomMirror.title') });
+    }
+    const eqn = objData?.eqn ?? '';
+    return eqn ? i18next.t('main:meta.colon', { name: base, value: eqn }) : base;
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

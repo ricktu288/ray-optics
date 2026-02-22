@@ -47,6 +47,10 @@ class Mirror extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.Mirror.title') });
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),

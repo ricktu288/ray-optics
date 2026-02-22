@@ -53,6 +53,10 @@ class CustomArcSurface extends BaseCustomSurface {
     twoSided: false,
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.CustomArcSurface.title');
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.endpoint1') },

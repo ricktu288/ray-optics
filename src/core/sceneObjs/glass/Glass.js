@@ -43,6 +43,10 @@ class Glass extends BaseGlass {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.Glass.title') });
+  }
+
   static getPropertySchema(objData, scene) {
     return [
       { key: 'path', type: 'array', label: i18next.t('simulator:sceneObjs.Glass.vertices'),
