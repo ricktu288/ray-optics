@@ -231,4 +231,56 @@ describe('ParabolicMirror', () => {
       invert: true
     });
   });
+
+  describe('focal length', () => {
+    // Setup: p1=(100,200), p2=(300,200), p3=(200,150)
+    // chord=200, dir1=[1,0], dir2=[0,-1], midpoint=(200,200)
+    // height = (p3 - midpoint) · dir2 = (150-200)*(-1) = 50
+    // x0 = 100, focalLength = x0²/(4*height) = 10000/200 = 50
+
+    it('gets focal length from geometry', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 150);
+
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(50, 5);
+    });
+
+    it('sets focal length', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 150);
+
+      // Set f=25: newHeight = 10000/(4*25) = 100, deltaHeight = 50-100 = -50
+      // p1 and p2 move along dir2=[0,-1] by deltaHeight=-50 → y increases by 50
+      user.set("{{simulator:sceneObjs.common.focalLength}}", 25);
+
+      const result = obj.serialize();
+      // p3 (vertex) stays fixed
+      expect(result.p3.x).toBeCloseTo(200, 5);
+      expect(result.p3.y).toBeCloseTo(150, 5);
+      // p1 and p2 move downward (y increases)
+      expect(result.p1.x).toBeCloseTo(100, 5);
+      expect(result.p1.y).toBeCloseTo(250, 5);
+      expect(result.p2.x).toBeCloseTo(300, 5);
+      expect(result.p2.y).toBeCloseTo(250, 5);
+      // Verify focal length reads back correctly
+      user.updateObjBar();
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(25, 3);
+    });
+
+    it('drags p3 and updates focal length', () => {
+      user.click(100, 200);
+      user.click(300, 200);
+      user.click(200, 150);
+
+      // Initial focal length is 50
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(50, 5);
+
+      // Drag p3 further from chord: p3 moves from (200,150) to (200,100)
+      // New height = (100-200)*(-1) = 100, f = 10000/(4*100) = 25
+      user.drag(200, 150, 200, 100);
+      expect(user.get("{{simulator:sceneObjs.common.focalLength}}")).toBeCloseTo(25, 3);
+    });
+  });
 }); 

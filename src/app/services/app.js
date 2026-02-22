@@ -838,48 +838,8 @@ function getBetaFeaturesInUse() {
 
   const allObjs = expandObjs(scene.objs || []);
 
-  if (scene.redWavelength !== defaultScene.redWavelength) {
-    features.push(i18next.t('simulator:settings.redWavelength.title'));
-  }
-
   if (scene.importedFromBeta) {
     features.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
-  }
-
-  if (scene.violetWavelength !== defaultScene.violetWavelength) {
-    features.push(i18next.t('simulator:settings.violetWavelength.title'));
-  }
-
-  const maxRayDepth = Number.isFinite(scene.maxRayDepth) ? scene.maxRayDepth : Infinity;
-  if (maxRayDepth !== defaultScene.maxRayDepth) {
-    features.push(i18next.t('simulator:settings.maxRayDepth.title'));
-  }
-
-  const usesLineStyle = allObjs.some((obj) =>
-    obj &&
-    (obj.constructor.type === 'Drawing' || obj.constructor.type === 'LineArrow') &&
-    obj.lineStyle
-  );
-  if (usesLineStyle) {
-    features.push(i18next.t('simulator:sceneObjs.common.lineStyle'));
-  }
-
-  const usesTextFillStyle = allObjs.some((obj) =>
-    obj &&
-    obj.constructor.type === 'TextLabel' &&
-    obj.fillStyle
-  );
-  if (usesTextFillStyle) {
-    features.push(i18next.t('simulator:sceneObjs.common.fillStyle'));
-  }
-
-  const usesPartialReflectBeta = allObjs.some((obj) =>
-    obj &&
-    Object.prototype.hasOwnProperty.call(obj, 'partialReflect') &&
-    obj.partialReflect === false
-  );
-  if (usesPartialReflectBeta) {
-    features.push(i18next.t('simulator:sceneObjs.BaseGlass.partialReflect'));
   }
 
   const betaModuleIds = new Set();
@@ -888,16 +848,29 @@ function getBetaFeaturesInUse() {
       betaModuleIds.add(moduleId);
     }
   }
-  for (const obj of allObjs) {
-    if (obj && obj.constructor === sceneObjs.ModuleObj && obj.moduleDef?.importedFromBeta) {
-      betaModuleIds.add(obj.module);
-    }
-  }
   if (betaModuleIds.size > 0) {
     [...betaModuleIds].sort().forEach((moduleId) => {
       features.push(i18next.t('simulator:footer.betaFeatures.moduleFromBeta', { moduleId }));
     });
   }
+
+  // When new features of the scene are added, add them as follows:
+  /*
+  if (scene.newFeature !== defaultScene.newFeature) {
+    features.push("New Feature");
+  }
+  */
+
+  // When new features of some objects are added, add them as follows:
+  /*
+  const usesNewFeature = allObjs.some((obj) =>
+    obj &&
+    (obj.constructor.type === 'Type') && obj.newFeature !== someDefaultValue
+  );
+  if (usesNewFeature) {
+    features.push("New Feature");
+  }
+  */
 
   return features;
 }

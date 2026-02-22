@@ -72,4 +72,15 @@ describe('LineArrow', () => {
       backArrow: true
     });
   });
+
+  it('sets stroke style', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+
+    const customStyle = { color: [0, 255, 0, 1], width: 3, dash: [10, 5] };
+    user.setStrokeStyle("{{simulator:sceneObjs.common.lineStyle}}", customStyle);
+
+    const result = obj.serialize();
+    expect(result.lineStyle).toEqual({ color: [0, 255, 0, 1], width: 3, dash: [10, 5] });
+  });
 }); 

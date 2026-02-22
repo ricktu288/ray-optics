@@ -124,7 +124,7 @@ class TextLabel extends BaseSceneObj {
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['fillStyle']))) {
       objBar.createFillStyleControl(
-        i18next.t('simulator:sceneObjs.common.fillStyle') + '<sup>Beta</sup>',
+        i18next.t('simulator:sceneObjs.common.fillStyle'),
         this.fillStyle,
         this.scene.theme.decoration,
         function (value) {
