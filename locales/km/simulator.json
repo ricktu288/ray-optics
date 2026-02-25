@@ -252,9 +252,9 @@
         "description": "បើអ្នកចង់ប្រើកម្មវិធីនេះនៅក្នុងកំព្យូទ័ររបស់អ្នកដោយឡែកពី Browser សូមមើលការណែនាំ [ទីនេះ](/run-locally)។"
       },
       "contactUs": {
-        "title": "ទាក់ទងយើង",
+        "title": "ទំនាក់ទំនង",
         "description": "អ្នកអាចទាក់ទងយើងតាមរយៈបណ្ដាញ e-mail អាសយដ្ឋាន [ray-optics@phydemo.app](/email)។ យើងលើកទឹកចិត្តឱ្យអ្នកបញ្ចេញមតិនៅ [Discussions](/github/discussions) ឬ [Issues](/github/issues) នៅបណ្ដាញ GitHub។",
-        "contribute": "អ្នកអាចចូលរួមអភិវឌ្ឍន៍កម្មវិធីបានដោយ [ចុចទីនេះ](/contributing)។"
+        "contribute": "អ្នកអាចចូលរួមជួយអភិវឌ្ឍន៍កម្មវិធីបានដោយ [ចុចទីនេះ](/contributing)។"
       }
     }
   }
