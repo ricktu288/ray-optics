@@ -21,7 +21,7 @@
       "warningthesequenceof": "Atención: La secuencia de luz apareciendo no representa realmente la velocidad de la luz - solo la imagen final es significante."
     },
     "imagesFormedByTwoMirrors": {
-      "title": "Imágenes de Dos Espejos",
+      "title": "Imágenes de dos espejos",
       "description": "La simulación muestra imágenes formadas por dos espejos. La \"L\" verde es el objeto. Si el ángulo entre ambos espejos es \\(\\frac{360^\\circ}{n}\\), entonces \\(n-1\\) imágenes virtuales (las L's naranjas) se formarán. Puedes arrastrar el punto final del espejo para cambiar el ángulo entre ellos."
     },
     "parabolicMirror": {
@@ -64,14 +64,22 @@
     },
     "interrogationRoom": {
       "darkroom": "Cuarto oscuro",
-      "lamp": "Lámpara"
+      "lamp": "Lámpara",
+      "interrogationroom": "Sala de interrogatorio",
+      "observerseyeris": "Ojo del observador",
+      "suspectseyeris": "Ojo del sospechoso",
+      "thelampsreflection": "El reflejo de la lámpara",
+      "title": "Sala de interrogatorio",
+      "twowaymirror": "Espejo de dos vías"
     },
     "prisms": {
       "title": "Prismas"
     },
     "rainbows": {
       "title": "Arcoíris",
-      "sunlight": "Luz solar"
+      "sunlight": "Luz solar",
+      "raindrop": "Gota de lluvia",
+      "primaryrainbow": "Arcoíris primario"
     },
     "minimumDeviationAngle": {
       "examplea": "Ejemplo A",
@@ -79,7 +87,9 @@
       "exampleb": "Ejemplo B",
       "dragtorotate": "Arrastre para rotar",
       "deviationangle": "Ángulo de desviación",
-      "incidenceangle": "Ángulo de incidencia"
+      "incidenceangle": "Ángulo de incidencia",
+      "dragtoadjustbeamwidt": "Arrastre para ajustar el ancho de los haces",
+      "usethebuiltinzoomtob": "Use el zoom integrado para una mejor interactividad con la simulación"
     },
     "mazeSolution": {
       "mazeexit": "Salida del laberinto",
@@ -90,7 +100,8 @@
       "diffuse": "Difusa"
     },
     "chaffCountermeasure": {
-      "radar": "Radar"
+      "radar": "Radar",
+      "plane": "Avión"
     },
     "cameraObscura": {
       "observer2": "Observador"
@@ -105,10 +116,15 @@
     "keplerianTelescope": {
       "realimage": "Imagen real",
       "thekepleriantelescop": "El telescopio kepleriano",
-      "eye": "ojo"
+      "eye": "ojo",
+      "lightfromstar": "Luz de una estrella",
+      "virtualimage": "Imagen virtual",
+      "title": "Telescopio kepleriano",
+      "description": "En esta simulación se describe el diagrama de rayos de un telescopio kepleriano."
     },
     "augustinFresnelsLighthouseOptics": {
-      "howitworks": "Cómo funciona"
+      "howitworks": "Cómo funciona",
+      "mirrorsorreflectorsc": "Los espejos o reflectores pueden redirigir haces con ángulos grandes, pero los reflectores de 1820 disipaban la mitad de la luz."
     },
     "opticsOfHumanEye": {
       "title": "Óptica del ojo humano",
@@ -117,16 +133,19 @@
     "monochromaticAberrations": {
       "sphericalaberration": "Aberración esférica",
       "screen": "Pantalla",
-      "title": "Aberraciones monocromáticas"
+      "title": "Aberraciones monocromáticas",
+      "commaaberration": "Aberración de coma"
     },
     "moduleExampleParameters": {
       "title": "Ejemplo de módulo - Parámetros"
     },
     "moduleExampleControlPoints": {
-      "hereisthemidpoint": "↙Aquí está el punto intermedio"
+      "hereisthemidpoint": "↙Aquí está el punto intermedio",
+      "title": "Ejemplo de módulo - Puntos de control"
     },
     "luneburgLens": {
-      "title": "Lente de Luneburg"
+      "title": "Lente de Luneburg",
+      "approximatedmultilay1": "Lente de Luneburg multicapa aproximada (puedes elegir y cambiar N, el número de capas)"
     },
     "aplanaticPoints": {
       "title": "Puntos aplanáticos",
@@ -154,6 +173,86 @@
     },
     "classicalCassegrainTelescopes": {
       "collimator": "Colimador"
+    },
+    "compoundMicroscope": {
+      "objective": "Objetivo"
+    },
+    "chromaticAberration": {
+      "title": "Aberración cromática"
+    },
+    "beamDirectors": {
+      "biprism": "Biprisma"
+    },
+    "apparentDepth": {
+      "title": "Profundidad aparente",
+      "observer": "Observador",
+      "observedimageorange": "Imagen observada (naranja)"
+    },
+    "virtualImageFormation": {
+      "object2": "Objeto",
+      "converginglensf1000u": "Lente convergente (F=1000 unidades)",
+      "virtualimagehighlyen": "Imagen virtual\nMucho mayor\nDerecha/Erguida"
+    },
+    "theMirascope": {
+      "object1": "Objeto",
+      "realimage1": "Imagen real"
+    },
+    "reflect": {
+      "title": "Reflexión y refracción",
+      "description": "En esta simulación se muestra el fenómeno de reflexión y de refracción en una superficie."
+    },
+    "koehlerIllumination": {
+      "sample": "muestra",
+      "sampleisnowilluminat": "ahora, la muestra \nestá iluminada homogéneamente",
+      "title": "Iluminación Köhler"
+    },
+    "inferiorMirage": {
+      "airwithinferiormirag": "Aire (con espejismo inferior)",
+      "ground": "Tierra",
+      "airwithoutinferiormi": "Aire (sin espejismo inferior)",
+      "observerseyenottosca1": "Ojo del observador (no está a escala)"
+    },
+    "rochesterCloak": {
+      "t8objects": "8 objetos",
+      "visibilityarea": "Área de visibilidad",
+      "object": "Objeto"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmósfera",
+      "earthssurface": "Superficie de la Tierra",
+      "observer1": "Observador",
+      "vacuum": "Vacío",
+      "virtualimage1": "Imagen virtual"
+    },
+    "logarithmicSpiralLens": {
+      "dragtochangetheiniti": "Arrastra para cambiar\nla dirección inicial del rayo",
+      "title": "Camino del rayo en espiral logarítmica"
+    },
+    "chromaticDispersion": {
+      "dragheretorotatethep": "Arrastra aquí\npara rotar el prisma",
+      "title": "Dispersión cromática"
+    },
+    "resonator": {
+      "flatmirror": "Espejo plano",
+      "sphericalconcavemirr": "Espejo cóncavo esférico",
+      "unstableresonator": "Resonador inestable",
+      "stableresonator": "Resonador estable"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "thistextisshownonlyw": "Este texto solo aparece cuando n>5"
+    },
+    "moduleExampleVariables": {
+      "title": "Ejemplo de módulo - Variables"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Ejemplo de módulo - Ecuación personalizada"
+    },
+    "moduleExampleBasics": {
+      "thistextisnotinamodu": "Este texto no está en un módulo.",
+      "thistextisalsonotina": "Este texto tampoco está en un módulo."
+    },
+    "moduleExampleShapeParametrization": {
+      "alensdefinedbydr1r2": "Una lente definida por d, R_1, R_2"
     }
   }
 }
